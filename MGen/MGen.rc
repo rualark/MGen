@@ -485,13 +485,13 @@ END
 STRINGTABLE
 BEGIN
     ID_VIEW_OUTPUTWND       "Show or hide console"
-    IDS_OUTPUT_WND          "Output"
+    IDS_OUTPUT_WND          "Console"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_BUILD_TAB           "Warnings   "
-    IDS_DEBUG_TAB           "Debug   "
+    IDS_BUILD_TAB           " Warnings  "
+    IDS_DEBUG_TAB           " Debug  "
     IDS_FIND_TAB            "Find"
 END
 

@@ -62,7 +62,7 @@ BOOL CMGenView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CMGenView drawing
 
-void CMGenView::OnDraw(CDC* /*pDC*/)
+void CMGenView::OnDraw(CDC* pDC)
 {
 	CMGenDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -70,6 +70,42 @@ void CMGenView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: add draw code for native data here
+	Graphics graphics(pDC->m_hDC);
+
+	Pen blue(Color(255, 0, 0, 255));
+	graphics.DrawLine(&blue, 10, 10, 50, 50);
+
+	/*
+	hdc = BeginPaint(hWnd, &ps);
+	Graphics gr(hdc);
+	Font font(&FontFamily(L"Arial"), 12);
+	LinearGradientBrush brush(Rect(0, 0, 100, 100), Color::Red, Color::Yellow, LinearGradientModeHorizontal);
+	Status st = gr.DrawString(L"Look at this text!", -1, &font, PointF(0, 0), &brush);
+	assert(st == Ok);
+	EndPaint(hWnd, &ps);
+	*/
+	CPaintDC dc(this); // Creates a device context for the client area, which
+					   // also erases the area to be drawn.
+
+	CPen MyPen, *pOldPen;
+	CBrush MyBrush, *pOldBrush; 
+	// A red pen, one pixel wide
+	MyPen.CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+
+	// Selecting an object returns the old one
+	// we need to catch and return it to avoid memory leaks
+	pOldPen = dc.SelectObject(&MyPen);
+
+	// A Blue brush                                         
+	MyBrush.CreateSolidBrush(RGB(0, 0, 255));
+	pOldBrush = dc.SelectObject(&MyBrush);
+
+	// Finally, we have our device context set up with our pen and brush and can
+	// use them to draw. <BR>
+	//Draws a rectangle that is red on the outside, filled in blue 
+	dc.Rectangle(0, 0, 200, 200);
+	dc.SelectObject(pOldPen);
+	dc.SelectObject(pOldBrush);
 }
 
 
