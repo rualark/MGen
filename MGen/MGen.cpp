@@ -97,6 +97,10 @@ BOOL CMGenApp::InitInstance()
 	// AfxInitRichEdit2() is required to use RichEdit control	
 	// AfxInitRichEdit2();
 
+	// Initialize GDI+
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
+
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	// of your final executable, you should remove from the following
@@ -104,9 +108,8 @@ BOOL CMGenApp::InitInstance()
 	// Change the registry key under which our settings are stored
 	// TODO: You should modify this string to be something appropriate
 	// such as the name of your company or organization
-	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
+	SetRegistryKey(_T("MGen"));
 	LoadStdProfileSettings(10);  // Load standard INI file options (including MRU)
-
 
 	InitContextMenuManager();
 
@@ -158,6 +161,7 @@ BOOL CMGenApp::InitInstance()
 int CMGenApp::ExitInstance()
 {
 	//TODO: handle additional resources you may have added
+	Gdiplus::GdiplusShutdown(m_gdiplusToken);
 	AfxOleTerm(FALSE);
 
 	return CWinAppEx::ExitInstance();

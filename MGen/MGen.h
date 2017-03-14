@@ -38,6 +38,7 @@ public:
 // Implementation
 	UINT  m_nAppLook;
 	BOOL  m_bHiColorIcons;
+	ULONG_PTR m_gdiplusToken;
 
 	virtual void PreLoadState();
 	virtual void LoadCustomState();

@@ -62,3 +62,4 @@
 #endif
 
 
+#include <gdiplus.h>
