@@ -134,7 +134,8 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 
 void CMainFrame::ShowOutputWnd()
 {
-	m_wndOutput.ShowPane(TRUE, FALSE, TRUE);
+	if (m_wndOutput.IsVisible()) m_wndOutput.ShowPane(FALSE, FALSE, FALSE);
+	else m_wndOutput.ShowPane(TRUE, FALSE, TRUE);
 }
 
 // CMainFrame diagnostics

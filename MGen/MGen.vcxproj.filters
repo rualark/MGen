@@ -71,6 +71,7 @@
     <None Include="res\MGen.rc2">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MGen.rc">

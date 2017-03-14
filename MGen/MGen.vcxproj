@@ -208,6 +208,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="MGen.reg" />
     <None Include="res\MGen.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
