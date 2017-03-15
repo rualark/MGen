@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_ALGO, &CMainFrame::OnButtonAlgo)
 	ON_COMMAND(ID_CHECK_OUTPUTWND, &CMainFrame::OnCheckOutputwnd)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_OUTPUTWND, &CMainFrame::OnUpdateCheckOutputwnd)
+	ON_UPDATE_COMMAND_UI(ID_COMBO_ALGO, &CMainFrame::OnUpdateComboAlgo)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -98,6 +99,17 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// set the visual manager and style based on persisted value
 	OnApplicationLook(theApp.m_nAppLook);
+
+	// Algorithm combo
+	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
+		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
+	for (int i = 1; i <= GAlgNum; i++) {
+		//pCombo->AddItem(GAlgName[i]);
+		//TCHAR st[100];
+		//_stprintf_s(st, _T("%d"), i);
+		//pCombo->AddItem(st);
+		pCombo->AddItem(GAlgName[i]);
+	}
 
 	return 0;
 }
@@ -320,4 +332,10 @@ void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI)
 	BOOL bEnable = m_wndOutput.IsVisible();
 	pCmdUI->Enable();
 	pCmdUI->SetCheck(bEnable);
+}
+
+
+void CMainFrame::OnUpdateComboAlgo(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable();
 }

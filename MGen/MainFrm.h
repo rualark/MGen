@@ -69,6 +69,7 @@ public:
 	afx_msg void OnButtonAlgo();
 	afx_msg void OnCheckOutputwnd();
 	afx_msg void OnUpdateCheckOutputwnd(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateComboAlgo(CCmdUI *pCmdUI);
 };
 
 
