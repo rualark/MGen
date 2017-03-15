@@ -295,8 +295,17 @@ void CMainFrame::OnButtonParams()
 
 void CMainFrame::OnButtonGen()
 {
-	CGenTemplate* pGen = new CGenCF1();
-	pGen->Generate();
+	CGenTemplate* pGen = 0;
+	int Algo = GetAlgo();
+	if (Algo == 1) {
+		pGen = new CGenCF1();
+	}
+	if (Algo == 2) {
+		pGen = new CGenCF2();
+	}
+	if (pGen != 0) {
+		pGen->Generate();
+	}
 	delete pGen;
 }
 
@@ -338,4 +347,11 @@ void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateComboAlgo(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable();
+}
+
+int CMainFrame::GetAlgo()
+{
+	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
+		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
+	return pCombo->GetCurSel()+1;
 }
