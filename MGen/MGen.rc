@@ -514,6 +514,7 @@ BEGIN
     ID_BUTTON_EXPORT        "Show or hide the messages window\nToggle Messages"
     ID_BUTTON_PARAMS        "Edit parameters of the selected algorithm\nEdit Parameters"
     ID_BUTTON_ALGO          "Show all algorithm and choose one\nChoose Algorithm"
+    ID_CHECK_OUTPUTWND      "Show or hide the messages window\nToggle Messages"
 END
 
 #endif    // English (United States) resources

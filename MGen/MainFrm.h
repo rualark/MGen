@@ -67,6 +67,8 @@ public:
 	afx_msg void OnButtonPlay();
 	afx_msg void OnButtonSettings();
 	afx_msg void OnButtonAlgo();
+	afx_msg void OnCheckOutputwnd();
+	afx_msg void OnUpdateCheckOutputwnd(CCmdUI *pCmdUI);
 };
 
 

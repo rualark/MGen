@@ -40,6 +40,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_PLAY, &CMainFrame::OnButtonPlay)
 	ON_COMMAND(ID_BUTTON_SETTINGS, &CMainFrame::OnButtonSettings)
 	ON_COMMAND(ID_BUTTON_ALGO, &CMainFrame::OnButtonAlgo)
+	ON_COMMAND(ID_CHECK_OUTPUTWND, &CMainFrame::OnCheckOutputwnd)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_OUTPUTWND, &CMainFrame::OnUpdateCheckOutputwnd)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -301,4 +303,19 @@ void CMainFrame::OnButtonSettings()
 void CMainFrame::OnButtonAlgo()
 {
 	// TODO: Add your command handler code here
+}
+
+
+void CMainFrame::OnCheckOutputwnd()
+{
+	if (m_wndOutput.IsVisible()) m_wndOutput.ShowPane(FALSE, FALSE, FALSE);
+	else m_wndOutput.ShowPane(TRUE, FALSE, TRUE);
+}
+
+
+void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI)
+{
+	BOOL bEnable = m_wndOutput.IsVisible();
+	pCmdUI->Enable();
+	pCmdUI->SetCheck(bEnable);
 }
