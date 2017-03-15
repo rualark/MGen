@@ -61,6 +61,13 @@ protected:
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
+public:
+	afx_msg void OnButtonParams();
+	afx_msg void OnButtonGen();
+	afx_msg void OnButtonPlay();
+	afx_msg void OnButtonExport();
+	afx_msg void OnButtonSettings();
+	afx_msg void OnButtonAlgo();
 };
 
 

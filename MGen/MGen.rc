@@ -485,7 +485,7 @@ END
 STRINGTABLE
 BEGIN
     ID_VIEW_OUTPUTWND       "Show or hide console"
-    IDS_OUTPUT_WND          "Console"
+    IDS_OUTPUT_WND          "Messages"
 END
 
 STRINGTABLE
@@ -498,6 +498,22 @@ END
 STRINGTABLE
 BEGIN
     IDS_EDIT_MENU           "Edit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_BUTTON_OUTPUTWND     "Show or hide the messages window\nToggle Messages"
+END
+
+STRINGTABLE
+BEGIN
+    ID_BUTTON7              "Edit parameters of selected algorithm\nEdit Parameters"
+    ID_BUTTON8              "Show all algorithms and select one\nShow Algorithms"
+    ID_BUTTON_GEN           "Generate music using currently selected algorithm and parameters\nGenerate Music"
+    ID_BUTTON_PLAY          "Play previously generated music\nPlay Music"
+    ID_BUTTON_EXPORT        "Show or hide the messages window\nToggle Messages"
+    ID_BUTTON_PARAMS        "Edit parameters of the selected algorithm\nEdit Parameters"
+    ID_BUTTON_ALGO          "Show all algorithm and choose one\nChoose Algorithm"
 END
 
 #endif    // English (United States) resources

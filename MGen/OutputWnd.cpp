@@ -80,7 +80,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_wndTabs.AddTab(&m_wndOutputFind, strTabName, (UINT)2);
 
 	// Fill output tabs with some dummy text (nothing magic here)
-	FillBuildWindow();
+	FillWarnWindow();
 	FillDebugWindow();
 	//FillFindWindow();
 
@@ -114,15 +114,15 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 	dc.SelectObject(pOldFont);
 }
 
-void COutputWnd::FillBuildWindow()
+void COutputWnd::FillWarnWindow()
 {
-	//m_wndOutputWarn.AddString(_T("Build output is being displayed here."));
 	//m_wndOutputWarn.AddString(_T("The output is being displayed in rows of a list view"));
 	//m_wndOutputWarn.AddString(_T("but you can change the way it is displayed as you wish..."));
 }
 
 void COutputWnd::FillDebugWindow()
 {
+	m_wndOutputDebug.AddString(_T("Started MGen version 1.1.5"));
 	//m_wndOutputDebug.AddString(_T("Debug output is being displayed here."));
 	//m_wndOutputDebug.AddString(_T("The output is being displayed in rows of a list view"));
 	//m_wndOutputDebug.AddString(_T("but you can change the way it is displayed as you wish..."));

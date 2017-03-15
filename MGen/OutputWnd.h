@@ -50,7 +50,7 @@ protected:
 	COutputList m_wndOutputFind;
 
 protected:
-	void FillBuildWindow();
+	void FillWarnWindow();
 	void FillDebugWindow();
 	void FillFindWindow();
 

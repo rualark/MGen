@@ -75,13 +75,14 @@ void CMGenView::OnDraw(CDC* pDC)
 
 	CRect ClipBox;
 	pDC->GetClipBox(&ClipBox);
-
 	CSize Size = GetTotalSize();
 
-	CRect rc;
-	GetClientRect(&rc);
-	rc.SetRect(0, 0, 200000, 1000);
-	pDC->FillSolidRect(rc, RGB(0, 0, 255));
+	//CRect rc;
+	//GetClientRect(&rc);
+	//rc.SetRect(0, 0, 200000, 1000);
+	//pDC->FillSolidRect(ClipBox, RGB(255, 0, 0));
+	//ClipBox.InflateRect(-1, -1);
+	//pDC->FillSolidRect(ClipBox, RGB(0, 0, 255));
 
 	/*
 	Graphics graphics(pDC->m_hDC);
@@ -161,7 +162,7 @@ void CMGenView::OnInitialUpdate()
 
 	// TODO: Add your specialized code here and/or call the base class
 	//Определить размер документа
-	CSize DocSize(200000, 0);
+	CSize DocSize(6000, 0);
 	//Установить режим отображения и размер документа
 	SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 }

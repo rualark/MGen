@@ -44,15 +44,26 @@
 #define IDS_EDIT_MENU                   306
 #define IDR_RIBBON                      307
 #define ID_WRITE_PASTEASHYPERLINK       32770
-#define ID_BUTTON2                      32772
 #define ID_BUTTON_OUTPUTWND             32772
+#define ID_COMBO_ALGO                   32775
+#define ID_BUTTON7                      32784
+#define ID_BUTTON8                      32785
+#define ID_BUTTON_SETTINGS              32786
+#define ID_BUTTON_GEN                   32787
+#define ID_BUTTON_PLAY                  32788
+#define ID_BUTTON_EXPORT                32789
+#define ID_BUTTON_PARAMS                32790
+#define ID_BUTTON13                     32791
+#define ID_BUTTON_ALGO                  32792
+#define ID_COMBO3                       32793
+#define ID_COMBO_MIDIOUT                32793
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32775
+#define _APS_NEXT_COMMAND_VALUE         32794
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

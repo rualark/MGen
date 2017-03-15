@@ -35,6 +35,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CMainFrame::OnUpdateFilePrintPreview)
 	ON_WM_SETTINGCHANGE()
 	ON_COMMAND(ID_BUTTON_OUTPUTWND, &CMainFrame::ShowOutputWnd)
+	ON_COMMAND(ID_BUTTON_PARAMS, &CMainFrame::OnButtonParams)
+	ON_COMMAND(ID_BUTTON_GEN, &CMainFrame::OnButtonGen)
+	ON_COMMAND(ID_BUTTON_PLAY, &CMainFrame::OnButtonPlay)
+	ON_COMMAND(ID_BUTTON_EXPORT, &CMainFrame::OnButtonExport)
+	ON_COMMAND(ID_BUTTON_SETTINGS, &CMainFrame::OnButtonSettings)
+	ON_COMMAND(ID_BUTTON_ALGO, &CMainFrame::OnButtonAlgo)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -265,4 +271,40 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
+}
+
+
+void CMainFrame::OnButtonParams()
+{
+	// TODO: Add your command handler code here
+}
+
+
+void CMainFrame::OnButtonGen()
+{
+	// TODO: Add your command handler code here
+}
+
+
+void CMainFrame::OnButtonPlay()
+{
+	// TODO: Add your command handler code here
+}
+
+
+void CMainFrame::OnButtonExport()
+{
+	// TODO: Add your command handler code here
+}
+
+
+void CMainFrame::OnButtonSettings()
+{
+	// TODO: Add your command handler code here
+}
+
+
+void CMainFrame::OnButtonAlgo()
+{
+	// TODO: Add your command handler code here
 }
