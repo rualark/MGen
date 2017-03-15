@@ -24,6 +24,7 @@ protected: // create from serialization only
 
 // Attributes
 public:
+	CGenTemplate* pGen = 0;
 
 // Operations
 public:
@@ -73,8 +74,15 @@ public:
 	afx_msg void OnCheckOutputwnd();
 	afx_msg void OnUpdateCheckOutputwnd(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateComboAlgo(CCmdUI *pCmdUI);
-	int GetAlgo();
 	afx_msg void OnComboAlgo();
+
+	afx_msg LRESULT OnGenFinish(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnDebugMsg(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnWarnMsg(WPARAM wParam, LPARAM lParam);
+
+	int GetAlgo();
+
+	static UINT GenThread(LPVOID pParam);
 };
 
 

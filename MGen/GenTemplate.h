@@ -14,4 +14,8 @@ public:
 	CGenTemplate();
 	virtual ~CGenTemplate();
 	virtual void Generate();
+
+	static UINT GenThread(LPVOID pParam);
+	HWND m_hWnd;
+	//static UINT WM_GEN_FINISH;
 };

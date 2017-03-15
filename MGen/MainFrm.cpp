@@ -23,6 +23,10 @@
 
 // CMainFrame
 
+static UINT WM_GEN_FINISH = RegisterWindowMessage(L"MGEN_GEN_FINISH_MSG");
+static UINT WM_DEBUG_MSG = RegisterWindowMessage(L"MGEN_DEBUG_MSG");
+static UINT WM_WARN_MSG = RegisterWindowMessage(L"MGEN_WARN_MSG");
+
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
@@ -44,6 +48,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_OUTPUTWND, &CMainFrame::OnUpdateCheckOutputwnd)
 	ON_UPDATE_COMMAND_UI(ID_COMBO_ALGO, &CMainFrame::OnUpdateComboAlgo)
 	ON_COMMAND(ID_COMBO_ALGO, &CMainFrame::OnComboAlgo)
+	ON_REGISTERED_MESSAGE(WM_GEN_FINISH, &CMainFrame::OnGenFinish)
+	ON_REGISTERED_MESSAGE(WM_DEBUG_MSG, &CMainFrame::OnDebugMsg)
+	ON_REGISTERED_MESSAGE(WM_WARN_MSG, &CMainFrame::OnWarnMsg)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -308,7 +315,11 @@ void CMainFrame::OnButtonParams()
 
 void CMainFrame::OnButtonGen()
 {
-	CGenTemplate* pGen = 0;
+	if (pGen != 0) {
+		WriteWarn(_T("Not deleted generator detected"));
+		delete pGen;
+	}
+	pGen = 0;
 	int Algo = GetAlgo();
 	if (Algo == 1) {
 		pGen = new CGenCF1();
@@ -318,9 +329,11 @@ void CMainFrame::OnButtonGen()
 	}
 	if (pGen != 0) {
 		WriteDebug(_T("Started generator: ") + GAlgName[Algo]);
-	  pGen->Generate();
+		pGen->m_hWnd = m_hWnd;
+		//CGenTemplate::WM_GEN_FINISH = WM_GEN_FINISH;
+		AfxBeginThread(CMainFrame::GenThread, pGen);
+		//pGen->Generate();
 	}
-	delete pGen;
 }
 
 
@@ -349,6 +362,24 @@ void CMainFrame::OnCheckOutputwnd()
 	else m_wndOutput.ShowPane(TRUE, FALSE, TRUE);
 }
 
+LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
+{
+	WriteDebug(L"Generation finished");
+	return 0;
+}
+
+LRESULT CMainFrame::OnDebugMsg(WPARAM wParam, LPARAM lParam)
+{
+	WriteDebug(*(CString*)lParam);
+	return LRESULT();
+}
+
+LRESULT CMainFrame::OnWarnMsg(WPARAM wParam, LPARAM lParam)
+{
+	WriteWarn(*(CString*)lParam);
+	return LRESULT();
+}
+
 
 void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI)
 {
@@ -374,4 +405,19 @@ int CMainFrame::GetAlgo()
 void CMainFrame::OnComboAlgo()
 {
 	// TODO: Add your command handler code here
+}
+
+UINT CMainFrame::GenThread(LPVOID pParam)
+{
+	CGenTemplate* pGen = (CGenTemplate*)pParam;
+
+	if (pGen == NULL) return 1;   // if Object is not valid  
+
+	::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread started"));
+	pGen->Generate();
+	Sleep(4000);
+	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
+
+	::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
+	return 0;   // thread completed successfully 
 }
