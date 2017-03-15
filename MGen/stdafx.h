@@ -62,6 +62,7 @@
 #endif
 
 #include <map>
+#include <vector>
 using namespace std;
 #include <gdiplus.h>
 using namespace Gdiplus;

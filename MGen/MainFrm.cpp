@@ -59,10 +59,12 @@ CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
+	srand((unsigned)time(0));
 }
 
 CMainFrame::~CMainFrame()
 {
+	if (pGen != 0) delete pGen;
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -119,18 +121,20 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		pCombo->AddItem(GAlgName[i]);
 	}
 
+	WriteDebug(L"Started MGen version 1.1.5");
+
 	return 0;
 }
 
 void CMainFrame::WriteDebug(CString st)
 {
-	m_wndOutput.m_wndOutputDebug.AddString(st);
+	m_wndOutput.m_wndOutputDebug.AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + L" " + st);
 	m_wndOutput.m_wndOutputDebug.SetTopIndex(m_wndOutput.m_wndOutputDebug.GetCount() - 1);
 }
 
 void CMainFrame::WriteWarn(CString st)
 {
-	m_wndOutput.m_wndOutputWarn.AddString(st);
+	m_wndOutput.m_wndOutputWarn.AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + L" " + st);
 	m_wndOutput.m_wndOutputWarn.SetTopIndex(m_wndOutput.m_wndOutputWarn.GetCount() - 1);
 }
 
@@ -330,7 +334,9 @@ void CMainFrame::OnButtonGen()
 	if (pGen != 0) {
 		WriteDebug(_T("Started generator: ") + GAlgName[Algo]);
 		pGen->m_hWnd = m_hWnd;
-		//CGenTemplate::WM_GEN_FINISH = WM_GEN_FINISH;
+		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
+		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
+		pGen->WM_WARN_MSG = WM_WARN_MSG;
 		AfxBeginThread(CMainFrame::GenThread, pGen);
 		//pGen->Generate();
 	}
@@ -352,12 +358,12 @@ void CMainFrame::OnButtonSettings()
 
 void CMainFrame::OnButtonAlgo()
 {
-	map <string, int> p;
-	p["param1"] = 100;
-	p["param2"] = 200;
-	TCHAR st[100];
-	_stprintf_s(st, _T("%d"), p["param1"] + p["param2"]);
-	WriteDebug(st);
+	//map <string, int> p;
+	//p["param1"] = 100;
+	//p["param2"] = 200;
+	//TCHAR st[100];
+	//_stprintf_s(st, _T("%d"), p["param1"] + p["param2"]);
+	//WriteDebug(st);
 }
 
 
@@ -424,7 +430,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 
 	::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread started"));
 	pGen->Generate();
-	Sleep(2000);
+	//Sleep(2000);
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 
 	::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
