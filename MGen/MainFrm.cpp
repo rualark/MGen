@@ -38,7 +38,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_PARAMS, &CMainFrame::OnButtonParams)
 	ON_COMMAND(ID_BUTTON_GEN, &CMainFrame::OnButtonGen)
 	ON_COMMAND(ID_BUTTON_PLAY, &CMainFrame::OnButtonPlay)
-	ON_COMMAND(ID_BUTTON_EXPORT, &CMainFrame::OnButtonExport)
 	ON_COMMAND(ID_BUTTON_SETTINGS, &CMainFrame::OnButtonSettings)
 	ON_COMMAND(ID_BUTTON_ALGO, &CMainFrame::OnButtonAlgo)
 END_MESSAGE_MAP()
@@ -291,11 +290,6 @@ void CMainFrame::OnButtonPlay()
 	// TODO: Add your command handler code here
 }
 
-
-void CMainFrame::OnButtonExport()
-{
-	// TODO: Add your command handler code here
-}
 
 
 void CMainFrame::OnButtonSettings()
