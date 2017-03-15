@@ -41,13 +41,13 @@ public:
 
 	void UpdateFonts();
 
-// Attributes
-protected:
-	CMFCTabCtrl	m_wndTabs;
-
 	COutputList m_wndOutputWarn;
 	COutputList m_wndOutputDebug;
 	COutputList m_wndOutputFind;
+
+	// Attributes
+protected:
+	CMFCTabCtrl	m_wndTabs;
 
 protected:
 	void FillWarnWindow();

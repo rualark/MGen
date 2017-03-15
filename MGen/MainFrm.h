@@ -28,7 +28,10 @@ public:
 // Operations
 public:
 
-// Overrides
+	void WriteDebug(CString st);
+	void WriteWarn(CString st);
+
+	// Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
@@ -71,6 +74,7 @@ public:
 	afx_msg void OnUpdateCheckOutputwnd(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateComboAlgo(CCmdUI *pCmdUI);
 	int GetAlgo();
+	afx_msg void OnComboAlgo();
 };
 
 

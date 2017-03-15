@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_CHECK_OUTPUTWND, &CMainFrame::OnCheckOutputwnd)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_OUTPUTWND, &CMainFrame::OnUpdateCheckOutputwnd)
 	ON_UPDATE_COMMAND_UI(ID_COMBO_ALGO, &CMainFrame::OnUpdateComboAlgo)
+	ON_COMMAND(ID_COMBO_ALGO, &CMainFrame::OnComboAlgo)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -112,6 +113,18 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	return 0;
+}
+
+void CMainFrame::WriteDebug(CString st)
+{
+	m_wndOutput.m_wndOutputDebug.AddString(st);
+	m_wndOutput.m_wndOutputDebug.SetTopIndex(m_wndOutput.m_wndOutputDebug.GetCount() - 1);
+}
+
+void CMainFrame::WriteWarn(CString st)
+{
+	m_wndOutput.m_wndOutputWarn.AddString(st);
+	m_wndOutput.m_wndOutputWarn.SetTopIndex(m_wndOutput.m_wndOutputWarn.GetCount() - 1);
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -304,7 +317,8 @@ void CMainFrame::OnButtonGen()
 		pGen = new CGenCF2();
 	}
 	if (pGen != 0) {
-		pGen->Generate();
+		WriteDebug(_T("Started generator: ") + GAlgName[Algo]);
+	  pGen->Generate();
 	}
 	delete pGen;
 }
@@ -354,4 +368,10 @@ int CMainFrame::GetAlgo()
 	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
 	return pCombo->GetCurSel()+1;
+}
+
+
+void CMainFrame::OnComboAlgo()
+{
+	// TODO: Add your command handler code here
 }

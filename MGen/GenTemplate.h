@@ -2,7 +2,7 @@
 
 const int GAlgNum = 2;
 
-const LPCTSTR GAlgName[] = {
+const CString GAlgName[] = {
 	L"No algorithm selected", // 0
 	L"Cantus firmus 1", // 1
 	L"Cantus firmus 2" // 2
