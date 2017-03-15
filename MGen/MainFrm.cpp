@@ -370,13 +370,17 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 
 LRESULT CMainFrame::OnDebugMsg(WPARAM wParam, LPARAM lParam)
 {
-	WriteDebug(*(CString*)lParam);
+	CString* pSt = (CString*)lParam;
+	WriteDebug(*pSt);
+	delete pSt;
 	return LRESULT();
 }
 
 LRESULT CMainFrame::OnWarnMsg(WPARAM wParam, LPARAM lParam)
 {
-	WriteWarn(*(CString*)lParam);
+	CString* pSt = (CString*) lParam;
+	WriteWarn(*pSt);
+	delete pSt;
 	return LRESULT();
 }
 
@@ -415,7 +419,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 
 	::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread started"));
 	pGen->Generate();
-	Sleep(4000);
+	Sleep(2000);
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 
 	::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
