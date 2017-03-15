@@ -65,3 +65,5 @@
 #include <gdiplus.h>
 
 using namespace Gdiplus;
+
+#include "GenCF1.h"

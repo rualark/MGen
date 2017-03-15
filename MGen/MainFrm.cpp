@@ -283,7 +283,9 @@ void CMainFrame::OnButtonParams()
 
 void CMainFrame::OnButtonGen()
 {
-	// TODO: Add your command handler code here
+	CGenTemplate* pGen = new CGenCF1();
+	pGen->Generate();
+	delete pGen;
 }
 
 
