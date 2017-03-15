@@ -352,7 +352,12 @@ void CMainFrame::OnButtonSettings()
 
 void CMainFrame::OnButtonAlgo()
 {
-	// TODO: Add your command handler code here
+	map <string, int> p;
+	p["param1"] = 100;
+	p["param2"] = 200;
+	TCHAR st[100];
+	_stprintf_s(st, _T("%d"), p["param1"] + p["param2"]);
+	WriteDebug(st);
 }
 
 

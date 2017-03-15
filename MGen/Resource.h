@@ -59,15 +59,15 @@
 #define ID_COMBO_PARAMS                 32795
 #define ID_CHECK2                       32797
 #define ID_BUTTON_EPARAMS               32798
-#define ID_CHECK3                       32799
 #define ID_CHECK_OUTPUTWND              32799
+#define ID_BUTTON2                      32800
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32800
+#define _APS_NEXT_COMMAND_VALUE         32801
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -18,4 +18,8 @@ public:
 	static UINT GenThread(LPVOID pParam);
 	HWND m_hWnd;
 	//static UINT WM_GEN_FINISH;
+
+protected:
+	int v_cnt=1; // Voice count
+	int t_count = 96000; // Timeslot count
 };
