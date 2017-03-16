@@ -21,6 +21,7 @@
 
 #include "MGenDoc.h"
 #include "MGenView.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -38,6 +39,8 @@ BEGIN_MESSAGE_MAP(CMGenView, CScrollView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMGenView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_MOUSEHOVER()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 // CMGenView construction/destruction
@@ -76,6 +79,15 @@ void CMGenView::OnDraw(CDC* pDC)
 	CRect ClipBox;
 	pDC->GetClipBox(&ClipBox);
 	CSize Size = GetTotalSize();
+
+	CMainFrame *pMainWnd = (CMainFrame *)AfxGetMainWnd();
+	CGenTemplate *pGen = pMainWnd->pGen;
+	if (pGen != 0) {
+		for (int i = 0; i < pGen->t_generated; i++) {
+			CRect rc(i*3, pGen->note[i][0]*5, i*3+1, pGen->note[i][0] * 5+3);
+			pDC->FillSolidRect(rc, RGB(255, 0, 0));
+		}
+	}
 
 	//CRect rc;
 	//GetClientRect(&rc);
@@ -131,6 +143,12 @@ void CMGenView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 #endif
 }
 
+void CMGenView::OnMouseHover(UINT, CPoint)
+{
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
+}
+
 
 // CMGenView diagnostics
 
@@ -165,4 +183,14 @@ void CMGenView::OnInitialUpdate()
 	CSize DocSize(6000, 0);
 	//”становить режим отображени€ и размер документа
 	SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
+}
+
+
+void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	//mf->m_wndStatusBar.GetElement(1)->SetText("Some text");
+	mf->WriteDebug("Mouse move");
+
+	CScrollView::OnMouseMove(nFlags, point);
 }

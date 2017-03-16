@@ -44,11 +44,12 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+	CMFCRibbonStatusBar  m_wndStatusBar;
+
 protected:  // control bar embedded members
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
 	CMFCToolBarImages m_PanelImages;
-	CMFCRibbonStatusBar  m_wndStatusBar;
 	COutputWnd        m_wndOutput;
 
 // Generated message map functions
@@ -63,6 +64,8 @@ protected:
 	afx_msg void ShowOutputWnd();
 	DECLARE_MESSAGE_MAP()
 
+	UINT_PTR m_nTimerID;
+
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
 public:
@@ -75,6 +78,7 @@ public:
 	afx_msg void OnUpdateCheckOutputwnd(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateComboAlgo(CCmdUI *pCmdUI);
 	afx_msg void OnComboAlgo();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 	afx_msg LRESULT OnGenFinish(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnDebugMsg(WPARAM wParam, LPARAM lParam);

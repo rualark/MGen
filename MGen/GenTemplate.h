@@ -3,9 +3,28 @@
 const int GAlgNum = 2;
 
 const CString GAlgName[] = {
-	L"No algorithm selected", // 0
-	L"Cantus firmus 1", // 1
-	L"Cantus firmus 2" // 2
+	"No algorithm selected", // 0
+	"Cantus firmus 1", // 1
+	"Cantus firmus 2" // 2
+};
+
+const CString InstName[] = {
+	"Piano", // 0
+	"Violin", // 1
+	"Violin2", // 2
+	"Viola", // 3
+	"Cello", // 4
+	"Bass", // 5
+	"Flute", // 6
+	"Oboe", // 7
+	"Clarinet", // 8
+	"Bassoon", // 9
+	"Horn", // 10
+	"Trumpet", // 11
+	"Trombone", // 12
+	"Tuba", // 13
+	"Harp", // 14
+	"Percussion" // 15
 };
 
 class CGenTemplate
@@ -21,11 +40,13 @@ public:
 	UINT WM_DEBUG_MSG;
 	UINT WM_WARN_MSG;
 
-protected:
+public:
 	// Main constants
 	int v_cnt=1; // Voice count
 	int t_cnt = 1600; // Timeslot count (eighth notes) to stop generation
-	int t_cnt2 = 1600; // Timeslot count to start with
+	int t_init = 1600; // Timeslot count to initialize vectors
+	int t_send = 10; // Timeslot count to send
+	int t_generated = 0; // Timeslots generated
 	float basic_tempo = 100; // Basic tempo
 	vector <string> instr; // Instruments for each voice
 	// Output

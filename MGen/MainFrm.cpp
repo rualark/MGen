@@ -21,16 +21,19 @@
 #define new DEBUG_NEW
 #endif
 
+#define TIMER1 1
+
 // CMainFrame
 
-static UINT WM_GEN_FINISH = RegisterWindowMessage(L"MGEN_GEN_FINISH_MSG");
-static UINT WM_DEBUG_MSG = RegisterWindowMessage(L"MGEN_DEBUG_MSG");
-static UINT WM_WARN_MSG = RegisterWindowMessage(L"MGEN_WARN_MSG");
+static UINT WM_GEN_FINISH = RegisterWindowMessage("MGEN_GEN_FINISH_MSG");
+static UINT WM_DEBUG_MSG = RegisterWindowMessage("MGEN_DEBUG_MSG");
+static UINT WM_WARN_MSG = RegisterWindowMessage("MGEN_WARN_MSG");
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
+	ON_WM_TIMER()
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 	ON_COMMAND(ID_FILE_PRINT, &CMainFrame::OnFilePrint)
@@ -121,20 +124,20 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		pCombo->AddItem(GAlgName[i]);
 	}
 
-	WriteDebug(L"Started MGen version 1.1.5");
+	WriteDebug("Started MGen version 1.1.5");
 
 	return 0;
 }
 
 void CMainFrame::WriteDebug(CString st)
 {
-	m_wndOutput.m_wndOutputDebug.AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + L" " + st);
+	m_wndOutput.m_wndOutputDebug.AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
 	m_wndOutput.m_wndOutputDebug.SetTopIndex(m_wndOutput.m_wndOutputDebug.GetCount() - 1);
 }
 
 void CMainFrame::WriteWarn(CString st)
 {
-	m_wndOutput.m_wndOutputWarn.AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + L" " + st);
+	m_wndOutput.m_wndOutputWarn.AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
 	m_wndOutput.m_wndOutputWarn.SetTopIndex(m_wndOutput.m_wndOutputWarn.GetCount() - 1);
 }
 
@@ -339,6 +342,9 @@ void CMainFrame::OnButtonGen()
 		pGen->WM_WARN_MSG = WM_WARN_MSG;
 		AfxBeginThread(CMainFrame::GenThread, pGen);
 		//pGen->Generate();
+		// Start timer
+		//m_nTimerID = ::SetTimer(m_hWnd, TIMER1, 1000, NULL);
+		m_nTimerID = SetTimer(TIMER1, 1000, NULL);
 	}
 }
 
@@ -375,7 +381,8 @@ void CMainFrame::OnCheckOutputwnd()
 
 LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 {
-	WriteDebug(L"Generation finished");
+	WriteDebug("Generation finished");
+	::KillTimer(m_hWnd, TIMER1); 
 	return 0;
 }
 
@@ -422,17 +429,26 @@ void CMainFrame::OnComboAlgo()
 	// TODO: Add your command handler code here
 }
 
+void CMainFrame::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent == m_nTimerID)
+	{
+		GetActiveView()->Invalidate();
+	}
+	CFrameWndEx::OnTimer(nIDEvent);
+}
+
 UINT CMainFrame::GenThread(LPVOID pParam)
 {
 	CGenTemplate* pGen = (CGenTemplate*)pParam;
 
 	if (pGen == NULL) return 1;   // if Object is not valid  
 
-	::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread started"));
+	//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread started"));
 	pGen->Generate();
 	//Sleep(2000);
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 
-	::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
+	//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
 	return 0;   // thread completed successfully 
 }

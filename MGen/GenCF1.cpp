@@ -26,5 +26,7 @@ void CGenCF1::Generate()
 		att[i][0] = 100;
 		tempo[i][0] = 100;
 		pause[i][0] = 0;
+		t_generated = i;
+		Sleep(100);
 	}
 }
