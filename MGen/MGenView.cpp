@@ -189,7 +189,8 @@ void CMGenView::OnInitialUpdate()
 void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
-	//mf->m_wndStatusBar.GetElement(1)->SetText("Some text");
+	mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
+	mf->m_wndStatusBar.Invalidate(1);
 	mf->WriteDebug("Mouse move");
 
 	CScrollView::OnMouseMove(nFlags, point);
