@@ -14,12 +14,17 @@
 
 #pragma once
 
+#include "CustomToolTipCtrl.h"
+
+class CMGenDoc;
 
 class CMGenView : public CScrollView
 {
 protected: // create from serialization only
 	CMGenView();
 	DECLARE_DYNCREATE(CMGenView)
+
+	CCustomToolTipCtrl m_ToolTip;
 
 // Attributes
 public:
@@ -57,6 +62,8 @@ protected:
 public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	virtual void GetToolTipLabelText(POINT cursor, CString& labelText, CString& descriptionText) const;
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 #ifndef _DEBUG  // debug version in MGenView.cpp

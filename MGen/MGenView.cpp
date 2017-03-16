@@ -48,7 +48,8 @@ END_MESSAGE_MAP()
 CMGenView::CMGenView()
 {
 	// TODO: add construction code here
-
+	m_ToolTip.Create(this);
+	m_ToolTip.Activate(TRUE);
 }
 
 CMGenView::~CMGenView()
@@ -143,12 +144,6 @@ void CMGenView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 #endif
 }
 
-void CMGenView::OnMouseHover(UINT, CPoint)
-{
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
-	mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
-}
-
 
 // CMGenView diagnostics
 
@@ -183,15 +178,63 @@ void CMGenView::OnInitialUpdate()
 	CSize DocSize(6000, 0);
 	//”становить режим отображени€ и размер документа
 	SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
+	
+	// Tooltip
+	CMFCToolTipInfo params;
+	params.m_bVislManagerTheme = TRUE;
+	//params.m_bRoundedCorners = TRUE;
+	m_ToolTip.SetParams(&params);
+	m_ToolTip.AddTool(this, _T("BASE LABLE"));
+	m_ToolTip.SetDelayTime(500);					// 0.5 secondS before tooltips pop up in view
+	m_ToolTip.SetDelayTime(TTDT_RESHOW, 500);		// 0.5 seconds before tooltip after moving
+	m_ToolTip.SetDelayTime(TTDT_AUTOPOP, 1000);	// leave tooltip visible
 }
 
 
 void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
-	mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
-	mf->m_wndStatusBar.Invalidate(1);
-	mf->WriteDebug("Mouse move");
+	//CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	//mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
+	//mf->m_wndStatusBar.Invalidate(1);
+	//mf->WriteDebug("Mouse move");
 
 	CScrollView::OnMouseMove(nFlags, point);
+}
+
+void CMGenView::OnMouseHover(UINT nFlags, CPoint point)
+{
+	//CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	//mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
+	CScrollView::OnMouseHover(nFlags, point);
+}
+
+void CMGenView::GetToolTipLabelText(POINT cursor, CString & labelText, CString & descriptionText) const
+{
+	ScreenToClient(&cursor);
+	CPoint pos(cursor);
+	pos += GetScrollPosition();
+
+	labelText = "Label";
+	descriptionText = "Desc";
+}
+
+
+BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
+{
+	switch (pMsg->message)
+	{
+	case WM_KEYDOWN:
+	case WM_SYSKEYDOWN:
+	case WM_LBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+	case WM_MBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONUP:
+	case WM_MBUTTONUP:
+	case WM_MOUSEMOVE:
+		m_ToolTip.RelayEvent(pMsg);
+		break;
+	}
+
+	return CScrollView::PreTranslateMessage(pMsg);
 }
