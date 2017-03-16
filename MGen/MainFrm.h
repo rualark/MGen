@@ -25,6 +25,19 @@ protected: // create from serialization only
 // Attributes
 public:
 	CGenTemplate* pGen = 0;
+	int midi_i=-1; // Index of selected MIDI device
+	int midi_s; // Name of selected MIDI device
+	int view_single_track = 1; // If all tracks are shown in one
+	int zoom_x = 100; // Zoom for view
+	int zoom_y = 100;
+	int m_state_gen=0;
+	// 0 = No music
+	// 1 = Generation started
+	// 2 = Generation finished
+	int m_state_play=0;
+	// 0 = No playback
+	// 1 = Playback
+	// 2 = Generation and playback started, but playback is paused (buffer underrun)
 
 // Operations
 public:

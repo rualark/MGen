@@ -16,6 +16,12 @@
 
 //#include "CustomToolTipCtrl.h"
 
+#define Y_HEADER 50
+#define Y_FOOTER 2
+#define X_FIELD 10
+#define MULTITRACK_MINNOTES 12
+#define SINGLETRACK_MINNOTES 36
+
 class CMGenDoc;
 
 class CMGenView : public CScrollView
@@ -64,8 +70,8 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	virtual void GetToolTipLabelText(POINT cursor, CString& labelText, CString& descriptionText) const;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #ifndef _DEBUG  // debug version in MGenView.cpp

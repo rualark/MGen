@@ -1,6 +1,10 @@
 #pragma once
 
-const int GAlgNum = 2;
+#define GAlgNum 2
+#define MAX_VOICE 16
+
+/* a ub4 is an unsigned 4-byte quantity */
+typedef  unsigned long int  ub4;
 
 const CString GAlgName[] = {
 	"No algorithm selected", // 0
@@ -32,8 +36,13 @@ class CGenTemplate
 public:
 	CGenTemplate();
 	virtual ~CGenTemplate();
-	virtual void Generate();
 	void Init();
+	virtual void Generate();
+	void ResizeVectors(int size);
+	// Random
+	void isaac();
+	void randinit(int flag);
+	unsigned int rand2();
 
 	HWND m_hWnd;
 	UINT WM_GEN_FINISH;
@@ -44,9 +53,11 @@ public:
 	// Main constants
 	int v_cnt=1; // Voice count
 	int t_cnt = 1600; // Timeslot count (eighth notes) to stop generation
-	int t_init = 1600; // Timeslot count to initialize vectors
+	int t_allocated = 1600; // Timeslot count to initialize vectors
 	int t_send = 10; // Timeslot count to send
 	int t_generated = 0; // Timeslots generated
+	int ng_min=1000; // Minimum generated note
+	int ng_max=0; // Maximum generated note
 	float basic_tempo = 100; // Basic tempo
 	vector <string> instr; // Instruments for each voice
 	// Output
@@ -58,4 +69,11 @@ public:
 	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
 	vector< vector <unsigned char> > tempo; // Tempo
 	vector< vector <unsigned char> > att; // Attack (velocity for piano)
+	// Random generator
+	/* external results */
+	ub4 randrsl[256], randcnt;
+	/* internal state */
+	ub4 mm[256];
+	ub4 aa = 0, bb = 0, cc = 0;
+	int cur_rand = 300, cur_rand2 = 100;
 };

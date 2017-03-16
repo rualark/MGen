@@ -62,7 +62,6 @@ CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
-	srand((unsigned)time(0));
 }
 
 CMainFrame::~CMainFrame()
@@ -328,6 +327,7 @@ void CMainFrame::OnButtonGen()
 	if (pGen != 0) {
 		WriteWarn(_T("Not deleted generator detected"));
 		delete pGen;
+		m_state_gen = 0;
 	}
 	pGen = 0;
 	int Algo = GetAlgo();
@@ -344,10 +344,9 @@ void CMainFrame::OnButtonGen()
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
 		pGen->WM_WARN_MSG = WM_WARN_MSG;
 		AfxBeginThread(CMainFrame::GenThread, pGen);
-		//pGen->Generate();
+		m_state_gen = 1;
 		// Start timer
-		//m_nTimerID = ::SetTimer(m_hWnd, TIMER1, 1000, NULL);
-		m_nTimerID = SetTimer(TIMER1, 1000, NULL);
+		//m_nTimerID = SetTimer(TIMER1, 100, NULL);
 	}
 }
 
@@ -386,6 +385,7 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 {
 	WriteDebug("Generation finished");
 	::KillTimer(m_hWnd, TIMER1); 
+	m_state_gen = 2;
 	return 0;
 }
 

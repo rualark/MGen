@@ -23,6 +23,7 @@
 #include "MGenView.h"
 #include "MainFrm.h"
 #include "InfoDlg.h"
+#include "MemDC2.cpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,8 +43,8 @@ BEGIN_MESSAGE_MAP(CMGenView, CScrollView)
 	ON_WM_RBUTTONUP()
 	ON_WM_MOUSEHOVER()
 	ON_WM_MOUSEMOVE()
-	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 // CMGenView construction/destruction
@@ -76,20 +77,63 @@ void CMGenView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 
+	// This is invalidated rect
+	CRect ClipBox;
+	pDC->GetClipBox(&ClipBox);
+	// Total client rect
+	CRect ClientRect;
+	GetClientRect(&ClientRect);
+	// Total scrollable size
+	CSize Size = GetTotalSize();
+
+	CMemDC2 dc(pDC);
+	dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
+
+	Graphics g(dc->m_hDC);
 	//CClientDC aDC(this);//получить контекст устройства
 	//OnPrepareDC(&aDC);//уточнить начальную точку в логических координатах
 	//aDC.DPtoLP(&point);//перевод из клиентских координат в логические
 
-	CRect ClipBox;
-	pDC->GetClipBox(&ClipBox);
-	CSize Size = GetTotalSize();
-
-	CMainFrame *pMainWnd = (CMainFrame *)AfxGetMainWnd();
-	CGenTemplate *pGen = pMainWnd->pGen;
+	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
+	CGenTemplate *pGen = mf->pGen;
 	if (pGen != 0) {
-		for (int i = 0; i < pGen->t_generated; i++) {
-			CRect rc(i*3, pGen->note[i][0]*5, i*3+1, pGen->note[i][0] * 5+3);
-			pDC->FillSolidRect(rc, RGB(255, 0, 0));
+		int nwidth = 4 * mf->zoom_x / 100;
+		if (mf->view_single_track) {
+			int ng_min = pGen->ng_min;
+			int ng_max = pGen->ng_max;
+			int ncount = ng_max - ng_min;
+			int ncount2 = ncount;
+			int ng_min2 = ng_min;
+			int ng_max2 = ng_max;
+			if (ncount2 < SINGLETRACK_MINNOTES) {
+				ncount2 = SINGLETRACK_MINNOTES;
+				ng_min2 = ng_min - (ncount2 - ncount) / 2;
+				ng_max2 = ng_max + (ncount2 - ncount) / 2;
+			}
+			int nheight = (ClientRect.bottom - Y_HEADER - Y_FOOTER) / ncount2;
+			// Select steps to show
+			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth);
+			int step2 = min(pGen->t_generated - 1, min((ClipBox.right - X_FIELD) / nwidth, 32000/nwidth));
+			for (int i = step1; i < step2; i++) {
+				/*
+				CRect rc(
+					X_FIELD + i * nwidth, 
+					ClientRect.bottom - Y_FOOTER - (pGen->note[i][0]-ng_min2) * nheight, 
+					X_FIELD + (i+1) * nwidth - 1,
+					ClientRect.bottom - Y_FOOTER - (pGen->note[i][0] - ng_min2 + 1) * nheight - 1);
+				//dc.FillSolidRect(rc, RGB(255, 0, 0));
+				*/
+				SolidBrush brush(Color(80 /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
+				g.FillRectangle(&brush, 
+					X_FIELD + i * nwidth, 
+					ClientRect.bottom - Y_FOOTER - (pGen->note[i][0] - ng_min2) * nheight, 
+					nwidth-1, 
+					nheight-1);
+			}
+		}
+		if (min(32000, nwidth*pGen->t_generated) > ClientRect.right) {
+			CSize DocSize(min(32000, nwidth*pGen->t_generated) + 10, 0);
+			SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 		}
 	}
 
@@ -178,7 +222,7 @@ void CMGenView::OnInitialUpdate()
 
 	// TODO: Add your specialized code here and/or call the base class
 	//Определить размер документа
-	CSize DocSize(6000, 0);
+	CSize DocSize(0, 0);
 	//Установить режим отображения и размер документа
 	SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 	
@@ -212,12 +256,14 @@ void CMGenView::OnMouseHover(UINT nFlags, CPoint point)
 
 void CMGenView::GetToolTipLabelText(POINT cursor, CString & labelText, CString & descriptionText) const
 {
+	/*
 	ScreenToClient(&cursor);
 	CPoint pos(cursor);
 	pos += GetScrollPosition();
 
 	labelText = "Label";
 	descriptionText = "Desc";
+	*/
 }
 
 
@@ -244,15 +290,6 @@ BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
 	return CScrollView::PreTranslateMessage(pMsg);
 }
 
-
-void CMGenView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: Add your message handler code here and/or call default
-
-	CScrollView::OnLButtonDown(nFlags, point);
-}
-
-
 void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
@@ -261,4 +298,12 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 	dlg.DoModal();
 
 	CScrollView::OnLButtonUp(nFlags, point);
+}
+
+
+BOOL CMGenView::OnEraseBkgnd(CDC* pDC)
+{
+	return false;
+
+	//return CScrollView::OnEraseBkgnd(pDC);
 }
