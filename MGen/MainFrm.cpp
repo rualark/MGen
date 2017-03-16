@@ -346,7 +346,7 @@ void CMainFrame::OnButtonGen()
 		AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;
 		// Start timer
-		//m_nTimerID = SetTimer(TIMER1, 100, NULL);
+		m_nTimerID = SetTimer(TIMER1, 100, NULL);
 	}
 }
 

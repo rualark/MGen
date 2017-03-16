@@ -99,36 +99,66 @@ void CMGenView::OnDraw(CDC* pDC)
 	if (pGen != 0) {
 		int nwidth = 4 * mf->zoom_x / 100;
 		if (mf->view_single_track) {
+			// Get generator window
 			int ng_min = pGen->ng_min;
 			int ng_max = pGen->ng_max;
-			int ncount = ng_max - ng_min;
-			int ncount2 = ncount;
+			int ncount = ng_max - ng_min + 1;
 			int ng_min2 = ng_min;
 			int ng_max2 = ng_max;
+			int ncount2 = ng_max2 - ng_min2 + 1;
+			// Load last window
+			if (mf->ng_max != 0) {
+				ng_min2 = mf->ng_min;
+				ng_max2 = mf->ng_max;
+				if ((ng_min < ng_min2) || (ng_max > ng_max2)) {
+					ng_min2 = ng_min;
+					ng_max2 = ng_max;
+				}
+				ncount2 = ng_max2 - ng_min2 + 1;
+			}
+			// Check if window is too small
 			if (ncount2 < SINGLETRACK_MINNOTES) {
 				ncount2 = SINGLETRACK_MINNOTES;
 				ng_min2 = ng_min - (ncount2 - ncount) / 2;
 				ng_max2 = ng_max + (ncount2 - ncount) / 2;
 			}
+			// Save window
+			mf->ng_min = ng_min2;
+			mf->ng_max = ng_max2;
+			// Count height
 			int nheight = (ClientRect.bottom - Y_HEADER - Y_FOOTER) / ncount2;
 			// Select steps to show
 			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth);
-			int step2 = min(pGen->t_generated - 1, min((ClipBox.right - X_FIELD) / nwidth, 32000/nwidth));
+			int step2_2 = min((ClipBox.right - X_FIELD) / nwidth, 32000 / nwidth);
+			int step2 = min(pGen->t_generated - 1, step2_2);
+			// Show grid
+			SolidBrush brush_gray(Color(127 /*A*/, 240 /*R*/, 240 /*G*/, 240 /*B*/));
+			Pen pen_dgray(Color(127 /*A*/, 200 /*R*/, 200 /*G*/, 200 /*B*/), 1);
+			Pen pen_ddgray(Color(127 /*A*/, 100 /*R*/, 100 /*G*/, 100 /*B*/), 1);
+			for (int i = ng_min2; i <= ng_max2; i++) {
+				if (diatonic[i % 12] == 0) {
+					g.FillRectangle(&brush_gray, max(X_FIELD, ClipBox.left),
+						ClientRect.bottom - Y_FOOTER - (i - ng_min2) * nheight,
+						ClipBox.right-ClipBox.left, nheight);
+				}
+				if (i % 12 == 4) g.DrawLine(&pen_dgray, max(X_FIELD, ClipBox.left),
+					ClientRect.bottom - Y_FOOTER - (i - ng_min2) * nheight, ClipBox.right,
+					ClientRect.bottom - Y_FOOTER - (i - ng_min2) * nheight);
+				if (i % 12 == 11) g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left),
+					ClientRect.bottom - Y_FOOTER - (i - ng_min2) * nheight, ClipBox.right,
+					ClientRect.bottom - Y_FOOTER - (i - ng_min2) * nheight);
+			}
+			// Draw vertical lines
+			for (int i = step1; i < step2_2; i++) {
+				if (i % 8 == 0) g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, ClientRect.bottom - Y_FOOTER,
+					X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
+			}
+			// Show notes
+			SolidBrush brush_v(Color(80 /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
 			for (int i = step1; i < step2; i++) {
-				/*
-				CRect rc(
-					X_FIELD + i * nwidth, 
-					ClientRect.bottom - Y_FOOTER - (pGen->note[i][0]-ng_min2) * nheight, 
-					X_FIELD + (i+1) * nwidth - 1,
-					ClientRect.bottom - Y_FOOTER - (pGen->note[i][0] - ng_min2 + 1) * nheight - 1);
-				//dc.FillSolidRect(rc, RGB(255, 0, 0));
-				*/
-				SolidBrush brush(Color(80 /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
-				g.FillRectangle(&brush, 
-					X_FIELD + i * nwidth, 
+				g.FillRectangle(&brush_v, X_FIELD + i * nwidth, 
 					ClientRect.bottom - Y_FOOTER - (pGen->note[i][0] - ng_min2) * nheight, 
-					nwidth-1, 
-					nheight-1);
+					nwidth-1, nheight-1);
 			}
 		}
 		if (min(32000, nwidth*pGen->t_generated) > ClientRect.right) {
@@ -148,6 +178,14 @@ void CMGenView::OnDraw(CDC* pDC)
 	Graphics graphics(pDC->m_hDC);
 	Pen blue(Color(255, 0, 0, 255));
 	graphics.DrawLine(&blue, 10, 10, 50, 50);
+	*/
+	/*
+	CRect rc(
+	X_FIELD + i * nwidth,
+	ClientRect.bottom - Y_FOOTER - (pGen->note[i][0]-ng_min2) * nheight,
+	X_FIELD + (i+1) * nwidth - 1,
+	ClientRect.bottom - Y_FOOTER - (pGen->note[i][0] - ng_min2 + 1) * nheight - 1);
+	//dc.FillSolidRect(rc, RGB(255, 0, 0));
 	*/
 }
 

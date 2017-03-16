@@ -22,6 +22,8 @@
 #define MULTITRACK_MINNOTES 12
 #define SINGLETRACK_MINNOTES 36
 
+const char diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
+
 class CMGenDoc;
 
 class CMGenView : public CScrollView

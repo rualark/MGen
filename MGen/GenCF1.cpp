@@ -4,8 +4,8 @@
 
 CGenCF1::CGenCF1()
 {
-	t_cnt = 80000;
-	t_allocated = 10;
+	t_cnt = 8000;
+	t_allocated = 8000;
 	Init();
 }
 
@@ -34,6 +34,6 @@ void CGenCF1::Generate()
 		t_generated = i;
 		if (ng_min > note[i][0]) ng_min = note[i][0];
 		if (ng_max < note[i][0]) ng_max = note[i][0];
-		//Sleep(10);
+		Sleep(10);
 	}
 }
