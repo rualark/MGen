@@ -43,6 +43,10 @@
 #define IDS_FIND_TAB                    302
 #define IDS_EDIT_MENU                   306
 #define IDR_RIBBON                      307
+#define IDD_DIALOG_INFO                 310
+#define IDC_RICHEDIT21                  1000
+#define IDC_BUTTON1                     1001
+#define IDC_BUTTON_HIDDEN               1001
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_BUTTON_OUTPUTWND             32772
 #define ID_COMBO_ALGO                   32775
@@ -66,9 +70,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        310
+#define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32801
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

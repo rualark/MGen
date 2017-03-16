@@ -127,6 +127,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	WriteDebug("Started MGen version 1.1.5");
+	AfxInitRichEdit2();
 
 	return 0;
 }

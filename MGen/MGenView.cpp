@@ -22,6 +22,7 @@
 #include "MGenDoc.h"
 #include "MGenView.h"
 #include "MainFrm.h"
+#include "InfoDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -41,6 +42,8 @@ BEGIN_MESSAGE_MAP(CMGenView, CScrollView)
 	ON_WM_RBUTTONUP()
 	ON_WM_MOUSEHOVER()
 	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 // CMGenView construction/destruction
@@ -48,8 +51,8 @@ END_MESSAGE_MAP()
 CMGenView::CMGenView()
 {
 	// TODO: add construction code here
-	m_ToolTip.Create(this);
-	m_ToolTip.Activate(TRUE);
+	//m_ToolTip.Create(this);
+	//m_ToolTip.Activate(TRUE);
 }
 
 CMGenView::~CMGenView()
@@ -180,14 +183,13 @@ void CMGenView::OnInitialUpdate()
 	SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 	
 	// Tooltip
-	CMFCToolTipInfo params;
-	params.m_bVislManagerTheme = TRUE;
-	//params.m_bRoundedCorners = TRUE;
-	m_ToolTip.SetParams(&params);
-	m_ToolTip.AddTool(this, _T("BASE LABLE"));
-	m_ToolTip.SetDelayTime(500);					// 0.5 secondS before tooltips pop up in view
-	m_ToolTip.SetDelayTime(TTDT_RESHOW, 500);		// 0.5 seconds before tooltip after moving
-	m_ToolTip.SetDelayTime(TTDT_AUTOPOP, 1000);	// leave tooltip visible
+	//CMFCToolTipInfo params;
+	//params.m_bVislManagerTheme = TRUE;
+	//m_ToolTip.SetParams(&params);
+	//m_ToolTip.AddTool(this, _T("."));
+	//m_ToolTip.SetDelayTime(100);					// 0.5 secondS before tooltips pop up in view
+	//m_ToolTip.SetDelayTime(TTDT_RESHOW, 500);		// 0.5 seconds before tooltip after moving
+	//m_ToolTip.SetDelayTime(TTDT_AUTOPOP, INT_MAX);	// leave tooltip visible
 }
 
 
@@ -221,6 +223,7 @@ void CMGenView::GetToolTipLabelText(POINT cursor, CString & labelText, CString &
 
 BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
 {
+	/*
 	switch (pMsg->message)
 	{
 	case WM_KEYDOWN:
@@ -232,9 +235,30 @@ BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
 	case WM_RBUTTONUP:
 	case WM_MBUTTONUP:
 	case WM_MOUSEMOVE:
+		//m_ToolTip.Activate(TRUE); 
 		m_ToolTip.RelayEvent(pMsg);
 		break;
 	}
+	*/
 
 	return CScrollView::PreTranslateMessage(pMsg);
+}
+
+
+void CMGenView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	CScrollView::OnLButtonDown(nFlags, point);
+}
+
+
+void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CInfoDlg dlg;
+	dlg.pGen = mf->pGen;
+	dlg.DoModal();
+
+	CScrollView::OnLButtonUp(nFlags, point);
 }

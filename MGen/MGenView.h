@@ -25,6 +25,7 @@ protected: // create from serialization only
 	DECLARE_DYNCREATE(CMGenView)
 
 	CCustomToolTipCtrl m_ToolTip;
+	CToolTipCtrl m_ToolTip2;
 
 // Attributes
 public:
@@ -64,6 +65,8 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	virtual void GetToolTipLabelText(POINT cursor, CString& labelText, CString& descriptionText) const;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // debug version in MGenView.cpp

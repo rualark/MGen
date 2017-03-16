@@ -189,6 +189,8 @@
     <ClInclude Include="GenCF1.h" />
     <ClInclude Include="GenCF2.h" />
     <ClInclude Include="GenTemplate.h" />
+    <ClInclude Include="InfoDlg.h" />
+    <ClInclude Include="InfoEditCtrl.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MGen.h" />
     <ClInclude Include="MGenDoc.h" />
@@ -203,6 +205,8 @@
     <ClCompile Include="GenCF1.cpp" />
     <ClCompile Include="GenCF2.cpp" />
     <ClCompile Include="GenTemplate.cpp" />
+    <ClCompile Include="InfoDlg.cpp" />
+    <ClCompile Include="InfoEditCtrl.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MGen.cpp" />
     <ClCompile Include="MGenDoc.cpp" />
