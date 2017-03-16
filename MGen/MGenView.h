@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "CustomToolTipCtrl.h"
+//#include "CustomToolTipCtrl.h"
 
 class CMGenDoc;
 
@@ -24,8 +24,7 @@ protected: // create from serialization only
 	CMGenView();
 	DECLARE_DYNCREATE(CMGenView)
 
-	CCustomToolTipCtrl m_ToolTip;
-	CToolTipCtrl m_ToolTip2;
+	//CCustomToolTipCtrl m_ToolTip;
 
 // Attributes
 public:

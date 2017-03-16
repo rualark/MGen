@@ -51,9 +51,6 @@
     <ClInclude Include="GenCF2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CustomToolTipCtrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="InfoDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,9 +84,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GenCF2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomToolTipCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InfoDlg.cpp">
