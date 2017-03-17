@@ -90,13 +90,17 @@ void CMGenView::OnDraw(CDC* pDC)
 	dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
 
 	Graphics g(dc->m_hDC);
-	//CClientDC aDC(this);//получить контекст устройства
-	//OnPrepareDC(&aDC);//уточнить начальную точку в логических координатах
-	//aDC.DPtoLP(&point);//перевод из клиентских координат в логические
+	//CClientDC aDC(this); //получить контекст устройства
+	//OnPrepareDC(&aDC); //уточнить начальную точку в логических координатах
+	//aDC.DPtoLP(&point); //перевод из клиентских координат в логические
 
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGenTemplate *pGen = mf->pGen;
 	if (pGen != 0) {
+		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
+			mf->WriteWarn("OnDraw mutex timed out: drawing stopped");
+			return;
+		}
 		int nwidth = 4 * mf->zoom_x / 100;
 		if (mf->view_single_track) {
 			// Get generator window
@@ -161,6 +165,7 @@ void CMGenView::OnDraw(CDC* pDC)
 					nwidth-1, nheight-1);
 			}
 		}
+		pGen->mutex_output.unlock();
 		if (min(32000, nwidth*pGen->t_generated) > ClientRect.right) {
 			CSize DocSize(min(32000, nwidth*pGen->t_generated) + 10, 0);
 			SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));

@@ -63,6 +63,7 @@
 
 #include <map>
 #include <vector>
+#include <mutex>
 using namespace std;
 #include <gdiplus.h>
 using namespace Gdiplus;

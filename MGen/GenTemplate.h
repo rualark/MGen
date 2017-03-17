@@ -52,6 +52,7 @@ public:
 public:
 	// Interface
 	short need_exit=0; // If thread needs to exit
+	timed_mutex mutex_output;
 	// Main constants
 	int v_cnt=1; // Voice count
 	int t_cnt = 1600; // Timeslot count (eighth notes) to stop generation

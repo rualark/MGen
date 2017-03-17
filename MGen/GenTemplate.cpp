@@ -134,6 +134,9 @@ void CGenTemplate::Init()
 
 void CGenTemplate::ResizeVectors(int size)
 {
+	if (!mutex_output.try_lock_for(chrono::milliseconds(1000))) {
+		::PostMessage(m_hWnd, WM_WARN_MSG, 0, (LPARAM)new CString("ResizeVectors mutex timed out"));
+	}
 	CString* st = new CString;
 	st->Format("ResizeVectors to %d", size);
 	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
@@ -156,5 +159,6 @@ void CGenTemplate::ResizeVectors(int size)
 		att[i].resize(v_cnt);
 	}
 	t_allocated = size;
+	mutex_output.unlock();
 }
 

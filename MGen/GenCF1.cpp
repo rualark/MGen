@@ -5,7 +5,7 @@
 CGenCF1::CGenCF1()
 {
 	t_cnt = 8000;
-	t_allocated = 8000;
+	t_allocated = 2;
 	Init();
 }
 
