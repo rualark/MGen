@@ -134,7 +134,7 @@ void CGenTemplate::Init()
 
 void CGenTemplate::ResizeVectors(int size)
 {
-	if (!mutex_output.try_lock_for(chrono::milliseconds(1000))) {
+	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
 		::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: ResizeVectors mutex timed out"));
 	}
 	CString* st = new CString;

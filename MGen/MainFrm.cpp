@@ -145,8 +145,8 @@ void CMainFrame::WriteLog(int log, CString st)
 	if (log == 2) pOL = &m_wndOutput.m_wndOutputPerf;
 	if (log == 3) pOL = &m_wndOutput.m_wndOutputAlgo;
 	pOL->AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
-	pOL->SetTopIndex(pOL->GetCount() - 1);
 	if (pOL->GetCount() > 1000) pOL->DeleteString(0);
+	pOL->SetTopIndex(pOL->GetCount() - 1);
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -508,7 +508,7 @@ void CMainFrame::OnButtonHzoomDec()
 	if (zoom_x < MIN_HZOOM) zoom_x = MIN_HZOOM;
 	CString st;
 	st.Format("New zoom %d", zoom_x);
-	WriteLog(1, st);
+	WriteLog(2, st);
 	GetActiveView()->Invalidate();
 }
 
@@ -519,7 +519,7 @@ void CMainFrame::OnButtonHzoomInc()
 	if (zoom_x > MAX_HZOOM) zoom_x = MAX_HZOOM;
 	CString st;
 	st.Format("New zoom %d", zoom_x);
-	WriteLog(1, st);
+	WriteLog(2, st);
 	GetActiveView()->Invalidate();
 }
 

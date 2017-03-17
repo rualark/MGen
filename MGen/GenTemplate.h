@@ -80,5 +80,5 @@ public:
 	/* internal state */
 	ub4 mm[256];
 	ub4 aa = 0, bb = 0, cc = 0;
-	int cur_rand = 300, cur_rand2 = 100;
+	int cur_rand = 0, cur_rand2 = 0;
 };

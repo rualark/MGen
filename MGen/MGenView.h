@@ -58,6 +58,13 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
+	int mouse_voice; // Current voice
+	int mouse_voice_old; // Previously drawn voice
+	int mouse_step; // Current step under mouse
+	int mouse_step_old; // Previously drawn mouse_step
+	int nwidth; // Step width
+	int nheight; // Note height
+	int y_start; // Position of lowest note
 
 protected:
 

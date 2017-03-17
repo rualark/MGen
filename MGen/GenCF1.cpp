@@ -5,7 +5,7 @@
 CGenCF1::CGenCF1()
 {
 	t_cnt = 10000;
-	t_allocated = 2;
+	t_allocated = 10;
 	Init();
 }
 
@@ -17,17 +17,26 @@ CGenCF1::~CGenCF1()
 void CGenCF1::Generate()
 {
 	for (int i = 0; i < t_cnt; i++) {
-		if (i >= t_allocated) ResizeVectors(t_allocated*2);
+		if (i >= t_allocated) ResizeVectors(t_allocated * 2);
 		//TCHAR st[100];
 		//_stprintf_s(st, _T("%d"), rand2());
 		//TRACE(st);
-		note[i][0] = 60 + 12 * rand2() / RAND_MAX;
-		len[i][0] = 1;
-		coff[i][0] = 0;
-		if (i>0) poff[i][0] = 1;
-		else poff[i][0] = 0;
-		if (i < t_cnt-1) noff[i][0] = 1;
-		else noff[i][0] = 0;
+		if ((i > 0) && (len[i-1][0] > 1) && (coff[i-1][0] < len[i-1][0]-1)) {
+			note[i][0] = note[i - 1][0];
+			len[i][0] = len[i - 1][0];
+			coff[i][0] = coff[i - 1][0] + 1;
+			poff[i][0] = poff[i - 1][0] + 1;
+		}
+		else {
+			note[i][0] = 60 + 12 * rand2() / RAND_MAX;
+			unsigned int test = RAND_MAX;
+			len[i][0] = 8 * rand2() / RAND_MAX;
+			coff[i][0] = 0;
+			if (i > 0) poff[i][0] = coff[i - 1][0] + 1;
+			else poff[i][0] = 0;
+		}
+		//if (i < t_cnt-1) noff[i][0] = 1;
+		//else noff[i][0] = 0;
 		att[i][0] = 100;
 		tempo[i][0] = 100;
 		pause[i][0] = 0;
@@ -38,7 +47,7 @@ void CGenCF1::Generate()
 		//st->Format("Note generated %d", note[i][0]);
 		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
 		if (i % t_send == 0) t_sent = t_generated;
-		Sleep(1);
+		//Sleep(1);
 		if (need_exit) return;
 	}
 	t_sent = t_generated;

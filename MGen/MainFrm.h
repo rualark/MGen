@@ -31,8 +31,8 @@ public:
 	int midi_i=-1; // Index of selected MIDI device
 	int midi_s; // Name of selected MIDI device
 	int view_single_track = 1; // If all tracks are shown in one
-	int zoom_x = 100; // Zoom for view
-	int zoom_y = 100;
+	int zoom_x = 200; // Zoom for view
+	int zoom_y = 200;
 	int ng_min = 0;
 	int ng_max = 0;
 	int m_state_gen=0;

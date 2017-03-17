@@ -79,7 +79,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	milliseconds time_stop5 = time_start;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGenTemplate *pGen = mf->pGen;
-	if (pGen != 0) {
+	if (pGen != 0) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
 			mf->WriteLog(2, "OnDraw mutex timed out: drawing postponed");
 			return;
@@ -134,13 +134,13 @@ void CMGenView::OnDraw(CDC* pDC)
 	g.DrawString(A2W(st), -1, &font, PointF(0, 25), &brush_black);
 
 	time_stop2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if (pGen != 0) {
+	if (pGen != 0) if (pGen->t_generated > 0) {
 		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d measures in %.1f seconds)", pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, ((float)(current_time - pGen->time_started).count()) / 1000);
 		if (mf->m_state_gen == 2) st.Format("(%d measures in %.1f seconds)", pGen->t_sent/8, ((float)(pGen->time_stopped - pGen->time_started).count()) / 1000);
 		g.DrawString(A2W(st), -1, &font, PointF(250, 0), &brush_black);
 		if (pGen->need_exit == 1)
 			g.DrawString(L"INTERRUPTED", -1, &font, PointF(600, 0), &brush_red);
-		int nwidth = 4 * mf->zoom_x / 100;
+		nwidth = 4 * mf->zoom_x / 100;
 		if (mf->view_single_track) {
 			// Get generator window
 			int ng_min = pGen->ng_min;
@@ -169,8 +169,8 @@ void CMGenView::OnDraw(CDC* pDC)
 			mf->ng_min = ng_min2;
 			mf->ng_max = ng_max2;
 			// Count height
-			int nheight = (ClientRect.bottom - ClientRect.top - Y_HEADER - Y_FOOTER) / ncount2;
-			int y_start = ClientRect.top + Y_HEADER + nheight*(ncount2 - 1);
+			nheight = (ClientRect.bottom - ClientRect.top - Y_HEADER - Y_FOOTER) / ncount2;
+			y_start = ClientRect.top + Y_HEADER + nheight*(ncount2 - 1);
 			// Select steps to show
 			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth - 1);
 			int step2_2 = min((ClipBox.right - X_FIELD) / nwidth + 1, 32000 / nwidth); // For horizontal bars
@@ -220,8 +220,8 @@ void CMGenView::OnDraw(CDC* pDC)
 						st.Format("%d", i / 8 + 1);
 						g.DrawString(A2W(st), -1, &font_small, PointF(X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE + 1), &brush_dddgray);
 					}
-					g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start,
-						X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
+					g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start - 1,
+						X_FIELD + i * nwidth, ClientRect.top + Y_HEADER + 1);
 				}
 				else if ((mf->zoom_x >= 200) && (i % 2 == 0)) g.DrawLine(&pen_dgray, X_FIELD + i * nwidth, y_start,
 					X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
@@ -233,18 +233,32 @@ void CMGenView::OnDraw(CDC* pDC)
 			//st.Format("Notes showing from %d to %d", step1, step2);
 			//mf->WriteLog(1, st);
 			for (int i = step1; i < step2; i++) {
-				g.FillRectangle(&brush_v, X_FIELD + i * nwidth, 
+				g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
 					y_start - (pGen->note[i][0] - ng_min2) * nheight,
-					nwidth-1, nheight-1);
+					nwidth - 1, nheight - 1);
+				if ((i == mouse_step) && (mouse_voice == 0)) {
+					g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
+						y_start - (pGen->note[i][0] - ng_min2) * nheight,
+						nwidth - 1, nheight - 1);
+				}
 			}
+			mouse_voice_old = mouse_voice;
 			// Highlight draft notes
 			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			if ((step2 > pGen->t_sent) || (pGen->need_exit == 1)) {
 				int step3 = max((ClipBox.left - X_FIELD) / nwidth - 1, pGen->t_sent);
 				g.FillRectangle(&brush_agray, X_FIELD + step3 * nwidth,
 					ClientRect.top + Y_HEADER,
-					X_FIELD + (step2 - step3 + 1) * nwidth, y_start - ClientRect.top - Y_HEADER);
+					(step2 - step3 + 1) * nwidth, y_start - ClientRect.top - Y_HEADER);
 			}
+			// Highlight selection
+			if ((mouse_step > -1)) {
+				int step3 = max((ClipBox.left - X_FIELD) / nwidth - 1, pGen->t_sent);
+				g.FillRectangle(&brush_agray, X_FIELD + mouse_step * nwidth,
+					ClientRect.top + Y_HEADER + 1,
+					nwidth, y_start - ClientRect.top - Y_HEADER - 1);
+			}
+			mouse_step_old = mouse_step;
 		}
 		if (min(32000, nwidth*pGen->t_generated) > ClientRect.right) {
 			CSize DocSize(min(32000, nwidth*pGen->t_generated) + 50, 0);
@@ -366,10 +380,44 @@ void CMGenView::OnInitialUpdate()
 
 void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	//CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
-	//mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
-	//mf->m_wndStatusBar.Invalidate(1);
-	//mf->WriteLog(0, "Mouse move");
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CGenTemplate *pGen = mf->pGen;
+	int mouse_note;
+	if ((pGen != 0) && (nwidth > 0) && (nheight > 0)) if (pGen->t_generated > 0) {
+		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
+			mf->WriteLog(2, "OnMouseMove mutex timed out: mouse not processed");
+			CScrollView::OnMouseMove(nFlags, point);
+			return;
+		}
+		CPoint scroll = GetScrollPosition();
+		// Find step
+		if ((point.y < Y_HEADER) || (point.y > y_start)) mouse_step = -1;
+		else mouse_step = (scroll.x + point.x - X_FIELD) / nwidth;
+		// Check if mouse is too left
+		if (mouse_step < -1) mouse_step = -1;
+		// Check if mouse step is in future
+		if (mouse_step > pGen->t_generated) mouse_step = -1;
+		// Find voice
+		mouse_voice = -1;
+		if (mouse_step != -1) {
+			mouse_note = (y_start - point.y) / nheight + mf->ng_min + 1;
+			for (int i = 0; i < pGen->v_cnt; i++)
+				if (pGen->note[mouse_step][i] == mouse_note) mouse_voice = i;
+		}
+		if (((mouse_step != -1) || (mouse_step_old != -1)) && ((mouse_step != mouse_step_old) || (mouse_voice != mouse_voice_old))) {
+			if (mouse_step_old == -1)	Invalidate();
+			else {
+				InvalidateRect(CRect(X_FIELD + min(mouse_step_old, mouse_step)*nwidth - scroll.x, 0,
+					X_FIELD + (max(mouse_step_old, mouse_step) + 1)*nwidth - scroll.x, 1080));
+			}
+		}
+		CString st;
+		st.Format("Step %d, voice %d", mouse_step, mouse_voice);
+		mf->m_wndStatusBar.GetElement(0)->SetText(st);
+		mf->m_wndStatusBar.Invalidate(1);
+		//mf->WriteLog(0, "Mouse move");
+		pGen->mutex_output.unlock();
+	}
 
 	CScrollView::OnMouseMove(nFlags, point);
 }
@@ -419,10 +467,12 @@ BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
 
 void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
-	CInfoDlg dlg;
-	dlg.pGen = mf->pGen;
-	dlg.DoModal();
+	if ((mouse_step > -1) && (mouse_voice > -1)) {
+		CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+		CInfoDlg dlg;
+		dlg.pGen = mf->pGen;
+		dlg.DoModal();
+	}
 
 	CScrollView::OnLButtonUp(nFlags, point);
 }
