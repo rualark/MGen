@@ -29,11 +29,15 @@ void CGenCF1::Generate()
 		}
 		else {
 			note[i][0] = 60 + 12 * rand2() / RAND_MAX;
-			unsigned int test = RAND_MAX;
-			len[i][0] = 8 * rand2() / RAND_MAX;
+			len[i][0] = max(1, 8 * rand2() / RAND_MAX);
 			coff[i][0] = 0;
 			if (i > 0) poff[i][0] = coff[i - 1][0] + 1;
 			else poff[i][0] = 0;
+			if (i > 0) {
+				for (int x = i - 1; x >= i-len[i-1][0]; x--) {
+					noff[x][0] = i - x;
+				}
+			}
 		}
 		//if (i < t_cnt-1) noff[i][0] = 1;
 		//else noff[i][0] = 0;
