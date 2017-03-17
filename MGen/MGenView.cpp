@@ -71,10 +71,23 @@ BOOL CMGenView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CMGenView::OnDraw(CDC* pDC)
 {
-	CMGenDoc* pDoc = GetDocument();
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	milliseconds time_stop = time_start;
+	milliseconds time_stop2 = time_start;
+	milliseconds time_stop3 = time_start;
+	milliseconds time_stop4 = time_start;
+	milliseconds time_stop5 = time_start;
+	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
+	CGenTemplate *pGen = mf->pGen;
+	if (pGen != 0) {
+		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
+			mf->WriteLog(2, "OnDraw mutex timed out: drawing postponed");
+			return;
+		}
+	}
+  CMGenDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
-	if (!pDoc)
-		return;
+	if (!pDoc) return;
 
 	// This is invalidated rect
 	CRect ClipBox;
@@ -105,11 +118,8 @@ void CMGenView::OnDraw(CDC* pDC)
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
 	Pen pen_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 
-	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
-	CGenTemplate *pGen = mf->pGen;
-
 	Gdiplus::Font font(&FontFamily(L"Arial"), 12);
-	Gdiplus::Font font_small(&FontFamily(L"Arial"), 10);
+	Gdiplus::Font font_small(&FontFamily(L"Arial"), 8);
 	milliseconds current_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
   USES_CONVERSION;
 	CString st;
@@ -123,13 +133,10 @@ void CMGenView::OnDraw(CDC* pDC)
 	if (mf->m_state_play == 2) st = "Playback: buffer underrun";
 	g.DrawString(A2W(st), -1, &font, PointF(0, 25), &brush_black);
 
+	time_stop2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (pGen != 0) {
-		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
-			mf->WriteWarn("OnDraw mutex timed out: drawing stopped");
-			return;
-		}
-		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d measures in %.1f seconds)", pGen->t_generated, pGen->t_sent, pGen->t_cnt, ((float)(current_time - pGen->time_started).count()) / 1000);
-		if (mf->m_state_gen == 2) st.Format("(%d measures in %.1f seconds)", pGen->t_sent, ((float)(pGen->time_stopped - pGen->time_started).count()) / 1000);
+		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d measures in %.1f seconds)", pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, ((float)(current_time - pGen->time_started).count()) / 1000);
+		if (mf->m_state_gen == 2) st.Format("(%d measures in %.1f seconds)", pGen->t_sent/8, ((float)(pGen->time_stopped - pGen->time_started).count()) / 1000);
 		g.DrawString(A2W(st), -1, &font, PointF(250, 0), &brush_black);
 		if (pGen->need_exit == 1)
 			g.DrawString(L"INTERRUPTED", -1, &font, PointF(600, 0), &brush_red);
@@ -173,6 +180,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			RectF sizeRect;
 			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), y_start, ClipBox.right, y_start);
 			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER, ClipBox.right, ClientRect.top + Y_HEADER);
+			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER - Y_TIMELINE, ClipBox.right, ClientRect.top + Y_HEADER - Y_TIMELINE);
 			for (int i = ng_min2; i <= ng_max2; i++) {
 				int pos = y_start - (i - ng_min2) * nheight;
 				if (diatonic[i % 12] == 0) {
@@ -187,7 +195,7 @@ void CMGenView::OnDraw(CDC* pDC)
 						g.FillRectangle(&brush_dddgray, 0, pos, X_FIELD / 2, nheight);
 					}
 					if (i % 12 == 11) {
-						if ((nheight > 6) && (i < ng_max2)) {
+						if ((nheight > 5) && (i < ng_max2)) {
 							g.DrawLine(&pen_dddgray, 0, pos, X_FIELD/2-2, pos);
 							st.Format("%d", i / 12);
 							g.MeasureString(A2W(st), -1, &font_small, sizeRect, &sizeRect);
@@ -202,24 +210,35 @@ void CMGenView::OnDraw(CDC* pDC)
 					}
 				}
 			}
+			time_stop3 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			// Draw vertical lines
-			for (int i = step1; i < step2_3; i++) {
-				if (i % 8 == 0) g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start,
-					X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
-				else if ((mf->zoom_x>=200) && (i % 2 == 0)) g.DrawLine(&pen_dgray, X_FIELD + i * nwidth, y_start,
+			for (int i = max(0, step1-16); i < step2_3; i++) {
+				if (i % 8 == 0) {
+					if ((i % 16 == 0) || (mf->zoom_x > 120)) {
+						g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, ClientRect.top + Y_HEADER,
+							X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE);
+						st.Format("%d", i / 8 + 1);
+						g.DrawString(A2W(st), -1, &font_small, PointF(X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE + 1), &brush_dddgray);
+					}
+					g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start,
+						X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
+				}
+				else if ((mf->zoom_x >= 200) && (i % 2 == 0)) g.DrawLine(&pen_dgray, X_FIELD + i * nwidth, y_start,
 					X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
 			}
 			// Show notes
+			time_stop4 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			SolidBrush brush_v(Color(80 /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
 			//CString st;
 			//st.Format("Notes showing from %d to %d", step1, step2);
-			//mf->WriteWarn(st);
+			//mf->WriteLog(1, st);
 			for (int i = step1; i < step2; i++) {
 				g.FillRectangle(&brush_v, X_FIELD + i * nwidth, 
 					y_start - (pGen->note[i][0] - ng_min2) * nheight,
 					nwidth-1, nheight-1);
 			}
 			// Highlight draft notes
+			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			if ((step2 > pGen->t_sent) || (pGen->need_exit == 1)) {
 				int step3 = max((ClipBox.left - X_FIELD) / nwidth - 1, pGen->t_sent);
 				g.FillRectangle(&brush_agray, X_FIELD + step3 * nwidth,
@@ -233,6 +252,9 @@ void CMGenView::OnDraw(CDC* pDC)
 		}
 		pGen->mutex_output.unlock();
 	}
+	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
+	mf->WriteLog(2, st);
 
 	//CRect rc;
 	//GetClientRect(&rc);
@@ -347,7 +369,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 	//CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 	//mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
 	//mf->m_wndStatusBar.Invalidate(1);
-	//mf->WriteDebug("Mouse move");
+	//mf->WriteLog(0, "Mouse move");
 
 	CScrollView::OnMouseMove(nFlags, point);
 }

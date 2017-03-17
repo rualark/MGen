@@ -27,7 +27,6 @@
 
 static UINT WM_GEN_FINISH = RegisterWindowMessage("MGEN_GEN_FINISH_MSG");
 static UINT WM_DEBUG_MSG = RegisterWindowMessage("MGEN_DEBUG_MSG");
-static UINT WM_WARN_MSG = RegisterWindowMessage("MGEN_WARN_MSG");
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
@@ -53,7 +52,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_COMBO_ALGO, &CMainFrame::OnComboAlgo)
 	ON_REGISTERED_MESSAGE(WM_GEN_FINISH, &CMainFrame::OnGenFinish)
 	ON_REGISTERED_MESSAGE(WM_DEBUG_MSG, &CMainFrame::OnDebugMsg)
-	ON_REGISTERED_MESSAGE(WM_WARN_MSG, &CMainFrame::OnWarnMsg)
 	ON_COMMAND(ID_BUTTON_STOPGEN, &CMainFrame::OnButtonStopgen)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_STOPGEN, &CMainFrame::OnUpdateButtonStopgen)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_GEN, &CMainFrame::OnUpdateButtonGen)
@@ -133,22 +131,22 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		pCombo->AddItem(GAlgName[i]);
 	}
 
-	WriteDebug("Started MGen version 1.1.5");
+	WriteLog(0, "Started MGen version 1.1.5");
 	AfxInitRichEdit2();
 
 	return 0;
 }
 
-void CMainFrame::WriteDebug(CString st)
+void CMainFrame::WriteLog(int log, CString st)
 {
-	m_wndOutput.m_wndOutputDebug.AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
-	m_wndOutput.m_wndOutputDebug.SetTopIndex(m_wndOutput.m_wndOutputDebug.GetCount() - 1);
-}
-
-void CMainFrame::WriteWarn(CString st)
-{
-	m_wndOutput.m_wndOutputWarn.AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
-	m_wndOutput.m_wndOutputWarn.SetTopIndex(m_wndOutput.m_wndOutputWarn.GetCount() - 1);
+	COutputList* pOL=0;
+	if (log == 0) pOL = &m_wndOutput.m_wndOutputDebug;
+	if (log == 1) pOL = &m_wndOutput.m_wndOutputWarn;
+	if (log == 2) pOL = &m_wndOutput.m_wndOutputPerf;
+	if (log == 3) pOL = &m_wndOutput.m_wndOutputAlgo;
+	pOL->AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
+	pOL->SetTopIndex(pOL->GetCount() - 1);
+	if (pOL->GetCount() > 1000) pOL->DeleteString(0);
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -333,12 +331,12 @@ void CMainFrame::OnButtonParams()
 void CMainFrame::OnButtonGen()
 {
 	if (m_state_gen == 1) {
-		WriteWarn("Cannot start generation: generation in progress");
+		WriteLog(1, "Cannot start generation: generation in progress");
 		pGen->need_exit = 1;
 		return;
 	}
 	if (m_state_gen == 2) {
-		WriteDebug("Starting generation: Removing previous generator");
+		WriteLog(0, "Starting generation: Removing previous generator");
 		delete pGen;
 		m_state_gen = 0;
 	}
@@ -351,11 +349,10 @@ void CMainFrame::OnButtonGen()
 		pGen = new CGenCF2();
 	}
 	if (pGen != 0) {
-		WriteDebug(_T("Started generator: ") + GAlgName[Algo]);
+		WriteLog(0, _T("Started generator: ") + GAlgName[Algo]);
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
-		pGen->WM_WARN_MSG = WM_WARN_MSG;
 		pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());		
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;
@@ -369,7 +366,7 @@ void CMainFrame::OnButtonStopgen()
 	if (m_state_gen == 1) {
 		if (pGen != 0) {
 			pGen->need_exit = 1;
-			WriteDebug("Sent need_exit to generation thread");
+			WriteLog(0, "Sent need_exit to generation thread");
 		}
 	}
 }
@@ -394,7 +391,7 @@ void CMainFrame::OnButtonAlgo()
 	//p["param2"] = 200;
 	//TCHAR st[100];
 	//_stprintf_s(st, _T("%d"), p["param1"] + p["param2"]);
-	//WriteDebug(st);
+	//WriteLog(0, st);
 }
 
 
@@ -407,7 +404,7 @@ void CMainFrame::OnCheckOutputwnd()
 LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 {
 	GetActiveView()->Invalidate();
-	WriteDebug("Generation finished");
+	WriteLog(0, "Generation finished");
 	::KillTimer(m_hWnd, TIMER1); 
 	m_state_gen = 2;
 	return 0;
@@ -416,19 +413,10 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 LRESULT CMainFrame::OnDebugMsg(WPARAM wParam, LPARAM lParam)
 {
 	CString* pSt = (CString*)lParam;
-	WriteDebug(*pSt);
+	WriteLog(wParam, *pSt);
 	delete pSt;
 	return LRESULT();
 }
-
-LRESULT CMainFrame::OnWarnMsg(WPARAM wParam, LPARAM lParam)
-{
-	CString* pSt = (CString*) lParam;
-	WriteWarn(*pSt);
-	delete pSt;
-	return LRESULT();
-}
-
 
 void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI)
 {
@@ -516,16 +504,22 @@ void CMainFrame::OnClose()
 
 void CMainFrame::OnButtonHzoomDec()
 {
-	zoom_x = zoom_x*0.8;
+	zoom_x = (int)(zoom_x*0.8);
 	if (zoom_x < MIN_HZOOM) zoom_x = MIN_HZOOM;
+	CString st;
+	st.Format("New zoom %d", zoom_x);
+	WriteLog(1, st);
 	GetActiveView()->Invalidate();
 }
 
 
 void CMainFrame::OnButtonHzoomInc()
 {
-	zoom_x = zoom_x*1.2;
+	zoom_x = (int)(zoom_x*1.2);
 	if (zoom_x > MAX_HZOOM) zoom_x = MAX_HZOOM;
+	CString st;
+	st.Format("New zoom %d", zoom_x);
+	WriteLog(1, st);
 	GetActiveView()->Invalidate();
 }
 

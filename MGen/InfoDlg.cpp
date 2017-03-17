@@ -88,7 +88,7 @@ BOOL CInfoDlg::OnInitDialog()
 	CGenTemplate *pGen = mf->pGen;
 	if (pGen != 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
-			mf->WriteWarn("InfoDlg mutex timed out: showing nothing");
+			mf->WriteLog(1, "InfoDlg mutex timed out: showing nothing");
 			return TRUE;
 		}
 		SetWindowText("Dialog: some text");

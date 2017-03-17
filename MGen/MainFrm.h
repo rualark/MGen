@@ -47,8 +47,7 @@ public:
 // Operations
 public:
 
-	void WriteDebug(CString st);
-	void WriteWarn(CString st);
+	void WriteLog(int log, CString st);
 
 	// Overrides
 public:

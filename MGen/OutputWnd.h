@@ -43,16 +43,12 @@ public:
 
 	COutputList m_wndOutputWarn;
 	COutputList m_wndOutputDebug;
-	COutputList m_wndOutputFind;
+	COutputList m_wndOutputPerf;
+	COutputList m_wndOutputAlgo;
 
 	// Attributes
 protected:
 	CMFCTabCtrl	m_wndTabs;
-
-protected:
-	void FillWarnWindow();
-	void FillDebugWindow();
-	void FillFindWindow();
 
 	void AdjustHorzScroll(CListBox& wndListBox);
 

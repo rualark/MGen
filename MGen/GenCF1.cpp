@@ -4,7 +4,7 @@
 
 CGenCF1::CGenCF1()
 {
-	t_cnt = 8000;
+	t_cnt = 10000;
 	t_allocated = 2;
 	Init();
 }
@@ -36,9 +36,9 @@ void CGenCF1::Generate()
 		if (ng_max < note[i][0]) ng_max = note[i][0];
 		//CString* st = new CString;
 		//st->Format("Note generated %d", note[i][0]);
-		//::PostMessage(m_hWnd, WM_WARN_MSG, 0, (LPARAM)st);
+		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
 		if (i % t_send == 0) t_sent = t_generated;
-		//Sleep(1);
+		Sleep(1);
 		if (need_exit) return;
 	}
 	t_sent = t_generated;

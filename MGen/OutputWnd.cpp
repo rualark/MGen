@@ -57,7 +57,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndOutputWarn.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
 		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputFind.Create(dwStyle, rectDummy, &m_wndTabs, 4))
+		!m_wndOutputAlgo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
+		!m_wndOutputPerf.Create(dwStyle, rectDummy, &m_wndTabs, 4))
 	{
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
@@ -66,23 +67,11 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	UpdateFonts();
 
 	CString strTabName;
-	BOOL bNameValid;
 
-	// Attach list windows to tab:
-	bNameValid = strTabName.LoadString(IDS_BUILD_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputWarn, strTabName, (UINT)0);
-	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputDebug, strTabName, (UINT)1);
-	//bNameValid = strTabName.LoadString(IDS_FIND_TAB);
-	//ASSERT(bNameValid);
-	//m_wndTabs.AddTab(&m_wndOutputFind, strTabName, (UINT)2);
-
-	// Fill output tabs with some dummy text (nothing magic here)
-	FillWarnWindow();
-	FillDebugWindow();
-	//FillFindWindow();
+	m_wndTabs.AddTab(&m_wndOutputWarn,  " Warnings     ", (UINT)0);
+	m_wndTabs.AddTab(&m_wndOutputDebug, " Debug     ", (UINT)1);
+	m_wndTabs.AddTab(&m_wndOutputPerf, " Performance     ", (UINT)2);
+	m_wndTabs.AddTab(&m_wndOutputAlgo, " Algorithm     ", (UINT)3);
 
 	return 0;
 }
@@ -114,32 +103,11 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 	dc.SelectObject(pOldFont);
 }
 
-void COutputWnd::FillWarnWindow()
-{
-	//m_wndOutputWarn.AddString(_T("The output is being displayed in rows of a list view"));
-	//m_wndOutputWarn.AddString(_T("but you can change the way it is displayed as you wish..."));
-}
-
-void COutputWnd::FillDebugWindow()
-{
-	//m_wndOutputDebug.AddString(_T("Started MGen version 1.1.5"));
-	//m_wndOutputDebug.AddString(_T("Debug output is being displayed here."));
-	//m_wndOutputDebug.AddString(_T("The output is being displayed in rows of a list view"));
-	//m_wndOutputDebug.AddString(_T("but you can change the way it is displayed as you wish..."));
-}
-
-void COutputWnd::FillFindWindow()
-{
-	//m_wndOutputFind.AddString(_T("Find output is being displayed here."));
-	//m_wndOutputFind.AddString(_T("The output is being displayed in rows of a list view"));
-	//m_wndOutputFind.AddString(_T("but you can change the way it is displayed as you wish..."));
-}
-
 void COutputWnd::UpdateFonts()
 {
 	m_wndOutputWarn.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputDebug.SetFont(&afxGlobalData.fontRegular);
-	m_wndOutputFind.SetFont(&afxGlobalData.fontRegular);
+	m_wndOutputPerf.SetFont(&afxGlobalData.fontRegular);
 }
 
 /////////////////////////////////////////////////////////////////////////////

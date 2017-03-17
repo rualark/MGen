@@ -47,7 +47,6 @@ public:
 	HWND m_hWnd;
 	UINT WM_GEN_FINISH;
 	UINT WM_DEBUG_MSG;
-	UINT WM_WARN_MSG;
 
 public:
 	// Interface
