@@ -58,6 +58,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_STOPGEN, &CMainFrame::OnUpdateButtonStopgen)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_GEN, &CMainFrame::OnUpdateButtonGen)
 	ON_WM_CLOSE()
+	ON_COMMAND(ID_BUTTON_HZOOM_DEC, &CMainFrame::OnButtonHzoomDec)
+	ON_COMMAND(ID_BUTTON_HZOOM_INC, &CMainFrame::OnButtonHzoomInc)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_HZOOM_DEC, &CMainFrame::OnUpdateButtonHzoomDec)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_HZOOM_INC, &CMainFrame::OnUpdateButtonHzoomInc)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -507,4 +511,34 @@ void CMainFrame::OnClose()
 	}
 
 	CFrameWndEx::OnClose();
+}
+
+
+void CMainFrame::OnButtonHzoomDec()
+{
+	zoom_x = zoom_x*0.8;
+	if (zoom_x < MIN_HZOOM) zoom_x = MIN_HZOOM;
+	GetActiveView()->Invalidate();
+}
+
+
+void CMainFrame::OnButtonHzoomInc()
+{
+	zoom_x = zoom_x*1.2;
+	if (zoom_x > MAX_HZOOM) zoom_x = MAX_HZOOM;
+	GetActiveView()->Invalidate();
+}
+
+
+void CMainFrame::OnUpdateButtonHzoomDec(CCmdUI *pCmdUI)
+{
+	BOOL bEnable = zoom_x > MIN_HZOOM;
+	pCmdUI->Enable(bEnable);
+}
+
+
+void CMainFrame::OnUpdateButtonHzoomInc(CCmdUI *pCmdUI)
+{
+	BOOL bEnable = zoom_x < MAX_HZOOM;
+	pCmdUI->Enable(bEnable);
 }

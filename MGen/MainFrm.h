@@ -15,6 +15,9 @@
 #pragma once
 #include "OutputWnd.h"
 
+#define MIN_HZOOM 80
+#define MAX_HZOOM 500
+
 class CMainFrame : public CFrameWndEx
 {
 	
@@ -107,6 +110,10 @@ public:
 	afx_msg void OnUpdateButtonStopgen(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
 	afx_msg void OnClose();
+	afx_msg void OnButtonHzoomDec();
+	afx_msg void OnButtonHzoomInc();
+	afx_msg void OnUpdateButtonHzoomDec(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateButtonHzoomInc(CCmdUI *pCmdUI);
 };
 
 
