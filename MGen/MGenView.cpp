@@ -128,8 +128,8 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Count height
 			int nheight = (ClientRect.bottom - Y_HEADER - Y_FOOTER) / ncount2;
 			// Select steps to show
-			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth);
-			int step2_2 = min((ClipBox.right - X_FIELD) / nwidth, 32000 / nwidth);
+			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth - 1);
+			int step2_2 = min((ClipBox.right - X_FIELD) / nwidth + 1, 32000 / nwidth);
 			int step2 = min(pGen->t_generated - 1, step2_2);
 			// Show grid
 			SolidBrush brush_gray(Color(127 /*A*/, 240 /*R*/, 240 /*G*/, 240 /*B*/));

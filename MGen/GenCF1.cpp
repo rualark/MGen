@@ -34,6 +34,6 @@ void CGenCF1::Generate()
 		t_generated = i;
 		if (ng_min > note[i][0]) ng_min = note[i][0];
 		if (ng_max < note[i][0]) ng_max = note[i][0];
-		Sleep(10);
+		Sleep(0);
 	}
 }

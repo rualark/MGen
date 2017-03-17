@@ -383,6 +383,7 @@ void CMainFrame::OnCheckOutputwnd()
 
 LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 {
+	GetActiveView()->Invalidate();
 	WriteDebug("Generation finished");
 	::KillTimer(m_hWnd, TIMER1); 
 	m_state_gen = 2;
