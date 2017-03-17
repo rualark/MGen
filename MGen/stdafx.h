@@ -64,6 +64,8 @@
 #include <map>
 #include <vector>
 #include <mutex>
+#include <initializer_list>
+#include <algorithm>
 using namespace std;
 #include <chrono>
 using namespace std::chrono;

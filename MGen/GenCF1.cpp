@@ -29,7 +29,8 @@ void CGenCF1::Generate()
 		}
 		else {
 			note[i][0] = 60 + 12 * rand2() / RAND_MAX;
-			len[i][0] = max(1, 8 * rand2() / RAND_MAX);
+			len[i][0] = 8 * rand2() / RAND_MAX;
+			if (len[i][0] == 0) len[i][0] = 1;
 			coff[i][0] = 0;
 			if (i > 0) poff[i][0] = coff[i - 1][0] + 1;
 			else poff[i][0] = 0;
@@ -51,6 +52,7 @@ void CGenCF1::Generate()
 		//st->Format("Note generated %d", note[i][0]);
 		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
 		if (i % t_send == 0) t_sent = t_generated;
+		if (len[i][0] == 0) ::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: Len = 0"));
 		//Sleep(1);
 		if (need_exit) return;
 	}

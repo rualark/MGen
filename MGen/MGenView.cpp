@@ -232,15 +232,34 @@ void CMGenView::OnDraw(CDC* pDC)
 			//CString st;
 			//st.Format("Notes showing from %d to %d", step1, step2);
 			//mf->WriteLog(1, st);
+			int retrigger;
 			for (int i = step1; i < step2; i++) {
+				if (i == step1) if (pGen->coff[i][0] > 0) i = i - pGen->coff[i][0];
+				retrigger = 0;
+				if (i+pGen->noff[i][0] < pGen->t_generated) 
+					if (pGen->note[i+pGen->noff[i][0]][0] == pGen->note[i][0]) retrigger = 1;
+				g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
+					y_start - (pGen->note[i][0] - ng_min2) * nheight,
+					pGen->len[i][0]*nwidth - retrigger, nheight);
+				// Highlight selected note
+				if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][0]) && (mouse_voice == 0)) {
+					g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
+						y_start - (pGen->note[i][0] - ng_min2) * nheight,
+						pGen->len[i][0] * nwidth - retrigger, nheight);
+				}
+				if (pGen->noff[i][0] == 0) break;
+				i = i + pGen->noff[i][0] - 1;
+				/*
 				g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
 					y_start - (pGen->note[i][0] - ng_min2) * nheight,
 					nwidth - 1, nheight - 1);
+			  // Highlight selected note
 				if ((i == mouse_step) && (mouse_voice == 0)) {
 					g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
 						y_start - (pGen->note[i][0] - ng_min2) * nheight,
 						nwidth - 1, nheight - 1);
 				}
+				*/
 			}
 			mouse_voice_old = mouse_voice;
 			// Highlight draft notes
@@ -268,7 +287,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
-	mf->WriteLog(2, st);
+	//mf->WriteLog(2, st);
 
 	//CRect rc;
 	//GetClientRect(&rc);
@@ -397,18 +416,36 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		if (mouse_step < -1) mouse_step = -1;
 		// Check if mouse step is in future
 		if (mouse_step > pGen->t_generated) mouse_step = -1;
+		if (mouse_step_old > pGen->t_generated) mouse_step_old = -1;
+		// Set note limits
+		int step1 = mouse_step;
+		int step2 = mouse_step;
+		int step21 = mouse_step_old;
+		int step22 = mouse_step_old;
 		// Find voice
 		mouse_voice = -1;
-		if (mouse_step != -1) {
+		int off = 0;
+		if ((mouse_step_old > -1) && (mouse_voice_old > -1)) {
+			step21 = mouse_step_old - pGen->coff[mouse_step_old][mouse_voice_old];
+			step22 = step21 + pGen->len[mouse_step_old][mouse_voice_old];
+		}
+		if (mouse_step > -1) {
 			mouse_note = (y_start - point.y) / nheight + mf->ng_min + 1;
 			for (int i = 0; i < pGen->v_cnt; i++)
-				if (pGen->note[mouse_step][i] == mouse_note) mouse_voice = i;
+				if (pGen->note[mouse_step][i] == mouse_note) {
+					mouse_voice = i;
+					step1 = mouse_step - pGen->coff[mouse_step][i];
+					step2 = step1 + pGen->len[mouse_step][i];
+				}
 		}
 		if (((mouse_step != -1) || (mouse_step_old != -1)) && ((mouse_step != mouse_step_old) || (mouse_voice != mouse_voice_old))) {
 			if (mouse_step_old == -1)	Invalidate();
 			else {
-				InvalidateRect(CRect(X_FIELD + min(mouse_step_old, mouse_step)*nwidth - scroll.x, 0,
-					X_FIELD + (max(mouse_step_old, mouse_step) + 1)*nwidth - scroll.x, 1080));
+				int min_step = min(step1, min(step2, min(step21, step22)));
+				int max_step = max(step1, max(step2, max(step21, step22)));
+				int step2 = max(mouse_step_old, mouse_step);
+				InvalidateRect(CRect(X_FIELD + min_step*nwidth - scroll.x, 0,
+					X_FIELD + (max_step + off + 1)*nwidth - scroll.x, 1080));
 			}
 		}
 		CString st;
