@@ -14,8 +14,9 @@
 
 #include "stdafx.h"
 #include "MGen.h"
-
 #include "MainFrm.h"
+#include "portmidi.h"
+#include "porttime.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
