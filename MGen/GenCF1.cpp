@@ -31,9 +31,12 @@ void CGenCF1::Generate()
 		att[i][0] = 100;
 		tempo[i][0] = 100;
 		pause[i][0] = 0;
-		t_generated = i;
+		t_generated = i+1;
 		if (ng_min > note[i][0]) ng_min = note[i][0];
 		if (ng_max < note[i][0]) ng_max = note[i][0];
+		//CString* st = new CString;
+		//st->Format("Note generated %d", note[i][0]);
+		//::PostMessage(m_hWnd, WM_WARN_MSG, 0, (LPARAM)st);
 		Sleep(10);
 		if (need_exit) return;
 	}

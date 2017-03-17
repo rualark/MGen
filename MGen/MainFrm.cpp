@@ -57,6 +57,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_STOPGEN, &CMainFrame::OnButtonStopgen)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_STOPGEN, &CMainFrame::OnUpdateButtonStopgen)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_GEN, &CMainFrame::OnUpdateButtonGen)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -351,7 +352,7 @@ void CMainFrame::OnButtonGen()
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
 		pGen->WM_WARN_MSG = WM_WARN_MSG;
-		AfxBeginThread(CMainFrame::GenThread, pGen);
+		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;
 		// Start timer
 		m_nTimerID = SetTimer(TIMER1, 100, NULL);
@@ -487,4 +488,21 @@ void CMainFrame::OnUpdateButtonGen(CCmdUI *pCmdUI)
 {
 	BOOL bEnable = m_state_gen != 1;
 	pCmdUI->Enable(bEnable);
+}
+
+
+void CMainFrame::OnClose()
+{
+	if (m_state_gen == 1) {
+		OnButtonStopgen();
+		WaitForSingleObject(m_GenThread->m_hThread, 10000);
+		delete pGen;
+		pGen = 0;
+	}
+	if (pGen != 0) {
+		delete pGen;
+		pGen = 0;
+	}
+
+	CFrameWndEx::OnClose();
 }

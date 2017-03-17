@@ -60,6 +60,7 @@ public:
 #endif
 
 	CMFCRibbonStatusBar  m_wndStatusBar;
+	CWinThread* m_GenThread;
 
 protected:  // control bar embedded members
 	CMFCRibbonBar     m_wndRibbonBar;
@@ -105,6 +106,7 @@ public:
 	afx_msg void OnButtonStopgen();
 	afx_msg void OnUpdateButtonStopgen(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
+	afx_msg void OnClose();
 };
 
 

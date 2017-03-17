@@ -134,7 +134,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Select steps to show
 			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth - 1);
 			int step2_2 = min((ClipBox.right - X_FIELD) / nwidth + 1, 32000 / nwidth);
-			int step2 = min(pGen->t_generated - 1, step2_2);
+			int step2 = min(pGen->t_generated, step2_2);
 			// Show grid
 			SolidBrush brush_gray(Color(127 /*A*/, 240 /*R*/, 240 /*G*/, 240 /*B*/));
 			Pen pen_dgray(Color(127 /*A*/, 200 /*R*/, 200 /*G*/, 200 /*B*/), 1);
@@ -159,17 +159,20 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			// Show notes
 			SolidBrush brush_v(Color(80 /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
+			//CString st;
+			//st.Format("Notes showing from %d to %d", step1, step2);
+			//mf->WriteWarn(st);
 			for (int i = step1; i < step2; i++) {
 				g.FillRectangle(&brush_v, X_FIELD + i * nwidth, 
 					ClientRect.bottom - Y_FOOTER - (pGen->note[i][0] - ng_min2) * nheight, 
 					nwidth-1, nheight-1);
 			}
 		}
-		pGen->mutex_output.unlock();
 		if (min(32000, nwidth*pGen->t_generated) > ClientRect.right) {
 			CSize DocSize(min(32000, nwidth*pGen->t_generated) + 10, 0);
 			SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 		}
+		pGen->mutex_output.unlock();
 	}
 
 	//CRect rc;

@@ -5,7 +5,8 @@
 #include "MGen.h"
 #include "InfoDlg.h"
 #include "afxdialogex.h"
-
+#include "MainFrm.h"
+#include "GenTemplate.h"
 
 // CInfoDlg dialog
 
@@ -83,58 +84,67 @@ BOOL CInfoDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	SetWindowText("Dialog: some text");
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
-	AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
-	m_info.SetSel(0, 0);
+	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
+	CGenTemplate *pGen = mf->pGen;
+	if (pGen != 0) {
+		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
+			mf->WriteWarn("InfoDlg mutex timed out: showing nothing");
+			return TRUE;
+		}
+		SetWindowText("Dialog: some text");
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
+		AddText("Other text text\r\n", RGB(10, 170, 0), CFE_ITALIC);
+		m_info.SetSel(0, 0);
+		pGen->mutex_output.unlock();
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 								// EXCEPTION: OCX Property Pages should return FALSE
