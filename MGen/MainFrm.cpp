@@ -334,7 +334,7 @@ void CMainFrame::OnButtonGen()
 		return;
 	}
 	if (m_state_gen == 2) {
-		WriteWarn("Starting generation: Removing previous generator");
+		WriteDebug("Starting generation: Removing previous generator");
 		delete pGen;
 		m_state_gen = 0;
 	}
@@ -352,6 +352,7 @@ void CMainFrame::OnButtonGen()
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
 		pGen->WM_WARN_MSG = WM_WARN_MSG;
+		pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());		
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;
 		// Start timer
@@ -470,6 +471,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	pGen->Generate();
 	//Sleep(2000);
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
+	pGen->time_stopped = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 
 	//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
 	return 0;   // thread completed successfully 

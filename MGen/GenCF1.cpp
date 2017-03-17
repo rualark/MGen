@@ -37,7 +37,9 @@ void CGenCF1::Generate()
 		//CString* st = new CString;
 		//st->Format("Note generated %d", note[i][0]);
 		//::PostMessage(m_hWnd, WM_WARN_MSG, 0, (LPARAM)st);
-		Sleep(10);
+		if (i % t_send == 0) t_sent = t_generated;
+		//Sleep(1);
 		if (need_exit) return;
 	}
+	t_sent = t_generated;
 }

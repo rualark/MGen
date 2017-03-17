@@ -55,10 +55,13 @@ public:
 	timed_mutex mutex_output;
 	// Main constants
 	int v_cnt=1; // Voice count
+	milliseconds time_started; // Time in milliseconds when generation started
+	milliseconds time_stopped; // Time in milliseconds when generation stopped
 	int t_cnt = 1600; // Timeslot count (eighth notes) to stop generation
 	int t_allocated = 1600; // Timeslot count to initialize vectors
-	int t_send = 10; // Timeslot count to send
 	int t_generated = 0; // Timeslots generated
+	int t_send = 60; // Timeslot count to send
+	int t_sent = 0; // Timeslot count sent
 	int ng_min=1000; // Minimum generated note
 	int ng_max=0; // Maximum generated note
 	float basic_tempo = 100; // Basic tempo

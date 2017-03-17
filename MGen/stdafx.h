@@ -65,6 +65,8 @@
 #include <vector>
 #include <mutex>
 using namespace std;
+#include <chrono>
+using namespace std::chrono;
 #include <gdiplus.h>
 using namespace Gdiplus;
 #include "GenCF1.h"
