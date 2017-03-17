@@ -50,6 +50,8 @@ public:
 	UINT WM_WARN_MSG;
 
 public:
+	// Interface
+	short need_exit=0; // If thread needs to exit
 	// Main constants
 	int v_cnt=1; // Voice count
 	int t_cnt = 1600; // Timeslot count (eighth notes) to stop generation

@@ -54,6 +54,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_REGISTERED_MESSAGE(WM_GEN_FINISH, &CMainFrame::OnGenFinish)
 	ON_REGISTERED_MESSAGE(WM_DEBUG_MSG, &CMainFrame::OnDebugMsg)
 	ON_REGISTERED_MESSAGE(WM_WARN_MSG, &CMainFrame::OnWarnMsg)
+	ON_COMMAND(ID_BUTTON_STOPGEN, &CMainFrame::OnButtonStopgen)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_STOPGEN, &CMainFrame::OnUpdateButtonStopgen)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_GEN, &CMainFrame::OnUpdateButtonGen)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -324,8 +327,13 @@ void CMainFrame::OnButtonParams()
 
 void CMainFrame::OnButtonGen()
 {
-	if (pGen != 0) {
-		WriteWarn(_T("Not deleted generator detected"));
+	if (m_state_gen == 1) {
+		WriteWarn("Cannot start generation: generation in progress");
+		pGen->need_exit = 1;
+		return;
+	}
+	if (m_state_gen == 2) {
+		WriteWarn("Starting generation: Removing previous generator");
 		delete pGen;
 		m_state_gen = 0;
 	}
@@ -350,6 +358,15 @@ void CMainFrame::OnButtonGen()
 	}
 }
 
+void CMainFrame::OnButtonStopgen()
+{
+	if (m_state_gen == 1) {
+		if (pGen != 0) {
+			pGen->need_exit = 1;
+			WriteDebug("Sent need_exit to generation thread");
+		}
+	}
+}
 
 void CMainFrame::OnButtonPlay()
 {
@@ -455,4 +472,19 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 
 	//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
 	return 0;   // thread completed successfully 
+}
+
+
+
+void CMainFrame::OnUpdateButtonStopgen(CCmdUI *pCmdUI)
+{
+	BOOL bEnable = m_state_gen == 1;
+	pCmdUI->Enable(bEnable);
+}
+
+
+void CMainFrame::OnUpdateButtonGen(CCmdUI *pCmdUI)
+{
+	BOOL bEnable = m_state_gen != 1;
+	pCmdUI->Enable(bEnable);
 }

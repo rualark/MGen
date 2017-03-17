@@ -102,6 +102,9 @@ public:
 	int GetAlgo();
 
 	static UINT GenThread(LPVOID pParam);
+	afx_msg void OnButtonStopgen();
+	afx_msg void OnUpdateButtonStopgen(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
 };
 
 
