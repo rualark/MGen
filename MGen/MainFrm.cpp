@@ -18,6 +18,13 @@
 #include "portmidi.h"
 #include "porttime.h"
 
+#define OUTPUT_BUFFER_SIZE 0
+#define DRIVER_INFO NULL
+#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
+#define TIME_INFO NULL
+#define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
+int32_t latency = 0;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -61,6 +68,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_HZOOM_INC, &CMainFrame::OnButtonHzoomInc)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_HZOOM_DEC, &CMainFrame::OnUpdateButtonHzoomDec)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_HZOOM_INC, &CMainFrame::OnUpdateButtonHzoomInc)
+	ON_UPDATE_COMMAND_UI(ID_COMBO_MIDIOUT, &CMainFrame::OnUpdateComboMidiout)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -130,6 +138,23 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		//_stprintf_s(st, _T("%d"), i);
 		//pCombo->AddItem(st);
 		pCombo->AddItem(GAlgName[i]);
+	}
+
+	// MIDI port
+	pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,	m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
+	CString st;
+	int default_in = Pm_GetDefaultInputDeviceID();
+	int default_out = Pm_GetDefaultOutputDeviceID();
+	for (int i = 0; i < Pm_CountDevices(); i++) {
+		char *deflt;
+		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
+		if (info->output) {
+			st.Format("%d: %s, %s", i, info->interf, info->name);
+			if (i == default_out) {
+				st += " (default)";
+			}
+		}
+		pCombo->AddItem(st);
 	}
 
 	WriteLog(0, "Started MGen version 1.1.5");
@@ -536,4 +561,10 @@ void CMainFrame::OnUpdateButtonHzoomInc(CCmdUI *pCmdUI)
 {
 	BOOL bEnable = zoom_x < MAX_HZOOM;
 	pCmdUI->Enable(bEnable);
+}
+
+
+void CMainFrame::OnUpdateComboMidiout(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable();
 }

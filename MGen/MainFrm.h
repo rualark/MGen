@@ -113,6 +113,7 @@ public:
 	afx_msg void OnButtonHzoomInc();
 	afx_msg void OnUpdateButtonHzoomDec(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateButtonHzoomInc(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateComboMidiout(CCmdUI *pCmdUI);
 };
 
 
