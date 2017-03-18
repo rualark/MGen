@@ -162,6 +162,7 @@ void CMainFrame::WriteLog(int log, CString st)
 	if (log == 1) pOL = &m_wndOutput.m_wndOutputWarn;
 	if (log == 2) pOL = &m_wndOutput.m_wndOutputPerf;
 	if (log == 3) pOL = &m_wndOutput.m_wndOutputAlgo;
+	if (log == 4) pOL = &m_wndOutput.m_wndOutputMidi;
 	pOL->AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
 	if (pOL->GetCount() > 1000) pOL->DeleteString(0);
 	pOL->SetTopIndex(pOL->GetCount() - 1);
@@ -428,8 +429,8 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		m_state_gen = 2;
 	}
 	if (wParam == 1) {
-		if (pGen->midi_sent > 0) return 0;
-		pGen->SendMIDI(pGen->midi_sent + 1, pGen->t_sent);
+		//if (pGen->midi_sent > 0) return 0;
+		pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
 	}
 	return 0;
 }

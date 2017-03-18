@@ -34,8 +34,8 @@ const CString InstName[] = {
 };
 
 // PortMIDI
-#define OUTPUT_BUFFER_SIZE 0
-#define MIDI_EVENT_BUFFER 1000
+#define OUTPUT_BUFFER_SIZE 10000
+#define MAX_MIDI_BUFFER_SEC 10
 #define DRIVER_INFO NULL
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL
@@ -69,9 +69,9 @@ public:
 	
 	// PortMIDI
 	PmStream * midi;
-	PmEvent midi_buffer[MIDI_EVENT_BUFFER];
 	int midi_sent = 0; // Steps already sent to midi
 	int midi_sent_t = 0; // Timestamp of last event sent to midi
+	int midi_start_time = 0; // Time when midi started to play
 
 	// Main constants
 	int v_cnt=1; // Voice count
@@ -93,7 +93,7 @@ public:
 	vector< vector <unsigned char> > coff; // Offset of current note start backward (0 = first timeslot of note)
 	vector< vector <unsigned char> > poff; // Offset of previous note start (backward)
 	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
-	vector< vector <unsigned char> > tempo; // Tempo
+	vector<unsigned char> tempo; // Tempo
 	vector< vector <unsigned char> > att; // Attack (velocity for piano)
 	// Random generator
 	ub4 randrsl[256], randcnt; // external results

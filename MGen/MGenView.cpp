@@ -113,6 +113,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	SolidBrush brush_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_red(Color(255 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_agray(Color(20 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
+	SolidBrush brush_ared(Color(20 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
 	Pen pen_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/), 1);
 	Pen pen_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/), 1);
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
@@ -178,9 +179,6 @@ void CMGenView::OnDraw(CDC* pDC)
 			int step2_3 = step2 / 8 * 8+8; // For vertical lines
 			// Show grid
 			RectF sizeRect;
-			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), y_start, ClipBox.right, y_start);
-			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER, ClipBox.right, ClientRect.top + Y_HEADER);
-			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER - Y_TIMELINE, ClipBox.right, ClientRect.top + Y_HEADER - Y_TIMELINE);
 			for (int i = ng_min2; i <= ng_max2; i++) {
 				int pos = y_start - (i - ng_min2) * nheight;
 				if (diatonic[i % 12] == 0) {
@@ -210,6 +208,10 @@ void CMGenView::OnDraw(CDC* pDC)
 					}
 				}
 			}
+			// Show horizontal lines
+			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), y_start, ClipBox.right, y_start);
+			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER, ClipBox.right, ClientRect.top + Y_HEADER);
+			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER - Y_TIMELINE, ClipBox.right, ClientRect.top + Y_HEADER - Y_TIMELINE);
 			time_stop3 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			// Draw vertical lines
 			for (int i = max(0, step1-16); i < step2_3; i++) {
@@ -266,7 +268,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			if ((step2 > pGen->t_sent) || (pGen->need_exit == 1)) {
 				int step3 = max((ClipBox.left - X_FIELD) / nwidth - 1, pGen->t_sent);
-				g.FillRectangle(&brush_agray, X_FIELD + step3 * nwidth,
+				g.FillRectangle(&brush_ared, X_FIELD + step3 * nwidth,
 					ClientRect.top + Y_HEADER,
 					(step2 - step3 + 1) * nwidth, y_start - ClientRect.top - Y_HEADER);
 			}

@@ -6,6 +6,7 @@ CGenCF1::CGenCF1()
 {
 	t_cnt = 10000;
 	t_allocated = 10;
+	t_send = 30;
 	Init();
 }
 
@@ -43,7 +44,7 @@ void CGenCF1::Generate()
 		//if (i < t_cnt-1) noff[i][0] = 1;
 		//else noff[i][0] = 0;
 		att[i][0] = 100;
-		tempo[i][0] = 100;
+		tempo[i] = 100;
 		pause[i][0] = 0;
 		t_generated = i+1;
 		if (ng_min > note[i][0]) ng_min = note[i][0];
@@ -51,12 +52,12 @@ void CGenCF1::Generate()
 		//CString* st = new CString;
 		//st->Format("Note generated %d", note[i][0]);
 		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
-		if (i % t_send == 0) {
+		if ((i > 0) && (i % t_send == 0)) {
 			t_sent = t_generated;
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}
 		if (len[i][0] == 0) ::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: Len = 0"));
-		Sleep(1);
+		Sleep(100);
 		if (need_exit) return;
 	}
 	t_sent = t_generated;

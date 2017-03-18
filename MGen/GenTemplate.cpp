@@ -128,8 +128,8 @@ void CGenTemplate::Init()
 	coff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	tempo = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	att = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	tempo = vector<unsigned char>(t_allocated);
 }
 
 void CGenTemplate::ResizeVectors(int size)
@@ -153,7 +153,6 @@ void CGenTemplate::ResizeVectors(int size)
 		coff[i].resize(v_cnt);
 		poff[i].resize(v_cnt);
 		noff[i].resize(v_cnt);
-		tempo[i].resize(v_cnt);
 		att[i].resize(v_cnt);
 	}
 	// Count time
@@ -170,18 +169,43 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency)
 {
 	TIME_START;
 	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUFFER_SIZE, TIME_PROC, NULL, latency);
+	CString* st = new CString;
+	st->Format("Pm_OpenOutput: buffer size %d, latency %d", OUTPUT_BUFFER_SIZE, latency);
+	::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)st);
 }
 
 void CGenTemplate::SendMIDI(int step1, int step2)
 {
-	PmTimestamp timestamp = TIME_PROC(TIME_INFO);
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	PmTimestamp timestamp_current = TIME_PROC(TIME_INFO);
+	PmTimestamp timestamp;
+	if (midi_sent_t != 0) timestamp = midi_sent_t;
+	else timestamp = timestamp_current;
+	// Check if we have buffer underrun
+	if (timestamp < timestamp_current) {
+		CString* st = new CString;
+		st->Format("SendMIDI got buffer underrun in %d ms (steps %d - %d)", timestamp_current - timestamp, step1, step2);
+		::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)st);
+		timestamp = timestamp_current;
+	}
+	PmTimestamp timestamp0 = timestamp;
+	// Set playback start
+	if (step1 == 0) midi_start_time = timestamp0;
+	// Check if buffer is full
+	if (midi_sent_t - timestamp_current > 10000) {
+		CString* st = new CString;
+		st->Format("SendMIDI: no need to send (full buffer = %d ms) at %d ms playback (steps %d - %d)", 
+			midi_sent_t - timestamp_current, timestamp_current - midi_start_time, step1, step2);
+		::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)st);
+		return;
+	}
 	int i, ncount = 0;
 	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
-		::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("SendMIDI mutex timed out"));
+		::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("SendMIDI mutex timed out: will try later"));
 	}
 	// Count notes
 	for (i = step1; i < step2; i++) {
-		if (i == step1) if (coff[i][0] > 0) i = i - coff[i][0];
+		if (i == step1) if (coff[i][0] > 0) i = i + noff[i][0];
 		ncount++;
 		if (noff[i][0] == 0) break;
 		i += noff[i][0] - 1;
@@ -189,24 +213,28 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	// Send notes
 	PmEvent* buffer = new PmEvent[ncount*2];
 	i = step1;
-	if (coff[i][0] > 0) i = i - coff[i][0];
+	if (coff[i][0] > 0) i = i + noff[i][0];
 	for (int x = 0; x < ncount; x++) {
 		// Note ON
 		buffer[x*2].timestamp = timestamp;
 		buffer[x*2].message = Pm_Message(0x90, note[i][0], att[i][0]);
+		midi_sent_t = timestamp;
 		// Note OFF
-		timestamp += 30000 * len[i][0] / tempo[i][0];
+		timestamp += 30000 * len[i][0] / tempo[i];
 		buffer[x * 2 + 1].timestamp = timestamp;
 		buffer[x * 2 + 1].message = Pm_Message(0x90, note[i][0], 0);
-		midi_sent = i;
-		midi_sent_t = timestamp;
-		// + send note off
 		if (noff[i][0] == 0) break;
 		i += noff[i][0];
 	}
+	midi_sent = step2;
 	mutex_output.unlock();
-	Pm_Write(midi, buffer, ncount);
+	Pm_Write(midi, buffer, ncount*2);
 	delete [] buffer;
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* st = new CString;
+	st->Format("Pm_Write %d notes (steps %d - %d) [future %d to %d ms] (in %d ms) playback is at %d ms", ncount, step1, midi_sent, timestamp0 - timestamp_current, midi_sent_t - timestamp_current, time_stop - time_start, timestamp_current-midi_start_time);
+	::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)st);
 }
 
 void CGenTemplate::StopMIDI()

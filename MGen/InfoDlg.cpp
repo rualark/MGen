@@ -100,7 +100,7 @@ BOOL CInfoDlg::OnInitDialog()
 		AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Current offset: %d\nPrevious offset: %d\nNext offset: %d\nAttack: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->att[ms][mv]);
 		AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Tempo: %d\nPause indicator: %d", pGen->tempo[ms][mv], pGen->pause[ms][mv]);
+		st.Format("Tempo: %d\nPause indicator: %d", pGen->tempo[ms], pGen->pause[ms][mv]);
 		AddText(st, RGB(0, 0, 0), 0);
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);
