@@ -22,6 +22,7 @@ CGenTemplate::CGenTemplate()
 
 CGenTemplate::~CGenTemplate()
 {
+	StopMIDI();
 }
 
 void CGenTemplate::Generate()
@@ -171,6 +172,12 @@ void CGenTemplate::ResizeVectors(int size)
 
 void CGenTemplate::StartMIDI(int midi_device_i, int latency)
 {
+	// Clear error flag
+	buffer_underrun = 0;
+	midi_play_step = 0;
+	midi_start_time = 0;
+	midi_sent_t = 0;
+	midi_sent = 0;
 	TIME_START;
 	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUFFER_SIZE, TIME_PROC, NULL, latency);
 	CString* st = new CString;
@@ -191,6 +198,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		st->Format("SendMIDI got buffer underrun in %d ms (steps %d - %d)", timestamp_current - timestamp, step1, step2);
 		::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)st);
 		timestamp = timestamp_current;
+		buffer_underrun = 1;
 	}
 	PmTimestamp timestamp0 = timestamp;
 	// Set playback start
@@ -241,7 +249,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	}
 	// Save last sent position
 	midi_sent = step22;
-	midi_sent_t = timestamp0 + stime[midi_sent] - stime[step1];
+	midi_sent_t = timestamp0 + ntime[midi_sent-1] - stime[step1];
 	mutex_output.unlock();
 	Pm_Write(midi, buffer, ncount*2);
 	delete [] buffer;
@@ -256,10 +264,45 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 
 void CGenTemplate::StopMIDI()
 {
-	Pm_Close(midi);
+	if (midi != 0) Pm_Close(midi);
+	midi = 0;
 }
 
 int CGenTemplate::randbw(int n1, int n2)
 {
 	return n1 + (double)(n2 - n1) * (double)rand2() / (double)RAND_MAX;
+}
+
+int CGenTemplate::GetPlayStep() {
+	if (buffer_underrun == 1) {
+		midi_play_step = 0;
+	}
+	else {
+		// Don't need lock, because this function is called from OnDraw, which already has lock
+		/*
+		if (!mutex_output.try_lock_for(chrono::milliseconds(100))) {
+			::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("GetPlayStep mutex timed out"));
+		}
+		*/
+		int step1 = midi_play_step;
+		int step2 = midi_sent;
+		int cur_step, currentElement;
+		int searchElement = TIME_PROC(TIME_INFO) - midi_start_time;
+		while (step1 <= step2) {
+			cur_step = (step1 + step2) / 2;
+			currentElement = stime[cur_step];
+			if (currentElement < searchElement) {
+				step1 = cur_step + 1;
+			}
+			else if (currentElement > searchElement) {
+				step2 = cur_step - 1;
+			}
+			else {
+				break;
+			}
+		}
+		midi_play_step = cur_step;
+		//mutex_output.unlock();
+	}
+	return midi_play_step;
 }

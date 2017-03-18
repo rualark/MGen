@@ -115,6 +115,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	SolidBrush brush_agray(Color(20 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_ared(Color(20 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
 	Pen pen_agray(Color(100 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
+	Pen pen_ared(Color(127 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/), 1);
 	Pen pen_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/), 1);
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
@@ -131,15 +132,22 @@ void CMGenView::OnDraw(CDC* pDC)
 	if (mf->m_state_gen == 2) st = "Generation: finished";
 	g.DrawString(A2W(st), -1, &font, PointF(0, 0), &brush_black);
 	if (mf->m_state_play == 0) st = "Playback: stopped";
-	if (mf->m_state_play == 1) st = "Playback: started";
-	if (mf->m_state_play == 2) st = "Playback: buffer underrun";
+	if (mf->m_state_play == 1) st = "Playback:";
+	if (mf->m_state_play == 2) st = "Playback ";
 	g.DrawString(A2W(st), -1, &font, PointF(800, 0), &brush_black);
 
 	time_stop2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (pGen != 0) if (pGen->t_generated > 0) {
-		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d measures in %.1f seconds)", pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, ((float)(current_time - pGen->time_started).count()) / 1000);
-		if (mf->m_state_gen == 2) st.Format("(%d measures in %.1f seconds)", pGen->t_sent/8, ((float)(pGen->time_stopped - pGen->time_started).count()) / 1000);
+		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d measures in %.1f seconds)", pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, ((float)(TIME_PROC(TIME_INFO) - pGen->time_started)) / 1000);
+		if (mf->m_state_gen == 2) st.Format("(%d measures in %.1f seconds)", pGen->t_sent/8, ((float)(pGen->time_stopped - pGen->time_started)) / 1000);
 		g.DrawString(A2W(st), -1, &font, PointF(250, 0), &brush_black);
+		int play_step = 0;
+		if (mf->m_state_play > 0) play_step = pGen->GetPlayStep();
+		if (play_step > 0) {
+			int play_time = TIME_PROC(TIME_INFO) - pGen->midi_start_time;
+			st.Format("(%02d:%02d - measure %d)", play_time/60000, (play_time/1000) % 60, play_step/8 + 1);
+			g.DrawString(A2W(st), -1, &font, PointF(900, 0), &brush_black);
+		}
 		if (pGen->need_exit == 1)
 			g.DrawString(L"INTERRUPTED", -1, &font, PointF(600, 0), &brush_red);
 		nwidth = 4 * mf->zoom_x / 100;
@@ -279,15 +287,15 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Show tempo
 			for (int i = step1; i < step2; i++)  {
 				if (i>0) g.DrawLine(&pen_agray, X_FIELD + i * nwidth + nwidth / 2, 
-					y_start - 1 - (y_start-Y_HEADER-2)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
+					y_start - 2 - (y_start-Y_HEADER-4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
 					X_FIELD + (i - 1) * nwidth + nwidth / 2, 
-					y_start - 1 - (y_start - Y_HEADER - 2)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
+					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
 			}
 			if (step2 < pGen->t_generated - 1) 
 				g.DrawLine(&pen_agray, X_FIELD + step2 * nwidth + nwidth / 2, 
-					y_start - 1 - (y_start - Y_HEADER - 2)*(pGen->tempo[step2] - tg_min) / (tg_max - tg_min),
+					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2] - tg_min) / (tg_max - tg_min),
 				X_FIELD + (step2 + 1) * nwidth + nwidth / 2, 
-					y_start - 1 - (y_start - Y_HEADER - 2)*(pGen->tempo[step2 + 1] - tg_min) / (tg_max - tg_min));
+					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2 + 1] - tg_min) / (tg_max - tg_min));
 			// Highlight draft notes
 			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			if ((step2 > pGen->t_sent) || (pGen->need_exit == 1)) {
@@ -304,6 +312,11 @@ void CMGenView::OnDraw(CDC* pDC)
 					nwidth, y_start - ClientRect.top - Y_HEADER - 1);
 			}
 			mouse_step_old = mouse_step;
+			// Show play position
+			if (play_step > 0) {
+				g.DrawLine(&pen_ared, X_FIELD + play_step * nwidth, y_start - 1,
+					X_FIELD + play_step * nwidth, ClientRect.top + Y_HEADER + 1);
+			}
 		}
 		if (min(32000, nwidth*pGen->t_generated) > ClientRect.right) {
 			CSize DocSize(min(32000, nwidth*pGen->t_generated) + 50, 0);

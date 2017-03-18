@@ -22,6 +22,7 @@
 #endif
 
 #define TIMER1 1
+#define TIMER2 2
 
 // CMainFrame
 
@@ -52,8 +53,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_COMBO_ALGO, &CMainFrame::OnComboAlgo)
 	ON_REGISTERED_MESSAGE(WM_GEN_FINISH, &CMainFrame::OnGenFinish)
 	ON_REGISTERED_MESSAGE(WM_DEBUG_MSG, &CMainFrame::OnDebugMsg)
-	ON_COMMAND(ID_BUTTON_STOPGEN, &CMainFrame::OnButtonStopgen)
-	ON_UPDATE_COMMAND_UI(ID_BUTTON_STOPGEN, &CMainFrame::OnUpdateButtonStopgen)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_GEN, &CMainFrame::OnUpdateButtonGen)
 	ON_WM_CLOSE()
 	ON_COMMAND(ID_BUTTON_HZOOM_DEC, &CMainFrame::OnButtonHzoomDec)
@@ -63,6 +62,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_COMBO_MIDIOUT, &CMainFrame::OnUpdateComboMidiout)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_EPARAMS, &CMainFrame::OnUpdateButtonEparams)
 	ON_COMMAND(ID_BUTTON_EPARAMS, &CMainFrame::OnButtonEparams)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_PLAY, &CMainFrame::OnUpdateButtonPlay)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -349,10 +349,19 @@ void CMainFrame::OnButtonParams()
 void CMainFrame::OnButtonGen()
 {
 	if (m_state_gen == 1) {
+		if (pGen != 0) {
+			pGen->need_exit = 1;
+			WriteLog(0, "Sent need_exit to generation thread");
+		}
+		return;
+	}
+	/*
+	if (m_state_gen == 1) {
 		WriteLog(1, "Cannot start generation: generation in progress");
 		pGen->need_exit = 1;
 		return;
 	}
+	*/
 	if (m_state_gen == 2) {
 		WriteLog(0, "Starting generation: Removing previous generator");
 		delete pGen;
@@ -371,31 +380,18 @@ void CMainFrame::OnButtonGen()
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
-		pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+		//pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+		pGen->StopMIDI();
 		pGen->StartMIDI(GetMidiI(), 100);
+		pGen->time_started = TIME_PROC(TIME_INFO);
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;
+		m_state_play = 0;
 		// Start timer
-		m_nTimerID = SetTimer(TIMER1, 100, NULL);
+		SetTimer(TIMER1, 100, NULL);
+		SetTimer(TIMER2, 1000, NULL);
 	}
 }
-
-void CMainFrame::OnButtonStopgen()
-{
-	if (m_state_gen == 1) {
-		if (pGen != 0) {
-			pGen->need_exit = 1;
-			WriteLog(0, "Sent need_exit to generation thread");
-		}
-	}
-}
-
-void CMainFrame::OnButtonPlay()
-{
-	// TODO: Add your command handler code here
-}
-
-
 
 void CMainFrame::OnButtonSettings()
 {
@@ -425,30 +421,10 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 	if (wParam == 0) {
 		GetActiveView()->Invalidate();
 		WriteLog(0, "Generation finished");
-		::KillTimer(m_hWnd, TIMER1);
+		if (m_state_play == 0) ::KillTimer(m_hWnd, TIMER1);
 		m_state_gen = 2;
 	}
 	if (wParam == 1) {
-		// Decide if we can play
-		if (m_state_play == 0) {
-			if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
-				WriteLog(4, "OnGenFinish mutex timed out: playback not started");
-				return 0;
-			}
-			double gtime = pGen->stime[pGen->t_sent-1];
-			double ptime = TIME_PROC(TIME_INFO);
-			if ((gtime / ptime > 2) || (gtime > 30000) || ((gtime / ptime > 1.2) && (gtime > 5000))) {
-				m_state_play = 1;
-			} else {
-				CString st;
-				st.Format("Only %.1f s generated after %.1f s. Playback is postponed to avoid buffer underruns", gtime/1000, ptime/1000);
-				WriteLog(4, st);
-			}
-			pGen->mutex_output.unlock();
-		}
-		if (m_state_play == 1) {
-			pGen->SendMIDI(pGen->midi_sent, pGen->t_sent - 1);
-		}
 	}
 	return 0;
 }
@@ -495,11 +471,49 @@ void CMainFrame::OnComboAlgo()
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
-	if (nIDEvent == m_nTimerID)
+	CFrameWndEx::OnTimer(nIDEvent);
+	if (nIDEvent == TIMER1)
 	{
 		GetActiveView()->Invalidate();
+		//int play_time = TIME_PROC(TIME_INFO) - pGen->midi_start_time;
+		if ((m_state_gen != 1) && (m_state_play == 2) && (TIME_PROC(TIME_INFO) > pGen->midi_sent_t)) {
+			OnButtonPlay();
+		}
 	}
-	CFrameWndEx::OnTimer(nIDEvent);
+	if ((nIDEvent == TIMER2) && (pGen != 0))
+	{
+		if (pGen->t_sent < 2) return;
+		// Decide if we can play
+		if (m_state_play == 0) {
+			if (m_state_gen == 2) m_state_play = 1;
+			if (m_state_gen == 1) {
+				if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
+					WriteLog(4, "OnGenFinish mutex timed out: playback not started");
+					return;
+				}
+				double gtime = pGen->stime[pGen->t_sent - 1];
+				double ptime = TIME_PROC(TIME_INFO) - pGen->time_started;
+				if ((gtime / ptime > 2) || (gtime > 30000) || ((gtime / ptime > 1.2) && (gtime > 5000))) {
+					m_state_play = 1;
+				}
+				else {
+					CString st;
+					st.Format("Only %.1f s generated after %.1f s. Playback is postponed to avoid buffer underruns", gtime / 1000, ptime / 1000);
+					WriteLog(4, st);
+				}
+				pGen->mutex_output.unlock();
+			}
+		}
+		if (m_state_play == 1) {
+			if ((pGen->t_sent > pGen->midi_sent))
+				pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
+			if ((pGen->t_sent == pGen->midi_sent) && (m_state_gen == 2)) {
+				::KillTimer(m_hWnd, TIMER2);
+				m_state_play = 2;
+				//GetActiveView()->Invalidate();
+			}
+		}
+	}
 }
 
 UINT CMainFrame::GenThread(LPVOID pParam)
@@ -512,32 +526,17 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	pGen->Generate();
 	//Sleep(2000);
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
-	pGen->time_stopped = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	//pGen->time_stopped = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	pGen->time_stopped = TIME_PROC(TIME_INFO);
 
 	//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
 	return 0;   // thread completed successfully 
 }
 
-
-
-void CMainFrame::OnUpdateButtonStopgen(CCmdUI *pCmdUI)
-{
-	BOOL bEnable = m_state_gen == 1;
-	pCmdUI->Enable(bEnable);
-}
-
-
-void CMainFrame::OnUpdateButtonGen(CCmdUI *pCmdUI)
-{
-	BOOL bEnable = m_state_gen != 1;
-	pCmdUI->Enable(bEnable);
-}
-
-
 void CMainFrame::OnClose()
 {
 	if (m_state_gen == 1) {
-		OnButtonStopgen();
+		OnButtonGen();
 		WaitForSingleObject(m_GenThread->m_hThread, 10000);
 		delete pGen;
 		pGen = 0;
@@ -605,3 +604,42 @@ void CMainFrame::OnButtonEparams()
 	CEditParamsDlg dlg;
 	dlg.DoModal();
 }
+
+
+void CMainFrame::OnUpdateButtonPlay(CCmdUI *pCmdUI)
+{
+	if ((m_state_gen == 1) && (m_state_play == 0)) pCmdUI->Enable(0);
+	else if (m_state_gen != 0) pCmdUI->Enable(1);
+	if (m_state_play > 0) pCmdUI->SetText("Stop Play");
+	else pCmdUI->SetText("Play");
+}
+
+void CMainFrame::OnUpdateButtonGen(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable();
+	if (m_state_gen == 1) pCmdUI->SetText("Stop Gen");
+	else pCmdUI->SetText("Generate");
+}
+
+void CMainFrame::OnButtonPlay()
+{
+	if (m_state_play > 0) {
+		m_state_play = 0;
+		if (pGen != 0) {
+			::KillTimer(m_hWnd, TIMER2);
+			if (m_state_gen == 2) ::KillTimer(m_hWnd, TIMER1);
+			pGen->StopMIDI();
+		}
+		WriteLog(4, "Stopped playback");
+	}
+	else if (m_state_gen == 2) {
+		pGen->StopMIDI();
+		pGen->StartMIDI(GetMidiI(), 100);
+		m_state_play = 1;
+		// Start timer
+		pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
+		SetTimer(TIMER1, 100, NULL);
+		SetTimer(TIMER2, 1000, NULL);
+	}
+}
+

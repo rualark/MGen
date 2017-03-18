@@ -44,7 +44,7 @@ public:
 	int m_state_play=0;
 	// 0 = No playback
 	// 1 = Playback
-	// 2 = Generation and playback started, but playback is paused (buffer underrun)
+	// 2 = Playback into buffer finished. Buffer is still playing
 
 // Operations
 public:
@@ -84,8 +84,6 @@ protected:
 	afx_msg void ShowOutputWnd();
 	DECLARE_MESSAGE_MAP()
 
-	UINT_PTR m_nTimerID;
-
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
 public:
@@ -108,8 +106,6 @@ public:
 	int GetMidiI();
 
 	static UINT GenThread(LPVOID pParam);
-	afx_msg void OnButtonStopgen();
-	afx_msg void OnUpdateButtonStopgen(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
 	afx_msg void OnClose();
 	afx_msg void OnButtonHzoomDec();
@@ -119,6 +115,7 @@ public:
 	afx_msg void OnUpdateComboMidiout(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateButtonEparams(CCmdUI *pCmdUI);
 	afx_msg void OnButtonEparams();
+	afx_msg void OnUpdateButtonPlay(CCmdUI *pCmdUI);
 };
 
 
