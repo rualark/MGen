@@ -131,7 +131,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	if (mf->m_state_play == 0) st = "Playback: stopped";
 	if (mf->m_state_play == 1) st = "Playback: started";
 	if (mf->m_state_play == 2) st = "Playback: buffer underrun";
-	g.DrawString(A2W(st), -1, &font, PointF(0, 25), &brush_black);
+	g.DrawString(A2W(st), -1, &font, PointF(800, 0), &brush_black);
 
 	time_stop2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (pGen != 0) if (pGen->t_generated > 0) {

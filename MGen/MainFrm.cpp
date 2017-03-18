@@ -15,15 +15,6 @@
 #include "stdafx.h"
 #include "MGen.h"
 #include "MainFrm.h"
-#include "portmidi.h"
-#include "porttime.h"
-
-#define OUTPUT_BUFFER_SIZE 0
-#define DRIVER_INFO NULL
-#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
-#define TIME_INFO NULL
-#define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
-int32_t latency = 0;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -143,18 +134,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// MIDI port
 	pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,	m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
 	CString st;
-	int default_in = Pm_GetDefaultInputDeviceID();
 	int default_out = Pm_GetDefaultOutputDeviceID();
 	for (int i = 0; i < Pm_CountDevices(); i++) {
-		char *deflt;
 		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
 		if (info->output) {
-			st.Format("%d: %s, %s", i, info->interf, info->name);
+			st.Format("%s, %s [%d]", info->name, info->interf, i);
 			if (i == default_out) {
 				st += " (default)";
 			}
 		}
-		pCombo->AddItem(st);
+		pCombo->AddItem(st, i);
 	}
 
 	WriteLog(0, "Started MGen version 1.1.5");
@@ -379,7 +368,8 @@ void CMainFrame::OnButtonGen()
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
-		pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());		
+		pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+		pGen->StartMIDI(GetMidiI(), 100);
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;
 		// Start timer
@@ -429,10 +419,16 @@ void CMainFrame::OnCheckOutputwnd()
 
 LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 {
-	GetActiveView()->Invalidate();
-	WriteLog(0, "Generation finished");
-	::KillTimer(m_hWnd, TIMER1); 
-	m_state_gen = 2;
+	if (wParam == 0) {
+		GetActiveView()->Invalidate();
+		WriteLog(0, "Generation finished");
+		::KillTimer(m_hWnd, TIMER1);
+		m_state_gen = 2;
+	}
+	if (wParam == 1) {
+		if (pGen->midi_sent > 0) return 0;
+		pGen->SendMIDI(pGen->midi_sent + 1, pGen->t_sent);
+	}
 	return 0;
 }
 
@@ -461,9 +457,15 @@ int CMainFrame::GetAlgo()
 {
 	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-	return pCombo->GetCurSel()+1;
+	return pCombo->GetCurSel() + 1;
 }
 
+int CMainFrame::GetMidiI()
+{
+	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
+		m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
+	return pCombo->GetItemData(pCombo->GetCurSel());
+}
 
 void CMainFrame::OnComboAlgo()
 {
@@ -523,6 +525,7 @@ void CMainFrame::OnClose()
 		delete pGen;
 		pGen = 0;
 	}
+	Pm_Terminate();
 
 	CFrameWndEx::OnClose();
 }

@@ -28,8 +28,8 @@ protected: // create from serialization only
 // Attributes
 public:
 	CGenTemplate* pGen = 0;
-	int midi_i=-1; // Index of selected MIDI device
-	int midi_s; // Name of selected MIDI device
+	int midi_device_i=-1; // Index of selected MIDI device
+	CString midi_device_s; // Name of selected MIDI device
 	int view_single_track = 1; // If all tracks are shown in one
 	int zoom_x = 200; // Zoom for view
 	int zoom_y = 200;
@@ -103,6 +103,7 @@ public:
 	afx_msg LRESULT OnWarnMsg(WPARAM wParam, LPARAM lParam);
 
 	int GetAlgo();
+	int GetMidiI();
 
 	static UINT GenThread(LPVOID pParam);
 	afx_msg void OnButtonStopgen();

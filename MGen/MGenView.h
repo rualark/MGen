@@ -16,7 +16,7 @@
 
 //#include "CustomToolTipCtrl.h"
 
-#define Y_HEADER 80
+#define Y_HEADER 50
 #define Y_TIMELINE 20
 #define Y_FOOTER 2
 #define X_FIELD 40

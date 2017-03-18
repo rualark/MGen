@@ -51,9 +51,12 @@ void CGenCF1::Generate()
 		//CString* st = new CString;
 		//st->Format("Note generated %d", note[i][0]);
 		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
-		if (i % t_send == 0) t_sent = t_generated;
+		if (i % t_send == 0) {
+			t_sent = t_generated;
+			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
+		}
 		if (len[i][0] == 0) ::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: Len = 0"));
-		//Sleep(1);
+		Sleep(1);
 		if (need_exit) return;
 	}
 	t_sent = t_generated;

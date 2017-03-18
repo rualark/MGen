@@ -3,8 +3,10 @@
 #define GAlgNum 2
 #define MAX_VOICE 16
 
-/* a ub4 is an unsigned 4-byte quantity */
-typedef  unsigned long int  ub4;
+#include "portmidi.h"
+#include "porttime.h"
+
+typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
 const CString GAlgName[] = {
 	"No algorithm selected", // 0
@@ -31,6 +33,14 @@ const CString InstName[] = {
 	"Percussion" // 15
 };
 
+// PortMIDI
+#define OUTPUT_BUFFER_SIZE 0
+#define MIDI_EVENT_BUFFER 1000
+#define DRIVER_INFO NULL
+#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
+#define TIME_INFO NULL
+#define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
+
 class CGenTemplate
 {
 public:
@@ -39,6 +49,10 @@ public:
 	void Init();
 	virtual void Generate();
 	void ResizeVectors(int size);
+	// PortMIDI
+	void StartMIDI(int midi_device_i, int latency);
+	void SendMIDI(int step1, int step2);
+	void StopMIDI();
 	// Random
 	void isaac();
 	void randinit(int flag);
@@ -52,6 +66,13 @@ public:
 	// Interface
 	short need_exit=0; // If thread needs to exit
 	timed_mutex mutex_output;
+	
+	// PortMIDI
+	PmStream * midi;
+	PmEvent midi_buffer[MIDI_EVENT_BUFFER];
+	int midi_sent = 0; // Steps already sent to midi
+	int midi_sent_t = 0; // Timestamp of last event sent to midi
+
 	// Main constants
 	int v_cnt=1; // Voice count
 	milliseconds time_started; // Time in milliseconds when generation started
@@ -60,7 +81,7 @@ public:
 	int t_allocated = 1600; // Timeslot count to initialize vectors
 	int t_generated = 0; // Timeslots generated
 	int t_send = 60; // Timeslot count to send
-	int t_sent = 0; // Timeslot count sent
+	int t_sent = 0; // Timeslot count sent to mainframe
 	int ng_min=1000; // Minimum generated note
 	int ng_max=0; // Maximum generated note
 	float basic_tempo = 100; // Basic tempo
@@ -75,10 +96,8 @@ public:
 	vector< vector <unsigned char> > tempo; // Tempo
 	vector< vector <unsigned char> > att; // Attack (velocity for piano)
 	// Random generator
-	/* external results */
-	ub4 randrsl[256], randcnt;
-	/* internal state */
-	ub4 mm[256];
+	ub4 randrsl[256], randcnt; // external results
+	ub4 mm[256];  // internal state
 	ub4 aa = 0, bb = 0, cc = 0;
 	int cur_rand = 0, cur_rand2 = 0;
 };

@@ -134,12 +134,10 @@ void CGenTemplate::Init()
 
 void CGenTemplate::ResizeVectors(int size)
 {
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
 		::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: ResizeVectors mutex timed out"));
 	}
-	CString* st = new CString;
-	st->Format("ResizeVectors to %d", size);
-	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
 	pause.resize(size);
 	note.resize(size);
 	len.resize(size);
@@ -158,7 +156,61 @@ void CGenTemplate::ResizeVectors(int size)
 		tempo[i].resize(v_cnt);
 		att[i].resize(v_cnt);
 	}
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* st = new CString;
+	st->Format("ResizeVectors from %d to %d (in %d ms)", t_allocated, size, time_stop - time_start);
+	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
+
 	t_allocated = size;
 	mutex_output.unlock();
+}
+
+void CGenTemplate::StartMIDI(int midi_device_i, int latency)
+{
+	TIME_START;
+	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUFFER_SIZE, TIME_PROC, NULL, latency);
+}
+
+void CGenTemplate::SendMIDI(int step1, int step2)
+{
+	PmTimestamp timestamp = TIME_PROC(TIME_INFO);
+	int i, ncount = 0;
+	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
+		::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("SendMIDI mutex timed out"));
+	}
+	// Count notes
+	for (i = step1; i < step2; i++) {
+		if (i == step1) if (coff[i][0] > 0) i = i - coff[i][0];
+		ncount++;
+		if (noff[i][0] == 0) break;
+		i += noff[i][0] - 1;
+	}
+	// Send notes
+	PmEvent* buffer = new PmEvent[ncount*2];
+	i = step1;
+	if (coff[i][0] > 0) i = i - coff[i][0];
+	for (int x = 0; x < ncount; x++) {
+		// Note ON
+		buffer[x*2].timestamp = timestamp;
+		buffer[x*2].message = Pm_Message(0x90, note[i][0], att[i][0]);
+		// Note OFF
+		timestamp += 30000 * len[i][0] / tempo[i][0];
+		buffer[x * 2 + 1].timestamp = timestamp;
+		buffer[x * 2 + 1].message = Pm_Message(0x90, note[i][0], 0);
+		midi_sent = i;
+		midi_sent_t = timestamp;
+		// + send note off
+		if (noff[i][0] == 0) break;
+		i += noff[i][0];
+	}
+	mutex_output.unlock();
+	Pm_Write(midi, buffer, ncount);
+	delete [] buffer;
+}
+
+void CGenTemplate::StopMIDI()
+{
+	Pm_Close(midi);
 }
 

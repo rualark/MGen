@@ -62,12 +62,12 @@
 #define ID_COMBO_MIDIOUT                32793
 #define ID_COMBO_PARAMS                 32795
 #define ID_CHECK2                       32797
+#define ID_CHECK_GENPLAY                32797
 #define ID_BUTTON_EPARAMS               32798
 #define ID_CHECK_OUTPUTWND              32799
 #define ID_BUTTON2                      32800
 #define ID_BUTTON_HZOOM_DEC             32800
 #define ID_BUTTON_STOPGEN               32801
-#define ID_BUTTON3                      32802
 #define ID_BUTTON_HZOOM_INC             32802
 
 // Next default values for new objects
