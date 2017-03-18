@@ -15,6 +15,7 @@
 #include "stdafx.h"
 #include "MGen.h"
 #include "MainFrm.h"
+#include "EditParamsDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,6 +61,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_HZOOM_DEC, &CMainFrame::OnUpdateButtonHzoomDec)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_HZOOM_INC, &CMainFrame::OnUpdateButtonHzoomInc)
 	ON_UPDATE_COMMAND_UI(ID_COMBO_MIDIOUT, &CMainFrame::OnUpdateComboMidiout)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_EPARAMS, &CMainFrame::OnUpdateButtonEparams)
+	ON_COMMAND(ID_BUTTON_EPARAMS, &CMainFrame::OnButtonEparams)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -339,7 +342,6 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 
 void CMainFrame::OnButtonParams()
 {
-	// TODO: Add your command handler code here
 }
 
 
@@ -570,4 +572,17 @@ void CMainFrame::OnUpdateButtonHzoomInc(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateComboMidiout(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable();
+}
+
+
+void CMainFrame::OnUpdateButtonEparams(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(GetAlgo() != 0);
+}
+
+
+void CMainFrame::OnButtonEparams()
+{
+	CEditParamsDlg dlg;
+	dlg.DoModal();
 }

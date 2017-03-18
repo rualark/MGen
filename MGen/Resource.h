@@ -44,9 +44,15 @@
 #define IDS_EDIT_MENU                   306
 #define IDR_RIBBON                      307
 #define IDD_DIALOG_INFO                 310
+#define IDD_DIALOG_EDITPARAMS           312
 #define IDC_RICHEDIT21                  1000
 #define IDC_BUTTON1                     1001
 #define IDC_BUTTON_HIDDEN               1001
+#define IDC_SAVEAS                      1001
+#define IDC_EDIT_ALGO                   1002
+#define IDC_COMBO1                      1004
+#define IDC_COMBO_CONFIG                1004
+#define IDC_RICHEDIT_PARAMS             1005
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_BUTTON_OUTPUTWND             32772
 #define ID_COMBO_ALGO                   32775
@@ -74,9 +80,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        312
+#define _APS_NEXT_RESOURCE_VALUE        314
 #define _APS_NEXT_COMMAND_VALUE         32803
-#define _APS_NEXT_CONTROL_VALUE         1002
+#define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
