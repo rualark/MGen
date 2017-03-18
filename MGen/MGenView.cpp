@@ -238,8 +238,8 @@ void CMGenView::OnDraw(CDC* pDC)
 			//mf->WriteLog(1, st);
 			int retrigger;
 			for (int i = step1; i < step2; i++) {
-				SolidBrush brush_v(Color(40+(80*pGen->att[i][0]/127) /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
 				if (i == step1) if (pGen->coff[i][0] > 0) i = i - pGen->coff[i][0];
+				SolidBrush brush_v(Color(40 + (80 * pGen->att[i][0] / 127) /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
 				retrigger = 0;
 				if (i+pGen->noff[i][0] < pGen->t_generated) 
 					if (pGen->note[i+pGen->noff[i][0]][0] == pGen->note[i][0]) retrigger = 1;
@@ -292,7 +292,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
-	mf->WriteLog(2, st);
+	//mf->WriteLog(2, st);
 
 	//CRect rc;
 	//GetClientRect(&rc);

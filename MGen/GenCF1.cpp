@@ -24,6 +24,7 @@ void CGenCF1::Generate()
 		//TRACE(st);
 		if ((i > 0) && (len[i-1][0] > 1) && (coff[i-1][0] < len[i-1][0]-1)) {
 			note[i][0] = note[i - 1][0];
+			att[i][0] = att[i - 1][0];
 			len[i][0] = len[i - 1][0];
 			coff[i][0] = coff[i - 1][0] + 1;
 			poff[i][0] = poff[i - 1][0] + 1;
@@ -33,6 +34,7 @@ void CGenCF1::Generate()
 			len[i][0] = 8 * rand2() / RAND_MAX;
 			if (len[i][0] == 0) len[i][0] = 1;
 			coff[i][0] = 0;
+			att[i][0] = 50 + 60 * rand2() / RAND_MAX;
 			if (i > 0) poff[i][0] = coff[i - 1][0] + 1;
 			else poff[i][0] = 0;
 			if (i > 0) {
@@ -43,8 +45,7 @@ void CGenCF1::Generate()
 		}
 		//if (i < t_cnt-1) noff[i][0] = 1;
 		//else noff[i][0] = 0;
-		att[i][0] = 50 + 60 * rand2() / RAND_MAX;
-		tempo[i] = 100;
+		tempo[i] = 90 + 20 * rand2() / RAND_MAX;
 		if (i > 0) stime[i] = stime[i - 1] + 30000.0 / (double)tempo[i - 1];
 		else stime[i] = 0;
 		ntime[i] = stime[i] + 30000.0 / (double)tempo[i];
