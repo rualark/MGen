@@ -3,12 +3,12 @@
 
 #define min_note 60
 #define max_note 71
-#define min_tempo 80
-#define max_tempo 120
+#define min_tempo 160
+#define max_tempo 200
 
 CGenCF1::CGenCF1()
 {
-	t_cnt = 10000;
+	t_cnt = 60;
 	t_allocated = 10;
 	t_send = 30;
 	Init();
@@ -56,7 +56,7 @@ void CGenCF1::Generate()
 		//if (i < t_cnt-1) noff[i][0] = 1;
 		//else noff[i][0] = 0;
 		if (i == 0) {
-			tempo[i] = 60 + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
+			tempo[i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
 		}
 		else {
 			tempo[i] = tempo[i - 1] + randbw(-3, 3);
@@ -80,7 +80,7 @@ void CGenCF1::Generate()
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}
 		if (len[i][0] == 0) ::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: Len = 0"));
-		Sleep(300);
+		Sleep(20);
 		if (need_exit) return;
 	}
 	t_sent = t_generated;

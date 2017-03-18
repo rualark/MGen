@@ -57,22 +57,22 @@
     <ClInclude Include="InfoEditCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EditParamsDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pminternal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="pmutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pmwinmm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="portmidi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="porttime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pminternal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pmwinmm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EditParamsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -110,13 +110,10 @@
     <ClCompile Include="InfoEditCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EditParamsDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="pmutil.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="portmidi.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ptwinmm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pmwin.c">
@@ -125,7 +122,10 @@
     <ClCompile Include="pmwinmm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EditParamsDlg.cpp">
+    <ClCompile Include="portmidi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ptwinmm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

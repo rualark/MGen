@@ -70,6 +70,7 @@ public:
 	void SendMIDI(int step1, int step2);
 	void StopMIDI();
 	int randbw(int n1, int n2);
+	int GetPlayStep();
 	// Random
 	void isaac();
 	void randinit(int flag);
@@ -85,15 +86,17 @@ public:
 	timed_mutex mutex_output;
 	
 	// PortMIDI
-	PmStream * midi;
+	PmStream * midi = 0;
 	int midi_sent = 0; // Steps already sent to midi
 	int midi_sent_t = 0; // Timestamp of last event sent to midi
 	int midi_start_time = 0; // Time when midi started to play
+	int buffer_underrun = 0; // Shows if current playback had an issue with buffer underrun
+	int midi_play_step = 0; // Current step being played by midi
 
 	// Main constants
 	int v_cnt=1; // Voice count
-	milliseconds time_started; // Time in milliseconds when generation started
-	milliseconds time_stopped; // Time in milliseconds when generation stopped
+	PmTimestamp time_started; // Time in milliseconds when generation started
+	PmTimestamp time_stopped; // Time in milliseconds when generation stopped
 	int t_cnt = 1600; // Timeslot count (eighth notes) to stop generation
 	int t_allocated = 1600; // Timeslot count to initialize vectors
 	int t_generated = 0; // Timeslots generated
