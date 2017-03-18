@@ -174,7 +174,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			mf->ng_max = ng_max2;
 			// Count height
 			nheight = (ClientRect.bottom - ClientRect.top - Y_HEADER - Y_FOOTER) / ncount2;
-			y_start = ClientRect.top + Y_HEADER + nheight*(ncount2 - 1);
+			y_start = ClientRect.top + Y_HEADER + nheight*ncount2;
 			// Select steps to show
 			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth - 1);
 			int step2_2 = min((ClipBox.right - X_FIELD) / nwidth + 1, 32000 / nwidth); // For horizontal bars
@@ -183,7 +183,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Show grid
 			RectF sizeRect;
 			for (int i = ng_min2; i <= ng_max2; i++) {
-				int pos = y_start - (i - ng_min2) * nheight;
+				int pos = y_start - (i - ng_min2 + 1) * nheight;
 				if (diatonic[i % 12] == 0) {
 					g.FillRectangle(&brush_gray, max(X_FIELD, ClipBox.left), pos,	ClipBox.right-ClipBox.left, nheight);
 				}
@@ -214,7 +214,8 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Show horizontal lines
 			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), y_start, ClipBox.right, y_start);
 			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER, ClipBox.right, ClientRect.top + Y_HEADER);
-			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER - Y_TIMELINE, ClipBox.right, ClientRect.top + Y_HEADER - Y_TIMELINE);
+			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER - Y_TIMELINE, 
+				ClipBox.right, ClientRect.top + Y_HEADER - Y_TIMELINE);
 			time_stop3 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			// Draw vertical lines
 			for (int i = max(0, step1-16); i < step2_3; i++) {
@@ -244,12 +245,12 @@ void CMGenView::OnDraw(CDC* pDC)
 				if (i+pGen->noff[i][0] < pGen->t_generated) 
 					if (pGen->note[i+pGen->noff[i][0]][0] == pGen->note[i][0]) retrigger = 1;
 				g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
-					y_start - (pGen->note[i][0] - ng_min2) * nheight,
+					y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
 					pGen->len[i][0]*nwidth - retrigger, nheight);
 				// Highlight selected note
 				if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][0]) && (mouse_voice == 0)) {
 					g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
-						y_start - (pGen->note[i][0] - ng_min2) * nheight,
+						y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
 						pGen->len[i][0] * nwidth - retrigger, nheight);
 				}
 				if (pGen->noff[i][0] == 0) break;
@@ -435,7 +436,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 			step22 = step21 + pGen->len[mouse_step_old][mouse_voice_old];
 		}
 		if (mouse_step > -1) {
-			mouse_note = (y_start - point.y) / nheight + mf->ng_min + 1;
+			mouse_note = (y_start - point.y) / nheight + mf->ng_min;
 			for (int i = 0; i < pGen->v_cnt; i++)
 				if (pGen->note[mouse_step][i] == mouse_note) {
 					mouse_voice = i;
