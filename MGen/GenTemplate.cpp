@@ -259,3 +259,7 @@ void CGenTemplate::StopMIDI()
 	Pm_Close(midi);
 }
 
+int CGenTemplate::randbw(int n1, int n2)
+{
+	return n1 + (double)(n2 - n1) * (double)rand2() / (double)RAND_MAX;
+}

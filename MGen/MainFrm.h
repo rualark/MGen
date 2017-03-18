@@ -35,6 +35,8 @@ public:
 	int zoom_y = 200;
 	int ng_min = 0;
 	int ng_max = 0;
+	int tg_min = 0;
+	int tg_max = 0;
 	int m_state_gen=0;
 	// 0 = No music
 	// 1 = Generation started

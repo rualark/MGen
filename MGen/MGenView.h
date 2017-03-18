@@ -22,6 +22,8 @@
 #define X_FIELD 40
 #define MULTITRACK_MINNOTES 12
 #define SINGLETRACK_MINNOTES 36
+#define MIN_TEMPO_DISPLAY 40
+#define MAX_TEMPO_DISPLAY 180
 
 const char diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
 

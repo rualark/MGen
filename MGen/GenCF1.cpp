@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "GenCF1.h"
 
+#define min_note 60
+#define max_note 71
+#define min_tempo 80
+#define max_tempo 120
 
 CGenCF1::CGenCF1()
 {
@@ -9,7 +13,6 @@ CGenCF1::CGenCF1()
 	t_send = 30;
 	Init();
 }
-
 
 CGenCF1::~CGenCF1()
 {
@@ -30,7 +33,14 @@ void CGenCF1::Generate()
 			poff[i][0] = poff[i - 1][0] + 1;
 		}
 		else {
-			note[i][0] = 60 + 12 * rand2() / RAND_MAX;
+			if (i == 0) {
+				note[i][0] = 60 + (max_note-min_note) * rand2() / RAND_MAX;
+			}
+			else {
+				note[i][0] = note[i - 1][0] + randbw(-3, 3);
+				if (note[i][0] > max_note) note[i][0] = 2 * max_note - note[i][0];
+				if (note[i][0] < min_note) note[i][0] = 2 * min_note - note[i][0];
+			}
 			len[i][0] = 8 * rand2() / RAND_MAX;
 			if (len[i][0] == 0) len[i][0] = 1;
 			coff[i][0] = 0;
@@ -45,7 +55,14 @@ void CGenCF1::Generate()
 		}
 		//if (i < t_cnt-1) noff[i][0] = 1;
 		//else noff[i][0] = 0;
-		tempo[i] = 90 + 20 * rand2() / RAND_MAX;
+		if (i == 0) {
+			tempo[i] = 60 + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
+		}
+		else {
+			tempo[i] = tempo[i - 1] + randbw(-3, 3);
+			if (tempo[i] > max_tempo) tempo[i] = 2 * max_tempo - tempo[i];
+			if (tempo[i] < min_tempo) tempo[i] = 2 * min_tempo - tempo[i];
+		}
 		if (i > 0) stime[i] = stime[i - 1] + 30000.0 / (double)tempo[i - 1];
 		else stime[i] = 0;
 		ntime[i] = stime[i] + 30000.0 / (double)tempo[i];
@@ -53,6 +70,8 @@ void CGenCF1::Generate()
 		t_generated = i+1;
 		if (ng_min > note[i][0]) ng_min = note[i][0];
 		if (ng_max < note[i][0]) ng_max = note[i][0];
+		if (tg_min > tempo[i]) tg_min = tempo[i];
+		if (tg_max < tempo[i]) tg_max = tempo[i];
 		//CString* st = new CString;
 		//st->Format("Note generated %d", note[i][0]);
 		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
@@ -61,7 +80,7 @@ void CGenCF1::Generate()
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}
 		if (len[i][0] == 0) ::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: Len = 0"));
-		Sleep(10);
+		Sleep(300);
 		if (need_exit) return;
 	}
 	t_sent = t_generated;

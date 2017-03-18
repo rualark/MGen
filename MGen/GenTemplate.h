@@ -69,6 +69,7 @@ public:
 	void StartMIDI(int midi_device_i, int latency);
 	void SendMIDI(int step1, int step2);
 	void StopMIDI();
+	int randbw(int n1, int n2);
 	// Random
 	void isaac();
 	void randinit(int flag);
@@ -98,8 +99,10 @@ public:
 	int t_generated = 0; // Timeslots generated
 	int t_send = 60; // Timeslot count to send
 	int t_sent = 0; // Timeslot count sent to mainframe
-	int ng_min=1000; // Minimum generated note
-	int ng_max=0; // Maximum generated note
+	int ng_min = 1000; // Minimum generated note
+	int ng_max = 0; // Maximum generated note
+	int tg_min = 1000; // Minimum generated tempo
+	int tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
 	vector <string> instr; // Instruments for each voice
 	// Output

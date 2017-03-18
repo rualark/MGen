@@ -114,6 +114,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	SolidBrush brush_red(Color(255 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_agray(Color(20 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_ared(Color(20 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
+	Pen pen_agray(Color(100 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/), 1);
 	Pen pen_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/), 1);
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
@@ -143,6 +144,12 @@ void CMGenView::OnDraw(CDC* pDC)
 			g.DrawString(L"INTERRUPTED", -1, &font, PointF(600, 0), &brush_red);
 		nwidth = 4 * mf->zoom_x / 100;
 		if (mf->view_single_track) {
+			// Count tempo window
+			int tg_min = MIN_TEMPO_DISPLAY;
+			int tg_max = MAX_TEMPO_DISPLAY;
+			// Increase if generated bigger tempo window
+			if (pGen->tg_min < tg_min) tg_min = pGen->tg_min;
+			if (pGen->tg_max > tg_max) tg_max = pGen->tg_max;
 			// Get generator window
 			int ng_min = pGen->ng_min;
 			int ng_max = pGen->ng_max;
@@ -178,6 +185,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Select steps to show
 			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth - 1);
 			int step2_2 = min((ClipBox.right - X_FIELD) / nwidth + 1, 32000 / nwidth); // For horizontal bars
+			if (step2_2 < step1) step2_2 = step1;
 			int step2 = min(pGen->t_generated, step2_2); // For notes
 			int step2_3 = step2 / 8 * 8+8; // For vertical lines
 			// Show grid
@@ -268,6 +276,18 @@ void CMGenView::OnDraw(CDC* pDC)
 				*/
 			}
 			mouse_voice_old = mouse_voice;
+			// Show tempo
+			for (int i = step1; i < step2; i++)  {
+				if (i>0) g.DrawLine(&pen_agray, X_FIELD + i * nwidth + nwidth / 2, 
+					y_start - 1 - (y_start-Y_HEADER-2)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
+					X_FIELD + (i - 1) * nwidth + nwidth / 2, 
+					y_start - 1 - (y_start - Y_HEADER - 2)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
+			}
+			if (step2 < pGen->t_generated - 1) 
+				g.DrawLine(&pen_agray, X_FIELD + step2 * nwidth + nwidth / 2, 
+					y_start - 1 - (y_start - Y_HEADER - 2)*(pGen->tempo[step2] - tg_min) / (tg_max - tg_min),
+				X_FIELD + (step2 + 1) * nwidth + nwidth / 2, 
+					y_start - 1 - (y_start - Y_HEADER - 2)*(pGen->tempo[step2 + 1] - tg_min) / (tg_max - tg_min));
 			// Highlight draft notes
 			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			if ((step2 > pGen->t_sent) || (pGen->need_exit == 1)) {

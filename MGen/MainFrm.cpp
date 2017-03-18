@@ -429,8 +429,26 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		m_state_gen = 2;
 	}
 	if (wParam == 1) {
-		//if (pGen->midi_sent > 0) return 0;
-		pGen->SendMIDI(pGen->midi_sent, pGen->t_sent - 1);
+		// Decide if we can play
+		if (m_state_play == 0) {
+			if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
+				WriteLog(4, "OnGenFinish mutex timed out: playback not started");
+				return 0;
+			}
+			double gtime = pGen->stime[pGen->t_sent-1];
+			double ptime = TIME_PROC(TIME_INFO);
+			if ((gtime / ptime > 2) || (gtime > 30000) || ((gtime / ptime > 1.2) && (gtime > 5000))) {
+				m_state_play = 1;
+			} else {
+				CString st;
+				st.Format("Only %.1f s generated after %.1f s. Playback is postponed to avoid buffer underruns", gtime/1000, ptime/1000);
+				WriteLog(4, st);
+			}
+			pGen->mutex_output.unlock();
+		}
+		if (m_state_play == 1) {
+			pGen->SendMIDI(pGen->midi_sent, pGen->t_sent - 1);
+		}
 	}
 	return 0;
 }
