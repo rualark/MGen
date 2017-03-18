@@ -96,11 +96,13 @@ BOOL CInfoDlg::OnInitDialog()
 		int mv = ((CMGenView*)(mf->GetActiveView()))->mouse_voice;
 		//SetWindowText("Dialog: some text");
 		CString st;
-		st.Format("Step: %d\nVoice: %d\nNote: %d\nLength: %d\n", ms, mv, pGen->note[ms][mv], pGen->len[ms][mv]);
+		st.Format("Step: %d (measure %d)\nVoice: %d\nNote: %s%d (midi %d)\nNote length: %d\n", ms, ms/8, mv, 
+			NoteName[pGen->note[ms][mv] % 12], pGen->note[ms][mv] / 12 - 1, pGen->note[ms][mv], pGen->len[ms][mv]);
 		AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		st.Format("Current offset: %d\nPrevious offset: %d\nNext offset: %d\nAttack: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->att[ms][mv]);
+		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nAttack: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->att[ms][mv]);
 		AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Tempo: %d\nPause indicator: %d", pGen->tempo[ms], pGen->pause[ms][mv]);
+		st.Format("Tempo: %d bpm\nStep start time: %.4f s (%.2f ms long)\nPause indicator: %d", pGen->tempo[ms], pGen->stime[ms]/1000, 
+			pGen->ntime[ms] - pGen->stime[ms], pGen->pause[ms][mv]);
 		AddText(st, RGB(0, 0, 0), 0);
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);

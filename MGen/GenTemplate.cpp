@@ -129,7 +129,9 @@ void CGenTemplate::Init()
 	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	att = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	tempo = vector<unsigned char>(t_allocated);
+	tempo = vector<unsigned short>(t_allocated);
+	stime = vector<double>(t_allocated);
+	ntime = vector<double>(t_allocated);
 }
 
 void CGenTemplate::ResizeVectors(int size)
@@ -145,6 +147,8 @@ void CGenTemplate::ResizeVectors(int size)
 	poff.resize(size);
 	noff.resize(size);
 	tempo.resize(size);
+	stime.resize(size);
+	ntime.resize(size);
 	att.resize(size);
 	for (int i = t_allocated; i < size; i++) {
 		pause[i].resize(v_cnt);
@@ -192,10 +196,10 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	// Set playback start
 	if (step1 == 0) midi_start_time = timestamp0;
 	// Check if buffer is full
-	if (midi_sent_t - timestamp_current > 10000) {
+	if (midi_sent_t - timestamp_current > MIN_MIDI_BUFFER_MSEC) {
 		CString* st = new CString;
-		st->Format("SendMIDI: no need to send (full buffer = %d ms) at %d ms playback (steps %d - %d)", 
-			midi_sent_t - timestamp_current, timestamp_current - midi_start_time, step1, step2);
+		st->Format("SendMIDI: no need to send (full buffer = %d ms) (steps %d - %d) playback is at %d", 
+			midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
 		::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)st);
 		return;
 	}
@@ -203,37 +207,50 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
 		::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("SendMIDI mutex timed out: will try later"));
 	}
+	int step21;
+	int step22;
+	// Move to note start
+	if (coff[step1][0] > 0) step21 = step1 - coff[step1][0];
+	else step21 = step1;
+	// Find last step not too far
+	for (i = step21; i <= step2; i++) {
+		step22 = i;
+		if (stime[i] - stime[step1] + timestamp - timestamp_current > MAX_MIDI_BUFFER_MSEC) break;
+	}
 	// Count notes
-	for (i = step1; i < step2; i++) {
-		if (i == step1) if (coff[i][0] > 0) i = i + noff[i][0];
+	for (i = step21; i < step22; i++) {
+		if (i + len[i][0] > step22) break;
 		ncount++;
 		if (noff[i][0] == 0) break;
 		i += noff[i][0] - 1;
 	}
 	// Send notes
 	PmEvent* buffer = new PmEvent[ncount*2];
-	i = step1;
-	if (coff[i][0] > 0) i = i + noff[i][0];
+	i = step21;
 	for (int x = 0; x < ncount; x++) {
 		// Note ON
+		timestamp = stime[step21] - stime[step1] + timestamp0;
 		buffer[x*2].timestamp = timestamp;
 		buffer[x*2].message = Pm_Message(0x90, note[i][0], att[i][0]);
-		midi_sent_t = timestamp;
 		// Note OFF
-		timestamp += 30000 * len[i][0] / tempo[i];
+		timestamp = ntime[i + len[i][0] - 1] - stime[step1] + timestamp0;
 		buffer[x * 2 + 1].timestamp = timestamp;
 		buffer[x * 2 + 1].message = Pm_Message(0x90, note[i][0], 0);
 		if (noff[i][0] == 0) break;
 		i += noff[i][0];
 	}
-	midi_sent = step2;
+	// Save last sent position
+	midi_sent = step22;
+	midi_sent_t = timestamp0 + stime[midi_sent] - stime[step1];
 	mutex_output.unlock();
 	Pm_Write(midi, buffer, ncount*2);
 	delete [] buffer;
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
-	st->Format("Pm_Write %d notes (steps %d - %d) [future %d to %d ms] (in %d ms) playback is at %d ms", ncount, step1, midi_sent, timestamp0 - timestamp_current, midi_sent_t - timestamp_current, time_stop - time_start, timestamp_current-midi_start_time);
+	st->Format("Pm_Write %d notes (steps %d/%d - %d/%d) [to future %d to %d ms] (in %d ms) playback is at %d ms", 
+		ncount, step21, step1, midi_sent, step2, timestamp0 - timestamp_current, midi_sent_t - timestamp_current, 
+		time_stop - time_start, timestamp_current-midi_start_time);
 	::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)st);
 }
 

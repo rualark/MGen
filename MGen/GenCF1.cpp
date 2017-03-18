@@ -43,8 +43,11 @@ void CGenCF1::Generate()
 		}
 		//if (i < t_cnt-1) noff[i][0] = 1;
 		//else noff[i][0] = 0;
-		att[i][0] = 100;
+		att[i][0] = 50 + 60 * rand2() / RAND_MAX;
 		tempo[i] = 100;
+		if (i > 0) stime[i] = stime[i - 1] + 30000.0 / (double)tempo[i - 1];
+		else stime[i] = 0;
+		ntime[i] = stime[i] + 30000.0 / (double)tempo[i];
 		pause[i][0] = 0;
 		t_generated = i+1;
 		if (ng_min > note[i][0]) ng_min = note[i][0];
@@ -57,7 +60,7 @@ void CGenCF1::Generate()
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}
 		if (len[i][0] == 0) ::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: Len = 0"));
-		Sleep(100);
+		Sleep(10);
 		if (need_exit) return;
 	}
 	t_sent = t_generated;

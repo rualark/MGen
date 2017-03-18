@@ -430,7 +430,7 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 	}
 	if (wParam == 1) {
 		//if (pGen->midi_sent > 0) return 0;
-		pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
+		pGen->SendMIDI(pGen->midi_sent, pGen->t_sent - 1);
 	}
 	return 0;
 }

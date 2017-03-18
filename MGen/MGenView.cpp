@@ -147,13 +147,15 @@ void CMGenView::OnDraw(CDC* pDC)
 			int ng_min = pGen->ng_min;
 			int ng_max = pGen->ng_max;
 			int ncount = ng_max - ng_min + 1;
+			// Copy generator window
 			int ng_min2 = ng_min;
 			int ng_max2 = ng_max;
-			int ncount2 = ng_max2 - ng_min2 + 1;
+			int ncount2 = ncount;
 			// Load last window
 			if (mf->ng_max != 0) {
 				ng_min2 = mf->ng_min;
 				ng_max2 = mf->ng_max;
+				// Switch to generator window if it is bigger than last window
 				if ((ng_min < ng_min2) || (ng_max > ng_max2)) {
 					ng_min2 = ng_min;
 					ng_max2 = ng_max;
@@ -161,10 +163,11 @@ void CMGenView::OnDraw(CDC* pDC)
 				ncount2 = ng_max2 - ng_min2 + 1;
 			}
 			// Check if window is too small
-			if (ncount2 < SINGLETRACK_MINNOTES) {
+			if (ncount2 < SINGLETRACK_MINNOTES - 2) {
 				ncount2 = SINGLETRACK_MINNOTES;
 				ng_min2 = ng_min - (ncount2 - ncount) / 2;
 				ng_max2 = ng_max + (ncount2 - ncount) / 2;
+				ncount2 = ng_max2 - ng_min2 + 1;
 			}
 			// Save window
 			mf->ng_min = ng_min2;
@@ -230,12 +233,12 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			// Show notes
 			time_stop4 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-			SolidBrush brush_v(Color(80 /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
 			//CString st;
 			//st.Format("Notes showing from %d to %d", step1, step2);
 			//mf->WriteLog(1, st);
 			int retrigger;
 			for (int i = step1; i < step2; i++) {
+				SolidBrush brush_v(Color(40+(80*pGen->att[i][0]/127) /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
 				if (i == step1) if (pGen->coff[i][0] > 0) i = i - pGen->coff[i][0];
 				retrigger = 0;
 				if (i+pGen->noff[i][0] < pGen->t_generated) 
@@ -289,7 +292,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
-	//mf->WriteLog(2, st);
+	mf->WriteLog(2, st);
 
 	//CRect rc;
 	//GetClientRect(&rc);

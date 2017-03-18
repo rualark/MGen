@@ -33,9 +33,25 @@ const CString InstName[] = {
 	"Percussion" // 15
 };
 
+const CString NoteName[] = {
+	"C", // 0
+	"C#", // 1
+	"D", // 2
+	"D#", // 3
+	"E", // 4
+	"F", // 5
+	"F#", // 6
+	"G", // 7
+	"G#", // 8
+	"A", // 9
+	"A#", // 10
+	"H" // 11
+};
+
 // PortMIDI
 #define OUTPUT_BUFFER_SIZE 10000
-#define MAX_MIDI_BUFFER_SEC 10
+#define MIN_MIDI_BUFFER_MSEC 10000
+#define MAX_MIDI_BUFFER_MSEC 20000
 #define DRIVER_INFO NULL
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL
@@ -93,9 +109,12 @@ public:
 	vector< vector <unsigned char> > coff; // Offset of current note start backward (0 = first timeslot of note)
 	vector< vector <unsigned char> > poff; // Offset of previous note start (backward)
 	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
-	vector<unsigned char> tempo; // Tempo
 	vector< vector <unsigned char> > att; // Attack (velocity for piano)
-	// Random generator
+	vector<unsigned short> tempo; // Tempo
+	vector<double> stime; // Time of current step in ms
+	vector<double> ntime; // Time of current step in ms
+  
+  // Random generator
 	ub4 randrsl[256], randcnt; // external results
 	ub4 mm[256];  // internal state
 	ub4 aa = 0, bb = 0, cc = 0;
