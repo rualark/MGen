@@ -1,3 +1,0 @@
-Algorithm = 1001
-MIDI_OUT = loopMIDI Port, MMSystem
-Horizontal_zoom = 0

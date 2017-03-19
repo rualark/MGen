@@ -489,6 +489,7 @@ void CMainFrame::LoadAlgo()
 	// Load header
 	fs.getline(pch, 255);
 	AlgCount = 0;
+	AlgGCount = 0;
 	while (fs.good()) {
 		pos = 0;
 		fs.getline(pch, 255);
@@ -507,6 +508,12 @@ void CMainFrame::LoadAlgo()
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			AlgGroup[AlgCount] = st2;
+			// Load groups
+			CString* pst = find(begin(AlgGroups), end(AlgGroups), st2);
+			if (*pst != st2) {
+				AlgGroups[AlgGCount] = st2;
+				AlgGCount++;
+			}
 			AlgCount++;
 		}
 	}
@@ -516,13 +523,15 @@ void CMainFrame::LoadAlgo()
 void CMainFrame::LoadSettings()
 {
 	ifstream fs;
-	fs.open("settings.txt");
+	fs.open("settings.pl");
 	CString st, st2, st3;
 	char pch[255];
 	int pos = 0;
 	while (fs.good()) {
 		fs.getline(pch, 255);
 		st = pch;
+		pos = st.Find("#");
+		if (pos != -1) st = st.Left(pos);
 		st.Trim();
 		pos = st.Find("=");
 		if (pos != -1) {
@@ -540,10 +549,10 @@ void CMainFrame::LoadSettings()
 			if (st2 == "MIDI_OUT") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
-				int id = distance(MidiName, find(begin(MidiName), end(MidiName), st3));
+				//int id = distance(MidiName, find(begin(MidiName), end(MidiName), st3));
 				pCombo->SelectItem(st3);
 			}
-			if (st2 == "MIDI_OUT") {
+			if (st2 == "Horizontal_zoom") {
 				zoom_x = atoi(st3);
 				if (zoom_x < MIN_HZOOM) zoom_x = MIN_HZOOM;
 				if (zoom_x > MAX_HZOOM) zoom_x = MAX_HZOOM;
@@ -556,19 +565,19 @@ void CMainFrame::LoadSettings()
 void CMainFrame::SaveSettings()
 {
 	ofstream fs;
-	fs.open("settings.txt");
+	fs.open("settings.pl");
 	CString st;
-	st.Format("Algorithm = %d\n", GetAlgo());
+	st.Format("Algorithm = %d # Id of the currently selected algorithm\n", GetAlgo());
 	fs << st;
 	int i = GetMidiI();
 	//st.Format("MIDI_OUT_ID = %d\n", i);
 	//fs << st;
 	if (i > -1) {
 		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-		st.Format("MIDI_OUT = %s, %s\n", info->name, info->interf);
+		st.Format("MIDI_OUT = %s, %s # Name of MIDI device used for playing notes\n", info->name, info->interf);
 		fs << st;
 	}
-	st.Format("Horizontal_zoom = %d\n", zoom_x);
+	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 80 to 500\n", zoom_x);
 	fs << st;
 	fs.close();
 }
@@ -668,6 +677,7 @@ void CMainFrame::OnButtonHzoomDec()
 	st.Format("New zoom %d", zoom_x);
 	WriteLog(2, st);
 	GetActiveView()->Invalidate();
+	SaveSettings();
 }
 
 
@@ -679,6 +689,7 @@ void CMainFrame::OnButtonHzoomInc()
 	st.Format("New zoom %d", zoom_x);
 	WriteLog(2, st);
 	GetActiveView()->Invalidate();
+	SaveSettings();
 }
 
 

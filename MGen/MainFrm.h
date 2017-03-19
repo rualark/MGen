@@ -53,9 +53,12 @@ public:
 	// 2 = Playback into buffer finished. Buffer is still playing
 	CString AlgName[MAX_ALGO];
 	CString AlgGroup[MAX_ALGO];
+	CString AlgGroups[MAX_ALGO];
+	CString AlgComment[MAX_ALGO];
 	CString AlgFolder[MAX_ALGO];
 	int AlgID[MAX_ALGO];
 	int AlgCount = 0;
+	int AlgGCount = 0;
 	// MIDI device names
 	CString MidiName[MAX_MIDI_DEVICES];
 	int MidiCount = 0;
