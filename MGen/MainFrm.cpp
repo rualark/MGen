@@ -123,15 +123,17 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// set the visual manager and style based on persisted value
 	OnApplicationLook(theApp.m_nAppLook);
 
+	LoadAlgo();
+
 	// Algorithm combo
 	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
 	for (int i = 1; i <= GAlgNum; i++) {
-		//pCombo->AddItem(GAlgName[i]);
+		//pCombo->AddItem(AlgName[i]);
 		//TCHAR st[100];
 		//_stprintf_s(st, _T("%d"), i);
 		//pCombo->AddItem(st);
-		pCombo->AddItem(GAlgName[i]);
+		pCombo->AddItem(AlgName[i], AlgId[i]);
 	}
 
 	// MIDI port
@@ -151,6 +153,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	WriteLog(0, "Started MGen version 1.1.5");
 	AfxInitRichEdit2();
+
+	LoadSettings();
 
 	return 0;
 }
@@ -369,14 +373,17 @@ void CMainFrame::OnButtonGen()
 	}
 	pGen = 0;
 	int Algo = GetAlgo();
-	if (Algo == 1) {
+	if (Algo == 101) {
 		pGen = new CGenCF1();
 	}
-	if (Algo == 2) {
+	if (Algo == 102) {
 		pGen = new CGenCF2();
 	}
+	if (Algo == 1001) {
+		pGen = new CGenRS1();
+	}
 	if (pGen != 0) {
-		WriteLog(0, _T("Started generator: ") + GAlgName[Algo]);
+		WriteLog(0, _T("Started generator: ") + AlgName[Algo]);
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
@@ -464,9 +471,79 @@ int CMainFrame::GetMidiI()
 	return pCombo->GetItemData(pCombo->GetCurSel());
 }
 
+void CMainFrame::LoadAlgo()
+{
+	ifstream fs;
+	fs.open("algorithms.txt");
+	CString st, st2, st3, st4, st5;
+	char pch[255];
+	int pos = 0;
+	// Load header
+	fs.getline(pch, 255);
+	while (fs.good()) {
+		pos = 0;
+		fs.getline(pch, 255);
+		st = pch;
+		st.Trim();
+		if (st.Find("|") != -1) {
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			WriteLog(1, st2);
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			WriteLog(1, st2);
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			WriteLog(1, st2);
+		}
+	}
+	fs.close();
+}
+
+void CMainFrame::LoadSettings()
+{
+	ifstream fs;
+	fs.open("settings.txt");
+	CString st, st2, st3;
+	char pch[255];
+	int pos = 0;
+	while (fs.good()) {
+		fs.getline(pch, 255);
+		st = pch;
+		st.Trim();
+		pos = st.Find("=");
+		if (pos != -1) {
+			st2 = st.Left(pos);
+			st3 = st.Mid(pos+1);
+			st2.Trim();
+			st3.Trim();
+			DWORD dwd = atoi(st3);
+			if (st2 == "Algorithm") {
+				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
+					m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
+				pCombo->SelectItem((DWORD_PTR)&dwd);
+				WriteLog(1, st3);
+			}
+		}
+	}
+	fs.close();
+}
+
+void CMainFrame::SaveSettings()
+{
+	ofstream fs;
+	fs.open("settings.txt");
+	CString st;
+	st.Format("Algorithm = %d\n", GetAlgo());
+	fs << st;
+	fs.close();
+}
+
 void CMainFrame::OnComboAlgo()
 {
-	// TODO: Add your command handler code here
+	WriteLog(1, "Combo");
+	SaveSettings();
+	LoadSettings();
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)

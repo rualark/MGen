@@ -14,6 +14,9 @@
 
 #pragma once
 #include "OutputWnd.h"
+#include "GenCF1.h"
+#include "GenCF2.h"
+#include "GenRS1.h"
 
 #define MIN_HZOOM 80
 #define MAX_HZOOM 500
@@ -45,6 +48,10 @@ public:
 	// 0 = No playback
 	// 1 = Playback
 	// 2 = Playback into buffer finished. Buffer is still playing
+	CString AlgName[MAX_ALGO];
+	CString AlgGroup[MAX_ALGO];
+	CString AlgFolder[MAX_ALGO];
+	int AlgId[MAX_ALGO];
 
 // Operations
 public:
@@ -104,6 +111,9 @@ public:
 
 	int GetAlgo();
 	int GetMidiI();
+	void LoadAlgo();
+	void LoadSettings();
+	void SaveSettings();
 
 	static UINT GenThread(LPVOID pParam);
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);

@@ -66,10 +66,10 @@
 #include <mutex>
 #include <initializer_list>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 using namespace std;
 #include <chrono>
 using namespace std::chrono;
 #include <gdiplus.h>
 using namespace Gdiplus;
-#include "GenCF1.h"
-#include "GenCF2.h"

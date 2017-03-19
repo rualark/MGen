@@ -1,0 +1,4 @@
+ID   | Folder | Name                     | Group
+1001 | GenRS1 | Random solo              | Random
+101  | GenCF1 | Cantus firmus 1          | Counterpoint
+102  | GenCF2 | Cantus firmus 2          | Counterpoint
