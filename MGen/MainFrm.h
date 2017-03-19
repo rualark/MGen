@@ -21,6 +21,9 @@
 #define MIN_HZOOM 80
 #define MAX_HZOOM 500
 
+#define MAX_ALGO 100
+#define MAX_MIDI_DEVICES 100
+
 class CMainFrame : public CFrameWndEx
 {
 	
@@ -53,6 +56,9 @@ public:
 	CString AlgFolder[MAX_ALGO];
 	int AlgID[MAX_ALGO];
 	int AlgCount = 0;
+	// MIDI device names
+	CString MidiName[MAX_MIDI_DEVICES];
+	int MidiCount = 0;
 
 // Operations
 public:
@@ -127,6 +133,7 @@ public:
 	afx_msg void OnUpdateButtonEparams(CCmdUI *pCmdUI);
 	afx_msg void OnButtonEparams();
 	afx_msg void OnUpdateButtonPlay(CCmdUI *pCmdUI);
+	afx_msg void OnComboMidiout();
 };
 
 

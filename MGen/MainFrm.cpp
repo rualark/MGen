@@ -63,6 +63,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_EPARAMS, &CMainFrame::OnUpdateButtonEparams)
 	ON_COMMAND(ID_BUTTON_EPARAMS, &CMainFrame::OnButtonEparams)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_PLAY, &CMainFrame::OnUpdateButtonPlay)
+	ON_COMMAND(ID_COMBO_MIDIOUT, &CMainFrame::OnComboMidiout)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -140,15 +141,18 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,	m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
 	CString st;
 	int default_out = Pm_GetDefaultOutputDeviceID();
+	MidiCount = 0;
 	for (int i = 0; i < Pm_CountDevices(); i++) {
 		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
 		if (info->output) {
-			st.Format("%s, %s [%d]", info->name, info->interf, i);
+			st.Format("%s, %s", info->name, info->interf);
 			if (i == default_out) {
-				st += " (default)";
+				//st += " (default)";
 			}
+			pCombo->AddItem(st, i);
+			MidiName[MidiCount] = st;
+			MidiCount++;
 		}
-		pCombo->AddItem(st, i);
 	}
 
 	WriteLog(0, "Started MGen version 1.1.5");
@@ -461,14 +465,18 @@ int CMainFrame::GetAlgo()
 {
 	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-	return pCombo->GetItemData(pCombo->GetCurSel());
+	int i = pCombo->GetCurSel();
+	if (i == -1) return -1;
+	else return pCombo->GetItemData(i);
 }
 
 int CMainFrame::GetMidiI()
 {
 	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 		m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
-	return pCombo->GetItemData(pCombo->GetCurSel());
+	int i = pCombo->GetCurSel();
+	if (i == -1) return -1;
+	else return pCombo->GetItemData(i);
 }
 
 void CMainFrame::LoadAlgo()
@@ -519,16 +527,26 @@ void CMainFrame::LoadSettings()
 		pos = st.Find("=");
 		if (pos != -1) {
 			st2 = st.Left(pos);
-			st3 = st.Mid(pos+1);
+			st3 = st.Mid(pos + 1);
 			st2.Trim();
 			st3.Trim();
-			DWORD dwd = atoi(st3);
+			int idata = atoi(st3);
 			if (st2 == "Algorithm") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-				int id = distance(AlgID, find(begin(AlgID), end(AlgID), dwd));
+				int id = distance(AlgID, find(begin(AlgID), end(AlgID), idata));
 				pCombo->SelectItem(id);
-				WriteLog(1, st3);
+			}
+			if (st2 == "MIDI_OUT") {
+				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
+					m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
+				int id = distance(MidiName, find(begin(MidiName), end(MidiName), st3));
+				pCombo->SelectItem(st3);
+			}
+			if (st2 == "MIDI_OUT") {
+				zoom_x = atoi(st3);
+				if (zoom_x < MIN_HZOOM) zoom_x = MIN_HZOOM;
+				if (zoom_x > MAX_HZOOM) zoom_x = MAX_HZOOM;
 			}
 		}
 	}
@@ -542,14 +560,22 @@ void CMainFrame::SaveSettings()
 	CString st;
 	st.Format("Algorithm = %d\n", GetAlgo());
 	fs << st;
+	int i = GetMidiI();
+	//st.Format("MIDI_OUT_ID = %d\n", i);
+	//fs << st;
+	if (i > -1) {
+		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
+		st.Format("MIDI_OUT = %s, %s\n", info->name, info->interf);
+		fs << st;
+	}
+	st.Format("Horizontal_zoom = %d\n", zoom_x);
+	fs << st;
 	fs.close();
 }
 
 void CMainFrame::OnComboAlgo()
 {
-	WriteLog(1, "Combo");
 	SaveSettings();
-	LoadSettings();
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
@@ -726,3 +752,7 @@ void CMainFrame::OnButtonPlay()
 	}
 }
 
+void CMainFrame::OnComboMidiout()
+{
+	SaveSettings();
+}

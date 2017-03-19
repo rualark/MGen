@@ -1,7 +1,6 @@
 #pragma once
 
 #define MAX_VOICE 16
-#define MAX_ALGO 100
 
 #include "portmidi.h"
 #include "porttime.h"
