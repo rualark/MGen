@@ -9,11 +9,6 @@
 
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
-CString AlgName[MAX_ALGO];
-CString AlgGroup[MAX_ALGO];
-CString AlgFolder[MAX_ALGO];
-int AlgId[MAX_ALGO];
-
 const CString InstName[] = {
 	"Piano", // 0
 	"Violin", // 1

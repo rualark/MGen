@@ -48,6 +48,10 @@ public:
 	// 0 = No playback
 	// 1 = Playback
 	// 2 = Playback into buffer finished. Buffer is still playing
+	CString AlgName[MAX_ALGO];
+	CString AlgGroup[MAX_ALGO];
+	CString AlgFolder[MAX_ALGO];
+	int AlgId[MAX_ALGO];
 
 // Operations
 public:
