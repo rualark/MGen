@@ -326,6 +326,89 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
 }
 
+void CGenTemplate::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int i, int v_cnt) {
+	v2D[i].clear();
+	v2D[i].resize(v_cnt);
+	char* pointer = reinterpret_cast<char*>(&v2D[i][0]);
+	size_t bytes = t_generated * sizeof(v2D[i][0]);
+	fs.read(pointer, bytes);
+	//for (int x = 0; x < v_cnt; x++) {
+	//	fs->read(reinterpret_cast<char *>(v2D[i][x]), 1)
+	//}
+
+	//std::istreambuf_iterator iter(fs);
+	//std::copy(iter.begin(), iter.end()+v_cnt, std::back_inserter(v2D));
+}
+
+void CGenTemplate::LoadVectorD(ifstream &fs, vector<double> &v, int t_generated) {
+	v.clear();
+	v.resize(t_generated);
+	char* pointer = reinterpret_cast<char*>(&v[0]);
+	size_t bytes = t_generated * sizeof(v[0]);
+	fs.read(pointer, bytes);
+}
+
+void CGenTemplate::LoadResults(CString dir, CString fname)
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	// Load strings
+	ifstream fs;
+	fs.open(dir + "\\config.txt");
+	CString st, st2, st3;
+	char pch[2550];
+	int pos = 0;
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st = pch;
+		pos = st.Find("#");
+		if (pos != -1) st = st.Left(pos);
+		st.Trim();
+		pos = st.Find("=");
+		if (pos != -1) {
+			st2 = st.Left(pos);
+			st3 = st.Mid(pos + 1);
+			st2.Trim();
+			st3.Trim();
+			st2.MakeLower();
+			int idata = atoi(st3);
+			CGenTemplate::CheckVar(&st2, &st3, "t_cnt", &t_cnt);
+			CGenTemplate::CheckVar(&st2, &st3, "v_cnt", &v_cnt);
+			CGenTemplate::CheckVar(&st2, &st3, "t_generated", &t_generated);
+			CGenTemplate::CheckVar(&st2, &st3, "t_sent", &t_sent);
+			CGenTemplate::CheckVar(&st2, &st3, "t_send", &t_send);
+			CGenTemplate::CheckVar(&st2, &st3, "need_exit", &need_exit);
+			CGenTemplate::CheckVar(&st2, &st3, "ng_min", &ng_min);
+			CGenTemplate::CheckVar(&st2, &st3, "ng_max", &ng_max);
+			CGenTemplate::CheckVar(&st2, &st3, "tg_min", &tg_min);
+			CGenTemplate::CheckVar(&st2, &st3, "tg_max", &tg_max);
+			CGenTemplate::LoadVar(&st2, &st3, "m_config", &m_config);
+		}
+	}
+	fs.close();
+	// Load binary
+	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
+	fs.unsetf(std::ios::skipws);
+	for (size_t i = 0; i < t_generated; i++)
+	{
+		LoadVector2C(fs, pause, i, v_cnt);
+		LoadVector2C(fs, note, i, v_cnt);
+		LoadVector2C(fs, len, i, v_cnt);
+		LoadVector2C(fs, coff, i, v_cnt);
+		LoadVector2C(fs, poff, i, v_cnt);
+		LoadVector2C(fs, noff, i, v_cnt);
+		LoadVector2C(fs, att, i, v_cnt);
+	}
+	LoadVectorD(fs, tempo, t_generated);
+	LoadVectorD(fs, stime, t_generated);
+	LoadVectorD(fs, ntime, t_generated);
+	fs.close();
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("Saved results to file in %d ms", time_stop - time_start);
+	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
+}
+
 void CGenTemplate::StartMIDI(int midi_device_i, int latency)
 {
 	// Clear error flag

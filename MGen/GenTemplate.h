@@ -62,6 +62,8 @@ public:
 protected:
 	void SaveVector2C(ofstream * fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveVectorD(ofstream &fs, vector<double> &v);
+	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i, int v_cnt);
+	void LoadVectorD(ifstream & fs, vector<double>& v, int t_generated);
 
 public:
 	CGenTemplate();
@@ -74,6 +76,7 @@ public:
 	void LoadConfig(CString fname);
 	void ResizeVectors(int size);
 	void SaveResults(CString dir, CString fname);
+	void LoadResults(CString dir, CString fname);
 
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency);
@@ -92,7 +95,7 @@ public:
 
 public:
 	// Interface
-	short need_exit=0; // If thread needs to exit
+	int need_exit=0; // If thread needs to exit
 	timed_mutex mutex_output;
 	int m_algo_id;
 	CString m_config;
