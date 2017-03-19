@@ -372,6 +372,8 @@ void CMainFrame::OnButtonGen()
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
+		pGen->m_algo_id = m_algo_id;
+		pGen->m_config = m_config;
 		// Initialize MIDI
 		pGen->StopMIDI();
 		pGen->StartMIDI(GetMidiI(), 100);

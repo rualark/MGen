@@ -222,7 +222,7 @@ void CGenTemplate::InitVectors()
 	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	att = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	tempo = vector<unsigned short>(t_allocated);
+	tempo = vector<double>(t_allocated);
 	stime = vector<double>(t_allocated);
 	ntime = vector<double>(t_allocated);
 }
@@ -262,15 +262,14 @@ void CGenTemplate::ResizeVectors(int size)
 	mutex_output.unlock();
 }
 
-void CGenTemplate::SaveVector(ofstream* fs, vector< vector<unsigned char> > &v2D, int i) {
-	/*
-	if (v2D[i].size() > 0)
-	{
-		char* buffer = static_cast<char*>(&v2D[i][0]);
-		file.write(buffer, v2D[i].size());
-	}
-	*/
+void CGenTemplate::SaveVector2C(ofstream* fs, vector< vector<unsigned char> > &v2D, int i) {
 	copy(v2D[i].begin(), v2D[i].end(), ostreambuf_iterator<char>(*fs));
+}
+
+void CGenTemplate::SaveVectorD(ofstream &fs, vector<double> &v) {
+	const char* pointer = reinterpret_cast<const char*>(&v[0]);
+	size_t bytes = t_generated * sizeof(v[0]);
+	fs.write(pointer, bytes);
 }
 
 void CGenTemplate::SaveResults(CString dir, CString fname)
@@ -280,8 +279,44 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
 	for (size_t i = 0; i < t_generated; i++)
 	{
-		SaveVector(&fs, note, i);
+		SaveVector2C(&fs, pause, i);
+		SaveVector2C(&fs, note, i);
+		SaveVector2C(&fs, len, i);
+		SaveVector2C(&fs, coff, i);
+		SaveVector2C(&fs, poff, i);
+		SaveVector2C(&fs, noff, i);
+		SaveVector2C(&fs, att, i);
 	}
+	SaveVectorD(fs, tempo);
+	SaveVectorD(fs, stime);
+	SaveVectorD(fs, ntime);
+	fs.close();
+	// Save strings
+	CString st;
+	fs.open(dir + "\\config.txt");
+	fs << "m_config = " + m_config + "\n";
+	st.Format("m_algo_id = %d\n", m_algo_id);
+	fs << st;
+	st.Format("t_cnt = %d\n", t_cnt);
+	fs << st;
+	st.Format("v_cnt = %d\n", v_cnt);
+	fs << st;
+	st.Format("t_generated = %d\n", t_generated);
+	fs << st;
+	st.Format("t_sent = %d\n", t_sent);
+	fs << st;
+	st.Format("t_send = %d\n", t_send);
+	fs << st;
+	st.Format("ng_min = %d\n", ng_min);
+	fs << st;
+	st.Format("ng_max = %d\n", ng_max);
+	fs << st;
+	st.Format("tg_min = %d\n", tg_min);
+	fs << st;
+	st.Format("tg_max = %d\n", tg_max);
+	fs << st;
+	st.Format("need_exit = %d\n", need_exit);
+	fs << st;
 	fs.close();
 }
 

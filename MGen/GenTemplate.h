@@ -59,6 +59,10 @@ public:
 	static bool fileExists(CString dirName_in);
   static bool nodeExists(CString dirName_in);
 
+protected:
+	void SaveVector2C(ofstream * fs, vector<vector<unsigned char>>& v2D, int i);
+	void SaveVectorD(ofstream &fs, vector<double> &v);
+
 public:
 	CGenTemplate();
 	virtual ~CGenTemplate();
@@ -69,7 +73,6 @@ public:
 	void InitVectors();
 	void LoadConfig(CString fname);
 	void ResizeVectors(int size);
-	void SaveVector(ofstream * fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveResults(CString dir, CString fname);
 
 	// PortMIDI
@@ -91,6 +94,8 @@ public:
 	// Interface
 	short need_exit=0; // If thread needs to exit
 	timed_mutex mutex_output;
+	int m_algo_id;
+	CString m_config;
 	
 	// PortMIDI
 	PmStream * midi = 0;
@@ -123,7 +128,7 @@ public:
 	vector< vector <unsigned char> > poff; // Offset of previous note start (backward)
 	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
 	vector< vector <unsigned char> > att; // Attack (velocity for piano)
-	vector<unsigned short> tempo; // Tempo
+	vector<double> tempo; // Tempo
 	vector<double> stime; // Time of current step in ms
 	vector<double> ntime; // Time of current step in ms
   
