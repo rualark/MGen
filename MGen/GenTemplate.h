@@ -54,6 +54,8 @@ class CGenTemplate
 {
 public:
 	static void CGenTemplate::CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin, int vmax);
+	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
+	static bool dirExists(CString dirName_in);
 
 public:
 	CGenTemplate();

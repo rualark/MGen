@@ -148,6 +148,7 @@ void CTreeColorCtrl::OnPaint()
 			CString sItem = GetItemText(hItem);
 
 			GetItemRect(hItem, &rect, TRUE);
+			//memDC.SetBkColor(GetBkColor());
 			memDC.SetBkColor(GetSysColor(COLOR_WINDOW));
 			memDC.TextOut(rect.left + 2, rect.top + 1, sItem);
 
@@ -159,4 +160,10 @@ void CTreeColorCtrl::OnPaint()
 
 	dc.BitBlt(rcClip.left, rcClip.top, rcClip.Width(), rcClip.Height(), &memDC,
 		rcClip.left, rcClip.top, SRCCOPY);
+}
+
+BOOL CTreeColorCtrl::DeleteAllItems()
+{
+	m_mapColorFont.RemoveAll();
+	return CTreeCtrl::DeleteAllItems();
 }

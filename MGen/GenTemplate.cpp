@@ -24,6 +24,25 @@ void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, in
 	}
 }
 
+void CGenTemplate::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * Dest)
+{
+	if (*sName == sSearch) {
+		*Dest = *sValue;
+	}
+}
+
+bool CGenTemplate::dirExists(CString dirName_in)
+{
+	DWORD ftyp = GetFileAttributesA(dirName_in);
+	if (ftyp == INVALID_FILE_ATTRIBUTES)
+		return false;  //something is wrong with your path!
+
+	if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+		return true;   // this is a directory!
+
+	return false;    // this is not a directory!
+}
+
 CGenTemplate::CGenTemplate()
 {
 }

@@ -63,9 +63,11 @@ public:
 	CString AlgComment[MAX_ALGO];
 	CString AlgFolder[MAX_ALGO];
 	int AlgID[MAX_ALGO];
+	int ParamCount[MAX_ALGO];
 	int AlgCount = 0;
 	int AlgGCount = 0;
-	// MIDI device names
+	vector< vector <CString> > ParamName; // 1 = pause, 0 = note
+  // MIDI device names
 	CString MidiName[MAX_MIDI_DEVICES];
 	int MidiCount = 0;
 

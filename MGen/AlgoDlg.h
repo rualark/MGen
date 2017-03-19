@@ -27,5 +27,11 @@ public:
 	CTreeColorCtrl m_tree;
 	CEdit m_comment;
 	afx_msg void OnTvnSelchangedTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult);
+	void LoadTree();
 	CStatic m_algo;
+	CStatic m_config;
+	CRichEditCtrl m_text;
+	afx_msg void OnBnClickedButtonSaveas();
+	afx_msg void OnBnClickedButtonEdit();
+	void UpdateControls();
 };

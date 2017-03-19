@@ -459,6 +459,8 @@ void CMainFrame::LoadAlgo()
 	int pos = 0;
 	// Load header
 	fs.getline(pch, 2550);
+	ParamName.clear();
+	for (int i = 0; i < MAX_ALGO; i++) ParamCount[i] = 0;
 	AlgCount = 0;
 	AlgGCount = 0;
 	while (fs.good()) {
@@ -488,6 +490,23 @@ void CMainFrame::LoadAlgo()
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			AlgComment[AlgCount] = st2;
+			// Check if folder exists
+			CString path = "configs\\" + AlgFolder[AlgCount];
+			if (!CGenTemplate::dirExists(path))	CreateDirectory(path, NULL);
+			// Get all configs
+			DIR *dir;
+			struct dirent *ent;
+			ParamName.push_back(vector<CString>());
+			if ((dir = opendir(path)) != NULL) {
+				while ((ent = readdir(dir)) != NULL) {
+					CString st = ent->d_name;
+					if (st.Left(1) != ".") {
+						ParamName[AlgCount].push_back(st);
+						ParamCount[AlgCount]++;
+					}
+				}
+				closedir(dir);
+			}
 			AlgCount++;
 		}
 	}
@@ -532,6 +551,7 @@ void CMainFrame::LoadSettings()
 			}
 			CGenTemplate::CheckVar(&st2, &st3, "horizontal_zoom", &zoom_x, MIN_HZOOM, MAX_HZOOM);
 			CGenTemplate::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
+			CGenTemplate::LoadVar(&st2, &st3, "config", &m_config);
 		}
 	}
 	fs.close();
@@ -546,6 +566,8 @@ void CMainFrame::SaveSettings()
 	fs << "# This file is loaded on MGen startup and automatically saved on every setting change\n";
 	fs << "\n";
 	st.Format("Algorithm = %d # Id of the currently selected algorithm\n", m_algo_id);
+	fs << st;
+	st.Format("Config = %s # Name of configuration file for selected algorithm\n", m_config);
 	fs << st;
 	int i = GetMidiI();
 	//st.Format("MIDI_OUT_ID = %d\n", i);

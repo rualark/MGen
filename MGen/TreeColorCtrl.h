@@ -35,6 +35,7 @@ protected:
 
 public:
 	afx_msg void OnPaint();
+	BOOL DeleteAllItems();
 };
 
 
