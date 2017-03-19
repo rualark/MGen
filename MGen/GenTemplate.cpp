@@ -274,6 +274,7 @@ void CGenTemplate::SaveVectorD(ofstream &fs, vector<double> &v) {
 
 void CGenTemplate::SaveResults(CString dir, CString fname)
 {
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CreateDirectory(dir, NULL);
 	ofstream fs;
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
@@ -318,6 +319,11 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	st.Format("need_exit = %d\n", need_exit);
 	fs << st;
 	fs.close();
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("Saved results to file in %d ms", time_stop - time_start);
+	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
 }
 
 void CGenTemplate::StartMIDI(int midi_device_i, int latency)
