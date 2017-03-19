@@ -262,13 +262,26 @@ void CGenTemplate::ResizeVectors(int size)
 	mutex_output.unlock();
 }
 
+void CGenTemplate::SaveVector(ofstream* fs, vector< vector<unsigned char> > &v2D, int i) {
+	/*
+	if (v2D[i].size() > 0)
+	{
+		char* buffer = static_cast<char*>(&v2D[i][0]);
+		file.write(buffer, v2D[i].size());
+	}
+	*/
+	copy(v2D[i].begin(), v2D[i].end(), ostreambuf_iterator<char>(*fs));
+}
+
 void CGenTemplate::SaveResults(CString dir, CString fname)
 {
 	CreateDirectory(dir, NULL);
 	ofstream fs;
-	fs.open(dir + "\\" + fname + ".mgr");
-	CString st;
-	fs << "# Settings of MGen\n";
+	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
+	for (size_t i = 0; i < t_generated; i++)
+	{
+		SaveVector(&fs, note, i);
+	}
 	fs.close();
 }
 

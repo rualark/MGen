@@ -417,6 +417,10 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		WriteLog(0, "Generation finished");
 		if (m_state_play == 0) ::KillTimer(m_hWnd, TIMER1);
 		m_state_gen = 2;
+		// Save results
+		CString fname = CTime::GetCurrentTime().Format("%Y-%m-%d-auto %H-%M-%S");
+		CString dir = "autosaves\\" + fname;
+		pGen->SaveResults(dir, fname);
 	}
 	if (wParam == 1) {
 	}

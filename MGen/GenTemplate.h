@@ -69,6 +69,7 @@ public:
 	void InitVectors();
 	void LoadConfig(CString fname);
 	void ResizeVectors(int size);
+	void SaveVector(ofstream * fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveResults(CString dir, CString fname);
 
 	// PortMIDI
