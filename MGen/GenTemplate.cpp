@@ -37,6 +37,13 @@ void CGenTemplate::LoadConfig(CString fname)
 {
 	CString st, st2, st3;
 	ifstream fs;
+	// Check file exists
+	if (!CGenTemplate::fileExists(fname)) {
+		CString* est = new CString;
+		est->Format("LoadConfig cannot find file: %s", fname);
+		::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)est);
+		return;
+	}
 	fs.open(fname);
 	char pch[2550];
 	int pos = 0;
@@ -253,6 +260,16 @@ void CGenTemplate::ResizeVectors(int size)
 
 	t_allocated = size;
 	mutex_output.unlock();
+}
+
+void CGenTemplate::SaveResults(CString dir, CString fname)
+{
+	CreateDirectory(dir, NULL);
+	ofstream fs;
+	fs.open(dir + "\\" + fname + ".mgr");
+	CString st;
+	fs << "# Settings of MGen\n";
+	fs.close();
 }
 
 void CGenTemplate::StartMIDI(int midi_device_i, int latency)

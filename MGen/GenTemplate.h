@@ -69,6 +69,7 @@ public:
 	void InitVectors();
 	void LoadConfig(CString fname);
 	void ResizeVectors(int size);
+	void SaveResults(CString dir, CString fname);
 
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency);
