@@ -52,8 +52,8 @@ void CGenRS1::Generate()
 				if (note[i][0] > max_note) note[i][0] = 2 * max_note - note[i][0];
 				if (note[i][0] < min_note) note[i][0] = 2 * min_note - note[i][0];
 			}
-			len[i][0] = 8 * rand2() / RAND_MAX;
-			if (len[i][0] == 0) len[i][0] = 1;
+			len[i][0] = min_len + (max_len-min_len) * rand2() / RAND_MAX;
+			if (len[i][0] < min_len) len[i][0] = min_len;
 			coff[i][0] = 0;
 			att[i][0] = 50 + 60 * rand2() / RAND_MAX;
 			if (i > 0) poff[i][0] = coff[i - 1][0] + 1;

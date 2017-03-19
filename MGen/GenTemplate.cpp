@@ -37,51 +37,34 @@ void CGenTemplate::LoadConfig(CString fname)
 {
 	CString st, st2, st3;
 	ifstream fs;
-	//prepare f to throw if failbit gets set
-	//ios_base::iostate exceptionMask = fs.exceptions() | ios::failbit;
-	//fs.exceptions(exceptionMask);
-	//try {
-		fs.open(fname);
-	//}
-	//catch (ios_base::failure& e) {
-		//CString* est = new CString;
-		//est->Format("LoadConfig %s got error %s", fname, e.what());
-		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)est);
-		//return;
-	//}
+	fs.open(fname);
 	char pch[2550];
 	int pos = 0;
 	int i = 0;
-	//try {
-		while (fs.good()) {
-			i++;
-			// Get line
-			fs.getline(pch, 2550);
-			st = pch;
-			// Remove unneeded
-			pos = st.Find("#");
-			if (pos != -1) st = st.Left(pos);
-			st.Trim();
-			pos = st.Find("=");
-			if (pos != -1) {
-				// Get variable name and value
-				st2 = st.Left(pos);
-				st3 = st.Mid(pos + 1);
-				st2.Trim();
-				st3.Trim();
-				st2.MakeLower();
-				LoadConfigLine(&st2, &st3);
-			}
+	while (fs.good()) {
+		i++;
+		// Get line
+		fs.getline(pch, 2550);
+		st = pch;
+		// Remove unneeded
+		pos = st.Find("#");
+		if (pos != -1) st = st.Left(pos);
+		st.Trim();
+		pos = st.Find("=");
+		if (pos != -1) {
+			// Get variable name and value
+			st2 = st.Left(pos);
+			st3 = st.Mid(pos + 1);
+			st2.Trim();
+			st3.Trim();
+			st2.MakeLower();
+			LoadConfigLine(&st2, &st3);
 		}
-	//}
-	//catch (ios_base::failure& e) {
-		//fs.close();
-		//CString* est = new CString;
-		//est->Format("LoadConfig %s got error %s at line %d", fname, e.what(), i);
-		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)est);
-		//return;
-	//}
+	}
 	fs.close();
+	CString* est = new CString;
+	est->Format("LoadConfig loaded %d lines from %s", i, fname);
+	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
 }
 
 bool CGenTemplate::dirExists(CString dirName_in)
