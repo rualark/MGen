@@ -45,14 +45,17 @@
 #define IDR_RIBBON                      307
 #define IDD_DIALOG_INFO                 310
 #define IDD_DIALOG_EDITPARAMS           312
+#define IDD_DIALOG_ALGO                 314
 #define IDC_RICHEDIT21                  1000
 #define IDC_BUTTON1                     1001
 #define IDC_BUTTON_HIDDEN               1001
 #define IDC_SAVEAS                      1001
 #define IDC_EDIT_ALGO                   1002
-#define IDC_COMBO1                      1004
 #define IDC_COMBO_CONFIG                1004
 #define IDC_RICHEDIT_PARAMS             1005
+#define IDC_TREE1                       1006
+#define IDC_TREE_ALGO                   1006
+#define IDC_EDIT_COMMENT                1007
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_BUTTON_OUTPUTWND             32772
 #define ID_COMBO_ALGO                   32775
@@ -68,21 +71,19 @@
 #define ID_COMBO_MIDIOUT                32793
 #define ID_COMBO_PARAMS                 32795
 #define ID_CHECK2                       32797
-#define ID_CHECK_GENPLAY                32797
 #define ID_BUTTON_EPARAMS               32798
 #define ID_CHECK_OUTPUTWND              32799
 #define ID_BUTTON2                      32800
 #define ID_BUTTON_HZOOM_DEC             32800
-#define ID_BUTTON_STOPGEN               32801
 #define ID_BUTTON_HZOOM_INC             32802
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        314
-#define _APS_NEXT_COMMAND_VALUE         32803
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_RESOURCE_VALUE        316
+#define _APS_NEXT_COMMAND_VALUE         32805
+#define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

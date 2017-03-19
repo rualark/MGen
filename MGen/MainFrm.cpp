@@ -16,6 +16,7 @@
 #include "MGen.h"
 #include "MainFrm.h"
 #include "EditParamsDlg.h"
+#include "AlgoDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -64,6 +65,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_EPARAMS, &CMainFrame::OnButtonEparams)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_PLAY, &CMainFrame::OnUpdateButtonPlay)
 	ON_COMMAND(ID_COMBO_MIDIOUT, &CMainFrame::OnComboMidiout)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_ALGO, &CMainFrame::OnUpdateButtonAlgo)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_PARAMS, &CMainFrame::OnUpdateButtonParams)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -126,19 +129,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	LoadAlgo();
 
-	// Algorithm combo
-	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
-		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-	for (int i = 0; i < AlgCount; i++) {
-		//pCombo->AddItem(AlgName[i]);
-		//TCHAR st[100];
-		//_stprintf_s(st, _T("%d"), i);
-		//pCombo->AddItem(st);
-		pCombo->AddItem(AlgName[i], AlgID[i]);
-	}
-
 	// MIDI port
-	pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,	m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
+	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,	m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
 	CString st;
 	int default_out = Pm_GetDefaultOutputDeviceID();
 	MidiCount = 0;
@@ -363,31 +355,23 @@ void CMainFrame::OnButtonGen()
 		}
 		return;
 	}
-	/*
-	if (m_state_gen == 1) {
-		WriteLog(1, "Cannot start generation: generation in progress");
-		pGen->need_exit = 1;
-		return;
-	}
-	*/
 	if (m_state_gen == 2) {
 		WriteLog(0, "Starting generation: Removing previous generator");
 		delete pGen;
 		m_state_gen = 0;
 	}
 	pGen = 0;
-	int Algo = GetAlgo();
-	if (Algo == 101) {
+	if (m_algo_id == 101) {
 		pGen = new CGenCF1();
 	}
-	if (Algo == 102) {
+	if (m_algo_id == 102) {
 		pGen = new CGenCF2();
 	}
-	if (Algo == 1001) {
+	if (m_algo_id == 1001) {
 		pGen = new CGenRS1();
 	}
 	if (pGen != 0) {
-		WriteLog(0, _T("Started generator: ") + AlgName[Algo]);
+		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
@@ -412,12 +396,8 @@ void CMainFrame::OnButtonSettings()
 
 void CMainFrame::OnButtonAlgo()
 {
-	//map <string, int> p;
-	//p["param1"] = 100;
-	//p["param2"] = 200;
-	//TCHAR st[100];
-	//_stprintf_s(st, _T("%d"), p["param1"] + p["param2"]);
-	//WriteLog(0, st);
+	CAlgoDlg dlg;
+	dlg.DoModal();
 }
 
 
@@ -459,15 +439,6 @@ void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateComboAlgo(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable();
-}
-
-int CMainFrame::GetAlgo()
-{
-	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
-		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-	int i = pCombo->GetCurSel();
-	if (i == -1) return -1;
-	else return pCombo->GetItemData(i);
 }
 
 int CMainFrame::GetMidiI()
@@ -514,6 +485,9 @@ void CMainFrame::LoadAlgo()
 				AlgGroups[AlgGCount] = st2;
 				AlgGCount++;
 			}
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			AlgComment[AlgCount] = st2;
 			AlgCount++;
 		}
 	}
@@ -543,8 +517,8 @@ void CMainFrame::LoadSettings()
 			if (st2 == "Algorithm") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-				int id = distance(AlgID, find(begin(AlgID), end(AlgID), idata));
-				pCombo->SelectItem(id);
+				m_algo_id = idata;
+				m_algo = distance(AlgID, find(begin(AlgID), end(AlgID), m_algo_id));
 			}
 			if (st2 == "MIDI_OUT") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
@@ -567,7 +541,9 @@ void CMainFrame::SaveSettings()
 	ofstream fs;
 	fs.open("settings.pl");
 	CString st;
-	st.Format("Algorithm = %d # Id of the currently selected algorithm\n", GetAlgo());
+	fs << "# Settings of MGen\n";
+	fs << "# This file is loaded on MGen startup and automatically saved on every setting change\n";
+	st.Format("Algorithm = %d # Id of the currently selected algorithm\n", m_algo);
 	fs << st;
 	int i = GetMidiI();
 	//st.Format("MIDI_OUT_ID = %d\n", i);
@@ -695,14 +671,14 @@ void CMainFrame::OnButtonHzoomInc()
 
 void CMainFrame::OnUpdateButtonHzoomDec(CCmdUI *pCmdUI)
 {
-	BOOL bEnable = zoom_x > MIN_HZOOM;
+	BOOL bEnable = zoom_x > MIN_HZOOM && m_state_gen > 0;
 	pCmdUI->Enable(bEnable);
 }
 
 
 void CMainFrame::OnUpdateButtonHzoomInc(CCmdUI *pCmdUI)
 {
-	BOOL bEnable = zoom_x < MAX_HZOOM;
+	BOOL bEnable = zoom_x < MAX_HZOOM && m_state_gen > 0;
 	pCmdUI->Enable(bEnable);
 }
 
@@ -711,13 +687,6 @@ void CMainFrame::OnUpdateComboMidiout(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable();
 }
-
-
-void CMainFrame::OnUpdateButtonEparams(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(GetAlgo() != 0);
-}
-
 
 void CMainFrame::OnButtonEparams()
 {
@@ -730,14 +699,14 @@ void CMainFrame::OnUpdateButtonPlay(CCmdUI *pCmdUI)
 {
 	if ((m_state_gen == 1) && (m_state_play == 0)) pCmdUI->Enable(0);
 	else if (m_state_gen != 0) pCmdUI->Enable(1);
-	if (m_state_play > 0) pCmdUI->SetText("Stop Play");
+	if (m_state_play > 0) pCmdUI->SetText("Stop Playback");
 	else pCmdUI->SetText("Play");
 }
 
 void CMainFrame::OnUpdateButtonGen(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable();
-	if (m_state_gen == 1) pCmdUI->SetText("Stop Gen");
+	if (m_state_gen == 1) pCmdUI->SetText("Stop Generator");
 	else pCmdUI->SetText("Generate");
 }
 
@@ -766,4 +735,23 @@ void CMainFrame::OnButtonPlay()
 void CMainFrame::OnComboMidiout()
 {
 	SaveSettings();
+}
+
+
+void CMainFrame::OnUpdateButtonAlgo(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_state_gen != 1);
+	if (m_algo != -1) pCmdUI->SetText("Algorithm: " + AlgName[m_algo]);
+	else pCmdUI->SetText("Algorithm: click to select");
+}
+
+
+void CMainFrame::OnUpdateButtonParams(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_state_gen != 1 && m_algo > -1);
+}
+
+void CMainFrame::OnUpdateButtonEparams(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_state_gen != 1 && m_algo > -1 && m_config != "");
 }

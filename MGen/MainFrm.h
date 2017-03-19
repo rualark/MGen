@@ -43,6 +43,9 @@ public:
 	int ng_max = 0;
 	int tg_min = 0;
 	int tg_max = 0;
+	int m_algo = 0; // Current algorithm global ID
+	int m_algo_id = 0; // Current algorithm local ID
+	CString m_config; // Current config
 	int m_state_gen=0;
 	// 0 = No music
 	// 1 = Generation started
@@ -119,7 +122,6 @@ public:
 	afx_msg LRESULT OnDebugMsg(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnWarnMsg(WPARAM wParam, LPARAM lParam);
 
-	int GetAlgo();
 	int GetMidiI();
 	void LoadAlgo();
 	void LoadSettings();
@@ -137,6 +139,8 @@ public:
 	afx_msg void OnButtonEparams();
 	afx_msg void OnUpdateButtonPlay(CCmdUI *pCmdUI);
 	afx_msg void OnComboMidiout();
+	afx_msg void OnUpdateButtonAlgo(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateButtonParams(CCmdUI *pCmdUI);
 };
 
 

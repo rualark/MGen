@@ -185,6 +185,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlgoDlg.h" />
     <ClInclude Include="EditParamsDlg.h" />
     <ClInclude Include="GenCF1.h" />
     <ClInclude Include="GenCF2.h" />
@@ -205,8 +206,10 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TreeColorCtrl.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AlgoDlg.cpp" />
     <ClCompile Include="EditParamsDlg.cpp" />
     <ClCompile Include="GenCF1.cpp" />
     <ClCompile Include="GenCF2.cpp" />
@@ -230,6 +233,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TreeColorCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -43,7 +43,7 @@ BOOL CEditParamsDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
-	m_algo.SetWindowTextA(mf->AlgName[mf->GetAlgo()]);
+	m_algo.SetWindowTextA(mf->AlgName[mf->m_algo]);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 								// EXCEPTION: OCX Property Pages should return FALSE

@@ -1,4 +1,4 @@
 ID   | Folder | Name                     | Group          | Comment
-1001 | GenRS1 | Random solo              | Random         | This is the most simple solo random generator algorithm
 101  | GenCF1 | Cantus firmus 1          | Counterpoint   | First cantus firmus generator
 102  | GenCF2 | Cantus firmus 2          | Counterpoint   | Second cantus firmus generator
+1001 | GenRS1 | Random solo              | Random         | This is the most simple solo random generator algorithm
