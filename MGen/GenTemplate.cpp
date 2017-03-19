@@ -15,6 +15,15 @@
 	h ^= a >> 9;  c += h; a += b; \
 }
 
+void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int vmin, int vmax)
+{
+	if (*sName == sSearch) {
+		*Dest = atoi(*sValue);
+		if (*Dest < vmin) *Dest = vmin;
+		if (*Dest > vmax) *Dest = vmax;
+	}
+}
+
 CGenTemplate::CGenTemplate()
 {
 }

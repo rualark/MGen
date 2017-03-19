@@ -53,6 +53,9 @@ const CString NoteName[] = {
 class CGenTemplate
 {
 public:
+	static void CGenTemplate::CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin, int vmax);
+
+public:
 	CGenTemplate();
 	virtual ~CGenTemplate();
 	void Init();

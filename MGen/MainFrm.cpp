@@ -383,7 +383,7 @@ void CMainFrame::OnButtonGen()
 		m_state_gen = 1;
 		m_state_play = 0;
 		// Start timer
-		SetTimer(TIMER1, 100, NULL);
+		SetTimer(TIMER1, m_view_timer, NULL);
 		SetTimer(TIMER2, 1000, NULL);
 	}
 }
@@ -455,15 +455,15 @@ void CMainFrame::LoadAlgo()
 	ifstream fs;
 	fs.open("algorithms.txt");
 	CString st, st2, st3, st4, st5;
-	char pch[255];
+	char pch[2550];
 	int pos = 0;
 	// Load header
-	fs.getline(pch, 255);
+	fs.getline(pch, 2550);
 	AlgCount = 0;
 	AlgGCount = 0;
 	while (fs.good()) {
 		pos = 0;
-		fs.getline(pch, 255);
+		fs.getline(pch, 2550);
 		st = pch;
 		st.Trim();
 		if (st.Find("|") != -1) {
@@ -513,24 +513,25 @@ void CMainFrame::LoadSettings()
 			st3 = st.Mid(pos + 1);
 			st2.Trim();
 			st3.Trim();
+			st2.MakeLower();
 			int idata = atoi(st3);
-			if (st2 == "Algorithm") {
+			if (st2 == "algorithm") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
 				m_algo_id = idata;
-				m_algo = distance(AlgID, find(begin(AlgID), end(AlgID), m_algo_id));
+				int* found = find(begin(AlgID), end(AlgID), m_algo_id);
+				if (*found == m_algo_id) {
+					m_algo = distance(AlgID, found);
+				}
 			}
-			if (st2 == "MIDI_OUT") {
+			if (st2 == "midi_out") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
 				//int id = distance(MidiName, find(begin(MidiName), end(MidiName), st3));
 				pCombo->SelectItem(st3);
 			}
-			if (st2 == "Horizontal_zoom") {
-				zoom_x = atoi(st3);
-				if (zoom_x < MIN_HZOOM) zoom_x = MIN_HZOOM;
-				if (zoom_x > MAX_HZOOM) zoom_x = MAX_HZOOM;
-			}
+			CGenTemplate::CheckVar(&st2, &st3, "horizontal_zoom", &zoom_x, MIN_HZOOM, MAX_HZOOM);
+			CGenTemplate::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 		}
 	}
 	fs.close();
@@ -543,7 +544,8 @@ void CMainFrame::SaveSettings()
 	CString st;
 	fs << "# Settings of MGen\n";
 	fs << "# This file is loaded on MGen startup and automatically saved on every setting change\n";
-	st.Format("Algorithm = %d # Id of the currently selected algorithm\n", m_algo);
+	fs << "\n";
+	st.Format("Algorithm = %d # Id of the currently selected algorithm\n", m_algo_id);
 	fs << st;
 	int i = GetMidiI();
 	//st.Format("MIDI_OUT_ID = %d\n", i);
@@ -554,6 +556,8 @@ void CMainFrame::SaveSettings()
 		fs << st;
 	}
 	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 80 to 500\n", zoom_x);
+	fs << st;
+	st.Format("View_timer = %d # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers\n", m_view_timer);
 	fs << st;
 	fs.close();
 }
@@ -727,7 +731,7 @@ void CMainFrame::OnButtonPlay()
 		m_state_play = 1;
 		// Start timer
 		pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
-		SetTimer(TIMER1, 100, NULL);
+		SetTimer(TIMER1, m_view_timer, NULL);
 		SetTimer(TIMER2, 1000, NULL);
 	}
 }
@@ -748,7 +752,7 @@ void CMainFrame::OnUpdateButtonAlgo(CCmdUI *pCmdUI)
 
 void CMainFrame::OnUpdateButtonParams(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(m_state_gen != 1 && m_algo > -1);
+	pCmdUI->Enable(m_state_gen != 1 && m_algo > -1 && m_config != "");
 }
 
 void CMainFrame::OnUpdateButtonEparams(CCmdUI *pCmdUI)

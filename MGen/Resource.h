@@ -50,12 +50,16 @@
 #define IDC_BUTTON1                     1001
 #define IDC_BUTTON_HIDDEN               1001
 #define IDC_SAVEAS                      1001
+#define IDC_BUTTON_SAVEAS               1001
 #define IDC_EDIT_ALGO                   1002
 #define IDC_COMBO_CONFIG                1004
 #define IDC_RICHEDIT_PARAMS             1005
-#define IDC_TREE1                       1006
 #define IDC_TREE_ALGO                   1006
 #define IDC_EDIT_COMMENT                1007
+#define IDC_RICHEDIT_CONFIG             1008
+#define IDC_BUTTON_EDIT                 1009
+#define IDC_STATIC_ALGO                 1010
+#define IDC_STATIC_CONFIG               1011
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_BUTTON_OUTPUTWND             32772
 #define ID_COMBO_ALGO                   32775
@@ -82,8 +86,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        316
-#define _APS_NEXT_COMMAND_VALUE         32805
-#define _APS_NEXT_CONTROL_VALUE         1008
+#define _APS_NEXT_COMMAND_VALUE         32807
+#define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

@@ -26,11 +26,16 @@ void CAlgoDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TREE_ALGO, m_tree);
 	DDX_Control(pDX, IDC_EDIT_COMMENT, m_comment);
+	DDX_Control(pDX, IDC_STATIC_ALGO, m_algo);
+	DDX_Control(pDX, IDC_STATIC_CONFIG, m_config);
+	DDX_Control(pDX, IDC_RICHEDIT_CONFIG, m_text);
 }
 
 
 BEGIN_MESSAGE_MAP(CAlgoDlg, CDialog)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_ALGO, &CAlgoDlg::OnTvnSelchangedTreeAlgo)
+	ON_BN_CLICKED(IDC_BUTTON_SAVEAS, &CAlgoDlg::OnBnClickedButtonSaveas)
+	ON_BN_CLICKED(IDC_BUTTON_EDIT, &CAlgoDlg::OnBnClickedButtonEdit)
 END_MESSAGE_MAP()
 
 
@@ -61,8 +66,7 @@ BOOL CAlgoDlg::OnInitDialog()
 				HTREEITEM gti3 = m_tree.InsertItem("Config 1", gti2, TVI_LAST);
 				gti3 = m_tree.InsertItem("Config 2", gti2, TVI_LAST);
 				m_tree.SetItemColor(gti3, RGB(0, 200, 0));
-				//m_tree.SetItemFont(gti3, logfont);
-				//m_tree.SetItemState(gti3, TVIS_BOLD, TVIS_BOLD);
+				m_tree.SetItemFont(gti3, logfont);
 			}
 		}
 		m_tree.Expand(gti, TVM_EXPAND);
@@ -76,8 +80,23 @@ BOOL CAlgoDlg::OnInitDialog()
 void CAlgoDlg::OnTvnSelchangedTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-	int i = m_tree.GetItemData(m_tree.GetSelectedItem());
+	hti = m_tree.GetSelectedItem();
+	if (m_tree.GetParentItem(hti))
+	int i = m_tree.GetItemData(hti);
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 	m_comment.SetWindowTextA(mf->AlgComment[i]);
+	m_algo.SetWindowTextA(mf->AlgName[i]);
 	*pResult = 0;
+}
+
+
+void CAlgoDlg::OnBnClickedButtonSaveas()
+{
+	// TODO: Add your control notification handler code here
+}
+
+
+void CAlgoDlg::OnBnClickedButtonEdit()
+{
+	// TODO: Add your control notification handler code here
 }

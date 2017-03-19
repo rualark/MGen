@@ -27,4 +27,5 @@ public:
 	CTreeColorCtrl m_tree;
 	CEdit m_comment;
 	afx_msg void OnTvnSelchangedTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult);
+	CStatic m_algo;
 };

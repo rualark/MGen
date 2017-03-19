@@ -20,6 +20,8 @@
 
 #define MIN_HZOOM 80
 #define MAX_HZOOM 500
+#define MIN_VIEW_TIMER 50
+#define MAX_VIEW_TIMER 3000
 
 #define MAX_ALGO 100
 #define MAX_MIDI_DEVICES 100
@@ -43,8 +45,9 @@ public:
 	int ng_max = 0;
 	int tg_min = 0;
 	int tg_max = 0;
-	int m_algo = 0; // Current algorithm global ID
-	int m_algo_id = 0; // Current algorithm local ID
+	int m_algo = -1; // Current algorithm global ID
+	int m_algo_id = -1; // Current algorithm local ID
+	int m_view_timer = 100; // Delay between ondraw events in ms
 	CString m_config; // Current config
 	int m_state_gen=0;
 	// 0 = No music
