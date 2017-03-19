@@ -89,7 +89,7 @@ void CAlgoDlg::LoadTree()
 					HTREEITEM gti3 = m_tree.InsertItem(mf->ParamName[x][z], gti2, TVI_LAST);
 					m_tree.SetItemColor(gti3, RGB(0, 200, 0));
 					//m_tree.SetItemFont(gti3, logfont);
-					if (mf->m_config == mf->ParamName[x][z]) {
+					if ((mf->m_algo == x) && (mf->m_config == mf->ParamName[x][z])) {
 						m_tree.SelectItem(gti3);
 					}
 					m_tree.SetItemData(gti3, z);
@@ -176,9 +176,6 @@ void CAlgoDlg::LoadFile(CString path) {
 	CString st, st2, st3, st4, st5;
 	char pch[2550];
 	int pos = 0;
-	// Load header
-	fs.getline(pch, 2550);
-	m_text.AddText(path + "\n", RGB(0, 0, 0), CFE_BOLD);
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;

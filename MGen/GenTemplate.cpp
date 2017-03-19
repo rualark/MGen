@@ -19,8 +19,10 @@ void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, in
 {
 	if (*sName == sSearch) {
 		*Dest = atoi(*sValue);
-		if (*Dest < vmin) *Dest = vmin;
-		if (*Dest > vmax) *Dest = vmax;
+		if ((vmin != -1) && (vmax != -1)) {
+			if (*Dest < vmin) *Dest = vmin;
+			if (*Dest > vmax) *Dest = vmax;
+		}
 	}
 }
 
@@ -29,6 +31,57 @@ void CGenTemplate::LoadVar(CString * sName, CString * sValue, char* sSearch, CSt
 	if (*sName == sSearch) {
 		*Dest = *sValue;
 	}
+}
+
+void CGenTemplate::LoadConfig(CString fname)
+{
+	CString st, st2, st3;
+	ifstream fs;
+	//prepare f to throw if failbit gets set
+	//ios_base::iostate exceptionMask = fs.exceptions() | ios::failbit;
+	//fs.exceptions(exceptionMask);
+	//try {
+		fs.open(fname);
+	//}
+	//catch (ios_base::failure& e) {
+		//CString* est = new CString;
+		//est->Format("LoadConfig %s got error %s", fname, e.what());
+		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)est);
+		//return;
+	//}
+	char pch[2550];
+	int pos = 0;
+	int i = 0;
+	//try {
+		while (fs.good()) {
+			i++;
+			// Get line
+			fs.getline(pch, 2550);
+			st = pch;
+			// Remove unneeded
+			pos = st.Find("#");
+			if (pos != -1) st = st.Left(pos);
+			st.Trim();
+			pos = st.Find("=");
+			if (pos != -1) {
+				// Get variable name and value
+				st2 = st.Left(pos);
+				st3 = st.Mid(pos + 1);
+				st2.Trim();
+				st3.Trim();
+				st2.MakeLower();
+				LoadConfigLine(&st2, &st3);
+			}
+		}
+	//}
+	//catch (ios_base::failure& e) {
+		//fs.close();
+		//CString* est = new CString;
+		//est->Format("LoadConfig %s got error %s at line %d", fname, e.what(), i);
+		//::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)est);
+		//return;
+	//}
+	fs.close();
 }
 
 bool CGenTemplate::dirExists(CString dirName_in)
@@ -72,10 +125,6 @@ CGenTemplate::CGenTemplate()
 CGenTemplate::~CGenTemplate()
 {
 	StopMIDI();
-}
-
-void CGenTemplate::Generate()
-{
 }
 
 void CGenTemplate::isaac()
@@ -162,16 +211,20 @@ unsigned int CGenTemplate::rand2() {
 	return ((randrsl[cur_rand]) >> (cur_rand2 * 16)) % RAND_MAX;
 }
 
-void CGenTemplate::Init()
+void CGenTemplate::InitRandom()
 {
 	// Init rand
 	srand((unsigned int)time(NULL));
 	// ISAAC
 	ub4 i;
 	aa = bb = cc = (ub4)0;
-	for (i = 0; i<256; ++i) mm[i] = randrsl[i] = rand()*rand();
+	for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
 	randinit(1);
-	// Create vectors
+}
+
+void CGenTemplate::InitVectors()
+{
+		// Create vectors
 	pause = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	note = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	len = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));

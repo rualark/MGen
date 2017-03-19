@@ -53,7 +53,7 @@ const CString NoteName[] = {
 class CGenTemplate
 {
 public:
-	static void CGenTemplate::CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin, int vmax);
+	static void CGenTemplate::CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	static bool dirExists(CString dirName_in);
 	static bool fileExists(CString dirName_in);
@@ -62,9 +62,14 @@ public:
 public:
 	CGenTemplate();
 	virtual ~CGenTemplate();
-	void Init();
-	virtual void Generate();
+	virtual void LoadConfigLine(CString* sN, CString* sV) = 0;
+	virtual void Generate() = 0;
+
+	void InitRandom();
+	void InitVectors();
+	void LoadConfig(CString fname);
 	void ResizeVectors(int size);
+
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency);
 	void SendMIDI(int step1, int step2);

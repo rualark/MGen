@@ -7,4 +7,5 @@ public:
 	CGenCF1();
 	~CGenCF1();
 	void Generate() override;
+	void LoadConfigLine(CString * sN, CString * sV);
 };

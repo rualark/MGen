@@ -363,24 +363,25 @@ void CMainFrame::OnButtonGen()
 		m_state_gen = 0;
 	}
 	pGen = 0;
-	if (m_algo_id == 101) {
-		pGen = new CGenCF1();
-	}
-	if (m_algo_id == 102) {
-		pGen = new CGenCF2();
-	}
-	if (m_algo_id == 1001) {
-		pGen = new CGenRS1();
-	}
+	if (m_algo_id == 101) pGen = new CGenCF1();
+	if (m_algo_id == 102) pGen = new CGenCF2();
+	if (m_algo_id == 1001) pGen = new CGenRS1();
 	if (pGen != 0) {
 		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
+		// Set pGen variables
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
-		//pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+		// Initialize MIDI
 		pGen->StopMIDI();
 		pGen->StartMIDI(GetMidiI(), 100);
+		//pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 		pGen->time_started = TIME_PROC(TIME_INFO);
+		// Initialize variables
+		pGen->InitRandom();
+		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
+		pGen->InitVectors();
+		// Start generation
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;
 		m_state_play = 0;
@@ -526,10 +527,10 @@ void CMainFrame::LoadSettings()
 	ifstream fs;
 	fs.open("settings.pl");
 	CString st, st2, st3;
-	char pch[255];
+	char pch[2550];
 	int pos = 0;
 	while (fs.good()) {
-		fs.getline(pch, 255);
+		fs.getline(pch, 2550);
 		st = pch;
 		pos = st.Find("#");
 		if (pos != -1) st = st.Left(pos);

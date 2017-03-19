@@ -1,22 +1,32 @@
 #include "stdafx.h"
 #include "GenRS1.h"
 
-#define min_note 60
-#define max_note 71
-#define min_tempo 160
-#define max_tempo 200
-
 CGenRS1::CGenRS1()
 {
+	// Set default variables
 	t_cnt = 60;
 	t_allocated = 10;
 	t_send = 30;
-	Init();
 }
-
 
 CGenRS1::~CGenRS1()
 {
+}
+
+void CGenRS1::LoadConfigLine(CString* sN, CString* sV)
+{
+	int idata = atoi(*sV);
+	double fdata = atof(*sV);
+	CGenTemplate::CheckVar(sN, sV, "t_cnt", &t_cnt);
+	CGenTemplate::CheckVar(sN, sV, "min_tempo", &min_tempo);
+	CGenTemplate::CheckVar(sN, sV, "max_tempo", &max_tempo);
+	CGenTemplate::CheckVar(sN, sV, "min_len", &min_len);
+	CGenTemplate::CheckVar(sN, sV, "max_len", &max_len);
+	CGenTemplate::CheckVar(sN, sV, "min_note", &min_note);
+	CGenTemplate::CheckVar(sN, sV, "max_note", &max_note);
+	CGenTemplate::CheckVar(sN, sV, "note_step", &note_step);
+	CGenTemplate::CheckVar(sN, sV, "sleep_ms", &sleep_ms);
+	//CGenTemplate::LoadVar(st2, st3, "config", &m_config);
 }
 
 void CGenRS1::Generate()
@@ -38,7 +48,7 @@ void CGenRS1::Generate()
 				note[i][0] = 60 + (max_note - min_note) * rand2() / RAND_MAX;
 			}
 			else {
-				note[i][0] = note[i - 1][0] + randbw(-3, 3);
+				note[i][0] = note[i - 1][0] + randbw(-note_step, note_step);
 				if (note[i][0] > max_note) note[i][0] = 2 * max_note - note[i][0];
 				if (note[i][0] < min_note) note[i][0] = 2 * min_note - note[i][0];
 			}
@@ -81,7 +91,7 @@ void CGenRS1::Generate()
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}
 		if (len[i][0] == 0) ::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: Len = 0"));
-		Sleep(20);
+		Sleep(sleep_ms);
 		if (need_exit) return;
 	}
 	t_sent = t_generated;
