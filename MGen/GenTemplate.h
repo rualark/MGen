@@ -2,17 +2,17 @@
 
 #define GAlgNum 2
 #define MAX_VOICE 16
+#define MAX_ALGO 100
 
 #include "portmidi.h"
 #include "porttime.h"
 
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
-const CString GAlgName[] = {
-	"No algorithm selected", // 0
-	"Cantus firmus 1", // 1
-	"Cantus firmus 2" // 2
-};
+CString AlgName[MAX_ALGO];
+CString AlgGroup[MAX_ALGO];
+CString AlgFolder[MAX_ALGO];
+int AlgId[MAX_ALGO];
 
 const CString InstName[] = {
 	"Piano", // 0
