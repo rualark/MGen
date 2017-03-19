@@ -492,7 +492,12 @@ void CMainFrame::LoadAlgo()
 			AlgComment[AlgCount] = st2;
 			// Check if folder exists
 			CString path = "configs\\" + AlgFolder[AlgCount];
-			if (!CGenTemplate::dirExists(path))	CreateDirectory(path, NULL);
+			if (!CGenTemplate::dirExists(path)) {
+				CreateDirectory(path, NULL);
+				ofstream fs;
+				fs.open(path + "\\Test.pl");
+				fs.close();
+			}
 			// Get all configs
 			DIR *dir;
 			struct dirent *ent;
@@ -775,6 +780,8 @@ void CMainFrame::OnUpdateButtonAlgo(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateButtonParams(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_state_gen != 1 && m_algo > -1 && m_config != "");
+	if (m_config != "") pCmdUI->SetText("Config: " + m_config);
+	else pCmdUI->SetText("Config: ");
 }
 
 void CMainFrame::OnUpdateButtonEparams(CCmdUI *pCmdUI)

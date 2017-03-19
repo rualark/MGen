@@ -2,6 +2,7 @@
 #include "afxcmn.h"
 #include "afxwin.h"
 #include "TreeColorCtrl.h"
+#include "InfoEditCtrl.h"
 
 // CAlgoDlg dialog
 
@@ -30,8 +31,10 @@ public:
 	void LoadTree();
 	CStatic m_algo;
 	CStatic m_config;
-	CRichEditCtrl m_text;
+	CInfoEditCtrl m_text;
 	afx_msg void OnBnClickedButtonSaveas();
 	afx_msg void OnBnClickedButtonEdit();
 	void UpdateControls();
+	void LoadFile(CString path);
+	afx_msg void OnBnClickedOk();
 };

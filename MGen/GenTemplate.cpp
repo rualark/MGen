@@ -292,6 +292,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 
 void CGenTemplate::StopMIDI()
 {
+	::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)new CString("Pm_Close"));
 	if (midi != 0) Pm_Close(midi);
 	midi = 0;
 }
