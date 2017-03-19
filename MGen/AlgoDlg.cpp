@@ -86,7 +86,7 @@ void CAlgoDlg::LoadTree()
 				for (int z = 0; z < mf->ParamCount[x]; z++) {
 					HTREEITEM gti3 = m_tree.InsertItem(mf->ParamName[x][z], gti2, TVI_LAST);
 					m_tree.SetItemColor(gti3, RGB(0, 200, 0));
-					m_tree.SetItemFont(gti3, logfont);
+					//m_tree.SetItemFont(gti3, logfont);
 					if (mf->m_config == mf->ParamName[x][z]) {
 						m_tree.SelectItem(gti3);
 					}

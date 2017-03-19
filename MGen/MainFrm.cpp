@@ -500,8 +500,8 @@ void CMainFrame::LoadAlgo()
 			if ((dir = opendir(path)) != NULL) {
 				while ((ent = readdir(dir)) != NULL) {
 					CString st = ent->d_name;
-					if (st.Left(1) != ".") {
-						ParamName[AlgCount].push_back(st);
+					if ((st.Left(1) != ".") && (st.Right(3) == ".pl")) {
+						ParamName[AlgCount].push_back(st.Mid(0, st.GetLength()-3));
 						ParamCount[AlgCount]++;
 					}
 				}

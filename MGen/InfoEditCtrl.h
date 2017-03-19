@@ -15,6 +15,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg UINT OnGetDlgCode();
+	void AddText(CString str, COLORREF color, DWORD dwEffects);
 };
 
 
