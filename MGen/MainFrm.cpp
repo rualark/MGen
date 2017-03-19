@@ -128,12 +128,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Algorithm combo
 	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-	for (int i = 1; i <= GAlgNum; i++) {
+	for (int i = 0; i < AlgCount; i++) {
 		//pCombo->AddItem(AlgName[i]);
 		//TCHAR st[100];
 		//_stprintf_s(st, _T("%d"), i);
 		//pCombo->AddItem(st);
-		pCombo->AddItem(AlgName[i], AlgId[i]);
+		pCombo->AddItem(AlgName[i], AlgID[i]);
 	}
 
 	// MIDI port
@@ -461,7 +461,7 @@ int CMainFrame::GetAlgo()
 {
 	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 		m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-	return pCombo->GetCurSel() + 1;
+	return pCombo->GetItemData(pCombo->GetCurSel());
 }
 
 int CMainFrame::GetMidiI()
@@ -480,6 +480,7 @@ void CMainFrame::LoadAlgo()
 	int pos = 0;
 	// Load header
 	fs.getline(pch, 255);
+	AlgCount = 0;
 	while (fs.good()) {
 		pos = 0;
 		fs.getline(pch, 255);
@@ -488,13 +489,17 @@ void CMainFrame::LoadAlgo()
 		if (st.Find("|") != -1) {
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			WriteLog(1, st2);
+			AlgID[AlgCount] = atoi(st2);
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			WriteLog(1, st2);
+			AlgFolder[AlgCount] = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			WriteLog(1, st2);
+			AlgName[AlgCount] = st2;
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			AlgGroup[AlgCount] = st2;
+			AlgCount++;
 		}
 	}
 	fs.close();
@@ -521,7 +526,8 @@ void CMainFrame::LoadSettings()
 			if (st2 == "Algorithm") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
-				pCombo->SelectItem((DWORD_PTR)&dwd);
+				int id = distance(AlgID, find(begin(AlgID), end(AlgID), dwd));
+				pCombo->SelectItem(id);
 				WriteLog(1, st3);
 			}
 		}

@@ -1,6 +1,5 @@
 #pragma once
 
-#define GAlgNum 2
 #define MAX_VOICE 16
 #define MAX_ALGO 100
 

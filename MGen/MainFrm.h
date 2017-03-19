@@ -51,7 +51,8 @@ public:
 	CString AlgName[MAX_ALGO];
 	CString AlgGroup[MAX_ALGO];
 	CString AlgFolder[MAX_ALGO];
-	int AlgId[MAX_ALGO];
+	int AlgID[MAX_ALGO];
+	int AlgCount = 0;
 
 // Operations
 public:
