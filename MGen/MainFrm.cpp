@@ -343,6 +343,8 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 
 void CMainFrame::OnButtonParams()
 {
+	CString path = "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl";
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", path, NULL, NULL, SW_SHOWNORMAL);
 }
 
 
@@ -462,6 +464,7 @@ void CMainFrame::LoadAlgo()
 	ParamName.clear();
 	for (int i = 0; i < MAX_ALGO; i++) ParamCount[i] = 0;
 	AlgCount = 0;
+	if (AlgGCount > 0) for (int i = 0; i < AlgGCount; i++) AlgGroups[i] = "@#(*&#$%@&*(^@#)(&*@$#)(*&%@#)&*#$";
 	AlgGCount = 0;
 	while (fs.good()) {
 		pos = 0;

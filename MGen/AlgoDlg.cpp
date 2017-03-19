@@ -197,13 +197,28 @@ void CAlgoDlg::OnBnClickedButtonSaveas()
 {
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 	HTREEITEM hti = m_tree.GetSelectedItem();
+	int alg_id = m_tree.GetItemData(m_tree.GetParentItem(hti));
+	// Get current folder
+	//char buffer[MAX_PATH];
+	//GetModuleFileName(NULL, buffer, MAX_PATH);
+	//CString path_old = string(buffer).substr(0, pos).c_str();
+	TCHAR buffer[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buffer); 
+	string::size_type pos = string(buffer).find_last_of("\\/");
+	CString path_old = string(buffer).c_str();
+	path_old += "\\configs\\" + mf->AlgFolder[alg_id] + "\\";
+	CString cname_old = m_tree.GetItemText(hti);
+	//mf->WriteLog(1, path_old);
+	//mf->WriteLog(1, cname_old);
+
 	// szFilters is a text string that includes two file name filters:
 	// "*.my" for "MyType Files" and "*.*' for "All Files."
-	TCHAR szFilters[] = _T("MGen configuration files (*.pl)|*.pl|All Files (*.*)|*.*||");
+	TCHAR szFilters[] = _T("MGen configuration files (*.pl)|*.pl|");
 
 	// Create an Open dialog; the default file name extension is ".my".
-	CFileDialog fileDlg(FALSE, _T("pl"), _T("*.pl"),
-		OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY, szFilters);
+	CFileDialog fileDlg(FALSE, _T("pl"), path_old + cname_old + ".pl",
+		OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFilters, this, 0, false);
+	fileDlg.m_ofn.lpstrInitialDir = path_old;
 
 	// Display the file dialog. When user clicks OK, fileDlg.DoModal() 
 	// returns IDOK.
@@ -212,12 +227,32 @@ void CAlgoDlg::OnBnClickedButtonSaveas()
 		// Get name
 		CString path = fileDlg.GetPathName();
 		CString cname = path.Mid(path.ReverseFind('\\') + 1);
-		cname = cname.Mid(0, cname.GetLength()-3)
+		cname = cname.Mid(0, cname.GetLength() - 3);
 	  // Check name
-		int alg_id = m_tree.GetItemData(m_tree.GetParentItem(hti));
-		CString path_old = "configs\\" + mf->AlgFolder[alg_id] + "\\";
+		//mf->WriteLog(1, cname);
 		if ((path.Find(path_old) == -1) || (path.Find(".pl") == -1)) {
-			MessageBox("File must be created in the same folder " + path_old + " and must have extension *.pl", "Error", 0);
+			MessageBox("New file must be created in the same folder " + path_old, "Error");
+			return;
+		}
+		//mf->WriteLog(1, cname);
+		// Check exists
+		if (CGenTemplate::fileExists(path)) {
+			MessageBox("This file already exists: " + path, "Error");
+			return;
+		}
+		if (CGenTemplate::dirExists(path)) {
+			MessageBox("There is already a folder with this name: " + path, "Error");
+			return;
+		}
+		// Try to copy
+		std::ifstream  src(path_old + cname_old + ".pl", std::ios::binary);
+		std::ofstream  dst(path_old + cname + ".pl", std::ios::binary);
+		dst << src.rdbuf();
+		src.close();
+		dst.close();
+		// Check file exists now
+		if (!CGenTemplate::fileExists(path)) {
+			MessageBox("Could not copy file " + path_old + cname_old + ".pl to " + path_old + cname + ".pl", "Error");
 			return;
 		}
 		// Save name
@@ -225,9 +260,10 @@ void CAlgoDlg::OnBnClickedButtonSaveas()
 		// Change to new config
 		mf->m_algo = m_tree.GetItemData(m_tree.GetParentItem(hti));
 		mf->m_algo_id = mf->AlgID[mf->m_algo];
-		mf->m_config = m_tree.GetItemText(hti);
+		mf->m_config = cname;
 		mf->SaveSettings();
 		LoadTree();
+		UpdateControls();
 	}	
 }
 
