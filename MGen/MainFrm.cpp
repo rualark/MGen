@@ -614,7 +614,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 		if (pGen->t_sent < 2) return;
 		// Decide if we can play
 		if (m_state_play == 0) {
-			if (m_state_gen == 2) m_state_play = 1;
+			if (m_state_gen == 2) {
+				m_state_play = 1;
+				SetTimer(TIMER1, m_view_timer, NULL);
+			}
 			if (m_state_gen == 1) {
 				if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
 					WriteLog(4, "OnGenFinish mutex timed out: playback not started");
@@ -624,6 +627,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 				double ptime = TIME_PROC(TIME_INFO) - pGen->time_started;
 				if ((gtime / ptime > 2) || (gtime > 30000) || ((gtime / ptime > 1.2) && (gtime > 5000))) {
 					m_state_play = 1;
+					SetTimer(TIMER1, m_view_timer, NULL);
 				}
 				else {
 					CString st;

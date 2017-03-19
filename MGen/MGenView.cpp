@@ -326,7 +326,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
-	//mf->WriteLog(2, st);
+	mf->WriteLog(2, st);
 
 	//CRect rc;
 	//GetClientRect(&rc);

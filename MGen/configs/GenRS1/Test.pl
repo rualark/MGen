@@ -1,5 +1,5 @@
 # This config is for testing new combinations of parameters
-t_cnt = 100 # Number of steps to generate
+t_cnt = 200 # Number of steps to generate
 min_tempo = 160 # Minimum tempo
 max_tempo = 200 # Maximum tempo
 min_len = 1 # Minimum note length
