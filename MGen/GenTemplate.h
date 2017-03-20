@@ -53,6 +53,7 @@ const CString NoteName[] = {
 class CGenTemplate
 {
 public:
+	static void copy_file(CString sName, CString dName);
 	static void CGenTemplate::CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	static bool dirExists(CString dirName_in);

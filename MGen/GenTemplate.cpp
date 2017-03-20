@@ -15,6 +15,14 @@
 	h ^= a >> 9;  c += h; a += b; \
 }
 
+void CGenTemplate::copy_file(CString sName, CString dName) {
+	std::ifstream  src(sName, std::ios::binary);
+	std::ofstream  dst(dName, std::ios::binary);
+	dst << src.rdbuf();
+	src.close();
+	dst.close();
+}
+
 void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int vmin, int vmax)
 {
 	if (*sName == sSearch) {
@@ -297,7 +305,7 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	fs.close();
 	// Save strings
 	CString st;
-	fs.open(dir + "\\config.txt");
+	fs.open(dir + "\\results.txt");
 	fs << "m_config = " + m_config + "\n";
 	st.Format("m_algo_id = %d\n", m_algo_id);
 	fs << st;
@@ -360,7 +368,7 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	// Load strings
 	ifstream fs;
-	fs.open(dir + "\\config.txt");
+	fs.open(dir + "\\results.txt");
 	CString st, st2, st3;
 	char pch[2550];
 	int pos = 0;

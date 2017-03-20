@@ -242,11 +242,7 @@ void CAlgoDlg::OnBnClickedButtonSaveas()
 			return;
 		}
 		// Try to copy
-		std::ifstream  src(path_old + cname_old + ".pl", std::ios::binary);
-		std::ofstream  dst(path_old + cname + ".pl", std::ios::binary);
-		dst << src.rdbuf();
-		src.close();
-		dst.close();
+		CGenTemplate::copy_file(path_old + cname_old + ".pl", path_old + cname + ".pl");
 		// Check file exists now
 		if (!CGenTemplate::fileExists(path)) {
 			MessageBox("Could not copy file " + path_old + cname_old + ".pl to " + path_old + cname + ".pl", "Error");

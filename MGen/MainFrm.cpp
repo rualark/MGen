@@ -453,6 +453,10 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		CString fname = CTime::GetCurrentTime().Format("%Y-%m-%d-auto %H-%M-%S");
 		CString dir = "autosaves\\" + fname;
 		pGen->SaveResults(dir, fname);
+		// Copy config
+		CGenTemplate::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\config.pl");
+		WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
+		WriteLog(1, dir + "\\config.pl");
 	}
 	if (wParam == 1) {
 	}
