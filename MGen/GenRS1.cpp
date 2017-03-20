@@ -70,7 +70,7 @@ void CGenRS1::Generate()
 			tempo[i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
 		}
 		else {
-			tempo[i] = tempo[i - 1] + randbw(-3, 3);
+			tempo[i] = tempo[i - 1] + randbw(-7, 7);
 			if (tempo[i] > max_tempo) tempo[i] = 2 * max_tempo - tempo[i];
 			if (tempo[i] < min_tempo) tempo[i] = 2 * min_tempo - tempo[i];
 		}
@@ -83,12 +83,37 @@ void CGenRS1::Generate()
 		if (ng_max < note[i][0]) ng_max = note[i][0];
 		if (tg_min > tempo[i]) tg_min = tempo[i];
 		if (tg_max < tempo[i]) tg_max = tempo[i];
-		//CString* st = new CString;
-		//st->Format("Note generated %d", note[i][0]);
-		//WriteLog(0, st);
-		if ((i > 0) && (i % t_send == 0)) {
-			t_sent = t_generated;
+		// Check if we can send new chunk
+		if (((i > 0) && ((i-3) % t_send == 0)) || (i == t_cnt - 1)) {
+			// Moving average 7 <<<|>>>
+			double ma;
+			double ma_size;
+			double* tempo2 = new double[t_generated - t_sent];
+			int delta = 3;
+			if (i == t_cnt - 1) delta = 0;
+			for (int x = t_sent; x < t_generated-delta; x++) {
+				ma = 0;
+				ma_size = 0;
+				for (int z = x - 3; z < x + 4; z++) if ((z >= 0) && (z < t_generated)) {
+					ma += tempo[z];
+					ma_size += 1;
+				}
+				tempo2[x - t_sent] = ma / ma_size;
+			}
+			for (int x = t_sent; x < t_generated-delta; x++) {
+				tempo[x] = tempo2[x - t_sent];
+				if (tg_min > tempo[x]) tg_min = tempo[x];
+				if (tg_max < tempo[x]) tg_max = tempo[x];
+			}
+			delete tempo2;
+			// Send
+			//t_sent = t_generated;
+			if (i == t_cnt - 1) t_sent = t_generated;
+			else t_sent = t_generated-3;
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
+			//CString* st = new CString;
+			//st->Format("Chunk sent up to %d", t_sent);
+			//WriteLog(0, st);
 		}
 		if (len[i][0] == 0) WriteLog(1, new CString("Critical error: Len = 0"));
 		Sleep(sleep_ms);

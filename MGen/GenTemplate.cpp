@@ -34,6 +34,13 @@ void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, in
 	}
 }
 
+void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, double * Dest)
+{
+	if (*sName == sSearch) {
+		*Dest = atof(*sValue);
+	}
+}
+
 void CGenTemplate::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * Dest)
 {
 	if (*sName == sSearch) {

@@ -54,7 +54,8 @@ class CGenTemplate
 {
 public:
 	static void copy_file(CString sName, CString dName);
-	static void CGenTemplate::CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
+	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
+	static void CheckVar(CString * sName, CString * sValue, char * sSearch, double * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	static bool dirExists(CString dirName_in);
 	static bool fileExists(CString dirName_in);
@@ -122,8 +123,8 @@ public:
 	int t_sent = 0; // Timeslot count sent to mainframe
 	int ng_min = 1000; // Minimum generated note
 	int ng_max = 0; // Maximum generated note
-	int tg_min = 1000; // Minimum generated tempo
-	int tg_max = 0; // Maximum generated tempo
+	double tg_min = 1000; // Minimum generated tempo
+	double tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
 	vector <string> instr; // Instruments for each voice
 	// Output

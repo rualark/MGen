@@ -156,11 +156,11 @@ void CMGenView::OnDraw(CDC* pDC)
 		nwidth = 4 * mf->zoom_x / 100;
 		if (mf->view_single_track) {
 			// Count tempo window
-			int tg_min = MIN_TEMPO_DISPLAY;
-			int tg_max = MAX_TEMPO_DISPLAY;
+			double tg_min = MIN_TEMPO_DISPLAY;
+			double tg_max = MAX_TEMPO_DISPLAY;
 			// Increase if generated bigger tempo window
-			if (pGen->tg_min < tg_min) tg_min = pGen->tg_min;
-			if (pGen->tg_max > tg_max) tg_max = pGen->tg_max;
+			if (pGen->tg_min < tg_min) tg_min = pGen->tg_min-1;
+			if (pGen->tg_max > tg_max) tg_max = pGen->tg_max+1;
 			// Get generator window
 			int ng_min = pGen->ng_min;
 			int ng_max = pGen->ng_max;

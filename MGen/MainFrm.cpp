@@ -457,8 +457,8 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		pGen->SaveResults(dir, fname);
 		// Copy config
 		CGenTemplate::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\config.pl");
-		WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
-		WriteLog(1, dir + "\\config.pl");
+		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
+		//WriteLog(1, dir + "\\config.pl");
 	}
 	if (wParam == 1) {
 	}

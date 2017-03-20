@@ -244,3 +244,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 *.rpp-bak
+/MGen/autosaves
