@@ -82,6 +82,7 @@ public:
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency);
 	void SendMIDI(int step1, int step2);
+	void WriteLog(int i, CString * pST);
 	void StopMIDI();
 	int randbw(int n1, int n2);
 	int GetPlayStep();
@@ -96,7 +97,8 @@ public:
 
 public:
 	// Interface
-	int need_exit=0; // If thread needs to exit
+	int need_exit=0; // If thread needs to exit due to generation abort
+	int can_send_log = 1; // If thread can send log to MainFrame (disabled OnClose)
 	timed_mutex mutex_output;
 	int m_algo_id;
 	CString m_config;

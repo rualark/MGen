@@ -387,7 +387,7 @@ void CMainFrame::OnButtonGen()
 		}
 		return;
 	}
-	if (m_state_gen == 2) {
+	if ((m_state_gen == 2) || (pGen != 0)) {
 		WriteLog(0, "Starting generation: Removing previous generator");
 		delete pGen;
 		m_state_gen = 0;
@@ -702,19 +702,22 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	//pGen->time_stopped = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	pGen->time_stopped = TIME_PROC(TIME_INFO);
 
-	//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
+	//if (pGen->can_send_log)
+		//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
 	return 0;   // thread completed successfully 
 }
 
 void CMainFrame::OnClose()
 {
 	if (m_state_gen == 1) {
+		pGen->can_send_log = 0;
 		OnButtonGen();
 		WaitForSingleObject(m_GenThread->m_hThread, 10000);
 		delete pGen;
 		pGen = 0;
 	}
 	if (pGen != 0) {
+		pGen->can_send_log = 0;
 		delete pGen;
 		pGen = 0;
 	}

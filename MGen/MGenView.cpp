@@ -79,7 +79,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	milliseconds time_stop5 = time_start;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGenTemplate *pGen = mf->pGen;
-	if (pGen != 0) if (pGen->t_generated > 0) {
+	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
 			mf->WriteLog(2, "OnDraw mutex timed out: drawing postponed");
 			return;
@@ -328,7 +328,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
-	mf->WriteLog(2, st);
+	//mf->WriteLog(2, st);
 
 	//CRect rc;
 	//GetClientRect(&rc);

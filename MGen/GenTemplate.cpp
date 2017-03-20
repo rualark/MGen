@@ -49,7 +49,7 @@ void CGenTemplate::LoadConfig(CString fname)
 	if (!CGenTemplate::fileExists(fname)) {
 		CString* est = new CString;
 		est->Format("LoadConfig cannot find file: %s", fname);
-		::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)est);
+		WriteLog(1, est);
 		return;
 	}
 	fs.open(fname);
@@ -79,7 +79,7 @@ void CGenTemplate::LoadConfig(CString fname)
 	fs.close();
 	CString* est = new CString;
 	est->Format("LoadConfig loaded %d lines from %s", i, fname);
-	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
+	WriteLog(0, est);
 }
 
 bool CGenTemplate::dirExists(CString dirName_in)
@@ -239,7 +239,7 @@ void CGenTemplate::ResizeVectors(int size)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
-		::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("Critical error: ResizeVectors mutex timed out"));
+		WriteLog(1, new CString("Critical error: ResizeVectors mutex timed out"));
 	}
 	pause.resize(size);
 	note.resize(size);
@@ -264,7 +264,7 @@ void CGenTemplate::ResizeVectors(int size)
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
 	st->Format("ResizeVectors from %d to %d (in %d ms)", t_allocated, size, time_stop - time_start);
-	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)st);
+	WriteLog(0, st);
 
 	t_allocated = size;
 	mutex_output.unlock();
@@ -338,7 +338,7 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
 	est->Format("Saved results to file in %d ms", time_stop - time_start);
-	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
+	WriteLog(0, est);
 }
 
 void CGenTemplate::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int i) {
@@ -426,7 +426,7 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
 	est->Format("Loaded results from files in %d ms", time_stop - time_start);
-	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
+	WriteLog(0, est);
 }
 
 void CGenTemplate::StartMIDI(int midi_device_i, int latency)
@@ -441,7 +441,7 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency)
 	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUFFER_SIZE, TIME_PROC, NULL, latency);
 	CString* st = new CString;
 	st->Format("Pm_OpenOutput: buffer size %d, latency %d", OUTPUT_BUFFER_SIZE, latency);
-	::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)st);
+	WriteLog(4, st);
 }
 
 void CGenTemplate::SendMIDI(int step1, int step2)
@@ -455,7 +455,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	if (timestamp < timestamp_current) {
 		CString* st = new CString;
 		st->Format("SendMIDI got buffer underrun in %d ms (steps %d - %d)", timestamp_current - timestamp, step1, step2);
-		::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)st);
+		WriteLog(1, st);
 		timestamp = timestamp_current;
 		buffer_underrun = 1;
 	}
@@ -467,12 +467,12 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		CString* st = new CString;
 		st->Format("SendMIDI: no need to send (full buffer = %d ms) (steps %d - %d) playback is at %d", 
 			midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
-		::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)st);
+		WriteLog(4, st);
 		return;
 	}
 	int i, ncount = 0;
 	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
-		::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("SendMIDI mutex timed out: will try later"));
+		WriteLog(0, new CString("SendMIDI mutex timed out: will try later"));
 	}
 	int step21;
 	int step22;
@@ -518,12 +518,18 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	st->Format("Pm_Write %d notes (steps %d/%d - %d/%d) [to future %d to %d ms] (in %d ms) playback is at %d ms", 
 		ncount, step21, step1, midi_sent, step2, timestamp0 - timestamp_current, midi_sent_t - timestamp_current, 
 		time_stop - time_start, timestamp_current-midi_start_time);
-	::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)st);
+	WriteLog(4, st);
+}
+
+void CGenTemplate::WriteLog(int i, CString* pST)
+{
+	if (can_send_log)	::PostMessage(m_hWnd, WM_DEBUG_MSG, i, (LPARAM)pST);
+	else delete pST;
 }
 
 void CGenTemplate::StopMIDI()
 {
-	::PostMessage(m_hWnd, WM_DEBUG_MSG, 4, (LPARAM)new CString("Pm_Close"));
+	WriteLog(4, new CString("Pm_Close"));
 	if (midi != 0) Pm_Close(midi);
 	midi = 0;
 }
@@ -541,7 +547,7 @@ int CGenTemplate::GetPlayStep() {
 		// Don't need lock, because this function is called from OnDraw, which already has lock
 		/*
 		if (!mutex_output.try_lock_for(chrono::milliseconds(100))) {
-			::PostMessage(m_hWnd, WM_DEBUG_MSG, 1, (LPARAM)new CString("GetPlayStep mutex timed out"));
+			WriteLog(1, new CString("GetPlayStep mutex timed out"));
 		}
 		*/
 		int step1 = midi_play_step;
