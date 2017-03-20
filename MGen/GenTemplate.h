@@ -60,11 +60,11 @@ public:
   static bool nodeExists(CString dirName_in);
 
 protected:
-	void SaveVector2C(ofstream * fs, vector<vector<unsigned char>>& v2D, int i);
+	void SaveVector2C(ofstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveVectorD(ofstream &fs, vector<double> &v);
-	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i, int v_cnt);
-	void LoadVectorD(ifstream & fs, vector<double>& v, int t_generated);
-
+	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i);
+	void LoadVectorD(ifstream & fs, vector<double>& v);
+	
 public:
 	CGenTemplate();
 	virtual ~CGenTemplate();

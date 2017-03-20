@@ -347,6 +347,36 @@ void CMainFrame::OnButtonParams()
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", path, NULL, NULL, SW_SHOWNORMAL);
 }
 
+void CMainFrame::LoadResults(CString path) {
+	string::size_type pos = string(path).find_last_of("\\/");
+	CString dir = string(path).substr(0, pos).c_str();
+	string::size_type pos2 = string(path).find_last_of("./");
+	CString fname = string(path).substr(pos + 1, pos2 - pos - 1).c_str();
+	WriteLog(1, dir);
+	WriteLog(1, fname);
+	pGen = new CGenRS1();
+	//if (m_algo_id == 101) pGen = new CGenCF1();
+	//if (m_algo_id == 102) pGen = new CGenCF2();
+	//if (m_algo_id == 1001) pGen = new CGenRS1();
+	if (pGen != 0) {
+		WriteLog(0, _T("Loading file: ") + path);
+		// Set pGen variables
+		pGen->m_hWnd = m_hWnd;
+		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
+		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
+		// Initialize MIDI
+		pGen->StopMIDI();
+		pGen->StartMIDI(GetMidiI(), 100);
+		pGen->time_started = TIME_PROC(TIME_INFO);
+		// Load results
+		pGen->LoadResults(dir, fname);
+		m_algo_id = pGen->m_algo_id;
+		m_config = pGen->m_config;
+		m_state_gen = 2;
+		m_state_play = 0;
+		GetActiveView()->Invalidate();
+	}
+}
 
 void CMainFrame::OnButtonGen()
 {

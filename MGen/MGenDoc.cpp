@@ -20,6 +20,7 @@
 #endif
 
 #include "MGenDoc.h"
+#include "MainFrm.h"
 
 #include <propkey.h>
 
@@ -65,13 +66,16 @@ BOOL CMGenDoc::OnNewDocument()
 
 void CMGenDoc::Serialize(CArchive& ar)
 {
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
 	}
 	else
 	{
-		// TODO: add loading code here
+		//ar.Close();
+		CString fname = ar.m_strFileName;
+		mf->WriteLog(1, fname);
 	}
 }
 
@@ -145,3 +149,18 @@ void CMGenDoc::Dump(CDumpContext& dc) const
 
 
 // CMGenDoc commands
+
+
+BOOL CMGenDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;
+
+	// TODO:  Add your specialized creation code here
+	CString fname = lpszPathName;
+	mf->WriteLog(1, fname);
+	mf->LoadResults(fname);
+
+	return TRUE;
+}

@@ -137,7 +137,9 @@ void CMGenView::OnDraw(CDC* pDC)
 	g.DrawString(A2W(st), -1, &font, PointF(800, 0), &brush_black);
 
 	time_stop2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if (pGen != 0) if (pGen->t_generated > 0) {
+	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
+		//pGen->mutex_output.unlock();
+		//return;
 		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d measures in %.1f seconds)", pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, ((float)(TIME_PROC(TIME_INFO) - pGen->time_started)) / 1000);
 		if (mf->m_state_gen == 2) st.Format("(%d measures in %.1f seconds)", pGen->t_sent/8, ((float)(pGen->time_stopped - pGen->time_started)) / 1000);
 		g.DrawString(A2W(st), -1, &font, PointF(250, 0), &brush_black);
@@ -454,8 +456,8 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		// Check if mouse is too left
 		if (mouse_step < -1) mouse_step = -1;
 		// Check if mouse step is in future
-		if (mouse_step > pGen->t_generated) mouse_step = -1;
-		if (mouse_step_old > pGen->t_generated) mouse_step_old = -1;
+		if (mouse_step >= pGen->t_generated) mouse_step = -1;
+		if (mouse_step_old >= pGen->t_generated) mouse_step_old = -1;
 		// Set note limits
 		int step1 = mouse_step;
 		int step2 = mouse_step;

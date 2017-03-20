@@ -198,10 +198,10 @@ void CAlgoDlg::OnBnClickedButtonSaveas()
 	// Get current folder
 	//char buffer[MAX_PATH];
 	//GetModuleFileName(NULL, buffer, MAX_PATH);
-	//CString path_old = string(buffer).substr(0, pos).c_str();
 	TCHAR buffer[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, buffer); 
 	string::size_type pos = string(buffer).find_last_of("\\/");
+	//CString path_old = string(buffer).substr(0, pos).c_str();
 	CString path_old = string(buffer).c_str();
 	path_old += "\\configs\\" + mf->AlgFolder[alg_id] + "\\";
 	CString cname_old = m_tree.GetItemText(hti);

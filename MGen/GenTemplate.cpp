@@ -262,8 +262,11 @@ void CGenTemplate::ResizeVectors(int size)
 	mutex_output.unlock();
 }
 
-void CGenTemplate::SaveVector2C(ofstream* fs, vector< vector<unsigned char> > &v2D, int i) {
-	copy(v2D[i].begin(), v2D[i].end(), ostreambuf_iterator<char>(*fs));
+void CGenTemplate::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {
+	//copy(v2D[i].begin(), v2D[i].end(), ostreambuf_iterator<char>(*fs));
+	const char* pointer = reinterpret_cast<const char*>(&v2D[i][0]);
+	size_t bytes = v_cnt * sizeof(v2D[i][0]);
+	fs.write(pointer, bytes);
 }
 
 void CGenTemplate::SaveVectorD(ofstream &fs, vector<double> &v) {
@@ -280,13 +283,13 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
 	for (size_t i = 0; i < t_generated; i++)
 	{
-		SaveVector2C(&fs, pause, i);
-		SaveVector2C(&fs, note, i);
-		SaveVector2C(&fs, len, i);
-		SaveVector2C(&fs, coff, i);
-		SaveVector2C(&fs, poff, i);
-		SaveVector2C(&fs, noff, i);
-		SaveVector2C(&fs, att, i);
+		SaveVector2C(fs, pause, i);
+		SaveVector2C(fs, note, i);
+		SaveVector2C(fs, len, i);
+		SaveVector2C(fs, coff, i);
+		SaveVector2C(fs, poff, i);
+		SaveVector2C(fs, noff, i);
+		SaveVector2C(fs, att, i);
 	}
 	SaveVectorD(fs, tempo);
 	SaveVectorD(fs, stime);
@@ -316,6 +319,10 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	fs << st;
 	st.Format("tg_max = %d\n", tg_max);
 	fs << st;
+	st.Format("time_started = %d\n", time_started);
+	fs << st;
+	st.Format("time_stopped = %d\n", time_stopped);
+	fs << st;
 	st.Format("need_exit = %d\n", need_exit);
 	fs << st;
 	fs.close();
@@ -326,11 +333,11 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
 }
 
-void CGenTemplate::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int i, int v_cnt) {
-	v2D[i].clear();
+void CGenTemplate::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int i) {
+	//v2D[i].clear();
 	v2D[i].resize(v_cnt);
-	char* pointer = reinterpret_cast<char*>(&v2D[i][0]);
-	size_t bytes = t_generated * sizeof(v2D[i][0]);
+	char* pointer = reinterpret_cast<char*>(&(v2D[i][0]));
+	size_t bytes = v_cnt * sizeof(v2D[i][0]);
 	fs.read(pointer, bytes);
 	//for (int x = 0; x < v_cnt; x++) {
 	//	fs->read(reinterpret_cast<char *>(v2D[i][x]), 1)
@@ -340,7 +347,7 @@ void CGenTemplate::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v
 	//std::copy(iter.begin(), iter.end()+v_cnt, std::back_inserter(v2D));
 }
 
-void CGenTemplate::LoadVectorD(ifstream &fs, vector<double> &v, int t_generated) {
+void CGenTemplate::LoadVectorD(ifstream &fs, vector<double> &v) {
 	v.clear();
 	v.resize(t_generated);
 	char* pointer = reinterpret_cast<char*>(&v[0]);
@@ -381,31 +388,36 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 			CGenTemplate::CheckVar(&st2, &st3, "ng_max", &ng_max);
 			CGenTemplate::CheckVar(&st2, &st3, "tg_min", &tg_min);
 			CGenTemplate::CheckVar(&st2, &st3, "tg_max", &tg_max);
+			CGenTemplate::CheckVar(&st2, &st3, "time_started", &time_started);
+			CGenTemplate::CheckVar(&st2, &st3, "time_stopped", &time_stopped);
 			CGenTemplate::LoadVar(&st2, &st3, "m_config", &m_config);
 		}
 	}
 	fs.close();
+	// Allocate
+	t_allocated = t_generated;
+	InitVectors();
 	// Load binary
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
 	fs.unsetf(std::ios::skipws);
 	for (size_t i = 0; i < t_generated; i++)
 	{
-		LoadVector2C(fs, pause, i, v_cnt);
-		LoadVector2C(fs, note, i, v_cnt);
-		LoadVector2C(fs, len, i, v_cnt);
-		LoadVector2C(fs, coff, i, v_cnt);
-		LoadVector2C(fs, poff, i, v_cnt);
-		LoadVector2C(fs, noff, i, v_cnt);
-		LoadVector2C(fs, att, i, v_cnt);
+		LoadVector2C(fs, pause, i);
+		LoadVector2C(fs, note, i);
+		LoadVector2C(fs, len, i);
+		LoadVector2C(fs, coff, i);
+		LoadVector2C(fs, poff, i);
+		LoadVector2C(fs, noff, i);
+		LoadVector2C(fs, att, i);
 	}
-	LoadVectorD(fs, tempo, t_generated);
-	LoadVectorD(fs, stime, t_generated);
-	LoadVectorD(fs, ntime, t_generated);
+	LoadVectorD(fs, tempo);
+	LoadVectorD(fs, stime);
+	LoadVectorD(fs, ntime);
 	fs.close();
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
-	est->Format("Saved results to file in %d ms", time_stop - time_start);
+	est->Format("Loaded results from files in %d ms", time_stop - time_start);
 	::PostMessage(m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)est);
 }
 

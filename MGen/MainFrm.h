@@ -131,6 +131,7 @@ public:
 	void LoadAlgo();
 	void LoadSettings();
 	void SaveSettings();
+	void LoadResults(CString path);
 
 	static UINT GenThread(LPVOID pParam);
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
