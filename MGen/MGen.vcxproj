@@ -197,6 +197,11 @@
     <ClInclude Include="MGen.h" />
     <ClInclude Include="MGenDoc.h" />
     <ClInclude Include="MGenView.h" />
+    <ClInclude Include="midifile\Binasc.h" />
+    <ClInclude Include="midifile\MidiEvent.h" />
+    <ClInclude Include="midifile\MidiEventList.h" />
+    <ClInclude Include="midifile\MidiFile.h" />
+    <ClInclude Include="midifile\MidiMessage.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="pminternal.h" />
     <ClInclude Include="pmutil.h" />
@@ -221,6 +226,11 @@
     <ClCompile Include="MGen.cpp" />
     <ClCompile Include="MGenDoc.cpp" />
     <ClCompile Include="MGenView.cpp" />
+    <ClCompile Include="midifile\Binasc.cpp" />
+    <ClCompile Include="midifile\MidiEvent.cpp" />
+    <ClCompile Include="midifile\MidiEventList.cpp" />
+    <ClCompile Include="midifile\MidiFile.cpp" />
+    <ClCompile Include="midifile\MidiMessage.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="pmutil.c" />
     <ClCompile Include="pmwin.c" />

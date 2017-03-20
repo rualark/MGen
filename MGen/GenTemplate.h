@@ -79,6 +79,7 @@ public:
 	void ResizeVectors(int size);
 	void SaveResults(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
+	void SaveMidi(CString dir, CString fname);
 
 	void CountOff(int step1, int step2);
 	void CountTime(int step1, int step2);

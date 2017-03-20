@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Portmidi">
+      <UniqueIdentifier>{9c959ddc-1504-4529-9bc8-b206e20ca02f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Portmidi">
+      <UniqueIdentifier>{d8868a35-c72f-4710-9f8f-79ff2f0e3d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\midifile">
+      <UniqueIdentifier>{7e982e2d-3aac-4968-9c2b-10492d728d5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\midifile">
+      <UniqueIdentifier>{3a95f558-4209-491b-a603-56da053aff26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -60,21 +72,6 @@
     <ClInclude Include="EditParamsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pminternal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pmutil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pmwinmm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="portmidi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="porttime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GenRS1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -83,6 +80,36 @@
     </ClInclude>
     <ClInclude Include="TreeColorCtrl.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="porttime.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="pminternal.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="pmutil.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="pmwinmm.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="portmidi.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="midifile\MidiEvent.h">
+      <Filter>Header Files\midifile</Filter>
+    </ClInclude>
+    <ClInclude Include="midifile\MidiEventList.h">
+      <Filter>Header Files\midifile</Filter>
+    </ClInclude>
+    <ClInclude Include="midifile\MidiFile.h">
+      <Filter>Header Files\midifile</Filter>
+    </ClInclude>
+    <ClInclude Include="midifile\MidiMessage.h">
+      <Filter>Header Files\midifile</Filter>
+    </ClInclude>
+    <ClInclude Include="midifile\Binasc.h">
+      <Filter>Header Files\midifile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,21 +149,6 @@
     <ClCompile Include="EditParamsDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pmutil.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pmwin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pmwinmm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="portmidi.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ptwinmm.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GenRS1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -145,6 +157,36 @@
     </ClCompile>
     <ClCompile Include="TreeColorCtrl.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ptwinmm.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="pmutil.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="pmwin.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="pmwinmm.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="portmidi.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="midifile\MidiEvent.cpp">
+      <Filter>Source Files\midifile</Filter>
+    </ClCompile>
+    <ClCompile Include="midifile\MidiEventList.cpp">
+      <Filter>Source Files\midifile</Filter>
+    </ClCompile>
+    <ClCompile Include="midifile\MidiFile.cpp">
+      <Filter>Source Files\midifile</Filter>
+    </ClCompile>
+    <ClCompile Include="midifile\MidiMessage.cpp">
+      <Filter>Source Files\midifile</Filter>
+    </ClCompile>
+    <ClCompile Include="midifile\Binasc.cpp">
+      <Filter>Source Files\midifile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

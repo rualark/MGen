@@ -50,6 +50,7 @@ void CGenRS1::Generate()
 			}
 			len[i][0] = min_len + (max_len-min_len) * rand2() / RAND_MAX;
 			if (len[i][0] < min_len) len[i][0] = min_len;
+			if (i + len[i][0] > t_cnt - 1) len[i][0] = t_cnt - i;
 			coff[i][0] = 0;
 			att[i][0] = 50 + 60 * rand2() / RAND_MAX;
 		}

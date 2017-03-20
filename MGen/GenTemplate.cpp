@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GenTemplate.h"
 
+#include "midifile/MidiFile.h"
 
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
@@ -426,10 +427,42 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 	WriteLog(0, est);
 }
 
+void CGenTemplate::SaveMidi(CString dir, CString fname)
+{
+	MidiFile midifile;
+	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
+	int tpq = 120;                // ticks per quarter note
+	midifile.setTicksPerQuarterNote(tpq);
+	int track = 0;
+	int channel = 0;
+	// Add some expression track (track 0) messages:
+	string st = fname;
+	midifile.addTrackName(track, 0, st);
+	// Save tempo
+	for (int i = 0; i < t_generated; i++) {
+		midifile.addTempo(track, (tpq * 4) + 60 * i, tempo[i]);
+	}
+	// Save notes
+	for (int v = 0; v < v_cnt; v++) {
+		track = v + 1;
+		channel = v;
+		midifile.addTrackName(track, 0, "Melody");
+		midifile.addPatchChange(track, 0, channel, 0); // 40=violin
+		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
+			midifile.addNoteOn(track, (tpq*4)+60*i, channel, note[i][v], att[i][v]);
+			midifile.addNoteOff(track, (tpq * 4) +60*(i+len[i][v])-1, channel, note[i][v], 0);
+			if (noff[i][v] == 0) break;
+			i += noff[i][v] - 1;
+		}
+	}
+	midifile.sortTracks();         // ensure tick times are in correct order
+	midifile.write(dir + "\\" + fname + ".mid");    
+}
+
 void CGenTemplate::CountOff(int step1, int step2)
 {
 	for (int i = step1; i <= step2; i++) {
-		for (int v = 0; v <= v_cnt; v++) {
+		for (int v = 0; v < v_cnt; v++) {
 			noff[i][v] = len[i][v] - coff[i][v];
 			if (i - coff[i][v] - 1 >= 0) poff[i][v] = len[i - coff[i][v] - 1][v] - coff[i][v];
 			else poff[i][v] = 0;
@@ -449,7 +482,7 @@ void CGenTemplate::CountTime(int step1, int step2)
 void CGenTemplate::UpdateNoteMinMax(int step1, int step2)
 {
 	for (int i = step1; i <= step2; i++) {
-		for (int v = 0; v <= v_cnt; v++) {
+		for (int v = 0; v < v_cnt; v++) {
 			if (ng_min > note[i][v]) ng_min = note[i][v];
 			if (ng_max < note[i][v]) ng_max = note[i][v];
 			if (ngv_min[v] > note[i][v]) ngv_min[v] = note[i][v];
