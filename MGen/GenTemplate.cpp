@@ -439,6 +439,7 @@ void CGenTemplate::SaveMidi(CString dir, CString fname)
 	string st = fname;
 	midifile.addTrackName(track, 0, st);
 	// Save tempo
+	midifile.addTempo(track, 0, tempo[0]);
 	for (int i = 0; i < t_generated; i++) {
 		midifile.addTempo(track, (tpq * 4) + 60 * i, tempo[i]);
 	}
@@ -550,9 +551,12 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	if (coff[step1][0] > 0) step21 = step1 - coff[step1][0];
 	else step21 = step1;
 	// Find last step not too far
+	double time;
 	for (i = step21; i <= step2; i++) {
 		step22 = i;
-		if (stime[i] - stime[step1] + timestamp - timestamp_current > MAX_MIDI_BUFFER_MSEC) break;
+		if (i == 0) time = stime[i];
+		else time = etime[i - 1];
+		if (time - stime[step1] + timestamp - timestamp_current > MAX_MIDI_BUFFER_MSEC) break;
 	}
 	// Count notes
 	for (i = step21; i < step22; i++) {

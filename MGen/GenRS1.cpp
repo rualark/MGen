@@ -34,17 +34,22 @@ void CGenRS1::Generate()
 	for (int i = 0; i < t_cnt; i++) {
 		if (i >= t_allocated) ResizeVectors(t_allocated * 2);
 		if ((i > 0) && (len[i - 1][0] > 1) && (coff[i - 1][0] < len[i - 1][0] - 1)) {
+			// Repeat last note
 			note[i][0] = note[i - 1][0];
 			att[i][0] = att[i - 1][0];
 			len[i][0] = len[i - 1][0];
 			coff[i][0] = coff[i - 1][0] + 1;
 		}
 		else {
+			// Create new note
 			if (i == 0) {
 				note[i][0] = 60 + (max_note - min_note) * rand2() / RAND_MAX;
 			}
 			else {
 				note[i][0] = note[i - 1][0] + randbw(-note_step, note_step);
+				// Choose again if same note
+				if (note[i][0] == note[i-1][0]) note[i][0] = note[i - 1][0] + randbw(-note_step, note_step);
+				// Check limits
 				if (note[i][0] > max_note) note[i][0] = 2 * max_note - note[i][0];
 				if (note[i][0] < min_note) note[i][0] = 2 * min_note - note[i][0];
 			}
@@ -62,6 +67,7 @@ void CGenRS1::Generate()
 			if (tempo[i] > max_tempo) tempo[i] = 2 * max_tempo - tempo[i];
 			if (tempo[i] < min_tempo) tempo[i] = 2 * min_tempo - tempo[i];
 		}
+		// Count additional variables
 		CountOff(i, i);
 		CountTime(i, i);
 		pause[i][0] = 0;
