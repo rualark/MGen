@@ -74,8 +74,8 @@ void CMGenDoc::Serialize(CArchive& ar)
 	else
 	{
 		//ar.Close();
-		CString fname = ar.m_strFileName;
-		mf->WriteLog(1, fname);
+		//CString fname = ar.m_strFileName;
+		//mf->WriteLog(1, fname);
 	}
 }
 
@@ -159,7 +159,7 @@ BOOL CMGenDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 	// TODO:  Add your specialized creation code here
 	CString fname = lpszPathName;
-	mf->WriteLog(1, fname);
+	//mf->WriteLog(1, fname);
 	mf->LoadResults(fname);
 
 	return TRUE;

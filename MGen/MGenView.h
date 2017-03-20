@@ -62,7 +62,7 @@ public:
 #endif
 	int mouse_voice; // Current voice
 	int mouse_voice_old; // Previously drawn voice
-	int mouse_step; // Current step under mouse
+	int mouse_step = -1; // Current step under mouse
 	int mouse_step_old; // Previously drawn mouse_step
 	int nwidth; // Step width
 	int nheight; // Note height

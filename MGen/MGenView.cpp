@@ -79,15 +79,16 @@ void CMGenView::OnDraw(CDC* pDC)
 	milliseconds time_stop5 = time_start;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGenTemplate *pGen = mf->pGen;
+	mf->WriteLog(2, "OnDraw start");
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
 			mf->WriteLog(2, "OnDraw mutex timed out: drawing postponed");
 			return;
 		}
 	}
-  CMGenDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc) return;
+  //CMGenDoc* pDoc = GetDocument();
+	//ASSERT_VALID(pDoc);
+	//if (!pDoc) return;
 
 	// This is invalidated rect
 	CRect ClipBox;
@@ -327,8 +328,10 @@ void CMGenView::OnDraw(CDC* pDC)
 		pGen->mutex_output.unlock();
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
-	//mf->WriteLog(2, st);
+	if ((time_stop - time_start).count() > 80) {
+		st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
+		mf->WriteLog(2, st);
+	}
 
 	//CRect rc;
 	//GetClientRect(&rc);
@@ -487,6 +490,9 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 				int step2 = max(mouse_step_old, mouse_step);
 				InvalidateRect(CRect(X_FIELD + min_step*nwidth - scroll.x, 0,
 					X_FIELD + (max_step + off + 1)*nwidth - scroll.x, 1080));
+				//CString st;
+				//st.Format("InvalidateRect %d, %d, %d, %d", X_FIELD, min_step, nwidth, scroll.x);
+				//mf->WriteLog(2, st);
 			}
 		}
 		CString st;

@@ -352,8 +352,8 @@ void CMainFrame::LoadResults(CString path) {
 	CString dir = string(path).substr(0, pos).c_str();
 	string::size_type pos2 = string(path).find_last_of("./");
 	CString fname = string(path).substr(pos + 1, pos2 - pos - 1).c_str();
-	WriteLog(1, dir);
-	WriteLog(1, fname);
+	//WriteLog(1, dir);
+	//WriteLog(1, fname);
 	pGen = new CGenRS1();
 	//if (m_algo_id == 101) pGen = new CGenCF1();
 	//if (m_algo_id == 102) pGen = new CGenCF2();
@@ -374,6 +374,8 @@ void CMainFrame::LoadResults(CString path) {
 		m_config = pGen->m_config;
 		m_state_gen = 2;
 		m_state_play = 0;
+		GetActiveView()->SetFocus();
+		Invalidate();
 		GetActiveView()->Invalidate();
 	}
 }
