@@ -80,6 +80,11 @@ public:
 	void SaveResults(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
 
+	void CountOff(int step1, int step2);
+	void CountTime(int step1, int step2);
+	void UpdateNoteMinMax(int step1, int step2);
+	void UpdateTempoMinMax(int step1, int step2);
+
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency);
 	void SendMIDI(int step1, int step2);
@@ -123,6 +128,8 @@ public:
 	int t_sent = 0; // Timeslot count sent to mainframe
 	int ng_min = 1000; // Minimum generated note
 	int ng_max = 0; // Maximum generated note
+	int ngv_min[MAX_VOICE]; // Minimum generated note per voice
+	int ngv_max[MAX_VOICE]; // Maximum generated note per voice
 	double tg_min = 1000; // Minimum generated tempo
 	double tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
@@ -137,7 +144,7 @@ public:
 	vector< vector <unsigned char> > att; // Attack (velocity for piano)
 	vector<double> tempo; // Tempo
 	vector<double> stime; // Time of current step in ms
-	vector<double> ntime; // Time of current step in ms
+	vector<double> etime; // Time of current step in ms
   
   // Random generator
 	ub4 randrsl[256], randcnt; // external results

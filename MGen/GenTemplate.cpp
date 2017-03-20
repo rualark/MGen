@@ -229,7 +229,7 @@ void CGenTemplate::InitRandom()
 
 void CGenTemplate::InitVectors()
 {
-		// Create vectors
+	// Create vectors
 	pause = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	note = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	len = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
@@ -239,7 +239,12 @@ void CGenTemplate::InitVectors()
 	att = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	tempo = vector<double>(t_allocated);
 	stime = vector<double>(t_allocated);
-	ntime = vector<double>(t_allocated);
+	etime = vector<double>(t_allocated);
+	// Init ngv
+	for (int v = 0; v < MAX_VOICE; v++) {
+		ngv_min[v] = 1000;
+		ngv_max[v] = 0;
+	}
 }
 
 void CGenTemplate::ResizeVectors(int size)
@@ -256,7 +261,7 @@ void CGenTemplate::ResizeVectors(int size)
 	noff.resize(size);
 	tempo.resize(size);
 	stime.resize(size);
-	ntime.resize(size);
+	etime.resize(size);
 	att.resize(size);
 	for (int i = t_allocated; i < size; i++) {
 		pause[i].resize(v_cnt);
@@ -302,13 +307,9 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 		SaveVector2C(fs, note, i);
 		SaveVector2C(fs, len, i);
 		SaveVector2C(fs, coff, i);
-		SaveVector2C(fs, poff, i);
-		SaveVector2C(fs, noff, i);
 		SaveVector2C(fs, att, i);
 	}
 	SaveVectorD(fs, tempo);
-	SaveVectorD(fs, stime);
-	SaveVectorD(fs, ntime);
 	fs.close();
 	// Save strings
 	CString st;
@@ -349,17 +350,10 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 }
 
 void CGenTemplate::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int i) {
-	//v2D[i].clear();
 	v2D[i].resize(v_cnt);
 	char* pointer = reinterpret_cast<char*>(&(v2D[i][0]));
 	size_t bytes = v_cnt * sizeof(v2D[i][0]);
 	fs.read(pointer, bytes);
-	//for (int x = 0; x < v_cnt; x++) {
-	//	fs->read(reinterpret_cast<char *>(v2D[i][x]), 1)
-	//}
-
-	//std::istreambuf_iterator iter(fs);
-	//std::copy(iter.begin(), iter.end()+v_cnt, std::back_inserter(v2D));
 }
 
 void CGenTemplate::LoadVectorD(ifstream &fs, vector<double> &v) {
@@ -399,10 +393,6 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 			CGenTemplate::CheckVar(&st2, &st3, "t_sent", &t_sent);
 			CGenTemplate::CheckVar(&st2, &st3, "t_send", &t_send);
 			CGenTemplate::CheckVar(&st2, &st3, "need_exit", &need_exit);
-			CGenTemplate::CheckVar(&st2, &st3, "ng_min", &ng_min);
-			CGenTemplate::CheckVar(&st2, &st3, "ng_max", &ng_max);
-			CGenTemplate::CheckVar(&st2, &st3, "tg_min", &tg_min);
-			CGenTemplate::CheckVar(&st2, &st3, "tg_max", &tg_max);
 			CGenTemplate::CheckVar(&st2, &st3, "time_started", &time_started);
 			CGenTemplate::CheckVar(&st2, &st3, "time_stopped", &time_stopped);
 			CGenTemplate::LoadVar(&st2, &st3, "m_config", &m_config);
@@ -421,19 +411,59 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 		LoadVector2C(fs, note, i);
 		LoadVector2C(fs, len, i);
 		LoadVector2C(fs, coff, i);
-		LoadVector2C(fs, poff, i);
-		LoadVector2C(fs, noff, i);
 		LoadVector2C(fs, att, i);
 	}
 	LoadVectorD(fs, tempo);
-	LoadVectorD(fs, stime);
-	LoadVectorD(fs, ntime);
+	CountOff(0, t_generated - 1);
+	CountTime(0, t_generated - 1);
+	UpdateNoteMinMax(0, t_generated - 1);
+	UpdateTempoMinMax(0, t_generated - 1);
 	fs.close();
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
 	est->Format("Loaded results from files in %d ms", time_stop - time_start);
 	WriteLog(0, est);
+}
+
+void CGenTemplate::CountOff(int step1, int step2)
+{
+	for (int i = step1; i <= step2; i++) {
+		for (int v = 0; v <= v_cnt; v++) {
+			noff[i][v] = len[i][v] - coff[i][v];
+			if (i - coff[i][v] - 1 >= 0) poff[i][v] = len[i - coff[i][v] - 1][v] - coff[i][v];
+			else poff[i][v] = 0;
+		}
+	}
+}
+
+void CGenTemplate::CountTime(int step1, int step2)
+{
+	for (int i = step1; i <= step2; i++) {
+		if (i > 0) stime[i] = stime[i - 1] + 30000.0 / tempo[i - 1];
+		else stime[i] = 0;
+		etime[i] = stime[i] + 30000.0 / tempo[i];
+	}
+}
+
+void CGenTemplate::UpdateNoteMinMax(int step1, int step2)
+{
+	for (int i = step1; i <= step2; i++) {
+		for (int v = 0; v <= v_cnt; v++) {
+			if (ng_min > note[i][v]) ng_min = note[i][v];
+			if (ng_max < note[i][v]) ng_max = note[i][v];
+			if (ngv_min[v] > note[i][v]) ngv_min[v] = note[i][v];
+			if (ngv_max[v] < note[i][v]) ngv_max[v] = note[i][v];
+		}
+	}
+}
+
+void CGenTemplate::UpdateTempoMinMax(int step1, int step2)
+{
+	for (int i = step1; i <= step2; i++) {
+		if (tg_min > tempo[i]) tg_min = tempo[i];
+		if (tg_max < tempo[i]) tg_max = tempo[i];
+	}
 }
 
 void CGenTemplate::StartMIDI(int midi_device_i, int latency)
@@ -507,7 +537,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		buffer[x*2].timestamp = timestamp;
 		buffer[x*2].message = Pm_Message(0x90, note[i][0], att[i][0]);
 		// Note OFF
-		timestamp = ntime[i + len[i][0] - 1] - stime[step1] + timestamp0;
+		timestamp = etime[i + len[i][0] - 1] - stime[step1] + timestamp0;
 		buffer[x * 2 + 1].timestamp = timestamp;
 		buffer[x * 2 + 1].message = Pm_Message(0x90, note[i][0], 0);
 		if (noff[i][0] == 0) break;
@@ -515,7 +545,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	}
 	// Save last sent position
 	midi_sent = step22;
-	midi_sent_t = timestamp0 + ntime[midi_sent-1] - stime[step1];
+	midi_sent_t = timestamp0 + etime[midi_sent-1] - stime[step1];
 	mutex_output.unlock();
 	Pm_Write(midi, buffer, ncount*2);
 	delete [] buffer;
