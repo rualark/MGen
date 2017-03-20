@@ -73,7 +73,6 @@ public:
 
 // Operations
 public:
-
 	void WriteLog(int log, CString st);
 
 	// Overrides
@@ -132,6 +131,7 @@ public:
 	void LoadSettings();
 	void SaveSettings();
 	void LoadResults(CString path);
+	bool NewDocument();
 
 	static UINT GenThread(LPVOID pParam);
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);

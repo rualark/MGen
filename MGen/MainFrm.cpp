@@ -380,6 +380,18 @@ void CMainFrame::LoadResults(CString path) {
 	}
 }
 
+bool CMainFrame::NewDocument()
+{
+	if ((m_state_gen == 2) && (m_state_play == 0)) if (pGen != 0) {
+		WriteLog(0, "Removing previous generator");
+		delete pGen;
+		m_state_gen = 0;
+		pGen = 0;
+		return true;
+	}
+	return false;
+}
+
 void CMainFrame::OnButtonGen()
 {
 	if (m_state_gen == 1) {
