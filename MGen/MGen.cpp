@@ -141,7 +141,7 @@ BOOL CMGenApp::InitInstance()
 
 	// Enable DDE Execute open
 	EnableShellOpen();
-	RegisterShellFileTypes(TRUE);
+	//RegisterShellFileTypes(TRUE);
 
 
 	// Dispatch commands specified on the command line.  Will return FALSE if
