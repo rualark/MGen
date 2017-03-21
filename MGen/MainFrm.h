@@ -41,14 +41,15 @@ public:
 	int view_single_track = 1; // If all tracks are shown in one
 	int zoom_x = 200; // Zoom for view
 	int zoom_y = 200;
-	int ng_min = 0;
+	int ng_min = 0; // Limits for view
 	int ng_max = 0;
 	int tg_min = 0;
 	int tg_max = 0;
-	int m_algo = -1; // Current algorithm global ID
-	int m_algo_id = -1; // Current algorithm local ID
+	int m_algo = -1; // Current algorithm local ID
+	int m_algo_id = -1; // Current algorithm global ID
 	int m_view_timer = 100; // Delay between ondraw events in ms
 	CString m_config; // Current config
+	CString m_fname; // Current saved results filename
 	int m_state_gen=0;
 	// 0 = No music
 	// 1 = Generation started
@@ -57,6 +58,8 @@ public:
 	// 0 = No playback
 	// 1 = Playback
 	// 2 = Playback into buffer finished. Buffer is still playing
+
+	// Algorithm / configs constants
 	CString AlgName[MAX_ALGO];
 	CString AlgGroup[MAX_ALGO];
 	CString AlgGroups[MAX_ALGO];

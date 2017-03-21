@@ -413,6 +413,8 @@ void CMainFrame::OnButtonGen()
 	if (m_algo_id == 1001) pGen = new CGenRS1();
 	if (pGen != 0) {
 		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
+		// Clear current saved path
+		m_fname = "";
 		// Set pGen variables
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
@@ -471,6 +473,7 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		CreateDirectory("autosaves\\" + AlgFolder[m_algo], NULL);
 		pGen->SaveResults(dir, fname);
 		pGen->SaveMidi(dir, fname);
+		m_fname = fname;
 		// Copy config
 		CGenTemplate::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\config.pl");
 		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
