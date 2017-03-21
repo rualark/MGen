@@ -423,6 +423,7 @@ void CMainFrame::OnButtonGen()
 		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
 		// Clear current saved path
 		m_fname = "";
+		m_dir = "";
 		// Set pGen variables
 		pGen->m_hWnd = m_hWnd;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;

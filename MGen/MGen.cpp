@@ -254,5 +254,6 @@ void CMGenApp::OnFileOpen()
 		// Get name
 		CString path = fileDlg.GetPathName();
 		mf->LoadResults(path);
+		AddToRecentFileList(path);
 	}
 }
