@@ -17,8 +17,6 @@ void CGenCF2::Generate()
 	TRACE("CGenCF2.Generate called\n");
 }
 
-void CGenCF2::LoadConfigLine(CString* sN, CString* sV)
+void CGenCF2::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
-	int idata = atoi(*sV);
-	double fdata = atof(*sV);
 }

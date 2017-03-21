@@ -81,7 +81,16 @@ void CGenTemplate::LoadConfig(CString fname)
 			st2.Trim();
 			st3.Trim();
 			st2.MakeLower();
-			LoadConfigLine(&st2, &st3);
+			// Load general variables
+			int idata = atoi(st2);
+			double fdata = atof(st3);
+			CheckVar(&st2, &st3, "v_cnt", &v_cnt);
+			CheckVar(&st2, &st3, "t_cnt", &t_cnt);
+			CheckVar(&st2, &st3, "t_allocated", &t_allocated);
+			CheckVar(&st2, &st3, "t_send", &t_send);
+			CheckVar(&st2, &st3, "midifile_tpq_mul", &midifile_tpq_mul);
+			// Load algorithm-specific variables
+			LoadConfigLine(&st2, &st3, idata, fdata);
 		}
 	}
 	fs.close();
@@ -432,6 +441,7 @@ void CGenTemplate::SaveMidi(CString dir, CString fname)
 	MidiFile midifile;
 	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
 	int tpq = 120;                // ticks per quarter note
+	int tpñ = 60 * midifile_tpq_mul; // ticks per croch
 	midifile.setTicksPerQuarterNote(tpq);
 	int track = 0;
 	int channel = 0;
@@ -441,7 +451,7 @@ void CGenTemplate::SaveMidi(CString dir, CString fname)
 	// Save tempo
 	midifile.addTempo(track, 0, tempo[0]);
 	for (int i = 0; i < t_generated; i++) {
-		midifile.addTempo(track, (tpq * 4) + 60 * i, tempo[i]);
+		midifile.addTempo(track, (tpq * 4) + tpñ * i, tempo[i]);
 	}
 	// Save notes
 	for (int v = 0; v < v_cnt; v++) {
@@ -450,8 +460,8 @@ void CGenTemplate::SaveMidi(CString dir, CString fname)
 		midifile.addTrackName(track, 0, "Melody");
 		midifile.addPatchChange(track, 0, channel, 0); // 40=violin
 		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
-			midifile.addNoteOn(track, (tpq*4)+60*i, channel, note[i][v], att[i][v]);
-			midifile.addNoteOff(track, (tpq * 4) +60*(i+len[i][v])-1, channel, note[i][v], 0);
+			midifile.addNoteOn(track, (tpq*4)+ tpñ*i, channel, note[i][v], att[i][v]);
+			midifile.addNoteOff(track, (tpq * 4) + tpñ*(i+len[i][v])-1, channel, note[i][v], 0);
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}

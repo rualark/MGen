@@ -13,11 +13,8 @@ CGenRS1::~CGenRS1()
 {
 }
 
-void CGenRS1::LoadConfigLine(CString* sN, CString* sV)
+void CGenRS1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
-	int idata = atoi(*sV);
-	double fdata = atof(*sV);
-	CGenTemplate::CheckVar(sN, sV, "t_cnt", &t_cnt);
 	CGenTemplate::CheckVar(sN, sV, "min_tempo", &min_tempo);
 	CGenTemplate::CheckVar(sN, sV, "max_tempo", &max_tempo);
 	CGenTemplate::CheckVar(sN, sV, "min_len", &min_len);

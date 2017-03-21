@@ -30,6 +30,7 @@ public:
 
 // Overrides
 public:
+	BOOL DoSave(LPCTSTR lpszPathName, BOOL bReplace);
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 #ifdef SHARED_HANDLERS

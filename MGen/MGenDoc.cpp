@@ -136,6 +136,11 @@ void CMGenDoc::Dump(CDumpContext& dc) const
 
 // CMGenDoc commands
 
+BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
+{
+	return TRUE;
+}
+
 BOOL CMGenDoc::OnNewDocument()
 {
 	//CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
@@ -167,6 +172,7 @@ BOOL CMGenDoc::OnOpenDocument(LPCTSTR lpszPathName)
 BOOL CMGenDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
 	// TODO: Add your specialized code here and/or call the base class
+	//return false;
 
 	return CDocument::OnSaveDocument(lpszPathName);
 }

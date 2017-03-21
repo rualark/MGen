@@ -13,8 +13,6 @@ void CGenCF1::Generate()
 {
 }
 
-void CGenCF1::LoadConfigLine(CString* sN, CString* sV)
+void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
-	int idata = atoi(*sV);
-	double fdata = atof(*sV);
 }

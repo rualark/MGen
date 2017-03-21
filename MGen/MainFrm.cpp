@@ -151,6 +151,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	AfxInitRichEdit2();
 
 	LoadSettings();
+	//m_wndRibbonBar.GetQuickAccessToolbar()->SetCompactMode(1);
 
 	return 0;
 }

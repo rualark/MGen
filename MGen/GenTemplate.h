@@ -66,11 +66,24 @@ protected:
 	void SaveVectorD(ofstream &fs, vector<double> &v);
 	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void LoadVectorD(ifstream & fs, vector<double>& v);
-	
+
+protected:
+	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, double fdata) = 0;
+	// Helper functions for child generators
+	void CountOff(int step1, int step2);
+	void CountTime(int step1, int step2);
+	void UpdateNoteMinMax(int step1, int step2);
+	void UpdateTempoMinMax(int step1, int step2);
+	// Mathematics
+	int randbw(int n1, int n2);
+	// Random
+	void isaac();
+	void randinit(int flag);
+	unsigned int rand2();
+
 public:
 	CGenTemplate();
 	virtual ~CGenTemplate();
-	virtual void LoadConfigLine(CString* sN, CString* sV) = 0;
 	virtual void Generate() = 0;
 
 	void InitRandom();
@@ -81,22 +94,12 @@ public:
 	void LoadResults(CString dir, CString fname);
 	void SaveMidi(CString dir, CString fname);
 
-	void CountOff(int step1, int step2);
-	void CountTime(int step1, int step2);
-	void UpdateNoteMinMax(int step1, int step2);
-	void UpdateTempoMinMax(int step1, int step2);
-
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency);
 	void SendMIDI(int step1, int step2);
 	void WriteLog(int i, CString * pST);
 	void StopMIDI();
-	int randbw(int n1, int n2);
 	int GetPlayStep();
-	// Random
-	void isaac();
-	void randinit(int flag);
-	unsigned int rand2();
 
 	HWND m_hWnd;
 	UINT WM_GEN_FINISH;
@@ -134,6 +137,7 @@ public:
 	double tg_min = 1000; // Minimum generated tempo
 	double tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
+	double midifile_tpq_mul = 1; // Multiplier of ticks per quarter notes in midi export
 	vector <string> instr; // Instruments for each voice
 	// Output
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
