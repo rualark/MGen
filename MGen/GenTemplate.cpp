@@ -595,9 +595,9 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	double time;
 	for (i = step21; i <= step2; i++) {
 		step22 = i;
-		if (i == 0) time = stime[i];
-		else time = etime[i - 1];
-		if (time - stime[step1] + timestamp - timestamp_current > MAX_MIDI_BUFFER_MSEC) break;
+		if (i == 0) time = stime[i] * 100 / m_pspeed;
+		else time = etime[i - 1] * 100/m_pspeed;
+		if (time - stime[step1] * 100 / m_pspeed + timestamp - timestamp_current > MAX_MIDI_BUFFER_MSEC) break;
 	}
 	// Count notes
 	for (i = step21; i < step22; i++) {
@@ -611,11 +611,11 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	i = step21;
 	for (int x = 0; x < ncount; x++) {
 		// Note ON
-		timestamp = stime[step21] - stime[step1] + timestamp0;
+		timestamp = (stime[step21] - stime[step1]) * 100 / m_pspeed + timestamp0;
 		buffer[x*2].timestamp = timestamp;
 		buffer[x*2].message = Pm_Message(0x90, note[i][0], att[i][0]);
 		// Note OFF
-		timestamp = etime[i + len[i][0] - 1] - stime[step1] + timestamp0;
+		timestamp = (etime[i + len[i][0] - 1] - stime[step1]) * 100 / m_pspeed + timestamp0;
 		buffer[x * 2 + 1].timestamp = timestamp;
 		buffer[x * 2 + 1].message = Pm_Message(0x90, note[i][0], 0);
 		if (noff[i][0] == 0) break;
@@ -623,7 +623,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	}
 	// Save last sent position
 	midi_sent = step22;
-	midi_sent_t = timestamp0 + etime[midi_sent-1] - stime[step1];
+	midi_sent_t = timestamp0 + (etime[midi_sent-1] - stime[step1]) * 100 / m_pspeed;
 	mutex_output.unlock();
 	Pm_Write(midi, buffer, ncount*2);
 	delete [] buffer;
@@ -671,7 +671,7 @@ int CGenTemplate::GetPlayStep() {
 		int searchElement = TIME_PROC(TIME_INFO) - midi_start_time;
 		while (step1 <= step2) {
 			cur_step = (step1 + step2) / 2;
-			currentElement = stime[cur_step];
+			currentElement = stime[cur_step] * 100 / m_pspeed;
 			if (currentElement < searchElement) {
 				step1 = cur_step + 1;
 			}

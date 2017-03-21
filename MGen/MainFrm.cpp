@@ -716,7 +716,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 					WriteLog(4, "OnGenFinish mutex timed out: playback not started");
 					return;
 				}
-				double gtime = pGen->stime[pGen->t_sent - 1];
+				double gtime = pGen->stime[pGen->t_sent - 1]*100/pGen->m_pspeed;
 				double ptime = TIME_PROC(TIME_INFO) - pGen->time_started;
 				if ((gtime / ptime > 2) || (gtime > 30000) || ((gtime / ptime > 1.2) && (gtime > 5000))) {
 					m_state_play = 1;
@@ -731,8 +731,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 			}
 		}
 		if (m_state_play == 1) {
-			if ((pGen->t_sent > pGen->midi_sent))
+			if ((pGen->t_sent > pGen->midi_sent)) {
+				pGen->m_pspeed = m_pspeed;
 				pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
+			}
 			if ((pGen->t_sent == pGen->midi_sent) && (m_state_gen == 2)) {
 				::KillTimer(m_hWnd, TIMER2);
 				m_state_play = 2;
@@ -861,6 +863,7 @@ void CMainFrame::OnButtonPlay()
 		pGen->StartMIDI(GetMidiI(), 100);
 		m_state_play = 1;
 		// Start timer
+		pGen->m_pspeed = m_pspeed;
 		pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
 		SetTimer(TIMER1, m_view_timer, NULL);
 		SetTimer(TIMER2, 1000, NULL);

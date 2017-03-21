@@ -66,12 +66,11 @@ public:
 	static CString dir_from_path(CString path);
 
 protected:
+	// File operations
 	void SaveVector2C(ofstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveVectorD(ofstream &fs, vector<double> &v);
 	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void LoadVectorD(ifstream & fs, vector<double>& v);
-
-protected:
 	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, double fdata) = 0;
 	// Helper functions for child generators
 	void CountOff(int step1, int step2);
@@ -118,6 +117,7 @@ public:
 	CString m_config;
 	
 	// PortMIDI
+	double m_pspeed = 100; // Playback speed in percent
 	PmStream * midi = 0;
 	int midi_sent = 0; // Steps already sent to midi
 	int midi_sent_t = 0; // Timestamp of last event sent to midi
