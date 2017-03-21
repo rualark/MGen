@@ -158,6 +158,7 @@ public:
 	afx_msg void OnButtonSconfig();
 	afx_msg void OnUpdateSpinPspeed(CCmdUI *pCmdUI);
 	afx_msg void OnSpinPspeed();
+	afx_msg void OnSpinZoom();
 };
 
 

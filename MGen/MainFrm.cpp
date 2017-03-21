@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_SCONFIG, &CMainFrame::OnButtonSconfig)
 	ON_UPDATE_COMMAND_UI(ID_SPIN_PSPEED, &CMainFrame::OnUpdateSpinPspeed)
 	ON_COMMAND(ID_SPIN_PSPEED, &CMainFrame::OnSpinPspeed)
+	ON_COMMAND(ID_SPIN_ZOOM, &CMainFrame::OnSpinZoom)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -641,7 +642,12 @@ void CMainFrame::LoadSettings()
 				pRibbonSpin->SetEditText(st3);
 				m_pspeed = atoi(st3);
 			}
-			CGenTemplate::CheckVar(&st2, &st3, "horizontal_zoom", &zoom_x, MIN_HZOOM, MAX_HZOOM);
+			if (st2 == "horizontal_zoom") {
+				CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_ZOOM));
+				pRibbonSpin->SetEditText(st3);
+				zoom_x = atoi(st3);
+			}
+			//CGenTemplate::CheckVar(&st2, &st3, "horizontal_zoom", &zoom_x, MIN_HZOOM, MAX_HZOOM);
 			CGenTemplate::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 			CGenTemplate::LoadVar(&st2, &st3, "config", &m_config);
 		}
@@ -935,8 +941,20 @@ void CMainFrame::OnSpinPspeed()
 {
 	CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_PSPEED));
 	CString st = pRibbonSpin->GetEditText();
-	if (m_pspeed != st) {
+	if (m_pspeed != atoi(st)) {
 		m_pspeed = atoi(st);
+		SaveSettings();
+	}
+}
+
+
+void CMainFrame::OnSpinZoom()
+{
+	CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_ZOOM));
+	CString st = pRibbonSpin->GetEditText();
+	if (zoom_x != atoi(st)) {
+		zoom_x = atoi(st);
+		GetActiveView()->Invalidate();
 		SaveSettings();
 	}
 }
