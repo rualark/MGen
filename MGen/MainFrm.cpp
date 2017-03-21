@@ -67,6 +67,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_COMBO_MIDIOUT, &CMainFrame::OnComboMidiout)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_ALGO, &CMainFrame::OnUpdateButtonAlgo)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_PARAMS, &CMainFrame::OnUpdateButtonParams)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_SCONFIG, &CMainFrame::OnUpdateButtonSconfig)
+	ON_COMMAND(ID_BUTTON_SCONFIG, &CMainFrame::OnButtonSconfig)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -888,4 +890,19 @@ BOOL CMainFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 	}
 
 	return CFrameWndEx::OnCommand(wParam, lParam);
+}
+
+
+void CMainFrame::OnUpdateButtonSconfig(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable((m_fname != "") && (m_dir != ""));
+}
+
+
+void CMainFrame::OnButtonSconfig()
+{
+	if ((m_dir != "") && (m_fname != "")) {
+		CString path = m_dir + "\\" + m_fname + ".pl";
+		::ShellExecute(GetDesktopWindow()->m_hWnd, "open", path, NULL, NULL, SW_SHOWNORMAL);
+	}
 }

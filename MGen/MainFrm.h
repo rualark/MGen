@@ -153,6 +153,8 @@ public:
 	afx_msg void OnUpdateButtonAlgo(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateButtonParams(CCmdUI *pCmdUI);
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	afx_msg void OnUpdateButtonSconfig(CCmdUI *pCmdUI);
+	afx_msg void OnButtonSconfig();
 };
 
 
