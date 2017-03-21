@@ -133,6 +133,7 @@ public:
 	int GetMidiI();
 	void LoadAlgo();
 	void LoadSettings();
+	int GetAlgoById(int id);
 	void SaveSettings();
 	void LoadResults(CString path);
 	bool NewDocument();

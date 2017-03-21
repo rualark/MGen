@@ -113,7 +113,7 @@ public:
 	int need_exit=0; // If thread needs to exit due to generation abort
 	int can_send_log = 1; // If thread can send log to MainFrame (disabled OnClose)
 	timed_mutex mutex_output;
-	int m_algo_id;
+	int m_algo_id = -1; // Current algorithm id
 	CString m_config;
 	
 	// PortMIDI

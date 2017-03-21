@@ -234,6 +234,7 @@ void CMGenApp::SaveCustomState()
 void CMGenApp::OnFileOpen()
 {
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	if (mf->m_state_gen == 1) return;
 	TCHAR buffer[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, buffer);
 	CString path_old = string(buffer).c_str();

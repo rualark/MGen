@@ -356,6 +356,16 @@ void CMainFrame::LoadResults(CString path) {
 	GetActiveDocument()->SetTitle(fname);
 	m_fname = fname;
 	m_dir = dir;
+	// Stop playback
+	if (m_state_play > 0) OnButtonPlay();
+	m_state_play = 0;
+	// Delete generator
+	if (pGen != 0) {
+		WriteLog(0, "Starting generation: Removing previous generator");
+		delete pGen;
+		m_state_gen = 0;
+	}
+	pGen = 0;
 	pGen = new CGenRS1();
 	if (pGen != 0) {
 		WriteLog(0, _T("Loading file: ") + path);
@@ -370,9 +380,9 @@ void CMainFrame::LoadResults(CString path) {
 		// Load results
 		pGen->LoadResults(dir, fname);
 		m_algo_id = pGen->m_algo_id;
+		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
 		m_config = pGen->m_config;
 		m_state_gen = 2;
-		m_state_play = 0;
 		GetActiveView()->SetFocus();
 		Invalidate();
 		GetActiveView()->Invalidate();
@@ -608,10 +618,7 @@ void CMainFrame::LoadSettings()
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
 				m_algo_id = idata;
-				int* found = find(begin(AlgID), end(AlgID), m_algo_id);
-				if (*found == m_algo_id) {
-					m_algo = distance(AlgID, found);
-				}
+				if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
 			}
 			if (st2 == "midi_out") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
@@ -625,6 +632,14 @@ void CMainFrame::LoadSettings()
 		}
 	}
 	fs.close();
+}
+
+int CMainFrame::GetAlgoById(int id) {
+	int* found = find(begin(AlgID), end(AlgID), id);
+	if (*found == id) {
+		return distance(AlgID, found);
+	}
+	return -1;
 }
 
 void CMainFrame::SaveSettings()

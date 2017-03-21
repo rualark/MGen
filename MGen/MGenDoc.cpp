@@ -153,8 +153,8 @@ BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 	TCHAR szFilters[] = _T("MGen result folders (*.*)|*.*|");
 
 	// Create an Open dialog; the default file name extension is ".my".
-	mf->WriteLog(1, path_old);
-	mf->WriteLog(1, path_old + "\\" + mf->m_fname);
+	//mf->WriteLog(1, path_old);
+	//mf->WriteLog(1, path_old + "\\" + mf->m_fname);
 	CFileDialog fileDlg(FALSE, "", path_old + "\\" + mf->m_fname,
 		OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFilters, mf, 0, false);
 	fileDlg.m_ofn.lpstrInitialDir = path_old;
@@ -175,11 +175,11 @@ BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".txt", path + "\\" + fname + ".txt");
 		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".pl", path + "\\" + fname + ".pl");
 		// Set new title
-		mf->WriteLog(1, mf->m_dir);
-		mf->WriteLog(1, mf->m_fname);
-		mf->WriteLog(1, path);
-		mf->WriteLog(1, dir);
-		mf->WriteLog(1, fname);
+		//mf->WriteLog(1, mf->m_dir);
+		//mf->WriteLog(1, mf->m_fname);
+		//mf->WriteLog(1, path);
+		//mf->WriteLog(1, dir);
+		//mf->WriteLog(1, fname);
 		//OnSaveDocument(path);
 		mf->m_dir = dir;
 		mf->m_fname = fname;
