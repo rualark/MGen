@@ -54,6 +54,7 @@ class CGenTemplate
 {
 public:
 	static void copy_file(CString sName, CString dName);
+	static void AppendLineToFile(CString fname, CString st);
 	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, double * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);

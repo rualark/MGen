@@ -24,6 +24,14 @@ void CGenTemplate::copy_file(CString sName, CString dName) {
 	dst.close();
 }
 
+void CGenTemplate::AppendLineToFile(CString fname, CString st)
+{
+	ofstream outfile;
+	outfile.open(fname, ios_base::app);
+	outfile << st;
+	outfile.close();
+}
+
 void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int vmin, int vmax)
 {
 	if (*sName == sSearch) {

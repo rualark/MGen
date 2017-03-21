@@ -489,6 +489,11 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		GetActiveDocument()->SetTitle(fname);
 		// Copy config
 		CGenTemplate::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\" + fname + ".pl");
+		// Append config name
+		CGenTemplate::AppendLineToFile(dir + "\\" + fname + ".pl",
+			"\n# This config was copied from file " + AlgFolder[m_algo] + "\\" + m_config + ".pl\n");
+		CGenTemplate::AppendLineToFile(dir + "\\" + fname + ".pl",
+			"# Originally autosaved at " + dir);
 		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		//WriteLog(1, dir + "\\config.pl");
 	}
