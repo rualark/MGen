@@ -138,6 +138,54 @@ void CMGenDoc::Dump(CDumpContext& dc) const
 
 BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 {
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	TCHAR buffer[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buffer);
+	//string::size_type pos = string(buffer).find_last_of("\\/");
+	CString path_old = string(buffer).c_str();
+	path_old += "\\saves\\" + mf->AlgFolder[mf->m_algo];
+	// Create folders
+	CreateDirectory("saves", NULL);
+	CreateDirectory(path_old, NULL);
+
+	// szFilters is a text string that includes two file name filters:
+	// "*.my" for "MyType Files" and "*.*' for "All Files."
+	TCHAR szFilters[] = _T("MGen result folders (*.*)|*.*|");
+
+	// Create an Open dialog; the default file name extension is ".my".
+	mf->WriteLog(1, path_old);
+	mf->WriteLog(1, path_old + "\\" + mf->m_fname);
+	CFileDialog fileDlg(FALSE, "", path_old + "\\" + mf->m_fname,
+		OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFilters, mf, 0, false);
+	fileDlg.m_ofn.lpstrInitialDir = path_old;
+
+	// Display the file dialog. When user clicks OK, fileDlg.DoModal() 
+	// returns IDOK.
+	if (fileDlg.DoModal() == IDOK)
+	{
+		// Get name
+		CString path = fileDlg.GetPathName();
+		CString fname = CGenTemplate::fname_from_path(path);
+		CString dir = CGenTemplate::dir_from_path(path);
+		// Create folders
+		CreateDirectory(path, NULL);
+		// Copy files
+		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mgr", path + "\\" + fname + ".mgr");
+		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mid", path + "\\" + fname + ".mid");
+		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".txt", path + "\\" + fname + ".txt");
+		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".pl", path + "\\" + fname + ".pl");
+		// Set new title
+		mf->WriteLog(1, mf->m_dir);
+		mf->WriteLog(1, mf->m_fname);
+		mf->WriteLog(1, path);
+		mf->WriteLog(1, dir);
+		mf->WriteLog(1, fname);
+		//OnSaveDocument(path);
+		mf->m_dir = dir;
+		mf->m_fname = fname;
+		SetTitle(fname);
+	}
+
 	return TRUE;
 }
 
@@ -156,14 +204,14 @@ BOOL CMGenDoc::OnNewDocument()
 
 BOOL CMGenDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	//CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
 	// TODO:  Add your specialized creation code here
-	CString fname = lpszPathName;
+	//CString fname = lpszPathName;
 	//mf->WriteLog(1, fname);
-	mf->LoadResults(fname);
+	//mf->LoadResults(fname);
 
 	return TRUE;
 }
@@ -172,7 +220,7 @@ BOOL CMGenDoc::OnOpenDocument(LPCTSTR lpszPathName)
 BOOL CMGenDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
 	// TODO: Add your specialized code here and/or call the base class
-	//return false;
+	return false;
 
 	return CDocument::OnSaveDocument(lpszPathName);
 }

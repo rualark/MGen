@@ -32,9 +32,10 @@ BEGIN_MESSAGE_MAP(CMGenApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &CMGenApp::OnAppAbout)
 	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+	//ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// Standard print setup command
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
+	ON_COMMAND(ID_FILE_OPEN, &CMGenApp::OnFileOpen)
 END_MESSAGE_MAP()
 
 
@@ -230,5 +231,27 @@ void CMGenApp::SaveCustomState()
 
 // CMGenApp message handlers
 
+void CMGenApp::OnFileOpen()
+{
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	TCHAR buffer[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buffer);
+	CString path_old = string(buffer).c_str();
+	// szFilters is a text string that includes two file name filters:
+	// "*.my" for "MyType Files" and "*.*' for "All Files."
+	TCHAR szFilters[] = _T("MGen result files (*.mgr)|*.mgr|");
 
+	// Create an Open dialog; the default file name extension is ".my".
+	CFileDialog fileDlg(TRUE, "", path_old + "\\*.mgr",
+		OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szFilters, mf, 0, false);
+	fileDlg.m_ofn.lpstrInitialDir = path_old;
 
+	// Display the file dialog. When user clicks OK, fileDlg.DoModal() 
+	// returns IDOK.
+	if (fileDlg.DoModal() == IDOK)
+	{
+		// Get name
+		CString path = fileDlg.GetPathName();
+		mf->LoadResults(path);
+	}
+}

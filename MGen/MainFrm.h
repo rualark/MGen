@@ -50,6 +50,7 @@ public:
 	int m_view_timer = 100; // Delay between ondraw events in ms
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
+	CString m_dir; // Current saved results dir
 	int m_state_gen=0;
 	// 0 = No music
 	// 1 = Generation started

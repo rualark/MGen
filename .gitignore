@@ -244,6 +244,7 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 *.rpp-bak
+/MGen/saves
 /MGen/autosaves
 /MGen/autosaves_old
 /distrib

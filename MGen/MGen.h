@@ -46,6 +46,7 @@ public:
 
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnFileOpen();
 };
 
 extern CMGenApp theApp;

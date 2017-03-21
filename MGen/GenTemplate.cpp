@@ -132,6 +132,28 @@ bool CGenTemplate::nodeExists(CString dirName_in)
 	return true;    // file exists
 }
 
+CString CGenTemplate::fname_from_path(CString path)
+{
+	string::size_type pos = string(path).find_last_of("\\/");
+	CString path2 = string(path).substr(pos + 1).c_str();
+	return path2;
+}
+
+CString CGenTemplate::bname_from_path(CString path)
+{
+	string::size_type pos = string(path).find_last_of("\\/");
+	string::size_type pos2 = string(path).find_last_of("./");
+	CString path2 = string(path).substr(pos + 1, pos2 - pos - 1).c_str();
+	return path2;
+}
+
+CString CGenTemplate::dir_from_path(CString path)
+{
+	string::size_type pos = string(path).find_last_of("\\/");
+	CString path2 = string(path).substr(0, pos).c_str();
+	return path2;
+}
+
 CGenTemplate::CGenTemplate()
 {
 }
@@ -323,7 +345,7 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 	fs.close();
 	// Save strings
 	CString st;
-	fs.open(dir + "\\results.txt");
+	fs.open(dir + "\\" + fname + ".txt");
 	fs << "m_config = " + m_config + "\n";
 	st.Format("m_algo_id = %d\n", m_algo_id);
 	fs << st;
@@ -379,7 +401,7 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	// Load strings
 	ifstream fs;
-	fs.open(dir + "\\results.txt");
+	fs.open(dir + "\\" + fname + ".txt");
 	CString st, st2, st3;
 	char pch[2550];
 	int pos = 0;

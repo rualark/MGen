@@ -353,12 +353,10 @@ void CMainFrame::LoadResults(CString path) {
 	CString dir = string(path).substr(0, pos).c_str();
 	string::size_type pos2 = string(path).find_last_of("./");
 	CString fname = string(path).substr(pos + 1, pos2 - pos - 1).c_str();
-	//WriteLog(1, dir);
-	//WriteLog(1, fname);
+	GetActiveDocument()->SetTitle(fname);
+	m_fname = fname;
+	m_dir = dir;
 	pGen = new CGenRS1();
-	//if (m_algo_id == 101) pGen = new CGenCF1();
-	//if (m_algo_id == 102) pGen = new CGenCF2();
-	//if (m_algo_id == 1001) pGen = new CGenRS1();
 	if (pGen != 0) {
 		WriteLog(0, _T("Loading file: ") + path);
 		// Set pGen variables
@@ -473,9 +471,11 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		CreateDirectory("autosaves\\" + AlgFolder[m_algo], NULL);
 		pGen->SaveResults(dir, fname);
 		pGen->SaveMidi(dir, fname);
+		m_dir = dir;
 		m_fname = fname;
+		GetActiveDocument()->SetTitle(fname);
 		// Copy config
-		CGenTemplate::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\config.pl");
+		CGenTemplate::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\" + fname + ".pl");
 		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		//WriteLog(1, dir + "\\config.pl");
 	}
