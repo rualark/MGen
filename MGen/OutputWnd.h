@@ -41,6 +41,7 @@ public:
 
 	void UpdateFonts();
 
+	COutputList m_wndOutputWarn;
 	COutputList m_wndOutputDebug;
 	COutputList m_wndOutputPerf;
 	COutputList m_wndOutputAlgo;
