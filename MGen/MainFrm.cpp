@@ -466,7 +466,9 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		m_state_gen = 2;
 		// Save results
 		CString fname = CTime::GetCurrentTime().Format("%Y-%m-%d-auto %H-%M-%S");
-		CString dir = "autosaves\\" + fname;
+		CString dir = "autosaves\\" + AlgFolder[m_algo] + "\\" + fname;
+		CreateDirectory("autosaves", NULL);
+		CreateDirectory("autosaves\\" + AlgFolder[m_algo], NULL);
 		pGen->SaveResults(dir, fname);
 		pGen->SaveMidi(dir, fname);
 		// Copy config

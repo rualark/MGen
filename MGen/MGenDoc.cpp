@@ -138,6 +138,32 @@ void CMGenDoc::Dump(CDumpContext& dc) const
 
 BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 {
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	TCHAR buffer[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buffer);
+	string::size_type pos = string(buffer).find_last_of("\\/");
+	CString path_old = string(buffer).c_str();
+	path_old += "\\saves";
+
+	// szFilters is a text string that includes two file name filters:
+	// "*.my" for "MyType Files" and "*.*' for "All Files."
+	TCHAR szFilters[] = _T("MGen result files (*.mgr)|*.mgr|");
+
+	// Create an Open dialog; the default file name extension is ".my".
+	CFileDialog fileDlg(FALSE, _T("pl"), GetPathName(),
+		OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFilters, mf, 0, false);
+	fileDlg.m_ofn.lpstrInitialDir = path_old;
+
+	// Display the file dialog. When user clicks OK, fileDlg.DoModal() 
+	// returns IDOK.
+	if (fileDlg.DoModal() == IDOK)
+	{
+		// Get name
+		CString path = fileDlg.GetPathName();
+		OnSaveDocument(path);
+		SetPathName(path);
+	}
+
 	return TRUE;
 }
 
