@@ -5,8 +5,8 @@ CGenCF1::CGenCF1()
 {
 	c_len = 9;
 	max_interval = 5;
-	midifile_tpq_mul = 4;
-	sleep_ms = 10;
+	midifile_tpq_mul = 8;
+	sleep_ms = 0;
 }
 
 CGenCF1::~CGenCF1()
@@ -16,7 +16,8 @@ CGenCF1::~CGenCF1()
 void CGenCF1::Generate()
 {
 	vector<int> c(c_len), leap(c_len);
-	vector<int> nstat(max_interval*2+1);
+	vector<int> nstat(max_interval * 2 + 1);
+	vector<int> nstat2(max_interval * 2 + 1);
 	// Set first and last notes
 	c[0] = 0;
 	c[c_len-1] = 0;
@@ -30,12 +31,12 @@ void CGenCF1::Generate()
 	int nmin, nmax, good, leap_sum;
 	int step = 0; // Global step
 	while (true) {
+		if (need_exit) return;
 		// Analyze combination
 		nmin = 0;
 		nmax = 0;
 		good = 1;
-		leap_sum = 0;
-		for (int i = 0; i < c_len-1; i++) {
+		for (int i = 0; i < c_len - 1; i++) {
 			// Local note repeat prohibited
 			if (c[i] == c[i + 1]) {
 				good = 0;
@@ -48,17 +49,18 @@ void CGenCF1::Generate()
 			}
 			// Tritone prohibit
 			if (!allow_tritone) if (((c[i + 1] == -1) && (c[i] == 3)) ||
-					((c[i + 1] == 3) && (c[i] == -1)) ||
-					((c[i + 1] == -4) && (c[i] == -1)) ||
-					((c[i + 1] == -1) && (c[i] == -4)))	{
+				((c[i + 1] == 3) && (c[i] == -1)) ||
+				((c[i + 1] == -4) && (c[i] == -1)) ||
+				((c[i + 1] == -1) && (c[i] == -4))) {
 				good = 0;
 				break;
 			}
 			// Find all leaps
+			leap[i] = 0;
 			if (c[i + 1] - c[i] > 1) leap[i] = 1;
 			else if (c[i + 1] - c[i] < -1) leap[i] = -1;
-			else leap[i] = 0;
 		}
+		leap_sum = 0;
 		if (good) for (int i = 0; i < c_len - 1; i++) {
 			// Add new leap
 			if (leap[i] != 0) leap_sum++;
@@ -69,13 +71,42 @@ void CGenCF1::Generate()
 				good = 0;
 				break;
 			}
+			// Check if leaps follow each other in same direction
+			if (i < c_len - 2) {
+				if (leap[i] * leap[i + 1] > 0) {
+					good = 0;
+					break;
+				}
+				// Check if melody direction changes after leap
+				if (leap[i] * (c[i+2] - c[i+1]) > 0) {
+					if ((allow_leap_second_release) && (i < c_len - 3)) {
+						if (leap[i] * (c[i + 3] - c[i + 2]) > 0) {
+							good = 0;
+							break;
+						}
+					} 
+					else {
+						good = 0;
+						break;
+					}
+				}
+				// Check if leap returns to same note
+				if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
+					good = 0;
+					break;
+				}
+			}
 		}
 		// Clear nstat
-		if (good) for (int i = 0; i <= max_interval*2; i++) nstat[i] = 0;
+		if (good) for (int i = 0; i <= max_interval * 2; i++) {
+			nstat[i] = 0;
+			nstat2[i] = 0;
+		}
 		if (good) for (int i = 0; i < c_len; i++) {
 			// Prohibit stagnation
 			// Add new note
-			nstat[c[i]+max_interval]++;
+			nstat[c[i] + max_interval]++;
+			nstat2[c[i] + max_interval]++;
 			// Subtract old note
 			if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] + max_interval]--;
 			// Check if too many repeating notes
@@ -87,16 +118,33 @@ void CGenCF1::Generate()
 			if (c[i] < nmin) nmin = c[i];
 			if (c[i] > nmax) nmax = c[i];
 		}
+		// Check note fill
+		if ((!allow_unfilled_leaps) && (good)) for (int i = nmin; i <= nmax; i++) {
+			if (nstat2[i + max_interval] == 0) {
+				good = 0;
+				break;
+			}
+		}
+		// Prohibit multiple culminations
+		leap_sum = 0;
+		if (good) for (int i = 0; i < c_len; i++) {
+			if (c[i] == nmax) leap_sum++;
+			if (leap_sum > 1) {
+				good = 0;
+				break;
+			}
+		}
 		// Limit melody interval
 		if (nmax - nmin > max_interval) good = 0;
 		if (good) {
-			if (need_exit) return;
 			accepted++;
-			if (accepted < 100) {
+			if (accepted < 10000) {
 				Sleep(sleep_ms);
 				// Copy cantus to output
+				if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
 				for (int x = step; x < step + c_len; x++) {
-					note[x][0] = dia_to_chrom[(c[x - step]+28) % 7] + first_note; // Negative four octaves reserve
+					note[x][0] = dia_to_chrom[(c[x - step] + 56) % 7] + (c[x - step]/7)*12 + first_note; // Negative eight octaves reserve
+					if (c[x - step] < 0) note[x][0] -= 12; // Correct negative octaves
 					len[x][0] = 1;
 					pause[x][0] = 0;
 					tempo[x] = 200;
@@ -117,11 +165,11 @@ void CGenCF1::Generate()
 				len[step][0] = 1;
 				pause[step][0] = 1;
 				att[step][0] = 0;
-				tempo[step] = tempo[step-1];
+				tempo[step] = tempo[step - 1];
 				coff[step][0] = 0;
 				step++;
 				// Count additional variables
-				CountOff(step-c_len-1, step-1);
+				CountOff(step - c_len - 1, step - 1);
 				CountTime(step - c_len - 1, step - 1);
 				UpdateNoteMinMax(step - c_len - 1, step - 1);
 				UpdateTempoMinMax(step - c_len - 1, step - 1);
@@ -131,9 +179,6 @@ void CGenCF1::Generate()
 				::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 			}
 		}
-		//CString* est = new CString;
-		//est->Format("Array %d %d %d %d %d", c[c_len - 6], c[c_len - 5], c[c_len - 4], c[c_len - 3], c[c_len - 2]);
-		//WriteLog(1, est);
 		while (true) {
 			if (c[p] < max_interval) break;
 			// If current element is max, make it minimum
@@ -154,7 +199,7 @@ void CGenCF1::Generate()
 		//if (cycle > 100) break;
 	}
 	CString* est = new CString;
-	est->Format("Accepted %.2f%% (%d) variants of %d", 100.0*(double)accepted/(double)cycle, accepted, cycle);
+	est->Format("Accepted %.5f%% (%d) variants of %d", 100.0*(double)accepted/(double)cycle, accepted, cycle);
 	WriteLog(1, est);
 }
 
