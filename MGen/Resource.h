@@ -82,15 +82,15 @@
 #define ID_BUTTON_HZOOM_INC             32802
 #define ID_BUTTON3                      32807
 #define ID_BUTTON_SCONFIG               32808
-#define ID_COMBO2                       32809
-#define ID_COMBO_PSPEED                 32809
+#define ID_SPIN2                        32811
+#define ID_SPIN_PSPEED                  32811
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        316
-#define _APS_NEXT_COMMAND_VALUE         32810
+#define _APS_NEXT_COMMAND_VALUE         32812
 #define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

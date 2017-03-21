@@ -69,6 +69,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_PARAMS, &CMainFrame::OnUpdateButtonParams)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_SCONFIG, &CMainFrame::OnUpdateButtonSconfig)
 	ON_COMMAND(ID_BUTTON_SCONFIG, &CMainFrame::OnButtonSconfig)
+	ON_UPDATE_COMMAND_UI(ID_SPIN_PSPEED, &CMainFrame::OnUpdateSpinPspeed)
+	ON_COMMAND(ID_SPIN_PSPEED, &CMainFrame::OnSpinPspeed)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -634,6 +636,11 @@ void CMainFrame::LoadSettings()
 				//int id = distance(MidiName, find(begin(MidiName), end(MidiName), st3));
 				pCombo->SelectItem(st3);
 			}
+			if (st2 == "playback_speed") {
+				CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_PSPEED));
+				pRibbonSpin->SetEditText(st3);
+				m_pspeed = atoi(st3);
+			}
 			CGenTemplate::CheckVar(&st2, &st3, "horizontal_zoom", &zoom_x, MIN_HZOOM, MAX_HZOOM);
 			CGenTemplate::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 			CGenTemplate::LoadVar(&st2, &st3, "config", &m_config);
@@ -673,6 +680,8 @@ void CMainFrame::SaveSettings()
 	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 80 to 500\n", zoom_x);
 	fs << st;
 	st.Format("View_timer = %d # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers\n", m_view_timer);
+	fs << st;
+	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
 	fs << st;
 	fs.close();
 }
@@ -909,5 +918,22 @@ void CMainFrame::OnButtonSconfig()
 	if ((m_dir != "") && (m_fname != "")) {
 		CString path = m_dir + "\\" + m_fname + ".pl";
 		::ShellExecute(GetDesktopWindow()->m_hWnd, "open", path, NULL, NULL, SW_SHOWNORMAL);
+	}
+}
+
+
+void CMainFrame::OnUpdateSpinPspeed(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_state_play == 0);
+}
+
+
+void CMainFrame::OnSpinPspeed()
+{
+	CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_PSPEED));
+	CString st = pRibbonSpin->GetEditText();
+	if (m_pspeed != st) {
+		m_pspeed = atoi(st);
+		SaveSettings();
 	}
 }
