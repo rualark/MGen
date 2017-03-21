@@ -48,6 +48,7 @@ public:
 	int m_algo = -1; // Current algorithm local ID
 	int m_algo_id = -1; // Current algorithm global ID
 	int m_view_timer = 100; // Delay between ondraw events in ms
+	int m_pspeed = 100; // Playback speed in percent
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
 	CString m_dir; // Current saved results dir
@@ -155,6 +156,8 @@ public:
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnUpdateButtonSconfig(CCmdUI *pCmdUI);
 	afx_msg void OnButtonSconfig();
+	afx_msg void OnUpdateSpinPspeed(CCmdUI *pCmdUI);
+	afx_msg void OnSpinPspeed();
 };
 
 
