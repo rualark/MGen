@@ -876,3 +876,16 @@ void CMainFrame::OnUpdateButtonEparams(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_state_gen != 1 && m_algo > -1 && m_config != "");
 }
+
+
+BOOL CMainFrame::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	if (wParam >= ID_FILE_MRU_FILE1 && wParam <= ID_FILE_MRU_FILE16)
+	{
+		int nIndex = wParam - ID_FILE_MRU_FILE1;
+		CString path = ((CMGenApp*)::AfxGetApp())->getRecentFile(nIndex);
+		LoadResults(path);
+	}
+
+	return CFrameWndEx::OnCommand(wParam, lParam);
+}

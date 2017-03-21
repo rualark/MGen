@@ -28,7 +28,7 @@ class CMGenApp : public CWinAppEx
 {
 public:
 	CMGenApp();
-
+	CString getRecentFile(int index);
 
 // Overrides
 public:

@@ -152,6 +152,7 @@ public:
 	afx_msg void OnComboMidiout();
 	afx_msg void OnUpdateButtonAlgo(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateButtonParams(CCmdUI *pCmdUI);
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 };
 
 

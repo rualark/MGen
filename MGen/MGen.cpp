@@ -257,3 +257,9 @@ void CMGenApp::OnFileOpen()
 		AddToRecentFileList(path);
 	}
 }
+
+CString CMGenApp::getRecentFile(int index)
+{
+	CString st = string((*m_pRecentFileList)[index]).c_str();
+	return st;
+}
