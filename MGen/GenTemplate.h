@@ -7,6 +7,8 @@
 
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
+const int dia_to_chrom[] = { 0, 2, 4, 5, 7, 9, 11 };
+
 const CString InstName[] = {
 	"Piano", // 0
 	"Violin", // 1
@@ -116,7 +118,8 @@ public:
 	timed_mutex mutex_output;
 	int m_algo_id = -1; // Current algorithm id
 	CString m_config;
-	
+	int sleep_ms = 10;
+
 	// PortMIDI
 	double m_pspeed = 100; // Playback speed in percent
 	PmStream * midi = 0;

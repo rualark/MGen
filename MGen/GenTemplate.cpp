@@ -265,7 +265,7 @@ void CGenTemplate::InitRandom()
 	aa = bb = cc = (ub4)0;
 	for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
 	randinit(1);
-	TestRandom();
+	//TestRandom();
 }
 
 void CGenTemplate::TestRandom()
@@ -273,7 +273,7 @@ void CGenTemplate::TestRandom()
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	int n_buckets = 30;
 	int n_samples = 100000;
-	int n_variants = 11;
+	int n_variants = 3;
 	vector< vector <int> > test = vector<vector<int>>(n_buckets, vector<int>(n_variants+1));
 	// Fill test
 	for (int v = 0; v < n_samples; v++) {
@@ -557,7 +557,7 @@ void CGenTemplate::CountTime(int step1, int step2)
 void CGenTemplate::UpdateNoteMinMax(int step1, int step2)
 {
 	for (int i = step1; i <= step2; i++) {
-		for (int v = 0; v < v_cnt; v++) {
+		for (int v = 0; v < v_cnt; v++) if (pause[i][v] == 0) {
 			if (ng_min > note[i][v]) ng_min = note[i][v];
 			if (ng_max < note[i][v]) ng_max = note[i][v];
 			if (ngv_min[v] > note[i][v]) ngv_min[v] = note[i][v];
@@ -684,7 +684,9 @@ void CGenTemplate::StopMIDI()
 
 int CGenTemplate::randbw(int n1, int n2)
 {
-	return n1 + (double)(n2 - n1 + 1) * (double)rand() / (double)RAND_MAX;
+	int re = (double)(n2 - n1 + 1) * rand2() / (double)RAND_MAX;
+	re = re + n1;
+	return re;
 }
 
 int CGenTemplate::GetPlayStep() {

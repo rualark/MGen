@@ -99,9 +99,6 @@ void CGenRS1::Generate()
 			else t_sent = t_generated-3;
 			// Interface
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
-			CString* est = new CString;
-			est->Format("Chunk sent up to %d", t_sent);
-			WriteLog(0, est);
 		}
 		if (len[i][0] == 0) WriteLog(1, new CString("Critical error: Len = 0"));
 		Sleep(sleep_ms);

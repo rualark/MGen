@@ -257,7 +257,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			//st.Format("Notes showing from %d to %d", step1, step2);
 			//mf->WriteLog(1, st);
 			int retrigger;
-			for (int i = step1; i < step2; i++) {
+			for (int i = step1; i < step2; i++) if (pGen->pause[i][0] == 0) {
 				if (i == step1) if (pGen->coff[i][0] > 0) i = i - pGen->coff[i][0];
 				SolidBrush brush_v(Color(40 + (80 * pGen->att[i][0] / 127) /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
 				retrigger = 0;
@@ -476,7 +476,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		if (mouse_step > -1) {
 			mouse_note = (y_start - point.y) / nheight + mf->ng_min;
 			for (int i = 0; i < pGen->v_cnt; i++)
-				if (pGen->note[mouse_step][i] == mouse_note) {
+				if ((pGen->note[mouse_step][i] == mouse_note) && (pGen->pause[mouse_step][i] == 0)) {
 					mouse_voice = i;
 					step1 = mouse_step - pGen->coff[mouse_step][i];
 					step2 = step1 + pGen->len[mouse_step][i];

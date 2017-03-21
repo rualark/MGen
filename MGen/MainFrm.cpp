@@ -722,6 +722,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 					WriteLog(4, "OnGenFinish mutex timed out: playback not started");
 					return;
 				}
+				// Check generation speed
 				double gtime = pGen->stime[pGen->t_sent - 1]*100/pGen->m_pspeed;
 				double ptime = TIME_PROC(TIME_INFO) - pGen->time_started;
 				if ((gtime / ptime > 2) || (gtime > 30000) || ((gtime / ptime > 1.2) && (gtime > 5000))) {
@@ -738,6 +739,9 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 		}
 		if (m_state_play == 1) {
 			if ((pGen->t_sent > pGen->midi_sent)) {
+				CString st;
+				st.Format("Chunk received up to %d", pGen->t_sent);
+				WriteLog(0, st);
 				pGen->m_pspeed = m_pspeed;
 				pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
 			}
