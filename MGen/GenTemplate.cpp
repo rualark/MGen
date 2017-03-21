@@ -270,6 +270,34 @@ void CGenTemplate::InitRandom()
 
 void CGenTemplate::TestRandom()
 {
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int n_buckets = 30;
+	int n_samples = 100000;
+	int n_variants = 11;
+	vector< vector <int> > test = vector<vector<int>>(n_buckets, vector<int>(n_variants+1));
+	// Fill test
+	for (int v = 0; v < n_samples; v++) {
+		for (int i = 0; i < n_buckets; i++) {
+			test[i][randbw(0, n_variants - 1)] ++;
+		}
+	}
+	// Show results
+	ofstream fs;
+	fs.open("test-random.csv");
+	CString st;
+	for (int i = 0; i < n_buckets; i++) {
+		for (int v = 0; v <= n_variants; v++) {
+			st.Format("%d;", test[i][v]);
+			fs << st;
+		}
+		fs << "\n";
+	}
+	fs.close();
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
+	WriteLog(0, est);
 }
 
 void CGenTemplate::InitVectors()
@@ -656,7 +684,7 @@ void CGenTemplate::StopMIDI()
 
 int CGenTemplate::randbw(int n1, int n2)
 {
-	return n1 + (double)(n2 - n1) * (double)rand2() / (double)RAND_MAX;
+	return n1 + (double)(n2 - n1 + 1) * (double)rand() / (double)RAND_MAX;
 }
 
 int CGenTemplate::GetPlayStep() {
