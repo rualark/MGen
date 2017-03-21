@@ -60,6 +60,7 @@ public:
 	// 0 = No playback
 	// 1 = Playback
 	// 2 = Playback into buffer finished. Buffer is still playing
+	CWinThread* m_GenThread;
 
 	// Algorithm / configs constants
 	CString AlgName[MAX_ALGO];
@@ -79,6 +80,14 @@ public:
 // Operations
 public:
 	void WriteLog(int log, CString st);
+	int GetMidiI();
+	void LoadAlgo();
+	void LoadSettings();
+	int GetAlgoById(int id);
+	void SaveSettings();
+	void LoadResults(CString path);
+	bool NewDocument();
+	static UINT GenThread(LPVOID pParam);
 
 	// Overrides
 public:
@@ -92,14 +101,12 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	CMFCRibbonStatusBar  m_wndStatusBar;
-	CWinThread* m_GenThread;
-
 protected:  // control bar embedded members
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
 	CMFCToolBarImages m_PanelImages;
 	COutputWnd        m_wndOutput;
+	CMFCRibbonStatusBar  m_wndStatusBar;
 
 // Generated message map functions
 protected:
@@ -115,6 +122,7 @@ protected:
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
+
 public:
 	afx_msg void OnButtonParams();
 	afx_msg void OnButtonGen();
@@ -126,20 +134,9 @@ public:
 	afx_msg void OnUpdateComboAlgo(CCmdUI *pCmdUI);
 	afx_msg void OnComboAlgo();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-
 	afx_msg LRESULT OnGenFinish(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnDebugMsg(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnWarnMsg(WPARAM wParam, LPARAM lParam);
 
-	int GetMidiI();
-	void LoadAlgo();
-	void LoadSettings();
-	int GetAlgoById(int id);
-	void SaveSettings();
-	void LoadResults(CString path);
-	bool NewDocument();
-
-	static UINT GenThread(LPVOID pParam);
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
 	afx_msg void OnClose();
 	afx_msg void OnButtonHzoomDec();
