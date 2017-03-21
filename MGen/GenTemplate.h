@@ -90,6 +90,7 @@ public:
 	virtual void Generate() = 0;
 
 	void InitRandom();
+	void TestRandom(); // Tests random generator
 	void InitVectors();
 	void LoadConfig(CString fname);
 	void ResizeVectors(int size);

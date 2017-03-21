@@ -265,6 +265,11 @@ void CGenTemplate::InitRandom()
 	aa = bb = cc = (ub4)0;
 	for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
 	randinit(1);
+	TestRandom();
+}
+
+void CGenTemplate::TestRandom()
+{
 }
 
 void CGenTemplate::InitVectors()
