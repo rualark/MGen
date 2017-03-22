@@ -273,19 +273,15 @@ void CMGenView::OnDraw(CDC* pDC)
 						y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
 						pGen->len[i][0] * nwidth - retrigger, nheight);
 				}
+				// Show comment
+				if (pGen->comment[i][0] != "")
+					g.DrawRectangle(&pen_ddgray, X_FIELD + i * nwidth,
+						y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
+						pGen->len[i][0] * nwidth - retrigger, nheight);
+				//g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][0] - ng_min2) * nheight,
+						//X_FIELD + i * nwidth, y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight);
 				if (pGen->noff[i][0] == 0) break;
 				i = i + pGen->noff[i][0] - 1;
-				/*
-				g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
-					y_start - (pGen->note[i][0] - ng_min2) * nheight,
-					nwidth - 1, nheight - 1);
-			  // Highlight selected note
-				if ((i == mouse_step) && (mouse_voice == 0)) {
-					g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
-						y_start - (pGen->note[i][0] - ng_min2) * nheight,
-						nwidth - 1, nheight - 1);
-				}
-				*/
 			}
 			mouse_voice_old = mouse_voice;
 			// Show tempo
