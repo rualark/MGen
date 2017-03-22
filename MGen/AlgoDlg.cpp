@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CAlgoDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_SAVEAS, &CAlgoDlg::OnBnClickedButtonSaveas)
 	ON_BN_CLICKED(IDC_BUTTON_EDIT, &CAlgoDlg::OnBnClickedButtonEdit)
 	ON_BN_CLICKED(IDOK, &CAlgoDlg::OnBnClickedOk)
+	ON_NOTIFY(NM_DBLCLK, IDC_TREE_ALGO, &CAlgoDlg::OnNMDblclkTreeAlgo)
 END_MESSAGE_MAP()
 
 
@@ -281,4 +282,12 @@ void CAlgoDlg::OnBnClickedOk()
 	mf->SaveSettings();
 
 	CDialog::OnOK();
+}
+
+
+void CAlgoDlg::OnNMDblclkTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	if (GetDlgItem(IDOK)->IsWindowEnabled()) OnBnClickedOk();
+
+	*pResult = 0;
 }

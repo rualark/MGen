@@ -37,4 +37,5 @@ public:
 	void UpdateControls();
 	void LoadFile(CString path);
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnNMDblclkTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult);
 };
