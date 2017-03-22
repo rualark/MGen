@@ -367,11 +367,19 @@ void CGenTemplate::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &
 	fs.write(pointer, bytes);
 }
 
+void CGenTemplate::SaveVector2Color(ofstream & fs, vector< vector<Color> > &v2D, int i) {
+	size_t bytes = 4;
+	for (int v = 0; v < v_cnt; v++) {
+		DWORD color = v2D[i][v].GetValue();
+		fs.write((char*)&color, bytes);
+	}
+}
+
 void CGenTemplate::SaveVector2ST(ofstream & fs, vector< vector<CString> > &v2D, int i) {
 	for (int v = 0; v < v_cnt; v++) {
 		unsigned short len = v2D[i][v].GetLength();
 		fs.write((char*)&len, sizeof(len));
-		fs.write(v2D[i][v].GetBuffer(), len);
+		if (len != 0) fs.write(v2D[i][v].GetBuffer(), len);
 	}
 }
 
@@ -395,13 +403,14 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 		SaveVector2C(fs, coff, i);
 		SaveVector2C(fs, att, i);
 		SaveVector2ST(fs, comment, i);
+		SaveVector2Color(fs, color, i);
 	}
 	SaveVectorD(fs, tempo);
 	fs.close();
 	// Save strings
 	CString st;
 	fs.open(dir + "\\" + fname + ".txt");
-	fs << "save_format_version = 1.1 # This is version of format used to save these files\n";
+	fs << "save_format_version = 1.2 # This is version of format used to save these files\n";
 	fs << "m_config = " + m_config + " # Name of config file used for generation\n";
 	st.Format("m_algo_id = %d\n", m_algo_id);
 	fs << st;
@@ -442,6 +451,27 @@ void CGenTemplate::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v
 	char* pointer = reinterpret_cast<char*>(&(v2D[i][0]));
 	size_t bytes = v_cnt * sizeof(v2D[i][0]);
 	fs.read(pointer, bytes);
+}
+
+void CGenTemplate::LoadVector2Color(ifstream & fs, vector< vector<Color> > &v2D, int i) {
+	size_t bytes = 4;
+	for (int v = 0; v < v_cnt; v++) {
+		DWORD color;
+		fs.read((char*)&color, bytes);
+		v2D[i][v].SetValue(color);
+	}
+}
+
+void CGenTemplate::LoadVector2ST(ifstream & fs, vector< vector<CString> > &v2D, int i) {
+	for (int v = 0; v < v_cnt; v++) {
+		unsigned short len;
+		char buf[5000];
+		fs.read((char*)&len, sizeof(len));
+		if (len != 0) {
+			fs.read((char*)&buf, len);
+			v2D[i][v] = buf;
+		}
+	}
 }
 
 void CGenTemplate::LoadVectorD(ifstream &fs, vector<double> &v) {
@@ -503,6 +533,8 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 		LoadVector2C(fs, len, i);
 		LoadVector2C(fs, coff, i);
 		LoadVector2C(fs, att, i);
+		LoadVector2ST(fs, comment, i);
+		LoadVector2Color(fs, color, i);
 	}
 	LoadVectorD(fs, tempo);
 	CountOff(0, t_generated - 1);

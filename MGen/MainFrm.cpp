@@ -384,7 +384,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Load results
 		pGen->LoadResults(dir, fname);
-		if (pGen->save_format_version != "1.0") MessageBox("This file was created with a different format version " + pGen->save_format_version + "\nYou can get errors trying to load it.", "Error");
+		if (pGen->save_format_version != "1.2") MessageBox("This file was created with a different format version " + pGen->save_format_version + "\nYou can get errors trying to load it.", "Error");
 		m_algo_id = pGen->m_algo_id;
 		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
 		m_config = pGen->m_config;
@@ -847,6 +847,7 @@ void CMainFrame::OnUpdateButtonPlay(CCmdUI *pCmdUI)
 {
 	if ((m_state_gen == 1) && (m_state_play == 0)) pCmdUI->Enable(0);
 	else if (m_state_gen != 0) pCmdUI->Enable(1);
+	else pCmdUI->Enable(0);
 	if (m_state_play > 0) pCmdUI->SetText("Stop Playback");
 	else pCmdUI->SetText("Play");
 }
