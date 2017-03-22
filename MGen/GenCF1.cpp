@@ -150,6 +150,7 @@ void CGenCF1::Generate()
 					if ((cc[i] % 12 == 5) && (cc[i - 1] % 12 != 4)) goto skip;
 					if ((cc[i + 1] % 12 == 5) && (cc[i + 2] % 12 != 4)) goto skip;
 					// Record tritone
+					if (accept[2] != 'T') goto skip;
 					flags[0] = 's';
 					flags[2] = 'T';
 					nflags[i][nflagsc[i]] = 2;
@@ -157,6 +158,7 @@ void CGenCF1::Generate()
 				}
 				// Sept prohibit
 				if (abs(c[i + 1] - c[i]) == 6) {
+					if (accept[1] != 'P') goto skip;
 					flags[0] = 's';
 					flags[1] = 'P';
 					nflags[i][nflagsc[i]] = 1;
@@ -181,6 +183,7 @@ void CGenCF1::Generate()
 				if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
 				// Check if too many leaps
 				if (leap_sum > max_leaps) {
+					if (accept[3] != 'J') goto skip;
 					flags[0] = 's';
 					flags[3] = 'J';
 					nflags[i][nflagsc[i]] = 3;
@@ -190,6 +193,7 @@ void CGenCF1::Generate()
 				if (smooth[i] != 0) smooth_sum++;
 				else smooth_sum = 0;
 				if (smooth_sum >= max_smooth) {
+					if (accept[4] != 'O') goto skip;
 					flags[0] = 's';
 					flags[4] = 'O';
 					nflags[i][nflagsc[i]] = 4;
@@ -200,6 +204,7 @@ void CGenCF1::Generate()
 					if (smooth[i] == smooth[i + 1]) smooth_sum2++;
 					else smooth_sum2 = 0;
 					if (smooth_sum2 >= max_smooth_direct - 1) {
+						if (accept[5] != 'L') goto skip;
 						flags[0] = 's';
 						flags[5] = 'L';
 						nflags[i][nflagsc[i]] = 5;
@@ -209,6 +214,7 @@ void CGenCF1::Generate()
 					if (leap[i] * leap[i + 1] > 0) {
 						// Check if leaps are long
 						if (c[i + 2] - c[i] > 4) goto skip;
+						if (accept[6] != 'C') goto skip;
 						flags[0] = 's';
 						flags[6] = 'C';
 						nflags[i][nflagsc[i]] = 6;
@@ -219,6 +225,7 @@ void CGenCF1::Generate()
 						if (i < c_len - 3) {
 							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) goto skip;
 							if (flags[6] != 'C') {
+								if (accept[7] != 'A') goto skip;
 								flags[0] = 's';
 								flags[7] = 'A';
 								nflags[i][nflagsc[i]] = 7;
@@ -229,6 +236,7 @@ void CGenCF1::Generate()
 					}
 					// Check if leap returns to same note
 					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
+						if (accept[8] != 'R') goto skip;
 						flags[0] = 's';
 						flags[8] = 'R';
 						nflags[i][nflagsc[i]] = 8;
@@ -236,6 +244,7 @@ void CGenCF1::Generate()
 					}
 					// Check if two notes repeat
 					if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) {
+						if (accept[9] != 'D') goto skip;
 						flags[0] = 's';
 						flags[9] = 'D';
 						nflags[i][nflagsc[i]] = 9;
@@ -257,6 +266,7 @@ void CGenCF1::Generate()
 				if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] + max_interval]--;
 				// Check if too many repeating notes
 				if (nstat[c[i] + max_interval] > stag_notes) {
+					if (accept[10] != 'G') goto skip;
 					flags[0] = 's';
 					flags[10] = 'G';
 					nflags[i][nflagsc[i]] = 10;
@@ -266,6 +276,7 @@ void CGenCF1::Generate()
 			// Check note fill
 			for (int i = nmin; i <= nmax; i++) {
 				if (nstat2[i + max_interval] == 0) {
+					if (accept[11] != 'F') goto skip;
 					flags[0] = 's';
 					flags[11] = 'F';
 					break;
@@ -277,6 +288,7 @@ void CGenCF1::Generate()
 				if (c[i] == nmax) {
 					culm_sum++;
 					if (culm_sum > 1) {
+						if (accept[12] != 'M') goto skip;
 						flags[0] = 's';
 						flags[12] = 'M';
 						nflags[i][nflagsc[i]] = 12;
