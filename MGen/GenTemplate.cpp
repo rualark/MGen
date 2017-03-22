@@ -631,7 +631,7 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 	midi_start_time = 0;
 	if (from > 0) {
 		midi_sent = from;
-		midi_sent_t = TIME_PROC(TIME_INFO) + 300;
+		midi_sent_t = TIME_PROC(TIME_INFO) + 500;
 	}
 	else {
 		midi_sent_t = 0;
