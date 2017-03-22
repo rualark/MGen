@@ -32,7 +32,7 @@ void CGenCF1::Generate()
 	int step = 0; // Global step
 	while (true) {
 		if (need_exit) return;
-		if (cycle > -1) { // Debug condition
+		if (cycle >= 2143582) { // Debug condition
 			// Analyze combination
 			nmin = 0;
 			nmax = 0;
@@ -81,7 +81,7 @@ void CGenCF1::Generate()
 				// Prohibit long smooth movement
 				if (smooth[i] != 0) smooth_sum++;
 				else smooth_sum = 0;
-				if (smooth_sum > max_smooth) {
+				if (smooth_sum >= max_smooth) {
 					good = 0;
 					break;
 				}
@@ -89,7 +89,7 @@ void CGenCF1::Generate()
 					// Prohibit long smooth movement in one direction
 					if (smooth[i] == smooth[i + 1]) smooth_sum2++;
 					else smooth_sum2 = 0;
-					if (smooth_sum2 > max_smooth_direct) {
+					if (smooth_sum2 >= max_smooth_direct - 1) {
 						good = 0;
 						break;
 					}
@@ -113,6 +113,11 @@ void CGenCF1::Generate()
 					}
 					// Check if leap returns to same note
 					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
+						good = 0;
+						break;
+					}
+					// Check if two notes repeat
+					if ((!allow_repeat2) && (i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) {
 						good = 0;
 						break;
 					}
@@ -225,7 +230,7 @@ void CGenCF1::Generate()
 		//if (cycle > 100) break;
 	}
 	CString* est = new CString;
-	est->Format("Accepted %.5f%% (%ld) variants of %ld", 100.0*(double)accepted/(double)cycle, accepted, cycle);
+	est->Format("Accepted %.8f%% (%ld) variants of %ld", 100.0*(double)accepted/(double)cycle, accepted, cycle);
 	WriteLog(1, est);
 }
 
