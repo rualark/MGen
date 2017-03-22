@@ -380,7 +380,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
 		// Initialize MIDI
 		pGen->StopMIDI();
-		pGen->StartMIDI(GetMidiI(), 100);
+		pGen->StartMIDI(GetMidiI(), 100, 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Load results
 		pGen->LoadResults(dir, fname);
@@ -438,7 +438,7 @@ void CMainFrame::OnButtonGen()
 		pGen->m_config = m_config;
 		// Initialize MIDI
 		pGen->StopMIDI();
-		pGen->StartMIDI(GetMidiI(), 100);
+		pGen->StartMIDI(GetMidiI(), 100, 0);
 		//pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Initialize variables
@@ -870,16 +870,21 @@ void CMainFrame::OnButtonPlay()
 		}
 		WriteLog(4, "Stopped playback");
 	}
-	else if (m_state_gen == 2) {
-		pGen->StopMIDI();
-		pGen->StartMIDI(GetMidiI(), 100);
-		m_state_play = 1;
-		// Start timer
-		pGen->m_pspeed = m_pspeed;
-		pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
-		SetTimer(TIMER1, m_view_timer, NULL);
-		SetTimer(TIMER2, 1000, NULL);
+	else if ((m_state_gen == 2) && (GetMidiI() > -1)) {
+		StartPlay(0);
 	}
+}
+
+void CMainFrame::StartPlay(int from)
+{
+	pGen->StopMIDI();
+	pGen->StartMIDI(GetMidiI(), 100, from);
+	m_state_play = 1;
+	// Start timer
+	pGen->m_pspeed = m_pspeed;
+	pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
+	SetTimer(TIMER1, m_view_timer, NULL);
+	SetTimer(TIMER2, 1000, NULL);
 }
 
 void CMainFrame::OnComboMidiout()

@@ -623,14 +623,20 @@ void CGenTemplate::UpdateTempoMinMax(int step1, int step2)
 	}
 }
 
-void CGenTemplate::StartMIDI(int midi_device_i, int latency)
+void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 {
 	// Clear error flag
 	buffer_underrun = 0;
 	midi_play_step = 0;
 	midi_start_time = 0;
-	midi_sent_t = 0;
-	midi_sent = 0;
+	if (from > 0) {
+		midi_sent = from;
+		midi_sent_t = TIME_PROC(TIME_INFO) + 300;
+	}
+	else {
+		midi_sent_t = 0;
+		midi_sent = 0;
+	}
 	TIME_START;
 	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUFFER_SIZE, TIME_PROC, NULL, latency);
 	CString* st = new CString;
@@ -656,6 +662,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	PmTimestamp timestamp0 = timestamp;
 	// Set playback start
 	if (step1 == 0) midi_start_time = timestamp0;
+	else if (midi_start_time == 0) midi_start_time = midi_sent_t - stime[step1];
 	// Check if buffer is full
 	if (midi_sent_t - timestamp_current > MIN_MIDI_BUFFER_MSEC) {
 		CString* st = new CString;

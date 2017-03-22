@@ -64,6 +64,7 @@ public:
 	int mouse_voice_old; // Previously drawn voice
 	int mouse_step = -1; // Current step under mouse
 	int mouse_step_old; // Previously drawn mouse_step
+	int mouse_in_timeline = 0; // =1 if mouse is inside timeline
 	int nwidth; // Step width
 	int nheight; // Note height
 	int y_start; // Position of lowest note

@@ -105,7 +105,7 @@ public:
 	void SaveMidi(CString dir, CString fname);
 
 	// PortMIDI
-	void StartMIDI(int midi_device_i, int latency);
+	void StartMIDI(int midi_device_i, int latency, int from);
 	void SendMIDI(int step1, int step2);
 	void WriteLog(int i, CString * pST);
 	void StopMIDI();

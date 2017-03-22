@@ -88,6 +88,7 @@ public:
 	void LoadResults(CString path);
 	bool NewDocument();
 	static UINT GenThread(LPVOID pParam);
+	void StartPlay(int from);
 
 	// Overrides
 public:

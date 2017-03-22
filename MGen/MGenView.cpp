@@ -458,7 +458,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		CPoint scroll = GetScrollPosition();
 		// Find step
-		if ((point.y < Y_HEADER) || (point.y > y_start)) mouse_step = -1;
+		if ((point.y < Y_HEADER - Y_TIMELINE) || (point.y > y_start)) mouse_step = -1;
 		else mouse_step = (scroll.x + point.x - X_FIELD) / nwidth;
 		// Check if mouse is too left
 		if (mouse_step < -1) mouse_step = -1;
@@ -485,6 +485,8 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 					step1 = mouse_step - pGen->coff[mouse_step][i];
 					step2 = step1 + pGen->len[mouse_step][i];
 				}
+			if ((point.y >= Y_HEADER - Y_TIMELINE) && (point.y <= Y_HEADER)) mouse_in_timeline = 1;
+			else mouse_in_timeline = 0;
 		}
 		if (((mouse_step != -1) || (mouse_step_old != -1)) && ((mouse_step != mouse_step_old) || (mouse_voice != mouse_voice_old))) {
 			if (mouse_step_old == -1)	Invalidate();
@@ -560,6 +562,11 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 		CInfoDlg dlg;
 		dlg.pGen = mf->pGen;
 		dlg.DoModal();
+	}
+	else if ((mouse_step > -1) && (mouse_in_timeline)) {
+		CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+		if ((mf->m_state_gen == 2) && (mf->m_state_play == 0))
+			mf->StartPlay(mouse_step);
 	}
 
 	CScrollView::OnLButtonUp(nFlags, point);
