@@ -158,6 +158,7 @@ public:
 	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
 	vector< vector <unsigned char> > att; // Attack (velocity for piano)
 	vector< vector <CString> > comment; // Comment for note
+	vector< vector <Color> > color; // Note color (rgb ignored if all zero; alpha ignored if zero)
 	vector<double> tempo; // Tempo
 	vector<double> stime; // Time of current step in ms
 	vector<double> etime; // Time of current step in ms

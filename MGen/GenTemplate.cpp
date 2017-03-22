@@ -311,6 +311,7 @@ void CGenTemplate::InitVectors()
 	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	att = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
+	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
 	tempo = vector<double>(t_allocated);
 	stime = vector<double>(t_allocated);
 	etime = vector<double>(t_allocated);
@@ -338,6 +339,7 @@ void CGenTemplate::ResizeVectors(int size)
 	etime.resize(size);
 	att.resize(size);
 	comment.resize(size);
+	color.resize(size);
 	for (int i = t_allocated; i < size; i++) {
 		pause[i].resize(v_cnt);
 		note[i].resize(v_cnt);
@@ -347,6 +349,7 @@ void CGenTemplate::ResizeVectors(int size)
 		noff[i].resize(v_cnt);
 		att[i].resize(v_cnt);
 		comment[i].resize(v_cnt);
+		color[i].resize(v_cnt);
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());

@@ -161,11 +161,14 @@ void CGenCF1::Generate()
 				accepted++;
 				if (accepted < 1000000) {
 					Sleep(sleep_ms);
+					//Color ccolor = Color(randbw(50, 200), randbw(0, 180), randbw(0, 180), randbw(0, 180));
+					Color ccolor = Color(0, randbw(0, 180), randbw(0, 180), randbw(0, 180));
 					// Copy cantus to output
 					if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
 					comment[step][0].Format("c%ld a%ld", cycle, accepted);
 					for (int x = step; x < step + c_len; x++) {
 						note[x][0] = dia_to_chrom[(c[x - step] + 56) % 7] + (c[x - step] / 7) * 12 + first_note; // Negative eight octaves reserve
+						color[x][0] = ccolor;
 						if (c[x - step] < 0) note[x][0] -= 12; // Correct negative octaves
 						len[x][0] = 1;
 						pause[x][0] = 0;

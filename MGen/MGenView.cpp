@@ -254,28 +254,35 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			// Show notes
 			time_stop4 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-			//CString st;
-			//st.Format("Notes showing from %d to %d", step1, step2);
-			//mf->WriteLog(1, st);
 			int retrigger;
+			Color ncolor;
+			int alpha;
 			for (int i = step1; i < step2; i++) if (pGen->pause[i][0] == 0) {
 				if (i == step1) if (pGen->coff[i][0] > 0) i = i - pGen->coff[i][0];
-				SolidBrush brush_v(Color(40 + (80 * pGen->att[i][0] / 127) /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/));
+				alpha = 40 + (80 * pGen->att[i][0] / 127);
+				if (pGen->color[i][0].GetValue() != 0) {
+					if (pGen->color[i][0].GetAlpha() == 0) ncolor = Color(alpha, pGen->color[i][0].GetR(), pGen->color[i][0].GetG(), pGen->color[i][0].GetB());
+					else ncolor = pGen->color[i][0];
+				}
+				else {
+					ncolor = Color(alpha /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/);
+				}
+				SolidBrush brush(ncolor);
 				retrigger = 0;
 				if (i+pGen->noff[i][0] < pGen->t_generated) 
 					if (pGen->note[i+pGen->noff[i][0]][0] == pGen->note[i][0]) retrigger = 1;
-				g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
+				g.FillRectangle(&brush, X_FIELD + i * nwidth,
 					y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
 					pGen->len[i][0]*nwidth - retrigger, nheight);
 				// Highlight selected note
 				if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][0]) && (mouse_voice == 0)) {
-					g.FillRectangle(&brush_v, X_FIELD + i * nwidth,
+					g.FillRectangle(&brush, X_FIELD + i * nwidth,
 						y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
 						pGen->len[i][0] * nwidth - retrigger, nheight);
 				}
 				// Show comment
 				if (pGen->comment[i][0] != "")
-					g.DrawRectangle(&pen_ddgray, X_FIELD + i * nwidth,
+					g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
 						y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
 						pGen->len[i][0] * nwidth - retrigger, nheight);
 				//g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][0] - ng_min2) * nheight,
