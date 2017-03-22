@@ -6,7 +6,7 @@
 CGenCF1::CGenCF1()
 {
 	c_len = 9;
-	max_interval = 5;
+	max_interval = 7;
 	midifile_tpq_mul = 8;
 	sleep_ms = 0;
 }
@@ -35,7 +35,7 @@ void CGenCF1::Generate()
 	// Walk all variants
 	int p = c_len - 2; // Minimal position in array to cycle
 	long cycle = 0;
-	long accepted = 0;
+	long accepted = 0, accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, culm_sum, smooth_sum, smooth_sum2;
 	int step = 0; // Global step
@@ -76,6 +76,7 @@ void CGenCF1::Generate()
 			// Note repeats note of previous measure
 			// Tritone is incorrectly resolved
 			// After leap two next notes move same direction
+			accepted3++;
 			flags = "Sptjolcardgfm";
 			for (int i = 0; i < c_len; i++) {
 				nflagsc[i] = 0;
@@ -92,8 +93,8 @@ void CGenCF1::Generate()
 					// Check if resolution is correct
 					if ((cc[i] % 12 == 11) && (cc[i - 1] % 12 != 0)) goto skip;
 					if ((cc[i + 1] % 12 == 11) && (cc[i + 2] % 12 != 0)) goto skip;
-					if ((cc[i] % 12 == 5) && (cc[i - 1] % 12 != 6)) goto skip;
-					if ((cc[i + 1] % 12 == 5) && (cc[i + 2] % 12 != 6)) goto skip;
+					if ((cc[i] % 12 == 5) && (cc[i - 1] % 12 != 4)) goto skip;
+					if ((cc[i + 1] % 12 == 5) && (cc[i + 2] % 12 != 4)) goto skip;
 					// Record tritone
 					flags[0] = 's';
 					flags[2] = 'T';
@@ -223,6 +224,7 @@ void CGenCF1::Generate()
 					nflagsc[i]++;
 				}
 			}
+			accepted2++;
 			// Calculate flag statistics
 			for (int i = 0; i < MAX_FLAGS; i++) {
 				if (flags[i] <= 'Z') fstat[i]++;
@@ -295,8 +297,15 @@ void CGenCF1::Generate()
 		cycle++;
 		//if (cycle > 100) break;
 	}
+	// Show flag statistics
 	CString* est = new CString;
-	est->Format("Accepted %.8f%% (%ld) variants of %ld", 100.0*(double)accepted/(double)cycle, accepted, cycle);
+	CString st, st2;
+	for (int i = 0; i < MAX_FLAGS; i++) {
+		st.Format("%c-%.3f ", accept[i], (double)fstat[i]/(double)1000);
+		st2 += st;
+	}
+	est->Format("%d/%d: Accepted %.8f%% (%ld/%ld/%ld) variants of %ld: %s", c_len, max_interval, 100.0*(double)accepted / (double)cycle, accepted, accepted2, accepted3, cycle, st2);
+	AppendLineToFile("GenCF1.log", *est + "\n");
 	WriteLog(1, est);
 }
 
