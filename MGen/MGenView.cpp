@@ -154,6 +154,7 @@ void CMGenView::OnDraw(CDC* pDC)
 		if (pGen->need_exit == 1)
 			g.DrawString(L"INTERRUPTED", -1, &font, PointF(600, 0), &brush_red);
 		nwidth = 4 * mf->zoom_x / 100;
+		if (nwidth == 0) nwidth = 1;
 		if (mf->view_single_track) {
 			// Count tempo window
 			double tg_min = MIN_TEMPO_DISPLAY;

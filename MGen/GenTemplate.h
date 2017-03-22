@@ -70,6 +70,7 @@ public:
 protected:
 	// File operations
 	void SaveVector2C(ofstream & fs, vector<vector<unsigned char>>& v2D, int i);
+	void SaveVector2ST(ofstream & fs, vector<vector<CString>>& v2D, int i);
 	void SaveVectorD(ofstream &fs, vector<double> &v);
 	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void LoadVectorD(ifstream & fs, vector<double>& v);
@@ -119,6 +120,7 @@ public:
 	int m_algo_id = -1; // Current algorithm id
 	CString m_config;
 	int sleep_ms = 10;
+	CString save_format_version; // Version of save format loaded
 
 	// PortMIDI
 	double m_pspeed = 100; // Playback speed in percent
@@ -155,6 +157,7 @@ public:
 	vector< vector <unsigned char> > poff; // Offset of previous note start (backward)
 	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
 	vector< vector <unsigned char> > att; // Attack (velocity for piano)
+	vector< vector <CString> > comment; // Comment for note
 	vector<double> tempo; // Tempo
 	vector<double> stime; // Time of current step in ms
 	vector<double> etime; // Time of current step in ms

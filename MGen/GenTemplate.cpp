@@ -310,6 +310,7 @@ void CGenTemplate::InitVectors()
 	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	att = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
 	tempo = vector<double>(t_allocated);
 	stime = vector<double>(t_allocated);
 	etime = vector<double>(t_allocated);
@@ -336,6 +337,7 @@ void CGenTemplate::ResizeVectors(int size)
 	stime.resize(size);
 	etime.resize(size);
 	att.resize(size);
+	comment.resize(size);
 	for (int i = t_allocated; i < size; i++) {
 		pause[i].resize(v_cnt);
 		note[i].resize(v_cnt);
@@ -344,6 +346,7 @@ void CGenTemplate::ResizeVectors(int size)
 		poff[i].resize(v_cnt);
 		noff[i].resize(v_cnt);
 		att[i].resize(v_cnt);
+		comment[i].resize(v_cnt);
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
@@ -356,10 +359,17 @@ void CGenTemplate::ResizeVectors(int size)
 }
 
 void CGenTemplate::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {
-	//copy(v2D[i].begin(), v2D[i].end(), ostreambuf_iterator<char>(*fs));
 	const char* pointer = reinterpret_cast<const char*>(&v2D[i][0]);
 	size_t bytes = v_cnt * sizeof(v2D[i][0]);
 	fs.write(pointer, bytes);
+}
+
+void CGenTemplate::SaveVector2ST(ofstream & fs, vector< vector<CString> > &v2D, int i) {
+	for (int v = 0; v < v_cnt; v++) {
+		unsigned short len = v2D[i][v].GetLength();
+		fs.write((char*)&len, sizeof(len));
+		fs.write(v2D[i][v].GetBuffer(), len);
+	}
 }
 
 void CGenTemplate::SaveVectorD(ofstream &fs, vector<double> &v) {
@@ -381,13 +391,15 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 		SaveVector2C(fs, len, i);
 		SaveVector2C(fs, coff, i);
 		SaveVector2C(fs, att, i);
+		SaveVector2ST(fs, comment, i);
 	}
 	SaveVectorD(fs, tempo);
 	fs.close();
 	// Save strings
 	CString st;
 	fs.open(dir + "\\" + fname + ".txt");
-	fs << "m_config = " + m_config + "\n";
+	fs << "save_format_version = 1.1 # This is version of format used to save these files\n";
+	fs << "m_config = " + m_config + " # Name of config file used for generation\n";
 	st.Format("m_algo_id = %d\n", m_algo_id);
 	fs << st;
 	st.Format("t_cnt = %d # Number of steps I had to generate\n", t_cnt);
@@ -470,6 +482,7 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 			CGenTemplate::CheckVar(&st2, &st3, "time_started", &time_started);
 			CGenTemplate::CheckVar(&st2, &st3, "time_stopped", &time_stopped);
 			CGenTemplate::LoadVar(&st2, &st3, "m_config", &m_config);
+			CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 		}
 	}
 	fs.close();
@@ -479,6 +492,7 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 	// Load binary
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
 	fs.unsetf(std::ios::skipws);
+	if (t_generated != 0)
 	for (size_t i = 0; i < t_generated; i++)
 	{
 		LoadVector2C(fs, pause, i);

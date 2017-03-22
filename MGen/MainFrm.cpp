@@ -384,6 +384,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Load results
 		pGen->LoadResults(dir, fname);
+		if (pGen->save_format_version != "1.0") MessageBox("This file was created with a different format version " + pGen->save_format_version + "\nYou can get errors trying to load it.", "Error");
 		m_algo_id = pGen->m_algo_id;
 		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
 		m_config = pGen->m_config;
@@ -958,6 +959,10 @@ void CMainFrame::OnSpinZoom()
 	CString st = pRibbonSpin->GetEditText();
 	if (zoom_x != atoi(st)) {
 		zoom_x = atoi(st);
+		if (zoom_x < MIN_HZOOM) zoom_x = MIN_HZOOM;
+		if (zoom_x > MAX_HZOOM) zoom_x = MAX_HZOOM;
+		st.Format("%d", zoom_x);
+		pRibbonSpin->SetEditText(st);
 		GetActiveView()->Invalidate();
 		SaveSettings();
 	}

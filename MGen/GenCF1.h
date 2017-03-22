@@ -20,6 +20,10 @@ protected:
 	int allow_leap_second_release = 0; // If leap can be released on second melody move
 	int allow_joined_leaps = 0; // If joined leaps in different directions are allowed
 	int allow_unfilled_leaps = 0; // If leaps can be unfilled
+	int allow_repeat2 = 0; // If 2 notes are allowed to be repeated without other notes inbetween
+	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
+	int max_smooth_direct = 5; // Maximum linear movement in one direction allowed (in steps)
+	int max_smooth = 7; // Maximum linear movement allowed (in steps)
 	int max_leaps = 2; // Maximum allowed max_leaps during max_leap_steps
 	int max_leap_steps = 7;
 	int stag_notes = 2; // Maximum allowed stag_notes (same notes) during stag_note_steps
