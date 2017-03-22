@@ -122,7 +122,7 @@ public:
 	timed_mutex mutex_output;
 	int m_algo_id = -1; // Current algorithm id
 	CString m_config;
-	int sleep_ms = 10;
+	int sleep_ms = 0;
 	CString save_format_version; // Version of save format loaded
 
 	// PortMIDI

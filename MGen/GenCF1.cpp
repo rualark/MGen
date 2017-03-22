@@ -3,6 +3,60 @@
 
 #define MAX_FLAGS 13
 
+
+const CString FlagName[] = {
+	"Strict", // 0 S
+	"Seventh", // 1 p
+	"Tritone", // 2 t
+	"Many leaps", // 3 j
+	"Long smooth", // 4 o
+	"Long line", // 5 l
+	"Leaps chain", // 6 c
+	"Late leap resolution", // 7 a
+	"Leap back", // 8 r
+	"Close repeat", // 9 d
+	"Stagnation", // 10 g
+	"Unfilled leap", // 11 f
+	"Multiple culminations" // 12 m
+};
+
+const Color FlagColor[] = {
+	Color(0, 100, 100, 100), // 0 S
+	Color(0, 180, 100, 100), // 1 p
+	Color(0, 255, 0, 0), // 2 t
+	Color(0, 0, 255, 0), // 3 j
+	Color(0, 120, 120, 255), // 4 o
+	Color(0, 120, 120, 0), // 5 l
+	Color(0, 255, 0, 255), // 6 c
+	Color(0, 0, 255, 255), // 7 a
+	Color(0, 0, 150, 150), // 8 r
+	Color(0, 150, 0, 150), // 9 d
+	Color(0, 0, 150, 0), // 10 g
+	Color(0, 80, 80, 170), // 11 f
+	Color(0, 250, 100, 160) // 12 m
+};
+
+// 0  S - strict
+// 1  p - sept
+// 2  t - tritone
+// 3  j - too many leaps
+// 4  o - too long smooth movement
+// 5  l - too long smooth movement in one direction (linear)
+// 6  c - chain of leaps in one direction
+// 7  a - leap is resolved after a second note
+// 8  r - leap returns to same note
+// 9  d - two notes repeat in contact
+// 10 g - stagnation on one note
+// 11 f - leap is not filled
+// 12 m - multiple culminations
+
+// Unskippable rules:
+// Total interval
+// Note repeats note of previous measure
+// Tritone is incorrectly resolved
+// After leap two next notes move same direction
+// Leap chain, when one of leaps is longer then 3rd
+
 CGenCF1::CGenCF1()
 {
 	//midifile_tpq_mul = 8;
@@ -14,6 +68,7 @@ CGenCF1::~CGenCF1()
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
+	CheckVar(sN, sV, "min_interval", &min_interval);
 	CheckVar(sN, sV, "max_interval", &max_interval);
 	CheckVar(sN, sV, "c_len", &c_len);
 	CheckVar(sN, sV, "first_note", &first_note);
@@ -72,20 +127,16 @@ void CGenCF1::Generate()
 			}
 			// Limit melody interval
 			if (nmax - nmin > max_interval) goto skip;
+			if (nmax - nmin < min_interval) goto skip;
 			// Clear flags
 
-			// Unskippable rules:
-			// Total interval
-			// Note repeats note of previous measure
-			// Tritone is incorrectly resolved
-			// After leap two next notes move same direction
 			accepted3++;
 			flags = "Sptjolcardgfm";
 			for (int i = 0; i < c_len; i++) {
 				nflagsc[i] = 0;
 				// Calculate chromatic positions
-				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (c[i] / 7) * 12 + first_note; // Negative eight octaves reserve
-				if (c[i] < 0) cc[i] -= 12; // Correct negative octaves
+				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i]+56) / 7)-8) * 12 + first_note; // Negative eight octaves reserve
+				//if ((c[i] < 0) && (c[i] % 7 != 0)) cc[i] -= 12; // Correct negative octaves
 			}
 			for (int i = 0; i < c_len - 1; i++) {
 				// Tritone prohibit
@@ -156,6 +207,8 @@ void CGenCF1::Generate()
 					}
 					// Check if leaps follow each other in same direction
 					if (leap[i] * leap[i + 1] > 0) {
+						// Check if leaps are long
+						if (c[i + 2] - c[i] > 4) goto skip;
 						flags[0] = 's';
 						flags[6] = 'C';
 						nflags[i][nflagsc[i]] = 6;
@@ -165,10 +218,12 @@ void CGenCF1::Generate()
 					if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
 						if (i < c_len - 3) {
 							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) goto skip;
-							flags[0] = 's';
-							flags[7] = 'A';
-							nflags[i][nflagsc[i]] = 7;
-							nflagsc[i]++;
+							if (flags[6] != 'C') {
+								flags[0] = 's';
+								flags[7] = 'A';
+								nflags[i][nflagsc[i]] = 7;
+								nflagsc[i]++;
+							}
 						}
 						else goto skip;
 					}
@@ -219,12 +274,14 @@ void CGenCF1::Generate()
 			// Prohibit multiple culminations
 			culm_sum = 0;
 			for (int i = 0; i < c_len; i++) {
-				if (c[i] == nmax) culm_sum++;
-				if (culm_sum > 1) {
-					flags[0] = 's';
-					flags[12] = 'M';
-					nflags[i][nflagsc[i]] = 12;
-					nflagsc[i]++;
+				if (c[i] == nmax) {
+					culm_sum++;
+					if (culm_sum > 1) {
+						flags[0] = 's';
+						flags[12] = 'M';
+						nflags[i][nflagsc[i]] = 12;
+						nflagsc[i]++;
+					}
 				}
 			}
 			accepted2++;
@@ -238,50 +295,58 @@ void CGenCF1::Generate()
 			}
 			// Accept cantus
 			accepted++;
-			Sleep(sleep_ms);
-			//Color ccolor = Color(0, randbw(0, 180), randbw(0, 180), randbw(0, 180));
-			// Copy cantus to output
-			if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
-			//comment[step][0].Format("c%ld a%ld", cycle, accepted);
-			for (int x = step; x < step + c_len; x++) {
-				note[x][0] = dia_to_chrom[(c[x - step] + 56) % 7] + (c[x - step] / 7) * 12 + first_note; // Negative eight octaves reserve
-				if (c[x - step] < 0) note[x][0] -= 12; // Correct negative octaves
-				if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
-					comment[x][0] += FlagName[nflags[x - step][i]] + " ";
+			if (accepted < t_cnt) {
+				Sleep(sleep_ms);
+				//Color ccolor = Color(0, randbw(0, 180), randbw(0, 180), randbw(0, 180));
+				// Copy cantus to output
+				if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
+				//comment[step][0].Format("c%ld a%ld", cycle, accepted);
+				for (int x = step; x < step + c_len; x++) {
+					// Set flag color
+					for (int i = 0; i < MAX_FLAGS; i++) {
+						if (flags[i] <= 'Z') color[x][0] = FlagColor[i];
+					}
+					//color[x][0] = FlagColor[accepted%13];
+					note[x][0] = cc[x - step];
+					//note[x][0] = dia_to_chrom[(c[x - step] + 56) % 7] + (c[x - step] / 7) * 12 + first_note; // Negative eight octaves reserve
+					//if ((c[x - step] < 0) && (c[x - step] > -7)) note[x][0] -= 12; // Correct negative octaves
+					if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
+						comment[x][0] += FlagName[nflags[x - step][i]] + " ";
+					}
+					//color[x][0] = ccolor;
+					len[x][0] = 1;
+					pause[x][0] = 0;
+					tempo[x] = 200;
+					coff[x][0] = 0;
+					att[x][0] = 80 + 30 * rand2() / RAND_MAX;
+					if (x == 0) {
+						tempo[x] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
+					}
+					else {
+						tempo[x] = tempo[x - 1] + randbw(-1, 1);
+						if (tempo[x] > max_tempo) tempo[x] = 2 * max_tempo - tempo[x];
+						if (tempo[x] < min_tempo) tempo[x] = 2 * min_tempo - tempo[x];
+					}
 				}
-				//color[x][0] = ccolor;
-				len[x][0] = 1;
-				pause[x][0] = 0;
-				tempo[x] = 200;
-				coff[x][0] = 0;
-				att[x][0] = 80 + 30 * rand2() / RAND_MAX;
-				if (x == 0) {
-					tempo[x] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
-				}
-				else {
-					tempo[x] = tempo[x - 1] + randbw(-1, 1);
-					if (tempo[x] > max_tempo) tempo[x] = 2 * max_tempo - tempo[x];
-					if (tempo[x] < min_tempo) tempo[x] = 2 * min_tempo - tempo[x];
-				}
+				// Create pause
+				step += c_len;
+				note[step][0] = 0;
+				len[step][0] = 1;
+				pause[step][0] = 1;
+				att[step][0] = 0;
+				tempo[step] = tempo[step - 1];
+				coff[step][0] = 0;
+				step++;
+				// Count additional variables
+				CountOff(step - c_len - 1, step - 1);
+				CountTime(step - c_len - 1, step - 1);
+				UpdateNoteMinMax(step - c_len - 1, step - 1);
+				UpdateTempoMinMax(step - c_len - 1, step - 1);
+				// Send
+				t_generated = step;
+				t_sent = t_generated;
+				::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 			}
-			// Create pause
-			step += c_len;
-			note[step][0] = 0;
-			len[step][0] = 1;
-			pause[step][0] = 1;
-			att[step][0] = 0;
-			tempo[step] = tempo[step - 1];
-			coff[step][0] = 0;
-			step++;
-			// Count additional variables
-			CountOff(step - c_len - 1, step - 1);
-			CountTime(step - c_len - 1, step - 1);
-			UpdateNoteMinMax(step - c_len - 1, step - 1);
-			UpdateTempoMinMax(step - c_len - 1, step - 1);
-			// Send
-			t_generated = step;
-			t_sent = t_generated;
-			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}
 		skip:
 		while (true) {

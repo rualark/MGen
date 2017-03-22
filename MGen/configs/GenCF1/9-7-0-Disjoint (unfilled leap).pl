@@ -1,15 +1,14 @@
 # Main parameters
+t_cnt = 1000 # Maximum number of canti generated
 c_len = 9 # Number of measures in each cantus. Usually 9 to 11
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
-last_diatonic_int = -7 # Diatonic interval between first and last note
-min_interval = 1 # Minimum diatonic interval in cantus (7 = octave)
 first_note = 60 # Starting note of each cantus
-t_cnt = 1000 # Maximum number of canti generated
+last_diatonic_int = 0 # Diatonic interval between first and last note
 min_tempo = 100 # Minimum tempo
 max_tempo = 130 # Maximum tempo
 
 # Rules
-accept = Sptjolcardgfm # Each upper case letter allows showing canti with specific properties:
+accept = sptjolcardgFm # Each upper case letter allows showing canti with specific properties:
 # 0  S - Strict
 # 1  p - Seventh
 # 2  t - Tritone

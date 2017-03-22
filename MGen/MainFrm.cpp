@@ -740,9 +740,9 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 		}
 		if (m_state_play == 1) {
 			if ((pGen->t_sent > pGen->midi_sent)) {
-				CString st;
-				st.Format("Chunk received up to %d", pGen->t_sent);
-				WriteLog(0, st);
+				//CString st;
+				//st.Format("Chunk received up to %d", pGen->t_sent);
+				//WriteLog(0, st);
 				pGen->m_pspeed = m_pspeed;
 				pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
 			}
