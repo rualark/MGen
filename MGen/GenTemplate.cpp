@@ -97,6 +97,7 @@ void CGenTemplate::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "t_allocated", &t_allocated);
 			CheckVar(&st2, &st3, "t_send", &t_send);
 			CheckVar(&st2, &st3, "midifile_tpq_mul", &midifile_tpq_mul);
+			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms);
 			// Load algorithm-specific variables
 			LoadConfigLine(&st2, &st3, idata, fdata);
 		}
@@ -320,6 +321,12 @@ void CGenTemplate::InitVectors()
 		ngv_min[v] = 1000;
 		ngv_max[v] = 0;
 	}
+	// Init color
+	for (int i = 0; i < t_allocated; i++) {
+		for (int v = 0; v < v_cnt; v++) {
+			color[i][v] = Color(0);
+		}
+	}
 }
 
 void CGenTemplate::ResizeVectors(int size)
@@ -349,7 +356,7 @@ void CGenTemplate::ResizeVectors(int size)
 		noff[i].resize(v_cnt);
 		att[i].resize(v_cnt);
 		comment[i].resize(v_cnt);
-		color[i].resize(v_cnt);
+		color[i].resize(v_cnt, Color(0));
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());

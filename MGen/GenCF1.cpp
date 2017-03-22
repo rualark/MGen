@@ -5,14 +5,30 @@
 
 CGenCF1::CGenCF1()
 {
-	c_len = 9;
-	max_interval = 7;
-	midifile_tpq_mul = 8;
-	sleep_ms = 0;
+	//midifile_tpq_mul = 8;
 }
 
 CGenCF1::~CGenCF1()
 {
+}
+
+void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
+{
+	CheckVar(sN, sV, "max_interval", &max_interval);
+	CheckVar(sN, sV, "c_len", &c_len);
+	CheckVar(sN, sV, "first_note", &first_note);
+	CheckVar(sN, sV, "last_diatonic_int", &last_diatonic_int);
+	CheckVar(sN, sV, "max_unfill_steps", &max_unfill_steps);
+	CheckVar(sN, sV, "max_repeat_mul", &max_repeat_mul);
+	CheckVar(sN, sV, "max_smooth_direct", &max_smooth_direct);
+	CheckVar(sN, sV, "max_smooth", &max_smooth);
+	CheckVar(sN, sV, "max_leaps", &max_leaps);
+	CheckVar(sN, sV, "max_leap_steps", &max_leap_steps);
+	CheckVar(sN, sV, "stag_notes", &stag_notes);
+	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
+	CheckVar(sN, sV, "min_tempo", &min_tempo);
+	CheckVar(sN, sV, "max_tempo", &max_tempo);
+	LoadVar(sN, sV, "accept", &accept);
 }
 
 void CGenCF1::Generate()
@@ -57,19 +73,6 @@ void CGenCF1::Generate()
 			// Limit melody interval
 			if (nmax - nmin > max_interval) goto skip;
 			// Clear flags
-			// 0  S - strict
-			// 1  p - sept
-			// 2  t - tritone
-			// 3  j - too many leaps
-			// 4  o - too long smooth movement
-			// 5  l - too long smooth movement in one direction (linear)
-			// 6  c - chain of leaps in one direction
-			// 7  a - leap is resolved after a second note
-			// 8  r - leap returns to same note
-			// 9  d - two notes repeat in contact
-			// 10 g - stagnation on one note
-			// 11 f - leap is not filled
-			// 12 m - multiple culminations
 
 			// Unskippable rules:
 			// Total interval
@@ -98,14 +101,14 @@ void CGenCF1::Generate()
 					// Record tritone
 					flags[0] = 's';
 					flags[2] = 'T';
-					nflags[i][nflagsc[i]] = 'T';
+					nflags[i][nflagsc[i]] = 2;
 					nflagsc[i]++;
 				}
 				// Sept prohibit
 				if (abs(c[i + 1] - c[i]) == 6) {
 					flags[0] = 's';
 					flags[1] = 'P';
-					nflags[i][nflagsc[i]] = 'P';
+					nflags[i][nflagsc[i]] = 1;
 					nflagsc[i]++;
 				}
 				// Find all leaps
@@ -129,7 +132,7 @@ void CGenCF1::Generate()
 				if (leap_sum > max_leaps) {
 					flags[0] = 's';
 					flags[3] = 'J';
-					nflags[i][nflagsc[i]] = 'J';
+					nflags[i][nflagsc[i]] = 3;
 					nflagsc[i]++;
 				}
 				// Prohibit long smooth movement
@@ -138,7 +141,7 @@ void CGenCF1::Generate()
 				if (smooth_sum >= max_smooth) {
 					flags[0] = 's';
 					flags[4] = 'O';
-					nflags[i][nflagsc[i]] = 'O';
+					nflags[i][nflagsc[i]] = 4;
 					nflagsc[i]++;
 				}
 				if (i < c_len - 2) {
@@ -148,14 +151,14 @@ void CGenCF1::Generate()
 					if (smooth_sum2 >= max_smooth_direct - 1) {
 						flags[0] = 's';
 						flags[5] = 'L';
-						nflags[i][nflagsc[i]] = 'L';
+						nflags[i][nflagsc[i]] = 5;
 						nflagsc[i]++;
 					}
 					// Check if leaps follow each other in same direction
 					if (leap[i] * leap[i + 1] > 0) {
 						flags[0] = 's';
 						flags[6] = 'C';
-						nflags[i][nflagsc[i]] = 'C';
+						nflags[i][nflagsc[i]] = 6;
 						nflagsc[i]++;
 					}
 					// Check if melody direction changes after leap
@@ -164,7 +167,7 @@ void CGenCF1::Generate()
 							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) goto skip;
 							flags[0] = 's';
 							flags[7] = 'A';
-							nflags[i][nflagsc[i]] = 'A';
+							nflags[i][nflagsc[i]] = 7;
 							nflagsc[i]++;
 						}
 						else goto skip;
@@ -173,14 +176,14 @@ void CGenCF1::Generate()
 					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
 						flags[0] = 's';
 						flags[8] = 'R';
-						nflags[i][nflagsc[i]] = 'R';
+						nflags[i][nflagsc[i]] = 8;
 						nflagsc[i]++;
 					}
 					// Check if two notes repeat
 					if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) {
 						flags[0] = 's';
 						flags[9] = 'D';
-						nflags[i][nflagsc[i]] = 'D';
+						nflags[i][nflagsc[i]] = 9;
 						nflagsc[i]++;
 					}
 				}
@@ -201,7 +204,7 @@ void CGenCF1::Generate()
 				if (nstat[c[i] + max_interval] > stag_notes) {
 					flags[0] = 's';
 					flags[10] = 'G';
-					nflags[i][nflagsc[i]] = 'G';
+					nflags[i][nflagsc[i]] = 10;
 					nflagsc[i]++;
 				}
 			}
@@ -220,7 +223,7 @@ void CGenCF1::Generate()
 				if (culm_sum > 1) {
 					flags[0] = 's';
 					flags[12] = 'M';
-					nflags[i][nflagsc[i]] = 'M';
+					nflags[i][nflagsc[i]] = 12;
 					nflagsc[i]++;
 				}
 			}
@@ -236,14 +239,17 @@ void CGenCF1::Generate()
 			// Accept cantus
 			accepted++;
 			Sleep(sleep_ms);
-			Color ccolor = Color(0, randbw(0, 180), randbw(0, 180), randbw(0, 180));
+			//Color ccolor = Color(0, randbw(0, 180), randbw(0, 180), randbw(0, 180));
 			// Copy cantus to output
 			if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
-			comment[step][0].Format("c%ld a%ld", cycle, accepted);
+			//comment[step][0].Format("c%ld a%ld", cycle, accepted);
 			for (int x = step; x < step + c_len; x++) {
 				note[x][0] = dia_to_chrom[(c[x - step] + 56) % 7] + (c[x - step] / 7) * 12 + first_note; // Negative eight octaves reserve
 				if (c[x - step] < 0) note[x][0] -= 12; // Correct negative octaves
-				color[x][0] = ccolor;
+				if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
+					comment[x][0] += FlagName[nflags[x - step][i]] + " ";
+				}
+				//color[x][0] = ccolor;
 				len[x][0] = 1;
 				pause[x][0] = 0;
 				tempo[x] = 200;
@@ -307,8 +313,4 @@ void CGenCF1::Generate()
 	est->Format("%d/%d: Accepted %.8f%% (%ld/%ld/%ld) variants of %ld: %s", c_len, max_interval, 100.0*(double)accepted / (double)cycle, accepted, accepted2, accepted3, cycle, st2);
 	AppendLineToFile("GenCF1.log", *est + "\n");
 	WriteLog(1, est);
-}
-
-void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
-{
 }

@@ -15,15 +15,15 @@ CGenRS1::~CGenRS1()
 
 void CGenRS1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
-	CGenTemplate::CheckVar(sN, sV, "min_tempo", &min_tempo);
-	CGenTemplate::CheckVar(sN, sV, "max_tempo", &max_tempo);
-	CGenTemplate::CheckVar(sN, sV, "min_len", &min_len);
-	CGenTemplate::CheckVar(sN, sV, "max_len", &max_len);
-	CGenTemplate::CheckVar(sN, sV, "min_note", &min_note);
-	CGenTemplate::CheckVar(sN, sV, "max_note", &max_note);
-	CGenTemplate::CheckVar(sN, sV, "note_step", &note_step);
-	CGenTemplate::CheckVar(sN, sV, "sleep_ms", &sleep_ms);
-	//CGenTemplate::LoadVar(st2, st3, "some_var", &some_var);
+	CheckVar(sN, sV, "min_tempo", &min_tempo);
+	CheckVar(sN, sV, "max_tempo", &max_tempo);
+	CheckVar(sN, sV, "min_len", &min_len);
+	CheckVar(sN, sV, "max_len", &max_len);
+	CheckVar(sN, sV, "min_note", &min_note);
+	CheckVar(sN, sV, "max_note", &max_note);
+	CheckVar(sN, sV, "note_step", &note_step);
+	CheckVar(sN, sV, "sleep_ms", &sleep_ms);
+	//LoadVar(st2, st3, "some_var", &some_var);
 }
 
 void CGenRS1::Generate()
