@@ -181,7 +181,7 @@ BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 		//mf->WriteLog(1, dir);
 		//mf->WriteLog(1, fname);
 		//OnSaveDocument(path);
-		mf->m_dir = dir;
+		mf->m_dir = dir + "\\" + fname;
 		mf->m_fname = fname;
 		SetTitle(fname);
 		::AfxGetApp()->AddToRecentFileList(path + "\\" + fname + ".mgr");
