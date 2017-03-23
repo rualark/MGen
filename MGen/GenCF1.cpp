@@ -406,7 +406,8 @@ void CGenCF1::Generate()
 		vector<Color> color2(t_generated);
 		for (int i = 0; i < accepted; i++) ci[i] = i;
 		// Shuffled indexes
-		random_shuffle(ci.begin(), ci.end());
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		::shuffle(ci.begin(), ci.end(), default_random_engine(seed));
 		// Swap
 		int i1, i2;
 		for (int i = 0; i < accepted; i++) {

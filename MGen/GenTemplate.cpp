@@ -261,8 +261,12 @@ unsigned int CGenTemplate::rand2() {
 void CGenTemplate::InitRandom()
 {
 	// Init rand
-	srand((unsigned int)time(NULL));
-	// ISAAC
+	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	srand(seed);
+	CString* est = new CString;
+	est->Format("Random check: %d", rand());
+	WriteLog(1, est);
+	// Init ISAAC
 	ub4 i;
 	aa = bb = cc = (ub4)0;
 	for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
