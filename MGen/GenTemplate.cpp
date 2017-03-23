@@ -163,8 +163,32 @@ CString CGenTemplate::dir_from_path(CString path)
 	return path2;
 }
 
+int CGenTemplate::PmEvent_comparator(const void * v1, const void * v2)
+{
+	const PmEvent *p1 = (PmEvent *)v1;
+	const PmEvent *p2 = (PmEvent *)v2;
+	//return (p2->timestamp - p1->timestamp);
+	if (p1->timestamp < p2->timestamp)
+		return -1;
+	else if (p1->timestamp > p2->timestamp)
+		return +1;
+	else
+		return 0;
+}
+
 CGenTemplate::CGenTemplate()
 {
+	// Init constant arrays
+	instr.resize(MAX_INSTR);
+	instr_type.resize(MAX_VOICE);
+	instr_min.resize(MAX_VOICE);
+	instr_max.resize(MAX_VOICE);
+	CC_dynamics.resize(MAX_VOICE);
+	max_slur_count.resize(MAX_VOICE);
+	max_slur_interval.resize(MAX_VOICE);
+	slur_ks.resize(MAX_VOICE);
+	legato_ahead.resize(MAX_VOICE);
+	// Set instrument
 	instr[0] = 1;
 }
 
@@ -321,6 +345,8 @@ void CGenTemplate::InitVectors()
 	tempo = vector<double>(t_allocated);
 	stime = vector<double>(t_allocated);
 	etime = vector<double>(t_allocated);
+	dstime = vector<double>(t_allocated);
+	detime = vector<double>(t_allocated);
 	// Init ngv
 	for (int v = 0; v < MAX_VOICE; v++) {
 		ngv_min[v] = 1000;
@@ -332,6 +358,47 @@ void CGenTemplate::InitVectors()
 			color[i][v] = Color(0);
 		}
 	}
+}
+
+void CGenTemplate::ResizeVectors(int size)
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
+		WriteLog(1, new CString("Critical error: ResizeVectors mutex timed out"));
+	}
+	pause.resize(size);
+	note.resize(size);
+	len.resize(size);
+	coff.resize(size);
+	poff.resize(size);
+	noff.resize(size);
+	tempo.resize(size);
+	stime.resize(size);
+	etime.resize(size);
+	dstime.resize(size);
+	detime.resize(size);
+	att.resize(size);
+	comment.resize(size);
+	color.resize(size);
+	for (int i = t_allocated; i < size; i++) {
+		pause[i].resize(v_cnt);
+		note[i].resize(v_cnt);
+		len[i].resize(v_cnt);
+		coff[i].resize(v_cnt);
+		poff[i].resize(v_cnt);
+		noff[i].resize(v_cnt);
+		att[i].resize(v_cnt);
+		comment[i].resize(v_cnt);
+		color[i].resize(v_cnt, Color(0));
+	}
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* st = new CString;
+	st->Format("ResizeVectors from %d to %d (in %d ms)", t_allocated, size, time_stop - time_start);
+	WriteLog(0, st);
+
+	t_allocated = size;
+	mutex_output.unlock();
 }
 
 void CGenTemplate::LoadInstruments()
@@ -360,7 +427,7 @@ void CGenTemplate::LoadInstruments()
 			st2.MakeLower();
 			int idata = atoi(st3);
 			if (st2 == "instrument") {
-				for (int x=0; x<MAX_INSTR; x++) {
+				for (int x = 0; x<MAX_INSTR; x++) {
 					if (InstName[x] == st3) i = x;
 				}
 			}
@@ -372,50 +439,12 @@ void CGenTemplate::LoadInstruments()
 				CGenTemplate::CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
 				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		}
 	}
 	fs.close();
-}
-
-void CGenTemplate::ResizeVectors(int size)
-{
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
-		WriteLog(1, new CString("Critical error: ResizeVectors mutex timed out"));
-	}
-	pause.resize(size);
-	note.resize(size);
-	len.resize(size);
-	coff.resize(size);
-	poff.resize(size);
-	noff.resize(size);
-	tempo.resize(size);
-	stime.resize(size);
-	etime.resize(size);
-	att.resize(size);
-	comment.resize(size);
-	color.resize(size);
-	for (int i = t_allocated; i < size; i++) {
-		pause[i].resize(v_cnt);
-		note[i].resize(v_cnt);
-		len[i].resize(v_cnt);
-		coff[i].resize(v_cnt);
-		poff[i].resize(v_cnt);
-		noff[i].resize(v_cnt);
-		att[i].resize(v_cnt);
-		comment[i].resize(v_cnt);
-		color[i].resize(v_cnt, Color(0));
-	}
-	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* st = new CString;
-	st->Format("ResizeVectors from %d to %d (in %d ms)", t_allocated, size, time_stop - time_start);
-	WriteLog(0, st);
-
-	t_allocated = size;
-	mutex_output.unlock();
 }
 
 void CGenTemplate::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {
@@ -708,6 +737,7 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 
 void CGenTemplate::SendMIDI(int step1, int step2)
 {
+	if (step2 == step1) return;
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	PmTimestamp timestamp_current = TIME_PROC(TIME_INFO);
 	PmTimestamp timestamp;
@@ -762,24 +792,59 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		// Send notes
 		vector <PmEvent> buffer;
 		PmEvent event;
-		//PmEvent* buffer = new PmEvent[ncount * 2];
 		i = step21;
+		int slur_count = 0;
+		int ei;
 		for (int x = 0; x < ncount; x++) {
+			// Fist send last note off, because it was blocked to protect legato ahead
+			if ((x == 0) && (i > 0) && (!pause[i - 1][v])) {
+				ei = i - 1;
+				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
+				event.timestamp = timestamp;
+				event.message = Pm_Message(0x90, note[ei][v], 0);
+				buffer.push_back(event);
+			}
+			// Advance start for legato
+			if ((i > 0) && (legato_ahead[instr[v]] > 0) && (detime[i - 1] >= 0) && (!pause[i - poff[i][v]][v])) {
+				dstime[i] = -legato_ahead[instr[v]];
+			}
 			// Note ON
-			timestamp = (stime[step21] - stime[step1]) * 100 / m_pspeed + timestamp0;
+			timestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
 			event.timestamp = timestamp;
 			event.message = Pm_Message(0x90, note[i][v], att[i][v]);
 			buffer.push_back(event);
+			// Send slur
+			if ((i > 0) && (instr_type[instr[v]] == 1) && (abs(note[i - poff[i][v]][v] - note[i][v]) <= max_slur_interval[instr[v]]) && 
+				(slur_count <= max_slur_count[instr[v]])) {
+				event.timestamp = timestamp - (stime[i] - stime[i-1])/4;
+				event.message = Pm_Message(0x90, slur_ks[instr[v]], 10);
+				//buffer.push_back(event);
+				// Note OFF
+				event.timestamp = timestamp + (stime[i] - stime[i - 1]) / 4;
+				event.message = Pm_Message(0x90, slur_ks[instr[v]], 0);
+				//buffer.push_back(event);
+				slur_count++;
+			}
+			else {
+				slur_count = 0;
+			}
 			// Note OFF
-			timestamp = (etime[i + len[i][v] - 1] - stime[step1]) * 100 / m_pspeed + timestamp0;
-			event.timestamp = timestamp;
-			event.message = Pm_Message(0x90, note[i][v], 0);
-			buffer.push_back(event);
+			ei = i + len[i][v] - 1;
+			//if (randbw(0, 100) < 20) detime[ei] = (etime[ei] - stime[ei]) / 2;
+			// Do not send NoteOFF if this is last note, because this will block legato ahead (if needed) in next MidiSend
+			if (i < step22 - 1) {
+				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
+				event.timestamp = timestamp;
+				event.message = Pm_Message(0x90, note[ei][v], 0);
+				buffer.push_back(event);
+			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
 		}
+		// Sort by timestamp before sending
+		qsort(buffer.data(), buffer.size(), sizeof(PmEvent), PmEvent_comparator);
+		// Send
 		Pm_Write(midi, buffer.data(), buffer.size());
-		//delete[] buffer;
 	}
 	// Save last sent position
 	midi_sent = step22;

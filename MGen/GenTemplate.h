@@ -67,6 +67,7 @@ public:
 	static CString fname_from_path(CString path);
 	static CString bname_from_path(CString path);
 	static CString dir_from_path(CString path);
+	static int PmEvent_comparator(const void *v1, const void *v2);
 
 protected:
 	// File operations
@@ -166,18 +167,21 @@ public:
 	vector< vector <CString> > comment; // Comment for note
 	vector< vector <Color> > color; // Note color (rgb ignored if all zero; alpha ignored if zero)
 	vector<double> tempo; // Tempo
-	vector<double> stime; // Time of current step in ms
-	vector<double> etime; // Time of current step in ms
+	vector<double> stime; // Time of current step start in ms
+	vector<double> etime; // Time of current step ending in ms
+	vector<double> dstime; // Delta of current step start in ms for playback
+	vector<double> detime; // Delta of current step ending in ms for playback
 
 	// Instruments
-	int instr[MAX_VOICE]; // Instruments for each voice
-	int instr_type[MAX_INSTR];
-	int instr_min[MAX_INSTR];
-	int instr_max[MAX_INSTR];
-	int CC_dynamics[MAX_INSTR];
-	int max_slur_count[MAX_INSTR];
-	int max_slur_interval[MAX_INSTR];
-	int slur_ks[MAX_INSTR];
+	vector<int> instr; // Instruments for each voice
+	vector<int> instr_type;
+	vector<int> instr_min;
+	vector<int> instr_max;
+	vector<int> CC_dynamics;
+	vector<int> max_slur_count;
+	vector<int> max_slur_interval;
+	vector<int> slur_ks;
+	vector<int> legato_ahead;
 
   // Random generator
 	ub4 randrsl[256], randcnt; // external results
