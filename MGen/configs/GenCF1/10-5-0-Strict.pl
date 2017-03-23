@@ -2,7 +2,7 @@
 t_cnt = 1000 # Maximum number of canti generated
 c_len = 10 # Number of measures in each cantus. Usually 9 to 11
 max_interval = 5 # Maximum diatonic interval in cantus (7 = octave)
-first_note = 60 # Starting note of each cantus
+first_note = 72 # Starting note of each cantus
 last_diatonic_int = 0 # Diatonic interval between first and last note
 min_tempo = 100 # Minimum tempo
 max_tempo = 130 # Maximum tempo

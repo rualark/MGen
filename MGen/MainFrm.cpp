@@ -452,7 +452,7 @@ void CMainFrame::OnButtonGen()
 		m_state_play = 0;
 		// Start timer
 		SetTimer(TIMER1, m_view_timer, NULL);
-		if (pGen->shuffle == 0) (TIMER2, 1000, NULL);
+		if (pGen->shuffle == 0) SetTimer(TIMER2, 1000, NULL);
 	}
 }
 
