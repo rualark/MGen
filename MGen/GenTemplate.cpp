@@ -332,6 +332,47 @@ void CGenTemplate::InitVectors()
 
 void CGenTemplate::LoadInstruments()
 {
+	// Load strings
+	ifstream fs;
+	fs.open("instruments.pl");
+	CString st, st2, st3;
+	char pch[2550];
+	int pos = 0;
+	int i = -1;
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st = pch;
+		// Remove comments
+		pos = st.Find("#");
+		if (pos != -1) st = st.Left(pos);
+		st.Trim();
+		// Find equals
+		pos = st.Find("=");
+		if (pos != -1) {
+			st2 = st.Left(pos);
+			st3 = st.Mid(pos + 1);
+			st2.Trim();
+			st3.Trim();
+			st2.MakeLower();
+			int idata = atoi(st3);
+			if (st2 == "instrument") {
+				for (int x=0; x<MAX_INSTR; x++) {
+					if (InstName[x] == st3) i = x;
+				}
+			}
+			if (i > -1) {
+				CGenTemplate::CheckVar(&st2, &st3, "n_min", &instr_min[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "n_max", &instr_max[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "type", &instr_type[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
+				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
+			}
+		}
+	}
+	fs.close();
 }
 
 void CGenTemplate::ResizeVectors(int size)

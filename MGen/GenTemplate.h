@@ -173,6 +173,7 @@ public:
 	int instr[MAX_VOICE]; // Instruments for each voice
 	int instr_type[MAX_INSTR];
 	int instr_min[MAX_INSTR];
+	int instr_max[MAX_INSTR];
 	int CC_dynamics[MAX_INSTR];
 	int max_slur_count[MAX_INSTR];
 	int max_slur_interval[MAX_INSTR];
