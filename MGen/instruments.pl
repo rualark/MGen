@@ -1,4 +1,10 @@
+# This file contains parameters of all supported instruments for MIDI port sending
+# Instrument types:
+# 0 - Melodic percussion
+# 1 - Friedlander violin
+
 Instrument = Piano
+Type = 0 # Instrument type
 n_min = 30 # Lowest note
 n_max = 80 # Highest note
 t_min = 1 # Shortest note in steps
@@ -6,3 +12,21 @@ t_max = 0 # Longest melody withot pauses in steps (0 = no limit). Changes with d
 poly = 6 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap
 dying = 5 # Seconds to fade out at mf
+library = Any # For which library algorithm is optimized
+
+Instrument = Violin
+Type = 1 # Instrument type
+n_min = 30 # Lowest note
+n_max = 80 # Highest note
+t_min = 1 # Shortest note in steps
+t_max = 0 # Longest melody withot pauses in steps (0 = no limit). Changes with dynamics
+poly = 1 # Maximum number of simultaneous voices
+leap_t_min = 1 # Shortest note after leap
+dying = 0 # Seconds to fade out at mf
+library = Friedlander Violin 1.5 # For which library algorithm is optimized
+CC_dynamics = 11
+CC_vib_intens = 1
+CC_vib_speed = 14
+max_slur_count = 4 # Use slur for 2nd moves, but no longer than X moves
+max_slur_interval = 2 # in semitones
+slur_ks = 49 # Keyswitch to send to create slur

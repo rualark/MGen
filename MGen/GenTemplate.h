@@ -1,6 +1,7 @@
 #pragma once
 
 #define MAX_VOICE 16
+#define MAX_INSTR 16
 
 #include "portmidi.h"
 #include "porttime.h"
@@ -98,6 +99,7 @@ public:
 	void InitRandom();
 	void TestRandom(); // Tests random generator
 	void InitVectors();
+	void LoadInstruments(); // Load instruments config
 	void LoadConfig(CString fname);
 	void ResizeVectors(int size);
 	void SaveResults(CString dir, CString fname);
@@ -152,7 +154,7 @@ public:
 	float basic_tempo = 100; // Basic tempo
 	double midifile_tpq_mul = 1; // Multiplier of ticks per quarter notes in midi export
 	int shuffle = 0; // If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
-	vector <string> instr; // Instruments for each voice
+	
 	// Output
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
 	vector< vector <unsigned char> > note; // Note values (midi)
@@ -166,7 +168,16 @@ public:
 	vector<double> tempo; // Tempo
 	vector<double> stime; // Time of current step in ms
 	vector<double> etime; // Time of current step in ms
-  
+
+	// Instruments
+	int instr[MAX_VOICE]; // Instruments for each voice
+	int instr_type[MAX_INSTR];
+	int instr_min[MAX_INSTR];
+	int CC_dynamics[MAX_INSTR];
+	int max_slur_count[MAX_INSTR];
+	int max_slur_interval[MAX_INSTR];
+	int slur_ks[MAX_INSTR];
+
   // Random generator
 	ub4 randrsl[256], randcnt; // external results
 	ub4 mm[256];  // internal state

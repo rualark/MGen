@@ -444,6 +444,7 @@ void CMainFrame::OnButtonGen()
 		// Initialize variables
 		pGen->InitRandom();
 		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
+		pGen->LoadInstruments();
 		pGen->InitVectors();
 		// Start generation
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);

@@ -6,4 +6,4 @@ Config = 9-7-0-Free and strict (shuffle) # Name of configuration file for select
 MIDI_OUT = loopMIDI Port, MMSystem # Name of MIDI device used for playing notes
 Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 80 to 500
 View_timer = 100 # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers
-playback_speed = 100 # Playback speed in percent
+playback_speed = 80 # Playback speed in percent

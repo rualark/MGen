@@ -165,6 +165,7 @@ CString CGenTemplate::dir_from_path(CString path)
 
 CGenTemplate::CGenTemplate()
 {
+	instr[0] = 1;
 }
 
 
@@ -327,6 +328,10 @@ void CGenTemplate::InitVectors()
 			color[i][v] = Color(0);
 		}
 	}
+}
+
+void CGenTemplate::LoadInstruments()
+{
 }
 
 void CGenTemplate::ResizeVectors(int size)
@@ -678,56 +683,59 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		WriteLog(4, st);
 		return;
 	}
-	int i, ncount = 0;
+	int i;
 	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
 		WriteLog(0, new CString("SendMIDI mutex timed out: will try later"));
 	}
-	int step21;
-	int step22;
-	// Move to note start
-	if (coff[step1][0] > 0) step21 = step1 - coff[step1][0];
-	else step21 = step1;
+	int step21; // Voice-dependent first step
+	int step22; // Voice-independent last step
 	// Find last step not too far
 	double time;
-	for (i = step21; i <= step2; i++) {
+	for (i = step1; i <= step2; i++) {
 		step22 = i;
 		if (i == 0) time = stime[i] * 100 / m_pspeed;
-		else time = etime[i - 1] * 100/m_pspeed;
+		else time = etime[i - 1] * 100 / m_pspeed;
 		if (time - stime[step1] * 100 / m_pspeed + timestamp - timestamp_current > MAX_MIDI_BUFFER_MSEC) break;
 	}
-	// Count notes
-	for (i = step21; i < step22; i++) {
-		if (i + len[i][0] > step22) break;
-		ncount++;
-		if (noff[i][0] == 0) break;
-		i += noff[i][0] - 1;
-	}
-	// Send notes
-	PmEvent* buffer = new PmEvent[ncount*2];
-	i = step21;
-	for (int x = 0; x < ncount; x++) {
-		// Note ON
-		timestamp = (stime[step21] - stime[step1]) * 100 / m_pspeed + timestamp0;
-		buffer[x*2].timestamp = timestamp;
-		buffer[x*2].message = Pm_Message(0x90, note[i][0], att[i][0]);
-		// Note OFF
-		timestamp = (etime[i + len[i][0] - 1] - stime[step1]) * 100 / m_pspeed + timestamp0;
-		buffer[x * 2 + 1].timestamp = timestamp;
-		buffer[x * 2 + 1].message = Pm_Message(0x90, note[i][0], 0);
-		if (noff[i][0] == 0) break;
-		i += noff[i][0];
+	for (int v = 0; v < v_cnt; v++) {
+		int ncount = 0;
+		// Move to note start
+		if (coff[step1][v] > 0) step21 = step1 - coff[step1][v];
+		else step21 = step1;
+		// Count notes
+		for (i = step21; i < step22; i++) {
+			if (i + len[i][v] > step22) break;
+			ncount++;
+			if (noff[i][v] == 0) break;
+			i += noff[i][v] - 1;
+		}
+		// Send notes
+		PmEvent* buffer = new PmEvent[ncount * 2];
+		i = step21;
+		for (int x = 0; x < ncount; x++) {
+			// Note ON
+			timestamp = (stime[step21] - stime[step1]) * 100 / m_pspeed + timestamp0;
+			buffer[x * 2].timestamp = timestamp;
+			buffer[x * 2].message = Pm_Message(0x90, note[i][v], att[i][v]);
+			// Note OFF
+			timestamp = (etime[i + len[i][v] - 1] - stime[step1]) * 100 / m_pspeed + timestamp0;
+			buffer[x * 2 + 1].timestamp = timestamp;
+			buffer[x * 2 + 1].message = Pm_Message(0x90, note[i][v], 0);
+			if (noff[i][v] == 0) break;
+			i += noff[i][v];
+		}
+		Pm_Write(midi, buffer, ncount * 2);
+		delete[] buffer;
 	}
 	// Save last sent position
 	midi_sent = step22;
 	midi_sent_t = timestamp0 + (etime[midi_sent-1] - stime[step1]) * 100 / m_pspeed;
 	mutex_output.unlock();
-	Pm_Write(midi, buffer, ncount*2);
-	delete [] buffer;
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
-	st->Format("Pm_Write %d notes (steps %d/%d - %d/%d) [to future %d to %d ms] (in %d ms) playback is at %d ms", 
-		ncount, step21, step1, midi_sent, step2, timestamp0 - timestamp_current, midi_sent_t - timestamp_current, 
+	st->Format("Pm_Write steps %d/%d - %d/%d [to future %d to %d ms] (in %d ms) playback is at %d ms", 
+		step21, step1, midi_sent, step2, timestamp0 - timestamp_current, midi_sent_t - timestamp_current, 
 		time_stop - time_start, timestamp_current-midi_start_time);
 	WriteLog(4, st);
 }
