@@ -756,9 +756,9 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		buffer_underrun = 1;
 	}
 	PmTimestamp timestamp0 = timestamp;
-	// Set playback start
+	// Set real time when playback started
 	if (step1 == 0) midi_start_time = timestamp0;
-	else if (midi_start_time == 0) midi_start_time = midi_sent_t - stime[step1];
+	else if (midi_start_time == 0) midi_start_time = (midi_sent_t - stime[step1] / m_pspeed * 100);
 	// Check if buffer is full
 	if (midi_sent_t - timestamp_current > MIN_MIDI_BUFFER_MSEC) {
 		CString* st = new CString;
