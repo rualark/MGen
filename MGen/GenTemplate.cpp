@@ -263,9 +263,9 @@ void CGenTemplate::InitRandom()
 	// Init rand
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	srand(seed);
-	CString* est = new CString;
-	est->Format("Random check: %d", rand());
-	WriteLog(1, est);
+	//CString* est = new CString;
+	//est->Format("Random test: %d", rand());
+	//WriteLog(1, est);
 	// Init ISAAC
 	ub4 i;
 	aa = bb = cc = (ub4)0;
@@ -632,6 +632,11 @@ void CGenTemplate::SaveMidi(CString dir, CString fname)
 		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
 			midifile.addNoteOn(track, (tpq*4)+ tpñ*i, channel, note[i][v], att[i][v]);
 			midifile.addNoteOff(track, (tpq * 4) + tpñ*(i+len[i][v])-1, channel, note[i][v], 0);
+			if (comment[i][v] != "") {
+				string st;
+				st = comment[i][v];
+				midifile.addLyric(track, (tpq * 4) + tpñ*i, st);
+			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}
