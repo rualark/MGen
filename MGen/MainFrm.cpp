@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_SPIN_PSPEED, &CMainFrame::OnUpdateSpinPspeed)
 	ON_COMMAND(ID_SPIN_PSPEED, &CMainFrame::OnSpinPspeed)
 	ON_COMMAND(ID_SPIN_ZOOM, &CMainFrame::OnSpinZoom)
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -349,8 +350,10 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 
 void CMainFrame::OnButtonParams()
 {
-	CString path = "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl";
-	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", path, NULL, NULL, SW_SHOWNORMAL);
+	if (m_state_gen != 1 && m_algo > -1 && m_config != "") {
+		CString path = "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl";
+		::ShellExecute(GetDesktopWindow()->m_hWnd, "open", path, NULL, NULL, SW_SHOWNORMAL);
+	}
 }
 
 void CMainFrame::LoadResults(CString path) {
@@ -458,14 +461,15 @@ void CMainFrame::OnButtonGen()
 
 void CMainFrame::OnButtonSettings()
 {
-	// TODO: Add your command handler code here
 }
 
 
 void CMainFrame::OnButtonAlgo()
 {
-	CAlgoDlg dlg;
-	dlg.DoModal();
+	if (m_state_gen != 1) {
+		CAlgoDlg dlg;
+		dlg.DoModal();
+	}
 }
 
 
@@ -846,8 +850,8 @@ void CMainFrame::OnUpdateComboMidiout(CCmdUI *pCmdUI)
 
 void CMainFrame::OnButtonEparams()
 {
-	CEditParamsDlg dlg;
-	dlg.DoModal();
+	//CEditParamsDlg dlg;
+	//dlg.DoModal();
 }
 
 
@@ -980,4 +984,11 @@ void CMainFrame::OnSpinZoom()
 		GetActiveView()->Invalidate();
 		SaveSettings();
 	}
+}
+
+
+void CMainFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+
+	CFrameWndEx::OnKeyDown(nChar, nRepCnt, nFlags);
 }

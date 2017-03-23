@@ -157,6 +157,7 @@ public:
 	afx_msg void OnUpdateSpinPspeed(CCmdUI *pCmdUI);
 	afx_msg void OnSpinPspeed();
 	afx_msg void OnSpinZoom();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 

@@ -44,6 +44,7 @@ BEGIN_MESSAGE_MAP(CMGenView, CScrollView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
 	ON_WM_ERASEBKGND()
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 // CMGenView construction/destruction
@@ -578,4 +579,24 @@ BOOL CMGenView::OnEraseBkgnd(CDC* pDC)
 	return false;
 
 	//return CScrollView::OnEraseBkgnd(pDC);
+}
+
+
+void CMGenView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	if (nChar == VK_F3) {
+		mf->OnButtonAlgo();
+	}
+	if (nChar == VK_F4) {
+		mf->OnButtonParams();
+	}
+	if (nChar == VK_F5) {
+		mf->OnButtonGen();
+	}
+	if (nChar == VK_SPACE) {
+		mf->OnButtonPlay();
+	}
+
+	CScrollView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
