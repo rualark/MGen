@@ -151,6 +151,7 @@ public:
 	double tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
 	double midifile_tpq_mul = 1; // Multiplier of ticks per quarter notes in midi export
+	int shuffle = 0; // If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 	vector <string> instr; // Instruments for each voice
 	// Output
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note

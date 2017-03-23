@@ -451,7 +451,7 @@ void CMainFrame::OnButtonGen()
 		m_state_play = 0;
 		// Start timer
 		SetTimer(TIMER1, m_view_timer, NULL);
-		SetTimer(TIMER2, 1000, NULL);
+		if (pGen->shuffle == 0) (TIMER2, 1000, NULL);
 	}
 }
 
@@ -500,8 +500,15 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 			"# Originally autosaved at " + dir);
 		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		//WriteLog(1, dir + "\\config.pl");
+		// Start playback after shuffle
+		if (pGen->shuffle) {
+			GetActiveView()->Invalidate();
+			if (m_state_play == 0) OnButtonPlay();
+		}
 	}
 	if (wParam == 1) {
+		// This message is sent from generation thread when t_sent is increased
+		// Now it is processed OnTimer
 	}
 	return 0;
 }

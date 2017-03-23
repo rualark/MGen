@@ -83,6 +83,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
 	CheckVar(sN, sV, "min_tempo", &min_tempo);
 	CheckVar(sN, sV, "max_tempo", &max_tempo);
+	CheckVar(sN, sV, "random_choose", &random_choose);
+	CheckVar(sN, sV, "shuffle", &shuffle);
 	LoadVar(sN, sV, "accept", &accept);
 }
 
@@ -106,7 +108,7 @@ void CGenCF1::Generate()
 	// Walk all variants
 	int p = c_len - 2; // Minimal position in array to cycle
 	double cycle = 0;
-	long accepted = 0, accepted2 = 0, accepted3 = 0;
+	long accepted = 0, accepted2 = 0, accepted3 = 0, accepted4 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, culm_sum, smooth_sum, smooth_sum2;
 	int step = 0; // Global step
@@ -305,9 +307,12 @@ void CGenCF1::Generate()
 			for (int i = 0; i < MAX_FLAGS; i++) {
 				if ((flags[i] <= 'Z') && (accept[i] > 'Z')) goto skip;
 			}
+			// Check random_choose
+			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
 			// Accept cantus
-			accepted++;
+			accepted4++;
 			if (accepted < t_cnt) {
+				accepted++;
 				Sleep(sleep_ms);
 				//Color ccolor = Color(0, randbw(0, 180), randbw(0, 180), randbw(0, 180));
 				// Copy cantus to output
@@ -320,14 +325,14 @@ void CGenCF1::Generate()
 					//for (int i = 0; i < MAX_FLAGS; i++) if (flags[i] <= 'Z') color[x][0] = FlagColor[i];
 					if (flags[11] == 'F') {
 						color[x][0] = FlagColor[11];
-						if (x == step)  comment[step][0] += "This cantus has unfilled loop ";
+						if (x == step)  comment[step][0] += "This cantus has unfilled loop. ";
 					}
 					// Set nflag color
 					if (nflagsc[x - step] > 0) color[x][0] = FlagColor[nflags[x - step][0]];
 					note[x][0] = cc[x - step];
 					//color[x][0] = FlagColor[accepted%13];
 					if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
-						comment[x][0] += FlagName[nflags[x - step][i]] + " ";
+						comment[x][0] += FlagName[nflags[x - step][i]] + ". ";
 					}
 					len[x][0] = 1;
 					pause[x][0] = 0;
@@ -390,7 +395,41 @@ void CGenCF1::Generate()
 		st.Format("%c-%.3f ", accept[i], (double)fstat[i]/(double)1000);
 		st2 += st;
 	}
-	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f) variants of %.3f: %s", c_len, max_interval, 100.0*(double)accepted / cycle, (double)accepted/1000, (double)accepted2/1000, (double)accepted3 / 1000, cycle/1000, st2);
+	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s", c_len, max_interval, 100.0*(double)accepted / cycle, 100.0*(double)accepted4 / cycle, (double)accepted/1000, (double)accepted2/1000, (double)accepted3 / 1000, cycle/1000, st2);
 	AppendLineToFile("GenCF1.log", *est + "\n");
 	WriteLog(3, est);
+	// Random shuffle
+	if (shuffle) {
+		vector<unsigned short> ci(accepted); // cantus indexes
+		vector<unsigned char> note2(t_generated);
+		vector<CString> comment2(t_generated);
+		vector<Color> color2(t_generated);
+		for (int i = 0; i < accepted; i++) ci[i] = i;
+		// Shuffled indexes
+		random_shuffle(ci.begin(), ci.end());
+		// Swap
+		int i1, i2;
+		for (int i = 0; i < accepted; i++) {
+			for (int x = 0; x < c_len; x++) {
+				i1 = i*(c_len + 1) + x;
+				i2 = ci[i]*(c_len + 1) + x;
+				note2[i1] = note[i2][0];
+				comment2[i1] = comment[i2][0];
+				color2[i1] = color[i2][0];
+			}
+		}
+		// Replace
+		for (int i = 0; i < accepted; i++) {
+			for (int x = 0; x < c_len; x++) {
+				i1 = i*(c_len + 1) + x;
+				note[i1][0] = note2[i1];
+				comment[i1][0] = comment2[i1];
+				color[i1][0] = color2[i1];
+			}
+		}
+		::PostMessage(m_hWnd, WM_GEN_FINISH, 2, 0);
+		CString* est = new CString;
+		est->Format("Shuffle of %ld melodies finished", accepted);
+		WriteLog(3, est);
+	}
 }

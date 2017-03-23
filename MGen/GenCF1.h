@@ -28,4 +28,5 @@ protected:
 	int stag_note_steps = 7;
 	int min_tempo = 100;
 	int max_tempo = 130;
+	double random_choose = 100; // Percent of accepted canti to show and play
 };
