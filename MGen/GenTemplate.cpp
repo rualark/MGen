@@ -188,6 +188,8 @@ CGenTemplate::CGenTemplate()
 	max_slur_interval.resize(MAX_VOICE);
 	slur_ks.resize(MAX_VOICE);
 	legato_ahead.resize(MAX_VOICE);
+	nonlegato_freq.resize(MAX_VOICE);
+	nonlegato_minlen.resize(MAX_VOICE);
 	// Set instrument
 	instr[0] = 1;
 }
@@ -440,6 +442,8 @@ void CGenTemplate::LoadInstruments()
 				CGenTemplate::CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
+				CGenTemplate::CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
 				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		}
@@ -792,9 +796,27 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		// Send notes
 		vector <PmEvent> buffer;
 		PmEvent event;
-		i = step21;
 		int slur_count = 0;
 		int ei;
+		// Calculate delta: dstime / detime
+		i = step21;
+		for (int x = 0; x < ncount; x++) {
+			// Advance start for legato (not longer than previous note length)
+			if ((i > 0) && (legato_ahead[instr[v]] > 0) && (detime[i - 1] >= 0) && (!pause[i - poff[i][v]][v])) {
+				dstime[i] = -min(legato_ahead[instr[v]], (etime[i - 1] - stime[i - poff[i][v]]) * 100 / m_pspeed + 
+					detime[i - 1] - dstime[i - poff[i][v]] - 1);
+				detime[i - 1] = 0.9 * dstime[i];
+			}
+			// Randomly make some notes non-legato if they have enough length
+			ei = i + len[i][v] - 1;
+			if (((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i] > nonlegato_minlen[instr[v]]) &&
+				(randbw(0, 100) < nonlegato_freq[instr[v]]))
+				detime[ei] = -min(300, (etime[ei] - stime[ei]) * 100 / m_pspeed / 3);
+			if (noff[i][v] == 0) break;
+			i += noff[i][v];
+		}
+		// Send notes
+		i = step21;
 		for (int x = 0; x < ncount; x++) {
 			// Fist send last note off, because it was blocked to protect legato ahead
 			if ((x == 0) && (i > 0) && (!pause[i - 1][v])) {
@@ -804,10 +826,6 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 				event.message = Pm_Message(0x90, note[ei][v], 0);
 				buffer.push_back(event);
 			}
-			// Advance start for legato
-			if ((i > 0) && (legato_ahead[instr[v]] > 0) && (detime[i - 1] >= 0) && (!pause[i - poff[i][v]][v])) {
-				dstime[i] = -legato_ahead[instr[v]];
-			}
 			// Note ON
 			timestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
 			event.timestamp = timestamp;
@@ -816,13 +834,13 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			// Send slur
 			if ((i > 0) && (instr_type[instr[v]] == 1) && (abs(note[i - poff[i][v]][v] - note[i][v]) <= max_slur_interval[instr[v]]) && 
 				(slur_count <= max_slur_count[instr[v]])) {
-				event.timestamp = timestamp - (stime[i] - stime[i-1])/4;
+				event.timestamp = timestamp - ((stime[i] - stime[i-1]) * 100 / m_pspeed + dstime[i] - dstime[i-1]) / 10;
 				event.message = Pm_Message(0x90, slur_ks[instr[v]], 10);
-				//buffer.push_back(event);
+				buffer.push_back(event);
 				// Note OFF
-				event.timestamp = timestamp + (stime[i] - stime[i - 1]) / 4;
+				event.timestamp = timestamp + ((stime[i] - stime[i - 1]) * 100 / m_pspeed + dstime[i] - dstime[i - 1]) / 10;
 				event.message = Pm_Message(0x90, slur_ks[instr[v]], 0);
-				//buffer.push_back(event);
+				buffer.push_back(event);
 				slur_count++;
 			}
 			else {
@@ -830,7 +848,6 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			}
 			// Note OFF
 			ei = i + len[i][v] - 1;
-			//if (randbw(0, 100) < 20) detime[ei] = (etime[ei] - stime[ei]) / 2;
 			// Do not send NoteOFF if this is last note, because this will block legato ahead (if needed) in next MidiSend
 			if (i < step22 - 1) {
 				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];

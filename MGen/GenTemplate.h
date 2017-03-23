@@ -182,6 +182,8 @@ public:
 	vector<int> max_slur_interval;
 	vector<int> slur_ks;
 	vector<int> legato_ahead;
+	vector<double> nonlegato_freq;
+	vector<int> nonlegato_minlen;
 
   // Random generator
 	ub4 randrsl[256], randcnt; // external results

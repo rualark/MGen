@@ -60,7 +60,7 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Tempo: %.1f bpm\nStep start time: %.4f s (%.2f ms long)\nPause indicator: %d\nComment: %s\n", pGen->tempo[ms], pGen->stime[ms] / 1000,
 			pGen->etime[ms] - pGen->stime[ms], pGen->pause[ms][mv], pGen->comment[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Playback start delta: %.1f ms\nPlayback ending delta: %.1f", pGen->dstime[ms], pGen->detime[ms]);
+		st.Format("Playback start delta: %.1f ms\nPlayback ending delta: %.1f ms", pGen->dstime[ms], pGen->detime[ms]);
 		m_info.AddText(st, RGB(0, 170, 0), 0);
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);
