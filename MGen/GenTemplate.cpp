@@ -751,22 +751,26 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			i += noff[i][v] - 1;
 		}
 		// Send notes
-		PmEvent* buffer = new PmEvent[ncount * 2];
+		vector <PmEvent> buffer;
+		PmEvent event;
+		//PmEvent* buffer = new PmEvent[ncount * 2];
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
 			// Note ON
 			timestamp = (stime[step21] - stime[step1]) * 100 / m_pspeed + timestamp0;
-			buffer[x * 2].timestamp = timestamp;
-			buffer[x * 2].message = Pm_Message(0x90, note[i][v], att[i][v]);
+			event.timestamp = timestamp;
+			event.message = Pm_Message(0x90, note[i][v], att[i][v]);
+			buffer.push_back(event);
 			// Note OFF
 			timestamp = (etime[i + len[i][v] - 1] - stime[step1]) * 100 / m_pspeed + timestamp0;
-			buffer[x * 2 + 1].timestamp = timestamp;
-			buffer[x * 2 + 1].message = Pm_Message(0x90, note[i][v], 0);
+			event.timestamp = timestamp;
+			event.message = Pm_Message(0x90, note[i][v], 0);
+			buffer.push_back(event);
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
 		}
-		Pm_Write(midi, buffer, ncount * 2);
-		delete[] buffer;
+		Pm_Write(midi, buffer.data(), buffer.size());
+		//delete[] buffer;
 	}
 	// Save last sent position
 	midi_sent = step22;
