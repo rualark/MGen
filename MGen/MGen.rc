@@ -187,13 +187,15 @@ CAPTION "About MGen"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
-    LTEXT           "Music Generator Laboratory, Version 1.1",IDC_STATIC,42,14,176,8,SS_NOPREFIX
+    LTEXT           "Music Generator Laboratory, Version 1.2",IDC_STATIC,42,14,176,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2017 by Alexey Arkhipenko",IDC_STATIC,42,26,148,8
     DEFPUSHBUTTON   "Close",IDOK,271,42,50,14,WS_GROUP
     CONTROL         "http://arkhipenko.weebly.com",IDC_MFCLINK1,"MfcLink",WS_TABSTOP,181,25,116,14
     LTEXT           "Visit",IDC_STATIC,7,43,15,8
     CONTROL         "https://github.com/rualark/MGen",IDC_MFCLINK2,"MfcLink",WS_TABSTOP,27,42,118,14
     LTEXT           "for new releases and changelog",IDC_STATIC,148,43,106,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,301,36,20,20
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,301,7,20,20
 END
 
 

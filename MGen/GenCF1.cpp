@@ -32,7 +32,7 @@ const Color FlagColor[] = {
 	Color(0, 0, 150, 150), // 8 r
 	Color(0, 150, 0, 150), // 9 d
 	Color(0, 0, 150, 0), // 10 g
-	Color(0, 80, 80, 170), // 11 f
+	Color(0, 120, 0, 250), // 11 f
 	Color(0, 250, 100, 160) // 12 m
 };
 
@@ -105,7 +105,7 @@ void CGenCF1::Generate()
 	for (int i = 1; i < c_len-1; i++) c[i] = -max_interval;
 	// Walk all variants
 	int p = c_len - 2; // Minimal position in array to cycle
-	long cycle = 0;
+	double cycle = 0;
 	long accepted = 0, accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, culm_sum, smooth_sum, smooth_sum2;
@@ -314,18 +314,21 @@ void CGenCF1::Generate()
 				if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
 				//comment[step][0].Format("c%ld a%ld", cycle, accepted);
 				for (int x = step; x < step + c_len; x++) {
+					//color[x][0] = ccolor;
 					// Set flag color
-					for (int i = 0; i < MAX_FLAGS; i++) {
-						if (flags[i] <= 'Z') color[x][0] = FlagColor[i];
+					color[x][0] = FlagColor[0];
+					//for (int i = 0; i < MAX_FLAGS; i++) if (flags[i] <= 'Z') color[x][0] = FlagColor[i];
+					if (flags[11] == 'F') {
+						color[x][0] = FlagColor[11];
+						if (x == step)  comment[step][0] += "This cantus has unfilled loop ";
 					}
-					//color[x][0] = FlagColor[accepted%13];
+					// Set nflag color
+					if (nflagsc[x - step] > 0) color[x][0] = FlagColor[nflags[x - step][0]];
 					note[x][0] = cc[x - step];
-					//note[x][0] = dia_to_chrom[(c[x - step] + 56) % 7] + (c[x - step] / 7) * 12 + first_note; // Negative eight octaves reserve
-					//if ((c[x - step] < 0) && (c[x - step] > -7)) note[x][0] -= 12; // Correct negative octaves
+					//color[x][0] = FlagColor[accepted%13];
 					if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
 						comment[x][0] += FlagName[nflags[x - step][i]] + " ";
 					}
-					//color[x][0] = ccolor;
 					len[x][0] = 1;
 					pause[x][0] = 0;
 					tempo[x] = 200;
@@ -387,7 +390,7 @@ void CGenCF1::Generate()
 		st.Format("%c-%.3f ", accept[i], (double)fstat[i]/(double)1000);
 		st2 += st;
 	}
-	est->Format("%d/%d: Accepted %.8f%% (%ld/%ld/%ld) variants of %ld: %s", c_len, max_interval, 100.0*(double)accepted / (double)cycle, accepted, accepted2, accepted3, cycle, st2);
+	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f) variants of %.3f: %s", c_len, max_interval, 100.0*(double)accepted / cycle, (double)accepted/1000, (double)accepted2/1000, (double)accepted3 / 1000, cycle/1000, st2);
 	AppendLineToFile("GenCF1.log", *est + "\n");
-	WriteLog(1, est);
+	WriteLog(3, est);
 }
