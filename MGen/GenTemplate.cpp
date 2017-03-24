@@ -225,11 +225,11 @@ int CGenTemplate::GetNoteI(CString st)
 
 CGenTemplate::CGenTemplate()
 {
-	// Init constant arrays
+	// Init constant length arrays
 	instr.resize(MAX_INSTR);
 	instr_type.resize(MAX_VOICE);
-	instr_min.resize(MAX_VOICE);
-	instr_max.resize(MAX_VOICE);
+	instr_nmin.resize(MAX_VOICE);
+	instr_nmax.resize(MAX_VOICE);
 	CC_dynamics.resize(MAX_VOICE);
 	max_slur_count.resize(MAX_VOICE);
 	max_slur_interval.resize(MAX_VOICE);
@@ -237,6 +237,8 @@ CGenTemplate::CGenTemplate()
 	legato_ahead.resize(MAX_VOICE);
 	nonlegato_freq.resize(MAX_VOICE);
 	nonlegato_minlen.resize(MAX_VOICE);
+	warning_note_range.resize(MAX_VOICE);
+	warning_note_short.resize(MAX_VOICE);
 	// Set instrument
 	instr[0] = 1;
 }
@@ -481,8 +483,8 @@ void CGenTemplate::LoadInstruments()
 				}
 			}
 			if (i > -1) {
-				LoadNote(&st2, &st3, "n_min", &instr_min[i]);
-				LoadNote(&st2, &st3, "n_max", &instr_max[i]);
+				LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
+				LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "type", &instr_type[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
@@ -876,22 +878,25 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			}
 			if (x == 0) {
 				// Check if notes are in instrument range
-				if ((ng_min + play_transpose < instr_min[instr[v]]) || (ng_max + play_transpose > instr_max[instr[v]])) {
-					if (ng_min < instr_min[instr[v]]) {
-						play_transpose = ((instr_min[instr[v]] - ng_min) / 12) * 12 + 12;
+				if ((ng_min + play_transpose < instr_nmin[instr[v]]) || (ng_max + play_transpose > instr_nmax[instr[v]])) {
+					if (ng_min < instr_nmin[instr[v]]) {
+						play_transpose = ((instr_nmin[instr[v]] - ng_min) / 12) * 12 + 12;
 					}
-					if (ng_max > instr_max[instr[v]]) {
-						play_transpose = -((ng_max - instr_max[instr[v]]) / 12) * 12 - 12;
+					if (ng_max > instr_nmax[instr[v]]) {
+						play_transpose = -((ng_max - instr_nmax[instr[v]]) / 12) * 12 - 12;
 					}
 					// Check if still have problem
 					CString* st = new CString;
-					if ((ng_min + play_transpose < instr_min[instr[v]]) || (ng_max + play_transpose > instr_max[instr[v]])) {
-						st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Cannot transpose automatically: range too wide.",
-							GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_min[instr[v]]), GetNoteName(instr_max[instr[v]]), play_transpose);
+					if ((ng_min + play_transpose < instr_nmin[instr[v]]) || (ng_max + play_transpose > instr_nmax[instr[v]])) {
+						if (!warning_note_range[v]) {
+							st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Cannot transpose automatically: range too wide.",
+								GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_nmin[instr[v]]), GetNoteName(instr_nmax[instr[v]]), play_transpose);
+							warning_note_range[v] = 1;
+						}
 					}
 					else {
 						st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
-							GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_min[instr[v]]), GetNoteName(instr_max[instr[v]]), play_transpose);
+							GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_nmin[instr[v]]), GetNoteName(instr_nmax[instr[v]]), play_transpose);
 					}
 					WriteLog(1, st);
 				}

@@ -155,9 +155,9 @@ public:
 	int midi_start_time = 0; // Time when midi started to play
 	int buffer_underrun = 0; // Shows if current playback had an issue with buffer underrun
 	int midi_play_step = 0; // Current step being played by midi
-	// MIDI play warnings show if warning was already fired to prevent repeated warnings
-	int warning_note_range = 0;
-	int warning_note_short = 0;
+	// MIDI play warnings for each voice show if warning was already fired to prevent repeated warnings
+	vector<int> warning_note_range;
+	vector<int> warning_note_short;
 
 	// Main constants
 	int v_cnt=1; // Voice count
@@ -197,8 +197,10 @@ public:
 	// Instruments
 	vector<int> instr; // Instruments for each voice
 	vector<int> instr_type;
-	vector<int> instr_min;
-	vector<int> instr_max;
+	vector<int> instr_nmin;
+	vector<int> instr_nmax;
+	vector<int> instr_tmin;
+	vector<int> instr_tmax;
 	vector<int> CC_dynamics;
 	vector<int> max_slur_count;
 	vector<int> max_slur_interval;

@@ -7,8 +7,8 @@ Instrument = Piano
 Type = 0 # Instrument type
 n_min = 30 # Lowest note
 n_max = 80 # Highest note
-t_min = 1 # Shortest note in steps
-t_max = 0 # Longest melody withot pauses in steps (0 = no limit). Changes with dynamics
+t_min = 50 # Shortest note in ms
+t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 6 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap
 dying = 5 # Seconds to fade out at mf
@@ -17,9 +17,9 @@ library = Any # For which library algorithm is optimized
 Instrument = Violin
 Type = 1 # Instrument type
 n_min = G3 # Lowest note
-n_max = F7 # Highest note
-t_min = 1 # Shortest note in steps
-t_max = 0 # Longest melody withot pauses in steps (0 = no limit). Changes with dynamics
+n_max = F3 # Highest note
+t_min = 200 # Shortest note in ms
+t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 1 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap
 dying = 0 # Seconds to fade out at mf
