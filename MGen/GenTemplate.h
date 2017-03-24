@@ -116,7 +116,8 @@ protected:
 	void UpdateTempoMinMax(int step1, int step2);
 	void Adapt(int step1, int step2);
 	// Mathematics
-	int randbw(int n1, int n2);
+	int randbw(int n1, int n2); // Random between two numbers
+	double rand01(); // Random double between 0 and 1
 	// Random
 	void isaac();
 	void randinit(int flag);
@@ -229,6 +230,7 @@ public:
 	vector<int> lengroup4;
 	vector<int> lengroup_edt1;
 	vector<int> lengroup_edt2;
+	vector<double> rand_start;
 
   // Random generator
 	ub4 randrsl[256], randcnt; // external results

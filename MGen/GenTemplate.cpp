@@ -45,6 +45,7 @@ CGenTemplate::CGenTemplate()
 	lengroup4.resize(MAX_INSTR);
 	lengroup_edt1.resize(MAX_INSTR);
 	lengroup_edt2.resize(MAX_INSTR);
+	rand_start.resize(MAX_INSTR);
 	// Set instrument
 	instr[0] = 0;
 }
@@ -518,6 +519,7 @@ void CGenTemplate::LoadInstruments()
 				CheckVar(&st2, &st3, "lengroup4", &lengroup4[i]);
 				CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
 				CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
+				CheckVar(&st2, &st3, "rand_start", &rand_start[i]);
 				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		}
@@ -911,11 +913,13 @@ void CGenTemplate::Adapt(int step1, int step2)
 						WriteLog(1, st);
 					}
 				}
-			}
+				// Randomize note starts
+				if (rand_start[ii] > 0) dstime[i] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
+			} // !pause
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
-		}
-	}
+		} // for x
+	} // for v
 }
 
 void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
@@ -1077,6 +1081,11 @@ int CGenTemplate::randbw(int n1, int n2)
 	int re = (double)(n2 - n1 + 1) * rand2() / (double)RAND_MAX;
 	re = re + n1;
 	return re;
+}
+
+double CGenTemplate::rand01()
+{
+	return (double) rand2() / (double)RAND_MAX;
 }
 
 int CGenTemplate::GetPlayStep() {
