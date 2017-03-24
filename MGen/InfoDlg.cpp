@@ -55,7 +55,7 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Step: %d (measure %d)\nVoice: %d\nNote: %s (midi %d)\nNote length: %d\n", ms, ms/8, mv, 
 			CGenTemplate::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv], pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nAttack: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->att[ms][mv]);
+		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nAttack: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->dyn[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Tempo: %.1f bpm\nStep start time: %.4f s (%.2f ms long)\nPause indicator: %d\nComment: %s\n", pGen->tempo[ms], pGen->stime[ms] / 1000,
 			pGen->etime[ms] - pGen->stime[ms], pGen->pause[ms][mv], pGen->comment[ms][mv]);

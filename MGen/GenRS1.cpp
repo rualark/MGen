@@ -33,7 +33,7 @@ void CGenRS1::Generate()
 		if ((i > 0) && (len[i - 1][0] > 1) && (coff[i - 1][0] < len[i - 1][0] - 1)) {
 			// Repeat last note
 			note[i][0] = note[i - 1][0];
-			att[i][0] = att[i - 1][0];
+			dyn[i][0] = dyn[i - 1][0];
 			len[i][0] = len[i - 1][0];
 			coff[i][0] = coff[i - 1][0] + 1;
 		}
@@ -54,7 +54,7 @@ void CGenRS1::Generate()
 			if (len[i][0] < min_len) len[i][0] = min_len;
 			if (i + len[i][0] > t_cnt - 1) len[i][0] = t_cnt - i;
 			coff[i][0] = 0;
-			att[i][0] = 50 + 60 * rand2() / RAND_MAX;
+			dyn[i][0] = 50 + 60 * rand2() / RAND_MAX;
 		}
 		if (i == 0) {
 			tempo[i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;

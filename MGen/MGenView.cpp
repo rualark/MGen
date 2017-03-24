@@ -260,7 +260,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			int alpha;
 			for (int i = step1; i < step2; i++) if (pGen->pause[i][0] == 0) {
 				if (i == step1) if (pGen->coff[i][0] > 0) i = i - pGen->coff[i][0];
-				alpha = 40 + (80 * pGen->att[i][0] / 127);
+				alpha = 40 + (80 * pGen->dyn[i][0] / 127);
 				if (pGen->color[i][0].GetValue() != 0) {
 					if (pGen->color[i][0].GetAlpha() == 0) ncolor = Color(alpha, pGen->color[i][0].GetR(), pGen->color[i][0].GetG(), pGen->color[i][0].GetB());
 					else ncolor = pGen->color[i][0];

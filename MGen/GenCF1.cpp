@@ -338,7 +338,7 @@ void CGenCF1::Generate()
 					pause[x][0] = 0;
 					tempo[x] = 200;
 					coff[x][0] = 0;
-					att[x][0] = 80 + 30 * rand2() / RAND_MAX;
+					dyn[x][0] = 80 + 30 * rand2() / RAND_MAX;
 					if (x == 0) {
 						tempo[x] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
 					}
@@ -353,7 +353,7 @@ void CGenCF1::Generate()
 				note[step][0] = 0;
 				len[step][0] = 1;
 				pause[step][0] = 1;
-				att[step][0] = 0;
+				dyn[step][0] = 0;
 				tempo[step] = tempo[step - 1];
 				coff[step][0] = 0;
 				step++;

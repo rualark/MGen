@@ -392,7 +392,9 @@ void CGenTemplate::InitVectors()
 	coff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	att = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
 	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
 	tempo = vector<double>(t_allocated);
@@ -430,7 +432,9 @@ void CGenTemplate::ResizeVectors(int size)
 	etime.resize(size);
 	dstime.resize(size);
 	detime.resize(size);
-	att.resize(size);
+	dyn.resize(size);
+	vel.resize(size);
+	artic.resize(size);
 	comment.resize(size);
 	color.resize(size);
 	for (int i = t_allocated; i < size; i++) {
@@ -440,7 +444,9 @@ void CGenTemplate::ResizeVectors(int size)
 		coff[i].resize(v_cnt);
 		poff[i].resize(v_cnt);
 		noff[i].resize(v_cnt);
-		att[i].resize(v_cnt);
+		dyn[i].resize(v_cnt);
+		vel[i].resize(v_cnt);
+		artic[i].resize(v_cnt);
 		comment[i].resize(v_cnt);
 		color[i].resize(v_cnt, Color(0));
 	}
@@ -544,7 +550,7 @@ void CGenTemplate::SaveResults(CString dir, CString fname)
 		SaveVector2C(fs, note, i);
 		SaveVector2C(fs, len, i);
 		SaveVector2C(fs, coff, i);
-		SaveVector2C(fs, att, i);
+		SaveVector2C(fs, dyn, i);
 		SaveVector2ST(fs, comment, i);
 		SaveVector2Color(fs, color, i);
 	}
@@ -675,7 +681,7 @@ void CGenTemplate::LoadResults(CString dir, CString fname)
 		LoadVector2C(fs, note, i);
 		LoadVector2C(fs, len, i);
 		LoadVector2C(fs, coff, i);
-		LoadVector2C(fs, att, i);
+		LoadVector2C(fs, dyn, i);
 		LoadVector2ST(fs, comment, i);
 		LoadVector2Color(fs, color, i);
 	}
@@ -717,7 +723,7 @@ void CGenTemplate::SaveMidi(CString dir, CString fname)
 		midifile.addTrackName(track, 0, st);
 		midifile.addPatchChange(track, 0, channel, 0); // 40=violin
 		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
-			midifile.addNoteOn(track, (tpq*4)+ tpñ*i, channel, note[i][v], att[i][v]);
+			midifile.addNoteOn(track, (tpq*4)+ tpñ*i, channel, note[i][v], dyn[i][v]);
 			midifile.addNoteOff(track, (tpq * 4) + tpñ*(i+len[i][v])-1, channel, note[i][v], 0);
 			if (comment[i][v] != "") {
 				string st;
@@ -849,7 +855,6 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}
-		// Send notes
 		vector <PmEvent> buffer;
 		PmEvent event;
 		int slur_count = 0;
@@ -912,7 +917,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			// Note ON
 			timestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
 			event.timestamp = timestamp;
-			event.message = Pm_Message(0x90, note[i][v] + play_transpose, att[i][v]);
+			event.message = Pm_Message(0x90, note[i][v] + play_transpose, dyn[i][v]);
 			buffer.push_back(event);
 			// Send slur
 			if ((i > 0) && (instr_type[instr[v]] == 1) && (abs(note[i - poff[i][v]][v] - note[i][v]) <= max_slur_interval[instr[v]]) && 

@@ -185,7 +185,9 @@ public:
 	vector< vector <unsigned char> > coff; // Offset of current note start backward (0 = first timeslot of note)
 	vector< vector <unsigned char> > poff; // Offset of previous note start (backward)
 	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
-	vector< vector <unsigned char> > att; // Attack (velocity for piano)
+	vector< vector <unsigned char> > dyn; // Dynamics (velocity for piano)
+	vector< vector <unsigned char> > vel; // Velocity of midi notes
+	vector< vector <unsigned char> > artic; // Velocity of midi notes
 	vector< vector <CString> > comment; // Comment for note
 	vector< vector <Color> > color; // Note color (rgb ignored if all zero; alpha ignored if zero)
 	vector<double> tempo; // Tempo
