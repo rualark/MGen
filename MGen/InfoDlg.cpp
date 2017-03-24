@@ -67,7 +67,7 @@ BOOL CInfoDlg::OnInitDialog()
 		if (pGen->artic[ms][mv] == ARTIC_SLUR) st2 = "Slur";
 		if (pGen->artic[ms][mv] == ARTIC_NONLEGATO) st2 = "Nonlegato";
 		if (pGen->artic[ms][mv] == ARTIC_STACCATO) st2 = "Staccato";
-		st.Format("Velocity: %d\nArticulation: %s\n", pGen->dstime[ms], st2);
+		st.Format("Velocity: %d\nArticulation: %s\nLengroup: %d\n", pGen->dstime[ms], st2, pGen->lengroup[ms][mv]);
 		m_info.AddText(st, RGB(170, 0, 0), 0);
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);

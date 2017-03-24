@@ -40,14 +40,99 @@ CGenTemplate::CGenTemplate()
 	nonlegato_minlen.resize(MAX_VOICE);
 	warning_note_range.resize(MAX_VOICE);
 	warning_note_short.resize(MAX_VOICE);
+	lengroup2.resize(MAX_INSTR);
+	lengroup3.resize(MAX_INSTR);
+	lengroup4.resize(MAX_INSTR);
+	lengroup_edt1.resize(MAX_INSTR);
+	lengroup_edt2.resize(MAX_INSTR);
 	// Set instrument
-	instr[0] = 1;
+	instr[0] = 0;
 }
 
 
 CGenTemplate::~CGenTemplate()
 {
 	StopMIDI();
+}
+
+void CGenTemplate::InitVectors()
+{
+	// Create vectors
+	pause = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	note = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	len = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	coff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	lengroup = vector<vector<char>>(t_allocated, vector<char>(v_cnt));
+	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
+	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
+	tempo = vector<double>(t_allocated);
+	stime = vector<double>(t_allocated);
+	etime = vector<double>(t_allocated);
+	dstime = vector<double>(t_allocated);
+	detime = vector<double>(t_allocated);
+	// Init ngv
+	for (int v = 0; v < MAX_VOICE; v++) {
+		ngv_min[v] = 1000;
+		ngv_max[v] = 0;
+	}
+	// Init color
+	for (int i = 0; i < t_allocated; i++) {
+		for (int v = 0; v < v_cnt; v++) {
+			color[i][v] = Color(0);
+		}
+	}
+}
+
+void CGenTemplate::ResizeVectors(int size)
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
+		WriteLog(1, new CString("Critical error: ResizeVectors mutex timed out"));
+	}
+	pause.resize(size);
+	note.resize(size);
+	len.resize(size);
+	coff.resize(size);
+	poff.resize(size);
+	noff.resize(size);
+	tempo.resize(size);
+	stime.resize(size);
+	etime.resize(size);
+	dstime.resize(size);
+	detime.resize(size);
+	dyn.resize(size);
+	vel.resize(size);
+	artic.resize(size);
+	lengroup.resize(size);
+	comment.resize(size);
+	color.resize(size);
+	for (int i = t_allocated; i < size; i++) {
+		pause[i].resize(v_cnt);
+		note[i].resize(v_cnt);
+		len[i].resize(v_cnt);
+		coff[i].resize(v_cnt);
+		poff[i].resize(v_cnt);
+		noff[i].resize(v_cnt);
+		dyn[i].resize(v_cnt);
+		vel[i].resize(v_cnt);
+		artic[i].resize(v_cnt);
+		lengroup[i].resize(v_cnt);
+		comment[i].resize(v_cnt);
+		color[i].resize(v_cnt, Color(0));
+	}
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* st = new CString;
+	st->Format("ResizeVectors from %d to %d (in %d ms)", t_allocated, size, time_stop - time_start);
+	WriteLog(0, st);
+
+	t_allocated = size;
+	mutex_output.unlock();
 }
 
 void CGenTemplate::copy_file(CString sName, CString dName) {
@@ -385,83 +470,6 @@ void CGenTemplate::TestRandom()
 	WriteLog(0, est);
 }
 
-void CGenTemplate::InitVectors()
-{
-	// Create vectors
-	pause = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	note = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	len = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	coff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
-	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
-	tempo = vector<double>(t_allocated);
-	stime = vector<double>(t_allocated);
-	etime = vector<double>(t_allocated);
-	dstime = vector<double>(t_allocated);
-	detime = vector<double>(t_allocated);
-	// Init ngv
-	for (int v = 0; v < MAX_VOICE; v++) {
-		ngv_min[v] = 1000;
-		ngv_max[v] = 0;
-	}
-	// Init color
-	for (int i = 0; i < t_allocated; i++) {
-		for (int v = 0; v < v_cnt; v++) {
-			color[i][v] = Color(0);
-		}
-	}
-}
-
-void CGenTemplate::ResizeVectors(int size)
-{
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
-		WriteLog(1, new CString("Critical error: ResizeVectors mutex timed out"));
-	}
-	pause.resize(size);
-	note.resize(size);
-	len.resize(size);
-	coff.resize(size);
-	poff.resize(size);
-	noff.resize(size);
-	tempo.resize(size);
-	stime.resize(size);
-	etime.resize(size);
-	dstime.resize(size);
-	detime.resize(size);
-	dyn.resize(size);
-	vel.resize(size);
-	artic.resize(size);
-	comment.resize(size);
-	color.resize(size);
-	for (int i = t_allocated; i < size; i++) {
-		pause[i].resize(v_cnt);
-		note[i].resize(v_cnt);
-		len[i].resize(v_cnt);
-		coff[i].resize(v_cnt);
-		poff[i].resize(v_cnt);
-		noff[i].resize(v_cnt);
-		dyn[i].resize(v_cnt);
-		vel[i].resize(v_cnt);
-		artic[i].resize(v_cnt);
-		comment[i].resize(v_cnt);
-		color[i].resize(v_cnt, Color(0));
-	}
-	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* st = new CString;
-	st->Format("ResizeVectors from %d to %d (in %d ms)", t_allocated, size, time_stop - time_start);
-	WriteLog(0, st);
-
-	t_allocated = size;
-	mutex_output.unlock();
-}
-
 void CGenTemplate::LoadInstruments()
 {
 	// Load strings
@@ -505,6 +513,11 @@ void CGenTemplate::LoadInstruments()
 				CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
 				CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
 				CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
+				CheckVar(&st2, &st3, "lengroup2", &lengroup2[i]);
+				CheckVar(&st2, &st3, "lengroup3", &lengroup3[i]);
+				CheckVar(&st2, &st3, "lengroup4", &lengroup4[i]);
+				CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
+				CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
 				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		}
@@ -783,9 +796,11 @@ void CGenTemplate::UpdateTempoMinMax(int step1, int step2)
 void CGenTemplate::Adapt(int step1, int step2)
 {
 	int slur_count = 0;
-	int ei;
-	int ndur;
+	int ei; // ending step
+	int pi; // previous note step
+	int ndur; // note duration
 	for (int v = 0; v < v_cnt; v++) {
+		int ii = instr[v]; // Instrument id
 		int ncount = 0;
 		// Move to note start
 		if (coff[step1][v] > 0) step1 = step1 - coff[step1][v];
@@ -797,63 +812,104 @@ void CGenTemplate::Adapt(int step1, int step2)
 			i += noff[i][v] - 1;
 		}
 		// Check if notes are in instrument range
-		if ((ngv_min[v] + play_transpose[v] < instr_nmin[instr[v]]) || (ngv_max[v] + play_transpose[v] > instr_nmax[instr[v]])) {
-			if (ngv_min[v] < instr_nmin[instr[v]]) {
-				play_transpose[v] = ((instr_nmin[instr[v]] - ngv_min[v]) / 12) * 12 + 12;
+		if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
+			if (ngv_min[v] < instr_nmin[ii]) {
+				play_transpose[v] = ((instr_nmin[ii] - ngv_min[v]) / 12) * 12 + 12;
 			}
-			if (ngv_max[v] > instr_nmax[instr[v]]) {
-				play_transpose[v] = -((ngv_max[v] - instr_nmax[instr[v]]) / 12) * 12 - 12;
+			if (ngv_max[v] > instr_nmax[ii]) {
+				play_transpose[v] = -((ngv_max[v] - instr_nmax[ii]) / 12) * 12 - 12;
 			}
 			// Check if still have problem
 			CString* st = new CString;
-			if ((ngv_min[v] + play_transpose[v] < instr_nmin[instr[v]]) || (ngv_max[v] + play_transpose[v] > instr_nmax[instr[v]])) {
+			if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
 				if (!warning_note_range[v]) {
 					st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Cannot transpose automatically: range too wide.",
-						GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), GetNoteName(instr_nmin[instr[v]]), 
-						GetNoteName(instr_nmax[instr[v]]), play_transpose[v]);
+						GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), GetNoteName(instr_nmin[ii]), 
+						GetNoteName(instr_nmax[ii]), play_transpose[v]);
 					warning_note_range[v] = 1;
 					WriteLog(1, st);
 				}
 			}
 			else {
 				st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
-					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), GetNoteName(instr_nmin[instr[v]]), 
-					GetNoteName(instr_nmax[instr[v]]), play_transpose[v]);
+					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), GetNoteName(instr_nmin[ii]), 
+					GetNoteName(instr_nmax[ii]), play_transpose[v]);
 				WriteLog(1, st);
 			}
 		}
 		// Calculate delta: dstime / detime
 		int i = step1;
 		for (int x = 0; x < ncount; x++) {
-			// Advance start for legato (not longer than previous note length)
-			if ((i > 0) && (legato_ahead[instr[v]] > 0) && (detime[i - 1] >= 0) && (!pause[i - poff[i][v]][v])) {
-				dstime[i] = -min(legato_ahead[instr[v]], (etime[i - 1] - stime[i - poff[i][v]]) * 100 / m_pspeed +
-					detime[i - 1] - dstime[i - poff[i][v]] - 1);
-				detime[i - 1] = 0.9 * dstime[i];
-			}
-			// Add slurs
-			if ((i > 0) && (instr_type[instr[v]] == 1) && (abs(note[i - poff[i][v]][v] - note[i][v]) <= max_slur_interval[instr[v]]) &&
-				(slur_count <= max_slur_count[instr[v]])) {
-				artic[x][v] = ARTIC_SLUR;
-				slur_count++;
-			}
-			else {
-				slur_count = 0;
-			}
-			// Randomly make some notes non-legato if they have enough length
 			ei = i + len[i][v] - 1;
-			if (((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i] > nonlegato_minlen[instr[v]]) &&
-				(randbw(0, 100) < nonlegato_freq[instr[v]]))
-				detime[ei] = -min(300, (etime[ei] - stime[ei]) * 100 / m_pspeed / 3);
-			// Check if note is too short
-			ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
-			if (ndur < instr_tmin[instr[v]]) {
-				CString* st = new CString;
-				if (warning_note_short[v] < 4) {
-					st->Format("Recommended minimum note length for %s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
-						InstName[instr[v]], instr_tmin[instr[v]], v, i, ndur);
-					warning_note_short[v] ++;
-					WriteLog(1, st);
+			pi = i - poff[i][v];
+			// Calculate lengroups
+			if (!pause[i][v]) {
+				if ((i == 0) || ((i > 0) && (lengroup[pi][v] < 2))) {
+					// Start new lengroup if was no lengroup or lengroup ended
+					int r = randbw(0, 100);
+					if (r < lengroup2[ii]) lengroup[i][v] = 2;
+					else if (r < lengroup2[ii] + lengroup3[ii]) lengroup[i][v] = 3;
+					else if (r < lengroup2[ii] + lengroup3[ii] + lengroup4[ii]) lengroup[i][v] = 4;
+					else lengroup[i][v] = 0;
+				}
+				else if (i > 0) {
+					// Continue lengroup
+					lengroup[i][v] = lengroup[pi][v] - 1;
+				}
+				// Apply lengroups
+				if (instr_type[ii] == INSTR_PIANO) {
+					if (lengroup[i][v] > 1) {
+						if (lengroup_edt1[ii] < 0) {
+							detime[ei] = -min(-lengroup_edt1[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
+							artic[i][v] = ARTIC_NONLEGATO;
+						}
+						else {
+							detime[ei] = lengroup_edt1[ii];
+							artic[i][v] = ARTIC_SLUR;
+						}
+					}
+					if (lengroup[i][v] == 1) {
+						if (lengroup_edt2[ii] < 0) {
+							detime[ei] = -min(-lengroup_edt2[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
+							artic[i][v] = ARTIC_NONLEGATO;
+						}
+						else {
+							detime[ei] = lengroup_edt2[ii];
+							artic[i][v] = ARTIC_SLUR;
+						}
+					}
+				}
+				// Advance start for legato (not longer than previous note length)
+				if ((i > 0) && (legato_ahead[ii] > 0) && (detime[i - 1] >= 0) && (!pause[pi][v])) {
+					dstime[i] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+						detime[i - 1] - dstime[pi] - 1);
+					detime[i - 1] = 0.9 * dstime[i];
+				}
+				// Add slurs
+				if ((i > 0) && (instr_type[ii] == INSTR_VIOLIN) && (abs(note[pi][v] - note[i][v]) <= max_slur_interval[ii]) &&
+					(slur_count <= max_slur_count[ii])) {
+					artic[x][v] = ARTIC_SLUR;
+					slur_count++;
+				}
+				else {
+					slur_count = 0;
+				}
+				// Randomly make some notes non-legato if they have enough length
+				if (((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i] > nonlegato_minlen[ii]) &&
+					(randbw(0, 100) < nonlegato_freq[ii])) {
+					detime[ei] = -min(300, (etime[ei] - stime[ei]) * 100 / m_pspeed / 3);
+					artic[i][v] = ARTIC_NONLEGATO;
+				}
+				// Check if note is too short
+				ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
+				if (ndur < instr_tmin[ii]) {
+					CString* st = new CString;
+					if (warning_note_short[v] < 4) {
+						st->Format("Recommended minimum note length for %s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
+							InstName[ii], instr_tmin[ii], v, i, ndur);
+						warning_note_short[v] ++;
+						WriteLog(1, st);
+					}
 				}
 			}
 			if (noff[i][v] == 0) break;
@@ -928,6 +984,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		if (time - stime[step1] * 100 / m_pspeed + timestamp - timestamp_current > MAX_MIDI_BUFFER_MSEC) break;
 	}
 	for (int v = 0; v < v_cnt; v++) {
+		int ii = instr[v];
 		int ncount = 0;
 		// Move to note start
 		if (coff[step1][v] > 0) step21 = step1 - coff[step1][v];
@@ -960,13 +1017,13 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			event.message = Pm_Message(0x90, note[i][v] + play_transpose[v], dyn[i][v]);
 			buffer.push_back(event);
 			// Send slur
-			if ((instr_type[instr[v]] == 1) && (artic[i][v] == ARTIC_SLUR)) {
+			if ((instr_type[ii] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_SLUR)) {
 				event.timestamp = timestamp - ((stime[i] - stime[i-1]) * 100 / m_pspeed + dstime[i] - dstime[i-1]) / 10;
-				event.message = Pm_Message(0x90, slur_ks[instr[v]], 10);
+				event.message = Pm_Message(0x90, slur_ks[ii], 10);
 				buffer.push_back(event);
 				// Note OFF
 				event.timestamp = timestamp + ((stime[i] - stime[i - 1]) * 100 / m_pspeed + dstime[i] - dstime[i - 1]) / 10;
-				event.message = Pm_Message(0x90, slur_ks[instr[v]], 0);
+				event.message = Pm_Message(0x90, slur_ks[ii], 0);
 				buffer.push_back(event);
 			}
 			ei = i + len[i][v] - 1;

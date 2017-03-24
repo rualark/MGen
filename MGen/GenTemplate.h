@@ -16,6 +16,11 @@ const int dia_to_chrom[] = { 0, 2, 4, 5, 7, 9, 11 };
 #define ARTIC_EXACT 3
 #define ARTIC_STACCATO 4
 
+#define INSTR_PIANO 0
+#define INSTR_VIOLIN 1
+#define INSTR_TRUMPET 11
+#define INSTR_FLUTE 6
+
 const CString InstName[] = {
 	"Piano", // 0
 	"Violin", // 1
@@ -196,6 +201,7 @@ public:
 	vector< vector <unsigned char> > dyn; // Dynamics (velocity for piano)
 	vector< vector <unsigned char> > vel; // Velocity of midi notes
 	vector< vector <unsigned char> > artic; // Velocity of midi notes
+	vector< vector <char> > lengroup; // How many notes left until last in lengroup
 	vector< vector <CString> > comment; // Comment for note
 	vector< vector <Color> > color; // Note color (rgb ignored if all zero; alpha ignored if zero)
 	vector<double> tempo; // Tempo
@@ -218,6 +224,11 @@ public:
 	vector<int> legato_ahead;
 	vector<double> nonlegato_freq;
 	vector<int> nonlegato_minlen;
+	vector<int> lengroup2;
+	vector<int> lengroup3;
+	vector<int> lengroup4;
+	vector<int> lengroup_edt1;
+	vector<int> lengroup_edt2;
 
   // Random generator
 	ub4 randrsl[256], randcnt; // external results
