@@ -23,6 +23,8 @@ UINT CGenTemplate::WM_DEBUG_MSG = 0;
 CGenTemplate::CGenTemplate()
 {
 	// Init constant length arrays
+	play_transpose.resize(MAX_INSTR);
+	play_transpose_old.resize(MAX_INSTR);
 	instr.resize(MAX_INSTR);
 	instr_type.resize(MAX_VOICE);
 	instr_nmin.resize(MAX_VOICE);
@@ -778,6 +780,88 @@ void CGenTemplate::UpdateTempoMinMax(int step1, int step2)
 	}
 }
 
+void CGenTemplate::Adapt(int step1, int step2)
+{
+	int slur_count = 0;
+	int ei;
+	int ndur;
+	for (int v = 0; v < v_cnt; v++) {
+		int ncount = 0;
+		// Move to note start
+		if (coff[step1][v] > 0) step1 = step1 - coff[step1][v];
+		// Count notes
+		for (int i = step1; i < step2; i++) {
+			if (i + len[i][v] > step2) break;
+			ncount++;
+			if (noff[i][v] == 0) break;
+			i += noff[i][v] - 1;
+		}
+		// Check if notes are in instrument range
+		if ((ngv_min[v] + play_transpose[v] < instr_nmin[instr[v]]) || (ngv_max[v] + play_transpose[v] > instr_nmax[instr[v]])) {
+			if (ngv_min[v] < instr_nmin[instr[v]]) {
+				play_transpose[v] = ((instr_nmin[instr[v]] - ngv_min[v]) / 12) * 12 + 12;
+			}
+			if (ngv_max[v] > instr_nmax[instr[v]]) {
+				play_transpose[v] = -((ngv_max[v] - instr_nmax[instr[v]]) / 12) * 12 - 12;
+			}
+			// Check if still have problem
+			CString* st = new CString;
+			if ((ngv_min[v] + play_transpose[v] < instr_nmin[instr[v]]) || (ngv_max[v] + play_transpose[v] > instr_nmax[instr[v]])) {
+				if (!warning_note_range[v]) {
+					st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Cannot transpose automatically: range too wide.",
+						GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), GetNoteName(instr_nmin[instr[v]]), 
+						GetNoteName(instr_nmax[instr[v]]), play_transpose[v]);
+					warning_note_range[v] = 1;
+					WriteLog(1, st);
+				}
+			}
+			else {
+				st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
+					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), GetNoteName(instr_nmin[instr[v]]), 
+					GetNoteName(instr_nmax[instr[v]]), play_transpose[v]);
+				WriteLog(1, st);
+			}
+		}
+		// Calculate delta: dstime / detime
+		int i = step1;
+		for (int x = 0; x < ncount; x++) {
+			// Advance start for legato (not longer than previous note length)
+			if ((i > 0) && (legato_ahead[instr[v]] > 0) && (detime[i - 1] >= 0) && (!pause[i - poff[i][v]][v])) {
+				dstime[i] = -min(legato_ahead[instr[v]], (etime[i - 1] - stime[i - poff[i][v]]) * 100 / m_pspeed +
+					detime[i - 1] - dstime[i - poff[i][v]] - 1);
+				detime[i - 1] = 0.9 * dstime[i];
+			}
+			// Add slurs
+			if ((i > 0) && (instr_type[instr[v]] == 1) && (abs(note[i - poff[i][v]][v] - note[i][v]) <= max_slur_interval[instr[v]]) &&
+				(slur_count <= max_slur_count[instr[v]])) {
+				artic[x][v] = ARTIC_SLUR;
+				slur_count++;
+			}
+			else {
+				slur_count = 0;
+			}
+			// Randomly make some notes non-legato if they have enough length
+			ei = i + len[i][v] - 1;
+			if (((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i] > nonlegato_minlen[instr[v]]) &&
+				(randbw(0, 100) < nonlegato_freq[instr[v]]))
+				detime[ei] = -min(300, (etime[ei] - stime[ei]) * 100 / m_pspeed / 3);
+			// Check if note is too short
+			ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
+			if (ndur < instr_tmin[instr[v]]) {
+				CString* st = new CString;
+				if (warning_note_short[v] < 4) {
+					st->Format("Recommended minimum note length for %s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
+						InstName[instr[v]], instr_tmin[instr[v]], v, i, ndur);
+					warning_note_short[v] ++;
+					WriteLog(1, st);
+				}
+			}
+			if (noff[i][v] == 0) break;
+			i += noff[i][v];
+		}
+	}
+}
+
 void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 {
 	// Clear warning flags
@@ -857,26 +941,8 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		}
 		vector <PmEvent> buffer;
 		PmEvent event;
-		int slur_count = 0;
 		int ei;
 		int ndur;
-		// Calculate delta: dstime / detime
-		i = step21;
-		for (int x = 0; x < ncount; x++) {
-			// Advance start for legato (not longer than previous note length)
-			if ((i > 0) && (legato_ahead[instr[v]] > 0) && (detime[i - 1] >= 0) && (!pause[i - poff[i][v]][v])) {
-				dstime[i] = -min(legato_ahead[instr[v]], (etime[i - 1] - stime[i - poff[i][v]]) * 100 / m_pspeed + 
-					detime[i - 1] - dstime[i - poff[i][v]] - 1);
-				detime[i - 1] = 0.9 * dstime[i];
-			}
-			// Randomly make some notes non-legato if they have enough length
-			ei = i + len[i][v] - 1;
-			if (((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i] > nonlegato_minlen[instr[v]]) &&
-				(randbw(0, 100) < nonlegato_freq[instr[v]]))
-				detime[ei] = -min(300, (etime[ei] - stime[ei]) * 100 / m_pspeed / 3);
-			if (noff[i][v] == 0) break;
-			i += noff[i][v];
-		}
 		// Send notes
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
@@ -885,43 +951,16 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 				ei = i - 1;
 				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
 				event.timestamp = timestamp;
-				event.message = Pm_Message(0x90, note[ei][v] + play_transpose, 0);
+				event.message = Pm_Message(0x90, note[ei][v] + play_transpose_old[v], 0);
 				buffer.push_back(event);
-			}
-			if (x == 0) {
-				// Check if notes are in instrument range
-				if ((ng_min + play_transpose < instr_nmin[instr[v]]) || (ng_max + play_transpose > instr_nmax[instr[v]])) {
-					if (ng_min < instr_nmin[instr[v]]) {
-						play_transpose = ((instr_nmin[instr[v]] - ng_min) / 12) * 12 + 12;
-					}
-					if (ng_max > instr_nmax[instr[v]]) {
-						play_transpose = -((ng_max - instr_nmax[instr[v]]) / 12) * 12 - 12;
-					}
-					// Check if still have problem
-					CString* st = new CString;
-					if ((ng_min + play_transpose < instr_nmin[instr[v]]) || (ng_max + play_transpose > instr_nmax[instr[v]])) {
-						if (!warning_note_range[v]) {
-							st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Cannot transpose automatically: range too wide.",
-								GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_nmin[instr[v]]), GetNoteName(instr_nmax[instr[v]]), play_transpose);
-							warning_note_range[v] = 1;
-							WriteLog(1, st);
-						}
-					}
-					else {
-						st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
-							GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_nmin[instr[v]]), GetNoteName(instr_nmax[instr[v]]), play_transpose);
-						WriteLog(1, st);
-					}
-				}
 			}
 			// Note ON
 			timestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
 			event.timestamp = timestamp;
-			event.message = Pm_Message(0x90, note[i][v] + play_transpose, dyn[i][v]);
+			event.message = Pm_Message(0x90, note[i][v] + play_transpose[v], dyn[i][v]);
 			buffer.push_back(event);
 			// Send slur
-			if ((i > 0) && (instr_type[instr[v]] == 1) && (abs(note[i - poff[i][v]][v] - note[i][v]) <= max_slur_interval[instr[v]]) && 
-				(slur_count <= max_slur_count[instr[v]])) {
+			if ((instr_type[instr[v]] == 1) && (artic[i][v] == ARTIC_SLUR)) {
 				event.timestamp = timestamp - ((stime[i] - stime[i-1]) * 100 / m_pspeed + dstime[i] - dstime[i-1]) / 10;
 				event.message = Pm_Message(0x90, slur_ks[instr[v]], 10);
 				buffer.push_back(event);
@@ -929,33 +968,21 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 				event.timestamp = timestamp + ((stime[i] - stime[i - 1]) * 100 / m_pspeed + dstime[i] - dstime[i - 1]) / 10;
 				event.message = Pm_Message(0x90, slur_ks[instr[v]], 0);
 				buffer.push_back(event);
-				slur_count++;
-			}
-			else {
-				slur_count = 0;
 			}
 			ei = i + len[i][v] - 1;
 			ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
-			// Check if note is too short
-			if (ndur < instr_tmin[instr[v]]) {
-				CString* st = new CString;
-				if (warning_note_short[v] > 3) {
-					st->Format("Recommended minimum note length for %s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
-						InstName[instr[v]], instr_tmin[instr[v]], v, i, ndur);
-					warning_note_short[v] ++;
-					WriteLog(1, st);
-				}
-			}
 			// Note OFF
 			// Do not send NoteOFF if this is last note, because this will block legato ahead (if needed) in next MidiSend
 			if (i < step22 - 1) {
 				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
 				event.timestamp = timestamp;
-				event.message = Pm_Message(0x90, note[ei][v] + play_transpose, 0);
+				event.message = Pm_Message(0x90, note[ei][v] + play_transpose[v], 0);
 				buffer.push_back(event);
 			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
+			// Save current transpose to be sure that we send correct note off for last note in next SendMIDI call
+			play_transpose_old[v] = play_transpose[v];
 		}
 		// Sort by timestamp before sending
 		qsort(buffer.data(), buffer.size(), sizeof(PmEvent), PmEvent_comparator);

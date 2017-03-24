@@ -74,6 +74,7 @@ void CGenRS1::Generate()
 		// Check if we can send new chunk
 		if (((i > 0) && ((i-3) % t_send == 0)) || (i == t_cnt - 1)) {
 			// Moving average 7 <<<|>>>
+			int t_sent_old = t_sent;
 			double ma;
 			double ma_size;
 			double* tempo2 = new double[t_generated - t_sent];
@@ -97,6 +98,7 @@ void CGenRS1::Generate()
 			// Send
 			if (i == t_cnt - 1) t_sent = t_generated;
 			else t_sent = t_generated-3;
+			Adapt(t_sent_old, t_sent - 1);
 			// Interface
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}

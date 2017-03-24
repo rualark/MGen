@@ -7,7 +7,7 @@ Instrument = Piano
 Type = 0 # Instrument type
 n_min = 30 # Lowest note
 n_max = 80 # Highest note
-t_min = 50 # Shortest note in ms
+t_min = 20 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 6 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap
@@ -18,7 +18,7 @@ Instrument = Violin
 Type = 1 # Instrument type
 n_min = G3 # Lowest note
 n_max = F7 # Highest note
-t_min = 200 # Shortest note in ms
+t_min = 400 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 1 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap

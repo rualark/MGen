@@ -362,9 +362,14 @@ void CGenCF1::Generate()
 				CountTime(step - c_len - 1, step - 1);
 				UpdateNoteMinMax(step - c_len - 1, step - 1);
 				UpdateTempoMinMax(step - c_len - 1, step - 1);
+				if (!shuffle) {
+					Adapt(step - c_len - 1, step - 1);
+				}
 				// Send
 				t_generated = step;
-				t_sent = t_generated;
+				if (!shuffle) {
+					t_sent = t_generated;
+				}
 				::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 			}
 		}
@@ -428,6 +433,10 @@ void CGenCF1::Generate()
 				color[i1][0] = color2[i1];
 			}
 		}
+		// Adapt
+		Adapt(0, t_generated);
+		// Send
+		t_sent = t_generated;
 		::PostMessage(m_hWnd, WM_GEN_FINISH, 2, 0);
 		CString* est = new CString;
 		est->Format("Shuffle of %ld melodies finished", accepted);

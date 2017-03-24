@@ -10,6 +10,12 @@ typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
 const int dia_to_chrom[] = { 0, 2, 4, 5, 7, 9, 11 };
 
+#define ARTIC_LEGATO 0
+#define ARTIC_SLUR 1
+#define ARTIC_NONLEGATO 2
+#define ARTIC_EXACT 3
+#define ARTIC_STACCATO 4
+
 const CString InstName[] = {
 	"Piano", // 0
 	"Violin", // 1
@@ -103,6 +109,7 @@ protected:
 	void CountTime(int step1, int step2);
 	void UpdateNoteMinMax(int step1, int step2);
 	void UpdateTempoMinMax(int step1, int step2);
+	void Adapt(int step1, int step2);
 	// Mathematics
 	int randbw(int n1, int n2);
 	// Random
@@ -148,7 +155,8 @@ public:
 
 	// PortMIDI
 	double m_pspeed = 100; // Playback speed in percent
-	int play_transpose = 0; // If generated notes are not in instrument range, playback is automatically transposed (semitones)
+	vector<int> play_transpose; // If generated notes are not in instrument range, playback is automatically transposed (semitones)
+	vector<int> play_transpose_old; // Value for last note of previous SendMIDI call
 	PmStream * midi = 0;
 	int midi_sent = 0; // Steps already sent to midi
 	int midi_sent_t = 0; // Timestamp of last event sent to midi
