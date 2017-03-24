@@ -56,10 +56,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_REGISTERED_MESSAGE(WM_DEBUG_MSG, &CMainFrame::OnDebugMsg)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_GEN, &CMainFrame::OnUpdateButtonGen)
 	ON_WM_CLOSE()
-	ON_COMMAND(ID_BUTTON_HZOOM_DEC, &CMainFrame::OnButtonHzoomDec)
-	ON_COMMAND(ID_BUTTON_HZOOM_INC, &CMainFrame::OnButtonHzoomInc)
-	ON_UPDATE_COMMAND_UI(ID_BUTTON_HZOOM_DEC, &CMainFrame::OnUpdateButtonHzoomDec)
-	ON_UPDATE_COMMAND_UI(ID_BUTTON_HZOOM_INC, &CMainFrame::OnUpdateButtonHzoomInc)
 	ON_UPDATE_COMMAND_UI(ID_COMBO_MIDIOUT, &CMainFrame::OnUpdateComboMidiout)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_EPARAMS, &CMainFrame::OnUpdateButtonEparams)
 	ON_COMMAND(ID_BUTTON_EPARAMS, &CMainFrame::OnButtonEparams)
@@ -73,6 +69,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_SPIN_PSPEED, &CMainFrame::OnSpinPspeed)
 	ON_COMMAND(ID_SPIN_ZOOM, &CMainFrame::OnSpinZoom)
 	ON_WM_KEYDOWN()
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_OPENMIDI, &CMainFrame::OnUpdateButtonOpenmidi)
+	ON_COMMAND(ID_BUTTON_OPENMIDI, &CMainFrame::OnButtonOpenmidi)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -660,9 +658,9 @@ void CMainFrame::LoadSettings()
 				pRibbonSpin->SetEditText(st3);
 				zoom_x = atoi(st3);
 			}
-			//CGenTemplate::CheckVar(&st2, &st3, "horizontal_zoom", &zoom_x, MIN_HZOOM, MAX_HZOOM);
 			CGenTemplate::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 			CGenTemplate::LoadVar(&st2, &st3, "config", &m_config);
+			//CGenTemplate::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
 	}
 	fs.close();
@@ -702,6 +700,8 @@ void CMainFrame::SaveSettings()
 	fs << st;
 	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
 	fs << st;
+	//st.Format("Midi_program = %s # Path to program to use to open MIDI file. Leave blank to use default OS file association.\n", midi_program);
+	//fs << st;
 	fs.close();
 }
 
@@ -804,43 +804,6 @@ void CMainFrame::OnClose()
 	CFrameWndEx::OnClose();
 }
 
-
-void CMainFrame::OnButtonHzoomDec()
-{
-	zoom_x = (int)(zoom_x*0.8);
-	if (zoom_x < MIN_HZOOM) zoom_x = MIN_HZOOM;
-	CString st;
-	st.Format("New zoom %d", zoom_x);
-	WriteLog(2, st);
-	GetActiveView()->Invalidate();
-	SaveSettings();
-}
-
-
-void CMainFrame::OnButtonHzoomInc()
-{
-	zoom_x = (int)(zoom_x*1.2);
-	if (zoom_x > MAX_HZOOM) zoom_x = MAX_HZOOM;
-	CString st;
-	st.Format("New zoom %d", zoom_x);
-	WriteLog(2, st);
-	GetActiveView()->Invalidate();
-	SaveSettings();
-}
-
-
-void CMainFrame::OnUpdateButtonHzoomDec(CCmdUI *pCmdUI)
-{
-	BOOL bEnable = zoom_x > MIN_HZOOM && m_state_gen > 0;
-	pCmdUI->Enable(bEnable);
-}
-
-
-void CMainFrame::OnUpdateButtonHzoomInc(CCmdUI *pCmdUI)
-{
-	BOOL bEnable = zoom_x < MAX_HZOOM && m_state_gen > 0;
-	pCmdUI->Enable(bEnable);
-}
 
 
 void CMainFrame::OnUpdateComboMidiout(CCmdUI *pCmdUI)
@@ -991,4 +954,16 @@ void CMainFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 
 	CFrameWndEx::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+
+void CMainFrame::OnUpdateButtonOpenmidi(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_fname != "");
+}
+
+
+void CMainFrame::OnButtonOpenmidi()
+{
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir + "\\" + m_fname + ".mid", NULL, NULL, SW_SHOWNORMAL);
 }

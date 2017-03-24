@@ -52,6 +52,7 @@ public:
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
 	CString m_dir; // Current saved results dir
+	//CString midi_program; // Path to MIDI program to use
 	int m_state_gen=0;
 	// 0 = No music
 	// 1 = Generation started
@@ -140,10 +141,6 @@ public:
 
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
 	afx_msg void OnClose();
-	afx_msg void OnButtonHzoomDec();
-	afx_msg void OnButtonHzoomInc();
-	afx_msg void OnUpdateButtonHzoomDec(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateButtonHzoomInc(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateComboMidiout(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateButtonEparams(CCmdUI *pCmdUI);
 	afx_msg void OnButtonEparams();
@@ -158,6 +155,8 @@ public:
 	afx_msg void OnSpinPspeed();
 	afx_msg void OnSpinZoom();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnUpdateButtonOpenmidi(CCmdUI *pCmdUI);
+	afx_msg void OnButtonOpenmidi();
 };
 
 

@@ -660,7 +660,8 @@ void CGenTemplate::SaveMidi(CString dir, CString fname)
 	for (int v = 0; v < v_cnt; v++) {
 		track = v + 1;
 		channel = v;
-		midifile.addTrackName(track, 0, "Melody");
+		string st = InstName[instr[v]];
+		midifile.addTrackName(track, 0, st);
 		midifile.addPatchChange(track, 0, channel, 0); // 40=violin
 		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
 			midifile.addNoteOn(track, (tpq*4)+ tpñ*i, channel, note[i][v], att[i][v]);
@@ -801,6 +802,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		// Calculate delta: dstime / detime
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
+			// Check if notes are in instrument range
 			// Advance start for legato (not longer than previous note length)
 			if ((i > 0) && (legato_ahead[instr[v]] > 0) && (detime[i - 1] >= 0) && (!pause[i - poff[i][v]][v])) {
 				dstime[i] = -min(legato_ahead[instr[v]], (etime[i - 1] - stime[i - poff[i][v]]) * 100 / m_pspeed + 

@@ -81,6 +81,7 @@
 #define ID_CHECK_OUTPUTWND              32799
 #define ID_BUTTON2                      32800
 #define ID_BUTTON_HZOOM_DEC             32800
+#define ID_BUTTON_OPENMIDI              32800
 #define ID_BUTTON_HZOOM_INC             32802
 #define ID_BUTTON3                      32807
 #define ID_BUTTON_SCONFIG               32808

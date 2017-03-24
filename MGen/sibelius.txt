@@ -1,0 +1,6 @@
+HKEY_CLASSES_ROOT\Applications\Sibelius.exe\shell\open\command\
+HKEY_CLASSES_ROOT\Sibelius\shell\open\command\(По умолчанию)
+HKEY_CLASSES_ROOT\Sibelius\DefaultIcon\(По умолчанию)
+HKEY_CURRENT_USER\Software\Classes\Applications\Sibelius.exe\shell\open\command
+HKEY_LOCAL_MACHINE\SOFTWARE\AVID\Common\ReWireLaunch
+HKEY_LOCAL_MACHINE\SOFTWARE\AVID\Sibelius\ApplicationPath\InstallFile
