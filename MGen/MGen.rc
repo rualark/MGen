@@ -662,11 +662,11 @@ STRINGTABLE
 BEGIN
     ID_BUTTON7              "Edit parameters of selected algorithm\nEdit Parameters"
     ID_BUTTON8              "Show all algorithms and select one\nShow Algorithms"
-    ID_BUTTON_GEN           "Generate music using currently selected algorithm and config\nGenerate Music"
-    ID_BUTTON_PLAY          "Play generated music\nPlay Music"
+    ID_BUTTON_GEN           "Generate music using currently selected algorithm and config (F5)\nGenerate Music"
+    ID_BUTTON_PLAY          "Play generated music (Space)\nPlay Music"
     ID_BUTTON_EXPORT        "Show or hide the messages window\nToggle Messages"
-    ID_BUTTON_PARAMS        "Edit configuration of selected algorithm\nEdit Config"
-    ID_BUTTON_ALGO          "Choose music generation algorithm and configuration for this algorithm\nChoose algorithm and config"
+    ID_BUTTON_PARAMS        "Edit configuration of selected algorithm (F4)\nEdit Config"
+    ID_BUTTON_ALGO          "Choose music generation algorithm and configuration for this algorithm (F3)\nChoose algorithm and config"
     ID_COMBO_MIDIOUT        "Choose MIDI out port that will be used for playback\nMIDI out port"
     ID_CHECK_OUTPUTWND      "Show or hide the messages window\nToggle Messages"
 END
