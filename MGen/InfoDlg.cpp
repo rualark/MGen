@@ -52,8 +52,8 @@ BOOL CInfoDlg::OnInitDialog()
 		int mv = ((CMGenView*)(mf->GetActiveView()))->mouse_voice;
 		//SetWindowText("Dialog: some text");
 		CString st;
-		st.Format("Step: %d (measure %d)\nVoice: %d\nNote: %s%d (midi %d)\nNote length: %d\n", ms, ms/8, mv, 
-			NoteName[pGen->note[ms][mv] % 12], pGen->note[ms][mv] / 12 - 1, pGen->note[ms][mv], pGen->len[ms][mv]);
+		st.Format("Step: %d (measure %d)\nVoice: %d\nNote: %s (midi %d)\nNote length: %d\n", ms, ms/8, mv, 
+			CGenTemplate::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv], pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nAttack: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->att[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);

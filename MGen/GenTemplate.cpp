@@ -3,6 +3,10 @@
 
 #include "midifile/MidiFile.h"
 
+int CGenTemplate::can_send_log = 1;
+HWND CGenTemplate::m_hWnd = 0;
+UINT CGenTemplate::WM_DEBUG_MSG = 0;
+
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
 { \
@@ -54,6 +58,13 @@ void CGenTemplate::LoadVar(CString * sName, CString * sValue, char* sSearch, CSt
 {
 	if (*sName == sSearch) {
 		*Dest = *sValue;
+	}
+}
+
+void CGenTemplate::LoadNote(CString * sName, CString * sValue, char* sSearch, int * Dest)
+{
+	if (*sName == sSearch) {
+		*Dest = CGenTemplate::GetNoteI(*sValue);
 	}
 }
 
@@ -174,6 +185,42 @@ int CGenTemplate::PmEvent_comparator(const void * v1, const void * v2)
 		return +1;
 	else
 		return 0;
+}
+
+CString CGenTemplate::GetNoteName(int n)
+{
+	CString st;
+	st.Format("%d", n / 12 - 1);
+	return NoteName[n % 12] + st;
+}
+
+int CGenTemplate::GetNoteI(CString st)
+{
+	if (isdigit(st[0])) {
+		return atoi(st);
+	}
+	else {
+		int nid = -1;
+		int pos = 2;
+		if (isdigit(st[1])) pos = 1;
+		CString nname = st.Left(pos);
+		for (int i = 0; i < 12; i++) if (NoteName[i] == nname) {
+			nid = i;
+			break;
+		}
+		if ((nid > -1) && (isdigit(st[pos]))) {
+			int i = nid + (atoi(st.Mid(pos, 1))+1) * 12;
+			CString* est = new CString;
+			est->Format("Converted note name %s to %d", st, i);
+			WriteLog(0, est);
+			return i;
+		} else {
+			CString* est = new CString;
+			if (nid > -1)	est->Format("Error parsing note name %s: not found octave indicator after note. Correct format examples: C#2 or C3", st);
+			else est->Format("Error parsing note name %s: note symbol not recognized. Correct format examples: C#2 or C3", st);
+			WriteLog(1, est);
+		}
+	}
 }
 
 CGenTemplate::CGenTemplate()
@@ -434,8 +481,8 @@ void CGenTemplate::LoadInstruments()
 				}
 			}
 			if (i > -1) {
-				CGenTemplate::CheckVar(&st2, &st3, "n_min", &instr_min[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "n_max", &instr_max[i]);
+				LoadNote(&st2, &st3, "n_min", &instr_min[i]);
+				LoadNote(&st2, &st3, "n_max", &instr_max[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "type", &instr_type[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
 				CGenTemplate::CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
@@ -802,7 +849,6 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		// Calculate delta: dstime / detime
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
-			// Check if notes are in instrument range
 			// Advance start for legato (not longer than previous note length)
 			if ((i > 0) && (legato_ahead[instr[v]] > 0) && (detime[i - 1] >= 0) && (!pause[i - poff[i][v]][v])) {
 				dstime[i] = -min(legato_ahead[instr[v]], (etime[i - 1] - stime[i - poff[i][v]]) * 100 / m_pspeed + 
@@ -825,13 +871,35 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 				ei = i - 1;
 				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
 				event.timestamp = timestamp;
-				event.message = Pm_Message(0x90, note[ei][v], 0);
+				event.message = Pm_Message(0x90, note[ei][v] + play_transpose, 0);
 				buffer.push_back(event);
+			}
+			if (x == 0) {
+				// Check if notes are in instrument range
+				if ((ng_min + play_transpose < instr_min[instr[v]]) || (ng_max + play_transpose > instr_max[instr[v]])) {
+					if (ng_min < instr_min[instr[v]]) {
+						play_transpose = ((instr_min[instr[v]] - ng_min) / 12) * 12 + 12;
+					}
+					if (ng_max > instr_max[instr[v]]) {
+						play_transpose = -((ng_max - instr_max[instr[v]]) / 12) * 12 - 12;
+					}
+					// Check if still have problem
+					CString* st = new CString;
+					if ((ng_min + play_transpose < instr_min[instr[v]]) || (ng_max + play_transpose > instr_max[instr[v]])) {
+						st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Cannot transpose automatically: range too wide.",
+							GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_min[instr[v]]), GetNoteName(instr_max[instr[v]]), play_transpose);
+					}
+					else {
+						st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
+							GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_min[instr[v]]), GetNoteName(instr_max[instr[v]]), play_transpose);
+					}
+					WriteLog(1, st);
+				}
 			}
 			// Note ON
 			timestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
 			event.timestamp = timestamp;
-			event.message = Pm_Message(0x90, note[i][v], att[i][v]);
+			event.message = Pm_Message(0x90, note[i][v] + play_transpose, att[i][v]);
 			buffer.push_back(event);
 			// Send slur
 			if ((i > 0) && (instr_type[instr[v]] == 1) && (abs(note[i - poff[i][v]][v] - note[i][v]) <= max_slur_interval[instr[v]]) && 
@@ -854,7 +922,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			if (i < step22 - 1) {
 				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
 				event.timestamp = timestamp;
-				event.message = Pm_Message(0x90, note[ei][v], 0);
+				event.message = Pm_Message(0x90, note[ei][v] + play_transpose, 0);
 				buffer.push_back(event);
 			}
 			if (noff[i][v] == 0) break;

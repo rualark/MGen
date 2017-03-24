@@ -44,6 +44,21 @@ const CString NoteName[] = {
 	"H" // 11
 };
 
+const CString NoteName2[] = {
+	"C", // 0
+	"DB", // 1
+	"D", // 2
+	"EB", // 3
+	"E", // 4
+	"F", // 5
+	"GB", // 6
+	"G", // 7
+	"AB", // 8
+	"A", // 9
+	"BB", // 10
+	"B" // 11
+};
+
 // PortMIDI
 #define OUTPUT_BUFFER_SIZE 10000
 #define MIN_MIDI_BUFFER_MSEC 10000
@@ -61,6 +76,7 @@ public:
 	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, double * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
+	static void LoadNote(CString * sName, CString * sValue, char * sSearch, int * Dest);
 	static bool dirExists(CString dirName_in);
 	static bool fileExists(CString dirName_in);
   static bool nodeExists(CString dirName_in);
@@ -68,6 +84,8 @@ public:
 	static CString bname_from_path(CString path);
 	static CString dir_from_path(CString path);
 	static int PmEvent_comparator(const void *v1, const void *v2);
+	static CString GetNoteName(int n);
+	static int GetNoteI(CString st);
 
 protected:
 	// File operations
@@ -110,18 +128,18 @@ public:
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency, int from);
 	void SendMIDI(int step1, int step2);
-	void WriteLog(int i, CString * pST);
+	static void WriteLog(int i, CString * pST);
 	void StopMIDI();
 	int GetPlayStep();
 
-	HWND m_hWnd;
+	static HWND m_hWnd;
 	UINT WM_GEN_FINISH;
-	UINT WM_DEBUG_MSG;
+	static UINT WM_DEBUG_MSG;
 
 public:
 	// Interface
 	int need_exit=0; // If thread needs to exit due to generation abort
-	int can_send_log = 1; // If thread can send log to MainFrame (disabled OnClose)
+	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
 	timed_mutex mutex_output;
 	int m_algo_id = -1; // Current algorithm id
 	CString m_config;
@@ -130,12 +148,16 @@ public:
 
 	// PortMIDI
 	double m_pspeed = 100; // Playback speed in percent
+	int play_transpose = 0; // If generated notes are not in instrument range, playback is automatically transposed (semitones)
 	PmStream * midi = 0;
 	int midi_sent = 0; // Steps already sent to midi
 	int midi_sent_t = 0; // Timestamp of last event sent to midi
 	int midi_start_time = 0; // Time when midi started to play
 	int buffer_underrun = 0; // Shows if current playback had an issue with buffer underrun
 	int midi_play_step = 0; // Current step being played by midi
+	// MIDI play warnings show if warning was already fired to prevent repeated warnings
+	int warning_note_range = 0;
+	int warning_note_short = 0;
 
 	// Main constants
 	int v_cnt=1; // Voice count

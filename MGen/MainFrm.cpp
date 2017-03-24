@@ -157,6 +157,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	LoadSettings();
 	//m_wndRibbonBar.GetQuickAccessToolbar()->SetCompactMode(1);
 
+	CGenTemplate::can_send_log = 0;
+	CGenTemplate::m_hWnd = m_hWnd;
+	CGenTemplate::WM_DEBUG_MSG = WM_DEBUG_MSG;
+
 	return 0;
 }
 
@@ -376,9 +380,8 @@ void CMainFrame::LoadResults(CString path) {
 	if (pGen != 0) {
 		WriteLog(0, _T("Loading file: ") + path);
 		// Set pGen variables
-		pGen->m_hWnd = m_hWnd;
+		CGenTemplate::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
-		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
 		// Initialize MIDI
 		pGen->StopMIDI();
 		pGen->StartMIDI(GetMidiI(), 100, 0);
@@ -432,9 +435,8 @@ void CMainFrame::OnButtonGen()
 		m_fname = "";
 		m_dir = "";
 		// Set pGen variables
-		pGen->m_hWnd = m_hWnd;
+		CGenTemplate::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
-		pGen->WM_DEBUG_MSG = WM_DEBUG_MSG;
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_config = m_config;
 		// Initialize MIDI
@@ -788,14 +790,14 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 void CMainFrame::OnClose()
 {
 	if (m_state_gen == 1) {
-		pGen->can_send_log = 0;
+		CGenTemplate::can_send_log = 0;
 		OnButtonGen();
 		WaitForSingleObject(m_GenThread->m_hThread, 10000);
 		delete pGen;
 		pGen = 0;
 	}
 	if (pGen != 0) {
-		pGen->can_send_log = 0;
+		CGenTemplate::can_send_log = 0;
 		delete pGen;
 		pGen = 0;
 	}

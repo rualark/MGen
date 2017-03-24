@@ -71,7 +71,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "min_interval", &min_interval);
 	CheckVar(sN, sV, "max_interval", &max_interval);
 	CheckVar(sN, sV, "c_len", &c_len);
-	CheckVar(sN, sV, "first_note", &first_note);
+	LoadNote(sN, sV, "first_note", &first_note);
 	CheckVar(sN, sV, "last_diatonic_int", &last_diatonic_int);
 	CheckVar(sN, sV, "max_unfill_steps", &max_unfill_steps);
 	CheckVar(sN, sV, "max_repeat_mul", &max_repeat_mul);
