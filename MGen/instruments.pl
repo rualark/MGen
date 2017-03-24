@@ -17,7 +17,7 @@ library = Any # For which library algorithm is optimized
 Instrument = Violin
 Type = 1 # Instrument type
 n_min = G3 # Lowest note
-n_max = F3 # Highest note
+n_max = F7 # Highest note
 t_min = 200 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 1 # Maximum number of simultaneous voices

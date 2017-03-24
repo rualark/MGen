@@ -7,4 +7,4 @@ max_len = 5 # Maximum note length
 min_note = 60 # Minimum note value
 max_note = 71 # Maximum note value
 note_step = 3 # Note step for random chain algorithm
-sleep_ms = 10 # Artificial pause in ms after generating each step
+sleep_ms = 50 # Artificial pause in ms after generating each step

@@ -439,16 +439,15 @@ void CMainFrame::OnButtonGen()
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_config = m_config;
-		// Initialize MIDI
-		pGen->StopMIDI();
-		pGen->StartMIDI(GetMidiI(), 100, 0);
-		//pGen->time_started = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Initialize variables
 		pGen->InitRandom();
 		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		pGen->LoadInstruments();
 		pGen->InitVectors();
+		// Initialize MIDI
+		pGen->StopMIDI();
+		pGen->StartMIDI(GetMidiI(), 100, 0);
+		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Start generation
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;

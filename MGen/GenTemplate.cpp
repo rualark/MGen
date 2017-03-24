@@ -20,6 +20,34 @@ UINT CGenTemplate::WM_DEBUG_MSG = 0;
 	h ^= a >> 9;  c += h; a += b; \
 }
 
+CGenTemplate::CGenTemplate()
+{
+	// Init constant length arrays
+	instr.resize(MAX_INSTR);
+	instr_type.resize(MAX_VOICE);
+	instr_nmin.resize(MAX_VOICE);
+	instr_nmax.resize(MAX_VOICE);
+	instr_tmin.resize(MAX_VOICE);
+	instr_tmax.resize(MAX_VOICE);
+	CC_dynamics.resize(MAX_VOICE);
+	max_slur_count.resize(MAX_VOICE);
+	max_slur_interval.resize(MAX_VOICE);
+	slur_ks.resize(MAX_VOICE);
+	legato_ahead.resize(MAX_VOICE);
+	nonlegato_freq.resize(MAX_VOICE);
+	nonlegato_minlen.resize(MAX_VOICE);
+	warning_note_range.resize(MAX_VOICE);
+	warning_note_short.resize(MAX_VOICE);
+	// Set instrument
+	instr[0] = 1;
+}
+
+
+CGenTemplate::~CGenTemplate()
+{
+	StopMIDI();
+}
+
 void CGenTemplate::copy_file(CString sName, CString dName) {
 	std::ifstream  src(sName, std::ios::binary);
 	std::ofstream  dst(dName, std::ios::binary);
@@ -221,32 +249,6 @@ int CGenTemplate::GetNoteI(CString st)
 			WriteLog(1, est);
 		}
 	}
-}
-
-CGenTemplate::CGenTemplate()
-{
-	// Init constant length arrays
-	instr.resize(MAX_INSTR);
-	instr_type.resize(MAX_VOICE);
-	instr_nmin.resize(MAX_VOICE);
-	instr_nmax.resize(MAX_VOICE);
-	CC_dynamics.resize(MAX_VOICE);
-	max_slur_count.resize(MAX_VOICE);
-	max_slur_interval.resize(MAX_VOICE);
-	slur_ks.resize(MAX_VOICE);
-	legato_ahead.resize(MAX_VOICE);
-	nonlegato_freq.resize(MAX_VOICE);
-	nonlegato_minlen.resize(MAX_VOICE);
-	warning_note_range.resize(MAX_VOICE);
-	warning_note_short.resize(MAX_VOICE);
-	// Set instrument
-	instr[0] = 1;
-}
-
-
-CGenTemplate::~CGenTemplate()
-{
-	StopMIDI();
 }
 
 void CGenTemplate::isaac()
@@ -485,14 +487,16 @@ void CGenTemplate::LoadInstruments()
 			if (i > -1) {
 				LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
 				LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "type", &instr_type[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
-				CGenTemplate::CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
+				CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
+				CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
+				CheckVar(&st2, &st3, "type", &instr_type[i]);
+				CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
+				CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
+				CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
+				CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
+				CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
+				CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
+				CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
 				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		}
@@ -770,6 +774,8 @@ void CGenTemplate::UpdateTempoMinMax(int step1, int step2)
 
 void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 {
+	// Clear warning flags
+	for (int i = 0; i < v_cnt; i++) warning_note_short[i] = 0;
 	// Clear error flag
 	buffer_underrun = 0;
 	midi_play_step = 0;
@@ -848,6 +854,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		PmEvent event;
 		int slur_count = 0;
 		int ei;
+		int ndur;
 		// Calculate delta: dstime / detime
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
@@ -892,13 +899,14 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 							st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Cannot transpose automatically: range too wide.",
 								GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_nmin[instr[v]]), GetNoteName(instr_nmax[instr[v]]), play_transpose);
 							warning_note_range[v] = 1;
+							WriteLog(1, st);
 						}
 					}
 					else {
 						st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
 							GetNoteName(ng_min), GetNoteName(ng_max), GetNoteName(instr_nmin[instr[v]]), GetNoteName(instr_nmax[instr[v]]), play_transpose);
+						WriteLog(1, st);
 					}
-					WriteLog(1, st);
 				}
 			}
 			// Note ON
@@ -921,8 +929,19 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			else {
 				slur_count = 0;
 			}
-			// Note OFF
 			ei = i + len[i][v] - 1;
+			ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
+			// Check if note is too short
+			if (ndur < instr_tmin[instr[v]]) {
+				CString* st = new CString;
+				if (warning_note_short[v] > 3) {
+					st->Format("Recommended minimum note length for %s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
+						InstName[instr[v]], instr_tmin[instr[v]], v, i, ndur);
+					warning_note_short[v] ++;
+					WriteLog(1, st);
+				}
+			}
+			// Note OFF
 			// Do not send NoteOFF if this is last note, because this will block legato ahead (if needed) in next MidiSend
 			if (i < step22 - 1) {
 				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
