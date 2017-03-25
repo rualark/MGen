@@ -21,6 +21,11 @@ const int dia_to_chrom[] = { 0, 2, 4, 5, 7, 9, 11 };
 #define INSTR_TRUMPET 11
 #define INSTR_FLUTE 6
 
+// MIDI PORT STATUS
+#define MIDI_NOTEON 0x90
+#define MIDI_NOTEOFF 0x90
+#define MIDI_CC 0xB0
+
 const CString InstName[] = {
 	"Piano", // 0
 	"Violin", // 1
@@ -71,9 +76,9 @@ const CString NoteName2[] = {
 };
 
 // PortMIDI
-#define OUTPUT_BUFFER_SIZE 10000
-#define MIN_MIDI_BUFFER_MSEC 10000
-#define MAX_MIDI_BUFFER_MSEC 20000
+#define OUTPUT_BUF_SIZE 10000
+#define MIN_MIDI_BUF_MSEC 10000
+#define MAX_MIDI_BUF_MSEC 20000
 #define DRIVER_INFO NULL
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL
@@ -139,23 +144,36 @@ public:
 	void SaveResults(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
 	void SaveMidi(CString dir, CString fname);
+	static void WriteLog(int i, CString * pST);
 
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency, int from);
 	void SendMIDI(int step1, int step2);
-	static void WriteLog(int i, CString * pST);
 	void StopMIDI();
 	int GetPlayStep();
 
-	static HWND m_hWnd;
-	UINT WM_GEN_FINISH;
-	static UINT WM_DEBUG_MSG;
+protected:
+	// PortMIDI internal
+	void AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2);
+	void AddNoteOn(PmTimestamp timestamp, int data1, int data2);
+	void AddNoteOff(PmTimestamp timestamp, int data1, int data2);
+	void AddCC(PmTimestamp timestamp, int data1, int data2);
+	void AddTransitionKs(int i, PmTimestamp timestamp, int ks);
+
+	// Information for current note in SendMIDI
+	vector <PmEvent> midi_buf;
+	int midi_channel = 0;
+	int midi_voice = 0;
 
 public:
-	// Interface
-	int need_exit=0; // If thread needs to exit due to generation abort
+	// Thread interface
+	static HWND m_hWnd;
+	static UINT WM_DEBUG_MSG;
 	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
+	UINT WM_GEN_FINISH;
 	timed_mutex mutex_output;
+	int need_exit=0; // If thread needs to exit due to generation abort
+	// Data interface
 	int m_algo_id = -1; // Current algorithm id
 	CString m_algo_insts; // Instruments of current algorithm from algorithms.txt
 	CString m_config;
@@ -170,7 +188,7 @@ public:
 	int midi_sent = 0; // Steps already sent to midi
 	int midi_sent_t = 0; // Timestamp of last event sent to midi
 	int midi_start_time = 0; // Time when midi started to play
-	int buffer_underrun = 0; // Shows if current playback had an issue with buffer underrun
+	int buf_underrun = 0; // Shows if current playback had an issue with buffer underrun
 	int midi_play_step = 0; // Current step being played by midi
 	// MIDI play warnings for each voice show if warning was already fired to prevent repeated warnings
 	vector<int> warning_note_range;

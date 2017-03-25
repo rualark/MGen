@@ -856,7 +856,6 @@ void CGenTemplate::UpdateTempoMinMax(int step1, int step2)
 
 void CGenTemplate::Adapt(int step1, int step2)
 {
-	int slur_count = 0;
 	int ei; // ending step
 	int pi; // previous note step
 	int ndur; // note duration
@@ -899,6 +898,7 @@ void CGenTemplate::Adapt(int step1, int step2)
 			}
 		}
 		// Calculate delta: dstime / detime
+		int slur_count = 0;
 		int i = step1;
 		for (int x = 0; x < ncount; x++) {
 			ei = i + len[i][v] - 1;
@@ -949,7 +949,7 @@ void CGenTemplate::Adapt(int step1, int step2)
 				// Add slurs
 				if ((i > 0) && (instr_type[ii] == INSTR_VIOLIN) && (abs(note[pi][v] - note[i][v]) <= max_slur_interval[ii]) &&
 					(slur_count <= max_slur_count[ii])) {
-					artic[x][v] = ARTIC_SLUR;
+					artic[i][v] = ARTIC_SLUR;
 					slur_count++;
 				}
 				else {
@@ -986,7 +986,7 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 	// Clear warning flags
 	for (int i = 0; i < v_cnt; i++) warning_note_short[i] = 0;
 	// Clear error flag
-	buffer_underrun = 0;
+	buf_underrun = 0;
 	midi_play_step = 0;
 	midi_start_time = 0;
 	if (from > 0) {
@@ -998,9 +998,9 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 		midi_sent = 0;
 	}
 	TIME_START;
-	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUFFER_SIZE, TIME_PROC, NULL, latency);
+	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUF_SIZE, TIME_PROC, NULL, latency);
 	CString* est = new CString;
-	est->Format("Pm_OpenOutput: buffer size %d, latency %d", OUTPUT_BUFFER_SIZE, latency);
+	est->Format("Pm_OpenOutput: buf size %d, latency %d", OUTPUT_BUF_SIZE, latency);
 	WriteLog(4, est);
 	// Show instruments
 	est = new CString;
@@ -1019,30 +1019,49 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 	WriteLog(4, est);
 }
 
+void CGenTemplate::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2)
+{
+	PmEvent event;
+	event.timestamp = timestamp;
+	event.message = Pm_Message(mm_type, data1, data2);
+	midi_buf.push_back(event);
+}
+
+void CGenTemplate::AddTransitionKs(int i, int stimestamp, int ks)
+{
+	int v = midi_voice;
+	int pi = i - poff[i][v];
+	int ei = i + len[i][v] - 1;
+	AddNoteOn(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i] - dstime[pi]) / 10, ks, 10);
+	AddNoteOff(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i]) / 10, ks, 0);
+}
+
 void CGenTemplate::SendMIDI(int step1, int step2)
 {
 	if (step2 == step1) return;
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	PmTimestamp timestamp_current = TIME_PROC(TIME_INFO);
 	PmTimestamp timestamp;
+	PmTimestamp stimestamp; // Note start timestamp
+	PmTimestamp etimestamp; // Note end timestamp
 	if (midi_sent_t != 0) timestamp = midi_sent_t;
 	else timestamp = timestamp_current;
-	// Check if we have buffer underrun
+	// Check if we have buf underrun
 	if (timestamp < timestamp_current) {
 		CString* st = new CString;
-		st->Format("SendMIDI got buffer underrun in %d ms (steps %d - %d)", timestamp_current - timestamp, step1, step2);
+		st->Format("SendMIDI got buf underrun in %d ms (steps %d - %d)", timestamp_current - timestamp, step1, step2);
 		WriteLog(1, st);
 		timestamp = timestamp_current;
-		buffer_underrun = 1;
+		buf_underrun = 1;
 	}
 	PmTimestamp timestamp0 = timestamp;
 	// Set real time when playback started
 	if (step1 == 0) midi_start_time = timestamp0;
 	else if (midi_start_time == 0) midi_start_time = (midi_sent_t - stime[step1] / m_pspeed * 100);
-	// Check if buffer is full
-	if (midi_sent_t - timestamp_current > MIN_MIDI_BUFFER_MSEC) {
+	// Check if buf is full
+	if (midi_sent_t - timestamp_current > MIN_MIDI_BUF_MSEC) {
 		CString* st = new CString;
-		st->Format("SendMIDI: no need to send (full buffer = %d ms) (steps %d - %d) playback is at %d", 
+		st->Format("SendMIDI: no need to send (full buf = %d ms) (steps %d - %d) playback is at %d", 
 			midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
 		WriteLog(4, st);
 		return;
@@ -1059,11 +1078,17 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		step22 = i;
 		if (i == 0) time = stime[i] * 100 / m_pspeed;
 		else time = etime[i - 1] * 100 / m_pspeed;
-		if (time - stime[step1] * 100 / m_pspeed + timestamp - timestamp_current > MAX_MIDI_BUFFER_MSEC) break;
+		if (time - stime[step1] * 100 / m_pspeed + timestamp - timestamp_current > MAX_MIDI_BUF_MSEC) break;
 	}
 	for (int v = 0; v < v_cnt; v++) {
-		int ii = instr[v];
+		// Initialize voice
+		PmEvent event;
+		int ei;
+		int ndur;
 		int ncount = 0;
+		int ii = instr[v];
+		midi_channel = instr_channel[ii];
+		midi_buf.clear();
 		// Move to note start
 		if (coff[step1][v] > 0) step21 = step1 - coff[step1][v];
 		else step21 = step1;
@@ -1074,61 +1099,59 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}
-		vector <PmEvent> buffer;
-		PmEvent event;
-		int ei;
-		int ndur;
-		int mm_noteon = 0x90 + instr_channel[ii];
-		int mm_noteoff = 0x90 + instr_channel[ii];
-		int mm_cc = 0xB0 + instr_channel[ii];
 		// Send notes
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
+			ei = i + len[i][v] - 1;
 			// Fist send last note off, because it was blocked to protect legato ahead
 			if ((x == 0) && (i > 0) && (!pause[i - 1][v])) {
-				ei = i - 1;
-				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
-				event.timestamp = timestamp;
-				event.message = Pm_Message(mm_noteoff, note[ei][v] + play_transpose_old[v], 0);
-				buffer.push_back(event);
+				int ei = i - 1;
+				etimestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
+				AddNoteOff(etimestamp, note[ei][v] + play_transpose_old[v], 0);
 			}
 			// Note ON
-			timestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
-			event.timestamp = timestamp;
-			event.message = Pm_Message(mm_noteon, note[i][v] + play_transpose[v], dyn[i][v]);
-			buffer.push_back(event);
-			// CC
-			event.message = Pm_Message(mm_cc, CC_dynamics[ii], dyn[i][v]);
-			buffer.push_back(event);
-			// Send slur
-			if ((instr_type[ii] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_SLUR)) {
-				event.timestamp = timestamp - ((stime[i] - stime[i-1]) * 100 / m_pspeed + dstime[i] - dstime[i-1]) / 10;
-				event.message = Pm_Message(mm_noteon, slur_ks[ii], 10);
-				buffer.push_back(event);
-				// Note OFF
-				event.timestamp = timestamp + ((stime[i] - stime[i - 1]) * 100 / m_pspeed + dstime[i] - dstime[i - 1]) / 10;
-				event.message = Pm_Message(mm_noteoff, slur_ks[ii], 0);
-				buffer.push_back(event);
-			}
-			ei = i + len[i][v] - 1;
+			stimestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
+			AddNoteOn(stimestamp, note[i][v] + play_transpose[v], dyn[i][v]);
 			ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
 			// Note OFF
 			// Do not send NoteOFF if this is last note, because this will block legato ahead (if needed) in next MidiSend
 			if (i < step22 - 1) {
-				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
-				event.timestamp = timestamp;
-				event.message = Pm_Message(mm_noteoff, note[ei][v] + play_transpose[v], 0);
-				buffer.push_back(event);
+				etimestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
+				AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
 			}
-			if (noff[i][v] == 0) break;
-			i += noff[i][v];
+			// Send slur
+			if ((instr_type[ii] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_SLUR)) {
+				AddTransitionKs(i, stimestamp, slur_ks[ii]);
+			}
 			// Save current transpose to be sure that we send correct note off for last note in next SendMIDI call
 			play_transpose_old[v] = play_transpose[v];
+			// Go to next note
+			if (noff[i][v] == 0) break;
+			i += noff[i][v];
+		}
+		// SendCC dynamics
+		int cc_value;
+		double cc_step; // Length of quarter of 
+		double cc_pos1; // Middle of current step
+		double cc_pos2; // Middle of next step
+		for (int i = step21; i < step22-1; i++) {
+			if (CC_dynamics[i]) {
+				cc_pos1 = (etime[i] + stime[i]) * 100 / m_pspeed / 2;
+				cc_pos2 = (etime[i + 1] + stime[i + 1]) * 100 / m_pspeed / 2;
+				cc_step = (cc_pos2 - cc_pos1) / 4;
+				for (int c = 0; c < 4; c++) {
+					//AddCC();
+					//event.timestamp = cc_pos1 + cc_step * c;
+					//cc_value = (c * dyn[i][v] + (4 - c) * dyn[i + 1][v]) / 4;
+					//event.message = Pm_Message(mm_cc, CC_dynamics[i], cc_value);
+					//buf.push_back(event);
+				}
+			}
 		}
 		// Sort by timestamp before sending
-		qsort(buffer.data(), buffer.size(), sizeof(PmEvent), PmEvent_comparator);
+		qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
 		// Send
-		Pm_Write(midi, buffer.data(), buffer.size());
+		Pm_Write(midi, midi_buf.data(), midi_buf.size());
 	}
 	// Save last sent position
 	midi_sent = step22;
@@ -1169,7 +1192,7 @@ double CGenTemplate::rand01()
 }
 
 int CGenTemplate::GetPlayStep() {
-	if (buffer_underrun == 1) {
+	if (buf_underrun == 1) {
 		midi_play_step = 0;
 	}
 	else {
@@ -1200,4 +1223,19 @@ int CGenTemplate::GetPlayStep() {
 		//mutex_output.unlock();
 	}
 	return midi_play_step;
+}
+
+void CGenTemplate::AddNoteOn(PmTimestamp timestamp, int data1, int data2)
+{
+	AddMidiEvent(timestamp, MIDI_NOTEON + midi_channel, data1, data2);
+}
+
+void CGenTemplate::AddNoteOff(PmTimestamp timestamp, int data1, int data2)
+{
+	AddMidiEvent(timestamp, MIDI_NOTEOFF + midi_channel, data1, data2);
+}
+
+void CGenTemplate::AddCC(PmTimestamp timestamp, int data1, int data2)
+{
+	AddMidiEvent(timestamp, MIDI_CC + midi_channel, data1, data2);
 }
