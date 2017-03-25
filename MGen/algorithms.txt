@@ -1,4 +1,4 @@
 ID   | Folder | Name                                | Group          | Instruments        | Comment
 101  | GenCF1 | Cantus firmus Major full scan       | Counterpoint   | Violin             | Major scale cantus firmus generator. Uses full scan to evaluate all possible note combinations.
 102  | GenCF2 | Cantus firmus 2                     | Counterpoint   | Piano              | Second cantus firmus generator
-1001 | GenRS1 | Random solo                         | Random         | Violin             | This is the most simple solo random generator algorithm
+1001 | GenRS1 | Random solo                         | Random         | Piano             | This is the most simple solo random generator algorithm

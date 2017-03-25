@@ -1080,6 +1080,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		int ndur;
 		int mm_noteon = 0x90 + instr_channel[ii];
 		int mm_noteoff = 0x90 + instr_channel[ii];
+		int mm_cc = 0xB0 + instr_channel[ii];
 		// Send notes
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
@@ -1095,6 +1096,9 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			timestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
 			event.timestamp = timestamp;
 			event.message = Pm_Message(mm_noteon, note[i][v] + play_transpose[v], dyn[i][v]);
+			buffer.push_back(event);
+			// CC
+			event.message = Pm_Message(mm_cc, CC_dynamics[ii], dyn[i][v]);
 			buffer.push_back(event);
 			// Send slur
 			if ((instr_type[ii] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_SLUR)) {

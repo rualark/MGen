@@ -158,6 +158,10 @@ public:
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnUpdateButtonOpenmidi(CCmdUI *pCmdUI);
 	afx_msg void OnButtonOpenmidi();
+	afx_msg void OnButtonEditalgo();
+	afx_msg void OnButtonEditinst();
+	afx_msg void OnButtonReloadalgo();
+	afx_msg void OnUpdateButtonReloadalgo(CCmdUI *pCmdUI);
 };
 
 

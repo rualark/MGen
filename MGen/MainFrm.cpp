@@ -71,6 +71,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_KEYDOWN()
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_OPENMIDI, &CMainFrame::OnUpdateButtonOpenmidi)
 	ON_COMMAND(ID_BUTTON_OPENMIDI, &CMainFrame::OnButtonOpenmidi)
+	ON_COMMAND(ID_BUTTON_EDITALGO, &CMainFrame::OnButtonEditalgo)
+	ON_COMMAND(ID_BUTTON_EDITINST, &CMainFrame::OnButtonEditinst)
+	ON_COMMAND(ID_BUTTON_RELOADALGO, &CMainFrame::OnButtonReloadalgo)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_RELOADALGO, &CMainFrame::OnUpdateButtonReloadalgo)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -976,4 +980,28 @@ void CMainFrame::OnUpdateButtonOpenmidi(CCmdUI *pCmdUI)
 void CMainFrame::OnButtonOpenmidi()
 {
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir + "\\" + m_fname + ".mid", NULL, NULL, SW_SHOWNORMAL);
+}
+
+
+void CMainFrame::OnButtonEditalgo()
+{
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "algorithms.txt", NULL, NULL, SW_SHOWNORMAL);
+}
+
+
+void CMainFrame::OnButtonEditinst()
+{
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "instruments.pl", NULL, NULL, SW_SHOWNORMAL);
+}
+
+
+void CMainFrame::OnButtonReloadalgo()
+{
+	LoadAlgo();
+}
+
+
+void CMainFrame::OnUpdateButtonReloadalgo(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_state_gen != 1);
 }
