@@ -479,8 +479,9 @@ void CGenTemplate::LoadInstruments()
 	CString st, st2, st3;
 	char pch[2550];
 	int pos = 0;
-	int i = -1;
+	int i = -1, x = 0;
 	while (fs.good()) {
+		x++;
 		fs.getline(pch, 2550);
 		st = pch;
 		// Remove comments
@@ -525,6 +526,9 @@ void CGenTemplate::LoadInstruments()
 		}
 	}
 	fs.close();
+	CString* est = new CString;
+	est->Format("LoadInstruments loaded %d lines from instruments.pl", x);
+	WriteLog(0, est);
 }
 
 void CGenTemplate::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {

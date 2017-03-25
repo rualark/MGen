@@ -392,6 +392,10 @@ void CMainFrame::LoadResults(CString path) {
 		m_algo_id = pGen->m_algo_id;
 		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
 		m_config = pGen->m_config;
+		// Load configs
+		pGen->LoadInstruments();
+		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
+		pGen->LoadConfig(dir + "\\" + fname + ".pl");
 		m_state_gen = 2;
 		GetActiveView()->SetFocus();
 		Invalidate();
@@ -441,8 +445,8 @@ void CMainFrame::OnButtonGen()
 		pGen->m_config = m_config;
 		// Initialize variables
 		pGen->InitRandom();
-		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		pGen->LoadInstruments();
+		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		pGen->InitVectors();
 		// Initialize MIDI
 		pGen->StopMIDI();
