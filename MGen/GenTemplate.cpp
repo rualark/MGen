@@ -1078,6 +1078,8 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		PmEvent event;
 		int ei;
 		int ndur;
+		int mm_noteon = 0x90 + instr_channel[ii];
+		int mm_noteoff = 0x90 + instr_channel[ii];
 		// Send notes
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
@@ -1086,22 +1088,22 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 				ei = i - 1;
 				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
 				event.timestamp = timestamp;
-				event.message = Pm_Message(0x90, note[ei][v] + play_transpose_old[v], 0);
+				event.message = Pm_Message(mm_noteoff, note[ei][v] + play_transpose_old[v], 0);
 				buffer.push_back(event);
 			}
 			// Note ON
 			timestamp = (stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + dstime[i];
 			event.timestamp = timestamp;
-			event.message = Pm_Message(0x90, note[i][v] + play_transpose[v], dyn[i][v]);
+			event.message = Pm_Message(mm_noteon, note[i][v] + play_transpose[v], dyn[i][v]);
 			buffer.push_back(event);
 			// Send slur
 			if ((instr_type[ii] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_SLUR)) {
 				event.timestamp = timestamp - ((stime[i] - stime[i-1]) * 100 / m_pspeed + dstime[i] - dstime[i-1]) / 10;
-				event.message = Pm_Message(0x90, slur_ks[ii], 10);
+				event.message = Pm_Message(mm_noteon, slur_ks[ii], 10);
 				buffer.push_back(event);
 				// Note OFF
 				event.timestamp = timestamp + ((stime[i] - stime[i - 1]) * 100 / m_pspeed + dstime[i] - dstime[i - 1]) / 10;
-				event.message = Pm_Message(0x90, slur_ks[ii], 0);
+				event.message = Pm_Message(mm_noteoff, slur_ks[ii], 0);
 				buffer.push_back(event);
 			}
 			ei = i + len[i][v] - 1;
@@ -1111,7 +1113,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			if (i < step22 - 1) {
 				timestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
 				event.timestamp = timestamp;
-				event.message = Pm_Message(0x90, note[ei][v] + play_transpose[v], 0);
+				event.message = Pm_Message(mm_noteoff, note[ei][v] + play_transpose[v], 0);
 				buffer.push_back(event);
 			}
 			if (noff[i][v] == 0) break;

@@ -8,3 +8,4 @@ min_note = 60 # Minimum note value
 max_note = 71 # Maximum note value
 note_step = 3 # Note step for random chain algorithm
 sleep_ms = 50 # Artificial pause in ms after generating each step
+Instruments = Piano
