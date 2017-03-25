@@ -23,21 +23,21 @@ UINT CGenTemplate::WM_DEBUG_MSG = 0;
 CGenTemplate::CGenTemplate()
 {
 	// Init constant length arrays
-	play_transpose.resize(MAX_INSTR);
-	play_transpose_old.resize(MAX_INSTR);
-	instr.resize(MAX_INSTR);
-	instr_type.resize(MAX_VOICE);
-	instr_nmin.resize(MAX_VOICE);
-	instr_nmax.resize(MAX_VOICE);
-	instr_tmin.resize(MAX_VOICE);
-	instr_tmax.resize(MAX_VOICE);
-	CC_dynamics.resize(MAX_VOICE);
-	max_slur_count.resize(MAX_VOICE);
-	max_slur_interval.resize(MAX_VOICE);
-	slur_ks.resize(MAX_VOICE);
-	legato_ahead.resize(MAX_VOICE);
-	nonlegato_freq.resize(MAX_VOICE);
-	nonlegato_minlen.resize(MAX_VOICE);
+	play_transpose.resize(MAX_VOICE);
+	play_transpose_old.resize(MAX_VOICE);
+	instr.resize(MAX_VOICE);
+	instr_type.resize(MAX_INSTR);
+	instr_nmin.resize(MAX_INSTR);
+	instr_nmax.resize(MAX_INSTR);
+	instr_tmin.resize(MAX_INSTR);
+	instr_tmax.resize(MAX_INSTR);
+	CC_dynamics.resize(MAX_INSTR);
+	max_slur_count.resize(MAX_INSTR);
+	max_slur_interval.resize(MAX_INSTR);
+	slur_ks.resize(MAX_INSTR);
+	legato_ahead.resize(MAX_INSTR);
+	nonlegato_freq.resize(MAX_INSTR);
+	nonlegato_minlen.resize(MAX_INSTR);
 	warning_note_range.resize(MAX_VOICE);
 	warning_note_short.resize(MAX_VOICE);
 	lengroup2.resize(MAX_INSTR);
@@ -47,7 +47,8 @@ CGenTemplate::CGenTemplate()
 	lengroup_edt2.resize(MAX_INSTR);
 	rand_start.resize(MAX_INSTR);
 	// Set instrument
-	instr[0] = 0;
+	instr[0] = 5;
+	instr[1] = 6;
 }
 
 
@@ -136,54 +137,6 @@ void CGenTemplate::ResizeVectors(int size)
 	mutex_output.unlock();
 }
 
-void CGenTemplate::copy_file(CString sName, CString dName) {
-	std::ifstream  src(sName, std::ios::binary);
-	std::ofstream  dst(dName, std::ios::binary);
-	dst << src.rdbuf();
-	src.close();
-	dst.close();
-}
-
-void CGenTemplate::AppendLineToFile(CString fname, CString st)
-{
-	ofstream outfile;
-	outfile.open(fname, ios_base::app);
-	outfile << st;
-	outfile.close();
-}
-
-void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int vmin, int vmax)
-{
-	if (*sName == sSearch) {
-		*Dest = atoi(*sValue);
-		if ((vmin != -1) && (vmax != -1)) {
-			if (*Dest < vmin) *Dest = vmin;
-			if (*Dest > vmax) *Dest = vmax;
-		}
-	}
-}
-
-void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, double * Dest)
-{
-	if (*sName == sSearch) {
-		*Dest = atof(*sValue);
-	}
-}
-
-void CGenTemplate::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * Dest)
-{
-	if (*sName == sSearch) {
-		*Dest = *sValue;
-	}
-}
-
-void CGenTemplate::LoadNote(CString * sName, CString * sValue, char* sSearch, int * Dest)
-{
-	if (*sName == sSearch) {
-		*Dest = CGenTemplate::GetNoteI(*sValue);
-	}
-}
-
 void CGenTemplate::LoadConfig(CString fname)
 {
 	CString st, st2, st3;
@@ -225,6 +178,7 @@ void CGenTemplate::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "t_send", &t_send);
 			CheckVar(&st2, &st3, "midifile_tpq_mul", &midifile_tpq_mul);
 			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms);
+			LoadVarInstr(&st2, &st3, "instruments", instr);
 			// Load algorithm-specific variables
 			LoadConfigLine(&st2, &st3, idata, fdata);
 		}
@@ -233,6 +187,137 @@ void CGenTemplate::LoadConfig(CString fname)
 	CString* est = new CString;
 	est->Format("LoadConfig loaded %d lines from %s", i, fname);
 	WriteLog(0, est);
+}
+
+void CGenTemplate::LoadInstruments()
+{
+	// Load strings
+	ifstream fs;
+	fs.open("instruments.pl");
+	CString st, st2, st3;
+	char pch[2550];
+	int pos = 0;
+	int i = -1, x = 0;
+	while (fs.good()) {
+		x++;
+		fs.getline(pch, 2550);
+		st = pch;
+		// Remove comments
+		pos = st.Find("#");
+		if (pos != -1) st = st.Left(pos);
+		st.Trim();
+		// Find equals
+		pos = st.Find("=");
+		if (pos != -1) {
+			st2 = st.Left(pos);
+			st3 = st.Mid(pos + 1);
+			st2.Trim();
+			st3.Trim();
+			st2.MakeLower();
+			int idata = atoi(st3);
+			if (st2 == "instrument") {
+				for (int x = 0; x<MAX_INSTR; x++) {
+					if (InstName[x] == st3) i = x;
+				}
+			}
+			LoadVarInstr(&st2, &st3, "instruments", instr);
+			if (i > -1) {
+				LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
+				LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
+				CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
+				CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
+				CheckVar(&st2, &st3, "type", &instr_type[i]);
+				CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
+				CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
+				CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
+				CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
+				CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
+				CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
+				CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
+				CheckVar(&st2, &st3, "lengroup2", &lengroup2[i]);
+				CheckVar(&st2, &st3, "lengroup3", &lengroup3[i]);
+				CheckVar(&st2, &st3, "lengroup4", &lengroup4[i]);
+				CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
+				CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
+				CheckVar(&st2, &st3, "rand_start", &rand_start[i]);
+				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
+			}
+		}
+	}
+	st2 = "instruments";
+	// After loading global mapping of voices to instruments, load algorithm-specific mapping
+	LoadVarInstr(&st2, &m_algo_insts, "instruments", instr);
+	fs.close();
+	CString* est = new CString;
+	est->Format("LoadInstruments loaded %d lines from instruments.pl", x);
+	WriteLog(0, est);
+}
+
+void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int vmin, int vmax)
+{
+	if (*sName == sSearch) {
+		*Dest = atoi(*sValue);
+		if ((vmin != -1) && (vmax != -1)) {
+			if (*Dest < vmin) *Dest = vmin;
+			if (*Dest > vmax) *Dest = vmax;
+		}
+	}
+}
+
+void CGenTemplate::CheckVar(CString * sName, CString * sValue, char* sSearch, double * Dest)
+{
+	if (*sName == sSearch) {
+		*Dest = atof(*sValue);
+	}
+}
+
+void CGenTemplate::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * Dest)
+{
+	if (*sName == sSearch) {
+		*Dest = *sValue;
+	}
+}
+
+void CGenTemplate::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
+{
+	if (*sName == sSearch) {
+		int pos = 0;
+		CString st;
+		for (int ii=0; ii<MAX_VOICE; ii++) {
+			st = sValue->Tokenize(",", pos);
+			st.Trim();
+			if (st == "") break;
+			for (int i = 0; i < MAX_INSTR; i++) {
+				if (InstName[i] == st) {
+					Dest[ii] = i;
+					break;
+				}
+			}
+		}
+	}
+}
+
+void CGenTemplate::LoadNote(CString * sName, CString * sValue, char* sSearch, int * Dest)
+{
+	if (*sName == sSearch) {
+		*Dest = CGenTemplate::GetNoteI(*sValue);
+	}
+}
+
+void CGenTemplate::copy_file(CString sName, CString dName) {
+	std::ifstream  src(sName, std::ios::binary);
+	std::ofstream  dst(dName, std::ios::binary);
+	dst << src.rdbuf();
+	src.close();
+	dst.close();
+}
+
+void CGenTemplate::AppendLineToFile(CString fname, CString st)
+{
+	ofstream outfile;
+	outfile.open(fname, ios_base::app);
+	outfile << st;
+	outfile.close();
 }
 
 bool CGenTemplate::dirExists(CString dirName_in)
@@ -320,9 +405,15 @@ int CGenTemplate::GetNoteI(CString st)
 		int pos = 2;
 		if (isdigit(st[1])) pos = 1;
 		CString nname = st.Left(pos);
-		for (int i = 0; i < 12; i++) if (NoteName[i] == nname) {
-			nid = i;
-			break;
+		for (int i = 0; i < 12; i++) {
+			if (NoteName[i] == nname) {
+				nid = i;
+				break;
+			}
+			if (NoteName2[i] == nname) {
+				nid = i;
+				break;
+			}
 		}
 		if ((nid > -1) && (isdigit(st[pos]))) {
 			int i = nid + (atoi(st.Mid(pos, 1))+1) * 12;
@@ -336,6 +427,28 @@ int CGenTemplate::GetNoteI(CString st)
 			else est->Format("Error parsing note name %s: note symbol not recognized. Correct format examples: C#2 or C3", st);
 			WriteLog(1, est);
 		}
+	}
+}
+
+int CGenTemplate::GetInstrumentI(CString st)
+{
+	int ii = -1;
+	for (int i = 0; i < MAX_INSTR; i++) {
+		if (InstName[i] == st) {
+			ii = i;
+			break;
+		}
+	}
+	if (ii > -1) {
+		CString* est = new CString;
+		est->Format("Converted instrument name %s to %d", st, ii);
+		WriteLog(0, est);
+		return ii;
+	}
+	else {
+		CString* est = new CString;
+		est->Format("Error parsing instrument name %s: not recognized", st);
+		WriteLog(1, est);
 	}
 }
 
@@ -468,66 +581,6 @@ void CGenTemplate::TestRandom()
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
 	est->Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
-	WriteLog(0, est);
-}
-
-void CGenTemplate::LoadInstruments()
-{
-	// Load strings
-	ifstream fs;
-	fs.open("instruments.pl");
-	CString st, st2, st3;
-	char pch[2550];
-	int pos = 0;
-	int i = -1, x = 0;
-	while (fs.good()) {
-		x++;
-		fs.getline(pch, 2550);
-		st = pch;
-		// Remove comments
-		pos = st.Find("#");
-		if (pos != -1) st = st.Left(pos);
-		st.Trim();
-		// Find equals
-		pos = st.Find("=");
-		if (pos != -1) {
-			st2 = st.Left(pos);
-			st3 = st.Mid(pos + 1);
-			st2.Trim();
-			st3.Trim();
-			st2.MakeLower();
-			int idata = atoi(st3);
-			if (st2 == "instrument") {
-				for (int x = 0; x<MAX_INSTR; x++) {
-					if (InstName[x] == st3) i = x;
-				}
-			}
-			if (i > -1) {
-				LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
-				LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
-				CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
-				CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
-				CheckVar(&st2, &st3, "type", &instr_type[i]);
-				CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
-				CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
-				CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
-				CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
-				CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
-				CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
-				CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
-				CheckVar(&st2, &st3, "lengroup2", &lengroup2[i]);
-				CheckVar(&st2, &st3, "lengroup3", &lengroup3[i]);
-				CheckVar(&st2, &st3, "lengroup4", &lengroup4[i]);
-				CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
-				CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
-				CheckVar(&st2, &st3, "rand_start", &rand_start[i]);
-				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
-			}
-		}
-	}
-	fs.close();
-	CString* est = new CString;
-	est->Format("LoadInstruments loaded %d lines from instruments.pl", x);
 	WriteLog(0, est);
 }
 

@@ -442,6 +442,7 @@ void CMainFrame::OnButtonGen()
 		CGenTemplate::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->m_algo_id = m_algo_id;
+		pGen->m_algo_insts = AlgInsts[m_algo];
 		pGen->m_config = m_config;
 		// Initialize variables
 		pGen->InitRandom();
@@ -589,6 +590,10 @@ void CMainFrame::LoadAlgo()
 				AlgGroups[AlgGCount] = st2;
 				AlgGCount++;
 			}
+			// Load instruments
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			AlgInsts[AlgCount] = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			AlgComment[AlgCount] = st2;

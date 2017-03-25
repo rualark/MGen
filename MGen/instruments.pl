@@ -2,6 +2,8 @@
 # Instrument types:
 # 0 - Melodic percussion
 # 1 - Friedlander violin
+Instruments = Piano,Violin
+Channels = 0,1
 
 Instrument = Piano
 Type = 0 # Instrument type

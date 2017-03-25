@@ -66,6 +66,7 @@ public:
 	// Algorithm / configs constants
 	CString AlgName[MAX_ALGO];
 	CString AlgGroup[MAX_ALGO];
+	CString AlgInsts[MAX_ALGO];
 	CString AlgGroups[MAX_ALGO];
 	CString AlgComment[MAX_ALGO];
 	CString AlgFolder[MAX_ALGO];

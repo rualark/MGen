@@ -87,6 +87,7 @@ public:
 	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, double * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
+	static void LoadVarInstr(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	static void LoadNote(CString * sName, CString * sValue, char * sSearch, int * Dest);
 	static bool dirExists(CString dirName_in);
 	static bool fileExists(CString dirName_in);
@@ -97,6 +98,7 @@ public:
 	static int PmEvent_comparator(const void *v1, const void *v2);
 	static CString GetNoteName(int n);
 	static int GetNoteI(CString st);
+	static int GetInstrumentI(CString st);
 
 protected:
 	// File operations
@@ -155,6 +157,7 @@ public:
 	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
 	timed_mutex mutex_output;
 	int m_algo_id = -1; // Current algorithm id
+	CString m_algo_insts; // Instruments of current algorithm from algorithms.txt
 	CString m_config;
 	int sleep_ms = 0;
 	CString save_format_version; // Version of save format loaded
