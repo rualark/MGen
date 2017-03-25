@@ -27,6 +27,7 @@ CGenTemplate::CGenTemplate()
 	play_transpose_old.resize(MAX_VOICE);
 	instr.resize(MAX_VOICE);
 	instr_type.resize(MAX_INSTR);
+	instr_channel.resize(MAX_INSTR);
 	instr_nmin.resize(MAX_INSTR);
 	instr_nmax.resize(MAX_INSTR);
 	instr_tmin.resize(MAX_INSTR);
@@ -227,6 +228,7 @@ void CGenTemplate::LoadInstruments()
 				CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
 				CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
 				CheckVar(&st2, &st3, "type", &instr_type[i]);
+				CheckVar(&st2, &st3, "channel", &instr_channel[i]);
 				CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
 				CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
 				CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
@@ -997,9 +999,24 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 	}
 	TIME_START;
 	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUFFER_SIZE, TIME_PROC, NULL, latency);
-	CString* st = new CString;
-	st->Format("Pm_OpenOutput: buffer size %d, latency %d", OUTPUT_BUFFER_SIZE, latency);
-	WriteLog(4, st);
+	CString* est = new CString;
+	est->Format("Pm_OpenOutput: buffer size %d, latency %d", OUTPUT_BUFFER_SIZE, latency);
+	WriteLog(4, est);
+	// Show instruments
+	est = new CString;
+	CString st, st2;
+	st2 = "Voice to instrument mapping: ";
+	for (int i = 0; i < MAX_VOICE; i++) {
+		st.Format("%d ", instr[i]);
+		st2 += st;
+	}
+	st2 += ". Instrument channels: ";
+	for (int i = 0; i < MAX_INSTR; i++) {
+		st.Format("%d ", instr_channel[i]);
+		st2 += st;
+	}
+	est->Format("%s", st2);
+	WriteLog(4, est);
 }
 
 void CGenTemplate::SendMIDI(int step1, int step2)

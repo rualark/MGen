@@ -216,6 +216,7 @@ public:
 
 	// Instruments
 	vector<int> instr; // Instruments for each voice
+	vector<int> instr_channel;
 	vector<int> instr_type;
 	vector<int> instr_nmin;
 	vector<int> instr_nmax;

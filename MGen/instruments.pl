@@ -3,9 +3,9 @@
 # 0 - Melodic percussion
 # 1 - Friedlander violin
 Instruments = Piano,Violin
-Channels = 0,1
 
 Instrument = Piano
+Channel = 0 # MIDI channel
 Type = 0 # Instrument type
 n_min = 21 # Lowest note
 n_max = 108 # Highest note
@@ -23,6 +23,7 @@ lengroup_edt2 = -100 # delta to alter note ending time of last note in group (ms
 rand_start = 8 # Randomize note starts not greater than percent of note length 
 
 Instrument = Violin
+Channel = 1 # MIDI channel
 Type = 1 # Instrument type
 n_min = G3 # Lowest note
 n_max = F7 # Highest note
