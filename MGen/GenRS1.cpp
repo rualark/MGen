@@ -72,7 +72,7 @@ void CGenRS1::Generate()
 		UpdateNoteMinMax(i, i);
 		UpdateTempoMinMax(i, i);
 		// Check if we can send new chunk
-		if (((i > 0) && ((i-3) % t_send == 0)) || (i == t_cnt - 1)) {
+		if (((i > t_send) && ((i-3) % t_send == 0)) || (i == t_cnt - 1)) {
 			// Moving average 7 <<<|>>>
 			int t_sent_old = t_sent;
 			double ma;
@@ -98,11 +98,10 @@ void CGenRS1::Generate()
 			// Send
 			if (i == t_cnt - 1) t_sent = t_generated;
 			else t_sent = t_generated-3;
-			Adapt(t_sent_old, t_sent - 1);
+			Adapt(t_sent_old, t_sent);
 			// Interface
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}
-		if (len[i][0] == 0) WriteLog(1, new CString("Critical error: Len = 0"));
 		Sleep(sleep_ms);
 		if (need_exit) return;
 	}

@@ -15,6 +15,7 @@ const int dia_to_chrom[] = { 0, 2, 4, 5, 7, 9, 11 };
 #define ARTIC_NONLEGATO 2
 #define ARTIC_EXACT 3
 #define ARTIC_STACCATO 4
+#define ARTIC_RETRIGGER 5
 
 #define INSTR_PIANO 0
 #define INSTR_VIOLIN 1
@@ -158,6 +159,7 @@ protected:
 	void AddNoteOn(PmTimestamp timestamp, int data1, int data2);
 	void AddNoteOff(PmTimestamp timestamp, int data1, int data2);
 	void AddCC(PmTimestamp timestamp, int data1, int data2);
+	void AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2);
 	void AddTransitionKs(int i, PmTimestamp timestamp, int ks);
 
 	// Information for current note in SendMIDI
@@ -241,6 +243,8 @@ public:
 	vector<int> instr_tmin;
 	vector<int> instr_tmax;
 	vector<int> CC_dynamics;
+	vector<int> CC_retrigger;
+	vector<int> retrigger_freq;
 	vector<int> max_slur_count;
 	vector<int> max_slur_interval;
 	vector<int> slur_ks;

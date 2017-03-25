@@ -33,6 +33,8 @@ CGenTemplate::CGenTemplate()
 	instr_tmin.resize(MAX_INSTR);
 	instr_tmax.resize(MAX_INSTR);
 	CC_dynamics.resize(MAX_INSTR);
+	CC_retrigger.resize(MAX_INSTR);
+	retrigger_freq.resize(MAX_INSTR);
 	max_slur_count.resize(MAX_INSTR);
 	max_slur_interval.resize(MAX_INSTR);
 	slur_ks.resize(MAX_INSTR);
@@ -230,6 +232,8 @@ void CGenTemplate::LoadInstruments()
 				CheckVar(&st2, &st3, "type", &instr_type[i]);
 				CheckVar(&st2, &st3, "channel", &instr_channel[i]);
 				CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
+				CheckVar(&st2, &st3, "cc_retrigger", &CC_retrigger[i]);
+				CheckVar(&st2, &st3, "retrigger_freq", &retrigger_freq[i]);
 				CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
 				CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
 				CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
@@ -858,6 +862,7 @@ void CGenTemplate::Adapt(int step1, int step2)
 {
 	int ei; // ending step
 	int pi; // previous note step
+	int pei; // previous note ending step
 	int ndur; // note duration
 	for (int v = 0; v < v_cnt; v++) {
 		int ii = instr[v]; // Instrument id
@@ -865,8 +870,8 @@ void CGenTemplate::Adapt(int step1, int step2)
 		// Move to note start
 		if (coff[step1][v] > 0) step1 = step1 - coff[step1][v];
 		// Count notes
-		for (int i = step1; i < step2; i++) {
-			if (i + len[i][v] > step2) break;
+		for (int i = step1; i <= step2; i++) {
+			if (i + len[i][v] > step2+1) break;
 			ncount++;
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
@@ -903,22 +908,23 @@ void CGenTemplate::Adapt(int step1, int step2)
 		for (int x = 0; x < ncount; x++) {
 			ei = i + len[i][v] - 1;
 			pi = i - poff[i][v];
+			pei = i - 1;
 			// Calculate lengroups
 			if (!pause[i][v]) {
-				if ((i == 0) || ((i > 0) && (lengroup[pi][v] < 2))) {
-					// Start new lengroup if was no lengroup or lengroup ended
-					int r = randbw(0, 100);
-					if (r < lengroup2[ii]) lengroup[i][v] = 2;
-					else if (r < lengroup2[ii] + lengroup3[ii]) lengroup[i][v] = 3;
-					else if (r < lengroup2[ii] + lengroup3[ii] + lengroup4[ii]) lengroup[i][v] = 4;
-					else lengroup[i][v] = 0;
-				}
-				else if (i > 0) {
-					// Continue lengroup
-					lengroup[i][v] = lengroup[pi][v] - 1;
-				}
-				// Apply lengroups
-				if (instr_type[ii] == INSTR_PIANO) {
+				if (lengroup2[ii] + lengroup3[ii] + lengroup4[ii] > 0) {
+					if ((i == 0) || ((i > 0) && (lengroup[pi][v] < 2))) {
+						// Start new lengroup if was no lengroup or lengroup ended
+						int r = randbw(0, 100);
+						if (r < lengroup2[ii]) lengroup[i][v] = 2;
+						else if (r < lengroup2[ii] + lengroup3[ii]) lengroup[i][v] = 3;
+						else if (r < lengroup2[ii] + lengroup3[ii] + lengroup4[ii]) lengroup[i][v] = 4;
+						else lengroup[i][v] = 0;
+					}
+					else if (i > 0) {
+						// Continue lengroup
+						lengroup[i][v] = lengroup[pi][v] - 1;
+					}
+					// Apply lengroups
 					if (lengroup[i][v] > 1) {
 						if (lengroup_edt1[ii] < 0) {
 							detime[ei] = -min(-lengroup_edt1[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
@@ -940,14 +946,8 @@ void CGenTemplate::Adapt(int step1, int step2)
 						}
 					}
 				}
-				// Advance start for legato (not longer than previous note length)
-				if ((i > 0) && (legato_ahead[ii] > 0) && (detime[i - 1] >= 0) && (!pause[pi][v])) {
-					dstime[i] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
-						detime[i - 1] - dstime[pi] - 1);
-					detime[i - 1] = 0.9 * dstime[i];
-				}
 				// Add slurs
-				if ((i > 0) && (instr_type[ii] == INSTR_VIOLIN) && (abs(note[pi][v] - note[i][v]) <= max_slur_interval[ii]) &&
+				if ((i > 0) && (max_slur_interval[ii] > 0) && (abs(note[pi][v] - note[i][v]) <= max_slur_interval[ii]) && (note[pi][v] != note[i][v]) &&
 					(slur_count <= max_slur_count[ii])) {
 					artic[i][v] = ARTIC_SLUR;
 					slur_count++;
@@ -955,11 +955,29 @@ void CGenTemplate::Adapt(int step1, int step2)
 				else {
 					slur_count = 0;
 				}
+				// Retrigger notes
+				if ((i > 0) && (note[pi][v] == note[i][v])) {
+					artic[i][v] = ARTIC_RETRIGGER;
+					detime[pei] = -1;
+					dstime[i] = 0;
+					// Replace retrigger with non-legato
+					if ((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) {
+						detime[pei] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
+						artic[i][v] = ARTIC_NONLEGATO;
+					}
+				}
 				// Randomly make some notes non-legato if they have enough length
-				if (((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i] > nonlegato_minlen[ii]) &&
+				if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei] - dstime[pi] > nonlegato_minlen[ii]) &&
 					(randbw(0, 100) < nonlegato_freq[ii])) {
-					detime[ei] = -min(300, (etime[ei] - stime[ei]) * 100 / m_pspeed / 3);
+					detime[pei] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
+					dstime[i] = 0;
 					artic[i][v] = ARTIC_NONLEGATO;
+				}
+				// Advance start for legato (not longer than previous note length)
+				if ((i > 0) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) && (detime[i - 1] >= 0) && (!pause[pi][v])) {
+					dstime[i] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+						detime[i - 1] - dstime[pi] - 1);
+					detime[i - 1] = 0.9 * dstime[i];
 				}
 				// Check if note is too short
 				ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
@@ -1034,6 +1052,15 @@ void CGenTemplate::AddTransitionKs(int i, int stimestamp, int ks)
 	int ei = i + len[i][v] - 1;
 	AddNoteOn(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i] - dstime[pi]) / 10, ks, 10);
 	AddNoteOff(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i]) / 10, ks, 0);
+}
+
+void CGenTemplate::AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2)
+{
+	int v = midi_voice;
+	int pi = i - poff[i][v];
+	int ei = i + len[i][v] - 1;
+	AddCC(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i] - dstime[pi]) / 10, CC, value1);
+	AddCC(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i]) / 10, CC, value2);
 }
 
 void CGenTemplate::SendMIDI(int step1, int step2)
@@ -1120,8 +1147,12 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 				AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
 			}
 			// Send slur
-			if ((instr_type[ii] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_SLUR)) {
+			if (artic[i][v] == ARTIC_SLUR) {
 				AddTransitionKs(i, stimestamp, slur_ks[ii]);
+			}
+			// Send retrigger
+			if ((instr[v] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_RETRIGGER)) {
+				AddTransitionCC(i, stimestamp, CC_retrigger[ii], 100, 0);
 			}
 			// Save current transpose to be sure that we send correct note off for last note in next SendMIDI call
 			play_transpose_old[v] = play_transpose[v];
@@ -1129,13 +1160,13 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
 		}
-		// SendCC dynamics
+		// Send CC dynamics
 		int cc_value;
 		double cc_step; // Length of quarter of 
 		double cc_pos1; // Middle of current step
 		double cc_pos2; // Middle of next step
 		for (int i = step21; i < step22-1; i++) {
-			if (CC_dynamics[i]) {
+			if (CC_dynamics[ii]) {
 				cc_pos1 = (etime[i] + stime[i]) * 100 / m_pspeed / 2;
 				cc_pos2 = (etime[i + 1] + stime[i + 1]) * 100 / m_pspeed / 2;
 				cc_step = (cc_pos2 - cc_pos1) / 4;
