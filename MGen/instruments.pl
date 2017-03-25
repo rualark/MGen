@@ -33,6 +33,7 @@ poly = 1 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap
 library = Friedlander Violin 1.5 # For which library algorithm is optimized
 CC_dynamics = 11
+CC_dyn_ma = 1 # If we should use moving average to smooth CC dynamics curve before sending
 CC_retrigger = 64 # This CC will be set before note retriger and reset soon after
 retrigger_freq = 50 # Percent to use CC retrigger instead of non-legato when repeating notes
 max_slur_count = 2 # Use slur for 2nd moves, but no longer than X moves

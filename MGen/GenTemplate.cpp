@@ -1047,6 +1047,9 @@ void CGenTemplate::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, i
 	event.timestamp = timestamp;
 	event.message = Pm_Message(mm_type, data1, data2);
 	midi_buf.push_back(event);
+	CString st;
+	st.Format("%d: At %d type %d, data %d/%d\n", TIME_PROC(TIME_INFO), timestamp, mm_type, data1, data2);
+	AppendLineToFile("midi.log", st);
 }
 
 void CGenTemplate::AddTransitionKs(int i, int stimestamp, int ks)
@@ -1076,7 +1079,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	PmTimestamp stimestamp; // Note start timestamp
 	PmTimestamp etimestamp; // Note end timestamp
 	if (midi_sent_t != 0) timestamp = midi_sent_t;
-	else timestamp = timestamp_current;
+	else timestamp = timestamp_current + 1000;
 	// Check if we have buf underrun
 	if (timestamp < timestamp_current) {
 		CString* st = new CString;
