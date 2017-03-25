@@ -16,5 +16,7 @@ public:
 	int min_note = 60;
 	int max_note = 71;
 	int note_step = 3;
+	int min_dyn = 60;
+	int max_dyn = 110;
 };
 

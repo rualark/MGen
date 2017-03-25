@@ -32,7 +32,9 @@ CGenTemplate::CGenTemplate()
 	instr_nmax.resize(MAX_INSTR);
 	instr_tmin.resize(MAX_INSTR);
 	instr_tmax.resize(MAX_INSTR);
-	CC_dynamics.resize(MAX_INSTR);
+	CC_steps.resize(MAX_INSTR);
+	CC_dyn.resize(MAX_INSTR);
+	CC_dyn_ma.resize(MAX_INSTR);
 	CC_retrigger.resize(MAX_INSTR);
 	retrigger_freq.resize(MAX_INSTR);
 	max_slur_count.resize(MAX_INSTR);
@@ -231,7 +233,9 @@ void CGenTemplate::LoadInstruments()
 				CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
 				CheckVar(&st2, &st3, "type", &instr_type[i]);
 				CheckVar(&st2, &st3, "channel", &instr_channel[i]);
-				CheckVar(&st2, &st3, "cc_dynamics", &CC_dynamics[i]);
+				CheckVar(&st2, &st3, "cc_steps", &CC_steps[i]);
+				CheckVar(&st2, &st3, "cc_dynamics", &CC_dyn[i]);
+				CheckVar(&st2, &st3, "cc_dyn_ma", &CC_dyn_ma[i]);
 				CheckVar(&st2, &st3, "cc_retrigger", &CC_retrigger[i]);
 				CheckVar(&st2, &st3, "retrigger_freq", &retrigger_freq[i]);
 				CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
@@ -1090,7 +1094,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		CString* st = new CString;
 		st->Format("SendMIDI: no need to send (full buf = %d ms) (steps %d - %d) playback is at %d", 
 			midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
-		WriteLog(4, st);
+		//WriteLog(4, st);
 		return;
 	}
 	int i;
@@ -1142,9 +1146,14 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
 			// Note OFF
 			// Do not send NoteOFF if this is last note, because this will block legato ahead (if needed) in next MidiSend
-			if (i < step22 - 1) {
+			if (x < ncount - 1) {
 				etimestamp = (etime[ei] - stime[step1]) * 100 / m_pspeed + timestamp0 + detime[ei];
 				AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
+			}
+			else {
+				CString* st = new CString;
+				st->Format("Skip note OFF at steps %d - %d", i, ei);
+				WriteLog(0, st);
 			}
 			// Send slur
 			if (artic[i][v] == ARTIC_SLUR) {
@@ -1161,21 +1170,65 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			i += noff[i][v];
 		}
 		// Send CC dynamics
-		int cc_value;
-		double cc_step; // Length of quarter of 
-		double cc_pos1; // Middle of current step
-		double cc_pos2; // Middle of next step
-		for (int i = step21; i < step22-1; i++) {
-			if (CC_dynamics[ii]) {
+		if (CC_dyn[ii]) {
+			int cc_value;
+			double cc_step; // Length of cc interpolation step
+			double cc_pos1; // Middle of current note step
+			double cc_pos2; // Middle of next note step
+			for (int i = step21-1; i < step22-1; i++) {
+				if (i < 0) continue;
+				vector <double> cc_lin; // Linear interpolation
+				vector <double> cc_ma; // Moving average
+				cc_lin.resize(CC_steps[ii] * 2);
+				cc_ma.resize(CC_steps[ii]);
+				// Calculate window
 				cc_pos1 = (etime[i] + stime[i]) * 100 / m_pspeed / 2;
 				cc_pos2 = (etime[i + 1] + stime[i + 1]) * 100 / m_pspeed / 2;
-				cc_step = (cc_pos2 - cc_pos1) / 4;
-				for (int c = 0; c < 4; c++) {
-					//AddCC();
-					//event.timestamp = cc_pos1 + cc_step * c;
-					//cc_value = (c * dyn[i][v] + (4 - c) * dyn[i + 1][v]) / 4;
-					//event.message = Pm_Message(mm_cc, CC_dynamics[i], cc_value);
-					//buf.push_back(event);
+				cc_step = (cc_pos2 - cc_pos1) / CC_steps[ii];
+				// Linear interpolation
+				for (int c = 0; c < CC_steps[ii] * 2; c++) {
+					// Left cc steps
+					if (c < CC_steps[ii] / 2) {
+						if (i == 0) cc_lin[c] = dyn[i][v];
+						else cc_lin[c] = (floor(CC_steps[ii] * 0.5 - c) * dyn[i-1][v] + floor(c + 1 + CC_steps[ii] / 2) * dyn[i][v]) / CC_steps[ii];
+					} 
+					// Mid cc steps
+					else if (c < CC_steps[ii] * 1.5) {
+						cc_lin[c] = (floor(CC_steps[ii] * 1.5 - c) * dyn[i][v] + floor(c - CC_steps[ii] / 2) * dyn[i + 1][v]) / CC_steps[ii];
+					}
+					// Right cc steps
+					else {
+						if (i == step22 - 2) cc_lin[c] = dyn[i + 1][v];
+						else cc_lin[c] = (floor(CC_steps[ii] * 2.5 - c) * dyn[i + 1][v] + floor(c - CC_steps[ii] * 1.5 + 1) * dyn[i + 2][v]) / CC_steps[ii];
+					}
+				}
+				if (!CC_dyn_ma[ii]) {
+					// Send linear CC
+					for (int c = 0; c < CC_steps[ii]; c++) {
+						AddCC((stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + (etime[i] - stime[i]) * 100 / m_pspeed*(double)c / (double)CC_steps[ii], CC_dyn[ii], cc_lin[c]);
+					}
+				}
+				else {
+					// First moving average
+					cc_ma[0] = 0;
+					for (int c = 0; c < CC_steps[ii]; c++) {
+						cc_ma[0] += cc_lin[c] / (double)CC_steps[ii];
+					}
+					// Extend moving average
+					for (int c = 1; c < CC_steps[ii]; c++) {
+						cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + CC_steps[ii] - 1] - cc_lin[c - 1]) / (double)CC_steps[ii];
+					}
+					// Send starting CC
+					if (i == 0) AddCC(timestamp0 - 1, CC_dyn[ii], dyn[i][v]);
+					// Send ma CC of first note
+					int hstep = CC_steps[ii] / 2;
+					for (int c = 0; c < hstep+1; c++) {
+						AddCC((stime[i] - stime[step1]) * 100 / m_pspeed + timestamp0 + (etime[i] - stime[i]) * 100 / m_pspeed*(double)(c + hstep) / (double)CC_steps[ii], CC_dyn[ii], cc_ma[c]);
+					}
+					// Send ma CC of second note
+					for (int c = hstep+1; c < CC_steps[ii]; c++) {
+						AddCC((stime[i+1] - stime[step1]) * 100 / m_pspeed + timestamp0 + (etime[i+1] - stime[i+1]) * 100 / m_pspeed*(double)(c - hstep - 1) / (double)CC_steps[ii], CC_dyn[ii], cc_ma[c]);
+					}
 				}
 			}
 		}

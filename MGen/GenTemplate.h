@@ -242,7 +242,9 @@ public:
 	vector<int> instr_nmax;
 	vector<int> instr_tmin;
 	vector<int> instr_tmax;
-	vector<int> CC_dynamics;
+	vector<int> CC_steps;
+	vector<int> CC_dyn_ma;
+	vector<int> CC_dyn;
 	vector<int> CC_retrigger;
 	vector<int> retrigger_freq;
 	vector<int> max_slur_count;

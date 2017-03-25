@@ -19,6 +19,8 @@ void CGenRS1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "max_tempo", &max_tempo);
 	CheckVar(sN, sV, "min_len", &min_len);
 	CheckVar(sN, sV, "max_len", &max_len);
+	CheckVar(sN, sV, "min_dyn", &min_dyn);
+	CheckVar(sN, sV, "max_dyn", &max_dyn);
 	CheckVar(sN, sV, "min_note", &min_note);
 	CheckVar(sN, sV, "max_note", &max_note);
 	CheckVar(sN, sV, "note_step", &note_step);
@@ -33,7 +35,7 @@ void CGenRS1::Generate()
 		if ((i > 0) && (len[i - 1][0] > 1) && (coff[i - 1][0] < len[i - 1][0] - 1)) {
 			// Repeat last note
 			note[i][0] = note[i - 1][0];
-			dyn[i][0] = dyn[i - 1][0];
+			//dyn[i][0] = dyn[i - 1][0];
 			len[i][0] = len[i - 1][0];
 			coff[i][0] = coff[i - 1][0] + 1;
 		}
@@ -54,7 +56,6 @@ void CGenRS1::Generate()
 			if (len[i][0] < min_len) len[i][0] = min_len;
 			if (i + len[i][0] > t_cnt - 1) len[i][0] = t_cnt - i;
 			coff[i][0] = 0;
-			dyn[i][0] = 50 + 60 * rand2() / RAND_MAX;
 		}
 		if (i == 0) {
 			tempo[i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
@@ -64,6 +65,7 @@ void CGenRS1::Generate()
 			if (tempo[i] > max_tempo) tempo[i] = 2 * max_tempo - tempo[i];
 			if (tempo[i] < min_tempo) tempo[i] = 2 * min_tempo - tempo[i];
 		}
+		dyn[i][0] = min_dyn + (max_dyn - min_dyn) * rand2() / RAND_MAX;
 		// Count additional variables
 		CountOff(i, i);
 		CountTime(i, i);
