@@ -71,6 +71,7 @@ public:
 	int y_start; // Position of lowest note
 
 protected:
+	vector< vector <unsigned char> > v_color; // Voice colors
 
 // Generated message map functions
 protected:

@@ -51,9 +51,26 @@ END_MESSAGE_MAP()
 
 CMGenView::CMGenView()
 {
-	// TODO: add construction code here
-	//m_ToolTip.Create(this);
-	//m_ToolTip.Activate(TRUE);
+	v_color = vector<vector<unsigned char>>(MAX_VOICE, vector<unsigned char>(3));
+	//Color(0, 100, 100, 100), // 0 S
+	//Color(0, 180, 100, 100), // 1 p
+	//Color(0, 255, 0, 0), // 2 t
+	//Color(0, 0, 255, 0), // 3 j
+	//Color(0, 120, 120, 255), // 4 o
+	//Color(0, 120, 120, 0), // 5 l
+	//Color(0, 255, 0, 255), // 6 c
+	//Color(0, 0, 255, 255), // 7 a
+	//Color(0, 0, 150, 150), // 8 r
+	//Color(0, 150, 0, 150), // 9 d
+	//Color(0, 0, 150, 0), // 10 g
+	//Color(0, 120, 0, 250), // 11 f
+	//Color(0, 250, 100, 160) // 12 m
+	v_color[0] = {   0,   0, 255 };
+	v_color[1] = { 255,   0, 255 };
+	v_color[2] = {   0, 255, 255 };
+	v_color[3] = {   0, 255,   0 };
+	v_color[4] = { 120, 120,   0 };
+	v_color[5] = {   0, 120, 120 };
 }
 
 CMGenView::~CMGenView()
@@ -269,7 +286,7 @@ void CMGenView::OnDraw(CDC* pDC)
 						else ncolor = pGen->color[i][v];
 					}
 					else {
-						ncolor = Color(alpha /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/);
+						ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 					}
 					SolidBrush brush(ncolor);
 					retrigger = 0;
