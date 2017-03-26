@@ -954,6 +954,7 @@ void CMainFrame::OnSpinPspeed()
 		pRibbonSpin->SetEditText(st);
 		GetActiveView()->Invalidate();
 		SaveSettings();
+		if (pGen != 0) pGen->m_pspeed = m_pspeed;
 	}
 }
 

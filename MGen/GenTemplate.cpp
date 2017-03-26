@@ -315,6 +315,17 @@ void CGenTemplate::LoadNote(CString * sName, CString * sValue, char* sSearch, in
 	}
 }
 
+CString CGenTemplate::FormatTime(int sec)
+{
+	CString st;
+	int hours = sec / 3600;
+	int minutes = (sec - hours*3600) / 60;
+	int seconds = sec % 60;
+	if (hours > 0) st.Format("%02d:%02d:%02d", hours, minutes, seconds);
+	else st.Format("%02d:%02d", minutes, seconds);
+	return st;
+}
+
 void CGenTemplate::copy_file(CString sName, CString dName) {
 	std::ifstream  src(sName, std::ios::binary);
 	std::ofstream  dst(dName, std::ios::binary);

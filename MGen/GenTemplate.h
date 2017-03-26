@@ -96,6 +96,7 @@ public:
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	static void LoadVarInstr(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	static void LoadNote(CString * sName, CString * sValue, char * sSearch, int * Dest);
+	static CString FormatTime(int sec);
 	static bool dirExists(CString dirName_in);
 	static bool fileExists(CString dirName_in);
   static bool nodeExists(CString dirName_in);
