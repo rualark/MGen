@@ -260,38 +260,38 @@ void CMGenView::OnDraw(CDC* pDC)
 			int retrigger;
 			Color ncolor;
 			int alpha;
-			for (int i = step1; i < step2; i++) if ((pGen->pause[i][0] == 0) && (pGen->note[i][0] > 0)) {
-				if (i == step1) if (pGen->coff[i][0] > 0) i = i - pGen->coff[i][0];
-				alpha = 40 + (80 * pGen->dyn[i][0] / 127);
-				if (pGen->color[i][0].GetValue() != 0) {
-					if (pGen->color[i][0].GetAlpha() == 0) ncolor = Color(alpha, pGen->color[i][0].GetR(), pGen->color[i][0].GetG(), pGen->color[i][0].GetB());
-					else ncolor = pGen->color[i][0];
-				}
-				else {
-					ncolor = Color(alpha /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/);
-				}
-				SolidBrush brush(ncolor);
-				retrigger = 0;
-				if (i+pGen->noff[i][0] < pGen->t_generated) 
-					if (pGen->note[i+pGen->noff[i][0]][0] == pGen->note[i][0]) retrigger = 1;
-				g.FillRectangle(&brush, X_FIELD + i * nwidth,
-					y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
-					pGen->len[i][0]*nwidth - retrigger, nheight);
-				// Highlight selected note
-				if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][0]) && (mouse_voice == 0)) {
+			for (int v = 0; v < pGen->v_cnt; v++) {
+				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
+					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
+					alpha = 40 + (80 * pGen->dyn[i][v] / 127);
+					if (pGen->color[i][v].GetValue() != 0) {
+						if (pGen->color[i][v].GetAlpha() == 0) ncolor = Color(alpha, pGen->color[i][v].GetR(), pGen->color[i][v].GetG(), pGen->color[i][v].GetB());
+						else ncolor = pGen->color[i][v];
+					}
+					else {
+						ncolor = Color(alpha /*A*/, 0 /*R*/, 0 /*G*/, 255 /*B*/);
+					}
+					SolidBrush brush(ncolor);
+					retrigger = 0;
+					if (i + pGen->noff[i][v] < pGen->t_generated)
+						if (pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v]) retrigger = 1;
 					g.FillRectangle(&brush, X_FIELD + i * nwidth,
-						y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
-						pGen->len[i][0] * nwidth - retrigger, nheight);
+						y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+						pGen->len[i][v] * nwidth - retrigger, nheight);
+					// Highlight selected note
+					if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == 0)) {
+						g.FillRectangle(&brush, X_FIELD + i * nwidth,
+							y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+							pGen->len[i][v] * nwidth - retrigger, nheight);
+					}
+					// Show comment
+					if (pGen->comment[i][v] != "")
+						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
+							y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+							pGen->len[i][v] * nwidth - retrigger, nheight);
+					if (pGen->noff[i][v] == 0) break;
+					i = i + pGen->noff[i][v] - 1;
 				}
-				// Show comment
-				if (pGen->comment[i][0] != "")
-					g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
-						y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight,
-						pGen->len[i][0] * nwidth - retrigger, nheight);
-				//g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][0] - ng_min2) * nheight,
-						//X_FIELD + i * nwidth, y_start - (pGen->note[i][0] - ng_min2 + 1) * nheight);
-				if (pGen->noff[i][0] == 0) break;
-				i = i + pGen->noff[i][0] - 1;
 			}
 			mouse_voice_old = mouse_voice;
 			// Show tempo
@@ -339,27 +339,6 @@ void CMGenView::OnDraw(CDC* pDC)
 		st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
 		mf->WriteLog(2, st);
 	}
-
-	//CRect rc;
-	//GetClientRect(&rc);
-	//rc.SetRect(0, 0, 200000, 1000);
-	//pDC->FillSolidRect(ClipBox, RGB(255, 0, 0));
-	//ClipBox.InflateRect(-1, -1);
-	//pDC->FillSolidRect(ClipBox, RGB(0, 0, 255));
-
-	/*
-	Graphics graphics(pDC->m_hDC);
-	Pen blue(Color(255, 0, 0, 255));
-	graphics.DrawLine(&blue, 10, 10, 50, 50);
-	*/
-	/*
-	CRect rc(
-	X_FIELD + i * nwidth,
-	ClientRect.bottom - Y_FOOTER - (pGen->note[i][0]-ng_min2) * nheight,
-	X_FIELD + (i+1) * nwidth - 1,
-	ClientRect.bottom - Y_FOOTER - (pGen->note[i][0] - ng_min2 + 1) * nheight - 1);
-	//dc.FillSolidRect(rc, RGB(255, 0, 0));
-	*/
 }
 
 

@@ -854,10 +854,23 @@ void CGenTemplate::CountTime(int step1, int step2)
 	}
 }
 
+void CGenTemplate::CopyVoice(int v1, int v2, int step1, int step2, int interval)
+{
+	for (int i = step1; i <= step2; i++) {
+		pause[i][v2] = pause[i][v1];
+		if (!pause[i][v1]) note[i][v2] = note[i][v1] + interval;
+		len[i][v2] = len[i][v1];
+		dyn[i][v2] = dyn[i][v1];
+		coff[i][v2] = coff[i][v1];
+		poff[i][v2] = poff[i][v1];
+		noff[i][v2] = noff[i][v1];
+	}
+}
+
 void CGenTemplate::UpdateNoteMinMax(int step1, int step2)
 {
 	for (int i = step1; i <= step2; i++) {
-		for (int v = 0; v < v_cnt; v++) if (pause[i][v] == 0) {
+		for (int v = 0; v < v_cnt; v++) if ((pause[i][v] == 0) && (note[i][v] != 0)) {
 			if (ng_min > note[i][v]) ng_min = note[i][v];
 			if (ng_max < note[i][v]) ng_max = note[i][v];
 			if (ngv_min[v] > note[i][v]) ngv_min[v] = note[i][v];
@@ -1200,20 +1213,22 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		for (int x = 0; x < ncount; x++) {
 			midi_current_step = i;
 			ei = i + len[i][v] - 1;
-			// Note ON
-			stimestamp = stime[i] * 100 / m_pspeed + dstime[i];
-			AddNoteOn(stimestamp, note[i][v] + play_transpose[v], dyn[i][v]);
-			ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
-			// Note OFF
-			etimestamp = etime[ei] * 100 / m_pspeed + detime[ei];
-			AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
-			// Send slur
-			if (artic[i][v] == ARTIC_SLUR) {
-				AddTransitionKs(i, stimestamp, slur_ks[ii]);
-			}
-			// Send retrigger
-			if ((instr[v] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_RETRIGGER)) {
-				AddTransitionCC(i, stimestamp, CC_retrigger[ii], 100, 0);
+			if (!pause[i][v]) {
+				// Note ON
+				stimestamp = stime[i] * 100 / m_pspeed + dstime[i];
+				AddNoteOn(stimestamp, note[i][v] + play_transpose[v], dyn[i][v]);
+				ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
+				// Note OFF
+				etimestamp = etime[ei] * 100 / m_pspeed + detime[ei];
+				AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
+				// Send slur
+				if (artic[i][v] == ARTIC_SLUR) {
+					AddTransitionKs(i, stimestamp, slur_ks[ii]);
+				}
+				// Send retrigger
+				if ((instr[v] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_RETRIGGER)) {
+					AddTransitionCC(i, stimestamp, CC_retrigger[ii], 100, 0);
+				}
 			}
 			// Go to next note
 			if (noff[i][v] == 0) break;

@@ -21,6 +21,7 @@ void CGenRS1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "max_len", &max_len);
 	CheckVar(sN, sV, "min_dyn", &min_dyn);
 	CheckVar(sN, sV, "max_dyn", &max_dyn);
+	CheckVar(sN, sV, "dyn_step", &dyn_step);
 	CheckVar(sN, sV, "min_note", &min_note);
 	CheckVar(sN, sV, "max_note", &max_note);
 	CheckVar(sN, sV, "note_step", &note_step);
@@ -49,10 +50,10 @@ void CGenRS1::Generate()
 			else {
 				pause[i][0] = 0;
 				if (i == 0) {
-					note[i][0] = 60 + (max_note - min_note) * rand2() / RAND_MAX;
+					note[i][0] = min_note + (max_note - min_note) * rand2() / RAND_MAX;
 				}
 				else {
-					if (pause[i-1][0]) note[i][0] = 60 + (max_note - min_note) * rand2() / RAND_MAX;
+					if (pause[i-1][0]) note[i][0] = min_note + (max_note - min_note) * rand2() / RAND_MAX;
 					else {
 						note[i][0] = note[i - 1][0] + randbw(-note_step, note_step);
 						// Choose again if same note
@@ -87,7 +88,13 @@ void CGenRS1::Generate()
 			if (tempo[i] > max_tempo) tempo[i] = 2 * max_tempo - tempo[i];
 			if (tempo[i] < min_tempo) tempo[i] = 2 * min_tempo - tempo[i];
 		}
-		dyn[i][0] = min_dyn + (max_dyn - min_dyn) * rand2() / RAND_MAX;
+		if (i == 0) dyn[i][0] = min_dyn + (max_dyn - min_dyn) * rand2() / RAND_MAX;
+		else {
+			dyn[i][0] = dyn[i - 1][0] + randbw(-1.5*dyn_step, dyn_step);
+			// Check limits
+			if (dyn[i][0] > max_dyn) dyn[i][0] = max_dyn;
+			if (dyn[i][0] < min_dyn) dyn[i][0] = min_dyn;
+		}
 		// Count additional variables
 		CountOff(i, i);
 		CountTime(i, i);
@@ -118,6 +125,11 @@ void CGenRS1::Generate()
 				if (tg_max < tempo[x]) tg_max = tempo[x];
 			}
 			delete tempo2;
+			// Copy voice to other voices
+			if (v_cnt > 1) {
+				for (int x = 1; x < v_cnt; x++) CopyVoice(0, x, t_sent_old, t_generated - 1, -12);
+				UpdateNoteMinMax(t_sent_old, t_generated - 1);
+			}
 			// Send
 			if (i == t_cnt - 1) t_sent = t_generated;
 			else t_sent = t_generated-3;
