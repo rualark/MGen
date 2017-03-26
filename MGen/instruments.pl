@@ -42,7 +42,7 @@ slur_ks = 44 # Keyswitch to send to create slur
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
-CC_steps = 5 # Number of CC steps in one note step (please use only odd numbers)
+CC_steps = 9 # Number of CC steps in one note step (please use only odd numbers)
 
 CC_vib_intens = 1
 CC_vib_speed = 14

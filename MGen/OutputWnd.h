@@ -31,6 +31,10 @@ protected:
 	afx_msg void OnViewOutput();
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnPopupShow();
+	afx_msg void OnUpdateEditSaveline(CCmdUI *pCmdUI);
+	afx_msg void OnEditSaveline();
 };
 
 class COutputWnd : public CDockablePane

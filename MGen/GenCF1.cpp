@@ -339,7 +339,7 @@ void CGenCF1::Generate()
 					tempo[x] = 200;
 					coff[x][0] = 0;
 					if (x < step + c_len / 2)	dyn[x][0] = 60 + 40*(x - step)/c_len + 20 * rand2() / RAND_MAX;
-					else dyn[x][0] = 70 + 40*(step + c_len - x) / c_len + 10 * rand2() / RAND_MAX;
+					else dyn[x][0] = 60 + 40 * (step + c_len - x) / c_len + 20 * rand2() / RAND_MAX;
 					if (x == 0) {
 						tempo[x] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
 					}

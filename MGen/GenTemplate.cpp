@@ -1274,8 +1274,8 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
-	st->Format("Pm_Write steps %d/%d - %d/%d [to future %d to %d ms] (in %d ms) playback is at %d ms", 
-		step21, step1, step22, step2, midi_sent_t - timestamp_current, midi_sent_t2 - timestamp_current,
+	st->Format("Pm_Write %d (%d postponed) events: steps %d/%d - %d/%d [to future %d to %d ms] (in %d ms) playback is at %d ms", 
+		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, midi_sent_t - timestamp_current, midi_sent_t2 - timestamp_current,
 		time_stop - time_start, timestamp_current-midi_start_time);
 	WriteLog(4, st);
 	// Save last sent position

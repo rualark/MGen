@@ -376,10 +376,8 @@ IDR_OUTPUT_POPUP MENU
 BEGIN
     POPUP "Popup"
     BEGIN
-        MENUITEM "&Copy",                       ID_EDIT_COPY
-        MENUITEM "&Clear",                      ID_EDIT_CLEAR
-        MENUITEM SEPARATOR
-        MENUITEM "&Hide",                       ID_VIEW_OUTPUTWND
+        MENUITEM "Show full text",              ID_POPUP_SHOW
+        MENUITEM "Save this &line to mgen.log", ID_EDIT_SAVELINE
     END
 END
 
@@ -588,9 +586,8 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_EDIT_CLEAR           "Erase the selection\nErase"
     ID_EDIT_CLEAR_ALL       "Erase everything\nErase Al"
-    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_COPY            "Save this line to mgen.log\nSave line"
     ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
     ID_EDIT_FIND            "Find the specified text\nFind"
     ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
@@ -637,7 +634,7 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_VIEW_OUTPUTWND       "Show or hide console"
+    ID_VIEW_OUTPUTWND       "Save all lines to mgen.log\nSave all lines"
     IDS_OUTPUT_WND          "Messages"
 END
 

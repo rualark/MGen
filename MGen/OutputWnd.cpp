@@ -131,6 +131,9 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
 	ON_WM_WINDOWPOSCHANGING()
+	ON_COMMAND(ID_POPUP_SHOW, &COutputList::OnPopupShow)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_SAVELINE, &COutputList::OnUpdateEditSaveline)
+	ON_COMMAND(ID_EDIT_SAVELINE, &COutputList::OnEditSaveline)
 END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList message handlers
@@ -142,14 +145,14 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 	CMenu* pSumMenu = menu.GetSubMenu(0);
 
-	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CMDIFrameWndEx)))
+	if (AfxGetMainWnd()->IsKindOf(RUNTIME_CLASS(CFrameWndEx)))
 	{
 		CMFCPopupMenu* pPopupMenu = new CMFCPopupMenu;
 
 		if (!pPopupMenu->Create(this, point.x, point.y, (HMENU)pSumMenu->m_hMenu, FALSE, TRUE))
 			return;
 
-		((CMDIFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
+		((CFrameWndEx*)AfxGetMainWnd())->OnShowPopupMenu(pPopupMenu);
 		UpdateDialogControls(this, FALSE);
 	}
 
@@ -158,7 +161,6 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 void COutputList::OnEditCopy()
 {
-	MessageBox(_T("Copy output"));
 }
 
 void COutputList::OnEditClear()
@@ -169,7 +171,7 @@ void COutputList::OnEditClear()
 void COutputList::OnViewOutput()
 {
 	CDockablePane* pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
-	CMDIFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
+	CFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CFrameWndEx, GetTopLevelFrame());
 
 	if (pMainFrame != NULL && pParentBar != NULL)
 	{
@@ -178,4 +180,25 @@ void COutputList::OnViewOutput()
 		pMainFrame->RecalcLayout();
 
 	}
+}
+
+void COutputList::OnPopupShow()
+{
+	CString st;
+	GetText(GetCurSel(), st);
+	MessageBox(st);
+}
+
+
+void COutputList::OnUpdateEditSaveline(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable();
+}
+
+
+void COutputList::OnEditSaveline()
+{
+	CString st;
+	GetText(GetCurSel(), st);
+	CGenTemplate::AppendLineToFile("mgen.log", st + "\n");
 }
