@@ -80,8 +80,8 @@ void CGenTemplate::InitVectors()
 	tempo = vector<double>(t_allocated);
 	stime = vector<double>(t_allocated);
 	etime = vector<double>(t_allocated);
-	dstime = vector<double>(t_allocated);
-	detime = vector<double>(t_allocated);
+	dstime = vector<vector<double>>(t_allocated, vector<double>(v_cnt));
+	detime = vector<vector<double>>(t_allocated, vector<double>(v_cnt));
 	// Init ngv
 	for (int v = 0; v < MAX_VOICE; v++) {
 		ngv_min[v] = 1000;
@@ -130,6 +130,8 @@ void CGenTemplate::ResizeVectors(int size)
 		artic[i].resize(v_cnt);
 		lengroup[i].resize(v_cnt);
 		comment[i].resize(v_cnt);
+		dstime[i].resize(v_cnt);
+		detime[i].resize(v_cnt);
 		color[i].resize(v_cnt, Color(0));
 	}
 	// Count time
@@ -905,6 +907,10 @@ void CGenTemplate::Adapt(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}
+		// Set vel to dyn
+		for (int i = step1; i <= step2; i++) {
+			vel[i][v] = dyn[i][v];
+		}
 		// Check if notes are in instrument range
 		if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
 			if (ngv_min[v] < instr_nmin[ii]) {
@@ -956,22 +962,22 @@ void CGenTemplate::Adapt(int step1, int step2)
 					// Apply lengroups
 					if (lengroup[i][v] > 1) {
 						if (lengroup_edt1[ii] < 0) {
-							detime[ei] = -min(-lengroup_edt1[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
+							detime[ei][v] = -min(-lengroup_edt1[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
 							artic[i][v] = ARTIC_NONLEGATO;
 						}
 						else {
-							if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei] = -10;
-							detime[ei] = lengroup_edt1[ii];
+							if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
+							detime[ei][v] = lengroup_edt1[ii];
 							artic[i][v] = ARTIC_SLUR;
 						}
 					}
 					if (lengroup[i][v] == 1) {
 						if (lengroup_edt2[ii] < 0) {
-							detime[ei] = -min(-lengroup_edt2[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
+							detime[ei][v] = -min(-lengroup_edt2[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
 							artic[i][v] = ARTIC_NONLEGATO;
 						}
 						else {
-							detime[ei] = lengroup_edt2[ii];
+							detime[ei][v] = lengroup_edt2[ii];
 							artic[i][v] = ARTIC_SLUR;
 						}
 					}
@@ -988,26 +994,26 @@ void CGenTemplate::Adapt(int step1, int step2)
 				// Retrigger notes
 				if ((i > 0) && (note[pi][v] == note[i][v])) {
 					artic[i][v] = ARTIC_RETRIGGER;
-					detime[pei] = -1;
-					dstime[i] = 0;
+					detime[pei][v] = -1;
+					dstime[i][v] = 0;
 					// Replace retrigger with non-legato
 					if ((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) {
-						detime[pei] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
+						detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
 						artic[i][v] = ARTIC_NONLEGATO;
 					}
 				}
 				// Randomly make some notes non-legato if they have enough length
-				if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei] - dstime[pi] > nonlegato_minlen[ii]) &&
+				if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > nonlegato_minlen[ii]) &&
 					(randbw(0, 100) < nonlegato_freq[ii])) {
-					detime[pei] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
-					dstime[i] = 0;
+					detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
+					dstime[i][v] = 0;
 					artic[i][v] = ARTIC_NONLEGATO;
 				}
 				// Advance start for legato (not longer than previous note length)
-				if ((i > 0) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) && (detime[i - 1] >= 0) && (!pause[pi][v])) {
-					dstime[i] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
-						detime[i - 1] - dstime[pi] - 1);
-					detime[i - 1] = 0.9 * dstime[i];
+				if ((i > 0) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) && (detime[i - 1][v] >= 0) && (!pause[pi][v])) {
+					dstime[i][v] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+						detime[i - 1][v] - dstime[pi][v] - 1);
+					detime[i - 1][v] = 0.9 * dstime[i][v];
 				}
 				// Check if note is too short
 				ndur = (etime[ei] - stime[i]) * 100 / m_pspeed;
@@ -1021,12 +1027,27 @@ void CGenTemplate::Adapt(int step1, int step2)
 					}
 				}
 				// Randomize note starts
-				if (rand_start[ii] > 0) dstime[i] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
+				if (rand_start[ii] > 0) dstime[i][v] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
 				// Randomize note ends
-				if (rand_end[ii] > 0) detime[ei] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_end[ii] / 100;
+				if (rand_end[ii] > 0) detime[ei][v] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_end[ii] / 100;
 				// Check if overlapping occured
-				if ((i > 0) && (note[pi][v] == note[i][v]) && ((stime[i] - etime[pei]) + dstime[i] - detime[pei] < 0)) 
-					dstime[i] = (etime[pei] - stime[i]) + detime[pei] + 1;
+				if (i > 0) {
+					int lpi = pi; // Local previous id
+					// Cycle through all notes backwards
+					while (true) {
+						if (note[lpi][v] == note[i][v]) {
+							int lpei = lpi + len[lpi][v] - 1;
+							if ((stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v] < 1) {
+								//dstime[i][v] = (etime[lpei] - stime[i]) + detime[lpei] + 1;
+								// Move ending of previous note to the left
+								detime[lpei][v] = (stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - 1;
+							}
+							break;
+						}
+						if (poff[lpi][v] == 0) break;
+						lpi = lpi - poff[lpi][v];
+					}
+				}
 			} // !pause
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
@@ -1118,8 +1139,8 @@ void CGenTemplate::AddTransitionKs(int i, int stimestamp, int ks)
 	int v = midi_voice;
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
-	AddNoteOn(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i] - dstime[pi]) / 10, ks, 10);
-	AddNoteOff(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i]) / 10, ks, 0);
+	AddNoteOn(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10, ks, 10);
+	AddNoteOff(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10, ks, 0);
 }
 
 void CGenTemplate::AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2)
@@ -1127,8 +1148,8 @@ void CGenTemplate::AddTransitionCC(int i, int stimestamp, int CC, int value1, in
 	int v = midi_voice;
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
-	AddCC(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i] - dstime[pi]) / 10, CC, value1);
-	AddCC(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i]) / 10, CC, value2);
+	AddCC(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10, CC, value1);
+	AddCC(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10, CC, value2);
 }
 
 void CGenTemplate::SendMIDI(int step1, int step2)
@@ -1185,12 +1206,14 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		midi_buf_next.clear();
 		WriteLog(4, new CString("Postponed notes sent"));
 	}
+	midi_buf_lim = 0;
 	for (int v = 0; v < v_cnt; v++) {
 		// Initialize voice
 		PmEvent event;
 		int ei;
 		int ndur;
 		int ncount = 0;
+		int last_i = step1; // first step of last full note
 		int ii = instr[v];
 		midi_channel = instr_channel[ii];
 		// Move to note start
@@ -1203,11 +1226,13 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		for (i = step21; i < step22; i++) {
 			if (i + len[i][v] > step22) break;
 			ncount++;
+			last_i = i;
 			// Set new buffer limit to beginning of last note
-			midi_buf_lim = midi_start_time + stime[i] * 100 / m_pspeed;
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}
+		// Set midi_buf_lim only for first voice. Other voices use same midi_buf_lim
+		if (midi_buf_lim == 0) midi_buf_lim = midi_start_time + stime[last_i] * 100 / m_pspeed;
 		// Send notes
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
@@ -1215,11 +1240,11 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 			ei = i + len[i][v] - 1;
 			if (!pause[i][v]) {
 				// Note ON
-				stimestamp = stime[i] * 100 / m_pspeed + dstime[i];
-				AddNoteOn(stimestamp, note[i][v] + play_transpose[v], dyn[i][v]);
-				ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei] - dstime[i];
+				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
+				AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
+				ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 				// Note OFF
-				etimestamp = etime[ei] * 100 / m_pspeed + detime[ei];
+				etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
 				AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
 				// Send slur
 				if (artic[i][v] == ARTIC_SLUR) {

@@ -296,7 +296,7 @@ void CMGenView::OnDraw(CDC* pDC)
 						y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
 						pGen->len[i][v] * nwidth - retrigger, nheight);
 					// Highlight selected note
-					if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == 0)) {
+					if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
 						g.FillRectangle(&brush, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - retrigger, nheight);

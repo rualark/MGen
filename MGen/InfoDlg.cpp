@@ -61,7 +61,7 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Tempo: %.1f bpm\nStep start time: %.4f s (%.2f ms long)\nPause indicator: %d\nComment: %s\n", pGen->tempo[ms], pGen->stime[ms] / pGen->m_pspeed / 10,
 			(pGen->etime[ms] - pGen->stime[ms]) * 100 / pGen->m_pspeed, pGen->pause[ms][mv], pGen->comment[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Playback step start delta: %.1f ms\nPlayback step ending delta: %.1f ms\n", pGen->dstime[ms], pGen->detime[ms]);
+		st.Format("Playback step start delta: %.1f ms\nPlayback step ending delta: %.1f ms\n", pGen->dstime[ms][mv], pGen->detime[ms][mv]);
 		m_info.AddText(st, RGB(0, 170, 0), 0);
 		if (pGen->artic[ms][mv] == ARTIC_LEGATO) st2 = "Legato";
 		if (pGen->artic[ms][mv] == ARTIC_EXACT) st2 = "Exact";
@@ -69,7 +69,7 @@ BOOL CInfoDlg::OnInitDialog()
 		if (pGen->artic[ms][mv] == ARTIC_NONLEGATO) st2 = "Nonlegato";
 		if (pGen->artic[ms][mv] == ARTIC_STACCATO) st2 = "Staccato";
 		if (pGen->artic[ms][mv] == ARTIC_RETRIGGER) st2 = "Retrigger";
-		st.Format("Velocity: %d\nArticulation: %s\nLengroup: %d\n", pGen->dstime[ms], st2, pGen->lengroup[ms][mv]);
+		st.Format("Velocity: %d\nArticulation: %s\nLengroup: %d\n", pGen->vel[ms][mv], st2, pGen->lengroup[ms][mv]);
 		m_info.AddText(st, RGB(170, 0, 0), 0);
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);
