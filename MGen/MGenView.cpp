@@ -260,7 +260,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			int retrigger;
 			Color ncolor;
 			int alpha;
-			for (int i = step1; i < step2; i++) if (pGen->pause[i][0] == 0) {
+			for (int i = step1; i < step2; i++) if ((pGen->pause[i][0] == 0) && (pGen->note[i][0] > 0)) {
 				if (i == step1) if (pGen->coff[i][0] > 0) i = i - pGen->coff[i][0];
 				alpha = 40 + (80 * pGen->dyn[i][0] / 127);
 				if (pGen->color[i][0].GetValue() != 0) {
@@ -452,7 +452,6 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 	CGenTemplate *pGen = mf->pGen;
-	int mouse_note;
 	if ((pGen != 0) && (nwidth > 0) && (nheight > 0)) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
 			mf->WriteLog(2, "OnMouseMove mutex timed out: mouse not processed");
@@ -504,10 +503,18 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 				//mf->WriteLog(2, st);
 			}
 		}
-		CString st;
+		CString st, st2;
 		if (mouse_step > -1) {
-			if (mouse_voice > -1) st.Format("Step %d, time %s, voice %d", mouse_step, CGenTemplate::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10), mouse_voice);
-			else st.Format("Step %d, time %s", mouse_step, CGenTemplate::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10));
+			st2.Format("Step %d, time %s. ", mouse_step, CGenTemplate::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10));
+			st += st2;
+		}
+		if (mouse_voice > -1) {
+			st2.Format("Voice %d. ", mouse_voice);
+			st += st2;
+		}
+		if (mouse_note > -1) {
+			st2.Format("Note %s (%d). ", CGenTemplate::GetNoteName(mouse_note), mouse_note);
+			st += st2;
 		}
 		mf->m_wndStatusBar.GetElement(0)->SetText(st);
 		mf->m_wndStatusBar.Invalidate(1);

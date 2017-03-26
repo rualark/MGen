@@ -24,6 +24,7 @@ void CGenRS1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "min_note", &min_note);
 	CheckVar(sN, sV, "max_note", &max_note);
 	CheckVar(sN, sV, "note_step", &note_step);
+	CheckVar(sN, sV, "pause_freq", &pause_freq);
 	CheckVar(sN, sV, "sleep_ms", &sleep_ms);
 	//LoadVar(st2, st3, "some_var", &some_var);
 }
@@ -34,23 +35,33 @@ void CGenRS1::Generate()
 		if (i >= t_allocated) ResizeVectors(t_allocated * 2);
 		if ((i > 0) && (len[i - 1][0] > 1) && (coff[i - 1][0] < len[i - 1][0] - 1)) {
 			// Repeat last note
+			pause[i][0] = pause[i - 1][0];
 			note[i][0] = note[i - 1][0];
-			//dyn[i][0] = dyn[i - 1][0];
 			len[i][0] = len[i - 1][0];
 			coff[i][0] = coff[i - 1][0] + 1;
 		}
 		else {
 			// Create new note
-			if (i == 0) {
-				note[i][0] = 60 + (max_note - min_note) * rand2() / RAND_MAX;
+			if (randbw(0, 100) < pause_freq) {
+				pause[i][0] = 1;
+				note[i][0] = 0;
 			}
 			else {
-				note[i][0] = note[i - 1][0] + randbw(-note_step, note_step);
-				// Choose again if same note
-				if (note[i][0] == note[i-1][0]) note[i][0] = note[i - 1][0] + randbw(-note_step, note_step);
-				// Check limits
-				if (note[i][0] > max_note) note[i][0] = 2 * max_note - note[i][0];
-				if (note[i][0] < min_note) note[i][0] = 2 * min_note - note[i][0];
+				pause[i][0] = 0;
+				if (i == 0) {
+					note[i][0] = 60 + (max_note - min_note) * rand2() / RAND_MAX;
+				}
+				else {
+					if (pause[i-1][0]) note[i][0] = 60 + (max_note - min_note) * rand2() / RAND_MAX;
+					else {
+						note[i][0] = note[i - 1][0] + randbw(-note_step, note_step);
+						// Choose again if same note
+						if (note[i][0] == note[i - 1][0]) note[i][0] = note[i - 1][0] + randbw(-note_step, note_step);
+						// Check limits
+						if (note[i][0] > max_note) note[i][0] = 2 * max_note - note[i][0];
+						if (note[i][0] < min_note) note[i][0] = 2 * min_note - note[i][0];
+					}
+				}
 			}
 			len[i][0] = min_len + (max_len-min_len) * rand2() / RAND_MAX;
 			if (len[i][0] < min_len) len[i][0] = min_len;
@@ -69,7 +80,6 @@ void CGenRS1::Generate()
 		// Count additional variables
 		CountOff(i, i);
 		CountTime(i, i);
-		pause[i][0] = 0;
 		t_generated = i + 1;
 		UpdateNoteMinMax(i, i);
 		UpdateTempoMinMax(i, i);

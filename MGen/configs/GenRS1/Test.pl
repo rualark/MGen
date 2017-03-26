@@ -1,4 +1,5 @@
 # This config is for testing new combinations of parameters
+v_cnt = 1 # Number of voices. In this algorithm all voices will get notes
 t_cnt = 400 # Number of steps to generate
 min_tempo = 160 # Minimum tempo
 max_tempo = 200 # Maximum tempo
@@ -10,4 +11,5 @@ note_step = 3 # Note step for random chain algorithm
 sleep_ms = 3 # Artificial pause in ms after generating each step
 min_dyn = 10 # Minimum dynamics
 max_dyn = 120 # Maximum dynamics
-Instruments = Violin
+pause_freq = 10 # Percent of notes that will be replaced with pauses
+Instruments = Violin # Instruments separated with comma

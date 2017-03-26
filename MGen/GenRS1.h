@@ -18,5 +18,6 @@ public:
 	int note_step = 3;
 	int min_dyn = 60;
 	int max_dyn = 110;
+	int pause_freq = 10;
 };
 
