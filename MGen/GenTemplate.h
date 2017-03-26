@@ -267,6 +267,7 @@ public:
 	vector<int> lengroup_edt1;
 	vector<int> lengroup_edt2;
 	vector<double> rand_start;
+	vector<double> rand_end;
 
   // Random generator
 	ub4 randrsl[256], randcnt; // external results

@@ -21,6 +21,7 @@ lengroup4 = 30 # Percent of grouping notes into groups of 4
 lengroup_edt1 = 70 # delta to alter note ending time of all notes in group except for the last (ms)
 lengroup_edt2 = -100 # delta to alter note ending time of last note in group (ms)
 rand_start = 8 # Randomize note starts not greater than percent of note length 
+rand_end = 8 # Randomize note end not greater than percent of note length 
 
 Instrument = Violin
 Channel = 1 # MIDI channel

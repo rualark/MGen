@@ -50,6 +50,7 @@ CGenTemplate::CGenTemplate()
 	lengroup_edt1.resize(MAX_INSTR);
 	lengroup_edt2.resize(MAX_INSTR);
 	rand_start.resize(MAX_INSTR);
+	rand_end.resize(MAX_INSTR);
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;
@@ -249,6 +250,7 @@ void CGenTemplate::LoadInstruments()
 				CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
 				CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
 				CheckVar(&st2, &st3, "rand_start", &rand_start[i]);
+				CheckVar(&st2, &st3, "rand_end", &rand_end[i]);
 				//CGenTemplate::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		}
@@ -996,6 +998,8 @@ void CGenTemplate::Adapt(int step1, int step2)
 				}
 				// Randomize note starts
 				if (rand_start[ii] > 0) dstime[i] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
+				// Randomize note ends
+				if (rand_end[ii] > 0) detime[ei] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_end[ii] / 100;
 				// Check if overlapping occured
 				if ((i > 0) && (note[pi][v] == note[i][v]) && ((stime[i] - etime[pei]) + dstime[i] - detime[pei] < 0)) 
 					dstime[i] = (etime[pei] - stime[i]) + detime[pei] + 1;
