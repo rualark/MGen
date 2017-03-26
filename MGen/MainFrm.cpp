@@ -952,9 +952,9 @@ void CMainFrame::OnSpinPspeed()
 		if (m_pspeed > MAX_PSPEED) m_pspeed = MAX_HZOOM;
 		st.Format("%d", m_pspeed);
 		pRibbonSpin->SetEditText(st);
+		if (pGen != 0) pGen->m_pspeed = m_pspeed;
 		GetActiveView()->Invalidate();
 		SaveSettings();
-		if (pGen != 0) pGen->m_pspeed = m_pspeed;
 	}
 }
 
