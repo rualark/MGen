@@ -448,6 +448,7 @@ void CMainFrame::OnButtonGen()
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_algo_insts = AlgInsts[m_algo];
 		pGen->m_config = m_config;
+		pGen->m_pspeed = m_pspeed;
 		// Initialize variables
 		pGen->InitRandom();
 		pGen->LoadInstruments();
@@ -770,9 +771,11 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 				//st.Format("Chunk received up to %d", pGen->t_sent);
 				//WriteLog(0, st);
 				pGen->m_pspeed = m_pspeed;
+				// If generation finished set last run
+				if (m_state_gen == 2) pGen->midi_last_run = 1;
 				pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
 			}
-			if ((pGen->t_sent == pGen->midi_sent) && (m_state_gen == 2)) {
+			if ((pGen->buf_underrun) || ((pGen->t_sent == pGen->midi_sent) && (m_state_gen == 2))) {
 				::KillTimer(m_hWnd, TIMER2);
 				m_state_play = 2;
 				//GetActiveView()->Invalidate();
@@ -871,6 +874,8 @@ void CMainFrame::StartPlay(int from)
 	m_state_play = 1;
 	// Start timer
 	pGen->m_pspeed = m_pspeed;
+	// If generation finished set last run
+	if (m_state_gen == 2) pGen->midi_last_run = 1;
 	pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
 	SetTimer(TIMER1, m_view_timer, NULL);
 	SetTimer(TIMER2, 1000, NULL);
@@ -943,6 +948,11 @@ void CMainFrame::OnSpinPspeed()
 	CString st = pRibbonSpin->GetEditText();
 	if (m_pspeed != atoi(st)) {
 		m_pspeed = atoi(st);
+		if (m_pspeed < MIN_PSPEED) m_pspeed = MIN_HZOOM;
+		if (m_pspeed > MAX_PSPEED) m_pspeed = MAX_HZOOM;
+		st.Format("%d", m_pspeed);
+		pRibbonSpin->SetEditText(st);
+		GetActiveView()->Invalidate();
 		SaveSettings();
 	}
 }

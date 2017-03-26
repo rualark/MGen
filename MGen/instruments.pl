@@ -27,7 +27,7 @@ Channel = 1 # MIDI channel
 Type = 1 # Instrument type
 n_min = G3 # Lowest note
 n_max = F7 # Highest note
-t_min = 220 # Shortest note in ms
+t_min = 160 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 1 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap
@@ -42,7 +42,7 @@ slur_ks = 44 # Keyswitch to send to create slur
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
-CC_steps = 9 # Number of CC steps in one note step (please use only odd numbers)
+CC_steps = 5 # Number of CC steps in one note step (please use only odd numbers)
 
 CC_vib_intens = 1
 CC_vib_speed = 14

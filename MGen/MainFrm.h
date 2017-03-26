@@ -20,6 +20,8 @@
 
 #define MIN_HZOOM 80
 #define MAX_HZOOM 500
+#define MIN_PSPEED 1
+#define MAX_PSPEED 5000
 #define MIN_VIEW_TIMER 50
 #define MAX_VIEW_TIMER 3000
 

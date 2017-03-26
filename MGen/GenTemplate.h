@@ -80,6 +80,7 @@ const CString NoteName2[] = {
 #define OUTPUT_BUF_SIZE 10000
 #define MIN_MIDI_BUF_MSEC 10000
 #define MAX_MIDI_BUF_MSEC 20000
+#define MIDI_BUF_PROTECT 500 // Number of ms to postpone playback on start
 #define DRIVER_INFO NULL
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL
@@ -164,39 +165,46 @@ protected:
 
 	// Information for current note in SendMIDI
 	vector <PmEvent> midi_buf;
+	vector <PmEvent> midi_buf_next; // Buffer for next SendMIDI run
+	int midi_buf_lim; // After this timestamp information goes to midi_buf_next
 	int midi_channel = 0;
 	int midi_voice = 0;
 
 public:
-	// Thread interface
-	static HWND m_hWnd;
-	static UINT WM_DEBUG_MSG;
-	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
-	UINT WM_GEN_FINISH;
-	timed_mutex mutex_output;
-	int need_exit=0; // If thread needs to exit due to generation abort
-	// Data interface
-	int m_algo_id = -1; // Current algorithm id
-	CString m_algo_insts; // Instruments of current algorithm from algorithms.txt
-	CString m_config;
-	int sleep_ms = 0;
-	CString save_format_version; // Version of save format loaded
-
 	// PortMIDI
 	double m_pspeed = 100; // Playback speed in percent
 	vector<int> play_transpose; // If generated notes are not in instrument range, playback is automatically transposed (semitones)
-	vector<int> play_transpose_old; // Value for last note of previous SendMIDI call
 	PmStream * midi = 0;
 	int midi_sent = 0; // Steps already sent to midi
-	int midi_sent_t = 0; // Timestamp of last event sent to midi
+	int midi_sent_t = 0; // Timestamp of last event sent to midi in previous SendMIDI
+	int midi_sent_t2 = 0; // Timestamp of last event sent to midi in current SendMIDI
+	PmMessage midi_sent_msg; // Last event sent to midi in previous SendMIDI
+	PmMessage midi_sent_msg2; // Last event sent to midi in current SendMIDI
+	int midi_current_step; // Current step processed by SendMIDI (for logs)
 	int midi_start_time = 0; // Time when midi started to play
+	int midi_last_run = 0; // If current SendMIDI is last
+	int midi_first_run = 0; // If current SendMIDI is first
 	int buf_underrun = 0; // Shows if current playback had an issue with buffer underrun
 	int midi_play_step = 0; // Current step being played by midi
 	// MIDI play warnings for each voice show if warning was already fired to prevent repeated warnings
 	vector<int> warning_note_range;
 	vector<int> warning_note_short;
 
-	// Main constants
+	// Thread interface
+	static HWND m_hWnd;
+	static UINT WM_DEBUG_MSG;
+	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
+	UINT WM_GEN_FINISH;
+	timed_mutex mutex_output;
+	int need_exit = 0; // If thread needs to exit due to generation abort
+										 // Data interface
+	int m_algo_id = -1; // Current algorithm id
+	CString m_algo_insts; // Instruments of current algorithm from algorithms.txt
+	CString m_config;
+	int sleep_ms = 0;
+	CString save_format_version; // Version of save format loaded
+
+  // Main constants
 	int v_cnt=1; // Voice count
 	PmTimestamp time_started; // Time in milliseconds when generation started
 	PmTimestamp time_stopped; // Time in milliseconds when generation stopped
