@@ -63,6 +63,17 @@ void CGenRS1::Generate()
 					}
 				}
 			}
+			// Shift note to diatonic
+			int found = 0;
+			int ni = (note[i][0] - min_note) % 12;
+			for (int x = 0; x < 12; x++) {
+				// If found note in diatonic
+				if (dia_to_chrom[x] == ni) {
+					found = 1;
+					break;
+				}
+			}
+			if (!found) note[i][0] ++;
 			len[i][0] = min_len + (max_len-min_len) * rand2() / RAND_MAX;
 			if (len[i][0] < min_len) len[i][0] = min_len;
 			if (i + len[i][0] > t_cnt - 1) len[i][0] = t_cnt - i;
