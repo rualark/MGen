@@ -10,4 +10,4 @@ note_step = 3 # Note step for random chain algorithm
 sleep_ms = 3 # Artificial pause in ms after generating each step
 min_dyn = 10 # Minimum dynamics
 max_dyn = 120 # Maximum dynamics
-Instruments = Piano
+Instruments = Violin
