@@ -503,7 +503,10 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 			}
 		}
 		CString st;
-		st.Format("Step %d, voice %d", mouse_step, mouse_voice);
+		if (mouse_step > -1) {
+			if (mouse_voice > -1) st.Format("Step %d, time %s, voice %d", mouse_step, CGenTemplate::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10), mouse_voice);
+			else st.Format("Step %d, time %s", mouse_step, CGenTemplate::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10));
+		}
 		mf->m_wndStatusBar.GetElement(0)->SetText(st);
 		mf->m_wndStatusBar.Invalidate(1);
 		//mf->WriteLog(0, "Mouse move");
