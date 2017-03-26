@@ -934,6 +934,7 @@ void CGenTemplate::Adapt(int step1, int step2)
 							artic[i][v] = ARTIC_NONLEGATO;
 						}
 						else {
+							if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei] = -10;
 							detime[ei] = lengroup_edt1[ii];
 							artic[i][v] = ARTIC_SLUR;
 						}
@@ -995,6 +996,9 @@ void CGenTemplate::Adapt(int step1, int step2)
 				}
 				// Randomize note starts
 				if (rand_start[ii] > 0) dstime[i] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
+				// Check if overlapping occured
+				if ((i > 0) && (note[pi][v] == note[i][v]) && ((stime[i] - etime[pei]) + dstime[i] - detime[pei] < 0)) 
+					dstime[i] = (etime[pei] - stime[i]) + detime[pei] + 1;
 			} // !pause
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
