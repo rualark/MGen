@@ -1016,7 +1016,7 @@ void CGenTemplate::StartMIDI(int midi_device_i, int latency, int from)
 	midi_start_time = 0;
 	if (from > 0) {
 		midi_sent = from;
-		midi_sent_t = TIME_PROC(TIME_INFO) + MIDI_BUF_PROTECT;
+		midi_sent_t = 0; // TIME_PROC(TIME_INFO) + MIDI_BUF_PROTECT
 	}
 	else {
 		midi_sent_t = 0;
@@ -1113,7 +1113,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	// Set real time when playback started
 	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - stime[step1] / m_pspeed * 100;
 	// Set real time when playback started
-	if (!midi_sent_t) midi_sent_t = midi_start_time - 100;
+	if (!midi_sent_t) midi_sent_t = stime[step1] / m_pspeed * 100 + midi_start_time - 100;
 	// Check if we have buf underrun
 	if (midi_sent_t < timestamp_current) {
 		CString* st = new CString;
