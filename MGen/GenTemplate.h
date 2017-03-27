@@ -160,7 +160,9 @@ protected:
 	// PortMIDI internal
 	void AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2);
 	void AddNoteOn(PmTimestamp timestamp, int data1, int data2);
+	void AddKsOn(PmTimestamp timestamp, int data1, int data2);
 	void AddNoteOff(PmTimestamp timestamp, int data1, int data2);
+	void AddKsOff(PmTimestamp timestamp, int data1, int data2);
 	void AddCC(PmTimestamp timestamp, int data1, int data2);
 	void AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2);
 	void AddTransitionKs(int i, PmTimestamp timestamp, int ks);
@@ -191,6 +193,7 @@ public:
 	// MIDI play warnings for each voice show if warning was already fired to prevent repeated warnings
 	vector<int> warning_note_range;
 	vector<int> warning_note_short;
+	vector<int> warning_note_wrong;
 
 	// Thread interface
 	static HWND m_hWnd;
