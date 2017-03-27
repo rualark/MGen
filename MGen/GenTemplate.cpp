@@ -890,6 +890,84 @@ void CGenTemplate::UpdateTempoMinMax(int step1, int step2)
 	}
 }
 
+void CGenTemplate::AdaptMpercStep(int v, int x, int i, int ii, int ei, int pi, int pei)
+{
+	// Check lengroups
+	if ((i > 0) && (lengroup2[ii] + lengroup3[ii] + lengroup4[ii] > 0)) {
+		if (lengroup[pi][v] < 2) {
+			// Start new lengroup if was no lengroup or lengroup ended
+			int r = randbw(0, 100);
+			if (r < lengroup2[ii]) lengroup[i][v] = 2;
+			else if (r < lengroup2[ii] + lengroup3[ii]) lengroup[i][v] = 3;
+			else if (r < lengroup2[ii] + lengroup3[ii] + lengroup4[ii]) lengroup[i][v] = 4;
+			else lengroup[i][v] = 0;
+		}
+		else if (i > 0) {
+			// Continue lengroup
+			lengroup[i][v] = lengroup[pi][v] - 1;
+		}
+		// Apply lengroups
+		if (lengroup[i][v] > 1) {
+			if (lengroup_edt1[ii] < 0) {
+				detime[ei][v] = -min(-lengroup_edt1[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
+				artic[i][v] = ARTIC_NONLEGATO;
+			}
+			else {
+				if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
+				detime[ei][v] = lengroup_edt1[ii];
+				artic[i][v] = ARTIC_LEGATO;
+			}
+		}
+		if (lengroup[i][v] == 1) {
+			if (lengroup_edt2[ii] < 0) {
+				detime[ei][v] = -min(-lengroup_edt2[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
+				artic[i][v] = ARTIC_NONLEGATO;
+			}
+			else {
+				detime[ei][v] = lengroup_edt2[ii];
+				artic[i][v] = ARTIC_LEGATO;
+			}
+		}
+	}
+}
+
+void CGenTemplate::AdaptFriedlanderStep(int v, int x, int i, int ii, int ei, int pi, int pei)
+{
+	// Add slurs
+	if ((i > 0) && (max_slur_interval[ii] > 0) && (abs(note[pi][v] - note[i][v]) <= max_slur_interval[ii]) && (note[pi][v] != note[i][v]) &&
+		(slur_count <= max_slur_count[ii])) {
+		artic[i][v] = ARTIC_SLUR;
+		slur_count++;
+	}
+	else {
+		slur_count = 0;
+	}
+	// Retrigger notes
+	if ((i > 0) && (note[pi][v] == note[i][v])) {
+		artic[i][v] = ARTIC_RETRIGGER;
+		detime[pei][v] = -1;
+		dstime[i][v] = 0;
+		// Replace retrigger with non-legato
+		if ((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) {
+			detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
+			artic[i][v] = ARTIC_NONLEGATO;
+		}
+	}
+	// Randomly make some notes non-legato if they have enough length
+	if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > nonlegato_minlen[ii]) &&
+		(randbw(0, 100) < nonlegato_freq[ii])) {
+		detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
+		dstime[i][v] = 0;
+		artic[i][v] = ARTIC_NONLEGATO;
+	}
+	// Advance start for legato (not longer than previous note length)
+	if ((i > 0) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) && (detime[i - 1][v] >= 0) && (!pause[pi][v])) {
+		dstime[i][v] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+			detime[i - 1][v] - dstime[pi][v] - 1);
+		detime[i - 1][v] = 0.9 * dstime[i][v];
+	}
+}
+
 void CGenTemplate::Adapt(int step1, int step2)
 {
 	int ei; // ending step
@@ -939,83 +1017,13 @@ void CGenTemplate::Adapt(int step1, int step2)
 			}
 		}
 		// Calculate delta: dstime / detime
-		int slur_count = 0;
+		slur_count = 0;
 		int i = step1;
 		for (int x = 0; x < ncount; x++) {
 			ei = i + len[i][v] - 1;
 			pi = i - poff[i][v];
 			pei = i - 1;
-			// Calculate lengroups
 			if (!pause[i][v]) {
-				if (lengroup2[ii] + lengroup3[ii] + lengroup4[ii] > 0) {
-					if ((i == 0) || ((i > 0) && (lengroup[pi][v] < 2))) {
-						// Start new lengroup if was no lengroup or lengroup ended
-						int r = randbw(0, 100);
-						if (r < lengroup2[ii]) lengroup[i][v] = 2;
-						else if (r < lengroup2[ii] + lengroup3[ii]) lengroup[i][v] = 3;
-						else if (r < lengroup2[ii] + lengroup3[ii] + lengroup4[ii]) lengroup[i][v] = 4;
-						else lengroup[i][v] = 0;
-					}
-					else if (i > 0) {
-						// Continue lengroup
-						lengroup[i][v] = lengroup[pi][v] - 1;
-					}
-					// Apply lengroups
-					if (lengroup[i][v] > 1) {
-						if (lengroup_edt1[ii] < 0) {
-							detime[ei][v] = -min(-lengroup_edt1[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
-							artic[i][v] = ARTIC_NONLEGATO;
-						}
-						else {
-							if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
-							detime[ei][v] = lengroup_edt1[ii];
-							artic[i][v] = ARTIC_SLUR;
-						}
-					}
-					if (lengroup[i][v] == 1) {
-						if (lengroup_edt2[ii] < 0) {
-							detime[ei][v] = -min(-lengroup_edt2[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
-							artic[i][v] = ARTIC_NONLEGATO;
-						}
-						else {
-							detime[ei][v] = lengroup_edt2[ii];
-							artic[i][v] = ARTIC_SLUR;
-						}
-					}
-				}
-				// Add slurs
-				if ((i > 0) && (max_slur_interval[ii] > 0) && (abs(note[pi][v] - note[i][v]) <= max_slur_interval[ii]) && (note[pi][v] != note[i][v]) &&
-					(slur_count <= max_slur_count[ii])) {
-					artic[i][v] = ARTIC_SLUR;
-					slur_count++;
-				}
-				else {
-					slur_count = 0;
-				}
-				// Retrigger notes
-				if ((i > 0) && (note[pi][v] == note[i][v])) {
-					artic[i][v] = ARTIC_RETRIGGER;
-					detime[pei][v] = -1;
-					dstime[i][v] = 0;
-					// Replace retrigger with non-legato
-					if ((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) {
-						detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
-						artic[i][v] = ARTIC_NONLEGATO;
-					}
-				}
-				// Randomly make some notes non-legato if they have enough length
-				if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > nonlegato_minlen[ii]) &&
-					(randbw(0, 100) < nonlegato_freq[ii])) {
-					detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
-					dstime[i][v] = 0;
-					artic[i][v] = ARTIC_NONLEGATO;
-				}
-				// Advance start for legato (not longer than previous note length)
-				if ((i > 0) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) && (detime[i - 1][v] >= 0) && (!pause[pi][v])) {
-					dstime[i][v] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
-						detime[i - 1][v] - dstime[pi][v] - 1);
-					detime[i - 1][v] = 0.9 * dstime[i][v];
-				}
 				// Check if note is too short
 				ndur = (etime[ei] - stime[i]) * 100 / m_pspeed;
 				if (ndur < instr_tmin[ii]) {
@@ -1027,6 +1035,9 @@ void CGenTemplate::Adapt(int step1, int step2)
 						WriteLog(1, st);
 					}
 				}
+				// Instrument-specific adaptation
+				if (instr_type[ii] == 0) AdaptMpercStep(v, x, i, ii, ei, pi, pei);
+				if (instr_type[ii] == 1) AdaptFriedlanderStep(v, x, i, ii, ei, pi, pei);
 				// Randomize note starts
 				if (rand_start[ii] > 0) dstime[i][v] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
 				// Randomize note ends

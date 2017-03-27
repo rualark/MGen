@@ -125,6 +125,8 @@ protected:
 	void CopyVoice(int v1, int v2, int step1, int step2, int interval);
 	void UpdateNoteMinMax(int step1, int step2);
 	void UpdateTempoMinMax(int step1, int step2);
+	void AdaptMpercStep(int v, int x, int i, int ii, int ei, int pi, int pei);
+	void AdaptFriedlanderStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void Adapt(int step1, int step2);
 	// Mathematics
 	int randbw(int n1, int n2); // Random between two numbers
@@ -173,6 +175,9 @@ protected:
 	int midi_buf_lim; // After this timestamp information goes to midi_buf_next
 	int midi_channel = 0;
 	int midi_voice = 0;
+
+	// Adapt local variables
+	int slur_count; // Number of successive slurs
 
 public:
 	// PortMIDI
