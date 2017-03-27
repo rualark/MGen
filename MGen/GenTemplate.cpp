@@ -43,6 +43,7 @@ CGenTemplate::CGenTemplate()
 	nonlegato_freq.resize(MAX_INSTR);
 	nonlegato_minlen.resize(MAX_INSTR);
 	warning_note_range.resize(MAX_VOICE);
+	warning_note_wrong.resize(MAX_VOICE);
 	warning_note_short.resize(MAX_VOICE);
 	lengroup2.resize(MAX_INSTR);
 	lengroup3.resize(MAX_INSTR);
@@ -1139,8 +1140,8 @@ void CGenTemplate::AddTransitionKs(int i, int stimestamp, int ks)
 	int v = midi_voice;
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
-	AddNoteOn(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10, ks, 10);
-	AddNoteOff(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10, ks, 0);
+	AddKsOn(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10, ks, 10);
+	AddKsOff(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10, ks, 0);
 }
 
 void CGenTemplate::AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2)
@@ -1216,6 +1217,7 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 		int last_i = step1; // first step of last full note
 		int ii = instr[v];
 		midi_channel = instr_channel[ii];
+		midi_voice = v;
 		// Move to note start
 		if (coff[step1][v] > 0) {
 			if (midi_first_run) step21 = step1 + noff[step1][v];
@@ -1405,11 +1407,65 @@ int CGenTemplate::GetPlayStep() {
 
 void CGenTemplate::AddNoteOn(PmTimestamp timestamp, int data1, int data2)
 {
+	// Check if range valid
+	if ((data1 < instr_nmin[instr[midi_voice]]) || (data1 > instr_nmax[instr[midi_voice]])) {
+		if (warning_note_wrong[midi_voice] < 4) {
+			CString* st = new CString;
+			st->Format("Blocked note %d/%d time %d in voice %d instrument %d out of range %d-%d",
+				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
+			WriteLog(1, st);
+			warning_note_wrong[midi_voice] ++;
+		}
+		return;
+	}
+	AddMidiEvent(timestamp, MIDI_NOTEON + midi_channel, data1, data2);
+}
+
+void CGenTemplate::AddKsOn(PmTimestamp timestamp, int data1, int data2)
+{
+	// Check if range valid
+	if ((data1 == 0) || ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]]))) {
+		if (warning_note_wrong[midi_voice] < 4) {
+			CString* st = new CString;
+			st->Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
+				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
+			WriteLog(1, st);
+			warning_note_wrong[midi_voice] ++;
+		}
+		return;
+	}
 	AddMidiEvent(timestamp, MIDI_NOTEON + midi_channel, data1, data2);
 }
 
 void CGenTemplate::AddNoteOff(PmTimestamp timestamp, int data1, int data2)
 {
+	// Check if range valid
+	if ((data1 < instr_nmin[instr[midi_voice]]) || (data1 > instr_nmax[instr[midi_voice]])) {
+		if (warning_note_wrong[midi_voice] < 4) {
+			CString* st = new CString;
+			st->Format("Blocked note %d/%d time %d in voice %d instrument %d out of range %d-%d",
+				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
+			WriteLog(1, st);
+			warning_note_wrong[midi_voice] ++;
+		}
+		return;
+	}
+	AddMidiEvent(timestamp, MIDI_NOTEOFF + midi_channel, data1, data2);
+}
+
+void CGenTemplate::AddKsOff(PmTimestamp timestamp, int data1, int data2)
+{
+	// Check if range valid
+	if ((data1 == 0) || ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]]))) {
+		if (warning_note_wrong[midi_voice] < 4) {
+			CString* st = new CString;
+			st->Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
+				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
+			WriteLog(1, st);
+			warning_note_wrong[midi_voice] ++;
+		}
+		return;
+	}
 	AddMidiEvent(timestamp, MIDI_NOTEOFF + midi_channel, data1, data2);
 }
 
