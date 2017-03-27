@@ -165,15 +165,15 @@ BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 	{
 		// Get name
 		CString path = fileDlg.GetPathName();
-		CString fname = CGenTemplate::fname_from_path(path);
-		CString dir = CGenTemplate::dir_from_path(path);
+		CString fname = CGLib::fname_from_path(path);
+		CString dir = CGLib::dir_from_path(path);
 		// Create folders
 		CreateDirectory(path, NULL);
 		// Copy files
-		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mgr", path + "\\" + fname + ".mgr");
-		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mid", path + "\\" + fname + ".mid");
-		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".txt", path + "\\" + fname + ".txt");
-		CGenTemplate::copy_file(mf->m_dir + "\\" + mf->m_fname + ".pl", path + "\\" + fname + ".pl");
+		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mgr", path + "\\" + fname + ".mgr");
+		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mid", path + "\\" + fname + ".mid");
+		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".txt", path + "\\" + fname + ".txt");
+		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".pl", path + "\\" + fname + ".pl");
 		// Set new title
 		//mf->WriteLog(1, mf->m_dir);
 		//mf->WriteLog(1, mf->m_fname);

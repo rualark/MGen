@@ -200,5 +200,5 @@ void COutputList::OnEditSaveline()
 {
 	CString st;
 	GetText(GetCurSel(), st);
-	CGenTemplate::AppendLineToFile("mgen.log", st + "\n");
+	CGLib::AppendLineToFile("mgen.log", st + "\n");
 }

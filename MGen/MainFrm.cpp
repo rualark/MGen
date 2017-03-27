@@ -161,9 +161,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	LoadSettings();
 	//m_wndRibbonBar.GetQuickAccessToolbar()->SetCompactMode(1);
 
-	CGenTemplate::can_send_log = 0;
-	CGenTemplate::m_hWnd = m_hWnd;
-	CGenTemplate::WM_DEBUG_MSG = WM_DEBUG_MSG;
+	CGLib::can_send_log = 0;
+	CGLib::m_hWnd = m_hWnd;
+	CGLib::WM_DEBUG_MSG = WM_DEBUG_MSG;
 
 	return 0;
 }
@@ -384,7 +384,7 @@ void CMainFrame::LoadResults(CString path) {
 	if (pGen != 0) {
 		WriteLog(0, _T("Loading file: ") + path);
 		// Set pGen variables
-		CGenTemplate::can_send_log = 1;
+		CGLib::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		// Initialize MIDI
 		pGen->StopMIDI();
@@ -443,7 +443,7 @@ void CMainFrame::OnButtonGen()
 		m_fname = "";
 		m_dir = "";
 		// Set pGen variables
-		CGenTemplate::can_send_log = 1;
+		CGLib::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_algo_insts = AlgInsts[m_algo];
@@ -506,11 +506,11 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		m_fname = fname;
 		GetActiveDocument()->SetTitle(fname);
 		// Copy config
-		CGenTemplate::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\" + fname + ".pl");
+		CGLib::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\" + fname + ".pl");
 		// Append config name
-		CGenTemplate::AppendLineToFile(dir + "\\" + fname + ".pl",
+		CGLib::AppendLineToFile(dir + "\\" + fname + ".pl",
 			"\n# This config was copied from file " + AlgFolder[m_algo] + "\\" + m_config + ".pl\n");
-		CGenTemplate::AppendLineToFile(dir + "\\" + fname + ".pl",
+		CGLib::AppendLineToFile(dir + "\\" + fname + ".pl",
 			"# Originally autosaved at " + dir);
 		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		//WriteLog(1, dir + "\\config.pl");
@@ -604,7 +604,7 @@ void CMainFrame::LoadAlgo()
 			AlgComment[AlgCount] = st2;
 			// Check if folder exists
 			CString path = "configs\\" + AlgFolder[AlgCount];
-			if (!CGenTemplate::dirExists(path)) {
+			if (!CGLib::dirExists(path)) {
 				CreateDirectory(path, NULL);
 				ofstream fs;
 				fs.open(path + "\\Test.pl");
@@ -673,9 +673,9 @@ void CMainFrame::LoadSettings()
 				pRibbonSpin->SetEditText(st3);
 				zoom_x = atoi(st3);
 			}
-			CGenTemplate::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
-			CGenTemplate::LoadVar(&st2, &st3, "config", &m_config);
-			//CGenTemplate::LoadVar(&st2, &st3, "midi_program", &midi_program);
+			CGLib::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
+			CGLib::LoadVar(&st2, &st3, "config", &m_config);
+			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
 	}
 	fs.close();
@@ -786,7 +786,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 
 UINT CMainFrame::GenThread(LPVOID pParam)
 {
-	CGenTemplate* pGen = (CGenTemplate*)pParam;
+	CGMidi* pGen = (CGMidi*)pParam;
 
 	if (pGen == NULL) return 1;   // if Object is not valid  
 
@@ -805,14 +805,14 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 void CMainFrame::OnClose()
 {
 	if (m_state_gen == 1) {
-		CGenTemplate::can_send_log = 0;
+		CGLib::can_send_log = 0;
 		OnButtonGen();
 		WaitForSingleObject(m_GenThread->m_hThread, 10000);
 		delete pGen;
 		pGen = 0;
 	}
 	if (pGen != 0) {
-		CGenTemplate::can_send_log = 0;
+		CGLib::can_send_log = 0;
 		delete pGen;
 		pGen = 0;
 	}

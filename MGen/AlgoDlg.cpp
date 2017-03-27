@@ -239,18 +239,18 @@ void CAlgoDlg::OnBnClickedButtonSaveas()
 		}
 		//mf->WriteLog(1, cname);
 		// Check exists
-		if (CGenTemplate::fileExists(path)) {
+		if (CGLib::fileExists(path)) {
 			MessageBox("This file already exists: " + path, "Error");
 			return;
 		}
-		if (CGenTemplate::dirExists(path)) {
+		if (CGLib::dirExists(path)) {
 			MessageBox("There is already a folder with this name: " + path, "Error");
 			return;
 		}
 		// Try to copy
-		CGenTemplate::copy_file(path_old + cname_old + ".pl", path_old + cname + ".pl");
+		CGLib::copy_file(path_old + cname_old + ".pl", path_old + cname + ".pl");
 		// Check file exists now
-		if (!CGenTemplate::fileExists(path)) {
+		if (!CGLib::fileExists(path)) {
 			MessageBox("Could not copy file " + path_old + cname_old + ".pl to " + path_old + cname + ".pl", "Error");
 			return;
 		}

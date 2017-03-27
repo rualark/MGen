@@ -96,7 +96,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	milliseconds time_stop4 = time_start;
 	milliseconds time_stop5 = time_start;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
-	CGenTemplate *pGen = mf->pGen;
+	CGMidi *pGen = mf->pGen;
 	//mf->WriteLog(2, "OnDraw start");
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
@@ -158,7 +158,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	time_stop2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
 		CString time_st = "";
-		if (pGen->t_sent > 0) time_st = CGenTemplate::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
+		if (pGen->t_sent > 0) time_st = CGLib::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
 		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d meas. / %s in %.1f sec.)", 
 			pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, time_st, ((float)(TIME_PROC(TIME_INFO) - pGen->time_started)) / 1000);
 		if (mf->m_state_gen == 2) st.Format("(%d meas. / %s in %.1f sec.)", 
@@ -452,7 +452,7 @@ void CMGenView::OnInitialUpdate()
 void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
-	CGenTemplate *pGen = mf->pGen;
+	CGMidi *pGen = mf->pGen;
 	if ((pGen != 0) && (nwidth > 0) && (nheight > 0)) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
 			mf->WriteLog(2, "OnMouseMove mutex timed out: mouse not processed");
@@ -506,7 +506,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		CString st, st2;
 		if (mouse_step > -1) {
-			st2.Format("Step %d, time %s, tempo %d. ", mouse_step, CGenTemplate::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10), (int)pGen->tempo[mouse_step]);
+			st2.Format("Step %d, time %s, tempo %d. ", mouse_step, CGLib::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10), (int)pGen->tempo[mouse_step]);
 			st += st2;
 		}
 		if (mouse_voice > -1) {
@@ -514,7 +514,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 			st += st2;
 		}
 		if (mouse_note > -1) {
-			st2.Format("Note %s (%d). ", CGenTemplate::GetNoteName(mouse_note), mouse_note);
+			st2.Format("Note %s (%d). ", CGLib::GetNoteName(mouse_note), mouse_note);
 			st += st2;
 		}
 		mf->m_wndStatusBar.GetElement(0)->SetText(st);

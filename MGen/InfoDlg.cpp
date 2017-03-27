@@ -6,7 +6,7 @@
 #include "InfoDlg.h"
 #include "afxdialogex.h"
 #include "MainFrm.h"
-#include "GenTemplate.h"
+#include "GMidi.h"
 #include "MGenView.h"
 
 #ifdef _DEBUG
@@ -46,7 +46,7 @@ BOOL CInfoDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
-	CGenTemplate *pGen = mf->pGen;
+	CGMidi *pGen = mf->pGen;
 	if (pGen != 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
 			mf->WriteLog(1, "InfoDlg mutex timed out: showing nothing");
@@ -58,7 +58,7 @@ BOOL CInfoDlg::OnInitDialog()
 		CString st, st2;
 		st.Format("Step: %d (measure %d)\nVoice: %d (%s, channel %d, type %d)\nNote: %s (midi %d)\nNote length: %d\n", ms, ms/8, mv, 
 			InstName[pGen->instr[mv]], pGen->instr_channel[pGen->instr[mv]], pGen->instr_type[pGen->instr[mv]],
-			CGenTemplate::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv], pGen->len[ms][mv]);
+			CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv], pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nDynamics: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->dyn[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);

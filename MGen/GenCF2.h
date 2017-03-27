@@ -1,7 +1,8 @@
 #pragma once
-#include "GenTemplate.h"
+#include "GMidi.h"
+
 class CGenCF2 :
-	public CGenTemplate
+	public CGMidi
 {
 public:
 	CGenCF2();

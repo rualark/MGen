@@ -187,10 +187,13 @@
   <ItemGroup>
     <ClInclude Include="AlgoDlg.h" />
     <ClInclude Include="EditParamsDlg.h" />
+    <ClInclude Include="GAdapt.h" />
     <ClInclude Include="GenCF1.h" />
     <ClInclude Include="GenCF2.h" />
     <ClInclude Include="GenRS1.h" />
-    <ClInclude Include="GenTemplate.h" />
+    <ClInclude Include="GLib.h" />
+    <ClInclude Include="GMidi.h" />
+    <ClInclude Include="GVar.h" />
     <ClInclude Include="InfoDlg.h" />
     <ClInclude Include="InfoEditCtrl.h" />
     <ClInclude Include="MainFrm.h" />
@@ -216,10 +219,13 @@
   <ItemGroup>
     <ClCompile Include="AlgoDlg.cpp" />
     <ClCompile Include="EditParamsDlg.cpp" />
+    <ClCompile Include="GAdapt.cpp" />
     <ClCompile Include="GenCF1.cpp" />
     <ClCompile Include="GenCF2.cpp" />
     <ClCompile Include="GenRS1.cpp" />
-    <ClCompile Include="GenTemplate.cpp" />
+    <ClCompile Include="GLib.cpp" />
+    <ClCompile Include="GMidi.cpp" />
+    <ClCompile Include="GVar.cpp" />
     <ClCompile Include="InfoDlg.cpp" />
     <ClCompile Include="InfoEditCtrl.cpp" />
     <ClCompile Include="MainFrm.cpp" />

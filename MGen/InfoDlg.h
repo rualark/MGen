@@ -1,6 +1,6 @@
 #pragma once
 #include "afxcmn.h"
-#include "GenTemplate.h"
+#include "GLib.h"
 #include "afxwin.h"
 #include "InfoEditCtrl.h"
 
@@ -27,6 +27,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CInfoEditCtrl m_info;
-	CGenTemplate* pGen = 0;
+	CGLib* pGen = 0;
 	virtual BOOL OnInitDialog();
 };

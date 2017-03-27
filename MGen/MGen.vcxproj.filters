@@ -54,9 +54,6 @@
     <ClInclude Include="OutputWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GenTemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GenCF1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -111,6 +108,18 @@
     <ClInclude Include="midifile\Binasc.h">
       <Filter>Header Files\midifile</Filter>
     </ClInclude>
+    <ClInclude Include="GLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GVar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GAdapt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GMidi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -129,9 +138,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OutputWnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GenTemplate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GenCF1.cpp">
@@ -187,6 +193,18 @@
     </ClCompile>
     <ClCompile Include="midifile\Binasc.cpp">
       <Filter>Source Files\midifile</Filter>
+    </ClCompile>
+    <ClCompile Include="GLib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GVar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GAdapt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GMidi.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
