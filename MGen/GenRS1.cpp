@@ -133,7 +133,7 @@ void CGenRS1::Generate()
 			// Send
 			if (i == t_cnt - 1) t_sent = t_generated;
 			else t_sent = t_generated-3;
-			Adapt(t_sent_old, t_sent);
+			Adapt(t_sent_old, t_sent-1);
 			// Interface
 			::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
 		}

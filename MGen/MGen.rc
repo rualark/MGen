@@ -194,8 +194,6 @@ BEGIN
     LTEXT           "Visit",IDC_STATIC,7,43,15,8
     CONTROL         "https://github.com/rualark/MGen",IDC_MFCLINK2,"MfcLink",WS_TABSTOP,27,42,118,14
     LTEXT           "for new releases and changelog",IDC_STATIC,148,43,106,8
-    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,301,36,20,20
-    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,301,7,20,20
 END
 
 
