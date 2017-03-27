@@ -140,7 +140,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
 	Pen pen_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 
-	Gdiplus::Font font(&FontFamily(L"Arial"), 12);
+	Gdiplus::Font font(&FontFamily(L"Arial"), 10);
 	Gdiplus::Font font_small(&FontFamily(L"Arial"), 8);
 	milliseconds current_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
   USES_CONVERSION;
@@ -159,16 +159,16 @@ void CMGenView::OnDraw(CDC* pDC)
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
 		CString time_st = "";
 		if (pGen->t_sent > 0) time_st = CGenTemplate::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
-		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d meas. / %s in %.1f seconds)", 
+		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d meas. / %s in %.1f sec.)", 
 			pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, time_st, ((float)(TIME_PROC(TIME_INFO) - pGen->time_started)) / 1000);
-		if (mf->m_state_gen == 2) st.Format("(%d meas. / %s in %.1f seconds)", 
+		if (mf->m_state_gen == 2) st.Format("(%d meas. / %s in %.1f sec.)", 
 			pGen->t_sent/8, time_st, ((float)(pGen->time_stopped - pGen->time_started)) / 1000);
 		g.DrawString(A2W(st), -1, &font, PointF(250, 0), &brush_black);
 		int play_step = 0;
 		if (mf->m_state_play > 0) play_step = pGen->GetPlayStep();
 		if (play_step > 0) {
 			int play_time = TIME_PROC(TIME_INFO) - pGen->midi_start_time;
-			st.Format("(%02d:%02d - measure %d)", play_time/60000, (play_time/1000) % 60, play_step/8 + 1);
+			st.Format("(%02d:%02d - meas. %d)", play_time/60000, (play_time/1000) % 60, play_step/8 + 1);
 			g.DrawString(A2W(st), -1, &font, PointF(900, 0), &brush_black);
 		}
 		if (pGen->need_exit == 1)
@@ -278,6 +278,11 @@ void CMGenView::OnDraw(CDC* pDC)
 			Color ncolor;
 			int alpha;
 			for (int v = 0; v < pGen->v_cnt; v++) {
+				// Show instrument name
+				ncolor = Color(255 /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+				SolidBrush brush_v(ncolor);
+				st = InstName[pGen->instr[v]];
+				g.DrawString(A2W(st), -1, &font, PointF(1150+100*v, 0), &brush_v);
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
 					alpha = 40 + (80 * pGen->dyn[i][v] / 127);
