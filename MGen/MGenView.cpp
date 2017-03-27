@@ -614,6 +614,8 @@ void CMGenView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_PRIOR) OnHScroll(SB_PAGELEFT, 0, NULL);
 	if (nChar == VK_RIGHT) OnHScroll(SB_LINERIGHT, 0, NULL);
 	if (nChar == VK_LEFT) OnHScroll(SB_LINELEFT, 0, NULL);
+	if (nChar == VK_END) OnHScroll(SB_RIGHT, 0, NULL);
+	if (nChar == VK_HOME) OnHScroll(SB_LEFT, 0, NULL);
 
 	CScrollView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
