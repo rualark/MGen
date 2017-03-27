@@ -491,6 +491,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 			if ((point.y >= Y_HEADER - Y_TIMELINE) && (point.y <= Y_HEADER)) mouse_in_timeline = 1;
 			else mouse_in_timeline = 0;
 		}
+		else mouse_note = -1;
 		if (((mouse_step != -1) || (mouse_step_old != -1)) && ((mouse_step != mouse_step_old) || (mouse_voice != mouse_voice_old))) {
 			if (mouse_step_old == -1)	Invalidate();
 			else {
@@ -528,44 +529,16 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CMGenView::OnMouseHover(UINT nFlags, CPoint point)
 {
-	//CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
-	//mf->m_wndStatusBar.GetElement(0)->SetText("Some text");
 	CScrollView::OnMouseHover(nFlags, point);
 }
 
 void CMGenView::GetToolTipLabelText(POINT cursor, CString & labelText, CString & descriptionText) const
 {
-	/*
-	ScreenToClient(&cursor);
-	CPoint pos(cursor);
-	pos += GetScrollPosition();
-
-	labelText = "Label";
-	descriptionText = "Desc";
-	*/
 }
 
 
 BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
 {
-	/*
-	switch (pMsg->message)
-	{
-	case WM_KEYDOWN:
-	case WM_SYSKEYDOWN:
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDOWN:
-	case WM_MBUTTONDOWN:
-	case WM_LBUTTONUP:
-	case WM_RBUTTONUP:
-	case WM_MBUTTONUP:
-	case WM_MOUSEMOVE:
-		//m_ToolTip.Activate(TRUE); 
-		m_ToolTip.RelayEvent(pMsg);
-		break;
-	}
-	*/
-
 	return CScrollView::PreTranslateMessage(pMsg);
 }
 

@@ -174,9 +174,12 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
 
 void CGAdapt::Adapt(int step1, int step2)
 {
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	int ei; // ending step
 	int pi; // previous note step
 	int pei; // previous note ending step
+	// Save current play speed
+	adapt_pspeed = m_pspeed;
 	for (int v = 0; v < v_cnt; v++) {
 		int ii = instr[v]; // Instrument id
 		int ncount = 0;
@@ -221,5 +224,10 @@ void CGAdapt::Adapt(int step1, int step2)
 			i += noff[i][v];
 		} // for x
 	} // for v
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* st = new CString;
+	st->Format("Adapt steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+	WriteLog(0, st);
 }
 

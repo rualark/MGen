@@ -869,6 +869,7 @@ void CMainFrame::OnButtonPlay()
 
 void CMainFrame::StartPlay(int from)
 {
+	if (pGen->m_pspeed != pGen->adapt_pspeed) pGen->Adapt(0, pGen->t_generated - 1);
 	pGen->StopMIDI();
 	pGen->StartMIDI(GetMidiI(), 100, from);
 	m_state_play = 1;
@@ -938,7 +939,7 @@ void CMainFrame::OnButtonSconfig()
 
 void CMainFrame::OnUpdateSpinPspeed(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(m_state_play == 0);
+	pCmdUI->Enable((m_state_play == 0) && (m_state_gen != 1));
 }
 
 

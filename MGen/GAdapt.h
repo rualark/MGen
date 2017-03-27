@@ -7,11 +7,13 @@ public:
 	CGAdapt();
 	~CGAdapt();
 
-	void CheckRange(int v, int ii);
-	void CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pei);
+	void Adapt(int step1, int step2);
+
+	double adapt_pspeed = 100; // Playback speed used during adaptation
 
 protected:
-	void Adapt(int step1, int step2);
+	void CheckRange(int v, int ii);
+	void CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptRetriggerStep(int v, int x, int i, int ii, int ei, int pi, int pei);
@@ -19,8 +21,8 @@ protected:
 	void AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 
 	void FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei);
-
-	// Adapt local variables
+												 
+  // Adapt local variables
 	int slur_count; // Number of successive slurs
 
 	// MIDI play warnings for each voice show if warning was already fired to prevent repeated warnings
