@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "GenRS1.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW 
+#endif
+
 CGenRS1::CGenRS1()
 {
 	// Set default variables

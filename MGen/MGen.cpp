@@ -25,7 +25,6 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CMGenApp
 
 BEGIN_MESSAGE_MAP(CMGenApp, CWinAppEx)

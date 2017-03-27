@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "GenCF1.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW 
+#endif
+
 #define MAX_FLAGS 13
 
 

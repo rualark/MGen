@@ -8,6 +8,10 @@
 //#include "brainchild.h"
 #include "MainFrm.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 // CEditParamsDlg dialog
 
 IMPLEMENT_DYNAMIC(CEditParamsDlg, CDialog)

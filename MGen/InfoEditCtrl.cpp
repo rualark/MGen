@@ -5,6 +5,9 @@
 #include "MGen.h"
 #include "InfoEditCtrl.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 // CInfoEditCtrl
 

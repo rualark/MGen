@@ -9,6 +9,10 @@
 #include "GenTemplate.h"
 #include "MGenView.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
 // CInfoDlg dialog
 
 IMPLEMENT_DYNAMIC(CInfoDlg, CDialog)

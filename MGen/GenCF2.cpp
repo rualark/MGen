@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "GenCF2.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 CGenCF2::CGenCF2()
 {

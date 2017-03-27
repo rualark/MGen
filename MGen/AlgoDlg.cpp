@@ -7,6 +7,11 @@
 #include "afxdialogex.h"
 #include "MainFrm.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+
 // CAlgoDlg dialog
 
 IMPLEMENT_DYNAMIC(CAlgoDlg, CDialog)

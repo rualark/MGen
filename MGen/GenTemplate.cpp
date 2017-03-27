@@ -3,6 +3,10 @@
 
 #include "midifile/MidiFile.h"
 
+#ifdef _DEBUG
+#define new DEBUG_NEW 
+#endif
+
 int CGenTemplate::can_send_log = 1;
 HWND CGenTemplate::m_hWnd = 0;
 UINT CGenTemplate::WM_DEBUG_MSG = 0;
@@ -1189,9 +1193,9 @@ void CGenTemplate::SendMIDI(int step1, int step2)
 	}
 	// Check if buf is full
 	if (midi_sent_t - timestamp_current > MIN_MIDI_BUF_MSEC) {
-		CString* st = new CString;
-		st->Format("SendMIDI: no need to send (full buf = %d ms) (steps %d - %d) playback is at %d", 
-			midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
+		//CString* st = new CString;
+		//st->Format("SendMIDI: no need to send (full buf = %d ms) (steps %d - %d) playback is at %d", 
+		//	midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
 		//WriteLog(4, st);
 		return;
 	}
