@@ -53,7 +53,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	// Create output panes:
-	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | LBS_NOTIFY | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
 
 	if (!m_wndOutputWarn.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
 		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
@@ -134,6 +134,7 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_COMMAND(ID_POPUP_SHOW, &COutputList::OnPopupShow)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_SAVELINE, &COutputList::OnUpdateEditSaveline)
 	ON_COMMAND(ID_EDIT_SAVELINE, &COutputList::OnEditSaveline)
+	ON_CONTROL_REFLECT(LBN_DBLCLK, &COutputList::OnLbnDblclk)
 END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList message handlers
@@ -201,4 +202,12 @@ void COutputList::OnEditSaveline()
 	CString st;
 	GetText(GetCurSel(), st);
 	CGLib::AppendLineToFile("mgen.log", st + "\n");
+}
+
+
+void COutputList::OnLbnDblclk()
+{
+	CString st;
+	GetText(GetCurSel(), st);
+	MessageBox(st);
 }

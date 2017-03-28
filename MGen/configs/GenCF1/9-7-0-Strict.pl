@@ -9,6 +9,7 @@ max_tempo = 130 # Maximum tempo
 shuffle = 1
 
 # Rules
+Strict = 1
 accept = Sptjolcardgfm # Each upper case letter allows showing canti with specific properties:
 # 0  S - Strict
 # 1  p - Seventh

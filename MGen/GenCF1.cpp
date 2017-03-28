@@ -64,6 +64,7 @@ const Color FlagColor[] = {
 CGenCF1::CGenCF1()
 {
 	//midifile_tpq_mul = 8;
+	accept.resize(MAX_FLAGS);
 }
 
 CGenCF1::~CGenCF1()
@@ -89,7 +90,16 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "max_tempo", &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "shuffle", &shuffle);
-	LoadVar(sN, sV, "accept", &accept);
+	//LoadVar(sN, sV, "accept", &accept);
+	// Load accept
+	CString st;
+	for (int i = 0; i < MAX_FLAGS; i++) {
+		st = FlagName[i];
+		st.MakeLower();
+		if (*sN == st) {
+			accept[i] = atoi(*sV);
+		}
+	}
 }
 
 void CGenCF1::Generate()
@@ -101,9 +111,10 @@ void CGenCF1::Generate()
 	vector<int> nstat(max_interval * 2 + 1);
 	vector<int> nstat2(max_interval * 2 + 1);
 	vector<long> fstat(MAX_FLAGS); // number of canti with each flag
-	string flags; // Flags for whole cantus
-	vector< vector <char> > nflags = vector<vector<char>>(c_len, vector<char>(MAX_FLAGS)); // Flags for each note
-	vector<char> nflagsc(c_len); // number of flags for each note
+	vector<unsigned char>  flags; // Flags for whole cantus
+	vector<vector<unsigned char>> nflags = vector<vector<unsigned char>>(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
+	vector<unsigned char> nflagsc(c_len); // number of flags for each note
+	flags.resize(MAX_FLAGS);
 	// Set first and last notes
 	c[0] = 0;
 	c[c_len-1] = last_diatonic_int;
@@ -135,9 +146,9 @@ void CGenCF1::Generate()
 			if (nmax - nmin > max_interval) goto skip;
 			if (nmax - nmin < min_interval) goto skip;
 			// Clear flags
-
 			accepted3++;
-			flags = "Sptjolcardgfm";
+			fill(flags.begin(), flags.end(), 0);
+			flags[0] = 1;
 			for (int i = 0; i < c_len; i++) {
 				nflagsc[i] = 0;
 				// Calculate chromatic positions
@@ -156,17 +167,17 @@ void CGenCF1::Generate()
 					if ((cc[i] % 12 == 5) && (cc[i - 1] % 12 != 4)) goto skip;
 					if ((cc[i + 1] % 12 == 5) && (cc[i + 2] % 12 != 4)) goto skip;
 					// Record tritone
-					if (accept[2] != 'T') goto skip;
-					flags[0] = 's';
-					flags[2] = 'T';
+					if (accept[2] != 1) goto skip;
+					flags[0] = 0;
+					flags[2] = 1;
 					nflags[i][nflagsc[i]] = 2;
 					nflagsc[i]++;
 				}
 				// Sept prohibit
 				if (abs(c[i + 1] - c[i]) == 6) {
-					if (accept[1] != 'P') goto skip;
-					flags[0] = 's';
-					flags[1] = 'P';
+					if (accept[1] != 1) goto skip;
+					flags[0] = 0;
+					flags[1] = 1;
 					nflags[i][nflagsc[i]] = 1;
 					nflagsc[i]++;
 				}
@@ -189,9 +200,9 @@ void CGenCF1::Generate()
 				if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
 				// Check if too many leaps
 				if (leap_sum > max_leaps) {
-					if (accept[3] != 'J') goto skip;
-					flags[0] = 's';
-					flags[3] = 'J';
+					if (accept[3] != 1) goto skip;
+					flags[0] = 0;
+					flags[3] = 1;
 					nflags[i][nflagsc[i]] = 3;
 					nflagsc[i]++;
 				}
@@ -199,9 +210,9 @@ void CGenCF1::Generate()
 				if (smooth[i] != 0) smooth_sum++;
 				else smooth_sum = 0;
 				if (smooth_sum >= max_smooth) {
-					if (accept[4] != 'O') goto skip;
-					flags[0] = 's';
-					flags[4] = 'O';
+					if (accept[4] != 1) goto skip;
+					flags[0] = 0;
+					flags[4] = 1;
 					nflags[i][nflagsc[i]] = 4;
 					nflagsc[i]++;
 				}
@@ -210,9 +221,9 @@ void CGenCF1::Generate()
 					if (smooth[i] == smooth[i + 1]) smooth_sum2++;
 					else smooth_sum2 = 0;
 					if (smooth_sum2 >= max_smooth_direct - 1) {
-						if (accept[5] != 'L') goto skip;
-						flags[0] = 's';
-						flags[5] = 'L';
+						if (accept[5] != 1) goto skip;
+						flags[0] = 0;
+						flags[5] = 1;
 						nflags[i][nflagsc[i]] = 5;
 						nflagsc[i]++;
 					}
@@ -220,9 +231,9 @@ void CGenCF1::Generate()
 					if (leap[i] * leap[i + 1] > 0) {
 						// Check if leaps are long
 						if (c[i + 2] - c[i] > 4) goto skip;
-						if (accept[6] != 'C') goto skip;
-						flags[0] = 's';
-						flags[6] = 'C';
+						if (accept[6] != 1) goto skip;
+						flags[0] = 0;
+						flags[6] = 1;
 						nflags[i][nflagsc[i]] = 6;
 						nflagsc[i]++;
 					}
@@ -230,10 +241,10 @@ void CGenCF1::Generate()
 					if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
 						if (i < c_len - 3) {
 							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) goto skip;
-							if (flags[6] != 'C') {
-								if (accept[7] != 'A') goto skip;
-								flags[0] = 's';
-								flags[7] = 'A';
+							if (flags[6] != 1) {
+								if (accept[7] != 1) goto skip;
+								flags[0] = 0;
+								flags[7] = 1;
 								nflags[i][nflagsc[i]] = 7;
 								nflagsc[i]++;
 							}
@@ -242,17 +253,17 @@ void CGenCF1::Generate()
 					}
 					// Check if leap returns to same note
 					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
-						if (accept[8] != 'R') goto skip;
-						flags[0] = 's';
-						flags[8] = 'R';
+						if (accept[8] != 1) goto skip;
+						flags[0] = 0;
+						flags[8] = 1;
 						nflags[i][nflagsc[i]] = 8;
 						nflagsc[i]++;
 					}
 					// Check if two notes repeat
 					if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) {
-						if (accept[9] != 'D') goto skip;
-						flags[0] = 's';
-						flags[9] = 'D';
+						if (accept[9] != 1) goto skip;
+						flags[0] = 0;
+						flags[9] = 1;
 						nflags[i][nflagsc[i]] = 9;
 						nflagsc[i]++;
 					}
@@ -272,9 +283,9 @@ void CGenCF1::Generate()
 				if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] + max_interval]--;
 				// Check if too many repeating notes
 				if (nstat[c[i] + max_interval] > stag_notes) {
-					if (accept[10] != 'G') goto skip;
-					flags[0] = 's';
-					flags[10] = 'G';
+					if (accept[10] != 1) goto skip;
+					flags[0] = 0;
+					flags[10] = 1;
 					nflags[i][nflagsc[i]] = 10;
 					nflagsc[i]++;
 				}
@@ -282,9 +293,9 @@ void CGenCF1::Generate()
 			// Check note fill
 			for (int i = nmin; i <= nmax; i++) {
 				if (nstat2[i + max_interval] == 0) {
-					if (accept[11] != 'F') goto skip;
-					flags[0] = 's';
-					flags[11] = 'F';
+					if (accept[11] != 1) goto skip;
+					flags[0] = 0;
+					flags[11] = 1;
 					break;
 				}
 			}
@@ -294,9 +305,9 @@ void CGenCF1::Generate()
 				if (c[i] == nmax) {
 					culm_sum++;
 					if (culm_sum > 1) {
-						if (accept[12] != 'M') goto skip;
-						flags[0] = 's';
-						flags[12] = 'M';
+						if (accept[12] != 1) goto skip;
+						flags[0] = 0;
+						flags[12] = 1;
 						nflags[i][nflagsc[i]] = 12;
 						nflagsc[i]++;
 					}
@@ -305,11 +316,11 @@ void CGenCF1::Generate()
 			accepted2++;
 			// Calculate flag statistics
 			for (int i = 0; i < MAX_FLAGS; i++) {
-				if (flags[i] <= 'Z') fstat[i]++;
+				if (flags[i]) fstat[i]++;
 			}
 			// Check if flags are accepted
 			for (int i = 0; i < MAX_FLAGS; i++) {
-				if ((flags[i] <= 'Z') && (accept[i] > 'Z')) goto skip;
+				if ((flags[i]) && (!accept[i])) goto skip;
 			}
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
@@ -402,10 +413,12 @@ void CGenCF1::Generate()
 	CString* est = new CString;
 	CString st, st2;
 	for (int i = 0; i < MAX_FLAGS; i++) {
-		st.Format("%c-%.3f ", accept[i], (double)fstat[i]/(double)1000);
+		st.Format("%s-%.3f ", FlagName[i].Left(5), (double)fstat[i]/(double)1000);
 		st2 += st;
 	}
-	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s", c_len, max_interval, 100.0*(double)accepted / cycle, 100.0*(double)accepted4 / cycle, (double)accepted/1000, (double)accepted2/1000, (double)accepted3 / 1000, cycle/1000, st2);
+	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s", 
+		c_len, max_interval, 100.0*(double)accepted / cycle, 100.0*(double)accepted4 / cycle, (double)accepted/1000, (double)accepted2/1000, 
+		(double)accepted3 / 1000, cycle/1000, st2);
 	AppendLineToFile("GenCF1.log", *est + "\n");
 	WriteLog(3, est);
 	// Random shuffle
@@ -439,7 +452,7 @@ void CGenCF1::Generate()
 			}
 		}
 		// Adapt
-		Adapt(0, t_generated);
+		Adapt(0, t_generated-1);
 		// Send
 		t_sent = t_generated;
 		::PostMessage(m_hWnd, WM_GEN_FINISH, 2, 0);

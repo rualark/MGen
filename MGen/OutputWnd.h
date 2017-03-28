@@ -35,6 +35,7 @@ public:
 	afx_msg void OnPopupShow();
 	afx_msg void OnUpdateEditSaveline(CCmdUI *pCmdUI);
 	afx_msg void OnEditSaveline();
+	afx_msg void OnLbnDblclk();
 };
 
 class COutputWnd : public CDockablePane

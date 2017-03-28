@@ -174,6 +174,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
 
 void CGAdapt::Adapt(int step1, int step2)
 {
+	if (step2 < 0) return;
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	int ei; // ending step
 	int pi; // previous note step
