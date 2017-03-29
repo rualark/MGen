@@ -184,17 +184,39 @@ void CGenCF1::Generate()
 			wscount = 0;
 			wtcount = 0;
 			for (int i = 0; i < c_len; i++) {
-				// Count same letters in a row
-				if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) tcount++;
-				else tcount = 0;
-				if ((pc[i] == 1) || (pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) dcount++;
-				else dcount = 0;
-				if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) scount++;
-				else scount = 0;
-				// Check
+				// Count same and missing letters in a row
+				if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
+					tcount++;
+					wtcount = 0;
+				}
+				else {
+					tcount = 0;
+					wtcount++;
+				}
+				if ((pc[i] == 1) || (pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
+					dcount++;
+					wdcount = 0;
+				}
+				else {
+					dcount = 0;
+					wdcount++;
+				}
+				if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) {
+					scount++;
+					wscount = 0;
+				}
+				else {
+					scount = 0;
+					wscount++;
+				}
+				// Check same letters
 				if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, i);
 				if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, i);
 				if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, i);
+				// Check missing letters
+				if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, i);
+				if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, i);
+				if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, i);
 			}
 			for (int i = 0; i < c_len - 1; i++) {
 				// Tritone prohibit
