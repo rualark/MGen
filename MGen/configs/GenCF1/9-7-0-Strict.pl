@@ -9,21 +9,19 @@ max_tempo = 130 # Maximum tempo
 shuffle = 1
 
 # Rules
-Strict = 1
-accept = Sptjolcardgfm # Each upper case letter allows showing canti with specific properties:
-# 0  S - Strict
-# 1  p - Seventh
-# 2  t - Tritone
-# 3  j - Too many leaps
-# 4  o - Too long smooth movement
-# 5  l - Too long smooth movement in one direction (linear)
-# 6  c - Chain of leaps in one direction
-# 7  a - Leap is resolved after a second note
-# 8  r - Leap returns to same note
-# 9  d - Two notes repeat in contact
-# 10 g - Stagnation on one note
-# 11 f - Leap is not filled
-# 12 m - Multiple culminations
+Strict                  = 1
+Seventh                 = 0
+Tritone                 = 0
+Many leaps              = 0
+Long smooth             = 0 # Too long smooth movement
+Long line               = 0 # Too long smooth movement in one direction (linear)
+Leaps chain             = 0 # Chain of leaps in one direction
+Late leap resolution    = 0 # Leap is resolved after a second note
+Leap back               = 0 # Leap returns to same note
+Close repeat            = 0 # Two notes repeat in contact
+Stagnation              = 0 # Stagnation on one note
+Unfilled leap           = 0 # Leap is not filled
+Multiple culminations   = 0 
 
 max_unfill_steps = 7 # Number of steps to check filling
 max_repeat_mul = 2 # Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different

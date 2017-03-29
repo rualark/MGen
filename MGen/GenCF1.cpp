@@ -5,23 +5,25 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 13
+#define MAX_FLAGS 15
 
 
-const CString FlagName[] = {
-	"Strict", // 0 S
-	"Seventh", // 1 p
-	"Tritone", // 2 t
-	"Many leaps", // 3 j
-	"Long smooth", // 4 o
-	"Long line", // 5 l
-	"Leaps chain", // 6 c
-	"Late leap resolution", // 7 a
-	"Leap back", // 8 r
-	"Close repeat", // 9 d
-	"Stagnation", // 10 g
-	"Unfilled leap", // 11 f
-	"Multiple culminations" // 12 m
+const CString FlagName[MAX_FLAGS] = {
+	"Strict", // 0
+	"Seventh", // 1
+	"Tritone", // 2 
+	"Many leaps", // 3 
+	"Long smooth", // 4 
+	"Long line", // 5 
+	"Leaps chain", // 6 
+	"Late leap resolution", // 7 
+	"Leap back", // 8 
+	"Close repeat", // 9 
+	"Stagnation", // 10 
+	"Unfilled leap", // 11 
+	"Multiple culminations", // 12 
+	"Second to last not D", // 13
+	"Third to last is D" // 14
 };
 
 const Color FlagColor[] = {
@@ -37,22 +39,28 @@ const Color FlagColor[] = {
 	Color(0, 150, 0, 150), // 9 d
 	Color(0, 0, 150, 0), // 10 g
 	Color(0, 120, 0, 250), // 11 f
-	Color(0, 250, 100, 160) // 12 m
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160), // 12
+	Color(0, 250, 100, 160) // 12
 };
-
-// 0  S - strict
-// 1  p - sept
-// 2  t - tritone
-// 3  j - too many leaps
-// 4  o - too long smooth movement
-// 5  l - too long smooth movement in one direction (linear)
-// 6  c - chain of leaps in one direction
-// 7  a - leap is resolved after a second note
-// 8  r - leap returns to same note
-// 9  d - two notes repeat in contact
-// 10 g - stagnation on one note
-// 11 f - leap is not filled
-// 12 m - multiple culminations
 
 // Unskippable rules:
 // Total interval
@@ -102,10 +110,12 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	}
 }
 
+
 void CGenCF1::Generate()
 {
 	vector<int> c(c_len); // cantus (diatonic)
 	vector<int> cc(c_len); // cantus (chromatic)
+	vector<int> pc(c_len); // pitch class
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
 	vector<int> nstat(max_interval * 2 + 1);
@@ -152,8 +162,25 @@ void CGenCF1::Generate()
 			for (int i = 0; i < c_len; i++) {
 				nflagsc[i] = 0;
 				// Calculate chromatic positions
-				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i]+56) / 7)-8) * 12 + first_note; // Negative eight octaves reserve
-				//if ((c[i] < 0) && (c[i] % 7 != 0)) cc[i] -= 12; // Correct negative octaves
+				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + first_note; // Negative eight octaves reserve
+				// Calculate pitch class
+				pc[i] = (c[i] + 56) % 7;
+			}
+			// Wrong second to last note
+			if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) {
+				if (accept[13] != 1) goto skip;
+				flags[0] = 0;
+				flags[13] = 1;
+				nflags[c_len - 2][nflagsc[c_len - 2]] = 13;
+				nflagsc[c_len - 2]++;
+			}
+			// Wrong third to last note
+			if ((pc[c_len - 3] == 4) || (pc[c_len - 3] == 6)) {
+				if (accept[14] != 1) goto skip;
+				flags[0] = 0;
+				flags[14] = 1;
+				nflags[c_len - 3][nflagsc[c_len - 3]] = 14;
+				nflagsc[c_len - 3]++;
 			}
 			for (int i = 0; i < c_len - 1; i++) {
 				// Tritone prohibit
@@ -417,8 +444,8 @@ void CGenCF1::Generate()
 		st2 += st;
 	}
 	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s", 
-		c_len, max_interval, 100.0*(double)accepted / cycle, 100.0*(double)accepted4 / cycle, (double)accepted/1000, (double)accepted2/1000, 
-		(double)accepted3 / 1000, cycle/1000, st2);
+		c_len, max_interval, 100.0*(double)accepted / cycle, (double)accepted4/1000.0, (double)accepted/1000.0, (double)accepted2/1000.0, 
+		(double)accepted3 / 1000.0, cycle/1000, st2);
 	AppendLineToFile("GenCF1.log", *est + "\n");
 	WriteLog(3, est);
 	// Random shuffle

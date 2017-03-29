@@ -1,28 +1,29 @@
 # Main parameters
+t_cnt = 1000 # Maximum number of canti generated
 c_len = 9 # Number of measures in each cantus. Usually 9 to 11
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
-last_diatonic_int = -7 # Diatonic interval between first and last note
-min_interval = 1 # Minimum diatonic interval in cantus (7 = octave)
-first_note = 72 # Starting note of each cantus
-t_cnt = 1000 # Maximum number of canti generated
+first_note = C5 # Starting note of each cantus
+last_diatonic_int = 0 # Diatonic interval between first and last note
 min_tempo = 100 # Minimum tempo
 max_tempo = 130 # Maximum tempo
+shuffle = 1
 
 # Rules
-accept = Sptjolcardgfm # Each upper case letter allows showing canti with specific properties:
-# 0  S - Strict
-# 1  p - Seventh
-# 2  t - Tritone
-# 3  j - Too many leaps
-# 4  o - Too long smooth movement
-# 5  l - Too long smooth movement in one direction (linear)
-# 6  c - Chain of leaps in one direction
-# 7  a - Leap is resolved after a second note
-# 8  r - Leap returns to same note
-# 9  d - Two notes repeat in contact
-# 10 g - Stagnation on one note
-# 11 f - Leap is not filled
-# 12 m - Multiple culminations
+Strict                  = 0
+Seventh                 = 0
+Tritone                 = 0
+Many leaps              = 0
+Long smooth             = 0 # Too long smooth movement
+Long line               = 0 # Too long smooth movement in one direction (linear)
+Leaps chain             = 0 # Chain of leaps in one direction
+Late leap resolution    = 0 # Leap is resolved after a second note
+Leap back               = 0 # Leap returns to same note
+Close repeat            = 0 # Two notes repeat in contact
+Stagnation              = 0 # Stagnation on one note
+Unfilled leap           = 0 # Leap is not filled
+Multiple culminations   = 0 
+Second to last not D    = 1 # Second to last note is not Dominant
+Third to last is D      = 0 # Third to last note is Dominant
 
 max_unfill_steps = 7 # Number of steps to check filling
 max_repeat_mul = 2 # Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
