@@ -5,8 +5,8 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 15
-
+#define MAX_FLAGS 21
+#define FLAG(id, i) { if (accept[id] != 1) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -23,7 +23,13 @@ const CString FlagName[MAX_FLAGS] = {
 	"Unfilled leap", // 11 
 	"Multiple culminations", // 12 
 	"Second to last not D", // 13
-	"Third to last is D" // 14
+	"Third to last is D", // 14
+	"3 letters in a row", // 15
+	"4 letters in a row", // 16
+	">4 letters in a row", // 17
+	"4 step miss", // 18
+	"5 step miss", // 19
+	">5 step miss" // 20
 };
 
 const Color FlagColor[] = {
@@ -136,6 +142,7 @@ void CGenCF1::Generate()
 	long accepted = 0, accepted2 = 0, accepted3 = 0, accepted4 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, culm_sum, smooth_sum, smooth_sum2;
+	int dcount, scount, tcount, wdcount, wscount, wtcount;
 	int step = 0; // Global step
 	while (true) {
 		if (need_exit) return;
@@ -167,20 +174,27 @@ void CGenCF1::Generate()
 				pc[i] = (c[i] + 56) % 7;
 			}
 			// Wrong second to last note
-			if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) {
-				if (accept[13] != 1) goto skip;
-				flags[0] = 0;
-				flags[13] = 1;
-				nflags[c_len - 2][nflagsc[c_len - 2]] = 13;
-				nflagsc[c_len - 2]++;
-			}
+			if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
 			// Wrong third to last note
-			if ((pc[c_len - 3] == 4) || (pc[c_len - 3] == 6)) {
-				if (accept[14] != 1) goto skip;
-				flags[0] = 0;
-				flags[14] = 1;
-				nflags[c_len - 3][nflagsc[c_len - 3]] = 14;
-				nflagsc[c_len - 3]++;
+			if ((pc[c_len - 3] == 4) || (pc[c_len - 3] == 6)) FLAG(14, c_len - 3);
+			dcount = 0;
+			scount = 0;
+			tcount = 0;
+			wdcount = 0;
+			wscount = 0;
+			wtcount = 0;
+			for (int i = 0; i < c_len; i++) {
+				// Count same letters in a row
+				if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) tcount++;
+				else tcount = 0;
+				if ((pc[i] == 1) || (pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) dcount++;
+				else dcount = 0;
+				if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) scount++;
+				else scount = 0;
+				// Check
+				if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, i);
+				if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, i);
+				if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, i);
 			}
 			for (int i = 0; i < c_len - 1; i++) {
 				// Tritone prohibit
