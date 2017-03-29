@@ -9,7 +9,7 @@ max_tempo = 130 # Maximum tempo
 shuffle = 1
 
 # Rules
-Strict                  = 1
+Strict                  = 1 # No violated rules
 Seventh                 = 0
 Tritone                 = 0
 Many leaps              = 0
@@ -22,8 +22,8 @@ Close repeat            = 0 # Two notes repeat in contact
 Stagnation              = 0 # Stagnation on one note
 Unfilled leap           = 0 # Leap is not filled
 Multiple culminations   = 0 
-Second to last not D    = 0 # Second to last note is not Dominant
-Third to last is D      = 0 # Third to last note is Dominant
+2nd to last not D       = 0 # Second to last note is not Dominant
+3rd to last is D        = 0 # Third to last note is Dominant
 3 letters in a row      = 0 # 3 same letters (TDS) in possible chord names in a row
 4 letters in a row      = 0 # 4 same letters (TDS) in possible chord names in a row
 >4 letters in a row     = 0 # More than 4 same letters (TDS) in possible chord names in a row

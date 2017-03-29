@@ -22,8 +22,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"Stagnation", // 10 
 	"Unfilled leap", // 11 
 	"Multiple culminations", // 12 
-	"Second to last not D", // 13
-	"Third to last is D", // 14
+	"2nd to last not D", // 13
+	"3rd to last is D", // 14
 	"3 letters in a row", // 15
 	"4 letters in a row", // 16
 	">4 letters in a row", // 17
@@ -230,20 +230,10 @@ void CGenCF1::Generate()
 					if ((cc[i] % 12 == 5) && (cc[i - 1] % 12 != 4)) goto skip;
 					if ((cc[i + 1] % 12 == 5) && (cc[i + 2] % 12 != 4)) goto skip;
 					// Record tritone
-					if (accept[2] != 1) goto skip;
-					flags[0] = 0;
-					flags[2] = 1;
-					nflags[i][nflagsc[i]] = 2;
-					nflagsc[i]++;
+					FLAG(2, i);
 				}
 				// Sept prohibit
-				if (abs(c[i + 1] - c[i]) == 6) {
-					if (accept[1] != 1) goto skip;
-					flags[0] = 0;
-					flags[1] = 1;
-					nflags[i][nflagsc[i]] = 1;
-					nflagsc[i]++;
-				}
+				if (abs(c[i + 1] - c[i]) == 6) FLAG(1, i);
 				// Find all leaps
 				leap[i] = 0;
 				smooth[i] = 0;
@@ -262,74 +252,34 @@ void CGenCF1::Generate()
 				// Subtract old leap
 				if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
 				// Check if too many leaps
-				if (leap_sum > max_leaps) {
-					if (accept[3] != 1) goto skip;
-					flags[0] = 0;
-					flags[3] = 1;
-					nflags[i][nflagsc[i]] = 3;
-					nflagsc[i]++;
-				}
+				if (leap_sum > max_leaps) FLAG(3, i);
 				// Prohibit long smooth movement
 				if (smooth[i] != 0) smooth_sum++;
 				else smooth_sum = 0;
-				if (smooth_sum >= max_smooth) {
-					if (accept[4] != 1) goto skip;
-					flags[0] = 0;
-					flags[4] = 1;
-					nflags[i][nflagsc[i]] = 4;
-					nflagsc[i]++;
-				}
+				if (smooth_sum >= max_smooth) FLAG(4, i);
 				if (i < c_len - 2) {
 					// Prohibit long smooth movement in one direction
 					if (smooth[i] == smooth[i + 1]) smooth_sum2++;
 					else smooth_sum2 = 0;
-					if (smooth_sum2 >= max_smooth_direct - 1) {
-						if (accept[5] != 1) goto skip;
-						flags[0] = 0;
-						flags[5] = 1;
-						nflags[i][nflagsc[i]] = 5;
-						nflagsc[i]++;
-					}
+					if (smooth_sum2 >= max_smooth_direct - 1) FLAG(5, i);
 					// Check if leaps follow each other in same direction
 					if (leap[i] * leap[i + 1] > 0) {
 						// Check if leaps are long
 						if (c[i + 2] - c[i] > 4) goto skip;
-						if (accept[6] != 1) goto skip;
-						flags[0] = 0;
-						flags[6] = 1;
-						nflags[i][nflagsc[i]] = 6;
-						nflagsc[i]++;
+						FLAG(6, i);
 					}
 					// Check if melody direction changes after leap
 					if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
 						if (i < c_len - 3) {
 							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) goto skip;
-							if (flags[6] != 1) {
-								if (accept[7] != 1) goto skip;
-								flags[0] = 0;
-								flags[7] = 1;
-								nflags[i][nflagsc[i]] = 7;
-								nflagsc[i]++;
-							}
+							if (flags[6] != 1) FLAG(7, i);
 						}
 						else goto skip;
 					}
 					// Check if leap returns to same note
-					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
-						if (accept[8] != 1) goto skip;
-						flags[0] = 0;
-						flags[8] = 1;
-						nflags[i][nflagsc[i]] = 8;
-						nflagsc[i]++;
-					}
+					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) FLAG(8, i);
 					// Check if two notes repeat
-					if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) {
-						if (accept[9] != 1) goto skip;
-						flags[0] = 0;
-						flags[9] = 1;
-						nflags[i][nflagsc[i]] = 9;
-						nflagsc[i]++;
-					}
+					if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG(9, i);
 				}
 			}
 			// Clear nstat
@@ -345,13 +295,7 @@ void CGenCF1::Generate()
 				// Subtract old note
 				if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] + max_interval]--;
 				// Check if too many repeating notes
-				if (nstat[c[i] + max_interval] > stag_notes) {
-					if (accept[10] != 1) goto skip;
-					flags[0] = 0;
-					flags[10] = 1;
-					nflags[i][nflagsc[i]] = 10;
-					nflagsc[i]++;
-				}
+				if (nstat[c[i] + max_interval] > stag_notes) FLAG(10, i);
 			}
 			// Check note fill
 			for (int i = nmin; i <= nmax; i++) {
@@ -367,13 +311,7 @@ void CGenCF1::Generate()
 			for (int i = 0; i < c_len; i++) {
 				if (c[i] == nmax) {
 					culm_sum++;
-					if (culm_sum > 1) {
-						if (accept[12] != 1) goto skip;
-						flags[0] = 0;
-						flags[12] = 1;
-						nflags[i][nflagsc[i]] = 12;
-						nflagsc[i]++;
-					}
+					if (culm_sum > 1) FLAG(12, i);
 				}
 			}
 			accepted2++;
