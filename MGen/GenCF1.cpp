@@ -5,7 +5,7 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 30
+#define MAX_FLAGS 31
 // if (accept[id] != 1) goto skip; 
 #define FLAG(id, i) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
@@ -40,6 +40,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap chain", // 27
 	"Two 3rds after 6/8", // 28
 	"Late >5th resolution", // 29
+	"Prepared unresolved 3rd", // 30
 };
 
 const Color FlagColor[] = {
@@ -152,7 +153,7 @@ void CGenCF1::Generate()
 	double cycle = 0;
 	long accepted = 0, accepted2 = 0, accepted3 = 0, accepted4 = 0;
 	int finished = 0;
-	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos;
+	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
 	int step = 0; // Global step
 	while (true) {
@@ -305,17 +306,35 @@ void CGenCF1::Generate()
 					}
 					// Check if melody direction does not change after leap
 					else if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
-						if (i < c_len - 3) {
-							// Check if melody direction does not change change second note after leap
-							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
-							// If direction changes second note after leap, 
-							else {
-								// Check leap size
-								if (abs(c[i + 1] - c[i]) > 4) FLAG(29, i)
-								else FLAG(7, i);
-							}
+						// Check if this leap is 3rd
+						ok = 0;
+						if (abs(c[i + 1] - c[i]) == 2) {
+							pos = (c[i + 1] - c[i]) / 2;
+							// Check if 3rd was pre-filled
+							if ((i > 0) && (c[i - 1] == pos)) ok = 1;
+							else if ((i > 1) && (c[i - 2] == pos)) ok = 1;
+							else if ((i > 2) && (c[i - 3] == pos)) ok = 1;
+							else if ((i > 3) && (c[i - 4] == pos)) ok = 1;
+							// Check if 3rd has pre-leap
+							else if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) ok = 1;
+							else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) ok = 1;
+							else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) ok = 1;
 						}
-						else FLAG(26, i);
+						// If this 3rd was prepared
+						if (ok) FLAG(30, i)
+						else {
+							if (i < c_len - 3) {
+								// Check if melody direction does not change change second note after leap
+								if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
+								// If direction changes second note after leap
+								else {
+									// Check leap size
+									if (abs(c[i + 1] - c[i]) > 4) FLAG(29, i)
+									else FLAG(7, i);
+								}
+							}
+							else FLAG(26, i);
+						}
 					}
 					// Check if leap returns to same note
 					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
