@@ -26,7 +26,7 @@ protected:
 	int max_leap_steps = 7;
 	int stag_notes = 2; // Maximum allowed stag_notes (same notes) during stag_note_steps
 	int stag_note_steps = 7;
-	int min_tempo = 100;
-	int max_tempo = 130;
+	int min_tempo = 110;
+	int max_tempo = 120;
 	double random_choose = 100; // Percent of accepted canti to show and play
 };

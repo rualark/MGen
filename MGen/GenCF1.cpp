@@ -100,8 +100,9 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "max_leap_steps", &max_leap_steps);
 	CheckVar(sN, sV, "stag_notes", &stag_notes);
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
-	CheckVar(sN, sV, "min_tempo", &min_tempo);
-	CheckVar(sN, sV, "max_tempo", &max_tempo);
+	//CheckVar(sN, sV, "min_tempo", &min_tempo);
+	//CheckVar(sN, sV, "max_tempo", &max_tempo);
+	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "shuffle", &shuffle);
 	//LoadVar(sN, sV, "accept", &accept);

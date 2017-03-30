@@ -6,6 +6,7 @@ first_note = C5 # Starting note of each cantus
 last_diatonic_int = 0 # Diatonic interval between first and last note
 min_tempo = 100 # Minimum tempo
 max_tempo = 130 # Maximum tempo
+tempo = 100-130 # Tempo range
 shuffle = 1
 
 # Rules

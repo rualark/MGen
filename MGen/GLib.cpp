@@ -42,6 +42,30 @@ void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Des
 	}
 }
 
+void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, int * vmin, int* vmax)
+{
+	if (*sName == sSearch) {
+		int pos = sValue->Find("-");
+		if (pos == -1) {
+			CString* est = new CString;
+			est->Format("Error parsing range variable '%s'. Range format must be 'X-Y'. Not found '-' symbol in string '%s'.", *sName, *sValue);
+			WriteLog(1, est);
+		}
+		else {
+			CString st, st2;
+			// Get min and max values
+			st = sValue->Left(pos);
+			st2 = sValue->Mid(pos+1);
+			// Trim
+			st.Trim();
+			st2.Trim();
+			// Load values
+			*vmin = atoi(st);
+			*vmax = atoi(st2);
+		}
+	}
+}
+
 void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, double * Dest)
 {
 	if (*sName == sSearch) {
