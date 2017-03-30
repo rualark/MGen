@@ -5,14 +5,14 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 31
+#define MAX_FLAGS 32
 // if (accept[id] != 1) goto skip; 
 #define FLAG(id, i) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
 	"Seventh", // 1
-	"Tritone", // 2 
+	"Tritone resolved", // 2 
 	"Many leaps", // 3 
 	"Long smooth", // 4 
 	"Long line", // 5 
@@ -41,6 +41,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Two 3rds after 6/8", // 28
 	"Late >5th resolution", // 29
 	"Prepared unresolved 3rd", // 30
+	"Tritone unresolved", // 31
 };
 
 const Color FlagColor[] = {
@@ -234,15 +235,14 @@ void CGenCF1::Generate()
 				// Tritone prohibit
 				if (abs(cc[i+1] - cc[i]) == 6) {
 				  // Check if tritone is first or last step
-					if (i > c_len - 3) goto skip;
-					if (i < 1) goto skip;
+					if (i > c_len - 3) FLAG(31, i)
+					//if (i < 1) FLAG(31, i);
 					// Check if resolution is correct
-					if ((cc[i] % 12 == 11) && (cc[i - 1] % 12 != 0)) goto skip;
-					if ((cc[i + 1] % 12 == 11) && (cc[i + 2] % 12 != 0)) goto skip;
-					if ((cc[i] % 12 == 5) && (cc[i - 1] % 12 != 4)) goto skip;
-					if ((cc[i + 1] % 12 == 5) && (cc[i + 2] % 12 != 4)) goto skip;
-					// Record tritone
-					FLAG(2, i);
+					else if (cc[i + 1] % 12 == 5) FLAG(31, i)
+					else if (cc[i + 2] % 12 != 0) FLAG(31, i)
+					else if (cc[i - 1] % 12 != 4) FLAG(31, i)
+					// Record resolved tritone
+					else FLAG(2, i);
 				}
 				// Sept prohibit
 				if (abs(c[i + 1] - c[i]) == 6) FLAG(1, i);

@@ -10,7 +10,8 @@ shuffle = 1
 # Rules: 0 - show only 0, 1 - show 0 or 1, 2 - show only 1
 Strict                    = 0 # No violated rules
 Seventh                   = 0 # Seventh interval leap
-Tritone                   = 0
+Tritone resolved          = 0 # Tritone is prepared by E and resolved to B
+Tritone unresolved        = 1 # Tritone is not resolved correctly
 Many leaps                = 0 # Maximum allowed max_leaps during max_leap_steps
 Many leaps+               = 0 # Maximum allowed max_leaps2 during max_leap_steps
 Long smooth               = 0 # Too long smooth movement
@@ -39,7 +40,7 @@ Last leap                 = 0 # Last step is a leap
 Unfilled leap             = 0 # Leap is not filled
 Leap unresolved           = 0 # Leap unresolved during two next steps (movement direction does not change)
 Leap chain                = 0 # Chain of two leaps in one direction
-Prepared unresolved 3rd   = 1 # 3rd is unresolved, but was prepared by filling or leap before
+Prepared unresolved 3rd   = 0 # 3rd is unresolved, but was prepared by filling or leap before
 
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling
 max_smooth_direct = 5 # Maximum linear movement in one direction allowed (in steps)
