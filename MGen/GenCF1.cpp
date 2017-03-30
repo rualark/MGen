@@ -5,7 +5,7 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 29
+#define MAX_FLAGS 30
 // if (accept[id] != 1) goto skip; 
 #define FLAG(id, i) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
@@ -17,7 +17,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Long smooth", // 4 
 	"Long line", // 5 
 	"Two 3rds", // 6 
-	"Late leap resolution", // 7 
+	"Late >4th resolution", // 7 
 	"Leap back <5th", // 8 
 	"Close repeat", // 9 
 	"Stagnation", // 10 
@@ -39,6 +39,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap unresolved", // 26
 	"Leap chain", // 27
 	"Two 3rds after 6/8", // 28
+	"Late <5th resolution", // 29
 };
 
 const Color FlagColor[] = {
@@ -81,8 +82,6 @@ const Color FlagColor[] = {
 // Total interval
 // Note repeats note of previous measure
 // Tritone is incorrectly resolved
-// After leap two next notes move same direction
-// Leap chain, when one of leaps is longer then 3rd
 
 CGenCF1::CGenCF1()
 {
@@ -304,13 +303,17 @@ void CGenCF1::Generate()
 							else FLAG(6, i);
 						}
 					}
-					// Check if melody direction changes after leap
+					// Check if melody direction does not change after leap
 					else if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
 						if (i < c_len - 3) {
-							// Check if melody direction changes second note after leap
+							// Check if melody direction does not change change second note after leap
 							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
 							// If direction changes second note after leap, 
-							else FLAG(7, i);
+							else {
+								// Check leap size
+								if (abs(c[i + 1] - c[i]) > 3) FLAG(7, i)
+								else FLAG(29, i);
+							}
 						}
 						else FLAG(26, i);
 					}
