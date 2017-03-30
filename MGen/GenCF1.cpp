@@ -5,7 +5,7 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 21
+#define MAX_FLAGS 26
 #define FLAG(id, i) { if (accept[id] != 1) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
@@ -17,10 +17,10 @@ const CString FlagName[MAX_FLAGS] = {
 	"Long line", // 5 
 	"Leaps chain", // 6 
 	"Late leap resolution", // 7 
-	"Leap back", // 8 
+	"Leap back <5th", // 8 
 	"Close repeat", // 9 
 	"Stagnation", // 10 
-	"Unfilled leap", // 11 
+	"Noncontiguous", // 11 
 	"Multiple culminations", // 12 
 	"2nd to last not D", // 13
 	"3rd to last is D", // 14
@@ -29,7 +29,12 @@ const CString FlagName[MAX_FLAGS] = {
 	">4 letters in a row", // 17
 	"4 step miss", // 18
 	"5 step miss", // 19
-	">5 step miss" // 20
+	">5 step miss", // 20
+	"Late culmination", // 21
+	"Leap back >4th", // 22
+	"Last leap", // 23
+	"Unfilled leap", // 24
+	"Many leaps+", // 25
 };
 
 const Color FlagColor[] = {
@@ -46,26 +51,26 @@ const Color FlagColor[] = {
 	Color(0, 0, 150, 0), // 10 g
 	Color(0, 120, 0, 250), // 11 f
 	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160), // 12
-	Color(0, 250, 100, 160) // 12
+	Color(0, 250, 100, 160), // 13
+	Color(0, 250, 100, 160), // 14
+	Color(0, 250, 100, 160), // 15
+	Color(0, 250, 100, 160), // 16
+	Color(0, 250, 100, 160), // 17
+	Color(0, 250, 100, 160), // 18
+	Color(0, 250, 100, 160), // 19
+	Color(0, 250, 100, 160), // 20
+	Color(0, 250, 100, 160), // 21
+	Color(0, 250, 100, 160), // 22
+	Color(0, 250, 100, 160), // 23
+	Color(0, 250, 100, 160), // 24
+	Color(0, 250, 100, 160), // 25
+	Color(0, 250, 100, 160), // 26
+	Color(0, 250, 100, 160), // 27
+	Color(0, 250, 100, 160), // 28
+	Color(0, 250, 100, 160), // 29
+	Color(0, 250, 100, 160), // 30
+	Color(0, 250, 100, 160), // 31
+	Color(0, 250, 100, 160) // 32
 };
 
 // Unskippable rules:
@@ -92,11 +97,12 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "c_len", &c_len);
 	LoadNote(sN, sV, "first_note", &first_note);
 	CheckVar(sN, sV, "last_diatonic_int", &last_diatonic_int);
-	CheckVar(sN, sV, "max_unfill_steps", &max_unfill_steps);
+	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
 	CheckVar(sN, sV, "max_repeat_mul", &max_repeat_mul);
 	CheckVar(sN, sV, "max_smooth_direct", &max_smooth_direct);
 	CheckVar(sN, sV, "max_smooth", &max_smooth);
 	CheckVar(sN, sV, "max_leaps", &max_leaps);
+	CheckVar(sN, sV, "max_leaps2", &max_leaps2);
 	CheckVar(sN, sV, "max_leap_steps", &max_leap_steps);
 	CheckVar(sN, sV, "stag_notes", &stag_notes);
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
@@ -127,6 +133,7 @@ void CGenCF1::Generate()
 	vector<int> smooth(c_len);
 	vector<int> nstat(max_interval * 2 + 1);
 	vector<int> nstat2(max_interval * 2 + 1);
+	vector<int> nstat3(max_interval * 2 + 1);
 	vector<long> fstat(MAX_FLAGS); // number of canti with each flag
 	vector<unsigned char>  flags; // Flags for whole cantus
 	vector<vector<unsigned char>> nflags = vector<vector<unsigned char>>(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
@@ -135,14 +142,14 @@ void CGenCF1::Generate()
 	// Set first and last notes
 	c[0] = 0;
 	c[c_len-1] = last_diatonic_int;
-	// Set middle notes
+	// Set middle notes to minimum
 	for (int i = 1; i < c_len-1; i++) c[i] = -max_interval;
 	// Walk all variants
 	int p = c_len - 2; // Minimal position in array to cycle
 	double cycle = 0;
 	long accepted = 0, accepted2 = 0, accepted3 = 0, accepted4 = 0;
 	int finished = 0;
-	int nmin, nmax, leap_sum, culm_sum, smooth_sum, smooth_sum2;
+	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
 	int step = 0; // Global step
 	while (true) {
@@ -245,15 +252,35 @@ void CGenCF1::Generate()
 				else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
 			}
 			leap_sum = 0;
+			max_leap_sum = 0;
 			smooth_sum = 0;
 			smooth_sum2 = 0;
 			for (int i = 0; i < c_len - 1; i++) {
 				// Add new leap
-				if (leap[i] != 0) leap_sum++;
+				if (leap[i] != 0) {
+					leap_sum++;
+					// Check if  leap is filled
+					pos = i + 2 + (abs(c[i + 1] - c[i]) - 1) * fill_steps_mul;
+					if (pos > c_len - 1) pos = c_len - 1;
+					// Zero array
+					fill(nstat3.begin(), nstat3.end(), 0);
+					// Fill all notes
+					for (int x = i + 2; x <= pos; x++) nstat3[c[x] + max_interval]++;
+					// Check if leap is filled
+					if (c[i] < c[i + 1]) {
+						for (int x = c[i]+1; x < c[i + 1]; x++) if (!nstat3[x + max_interval]) FLAG(24, i);
+					}
+					else {
+						for (int x = c[i+1]+1; x < c[i]; x++) if (!nstat3[x + max_interval]) FLAG(24, i);
+					}
+				}
 				// Subtract old leap
 				if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
-				// Check if too many leaps
-				if (leap_sum > max_leaps) FLAG(3, i);
+				// Get maximum leap_sum
+				if (leap_sum > max_leap_sum) {
+					max_leap_sum = leap_sum;
+					leap_sum_i = i;
+				}
 				// Prohibit long smooth movement
 				if (smooth[i] != 0) smooth_sum++;
 				else smooth_sum = 0;
@@ -278,10 +305,18 @@ void CGenCF1::Generate()
 						else goto skip;
 					}
 					// Check if leap returns to same note
-					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) FLAG(8, i);
+					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
+						if (abs(c[i] - c[i + 1]) > 3) FLAG(22, i)
+						else FLAG(8, i);
+					}
 					// Check if two notes repeat
 					if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG(9, i);
 				}
+			}
+			// Check if too many leaps
+			if (max_leap_sum > max_leaps) {
+				if (leap_sum > max_leaps2) FLAG(25, leap_sum_i)
+				else FLAG(3, leap_sum_i);
 			}
 			// Clear nstat
 			for (int i = 0; i <= max_interval * 2; i++) {
@@ -291,8 +326,8 @@ void CGenCF1::Generate()
 			for (int i = 0; i < c_len; i++) {
 				// Prohibit stagnation
 				// Add new note
-				nstat[c[i] + max_interval]++;
-				nstat2[c[i] + max_interval]++;
+				nstat[c[i] + max_interval]++; // Stagnation array
+				nstat2[c[i] + max_interval]++; // Note fill array
 				// Subtract old note
 				if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] + max_interval]--;
 				// Check if too many repeating notes
@@ -312,9 +347,14 @@ void CGenCF1::Generate()
 			for (int i = 0; i < c_len; i++) {
 				if (c[i] == nmax) {
 					culm_sum++;
+					culm_step = i;
 					if (culm_sum > 1) FLAG(12, i);
 				}
 			}
+			// Prohibit culminations at last steps
+			if (culm_step > c_len - 4) FLAG(21, culm_step);
+			// Prohibit last leap
+			if (leap[c_len-2]) FLAG(23, c_len-1);
 			accepted2++;
 			// Calculate flag statistics
 			for (int i = 0; i < MAX_FLAGS; i++) {
@@ -415,7 +455,7 @@ void CGenCF1::Generate()
 	CString* est = new CString;
 	CString st, st2;
 	for (int i = 0; i < MAX_FLAGS; i++) {
-		st.Format("%s-%.3f ", FlagName[i].Left(5), (double)fstat[i]/(double)1000);
+		st.Format("%s-%.3f ", FlagName[i].Left(10), (double)fstat[i]/(double)1000);
 		st2 += st;
 	}
 	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s", 
