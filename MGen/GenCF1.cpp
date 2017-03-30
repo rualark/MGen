@@ -17,7 +17,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Long smooth", // 4 
 	"Long line", // 5 
 	"Two 3rds", // 6 
-	"Late >4th resolution", // 7 
+	"Late <6th resolution", // 7 
 	"Leap back <5th", // 8 
 	"Close repeat", // 9 
 	"Stagnation", // 10 
@@ -39,7 +39,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap unresolved", // 26
 	"Leap chain", // 27
 	"Two 3rds after 6/8", // 28
-	"Late <5th resolution", // 29
+	"Late >5th resolution", // 29
 };
 
 const Color FlagColor[] = {
@@ -311,8 +311,8 @@ void CGenCF1::Generate()
 							// If direction changes second note after leap, 
 							else {
 								// Check leap size
-								if (abs(c[i + 1] - c[i]) > 3) FLAG(7, i)
-								else FLAG(29, i);
+								if (abs(c[i + 1] - c[i]) > 4) FLAG(29, i)
+								else FLAG(7, i);
 							}
 						}
 						else FLAG(26, i);
