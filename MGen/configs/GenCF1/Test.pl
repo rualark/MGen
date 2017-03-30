@@ -7,15 +7,16 @@ last_diatonic_int = 0 # Diatonic interval between first and last note
 tempo = 100-130 # Tempo range
 shuffle = 1
 
-# Rules
+# Rules: 0 - show only 0, 1 - show 0 or 1, 2 - show only 1
 Strict                    = 0 # No violated rules
 Seventh                   = 0 # Seventh interval leap
 Tritone                   = 0
 Many leaps                = 0 # Maximum allowed max_leaps during max_leap_steps
-Many leaps+               = 1 # Maximum allowed max_leaps2 during max_leap_steps
+Many leaps+               = 0 # Maximum allowed max_leaps2 during max_leap_steps
 Long smooth               = 0 # Too long smooth movement
 Long line                 = 0 # Too long smooth movement in one direction (linear)
-Leaps chain               = 0 # Chain of leaps in one direction
+Two 3rds                  = 0 # Chain of two thirds in one direction
+Two 3rds after 6/8        = 0 # Chain of two thirds in one direction after 6th or octave
 Late leap resolution >4th = 0 # Leap greater than 4th is resolved after a second note
 Late leap resolution <5th = 0 # Leap smaller than 4th is resolved after a second note
 Leap back <5th            = 0 # Leap returns to same note (in case leap is equal or less than 4th)
@@ -36,6 +37,8 @@ Last 3 step culmination   = 0 # If culmination is at the last three steps
 Late culmination          = 0 # Culmination at last three steps
 Last leap                 = 0 # Last step is a leap
 Unfilled leap             = 0 # Leap is not filled
+Leap unresolved           = 0 # Leap unresolved during two next steps (movement direction does not change)
+Leap chain                = 0 # Chain of two leaps in one direction
 
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling
 max_smooth_direct = 5 # Maximum linear movement in one direction allowed (in steps)

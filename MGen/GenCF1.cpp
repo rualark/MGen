@@ -5,8 +5,9 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 26
-#define FLAG(id, i) { if (accept[id] != 1) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
+#define MAX_FLAGS 29
+// if (accept[id] != 1) goto skip; 
+#define FLAG(id, i) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -15,7 +16,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Many leaps", // 3 
 	"Long smooth", // 4 
 	"Long line", // 5 
-	"Leaps chain", // 6 
+	"Two 3rds", // 6 
 	"Late leap resolution", // 7 
 	"Leap back <5th", // 8 
 	"Close repeat", // 9 
@@ -35,6 +36,9 @@ const CString FlagName[MAX_FLAGS] = {
 	"Last leap", // 23
 	"Unfilled leap", // 24
 	"Many leaps+", // 25
+	"Leap unresolved", // 26
+	"Leap chain", // 27
+	"Two 3rds after 6/8", // 28
 };
 
 const Color FlagColor[] = {
@@ -293,16 +297,22 @@ void CGenCF1::Generate()
 					// Check if leaps follow each other in same direction
 					if (leap[i] * leap[i + 1] > 0) {
 						// Check if leaps are long
-						if (c[i + 2] - c[i] > 4) goto skip;
-						FLAG(6, i);
+						if (abs(c[i + 2] - c[i]) > 4) FLAG(27, i)
+						// If leaps are 3rds
+						else {
+							if ((i>0) && ((leap[i] * (c[i] - c[i - 1]) == -5) || (leap[i]*(c[i] - c[i-1]) == -7))) FLAG(28, i)
+							else FLAG(6, i);
+						}
 					}
 					// Check if melody direction changes after leap
-					if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
+					else if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
 						if (i < c_len - 3) {
-							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) goto skip;
-							if (flags[6] != 1) FLAG(7, i);
+							// Check if melody direction changes second note after leap
+							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
+							// If direction changes second note after leap, 
+							else FLAG(7, i);
 						}
-						else goto skip;
+						else FLAG(26, i);
 					}
 					// Check if leap returns to same note
 					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
@@ -363,6 +373,7 @@ void CGenCF1::Generate()
 			// Check if flags are accepted
 			for (int i = 0; i < MAX_FLAGS; i++) {
 				if ((flags[i]) && (!accept[i])) goto skip;
+				if ((!flags[i]) && (accept[i] == 2)) goto skip;
 			}
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
