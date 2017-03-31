@@ -22,7 +22,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	MidiFile midifile;
 	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
 	int tpq = 120;                // ticks per quarter note
-	int tpñ = 60 * midifile_tpq_mul; // ticks per croch
+	int tpñ = 60 * midifile_tpq_mul; // ticks per croche
 	midifile.setTicksPerQuarterNote(tpq);
 	int track = 0;
 	int channel = 0;
@@ -66,40 +66,85 @@ void CGMidi::LoadMidi(CString dir, CString fname)
 	midifile.doTimeAnalysis();
 
 	midifile.absoluteTicks();
+	
+	int tpq = midifile.getTicksPerQuarterNote();
+	int tpc = (double)tpq / (double)2 / (double)midifile_tpq_mul; // ticks per croche
 
 	double lastNoteFinished = 0.0;
-	int x = 0; // Current note
+	int last_step = 0; 
+	// Load tempo
+	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		for (int i = 0; i < midifile[track].size(); i++) {
+			MidiEvent* mev = &midifile[track][i];
+			if (mev->isTempo()) {
+				int pos = mev->tick / tpc;
+				if (pos >= t_allocated) ResizeVectors(t_allocated * 2);
+				tempo[pos] = mev->getTempoBPM();
+				if (pos > last_step) last_step = pos;
+			}
+		}
+	}
+	// Fill tempo
+	for (int z = 1; z < last_step; z++) {
+		if (tempo[z] == 0) tempo[z] = tempo[z - 1];
+	}
+	UpdateTempoMinMax(0, last_step - 1);
+	last_step = 0;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
-			if (!mev->isNoteOn() || mev->getLinkedEvent() == NULL) {
-				continue;
+			if (mev->isNoteOn()) {
+				int v = mev->getChannel();
+				// Resize vectors for new voice number
+				if (v > v_cnt - 1) {
+					v_cnt = v + 1;
+					int size = t_allocated;
+					t_allocated = 0;
+					ResizeVectors(size);
+				}
+				int pos = mev->tick / tpc;
+				int nlen = round(mev->getTickDuration() / tpc);
+				if (nlen < 1) nlen = 1;
+				if (pos + nlen >= t_allocated) ResizeVectors(t_allocated * 2);
+				// Search for last note
+				if ((pos > 0) && (note[pos - 1][v] == 0)) {
+					int last_pause = pos - 1;
+					for (int z = pos - 1; z >= 0; z--) {
+						if (note[z][v] != 0) break;
+						last_pause = z;
+					}
+					// Set previous pause
+					for (int z = last_pause; z < pos; z++) {
+						len[z][v] = pos - last_pause;
+						dyn[z][v] = 0;
+						pause[z][v] = 1;
+						coff[z][v] = z - last_pause;
+						if (tempo[z] == 0) tempo[z] = tempo[z - 1];
+					}
+					// Set additional variables
+					CountOff(last_pause, pos - 1);
+					CountTime(last_pause, pos - 1);
+				}
+				// Set note steps
+				for (int z = 0; z < nlen; z++) {
+					note[pos+z][v] = mev->getKeyNumber();
+					len[pos + z][v] = nlen;
+					dyn[pos + z][v] = mev->getVelocity();
+					pause[pos + z][v] = 0;
+					coff[pos + z][v] = z;
+					if (tempo[pos + z] == 0) tempo[pos + z] = tempo[pos + z - 1];
+				}
+				// Set additional variables
+				CountOff(pos, pos + nlen - 1);
+				CountTime(pos, pos + nlen - 1);
+				UpdateNoteMinMax(pos, pos + nlen - 1);
+				if (pos + nlen - 1 > last_step) last_step = pos + nlen - 1;
+				t_generated = pos;
 			}
-
-			if (x >= t_allocated) ResizeVectors(t_allocated * 2);
-			// pause, silence
-			int silence = static_cast<int>((midifile.getTimeInSeconds(mev->tick) - lastNoteFinished) * 1000 * 1000);
-	
-			double duration = mev->getDurationInSeconds();
-
-			note[x][0] = mev->getKeyNumber();
-			len[x][0] = 1;
-			dyn[x][0] = 100;
-			tempo[x] = 100;
-			pause[x][0] = 0;
-			coff[x][0] = 0;
-			x++;
-
-			MidiEvent* off = mev->getLinkedEvent();
-			lastNoteFinished = midifile.getTimeInSeconds(off->tick);
 		}
 	}
-	CountOff(0, x-1);
-	CountTime(0, x-1);
-	UpdateNoteMinMax(0, x - 1);
-	UpdateTempoMinMax(0, x - 1);
-	Adapt(0, x - 1);
-	t_generated = x;
+	// Send last
+	t_generated = last_step + 1;
 }
 
 void CGMidi::StartMIDI(int midi_device_i, int latency, int from)

@@ -111,6 +111,7 @@ public:
 	void InitRandom();
 	void TestRandom(); // Tests random generator
 	static void WriteLog(int i, CString * pST);
+	static void WriteLog(int i, CString st);
 
 public:
 	// Thread interface

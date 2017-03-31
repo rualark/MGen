@@ -15,7 +15,8 @@ CGenMP1::~CGenMP1()
 
 void CGenMP1::Generate()
 {
-	LoadMidi("load", "test");
+	LoadMidi("load", "hamlet");
+	Adapt(0, t_generated - 1);
 	t_sent = t_generated;
 }
 

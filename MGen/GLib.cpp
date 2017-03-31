@@ -390,6 +390,13 @@ void CGLib::WriteLog(int i, CString* pST)
 	else delete pST;
 }
 
+void CGLib::WriteLog(int i, CString st)
+{
+	CString *est = new CString;
+	*est = st;
+	WriteLog(i, est);
+}
+
 int CGLib::randbw(int n1, int n2)
 {
 	int re = (double)(n2 - n1 + 1) * rand2() / (double)RAND_MAX;
