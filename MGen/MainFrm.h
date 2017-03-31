@@ -17,6 +17,7 @@
 #include "GenCF1.h"
 #include "GenCF2.h"
 #include "GenRS1.h"
+#include "GenMP1.h"
 
 #define MIN_HZOOM 80
 #define MAX_HZOOM 500

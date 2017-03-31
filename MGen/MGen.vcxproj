@@ -190,6 +190,7 @@
     <ClInclude Include="GAdapt.h" />
     <ClInclude Include="GenCF1.h" />
     <ClInclude Include="GenCF2.h" />
+    <ClInclude Include="GenMP1.h" />
     <ClInclude Include="GenRS1.h" />
     <ClInclude Include="GLib.h" />
     <ClInclude Include="GMidi.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="GAdapt.cpp" />
     <ClCompile Include="GenCF1.cpp" />
     <ClCompile Include="GenCF2.cpp" />
+    <ClCompile Include="GenMP1.cpp" />
     <ClCompile Include="GenRS1.cpp" />
     <ClCompile Include="GLib.cpp" />
     <ClCompile Include="GMidi.cpp" />

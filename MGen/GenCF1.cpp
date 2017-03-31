@@ -5,9 +5,8 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 32
-// if (accept[id] != 1) goto skip; 
-#define FLAG(id, i) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
+#define MAX_FLAGS 35
+#define FLAG(id, i) { if (accept[id] < 1) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -24,7 +23,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Noncontiguous", // 11 
 	"Multiple culminations", // 12 
 	"2nd to last not D", // 13
-	"3rd to last is D", // 14
+	"3rd to last is CEG", // 14
 	"3 letters in a row", // 15
 	"4 letters in a row", // 16
 	">4 letters in a row", // 17
@@ -42,6 +41,47 @@ const CString FlagName[MAX_FLAGS] = {
 	"Late >5th resolution", // 29
 	"Prepared unresolved 3rd", // 30
 	"Tritone unresolved", // 31
+	"Tritone culmination", // 32
+	"Leap to leap resolution", // 33
+	"3rd to last is leading", // 34
+};
+
+const int SeverityFlag[MAX_FLAGS] = {
+	0, // "Strict", // 0
+	1, // "Seventh", // 1
+	2, // "Tritone resolved", // 2 
+	3, // "Many leaps", // 3 
+	4, // "Long smooth", // 4 
+	5, // "Long line", // 5 
+	6, // "Two 3rds", // 6 
+	7, // "Late <6th resolution", // 7 
+	8, // "Leap back <5th", // 8 
+	9, // "Close repeat", // 9 
+	10, // "Stagnation", // 10 
+	11, // "Noncontiguous", // 11 
+	12, // "Multiple culminations", // 12 
+	13, // "2nd to last not D", // 13
+	14, // "3rd to last is CEG", // 14
+	15, // "3 letters in a row", // 15
+	16, // "4 letters in a row", // 16
+	17, // ">4 letters in a row", // 17
+	18, // "4 step miss", // 18
+	19, // "5 step miss", // 19
+	20, // ">5 step miss", // 20
+	21, // "Late culmination", // 21
+	22, // "Leap back >4th", // 22
+	23, // "Last leap", // 23
+	24, // "Unfilled leap", // 24
+	25, // "Many leaps+", // 25
+	26, // "Leap unresolved", // 26
+	27, // "Leap chain", // 27
+	28, // "Two 3rds after 6/8", // 28
+	29, // "Late >5th resolution", // 29
+	30, // "Prepared unresolved 3rd", // 30
+	31, // "Tritone unresolved", // 31
+	32, // "Tritone culmination", // 32
+	33, // "Leap to leap resolution", // 33
+	34, // "3rd to last is leading", // 34
 };
 
 const Color FlagColor[] = {
@@ -77,13 +117,18 @@ const Color FlagColor[] = {
 	Color(0, 250, 100, 160), // 29
 	Color(0, 250, 100, 160), // 30
 	Color(0, 250, 100, 160), // 31
+	Color(0, 250, 100, 160), // 31
+	Color(0, 250, 100, 160), // 31
+	Color(0, 250, 100, 160), // 31
+	Color(0, 250, 100, 160), // 31
+	Color(0, 250, 100, 160), // 31
+	Color(0, 250, 100, 160), // 31
 	Color(0, 250, 100, 160) // 32
 };
 
 // Unskippable rules:
 // Total interval
 // Note repeats note of previous measure
-// Tritone is incorrectly resolved
 
 CGenCF1::CGenCF1()
 {
@@ -111,12 +156,9 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "max_leap_steps", &max_leap_steps);
 	CheckVar(sN, sV, "stag_notes", &stag_notes);
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
-	//CheckVar(sN, sV, "min_tempo", &min_tempo);
-	//CheckVar(sN, sV, "max_tempo", &max_tempo);
 	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "shuffle", &shuffle);
-	//LoadVar(sN, sV, "accept", &accept);
 	// Load accept
 	CString st;
 	for (int i = 0; i < MAX_FLAGS; i++) {
@@ -140,15 +182,21 @@ void CGenCF1::Generate()
 	vector<int> nstat2(max_interval * 2 + 1);
 	vector<int> nstat3(max_interval * 2 + 1);
 	vector<long> fstat(MAX_FLAGS); // number of canti with each flag
-	vector<unsigned char>  flags; // Flags for whole cantus
+	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
+	vector<unsigned char>  flag_sev(MAX_FLAGS); // Get severity by flag id
+	vector<Color>  flag_color(MAX_FLAGS); // Flag colors
 	vector<vector<unsigned char>> nflags = vector<vector<unsigned char>>(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
 	vector<unsigned char> nflagsc(c_len); // number of flags for each note
-	flags.resize(MAX_FLAGS);
 	// Set first and last notes
 	c[0] = 0;
 	c[c_len-1] = last_diatonic_int;
+	// Set priority
+	for (int i = 0; i < MAX_FLAGS; i++) {
+		flag_sev[SeverityFlag[i]] = i;
+		flag_color[SeverityFlag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
+	}
 	// Set middle notes to minimum
-	for (int i = 1; i < c_len-1; i++) c[i] = -max_interval;
+	for (int i = 1; i < c_len - 1; i++) c[i] = -max_interval;
 	// Walk all variants
 	int p = c_len - 2; // Minimal position in array to cycle
 	double cycle = 0;
@@ -189,7 +237,9 @@ void CGenCF1::Generate()
 			// Wrong second to last note
 			if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
 			// Wrong third to last note
-			if ((pc[c_len - 3] == 4) || (pc[c_len - 3] == 6)) FLAG(14, c_len - 3);
+			if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG(14, c_len - 3);
+			// Leading third to last note
+			if (pc[c_len - 3] == 6) FLAG(34, c_len - 3);
 			dcount = 0;
 			scount = 0;
 			tcount = 0;
@@ -234,7 +284,9 @@ void CGenCF1::Generate()
 			for (int i = 0; i < c_len - 1; i++) {
 				// Tritone prohibit
 				if (abs(cc[i+1] - cc[i]) == 6) {
-				  // Check if tritone is first or last step
+					// Check if tritone is highest leap
+					if ((c[i] == nmax) || (c[i+1] == nmax)) FLAG(32, i)
+					// Check if tritone is first or last step
 					if (i > c_len - 3) FLAG(31, i)
 					//if (i < 1) FLAG(31, i);
 					// Check if resolution is correct
@@ -336,6 +388,11 @@ void CGenCF1::Generate()
 							else FLAG(26, i);
 						}
 					}
+					// If melody direction changes after leap
+					else {
+						// Check if it is a leap to leap resolution
+						if (leap[i] * leap[i + 1] != 0) FLAG(33, i);
+					}
 					// Check if leap returns to same note
 					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
 						if (abs(c[i] - c[i + 1]) > 3) FLAG(22, i)
@@ -404,25 +461,26 @@ void CGenCF1::Generate()
 			if (accepted < t_cnt) {
 				accepted++;
 				Sleep(sleep_ms);
-				//Color ccolor = Color(0, randbw(0, 180), randbw(0, 180), randbw(0, 180));
 				// Copy cantus to output
 				if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
-				//comment[step][0].Format("c%ld a%ld", cycle, accepted);
 				for (int x = step; x < step + c_len; x++) {
-					//color[x][0] = ccolor;
 					// Set flag color
 					color[x][0] = FlagColor[0];
-					//for (int i = 0; i < MAX_FLAGS; i++) if (flags[i] <= 'Z') color[x][0] = FlagColor[i];
+					int current_severity = -1;
 					if (flags[11] == 'F') {
-						color[x][0] = FlagColor[11];
+						color[x][0] = flag_color[11];
+						current_severity = flag_sev[11];
 						if (x == step)  comment[step][0] += "This cantus has unfilled loop. ";
 					}
 					// Set nflag color
-					if (nflagsc[x - step] > 0) color[x][0] = FlagColor[nflags[x - step][0]];
 					note[x][0] = cc[x - step];
-					//color[x][0] = FlagColor[accepted%13];
 					if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
 						comment[x][0] += FlagName[nflags[x - step][i]] + ". ";
+						// Set note color if this is maximum flag severity
+						if (flag_sev[nflags[x - step][i]] > current_severity) {
+							current_severity = flag_sev[nflags[x - step][i]];
+							color[x][0] = flag_color[nflags[x - step][i]];
+						}
 					}
 					len[x][0] = 1;
 					pause[x][0] = 0;

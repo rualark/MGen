@@ -437,6 +437,7 @@ void CMainFrame::OnButtonGen()
 	if (m_algo_id == 101) pGen = new CGenCF1();
 	if (m_algo_id == 102) pGen = new CGenCF2();
 	if (m_algo_id == 1001) pGen = new CGenRS1();
+	if (m_algo_id == 2001) pGen = new CGenMP1();
 	if (pGen != 0) {
 		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
 		// Clear current saved path
@@ -517,7 +518,7 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		// Start playback after shuffle
 		if (pGen->shuffle) {
 			GetActiveView()->Invalidate();
-			if (m_state_play == 0) OnButtonPlay();
+			if ((m_state_play == 0) && (pGen->t_sent > 0)) OnButtonPlay();
 		}
 	}
 	if (wParam == 1) {

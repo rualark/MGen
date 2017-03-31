@@ -57,6 +57,51 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	midifile.write(dir + "\\" + fname + ".mid");
 }
 
+void CGMidi::LoadMidi(CString dir, CString fname)
+{
+	MidiFile midifile;
+	midifile.read(dir + "\\" + fname + ".mid");
+	midifile.linkNotePairs();
+	midifile.joinTracks();
+	midifile.doTimeAnalysis();
+
+	midifile.absoluteTicks();
+
+	double lastNoteFinished = 0.0;
+	int x = 0; // Current note
+	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		for (int i = 0; i<midifile[track].size(); i++) {
+			MidiEvent* mev = &midifile[track][i];
+			if (!mev->isNoteOn() || mev->getLinkedEvent() == NULL) {
+				continue;
+			}
+
+			if (x >= t_allocated) ResizeVectors(t_allocated * 2);
+			// pause, silence
+			int silence = static_cast<int>((midifile.getTimeInSeconds(mev->tick) - lastNoteFinished) * 1000 * 1000);
+	
+			double duration = mev->getDurationInSeconds();
+
+			note[x][0] = mev->getKeyNumber();
+			len[x][0] = 1;
+			dyn[x][0] = 100;
+			tempo[x] = 100;
+			pause[x][0] = 0;
+			coff[x][0] = 0;
+			x++;
+
+			MidiEvent* off = mev->getLinkedEvent();
+			lastNoteFinished = midifile.getTimeInSeconds(off->tick);
+		}
+	}
+	CountOff(0, x-1);
+	CountTime(0, x-1);
+	UpdateNoteMinMax(0, x - 1);
+	UpdateTempoMinMax(0, x - 1);
+	Adapt(0, x - 1);
+	t_generated = x;
+}
+
 void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
 {
 	// Clear old sent messages
