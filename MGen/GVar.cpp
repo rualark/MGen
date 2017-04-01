@@ -41,6 +41,7 @@ CGVar::CGVar()
 	vel_gliss_minlen.resize(MAX_INSTR);
 	rand_start_max.resize(MAX_INSTR);
 	rand_end_max.resize(MAX_INSTR);
+	max_ahead_note.resize(MAX_INSTR);
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;
@@ -252,6 +253,7 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "vel_gliss_minlen", &vel_gliss_minlen[i]);
 				CheckVar(&st2, &st3, "rand_start_max", &rand_start_max[i]);
 				CheckVar(&st2, &st3, "rand_end_max", &rand_end_max[i]);
+				CheckVar(&st2, &st3, "max_ahead_note", &max_ahead_note[i]);
 				//CGVar::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		}

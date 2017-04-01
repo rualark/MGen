@@ -97,6 +97,7 @@ public:
 	vector<int> vel_gliss_minlen; // Minimum note length that can have a gliss transition
 	vector<int> rand_start_max; // Maximum shift in ms
 	vector<int> rand_end_max; // Maximum shift in ms
+	vector<int> max_ahead_note; // Maximum chromatic interval having ahead property
 
 protected:
 	// File operations

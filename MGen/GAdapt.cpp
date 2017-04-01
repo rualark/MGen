@@ -147,7 +147,8 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Advance start for legato (not longer than previous note length)
-	if ((i > 0) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) && (detime[i - 1][v] >= 0) && (!pause[pi][v])) {
+	if ((i > 0) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) && 
+		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i-1][v]) <= max_ahead_note[ii])) {
 		dstime[i][v] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		detime[i - 1][v] = 0.9 * dstime[i][v];
