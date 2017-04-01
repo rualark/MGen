@@ -177,8 +177,9 @@ void CGMidi::LoadCantus(CString path)
 	int tpq = midifile.getTicksPerQuarterNote();
 	int tpc = (double)tpq / (double)2 / (double)midifile_tpq_mul; // ticks per croche
 
-	int cid = -1;
+	int cid = 0;
 	int nid = 0;
+	vector <unsigned char> c;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		double last_tick = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {
@@ -188,20 +189,29 @@ void CGMidi::LoadCantus(CString path)
 				double pos = mev->tick;
 				double nlen = mev->getTickDuration();
 				// Check for pause
-				if (pos - last_tick > tpc / 2) nid = 0;
+				if (pos - last_tick > tpc / 2) {
+					// Add cantus if it is long
+					if (nid > 3) cantus.push_back(c);
+					// Go to next cantus
+					nid = 0;
+				}
 				if (nid == 0) {
 					// Add new cantus
 					cid++;
-					cantus.resize(cid + 1);
+					c.clear();
 				}
 				// Add new note
-				cantus[cid].push_back(mev->getKeyNumber());
-				nid++;
+				if ((nid == 0) || (c[nid-1] != mev->getKeyNumber())) {
+					c.push_back(mev->getKeyNumber());
+					nid++;
+				}
 				// Save last time
 				last_tick = pos + nlen;
 			}
 		}
 	}
+	// Add cantus if it is long
+	if (nid > 3) cantus.push_back(c);
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
