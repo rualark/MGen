@@ -26,6 +26,8 @@ public:
 	void SaveMidi(CString dir, CString fname);
 	void LoadMidi(CString path);
 
+	void LoadCantus(CString path);
+
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency, int from);
 	void SendMIDI(int step1, int step2);
@@ -65,5 +67,7 @@ protected:
 	int midi_channel = 0;
 	int midi_voice = 0;
 
+	// Cantus
+	vector< vector <unsigned char> > cantus; // Cantus loaded from midi file
 };
 

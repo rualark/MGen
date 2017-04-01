@@ -188,6 +188,7 @@
     <ClInclude Include="AlgoDlg.h" />
     <ClInclude Include="EditParamsDlg.h" />
     <ClInclude Include="GAdapt.h" />
+    <ClInclude Include="GenCA1.h" />
     <ClInclude Include="GenCF1.h" />
     <ClInclude Include="GenCF2.h" />
     <ClInclude Include="GenMP1.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="AlgoDlg.cpp" />
     <ClCompile Include="EditParamsDlg.cpp" />
     <ClCompile Include="GAdapt.cpp" />
+    <ClCompile Include="GenCA1.cpp" />
     <ClCompile Include="GenCF1.cpp" />
     <ClCompile Include="GenCF2.cpp" />
     <ClCompile Include="GenMP1.cpp" />

@@ -123,6 +123,9 @@
     <ClInclude Include="GenMP1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GenCA1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -210,6 +213,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GenMP1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GenCA1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

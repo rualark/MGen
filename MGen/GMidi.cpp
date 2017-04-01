@@ -71,12 +71,12 @@ void CGMidi::LoadMidi(CString path)
 	midifile.doTimeAnalysis();
 
 	midifile.absoluteTicks();
-	
+
 	int tpq = midifile.getTicksPerQuarterNote();
 	int tpc = (double)tpq / (double)2 / (double)midifile_tpq_mul; // ticks per croche
 
 	double lastNoteFinished = 0.0;
-	int last_step = 0; 
+	int last_step = 0;
 	// Load tempo
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		for (int i = 0; i < midifile[track].size(); i++) {
@@ -132,7 +132,7 @@ void CGMidi::LoadMidi(CString path)
 				}
 				// Set note steps
 				for (int z = 0; z < nlen; z++) {
-					note[pos+z][v] = mev->getKeyNumber();
+					note[pos + z][v] = mev->getKeyNumber();
 					len[pos + z][v] = nlen;
 					dyn[pos + z][v] = mev->getVelocity();
 					pause[pos + z][v] = 0;
@@ -150,6 +150,51 @@ void CGMidi::LoadMidi(CString path)
 	}
 	// Send last
 	t_generated = last_step + 1;
+}
+
+void CGMidi::LoadCantus(CString path)
+{
+	MidiFile midifile;
+	if (!midifile.read(path)) {
+		CString* est = new CString;
+		est->Format("Error reading midi file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	midifile.linkNotePairs();
+	//midifile.joinTracks();
+	midifile.doTimeAnalysis();
+
+	midifile.absoluteTicks();
+
+	int tpq = midifile.getTicksPerQuarterNote();
+	int tpc = (double)tpq / (double)2 / (double)midifile_tpq_mul; // ticks per croche
+
+	int cid = -1;
+	int nid = 0;
+	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		double last_tick = 0;
+		for (int i = 0; i<midifile[track].size(); i++) {
+			MidiEvent* mev = &midifile[track][i];
+			double time = midifile.getTimeInSeconds(mev->tick);
+			if (mev->isNoteOn()) {
+				double pos = mev->tick;
+				double nlen = mev->getTickDuration();
+				// Check for pause
+				if (pos - last_tick > tpc / 2) nid = 0;
+				if (nid == 0) {
+					// Add new cantus
+					cid++;
+					cantus.resize(cid + 1);
+				}
+				// Add new note
+				cantus[cid].push_back(mev->getKeyNumber());
+				nid++;
+				// Save last time
+				last_tick = pos + nlen;
+			}
+		}
+	}
 }
 
 void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
