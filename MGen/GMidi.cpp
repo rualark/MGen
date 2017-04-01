@@ -108,7 +108,7 @@ void CGMidi::LoadMidi(CString path)
 					ResizeVectors(size);
 				}
 				int pos = round(mev->tick / (double)tpc);
-				int nlen = round(mev->getTickDuration() / (double)tpc);
+				int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
 				if (nlen < 1) nlen = 1;
 				if (pos + nlen >= t_allocated) ResizeVectors(t_allocated * 2);
 				// Search for last note
