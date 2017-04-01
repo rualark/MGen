@@ -1,5 +1,5 @@
 Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
-Midi_file = load\cloud.mid # Path and file name of imported midi file
+Midi_file = load\9-7-0-free.mid # Path and file name of imported midi file
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
 
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)

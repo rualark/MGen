@@ -389,8 +389,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 		else step21 = step1;
 		// Count notes
 		for (i = step21; i < step22; i++) {
-			if (i + len[i][v] > step22) break;
 			ncount++;
+			if (i + len[i][v] > step22) break;
 			last_i = i;
 			// Set new buffer limit to beginning of last note
 			if (noff[i][v] == 0) break;
@@ -404,13 +404,16 @@ void CGMidi::SendMIDI(int step1, int step2)
 			midi_current_step = i;
 			ei = i + len[i][v] - 1;
 			if (!pause[i][v]) {
-				// Note ON
+				// Note ON if it is not blocked
 				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
-				AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
-				ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-				// Note OFF
-				etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
-				AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
+				if (stimestamp + midi_start_time >= midi_sent_t) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
+				// Note OFF if it is in window
+				if (ei <= step22) {
+					// Note OFF
+					// ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+					etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
+					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
+				}
 				// Send slur
 				if (artic[i][v] == ARTIC_SLUR) {
 					AddTransitionKs(i, stimestamp, slur_ks[ii]);
