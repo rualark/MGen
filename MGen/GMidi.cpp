@@ -75,6 +75,7 @@ void CGMidi::LoadMidi(CString path)
 
 	int tpq = midifile.getTicksPerQuarterNote();
 	int tpc = (double)tpq / (double)2 / (double)midifile_tpq_mul; // ticks per croche
+	vector<int> vlast_step(16);
 
 	double lastNoteFinished = 0.0;
 	int last_step = 0;
@@ -109,12 +110,7 @@ void CGMidi::LoadMidi(CString path)
 			if (mev->isNoteOn()) {
 				int v = mev->getChannel();
 				// Resize vectors for new voice number
-				if (v > v_cnt - 1) {
-					v_cnt = v + 1;
-					int size = t_allocated;
-					t_allocated = 0;
-					ResizeVectors(size);
-				}
+				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				int pos = round(mev->tick / (double)tpc);
 				// Check alignment
 				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
@@ -159,7 +155,19 @@ void CGMidi::LoadMidi(CString path)
 				CountTime(pos, pos + nlen - 1);
 				UpdateNoteMinMax(pos, pos + nlen - 1);
 				if (pos + nlen - 1 > last_step) last_step = pos + nlen - 1;
+				if (pos + nlen - 1 > vlast_step[v]) vlast_step[v] = pos + nlen - 1;
 				t_generated = pos;
+			}
+		}
+	}
+	// Add closing pauses
+	for (int v = 0; v < v_cnt; v++) {
+		if (vlast_step[v] < last_step) {
+			int len2 = last_step - vlast_step[v];
+			for (int i = 1; i <= len2; i++) {
+				pause[vlast_step[v] + i][v] = 1;
+				len[vlast_step[v] + i][v] = len2;
+				coff[vlast_step[v] + i][v] = i - 1;
 			}
 		}
 	}

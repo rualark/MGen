@@ -118,7 +118,7 @@ protected:
 	void CopyVoice(int v1, int v2, int step1, int step2, int interval);
 	void UpdateNoteMinMax(int step1, int step2);
 	void UpdateTempoMinMax(int step1, int step2);
-	void ResizeVectors(int size);
+	void ResizeVectors(int size, int vsize = -1);
 
 };
 

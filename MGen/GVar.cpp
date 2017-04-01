@@ -85,12 +85,13 @@ void CGVar::InitVectors()
 	}
 }
 
-void CGVar::ResizeVectors(int size)
+void CGVar::ResizeVectors(int size, int vsize)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
 		WriteLog(1, new CString("Critical error: ResizeVectors mutex timed out"));
 	}
+	if (vsize == -1) vsize = v_cnt;
 	pause.resize(size);
 	note.resize(size);
 	len.resize(size);
@@ -108,29 +109,32 @@ void CGVar::ResizeVectors(int size)
 	lengroup.resize(size);
 	comment.resize(size);
 	color.resize(size);
-	for (int i = t_allocated; i < size; i++) {
-		pause[i].resize(v_cnt);
-		note[i].resize(v_cnt);
-		len[i].resize(v_cnt);
-		coff[i].resize(v_cnt);
-		poff[i].resize(v_cnt);
-		noff[i].resize(v_cnt);
-		dyn[i].resize(v_cnt);
-		vel[i].resize(v_cnt);
-		artic[i].resize(v_cnt);
-		lengroup[i].resize(v_cnt);
-		comment[i].resize(v_cnt);
-		dstime[i].resize(v_cnt);
-		detime[i].resize(v_cnt);
-		color[i].resize(v_cnt, Color(0));
+	int start = t_allocated;
+	if (vsize != v_cnt) start = 0;
+	for (int i = start; i < size; i++) {
+		pause[i].resize(vsize);
+		note[i].resize(vsize);
+		len[i].resize(vsize);
+		coff[i].resize(vsize);
+		poff[i].resize(vsize);
+		noff[i].resize(vsize);
+		dyn[i].resize(vsize);
+		vel[i].resize(vsize);
+		artic[i].resize(vsize);
+		lengroup[i].resize(vsize);
+		comment[i].resize(vsize);
+		dstime[i].resize(vsize);
+		detime[i].resize(vsize);
+		color[i].resize(vsize, Color(0));
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
-	st->Format("ResizeVectors from %d to %d (in %d ms)", t_allocated, size, time_stop - time_start);
+	st->Format("ResizeVectors from %d to %d steps, from %d to %d voices (in %d ms)", t_allocated, size, v_cnt, vsize, time_stop - time_start);
 	WriteLog(0, st);
 
 	t_allocated = size;
+	v_cnt = vsize;
 	mutex_output.unlock();
 }
 
