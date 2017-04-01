@@ -21,6 +21,8 @@ protected:
 	void AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 
 	void FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei);
+
+	void AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 												 
   // Adapt local variables
 	int slur_count; // Number of successive slurs

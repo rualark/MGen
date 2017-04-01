@@ -86,6 +86,16 @@ public:
 	vector<int> lengroup_edt2;
 	vector<double> rand_start;
 	vector<double> rand_end;
+	vector<int> retrigger_min_len; // Minimum next note length in ms to use retrigger
+	vector<int> retrigger_rand_end; // Maximum percent of note length to move note end to the left in case of nonlegato
+	vector<int> vel_harsh; // Velocity equal or above this value triggers harsh sustain
+	vector<int> vel_immediate; // Velocity equal or above this value triggers immediate sustain
+	vector<int> vel_normal; // Velocity equal or above this value triggers normal sustain
+	vector<int> vel_gliss; // Velocity below this value triggers glissando transition
+	vector<int> vel_normal_minlen; // Minimum note length that can have a normal or lower sustain
+	vector<int> vel_gliss_minlen; // Minimum note length that can have a gliss transition
+	vector<int> rand_start_max; // Maximum shift in ms
+	vector<int> rand_end_max; // Maximum shift in ms
 
 protected:
 	// File operations

@@ -155,7 +155,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
 	// Check if note overlapping occured
 	if (i > 0) {
 		int lpi = pi; // Local previous id
-		// Cycle through all notes backwards
+									// Cycle through all notes backwards
 		while (true) {
 			if (note[lpi][v] == note[i][v]) {
 				int lpei = lpi + len[lpi][v] - 1;
@@ -169,6 +169,17 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
 			if (poff[lpi][v] == 0) break;
 			lpi = lpi - poff[lpi][v];
 		}
+	}
+}
+
+void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int pei)
+{
+	// If nonlegato and short note, avoid slow sustain articulations for Friedlander violin
+	if (artic[i][v] == ARTIC_NONLEGATO) {
+		double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+		if (ndur < vel_normal_minlen[ii]) vel[i][v] = randbw(vel_immediate[ii], 127);
+		//if (ndur < vel_normal_minlen[ii]) vel[i][v] = dyn[i][v] * (double)(127 - vel_immediate[ii]) / 127.0 + vel_immediate[ii];
+		//else vel[i][v] = dyn[i][v] * (double)(vel_immediate[ii] - 1) / 127.0;
 	}
 }
 
@@ -205,6 +216,8 @@ void CGAdapt::Adapt(int step1, int step2)
 			ei = i + len[i][v] - 1;
 			pi = i - poff[i][v];
 			pei = i - 1;
+			// Set nonlegato for separate notes
+			if ((i == 0) || (pause[pi][v])) artic[i][v] = ARTIC_NONLEGATO;
 			if (!pause[i][v]) {
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation
@@ -214,6 +227,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptRetriggerStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptAheadStep(v, x, i, ii, ei, pi, pei);
+					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
 				// Randomize note starts
 				if (rand_start[ii] > 0) dstime[i][v] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
