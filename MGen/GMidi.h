@@ -49,6 +49,9 @@ public:
 	int midi_play_step = 0; // Current step being played by midi
 
 protected:
+	// Warnings
+	int warning_loadmidi_align = 0;
+
 	// PortMIDI internal
 	void AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2);
 	void AddNoteOn(PmTimestamp timestamp, int data1, int data2);

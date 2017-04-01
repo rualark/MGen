@@ -84,6 +84,13 @@ void CGMidi::LoadMidi(CString path)
 			MidiEvent* mev = &midifile[track][i];
 			if (mev->isTempo()) {
 				int pos = round(mev->tick / (double)tpc);
+				// Check alignment
+				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
+					//CString* st = new CString;
+					//st->Format("Tempo not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s", mev->tick, tpc, midifile_tpq_mul, pos, path);
+					//WriteLog(1, st);
+					//warning_loadmidi_align++;
+				}
 				if (pos >= t_allocated) ResizeVectors(t_allocated * 2);
 				tempo[pos] = mev->getTempoBPM() * midifile_tpq_mul;
 				if (pos > last_step) last_step = pos;
@@ -109,6 +116,13 @@ void CGMidi::LoadMidi(CString path)
 					ResizeVectors(size);
 				}
 				int pos = round(mev->tick / (double)tpc);
+				// Check alignment
+				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
+					CString* st = new CString;
+					st->Format("Note not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing tpq will improve approximation.", mev->tick, tpc, midifile_tpq_mul, pos, path);
+					WriteLog(1, st);
+					warning_loadmidi_align++;
+				}
 				int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
 				if (nlen < 1) nlen = 1;
 				if (pos + nlen >= t_allocated) ResizeVectors(t_allocated * 2);
