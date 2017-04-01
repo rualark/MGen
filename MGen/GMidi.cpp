@@ -59,6 +59,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 
 void CGMidi::LoadMidi(CString path)
 {
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString* est = new CString;
@@ -150,10 +151,16 @@ void CGMidi::LoadMidi(CString path)
 	}
 	// Send last
 	t_generated = last_step + 1;
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* st = new CString;
+	st->Format("LoadMidi successfully loaded %d steps (in %d ms)", t_generated, time_stop - time_start);
+	WriteLog(0, st);
 }
 
 void CGMidi::LoadCantus(CString path)
 {
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString* est = new CString;
@@ -195,6 +202,11 @@ void CGMidi::LoadCantus(CString path)
 			}
 		}
 	}
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* st = new CString;
+	st->Format("LoadCantus successfully loaded %d canti (in %d ms)", cid+1, time_stop - time_start);
+	WriteLog(0, st);
 }
 
 void CGMidi::StartMIDI(int midi_device_i, int latency, int from)

@@ -99,6 +99,18 @@ CGenCA1::~CGenCA1()
 void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
 	LoadVar(sN, sV, "midi_file", &midi_file);
+	CheckVar(sN, sV, "min_interval", &min_interval);
+	CheckVar(sN, sV, "max_interval", &max_interval);
+	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
+	CheckVar(sN, sV, "max_repeat_mul", &max_repeat_mul);
+	CheckVar(sN, sV, "max_smooth_direct", &max_smooth_direct);
+	CheckVar(sN, sV, "max_smooth", &max_smooth);
+	CheckVar(sN, sV, "max_leaps", &max_leaps);
+	CheckVar(sN, sV, "max_leaps2", &max_leaps2);
+	CheckVar(sN, sV, "max_leap_steps", &max_leap_steps);
+	CheckVar(sN, sV, "stag_notes", &stag_notes);
+	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
+	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 }
 
 void CGenCA1::FlagCantus(vector <unsigned char> &cc)

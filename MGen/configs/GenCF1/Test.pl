@@ -1,6 +1,7 @@
 # Main parameters
 t_cnt = 1000 # Maximum number of canti generated
 c_len = 9 # Number of measures in each cantus. Usually 9 to 11
+min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
 last_diatonic_int = 0 # Diatonic interval between first and last note
