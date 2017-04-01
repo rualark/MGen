@@ -32,6 +32,7 @@ CGVar::CGVar()
 	rand_end.resize(MAX_INSTR);
 	retrigger_min_len.resize(MAX_INSTR);
 	retrigger_rand_end.resize(MAX_INSTR);
+	retrigger_rand_max.resize(MAX_INSTR);
 	vel_harsh.resize(MAX_INSTR);
 	vel_immediate.resize(MAX_INSTR);
 	vel_normal.resize(MAX_INSTR);
@@ -242,6 +243,7 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "rand_end", &rand_end[i]);
 				CheckVar(&st2, &st3, "retrigger_min_len", &retrigger_min_len[i]);
 				CheckVar(&st2, &st3, "retrigger_rand_end", &retrigger_rand_end[i]);
+				CheckVar(&st2, &st3, "retrigger_rand_max", &retrigger_rand_max[i]);
 				CheckVar(&st2, &st3, "vel_harsh", &vel_harsh[i]);
 				CheckVar(&st2, &st3, "vel_immediate", &vel_immediate[i]);
 				CheckVar(&st2, &st3, "vel_normal", &vel_normal[i]);

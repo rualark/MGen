@@ -121,9 +121,11 @@ void CGAdapt::AdaptRetriggerStep(int v, int x, int i, int ii, int ei, int pi, in
 		artic[i][v] = ARTIC_RETRIGGER;
 		detime[pei][v] = -1;
 		dstime[i][v] = 0;
+		double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Replace retrigger with non-legato
-		if ((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) {
-			detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
+		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) 
+		  || (ndur < retrigger_min_len[ii])) {
+			detime[pei][v] = -min(retrigger_rand_max[ii], (etime[pei] - stime[pei]) * 100 / m_pspeed * (double)retrigger_rand_end[ii] / 100.0);
 			artic[i][v] = ARTIC_NONLEGATO;
 		}
 	}

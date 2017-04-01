@@ -88,6 +88,7 @@ public:
 	vector<double> rand_end;
 	vector<int> retrigger_min_len; // Minimum next note length in ms to use retrigger
 	vector<int> retrigger_rand_end; // Maximum percent of note length to move note end to the left in case of nonlegato
+	vector<int> retrigger_rand_max; // Maximum length in ms to move note end to the left in case of nonlegato retrigger
 	vector<int> vel_harsh; // Velocity equal or above this value triggers harsh sustain
 	vector<int> vel_immediate; // Velocity equal or above this value triggers immediate sustain
 	vector<int> vel_normal; // Velocity equal or above this value triggers normal sustain
