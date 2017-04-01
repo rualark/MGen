@@ -193,6 +193,47 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 	}
 }
 
+void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
+{
+	double long_bell_start = 0.2;
+	double long_bell_end = 0.2;
+	double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+	if ((ndur > vel_normal_minlen[ii]) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
+		int pos = i + len[i][v] / 3;
+		int ok = 1;
+		// Check if dynamics is even
+		if (pos - i > 1) for (int z = i + 1; z < pos; z++) {
+			if (dyn[z][v] != dyn[z - 1][v]) {
+				ok = 0;
+				break;
+			}
+		}
+		if (ok) {
+			for (int z = i; z < pos; z++) {
+				dyn[z][v] = dyn[z][v] * (long_bell_start + (double)(z - i) / (pos - i) * (1.0 - long_bell_start));
+			}
+		}
+	}
+	int ni = i + noff[i][v];
+	if ((ndur > vel_normal_minlen[ii]) && (len[i][v] > 2) && (x == ncount-1 || pause[ni][v])) {
+		int pos = round(i + len[i][v] * 2.0 / 3.0);
+		int ok = 1;
+		int end = i + len[i][v];
+		// Check if dynamics is even
+		if (end - pos > 1) for (int z = pos; z < end; z++) {
+			if (dyn[z][v] != dyn[z - 1][v]) {
+				ok = 0;
+				break;
+			}
+		}
+		if (ok) {
+			for (int z = pos; z < end; z++) {
+				dyn[z][v] = dyn[z][v] * (long_bell_start + (double)(end - z) / (end - pos) * (1.0 - long_bell_start));
+			}
+		}
+	}
+}
+
 void CGAdapt::Adapt(int step1, int step2)
 {
 	if (step2 < 0) return;
@@ -220,7 +261,6 @@ void CGAdapt::Adapt(int step1, int step2)
 		}
 		CheckRange(v, ii);
 		if (!adapt_enable) continue;
-		// Calculate delta: dstime / detime
 		slur_count = 0;
 		int i = step1;
 		for (int x = 0; x < ncount; x++) {
@@ -234,6 +274,7 @@ void CGAdapt::Adapt(int step1, int step2)
 				// Instrument-specific adaptation
 				if (instr_type[ii] == 0) AdaptLengroupStep(v, x, i, ii, ei, pi, pei);
 				if (instr_type[ii] == 1) {
+					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptSlurStep(v, x, i, ii, ei, pi, pei);
 					AdaptRetriggerStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
