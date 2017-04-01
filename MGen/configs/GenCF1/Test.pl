@@ -11,7 +11,7 @@ shuffle = 1
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
 Strict                    = 0 # No violated rules
 Seventh                   = 1 # Seventh interval leap
-Tritone resolved          = 1 # Tritone is prepared by E and resolved to B
+Tritone resolved          = 1 # Tritone is prepared by E and resolved to C
 Tritone unresolved        = 1 # Tritone is not resolved correctly
 Tritone culmination       = 1 # Tritone is the highest leap
 Many leaps                = 0 # Maximum allowed max_leaps during max_leap_steps

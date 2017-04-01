@@ -9,8 +9,8 @@ tempo = 100-130 # Tempo range
 shuffle = 1
 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
-Strict                    = 1 # No violated rules
-Seventh                   = 0 # Seventh interval leap
+Strict                    = 0 # No violated rules
+Seventh                   = 1 # Seventh interval leap
 Tritone resolved          = 0 # Tritone is prepared by E and resolved to B
 Tritone unresolved        = 0 # Tritone is not resolved correctly
 Tritone culmination       = 0 # Tritone is the highest leap

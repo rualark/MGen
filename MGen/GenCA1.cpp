@@ -5,7 +5,7 @@
 #define new DEBUG_NEW
 #endif
 
-#define MAX_FLAGS 35
+#define MAX_FLAGS 37
 #define FLAG(id, i) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
@@ -44,6 +44,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"Tritone culmination", // 32
 	"Leap to leap resolution", // 33
 	"3rd to last is leading", // 34
+	"Too wide range", // 35
+	"Too tighr range", // 36
 };
 
 const int SeverityFlag[MAX_FLAGS] = {
@@ -82,6 +84,8 @@ const int SeverityFlag[MAX_FLAGS] = {
 	32, // "Tritone culmination", // 32
 	33, // "Leap to leap resolution", // 33
 	34, // "3rd to last is leading", // 34
+	35, // "Too wide range",
+	36, // "Too tight range",
 };
 
 const Color FlagColor[] = {
@@ -147,20 +151,6 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
  
-	// Local note repeat prohibited
-	for (int i = 0; i < c_len - 1; i++) {
-		if (c[i] == c[i + 1]); // TODO
-	}
-	nmin = 0;
-	nmax = 0;
-	// Count limits
-	for (int i = 0; i < c_len; i++) {
-		if (c[i] < nmin) nmin = c[i];
-		if (c[i] > nmax) nmax = c[i];
-	}
-	// Limit melody interval
-	if (nmax - nmin > max_interval) ; // TODO
-	if (nmax - nmin < min_interval) ; // TODO
 	// Clear flags
 	fill(flags.begin(), flags.end(), 0);
 	flags[0] = 1;
@@ -169,6 +159,20 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 		// Calculate pitch class
 		pc[i] = (c[i] + 56) % 7;
 	}
+	// Local note repeat prohibited
+	for (int i = 0; i < c_len - 1; i++) {
+		if (c[i] == c[i + 1]) return; // TODO
+	}
+	nmin = c[0];
+	nmax = c[0];
+	// Count limits
+	for (int i = 0; i < c_len; i++) {
+		if (c[i] < nmin) nmin = c[i];
+		if (c[i] > nmax) nmax = c[i];
+	}
+	// Limit melody interval
+	if (nmax - nmin > max_interval) FLAG(35, 0); // TODO
+	if (nmax - nmin < min_interval) FLAG(36, 0); // TODO
 	// Wrong second to last note
 	if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
 	// Wrong third to last note
