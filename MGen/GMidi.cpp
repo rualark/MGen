@@ -426,9 +426,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 			midi_current_step = i;
 			ei = i + len[i][v] - 1;
 			if (!pause[i][v]) {
-				// Note ON if it is not blocked
+				// Note ON if it is not blocked and was not yet sent
 				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
-				if (stimestamp + midi_start_time >= midi_sent_t) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
+				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
 				// Note OFF if it is in window
 				if (ei <= step22) {
 					// Note OFF
