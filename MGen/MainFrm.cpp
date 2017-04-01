@@ -107,11 +107,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	CString strTitlePane1;
-	CString strTitlePane2;
+	CString strTitlePane2 = "Release";
 	bNameValid = strTitlePane1.LoadString(IDS_STATUS_PANE1);
 	ASSERT(bNameValid);
-	bNameValid = strTitlePane2.LoadString(IDS_STATUS_PANE2);
-	ASSERT(bNameValid);
+	//bNameValid = strTitlePane2.LoadString(IDS_STATUS_PANE2);
+	//ASSERT(bNameValid);
+
+#if defined(_DEBUG)
+	strTitlePane2 = "Debug";
+#endif
+
 	CMFCRibbonStatusBarPane* pPane = new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, strTitlePane1, TRUE);
 	pPane->SetAlmostLargeText(_T("Connecting Connecting Connecting Connecting Connecting Connecting"));
 	m_wndStatusBar.AddElement(pPane, strTitlePane1);
