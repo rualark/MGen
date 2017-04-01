@@ -219,6 +219,7 @@ void CGAdapt::Adapt(int step1, int step2)
 			vel[i][v] = dyn[i][v];
 		}
 		CheckRange(v, ii);
+		if (!adapt_enable) continue;
 		// Calculate delta: dstime / detime
 		slur_count = 0;
 		int i = step1;

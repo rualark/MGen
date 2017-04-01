@@ -175,6 +175,7 @@ void CGVar::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "t_send", &t_send);
 			CheckVar(&st2, &st3, "midifile_tpq_mul", &midifile_tpq_mul);
 			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms);
+			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable);
 			LoadVarInstr(&st2, &st3, "instruments", instr);
 			// Load algorithm-specific variables
 			LoadConfigLine(&st2, &st3, idata, fdata);

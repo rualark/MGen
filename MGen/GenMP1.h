@@ -11,5 +11,4 @@ public:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
 
 	CString midi_file;
-	int adapt_enable = 1;
 };

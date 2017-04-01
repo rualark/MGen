@@ -99,6 +99,7 @@ public:
 	vector<int> rand_start_max; // Maximum shift in ms
 	vector<int> rand_end_max; // Maximum shift in ms
 	vector<int> max_ahead_note; // Maximum chromatic interval having ahead property
+	int adapt_enable = 1;
 
 protected:
 	// File operations
