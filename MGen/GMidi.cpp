@@ -84,7 +84,7 @@ void CGMidi::LoadMidi(CString path)
 			if (mev->isTempo()) {
 				int pos = round(mev->tick / (double)tpc);
 				if (pos >= t_allocated) ResizeVectors(t_allocated * 2);
-				tempo[pos] = mev->getTempoBPM();
+				tempo[pos] = mev->getTempoBPM() * midifile_tpq_mul;
 				if (pos > last_step) last_step = pos;
 			}
 		}
