@@ -94,7 +94,8 @@ public:
 	vector<int> vel_normal; // Velocity equal or above this value triggers normal sustain
 	vector<int> vel_gliss; // Velocity below this value triggers glissando transition
 	vector<int> vel_normal_minlen; // Minimum note length that can have a normal or lower sustain
-	vector<int> vel_gliss_minlen; // Minimum note length that can have a gliss transition
+	vector<int> gliss_minlen; // Minimum note length that can have a gliss transition
+	vector<int> gliss_freq; // Frequency of gliss articulation in percent
 	vector<int> rand_start_max; // Maximum shift in ms
 	vector<int> rand_end_max; // Maximum shift in ms
 	vector<int> max_ahead_note; // Maximum chromatic interval having ahead property

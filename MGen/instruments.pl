@@ -44,6 +44,7 @@ max_slur_count = 2 # Use slur for 2nd moves, but no longer than X moves
 max_slur_interval = 2 # in semitones
 slur_ks = 44 # Keyswitch to send to create slur
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
+max_ahead_note = 12 # Maximum chromatic interval having ahead property
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
 CC_steps = 9 # Number of CC steps in one note step (please use only odd numbers)
@@ -52,7 +53,8 @@ vel_immediate = 84 # Velocity equal or above this value triggers immediate susta
 vel_normal = 50 # Velocity equal or above this value triggers normal sustain
 vel_gliss = 18 # Velocity below this value triggers glissando transition
 vel_normal_minlen = 600 # Minimum note length that can have a normal or lower sustain
-vel_gliss_minlen = 1000 # Minimum note length that can have a gliss transition
+gliss_minlen = 1000 # Minimum note length that can have a gliss transition
+gliss_freq = 50 # Frequency of gliss articulation in percent
 
 CC_vib_intens = 1
 CC_vib_speed = 14

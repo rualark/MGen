@@ -38,7 +38,8 @@ CGVar::CGVar()
 	vel_normal.resize(MAX_INSTR);
 	vel_gliss.resize(MAX_INSTR);
 	vel_normal_minlen.resize(MAX_INSTR);
-	vel_gliss_minlen.resize(MAX_INSTR);
+	gliss_minlen.resize(MAX_INSTR);
+	gliss_freq.resize(MAX_INSTR);
 	rand_start_max.resize(MAX_INSTR);
 	rand_end_max.resize(MAX_INSTR);
 	max_ahead_note.resize(MAX_INSTR);
@@ -250,7 +251,8 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "vel_normal", &vel_normal[i]);
 				CheckVar(&st2, &st3, "vel_gliss", &vel_gliss[i]);
 				CheckVar(&st2, &st3, "vel_normal_minlen", &vel_normal_minlen[i]);
-				CheckVar(&st2, &st3, "vel_gliss_minlen", &vel_gliss_minlen[i]);
+				CheckVar(&st2, &st3, "gliss_minlen", &gliss_minlen[i]);
+				CheckVar(&st2, &st3, "gliss_freq", &gliss_freq[i]);
 				CheckVar(&st2, &st3, "rand_start_max", &rand_start_max[i]);
 				CheckVar(&st2, &st3, "rand_end_max", &rand_end_max[i]);
 				CheckVar(&st2, &st3, "max_ahead_note", &max_ahead_note[i]);
