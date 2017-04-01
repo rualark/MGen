@@ -57,10 +57,15 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	midifile.write(dir + "\\" + fname + ".mid");
 }
 
-void CGMidi::LoadMidi(CString dir, CString fname)
+void CGMidi::LoadMidi(CString path)
 {
 	MidiFile midifile;
-	midifile.read(dir + "\\" + fname + ".mid");
+	if (!midifile.read(path)) {
+		CString* est = new CString;
+		est->Format("Error reading midi file %s", path);
+		WriteLog(1, est);
+		return;
+	}
 	midifile.linkNotePairs();
 	midifile.joinTracks();
 	midifile.doTimeAnalysis();
@@ -77,7 +82,7 @@ void CGMidi::LoadMidi(CString dir, CString fname)
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			if (mev->isTempo()) {
-				int pos = mev->tick / tpc;
+				int pos = round(mev->tick / (double)tpc);
 				if (pos >= t_allocated) ResizeVectors(t_allocated * 2);
 				tempo[pos] = mev->getTempoBPM();
 				if (pos > last_step) last_step = pos;
@@ -102,8 +107,8 @@ void CGMidi::LoadMidi(CString dir, CString fname)
 					t_allocated = 0;
 					ResizeVectors(size);
 				}
-				int pos = mev->tick / tpc;
-				int nlen = round(mev->getTickDuration() / tpc);
+				int pos = round(mev->tick / (double)tpc);
+				int nlen = round(mev->getTickDuration() / (double)tpc);
 				if (nlen < 1) nlen = 1;
 				if (pos + nlen >= t_allocated) ResizeVectors(t_allocated * 2);
 				// Search for last note

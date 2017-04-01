@@ -13,13 +13,16 @@ CGenMP1::~CGenMP1()
 {
 }
 
-void CGenMP1::Generate()
-{
-	LoadMidi("load", "hamlet");
-	Adapt(0, t_generated - 1);
-	t_sent = t_generated;
-}
-
 void CGenMP1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
+	CheckVar(sN, sV, "adapt_enable", &adapt_enable);
+	LoadVar(sN, sV, "midi_file", &midi_file);
+}
+
+void CGenMP1::Generate()
+{
+	LoadMidi(midi_file);
+	if (!t_generated) return;
+	if (adapt_enable) Adapt(0, t_generated - 1);
+	t_sent = t_generated;
 }

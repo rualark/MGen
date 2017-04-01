@@ -24,7 +24,7 @@ public:
 
 	// Midi files
 	void SaveMidi(CString dir, CString fname);
-	void LoadMidi(CString dir, CString fname);
+	void LoadMidi(CString path);
 
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency, int from);
