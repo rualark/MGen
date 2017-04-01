@@ -22,6 +22,8 @@ lengroup_edt1 = 70 # delta to alter note ending time of all notes in group excep
 lengroup_edt2 = -100 # delta to alter note ending time of last note in group (ms)
 rand_start = 8 # Randomize note starts not greater than percent of note length 
 rand_end = 8 # Randomize note end not greater than percent of note length 
+rand_start_max = 70 # Maximum shift in ms
+rand_end_max = 70 # Maximum shift in ms
 
 Instrument = Violin
 Channel = 1 # MIDI channel
@@ -59,5 +61,3 @@ gliss_freq = 50 # Frequency of gliss articulation in percent
 CC_vib_intens = 1
 CC_vib_speed = 14
 dying = 0 # Seconds to fade out at mf
-rand_start_max = 50 # Maximum shift in ms
-rand_end_max = 50 # Maximum shift in ms

@@ -240,9 +240,17 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
 				// Randomize note starts
-				if (rand_start[ii] > 0) dstime[i][v] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
+				if (rand_start[ii] > 0) {
+					double max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
+					if ((rand_start_max[ii] > 0) && (max_shift > rand_start_max[ii])) max_shift = rand_start_max[ii];
+					dstime[i][v] += (rand01() - 0.5) * max_shift;
+				}
 				// Randomize note ends
-				if (rand_end[ii] > 0) detime[ei][v] += (rand01() - 0.5) * (etime[ei] - stime[i]) * 100 / m_pspeed * rand_end[ii] / 100;
+				if (rand_end[ii] > 0) {
+					double max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * rand_end[ii] / 100;
+					if ((rand_end_max[ii] > 0) && (max_shift > rand_end_max[ii])) max_shift = rand_end_max[ii];
+					detime[ei][v] += (rand01() - 0.5) * max_shift;
+				}
 				FixOverlap(v, x, i, ii, ei, pi, pei);
 			} // !pause
 			if (noff[i][v] == 0) break;
