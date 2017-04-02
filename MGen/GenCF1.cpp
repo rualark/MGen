@@ -50,41 +50,42 @@ const CString FlagName[MAX_FLAGS] = {
 
 const int SeverityFlag[MAX_FLAGS] = {
 	0, // "Strict", // 0
-	1, // "Seventh", // 1
-	2, // "Tritone resolved", // 2 
-	3, // "Many leaps", // 3 
-	4, // "Long smooth", // 4 
-	5, // "Long line", // 5 
-	6, // "Two 3rds", // 6 
-	7, // "Late <6th resolution", // 7 
-	8, // "Leap back <5th", // 8 
-	9, // "Close repeat", // 9 
-	10, // "Stagnation", // 10 
-	11, // "Noncontiguous", // 11 
-	12, // "Multiple culminations", // 12 
-	13, // "2nd to last not D", // 13
-	14, // "3rd to last is CEG", // 14
-	15, // "3 letters in a row", // 15
-	16, // "4 letters in a row", // 16
-	17, // ">4 letters in a row", // 17
-	18, // "4 step miss", // 18
-	19, // "5 step miss", // 19
-	20, // ">5 step miss", // 20
-	21, // "Late culmination", // 21
-	22, // "Leap back >4th", // 22
-	23, // "Last leap", // 23
-	24, // "Unfilled leap", // 24
-	25, // "Many leaps+", // 25
-	26, // "Leap unresolved", // 26
-	27, // "Leap chain", // 27
-	28, // "Two 3rds after 6/8", // 28
-	29, // "Late >5th resolution", // 29
-	30, // "Prepared unresolved 3rd", // 30
-	31, // "Tritone unresolved", // 31
-	32, // "Tritone culmination", // 32
-	33, // "Leap to leap resolution", // 33
-	34, // "3rd to last is leading", // 34
-	35, // "Prepared unfilled 3rd", // 35
+	35, // "Prepared unfilled 3rd", // LEAP FILL
+	30, // "Prepared unresolved 3rd", // LEAP RESOLUTION
+	28, // "Two 3rds after 6/8", // LEAP RESOLUTION
+	7, // "Late <6th resolution", // LEAP RESOLUTION
+	8, // "Leap back <5th", // LEAP RESOLUTION 
+	1, // "Seventh", // LEAPS
+	11, // "Leap pre/late fill", // LEAP FILL 
+	3, // "Many leaps", // LEAPS 
+	14, // "3rd to last is CEG", // HARMONY
+	23, // "Last leap", // END
+	2, // "Tritone resolved", // TRITONE 
+	15, // "3 letters in a row", // HARMONY
+	24, // "Unfilled leap", // LEAP FILL
+	33, // "Leap to leap resolution", // LEAP RESOLUTION
+	6, // "Two 3rds", // LEAP RESOLUTION 
+	18, // "4 step miss", // HARMONY
+
+	4, // "Long smooth", // LEAPS 
+	5, // "Long line", // LEAPS 
+	9, // "Close repeat", // REPEATS 
+	10, // "Stagnation", // REPEATS 
+	12, // "Multiple culminations", // REPEATS 
+	13, // "2nd to last not D", // HARMONY
+	16, // "4 letters in a row", // HARMONY
+	17, // ">4 letters in a row", // HARMONY
+	19, // "5 step miss", // HARMONY
+	20, // ">5 step miss", // HARMONY
+	21, // "Late culmination", // END
+	22, // "Leap back >4th", // LEAP RESOLUTION
+	25, // "Many leaps+", // LEAPS
+	26, // "Leap unresolved", // LEAP RESOLUTION
+	27, // "Leap chain", // LEAP RESOLUTION
+	29, // "Late >5th resolution", // LEAP RESOLUTION
+	31, // "Tritone unresolved", // TRITONE
+	32, // "Tritone culmination", // TRITONE
+	34, // "3rd to last is leading", // HARMONY
 };
 
 const Color FlagColor[] = {
@@ -145,6 +146,7 @@ void CGenCF1::Generate()
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
 	vector<int> nstat(max_interval * 2 + 1);
+	vector<int> nstat2(max_interval * 2 + 1);
 	vector<int> nstat3(max_interval * 2 + 1);
 	vector<long> fstat(MAX_FLAGS); // number of canti with each flag
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
@@ -317,24 +319,34 @@ void CGenCF1::Generate()
 					pos = i + 2 + (abs(c[i + 1] - c[i]) - 1) * fill_steps_mul;
 					if (pos > c_len - 1) pos = c_len - 1;
 					// Zero array
+					fill(nstat2.begin(), nstat2.end(), 0);
 					fill(nstat3.begin(), nstat3.end(), 0);
 					// Fill all notes
-					for (int x = i + 2; x <= pos; x++) nstat3[c[x] + max_interval]++;
+					for (int x = 0; x < c_len; x++) {
+						// Update local fill
+						if ((x > i + 1) && (x <= pos)) nstat3[c[x] + max_interval]++;
+						// Update global fill
+						nstat2[c[x] + max_interval]++;
+					}
 					// Check if leap is filled
 					ok = 1; // Local fill
 					ok2 = 1; // Global fill
 					int pos1 = min(c[i], c[i + 1]);
 					int pos2 = max(c[i], c[i + 1]);
-					for (int x = 0; x < c_len; x++) if (!nstat3[x + max_interval]) {
-						if ((x > pos1) && (x < pos2)) ok = 0;
-						ok2 = 0;
+					for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x + max_interval]) {
+						ok = 0;
+						if (!nstat2[x + max_interval]) ok2 = 0;
 						break;
 					}
+					// Local not filled?
 					if (!ok) {
+						// Local not filled. Third prepared?
 						if (third_prepared) FLAG(35, i)
+							// Local not filled. Third not prepared. Global filled?
+						else if (ok2) FLAG(11, i)
+							// Local not filled. Third not prepared. Global not filled.
 						else FLAG(24, i);
 					}
-					else if (!ok2) FLAG(11, i);
 				}
 				// Subtract old leap
 				if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;

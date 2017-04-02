@@ -388,24 +388,15 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	// Clear nstat
 	for (int i = nmin; i <= nmax; i++) {
 		nstat[i] = 0;
-		nstat2[i] = 0;
 	}
 	for (int i = 0; i < c_len; i++) {
 		// Prohibit stagnation
 		// Add new note
 		nstat[c[i]]++; // Stagnation array
-		nstat2[c[i]]++; // Note fill array
-																		// Subtract old note
+		// Subtract old note
 		if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps]]--;
 		// Check if too many repeating notes
 		if (nstat[c[i]] > stag_notes) FLAG(10, i);
-	}
-	// Check note fill
-	for (int i = nmin; i <= nmax; i++) {
-		if (nstat2[i] == 0) {
-			FLAG(11, 0);
-			break;
-		}
 	}
 	// Prohibit multiple culminations
 	culm_sum = 0;
