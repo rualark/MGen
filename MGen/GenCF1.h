@@ -30,4 +30,5 @@ protected:
 	int min_tempo = 110;
 	int max_tempo = 120;
 	double random_choose = 100; // Percent of accepted canti to show and play
+	int calculate_correlation = 0; // Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 };

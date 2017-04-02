@@ -7,18 +7,19 @@ first_note = C5 # Starting note of each cantus
 last_diatonic_int = 0 # Diatonic interval between first and last note
 tempo = 100-130 # Tempo range
 shuffle = 1
+calculate_correlation = 1 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
-Strict                    = 0 # No violated rules
-Seventh                   = 1 # Seventh interval leap
-Tritone resolved          = 1 # Tritone is prepared by E and resolved to C
-Tritone unresolved        = 1 # Tritone is not resolved correctly
-Tritone culmination       = 1 # Tritone is the highest leap
+Strict                    = 1 # No violated rules
+Seventh                   = 0 # Seventh interval leap
+Tritone resolved          = 0 # Tritone is prepared by E and resolved to C
+Tritone unresolved        = 0 # Tritone is not resolved correctly
+Tritone culmination       = 0 # Tritone is the highest leap
 Many leaps                = 0 # Maximum allowed max_leaps during max_leap_steps
 Many leaps+               = 0 # Maximum allowed max_leaps2 during max_leap_steps
 Long smooth               = 0 # Too long smooth movement
 Long line                 = 0 # Too long smooth movement in one direction (linear)
-Two 3rds                  = 1 # Chain of two thirds in one direction
+Two 3rds                  = 0 # Chain of two thirds in one direction
 Two 3rds after 6/8        = 0 # Chain of two thirds in one direction after 6th or octave
 Late <6th resolution      = 0 # Leap less than 6th is resolved after a second note
 Late >5th resolution      = 0 # Leap greater than 5th is resolved after a second note

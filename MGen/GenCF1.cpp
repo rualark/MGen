@@ -6,7 +6,8 @@
 #endif
 
 #define MAX_FLAGS 35
-#define FLAG(id, i) { if (accept[id] < 1) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
+// 
+#define FLAG(id, i) { if ((!calculate_correlation) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -121,6 +122,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "shuffle", &shuffle);
+	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
 	// Load accept
 	CString st;
 	for (int i = 0; i < MAX_FLAGS; i++) {
@@ -147,6 +149,7 @@ void CGenCF1::Generate()
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<unsigned char>  flag_sev(MAX_FLAGS); // Get severity by flag id
 	vector<Color>  flag_color(MAX_FLAGS); // Flag colors
+	vector<vector<long>> fcor = vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)); // Flags correlation matrix
 	vector<vector<unsigned char>> nflags = vector<vector<unsigned char>>(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
 	vector<unsigned char> nflagsc(c_len); // number of flags for each note
 	// Set first and last notes
@@ -408,7 +411,13 @@ void CGenCF1::Generate()
 			accepted2++;
 			// Calculate flag statistics
 			for (int i = 0; i < MAX_FLAGS; i++) {
-				if (flags[i]) fstat[i]++;
+				if (flags[i]) {
+					fstat[i]++;
+					// Calculate correlation
+					if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; z++) {
+						if (flags[z]) fcor[i][z]++;
+					}
+				}
 			}
 			// Check if flags are accepted
 			for (int i = 0; i < MAX_FLAGS; i++) {
@@ -502,6 +511,22 @@ void CGenCF1::Generate()
 		p = c_len - 2;
 		cycle++;
 		//if (cycle > 100) break;
+	}
+	// Write flag correlation
+	if (calculate_correlation) {
+		DeleteFile("cf1-cor.csv");
+		CString st, st2, st3;
+		st3 = "Flag; Total; ";
+		for (int i = 0; i < MAX_FLAGS; i++) {
+			st2.Format("%s; %d; ", FlagName[i], fcor[i][i]);
+			st3 += FlagName[i] + "; ";
+			for (int z = 0; z < MAX_FLAGS; z++) {
+				st.Format("%ld; ", fcor[i][z]);
+				st2 += st;
+			}
+			CGLib::AppendLineToFile("cf1-cor.csv", st2 + "\n");
+		}
+		CGLib::AppendLineToFile("cf1-cor.csv", st3 + "\n");
 	}
 	// Show flag statistics
 	CString* est = new CString;
