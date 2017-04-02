@@ -191,6 +191,7 @@
     <ClInclude Include="GenCA1.h" />
     <ClInclude Include="GenCF1.h" />
     <ClInclude Include="GenCF2.h" />
+    <ClInclude Include="GenCP1.h" />
     <ClInclude Include="GenMP1.h" />
     <ClInclude Include="GenRS1.h" />
     <ClInclude Include="GLib.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="GenCA1.cpp" />
     <ClCompile Include="GenCF1.cpp" />
     <ClCompile Include="GenCF2.cpp" />
+    <ClCompile Include="GenCP1.cpp" />
     <ClCompile Include="GenMP1.cpp" />
     <ClCompile Include="GenRS1.cpp" />
     <ClCompile Include="GLib.cpp" />

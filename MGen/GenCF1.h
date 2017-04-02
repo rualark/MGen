@@ -15,6 +15,7 @@ protected:
 	int min_interval = 1; // Minimum diatonic interval in cantus (7 = octave)
 	int max_interval = 5; // Maximum diatonic interval in cantus (7 = octave)
 	int c_len = 9; // Number of measures in each cantus. Usually 9 to 11
+	int s_len = 4; // Maximum number of measures to full scan
 	int first_note = 72; // Starting note of each cantus
 	int last_diatonic_int = 0; // Diatonic interval between first and last note
 	vector <unsigned char> accept; // Each upper case letter allows showing canti with specific properties:

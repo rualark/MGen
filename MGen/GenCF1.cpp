@@ -111,6 +111,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "min_interval", &min_interval);
 	CheckVar(sN, sV, "max_interval", &max_interval);
 	CheckVar(sN, sV, "c_len", &c_len);
+	CheckVar(sN, sV, "s_len", &s_len);
 	LoadNote(sN, sV, "first_note", &first_note);
 	CheckVar(sN, sV, "last_diatonic_int", &last_diatonic_int);
 	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
@@ -173,18 +174,25 @@ void CGenCF1::Generate()
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int step = 0; // Global step
+	// Select window
+	int sp1 = 1; // Start of search window
+	int sp2 = sp1 + s_len; // End of search window
+	if (sp2 > c_len - 1) sp2 = c_len - 1;
+	int ep2 = sp2; // End of evaluation window
+	// Add last note if this is last window
+	if (ep2 == c_len - 1) ep2 = c_len;
 	while (true) {
 		if (need_exit) return;
 		// Analyze combination
 		if (cycle >= 0) { // Debug condition
     	// Local note repeat prohibited
-			for (int i = 0; i < c_len - 1; i++) {
+			for (int i = sp1-1; i < ep2-1; i++) {
 				if (c[i] == c[i + 1]) goto skip;
 			}
 			nmin = 0;
 			nmax = 0;
 			// Count limits
-			for (int i = 0; i < c_len; i++) {
+			for (int i = 0; i < ep2; i++) {
 				if (c[i] < nmin) nmin = c[i];
 				if (c[i] > nmax) nmax = c[i];
 			}
@@ -195,7 +203,7 @@ void CGenCF1::Generate()
 			accepted3++;
 			fill(flags.begin(), flags.end(), 0);
 			flags[0] = 1;
-			for (int i = 0; i < c_len; i++) {
+			for (int i = 0; i < ep2; i++) {
 				nflagsc[i] = 0;
 				// Calculate chromatic positions
 				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + first_note; // Negative eight octaves reserve
@@ -203,18 +211,21 @@ void CGenCF1::Generate()
 				pc[i] = (c[i] + 56) % 7;
 			}
 			// Wrong second to last note
-			if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
+			if (ep2 > c_len - 2)
+				if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
 			// Wrong third to last note
-			if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG(14, c_len - 3);
-			// Leading third to last note
-			if (pc[c_len - 3] == 6) FLAG(34, c_len - 3);
+			if (ep2 > c_len - 3) {
+				if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG(14, c_len - 3);
+				// Leading third to last note
+				if (pc[c_len - 3] == 6) FLAG(34, c_len - 3);
+			}
 			dcount = 0;
 			scount = 0;
 			tcount = 0;
 			wdcount = 0;
 			wscount = 0;
 			wtcount = 0;
-			for (int i = 0; i < c_len; i++) {
+			for (int i = 0; i < ep2; i++) {
 				// Count same and missing letters in a row
 				if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
 					if (wtcount == 4) FLAG(18, i - 1);
@@ -260,14 +271,14 @@ void CGenCF1::Generate()
 				}
 			}
 			// Check same letters
-			if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, c_len-1);
-			if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, c_len - 1);
-			if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, c_len - 1);
+			if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, ep2 -1);
+			if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, ep2 - 1);
+			if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, ep2 - 1);
 			// Check missing letters
-			if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, c_len - 1);
-			if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, c_len - 1);
-			if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, c_len - 1);
-			for (int i = 0; i < c_len - 1; i++) {
+			if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, ep2 - 1);
+			if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, ep2 - 1);
+			if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
+			for (int i = 0; i < ep2 - 1; i++) {
 				// Tritone prohibit
 				if (abs(cc[i+1] - cc[i]) == 6) {
 					// Check if tritone is highest leap
@@ -276,11 +287,13 @@ void CGenCF1::Generate()
 					if (i > c_len - 3) FLAG(31, i)
 					//if (i < 1) FLAG(31, i);
 					// Check if resolution is correct
-					else if (cc[i + 1] % 12 == 5) FLAG(31, i)
-					else if (cc[i + 2] % 12 != 0) FLAG(31, i)
-					else if (cc[i - 1] % 12 != 4) FLAG(31, i)
-					// Record resolved tritone
-					else FLAG(2, i);
+					else if (i < ep2 - 2) {
+						if (cc[i + 1] % 12 == 5) FLAG(31, i)
+						else if (cc[i + 2] % 12 != 0) FLAG(31, i)
+						else if (cc[i - 1] % 12 != 4) FLAG(31, i)
+						// Record resolved tritone
+						else FLAG(2, i);
+					}
 				}
 				// Sept prohibit
 				if (abs(c[i + 1] - c[i]) == 6) FLAG(1, i);
@@ -317,12 +330,12 @@ void CGenCF1::Generate()
 					}
 					// Check if  leap is filled
 					pos = i + 2 + (abs(c[i + 1] - c[i]) - 1) * fill_steps_mul;
-					if (pos > c_len - 1) pos = c_len - 1;
+					if (pos > ep2 - 1) pos = ep2 - 1;
 					// Zero array
 					fill(nstat2.begin(), nstat2.end(), 0);
 					fill(nstat3.begin(), nstat3.end(), 0);
 					// Fill all notes
-					for (int x = 0; x < c_len; x++) {
+					for (int x = 0; x < ep2; x++) {
 						// Update local fill
 						if ((x > i + 1) && (x <= pos)) nstat3[c[x] + max_interval]++;
 						// Update global fill
@@ -359,7 +372,7 @@ void CGenCF1::Generate()
 				if (smooth[i] != 0) smooth_sum++;
 				else smooth_sum = 0;
 				if (smooth_sum >= max_smooth) FLAG(4, i);
-				if (i < c_len - 2) {
+				if (i < ep2 - 2) {
 					// Prohibit long smooth movement in one direction
 					if (smooth[i] == smooth[i + 1]) smooth_sum2++;
 					else smooth_sum2 = 0;
@@ -379,7 +392,7 @@ void CGenCF1::Generate()
 						// If this 3rd was prepared
 						if (third_prepared) FLAG(30, i)
 						else {
-							if (i < c_len - 3) {
+							if (i < ep2 - 3) {
 								// Check if melody direction does not change change second note after leap
 								if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
 								// If direction changes second note after leap
@@ -415,8 +428,8 @@ void CGenCF1::Generate()
 			for (int i = 0; i <= max_interval * 2; i++) {
 				nstat[i] = 0;
 			}
-			for (int i = 0; i < c_len; i++) {
-				// Prohibit stagnation
+			// Prohibit stagnation
+			for (int i = 0; i < ep2; i++) {
 				// Add new note
 				nstat[c[i] + max_interval]++; // Stagnation array
 				// Subtract old note
@@ -426,7 +439,7 @@ void CGenCF1::Generate()
 			}
 			// Prohibit multiple culminations
 			culm_sum = 0;
-			for (int i = 0; i < c_len; i++) {
+			for (int i = 0; i < ep2; i++) {
 				if (c[i] == nmax) {
 					culm_sum++;
 					culm_step = i;
@@ -436,7 +449,8 @@ void CGenCF1::Generate()
 			// Prohibit culminations at last steps
 			if (culm_step > c_len - 4) FLAG(21, culm_step);
 			// Prohibit last leap
-			if (leap[c_len-2]) FLAG(23, c_len-1);
+			if (ep2 == c_len)
+				if (leap[c_len-2]) FLAG(23, c_len-1);
 			accepted2++;
 			// Calculate flag statistics
 			for (int i = 0; i < MAX_FLAGS; i++) {
@@ -452,6 +466,17 @@ void CGenCF1::Generate()
 			for (int i = 0; i < MAX_FLAGS; i++) {
 				if ((flags[i]) && (!accept[i])) goto skip;
 				if ((!flags[i]) && (accept[i] == 2)) goto skip;
+			}
+			// If this is not last window, go to next window
+			if (ep2 < c_len) {
+				sp1 = sp2 + 1;
+				sp2 = sp1 + s_len; // End of search window
+				if (sp2 > c_len - 1) sp2 = c_len - 1;
+				// End of evaluation window
+				ep2 = sp2; 
+  		  // Add last note if this is last window
+				if (ep2 == c_len - 1) ep2 = c_len;
+				goto skip;
 			}
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
@@ -514,15 +539,15 @@ void CGenCF1::Generate()
 					t_sent = t_generated;
 				}
 				::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
-			}
-		}
+			} // t_cnt limit
+		} // cycle debug condition
 		skip:
 		while (true) {
 			if (c[p] < max_interval) break;
 			// If current element is max, make it minimum
 			c[p] = -max_interval;
 			// Move left one element
-			if (p == 1) {
+			if (p == sp1) {
 				finished = 1;
 				break;
 			}
@@ -532,7 +557,7 @@ void CGenCF1::Generate()
 		// Increase rightmost element, which was not reset to minimum
 		c[p]++;
 		// Go to rightmost element
-		p = c_len - 2;
+		p = sp2 - 1;
 		cycle++;
 		//if (cycle > 100) break;
 	}

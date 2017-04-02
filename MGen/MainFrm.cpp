@@ -442,6 +442,7 @@ void CMainFrame::OnButtonGen()
 	if (m_algo_id == 101) pGen = new CGenCF1();
 	if (m_algo_id == 102) pGen = new CGenCF2();
 	if (m_algo_id == 111) pGen = new CGenCA1();
+	if (m_algo_id == 121) pGen = new CGenCP1();
 	if (m_algo_id == 1001) pGen = new CGenRS1();
 	if (m_algo_id == 2001) pGen = new CGenMP1();
 	if (pGen != 0) {

@@ -25,6 +25,18 @@
     <Filter Include="Source Files\midifile">
       <UniqueIdentifier>{3a95f558-4209-491b-a603-56da053aff26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Generators">
+      <UniqueIdentifier>{226a89c3-64f0-4b1a-b04d-8793b332f133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gen helpers">
+      <UniqueIdentifier>{9cb0a150-a7a7-4fac-8e56-232c54cf906b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Generators">
+      <UniqueIdentifier>{5b08b15f-5dff-48ff-a250-0f25bf22c16c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gen helpers">
+      <UniqueIdentifier>{6bc2cbcb-2f43-4776-a62a-c09bafc21bb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -54,12 +66,6 @@
     <ClInclude Include="OutputWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GenCF1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GenCF2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="InfoDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -67,9 +73,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EditParamsDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GenRS1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AlgoDlg.h">
@@ -108,22 +111,34 @@
     <ClInclude Include="midifile\Binasc.h">
       <Filter>Header Files\midifile</Filter>
     </ClInclude>
-    <ClInclude Include="GLib.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GenCA1.h">
+      <Filter>Header Files\Generators</Filter>
     </ClInclude>
-    <ClInclude Include="GVar.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GenCF1.h">
+      <Filter>Header Files\Generators</Filter>
     </ClInclude>
-    <ClInclude Include="GAdapt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GMidi.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GenCF2.h">
+      <Filter>Header Files\Generators</Filter>
     </ClInclude>
     <ClInclude Include="GenMP1.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Generators</Filter>
     </ClInclude>
-    <ClInclude Include="GenCA1.h">
+    <ClInclude Include="GenRS1.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="GAdapt.h">
+      <Filter>Header Files\Gen helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="GLib.h">
+      <Filter>Header Files\Gen helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="GMidi.h">
+      <Filter>Header Files\Gen helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="GVar.h">
+      <Filter>Header Files\Gen helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="GenCP1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -146,12 +161,6 @@
     <ClCompile Include="OutputWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GenCF1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GenCF2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InfoDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -159,9 +168,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EditParamsDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GenRS1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AlgoDlg.cpp">
@@ -200,22 +206,34 @@
     <ClCompile Include="midifile\Binasc.cpp">
       <Filter>Source Files\midifile</Filter>
     </ClCompile>
-    <ClCompile Include="GLib.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GenCA1.cpp">
+      <Filter>Source Files\Generators</Filter>
     </ClCompile>
-    <ClCompile Include="GVar.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GenCF1.cpp">
+      <Filter>Source Files\Generators</Filter>
     </ClCompile>
-    <ClCompile Include="GAdapt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GMidi.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GenCF2.cpp">
+      <Filter>Source Files\Generators</Filter>
     </ClCompile>
     <ClCompile Include="GenMP1.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Generators</Filter>
     </ClCompile>
-    <ClCompile Include="GenCA1.cpp">
+    <ClCompile Include="GenRS1.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="GAdapt.cpp">
+      <Filter>Source Files\Gen helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="GLib.cpp">
+      <Filter>Source Files\Gen helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="GMidi.cpp">
+      <Filter>Source Files\Gen helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="GVar.cpp">
+      <Filter>Source Files\Gen helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="GenCP1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
