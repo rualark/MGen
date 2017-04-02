@@ -421,8 +421,7 @@ void CGenCF1::Generate()
 			// Check note fill
 			for (int i = nmin; i <= nmax; i++) {
 				if (nstat2[i + max_interval] == 0) {
-					flags[0] = 0;
-					flags[11] = 1;
+					FLAG(11, 0);
 					break;
 				}
 			}
