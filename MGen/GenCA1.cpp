@@ -191,38 +191,56 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	for (int i = 0; i < c_len; i++) {
 		// Count same and missing letters in a row
 		if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
+			if (wtcount == 4) FLAG(18, i - 1);
+			if (wtcount == 5) FLAG(19, i - 1);
+			if (wtcount > 5) FLAG(20, i - 1);
 			tcount++;
 			wtcount = 0;
 		}
 		else {
+			if (tcount == 3) FLAG(15, i - 1);
+			if (tcount == 4) FLAG(16, i - 1);
+			if (tcount > 4) FLAG(17, i - 1);
 			tcount = 0;
 			wtcount++;
 		}
 		if ((pc[i] == 1) || (pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
+			if (wdcount == 4) FLAG(18, i - 1);
+			if (wdcount == 5) FLAG(19, i - 1);
+			if (wdcount > 5) FLAG(20, i - 1);
 			dcount++;
 			wdcount = 0;
 		}
 		else {
+			if (dcount == 3) FLAG(15, i - 1);
+			if (dcount == 4) FLAG(16, i - 1);
+			if (dcount > 4) FLAG(17, i - 1);
 			dcount = 0;
 			wdcount++;
 		}
 		if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) {
+			if (wscount == 4) FLAG(18, i - 1);
+			if (wscount == 5) FLAG(19, i - 1);
+			if (wscount > 5) FLAG(20, i - 1);
 			scount++;
 			wscount = 0;
 		}
 		else {
+			if (scount == 3) FLAG(15, i - 1);
+			if (scount == 4) FLAG(16, i - 1);
+			if (scount > 4) FLAG(17, i - 1);
 			scount = 0;
 			wscount++;
 		}
-		// Check same letters
-		if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, i);
-		if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, i);
-		if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, i);
-		// Check missing letters
-		if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, i);
-		if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, i);
-		if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, i);
 	}
+	// Check same letters
+	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, c_len - 1);
+	if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, c_len - 1);
+	if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, c_len - 1);
+	// Check missing letters
+	if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, c_len - 1);
+	if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, c_len - 1);
+	if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, c_len - 1);
 	for (int i = 0; i < c_len - 1; i++) {
 		// Tritone prohibit
 		if (abs(cc[i + 1] - cc[i]) == 6) {
