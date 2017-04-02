@@ -5,7 +5,7 @@
 #define new DEBUG_NEW
 #endif
 
-#define MAX_FLAGS 37
+#define MAX_FLAGS 38
 #define FLAG(id, i) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
@@ -44,8 +44,9 @@ const CString FlagName[MAX_FLAGS] = {
 	"Tritone culmination", // 32
 	"Leap to leap resolution", // 33
 	"3rd to last is leading", // 34
-	"Too wide range", // 35
-	"Too tighr range", // 36
+	"Prepared unfilled 3rd", // 35
+	"Too wide range", // 36
+	"Too tighr range", // 37
 };
 
 const int SeverityFlag[MAX_FLAGS] = {
@@ -171,8 +172,8 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 		if (c[i] > nmax) nmax = c[i];
 	}
 	// Limit melody interval
-	if (nmax - nmin > max_interval) FLAG(35, 0); // TODO
-	if (nmax - nmin < min_interval) FLAG(36, 0); // TODO
+	if (nmax - nmin > max_interval) FLAG(36, 0); // TODO
+	if (nmax - nmin < min_interval) FLAG(37, 0); // TODO
 	// Wrong second to last note
 	if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
 	// Wrong third to last note
