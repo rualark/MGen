@@ -125,6 +125,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
 	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
+	CheckVar(sN, sV, "random_seed", &random_seed);
 	CheckVar(sN, sV, "shuffle", &shuffle);
 	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
 	// Load accept
@@ -169,6 +170,8 @@ void CGenCF1::Generate()
 	}
 	// Set middle notes to minimum
 	for (int i = 1; i < c_len - 1; i++) c[i] = -max_interval;
+	if (random_seed)
+		for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(-max_interval, max_interval);
 	// Walk all variants
 	double cycle = 0;
 	long accepted = 0, accepted2 = 0, accepted3 = 0, accepted4 = 0;
@@ -190,7 +193,7 @@ void CGenCF1::Generate()
 	if (ep2 == c_len - 1) ep2 = c_len;
 	int p = sp2 - 1; // Minimal position in array to cycle
 	while (true) {
-		if (need_exit) return;
+		if (need_exit) break;
 		// Analyze combination
 		if (cycle >= 0) { // Debug condition
     	// Local note repeat prohibited
@@ -484,22 +487,37 @@ void CGenCF1::Generate()
 				if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
 				// Record window
 				wid++;
-				if (wcount < wid + 1) wcount = wid + 1;
 				wpos1[wid] = sp1;
 				wpos2[wid] = sp2;
 				// End of evaluation window
-				ep2 = sp2; 
-  		  // Add last note if this is last window
+				ep2 = sp2;
+				// Add last note if this is last window
 				if (ep2 == c_len - 1) ep2 = c_len;
 				// Go to rightmost element
 				p = sp2 - 1;
+				if (wcount < wid + 1) {
+					wcount = wid + 1;
+					if (ep2 == c_len) {
+						// Show window statistics
+						CString* est = new CString;
+						CString st, st2;
+						for (int i = 0; i < wcount; i++) {
+							if (i > 0) st2 += ", ";
+							st.Format("%d-%d", wpos1[i], wpos2[i]);
+							st2 += st;
+						}
+						est->Format("Algorithm created %d windows: %s", wcount, st2);
+						WriteLog(3, est);
+					}
+				}
 				goto skip;
 			}
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
 			// Accept cantus
 			accepted4++;
-			if (accepted < t_cnt) {
+			if (accepted >= t_cnt) break;
+			else {
 				accepted++;
 				Sleep(sleep_ms);
 				// Copy cantus to output
@@ -615,15 +633,6 @@ void CGenCF1::Generate()
 	// Show window statistics
 	CString* est = new CString;
 	CString st, st2;
-	for (int i = 0; i < wcount; i++) {
-		st.Format("%d-%d, ", wpos1[i], wpos2[i]);
-		st2 += st;
-	}
-	est->Format("Algorithm created %d windows: %s", wcount, st2);
-	WriteLog(3, est);
-	// Show flag statistics
-	est = new CString;
-	st2 = "";
 	for (int i = 0; i < MAX_FLAGS; i++) {
 		st.Format("%s-%.3f ", FlagName[i].Left(10), (double)fstat[i]/(double)1000);
 		st2 += st;
