@@ -20,7 +20,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap back <5th", // 8 
 	"Close repeat", // 9 
 	"Stagnation", // 10 
-	"Leap pre/late fill", // 11 
+	"Leap pre-late fill", // 11 
 	"Multiple culminations", // 12 
 	"2nd to last not D", // 13
 	"3rd to last is CEG", // 14
@@ -269,6 +269,7 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	}
 	leap_sum = 0;
 	max_leap_sum = 0;
+	leap_sum_i = 0;
 	smooth_sum = 0;
 	smooth_sum2 = 0;
 	for (int i = 0; i < c_len - 1; i++) {
@@ -382,7 +383,7 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	}
 	// Check if too many leaps
 	if (max_leap_sum > max_leaps) {
-		if (leap_sum > max_leaps2) FLAG(25, leap_sum_i)
+		if (max_leap_sum > max_leaps2) FLAG(25, leap_sum_i)
 		else FLAG(3, leap_sum_i);
 	}
 	// Clear nstat

@@ -21,7 +21,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap back <5th", // 8 
 	"Close repeat", // 9 
 	"Stagnation", // 10 
-	"Leap pre/late fill", // 11 
+	"Leap pre-late fill", // 11 
 	"Multiple culminations", // 12 
 	"2nd to last not D", // 13
 	"3rd to last is CEG", // 14
@@ -56,7 +56,7 @@ const int SeverityFlag[MAX_FLAGS] = {
 	7, // "Late <6th resolution", // LEAP RESOLUTION
 	8, // "Leap back <5th", // LEAP RESOLUTION 
 	1, // "Seventh", // LEAPS
-	11, // "Leap pre/late fill", // LEAP FILL 
+	11, // "Leap pre-late fill", // LEAP FILL 
 	3, // "Many leaps", // LEAPS 
 	14, // "3rd to last is CEG", // HARMONY
 	23, // "Last leap", // END
@@ -141,11 +141,14 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 
 void CGenCF1::Generate()
 {
+	int wid; // Window id
 	vector<int> c(c_len); // cantus (diatonic)
 	vector<int> cc(c_len); // cantus (chromatic)
 	vector<int> pc(c_len); // pitch class
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
+	vector<int> wpos1(c_len / s_len + 1);
+	vector<int> wpos2(c_len / s_len + 1);
 	vector<int> nstat(max_interval * 2 + 1);
 	vector<int> nstat2(max_interval * 2 + 1);
 	vector<int> nstat3(max_interval * 2 + 1);
@@ -167,7 +170,6 @@ void CGenCF1::Generate()
 	// Set middle notes to minimum
 	for (int i = 1; i < c_len - 1; i++) c[i] = -max_interval;
 	// Walk all variants
-	int p = c_len - 2; // Minimal position in array to cycle
 	double cycle = 0;
 	long accepted = 0, accepted2 = 0, accepted3 = 0, accepted4 = 0;
 	int finished = 0;
@@ -179,8 +181,13 @@ void CGenCF1::Generate()
 	int sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len - 1) sp2 = c_len - 1;
 	int ep2 = sp2; // End of evaluation window
+	// Record window
+	wid = 0;
+	wpos1[wid] = sp1;
+	wpos2[wid] = sp2;
 	// Add last note if this is last window
 	if (ep2 == c_len - 1) ep2 = c_len;
+	int p = sp2 - 1; // Minimal position in array to cycle
 	while (true) {
 		if (need_exit) return;
 		// Analyze combination
@@ -310,7 +317,7 @@ void CGenCF1::Generate()
 			max_leap_sum = 0;
 			smooth_sum = 0;
 			smooth_sum2 = 0;
-			for (int i = 0; i < c_len - 1; i++) {
+			for (int i = 0; i < ep2 - 1; i++) {
 				// Add new leap
 				if (leap[i] != 0) {
 					leap_sum++;
@@ -421,7 +428,7 @@ void CGenCF1::Generate()
 			}
 			// Check if too many leaps
 			if (max_leap_sum > max_leaps) {
-				if (leap_sum > max_leaps2) FLAG(25, leap_sum_i)
+				if (max_leap_sum > max_leaps2) FLAG(25, leap_sum_i)
 				else FLAG(3, leap_sum_i);
 			}
 			// Clear nstat
@@ -453,7 +460,7 @@ void CGenCF1::Generate()
 				if (leap[c_len-2]) FLAG(23, c_len-1);
 			accepted2++;
 			// Calculate flag statistics
-			for (int i = 0; i < MAX_FLAGS; i++) {
+			if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; i++) {
 				if (flags[i]) {
 					fstat[i]++;
 					// Calculate correlation
@@ -469,13 +476,19 @@ void CGenCF1::Generate()
 			}
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
-				sp1 = sp2 + 1;
+				sp1 = sp2;
 				sp2 = sp1 + s_len; // End of search window
 				if (sp2 > c_len - 1) sp2 = c_len - 1;
+				// Record window
+				wid++;
+				wpos1[wid] = sp1;
+				wpos2[wid] = sp2;
 				// End of evaluation window
 				ep2 = sp2; 
   		  // Add last note if this is last window
 				if (ep2 == c_len - 1) ep2 = c_len;
+				// Go to rightmost element
+				p = sp2 - 1;
 				goto skip;
 			}
 			// Check random_choose
@@ -553,7 +566,23 @@ void CGenCF1::Generate()
 			}
 			p--;
 		}
-		if (finished) break;
+		if (finished) {
+			// Finish if this is last variant in first window
+			if ((p == 1) || (wid == 0)) break;
+			// Clear current window
+			for (int i = sp1; i < sp2; i++) c[i] = -max_interval;
+			// If this is not first window, go to previous window
+			wid--;
+			sp1 = wpos1[wid];
+			sp2 = wpos2[wid];
+			// End of evaluation window
+			ep2 = sp2;
+			// Add last note if this is last window
+			if (ep2 == c_len - 1) ep2 = c_len;
+			// Go to rightmost element
+			p = sp2 - 1;
+			finished = 0;
+		}
 		// Increase rightmost element, which was not reset to minimum
 		c[p]++;
 		// Go to rightmost element
