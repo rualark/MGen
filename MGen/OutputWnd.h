@@ -36,6 +36,7 @@ public:
 	afx_msg void OnUpdateEditSaveline(CCmdUI *pCmdUI);
 	afx_msg void OnEditSaveline();
 	afx_msg void OnLbnDblclk();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 class COutputWnd : public CDockablePane
@@ -67,5 +68,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 

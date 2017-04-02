@@ -14,6 +14,7 @@
 #include "OutputWnd.h"
 #include "Resource.h"
 #include "MainFrm.h"
+#include "MGenView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -35,6 +36,7 @@ COutputWnd::~COutputWnd()
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -135,6 +137,7 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_SAVELINE, &COutputList::OnUpdateEditSaveline)
 	ON_COMMAND(ID_EDIT_SAVELINE, &COutputList::OnEditSaveline)
 	ON_CONTROL_REFLECT(LBN_DBLCLK, &COutputList::OnLbnDblclk)
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList message handlers
@@ -210,4 +213,22 @@ void COutputList::OnLbnDblclk()
 	CString st;
 	GetText(GetCurSel(), st);
 	MessageBox(st);
+}
+
+
+void COutputWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	CFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CFrameWndEx, GetTopLevelFrame());
+	((CMGenView*)(pMainFrame->GetActiveView()))->OnKeyDown(nChar, nRepCnt, nFlags);
+
+	CDockablePane::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+
+void COutputList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	CFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CFrameWndEx, GetTopLevelFrame());
+	((CMGenView*)(pMainFrame->GetActiveView()))->OnKeyDown(nChar, nRepCnt, nFlags);
+
+	CListBox::OnKeyDown(nChar, nRepCnt, nFlags);
 }
