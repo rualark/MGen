@@ -635,6 +635,9 @@ void CMainFrame::LoadAlgo()
 		}
 	}
 	fs.close();
+	if (AlgCount == 0) {
+		WriteLog(1, "Error loading algorithms.txt");
+	}
 }
 
 void CMainFrame::LoadSettings()
