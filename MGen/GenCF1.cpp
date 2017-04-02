@@ -450,11 +450,6 @@ void CGenCF1::Generate()
 					// Set flag color
 					color[x][0] = FlagColor[0];
 					int current_severity = -1;
-					if (flags[11] == 'F') {
-						color[x][0] = flag_color[11];
-						current_severity = flag_sev[11];
-						if (x == step)  comment[step][0] += "This cantus has unfilled loop. ";
-					}
 					// Set nflag color
 					note[x][0] = cc[x - step];
 					if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
@@ -531,10 +526,12 @@ void CGenCF1::Generate()
 		CString st, st2, st3;
 		st3 = "Flag; Total; ";
 		for (int i = 0; i < MAX_FLAGS; i++) {
-			st2.Format("%s; %d; ", FlagName[i], fcor[i][i]);
-			st3 += FlagName[i] + "; ";
+			int f1 = SeverityFlag[i];
+			st2.Format("%s; %d; ", FlagName[f1], fcor[f1][f1]);
+			st3 += FlagName[f1] + "; ";
 			for (int z = 0; z < MAX_FLAGS; z++) {
-				st.Format("%ld; ", fcor[i][z]);
+				int f2 = SeverityFlag[z];
+				st.Format("%ld; ", fcor[f1][f2]);
 				st2 += st;
 			}
 			CGLib::AppendLineToFile("cf1-cor.csv", st2 + "\n");

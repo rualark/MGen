@@ -51,43 +51,44 @@ const CString FlagName[MAX_FLAGS] = {
 
 const int SeverityFlag[MAX_FLAGS] = {
 	0, // "Strict", // 0
+	35, // "Prepared unfilled 3rd", // 35
+	30, // "Prepared unresolved 3rd", // 30
+	7, // "Late <6th resolution", // 7 
+	8, // "Leap back <5th", // 8 
 	1, // "Seventh", // 1
 	2, // "Tritone resolved", // 2 
 	3, // "Many leaps", // 3 
+	11, // "Noncontiguous", // 11 
+	14, // "3rd to last is CEG", // 14
+	23, // "Last leap", // 23
+	28, // "Two 3rds after 6/8", // 28
+	15, // "3 letters in a row", // 15
+	33, // "Leap to leap resolution", // 33
+	6, // "Two 3rds", // 6 
+	18, // "4 step miss", // 18
+
+	24, // "Unfilled leap", // 24
+	36, // "Too wide range",
+	37, // "Too tight range",
 	4, // "Long smooth", // 4 
 	5, // "Long line", // 5 
-	6, // "Two 3rds", // 6 
-	7, // "Late <6th resolution", // 7 
-	8, // "Leap back <5th", // 8 
 	9, // "Close repeat", // 9 
 	10, // "Stagnation", // 10 
-	11, // "Noncontiguous", // 11 
 	12, // "Multiple culminations", // 12 
 	13, // "2nd to last not D", // 13
-	14, // "3rd to last is CEG", // 14
-	15, // "3 letters in a row", // 15
 	16, // "4 letters in a row", // 16
 	17, // ">4 letters in a row", // 17
-	18, // "4 step miss", // 18
 	19, // "5 step miss", // 19
 	20, // ">5 step miss", // 20
 	21, // "Late culmination", // 21
 	22, // "Leap back >4th", // 22
-	23, // "Last leap", // 23
-	24, // "Unfilled leap", // 24
 	25, // "Many leaps+", // 25
 	26, // "Leap unresolved", // 26
 	27, // "Leap chain", // 27
-	28, // "Two 3rds after 6/8", // 28
 	29, // "Late >5th resolution", // 29
-	30, // "Prepared unresolved 3rd", // 30
 	31, // "Tritone unresolved", // 31
 	32, // "Tritone culmination", // 32
-	33, // "Leap to leap resolution", // 33
 	34, // "3rd to last is leading", // 34
-	35, // "Prepared unfilled 3rd", // 35
-	36, // "Too wide range",
-	37, // "Too tight range",
 };
 
 const Color FlagColor[] = {
@@ -377,8 +378,7 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	// Check note fill
 	for (int i = nmin; i <= nmax; i++) {
 		if (nstat2[i] == 0) {
-			flags[0] = 0;
-			flags[11] = 1;
+			FLAG(11, 0);
 			break;
 		}
 	}
@@ -406,11 +406,6 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 		// Set flag color
 		color[x][0] = FlagColor[0];
 		int current_severity = -1;
-		if (flags[11] == 'F') {
-			color[x][0] = flag_color[11];
-			current_severity = flag_sev[11];
-			if (x == step)  comment[step][0] += "This cantus has unfilled loop. ";
-		}
 		// Set nflag color
 		note[x][0] = cc[x - step];
 		if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
