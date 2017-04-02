@@ -177,6 +177,7 @@ void CGenCF1::Generate()
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int step = 0; // Global step
 	// Select window
+	int wcount = 1; // Number of windows created
 	int sp1 = 1; // Start of search window
 	int sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len - 1) sp2 = c_len - 1;
@@ -479,8 +480,11 @@ void CGenCF1::Generate()
 				sp1 = sp2;
 				sp2 = sp1 + s_len; // End of search window
 				if (sp2 > c_len - 1) sp2 = c_len - 1;
+				// Reserve last window with maximum length
+				if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
 				// Record window
 				wid++;
+				if (wcount < wid + 1) wcount = wid + 1;
 				wpos1[wid] = sp1;
 				wpos2[wid] = sp2;
 				// End of evaluation window
@@ -608,9 +612,18 @@ void CGenCF1::Generate()
 		}
 		CGLib::AppendLineToFile("cf1-cor.csv", st3 + "\n");
 	}
-	// Show flag statistics
+	// Show window statistics
 	CString* est = new CString;
 	CString st, st2;
+	for (int i = 0; i < wcount; i++) {
+		st.Format("%d-%d, ", wpos1[i], wpos2[i]);
+		st2 += st;
+	}
+	est->Format("Algorithm created %d windows: %s", wcount, st2);
+	WriteLog(3, est);
+	// Show flag statistics
+	est = new CString;
+	st2 = "";
 	for (int i = 0; i < MAX_FLAGS; i++) {
 		st.Format("%s-%.3f ", FlagName[i].Left(10), (double)fstat[i]/(double)1000);
 		st2 += st;
@@ -618,7 +631,6 @@ void CGenCF1::Generate()
 	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s", 
 		c_len, max_interval, 100.0*(double)accepted / cycle, (double)accepted4/1000.0, (double)accepted/1000.0, (double)accepted2/1000.0, 
 		(double)accepted3 / 1000.0, cycle/1000, st2);
-	AppendLineToFile("GenCF1.log", *est + "\n");
 	WriteLog(3, est);
 	// Random shuffle
 	if (shuffle) {
