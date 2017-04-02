@@ -20,7 +20,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap back <5th", // 8 
 	"Close repeat", // 9 
 	"Stagnation", // 10 
-	"Noncontiguous", // 11 
+	"Leap pre/late fill", // 11 
 	"Multiple culminations", // 12 
 	"2nd to last not D", // 13
 	"3rd to last is CEG", // 14
@@ -53,20 +53,20 @@ const int SeverityFlag[MAX_FLAGS] = {
 	0, // "Strict", // 0
 	35, // "Prepared unfilled 3rd", // LEAP FILL
 	30, // "Prepared unresolved 3rd", // LEAP RESOLUTION
+	28, // "Two 3rds after 6/8", // LEAP RESOLUTION
 	7, // "Late <6th resolution", // LEAP RESOLUTION
 	8, // "Leap back <5th", // LEAP RESOLUTION 
 	1, // "Seventh", // LEAPS
-	2, // "Tritone resolved", // TRITONE 
+	11, // "Leap pre/late fill", // LEAP FILL 
 	3, // "Many leaps", // LEAPS 
-	24, // "Unfilled leap", // LEAP FILL
 	14, // "3rd to last is CEG", // HARMONY
 	23, // "Last leap", // END
-	28, // "Two 3rds after 6/8", // LEAP RESOLUTION
+	2, // "Tritone resolved", // TRITONE 
 	15, // "3 letters in a row", // HARMONY
+	24, // "Unfilled leap", // LEAP FILL
 	33, // "Leap to leap resolution", // LEAP RESOLUTION
 	6, // "Two 3rds", // LEAP RESOLUTION 
 	18, // "4 step miss", // HARMONY
-	11, // "Noncontiguous", // LEAP FILL 
 
 	36, // "Too wide range", // RANGE
 	37, // "Too tight range", // RANGE
@@ -151,7 +151,7 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 		flag_color[SeverityFlag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
 	}
 	int finished = 0;
-	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok;
+	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
  
 	// Clear flags
@@ -293,25 +293,32 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 			pos = i + 2 + (abs(c[i + 1] - c[i]) - 1) * fill_steps_mul;
 			if (pos > c_len - 1) pos = c_len - 1;
 			// Zero array
+			fill(nstat2.begin(), nstat2.end(), 0);
 			fill(nstat3.begin(), nstat3.end(), 0);
 			// Fill all notes
-			for (int x = i + 2; x <= pos; x++) nstat3[c[x]]++;
+			for (int x = 0; x < c_len; x++) {
+				// Update local fill
+				if ((x > i + 1) && (x <= pos)) nstat3[c[x]]++;
+				// Update global fill
+				nstat2[c[x]]++;
+			}
 			// Check if leap is filled
-			ok = 1;
-			if (c[i] < c[i + 1]) {
-				for (int x = c[i] + 1; x < c[i + 1]; x++) if (!nstat3[x]) {
-					ok = 0;
-					break;
-				}
+			ok = 1; // Local fill
+			ok2 = 1; // Global fill
+			int pos1 = min(c[i], c[i + 1]);
+			int pos2 = max(c[i], c[i + 1]);
+			for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x]) {
+				ok = 0;
+				if (!nstat2[x]) ok2 = 0;
+				break;
 			}
-			else {
-				for (int x = c[i+1]+1; x < c[i]; x++) if (!nstat3[x]) {
-					ok = 0;
-					break;
-				}
-			}
+			// Local not filled?
 			if (!ok) {
+				// Local not filled. Third prepared?
 				if (third_prepared) FLAG(35, i)
+				// Local not filled. Third not prepared. Global filled?
+				else if (ok2) FLAG(11, i)
+				// Local not filled. Third not prepared. Global not filled.
 				else FLAG(24, i);
 			}
 		}

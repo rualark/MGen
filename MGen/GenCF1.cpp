@@ -21,7 +21,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap back <5th", // 8 
 	"Close repeat", // 9 
 	"Stagnation", // 10 
-	"Noncontiguous", // 11 
+	"Leap pre/late fill", // 11 
 	"Multiple culminations", // 12 
 	"2nd to last not D", // 13
 	"3rd to last is CEG", // 14
@@ -145,7 +145,6 @@ void CGenCF1::Generate()
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
 	vector<int> nstat(max_interval * 2 + 1);
-	vector<int> nstat2(max_interval * 2 + 1);
 	vector<int> nstat3(max_interval * 2 + 1);
 	vector<long> fstat(MAX_FLAGS); // number of canti with each flag
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
@@ -169,7 +168,7 @@ void CGenCF1::Generate()
 	double cycle = 0;
 	long accepted = 0, accepted2 = 0, accepted3 = 0, accepted4 = 0;
 	int finished = 0;
-	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok;
+	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int step = 0; // Global step
 	while (true) {
@@ -322,23 +321,20 @@ void CGenCF1::Generate()
 					// Fill all notes
 					for (int x = i + 2; x <= pos; x++) nstat3[c[x] + max_interval]++;
 					// Check if leap is filled
-					ok = 1;
-					if (c[i] < c[i + 1]) {
-						for (int x = c[i] + 1; x < c[i + 1]; x++) if (!nstat3[x + max_interval]) {
-							ok = 0;
-							break;
-						}
-					}
-					else {
-						for (int x = c[i+1]+1; x < c[i]; x++) if (!nstat3[x + max_interval]) {
-							ok = 0;
-							break;
-						}
+					ok = 1; // Local fill
+					ok2 = 1; // Global fill
+					int pos1 = min(c[i], c[i + 1]);
+					int pos2 = max(c[i], c[i + 1]);
+					for (int x = 0; x < c_len; x++) if (!nstat3[x + max_interval]) {
+						if ((x > pos1) && (x < pos2)) ok = 0;
+						ok2 = 0;
+						break;
 					}
 					if (!ok) {
 						if (third_prepared) FLAG(35, i)
 						else FLAG(24, i);
 					}
+					else if (!ok2) FLAG(11, i);
 				}
 				// Subtract old leap
 				if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
@@ -406,24 +402,15 @@ void CGenCF1::Generate()
 			// Clear nstat
 			for (int i = 0; i <= max_interval * 2; i++) {
 				nstat[i] = 0;
-				nstat2[i] = 0;
 			}
 			for (int i = 0; i < c_len; i++) {
 				// Prohibit stagnation
 				// Add new note
 				nstat[c[i] + max_interval]++; // Stagnation array
-				nstat2[c[i] + max_interval]++; // Note fill array
 				// Subtract old note
 				if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] + max_interval]--;
 				// Check if too many repeating notes
 				if (nstat[c[i] + max_interval] > stag_notes) FLAG(10, i);
-			}
-			// Check note fill
-			for (int i = nmin; i <= nmax; i++) {
-				if (nstat2[i + max_interval] == 0) {
-					FLAG(11, 0);
-					break;
-				}
 			}
 			// Prohibit multiple culminations
 			culm_sum = 0;
