@@ -84,6 +84,7 @@ const int SeverityFlag[MAX_FLAGS] = {
 	32, // "Tritone culmination", // 32
 	33, // "Leap to leap resolution", // 33
 	34, // "3rd to last is leading", // 34
+	35, // "Prepared unfilled 3rd", // 35
 };
 
 const Color FlagColor[] = {
@@ -284,7 +285,7 @@ void CGenCF1::Generate()
 					// Check if this leap is 3rd
 					third_prepared = 0;
 					if (abs(c[i + 1] - c[i]) == 2) {
-						pos = (c[i + 1] - c[i]) / 2;
+						pos = (c[i + 1] + c[i]) / 2;
 						// Check if 3rd was pre-filled
 						if ((i > 0) && (c[i - 1] == pos)) third_prepared = 1;
 						else if ((i > 1) && (c[i - 2] == pos)) third_prepared = 1;

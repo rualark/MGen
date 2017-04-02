@@ -46,7 +46,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"3rd to last is leading", // 34
 	"Prepared unfilled 3rd", // 35
 	"Too wide range", // 36
-	"Too tighr range", // 37
+	"Too tight range", // 37
 };
 
 const int SeverityFlag[MAX_FLAGS] = {
@@ -85,8 +85,9 @@ const int SeverityFlag[MAX_FLAGS] = {
 	32, // "Tritone culmination", // 32
 	33, // "Leap to leap resolution", // 33
 	34, // "3rd to last is leading", // 34
-	35, // "Too wide range",
-	36, // "Too tight range",
+	35, // "Prepared unfilled 3rd", // 35
+	36, // "Too wide range",
+	37, // "Too tight range",
 };
 
 const Color FlagColor[] = {
@@ -150,7 +151,7 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	}
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok;
-	int dcount, scount, tcount, wdcount, wscount, wtcount;
+	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
  
 	// Clear flags
 	fill(flags.begin(), flags.end(), 0);
@@ -255,6 +256,20 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 		// Add new leap
 		if (leap[i] != 0) {
 			leap_sum++;
+			// Check if this leap is 3rd
+			third_prepared = 0;
+			if (abs(c[i + 1] - c[i]) == 2) {
+				pos = (c[i + 1] + c[i]) / 2;
+				// Check if 3rd was pre-filled
+				if ((i > 0) && (c[i - 1] == pos)) third_prepared = 1;
+				else if ((i > 1) && (c[i - 2] == pos)) third_prepared = 1;
+				else if ((i > 2) && (c[i - 3] == pos)) third_prepared = 1;
+				else if ((i > 3) && (c[i - 4] == pos)) third_prepared = 1;
+				// Check if 3rd has pre-leap
+				else if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
+				else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
+				else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
+			}
 			// Check if  leap is filled
 			pos = i + 2 + (abs(c[i + 1] - c[i]) - 1) * fill_steps_mul;
 			if (pos > c_len - 1) pos = c_len - 1;
@@ -263,11 +278,22 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 			// Fill all notes
 			for (int x = i + 2; x <= pos; x++) nstat3[c[x]]++;
 			// Check if leap is filled
+			ok = 1;
 			if (c[i] < c[i + 1]) {
-				for (int x = c[i] + 1; x < c[i + 1]; x++) if (!nstat3[x]) FLAG(24, i);
+				for (int x = c[i] + 1; x < c[i + 1]; x++) if (!nstat3[x]) {
+					ok = 0;
+					break;
+				}
 			}
 			else {
-				for (int x = c[i + 1] + 1; x < c[i]; x++) if (!nstat3[x]) FLAG(24, i);
+				for (int x = c[i+1]+1; x < c[i]; x++) if (!nstat3[x]) {
+					ok = 0;
+					break;
+				}
+			}
+			if (!ok) {
+				if (third_prepared) FLAG(35, i)
+				else FLAG(24, i);
 			}
 		}
 		// Subtract old leap
@@ -298,22 +324,8 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 			}
 			// Check if melody direction does not change after leap
 			else if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
-				// Check if this leap is 3rd
-				ok = 0;
-				if (abs(c[i + 1] - c[i]) == 2) {
-					pos = (c[i + 1] - c[i]) / 2;
-					// Check if 3rd was pre-filled
-					if ((i > 0) && (c[i - 1] == pos)) ok = 1;
-					else if ((i > 1) && (c[i - 2] == pos)) ok = 1;
-					else if ((i > 2) && (c[i - 3] == pos)) ok = 1;
-					else if ((i > 3) && (c[i - 4] == pos)) ok = 1;
-					// Check if 3rd has pre-leap
-					else if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) ok = 1;
-					else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) ok = 1;
-					else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) ok = 1;
-				}
 				// If this 3rd was prepared
-				if (ok) FLAG(30, i)
+				if (third_prepared) FLAG(30, i)
 				else {
 					if (i < c_len - 3) {
 						// Check if melody direction does not change change second note after leap

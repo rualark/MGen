@@ -71,6 +71,8 @@ CMGenView::CMGenView()
 	v_color[3] = {   0, 255,   0 };
 	v_color[4] = { 120, 120,   0 };
 	v_color[5] = {   0, 120, 120 };
+	// Dummy set to avoid assertion failure on first OnPaint
+	SetScrollSizes(MM_TEXT, CSize(20000, 20000));
 }
 
 CMGenView::~CMGenView()
