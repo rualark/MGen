@@ -318,25 +318,30 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 			}
 			mouse_voice_old = mouse_voice;
+			// Add step to the left and to the right
+			int step1t = step1;
+			int step2t = step2;
+			if (step1t > 0) step1t--;
+			if (step2t < pGen->t_generated-1) step2t++;
 			// Show tempo
-			for (int i = step1; i < step2; i++)  {
+			for (int i = step1t; i < step2t; i++)  {
 				if (i>0) g.DrawLine(&pen_agray, X_FIELD + i * nwidth + nwidth / 2, 
 					y_start - 2 - (y_start-Y_HEADER-4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
 					X_FIELD + (i - 1) * nwidth + nwidth / 2, 
 					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
 			}
-			if (step2 < pGen->t_generated - 1) 
-				g.DrawLine(&pen_agray, X_FIELD + step2 * nwidth + nwidth / 2, 
-					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2] - tg_min) / (tg_max - tg_min),
-				X_FIELD + (step2 + 1) * nwidth + nwidth / 2, 
-					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2 + 1] - tg_min) / (tg_max - tg_min));
+			if (step2t < pGen->t_generated - 1) 
+				g.DrawLine(&pen_agray, X_FIELD + step2t * nwidth + nwidth / 2, 
+					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t] - tg_min) / (tg_max - tg_min),
+				X_FIELD + (step2t + 1) * nwidth + nwidth / 2, 
+					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t + 1] - tg_min) / (tg_max - tg_min));
 			// Highlight draft notes
 			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-			if ((step2 > pGen->t_sent) || (pGen->need_exit == 1)) {
+			if ((step2t > pGen->t_sent) || (pGen->need_exit == 1)) {
 				int step3 = max((ClipBox.left - X_FIELD) / nwidth - 1, pGen->t_sent);
 				g.FillRectangle(&brush_ared, X_FIELD + step3 * nwidth,
 					ClientRect.top + Y_HEADER,
-					(step2 - step3 + 1) * nwidth, y_start - ClientRect.top - Y_HEADER);
+					(step2t - step3 + 1) * nwidth, y_start - ClientRect.top - Y_HEADER);
 			}
 			// Highlight selection
 			if ((mouse_step > -1)) {
