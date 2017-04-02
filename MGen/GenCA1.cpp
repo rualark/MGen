@@ -51,44 +51,44 @@ const CString FlagName[MAX_FLAGS] = {
 
 const int SeverityFlag[MAX_FLAGS] = {
 	0, // "Strict", // 0
-	35, // "Prepared unfilled 3rd", // 35
-	30, // "Prepared unresolved 3rd", // 30
-	7, // "Late <6th resolution", // 7 
-	8, // "Leap back <5th", // 8 
-	1, // "Seventh", // 1
-	2, // "Tritone resolved", // 2 
-	3, // "Many leaps", // 3 
-	11, // "Noncontiguous", // 11 
-	14, // "3rd to last is CEG", // 14
-	23, // "Last leap", // 23
-	28, // "Two 3rds after 6/8", // 28
-	15, // "3 letters in a row", // 15
-	33, // "Leap to leap resolution", // 33
-	6, // "Two 3rds", // 6 
-	18, // "4 step miss", // 18
+	35, // "Prepared unfilled 3rd", // LEAP FILL
+	30, // "Prepared unresolved 3rd", // LEAP RESOLUTION
+	7, // "Late <6th resolution", // LEAP RESOLUTION
+	8, // "Leap back <5th", // LEAP RESOLUTION 
+	1, // "Seventh", // LEAPS
+	2, // "Tritone resolved", // TRITONE 
+	3, // "Many leaps", // LEAPS 
+	24, // "Unfilled leap", // LEAP FILL
+	14, // "3rd to last is CEG", // HARMONY
+	23, // "Last leap", // END
+	28, // "Two 3rds after 6/8", // LEAP RESOLUTION
+	15, // "3 letters in a row", // HARMONY
+	33, // "Leap to leap resolution", // LEAP RESOLUTION
+	6, // "Two 3rds", // LEAP RESOLUTION 
+	18, // "4 step miss", // HARMONY
+	11, // "Noncontiguous", // LEAP FILL 
 
-	24, // "Unfilled leap", // 24
-	36, // "Too wide range",
-	37, // "Too tight range",
-	4, // "Long smooth", // 4 
-	5, // "Long line", // 5 
-	9, // "Close repeat", // 9 
-	10, // "Stagnation", // 10 
-	12, // "Multiple culminations", // 12 
-	13, // "2nd to last not D", // 13
-	16, // "4 letters in a row", // 16
-	17, // ">4 letters in a row", // 17
-	19, // "5 step miss", // 19
-	20, // ">5 step miss", // 20
-	21, // "Late culmination", // 21
-	22, // "Leap back >4th", // 22
-	25, // "Many leaps+", // 25
-	26, // "Leap unresolved", // 26
-	27, // "Leap chain", // 27
-	29, // "Late >5th resolution", // 29
-	31, // "Tritone unresolved", // 31
-	32, // "Tritone culmination", // 32
-	34, // "3rd to last is leading", // 34
+	36, // "Too wide range", // RANGE
+	37, // "Too tight range", // RANGE
+	4, // "Long smooth", // LEAPS 
+	5, // "Long line", // LEAPS 
+	9, // "Close repeat", // REPEATS 
+	10, // "Stagnation", // REPEATS 
+	12, // "Multiple culminations", // REPEATS 
+	13, // "2nd to last not D", // HARMONY
+	16, // "4 letters in a row", // HARMONY
+	17, // ">4 letters in a row", // HARMONY
+	19, // "5 step miss", // HARMONY
+	20, // ">5 step miss", // HARMONY
+	21, // "Late culmination", // END
+	22, // "Leap back >4th", // LEAP RESOLUTION
+	25, // "Many leaps+", // LEAPS
+	26, // "Leap unresolved", // LEAP RESOLUTION
+	27, // "Leap chain", // LEAP RESOLUTION
+	29, // "Late >5th resolution", // LEAP RESOLUTION
+	31, // "Tritone unresolved", // TRITONE
+	32, // "Tritone culmination", // TRITONE
+	34, // "3rd to last is leading", // HARMONY
 };
 
 const Color FlagColor[] = {
