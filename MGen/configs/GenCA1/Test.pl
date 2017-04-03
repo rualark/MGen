@@ -15,10 +15,8 @@ max_leaps2 = 3 # Maximum allowed max_leaps2 during max_leap_steps for Many leaps
 max_leap_steps = 7
 stag_notes = 2 # Maximum allowed stag_notes (same notes) during stag_note_steps
 stag_note_steps = 7
+repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 
 # Technical parameters
 midifile_tpq_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
-
-# Not implemented
-max_repeat_mul = 2 # Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different

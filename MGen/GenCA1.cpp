@@ -5,7 +5,7 @@
 #define new DEBUG_NEW
 #endif
 
-#define MAX_FLAGS 38
+#define MAX_FLAGS 39
 #define FLAG(id, i) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
@@ -45,8 +45,9 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap to leap resolution", // 33
 	"3rd to last is leading", // 34
 	"Prepared unfilled 3rd", // 35
-	"Too wide range", // 36
-	"Too tight range", // 37
+	"Outstanding repeat", // 36
+	"Too wide range", // 37
+	"Too tight range", // 38
 };
 
 const int SeverityFlag[MAX_FLAGS] = {
@@ -67,6 +68,7 @@ const int SeverityFlag[MAX_FLAGS] = {
 	33, // "Leap to leap resolution", // LEAP RESOLUTION
 	6, // "Two 3rds", // LEAP RESOLUTION 
 	18, // "4 step miss", // HARMONY
+	36, // "Outstanding repeat", // REPEATS
 
 	36, // "Too wide range", // RANGE
 	37, // "Too tight range", // RANGE
@@ -115,6 +117,7 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "max_leaps", &max_leaps);
 	CheckVar(sN, sV, "max_leaps2", &max_leaps2);
 	CheckVar(sN, sV, "max_leap_steps", &max_leap_steps);
+	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
 	CheckVar(sN, sV, "stag_notes", &stag_notes);
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
 	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
@@ -166,7 +169,7 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	}
 	// Local note repeat prohibited
 	for (int i = 0; i < c_len - 1; i++) {
-		if (c[i] == c[i + 1]) return; // TODO
+		if (c[i] == c[i + 1]) return;
 	}
 	nmin = c[0];
 	nmax = c[0];
@@ -176,8 +179,8 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 		if (c[i] > nmax) nmax = c[i];
 	}
 	// Limit melody interval
-	if (nmax - nmin > max_interval) FLAG(36, 0); // TODO
-	if (nmax - nmin < min_interval) FLAG(37, 0); // TODO
+	if (nmax - nmin > max_interval) FLAG(37, 0);
+	if (nmax - nmin < min_interval) FLAG(38, 0);
 	// Wrong second to last note
 	if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
 	// Wrong third to last note
@@ -274,6 +277,24 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	leap_sum_i = 0;
 	smooth_sum = 0;
 	smooth_sum2 = 0;
+	// Search for outstanding repeats
+	if (c_len > 6) for (int i = 0; i < c_len - 6; i++) {
+		// Check if note changes direction or is a leap
+		if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
+			// Search for repeat of note at same beat until last three notes
+			int finish = i + repeat_steps;
+			if (finish > c_len - 2) finish = c_len - 2;
+			for (int x = i + 2; x < finish; x += 2) {
+				// Check if same note with direction change or leap
+				if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
+					// Check that two more notes repeat
+					if ((c[x + 1] == c[i + 1]) && (c[x + 2] == c[i + 2])) {
+						FLAG(36, i);
+					}
+				}
+			}
+		}
+	}
 	for (int i = 0; i < c_len - 1; i++) {
 		// Add new leap
 		if (leap[i] != 0) {

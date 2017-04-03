@@ -35,5 +35,6 @@ protected:
 	int min_tempo = 110;
 	int max_tempo = 120;
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
+	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 };
 
