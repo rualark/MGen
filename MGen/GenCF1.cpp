@@ -5,7 +5,7 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 36
+#define MAX_FLAGS 37
 // 
 #define FLAG(id, i) { if ((!calculate_correlation) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
@@ -46,6 +46,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Leap to leap resolution", // 33
 	"3rd to last is leading", // 34
 	"Prepared unfilled 3rd", // 35
+	"Outstanding repeat", // 36
 };
 
 const int SeverityFlag[MAX_FLAGS] = {
@@ -66,6 +67,7 @@ const int SeverityFlag[MAX_FLAGS] = {
 	33, // "Leap to leap resolution", // LEAP RESOLUTION
 	6, // "Two 3rds", // LEAP RESOLUTION 
 	18, // "4 step miss", // HARMONY
+	36, // "Outstanding repeat", // REPEATS
 
 	4, // "Long smooth", // LEAPS 
 	5, // "Long line", // LEAPS 
@@ -126,6 +128,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "random_seed", &random_seed);
+	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
 	CheckVar(sN, sV, "shuffle", &shuffle);
 	CheckVar(sN, sV, "show_severity", &show_severity);
 	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
@@ -329,6 +332,24 @@ void CGenCF1::Generate()
 			max_leap_sum = 0;
 			smooth_sum = 0;
 			smooth_sum2 = 0;
+			// Search for outstanding repeats
+			if (ep2 > 6) for (int i = 0; i < ep2 - 6; i++) {
+				// Check if note changes direction or is a leap
+				if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
+					// Search for repeat of note at same beat until last three notes
+					int finish = i + repeat_steps;
+					if (finish > ep2 - 2) finish = ep2 - 2;
+					for (int x = i+2; x < finish; x+=2) {
+						// Check if same note with direction change or leap
+						if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
+							// Check that two more notes repeat
+							if ((c[x + 1] == c[i + 1]) && (c[x + 2] == c[i + 2])) {
+								FLAG(36, i);
+							}
+						}
+					}
+				}
+			}
 			for (int i = 0; i < ep2 - 1; i++) {
 				// Add new leap
 				if (leap[i] != 0) {

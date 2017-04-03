@@ -34,4 +34,5 @@ protected:
 	int random_seed = 0; // Seed melody with random numbers. This ensures giving different results if generation is very slow.
 	int calculate_correlation = 0; // Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
+	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes(if beats are same)
 };
