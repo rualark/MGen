@@ -1,18 +1,17 @@
 # Main parameters
 t_cnt = 100 # Maximum number of canti generated
-c_len = 17 # Number of measures in each cantus. Usually 9 to 11
+c_len = 9 # Number of measures in each cantus. Usually 9 to 11
 s_len = 7 # Maximum number of measures to full scan
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
 last_diatonic_int = 0 # Diatonic interval between first and last note
 tempo = 100-130 # Tempo range
-shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
-calculate_correlation = 1 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
+shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
-Strict                    = 0 # No violated rules
+Strict                    = 1 # No violated rules
 Prepared unfilled 3rd     = 0 # 3rd is unfilled, but was prepared by filling or leap before
 Prepared unresolved 3rd   = 0 # 3rd is unresolved, but was prepared by filling or leap before
 Two 3rds after 6/8        = 0 # Chain of two thirds in one direction after 6th or octave
@@ -25,12 +24,11 @@ Many leaps                = 0 # Maximum allowed max_leaps during max_leap_steps
 Last leap                 = 0 # Last step is a leap
 Tritone resolved          = 0 # Tritone is prepared by E and resolved to C
 3 letters in a row        = 0 # 3 same letters (TDS) in possible chord names in a row
-Unfilled leap             = 1 # Leap is not filled
+Unfilled leap             = 0 # Leap is not filled
 Leap to leap resolution   = 0 # Resolution of leap with another leap
 Two 3rds                  = 0 # Chain of two thirds in one direction
 4 step miss               = 0 # 4 steps missing one of 3 letters (TDS) in possible chord names in a row
-Outstanding repeat        = 2 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
-
+Outstanding repeat        = 0 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 Long smooth               = 0 # Too long smooth movement
 Long line                 = 0 # Too long smooth movement in one direction (linear)
 Close repeat              = 0 # Two notes repeat in contact
@@ -51,6 +49,7 @@ Tritone unresolved        = 0 # Tritone is not resolved correctly
 Tritone culmination       = 0 # Tritone is the highest leap
 3rd to last is leading    = 0 # Third to last note is leading (B forbidden)
 
+#Rule parameters
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling
 max_smooth_direct = 5 # Maximum linear movement in one direction allowed (in steps)
 max_smooth = 7 # Maximum linear movement allowed (in steps)
@@ -64,3 +63,4 @@ repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps betwee
 # Technical parameters
 midifile_tpq_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
+calculate_correlation = 1 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
