@@ -127,6 +127,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "random_seed", &random_seed);
 	CheckVar(sN, sV, "shuffle", &shuffle);
+	CheckVar(sN, sV, "show_severity", &show_severity);
 	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
 	// Load accept
 	CString st;
@@ -142,6 +143,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 
 void CGenCF1::Generate()
 {
+	CString st;
 	int wid; // Window id
 	vector<int> c(c_len); // cantus (diatonic)
 	vector<int> cc(c_len); // cantus (chromatic)
@@ -534,7 +536,10 @@ void CGenCF1::Generate()
 					// Set nflag color
 					note[x][0] = cc[x - step];
 					if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
-						comment[x][0] += FlagName[nflags[x - step][i]] + ". ";
+						comment[x][0] += FlagName[nflags[x - step][i]];
+						st.Format(" [%d]", flag_sev[nflags[x - step][i]]);
+						if (show_severity) comment[x][0] += st;
+						comment[x][0] += ". ";
 						// Set note color if this is maximum flag severity
 						if (flag_sev[nflags[x - step][i]] > current_severity) {
 							current_severity = flag_sev[nflags[x - step][i]];
@@ -637,7 +642,7 @@ void CGenCF1::Generate()
 	}
 	// Show window statistics
 	CString* est = new CString;
-	CString st, st2;
+	CString st2;
 	for (int i = 0; i < MAX_FLAGS; i++) {
 		st.Format("%s-%.3f ", FlagName[i].Left(10), (double)fstat[i]/(double)1000);
 		st2 += st;
