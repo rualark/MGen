@@ -18,6 +18,7 @@ stag_note_steps = 7
 
 # Technical parameters
 midifile_tpq_mul = 8 # All notes are made whole for midi export
+show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 
 # Not implemented
 max_repeat_mul = 2 # Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different

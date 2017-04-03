@@ -118,10 +118,12 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "stag_notes", &stag_notes);
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
 	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
+	CheckVar(sN, sV, "show_severity", &show_severity);
 }
 
 void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 {
+	CString st;
 	int c_len = cc.size();
 	int max_diatonic = 77;
 	vector<int> c(c_len); // cantus (diatonic)
@@ -426,7 +428,10 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 		// Set nflag color
 		note[x][0] = cc[x - step];
 		if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
-			comment[x][0] += FlagName[nflags[x - step][i]] + ". ";
+			comment[x][0] += FlagName[nflags[x - step][i]];
+			st.Format(" [%d]", flag_sev[nflags[x - step][i]]);
+			if (show_severity) comment[x][0] += st;
+			comment[x][0] += ". ";
 			// Set note color if this is maximum flag severity
 			if (flag_sev[nflags[x - step][i]] > current_severity) {
 				current_severity = flag_sev[nflags[x - step][i]];

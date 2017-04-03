@@ -34,5 +34,6 @@ protected:
 	int stag_note_steps = 7;
 	int min_tempo = 110;
 	int max_tempo = 120;
+	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 };
 
