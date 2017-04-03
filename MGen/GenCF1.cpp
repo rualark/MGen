@@ -145,6 +145,7 @@ void CGenCF1::Generate()
 {
 	CString st;
 	int wid; // Window id
+	int seed_cycle = 0; // Number of cycles in case of random_seed
 	vector<int> c(c_len); // cantus (diatonic)
 	vector<int> cc(c_len); // cantus (chromatic)
 	vector<int> pc(c_len); // pitch class
@@ -600,11 +601,19 @@ void CGenCF1::Generate()
 		}
 		if (finished) {
 			// Finish if this is last variant in first window
-			if ((p == 1) || (wid == 0)) break;
+			if ((p == 1) || (wid == 0)) {
+				// If we started from random seed, allow one more full cycle
+				if (random_seed) {
+					if (seed_cycle) break;
+					WriteLog(3, "Random seed allows one more full cycle: restarting");
+					seed_cycle++;
+				}
+				else break;
+			}
 			// Clear current window
 			for (int i = sp1; i < sp2; i++) c[i] = -max_interval;
 			// If this is not first window, go to previous window
-			wid--;
+			if (wid > 0) wid--;
 			sp1 = wpos1[wid];
 			sp2 = wpos2[wid];
 			// End of evaluation window

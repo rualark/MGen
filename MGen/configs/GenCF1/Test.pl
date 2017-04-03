@@ -1,13 +1,13 @@
 # Main parameters
-t_cnt = 10 # Maximum number of canti generated
-c_len = 10 # Number of measures in each cantus. Usually 9 to 11
+t_cnt = 1000 # Maximum number of canti generated
+c_len = 8 # Number of measures in each cantus. Usually 9 to 11
 s_len = 5 # Maximum number of measures to full scan
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
 last_diatonic_int = 0 # Diatonic interval between first and last note
 tempo = 100-130 # Tempo range
-shuffle = 1 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
+shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 
