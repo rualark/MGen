@@ -160,6 +160,11 @@ void CGenCF1::Generate()
 	vector<vector<long>> fcor = vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)); // Flags correlation matrix
 	vector<vector<unsigned char>> nflags = vector<vector<unsigned char>>(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
 	vector<unsigned char> nflagsc(c_len); // number of flags for each note
+	// Check that at least one rule accepted
+	for (int i = 0; i < MAX_FLAGS; i++) {
+		if (accept[i]) break;
+		if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
+	}
 	// Set first and last notes
 	c[0] = 0;
 	c[c_len-1] = last_diatonic_int;
@@ -404,7 +409,7 @@ void CGenCF1::Generate()
 						if (third_prepared) FLAG(30, i)
 						else {
 							if (i < ep2 - 3) {
-								// Check if melody direction does not change change second note after leap
+								// Check if melody direction does not change second note after leap
 								if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
 								// If direction changes second note after leap
 								else {
