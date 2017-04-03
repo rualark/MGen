@@ -303,8 +303,9 @@ void CGenCF1::Generate()
 			for (int i = 0; i < ep2 - 1; i++) {
 				// Tritone prohibit
 				if (abs(cc[i+1] - cc[i]) == 6) {
-					// Check if tritone is highest leap
-					if ((c[i] == nmax) || (c[i+1] == nmax)) FLAG(32, i)
+					// Check if tritone is highest leap if this is last window
+					if (ep2 == c_len)
+						if ((c[i] == nmax) || (c[i+1] == nmax)) FLAG(32, i)
 					// Check if tritone is first or last step
 					if (i > c_len - 3) FLAG(31, i)
 					//if (i < 1) FLAG(31, i);
@@ -316,6 +317,7 @@ void CGenCF1::Generate()
 						// Record resolved tritone
 						else FLAG(2, i);
 					}
+					// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
 				}
 				// Sept prohibit
 				if (abs(c[i + 1] - c[i]) == 6) FLAG(1, i);
@@ -370,35 +372,38 @@ void CGenCF1::Generate()
 					}
 					// Check if  leap is filled
 					pos = i + 2 + (abs(c[i + 1] - c[i]) - 1) * fill_steps_mul;
-					if (pos > ep2 - 1) pos = ep2 - 1;
-					// Zero array
-					fill(nstat2.begin(), nstat2.end(), 0);
-					fill(nstat3.begin(), nstat3.end(), 0);
-					// Fill all notes
-					for (int x = 0; x < ep2; x++) {
-						// Update local fill
-						if ((x > i + 1) && (x <= pos)) nstat3[c[x] + max_interval]++;
-						// Update global fill
-						nstat2[c[x] + max_interval]++;
-					}
-					// Check if leap is filled
-					ok = 1; // Local fill
-					ok2 = 1; // Global fill
-					int pos1 = min(c[i], c[i + 1]);
-					int pos2 = max(c[i], c[i + 1]);
-					for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x + max_interval]) {
-						ok = 0;
-						if (!nstat2[x + max_interval]) ok2 = 0;
-						break;
-					}
-					// Local not filled?
-					if (!ok) {
-						// Local not filled. Third prepared?
-						if (third_prepared) FLAG(35, i)
-							// Local not filled. Third not prepared. Global filled?
-						else if (ok2) FLAG(11, i)
-							// Local not filled. Third not prepared. Global not filled.
-						else FLAG(24, i);
+					// Do not check fill if search window is cut by end of current not-last scan window
+					if ((pos < ep2) || (c_len == ep2)) {
+						if (pos > ep2 - 1) pos = ep2 - 1;
+						// Zero array
+						fill(nstat2.begin(), nstat2.end(), 0);
+						fill(nstat3.begin(), nstat3.end(), 0);
+						// Fill all notes
+						for (int x = 0; x < ep2; x++) {
+							// Update local fill
+							if ((x > i + 1) && (x <= pos)) nstat3[c[x] + max_interval]++;
+							// Update global fill
+							nstat2[c[x] + max_interval]++;
+						}
+						// Check if leap is filled
+						ok = 1; // Local fill
+						ok2 = 1; // Global fill
+						int pos1 = min(c[i], c[i + 1]);
+						int pos2 = max(c[i], c[i + 1]);
+						for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x + max_interval]) {
+							ok = 0;
+							if (!nstat2[x + max_interval]) ok2 = 0;
+							break;
+						}
+						// Local not filled?
+						if (!ok) {
+							// Local not filled. Third prepared?
+							if (third_prepared) FLAG(35, i)
+								// Local not filled. Third not prepared. Global filled?
+							else if (ok2) FLAG(11, i)
+								// Local not filled. Third not prepared. Global not filled.
+							else FLAG(24, i);
+						}
 					}
 				}
 				// Subtract old leap
@@ -442,7 +447,10 @@ void CGenCF1::Generate()
 									else FLAG(7, i);
 								}
 							}
-							else FLAG(26, i);
+							else {
+								// Mark leap unresolved if this is end of cantus
+								if (c_len == ep2) FLAG(26, i);
+							}
 						}
 					}
 					// If melody direction changes after leap
