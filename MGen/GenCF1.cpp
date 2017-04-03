@@ -524,7 +524,10 @@ void CGenCF1::Generate()
 			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
 			// Accept cantus
 			accepted4++;
-			if (accepted >= t_cnt) break;
+			if (accepted >= t_cnt) {
+				WriteLog(3, "Generation reached t_cnt. Breaking.");
+				break;
+			}
 			else {
 				accepted++;
 				Sleep(sleep_ms);

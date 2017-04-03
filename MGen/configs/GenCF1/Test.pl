@@ -1,5 +1,5 @@
 # Main parameters
-t_cnt = 1000 # Maximum number of canti generated
+t_cnt = 100 # Maximum number of canti generated
 c_len = 8 # Number of measures in each cantus. Usually 9 to 11
 s_len = 5 # Maximum number of measures to full scan
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
