@@ -1,7 +1,7 @@
 # Main parameters
 t_cnt = 100 # Maximum number of canti generated
-c_len = 11 # Number of measures in each cantus. Usually 9 to 11
-s_len = 6 # Maximum number of measures to full scan
+c_len = 9 # Number of measures in each cantus. Usually 9 to 11
+s_len = 7 # Maximum number of measures to full scan
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
@@ -12,18 +12,18 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
 Strict                    = 0 # No violated rules
-Prepared unfilled 3rd     = 1 # 3rd is unfilled, but was prepared by filling or leap before
-Prepared unresolved 3rd   = 1 # 3rd is unresolved, but was prepared by filling or leap before
-Two 3rds after 6/8        = 1 # Chain of two thirds in one direction after 6th or octave
-Late <6th resolution      = 1 # Leap less than 6th is resolved after a second note
-Leap back <5th            = 1 # Leap returns to same note (in case leap is equal or less than 4th)
-Seventh                   = 1 # Seventh interval leap
-Leap pre-late fill        = 1 # Melody has unfilled gaps
+Prepared unfilled 3rd     = 0 # 3rd is unfilled, but was prepared by filling or leap before
+Prepared unresolved 3rd   = 0 # 3rd is unresolved, but was prepared by filling or leap before
+Two 3rds after 6/8        = 2 # Chain of two thirds in one direction after 6th or octave
+Late <6th resolution      = 0 # Leap less than 6th is resolved after a second note
+Leap back <5th            = 0 # Leap returns to same note (in case leap is equal or less than 4th)
+Seventh                   = 0 # Seventh interval leap
+Leap pre-late fill        = 0 # Melody has unfilled gaps
 Many leaps                = 0 # Maximum allowed max_leaps during max_leap_steps
 3rd to last is CEG        = 0 # Third to last note is not Subdominant (C E G forbidden)
 Last leap                 = 0 # Last step is a leap
 Tritone resolved          = 0 # Tritone is prepared by E and resolved to C
-3 letters in a row        = 0 # 3 same letters (TDS) in possible chord names in a row
+3 letters in a row        = 1 # 3 same letters (TDS) in possible chord names in a row
 Unfilled leap             = 0 # Leap is not filled
 Leap to leap resolution   = 0 # Resolution of leap with another leap
 Two 3rds                  = 0 # Chain of two thirds in one direction
@@ -41,7 +41,7 @@ Multiple culminations     = 0 # Melody has more than one culmination with the sa
 >5 step miss              = 0 # More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row
 Late culmination          = 0 # Culmination at last three steps
 Leap back >4th            = 0 # Leap returns to same note (in case leap is larger than 4th)
-Many leaps+               = 0 # Maximum allowed max_leaps2 during max_leap_steps
+Many leaps+               = 1 # Maximum allowed max_leaps2 during max_leap_steps
 Leap unresolved           = 0 # Leap unresolved during two next steps (movement direction does not change)
 Leap chain                = 0 # Chain of two leaps in one direction
 Late >5th resolution      = 0 # Leap greater than 5th is resolved after a second note

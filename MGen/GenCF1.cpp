@@ -165,7 +165,7 @@ void CGenCF1::Generate()
 	vector<long> accepted4(MAX_WIND); // number of accepted canti per window
 	vector<long> accepted5(MAX_WIND); // number of canti with neede flags per window
 	vector<long> fstat(MAX_FLAGS); // number of canti with each flag
-	vector<vector<long>> fblock = vector<vector<long>>(MAX_WIND, vector<long>(MAX_FLAGS)); // number of canti rejected with foreign flags
+	vector<vector<vector<long>>> fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS))); // number of canti rejected with foreign flags
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<unsigned char>  flag_sev(MAX_FLAGS); // Get severity by flag id
 	vector<Color>  flag_color(MAX_FLAGS); // Flag colors
@@ -543,9 +543,11 @@ void CGenCF1::Generate()
 			if (calculate_blocking) {
 				int flags_found = 0;
 				int flags_found2 = 0;
+				int flags_conflict = 0;
 				// Find if any of accepted flags set
 				for (int i = 0; i < MAX_FLAGS; i++) {
 					if ((flags[i]) && (accept[i])) flags_found++;
+					if ((flags[i]) && (!accept[i])) flags_conflict++;
 					if ((flags[i]) && (accept[i] == 2)) flags_found2++;
 				}
 				// Check if no needed flags set
@@ -555,7 +557,8 @@ void CGenCF1::Generate()
 				accepted5[wid]++;
 				// Find flags that are blocking
 				for (int i = 0; i < MAX_FLAGS; i++) {
-					if ((flags[i]) && (!accept[i])) fblock[wid][i]++;
+					if ((flags[i]) && (!accept[i]))
+						fblock[wid][flags_conflict][i]++;
 				}
 			}
 			// Check if flags are accepted
@@ -737,33 +740,46 @@ void CGenCF1::Generate()
 			st.Format("\n%.3f %s ", (double)fstat[f1] / (double)1000, FlagName[f1]);
 			st2 += st;
 		}
-		est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s",
-			c_len, max_interval, 100.0*(double)accepted / cycle, (double)accepted4[wcount-1] / 1000.0, (double)accepted / 1000.0, (double)accepted2 / 1000.0,
+		est->Format("%d/%d: Accepted %.3f/%.3f/%.3f/%.3f variants of %.3f: %s",
+			c_len, max_interval, (double)accepted4[wcount-1] / 1000.0, (double)accepted / 1000.0, (double)accepted2 / 1000.0,
 			(double)accepted3 / 1000.0, cycle / 1000, st2);
 		WriteLog(3, est);
 	}
 	// Show blocking statistics
 	if (calculate_blocking) {
 		for (int w = 0; w < wcount; w++) {
+			int lines = 0;
 			CString* est = new CString;
 			st2 = "";
-			int max_flag = 0;
-			long max_value = -1;
-			for (int x = 0; x < MAX_FLAGS; x++) {
-				max_value = -1;
-				// Find biggest value
-				for (int i = 0; i < MAX_FLAGS; i++) {
-					if (fblock[w][i] > max_value) {
-						max_value = fblock[w][i];
-						max_flag = i;
-					}
+			for (int d = 1; d < MAX_FLAGS; d++) {
+				if (lines > 100) break;
+				int flagc = 0;
+				for (int x = 0; x < MAX_FLAGS; x++) {
+					if (fblock[w][d][x] > 0) flagc++;
 				}
-				st.Format("\n%.0f%% %s, ", (double)max_value * 100.0 / (accepted5[w] - accepted4[w]), FlagName[max_flag]);
+				if (!flagc) continue;
+				int max_flag = 0;
+				long max_value = -1;
+				st.Format("\nTier %d: ", d);
 				st2 += st;
-				// Clear biggest value to search for next
-				fblock[w][max_flag] = -1;
+				for (int x = 0; x < MAX_FLAGS; x++) {
+					max_value = -1;
+					// Find biggest value
+					for (int i = 0; i < MAX_FLAGS; i++) {
+						if (fblock[w][d][i] > max_value) {
+							max_value = fblock[w][d][i];
+							max_flag = i;
+						}
+					}
+					if (max_value < 1) break;
+					st.Format("\n%ld %s, ", max_value, FlagName[max_flag]);
+					st2 += st;
+					lines++;
+					// Clear biggest value to search for next
+					fblock[w][d][max_flag] = -1;
+				}
 			}
-			est->Format("Window %d: %ld variants are blocked by flags: %s", w, accepted5[w] - accepted4[w], st2);
+			est->Format("Window %d: %ld of %ld variants blocked: %s", w, accepted5[w] - accepted4[w], accepted5[w], st2);
 			WriteLog(3, est);
 		}
 	}
