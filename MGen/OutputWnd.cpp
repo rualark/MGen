@@ -15,6 +15,7 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "MGenView.h"
+#include "MsgDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -212,7 +213,10 @@ void COutputList::OnLbnDblclk()
 {
 	CString st;
 	GetText(GetCurSel(), st);
-	MessageBox(st);
+	//MessageBox(st);
+	CMsgDlg dlg;
+	dlg.m_text = st;
+	dlg.DoModal();
 }
 
 

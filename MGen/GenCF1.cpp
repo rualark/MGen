@@ -6,8 +6,9 @@
 #endif
 
 #define MAX_FLAGS 37
+#define MAX_WIND 50
 // 
-#define FLAG(id, i) { if ((!calculate_correlation) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
+#define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -132,6 +133,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "shuffle", &shuffle);
 	CheckVar(sN, sV, "show_severity", &show_severity);
 	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
+	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
+	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	// Load accept
 	CString st;
 	for (int i = 0; i < MAX_FLAGS; i++) {
@@ -146,7 +149,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 
 void CGenCF1::Generate()
 {
-	CString st;
+	CString st, st2;
 	int wid; // Window id
 	int seed_cycle = 0; // Number of cycles in case of random_seed
 	vector<int> c(c_len); // cantus (diatonic)
@@ -159,13 +162,22 @@ void CGenCF1::Generate()
 	vector<int> nstat(max_interval * 2 + 1);
 	vector<int> nstat2(max_interval * 2 + 1);
 	vector<int> nstat3(max_interval * 2 + 1);
+	vector<long> accepted4(MAX_WIND); // number of accepted canti per window
+	vector<long> accepted5(MAX_WIND); // number of canti with neede flags per window
 	vector<long> fstat(MAX_FLAGS); // number of canti with each flag
+	vector<vector<long>> fblock = vector<vector<long>>(MAX_WIND, vector<long>(MAX_FLAGS)); // number of canti rejected with foreign flags
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<unsigned char>  flag_sev(MAX_FLAGS); // Get severity by flag id
 	vector<Color>  flag_color(MAX_FLAGS); // Flag colors
 	vector<vector<long>> fcor = vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)); // Flags correlation matrix
 	vector<vector<unsigned char>> nflags = vector<vector<unsigned char>>(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
 	vector<unsigned char> nflagsc(c_len); // number of flags for each note
+	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+	int flags_need2 = 0; // Number of second level flags set
+	// Calculate second level flags count
+	for (int i = 0; i < MAX_FLAGS; i++) {
+		if (accept[i] == 2) flags_need2++;
+	}
 	// Check that at least one rule accepted
 	for (int i = 0; i < MAX_FLAGS; i++) {
 		if (accept[i]) break;
@@ -185,7 +197,7 @@ void CGenCF1::Generate()
 		for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(-max_interval, max_interval);
 	// Walk all variants
 	double cycle = 0;
-	long accepted = 0, accepted2 = 0, accepted3 = 0, accepted4 = 0;
+	long accepted = 0, accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
@@ -203,6 +215,14 @@ void CGenCF1::Generate()
 	// Add last note if this is last window
 	if (ep2 == c_len - 1) ep2 = c_len;
 	int p = sp2 - 1; // Minimal position in array to cycle
+	// Check if too many windows
+	if ((c_len - 2) / (double)s_len > MAX_WIND) {
+		CString* est = new CString;
+		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.", 
+			c_len, s_len, MAX_WIND);
+		WriteLog(1, est);
+		return;
+	}
 	while (true) {
 		if (need_exit) break;
 		// Analyze combination
@@ -462,6 +482,10 @@ void CGenCF1::Generate()
 								if (abs(c[i] - c[i + 1]) > 3) FLAG(22, i)
 								else FLAG(8, i);
 							}
+							// Check if two thirds go after leap
+							else if ((i < ep2 - 3) && (leap[i + 1] == leap[i + 2]) && (c[i + 3] - c[i + 1] == 4)) {
+								// Do nothing (leap will be marked later)
+							}
 							// Else it is a simple leap-to-leap
 							else FLAG(33, i);
 						}
@@ -504,13 +528,34 @@ void CGenCF1::Generate()
 				if (leap[c_len-2]) FLAG(23, c_len-1);
 			accepted2++;
 			// Calculate flag statistics
-			if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; i++) {
-				if (flags[i]) {
-					fstat[i]++;
-					// Calculate correlation
-					if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; z++) {
-						if (flags[z]) fcor[i][z]++;
+			if (calculate_stat || calculate_correlation) {
+				if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; i++) {
+					if (flags[i]) {
+						fstat[i]++;
+						// Calculate correlation
+						if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; z++) {
+							if (flags[z]) fcor[i][z]++;
+						}
 					}
+				}
+			}
+			// Calculate flag blocking
+			if (calculate_blocking) {
+				int flags_found = 0;
+				int flags_found2 = 0;
+				// Find if any of accepted flags set
+				for (int i = 0; i < MAX_FLAGS; i++) {
+					if ((flags[i]) && (accept[i])) flags_found++;
+					if ((flags[i]) && (accept[i] == 2)) flags_found2++;
+				}
+				// Check if no needed flags set
+				if (flags_found == 0) goto skip;
+				// Check if not enough 2 flags set
+				if (flags_found2 < flags_need2) goto skip;
+				accepted5[wid]++;
+				// Find flags that are blocking
+				for (int i = 0; i < MAX_FLAGS; i++) {
+					if ((flags[i]) && (!accept[i])) fblock[wid][i]++;
 				}
 			}
 			// Check if flags are accepted
@@ -518,6 +563,7 @@ void CGenCF1::Generate()
 				if ((flags[i]) && (!accept[i])) goto skip;
 				if ((!flags[i]) && (accept[i] == 2)) goto skip;
 			}
+			accepted4[wid]++;
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
 				sp1 = sp2;
@@ -555,13 +601,12 @@ void CGenCF1::Generate()
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
 			// Accept cantus
-			accepted4++;
+			accepted++;
 			if (accepted >= t_cnt) {
 				WriteLog(3, "Generation reached t_cnt. Breaking.");
 				break;
 			}
 			else {
-				accepted++;
 				Sleep(sleep_ms);
 				// Copy cantus to output
 				if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
@@ -684,17 +729,44 @@ void CGenCF1::Generate()
 		}
 		CGLib::AppendLineToFile("cf1-cor.csv", st3 + "\n");
 	}
-	// Show window statistics
-	CString* est = new CString;
-	CString st2;
-	for (int i = 0; i < MAX_FLAGS; i++) {
-		st.Format("%s-%.3f ", FlagName[i].Left(10), (double)fstat[i]/(double)1000);
-		st2 += st;
+	// Show flag statistics
+	if (calculate_stat) {
+		CString* est = new CString;
+		for (int i = 0; i < MAX_FLAGS; i++) {
+			int f1 = SeverityFlag[i];
+			st.Format("\n%.3f %s ", (double)fstat[f1] / (double)1000, FlagName[f1]);
+			st2 += st;
+		}
+		est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s",
+			c_len, max_interval, 100.0*(double)accepted / cycle, (double)accepted4[wcount-1] / 1000.0, (double)accepted / 1000.0, (double)accepted2 / 1000.0,
+			(double)accepted3 / 1000.0, cycle / 1000, st2);
+		WriteLog(3, est);
 	}
-	est->Format("%d/%d: Accepted %.8f%% (%.3f/%.3f/%.3f/%.3f) variants of %.3f: %s", 
-		c_len, max_interval, 100.0*(double)accepted / cycle, (double)accepted4/1000.0, (double)accepted/1000.0, (double)accepted2/1000.0, 
-		(double)accepted3 / 1000.0, cycle/1000, st2);
-	WriteLog(3, est);
+	// Show blocking statistics
+	if (calculate_blocking) {
+		for (int w = 0; w < wcount; w++) {
+			CString* est = new CString;
+			st2 = "";
+			int max_flag = 0;
+			long max_value = -1;
+			for (int x = 0; x < MAX_FLAGS; x++) {
+				max_value = -1;
+				// Find biggest value
+				for (int i = 0; i < MAX_FLAGS; i++) {
+					if (fblock[w][i] > max_value) {
+						max_value = fblock[w][i];
+						max_flag = i;
+					}
+				}
+				st.Format("\n%.0f%% %s, ", (double)max_value * 100.0 / (accepted5[w] - accepted4[w]), FlagName[max_flag]);
+				st2 += st;
+				// Clear biggest value to search for next
+				fblock[w][max_flag] = -1;
+			}
+			est->Format("Window %d: %ld variants are blocked by flags: %s", w, accepted5[w] - accepted4[w], st2);
+			WriteLog(3, est);
+		}
+	}
 	// Random shuffle
 	if (shuffle) {
 		vector<unsigned short> ci(accepted); // cantus indexes

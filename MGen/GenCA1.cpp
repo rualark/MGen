@@ -393,7 +393,19 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 			// If melody direction changes after leap
 			else {
 				// Check if it is a leap to leap resolution
-				if (leap[i] * leap[i + 1] != 0) FLAG(33, i);
+				if (leap[i] * leap[i + 1] != 0) {
+					// Check if leap returns to same note
+					if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
+						if (abs(c[i] - c[i + 1]) > 3) FLAG(22, i)
+						else FLAG(8, i);
+					}
+					// Check if two thirds go after leap
+					else if ((i < c_len - 3) && (leap[i + 1] == leap[i + 2]) && (c[i + 3] - c[i + 1] == 4)) {
+						// Do nothing (leap will be marked later)
+					}
+					// Else it is a simple leap-to-leap
+					else FLAG(33, i);
+				}
 			}
 			// Check if leap returns to same note
 			if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {

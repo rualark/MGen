@@ -141,6 +141,9 @@
     <ClInclude Include="GenCP1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MsgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -234,6 +237,9 @@
       <Filter>Source Files\Gen helpers</Filter>
     </ClCompile>
     <ClCompile Include="GenCP1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MsgDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

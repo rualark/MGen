@@ -208,6 +208,7 @@
     <ClInclude Include="midifile\MidiEventList.h" />
     <ClInclude Include="midifile\MidiFile.h" />
     <ClInclude Include="midifile\MidiMessage.h" />
+    <ClInclude Include="MsgDlg.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="pminternal.h" />
     <ClInclude Include="pmutil.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="midifile\MidiEventList.cpp" />
     <ClCompile Include="midifile\MidiFile.cpp" />
     <ClCompile Include="midifile\MidiMessage.cpp" />
+    <ClCompile Include="MsgDlg.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="pmutil.c" />
     <ClCompile Include="pmwin.c" />

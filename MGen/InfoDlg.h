@@ -14,8 +14,6 @@ public:
 	CInfoDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CInfoDlg();
 
-	void AddText(CString str, COLORREF color, DWORD dwEffects);
-
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG_INFO };

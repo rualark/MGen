@@ -1,7 +1,7 @@
 # Main parameters
 t_cnt = 100 # Maximum number of canti generated
-c_len = 9 # Number of measures in each cantus. Usually 9 to 11
-s_len = 7 # Maximum number of measures to full scan
+c_len = 11 # Number of measures in each cantus. Usually 9 to 11
+s_len = 6 # Maximum number of measures to full scan
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
@@ -11,14 +11,14 @@ random_seed = 0 # Seed melody with random numbers. This ensures giving different
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
-Strict                    = 1 # No violated rules
-Prepared unfilled 3rd     = 0 # 3rd is unfilled, but was prepared by filling or leap before
-Prepared unresolved 3rd   = 0 # 3rd is unresolved, but was prepared by filling or leap before
-Two 3rds after 6/8        = 0 # Chain of two thirds in one direction after 6th or octave
-Late <6th resolution      = 0 # Leap less than 6th is resolved after a second note
-Leap back <5th            = 0 # Leap returns to same note (in case leap is equal or less than 4th)
-Seventh                   = 0 # Seventh interval leap
-Leap pre-late fill        = 0 # Melody has unfilled gaps
+Strict                    = 0 # No violated rules
+Prepared unfilled 3rd     = 1 # 3rd is unfilled, but was prepared by filling or leap before
+Prepared unresolved 3rd   = 1 # 3rd is unresolved, but was prepared by filling or leap before
+Two 3rds after 6/8        = 1 # Chain of two thirds in one direction after 6th or octave
+Late <6th resolution      = 1 # Leap less than 6th is resolved after a second note
+Leap back <5th            = 1 # Leap returns to same note (in case leap is equal or less than 4th)
+Seventh                   = 1 # Seventh interval leap
+Leap pre-late fill        = 1 # Melody has unfilled gaps
 Many leaps                = 0 # Maximum allowed max_leaps during max_leap_steps
 3rd to last is CEG        = 0 # Third to last note is not Subdominant (C E G forbidden)
 Last leap                 = 0 # Last step is a leap
@@ -64,3 +64,5 @@ repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps betwee
 midifile_tpq_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 1 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
+calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
+calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
