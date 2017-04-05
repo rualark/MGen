@@ -56,6 +56,7 @@ void CGAdapt::CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pe
 				InstName[ii], instr_tmin[ii], v, i, ndur);
 			warning_note_short[v] ++;
 			WriteLog(1, st);
+			if (comment_adapt) adapt_comment[i][v] += "Too short note. ";
 		}
 	}
 }
@@ -81,21 +82,25 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 			if (lengroup_edt1[ii] < 0) {
 				detime[ei][v] = -min(-lengroup_edt1[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
 				artic[i][v] = ARTIC_NONLEGATO;
+				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 nonlegato. ";
 			}
 			else {
 				if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
 				detime[ei][v] = lengroup_edt1[ii];
 				artic[i][v] = ARTIC_LEGATO;
+				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 legato. ";
 			}
 		}
 		if (lengroup[i][v] == 1) {
 			if (lengroup_edt2[ii] < 0) {
 				detime[ei][v] = -min(-lengroup_edt2[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
 				artic[i][v] = ARTIC_NONLEGATO;
+				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt2 nonlegato. ";
 			}
 			else {
 				detime[ei][v] = lengroup_edt2[ii];
 				artic[i][v] = ARTIC_LEGATO;
+				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt2 legato. ";
 			}
 		}
 	}
@@ -118,9 +123,6 @@ void CGAdapt::AdaptRetriggerStep(int v, int x, int i, int ii, int ei, int pi, in
 {
 	// Retrigger notes
 	if ((i > 0) && (note[pi][v] == note[i][v])) {
-		artic[i][v] = ARTIC_RETRIGGER;
-		detime[pei][v] = -1;
-		dstime[i][v] = 0;
 		double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Replace retrigger with non-legato
 		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) 
@@ -129,6 +131,13 @@ void CGAdapt::AdaptRetriggerStep(int v, int x, int i, int ii, int ei, int pi, in
 			if (max_shift > retrigger_rand_max[ii]) max_shift = retrigger_rand_max[ii];
 			detime[pei][v] = -randbw(0, max_shift);
 			artic[i][v] = ARTIC_NONLEGATO;
+			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
+		}
+		else {
+			if (comment_adapt) adapt_comment[i][v] += "Rebow retrigger. ";
+			artic[i][v] = ARTIC_RETRIGGER;
+			detime[pei][v] = -1;
+			dstime[i][v] = 0;
 		}
 	}
 }
@@ -141,6 +150,7 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 		detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
 		dstime[i][v] = 0;
 		artic[i][v] = ARTIC_NONLEGATO;
+		if (comment_adapt) adapt_comment[i][v] += "Random nonlegato. ";
 	}
 }
 
@@ -152,10 +162,13 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 		dstime[i][v] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		detime[i - 1][v] = 0.9 * dstime[i][v];
+		if (comment_adapt) adapt_comment[i][v] += "Ahead start. ";
+		if (comment_adapt) adapt_comment[i-1][v] += "Ahead end. ";
 		// Add glissando if note is long
 		double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if ((ndur > gliss_minlen[ii]) && (randbw(0, 100) < gliss_freq[ii])) {
 			vel[i][v] = vel_gliss[ii];
+			if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
 		}
 	}
 }
@@ -173,6 +186,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
 					//dstime[i][v] = (etime[lpei] - stime[i]) + detime[lpei] + 1;
 					// Move ending of previous note to the left
 					detime[lpei][v] = (stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - 1;
+					if (comment_adapt) adapt_comment[lpei][v] += "Ending overlap fixed. ";
 				}
 				break;
 			}
@@ -187,7 +201,10 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 	// If nonlegato and short note, avoid slow sustain articulations for Friedlander violin
 	if (artic[i][v] == ARTIC_NONLEGATO) {
 		double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-		if (ndur < vel_normal_minlen[ii]) vel[i][v] = randbw(vel_immediate[ii], 127);
+		if (ndur < vel_normal_minlen[ii]) {
+			vel[i][v] = randbw(vel_immediate[ii], 127);
+			if (comment_adapt) adapt_comment[i][v] += "Vel random over normal. ";
+		}
 		//if (ndur < vel_normal_minlen[ii]) vel[i][v] = dyn[i][v] * (double)(127 - vel_immediate[ii]) / 127.0 + vel_immediate[ii];
 		//else vel[i][v] = dyn[i][v] * (double)(vel_immediate[ii] - 1) / 127.0;
 	}
@@ -212,6 +229,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 			for (int z = i; z < pos; z++) {
 				dyn[z][v] = dyn[z][v] * (long_bell_start + (double)(z - i) / (pos - i) * (1.0 - long_bell_start));
 			}
+			if (comment_adapt) adapt_comment[i][v] += "Long bell start. ";
 		}
 	}
 	int ni = i + noff[i][v];
@@ -230,6 +248,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 			for (int z = pos; z < end; z++) {
 				dyn[z][v] = dyn[z][v] * (long_bell_start + (double)(end - z) / (end - pos) * (1.0 - long_bell_start));
 			}
+			if (comment_adapt) adapt_comment[i + len[i][v] - 1][v] += "Long bell end. ";
 		}
 	}
 }
@@ -270,7 +289,10 @@ void CGAdapt::Adapt(int step1, int step2)
 			pi = i - poff[i][v];
 			pei = i - 1;
 			// Set nonlegato for separate notes
-			if ((i == 0) || (pause[pi][v])) artic[i][v] = ARTIC_NONLEGATO;
+			if ((i == 0) || (pause[pi][v])) {
+				artic[i][v] = ARTIC_NONLEGATO;
+				if (comment_adapt) adapt_comment[i][v] += "Separate note nonlegato. ";
+			}
 			if (!pause[i][v]) {
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation

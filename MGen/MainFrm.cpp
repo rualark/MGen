@@ -399,6 +399,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->StopMIDI();
 		pGen->StartMIDI(GetMidiI(), 100, 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
+		pGen->InitRandom();
 		// Load results
 		pGen->LoadResults(dir, fname);
 		if (pGen->save_format_version != "1.2") MessageBox("This file was created with a different format version " + pGen->save_format_version + "\nYou can get errors trying to load it.", "Error");
