@@ -288,8 +288,18 @@ void CMGenView::OnDraw(CDC* pDC)
 				g.DrawString(A2W(st), -1, &font, PointF(1150+100*v, 0), &brush_v);
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
+					// Check if note steps have different dynamics
+					int step_dyn2 = 0;
+					if ((step_dyn) && (pGen->len[i][v] > 1)) {
+						for (int x = i + 1; x < i + pGen->len[i][v]; x++) {
+							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) {
+								step_dyn2 = 1;
+								break;
+							}
+						}
+					}
 					// Show without step dynamics
-					if (!step_dyn) {
+					if (!step_dyn2) {
 						alpha = 40 + (80 * pGen->dyn[i][v] / 127);
 						if (pGen->color[i][v].GetValue() != 0) {
 							if (pGen->color[i][v].GetAlpha() == 0) ncolor = Color(alpha, pGen->color[i][v].GetR(), pGen->color[i][v].GetG(), pGen->color[i][v].GetB());
@@ -395,7 +405,7 @@ void CMGenView::OnDraw(CDC* pDC)
 		pGen->mutex_output.unlock();
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if ((time_stop - time_start).count() > 80) {
+	if ((time_stop - time_start).count() > 10) {
 		st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
 		mf->WriteLog(2, st);
 	}
