@@ -400,7 +400,7 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 						else FLAG(8, i);
 					}
 					// Check if two thirds go after leap
-					else if ((i < c_len - 3) && (leap[i + 1] == leap[i + 2]) && (c[i + 3] - c[i + 1] == 4)) {
+					else if ((i < c_len - 3) && (leap[i + 1] == leap[i + 2]) && (abs(c[i + 3] - c[i + 1]) == 4)) {
 						// Do nothing (leap will be marked later)
 					}
 					// Else it is a simple leap-to-leap
