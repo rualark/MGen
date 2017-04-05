@@ -162,15 +162,16 @@ void CGenCF1::Generate()
 	vector<int> nstat(max_interval * 2 + 1);
 	vector<int> nstat2(max_interval * 2 + 1);
 	vector<int> nstat3(max_interval * 2 + 1);
-	vector<long> accepted4(MAX_WIND); // number of accepted canti per window
-	vector<long> accepted5(MAX_WIND); // number of canti with neede flags per window
-	vector<long> fstat(MAX_FLAGS); // number of canti with each flag
-	vector<vector<vector<long>>> fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS))); // number of canti rejected with foreign flags
+	vector<long long> wscans(MAX_WIND); // number of full scans per window
+	vector<long long> accepted4(MAX_WIND); // number of accepted canti per window
+	vector<long long> accepted5(MAX_WIND); // number of canti with neede flags per window
+	vector<long long> fstat(MAX_FLAGS); // number of canti with each flag
+	vector<vector<vector<long>>> fblock(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS))); // number of canti rejected with foreign flags
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<unsigned char>  flag_sev(MAX_FLAGS); // Get severity by flag id
 	vector<Color>  flag_color(MAX_FLAGS); // Flag colors
-	vector<vector<long>> fcor = vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)); // Flags correlation matrix
-	vector<vector<unsigned char>> nflags = vector<vector<unsigned char>>(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
+	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
+	vector<vector<unsigned char>> nflags(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
 	vector<unsigned char> nflagsc(c_len); // number of flags for each note
 	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	int flags_need2 = 0; // Number of second level flags set
@@ -196,8 +197,8 @@ void CGenCF1::Generate()
 	if (random_seed)
 		for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(-max_interval, max_interval);
 	// Walk all variants
-	double cycle = 0;
-	long accepted = 0, accepted2 = 0, accepted3 = 0;
+	long long cycle = 0;
+	long long accepted = 0, accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
@@ -578,6 +579,7 @@ void CGenCF1::Generate()
 				wid++;
 				wpos1[wid] = sp1;
 				wpos2[wid] = sp2;
+				wscans[wid]++;
 				// End of evaluation window
 				ep2 = sp2;
 				// Add last note if this is last window
@@ -725,7 +727,7 @@ void CGenCF1::Generate()
 			st3 += FlagName[f1] + "; ";
 			for (int z = 0; z < MAX_FLAGS; z++) {
 				int f2 = SeverityFlag[z];
-				st.Format("%ld; ", fcor[f1][f2]);
+				st.Format("%lld; ", fcor[f1][f2]);
 				st2 += st;
 			}
 			CGLib::AppendLineToFile("cf1-cor.csv", st2 + "\n");
@@ -737,12 +739,12 @@ void CGenCF1::Generate()
 		CString* est = new CString;
 		for (int i = 0; i < MAX_FLAGS; i++) {
 			int f1 = SeverityFlag[i];
-			st.Format("\n%.3f %s ", (double)fstat[f1] / (double)1000, FlagName[f1]);
+			st.Format("\n%lld %s ", fstat[f1], FlagName[f1]);
 			st2 += st;
 		}
-		est->Format("%d/%d: Accepted %.3f/%.3f/%.3f/%.3f variants of %.3f: %s",
-			c_len, max_interval, (double)accepted4[wcount-1] / 1000.0, (double)accepted / 1000.0, (double)accepted2 / 1000.0,
-			(double)accepted3 / 1000.0, cycle / 1000, st2);
+		est->Format("%d/%d: Accepted %lld/%lld/%lld/%lld variants of %lld: %s",
+			c_len, max_interval, accepted4[wcount-1], accepted, accepted2,
+			accepted3, cycle, st2);
 		WriteLog(3, est);
 	}
 	// Show blocking statistics
@@ -760,7 +762,7 @@ void CGenCF1::Generate()
 				if (!flagc) continue;
 				int max_flag = 0;
 				long max_value = -1;
-				st.Format("\nTier %d: ", d);
+				st.Format("\nTIER %d: ", d);
 				st2 += st;
 				for (int x = 0; x < MAX_FLAGS; x++) {
 					max_value = -1;
@@ -779,7 +781,7 @@ void CGenCF1::Generate()
 					fblock[w][d][max_flag] = -1;
 				}
 			}
-			est->Format("Window %d: %ld of %ld variants blocked: %s", w, accepted5[w] - accepted4[w], accepted5[w], st2);
+			est->Format("Window %d: %lld scans, %lld of %lld variants blocked: %s", w, wscans[w], accepted5[w] - accepted4[w], accepted5[w], st2);
 			WriteLog(3, est);
 		}
 	}
@@ -819,7 +821,7 @@ void CGenCF1::Generate()
 		t_sent = t_generated;
 		::PostMessage(m_hWnd, WM_GEN_FINISH, 2, 0);
 		CString* est = new CString;
-		est->Format("Shuffle of %ld melodies finished", accepted);
+		est->Format("Shuffle of %lld melodies finished", accepted);
 		WriteLog(3, est);
 	}
 }

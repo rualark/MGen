@@ -578,6 +578,9 @@ BOOL CMGenView::OnEraseBkgnd(CDC* pDC)
 void CMGenView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	if (nChar == VK_F1) {
+		((CMGenApp*)::AfxGetApp())->OnAppAbout();
+	}
 	if (nChar == VK_F3) {
 		mf->OnButtonAlgo();
 	}
