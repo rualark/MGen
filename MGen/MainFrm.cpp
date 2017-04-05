@@ -368,6 +368,10 @@ void CMainFrame::OnButtonParams()
 }
 
 void CMainFrame::LoadResults(CString path) {
+	if (m_state_gen == 1) {
+		AfxMessageBox("Please stop generation before opening saved results");
+		return;
+	}
 	string::size_type pos = string(path).find_last_of("\\/");
 	CString dir = string(path).substr(0, pos).c_str();
 	string::size_type pos2 = string(path).find_last_of("./");
