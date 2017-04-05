@@ -695,6 +695,7 @@ void CMainFrame::LoadSettings()
 				zoom_x = atoi(st3);
 			}
 			CGLib::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
+			CGLib::CheckVar(&st2, &st3, "step_dyn", &m_step_dyn);
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
@@ -735,6 +736,8 @@ void CMainFrame::SaveSettings()
 	st.Format("View_timer = %d # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers\n", m_view_timer);
 	fs << st;
 	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
+	fs << st;
+	st.Format("Step_dyn = %d # Show dynamics with note opacity for each step of note.Disable for slower computers.\n", m_step_dyn);
 	fs << st;
 	//st.Format("Midi_program = %s # Path to program to use to open MIDI file. Leave blank to use default OS file association.\n", midi_program);
 	//fs << st;

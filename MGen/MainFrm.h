@@ -53,6 +53,8 @@ public:
 	int m_algo = -1; // Current algorithm local ID
 	int m_algo_id = -1; // Current algorithm global ID
 	int m_view_timer = 100; // Delay between ondraw events in ms
+	int m_step_dyn = 1; // Show dynamics with note opacity for each step of note.Disable for slower computers.
+
 	int m_pspeed = 100; // Playback speed in percent
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename

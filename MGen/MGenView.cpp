@@ -279,6 +279,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			int retrigger;
 			Color ncolor;
 			int alpha;
+			int step_dyn = mf->m_step_dyn;
 			for (int v = 0; v < pGen->v_cnt; v++) {
 				// Show instrument name
 				ncolor = Color(255 /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
@@ -287,28 +288,55 @@ void CMGenView::OnDraw(CDC* pDC)
 				g.DrawString(A2W(st), -1, &font, PointF(1150+100*v, 0), &brush_v);
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
-					for (int x = i; x < i + pGen->len[i][v]; x++) {
-						alpha = 40 + (80 * pGen->dyn[x][v] / 127);
-						if (pGen->color[x][v].GetValue() != 0) {
-							if (pGen->color[x][v].GetAlpha() == 0) 
-								ncolor = Color(alpha, pGen->color[x][v].GetR(), pGen->color[x][v].GetG(), pGen->color[x][v].GetB());
-							else ncolor = pGen->color[x][v];
+					// Show without step dynamics
+					if (!step_dyn) {
+						alpha = 40 + (80 * pGen->dyn[i][v] / 127);
+						if (pGen->color[i][v].GetValue() != 0) {
+							if (pGen->color[i][v].GetAlpha() == 0) ncolor = Color(alpha, pGen->color[i][v].GetR(), pGen->color[i][v].GetG(), pGen->color[i][v].GetB());
+							else ncolor = pGen->color[i][v];
 						}
 						else {
 							ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 						}
 						SolidBrush brush(ncolor);
 						retrigger = 0;
-						if ((x == i + pGen->len[i][v] - 1) && (i + pGen->noff[i][v] < pGen->t_generated) && 
-							(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) retrigger = 1;
-						g.FillRectangle(&brush, X_FIELD + x * nwidth,
+						if (i + pGen->noff[i][v] < pGen->t_generated)
+							if (pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v]) retrigger = 1;
+						g.FillRectangle(&brush, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
-							nwidth - retrigger, nheight);
+							pGen->len[i][v] * nwidth - retrigger, nheight);
 						// Highlight selected note
 						if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
+							g.FillRectangle(&brush, X_FIELD + i * nwidth,
+								y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+								pGen->len[i][v] * nwidth - retrigger, nheight);
+						}
+					}
+					// Show with step dynamics
+					else {
+						for (int x = i; x < i + pGen->len[i][v]; x++) {
+							alpha = 40 + (80 * pGen->dyn[x][v] / 127);
+							if (pGen->color[x][v].GetValue() != 0) {
+								if (pGen->color[x][v].GetAlpha() == 0)
+									ncolor = Color(alpha, pGen->color[x][v].GetR(), pGen->color[x][v].GetG(), pGen->color[x][v].GetB());
+								else ncolor = pGen->color[x][v];
+							}
+							else {
+								ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+							}
+							SolidBrush brush(ncolor);
+							retrigger = 0;
+							if ((x == i + pGen->len[i][v] - 1) && (i + pGen->noff[i][v] < pGen->t_generated) &&
+								(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) retrigger = 1;
 							g.FillRectangle(&brush, X_FIELD + x * nwidth,
 								y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
 								nwidth - retrigger, nheight);
+							// Highlight selected note
+							if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
+								g.FillRectangle(&brush, X_FIELD + x * nwidth,
+									y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+									nwidth - retrigger, nheight);
+							}
 						}
 					}
 					// Show comment
@@ -367,9 +395,16 @@ void CMGenView::OnDraw(CDC* pDC)
 		pGen->mutex_output.unlock();
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if ((time_stop - time_start).count() > 0) {
+	if ((time_stop - time_start).count() > 80) {
 		st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
 		mf->WriteLog(2, st);
+	}
+	if ((time_stop - time_start).count() > max_draw_time) {
+		max_draw_time = (time_stop - time_start).count();
+		if (max_draw_time > WARN_DRAW * (double)(mf->m_view_timer)) {
+			st.Format("Warning: drawing takes %d ms. Your delay between drawings (View_timer) is %d ms. It is recommended to increase zoom or increase View_timer or set step_dyn to 0 in settings.pl if you face performance issues.", time_stop - time_start, mf->m_view_timer);
+			mf->WriteLog(1, st);
+		}
 	}
 }
 
