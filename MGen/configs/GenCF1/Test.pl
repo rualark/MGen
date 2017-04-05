@@ -12,7 +12,7 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
 # ! means that this rule can produce results without other rules with c_len=9, interval 4-7
-Strict                    = 0 # No violated rules
+Strict                    = 1 # No violated rules
 Prepared unfilled 3rd     = 0 # 3rd is unfilled, but was prepared by filling or leap before
 Prepared unresolved 3rd   = 0 #! 3rd is unresolved, but was prepared by filling or leap before
 Two 3rds after 6/8        = 0 # Chain of two thirds in one direction after 6th or octave
@@ -23,7 +23,7 @@ Leap pre-late fill        = 0 #! Melody has unfilled gaps
 Many leaps                = 0 #! Maximum allowed max_leaps during max_leap_steps
 3rd to last is CEG        = 0 #! Third to last note is not Subdominant (C E G forbidden)
 Last leap                 = 0 # Last step is a leap
-Tritone resolved          = 2 # Tritone is prepared by E and resolved to C
+Tritone resolved          = 0 # Tritone is prepared by E and resolved to C
 3 letters in a row        = 0 #! 3 same letters (TDS) in possible chord names in a row
 Unfilled leap             = 0 #! Leap is not filled
 Leap to leap resolution   = 0 # Resolution of leap with another leap

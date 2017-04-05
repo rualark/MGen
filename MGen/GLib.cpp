@@ -217,9 +217,9 @@ int CGLib::GetNoteI(CString st)
 		}
 		if ((nid > -1) && (isdigit(st[pos]))) {
 			int i = nid + (atoi(st.Mid(pos, 1))+1) * 12;
-			CString* est = new CString;
-			est->Format("Converted note name %s to %d", st, i);
-			WriteLog(0, est);
+			//CString* est = new CString;
+			//est->Format("Converted note name %s to %d", st, i);
+			//WriteLog(0, est);
 			return i;
 		} else {
 			CString* est = new CString;
