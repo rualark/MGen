@@ -135,6 +135,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
 	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
+	CheckVar(sN, sV, "late_require", &late_require);
 	// Load accept
 	CString st;
 	for (int i = 0; i < MAX_FLAGS; i++) {
@@ -551,10 +552,13 @@ void CGenCF1::Generate()
 					if ((flags[i]) && (!accept[i])) flags_conflict++;
 					if ((flags[i]) && (accept[i] == 2)) flags_found2++;
 				}
-				// Check if no needed flags set
-				if (flags_found == 0) goto skip;
-				// Check if not enough 2 flags set
-				if (flags_found2 < flags_need2) goto skip;
+				// Skip only if flags required
+				if ((!late_require) || (ep2 == c_len)) {
+					// Check if no needed flags set
+					if (flags_found == 0) goto skip;
+					// Check if not enough 2 flags set
+					if (flags_found2 < flags_need2) goto skip;
+				}
 				accepted5[wid]++;
 				// Find flags that are blocking
 				for (int i = 0; i < MAX_FLAGS; i++) {
@@ -565,7 +569,8 @@ void CGenCF1::Generate()
 			// Check if flags are accepted
 			for (int i = 0; i < MAX_FLAGS; i++) {
 				if ((flags[i]) && (!accept[i])) goto skip;
-				if ((!flags[i]) && (accept[i] == 2)) goto skip;
+				if ((!late_require) || (ep2 == c_len)) 
+					if ((!flags[i]) && (accept[i] == 2)) goto skip;
 			}
 			accepted4[wid]++;
 			// If this is not last window, go to next window

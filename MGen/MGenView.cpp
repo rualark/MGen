@@ -405,7 +405,7 @@ void CMGenView::OnDraw(CDC* pDC)
 		pGen->mutex_output.unlock();
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if ((time_stop - time_start).count() > 10) {
+	if ((time_stop - time_start).count() > 80) {
 		st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
 		mf->WriteLog(2, st);
 	}

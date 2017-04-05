@@ -37,4 +37,5 @@ protected:
 	int calculate_stat = 0; // Enables flag statistics calculation algorithm. Slows down generation.
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes(if beats are same)
+	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 };
