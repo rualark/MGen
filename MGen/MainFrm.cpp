@@ -404,6 +404,7 @@ void CMainFrame::LoadResults(CString path) {
 		if (pGen->save_format_version != "1.2") MessageBox("This file was created with a different format version " + pGen->save_format_version + "\nYou can get errors trying to load it.", "Error");
 		m_algo_id = pGen->m_algo_id;
 		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
+		pGen->m_algo_insts = AlgInsts[m_algo];
 		m_config = pGen->m_config;
 		// Load configs
 		pGen->LoadInstruments();
@@ -525,7 +526,9 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		CGLib::AppendLineToFile(dir + "\\" + fname + ".pl",
 			"\n# This config was copied from file " + AlgFolder[m_algo] + "\\" + m_config + ".pl\n");
 		CGLib::AppendLineToFile(dir + "\\" + fname + ".pl",
-			"# Originally autosaved at " + dir);
+			"# Originally autosaved at " + dir + "\n");
+		CGLib::AppendLineToFile(dir + "\\" + fname + ".pl",
+			"Instruments = " + pGen->m_algo_insts + " # Original instruments of current algorithm saved");
 		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		//WriteLog(1, dir + "\\config.pl");
 		// Start playback after shuffle
