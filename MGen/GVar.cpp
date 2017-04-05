@@ -66,6 +66,7 @@ void CGVar::InitVectors()
 	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	lengroup = vector<vector<char>>(t_allocated, vector<char>(v_cnt));
 	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
+	adapt_comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
 	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
 	tempo = vector<double>(t_allocated);
 	stime = vector<double>(t_allocated);
@@ -108,6 +109,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	artic.resize(size);
 	lengroup.resize(size);
 	comment.resize(size);
+	adapt_comment.resize(size);
 	color.resize(size);
 	int start = t_allocated;
 	if (vsize != v_cnt) start = 0;
@@ -123,6 +125,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		artic[i].resize(vsize);
 		lengroup[i].resize(vsize);
 		comment[i].resize(vsize);
+		adapt_comment[i].resize(vsize);
 		dstime[i].resize(vsize);
 		detime[i].resize(vsize);
 		color[i].resize(vsize, Color(0));
@@ -180,6 +183,7 @@ void CGVar::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "midifile_tpq_mul", &midifile_tpq_mul);
 			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms);
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable);
+			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt);
 			LoadVarInstr(&st2, &st3, "instruments", instr);
 			// Load algorithm-specific variables
 			LoadConfigLine(&st2, &st3, idata, fdata);

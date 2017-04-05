@@ -40,6 +40,7 @@ public:
 	float basic_tempo = 100; // Basic tempo
 	double midifile_tpq_mul = 1; // Multiplier of ticks per quarter notes in midi export
 	int shuffle = 0; // If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
+	int comment_adapt = 1; // If you want to have each adaptation decision commented
 	
 	// Output
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
@@ -53,6 +54,7 @@ public:
 	vector< vector <unsigned char> > artic; // Velocity of midi notes
 	vector< vector <char> > lengroup; // How many notes left until last in lengroup
 	vector< vector <CString> > comment; // Comment for note
+	vector< vector <CString> > adapt_comment; // Adaptation comment for note
 	vector< vector <Color> > color; // Note color (rgb ignored if all zero; alpha ignored if zero)
 	vector<double> tempo; // Tempo
 	vector<double> stime; // Time of current step start in ms

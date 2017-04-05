@@ -62,8 +62,10 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nDynamics: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->dyn[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Tempo: %.1f bpm\nStep start time: %.4f s (%.2f ms long)\nPause indicator: %d\nComment: %s\n", pGen->tempo[ms], pGen->stime[ms] / pGen->m_pspeed / 10,
-			(pGen->etime[ms] - pGen->stime[ms]) * 100 / pGen->m_pspeed, pGen->pause[ms][mv], pGen->comment[ms][mv]);
+		st.Format("Tempo: %.1f bpm\nStep start time: %.4f s (%.2f ms long)\nPause indicator: %d\nComment: %s\nAdapt comment: %s\n", 
+			pGen->tempo[ms], pGen->stime[ms] / pGen->m_pspeed / 10,
+			(pGen->etime[ms] - pGen->stime[ms]) * 100 / pGen->m_pspeed, pGen->pause[ms][mv], 
+			pGen->comment[ms][mv], pGen->adapt_comment[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Playback step start delta: %.1f ms\nPlayback step ending delta: %.1f ms\n", pGen->dstime[ms][mv], pGen->detime[ms][mv]);
 		m_info.AddText(st, RGB(0, 170, 0), 0);

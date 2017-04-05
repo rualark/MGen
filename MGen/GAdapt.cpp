@@ -254,6 +254,8 @@ void CGAdapt::Adapt(int step1, int step2)
 			ncount++;
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
+			// Clear adaptation comment
+			adapt_comment[i][v] = "";
 		}
 		// Set vel to dyn
 		for (int i = step1; i <= step2; i++) {
