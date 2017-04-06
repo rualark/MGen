@@ -5,7 +5,7 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 37
+#define MAX_FLAGS 39
 #define MAX_WIND 50
 // 
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
@@ -48,6 +48,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"3rd to last is leading", // 34
 	"Prepared unfilled 3rd", // 35
 	"Outstanding repeat", // 36
+	"Too wide range", // 37
+	"Too tight range", // 38
 };
 
 const int SeverityFlag[MAX_FLAGS] = {
@@ -70,6 +72,8 @@ const int SeverityFlag[MAX_FLAGS] = {
 	18, // "4 step miss", // HARMONY
 	36, // "Outstanding repeat", // REPEATS
 
+	36, // "Too wide range", // RANGE
+	37, // "Too tight range", // RANGE
 	4, // "Long smooth", // LEAPS 
 	5, // "Long line", // LEAPS 
 	9, // "Close repeat", // REPEATS 
@@ -149,7 +153,9 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	}
 }
 
-void CGenCF1::ScanCantus() {
+void CGenCF1::ScanCantus(int cid) {
+	// Get cantus size
+	if (cid) c_len = cantus[cid - 1].size();
 	CString st, st2;
 	int wid; // Window id
 	int seed_cycle = 0; // Number of cycles in case of random_seed
@@ -173,61 +179,77 @@ void CGenCF1::ScanCantus() {
 	vector<vector<unsigned char>> nflags(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
 	vector<unsigned char> nflagsc(c_len); // number of flags for each note
 	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
-	int flags_need2 = 0; // Number of second level flags set
-	// Calculate second level flags count
-	for (int i = 0; i < MAX_FLAGS; i++) {
-		if (accept[i] == 2) flags_need2++;
-	}
-	// Check that at least one rule accepted
-	for (int i = 0; i < MAX_FLAGS; i++) {
-		if (accept[i]) break;
-		if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
-	}
-	// Set first and last notes
-	c[0] = 0;
-	c[c_len - 1] = last_diatonic_int;
-	// Set priority
-	for (int i = 0; i < MAX_FLAGS; i++) {
-		flag_sev[SeverityFlag[i]] = i;
-		flag_color[SeverityFlag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
-	}
-	// Set middle notes to minimum
-	for (int i = 1; i < c_len - 1; i++) c[i] = -max_interval;
-	if (random_seed)
-		for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(-max_interval, max_interval);
-	// Walk all variants
 	long long cycle = 0;
 	long long accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
-	step = 0; // Global step
-						// Select window
 	int wcount = 1; // Number of windows created
-	int sp1 = 1; // Start of search window
-	int sp2 = sp1 + s_len; // End of search window
-	if (sp2 > c_len - 1) sp2 = c_len - 1;
-	int ep2 = sp2; // End of evaluation window
-								 // Record window
-	wid = 0;
-	wpos1[wid] = sp1;
-	wpos2[wid] = sp2;
-	// Add last note if this is last window
-	if (ep2 == c_len - 1) ep2 = c_len;
-	int p = sp2 - 1; // Minimal position in array to cycle
-									 // Check if too many windows
-	if ((c_len - 2) / (double)s_len > MAX_WIND) {
-		CString* est = new CString;
-		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
-			c_len, s_len, MAX_WIND);
-		WriteLog(1, est);
-		return;
+	int sp1, sp2, ep2, p, tonic, ctonic;
+	// Analyze single cantus
+	if (cid) {
+		// Copy cantus
+		cc = cantus[cid - 1];
+		// Get diatonic steps from chromatic
+		ctonic = cc[c_len - 1]; // Chromatic tonic
+		for (int i = 0; i < c_len; i++) {
+			c[i] = chrom_to_dia[(cc[i] + 132 - ctonic) % 12] + ((cc[i] + 132 - ctonic) / 12 - 11) * 7;
+		}
+		tonic = c[c_len - 1]; // Diatonic tonic
+		sp1 = 1;
+		sp2 = c_len - 1;
+		ep2 = c_len;
+		// Clear flags
+		accepted3++;
+		fill(flags.begin(), flags.end(), 0);
+		flags[0] = 1;
+		for (int i = 0; i < ep2; i++) {
+			nflagsc[i] = 0;
+		}
 	}
+	// Full scan canti
+	else {
+		// Check that at least one rule accepted
+		for (int i = 0; i < MAX_FLAGS; i++) {
+			if (accept[i]) break;
+			if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
+		}
+		tonic = 0;
+		ctonic = first_note;
+		// Set first and last notes
+		c[0] = 0;
+		c[c_len - 1] = last_diatonic_int;
+		// Set middle notes to minimum
+		for (int i = 1; i < c_len - 1; i++) c[i] = -max_interval;
+		if (random_seed)
+			for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(-max_interval, max_interval);
+		sp1 = 1; // Start of search window
+		sp2 = sp1 + s_len; // End of search window
+		if (sp2 > c_len - 1) sp2 = c_len - 1;
+		ep2 = sp2; // End of evaluation window
+		// Record window
+		wid = 0;
+		wpos1[wid] = sp1;
+		wpos2[wid] = sp2;
+		// Add last note if this is last window
+		if (ep2 == c_len - 1) ep2 = c_len;
+		p = sp2 - 1; // Minimal position in array to cycle
+		// Check if too many windows
+		if ((c_len - 2) / (double)s_len > MAX_WIND) {
+			CString* est = new CString;
+			est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
+				c_len, s_len, MAX_WIND);
+			WriteLog(1, est);
+			return;
+		}
+	}
+	// Walk all variants
 	while (true) {
 		if (need_exit) break;
 		// Analyze combination
-		if (cycle >= 0) { // Debug condition
-											// Local note repeat prohibited
+		// Debug condition
+		if (cycle >= 0) { 
+			// Local note repeat prohibited
 			for (int i = sp1 - 1; i < ep2 - 1; i++) {
 				if (c[i] == c[i + 1]) goto skip;
 			}
@@ -239,17 +261,28 @@ void CGenCF1::ScanCantus() {
 				if (c[i] > nmax) nmax = c[i];
 			}
 			// Limit melody interval
-			if (nmax - nmin > max_interval) goto skip;
-			if (nmax - nmin < min_interval) goto skip;
-			// Clear flags
-			accepted3++;
-			fill(flags.begin(), flags.end(), 0);
-			flags[0] = 1;
+			if (cid) {
+				if (nmax - nmin > max_interval) FLAG(37, 0);
+				if (nmax - nmin < min_interval) FLAG(38, 0);
+			}
+			else {
+				if (nmax - nmin > max_interval) goto skip;
+				if (nmax - nmin < min_interval) goto skip;
+			}
+			if (!cid) {
+				// Clear flags
+				accepted3++;
+				fill(flags.begin(), flags.end(), 0);
+				flags[0] = 1;
+				for (int i = 0; i < ep2; i++) {
+					nflagsc[i] = 0;
+				}
+			}
 			for (int i = 0; i < ep2; i++) {
-				nflagsc[i] = 0;
 				// Calculate chromatic positions
-				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + first_note; // Negative eight octaves reserve
-																																													 // Calculate pitch class
+				// Negative eight octaves reserve
+				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + first_note;
+				// Calculate pitch class
 				pc[i] = (c[i] + 56) % 7;
 			}
 			// Wrong second to last note
@@ -326,10 +359,9 @@ void CGenCF1::ScanCantus() {
 					// Check if tritone is highest leap if this is last window
 					if (ep2 == c_len)
 						if ((c[i] == nmax) || (c[i + 1] == nmax)) FLAG(32, i)
-							// Check if tritone is first or last step
+							// Check if tritone is last step
 							if (i > c_len - 3) FLAG(31, i)
-								//if (i < 1) FLAG(31, i);
-								// Check if resolution is correct
+							// Check if resolution is correct
 							else if (i < ep2 - 2) {
 								if (cc[i + 1] % 12 == 5) FLAG(31, i)
 								else if (cc[i + 2] % 12 != 0) FLAG(31, i)
@@ -500,8 +532,8 @@ void CGenCF1::ScanCantus() {
 				else FLAG(3, leap_sum_i);
 			}
 			// Clear nstat
-			for (int i = 0; i <= max_interval * 2; i++) {
-				nstat[i] = 0;
+			for (int i = nmin; i <= nmax; i++) {
+				nstat[i - nmin] = 0;
 			}
 			// Prohibit stagnation
 			for (int i = 0; i < ep2; i++) {
@@ -526,88 +558,90 @@ void CGenCF1::ScanCantus() {
 			// Prohibit last leap
 			if (ep2 == c_len)
 				if (leap[c_len - 2]) FLAG(23, c_len - 1);
-			accepted2++;
-			// Calculate flag statistics
-			if (calculate_stat || calculate_correlation) {
-				if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; i++) {
-					if (flags[i]) {
-						fstat[i]++;
-						// Calculate correlation
-						if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; z++) {
-							if (flags[z]) fcor[i][z]++;
+			if (!cid) {
+				accepted2++;
+				// Calculate flag statistics
+				if (calculate_stat || calculate_correlation) {
+					if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; i++) {
+						if (flags[i]) {
+							fstat[i]++;
+							// Calculate correlation
+							if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; z++) {
+								if (flags[z]) fcor[i][z]++;
+							}
 						}
 					}
 				}
-			}
-			// Calculate flag blocking
-			if (calculate_blocking) {
-				int flags_found = 0;
-				int flags_found2 = 0;
-				int flags_conflict = 0;
-				// Find if any of accepted flags set
-				for (int i = 0; i < MAX_FLAGS; i++) {
-					if ((flags[i]) && (accept[i])) flags_found++;
-					if ((flags[i]) && (!accept[i])) flags_conflict++;
-					if ((flags[i]) && (accept[i] == 2)) flags_found2++;
-				}
-				// Skip only if flags required
-				if ((!late_require) || (ep2 == c_len)) {
-					// Check if no needed flags set
-					if (flags_found == 0) goto skip;
-					// Check if not enough 2 flags set
-					if (flags_found2 < flags_need2) goto skip;
-				}
-				accepted5[wid]++;
-				// Find flags that are blocking
-				for (int i = 0; i < MAX_FLAGS; i++) {
-					if ((flags[i]) && (!accept[i]))
-						fblock[wid][flags_conflict][i]++;
-				}
-			}
-			// Check if flags are accepted
-			for (int i = 0; i < MAX_FLAGS; i++) {
-				if ((flags[i]) && (!accept[i])) goto skip;
-				if ((!late_require) || (ep2 == c_len))
-					if ((!flags[i]) && (accept[i] == 2)) goto skip;
-			}
-			accepted4[wid]++;
-			// If this is not last window, go to next window
-			if (ep2 < c_len) {
-				sp1 = sp2;
-				sp2 = sp1 + s_len; // End of search window
-				if (sp2 > c_len - 1) sp2 = c_len - 1;
-				// Reserve last window with maximum length
-				if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
-				// Record window
-				wid++;
-				wpos1[wid] = sp1;
-				wpos2[wid] = sp2;
-				wscans[wid]++;
-				// End of evaluation window
-				ep2 = sp2;
-				// Add last note if this is last window
-				if (ep2 == c_len - 1) ep2 = c_len;
-				// Go to rightmost element
-				p = sp2 - 1;
-				if (wcount < wid + 1) {
-					wcount = wid + 1;
-					if (ep2 == c_len) {
-						// Show window statistics
-						CString* est = new CString;
-						CString st, st2;
-						for (int i = 0; i < wcount; i++) {
-							if (i > 0) st2 += ", ";
-							st.Format("%d-%d", wpos1[i], wpos2[i]);
-							st2 += st;
-						}
-						est->Format("Algorithm created %d windows: %s", wcount, st2);
-						WriteLog(3, est);
+				// Calculate flag blocking
+				if (calculate_blocking) {
+					int flags_found = 0;
+					int flags_found2 = 0;
+					int flags_conflict = 0;
+					// Find if any of accepted flags set
+					for (int i = 0; i < MAX_FLAGS; i++) {
+						if ((flags[i]) && (accept[i])) flags_found++;
+						if ((flags[i]) && (!accept[i])) flags_conflict++;
+						if ((flags[i]) && (accept[i] == 2)) flags_found2++;
+					}
+					// Skip only if flags required
+					if ((!late_require) || (ep2 == c_len)) {
+						// Check if no needed flags set
+						if (flags_found == 0) goto skip;
+						// Check if not enough 2 flags set
+						if (flags_found2 < flags_need2) goto skip;
+					}
+					accepted5[wid]++;
+					// Find flags that are blocking
+					for (int i = 0; i < MAX_FLAGS; i++) {
+						if ((flags[i]) && (!accept[i]))
+							fblock[wid][flags_conflict][i]++;
 					}
 				}
-				goto skip;
+				// Check if flags are accepted
+				for (int i = 0; i < MAX_FLAGS; i++) {
+					if ((flags[i]) && (!accept[i])) goto skip;
+					if ((!late_require) || (ep2 == c_len))
+						if ((!flags[i]) && (accept[i] == 2)) goto skip;
+				}
+				accepted4[wid]++;
+				// If this is not last window, go to next window
+				if (ep2 < c_len) {
+					sp1 = sp2;
+					sp2 = sp1 + s_len; // End of search window
+					if (sp2 > c_len - 1) sp2 = c_len - 1;
+					// Reserve last window with maximum length
+					if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
+					// Record window
+					wid++;
+					wpos1[wid] = sp1;
+					wpos2[wid] = sp2;
+					wscans[wid]++;
+					// End of evaluation window
+					ep2 = sp2;
+					// Add last note if this is last window
+					if (ep2 == c_len - 1) ep2 = c_len;
+					// Go to rightmost element
+					p = sp2 - 1;
+					if (wcount < wid + 1) {
+						wcount = wid + 1;
+						if (ep2 == c_len) {
+							// Show window statistics
+							CString* est = new CString;
+							CString st, st2;
+							for (int i = 0; i < wcount; i++) {
+								if (i > 0) st2 += ", ";
+								st.Format("%d-%d", wpos1[i], wpos2[i]);
+								st2 += st;
+							}
+							est->Format("Algorithm created %d windows: %s", wcount, st2);
+							WriteLog(3, est);
+						}
+					}
+					goto skip;
+				}
+				// Check random_choose
+				if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
 			}
-			// Check random_choose
-			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
 			// Accept cantus
 			accepted++;
 			if (accepted >= t_cnt) {
@@ -619,6 +653,7 @@ void CGenCF1::ScanCantus() {
 			} // t_cnt limit
 		} // cycle debug condition
 	skip:
+		if (cid) return;
 		while (true) {
 			if (c[p] < max_interval) break;
 			// If current element is max, make it minimum
@@ -794,9 +829,25 @@ void CGenCF1::SendCantus(vector<char> &c, vector<unsigned char> &cc, vector<vect
 	}
 }
 
+void CGenCF1::InitCantus()
+{
+	// Global step
+	step = 0;
+	// Calculate second level flags count
+	for (int i = 0; i < MAX_FLAGS; i++) {
+		if (accept[i] == 2) flags_need2++;
+	}
+	// Set priority
+	for (int i = 0; i < MAX_FLAGS; i++) {
+		flag_sev[SeverityFlag[i]] = i;
+		flag_color[SeverityFlag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
+	}
+}
+
 void CGenCF1::Generate()
 {
-	ScanCantus();
+	InitCantus();
+	ScanCantus(0);
 	// Random shuffle
 	if (shuffle) {
 		vector<unsigned short> ci(accepted); // cantus indexes

@@ -9,8 +9,10 @@ public:
 	~CGenCF1();
 	void Generate() override;
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
-	void ScanCantus();
+	void ScanCantus(int cid);
 	void SendCantus(vector<char>& c, vector<unsigned char>& cc, vector<vector<unsigned char>>& nflags, vector<unsigned char>& nflagsc);
+
+	void InitCantus();
 	
 protected:
 	// Parameters
@@ -46,4 +48,5 @@ protected:
 	vector<Color>  flag_color; // Flag colors
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
+	int flags_need2 = 0; // Number of second level flags set
 };
