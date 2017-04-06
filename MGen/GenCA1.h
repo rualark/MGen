@@ -15,6 +15,10 @@ public:
 	CString midi_file;
 
 protected:
-	
+	int pre_bad = 3; // How many notes to recalculate before rule violation
+	int post_bad = 8; // How many notes to recalculate after rule violation
+	double step_penalty = 1; // Penalty for adding one more changing step while correcting cantus
+	double pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
+
 };
 

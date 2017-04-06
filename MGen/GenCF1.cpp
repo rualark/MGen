@@ -153,14 +153,18 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	}
 }
 
-void CGenCF1::ScanCantus(int cid) {
+void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	// Get cantus size
-	if (cid) c_len = cantus[cid - 1].size();
+	if (pcantus) c_len = pcantus->size();
+	// Resize global vectors
+	c.resize(c_len); // cantus (diatonic)
+	cc.resize(c_len); // cantus (chromatic)
+	nflags.resize(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
+	nflagsc.resize(c_len); // number of flags for each note
+	// Local variables
 	CString st, st2;
 	int wid; // Window id
 	int seed_cycle = 0; // Number of cycles in case of random_seed
-	vector<char> c(c_len); // cantus (diatonic)
-	vector<unsigned char> cc(c_len); // cantus (chromatic)
 	vector<unsigned char> pc(c_len); // pitch class
 	vector<char> leap(c_len);
 	vector<char> smooth(c_len);
@@ -176,8 +180,9 @@ void CGenCF1::ScanCantus(int cid) {
 	vector<vector<vector<long>>> fblock(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS))); // number of canti rejected with foreign flags
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
-	vector<vector<unsigned char>> nflags(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
-	vector<unsigned char> nflagsc(c_len); // number of flags for each note
+	vector <char> smatrix2; // Vector of links to steps that were selected for recalculation
+	vector <unsigned short> smap; // Map of links from matrix local IDs to cantus step IDs
+	int smatrixc2 = 0; // Number of steps marked in smatrix
 	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	long long cycle = 0;
 	long long accepted2 = 0, accepted3 = 0;
@@ -185,11 +190,11 @@ void CGenCF1::ScanCantus(int cid) {
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int wcount = 1; // Number of windows created
-	int sp1, sp2, ep2, p, tonic, ctonic;
+	int sp1, sp2, ep1, ep2, p, tonic, ctonic, pp;
 	// Analyze single cantus
-	if (cid) {
+	if (pcantus) {
 		// Copy cantus
-		cc = cantus[cid - 1];
+		cc = *pcantus;
 		// Get diatonic steps from chromatic
 		ctonic = cc[c_len - 1]; // Chromatic tonic
 		for (int i = 0; i < c_len; i++) {
@@ -198,6 +203,7 @@ void CGenCF1::ScanCantus(int cid) {
 		tonic = c[c_len - 1]; // Diatonic tonic
 		sp1 = 1;
 		sp2 = c_len - 1;
+		ep1 = sp1;
 		ep2 = c_len;
 		// Clear flags
 		accepted3++;
@@ -205,6 +211,36 @@ void CGenCF1::ScanCantus(int cid) {
 		flags[0] = 1;
 		for (int i = 0; i < ep2; i++) {
 			nflagsc[i] = 0;
+		}
+		// Matrix scan
+		if (use_matrix) {
+			// Exit if no violations
+			if (!smatrixc) return;
+			// Copy to local for better performance
+			smatrixc2 = smatrixc;
+			smatrix2 = smatrix;
+			// Create map
+			smap.resize(smatrixc2);
+			int map_id = 0;
+			for (int i = 0; i < c_len; i++) if (smatrix[i]) {
+				smap[map_id] = i;
+				map_id++;
+			}
+			sp1 = 0;
+			sp2 = sp1 + s_len; // End of search window
+			if (sp2 > smatrixc2) sp2 = smatrixc2;
+			// Record window
+			wid = 0;
+			wpos1[wid] = sp1;
+			wpos2[wid] = sp2;
+			// Add last note if this is last window
+			// End of evaluation window
+			ep1 = smap[sp1];
+			ep2 = smap[sp2 - 1] + 1;
+			if (sp2 == smatrixc2) ep2 = c_len;
+			// Minimal position in array to cycle
+			pp = sp2 - 1;
+			p = smap[pp]; 
 		}
 	}
 	// Full scan canti
@@ -226,22 +262,23 @@ void CGenCF1::ScanCantus(int cid) {
 		sp1 = 1; // Start of search window
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > c_len - 1) sp2 = c_len - 1;
-		ep2 = sp2; // End of evaluation window
 		// Record window
 		wid = 0;
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
 		// Add last note if this is last window
+		ep1 = sp1;
+		ep2 = sp2; // End of evaluation window
 		if (ep2 == c_len - 1) ep2 = c_len;
 		p = sp2 - 1; // Minimal position in array to cycle
-		// Check if too many windows
-		if ((c_len - 2) / (double)s_len > MAX_WIND) {
-			CString* est = new CString;
-			est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
-				c_len, s_len, MAX_WIND);
-			WriteLog(1, est);
-			return;
-		}
+	}
+	// Check if too many windows
+	if ((c_len - 2) / (double)s_len > MAX_WIND) {
+		CString* est = new CString;
+		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
+			c_len, s_len, MAX_WIND);
+		WriteLog(1, est);
+		return;
 	}
 	// Walk all variants
 	while (true) {
@@ -250,7 +287,7 @@ void CGenCF1::ScanCantus(int cid) {
 		// Debug condition
 		if (cycle >= 0) { 
 			// Local note repeat prohibited
-			for (int i = sp1 - 1; i < ep2 - 1; i++) {
+			for (int i = ep1 - 1; i < ep2 - 1; i++) {
 				if (c[i] == c[i + 1]) goto skip;
 			}
 			nmin = 0;
@@ -261,15 +298,13 @@ void CGenCF1::ScanCantus(int cid) {
 				if (c[i] > nmax) nmax = c[i];
 			}
 			// Limit melody interval
-			if (cid) {
+			if ((pcantus) && (!use_matrix)) {
 				if (nmax - nmin > max_interval) FLAG(37, 0);
 				if (nmax - nmin < min_interval) FLAG(38, 0);
 			}
 			else {
 				if (nmax - nmin > max_interval) goto skip;
 				if (nmax - nmin < min_interval) goto skip;
-			}
-			if (!cid) {
 				// Clear flags
 				accepted3++;
 				fill(flags.begin(), flags.end(), 0);
@@ -558,7 +593,7 @@ void CGenCF1::ScanCantus(int cid) {
 			// Prohibit last leap
 			if (ep2 == c_len)
 				if (leap[c_len - 2]) FLAG(23, c_len - 1);
-			if (!cid) {
+			if ((!pcantus) || (use_matrix)) {
 				accepted2++;
 				// Calculate flag statistics
 				if (calculate_stat || calculate_correlation) {
@@ -606,22 +641,45 @@ void CGenCF1::ScanCantus(int cid) {
 				accepted4[wid]++;
 				// If this is not last window, go to next window
 				if (ep2 < c_len) {
-					sp1 = sp2;
-					sp2 = sp1 + s_len; // End of search window
-					if (sp2 > c_len - 1) sp2 = c_len - 1;
-					// Reserve last window with maximum length
-					if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
-					// Record window
-					wid++;
-					wpos1[wid] = sp1;
-					wpos2[wid] = sp2;
-					wscans[wid]++;
-					// End of evaluation window
-					ep2 = sp2;
-					// Add last note if this is last window
-					if (ep2 == c_len - 1) ep2 = c_len;
-					// Go to rightmost element
-					p = sp2 - 1;
+					if (use_matrix) {
+						sp1 = sp2;
+						sp2 = sp1 + s_len; // End of search window
+						if (sp2 > smatrixc2) sp2 = smatrixc2;
+						// Reserve last window with maximum length
+						if ((smatrixc2 - sp1 < s_len * 2) && (smatrixc2 - sp1 > s_len)) sp2 = (smatrixc2 + sp1) / 2;
+						// Record window
+						wid++;
+						wpos1[wid] = sp1;
+						wpos2[wid] = sp2;
+						wscans[wid]++;
+						// Add last note if this is last window
+						// End of evaluation window
+						ep1 = smap[sp1];
+						ep2 = smap[sp2 - 1] + 1;
+						if (sp2 == smatrixc2) ep2 = c_len;
+						// Minimal position in array to cycle
+						pp = sp2 - 1;
+						p = smap[pp];
+					}
+					else {
+						sp1 = sp2;
+						sp2 = sp1 + s_len; // End of search window
+						if (sp2 > c_len - 1) sp2 = c_len - 1;
+						// Reserve last window with maximum length
+						if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
+						// Record window
+						wid++;
+						wpos1[wid] = sp1;
+						wpos2[wid] = sp2;
+						wscans[wid]++;
+						// End of evaluation window
+						ep1 = sp1;
+						ep2 = sp2;
+						// Add last note if this is last window
+						if (ep2 == c_len - 1) ep2 = c_len;
+						// Go to rightmost element
+						p = sp2 - 1;
+					}
 					if (wcount < wid + 1) {
 						wcount = wid + 1;
 						if (ep2 == c_len) {
@@ -649,21 +707,36 @@ void CGenCF1::ScanCantus(int cid) {
 				break;
 			}
 			else {
-				SendCantus(c, cc, nflags, nflagsc);
+				if (use_matrix) {
+					SaveCantus();
+				}
+				else {
+					SendCantus(v, pcantus);
+				}
 			} // t_cnt limit
 		} // cycle debug condition
 	skip:
-		if (cid) return;
+		if ((pcantus) && (!use_matrix)) return;
 		while (true) {
 			if (c[p] < max_interval) break;
 			// If current element is max, make it minimum
 			c[p] = -max_interval;
 			// Move left one element
-			if (p == sp1) {
-				finished = 1;
-				break;
+			if (use_matrix) {
+				if (pp == sp1) {
+					finished = 1;
+					break;
+				}
+				pp--;
+				p = smap[pp];
 			}
-			p--;
+			else {
+				if (p == sp1) {
+					finished = 1;
+					break;
+				}
+				p--;
+			}
 		}
 		if (finished) {
 			// Finish if this is last variant in first window
@@ -676,24 +749,48 @@ void CGenCF1::ScanCantus(int cid) {
 				}
 				else break;
 			}
-			// Clear current window
-			for (int i = sp1; i < sp2; i++) c[i] = -max_interval;
-			// If this is not first window, go to previous window
-			if (wid > 0) wid--;
-			sp1 = wpos1[wid];
-			sp2 = wpos2[wid];
-			// End of evaluation window
-			ep2 = sp2;
-			// Add last note if this is last window
-			if (ep2 == c_len - 1) ep2 = c_len;
-			// Go to rightmost element
-			p = sp2 - 1;
+			if (use_matrix) {
+				// Clear current window
+				for (int i = sp1; i < sp2; i++) c[smap[i]] = -max_interval;
+				// If this is not first window, go to previous window
+				if (wid > 0) wid--;
+				sp1 = wpos1[wid];
+				sp2 = wpos2[wid];
+				// End of evaluation window
+				ep1 = smap[sp1];
+				ep2 = smap[sp2 - 1] + 1;
+				if (sp2 == smatrixc2) ep2 = c_len;
+				// Minimal position in array to cycle
+				pp = sp2 - 1;
+				p = smap[pp];
+			}
+			else {
+				// Clear current window
+				for (int i = sp1; i < sp2; i++) c[i] = -max_interval;
+				// If this is not first window, go to previous window
+				if (wid > 0) wid--;
+				sp1 = wpos1[wid];
+				sp2 = wpos2[wid];
+				// End of evaluation window
+				ep1 = sp1;
+				ep2 = sp2;
+				// Add last note if this is last window
+				if (ep2 == c_len - 1) ep2 = c_len;
+				// Go to rightmost element
+				p = sp2 - 1;
+			}
 			finished = 0;
 		}
 		// Increase rightmost element, which was not reset to minimum
 		c[p]++;
 		// Go to rightmost element
-		p = sp2 - 1;
+		if (use_matrix) {
+			pp = sp2 - 1;
+			p = smap[pp];
+		}
+		else {
+			p = sp2 - 1;
+		}
 		cycle++;
 		//if (cycle > 100) break;
 	}
@@ -768,34 +865,39 @@ void CGenCF1::ScanCantus(int cid) {
 	}
 }
 
-void CGenCF1::SendCantus(vector<char> &c, vector<unsigned char> &cc, vector<vector<unsigned char>> &nflags, vector<unsigned char> &nflagsc) {
+void CGenCF1::SaveCantus() {
+	if (clib.size() <= c_len) clib.resize(c_len + 1);
+	clib[c_len].push_back(cc);
+}
+
+void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 	CString st;
 	Sleep(sleep_ms);
 	// Copy cantus to output
 	if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = step; x < step + c_len; x++) {
 		// Set flag color
-		color[x][0] = FlagColor[0];
+		color[x][v] = FlagColor[0];
 		int current_severity = -1;
 		// Set nflag color
-		note[x][0] = cc[x - step];
+		note[x][v] = cc[x - step] + v*24;
 		if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
-			comment[x][0] += FlagName[nflags[x - step][i]];
+			comment[x][v] += FlagName[nflags[x - step][i]];
 			st.Format(" [%d]", flag_sev[nflags[x - step][i]]);
-			if (show_severity) comment[x][0] += st;
-			comment[x][0] += ". ";
+			if (show_severity) comment[x][v] += st;
+			comment[x][v] += ". ";
 			// Set note color if this is maximum flag severity
 			if (flag_sev[nflags[x - step][i]] > current_severity) {
 				current_severity = flag_sev[nflags[x - step][i]];
-				color[x][0] = flag_color[nflags[x - step][i]];
+				color[x][v] = flag_color[nflags[x - step][i]];
 			}
 		}
-		len[x][0] = 1;
-		pause[x][0] = 0;
+		len[x][v] = 1;
+		pause[x][v] = 0;
 		tempo[x] = 200;
-		coff[x][0] = 0;
-		if (x < step + c_len / 2)	dyn[x][0] = 60 + 40 * (x - step) / c_len + 20 * rand2() / RAND_MAX;
-		else dyn[x][0] = 60 + 40 * (step + c_len - x) / c_len + 20 * rand2() / RAND_MAX;
+		coff[x][v] = 0;
+		if (x < step + c_len / 2)	dyn[x][v] = 60 + 40 * (x - step) / c_len + 20 * rand2() / RAND_MAX;
+		else dyn[x][v] = 60 + 40 * (step + c_len - x) / c_len + 20 * rand2() / RAND_MAX;
 		if (x == 0) {
 			tempo[x] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
 		}
@@ -807,25 +909,29 @@ void CGenCF1::SendCantus(vector<char> &c, vector<unsigned char> &cc, vector<vect
 	}
 	// Create pause
 	step += c_len;
-	note[step][0] = 0;
-	len[step][0] = 1;
-	pause[step][0] = 1;
-	dyn[step][0] = 0;
+	note[step][v] = 0;
+	len[step][v] = 1;
+	pause[step][v] = 1;
+	dyn[step][v] = 0;
 	tempo[step] = tempo[step - 1];
-	coff[step][0] = 0;
+	coff[step][v] = 0;
 	step++;
 	// Count additional variables
 	CountOff(step - c_len - 1, step - 1);
 	CountTime(step - c_len - 1, step - 1);
 	UpdateNoteMinMax(step - c_len - 1, step - 1);
 	UpdateTempoMinMax(step - c_len - 1, step - 1);
-	if (!shuffle) {
-		Adapt(step - c_len - 1, step - 1);
+	if (!pcantus) {
+		if (!shuffle) {
+			Adapt(step - c_len - 1, step - 1);
+		}
 	}
 	// Send
 	t_generated = step;
-	if (!shuffle) {
-		t_sent = t_generated;
+	if (!pcantus) {
+		if (!shuffle) {
+			t_sent = t_generated;
+		}
 	}
 }
 
@@ -846,8 +952,10 @@ void CGenCF1::InitCantus()
 
 void CGenCF1::Generate()
 {
+	// Voice
+	int v = 0;
 	InitCantus();
-	ScanCantus(0);
+	ScanCantus(0, 0, 0);
 	// Random shuffle
 	if (shuffle) {
 		vector<unsigned short> ci(accepted); // cantus indexes
@@ -864,18 +972,18 @@ void CGenCF1::Generate()
 			for (int x = 0; x < c_len; x++) {
 				i1 = i*(c_len + 1) + x;
 				i2 = ci[i]*(c_len + 1) + x;
-				note2[i1] = note[i2][0];
-				comment2[i1] = comment[i2][0];
-				color2[i1] = color[i2][0];
+				note2[i1] = note[i2][v];
+				comment2[i1] = comment[i2][v];
+				color2[i1] = color[i2][v];
 			}
 		}
 		// Replace
 		for (int i = 0; i < accepted; i++) {
 			for (int x = 0; x < c_len; x++) {
 				i1 = i*(c_len + 1) + x;
-				note[i1][0] = note2[i1];
-				comment[i1][0] = comment2[i1];
-				color[i1][0] = color2[i1];
+				note[i1][v] = note2[i1];
+				comment[i1][v] = comment2[i1];
+				color[i1][v] = color2[i1];
 			}
 		}
 		// Adapt

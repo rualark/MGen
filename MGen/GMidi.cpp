@@ -201,7 +201,7 @@ void CGMidi::LoadCantus(CString path)
 
 	int cid = 0;
 	int nid = 0;
-	vector <unsigned char> c;
+	vector <char> c;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		double last_tick = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {

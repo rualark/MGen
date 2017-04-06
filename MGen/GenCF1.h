@@ -9,8 +9,9 @@ public:
 	~CGenCF1();
 	void Generate() override;
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
-	void ScanCantus(int cid);
-	void SendCantus(vector<char>& c, vector<unsigned char>& cc, vector<vector<unsigned char>>& nflags, vector<unsigned char>& nflagsc);
+	void ScanCantus(vector<char>* pcantus, bool use_matrix, int v);
+	void SaveCantus();
+	void SendCantus(int v, vector<char>* pcantus);
 
 	void InitCantus();
 	
@@ -22,7 +23,7 @@ protected:
 	int s_len = 4; // Maximum number of measures to full scan
 	int first_note = 72; // Starting note of each cantus
 	int last_diatonic_int = 0; // Diatonic interval between first and last note
-	vector <unsigned char> accept; // Each upper case letter allows showing canti with specific properties:
+	vector <unsigned char> accept; // Each 1 allows showing canti with specific properties
 	int fill_steps_mul = 2; // Multiply number of notes between leap notes to get steps for filling
 	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
 	int max_smooth_direct = 5; // Maximum linear movement in one direction allowed (in steps)
@@ -49,4 +50,14 @@ protected:
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
 	int flags_need2 = 0; // Number of second level flags set
+	vector<char> c; // Cantus diatonic
+	vector<char> cc; // Cantus chromatic
+	vector<vector<unsigned char>> nflags; // Note flags
+	vector<unsigned char> nflagsc; // Note flags count
+
+	// Cantus correcting
+	vector <char> smatrix; // Vector of links to steps that were selected for recalculation
+	int smatrixc = 0; // Number of steps marked in smatrix
+	vector<vector<vector<char>>> clib; // Library of cantus
+	vector<vector<int>> cpenalty; // Penalty of each cantus
 };
