@@ -103,6 +103,8 @@ CGenCF1::CGenCF1()
 {
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
+	flag_sev.resize(MAX_FLAGS);
+	flag_color.resize(MAX_FLAGS);
 }
 
 CGenCF1::~CGenCF1()
@@ -147,17 +149,15 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	}
 }
 
-
-void CGenCF1::Generate()
-{
+void CGenCF1::ScanCantus() {
 	CString st, st2;
 	int wid; // Window id
 	int seed_cycle = 0; // Number of cycles in case of random_seed
-	vector<int> c(c_len); // cantus (diatonic)
-	vector<int> cc(c_len); // cantus (chromatic)
-	vector<int> pc(c_len); // pitch class
-	vector<int> leap(c_len);
-	vector<int> smooth(c_len);
+	vector<char> c(c_len); // cantus (diatonic)
+	vector<unsigned char> cc(c_len); // cantus (chromatic)
+	vector<unsigned char> pc(c_len); // pitch class
+	vector<char> leap(c_len);
+	vector<char> smooth(c_len);
 	vector<int> wpos1(c_len / s_len + 1);
 	vector<int> wpos2(c_len / s_len + 1);
 	vector<int> nstat(max_interval * 2 + 1);
@@ -169,8 +169,6 @@ void CGenCF1::Generate()
 	vector<long long> fstat(MAX_FLAGS); // number of canti with each flag
 	vector<vector<vector<long>>> fblock(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS))); // number of canti rejected with foreign flags
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
-	vector<unsigned char>  flag_sev(MAX_FLAGS); // Get severity by flag id
-	vector<Color>  flag_color(MAX_FLAGS); // Flag colors
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
 	vector<vector<unsigned char>> nflags(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
 	vector<unsigned char> nflagsc(c_len); // number of flags for each note
@@ -187,7 +185,7 @@ void CGenCF1::Generate()
 	}
 	// Set first and last notes
 	c[0] = 0;
-	c[c_len-1] = last_diatonic_int;
+	c[c_len - 1] = last_diatonic_int;
 	// Set priority
 	for (int i = 0; i < MAX_FLAGS; i++) {
 		flag_sev[SeverityFlag[i]] = i;
@@ -199,28 +197,28 @@ void CGenCF1::Generate()
 		for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(-max_interval, max_interval);
 	// Walk all variants
 	long long cycle = 0;
-	long long accepted = 0, accepted2 = 0, accepted3 = 0;
+	long long accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
-	int step = 0; // Global step
-	// Select window
+	step = 0; // Global step
+						// Select window
 	int wcount = 1; // Number of windows created
 	int sp1 = 1; // Start of search window
 	int sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len - 1) sp2 = c_len - 1;
 	int ep2 = sp2; // End of evaluation window
-	// Record window
+								 // Record window
 	wid = 0;
 	wpos1[wid] = sp1;
 	wpos2[wid] = sp2;
 	// Add last note if this is last window
 	if (ep2 == c_len - 1) ep2 = c_len;
 	int p = sp2 - 1; // Minimal position in array to cycle
-	// Check if too many windows
+									 // Check if too many windows
 	if ((c_len - 2) / (double)s_len > MAX_WIND) {
 		CString* est = new CString;
-		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.", 
+		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
 			c_len, s_len, MAX_WIND);
 		WriteLog(1, est);
 		return;
@@ -229,8 +227,8 @@ void CGenCF1::Generate()
 		if (need_exit) break;
 		// Analyze combination
 		if (cycle >= 0) { // Debug condition
-    	// Local note repeat prohibited
-			for (int i = sp1-1; i < ep2-1; i++) {
+											// Local note repeat prohibited
+			for (int i = sp1 - 1; i < ep2 - 1; i++) {
 				if (c[i] == c[i + 1]) goto skip;
 			}
 			nmin = 0;
@@ -251,7 +249,7 @@ void CGenCF1::Generate()
 				nflagsc[i] = 0;
 				// Calculate chromatic positions
 				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + first_note; // Negative eight octaves reserve
-				// Calculate pitch class
+																																													 // Calculate pitch class
 				pc[i] = (c[i] + 56) % 7;
 			}
 			// Wrong second to last note
@@ -315,7 +313,7 @@ void CGenCF1::Generate()
 				}
 			}
 			// Check same letters
-			if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, ep2 -1);
+			if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, ep2 - 1);
 			if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, ep2 - 1);
 			if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, ep2 - 1);
 			// Check missing letters
@@ -324,21 +322,21 @@ void CGenCF1::Generate()
 			if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
 			for (int i = 0; i < ep2 - 1; i++) {
 				// Tritone prohibit
-				if (abs(cc[i+1] - cc[i]) == 6) {
+				if (abs(cc[i + 1] - cc[i]) == 6) {
 					// Check if tritone is highest leap if this is last window
 					if (ep2 == c_len)
-						if ((c[i] == nmax) || (c[i+1] == nmax)) FLAG(32, i)
-					// Check if tritone is first or last step
-					if (i > c_len - 3) FLAG(31, i)
-					//if (i < 1) FLAG(31, i);
-					// Check if resolution is correct
-					else if (i < ep2 - 2) {
-						if (cc[i + 1] % 12 == 5) FLAG(31, i)
-						else if (cc[i + 2] % 12 != 0) FLAG(31, i)
-						else if (cc[i - 1] % 12 != 4) FLAG(31, i)
-						// Record resolved tritone
-						else FLAG(2, i);
-					}
+						if ((c[i] == nmax) || (c[i + 1] == nmax)) FLAG(32, i)
+							// Check if tritone is first or last step
+							if (i > c_len - 3) FLAG(31, i)
+								//if (i < 1) FLAG(31, i);
+								// Check if resolution is correct
+							else if (i < ep2 - 2) {
+								if (cc[i + 1] % 12 == 5) FLAG(31, i)
+								else if (cc[i + 2] % 12 != 0) FLAG(31, i)
+								else if (cc[i - 1] % 12 != 4) FLAG(31, i)
+									// Record resolved tritone
+								else FLAG(2, i);
+							}
 					// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
 				}
 				// Sept prohibit
@@ -363,7 +361,7 @@ void CGenCF1::Generate()
 					// Search for repeat of note at same beat until last three notes
 					int finish = i + repeat_steps;
 					if (finish > ep2 - 2) finish = ep2 - 2;
-					for (int x = i+2; x < finish; x+=2) {
+					for (int x = i + 2; x < finish; x += 2) {
 						// Check if same note with direction change or leap
 						if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
 							// Check that two more notes repeat
@@ -403,18 +401,18 @@ void CGenCF1::Generate()
 						// Fill all notes
 						for (int x = 0; x < ep2; x++) {
 							// Update local fill
-							if ((x > i + 1) && (x <= pos)) nstat3[c[x] + max_interval]++;
+							if ((x > i + 1) && (x <= pos)) nstat3[c[x] - nmin]++;
 							// Update global fill
-							nstat2[c[x] + max_interval]++;
+							nstat2[c[x] - nmin]++;
 						}
 						// Check if leap is filled
 						ok = 1; // Local fill
 						ok2 = 1; // Global fill
 						int pos1 = min(c[i], c[i + 1]);
 						int pos2 = max(c[i], c[i + 1]);
-						for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x + max_interval]) {
+						for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x - nmin]) {
 							ok = 0;
-							if (!nstat2[x + max_interval]) ok2 = 0;
+							if (!nstat2[x - nmin]) ok2 = 0;
 							break;
 						}
 						// Local not filled?
@@ -448,9 +446,9 @@ void CGenCF1::Generate()
 					if (leap[i] * leap[i + 1] > 0) {
 						// Check if leaps are long
 						if (abs(c[i + 2] - c[i]) > 4) FLAG(27, i)
-						// If leaps are 3rds
+							// If leaps are 3rds
 						else {
-							if ((i>0) && ((leap[i] * (c[i] - c[i - 1]) == -5) || (leap[i]*(c[i] - c[i-1]) == -7))) FLAG(28, i)
+							if ((i>0) && ((leap[i] * (c[i] - c[i - 1]) == -5) || (leap[i] * (c[i] - c[i - 1]) == -7))) FLAG(28, i)
 							else FLAG(6, i);
 						}
 					}
@@ -462,7 +460,7 @@ void CGenCF1::Generate()
 							if (i < ep2 - 3) {
 								// Check if melody direction does not change second note after leap
 								if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
-								// If direction changes second note after leap
+									// If direction changes second note after leap
 								else {
 									// Check leap size
 									if (abs(c[i + 1] - c[i]) > 4) FLAG(29, i)
@@ -508,11 +506,11 @@ void CGenCF1::Generate()
 			// Prohibit stagnation
 			for (int i = 0; i < ep2; i++) {
 				// Add new note
-				nstat[c[i] + max_interval]++; // Stagnation array
-				// Subtract old note
-				if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] + max_interval]--;
+				nstat[c[i] - nmin]++; // Stagnation array
+															// Subtract old note
+				if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] - nmin]--;
 				// Check if too many repeating notes
-				if (nstat[c[i] + max_interval] > stag_notes) FLAG(10, i);
+				if (nstat[c[i] - nmin] > stag_notes) FLAG(10, i);
 			}
 			// Prohibit multiple culminations
 			culm_sum = 0;
@@ -527,7 +525,7 @@ void CGenCF1::Generate()
 			if (culm_step > c_len - 4) FLAG(21, culm_step);
 			// Prohibit last leap
 			if (ep2 == c_len)
-				if (leap[c_len-2]) FLAG(23, c_len-1);
+				if (leap[c_len - 2]) FLAG(23, c_len - 1);
 			accepted2++;
 			// Calculate flag statistics
 			if (calculate_stat || calculate_correlation) {
@@ -569,7 +567,7 @@ void CGenCF1::Generate()
 			// Check if flags are accepted
 			for (int i = 0; i < MAX_FLAGS; i++) {
 				if ((flags[i]) && (!accept[i])) goto skip;
-				if ((!late_require) || (ep2 == c_len)) 
+				if ((!late_require) || (ep2 == c_len))
 					if ((!flags[i]) && (accept[i] == 2)) goto skip;
 			}
 			accepted4[wid]++;
@@ -617,67 +615,10 @@ void CGenCF1::Generate()
 				break;
 			}
 			else {
-				Sleep(sleep_ms);
-				// Copy cantus to output
-				if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
-				for (int x = step; x < step + c_len; x++) {
-					// Set flag color
-					color[x][0] = FlagColor[0];
-					int current_severity = -1;
-					// Set nflag color
-					note[x][0] = cc[x - step];
-					if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
-						comment[x][0] += FlagName[nflags[x - step][i]];
-						st.Format(" [%d]", flag_sev[nflags[x - step][i]]);
-						if (show_severity) comment[x][0] += st;
-						comment[x][0] += ". ";
-						// Set note color if this is maximum flag severity
-						if (flag_sev[nflags[x - step][i]] > current_severity) {
-							current_severity = flag_sev[nflags[x - step][i]];
-							color[x][0] = flag_color[nflags[x - step][i]];
-						}
-					}
-					len[x][0] = 1;
-					pause[x][0] = 0;
-					tempo[x] = 200;
-					coff[x][0] = 0;
-					if (x < step + c_len / 2)	dyn[x][0] = 60 + 40*(x - step)/c_len + 20 * rand2() / RAND_MAX;
-					else dyn[x][0] = 60 + 40 * (step + c_len - x) / c_len + 20 * rand2() / RAND_MAX;
-					if (x == 0) {
-						tempo[x] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
-					}
-					else {
-						tempo[x] = tempo[x - 1] + randbw(-1, 1);
-						if (tempo[x] > max_tempo) tempo[x] = 2 * max_tempo - tempo[x];
-						if (tempo[x] < min_tempo) tempo[x] = 2 * min_tempo - tempo[x];
-					}
-				}
-				// Create pause
-				step += c_len;
-				note[step][0] = 0;
-				len[step][0] = 1;
-				pause[step][0] = 1;
-				dyn[step][0] = 0;
-				tempo[step] = tempo[step - 1];
-				coff[step][0] = 0;
-				step++;
-				// Count additional variables
-				CountOff(step - c_len - 1, step - 1);
-				CountTime(step - c_len - 1, step - 1);
-				UpdateNoteMinMax(step - c_len - 1, step - 1);
-				UpdateTempoMinMax(step - c_len - 1, step - 1);
-				if (!shuffle) {
-					Adapt(step - c_len - 1, step - 1);
-				}
-				// Send
-				t_generated = step;
-				if (!shuffle) {
-					t_sent = t_generated;
-				}
-				::PostMessage(m_hWnd, WM_GEN_FINISH, 1, 0);
+				SendCantus(c, cc, nflags, nflagsc);
 			} // t_cnt limit
 		} // cycle debug condition
-		skip:
+	skip:
 		while (true) {
 			if (c[p] < max_interval) break;
 			// If current element is max, make it minimum
@@ -748,7 +689,7 @@ void CGenCF1::Generate()
 			st2 += st;
 		}
 		est->Format("%d/%d: Accepted %lld/%lld/%lld/%lld variants of %lld: %s",
-			c_len, max_interval, accepted4[wcount-1], accepted, accepted2,
+			c_len, max_interval, accepted4[wcount - 1], accepted, accepted2,
 			accepted3, cycle, st2);
 		WriteLog(3, est);
 	}
@@ -790,6 +731,72 @@ void CGenCF1::Generate()
 			WriteLog(3, est);
 		}
 	}
+}
+
+void CGenCF1::SendCantus(vector<char> &c, vector<unsigned char> &cc, vector<vector<unsigned char>> &nflags, vector<unsigned char> &nflagsc) {
+	CString st;
+	Sleep(sleep_ms);
+	// Copy cantus to output
+	if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
+	for (int x = step; x < step + c_len; x++) {
+		// Set flag color
+		color[x][0] = FlagColor[0];
+		int current_severity = -1;
+		// Set nflag color
+		note[x][0] = cc[x - step];
+		if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
+			comment[x][0] += FlagName[nflags[x - step][i]];
+			st.Format(" [%d]", flag_sev[nflags[x - step][i]]);
+			if (show_severity) comment[x][0] += st;
+			comment[x][0] += ". ";
+			// Set note color if this is maximum flag severity
+			if (flag_sev[nflags[x - step][i]] > current_severity) {
+				current_severity = flag_sev[nflags[x - step][i]];
+				color[x][0] = flag_color[nflags[x - step][i]];
+			}
+		}
+		len[x][0] = 1;
+		pause[x][0] = 0;
+		tempo[x] = 200;
+		coff[x][0] = 0;
+		if (x < step + c_len / 2)	dyn[x][0] = 60 + 40 * (x - step) / c_len + 20 * rand2() / RAND_MAX;
+		else dyn[x][0] = 60 + 40 * (step + c_len - x) / c_len + 20 * rand2() / RAND_MAX;
+		if (x == 0) {
+			tempo[x] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
+		}
+		else {
+			tempo[x] = tempo[x - 1] + randbw(-1, 1);
+			if (tempo[x] > max_tempo) tempo[x] = 2 * max_tempo - tempo[x];
+			if (tempo[x] < min_tempo) tempo[x] = 2 * min_tempo - tempo[x];
+		}
+	}
+	// Create pause
+	step += c_len;
+	note[step][0] = 0;
+	len[step][0] = 1;
+	pause[step][0] = 1;
+	dyn[step][0] = 0;
+	tempo[step] = tempo[step - 1];
+	coff[step][0] = 0;
+	step++;
+	// Count additional variables
+	CountOff(step - c_len - 1, step - 1);
+	CountTime(step - c_len - 1, step - 1);
+	UpdateNoteMinMax(step - c_len - 1, step - 1);
+	UpdateTempoMinMax(step - c_len - 1, step - 1);
+	if (!shuffle) {
+		Adapt(step - c_len - 1, step - 1);
+	}
+	// Send
+	t_generated = step;
+	if (!shuffle) {
+		t_sent = t_generated;
+	}
+}
+
+void CGenCF1::Generate()
+{
+	ScanCantus();
 	// Random shuffle
 	if (shuffle) {
 		vector<unsigned short> ci(accepted); // cantus indexes

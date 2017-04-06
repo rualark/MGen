@@ -9,7 +9,9 @@ public:
 	~CGenCF1();
 	void Generate() override;
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
-
+	void ScanCantus();
+	void SendCantus(vector<char>& c, vector<unsigned char>& cc, vector<vector<unsigned char>>& nflags, vector<unsigned char>& nflagsc);
+	
 protected:
 	// Parameters
 	int min_interval = 1; // Minimum diatonic interval in cantus (7 = octave)
@@ -38,4 +40,10 @@ protected:
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes(if beats are same)
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
+
+  // Local
+	vector<unsigned char>  flag_sev; // Get severity by flag id
+	vector<Color>  flag_color; // Flag colors
+	int step = 0; // Global step
+	long long accepted = 0; // Number of accepted canti
 };

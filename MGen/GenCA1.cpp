@@ -147,9 +147,11 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	// Detect key
 	int key = 0;
 	// Get diatonic steps from chromatic
+	int ctonic = cc[c_len - 1]; // Chromatic tonic
 	for (int i = 0; i < c_len; i++) {
-		c[i] = chrom_to_dia[cc[i] % 12] + (cc[i] / 12) * 7;
+		c[i] = chrom_to_dia[(cc[i] + 132 - ctonic) % 12] + ((cc[i] + 132 - ctonic) / 12 - 11) * 7;
 	}
+	int tonic = c[c_len - 1]; // Diatonic tonic
 	// Set priority
 	for (int i = 0; i < MAX_FLAGS; i++) {
 		flag_sev[SeverityFlag[i]] = i;
@@ -322,18 +324,18 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 			// Fill all notes
 			for (int x = 0; x < c_len; x++) {
 				// Update local fill
-				if ((x > i + 1) && (x <= pos)) nstat3[c[x]]++;
+				if ((x > i + 1) && (x <= pos)) nstat3[c[x] - nmin]++;
 				// Update global fill
-				nstat2[c[x]]++;
+				nstat2[c[x] - nmin]++;
 			}
 			// Check if leap is filled
 			ok = 1; // Local fill
 			ok2 = 1; // Global fill
 			int pos1 = min(c[i], c[i + 1]);
 			int pos2 = max(c[i], c[i + 1]);
-			for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x]) {
+			for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x - nmin]) {
 				ok = 0;
-				if (!nstat2[x]) ok2 = 0;
+				if (!nstat2[x - nmin]) ok2 = 0;
 				break;
 			}
 			// Local not filled?
@@ -407,11 +409,6 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 					else FLAG(33, i);
 				}
 			}
-			// Check if leap returns to same note
-			if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
-				if (abs(c[i] - c[i + 1]) > 3) FLAG(22, i)
-				else FLAG(8, i);
-			}
 			// Check if two notes repeat
 			if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG(9, i);
 		}
@@ -423,16 +420,16 @@ void CGenCA1::FlagCantus(vector <unsigned char> &cc)
 	}
 	// Clear nstat
 	for (int i = nmin; i <= nmax; i++) {
-		nstat[i] = 0;
+		nstat[i - nmin] = 0;
 	}
 	for (int i = 0; i < c_len; i++) {
 		// Prohibit stagnation
 		// Add new note
-		nstat[c[i]]++; // Stagnation array
+		nstat[c[i] - nmin]++; // Stagnation array
 		// Subtract old note
-		if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps]]--;
+		if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] - nmin]--;
 		// Check if too many repeating notes
-		if (nstat[c[i]] > stag_notes) FLAG(10, i);
+		if (nstat[c[i] - nmin] > stag_notes) FLAG(10, i);
 	}
 	// Prohibit multiple culminations
 	culm_sum = 0;
