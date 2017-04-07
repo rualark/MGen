@@ -22,6 +22,7 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "post_bad", &post_bad);
 	CheckVar(sN, sV, "step_penalty", &step_penalty);
 	CheckVar(sN, sV, "pitch_penalty", &pitch_penalty);
+	CheckVar(sN, sV, "correct_transpose", &correct_transpose);
 
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -36,7 +37,7 @@ void CGenCA1::Generate()
 	// This flag is needed to prevent flag skipping
 	calculate_stat = 1;
 	// Transpose corrected voice up for display
-	show_transpose[1] = 12;
+	show_transpose[1] = correct_transpose;
 	for (int i = 0; i < cantus.size(); i++) {
 		clib.clear();
 		if (need_exit) break;

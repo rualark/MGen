@@ -17,6 +17,7 @@
 #include "MainFrm.h"
 #include "EditParamsDlg.h"
 #include "AlgoDlg.h"
+#include "MGenView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -391,6 +392,12 @@ void CMainFrame::LoadResults(CString path) {
 	pGen = 0;
 	pGen = new CGenRS1();
 	if (pGen != 0) {
+		// Clear note minimax
+		ng_min = 0;
+		ng_max = 0;
+		// Clear scroll
+		CSize DocSize(0, 0);
+		((CMGenView*)(GetActiveView()))->SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 		WriteLog(0, _T("Loading file: ") + path);
 		// Set pGen variables
 		CGLib::can_send_log = 1;
@@ -454,6 +461,12 @@ void CMainFrame::OnButtonGen()
 	if (m_algo_id == 1001) pGen = new CGenRS1();
 	if (m_algo_id == 2001) pGen = new CGenMP1();
 	if (pGen != 0) {
+		// Clear note minimax
+		ng_min = 0;
+		ng_max = 0;
+		// Clear scroll
+		CSize DocSize(0, 0);
+		((CMGenView*)(GetActiveView()))->SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
 		// Clear current saved path
 		m_fname = "";
