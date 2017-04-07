@@ -47,6 +47,8 @@
 #define IDD_DIALOG_EDITPARAMS           312
 #define IDD_DIALOG_ALGO                 314
 #define IDD_DIALOG_MSG                  318
+#define IDD_DIALOG_ALGO1                319
+#define IDD_DIALOG_MFI                  319
 #define IDC_RICHEDIT21                  1000
 #define IDC_BUTTON1                     1001
 #define IDC_BUTTON_HIDDEN               1001
@@ -63,7 +65,6 @@
 #define IDC_STATIC_CONFIG               1011
 #define IDC_MFCLINK1                    1012
 #define IDC_MFCLINK2                    1013
-#define IDC_RICHEDIT_MST                1014
 #define IDC_RICHEDIT_MSG                1014
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_BUTTON_OUTPUTWND             32772

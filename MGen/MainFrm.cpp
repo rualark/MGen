@@ -18,6 +18,7 @@
 #include "EditParamsDlg.h"
 #include "AlgoDlg.h"
 #include "MGenView.h"
+#include "MFIDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -427,6 +428,41 @@ void CMainFrame::LoadResults(CString path) {
 	}
 }
 
+void CMainFrame::LoadMidi(CString path)
+{
+	if (m_state_gen == 1) {
+		AfxMessageBox("Please stop generation before opening saved results");
+		return;
+	}
+	CMFIDialog dlg;
+	if (dlg.DoModal() == IDOK) {
+		// Check default config exists
+		if (!CGLib::fileExists("configs\\" + AlgFolder[m_algo] +".pl")) {
+			AfxMessageBox("Not found default configuration for loading MIDI file with this algorithm at configs\\" + AlgFolder[m_algo] + ".pl \nPlease create default configuration or use manual configuration.");
+			return;
+		}
+		// Create config name
+		CString time_str = CTime::GetCurrentTime().Format("%Y-%m-%d %H-%M-%S");
+		m_config = "autoconf-" + CGLib::bname_from_path(path);
+		CString fname = "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl";
+		// Copy default config
+		CGLib::copy_file("configs\\" + AlgFolder[m_algo] + ".pl", fname);
+		// Append config name
+		CGLib::AppendLineToFile(fname,
+			"\n# This config was created from default config file configs\\" + AlgFolder[m_algo] + ".pl\n");
+		CGLib::AppendLineToFile(fname,
+			"# Created at " + time_str + "\n");
+		CGLib::AppendLineToFile(fname,
+			"Midi_file = " + path + "\n");
+		// Load newly created config into table
+		LoadAlgo();
+		// Save settings
+		SaveSettings();
+		// Start generation
+		OnButtonGen();
+	}
+}
+
 bool CMainFrame::NewDocument()
 {
 	if ((m_state_gen == 2) && (m_state_play == 0)) if (pGen != 0) {
@@ -616,6 +652,9 @@ void CMainFrame::LoadAlgo()
 			AlgFolder[AlgCount] = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
+			AlgMFI[AlgCount] = atoi(st2);
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
 			AlgName[AlgCount] = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
@@ -625,6 +664,13 @@ void CMainFrame::LoadAlgo()
 			if (*pst != st2) {
 				AlgGroups[AlgGCount] = st2;
 				AlgGCount++;
+			}
+			if (AlgMFI[AlgCount]) {
+				pst = find(begin(AlgMFIGroups), end(AlgMFIGroups), st2);
+				if (*pst != st2) {
+					AlgMFIGroups[AlgMFIGCount] = st2;
+					AlgMFIGCount++;
+				}
 			}
 			// Load instruments
 			st2 = st.Tokenize("|", pos);

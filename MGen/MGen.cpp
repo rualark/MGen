@@ -177,7 +177,7 @@ class CAboutDlg : public CDialogEx
 public:
 	CAboutDlg();
 
-// Dialog Data
+	// Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
@@ -242,10 +242,10 @@ void CMGenApp::OnFileOpen()
 	CString path_old = string(buffer).c_str();
 	// szFilters is a text string that includes two file name filters:
 	// "*.my" for "MyType Files" and "*.*' for "All Files."
-	TCHAR szFilters[] = _T("MGen result files (*.mgr)|*.mgr|");
+	TCHAR szFilters[] = _T("All supported formats (*.mgr;*.mid;*.midi)|*.mgr;*.mid;*.midi|MGen result files (*.mgr)|*.mgr|MIDI files (*.mid)|*.mid|MIDI files (*.midi)|*.midi||");
 
 	// Create an Open dialog; the default file name extension is ".my".
-	CFileDialog fileDlg(TRUE, "", path_old + "\\*.mgr",
+	CFileDialog fileDlg(TRUE, "", path_old, // path_old
 		OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szFilters, mf, 0, false);
 	fileDlg.m_ofn.lpstrInitialDir = path_old;
 
@@ -255,7 +255,13 @@ void CMGenApp::OnFileOpen()
 	{
 		// Get name
 		CString path = fileDlg.GetPathName();
-		mf->LoadResults(path);
+		CString ext = CGLib::ext_from_path(path);
+		if ((ext == "mid") || (ext == "midi")) {
+			mf->LoadMidi(path);
+		}
+		else {
+			mf->LoadResults(path);
+		}
 		AddToRecentFileList(path);
 	}
 }

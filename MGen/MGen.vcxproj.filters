@@ -144,6 +144,9 @@
     <ClInclude Include="MsgDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MFIDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -240,6 +243,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MsgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MFIDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

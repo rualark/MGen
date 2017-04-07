@@ -75,12 +75,15 @@ public:
 	CString AlgGroup[MAX_ALGO];
 	CString AlgInsts[MAX_ALGO];
 	CString AlgGroups[MAX_ALGO];
+	CString AlgMFIGroups[MAX_ALGO];
 	CString AlgComment[MAX_ALGO];
 	CString AlgFolder[MAX_ALGO];
+	int AlgMFI[MAX_ALGO]; // =1 if this algorithm supports Midi File Import
 	int AlgID[MAX_ALGO];
 	int ParamCount[MAX_ALGO];
 	int AlgCount = 0;
 	int AlgGCount = 0;
+	int AlgMFIGCount = 0; // Number of groups which support Midi File Import
 	vector< vector <CString> > ParamName; // 1 = pause, 0 = note
   // MIDI device names
 	CString MidiName[MAX_MIDI_DEVICES];
@@ -95,6 +98,7 @@ public:
 	int GetAlgoById(int id);
 	void SaveSettings();
 	void LoadResults(CString path);
+	void LoadMidi(CString path);
 	bool NewDocument();
 	static UINT GenThread(LPVOID pParam);
 	void StartPlay(int from);

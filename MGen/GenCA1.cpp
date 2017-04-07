@@ -52,6 +52,7 @@ void CGenCA1::Generate()
 			continue;
 		}
 		step -= c_len + 1;
+		if (step < 0) step = 0;
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Clear scan matrix
@@ -166,6 +167,13 @@ void CGenCA1::Generate()
 			CString* est = new CString;
 			est->Format("Sent corrections with penalties/variants: %s", st2);
 			WriteLog(3, est);
+		}
+		else {
+			// Go forward
+			step += c_len + 1;
+			Adapt(step - c_len - 1, step - 1);
+			t_generated = step;
+			t_sent = t_generated;
 		}
 	}
 }

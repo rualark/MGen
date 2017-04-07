@@ -89,6 +89,7 @@ public:
 	static bool dirExists(CString dirName_in);
 	static bool fileExists(CString dirName_in);
 	static bool nodeExists(CString dirName_in);
+	static CString ext_from_path(CString path);
 	static CString fname_from_path(CString path);
 	static CString bname_from_path(CString path);
 	static CString dir_from_path(CString path);

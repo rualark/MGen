@@ -166,6 +166,13 @@ bool CGLib::nodeExists(CString dirName_in)
 	return true;    // file exists
 }
 
+CString CGLib::ext_from_path(CString path)
+{
+	string::size_type pos2 = string(path).find_last_of("./");
+	CString path2 = string(path).substr(pos2 + 1, path.GetLength()).c_str();
+	return path2;
+}
+
 CString CGLib::fname_from_path(CString path)
 {
 	string::size_type pos = string(path).find_last_of("\\/");
