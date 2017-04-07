@@ -77,6 +77,8 @@ BOOL CInfoDlg::OnInitDialog()
 		if (pGen->artic[ms][mv] == ARTIC_RETRIGGER) st2 = "Retrigger";
 		st.Format("Velocity: %d\nArticulation: %s\nLengroup: %d\n", pGen->vel[ms][mv], st2, pGen->lengroup[ms][mv]);
 		m_info.AddText(st, RGB(170, 0, 0), 0);
+		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
+		m_info.AddText(st, RGB(170, 0, 0), 0);
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);
 		pGen->mutex_output.unlock();

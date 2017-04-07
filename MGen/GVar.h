@@ -63,6 +63,7 @@ public:
 	vector<double> etime; // Time of current step ending in ms
 	vector< vector <double> > dstime; // Delta of current step start in ms for playback
 	vector< vector <double> > detime; // Delta of current step ending in ms for playback
+	vector <int> show_transpose; // Semitone transpose for showing
 
 	// Instruments
 	vector<int> instr; // Instruments for each voice

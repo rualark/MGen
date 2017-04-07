@@ -35,6 +35,8 @@ void CGenCA1::Generate()
 	if (cantus.size() < 1) return;
 	// This flag is needed to prevent flag skipping
 	calculate_stat = 1;
+	// Transpose corrected voice up for display
+	show_transpose[1] = 12;
 	for (int i = 0; i < cantus.size(); i++) {
 		clib.clear();
 		if (need_exit) break;

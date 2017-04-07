@@ -43,6 +43,7 @@ CGVar::CGVar()
 	rand_start_max.resize(MAX_INSTR);
 	rand_end_max.resize(MAX_INSTR);
 	max_ahead_note.resize(MAX_INSTR);
+	show_transpose.resize(MAX_VOICE);
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;
@@ -509,8 +510,10 @@ void CGVar::UpdateNoteMinMax(int step1, int step2)
 {
 	for (int i = step1; i <= step2; i++) {
 		for (int v = 0; v < v_cnt; v++) if ((pause[i][v] == 0) && (note[i][v] != 0)) {
-			if (ng_min > note[i][v]) ng_min = note[i][v];
-			if (ng_max < note[i][v]) ng_max = note[i][v];
+			// Global minimax includes show_transpose, because it is used only for visualization
+			if (ng_min > note[i][v] + show_transpose[v]) ng_min = note[i][v] + show_transpose[v];
+			if (ng_max < note[i][v] + show_transpose[v]) ng_max = note[i][v] + show_transpose[v];
+			// Voice minimax does not include show_transpose, because it is used for Adaptation
 			if (ngv_min[v] > note[i][v]) ngv_min[v] = note[i][v];
 			if (ngv_max[v] < note[i][v]) ngv_max[v] = note[i][v];
 		}

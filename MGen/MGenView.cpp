@@ -313,12 +313,12 @@ void CMGenView::OnDraw(CDC* pDC)
 						if (i + pGen->noff[i][v] < pGen->t_generated)
 							if (pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v]) retrigger = 1;
 						g.FillRectangle(&brush, X_FIELD + i * nwidth,
-							y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - retrigger, nheight);
 						// Highlight selected note
 						if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
 							g.FillRectangle(&brush, X_FIELD + i * nwidth,
-								y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 								pGen->len[i][v] * nwidth - retrigger, nheight);
 						}
 					}
@@ -339,27 +339,27 @@ void CMGenView::OnDraw(CDC* pDC)
 							if ((x == i + pGen->len[i][v] - 1) && (i + pGen->noff[i][v] < pGen->t_generated) &&
 								(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) retrigger = 1;
 							g.FillRectangle(&brush, X_FIELD + x * nwidth,
-								y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 								nwidth - retrigger, nheight);
 							// Highlight selected note
 							if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
 								g.FillRectangle(&brush, X_FIELD + x * nwidth,
-									y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+									y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 									nwidth - retrigger, nheight);
 							}
 						}
 					}
 					// Show lining
 					if (pGen->lining[i][v] == 1) {
-						g.DrawLine(&pen_dddgray, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
-							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] - ng_min2) * nheight);
-						g.DrawLine(&pen_dddgray, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] - ng_min2) * nheight,
-							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight);
+						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight);
+						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight,
+							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
 					}
 					// Show comment
 					if (pGen->comment[i][v] != "")
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
-							y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - retrigger, nheight);
 					if (pGen->noff[i][v] == 0) break;
 					i = i + pGen->noff[i][v] - 1;
@@ -367,7 +367,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			// Show generated vertical lines
 			for (int v = 0; v < pGen->v_cnt; v++) {
-				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
+				for (int i = step1; i < step2; i++) {
 					if (pGen->linecolor[i].GetAlpha() != 0) {
 						Pen pen_line(pGen->linecolor[i]);
 						g.DrawLine(&pen_line, X_FIELD + i * nwidth, y_start - (pGen->ng_min - ng_min2) * nheight,
@@ -555,7 +555,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		if (mouse_step > -1) {
 			mouse_note = (y_start - point.y) / nheight + mf->ng_min;
 			for (int i = 0; i < pGen->v_cnt; i++)
-				if ((pGen->note[mouse_step][i] == mouse_note) && (pGen->pause[mouse_step][i] == 0)) {
+				if ((pGen->note[mouse_step][i] + pGen->show_transpose[i] == mouse_note) && (pGen->pause[mouse_step][i] == 0)) {
 					mouse_voice = i;
 					step1 = mouse_step - pGen->coff[mouse_step][i];
 					step2 = step1 + pGen->len[mouse_step][i];

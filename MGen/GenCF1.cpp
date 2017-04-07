@@ -879,7 +879,7 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 		color[x][v] = FlagColor[0];
 		int current_severity = -1;
 		// Set nflag color
-		note[x][v] = cc[x - step] + v*12;
+		note[x][v] = cc[x - step];
 		if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
 			comment[x][v] += FlagName[nflags[x - step][i]];
 			st.Format(" [%d]", flag_sev[nflags[x - step][i]]);
