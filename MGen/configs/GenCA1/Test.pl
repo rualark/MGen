@@ -5,7 +5,7 @@ pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
-correct_transpose = 0 # Transpose corrected canti semitones up for display
+correct_transpose = 12 # Transpose corrected canti semitones up for display
 
 # Main parameters
 Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
