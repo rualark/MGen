@@ -44,6 +44,10 @@ CGVar::CGVar()
 	rand_end_max.resize(MAX_INSTR);
 	max_ahead_note.resize(MAX_INSTR);
 	show_transpose.resize(MAX_VOICE);
+	bell_start_mul.resize(MAX_VOICE);
+	bell_end_mul.resize(MAX_VOICE);
+	bell_start_len.resize(MAX_VOICE);
+	bell_end_len.resize(MAX_VOICE);
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;
@@ -272,6 +276,10 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "rand_start_max", &rand_start_max[i]);
 				CheckVar(&st2, &st3, "rand_end_max", &rand_end_max[i]);
 				CheckVar(&st2, &st3, "max_ahead_note", &max_ahead_note[i]);
+				CheckVar(&st2, &st3, "bell_start_mul", &bell_start_mul[i]);
+				CheckVar(&st2, &st3, "bell_end_mul", &bell_end_mul[i]);
+				CheckVar(&st2, &st3, "bell_end_len", &bell_end_len[i]);
+				CheckVar(&st2, &st3, "bell_start_len", &bell_start_len[i]);
 				//CGVar::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		}

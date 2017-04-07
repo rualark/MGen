@@ -57,6 +57,11 @@ vel_gliss = 18 # Velocity below this value triggers glissando transition
 vel_normal_minlen = 600 # Minimum note length that can have a normal or lower sustain
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition
 gliss_freq = 50 # Frequency of gliss articulation in percent
+bell_start_mul = 0.2 # Multiply dynamics by this parameter at bell start
+bell_end_mul = 0.2 # Multiply dynamics by this parameter at bell end
+bell_start_len = 30 # Percent of notelength to use for slope at bell start
+bell_end_len = 30 # Percent of notelength to use for slope at bell end
+
 
 CC_vib_intens = 1
 CC_vib_speed = 14

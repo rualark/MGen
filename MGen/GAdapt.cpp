@@ -212,11 +212,10 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 
 void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
 {
-	double long_bell_start = 0.2;
-	double long_bell_end = 0.2;
 	double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+	// Create bell if long length, not high velocity, not pause and not first note
 	if ((ndur > vel_normal_minlen[ii]) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
-		int pos = i + len[i][v] / 3;
+		int pos = i + (double)(len[i][v]) * bell_start_len[ii] / 100.0;
 		int ok = 1;
 		// Check if dynamics is even
 		if (pos - i > 1) for (int z = i + 1; z < pos; z++) {
@@ -227,14 +226,15 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		}
 		if (ok) {
 			for (int z = i; z < pos; z++) {
-				dyn[z][v] = dyn[z][v] * (long_bell_start + (double)(z - i) / (pos - i) * (1.0 - long_bell_start));
+				dyn[z][v] = dyn[z][v] * (bell_start_mul[ii] + (double)(z - i) / (pos - i) * (1.0 - bell_start_mul[ii]));
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Long bell start. ";
 		}
 	}
 	int ni = i + noff[i][v];
+	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
 	if ((ndur > vel_normal_minlen[ii]) && (len[i][v] > 2) && (x == ncount-1 || pause[ni][v])) {
-		int pos = round(i + len[i][v] * 2.0 / 3.0);
+		int pos = round(i + (double)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
 		// Check if dynamics is even
@@ -246,7 +246,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		}
 		if (ok) {
 			for (int z = pos; z < end; z++) {
-				dyn[z][v] = dyn[z][v] * (long_bell_start + (double)(end - z) / (end - pos) * (1.0 - long_bell_start));
+				dyn[z][v] = dyn[z][v] * (bell_end_mul[ii] + (double)(end - z) / (end - pos) * (1.0 - bell_end_mul[ii]));
 			}
 			if (comment_adapt) adapt_comment[i + len[i][v] - 1][v] += "Long bell end. ";
 		}
