@@ -8,6 +8,7 @@ CGVar::CGVar()
 	instr.resize(MAX_VOICE);
 	instr_type.resize(MAX_INSTR);
 	instr_channel.resize(MAX_INSTR);
+	instr_poly.resize(MAX_INSTR);
 	instr_nmin.resize(MAX_INSTR);
 	instr_nmax.resize(MAX_INSTR);
 	instr_tmin.resize(MAX_INSTR);
@@ -243,6 +244,7 @@ void CGVar::LoadInstruments()
 				LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
 				CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
 				CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
+				CheckVar(&st2, &st3, "poly", &instr_poly[i]);
 				CheckVar(&st2, &st3, "type", &instr_type[i]);
 				CheckVar(&st2, &st3, "channel", &instr_channel[i]);
 				CheckVar(&st2, &st3, "cc_steps", &CC_steps[i]);

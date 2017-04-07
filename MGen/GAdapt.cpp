@@ -8,6 +8,7 @@ CGAdapt::CGAdapt()
 	warning_note_range.resize(MAX_VOICE);
 	warning_note_wrong.resize(MAX_VOICE);
 	warning_note_short.resize(MAX_VOICE);
+	warning_poly.resize(MAX_INSTR);
 }
 
 
@@ -262,8 +263,11 @@ void CGAdapt::Adapt(int step1, int step2)
 	int pei; // previous note ending step
 	// Save current play speed
 	adapt_pspeed = m_pspeed;
+	vector<int> isent(MAX_INSTR);
 	for (int v = 0; v < v_cnt; v++) {
 		int ii = instr[v]; // Instrument id
+		// Check if sending multiple voices to monophonic instrument
+		isent[ii]++;
 		int ncount = 0;
 		// Move to note start
 		if (coff[step1][v] > 0) step1 = step1 - coff[step1][v];
@@ -323,6 +327,17 @@ void CGAdapt::Adapt(int step1, int step2)
 			i += noff[i][v];
 		} // for x
 	} // for v
+	for (int v = 0; v < v_cnt; v++) {
+		// Instrument id
+		int ii = instr[v]; 
+		// Check if sending multiple voices to monophonic instrument
+		if ((isent[ii] > instr_poly[ii]) && (!warning_poly[ii])) {
+			CString* est = new CString;
+			est->Format("Warning: sending %d voices to instrument %s [%d] with polyphony = %d", isent[ii], InstName[ii], ii, instr_poly[ii]);
+			WriteLog(1, est);
+			warning_poly[ii]++;
+		}
+	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;

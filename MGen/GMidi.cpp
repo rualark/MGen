@@ -215,7 +215,7 @@ void CGMidi::LoadCantus(CString path)
 				// Check for pause
 				if (pos - last_tick > tpc / 2) {
 					// Add cantus if it is long
-					if (nid > 3) cantus.push_back(c);
+					if (nid > 5) cantus.push_back(c);
 					// Go to next cantus
 					nid = 0;
 				}
@@ -235,7 +235,7 @@ void CGMidi::LoadCantus(CString path)
 		}
 	}
 	// Add cantus if it is long
-	if (nid > 3) cantus.push_back(c);
+	if (nid > 5) cantus.push_back(c);
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;

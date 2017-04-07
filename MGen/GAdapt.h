@@ -33,6 +33,7 @@ protected:
 	vector<int> warning_note_range;
 	vector<int> warning_note_short;
 	vector<int> warning_note_wrong;
+	vector<int> warning_poly;
 
 	vector<int> play_transpose; // If generated notes are not in instrument range, playback is automatically transposed (semitones)
 };

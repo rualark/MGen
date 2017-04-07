@@ -72,8 +72,8 @@ const int SeverityFlag[MAX_FLAGS] = {
 	18, // "4 step miss", // HARMONY
 	36, // "Outstanding repeat", // REPEATS
 
-	36, // "Too wide range", // RANGE
-	37, // "Too tight range", // RANGE
+	37, // "Too wide range", // RANGE
+	38, // "Too tight range", // RANGE
 	4, // "Long smooth", // LEAPS 
 	5, // "Long line", // LEAPS 
 	9, // "Close repeat", // REPEATS 

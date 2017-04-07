@@ -38,10 +38,17 @@ void CGenCA1::Generate()
 	calculate_stat = 1;
 	// Transpose corrected voice up for display
 	show_transpose[1] = correct_transpose;
+	int t_generated2 = 0; // Saved t_generated
 	for (int i = 0; i < cantus.size(); i++) {
 		clib.clear();
 		if (need_exit) break;
+		// Add line
+		linecolor[step] = Color(255, 0, 0, 0);
+		// Show imported melody
 		ScanCantus(&(cantus[i]), 0, 0);
+		// Check if cantus was shown
+		if (t_generated2 == t_generated) continue;
+		t_generated2 = t_generated;
 		// If no corrections needed
 		if (!corrections) {
 			v_cnt = 1;
@@ -52,9 +59,13 @@ void CGenCA1::Generate()
 			continue;
 		}
 		step -= c_len + 1;
-		if (step < 0) step = 0;
-		// Add line
-		linecolor[step] = Color(255, 0, 0, 0);
+		// Fill pauses if no results generated
+		for (int x = step; x <= step + c_len; x++) {
+			pause[x][1] = 1;
+			note[x][1] = 0;
+			len[x][1] = c_len + 1;
+			coff[x][1] = x - step;
+		}
 		// Clear scan matrix
 		smatrixc = 0;
 		smatrix.resize(c_len);
@@ -87,13 +98,6 @@ void CGenCA1::Generate()
 		CString* est = new CString;
 		est->Format("Scan matrix created: %s", st2);
 		WriteLog(3, est);
-		// Fill pauses if no results generated
-		for (int x = step; x <= step + c_len; x++) {
-			pause[x][1] = 1;
-			note[x][1] = 0;
-			len[x][1] = c_len + 1;
-			coff[x][1] = x - step;
-		}
 		// Count additional variables
 		CountOff(step, step + c_len);
 		CountTime(step, step + c_len);

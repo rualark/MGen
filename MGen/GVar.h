@@ -73,6 +73,7 @@ public:
 	vector<int> instr_nmax;
 	vector<int> instr_tmin;
 	vector<int> instr_tmax;
+	vector<int> instr_poly; // Maximum number of simultaneous voices
 	vector<int> CC_steps;
 	vector<int> CC_dyn_ma;
 	vector<int> CC_dyn;
