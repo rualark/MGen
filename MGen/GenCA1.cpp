@@ -39,6 +39,15 @@ void CGenCA1::Generate()
 		clib.clear();
 		if (need_exit) break;
 		ScanCantus(&(cantus[i]), 0, 0);
+		// If no corrections needed
+		if (!corrections) {
+			v_cnt = 1;
+			// Go forward
+			Adapt(step - c_len - 1, step - 1);
+			t_generated = step;
+			t_sent = t_generated;
+			continue;
+		}
 		step -= c_len + 1;
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);

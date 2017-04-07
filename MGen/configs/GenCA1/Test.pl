@@ -1,6 +1,6 @@
 # Analysis
 Midi_file = load\known-cf-maj.mid # Path and file name of imported midi file
-corrections = 3 # Number of corrections to show
+corrections = 0 # Number of corrections to show. Set to 0 to disable corrections
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
@@ -9,7 +9,7 @@ pitch_penalty = 1 # Penalty for changing note one more diatonic step while corre
 # Main parameters
 Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
 t_cnt = 1000000 # Maximum number of canti generated
-s_len = 7 # Maximum number of measures to full scan
+s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
