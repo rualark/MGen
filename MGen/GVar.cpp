@@ -64,6 +64,8 @@ void CGVar::InitVectors()
 	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	lining = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	linecolor = vector<Color>(t_allocated);
 	lengroup = vector<vector<char>>(t_allocated, vector<char>(v_cnt));
 	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
 	adapt_comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
@@ -80,6 +82,7 @@ void CGVar::InitVectors()
 	}
 	// Init color
 	for (int i = 0; i < t_allocated; i++) {
+		linecolor[i] = Color(0);
 		for (int v = 0; v < v_cnt; v++) {
 			color[i][v] = Color(0);
 		}
@@ -107,6 +110,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 	dyn.resize(size);
 	vel.resize(size);
 	artic.resize(size);
+	lining.resize(size);
+	linecolor.resize(size, Color(0));
 	lengroup.resize(size);
 	comment.resize(size);
 	adapt_comment.resize(size);
@@ -123,6 +128,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		dyn[i].resize(vsize);
 		vel[i].resize(vsize);
 		artic[i].resize(vsize);
+		lining[i].resize(vsize);
 		lengroup[i].resize(vsize);
 		comment[i].resize(vsize);
 		adapt_comment[i].resize(vsize);

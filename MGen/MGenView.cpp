@@ -349,6 +349,13 @@ void CMGenView::OnDraw(CDC* pDC)
 							}
 						}
 					}
+					// Show lining
+					if (pGen->lining[i][v] == 1) {
+						g.DrawLine(&pen_dddgray, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight,
+							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] - ng_min2) * nheight);
+						g.DrawLine(&pen_dddgray, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] - ng_min2) * nheight,
+							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] - ng_min2 + 1) * nheight);
+					}
 					// Show comment
 					if (pGen->comment[i][v] != "")
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
@@ -356,6 +363,16 @@ void CMGenView::OnDraw(CDC* pDC)
 							pGen->len[i][v] * nwidth - retrigger, nheight);
 					if (pGen->noff[i][v] == 0) break;
 					i = i + pGen->noff[i][v] - 1;
+				}
+			}
+			// Show generated vertical lines
+			for (int v = 0; v < pGen->v_cnt; v++) {
+				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
+					if (pGen->linecolor[i].GetAlpha() != 0) {
+						Pen pen_line(pGen->linecolor[i]);
+						g.DrawLine(&pen_line, X_FIELD + i * nwidth, y_start - (pGen->ng_min - ng_min2) * nheight,
+							X_FIELD + i * nwidth, y_start - (pGen->ng_max - ng_min2 + 1) * nheight);
+					}
 				}
 			}
 			mouse_voice_old = mouse_voice;

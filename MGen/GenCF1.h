@@ -58,6 +58,5 @@ protected:
 	// Cantus correcting
 	vector <char> smatrix; // Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix
-	vector<vector<vector<char>>> clib; // Library of cantus
-	vector<vector<int>> cpenalty; // Penalty of each cantus
+	vector<vector<char>> clib; // Library of cantus
 };

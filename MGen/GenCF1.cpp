@@ -316,7 +316,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			for (int i = 0; i < ep2; i++) {
 				// Calculate chromatic positions
 				// Negative eight octaves reserve
-				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + first_note;
+				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
 				// Calculate pitch class
 				pc[i] = (c[i] + 56) % 7;
 			}
@@ -866,8 +866,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 }
 
 void CGenCF1::SaveCantus() {
-	if (clib.size() <= c_len) clib.resize(c_len + 1);
-	clib[c_len].push_back(cc);
+	clib.push_back(cc);
 }
 
 void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
@@ -880,7 +879,7 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 		color[x][v] = FlagColor[0];
 		int current_severity = -1;
 		// Set nflag color
-		note[x][v] = cc[x - step] + v*24;
+		note[x][v] = cc[x - step] + v*12;
 		if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
 			comment[x][v] += FlagName[nflags[x - step][i]];
 			st.Format(" [%d]", flag_sev[nflags[x - step][i]]);

@@ -17,20 +17,31 @@ CGenCA1::~CGenCA1()
 void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
 	LoadVar(sN, sV, "midi_file", &midi_file);
+	CheckVar(sN, sV, "corrections", &corrections);
+	CheckVar(sN, sV, "pre_bad", &pre_bad);
+	CheckVar(sN, sV, "post_bad", &post_bad);
+	CheckVar(sN, sV, "step_penalty", &step_penalty);
+	CheckVar(sN, sV, "pitch_penalty", &pitch_penalty);
 
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
 
 void CGenCA1::Generate()
 {
+	CString st, st2;
+	vector <double> cpenalty; // Penalty in terms of difference from user melody
 	InitCantus();
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
 	// This flag is needed to prevent flag skipping
 	calculate_stat = 1;
 	for (int i = 0; i < cantus.size(); i++) {
+		clib.clear();
+		if (need_exit) break;
 		ScanCantus(&(cantus[i]), 0, 0);
 		step -= c_len + 1;
+		// Add line
+		linecolor[step] = Color(255, 0, 0, 0);
 		// Clear scan matrix
 		smatrixc = 0;
 		smatrix.resize(c_len);
@@ -38,7 +49,7 @@ void CGenCA1::Generate()
 		// Search each note
 		for (int x = 0; x < c_len; x++) {
 			// Search each flag
-			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; x++) {
+			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; f++) {
 				// Find prohibited flag
 				if (accept[nflags[x][f]] == 0) {
 					// Create matrix window
@@ -55,34 +66,94 @@ void CGenCA1::Generate()
 				}
 			}
 		}
-		// Full scan marked notes if did not scan this length yet
-		if ((clib.size() <= c_len) || (!clib[c_len].size())) ScanCantus(&(cantus[i]), 1, 0);
+		st2 = "";
+		for (int x = 0; x < c_len; x++) {
+			st.Format("%d ", smatrix[x]);
+			st2 += st;
+		}
+		CString* est = new CString;
+		est->Format("Scan matrix created: %s", st2);
+		WriteLog(3, est);
+		// Fill pauses if no results generated
+		for (int x = step; x <= step + c_len; x++) {
+			pause[x][1] = 1;
+			note[x][1] = 0;
+			len[x][1] = c_len + 1;
+			coff[x][1] = x - step;
+		}
+		// Count additional variables
+		CountOff(step, step + c_len);
+		CountTime(step, step + c_len);
+		UpdateNoteMinMax(step, step + c_len);
+		UpdateTempoMinMax(step, step + c_len);
+		// Full scan marked notes
+		ScanCantus(&(cantus[i]), 1, 0);
 		// Check if we have results
-		if ((clib.size() > c_len) && (clib[c_len].size())) {
-			cc = clib[c_len][0];
-			// Show result
-			ScanCantus(&(cc), 0, 1);
-			// Go back
-			step -= c_len + 1;
-		}
-		else {
-			// Fill pauses if no results generated
-			for (int x = step; x <= step + c_len; x++) {
-				pause[x][1] = 1;
-				note[x][1] = 0;
-				len[x][1] = c_len+1;
-				coff[x][1] = x - step;
+		if (clib.size()) {
+			// Count penalty
+			int cnum = clib.size();
+			cpenalty.resize(cnum);
+			for (int x = 0; x < cnum; x++) {
+				cpenalty[x] = 0;
+				for (int z = 0; z < c_len; z++) {
+					int dif = abs(cantus[i][z] - clib[x][z]);
+					if (dif) cpenalty[x] += step_penalty + pitch_penalty * dif;
+				}
 			}
-			// Count additional variables
-			CountOff(step, step + c_len);
-			CountTime(step, step + c_len);
-			UpdateNoteMinMax(step, step + c_len);
-			UpdateTempoMinMax(step, step + c_len);
+			// Find minimum penalty
+			int ccount = 0;
+			vector <long> cids;
+			// Cycle through all best matches
+			st2 = "";
+			for (int p = 0; p < corrections; p++) {
+				// Find minimum penalty
+				cids.clear();
+				double min_penalty = MAX_PENALTY;
+				for (int x = 0; x < cnum; x++) if (cpenalty[x] < min_penalty) min_penalty = cpenalty[x];
+				// Get all best corrections
+				for (int x = 0; x < cnum; x++) if (cpenalty[x] == min_penalty) {
+					cids.push_back(x);
+				}
+				// Shuffle cids
+				unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+				::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
+				for (int x = 0; x < cids.size(); x++) {
+					if (need_exit) break;
+					ccount++;
+					if (ccount > corrections) break;
+					// Write log
+					st.Format("%.0f/%d ", min_penalty, cids.size());
+					st2 += st;
+					// Clear penalty
+					cpenalty[cids[x]] = MAX_PENALTY;
+					// Show initial melody again if this is not first iteration
+					if (ccount > 1) {
+						ScanCantus(&(cantus[i]), 0, 0);
+						step -= c_len + 1;
+					}
+					// Get cantus
+					cc = clib[cids[x]];
+					// Show result
+					ScanCantus(&(cc), 0, 1);
+					// Go back
+					step -= c_len + 1;
+					// Add lining
+					for (int z = 0; z < c_len; z++) {
+						if (cantus[i][z] != clib[cids[x]][z]) {
+							lining[step + z][0] = 1;
+						}
+					}
+					// Go forward
+					step += c_len + 1;
+					Adapt(step - c_len - 1, step - 1);
+					t_generated = step;
+					t_sent = t_generated;
+				}
+			}
+			// Send log
+			CString* est = new CString;
+			est->Format("Sent corrections with penalties/variants: %s", st2);
+			WriteLog(3, est);
 		}
-		// Go forward
-		step += c_len + 1;
-		Adapt(step - c_len - 1, step - 1);
-		t_generated = step;
-		t_sent = t_generated;
 	}
 }
