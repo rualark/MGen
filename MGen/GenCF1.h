@@ -10,8 +10,9 @@ public:
 	void Generate() override;
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
 	void ScanCantus(vector<char>* pcantus, bool use_matrix, int v);
-	void SaveCantus(vector<char>& cc);
-	void SendCantus(int v, vector<char>* pcantus, vector<char>& cc, vector<vector<unsigned char>>& nflags, vector<unsigned char>& nflagsc);
+	void SaveCantus();
+	void SendCantus(int v, vector<char>* pcantus);
+
 	void InitCantus();
 	
 protected:
@@ -49,8 +50,10 @@ protected:
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
 	int flags_need2 = 0; // Number of second level flags set
-	vector<vector<unsigned char>> nflags2; // Note flags
-	vector<unsigned char> nflagsc2; // Note flags count
+	vector<char> c; // Cantus diatonic
+	vector<char> cc; // Cantus chromatic
+	vector<vector<unsigned char>> nflags; // Note flags
+	vector<unsigned char> nflagsc; // Note flags count
 
 	// Cantus correcting
 	vector <char> smatrix; // Vector of links to steps that were selected for recalculation
