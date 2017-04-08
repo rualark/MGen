@@ -188,7 +188,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	long long accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
-	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
+	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared, need_nminmax = 0;
 	int wcount = 1; // Number of windows created
 	int sp1, sp2, ep1, ep2, p, tonic, ctonic, pp;
 	// Analyze single cantus
@@ -280,449 +280,464 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 		WriteLog(1, est);
 		return;
 	}
-	// Walk all variants
+	nmin = max_interval;
+	nmax = -max_interval;
+	// Count limits
+	for (int i = 0; i < ep2; i++) {
+		if (c[i] < nmin) nmin = c[i];
+		if (c[i] > nmax) nmax = c[i];
+	}
 	while (true) {
 		// Do not exit if we are analyzing single cantus
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		// Analyze combination
-			// Local note repeat prohibited
-			//for (int i = ep1 - 1; i < ep2 - 1; i++) {
-				//if (c[i] == c[i + 1]) goto skip;
-			//}
-			nmin = 0;
-			nmax = 0;
+		// Local note repeat prohibited
+		//for (int i = ep1 - 1; i < ep2 - 1; i++) {
+			//if (c[i] == c[i + 1]) goto skip;
+		//}
+		if (need_nminmax) {
+			nmin = max_interval;
+			nmax = -max_interval;
 			// Count limits
 			for (int i = 0; i < ep2; i++) {
 				if (c[i] < nmin) nmin = c[i];
 				if (c[i] > nmax) nmax = c[i];
 			}
-			// Limit melody interval
-			if ((pcantus) && (!use_matrix)) {
-				if (nmax - nmin > max_interval) FLAG(37, 0);
-				if (nmax - nmin < min_interval) FLAG(38, 0);
+		}
+		// Limit melody interval
+		if ((pcantus) && (!use_matrix)) {
+			if (nmax - nmin > max_interval) FLAG(37, 0);
+			if (nmax - nmin < min_interval) FLAG(38, 0);
+		}
+		else {
+			if (nmax - nmin > max_interval) goto skip;
+			if (nmax - nmin < min_interval) goto skip;
+			// Clear flags
+			accepted3++;
+			fill(flags.begin(), flags.end(), 0);
+			flags[0] = 1;
+			for (int i = 0; i < ep2; i++) {
+				nflagsc[i] = 0;
+			}
+		}
+		for (int i = 0; i < ep2; i++) {
+			// Calculate chromatic positions
+			// Negative eight octaves reserve
+			cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
+			// Calculate pitch class
+			pc[i] = (c[i] + 56) % 7;
+		}
+		// Wrong second to last note
+		if (ep2 > c_len - 2)
+			if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
+		// Wrong third to last note
+		if (ep2 > c_len - 3) {
+			if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG(14, c_len - 3);
+			// Leading third to last note
+			if (pc[c_len - 3] == 6) FLAG(34, c_len - 3);
+		}
+		dcount = 0;
+		scount = 0;
+		tcount = 0;
+		wdcount = 0;
+		wscount = 0;
+		wtcount = 0;
+		for (int i = 0; i < ep2; i++) {
+			// Count same and missing letters in a row
+			if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
+				if (wtcount == 4) FLAG(18, i - 1);
+				if (wtcount == 5) FLAG(19, i - 1);
+				if (wtcount > 5) FLAG(20, i - 1);
+				tcount++;
+				wtcount = 0;
 			}
 			else {
-				if (nmax - nmin > max_interval) goto skip;
-				if (nmax - nmin < min_interval) goto skip;
-				// Clear flags
-				accepted3++;
-				fill(flags.begin(), flags.end(), 0);
-				flags[0] = 1;
-				for (int i = 0; i < ep2; i++) {
-					nflagsc[i] = 0;
-				}
+				if (tcount == 3) FLAG(15, i - 1);
+				if (tcount == 4) FLAG(16, i - 1);
+				if (tcount > 4) FLAG(17, i - 1);
+				tcount = 0;
+				wtcount++;
 			}
-			for (int i = 0; i < ep2; i++) {
-				// Calculate chromatic positions
-				// Negative eight octaves reserve
-				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
-				// Calculate pitch class
-				pc[i] = (c[i] + 56) % 7;
+			if ((pc[i] == 1) || (pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
+				if (wdcount == 4) FLAG(18, i - 1);
+				if (wdcount == 5) FLAG(19, i - 1);
+				if (wdcount > 5) FLAG(20, i - 1);
+				dcount++;
+				wdcount = 0;
 			}
-			// Wrong second to last note
-			if (ep2 > c_len - 2)
-				if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
-			// Wrong third to last note
-			if (ep2 > c_len - 3) {
-				if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG(14, c_len - 3);
-				// Leading third to last note
-				if (pc[c_len - 3] == 6) FLAG(34, c_len - 3);
+			else {
+				if (dcount == 3) FLAG(15, i - 1);
+				if (dcount == 4) FLAG(16, i - 1);
+				if (dcount > 4) FLAG(17, i - 1);
+				dcount = 0;
+				wdcount++;
 			}
-			dcount = 0;
-			scount = 0;
-			tcount = 0;
-			wdcount = 0;
-			wscount = 0;
-			wtcount = 0;
-			for (int i = 0; i < ep2; i++) {
-				// Count same and missing letters in a row
-				if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
-					if (wtcount == 4) FLAG(18, i - 1);
-					if (wtcount == 5) FLAG(19, i - 1);
-					if (wtcount > 5) FLAG(20, i - 1);
-					tcount++;
-					wtcount = 0;
-				}
-				else {
-					if (tcount == 3) FLAG(15, i - 1);
-					if (tcount == 4) FLAG(16, i - 1);
-					if (tcount > 4) FLAG(17, i - 1);
-					tcount = 0;
-					wtcount++;
-				}
-				if ((pc[i] == 1) || (pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
-					if (wdcount == 4) FLAG(18, i - 1);
-					if (wdcount == 5) FLAG(19, i - 1);
-					if (wdcount > 5) FLAG(20, i - 1);
-					dcount++;
-					wdcount = 0;
-				}
-				else {
-					if (dcount == 3) FLAG(15, i - 1);
-					if (dcount == 4) FLAG(16, i - 1);
-					if (dcount > 4) FLAG(17, i - 1);
-					dcount = 0;
-					wdcount++;
-				}
-				if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) {
-					if (wscount == 4) FLAG(18, i - 1);
-					if (wscount == 5) FLAG(19, i - 1);
-					if (wscount > 5) FLAG(20, i - 1);
-					scount++;
-					wscount = 0;
-				}
-				else {
-					if (scount == 3) FLAG(15, i - 1);
-					if (scount == 4) FLAG(16, i - 1);
-					if (scount > 4) FLAG(17, i - 1);
-					scount = 0;
-					wscount++;
-				}
+			if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) {
+				if (wscount == 4) FLAG(18, i - 1);
+				if (wscount == 5) FLAG(19, i - 1);
+				if (wscount > 5) FLAG(20, i - 1);
+				scount++;
+				wscount = 0;
 			}
-			// Check same letters
-			if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, ep2 - 1);
-			if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, ep2 - 1);
-			if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, ep2 - 1);
-			// Check missing letters
-			if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, ep2 - 1);
-			if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, ep2 - 1);
-			if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
-			for (int i = 0; i < ep2 - 1; i++) {
-				// Tritone prohibit
-				if (abs(cc[i + 1] - cc[i]) == 6) {
-					// Check if tritone is highest leap if this is last window
-					if (ep2 == c_len)
-						if ((c[i] == nmax) || (c[i + 1] == nmax)) FLAG(32, i)
-							// Check if tritone is last step
-							if (i > c_len - 3) FLAG(31, i)
-							// Check if resolution is correct
-							else if (i < ep2 - 2) {
-								if (cc[i + 1] % 12 == 5) FLAG(31, i)
-								else if (cc[i + 2] % 12 != 0) FLAG(31, i)
-								else if (cc[i - 1] % 12 != 4) FLAG(31, i)
-									// Record resolved tritone
-								else FLAG(2, i);
-							}
-					// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
-				}
-				// Sept prohibit
-				if (abs(c[i + 1] - c[i]) == 6) FLAG(1, i);
-				// Find all leaps
-				leap[i] = 0;
-				smooth[i] = 0;
-				if (c[i + 1] - c[i] > 1) leap[i] = 1;
-				else if (c[i + 1] - c[i] < -1) leap[i] = -1;
-				// Find all smooth
-				else if (c[i + 1] - c[i] == 1) smooth[i] = 1;
-				else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
+			else {
+				if (scount == 3) FLAG(15, i - 1);
+				if (scount == 4) FLAG(16, i - 1);
+				if (scount > 4) FLAG(17, i - 1);
+				scount = 0;
+				wscount++;
 			}
-			leap_sum = 0;
-			max_leap_sum = 0;
-			smooth_sum = 0;
-			smooth_sum2 = 0;
-			// Search for outstanding repeats
-			if (ep2 > 6) for (int i = 0; i < ep2 - 6; i++) {
-				// Check if note changes direction or is a leap
-				if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
-					// Search for repeat of note at same beat until last three notes
-					int finish = i + repeat_steps;
-					if (finish > ep2 - 2) finish = ep2 - 2;
-					for (int x = i + 2; x < finish; x += 2) {
-						// Check if same note with direction change or leap
-						if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
-							// Check that two more notes repeat
-							if ((c[x + 1] == c[i + 1]) && (c[x + 2] == c[i + 2])) {
-								FLAG(36, i);
-							}
+		}
+		// Check same letters
+		if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, ep2 - 1);
+		if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, ep2 - 1);
+		if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, ep2 - 1);
+		// Check missing letters
+		if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, ep2 - 1);
+		if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, ep2 - 1);
+		if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
+		for (int i = 0; i < ep2 - 1; i++) {
+			// Tritone prohibit
+			if (abs(cc[i + 1] - cc[i]) == 6) {
+				// Check if tritone is highest leap if this is last window
+				if (ep2 == c_len)
+					if ((c[i] == nmax) || (c[i + 1] == nmax)) FLAG(32, i)
+						// Check if tritone is last step
+						if (i > c_len - 3) FLAG(31, i)
+						// Check if resolution is correct
+						else if (i < ep2 - 2) {
+							if (cc[i + 1] % 12 == 5) FLAG(31, i)
+							else if (cc[i + 2] % 12 != 0) FLAG(31, i)
+							else if (cc[i - 1] % 12 != 4) FLAG(31, i)
+								// Record resolved tritone
+							else FLAG(2, i);
+						}
+				// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
+			}
+			// Sept prohibit
+			if (abs(c[i + 1] - c[i]) == 6) FLAG(1, i);
+			// Find all leaps
+			leap[i] = 0;
+			smooth[i] = 0;
+			if (c[i + 1] - c[i] > 1) leap[i] = 1;
+			else if (c[i + 1] - c[i] < -1) leap[i] = -1;
+			// Find all smooth
+			else if (c[i + 1] - c[i] == 1) smooth[i] = 1;
+			else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
+		}
+		leap_sum = 0;
+		max_leap_sum = 0;
+		smooth_sum = 0;
+		smooth_sum2 = 0;
+		// Search for outstanding repeats
+		if (ep2 > 6) for (int i = 0; i < ep2 - 6; i++) {
+			// Check if note changes direction or is a leap
+			if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
+				// Search for repeat of note at same beat until last three notes
+				int finish = i + repeat_steps;
+				if (finish > ep2 - 2) finish = ep2 - 2;
+				for (int x = i + 2; x < finish; x += 2) {
+					// Check if same note with direction change or leap
+					if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
+						// Check that two more notes repeat
+						if ((c[x + 1] == c[i + 1]) && (c[x + 2] == c[i + 2])) {
+							FLAG(36, i);
 						}
 					}
 				}
 			}
-			for (int i = 0; i < ep2 - 1; i++) {
-				// Add new leap
-				if (leap[i] != 0) {
-					leap_sum++;
-					// Check if this leap is 3rd
-					third_prepared = 0;
-					if (abs(c[i + 1] - c[i]) == 2) {
-						pos = (c[i + 1] + c[i]) / 2;
-						// Check if 3rd was pre-filled
-						if ((i > 0) && (c[i - 1] == pos)) third_prepared = 1;
-						else if ((i > 1) && (c[i - 2] == pos)) third_prepared = 1;
-						else if ((i > 2) && (c[i - 3] == pos)) third_prepared = 1;
-						else if ((i > 3) && (c[i - 4] == pos)) third_prepared = 1;
-						// Check if 3rd has pre-leap
-						else if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
-						else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
-						else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
+		}
+		for (int i = 0; i < ep2 - 1; i++) {
+			// Add new leap
+			if (leap[i] != 0) {
+				leap_sum++;
+				// Check if this leap is 3rd
+				third_prepared = 0;
+				if (abs(c[i + 1] - c[i]) == 2) {
+					pos = (c[i + 1] + c[i]) / 2;
+					// Check if 3rd was pre-filled
+					if ((i > 0) && (c[i - 1] == pos)) third_prepared = 1;
+					else if ((i > 1) && (c[i - 2] == pos)) third_prepared = 1;
+					else if ((i > 2) && (c[i - 3] == pos)) third_prepared = 1;
+					else if ((i > 3) && (c[i - 4] == pos)) third_prepared = 1;
+					// Check if 3rd has pre-leap
+					else if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
+					else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
+					else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) third_prepared = 1;
+				}
+				// Check if  leap is filled
+				pos = i + 2 + (abs(c[i + 1] - c[i]) - 1) * fill_steps_mul;
+				// Do not check fill if search window is cut by end of current not-last scan window
+				if ((pos < ep2) || (c_len == ep2)) {
+					if (pos > ep2 - 1) pos = ep2 - 1;
+					// Zero array
+					fill(nstat2.begin(), nstat2.end(), 0);
+					fill(nstat3.begin(), nstat3.end(), 0);
+					// Fill all notes
+					for (int x = 0; x < ep2; x++) {
+						// Update local fill
+						if ((x > i + 1) && (x <= pos)) nstat3[c[x] - nmin]++;
+						// Update global fill
+						nstat2[c[x] - nmin]++;
 					}
-					// Check if  leap is filled
-					pos = i + 2 + (abs(c[i + 1] - c[i]) - 1) * fill_steps_mul;
-					// Do not check fill if search window is cut by end of current not-last scan window
-					if ((pos < ep2) || (c_len == ep2)) {
-						if (pos > ep2 - 1) pos = ep2 - 1;
-						// Zero array
-						fill(nstat2.begin(), nstat2.end(), 0);
-						fill(nstat3.begin(), nstat3.end(), 0);
-						// Fill all notes
-						for (int x = 0; x < ep2; x++) {
-							// Update local fill
-							if ((x > i + 1) && (x <= pos)) nstat3[c[x] - nmin]++;
-							// Update global fill
-							nstat2[c[x] - nmin]++;
-						}
-						// Check if leap is filled
-						ok = 1; // Local fill
-						ok2 = 1; // Global fill
-						int pos1 = min(c[i], c[i + 1]);
-						int pos2 = max(c[i], c[i + 1]);
-						for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x - nmin]) {
-							ok = 0;
-							if (!nstat2[x - nmin]) ok2 = 0;
-							break;
-						}
-						// Local not filled?
-						if (!ok) {
-							// Local not filled. Third prepared?
-							if (third_prepared) FLAG(35, i)
-								// Local not filled. Third not prepared. Global filled?
-							else if (ok2) FLAG(11, i)
-								// Local not filled. Third not prepared. Global not filled.
-							else FLAG(24, i);
-						}
+					// Check if leap is filled
+					ok = 1; // Local fill
+					ok2 = 1; // Global fill
+					int pos1 = min(c[i], c[i + 1]);
+					int pos2 = max(c[i], c[i + 1]);
+					for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x - nmin]) {
+						ok = 0;
+						if (!nstat2[x - nmin]) ok2 = 0;
+						break;
+					}
+					// Local not filled?
+					if (!ok) {
+						// Local not filled. Third prepared?
+						if (third_prepared) FLAG(35, i)
+							// Local not filled. Third not prepared. Global filled?
+						else if (ok2) FLAG(11, i)
+							// Local not filled. Third not prepared. Global not filled.
+						else FLAG(24, i);
 					}
 				}
-				// Subtract old leap
-				if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
-				// Get maximum leap_sum
-				if (leap_sum > max_leap_sum) {
-					max_leap_sum = leap_sum;
-					leap_sum_i = i;
-				}
-				// Prohibit long smooth movement
-				if (smooth[i] != 0) smooth_sum++;
-				else smooth_sum = 0;
-				if (smooth_sum >= max_smooth) FLAG(4, i);
-				if (i < ep2 - 2) {
-					// Prohibit long smooth movement in one direction
-					if (smooth[i] == smooth[i + 1]) smooth_sum2++;
-					else smooth_sum2 = 0;
-					if (smooth_sum2 >= max_smooth_direct - 1) FLAG(5, i);
-					// Check if leaps follow each other in same direction
-					if (leap[i] * leap[i + 1] > 0) {
-						// Check if leaps are long
-						if (abs(c[i + 2] - c[i]) > 4) FLAG(27, i)
-							// If leaps are 3rds
-						else {
-							if ((i>0) && ((leap[i] * (c[i] - c[i - 1]) == -5) || (leap[i] * (c[i] - c[i - 1]) == -7))) FLAG(28, i)
-							else FLAG(6, i);
-						}
+			}
+			// Subtract old leap
+			if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
+			// Get maximum leap_sum
+			if (leap_sum > max_leap_sum) {
+				max_leap_sum = leap_sum;
+				leap_sum_i = i;
+			}
+			// Prohibit long smooth movement
+			if (smooth[i] != 0) smooth_sum++;
+			else smooth_sum = 0;
+			if (smooth_sum >= max_smooth) FLAG(4, i);
+			if (i < ep2 - 2) {
+				// Prohibit long smooth movement in one direction
+				if (smooth[i] == smooth[i + 1]) smooth_sum2++;
+				else smooth_sum2 = 0;
+				if (smooth_sum2 >= max_smooth_direct - 1) FLAG(5, i);
+				// Check if leaps follow each other in same direction
+				if (leap[i] * leap[i + 1] > 0) {
+					// Check if leaps are long
+					if (abs(c[i + 2] - c[i]) > 4) FLAG(27, i)
+						// If leaps are 3rds
+					else {
+						if ((i>0) && ((leap[i] * (c[i] - c[i - 1]) == -5) || (leap[i] * (c[i] - c[i - 1]) == -7))) FLAG(28, i)
+						else FLAG(6, i);
 					}
-					// Check if melody direction does not change after leap
-					else if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
-						// If this 3rd was prepared
-						if (third_prepared) FLAG(30, i)
-						else {
-							if (i < ep2 - 3) {
-								// Check if melody direction does not change second note after leap
-								if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
-									// If direction changes second note after leap
-								else {
-									// Check leap size
-									if (abs(c[i + 1] - c[i]) > 4) FLAG(29, i)
-									else FLAG(7, i);
-								}
-							}
+				}
+				// Check if melody direction does not change after leap
+				else if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
+					// If this 3rd was prepared
+					if (third_prepared) FLAG(30, i)
+					else {
+						if (i < ep2 - 3) {
+							// Check if melody direction does not change second note after leap
+							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) FLAG(26, i)
+								// If direction changes second note after leap
 							else {
-								// Mark leap unresolved if this is end of cantus
-								if (c_len == ep2) FLAG(26, i);
+								// Check leap size
+								if (abs(c[i + 1] - c[i]) > 4) FLAG(29, i)
+								else FLAG(7, i);
 							}
 						}
-					}
-					// If melody direction changes after leap
-					else {
-						// Check if it is a leap to leap resolution
-						if (leap[i] * leap[i + 1] != 0) {
-							// Check if leap returns to same note
-							if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
-								if (abs(c[i] - c[i + 1]) > 3) FLAG(22, i)
-								else FLAG(8, i);
-							}
-							// Check if two thirds go after leap
-							else if ((i < ep2 - 3) && (leap[i + 1] == leap[i + 2]) && (abs(c[i + 3] - c[i + 1]) == 4)) {
-								// Do nothing (leap will be marked later)
-							}
-							// Else it is a simple leap-to-leap
-							else FLAG(33, i);
-						}
-					}
-					// Check if two notes repeat
-					if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG(9, i);
-				}
-			}
-			// Check if too many leaps
-			if (max_leap_sum > max_leaps) {
-				if (max_leap_sum > max_leaps2) FLAG(25, leap_sum_i)
-				else FLAG(3, leap_sum_i);
-			}
-			// Clear nstat
-			for (int i = nmin; i <= nmax; i++) {
-				nstat[i - nmin] = 0;
-			}
-			// Prohibit stagnation
-			for (int i = 0; i < ep2; i++) {
-				// Add new note
-				nstat[c[i] - nmin]++; // Stagnation array
-															// Subtract old note
-				if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] - nmin]--;
-				// Check if too many repeating notes
-				if (nstat[c[i] - nmin] > stag_notes) FLAG(10, i);
-			}
-			// Prohibit multiple culminations
-			culm_sum = 0;
-			for (int i = 0; i < ep2; i++) {
-				if (c[i] == nmax) {
-					culm_sum++;
-					culm_step = i;
-					if (culm_sum > 1) FLAG(12, i);
-				}
-			}
-			// Prohibit culminations at last steps
-			if (culm_step > c_len - 4) FLAG(21, culm_step);
-			// Prohibit last leap
-			if (ep2 == c_len)
-				if (leap[c_len - 2]) FLAG(23, c_len - 1);
-			if ((!pcantus) || (use_matrix)) {
-				accepted2++;
-				// Calculate flag statistics
-				if (calculate_stat || calculate_correlation) {
-					if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; i++) {
-						if (flags[i]) {
-							fstat[i]++;
-							// Calculate correlation
-							if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; z++) {
-								if (flags[z]) fcor[i][z]++;
-							}
+						else {
+							// Mark leap unresolved if this is end of cantus
+							if (c_len == ep2) FLAG(26, i);
 						}
 					}
 				}
-				// Calculate flag blocking
-				if (calculate_blocking) {
-					int flags_found = 0;
-					int flags_found2 = 0;
-					int flags_conflict = 0;
-					// Find if any of accepted flags set
-					for (int i = 0; i < MAX_FLAGS; i++) {
-						if ((flags[i]) && (accept[i])) flags_found++;
-						if ((flags[i]) && (!accept[i])) flags_conflict++;
-						if ((flags[i]) && (accept[i] == 2)) flags_found2++;
-					}
-					// Skip only if flags required
-					if ((!late_require) || (ep2 == c_len)) {
-						// Check if no needed flags set
-						if (flags_found == 0) goto skip;
-						// Check if not enough 2 flags set
-						if (flags_found2 < flags_need2) goto skip;
-					}
-					accepted5[wid]++;
-					// Find flags that are blocking
-					for (int i = 0; i < MAX_FLAGS; i++) {
-						if ((flags[i]) && (!accept[i]))
-							fblock[wid][flags_conflict][i]++;
+				// If melody direction changes after leap
+				else {
+					// Check if it is a leap to leap resolution
+					if (leap[i] * leap[i + 1] != 0) {
+						// Check if leap returns to same note
+						if ((leap[i] != 0) && (leap[i + 1] != 0) && (c[i] == c[i + 2])) {
+							if (abs(c[i] - c[i + 1]) > 3) FLAG(22, i)
+							else FLAG(8, i);
+						}
+						// Check if two thirds go after leap
+						else if ((i < ep2 - 3) && (leap[i + 1] == leap[i + 2]) && (abs(c[i + 3] - c[i + 1]) == 4)) {
+							// Do nothing (leap will be marked later)
+						}
+						// Else it is a simple leap-to-leap
+						else FLAG(33, i);
 					}
 				}
-				// Check if flags are accepted
+				// Check if two notes repeat
+				if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG(9, i);
+			}
+		}
+		// Check if too many leaps
+		if (max_leap_sum > max_leaps) {
+			if (max_leap_sum > max_leaps2) FLAG(25, leap_sum_i)
+			else FLAG(3, leap_sum_i);
+		}
+		// Clear nstat
+		for (int i = nmin; i <= nmax; i++) {
+			nstat[i - nmin] = 0;
+		}
+		// Prohibit stagnation
+		for (int i = 0; i < ep2; i++) {
+			// Add new note
+			nstat[c[i] - nmin]++; // Stagnation array
+														// Subtract old note
+			if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] - nmin]--;
+			// Check if too many repeating notes
+			if (nstat[c[i] - nmin] > stag_notes) FLAG(10, i);
+		}
+		// Prohibit multiple culminations
+		culm_sum = 0;
+		for (int i = 0; i < ep2; i++) {
+			if (c[i] == nmax) {
+				culm_sum++;
+				culm_step = i;
+				if (culm_sum > 1) FLAG(12, i);
+			}
+		}
+		// Prohibit culminations at last steps
+		if (culm_step > c_len - 4) FLAG(21, culm_step);
+		// Prohibit last leap
+		if (ep2 == c_len)
+			if (leap[c_len - 2]) FLAG(23, c_len - 1);
+		if ((!pcantus) || (use_matrix)) {
+			accepted2++;
+			// Calculate flag statistics
+			if (calculate_stat || calculate_correlation) {
+				if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; i++) {
+					if (flags[i]) {
+						fstat[i]++;
+						// Calculate correlation
+						if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; z++) {
+							if (flags[z]) fcor[i][z]++;
+						}
+					}
+				}
+			}
+			// Calculate flag blocking
+			if (calculate_blocking) {
+				int flags_found = 0;
+				int flags_found2 = 0;
+				int flags_conflict = 0;
+				// Find if any of accepted flags set
 				for (int i = 0; i < MAX_FLAGS; i++) {
-					if ((flags[i]) && (!accept[i])) goto skip;
-					if ((!late_require) || (ep2 == c_len))
-						if ((!flags[i]) && (accept[i] == 2)) goto skip;
+					if ((flags[i]) && (accept[i])) flags_found++;
+					if ((flags[i]) && (!accept[i])) flags_conflict++;
+					if ((flags[i]) && (accept[i] == 2)) flags_found2++;
 				}
-				accepted4[wid]++;
-				// If this is not last window, go to next window
-				if (ep2 < c_len) {
-					if (use_matrix) {
-						sp1 = sp2;
-						sp2 = sp1 + s_len; // End of search window
-						if (sp2 > smatrixc2) sp2 = smatrixc2;
-						// Reserve last window with maximum length
-						if ((smatrixc2 - sp1 < s_len * 2) && (smatrixc2 - sp1 > s_len)) sp2 = (smatrixc2 + sp1) / 2;
-						// Record window
-						wid++;
-						wpos1[wid] = sp1;
-						wpos2[wid] = sp2;
-						wscans[wid]++;
-						// Add last note if this is last window
-						// End of evaluation window
-						ep1 = smap[sp1];
-						ep2 = smap[sp2 - 1] + 1;
-						if (sp2 == smatrixc2) ep2 = c_len;
-						// Minimal position in array to cycle
-						pp = sp2 - 1;
-						p = smap[pp];
-					}
-					else {
-						sp1 = sp2;
-						sp2 = sp1 + s_len; // End of search window
-						if (sp2 > c_len - 1) sp2 = c_len - 1;
-						// Reserve last window with maximum length
-						if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
-						// Record window
-						wid++;
-						wpos1[wid] = sp1;
-						wpos2[wid] = sp2;
-						wscans[wid]++;
-						// End of evaluation window
-						ep1 = sp1;
-						ep2 = sp2;
-						// Add last note if this is last window
-						if (ep2 == c_len - 1) ep2 = c_len;
-						// Go to rightmost element
-						p = sp2 - 1;
-					}
-					if (wcount < wid + 1) {
-						wcount = wid + 1;
-						if (ep2 == c_len) {
-							// Show window statistics
-							CString* est = new CString;
-							CString st, st2;
-							for (int i = 0; i < wcount; i++) {
-								if (i > 0) st2 += ", ";
-								st.Format("%d-%d", wpos1[i], wpos2[i]);
-								st2 += st;
-							}
-							est->Format("Algorithm created %d windows: %s", wcount, st2);
-							WriteLog(3, est);
-						}
-					}
-					goto skip;
+				// Skip only if flags required
+				if ((!late_require) || (ep2 == c_len)) {
+					// Check if no needed flags set
+					if (flags_found == 0) goto skip;
+					// Check if not enough 2 flags set
+					if (flags_found2 < flags_need2) goto skip;
 				}
-				// Check random_choose
-				if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
+				accepted5[wid]++;
+				// Find flags that are blocking
+				for (int i = 0; i < MAX_FLAGS; i++) {
+					if ((flags[i]) && (!accept[i]))
+						fblock[wid][flags_conflict][i]++;
+				}
 			}
-			// Accept cantus
-			accepted++;
-			if (accepted >= t_cnt) {
-				WriteLog(3, "Generation reached t_cnt. Breaking.");
-				break;
+			// Check if flags are accepted
+			for (int i = 0; i < MAX_FLAGS; i++) {
+				if ((flags[i]) && (!accept[i])) goto skip;
+				if ((!late_require) || (ep2 == c_len))
+					if ((!flags[i]) && (accept[i] == 2)) goto skip;
 			}
-			else {
+			accepted4[wid]++;
+			// If this is not last window, go to next window
+			if (ep2 < c_len) {
 				if (use_matrix) {
-					SaveCantus();
+					sp1 = sp2;
+					sp2 = sp1 + s_len; // End of search window
+					if (sp2 > smatrixc2) sp2 = smatrixc2;
+					// Reserve last window with maximum length
+					if ((smatrixc2 - sp1 < s_len * 2) && (smatrixc2 - sp1 > s_len)) sp2 = (smatrixc2 + sp1) / 2;
+					// Record window
+					wid++;
+					wpos1[wid] = sp1;
+					wpos2[wid] = sp2;
+					wscans[wid]++;
+					// Add last note if this is last window
+					// End of evaluation window
+					ep1 = smap[sp1];
+					ep2 = smap[sp2 - 1] + 1;
+					if (sp2 == smatrixc2) ep2 = c_len;
+					// Minimal position in array to cycle
+					pp = sp2 - 1;
+					p = smap[pp];
 				}
 				else {
-					SendCantus(v, pcantus);
-					if ((pcantus) && (!use_matrix)) return;
+					sp1 = sp2;
+					sp2 = sp1 + s_len; // End of search window
+					if (sp2 > c_len - 1) sp2 = c_len - 1;
+					// Reserve last window with maximum length
+					if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
+					// Record window
+					wid++;
+					wpos1[wid] = sp1;
+					wpos2[wid] = sp2;
+					wscans[wid]++;
+					// End of evaluation window
+					ep1 = sp1;
+					ep2 = sp2;
+					// Add last note if this is last window
+					if (ep2 == c_len - 1) ep2 = c_len;
+					// Go to rightmost element
+					p = sp2 - 1;
 				}
-			} // t_cnt limit
+				if (wcount < wid + 1) {
+					wcount = wid + 1;
+					if (ep2 == c_len) {
+						// Show window statistics
+						CString* est = new CString;
+						CString st, st2;
+						for (int i = 0; i < wcount; i++) {
+							if (i > 0) st2 += ", ";
+							st.Format("%d-%d", wpos1[i], wpos2[i]);
+							st2 += st;
+						}
+						est->Format("Algorithm created %d windows: %s", wcount, st2);
+						WriteLog(3, est);
+					}
+				}
+				goto skip;
+			}
+			// Check random_choose
+			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
+		}
+		// Accept cantus
+		accepted++;
+		if (accepted >= t_cnt) {
+			WriteLog(3, "Generation reached t_cnt. Breaking.");
+			break;
+		}
+		else {
+			if (use_matrix) {
+				SaveCantus();
+			}
+			else {
+				SendCantus(v, pcantus);
+				if ((pcantus) && (!use_matrix)) return;
+			}
+		} // t_cnt limit
 	skip:
 		while (true) {
+			newcycle:
 			// This check is run every global cycle
 			if (c[p] < max_interval) {
 				// If rightmost element is not max, increase it
 				c[p] ++;
+				// Every cycle needs nmin nmax calculation if special conditions are not met
+				if (c[p] <= nmax && c[p] > nmin + 1) need_nminmax = 0;
+				else need_nminmax = 1;
 				// If we have repeat, increase further. Decreasing p is safe because we always have first not-scanned step
 				if (c[p] == c[p - 1]) {
 					c[p]++;
+					// Every cycle needs nmin nmax calculation if special conditions are not met
+					if (c[p] <= nmax && c[p] > nmin + 2) need_nminmax = 0;
+					else need_nminmax = 1;
 					// Check again, because we increased further
 					if (c[p] <= max_interval) break;
 					// Only situation when we do not break here is when we got over maximum element
@@ -731,6 +746,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			}
 			// If current element is max, make it minimum
 			c[p] = -max_interval;
+			need_nminmax = 1;
 			// Move left one element
 			if (use_matrix) {
 				if (pp == sp1) {
@@ -755,21 +771,12 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 				if (c[p] == c[p - 1]) {
 					c[p]++;
 					// Check again, because we increased further
-					if (c[p] <= max_interval) {
-						// Go to rightmost element
-						if (use_matrix) {
-							pp = sp2 - 1;
-							p = smap[pp];
-						}
-						else {
-							p = sp2 - 1;
-						}
-						cycle++;
-						break;
-					}
+					if (c[p] <= max_interval) goto breaking2;
 					// Only situation when we do not break here is when we got over maximum element
+					goto newcycle;
 				}
 				else {
+					breaking2:
 					// Go to rightmost element
 					if (use_matrix) {
 						pp = sp2 - 1;
