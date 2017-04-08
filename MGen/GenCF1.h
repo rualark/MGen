@@ -12,7 +12,6 @@ public:
 	void ScanCantus(vector<char>* pcantus, bool use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<char>* pcantus);
-
 	void InitCantus();
 	
 protected:

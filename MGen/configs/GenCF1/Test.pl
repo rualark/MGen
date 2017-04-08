@@ -1,7 +1,7 @@
 # Main parameters
 t_cnt = 1000000 # Maximum number of canti generated
 c_len = 9 # Number of measures in each cantus. Usually 9 to 11
-s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+s_len = 5 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus

@@ -280,16 +280,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 		WriteLog(1, est);
 		return;
 	}
-	nmin = max_interval;
-	nmax = -max_interval;
-	// Count limits
-	for (int i = 0; i < ep2; i++) {
-		if (c[i] < nmin) nmin = c[i];
-		if (c[i] > nmax) nmax = c[i];
-	}
+	// Count note min max for first variant
+	need_nminmax = 1;
 	while (true) {
-		// Do not exit if we are analyzing single cantus
-		if ((need_exit) && (!pcantus || use_matrix)) break;
 		// Analyze combination
 		// Local note repeat prohibited
 		//for (int i = ep1 - 1; i < ep2 - 1; i++) {
@@ -702,6 +695,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 						WriteLog(3, est);
 					}
 				}
+				// Clear minimax so that it is recalculated
+				nmin = 0;
+				nmax = 0;
 				goto skip;
 			}
 			// Check random_choose
@@ -724,7 +720,6 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 		} // t_cnt limit
 	skip:
 		while (true) {
-			newcycle:
 			// This check is run every global cycle
 			if (c[p] < max_interval) {
 				// If rightmost element is not max, increase it
@@ -771,12 +766,14 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 				if (c[p] == c[p - 1]) {
 					c[p]++;
 					// Check again, because we increased further
-					if (c[p] <= max_interval) goto breaking2;
+					if (c[p] <= max_interval) goto breaking;
 					// Only situation when we do not break here is when we got over maximum element
-					goto newcycle;
+					goto skip;
 				}
 				else {
-					breaking2:
+					breaking:
+					// Do not exit if we are analyzing single cantus
+					if ((need_exit) && (!pcantus || use_matrix)) break;
 					// Go to rightmost element
 					if (use_matrix) {
 						pp = sp2 - 1;
@@ -831,7 +828,13 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 				// Go to rightmost element
 				p = sp2 - 1;
 			}
+			// Clear flag to prevent coming here again
 			finished = 0;
+			// Clear minimax so that it is recalculated
+			nmin = 0;
+			nmax = 0;
+			// Goto next variant calculation
+			goto skip;
 		}
 	}
 	// Write flag correlation
