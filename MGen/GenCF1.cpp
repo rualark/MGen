@@ -285,8 +285,6 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 		// Do not exit if we are analyzing single cantus
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		// Analyze combination
-		// Debug condition
-		if (cycle >= 0) { 
 			// Local note repeat prohibited
 			for (int i = ep1 - 1; i < ep2 - 1; i++) {
 				if (c[i] == c[i + 1]) goto skip;
@@ -715,7 +713,6 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 					SendCantus(v, pcantus);
 				}
 			} // t_cnt limit
-		} // cycle debug condition
 	skip:
 		if ((pcantus) && (!use_matrix)) return;
 		while (true) {
