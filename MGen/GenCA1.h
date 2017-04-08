@@ -24,5 +24,6 @@ protected:
 	double step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	double pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int correct_transpose = 12; // Transpose corrected canti semitones up for display
+	int algorithm = 2; // Type of algorithm to use for searching of corrected variants
 };
 

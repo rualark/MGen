@@ -23,6 +23,7 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "step_penalty", &step_penalty);
 	CheckVar(sN, sV, "pitch_penalty", &pitch_penalty);
 	CheckVar(sN, sV, "correct_transpose", &correct_transpose);
+	CheckVar(sN, sV, "algorithm", &algorithm);
 
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -106,7 +107,7 @@ void CGenCA1::Generate()
 		// Here we can skip flags if no calculations specified
 		skip_flags2 = 0;
 		// Full scan marked notes
-		ScanCantus(&(cantus[i]), 1, 0);
+		ScanCantus(&(cantus[i]), algorithm, 0);
 		// Check if we have results
 		if (clib.size()) {
 			// Count penalty

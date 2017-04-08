@@ -180,9 +180,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
-	vector <char> smatrix2; // Vector of links to steps that were selected for recalculation
 	vector <unsigned short> smap; // Map of links from matrix local IDs to cantus step IDs
-	int smatrixc2 = 0; // Number of steps marked in smatrix
 	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat && !skip_flags2;
 	long long cycle = 0;
 	long long accepted2 = 0, accepted3 = 0;
@@ -221,10 +219,8 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			// Exit if no violations
 			if (!smatrixc) return;
 			// Copy to local for better performance
-			smatrixc2 = smatrixc;
-			smatrix2 = smatrix;
 			// Create map
-			smap.resize(smatrixc2);
+			smap.resize(smatrixc);
 			int map_id = 0;
 			for (int i = 0; i < c_len; i++) if (smatrix[i]) {
 				smap[map_id] = i;
@@ -232,7 +228,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			}
 			sp1 = 0;
 			sp2 = sp1 + s_len; // End of search window
-			if (sp2 > smatrixc2) sp2 = smatrixc2;
+			if (sp2 > smatrixc) sp2 = smatrixc;
 			// Record window
 			wid = 0;
 			wpos1[wid] = sp1;
@@ -241,7 +237,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			// End of evaluation window
 			ep1 = smap[sp1];
 			ep2 = smap[sp2 - 1] + 1;
-			if (sp2 == smatrixc2) ep2 = c_len;
+			if (sp2 == smatrixc) ep2 = c_len;
 			// Minimal position in array to cycle
 			pp = sp2 - 1;
 			p = smap[pp]; 
@@ -288,10 +284,6 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	need_nminmax = 1;
 	while (true) {
 		// Analyze combination
-		// Local note repeat prohibited
-		//for (int i = ep1 - 1; i < ep2 - 1; i++) {
-			//if (c[i] == c[i + 1]) goto skip;
-		//}
 		if (need_nminmax) {
 			nmin = max_interval;
 			nmax = -max_interval;
@@ -645,9 +637,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 				if (use_matrix) {
 					sp1 = sp2;
 					sp2 = sp1 + s_len; // End of search window
-					if (sp2 > smatrixc2) sp2 = smatrixc2;
+					if (sp2 > smatrixc) sp2 = smatrixc;
 					// Reserve last window with maximum length
-					if ((smatrixc2 - sp1 < s_len * 2) && (smatrixc2 - sp1 > s_len)) sp2 = (smatrixc2 + sp1) / 2;
+					if ((smatrixc - sp1 < s_len * 2) && (smatrixc - sp1 > s_len)) sp2 = (smatrixc + sp1) / 2;
 					// Record window
 					wid++;
 					wpos1[wid] = sp1;
@@ -657,7 +649,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 					// End of evaluation window
 					ep1 = smap[sp1];
 					ep2 = smap[sp2 - 1] + 1;
-					if (sp2 == smatrixc2) ep2 = c_len;
+					if (sp2 == smatrixc) ep2 = c_len;
 					// Minimal position in array to cycle
 					pp = sp2 - 1;
 					p = smap[pp];
@@ -814,7 +806,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 				// End of evaluation window
 				ep1 = smap[sp1];
 				ep2 = smap[sp2 - 1] + 1;
-				if (sp2 == smatrixc2) ep2 = c_len;
+				if (sp2 == smatrixc) ep2 = c_len;
 				// Minimal position in array to cycle
 				pp = sp2 - 1;
 				p = smap[pp];
