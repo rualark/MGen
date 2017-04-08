@@ -154,6 +154,10 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 }
 
 void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
+	vector<char> c; // Cantus diatonic
+	vector<char> cc; // Cantus chromatic
+	vector<vector<unsigned char>> nflags; // Note flags
+	vector<unsigned char> nflagsc; // Note flags count
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
 	// Resize global vectors
@@ -282,7 +286,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	}
 	// Walk all variants
 	while (true) {
-		if (need_exit) break;
+		if ((need_exit) && (!pcantus || use_matrix)) break;
 		// Analyze combination
 		// Debug condition
 		if (cycle >= 0) { 
@@ -708,10 +712,15 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			}
 			else {
 				if (use_matrix) {
-					SaveCantus();
+					SaveCantus(cc);
 				}
 				else {
-					SendCantus(v, pcantus);
+					SendCantus(v, pcantus, cc, nflags, nflagsc);
+					// Copy flags to global if we are analyzing cantus without matrix
+					if (pcantus) {
+						nflags2 = nflags;
+						nflagsc2 = nflagsc;
+					}
 				}
 			} // t_cnt limit
 		} // cycle debug condition
@@ -865,11 +874,11 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	}
 }
 
-void CGenCF1::SaveCantus() {
+void CGenCF1::SaveCantus(vector<char> &cc) {
 	clib.push_back(cc);
 }
 
-void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
+void CGenCF1::SendCantus(int v, vector<char> *pcantus, vector<char> &cc, vector<vector<unsigned char>> &nflags, vector<unsigned char> &nflagsc) {
 	CString st;
 	Sleep(sleep_ms);
 	// Copy cantus to output

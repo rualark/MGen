@@ -73,9 +73,9 @@ void CGenCA1::Generate()
 		// Search each note
 		for (int x = 0; x < c_len; x++) {
 			// Search each flag
-			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; f++) {
+			if (nflagsc2[x] > 0) for (int f = 0; f < nflagsc2[x]; f++) {
 				// Find prohibited flag
-				if (accept[nflags[x][f]] == 0) {
+				if (accept[nflags2[x][f]] == 0) {
 					// Create matrix window
 					int pos1 = x - pre_bad;
 					int pos2 = x + post_bad;
@@ -135,7 +135,6 @@ void CGenCA1::Generate()
 				unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 				::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
 				for (int x = 0; x < cids.size(); x++) {
-					if (need_exit) break;
 					ccount++;
 					if (ccount > corrections) break;
 					// Write log
@@ -149,9 +148,8 @@ void CGenCA1::Generate()
 						step -= c_len + 1;
 					}
 					// Get cantus
-					cc = clib[cids[x]];
 					// Show result
-					ScanCantus(&(cc), 0, 1);
+					ScanCantus(&(clib[cids[x]]), 0, 1);
 					// Go back
 					step -= c_len + 1;
 					// Add lining
