@@ -177,7 +177,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	vector<long long> accepted4(MAX_WIND); // number of accepted canti per window
 	vector<long long> accepted5(MAX_WIND); // number of canti with neede flags per window
 	vector<long long> fstat(MAX_FLAGS); // number of canti with each flag
-	vector<vector<vector<long>>> fblock(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS))); // number of canti rejected with foreign flags
+	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
 	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
 	vector <char> smatrix2; // Vector of links to steps that were selected for recalculation
@@ -191,6 +191,10 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared, need_nminmax = 0;
 	int wcount = 1; // Number of windows created
 	int sp1, sp2, ep1, ep2, p, tonic, ctonic, pp;
+	// Initialize fblock if calculation is needed
+	if (calculate_blocking) {
+		fblock = vector<vector<vector<long>>> (MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
+	}
 	// Analyze single cantus
 	if (pcantus) {
 		// Copy cantus
