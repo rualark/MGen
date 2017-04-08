@@ -183,7 +183,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	vector <char> smatrix2; // Vector of links to steps that were selected for recalculation
 	vector <unsigned short> smap; // Map of links from matrix local IDs to cantus step IDs
 	int smatrixc2 = 0; // Number of steps marked in smatrix
-	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat && !skip_flags2;
 	long long cycle = 0;
 	long long accepted2 = 0, accepted3 = 0;
 	int finished = 0;

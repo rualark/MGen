@@ -53,6 +53,7 @@ protected:
 	vector<char> cc; // Cantus chromatic
 	vector<vector<unsigned char>> nflags; // Note flags
 	vector<unsigned char> nflagsc; // Note flags count
+	int skip_flags2; // This variable is used to prevent flag skipping when analyzing CA1
 
 	// Cantus correcting
 	vector <char> smatrix; // Vector of links to steps that were selected for recalculation
