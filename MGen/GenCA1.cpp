@@ -135,7 +135,6 @@ void CGenCA1::Generate()
 				unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 				::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
 				for (int x = 0; x < cids.size(); x++) {
-					if (need_exit) break;
 					ccount++;
 					if (ccount > corrections) break;
 					// Write log

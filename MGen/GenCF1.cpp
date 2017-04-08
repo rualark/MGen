@@ -282,7 +282,8 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	}
 	// Walk all variants
 	while (true) {
-		if (need_exit) break;
+		// Do not exit if we are analyzing single cantus
+		if ((need_exit) && (!pcantus || use_matrix)) break;
 		// Analyze combination
 		// Debug condition
 		if (cycle >= 0) { 
