@@ -286,9 +286,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		// Analyze combination
 			// Local note repeat prohibited
-			for (int i = ep1 - 1; i < ep2 - 1; i++) {
-				if (c[i] == c[i + 1]) goto skip;
-			}
+			//for (int i = ep1 - 1; i < ep2 - 1; i++) {
+				//if (c[i] == c[i + 1]) goto skip;
+			//}
 			nmin = 0;
 			nmax = 0;
 			// Count limits
@@ -711,12 +711,24 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 				}
 				else {
 					SendCantus(v, pcantus);
+					if ((pcantus) && (!use_matrix)) return;
 				}
 			} // t_cnt limit
 	skip:
-		if ((pcantus) && (!use_matrix)) return;
 		while (true) {
-			if (c[p] < max_interval) break;
+			// This check is run every global cycle
+			if (c[p] < max_interval) {
+				// If rightmost element is not max, increase it
+				c[p] ++;
+				// If we have repeat, increase further. Decreasing p is safe because we always have first not-scanned step
+				if (c[p] == c[p - 1]) {
+					c[p]++;
+					// Check again, because we increased further
+					if (c[p] <= max_interval) break;
+					// Only situation when we do not break here is when we got over maximum element
+				}
+				else break;
+			}
 			// If current element is max, make it minimum
 			c[p] = -max_interval;
 			// Move left one element
@@ -734,6 +746,41 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 					break;
 				}
 				p--;
+			}
+			// If element found, do not allow to run upper break. Increase current element instead
+			if (c[p] < max_interval) {
+				// Increase rightmost element, which was not reset to minimum
+				c[p]++;
+				// If we have repeat, increase further. Decreasing p is safe because we always have first not-scanned step
+				if (c[p] == c[p - 1]) {
+					c[p]++;
+					// Check again, because we increased further
+					if (c[p] <= max_interval) {
+						// Go to rightmost element
+						if (use_matrix) {
+							pp = sp2 - 1;
+							p = smap[pp];
+						}
+						else {
+							p = sp2 - 1;
+						}
+						cycle++;
+						break;
+					}
+					// Only situation when we do not break here is when we got over maximum element
+				}
+				else {
+					// Go to rightmost element
+					if (use_matrix) {
+						pp = sp2 - 1;
+						p = smap[pp];
+					}
+					else {
+						p = sp2 - 1;
+					}
+					cycle++;
+					break;
+				}
 			}
 		}
 		if (finished) {
@@ -779,18 +826,6 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			}
 			finished = 0;
 		}
-		// Increase rightmost element, which was not reset to minimum
-		c[p]++;
-		// Go to rightmost element
-		if (use_matrix) {
-			pp = sp2 - 1;
-			p = smap[pp];
-		}
-		else {
-			p = sp2 - 1;
-		}
-		cycle++;
-		//if (cycle > 100) break;
 	}
 	// Write flag correlation
 	if (calculate_correlation) {
