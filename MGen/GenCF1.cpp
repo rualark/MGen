@@ -190,7 +190,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared, need_nminmax = 0;
 	int wcount = 1; // Number of windows created
-	int sp1, sp2, ep1, ep2, p, tonic, ctonic, pp;
+	int sp1, sp2, ep1, ep2, p, tonic, pp;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
 		fblock = vector<vector<vector<long>>> (MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
@@ -318,9 +318,6 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			}
 		}
 		for (int i = 0; i < ep2; i++) {
-			// Calculate chromatic positions
-			// Negative eight octaves reserve
-			cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
 			// Calculate pitch class
 			pc[i] = (c[i] + 56) % 7;
 		}
@@ -394,7 +391,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 		if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
 		for (int i = 0; i < ep2 - 1; i++) {
 			// Tritone prohibit
-			if (abs(cc[i + 1] - cc[i]) == 6) {
+			if ((pc[i+1] == 6 && pc[i] == 3) || (pc[i+1] == 3 && pc[i] == 6)) {
 				// Check if tritone is highest leap if this is last window
 				if (ep2 == c_len)
 					if ((c[i] == nmax) || (c[i + 1] == nmax)) FLAG(32, i)
@@ -402,9 +399,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 						if (i > c_len - 3) FLAG(31, i)
 						// Check if resolution is correct
 						else if (i < ep2 - 2) {
-							if (cc[i + 1] % 12 == 5) FLAG(31, i)
-							else if (cc[i + 2] % 12 != 0) FLAG(31, i)
-							else if (cc[i - 1] % 12 != 4) FLAG(31, i)
+							if (pc[i + 1] == 3) FLAG(31, i)
+							else if (pc[i + 2] != 0) FLAG(31, i)
+							else if (pc[i - 1] != 2) FLAG(31, i)
 								// Record resolved tritone
 							else FLAG(2, i);
 						}
@@ -714,6 +711,11 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, bool use_matrix, int v) {
 			break;
 		}
 		else {
+			// Calculate chromatic positions
+			for (int i = 0; i < ep2; i++) {
+				// Negative eight octaves reserve
+				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
+			}
 			if (use_matrix) {
 				SaveCantus();
 			}
