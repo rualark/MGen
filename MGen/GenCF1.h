@@ -58,7 +58,9 @@ protected:
 	vector<vector<unsigned char>> nflags; // Note flags
 	vector<unsigned char> nflagsc; // Note flags count
 	int ctonic; // Chromatic tonic
-	int rpenalty = 0; // Rules penalty
+	double rpenalty_cur = 0; // Rules penalty
+	double rpenalty_min; // Minimum rules penalty for this scan
+	vector <double> rpenalty; // Penalty in terms of sum of flag severity
 
 	// Cantus correcting
 	vector <char> smatrix; // Vector of links to steps that were selected for recalculation

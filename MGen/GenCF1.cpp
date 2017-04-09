@@ -653,7 +653,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		// Prohibit last leap
 		if (ep2 == c_len)
 			if (leap[c_len - 2]) FLAG(23, c_len - 1);
-		if ((!pcantus) || (use_matrix)) {
+		if ((!pcantus) || (use_matrix == 1)) {
 			accepted2++;
 			// Calculate flag statistics
 			if (calculate_stat || calculate_correlation) {
@@ -765,10 +765,10 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		}
 		// Calculate rules penalty if we analyze cantus without full scan
 		if (pcantus && (use_matrix == 2 || !use_matrix)) {
-			rpenalty = 0;
+			rpenalty_cur = 0;
 			for (int x = 0; x < ep2; x++) {
-				if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; i++) {
-					rpenalty += flag_sev[nflags[x][i]];
+				if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; i++) if (!accept[nflags[x][i]]) {
+					rpenalty_cur += flag_sev[nflags[x][i]];
 				}
 			}
 		}
@@ -1000,7 +1000,11 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 }
 
 void CGenCF1::SaveCantus() {
-	clib.push_back(cc);
+	if (rpenalty_cur <= rpenalty_min) {
+		clib.push_back(cc);
+		rpenalty.push_back(rpenalty_cur);
+		rpenalty_min = rpenalty_cur;
+	}
 }
 
 void CGenCF1::SendCantus(int v, vector<char> *pcantus) {

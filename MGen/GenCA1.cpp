@@ -23,7 +23,6 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "step_penalty", &step_penalty);
 	CheckVar(sN, sV, "pitch_penalty", &pitch_penalty);
 	CheckVar(sN, sV, "correct_transpose", &correct_transpose);
-	CheckVar(sN, sV, "algorithm", &algorithm);
 
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -31,7 +30,11 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 void CGenCA1::Generate()
 {
 	CString st, st2;
-	vector <double> cpenalty; // Penalty in terms of difference from user melody
+	vector <double> dpenalty; // Penalty in terms of difference from user melody
+	vector<char> c; // Local cantus
+	int ccount = 0;
+	vector <long> cids;
+	double dpenalty_min;
 	InitCantus();
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
@@ -39,7 +42,6 @@ void CGenCA1::Generate()
 	show_transpose[1] = correct_transpose;
 	int t_generated2 = 0; // Saved t_generated
 	for (int i = 0; i < cantus.size(); i++) {
-		clib.clear();
 		if (need_exit) break;
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
@@ -102,32 +104,91 @@ void CGenCA1::Generate()
 		CountTime(step, step + c_len);
 		UpdateNoteMinMax(step, step + c_len);
 		UpdateTempoMinMax(step, step + c_len);
-		// Full scan marked notes
-		ScanCantus(&(cantus[i]), 2, 0);
+		// Prepare to correct
+		if (c_len - 2 > fullscan_max) {
+			// Save source rpenalty
+			double rpenalty_source = rpenalty_cur;
+			// Save cantus only if its penalty is less or equal to source rpenalty
+			rpenalty_min = rpenalty_cur;
+			dpenalty_min = MAX_PENALTY;
+			cc = cantus[i];
+			for (int a = 0; a < approximations; a++) {
+				// Save previous minimum penalty
+				int rpenalty_min_old = rpenalty_min;
+				int dpenalty_min_old = dpenalty_min;
+				// Clear before scan
+				clib.clear();
+				rpenalty.clear();
+				dpenalty_min = MAX_PENALTY;
+				// Add current cantus if this is not first run
+				if (a > 0) {
+					clib.push_back(cc);
+					rpenalty.push_back(rpenalty_min_old);
+				}
+				// Sliding Windows Approximation
+				ScanCantus(&cc, 2, 0);
+				long cnum = clib.size();
+				if (cnum == 0) break;
+				// Count dpenalty for results, where rpenalty is minimal
+				dpenalty.resize(cnum);
+				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
+					dpenalty[x] = 0;
+					for (int z = 0; z < c_len; z++) {
+						int dif = abs(cantus[i][z] - clib[x][z]);
+						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
+					}
+					if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
+					st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
+					AppendLineToFile("temp.log", st);
+					LogCantus(clib[x]);
+				}
+				// Get all best corrections
+				cids.clear();
+				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && dpenalty[x] == dpenalty_min) {
+					cids.push_back(x);
+				}
+				// Get random cid
+				int cid = randbw(0, cids.size() - 1);
+				// Get random cantus to continue
+				cc = clib[cids[cid]];
+				// Send log
+				CString* est = new CString;
+				est->Format("SWA #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+				WriteLog(3, est);
+				// Abort SWA if dpenalty and rpenalty not decreasing
+				if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) break;
+			}
+		}
+		else {
+			clib.clear();
+			rpenalty.clear();
+			// Full scan marked notes
+			ScanCantus(&(cantus[i]), 2, 0);
+			rpenalty_min = MAX_PENALTY;
+		}
 		// Check if we have results
 		if (clib.size()) {
 			// Count penalty
-			int cnum = clib.size();
-			cpenalty.resize(cnum);
-			for (int x = 0; x < cnum; x++) {
-				cpenalty[x] = 0;
+			long cnum = clib.size();
+			dpenalty.resize(cnum);
+			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
+				dpenalty[x] = 0;
 				for (int z = 0; z < c_len; z++) {
 					int dif = abs(cantus[i][z] - clib[x][z]);
-					if (dif) cpenalty[x] += step_penalty + pitch_penalty * dif;
+					if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
 				}
 			}
 			// Find minimum penalty
-			int ccount = 0;
-			vector <long> cids;
+			ccount = 0;
 			// Cycle through all best matches
 			st2 = "";
 			for (int p = 0; p < corrections; p++) {
 				// Find minimum penalty
 				cids.clear();
-				double min_penalty = MAX_PENALTY;
-				for (int x = 0; x < cnum; x++) if (cpenalty[x] < min_penalty) min_penalty = cpenalty[x];
+				double dpenalty_min = MAX_PENALTY;
+				for (int x = 0; x < cnum; x++) if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
 				// Get all best corrections
-				for (int x = 0; x < cnum; x++) if (cpenalty[x] == min_penalty) {
+				for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min) {
 					cids.push_back(x);
 				}
 				// Shuffle cids
@@ -137,10 +198,10 @@ void CGenCA1::Generate()
 					ccount++;
 					if (ccount > corrections) break;
 					// Write log
-					st.Format("%.0f/%d ", min_penalty, cids.size());
+					st.Format("%.0f/%d ", dpenalty_min, cids.size());
 					st2 += st;
 					// Clear penalty
-					cpenalty[cids[x]] = MAX_PENALTY;
+					dpenalty[cids[x]] = MAX_PENALTY;
 					// Show initial melody again if this is not first iteration
 					if (ccount > 1) {
 						ScanCantus(&(cantus[i]), 0, 0);
