@@ -10,11 +10,13 @@ public:
 	void Generate() override;
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
-	void GetCantusRange();
-	void ScanCantus(vector<char>* pcantus, bool use_matrix, int v);
+	void LogCantus(vector<char>& c);
+	void ScanCantus(vector<char>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<char>* pcantus);
 	void InitCantus();
+	void FillCantus(vector<char>& c, int step1, int step2, char value);
+	void FillCantusMap(vector<char>& c, vector<unsigned short>& smap, int step1, int step2, char value);
 
 	// Parameters
 	int min_interval = 1; // Minimum diatonic interval in cantus (7 = octave)
@@ -55,8 +57,8 @@ protected:
 	vector<char> cc; // Cantus chromatic
 	vector<vector<unsigned char>> nflags; // Note flags
 	vector<unsigned char> nflagsc; // Note flags count
-	int skip_flags2; // This variable is used to prevent flag skipping when analyzing CA1
 	int ctonic; // Chromatic tonic
+	int rpenalty = 0; // Rules penalty
 
 	// Cantus correcting
 	vector <char> smatrix; // Vector of links to steps that were selected for recalculation

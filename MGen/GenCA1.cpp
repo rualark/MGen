@@ -43,8 +43,6 @@ void CGenCA1::Generate()
 		if (need_exit) break;
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
-		// This flag is needed to prevent flag skipping
-		skip_flags2 = 1;
 		// Show imported melody
 		ScanCantus(&(cantus[i]), 0, 0);
 		// Check if cantus was shown
@@ -104,10 +102,8 @@ void CGenCA1::Generate()
 		CountTime(step, step + c_len);
 		UpdateNoteMinMax(step, step + c_len);
 		UpdateTempoMinMax(step, step + c_len);
-		// Here we can skip flags if no calculations specified
-		skip_flags2 = 0;
 		// Full scan marked notes
-		ScanCantus(&(cantus[i]), algorithm, 0);
+		ScanCantus(&(cantus[i]), 2, 0);
 		// Check if we have results
 		if (clib.size()) {
 			// Count penalty
@@ -145,8 +141,6 @@ void CGenCA1::Generate()
 					st2 += st;
 					// Clear penalty
 					cpenalty[cids[x]] = MAX_PENALTY;
-					// This flag is needed to prevent flag skipping
-					skip_flags2 = 1;
 					// Show initial melody again if this is not first iteration
 					if (ccount > 1) {
 						ScanCantus(&(cantus[i]), 0, 0);

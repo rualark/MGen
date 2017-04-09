@@ -13,7 +13,7 @@ correct_transpose = 12 # Transpose corrected canti semitones up for display
 
 # Main parameters
 t_cnt = 1000000 # Maximum number of canti generated
-s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+s_len = 3 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
@@ -84,4 +84,4 @@ late_require = 0 # Allow not-last scan window to have no needed tags, but no blo
 
 # This config was created from default config file configs\GenCA1.pl
 # Created at 2017-04-08 23-17-15
-Midi_file = N:\Public\Critic\app\GitHub\MGen\MGen\load\melody-test.mid
+Midi_file = N:\Public\Critic\app\GitHub\MGen\MGen\load\melody-test3.mid
