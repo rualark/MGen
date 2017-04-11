@@ -218,7 +218,7 @@ void CGenCA1::Generate()
 				for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min) {
 					cids.push_back(x);
 				}
-				if (!cids.size() || dpenalty_min == MAX_PENALTre) break;
+				if (!cids.size() || dpenalty_min == MAX_PENALTY) break;
 				// Shuffle cids
 				unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 				::shuffle(cids.begin(), cids.end(), default_random_engine(seed));

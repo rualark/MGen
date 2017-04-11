@@ -352,7 +352,7 @@ check:
 			if (nmax - nmin < min_interval) goto skip;
 			// Clear flags
 			accepted3++;
-			fill(flags.begin(), flags.end(), 0);
+			if (!skip_flags) fill(flags.begin(), flags.end(), 0);
 			flags[0] = 1;
 			for (int i = 0; i < ep2; i++) {
 				nflagsc[i] = 0;
