@@ -435,12 +435,22 @@ void CGVar::LoadVectorD(ifstream &fs, vector<double> &v) {
 void CGVar::LoadResults(CString dir, CString fname)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	// Load strings
 	ifstream fs;
-	fs.open(dir + "\\" + fname + ".txt");
 	CString st, st2, st3;
+	int pos;
 	char pch[2550];
-	int pos = 0;
+	// Load logs
+	fs.open(dir + "\\algorithm.log");
+	pos = 0;
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st = pch;
+		if (st != "") WriteLog(3, st);
+	}
+	fs.close();
+	// Load strings
+	fs.open(dir + "\\" + fname + ".txt");
+	pos = 0;
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
