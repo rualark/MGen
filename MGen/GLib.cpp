@@ -397,7 +397,7 @@ void CGLib::WriteLog(int i, CString* pST)
 {
 	// Add log to vector
 	if (logs.size() < 2) logs.resize(10);
-	logs[i].push_back(*pST);
+	logs[i].push_back(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + *pST);
 	if (can_send_log)	::PostMessage(m_hWnd, WM_DEBUG_MSG, i, (LPARAM)pST);
 	else delete pST;
 }
