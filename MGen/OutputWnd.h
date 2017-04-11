@@ -37,6 +37,7 @@ public:
 	afx_msg void OnEditSaveline();
 	afx_msg void OnLbnDblclk();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnClearall();
 };
 
 class COutputWnd : public CDockablePane

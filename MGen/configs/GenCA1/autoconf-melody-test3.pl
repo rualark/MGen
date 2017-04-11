@@ -1,5 +1,9 @@
+# THIS CONFIG WAS AUTOMATICALLY CREATED FROM DEFAULT CONFIG FILE TO OPEN A MIDI FILE
+# YOU CAN EDIT THIS CONFIG FILE TO OPEN THIS FILE AGAIN
+# If you want to change default config file, that is copied each time you open a MIDI file, please go to configs folder in your File browser
+# Default configs are not accessible from MGen GUI, you will need to change it outside of the program
+
 # Analysis
-Midi_file = load\known-cf-maj.mid # Path and file name of imported midi file
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
@@ -10,8 +14,8 @@ fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use S
 approximations = 10 # Maximum number of approximations to run if penalty decreases
 
 # Main parameters
-Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
-s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+t_cnt = 1000000 # Maximum number of canti generated
+s_len = 3 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
@@ -76,5 +80,10 @@ midifile_tpq_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
-calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
+calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
+
+
+# This config was created from default config file configs\GenCA1.pl
+# Created at 2017-04-10 19-13-28
+Midi_file = N:\Public\Critic\app\GitHub\MGen\MGen\load\melody-test3.mid

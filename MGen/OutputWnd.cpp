@@ -139,6 +139,7 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_COMMAND(ID_EDIT_SAVELINE, &COutputList::OnEditSaveline)
 	ON_CONTROL_REFLECT(LBN_DBLCLK, &COutputList::OnLbnDblclk)
 	ON_WM_KEYDOWN()
+	ON_COMMAND(ID_CLEARALL, &COutputList::OnClearall)
 END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList message handlers
@@ -235,4 +236,10 @@ void COutputList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	((CMGenView*)(pMainFrame->GetActiveView()))->OnKeyDown(nChar, nRepCnt, nFlags);
 
 	CListBox::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+
+void COutputList::OnClearall()
+{
+	ResetContent();
 }

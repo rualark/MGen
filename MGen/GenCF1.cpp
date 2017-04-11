@@ -166,37 +166,16 @@ void CGenCF1::LogCantus(vector<char> &c)
 void CGenCF1::FillCantus(vector<char>& c, int step1, int step2, char value)
 {
 	// Step2 must be exclusive
-	// Set first value separately because it cannot be corrected if i = 0
-	c[step1] = value;
-	// Prevent duplicate if it is not first step
-	if (step1 > 0) {
-		if (c[step1 - 1] == c[step]) c[step1]++;
-	}
-	// Now set all other elements
-	if (step2 > step1 + 1) for (int i = step1; i < step2; i++) {
+	for (int i = step1; i < step2; i++) {
 		c[i] = value;
-		// Prevent duplicate if it is not first step
-		if (c[i - 1] == c[i]) c[i]++;
 	}
 }
 
 void CGenCF1::FillCantusMap(vector<char>& c, vector<unsigned short>& smap, int step1, int step2, char value)
 {
 	// Step2 must be exclusive
-	// Calculate first index
-	int x = smap[step1];
-	// Set first value separately because it cannot be corrected if i = 0
-	c[x] = value;
-	// Prevent duplicate if it is not first step
-	if (x > 0) {
-		if (c[x - 1] == c[x]) c[x]++;
-	}
-	// Now set all other elements
-	if (step2 > step1 + 1) for (int i = step1; i < step2; i++) {
-		int x = smap[i];
-		c[x] = value;
-		// Prevent duplicate if it is not first step
-		if (c[x - 1] == c[x]) c[x]++;
+	for (int i = step1; i < step2; i++) {
+		c[smap[i]] = value;
 	}
 }
 
@@ -234,9 +213,10 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	long long accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
-	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared, need_nminmax = 0;
+	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int wcount = 1; // Number of windows created
 	int sp1, sp2, ep1, ep2, p, tonic, pp;
+	accepted = 0;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
 		fblock = vector<vector<vector<long>>> (MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
@@ -346,19 +326,21 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		WriteLog(1, est);
 		return;
 	}
-	// Count note min max for first variant
-	need_nminmax = 1;
+	// Analyze combination
+check:
 	while (true) {
 		//LogCantus(c);
-		// Analyze combination
-		if (need_nminmax) {
-			nmin = max_interval;
-			nmax = -max_interval;
-			// Count limits
-			for (int i = 0; i < ep2; i++) {
-				if (c[i] < nmin) nmin = c[i];
-				if (c[i] > nmax) nmax = c[i];
-			}
+		// Detect repeating notes
+		for (int i = ep1 - 1; i < ep2 - 1; i++) {
+			if (c[i] == c[i + 1]) goto skip;
+		}
+		if ((need_exit) && (!pcantus || use_matrix)) break;
+		// Count limits
+		nmin = max_interval;
+		nmax = -max_interval;
+		for (int i = 0; i < ep2; i++) {
+			if (c[i] < nmin) nmin = c[i];
+			if (c[i] > nmax) nmax = c[i];
 		}
 		// Limit melody interval
 		if ((pcantus) && (!use_matrix)) {
@@ -774,48 +756,27 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		}
 		// Accept cantus
 		accepted++;
-		if (accepted >= t_cnt) {
-			WriteLog(3, "Generation reached t_cnt. Breaking.");
-			break;
+		// Calculate chromatic positions
+		for (int i = 0; i < ep2; i++) {
+			// Negative eight octaves reserve
+			cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
+		}
+		if (use_matrix == 1) {
+			LogCantus(c);
+			SaveCantus();
+		}
+		else if (use_matrix == 2) {
+			if (rpenalty_cur <= rpenalty_min)	SaveCantus();
 		}
 		else {
-			// Calculate chromatic positions
-			for (int i = 0; i < ep2; i++) {
-				// Negative eight octaves reserve
-				cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
-			}
-			if (use_matrix) {
-				SaveCantus();
-			}
-			else {
-				SendCantus(v, pcantus);
-				if ((pcantus) && (!use_matrix)) return;
-			}
-		} // t_cnt limit
+			SendCantus(v, pcantus);
+			if ((pcantus) && (!use_matrix)) return;
+		}
 	skip:
 		while (true) {
-			// This check is run every global cycle
-			if (c[p] < max_interval) {
-				// If rightmost element is not max, increase it
-				c[p] ++;
-				// Every cycle needs nmin nmax calculation if special conditions are not met
-				if (c[p] <= nmax && c[p] > nmin + 1) need_nminmax = 0;
-				else need_nminmax = 1;
-				// If we have repeat, increase further. Decreasing p is safe because we always have first not-scanned step
-				if (c[p] == c[p - 1]) {
-					c[p]++;
-					// Every cycle needs nmin nmax calculation if special conditions are not met
-					if (c[p] <= nmax && c[p] > nmin + 2) need_nminmax = 0;
-					else need_nminmax = 1;
-					// Check again, because we increased further
-					if (c[p] <= max_interval) break;
-					// Only situation when we do not break here is when we got over maximum element
-				}
-				else break;
-			}
+			if (c[p] < max_interval) break;
 			// If current element is max, make it minimum
 			c[p] = -max_interval;
-			need_nminmax = 1;
 			// Move left one element
 			if (use_matrix) {
 				if (pp == sp1) {
@@ -832,35 +793,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 				}
 				p--;
 			}
-			// If element found, do not allow to run upper break. Increase current element instead
-			if (c[p] < max_interval) {
-				// Increase rightmost element, which was not reset to minimum
-				c[p]++;
-				// If we have repeat, increase further. Decreasing p is safe because we always have first not-scanned step
-				if (c[p] == c[p - 1]) {
-					c[p]++;
-					// Check again, because we increased further
-					if (c[p] <= max_interval) goto breaking;
-					// Only situation when we do not break here is when we got over maximum element
-					goto skip;
-				}
-				else {
-					breaking:
-					// Do not exit if we are analyzing single cantus
-					if ((need_exit) && (!pcantus || use_matrix)) break;
-					// Go to rightmost element
-					if (use_matrix) {
-						pp = sp2 - 1;
-						p = smap[pp];
-					}
-					else {
-						p = sp2 - 1;
-					}
-					cycle++;
-					break;
-				}
-			}
-		}
+		} // while (true)
 		if (finished) {
 			// Sliding Windows Approximation
 			if (use_matrix == 2) {
@@ -926,7 +859,18 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			nmax = 0;
 			// Goto next variant calculation
 			goto skip;
+		} // if (finished)
+		// Increase rightmost element, which was not reset to minimum
+		c[p]++;
+		// Go to rightmost element
+		if (use_matrix) {
+			pp = sp2 - 1;
+			p = smap[pp];
 		}
+		else {
+			p = sp2 - 1;
+		}
+		cycle++;
 	}
 	// Write flag correlation
 	if (calculate_correlation) {
@@ -1000,11 +944,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 }
 
 void CGenCF1::SaveCantus() {
-	if (rpenalty_cur <= rpenalty_min) {
-		clib.push_back(cc);
-		rpenalty.push_back(rpenalty_cur);
-		rpenalty_min = rpenalty_cur;
-	}
+	clib.push_back(cc);
+	rpenalty.push_back(rpenalty_cur);
+	rpenalty_min = rpenalty_cur;
 }
 
 void CGenCF1::SendCantus(int v, vector<char> *pcantus) {

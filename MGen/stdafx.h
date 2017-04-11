@@ -53,6 +53,7 @@
 
 #include <map>
 #include <vector>
+#include <queue>
 #include <mutex>
 #include <initializer_list>
 #include <random>

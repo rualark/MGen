@@ -12,6 +12,8 @@ public:
 	CGenCA1();
 	~CGenCA1();
 
+	void GetMinIDs(vector<double>& inv, int n, vector<long>& outv);
+
 	void Generate() override;
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
 	
@@ -25,6 +27,6 @@ protected:
 	double pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int correct_transpose = 12; // Transpose corrected canti semitones up for display
 	int fullscan_max = 5; // Maximum steps length to full scan. If melody is longer, use SWA
-	int approximations = 5; // Maximum number of approximations to run if penalty decreases
+	int approximations = 10; // Maximum number of approximations to run if penalty decreases
 };
 

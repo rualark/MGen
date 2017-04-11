@@ -98,13 +98,15 @@
 #define ID_POPUP_SHOWFULLTEXT           32815
 #define ID_POPUP_SHOW                   32816
 #define ID_EDIT_SAVELINE                32817
+#define ID_POPUP_CLEARALL               32818
+#define ID_CLEARALL                     32819
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32818
+#define _APS_NEXT_COMMAND_VALUE         32820
 #define _APS_NEXT_CONTROL_VALUE         1015
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
