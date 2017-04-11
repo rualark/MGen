@@ -766,7 +766,13 @@ check:
 			SaveCantus();
 		}
 		else if (use_matrix == 2) {
-			if (rpenalty_cur <= rpenalty_min)	SaveCantus();
+			// Is penalty not greater than minimum of all previous?
+			if (rpenalty_cur <= rpenalty_min) {
+				// If rpenalty 0, we can skip_flags (if allowed)
+				if (!skip_flags && rpenalty_cur == 0) 
+					skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+				SaveCantus();
+			}
 		}
 		else {
 			SendCantus(v, pcantus);
