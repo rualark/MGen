@@ -8,6 +8,7 @@ pitch_penalty = 1 # Penalty for changing note one more diatonic step while corre
 correct_transpose = 12 # Transpose corrected canti semitones up for display
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
+swa_steps = 6 # Size of Sliding Window Approximation algorithm window in steps
 
 # Main parameters
 Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano

@@ -25,6 +25,7 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "correct_transpose", &correct_transpose);
 	CheckVar(sN, sV, "fullscan_max", &fullscan_max);
 	CheckVar(sN, sV, "approximations", &approximations);
+	CheckVar(sN, sV, "swa_steps", &swa_steps);
 
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -134,6 +135,7 @@ void CGenCA1::Generate()
 					rpenalty.push_back(rpenalty_min_old);
 				}
 				// Sliding Windows Approximation
+				s_len = swa_steps;
 				ScanCantus(&cc, 2, 0);
 				cnum = clib.size();
 				if (cnum == 0) break;

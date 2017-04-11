@@ -26,7 +26,8 @@ protected:
 	double step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	double pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int correct_transpose = 12; // Transpose corrected canti semitones up for display
-	int fullscan_max = 5; // Maximum steps length to full scan. If melody is longer, use SWA
-	int approximations = 10; // Maximum number of approximations to run if penalty decreases
+	int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
+	int approximations = 30; // Maximum number of approximations to run if penalty decreases
+	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
 };
 
