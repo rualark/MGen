@@ -38,6 +38,7 @@ void CGenCA1::Generate()
 	int ccount = 0;
 	vector <long> cids;
 	double dpenalty_min;
+	int s_len2 = s_len;
 	// These are temporary vectors for removing duplicates
 	vector<vector<char>> clib2; // Library of cantus
 	vector <double> rpenalty2;
@@ -114,6 +115,7 @@ void CGenCA1::Generate()
 		UpdateTempoMinMax(step, step + c_len);
 		// Sliding windows approximation
 		if (smatrixc > fullscan_max) {
+			s_len = swa_steps;
 			// Save source rpenalty
 			double rpenalty_source = rpenalty_cur;
 			long cnum;
@@ -135,7 +137,6 @@ void CGenCA1::Generate()
 					rpenalty.push_back(rpenalty_min_old);
 				}
 				// Sliding Windows Approximation
-				s_len = swa_steps;
 				ScanCantus(&cc, 2, 0);
 				cnum = clib.size();
 				if (cnum == 0) break;
@@ -188,6 +189,7 @@ void CGenCA1::Generate()
 			clib = clib2;
 		}
 		else {
+			s_len = s_len2;
 			clib.clear();
 			rpenalty.clear();
 			rpenalty_min = 0;
