@@ -105,7 +105,7 @@ void CGenCA1::Generate()
 			st2 += st;
 		}
 		CString* est = new CString;
-		est->Format("Scan matrix for cantus %d created with %d noted: %s", i+1, smatrixc, st2);
+		est->Format("Scan matrix for cantus %d created with %d steps of %d: %s", i+1, smatrixc, c_len, st2);
 		WriteLog(3, est);
 		// Count additional variables
 		CountOff(step, step + c_len);
@@ -113,7 +113,7 @@ void CGenCA1::Generate()
 		UpdateNoteMinMax(step, step + c_len);
 		UpdateTempoMinMax(step, step + c_len);
 		// Sliding windows approximation
-		if (c_len - 2 > fullscan_max) {
+		if (smatrixc > fullscan_max) {
 			// Save source rpenalty
 			double rpenalty_source = rpenalty_cur;
 			long cnum;

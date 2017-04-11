@@ -4,13 +4,13 @@
 # Default configs are not accessible from MGen GUI, you will need to change it outside of the program
 
 # Analysis
-corrections = 4 # Number of corrections to show. Set to 0 to disable corrections
+corrections = 1 # Number of corrections to show. Set to 0 to disable corrections
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 correct_transpose = 12 # Transpose corrected canti semitones up for display
-fullscan_max = 2 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 7 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 30 # Maximum number of approximations to run if penalty still decreases
 swa_steps = 6 # Size of Sliding Window Approximation algorithm window in steps
 
