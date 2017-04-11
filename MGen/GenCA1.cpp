@@ -29,6 +29,30 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
 
+// Get ids of N lowest penalties in INV to OUTV
+// N must be lower or equal to INV.size()
+void CGenCA1::GetMinIDs(vector <double> & inv, int n, vector <long> & outv)
+{
+	priority_queue<pair<double, int>> q;
+	double v, min_v = MAX_PENALTY;
+	outv.clear();
+	// First n values always go to sorting
+	for (int i = 0; i < n; ++i) {
+		v = inv[i];
+		q.push(pair<double, int>(v, i));
+		if (v < min_v) min_v = v;
+	}
+	// Next values go only if they are low
+	for (int i = n; i < inv.size(); ++i) if (inv[v] <= min_v) {
+		q.push(pair<double, int>(inv[i], i));
+		min_v = inv[i];
+	}
+	for (int i = 0; i < n; ++i) {
+		outv.push_back(q.top().second);
+		q.pop();
+	}
+}
+
 void CGenCA1::Generate()
 {
 	CString st, st2;
@@ -108,7 +132,8 @@ void CGenCA1::Generate()
 		CountTime(step, step + c_len);
 		UpdateNoteMinMax(step, step + c_len);
 		UpdateTempoMinMax(step, step + c_len);
-		// Prepare to correct
+		
+		// Tree Approximation
 		if (c_len - 2 > fullscan_max) {
 			// Save source rpenalty
 			double rpenalty_source = rpenalty_cur;
