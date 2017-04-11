@@ -174,6 +174,11 @@ BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mid", path + "\\" + fname + ".mid");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".txt", path + "\\" + fname + ".txt");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".pl", path + "\\" + fname + ".pl");
+		CGLib::copy_file(mf->m_dir + "\\debug.log", path + "\\debug.log");
+		CGLib::copy_file(mf->m_dir + "\\warning.log", path + "\\warning.log");
+		CGLib::copy_file(mf->m_dir + "\\gui.log", path + "\\gui.log");
+		CGLib::copy_file(mf->m_dir + "\\algorithm.log", path + "\\algorithm.log");
+		CGLib::copy_file(mf->m_dir + "\\midi.log", path + "\\midi.log");
 		// Set new title
 		//mf->WriteLog(1, mf->m_dir);
 		//mf->WriteLog(1, mf->m_fname);
