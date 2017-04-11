@@ -8,6 +8,7 @@
 int CGLib::can_send_log = 1;
 HWND CGLib::m_hWnd = 0;
 UINT CGLib::WM_DEBUG_MSG = 0;
+vector<vector<CString>> CGLib::logs;
 
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
@@ -24,6 +25,7 @@ UINT CGLib::WM_DEBUG_MSG = 0;
 
 CGLib::CGLib()
 {
+	logs.clear();
 }
 
 
@@ -393,6 +395,9 @@ void CGLib::TestRandom()
 
 void CGLib::WriteLog(int i, CString* pST)
 {
+	// Add log to vector
+	if (logs.size() < 2) logs.resize(10);
+	logs[i].push_back(*pST);
 	if (can_send_log)	::PostMessage(m_hWnd, WM_DEBUG_MSG, i, (LPARAM)pST);
 	else delete pST;
 }

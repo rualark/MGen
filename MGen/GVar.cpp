@@ -373,10 +373,26 @@ void CGVar::SaveResults(CString dir, CString fname)
 	st.Format("need_exit = %d\n", need_exit);
 	fs << st;
 	fs.close();
+	// Save logs
+	fs.open(dir + "\\debug.log");
+	for (int i = 0; i<logs[0].size(); i++) fs << logs[0][i] << "\n";
+	fs.close();
+	fs.open(dir + "\\warning.log");
+	for (int i = 0; i<logs[1].size(); i++) fs << logs[1][i] << "\n";
+	fs.close();
+	fs.open(dir + "\\gui.log");
+	for (int i = 0; i<logs[2].size(); i++) fs << logs[2][i] << "\n";
+	fs.close();
+	fs.open(dir + "\\algorithm.log");
+	for (int i = 0; i<logs[3].size(); i++) fs << logs[3][i] << "\n";
+	fs.close();
+	fs.open(dir + "\\midi.log");
+	for (int i = 0; i<logs[4].size(); i++) fs << logs[4][i] << "\n";
+	fs.close();
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
-	est->Format("Saved results to file in %d ms", time_stop - time_start);
+	est->Format("Saved results to files in %d ms", time_stop - time_start);
 	WriteLog(0, est);
 }
 

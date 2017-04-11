@@ -11,7 +11,7 @@ step_penalty = 3 # Penalty for adding one more changing step while correcting ca
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 correct_transpose = 12 # Transpose corrected canti semitones up for display
 fullscan_max = 2 # Maximum steps length to full scan. If melody is longer, use SWA
-approximations = 10 # Maximum number of approximations to run if penalty decreases
+approximations = 30 # Maximum number of approximations to run if penalty still decreases
 
 # Main parameters
 t_cnt = 1000000 # Maximum number of canti generated
@@ -80,7 +80,7 @@ midifile_tpq_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
-calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
+calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
 
 

@@ -124,9 +124,12 @@ public:
 	timed_mutex mutex_output;
 	int need_exit = 0; // If thread needs to exit due to generation abort
 
+protected:
   // Random generator
 	ub4 randrsl[256], randcnt; // external results
 	ub4 mm[256];  // internal state
 	ub4 aa = 0, bb = 0, cc = 0;
 	int cur_rand = 0, cur_rand2 = 0;
+	static vector<vector<CString>> logs; // Logs array
+
 };
