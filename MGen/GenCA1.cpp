@@ -37,6 +37,9 @@ void CGenCA1::Generate()
 	int ccount = 0;
 	vector <long> cids;
 	double dpenalty_min;
+	// These are temporary vectors for removing duplicates
+	vector<vector<char>> clib2; // Library of cantus
+	vector <double> rpenalty2;
 	InitCantus();
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
@@ -108,10 +111,11 @@ void CGenCA1::Generate()
 		CountTime(step, step + c_len);
 		UpdateNoteMinMax(step, step + c_len);
 		UpdateTempoMinMax(step, step + c_len);
-		// Prepare to correct
+		// Sliding windows approximation
 		if (c_len - 2 > fullscan_max) {
 			// Save source rpenalty
 			double rpenalty_source = rpenalty_cur;
+			long cnum;
 			// Save cantus only if its penalty is less or equal to source rpenalty
 			rpenalty_min = rpenalty_cur;
 			dpenalty_min = MAX_PENALTY;
@@ -131,7 +135,7 @@ void CGenCA1::Generate()
 				}
 				// Sliding Windows Approximation
 				ScanCantus(&cc, 2, 0);
-				long cnum = clib.size();
+				cnum = clib.size();
 				if (cnum == 0) break;
 				// Count dpenalty for results, where rpenalty is minimal
 				dpenalty.resize(cnum);
@@ -142,9 +146,9 @@ void CGenCA1::Generate()
 						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
 					}
 					if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
-					st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
-					AppendLineToFile("temp.log", st);
-					LogCantus(clib[x]);
+					//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
+					//AppendLineToFile("temp.log", st);
+					//LogCantus(clib[x]);
 				}
 				// Get all best corrections
 				cids.clear();
@@ -157,11 +161,29 @@ void CGenCA1::Generate()
 				cc = clib[cids[cid]];
 				// Send log
 				CString* est = new CString;
-				est->Format("SWA #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+				est->Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 				WriteLog(3, est);
 				// Abort SWA if dpenalty and rpenalty not decreasing
 				if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) break;
 			}
+			// Remove duplicates
+			clib2.clear();
+			rpenalty2.clear();
+			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
+				int good = 1;
+				for (int z = 0; z < clib2.size(); z++) {
+					if (clib[x] == clib2[z]) {
+						good = 0;
+						break;
+					}
+				}
+				if (good) {
+					clib2.push_back(clib[x]);
+					rpenalty2.push_back(rpenalty[x]);
+				}
+			}
+			rpenalty = rpenalty2;
+			clib = clib2;
 		}
 		else {
 			clib.clear();
@@ -196,7 +218,7 @@ void CGenCA1::Generate()
 				for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min) {
 					cids.push_back(x);
 				}
-				if (!cids.size()) break;
+				if (!cids.size() || dpenalty_min == MAX_PENALTre) break;
 				// Shuffle cids
 				unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 				::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
