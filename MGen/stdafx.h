@@ -55,6 +55,7 @@
 #include <vector>
 #include <queue>
 #include <mutex>
+#include <numeric>
 #include <initializer_list>
 #include <random>
 #include <algorithm>

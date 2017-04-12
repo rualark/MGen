@@ -612,3 +612,12 @@ void CGVar::UpdateTempoMinMax(int step1, int step2)
 	}
 }
 
+void CGVar::AddNote(int pos, int v, char note2, int len2, int dyn2)
+{
+	for (int i = 0; i < len2; i++) {
+		note[pos + i][v] = note2;
+		len[pos][v] = len2;
+		coff[pos][v] = i;
+		dyn[pos][v] = dyn2;
+	}
+}

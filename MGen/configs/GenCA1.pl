@@ -9,10 +9,13 @@ pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
-correct_transpose = 12 # Transpose corrected canti semitones up for display
+show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
+fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
+approximations = 10 # Maximum number of approximations to run if penalty decreases
+swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 
 # Main parameters
-t_cnt = 1000000 # Maximum number of canti generated
+Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
 s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
@@ -61,6 +64,8 @@ Late >5th resolution      = 0 # Leap greater than 5th is resolved after a second
 Tritone unresolved        = 0 # Tritone is not resolved correctly
 Tritone culmination       = 0 # Tritone is the highest leap
 3rd to last is leading    = 0 # Third to last note is leading (B forbidden)
+Too wide range            = 0 # If range is greater than max_interval (diatonic interval)
+Too tight range           = 0 # If range is lower than min_interval (diatonic interval)
 
 #Rule parameters
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling
@@ -74,10 +79,11 @@ stag_note_steps = 7
 repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 
 # Technical parameters
-midifile_tpq_mul = 8 # All notes are made whole for midi export
+midifile_in_mul = 1 # Multiply note length with this value when loading
+midifile_out_mul = 8 # Multiply note length with this value when saving
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
-calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
+calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
 

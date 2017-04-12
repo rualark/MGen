@@ -219,18 +219,24 @@ void CGMidi::LoadCantus(CString path)
 	int cid = 0;
 	int nid = 0;
 	vector <char> c;
+	vector <unsigned char> cl;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		double last_tick = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			double time = midifile.getTimeInSeconds(mev->tick);
 			if (mev->isNoteOn()) {
-				double pos = mev->tick;
-				double nlen = mev->getTickDuration();
+				double pos2 = mev->tick;
+				int pos = round(mev->tick / (double)tpc);
+				double nlen2 = mev->getTickDuration();
+				int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
 				// Check for pause
-				if (pos - last_tick > tpc / 2) {
+				if (pos2 - last_tick > tpc / 2) {
 					// Add cantus if it is long
-					if (nid > 5) cantus.push_back(c);
+					if (nid > 5) {
+						cantus.push_back(c);
+						cantus_len.push_back(cl);
+					}
 					// Go to next cantus
 					nid = 0;
 				}
@@ -238,19 +244,24 @@ void CGMidi::LoadCantus(CString path)
 					// Add new cantus
 					cid++;
 					c.clear();
+					cl.clear();
 				}
 				// Add new note
 				if ((nid == 0) || (c[nid-1] != mev->getKeyNumber())) {
 					c.push_back(mev->getKeyNumber());
+					cl.push_back(nlen);
 					nid++;
 				}
 				// Save last time
-				last_tick = pos + nlen;
+				last_tick = pos2 + nlen2;
 			}
 		}
 	}
 	// Add cantus if it is long
-	if (nid > 5) cantus.push_back(c);
+	if (nid > 5) {
+		cantus.push_back(c);
+		cantus_len.push_back(cl);
+	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;

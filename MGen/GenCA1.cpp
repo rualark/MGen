@@ -53,6 +53,8 @@ void CGenCA1::Generate()
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Show imported melody
+		cc_len = cantus_len[i];
+		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		ScanCantus(&(cantus[i]), 0, 0);
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
@@ -61,18 +63,18 @@ void CGenCA1::Generate()
 		if (!corrections) {
 			v_cnt = 1;
 			// Go forward
-			Adapt(step - c_len - 1, step - 1);
+			Adapt(step - real_len - 1, step - 1);
 			t_generated = step;
 			t_sent = t_generated;
 			continue;
 		}
-		step -= c_len + 1;
+		step -= real_len + 1;
 		// Fill pauses if no results generated
-		for (int x = step; x <= step + c_len; x++) {
+		for (int x = step; x <= step + real_len; x++) {
 			pause[x][1] = 1;
 			note[x][1] = 0;
-			len[x][1] = c_len + 1;
-			coff[x][1] = x - step;
+			len[x][1] = 1;
+			coff[x][1] = 0;
 		}
 		// Clear scan matrix
 		smatrixc = 0;
@@ -107,10 +109,10 @@ void CGenCA1::Generate()
 		est->Format("Scan matrix for cantus %d created with %d steps of %d: %s", i+1, smatrixc, c_len, st2);
 		WriteLog(3, est);
 		// Count additional variables
-		CountOff(step, step + c_len);
-		CountTime(step, step + c_len);
-		UpdateNoteMinMax(step, step + c_len);
-		UpdateTempoMinMax(step, step + c_len);
+		CountOff(step, step + real_len);
+		CountTime(step, step + real_len);
+		UpdateNoteMinMax(step, step + real_len);
+		UpdateTempoMinMax(step, step + real_len);
 		// Sliding windows approximation
 		if (smatrixc > fullscan_max) {
 			s_len = swa_steps;
@@ -235,24 +237,28 @@ void CGenCA1::Generate()
 					// Show initial melody again if this is not first iteration
 					if (ccount > 1) {
 						ScanCantus(&(cantus[i]), 0, 0);
-						step -= c_len + 1;
+						step -= real_len + 1;
 					}
 					// Get cantus
 					cc = clib[cids[x]];
 					// Show result
 					ScanCantus(&(cc), 0, 1);
 					// Go back
-					step -= c_len + 1;
+					step -= real_len + 1;
 					if (step < 0) break;
 					// Add lining
+					int pos = step;
 					for (int z = 0; z < c_len; z++) {
 						if (cantus[i][z] != clib[cids[x]][z]) {
-							lining[step + z][0] = 1;
+							for (int g = 0; g < cc_len[z]; g++) {
+								lining[pos + g][0] = 1;
+							}
+							pos += cc_len[z];
 						}
 					}
 					// Go forward
-					step += c_len + 1;
-					Adapt(step - c_len - 1, step - 1);
+					step += real_len + 1;
+					Adapt(step - real_len - 1, step - 1);
 					t_generated = step;
 					t_sent = t_generated;
 				}
@@ -265,8 +271,8 @@ void CGenCA1::Generate()
 		}
 		else {
 			// Go forward
-			step += c_len + 1;
-			Adapt(step - c_len - 1, step - 1);
+			step += real_len + 1;
+			Adapt(step - real_len - 1, step - 1);
 			t_generated = step;
 			t_sent = t_generated;
 		}

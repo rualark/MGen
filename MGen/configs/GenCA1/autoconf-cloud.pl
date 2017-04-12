@@ -1,5 +1,9 @@
+# THIS CONFIG WAS AUTOMATICALLY CREATED FROM DEFAULT CONFIG FILE TO OPEN A MIDI FILE
+# YOU CAN EDIT THIS CONFIG FILE TO OPEN THIS FILE AGAIN
+# If you want to change default config file, that is copied each time you open a MIDI file, please go to configs folder in your File browser
+# Default configs are not accessible from MGen GUI, you will need to change it outside of the program
+
 # Analysis
-Midi_file = load\test-melody4.mid # Path and file name of imported midi file
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
@@ -8,11 +12,11 @@ pitch_penalty = 1 # Penalty for changing note one more diatonic step while corre
 show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
-swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
+swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 
 # Main parameters
 Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
-s_len = 6 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 first_note = C5 # Starting note of each cantus
@@ -76,9 +80,14 @@ repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps betwee
 
 # Technical parameters
 midifile_in_mul = 1 # Multiply note length with this value when loading
-midifile_out_mul = 8 # Multiply note length with this value when saving
+midifile_out_mul = 1 # Multiply note length with this value when saving
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
+
+
+# This config was created from default config file configs\GenCA1.pl
+# Created at 2017-04-12 23-04-07
+Midi_file = N:\Public\Critic\app\GitHub\MGen\MGen\load\cloud.mid

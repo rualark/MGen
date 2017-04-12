@@ -65,6 +65,8 @@ protected:
 	double rpenalty_cur = 0; // Rules penalty
 	double rpenalty_min; // Minimum rules penalty for this scan
 	vector <double> rpenalty; // Penalty in terms of sum of flag severity
+	vector <unsigned char> cc_len; // Length of each cantus step
+	int real_len; // Total length of cantus in steps
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file

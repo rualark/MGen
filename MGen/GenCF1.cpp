@@ -214,6 +214,8 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			c[i] = chrom_to_dia[(cc[i] + 132 - ctonic) % 12] + ((cc[i] + 132 - ctonic) / 12 - 11) * 7;
 			// Save value for future use;
 			c2[i] = c[i];
+			// Check duplicate
+			if (i > 0 && c[i] == c[i - 1]) return;
 		}
 		tonic = c[c_len - 1]; // Diatonic tonic
 		sp1 = 1;
@@ -425,7 +427,7 @@ check:
 						else if (i < ep2 - 2) {
 							if (pc[i + 1] == 3) FLAG(31, i)
 							else if (pc[i + 2] != 0) FLAG(31, i)
-							else if (pc[i - 1] != 2) FLAG(31, i)
+							else if (i>0 && pc[i - 1] != 2) FLAG(31, i)
 								// Record resolved tritone
 							else FLAG(2, i);
 						}
@@ -942,41 +944,45 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 	CString st;
 	Sleep(sleep_ms);
 	// Copy cantus to output
-	if (step + c_len >= t_allocated) ResizeVectors(t_allocated * 2);
-	for (int x = step; x < step + c_len; x++) {
-		// Set flag color
-		color[x][v] = FlagColor[0];
-		int current_severity = -1;
-		// Set nflag color
-		note[x][v] = cc[x - step];
-		if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
-			comment[x][v] += FlagName[nflags[x - step][i]];
-			st.Format(" [%d]", flag_to_sev[nflags[x - step][i]]);
-			if (show_severity) comment[x][v] += st;
-			comment[x][v] += ". ";
-			// Set note color if this is maximum flag severity
-			if (flag_to_sev[nflags[x - step][i]] > current_severity) {
-				current_severity = flag_to_sev[nflags[x - step][i]];
-				color[x][v] = flag_color[nflags[x - step][i]];
+	int pos = step;
+	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
+	for (int x = 0; x < c_len; x++) {
+		for (int i = 0; i < cc_len[x]; i++) {
+			// Set flag color
+			color[pos+i][v] = FlagColor[0];
+			int current_severity = -1;
+			// Set nflag color
+			note[pos + i][v] = cc[x];
+			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; f++) {
+				comment[pos + i][v] += FlagName[nflags[x][f]];
+				st.Format(" [%d]", flag_to_sev[nflags[x][f]]);
+				if (show_severity) comment[pos + i][v] += st;
+				comment[pos + i][v] += ". ";
+				// Set note color if this is maximum flag severity
+				if (flag_to_sev[nflags[x][f]] > current_severity) {
+					current_severity = flag_to_sev[nflags[x][f]];
+					color[pos + i][v] = flag_color[nflags[x][f]];
+				}
+			}
+			len[pos + i][v] = cc_len[x];
+			pause[pos + i][v] = 0;
+			tempo[pos + i] = 200;
+			coff[pos + i][v] = i;
+			if (x < real_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
+			else dyn[pos + i][v] = 60 + 40 * (real_len - pos - i + step) / real_len + 20 * rand2() / RAND_MAX;
+			if (pos+i == 0) {
+				tempo[pos + i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
+			}
+			else {
+				tempo[pos + i] = tempo[pos + i - 1] + randbw(-1, 1);
+				if (tempo[pos + i] > max_tempo) tempo[pos + i] = 2 * max_tempo - tempo[pos + i];
+				if (tempo[pos + i] < min_tempo) tempo[pos + i] = 2 * min_tempo - tempo[pos + i];
 			}
 		}
-		len[x][v] = 1;
-		pause[x][v] = 0;
-		tempo[x] = 200;
-		coff[x][v] = 0;
-		if (x < step + c_len / 2)	dyn[x][v] = 60 + 40 * (x - step) / c_len + 20 * rand2() / RAND_MAX;
-		else dyn[x][v] = 60 + 40 * (step + c_len - x) / c_len + 20 * rand2() / RAND_MAX;
-		if (x == 0) {
-			tempo[x] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
-		}
-		else {
-			tempo[x] = tempo[x - 1] + randbw(-1, 1);
-			if (tempo[x] > max_tempo) tempo[x] = 2 * max_tempo - tempo[x];
-			if (tempo[x] < min_tempo) tempo[x] = 2 * min_tempo - tempo[x];
-		}
+		pos += cc_len[x];
 	}
 	// Create pause
-	step += c_len;
+	step = pos;
 	note[step][v] = 0;
 	len[step][v] = 1;
 	pause[step][v] = 1;
@@ -985,13 +991,13 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 	coff[step][v] = 0;
 	step++;
 	// Count additional variables
-	CountOff(step - c_len - 1, step - 1);
-	CountTime(step - c_len - 1, step - 1);
-	UpdateNoteMinMax(step - c_len - 1, step - 1);
-	UpdateTempoMinMax(step - c_len - 1, step - 1);
+	CountOff(step - real_len - 1, step - 1);
+	CountTime(step - real_len - 1, step - 1);
+	UpdateNoteMinMax(step - real_len - 1, step - 1);
+	UpdateTempoMinMax(step - real_len - 1, step - 1);
 	if (!pcantus) {
 		if (!shuffle) {
-			Adapt(step - c_len - 1, step - 1);
+			Adapt(step - real_len - 1, step - 1);
 		}
 	}
 	// Send
@@ -1044,6 +1050,10 @@ void CGenCF1::Generate()
 	// Voice
 	int v = 0;
 	InitCantus();
+	// Set uniform length
+	cc_len.resize(c_len);
+	real_len = c_len;
+	for (int i = 0; i < c_len; i++) cc_len[i] = 1;
 	ScanCantus(0, 0, 0);
 	// Random shuffle
 	if (shuffle) {
