@@ -106,20 +106,30 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 		st.MakeLower();
 		if (*sN == st) {
 			accept[i] = atoi(*sV);
+			// Check if not Strict flag
 			if (i) {
 				if (cur_severity == MAX_FLAGS) {
 					CString* est = new CString;
-					est->Format("Warning: more flags in config than in algorithm. Possibly duplicate flags inc config. Please correct config %s", m_config);
+					est->Format("Warning: more flags in config than in algorithm. Possibly duplicate flags in config. Please correct config %s", m_config);
 					WriteLog(1, est);
 				}
 				else {
-					// Load severity based on position in file
-					sev_to_flag[cur_severity] = i;
-					// Log
-					CString* est = new CString;
-					est->Format("Flag '%s' gets severity %d", FlagName[i], cur_severity);
-					WriteLog(1, est);
-					cur_severity++;
+					// Check if flag already has severity
+					if (flag_to_sev[i]) {
+						CString* est = new CString;
+						est->Format("Warning: detected duplicate flag %s. Please correct config %s", FlagName[i], m_config);
+						WriteLog(1, est);
+					}
+					else {
+						// Load severity based on position in file
+						sev_to_flag[cur_severity] = i;
+						flag_to_sev[i] = cur_severity;
+						// Log
+						//CString* est = new CString;
+						//est->Format("Flag '%s' gets severity %d", FlagName[i], cur_severity);
+						//WriteLog(1, est);
+						cur_severity++;
+					}
 				}
 			}
 		}
@@ -998,7 +1008,7 @@ void CGenCF1::InitCantus()
 	// Check all flags severity loaded
 	if (cur_severity < MAX_FLAGS) {
 		for (int i = 1; i < MAX_FLAGS; i++) {
-			if (!sev_to_flag[i]) {
+			if (!flag_to_sev[i]) {
 				if (cur_severity == MAX_FLAGS) {
 					CString* est = new CString;
 					est->Format("Warning: more flags in config than in algorithm. Possibly duplicate flags inc config. Please correct config %s", m_config);
@@ -1006,6 +1016,7 @@ void CGenCF1::InitCantus()
 				}
 				else {
 					sev_to_flag[cur_severity] = i;
+					flag_to_sev[i] = cur_severity;
 					// Log
 					CString* est = new CString;
 					est->Format("Warning: flag '%s' not found in config %s. Assigning severity %d to flag. Please add flag to file", FlagName[i], m_config, cur_severity);
