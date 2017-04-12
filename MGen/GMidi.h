@@ -72,5 +72,7 @@ protected:
 
 	// Cantus
 	vector< vector <char> > cantus; // Cantus loaded from midi file
+	vector< vector <unsigned char> > cantus_len; // Cantus loaded from midi file
+	vector< vector <double> > cantus_tempo; // Cantus loaded from midi file
 };
 

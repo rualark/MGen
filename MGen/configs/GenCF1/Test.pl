@@ -62,7 +62,7 @@ stag_note_steps = 7
 repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 
 # Technical parameters
-midifile_tpq_mul = 8 # All notes are made whole for midi export
+midifile_out_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.

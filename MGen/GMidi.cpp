@@ -129,6 +129,14 @@ void CGMidi::LoadMidi(CString path)
 					warning_loadmidi_align++;
 				}
 				int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
+				// Check if note too long
+				if (nlen > 255) {
+					CString* st = new CString;
+					st->Format("Note too long and will be cut short at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", mev->tick, tpc, midifile_in_mul, pos, path);
+					WriteLog(1, st);
+					warning_loadmidi_align++;
+					nlen = 255;
+				}
 				if (nlen < 1) nlen = 1;
 				if (pos + nlen >= t_allocated) ResizeVectors(t_allocated * 2);
 				// Search for last note
