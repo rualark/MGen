@@ -419,6 +419,8 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->LoadInstruments();
 		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		pGen->LoadConfig(dir + "\\" + fname + ".pl");
+		// Load music
+		pGen->LoadResultMusic(dir, fname);
 		// Adapt
 		pGen->Adapt(0, pGen->t_sent - 1);
 		m_state_gen = 2;

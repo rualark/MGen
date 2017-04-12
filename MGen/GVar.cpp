@@ -466,23 +466,34 @@ void CGVar::LoadResults(CString dir, CString fname)
 			st3.Trim();
 			st2.MakeLower();
 			int idata = atoi(st3);
-			CGVar::CheckVar(&st2, &st3, "t_cnt", &t_cnt);
-			CGVar::CheckVar(&st2, &st3, "m_algo_id", &m_algo_id);
-			CGVar::CheckVar(&st2, &st3, "v_cnt", &v_cnt);
-			CGVar::CheckVar(&st2, &st3, "t_generated", &t_generated);
-			CGVar::CheckVar(&st2, &st3, "t_sent", &t_sent);
-			CGVar::CheckVar(&st2, &st3, "t_send", &t_send);
-			CGVar::CheckVar(&st2, &st3, "need_exit", &need_exit);
-			CGVar::CheckVar(&st2, &st3, "time_started", &time_started);
-			CGVar::CheckVar(&st2, &st3, "time_stopped", &time_stopped);
-			CGVar::LoadVar(&st2, &st3, "m_config", &m_config);
-			CGVar::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
+			CheckVar(&st2, &st3, "t_cnt", &t_cnt);
+			CheckVar(&st2, &st3, "m_algo_id", &m_algo_id);
+			CheckVar(&st2, &st3, "v_cnt", &v_cnt);
+			CheckVar(&st2, &st3, "t_generated", &t_generated);
+			CheckVar(&st2, &st3, "t_sent", &t_sent);
+			CheckVar(&st2, &st3, "t_send", &t_send);
+			CheckVar(&st2, &st3, "need_exit", &need_exit);
+			CheckVar(&st2, &st3, "time_started", &time_started);
+			CheckVar(&st2, &st3, "time_stopped", &time_stopped);
+			LoadVar(&st2, &st3, "m_config", &m_config);
+			LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 		}
 	}
 	fs.close();
 	// Allocate
 	t_allocated = t_generated;
 	InitVectors();
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("Loaded result infor from folder %s in %d ms", dir, time_stop - time_start);
+	WriteLog(0, est);
+}
+
+void CGVar::LoadResultMusic(CString dir, CString fname)
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	ifstream fs;
 	// Load binary
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
 	fs.unsetf(std::ios::skipws);
@@ -506,7 +517,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
-	est->Format("Loaded results from files in %d ms", time_stop - time_start);
+	est->Format("Loaded result music from folder %s in %d ms", dir, time_stop - time_start);
 	WriteLog(0, est);
 }
 

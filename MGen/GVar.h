@@ -14,6 +14,8 @@ public:
 	void SaveResults(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
 
+	void LoadResultMusic(CString dir, CString fname);
+
 	// Data interface
 	int m_algo_id = -1; // Current algorithm id
 	CString m_algo_insts; // Instruments of current algorithm from algorithms.txt
