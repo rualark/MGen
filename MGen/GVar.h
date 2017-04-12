@@ -40,7 +40,8 @@ public:
 	double tg_min = 1000; // Minimum generated tempo
 	double tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
-	double midifile_tpq_mul = 1; // Multiplier of ticks per quarter notes in midi export
+	double midifile_in_mul = 1; // Multiply note length with this value when loading
+	double midifile_out_mul = 1; // Multiply note length with this value when saving
 	int shuffle = 0; // If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 	int comment_adapt = 1; // If you want to have each adaptation decision commented
 	

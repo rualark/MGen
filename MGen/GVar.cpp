@@ -192,7 +192,8 @@ void CGVar::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "t_cnt", &t_cnt);
 			CheckVar(&st2, &st3, "t_allocated", &t_allocated);
 			CheckVar(&st2, &st3, "t_send", &t_send);
-			CheckVar(&st2, &st3, "midifile_tpq_mul", &midifile_tpq_mul);
+			CheckVar(&st2, &st3, "midifile_in_mul", &midifile_in_mul);
+			CheckVar(&st2, &st3, "midifile_out_mul", &midifile_out_mul);
 			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms);
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt);

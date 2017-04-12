@@ -22,7 +22,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	MidiFile midifile;
 	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
 	int tpq = 120;                // ticks per quarter note
-	int tpñ = 60 * midifile_tpq_mul; // ticks per croche
+	int tpñ = 60 * midifile_out_mul; // ticks per croche
 	midifile.setTicksPerQuarterNote(tpq);
 	int track = 0;
 	int channel = 0;
@@ -76,7 +76,7 @@ void CGMidi::LoadMidi(CString path)
 	midifile.absoluteTicks();
 
 	int tpq = midifile.getTicksPerQuarterNote();
-	int tpc = (double)tpq / (double)2 / (double)midifile_tpq_mul; // ticks per croche
+	int tpc = (double)tpq / (double)2 / (double)midifile_in_mul; // ticks per croche
 	vector<int> vlast_step(16);
 
 	double lastNoteFinished = 0.0;
@@ -95,7 +95,7 @@ void CGMidi::LoadMidi(CString path)
 					//warning_loadmidi_align++;
 				}
 				if (pos >= t_allocated) ResizeVectors(t_allocated * 2);
-				tempo[pos] = mev->getTempoBPM() * midifile_tpq_mul;
+				tempo[pos] = mev->getTempoBPM() * midifile_in_mul;
 				if (pos > last_step) last_step = pos;
 			}
 		}
@@ -117,7 +117,14 @@ void CGMidi::LoadMidi(CString path)
 				// Check alignment
 				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
 					CString* st = new CString;
-					st->Format("Note not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing tpq will improve approximation.", mev->tick, tpc, midifile_tpq_mul, pos, path);
+					st->Format("Note not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, path);
+					WriteLog(1, st);
+					warning_loadmidi_align++;
+				}
+				// Check if current note already set
+				if (note[pos][v] || pause[pos][v]) {
+					CString* st = new CString;
+					st->Format("Note too short and is overwritten at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, path);
 					WriteLog(1, st);
 					warning_loadmidi_align++;
 				}
@@ -199,7 +206,7 @@ void CGMidi::LoadCantus(CString path)
 	midifile.absoluteTicks();
 
 	int tpq = midifile.getTicksPerQuarterNote();
-	int tpc = (double)tpq / (double)2 / (double)midifile_tpq_mul; // ticks per croche
+	int tpc = (double)tpq / (double)2 / (double)midifile_in_mul; // ticks per croche
 
 	int cid = 0;
 	int nid = 0;
