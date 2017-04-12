@@ -197,6 +197,7 @@ void CGVar::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt);
 			LoadVarInstr(&st2, &st3, "instruments", instr);
+			LoadVector(&st2, &st3, "show_transpose", show_transpose);
 			// Load algorithm-specific variables
 			LoadConfigLine(&st2, &st3, idata, fdata);
 		}
@@ -344,7 +345,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 	// Save strings
 	CString st;
 	fs.open(dir + "\\" + fname + ".txt");
-	fs << "save_format_version = 1.2 # This is version of format used to save these files\n";
+	fs << "save_format_version = " << MGR_VERSION << " # This is version of format used to save these files\n";
 	fs << "m_config = " + m_config + " # Name of config file used for generation\n";
 	st.Format("m_algo_id = %d\n", m_algo_id);
 	fs << st;

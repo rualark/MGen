@@ -101,6 +101,20 @@ void CGLib::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 	}
 }
 
+void CGLib::LoadVector(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
+{
+	if (*sName == sSearch) {
+		int pos = 0;
+		CString st;
+		for (int i = 0; i<1000; i++) {
+			st = sValue->Tokenize(",", pos);
+			st.Trim();
+			if (st == "") break;
+			Dest[i] = atoi(st);
+		}
+	}
+}
+
 void CGLib::LoadNote(CString * sName, CString * sValue, char* sSearch, int * Dest)
 {
 	if (*sName == sSearch) {

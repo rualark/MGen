@@ -22,7 +22,6 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "post_bad", &post_bad);
 	CheckVar(sN, sV, "step_penalty", &step_penalty);
 	CheckVar(sN, sV, "pitch_penalty", &pitch_penalty);
-	CheckVar(sN, sV, "correct_transpose", &correct_transpose);
 	CheckVar(sN, sV, "fullscan_max", &fullscan_max);
 	CheckVar(sN, sV, "approximations", &approximations);
 	CheckVar(sN, sV, "swa_steps", &swa_steps);
@@ -46,7 +45,6 @@ void CGenCA1::Generate()
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
 	// Transpose corrected voice up for display
-	show_transpose[1] = correct_transpose;
 	int t_generated2 = 0; // Saved t_generated
 	for (int i = 0; i < cantus.size(); i++) {
 		if (need_exit) break;

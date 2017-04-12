@@ -5,10 +5,10 @@ pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
-correct_transpose = 12 # Transpose corrected canti semitones up for display
+show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
-swa_steps = 6 # Size of Sliding Window Approximation algorithm window in steps
+swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 
 # Main parameters
 Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano

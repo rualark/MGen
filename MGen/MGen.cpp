@@ -20,6 +20,7 @@
 
 #include "MGenDoc.h"
 #include "MGenView.h"
+#include "GLib.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -188,15 +189,20 @@ protected:
 // Implementation
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	CString m_ver;
+	virtual BOOL OnInitDialog();
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
+, m_ver(_T(""))
 {
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_STATIC_VER, m_ver);
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
@@ -206,6 +212,7 @@ END_MESSAGE_MAP()
 void CMGenApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
+	aboutDlg.m_ver.Format("Music Generator Laboratory, Version %s", APP_VERSION);
 	aboutDlg.DoModal();
 }
 
@@ -270,4 +277,12 @@ CString CMGenApp::getRecentFile(int index)
 {
 	CString st = string((*m_pRecentFileList)[index]).c_str();
 	return st;
+}
+
+BOOL CAboutDlg::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+								// EXCEPTION: OCX Property Pages should return FALSE
 }
