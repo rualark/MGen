@@ -101,7 +101,7 @@ void CGLib::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 	}
 }
 
-void CGLib::LoadVector(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
+void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
 {
 	if (*sName == sSearch) {
 		int pos = 0;

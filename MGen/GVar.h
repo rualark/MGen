@@ -118,11 +118,14 @@ protected:
 	void SaveVector2C(ofstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveVector2Color(ofstream & fs, vector<vector<Color>>& v2D, int i);
 	void SaveVector2ST(ofstream & fs, vector<vector<CString>>& v2D, int i);
-	void SaveVectorD(ofstream &fs, vector<double> &v);
+	void SaveVector(ofstream &fs, vector<double> &v);
+	void SaveVector(ofstream &fs, vector<Color> &v);
 	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void LoadVector2Color(ifstream & fs, vector<vector<Color>>& v2D, int i);
 	void LoadVector2ST(ifstream & fs, vector<vector<CString>>& v2D, int i);
-	void LoadVectorD(ifstream & fs, vector<double>& v);
+	void LoadVector(ifstream & fs, vector<Color>& v);
+	void LoadVector(ifstream & fs, vector<double>& v);
+	void LoadVector(ifstream & fs, vector<unsigned char>& v);
 	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, double fdata) = 0;
 	// Helper functions for child generators
 	void CountOff(int step1, int step2);

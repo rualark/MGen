@@ -197,7 +197,7 @@ void CGVar::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt);
 			LoadVarInstr(&st2, &st3, "instruments", instr);
-			LoadVector(&st2, &st3, "show_transpose", show_transpose);
+			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose);
 			// Load algorithm-specific variables
 			LoadConfigLine(&st2, &st3, idata, fdata);
 		}
@@ -318,7 +318,13 @@ void CGVar::SaveVector2ST(ofstream & fs, vector< vector<CString> > &v2D, int i) 
 	}
 }
 
-void CGVar::SaveVectorD(ofstream &fs, vector<double> &v) {
+void CGVar::SaveVector(ofstream &fs, vector<double> &v) {
+	const char* pointer = reinterpret_cast<const char*>(&v[0]);
+	size_t bytes = t_generated * sizeof(v[0]);
+	fs.write(pointer, bytes);
+}
+
+void CGVar::SaveVector(ofstream &fs, vector<Color> &v) {
 	const char* pointer = reinterpret_cast<const char*>(&v[0]);
 	size_t bytes = t_generated * sizeof(v[0]);
 	fs.write(pointer, bytes);
@@ -330,17 +336,23 @@ void CGVar::SaveResults(CString dir, CString fname)
 	CreateDirectory(dir, NULL);
 	ofstream fs;
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
-	for (size_t i = 0; i < t_generated; i++)
-	{
-		SaveVector2C(fs, pause, i);
-		SaveVector2C(fs, note, i);
-		SaveVector2C(fs, len, i);
-		SaveVector2C(fs, coff, i);
-		SaveVector2C(fs, dyn, i);
-		SaveVector2ST(fs, comment, i);
-		SaveVector2Color(fs, color, i);
+	if (t_generated > 0) {
+		for (size_t i = 0; i < t_generated; i++) {
+			SaveVector2C(fs, pause, i);
+			SaveVector2C(fs, note, i);
+			SaveVector2C(fs, len, i);
+			SaveVector2C(fs, coff, i);
+			SaveVector2C(fs, dyn, i);
+			SaveVector2ST(fs, comment, i);
+			SaveVector2Color(fs, color, i);
+		}
+		SaveVector(fs, tempo);
+		// Added in version 1.6
+		for (size_t i = 0; i < t_generated; i++) {
+			SaveVector2C(fs, lining, i);
+		}
+		SaveVector(fs, linecolor);
 	}
-	SaveVectorD(fs, tempo);
 	fs.close();
 	// Save strings
 	CString st;
@@ -425,7 +437,23 @@ void CGVar::LoadVector2ST(ifstream & fs, vector< vector<CString> > &v2D, int i) 
 	}
 }
 
-void CGVar::LoadVectorD(ifstream &fs, vector<double> &v) {
+void CGVar::LoadVector(ifstream &fs, vector<double> &v) {
+	v.clear();
+	v.resize(t_generated);
+	char* pointer = reinterpret_cast<char*>(&v[0]);
+	size_t bytes = t_generated * sizeof(v[0]);
+	fs.read(pointer, bytes);
+}
+
+void CGVar::LoadVector(ifstream &fs, vector<unsigned char> &v) {
+	v.clear();
+	v.resize(t_generated);
+	char* pointer = reinterpret_cast<char*>(&v[0]);
+	size_t bytes = t_generated * sizeof(v[0]);
+	fs.read(pointer, bytes);
+}
+
+void CGVar::LoadVector(ifstream &fs, vector<Color> &v) {
 	v.clear();
 	v.resize(t_generated);
 	char* pointer = reinterpret_cast<char*>(&v[0]);
@@ -497,9 +525,8 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 	// Load binary
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
 	fs.unsetf(std::ios::skipws);
-	if (t_generated != 0)
-		for (size_t i = 0; i < t_generated; i++)
-		{
+	if (t_generated != 0) {
+		for (size_t i = 0; i < t_generated; i++) {
 			LoadVector2C(fs, pause, i);
 			LoadVector2C(fs, note, i);
 			LoadVector2C(fs, len, i);
@@ -508,7 +535,15 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 			LoadVector2ST(fs, comment, i);
 			LoadVector2Color(fs, color, i);
 		}
-	LoadVectorD(fs, tempo);
+		LoadVector(fs, tempo);
+		// Added with version 1.6
+		if (fs.peek() != EOF) {
+			for (size_t i = 0; i < t_generated; i++) {
+				LoadVector2C(fs, lining, i);
+			}
+			LoadVector(fs, linecolor);
+		}
+	}
 	CountOff(0, t_generated - 1);
 	CountTime(0, t_generated - 1);
 	UpdateNoteMinMax(0, t_generated - 1);
