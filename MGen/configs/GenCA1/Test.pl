@@ -60,6 +60,9 @@ Late >5th resolution      = 0 # Leap greater than 5th is resolved after a second
 Tritone unresolved        = 0 # Tritone is not resolved correctly
 Tritone culmination       = 0 # Tritone is the highest leap
 3rd to last is leading    = 0 # Third to last note is leading (B forbidden)
+Too wide range            = 0 # If range is greater than max_interval (diatonic interval)
+Too tight range           = 0 # If range is lower than min_interval (diatonic interval)
+Too tight range           = 0 # If range is lower than min_interval (diatonic interval)
 
 #Rule parameters
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling

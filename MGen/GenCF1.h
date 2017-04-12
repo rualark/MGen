@@ -1,6 +1,9 @@
 #pragma once
 #include "GMidi.h"
 
+#define MAX_FLAGS 39
+#define MAX_WIND 50
+
 class CGenCF1 :
 	public CGMidi
 {
@@ -48,7 +51,8 @@ protected:
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 
   // Local
-	vector<unsigned char>  flag_sev; // Get severity by flag id
+	int sev_to_flag[MAX_FLAGS]; // Get flag ID by severity
+	vector<unsigned char>  flag_to_sev; // Get severity by flag id
 	vector<Color>  flag_color; // Flag colors
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
@@ -61,6 +65,9 @@ protected:
 	double rpenalty_cur = 0; // Rules penalty
 	double rpenalty_min; // Minimum rules penalty for this scan
 	vector <double> rpenalty; // Penalty in terms of sum of flag severity
+
+	// Load severity
+	int cur_severity = 0; // Current severity loaded from configuration file
 
 	// Cantus correcting
 	vector <char> smatrix; // Vector of links to steps that were selected for recalculation

@@ -5,9 +5,6 @@
 #define new DEBUG_NEW 
 #endif
 
-#define MAX_FLAGS 39
-#define MAX_WIND 50
-// 
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 const CString FlagName[MAX_FLAGS] = {
@@ -52,49 +49,6 @@ const CString FlagName[MAX_FLAGS] = {
 	"Too tight range", // 38
 };
 
-const int SeverityFlag[MAX_FLAGS] = {
-	0, // "Strict", // 0
-	35, // "Prepared unfilled 3rd", // LEAP FILL
-	30, // "Prepared unresolved 3rd", // LEAP RESOLUTION
-	28, // "Two 3rds after 6/8", // LEAP RESOLUTION
-	7, // "Late <6th resolution", // LEAP RESOLUTION
-	8, // "Leap back <5th", // LEAP RESOLUTION 
-	1, // "Seventh", // LEAPS
-	11, // "Leap pre-late fill", // LEAP FILL 
-	3, // "Many leaps", // LEAPS 
-	14, // "3rd to last is CEG", // HARMONY
-	23, // "Last leap", // END
-	2, // "Tritone resolved", // TRITONE 
-	15, // "3 letters in a row", // HARMONY
-	24, // "Unfilled leap", // LEAP FILL
-	33, // "Leap to leap resolution", // LEAP RESOLUTION
-	6, // "Two 3rds", // LEAP RESOLUTION 
-	18, // "4 step miss", // HARMONY
-	36, // "Outstanding repeat", // REPEATS
-
-	37, // "Too wide range", // RANGE
-	38, // "Too tight range", // RANGE
-	4, // "Long smooth", // LEAPS 
-	5, // "Long line", // LEAPS 
-	9, // "Close repeat", // REPEATS 
-	10, // "Stagnation", // REPEATS 
-	12, // "Multiple culminations", // REPEATS 
-	13, // "2nd to last not D", // HARMONY
-	16, // "4 letters in a row", // HARMONY
-	17, // ">4 letters in a row", // HARMONY
-	19, // "5 step miss", // HARMONY
-	20, // ">5 step miss", // HARMONY
-	21, // "Late culmination", // END
-	22, // "Leap back >4th", // LEAP RESOLUTION
-	25, // "Many leaps+", // LEAPS
-	26, // "Leap unresolved", // LEAP RESOLUTION
-	27, // "Leap chain", // LEAP RESOLUTION
-	29, // "Late >5th resolution", // LEAP RESOLUTION
-	31, // "Tritone unresolved", // TRITONE
-	32, // "Tritone culmination", // TRITONE
-	34, // "3rd to last is leading", // HARMONY
-};
-
 const Color FlagColor[] = {
 	Color(0, 100, 100, 100), // 0 S
 };
@@ -107,8 +61,11 @@ CGenCF1::CGenCF1()
 {
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
-	flag_sev.resize(MAX_FLAGS);
+	flag_to_sev.resize(MAX_FLAGS);
 	flag_color.resize(MAX_FLAGS);
+	// Start severity
+	sev_to_flag[0] = 0;
+	cur_severity = 1;
 }
 
 CGenCF1::~CGenCF1()
@@ -149,6 +106,22 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 		st.MakeLower();
 		if (*sN == st) {
 			accept[i] = atoi(*sV);
+			if (i) {
+				if (cur_severity == MAX_FLAGS) {
+					CString* est = new CString;
+					est->Format("Warning: more flags in config than in algorithm. Possibly duplicate flags inc config. Please correct config %s", m_config);
+					WriteLog(1, est);
+				}
+				else {
+					// Load severity based on position in file
+					sev_to_flag[cur_severity] = i;
+					// Log
+					CString* est = new CString;
+					est->Format("Flag '%s' gets severity %d", FlagName[i], cur_severity);
+					WriteLog(1, est);
+					cur_severity++;
+				}
+			}
 		}
 	}
 }
@@ -750,7 +723,7 @@ check:
 			rpenalty_cur = 0;
 			for (int x = 0; x < ep2; x++) {
 				if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; i++) if (!accept[nflags[x][i]]) {
-					rpenalty_cur += flag_sev[nflags[x][i]];
+					rpenalty_cur += flag_to_sev[nflags[x][i]];
 				}
 			}
 		}
@@ -884,11 +857,11 @@ check:
 		CString st, st2, st3;
 		st3 = "Flag; Total; ";
 		for (int i = 0; i < MAX_FLAGS; i++) {
-			int f1 = SeverityFlag[i];
+			int f1 = sev_to_flag[i];
 			st2.Format("%s; %d; ", FlagName[f1], fcor[f1][f1]);
 			st3 += FlagName[f1] + "; ";
 			for (int z = 0; z < MAX_FLAGS; z++) {
-				int f2 = SeverityFlag[z];
+				int f2 = sev_to_flag[z];
 				st.Format("%lld; ", fcor[f1][f2]);
 				st2 += st;
 			}
@@ -900,7 +873,7 @@ check:
 	if (calculate_stat) {
 		CString* est = new CString;
 		for (int i = 0; i < MAX_FLAGS; i++) {
-			int f1 = SeverityFlag[i];
+			int f1 = sev_to_flag[i];
 			st.Format("\n%lld %s ", fstat[f1], FlagName[f1]);
 			st2 += st;
 		}
@@ -968,12 +941,12 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 		note[x][v] = cc[x - step];
 		if (nflagsc[x - step] > 0) for (int i = 0; i < nflagsc[x - step]; i++) {
 			comment[x][v] += FlagName[nflags[x - step][i]];
-			st.Format(" [%d]", flag_sev[nflags[x - step][i]]);
+			st.Format(" [%d]", flag_to_sev[nflags[x - step][i]]);
 			if (show_severity) comment[x][v] += st;
 			comment[x][v] += ". ";
 			// Set note color if this is maximum flag severity
-			if (flag_sev[nflags[x - step][i]] > current_severity) {
-				current_severity = flag_sev[nflags[x - step][i]];
+			if (flag_to_sev[nflags[x - step][i]] > current_severity) {
+				current_severity = flag_to_sev[nflags[x - step][i]];
 				color[x][v] = flag_color[nflags[x - step][i]];
 			}
 		}
@@ -1022,6 +995,26 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 
 void CGenCF1::InitCantus()
 {
+	// Check all flags severity loaded
+	if (cur_severity < MAX_FLAGS) {
+		for (int i = 1; i < MAX_FLAGS; i++) {
+			if (!sev_to_flag[i]) {
+				if (cur_severity == MAX_FLAGS) {
+					CString* est = new CString;
+					est->Format("Warning: more flags in config than in algorithm. Possibly duplicate flags inc config. Please correct config %s", m_config);
+					WriteLog(1, est);
+				}
+				else {
+					sev_to_flag[cur_severity] = i;
+					// Log
+					CString* est = new CString;
+					est->Format("Warning: flag '%s' not found in config %s. Assigning severity %d to flag. Please add flag to file", FlagName[i], m_config, cur_severity);
+					WriteLog(1, est);
+					cur_severity++;
+				}
+			}
+		}
+	}
 	// Global step
 	step = 0;
 	// Calculate second level flags count
@@ -1030,8 +1023,8 @@ void CGenCF1::InitCantus()
 	}
 	// Set priority
 	for (int i = 0; i < MAX_FLAGS; i++) {
-		flag_sev[SeverityFlag[i]] = i;
-		flag_color[SeverityFlag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
+		flag_to_sev[sev_to_flag[i]] = i;
+		flag_color[sev_to_flag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
 	}
 }
 
