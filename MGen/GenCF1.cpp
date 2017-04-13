@@ -9,7 +9,7 @@
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
-	"Seventh", // 1
+	"Minor seventh", // 1
 	"Tritone resolved", // 2 
 	"Many leaps", // 3 
 	"Long smooth", // 4 
@@ -21,7 +21,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Stagnation", // 10 
 	"Leap pre-late fill", // 11 
 	"Multiple culminations", // 12 
-	"2nd to last not D", // 13
+	"2nd to last not GBD", // 13
 	"3rd to last is CEG", // 14
 	"3 letters in a row", // 15
 	"4 letters in a row", // 16
@@ -47,6 +47,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Outstanding repeat", // 36
 	"Too wide range", // 37
 	"Too tight range", // 38
+	"Major seventh", // 39
 };
 
 const Color FlagColor[] = {
@@ -54,7 +55,6 @@ const Color FlagColor[] = {
 };
 
 // Unskippable rules:
-// Total interval
 // Note repeats note of previous measure
 
 CGenCF1::CGenCF1()
@@ -954,10 +954,12 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 			// Set nflag color
 			note[pos + i][v] = cc[x];
 			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; f++) {
-				comment[pos + i][v] += FlagName[nflags[x][f]];
-				st.Format(" [%d]", flag_to_sev[nflags[x][f]]);
-				if (show_severity) comment[pos + i][v] += st;
-				comment[pos + i][v] += ". ";
+				if (!i) {
+					comment[pos + i][v] += FlagName[nflags[x][f]];
+					st.Format(" [%d]", flag_to_sev[nflags[x][f]]);
+					if (show_severity) comment[pos + i][v] += st;
+					comment[pos + i][v] += ". ";
+				}
 				// Set note color if this is maximum flag severity
 				if (flag_to_sev[nflags[x][f]] > current_severity) {
 					current_severity = flag_to_sev[nflags[x][f]];
@@ -966,18 +968,10 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 			}
 			len[pos + i][v] = cc_len[x];
 			pause[pos + i][v] = 0;
-			tempo[pos + i] = 200;
 			coff[pos + i][v] = i;
 			if (x < real_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
 			else dyn[pos + i][v] = 60 + 40 * (real_len - pos - i + step) / real_len + 20 * rand2() / RAND_MAX;
-			if (pos+i == 0) {
-				tempo[pos + i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
-			}
-			else {
-				tempo[pos + i] = tempo[pos + i - 1] + randbw(-1, 1);
-				if (tempo[pos + i] > max_tempo) tempo[pos + i] = 2 * max_tempo - tempo[pos + i];
-				if (tempo[pos + i] < min_tempo) tempo[pos + i] = 2 * min_tempo - tempo[pos + i];
-			}
+			tempo[pos + i] = cc_tempo[x];
 		}
 		pos += cc_len[x];
 	}

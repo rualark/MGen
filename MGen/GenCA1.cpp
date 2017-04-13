@@ -54,6 +54,7 @@ void CGenCA1::Generate()
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Show imported melody
 		cc_len = cantus_len[i];
+		cc_tempo = cantus_tempo[i];
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		ScanCantus(&(cantus[i]), 0, 0);
 		// Check if cantus was shown
@@ -253,8 +254,8 @@ void CGenCA1::Generate()
 							for (int g = 0; g < cc_len[z]; g++) {
 								lining[pos + g][0] = 1;
 							}
-							pos += cc_len[z];
 						}
+						pos += cc_len[z];
 					}
 					// Go forward
 					step += real_len + 1;

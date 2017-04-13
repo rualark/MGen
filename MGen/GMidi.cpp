@@ -88,13 +88,13 @@ void CGMidi::LoadMidi(CString path)
 			if (mev->isTempo()) {
 				int pos = round(mev->tick / (double)tpc);
 				// Check alignment
-				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
+				//if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
 					//CString* st = new CString;
 					//st->Format("Tempo not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s", mev->tick, tpc, midifile_tpq_mul, pos, path);
 					//WriteLog(1, st);
 					//warning_loadmidi_align++;
-				}
-				if (pos >= t_allocated) ResizeVectors(t_allocated * 2);
+				//}
+				if (pos >= t_allocated) ResizeVectors(max(t_allocated * 2, pos + 1));
 				tempo[pos] = mev->getTempoBPM() * midifile_in_mul;
 				if (pos > last_step) last_step = pos;
 			}
@@ -138,7 +138,7 @@ void CGMidi::LoadMidi(CString path)
 					nlen = 255;
 				}
 				if (nlen < 1) nlen = 1;
-				if (pos + nlen >= t_allocated) ResizeVectors(t_allocated * 2);
+				if (pos + nlen >= t_allocated) ResizeVectors(max(pos + nlen, t_allocated * 2));
 				// Search for last note
 				if ((pos > 0) && (note[pos - 1][v] == 0)) {
 					int last_pause = pos - 1;
@@ -214,12 +214,37 @@ void CGMidi::LoadCantus(CString path)
 	midifile.absoluteTicks();
 
 	int tpq = midifile.getTicksPerQuarterNote();
-	int tpc = (double)tpq / (double)2 / (double)midifile_in_mul; // ticks per croche
+	// ticks per croche
+	int tpc = (double)tpq / (double)2 / (double)midifile_in_mul; 
+
+	vector <double> tempo2;
+	long tempo_count = 0;
+	int last_step = 0;
+	// Load tempo
+	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		for (int i = 0; i < midifile[track].size(); i++) {
+			MidiEvent* mev = &midifile[track][i];
+			int pos = round(mev->tick / (double)tpc);
+			if (pos >= tempo_count) {
+				tempo_count = pos + 1;
+				tempo2.resize(tempo_count);
+			}
+			if (mev->isTempo()) {
+				tempo2[pos] = mev->getTempoBPM() * midifile_in_mul;
+			}
+			if (pos > last_step) last_step = pos;
+		}
+	}
+	// Fill tempo
+	for (int z = 1; z < last_step; z++) {
+		if (tempo2[z] == 0) tempo2[z] = tempo2[z - 1];
+	}
 
 	int cid = 0;
 	int nid = 0;
 	vector <char> c;
 	vector <unsigned char> cl;
+	vector <double> ct;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		double last_tick = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {
@@ -236,6 +261,7 @@ void CGMidi::LoadCantus(CString path)
 					if (nid > 5) {
 						cantus.push_back(c);
 						cantus_len.push_back(cl);
+						cantus_tempo.push_back(ct);
 					}
 					// Go to next cantus
 					nid = 0;
@@ -245,11 +271,13 @@ void CGMidi::LoadCantus(CString path)
 					cid++;
 					c.clear();
 					cl.clear();
+					ct.clear();
 				}
 				// Add new note
 				if ((nid == 0) || (c[nid-1] != mev->getKeyNumber())) {
 					c.push_back(mev->getKeyNumber());
 					cl.push_back(nlen);
+					ct.push_back(tempo2[pos]);
 					nid++;
 				}
 				// Save last time
@@ -261,6 +289,7 @@ void CGMidi::LoadCantus(CString path)
 	if (nid > 5) {
 		cantus.push_back(c);
 		cantus_len.push_back(cl);
+		cantus_tempo.push_back(ct);
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());

@@ -1,7 +1,7 @@
 #pragma once
 #include "GMidi.h"
 
-#define MAX_FLAGS 39
+#define MAX_FLAGS 40
 #define MAX_WIND 50
 
 class CGenCF1 :
@@ -66,6 +66,7 @@ protected:
 	double rpenalty_min; // Minimum rules penalty for this scan
 	vector <double> rpenalty; // Penalty in terms of sum of flag severity
 	vector <unsigned char> cc_len; // Length of each cantus step
+	vector <double> cc_tempo; // Tempo of each cantus step
 	int real_len; // Total length of cantus in steps
 
 	// Load severity
