@@ -15,8 +15,6 @@ Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
 s_len = 6 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
-first_note = C5 # Starting note of each cantus
-last_diatonic_int = 0 # Diatonic interval between first and last note
 tempo = 100-130 # Tempo range
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)

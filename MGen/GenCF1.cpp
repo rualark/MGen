@@ -79,7 +79,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "c_len", &c_len);
 	CheckVar(sN, sV, "s_len", &s_len);
 	LoadNote(sN, sV, "first_note", &first_note);
-	CheckVar(sN, sV, "last_diatonic_int", &last_diatonic_int);
+	LoadNote(sN, sV, "last_note", &last_note);
 	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
 	CheckVar(sN, sV, "max_repeat_mul", &max_repeat_mul);
 	CheckVar(sN, sV, "max_smooth_direct", &max_smooth_direct);
@@ -285,7 +285,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		ctonic = first_note;
 		// Set first and last notes
 		c[0] = 0;
-		c[c_len - 1] = last_diatonic_int;
+		c[c_len - 1] = last_note - first_note;
 		// Set middle notes to minimum
 		FillCantus(c, 1, c_len-1, -max_interval);
 		if (random_seed)
