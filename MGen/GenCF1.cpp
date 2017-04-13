@@ -415,6 +415,11 @@ check:
 		if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, ep2 - 1);
 		if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, ep2 - 1);
 		if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
+		// Calculate chromatic positions
+		for (int i = 0; i < ep2; i++) {
+			// Negative eight octaves reserve
+			cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
+		}
 		for (int i = 0; i < ep2 - 1; i++) {
 			// Tritone prohibit
 			if ((pc[i+1] == 6 && pc[i] == 3) || (pc[i+1] == 3 && pc[i] == 6)) {
@@ -434,7 +439,8 @@ check:
 				// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
 			}
 			// Sept prohibit
-			if (abs(c[i + 1] - c[i]) == 6) FLAG(1, i);
+			if (abs(cc[i + 1] - cc[i]) == 10) FLAG(1, i)
+			else if (abs(cc[i + 1] - cc[i]) == 11) FLAG(39, i);
 			// Find all leaps
 			leap[i] = 0;
 			smooth[i] = 0;
@@ -741,11 +747,6 @@ check:
 		}
 		// Accept cantus
 		accepted++;
-		// Calculate chromatic positions
-		for (int i = 0; i < ep2; i++) {
-			// Negative eight octaves reserve
-			cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
-		}
 		if (use_matrix == 1) {
 			LogCantus(c);
 			SaveCantus();
@@ -971,7 +972,21 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 			coff[pos + i][v] = i;
 			if (x < real_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
 			else dyn[pos + i][v] = 60 + 40 * (real_len - pos - i + step) / real_len + 20 * rand2() / RAND_MAX;
-			tempo[pos + i] = cc_tempo[x];
+			// Assign source tempo if exists
+			if (cc_tempo[x]) {
+				tempo[pos + i] = cc_tempo[x];
+			}
+			// Generate tempo if no source
+			else {
+				if (pos + i == 0) {
+					tempo[pos + i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
+				}
+				else {
+					tempo[pos + i] = tempo[pos + i - 1] + randbw(-1, 1);
+					if (tempo[pos + i] > max_tempo) tempo[pos + i] = 2 * max_tempo - tempo[pos + i];
+					if (tempo[pos + i] < min_tempo) tempo[pos + i] = 2 * min_tempo - tempo[pos + i];
+				}
+			}
 		}
 		pos += cc_len[x];
 	}
@@ -1046,6 +1061,7 @@ void CGenCF1::Generate()
 	InitCantus();
 	// Set uniform length
 	cc_len.resize(c_len);
+	cc_tempo.resize(c_len);
 	real_len = c_len;
 	for (int i = 0; i < c_len; i++) cc_len[i] = 1;
 	ScanCantus(0, 0, 0);
