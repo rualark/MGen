@@ -218,7 +218,7 @@ CString CGLib::GetNoteName(int n)
 	return NoteName[n % 12] + st;
 }
 
-int CGLib::GetNoteI(CString st)
+int CGLib::GetNoteI(CString &st)
 {
 	if (isdigit(st[0])) {
 		return atoi(st);
@@ -249,7 +249,35 @@ int CGLib::GetNoteI(CString st)
 			if (nid > -1)	est->Format("Error parsing note name %s: not found octave indicator after note. Correct format examples: C#2 or C3", st);
 			else est->Format("Error parsing note name %s: note symbol not recognized. Correct format examples: C#2 or C3", st);
 			WriteLog(1, est);
+			return -1;
 		}
+	}
+}
+
+// Get pith class index from note name
+int CGLib::GetPC(CString &st)
+{
+	int nid = -1;
+	for (int i = 0; i < 12; i++) {
+		if (NoteName[i] == st) {
+			nid = i;
+			break;
+		}
+		if (NoteName2[i] == st) {
+			nid = i;
+			break;
+		}
+	}
+	if (nid > -1) {
+		//CString* est = new CString;
+		//est->Format("Converted pitch class name %s to %d", st, nid);
+		//WriteLog(0, est);
+		return nid;
+	}
+	else {
+		CString* est = new CString;
+		est->Format("Error parsing pitch class name %s: note symbol not recognized. Correct format examples: C# or C", st);
+		WriteLog(1, est);
 	}
 }
 

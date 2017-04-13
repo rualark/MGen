@@ -97,7 +97,8 @@ public:
 	static CString bname_from_path(CString path);
 	static CString dir_from_path(CString path);
 	static CString GetNoteName(int n);
-	static int GetNoteI(CString st);
+	static int GetNoteI(CString &st);
+	static int GetPC(CString &st);
 	static int GetInstrumentI(CString st);
 
 protected:

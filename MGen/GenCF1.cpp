@@ -99,6 +99,14 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
+	// Load tonic
+	if (*sN == "key") {
+		if (sV->Right(1) == "m") {
+			*sV = sV->Left(sV->GetLength() - 1);
+			minor = 1;
+		}
+		tonic = GetPC(*sV);
+	}
 	// Load accept
 	CString st;
 	for (int i = 0; i < MAX_FLAGS; i++) {
