@@ -378,7 +378,7 @@ check:
 				tcount = 0;
 				wtcount++;
 			}
-			if ((pc[i] == 1) || (pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
+			if ((pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
 				if (wdcount == 4) FLAG(18, i - 1);
 				if (wdcount == 5) FLAG(19, i - 1);
 				if (wdcount > 5) FLAG(20, i - 1);
