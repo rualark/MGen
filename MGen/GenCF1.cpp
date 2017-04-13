@@ -202,11 +202,12 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	long long cycle = 0;
 	long long accepted2 = 0, accepted3 = 0;
+	int first_note_dia, first_note_oct;
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int wcount = 1; // Number of windows created
-	int sp1, sp2, ep1, ep2, p, tonic, pp;
+	int sp1, sp2, ep1, ep2, p, pp;
 	accepted = 0;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
@@ -217,9 +218,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		// Copy cantus
 		cc = *pcantus;
 		// Get diatonic steps from chromatic
-		ctonic = cc[c_len - 1]; // Chromatic tonic
+		//ctonic = cc[c_len - 1]; // Chromatic tonic
 		for (int i = 0; i < c_len; i++) {
-			c[i] = chrom_to_dia[(cc[i] + 132 - ctonic) % 12] + ((cc[i] + 132 - ctonic) / 12 - 11) * 7;
+			//c[i] = chrom_to_dia[(cc[i] + 132 - ctonic) % 12] + ((cc[i] + 132 - ctonic) / 12 - 11) * 7;
 			// Save value for future use;
 			c2[i] = c[i];
 			// Check duplicate
@@ -289,11 +290,11 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			if (accept[i]) break;
 			if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
 		}
-		tonic = 0;
-		ctonic = first_note;
+		first_note_dia = chrom_to_dia[first_note % 12 - tonic];
+		first_note_oct = first_note / 12;
 		// Set first and last notes
 		c[0] = 0;
-		c[c_len - 1] = last_note - first_note;
+		c[c_len - 1] = chrom_to_dia[(last_note + 132 - first_note) % 12] + ((last_note + 132 - first_note) / 12 - 11) * 7;
 		// Set middle notes to minimum
 		FillCantus(c, 1, c_len-1, -max_interval);
 		if (random_seed)
@@ -353,7 +354,7 @@ check:
 		}
 		for (int i = 0; i < ep2; i++) {
 			// Calculate pitch class
-			pc[i] = (c[i] + 56) % 7;
+			pc[i] = (c[i] + 56 + first_note_dia) % 7;
 		}
 		// Wrong second to last note
 		if (ep2 > c_len - 2)
@@ -426,7 +427,7 @@ check:
 		// Calculate chromatic positions
 		for (int i = 0; i < ep2; i++) {
 			// Negative eight octaves reserve
-			cc[i] = dia_to_chrom[(c[i] + 56) % 7] + (((c[i] + 56) / 7) - 8) * 12 + ctonic;
+			cc[i] = dia_to_chrom[(c[i] + 56 + first_note_dia) % 7] + (((c[i] + 56 + first_note_dia) / 7) - 8 + first_note_oct) * 12 + tonic;
 		}
 		for (int i = 0; i < ep2 - 1; i++) {
 			// Tritone prohibit

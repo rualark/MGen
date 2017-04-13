@@ -63,7 +63,6 @@ protected:
 	vector<char> cc; // Cantus chromatic
 	vector<vector<unsigned char>> nflags; // Note flags
 	vector<unsigned char> nflagsc; // Note flags count
-	int ctonic; // Chromatic tonic
 	double rpenalty_cur = 0; // Rules penalty
 	double rpenalty_min; // Minimum rules penalty for this scan
 	vector <double> rpenalty; // Penalty in terms of sum of flag severity
