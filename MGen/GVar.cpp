@@ -175,7 +175,11 @@ void CGVar::LoadConfig(CString fname)
 		st = pch;
 		// Remove unneeded
 		pos = st.Find("#");
-		if (pos != -1) st = st.Left(pos);
+		// Check if it is first symbol
+		if (pos == 0)	st = st.Left(pos);
+		pos = st.Find(" #");
+		// Check if it is after space
+		if (pos > -1)	st = st.Left(pos);
 		st.Trim();
 		pos = st.Find("=");
 		if (pos != -1) {
@@ -224,7 +228,11 @@ void CGVar::LoadInstruments()
 		st = pch;
 		// Remove comments
 		pos = st.Find("#");
-		if (pos != -1) st = st.Left(pos);
+		// Check if it is first symbol
+		if (pos == 0)	st = st.Left(pos);
+		pos = st.Find(" #");
+		// Check if it is after space
+		if (pos > -1)	st = st.Left(pos);
 		st.Trim();
 		// Find equals
 		pos = st.Find("=");

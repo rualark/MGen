@@ -220,12 +220,13 @@ CString CGLib::GetNoteName(int n)
 
 int CGLib::GetNoteI(CString &st)
 {
+	st.Replace("'", "");
 	if (isdigit(st[0])) {
 		return atoi(st);
 	}
 	else {
 		int nid = -1;
-		int pos = 2;
+		int pos = st.GetLength()-1;
 		if (isdigit(st[1])) pos = 1;
 		CString nname = st.Left(pos);
 		for (int i = 0; i < 12; i++) {
@@ -257,6 +258,7 @@ int CGLib::GetNoteI(CString &st)
 // Get pith class index from note name
 int CGLib::GetPC(CString &st)
 {
+	st.Replace("'", "");
 	int nid = -1;
 	for (int i = 0; i < 12; i++) {
 		if (NoteName[i] == st) {
