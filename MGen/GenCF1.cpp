@@ -9,10 +9,10 @@
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 // Convert chromatic to diatonic
-#define CC_C(note) (chrom_to_dia[note % 12] + (note / 12) * 7)
+#define CC_C(note) (chrom_to_dia[(note + 12 - tonic) % 12] + ((note + 12 - tonic) / 12 - 1) * 7)
 
-// Convert zero-first diatonic to chromatic
-#define C_CC(note) (dia_to_chrom[note % 7] + (note / 7) * 12)
+// Convert diatonic to chromatic
+#define C_CC(note) (dia_to_chrom[note % 7] + (note / 7) * 12 + tonic)
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -312,7 +312,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		c[c_len - 1] = CC_C(last_note);
 		// Set pitch limits
 		min_c = c[0] - max_interval;
-		max_c = c[0] - max_interval;
+		max_c = c[0] + max_interval;
 		// Set middle notes to minimum
 		FillCantus(c, 1, c_len-1, min_c);
 		if (random_seed)
