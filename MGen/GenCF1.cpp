@@ -5,7 +5,17 @@
 #define new DEBUG_NEW 
 #endif
 
+// Report violation
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
+
+// Convert chromatic to diatonic
+#define CC_D(note) (chrom_to_dia[(note + 132 - tonic) % 12] + ((note + 132 - tonic) / 12 - 11) * 7)
+
+// Convert chromatic to zero-first diatonic
+#define CC_C(note) (CC_D(note) - CC_D(first_note))
+
+// Convert zero-first diatonic to chromatic
+#define C_CC(note) dia_to_chrom[(note + 56 + first_note_dia) % 7] + (((note + 56 + first_note_dia) / 7) - 8 + first_note_oct) * 12 + tonic
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -218,9 +228,13 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		// Copy cantus
 		cc = *pcantus;
 		// Get diatonic steps from chromatic
-		//ctonic = cc[c_len - 1]; // Chromatic tonic
+		first_note = cc[0];
+		last_note = cc[c_len - 1];
+		tonic = last_note % 12;
+		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic) % 12];
+		first_note_oct = first_note / 12;
 		for (int i = 0; i < c_len; i++) {
-			//c[i] = chrom_to_dia[(cc[i] + 132 - ctonic) % 12] + ((cc[i] + 132 - ctonic) / 12 - 11) * 7;
+			c[i] = CC_C(cc[i]);
 			// Save value for future use;
 			c2[i] = c[i];
 			// Check duplicate
@@ -290,11 +304,11 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			if (accept[i]) break;
 			if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
 		}
-		first_note_dia = chrom_to_dia[first_note % 12 - tonic];
+		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic) % 12];
 		first_note_oct = first_note / 12;
 		// Set first and last notes
 		c[0] = 0;
-		c[c_len - 1] = chrom_to_dia[(last_note + 132 - first_note) % 12] + ((last_note + 132 - first_note) / 12 - 11) * 7;
+		c[c_len - 1] = CC_C(last_note);
 		// Set middle notes to minimum
 		FillCantus(c, 1, c_len-1, -max_interval);
 		if (random_seed)
@@ -427,7 +441,7 @@ check:
 		// Calculate chromatic positions
 		for (int i = 0; i < ep2; i++) {
 			// Negative eight octaves reserve
-			cc[i] = dia_to_chrom[(c[i] + 56 + first_note_dia) % 7] + (((c[i] + 56 + first_note_dia) / 7) - 8 + first_note_oct) * 12 + tonic;
+			cc[i] = C_CC(c[i]);
 		}
 		for (int i = 0; i < ep2 - 1; i++) {
 			// Tritone prohibit
