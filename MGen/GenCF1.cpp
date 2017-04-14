@@ -9,13 +9,10 @@
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 // Convert chromatic to diatonic
-#define CC_D(note) (chrom_to_dia[(note + 132 - tonic) % 12] + ((note + 132 - tonic) / 12 - 11) * 7)
-
-// Convert chromatic to zero-first diatonic
-#define CC_C(note) (CC_D(note) - CC_D(first_note))
+#define CC_C(note) (chrom_to_dia[note % 12] + (note / 12) * 7)
 
 // Convert zero-first diatonic to chromatic
-#define C_CC(note) dia_to_chrom[(note + 56 + first_note_dia) % 7] + (((note + 56 + first_note_dia) / 7) - 8 + first_note_oct) * 12 + tonic
+#define C_CC(note) (dia_to_chrom[note % 7] + (note / 7) * 12)
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -198,9 +195,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	vector<char> smooth(c_len);
 	vector<int> wpos1(c_len / s_len + 1);
 	vector<int> wpos2(c_len / s_len + 1);
-	vector<int> nstat(max_interval * 2 + 1);
-	vector<int> nstat2(max_interval * 2 + 1);
-	vector<int> nstat3(max_interval * 2 + 1);
+	vector<int> nstat(MAX_NOTE);
+	vector<int> nstat2(MAX_NOTE);
+	vector<int> nstat3(MAX_NOTE);
 	vector<long long> wscans(MAX_WIND); // number of full scans per window
 	vector<long long> accepted4(MAX_WIND); // number of accepted canti per window
 	vector<long long> accepted5(MAX_WIND); // number of canti with neede flags per window
@@ -218,6 +215,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int wcount = 1; // Number of windows created
 	int sp1, sp2, ep1, ep2, p, pp;
+	int min_c, max_c;
 	accepted = 0;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
@@ -231,6 +229,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		first_note = cc[0];
 		last_note = cc[c_len - 1];
 		tonic = last_note % 12;
+		minor = 0;
 		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic) % 12];
 		first_note_oct = first_note / 12;
 		for (int i = 0; i < c_len; i++) {
@@ -240,7 +239,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			// Check duplicate
 			if (i > 0 && c[i] == c[i - 1]) return;
 		}
-		tonic = c[c_len - 1]; // Diatonic tonic
+		// Set pitch limits
+		min_c = c[0] - max_interval;
+		max_c = c[0] + max_interval;
 		sp1 = 1;
 		sp2 = c_len - 1;
 		ep1 = sp1;
@@ -277,7 +278,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 				ep2 = smap[sp2 - 1] + 1;
 				if (sp2 == smatrixc) ep2 = c_len;
 				// Clear scan steps
-				FillCantusMap(c, smap, 0, smatrixc, -max_interval);
+				FillCantusMap(c, smap, 0, smatrixc, min_c);
 				// Can skip flags - full scan must remove all flags
 			}
 			// For sliding windows algorithm evaluate whole melody
@@ -286,7 +287,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 				// Cannot skip flags - need them for penalty if cannot remove all flags
 				skip_flags = 0;
 				// Clear scan steps of current window
-				FillCantusMap(c, smap, sp1, sp2, -max_interval);
+				FillCantusMap(c, smap, sp1, sp2, min_c);
 			}
 			// Minimal position in array to cycle
 			pp = sp2 - 1;
@@ -307,12 +308,15 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic) % 12];
 		first_note_oct = first_note / 12;
 		// Set first and last notes
-		c[0] = 0;
+		c[0] = CC_C(first_note);
 		c[c_len - 1] = CC_C(last_note);
+		// Set pitch limits
+		min_c = c[0] - max_interval;
+		max_c = c[0] - max_interval;
 		// Set middle notes to minimum
-		FillCantus(c, 1, c_len-1, -max_interval);
+		FillCantus(c, 1, c_len-1, min_c);
 		if (random_seed)
-			for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(-max_interval, max_interval);
+			for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(min_c, max_c);
 		sp1 = 1; // Start of search window
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > c_len - 1) sp2 = c_len - 1;
@@ -344,8 +348,8 @@ check:
 		}
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		// Count limits
-		nmin = max_interval;
-		nmax = -max_interval;
+		nmin = MAX_NOTE;
+		nmax = 0;
 		for (int i = 0; i < ep2; i++) {
 			if (c[i] < nmin) nmin = c[i];
 			if (c[i] > nmax) nmax = c[i];
@@ -368,7 +372,7 @@ check:
 		}
 		for (int i = 0; i < ep2; i++) {
 			// Calculate pitch class
-			pc[i] = (c[i] + 56 + first_note_dia) % 7;
+			pc[i] = c[i] % 7;
 		}
 		// Wrong second to last note
 		if (ep2 > c_len - 2)
@@ -440,7 +444,6 @@ check:
 		if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
 		// Calculate chromatic positions
 		for (int i = 0; i < ep2; i++) {
-			// Negative eight octaves reserve
 			cc[i] = C_CC(c[i]);
 		}
 		for (int i = 0; i < ep2 - 1; i++) {
@@ -789,9 +792,9 @@ check:
 		}
 	skip:
 		while (true) {
-			if (c[p] < max_interval) break;
+			if (c[p] < max_c) break;
 			// If current element is max, make it minimum
-			c[p] = -max_interval;
+			c[p] = min_c;
 			// Move left one element
 			if (use_matrix) {
 				if (pp == sp1) {
@@ -824,7 +827,7 @@ check:
 				// Restore previous step after sliding window
 				c[smap[sp1 - 1]] = c2[smap[sp1 - 1]];
 				// Clear scan steps of current window
-				FillCantusMap(c, smap, sp1, sp2, -max_interval);
+				FillCantusMap(c, smap, sp1, sp2, min_c);
 			}
 			// Finish if this is last variant in first window and not SWA
 			else if ((p == 1) || (wid == 0)) {
@@ -838,7 +841,7 @@ check:
 			}
 			if (use_matrix == 1) {
 				// Clear current window
-				FillCantusMap(c, smap, sp1, sp2, -max_interval);
+				FillCantusMap(c, smap, sp1, sp2, min_c);
 				// If this is not first window, go to previous window
 				if (wid > 0) wid--;
 				sp1 = wpos1[wid];
@@ -854,7 +857,7 @@ check:
 			// Normal full scan
 			else if (!use_matrix) {
 				// Clear current window
-				FillCantus(c, sp1, sp2, -max_interval);
+				FillCantus(c, sp1, sp2, min_c);
 				// If this is not first window, go to previous window
 				if (wid > 0) wid--;
 				sp1 = wpos1[wid];

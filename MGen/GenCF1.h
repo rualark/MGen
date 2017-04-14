@@ -3,6 +3,7 @@
 
 #define MAX_FLAGS 40
 #define MAX_WIND 50
+#define MAX_NOTE 127
 
 class CGenCF1 :
 	public CGMidi
