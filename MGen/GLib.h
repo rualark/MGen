@@ -122,6 +122,7 @@ public:
 
 public:
 	// Thread interface
+	static int debug_level;
 	static HWND m_hWnd;
 	static UINT WM_DEBUG_MSG;
 	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)

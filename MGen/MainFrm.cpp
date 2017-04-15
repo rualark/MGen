@@ -758,10 +758,12 @@ void CMainFrame::LoadSettings()
 			}
 			CGLib::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 			CGLib::CheckVar(&st2, &st3, "step_dyn", &m_step_dyn);
+			CGLib::CheckVar(&st2, &st3, "debug_level", &m_debug_level);
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
 	}
+	CGLib::debug_level = m_debug_level;
 	fs.close();
 }
 
@@ -800,6 +802,8 @@ void CMainFrame::SaveSettings()
 	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
 	fs << st;
 	st.Format("Step_dyn = %d # Show dynamics with note opacity for each step of note.Disable for slower computers.\n", m_step_dyn);
+	fs << st;
+	st.Format("Debug_level = %d # Increase to show more debug logs\n", m_debug_level);
 	fs << st;
 	//st.Format("Midi_program = %s # Path to program to use to open MIDI file. Leave blank to use default OS file association.\n", midi_program);
 	//fs << st;
@@ -876,15 +880,16 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 
 	if (pGen == NULL) return 1;   // if Object is not valid  
 
-	//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread started"));
+	if (pGen->debug_level > 1 && pGen->can_send_log) 
+		::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread started"));
 	pGen->Generate();
 	//Sleep(2000);
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 	//pGen->time_stopped = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	pGen->time_stopped = TIME_PROC(TIME_INFO);
 
-	//if (pGen->can_send_log)
-		//::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
+	if (pGen->debug_level > 1 && pGen->can_send_log)
+		::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
 	return 0;   // thread completed successfully 
 }
 

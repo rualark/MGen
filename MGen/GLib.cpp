@@ -7,6 +7,7 @@
 
 int CGLib::can_send_log = 1;
 HWND CGLib::m_hWnd = 0;
+int CGLib::debug_level = 0;
 UINT CGLib::WM_DEBUG_MSG = 0;
 vector<vector<CString>> CGLib::logs;
 
