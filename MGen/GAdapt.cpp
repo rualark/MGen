@@ -180,7 +180,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
 	if (i > 0) {
 		int lpi = pi; // Local previous id
 									// Cycle through all notes backwards
-		while (true) {
+		while (lpi >= 0) {
 			if (note[lpi][v] == note[i][v]) {
 				int lpei = lpi + len[lpi][v] - 1;
 				if ((stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v] < 1) {

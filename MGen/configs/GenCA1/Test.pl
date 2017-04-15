@@ -1,5 +1,5 @@
 # Analysis
-Midi_file = load\test-melody4.mid # Path and file name of imported midi file
+Midi_file = load\known-cf-maj.mid # Path and file name of imported midi file
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation

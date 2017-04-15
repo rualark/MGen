@@ -182,7 +182,11 @@ void CMainFrame::WriteLog(int log, CString st)
 {
 	COutputList* pOL=0;
 	if (log == 0) pOL = &m_wndOutput.m_wndOutputDebug;
-	if (log == 1) pOL = &m_wndOutput.m_wndOutputWarn;
+	if (log == 1) {
+		pOL = &m_wndOutput.m_wndOutputWarn;
+		CGLib::AppendLineToFile("warning.log", 
+			CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st + "\n");
+	}
 	if (log == 2) pOL = &m_wndOutput.m_wndOutputPerf;
 	if (log == 3) pOL = &m_wndOutput.m_wndOutputAlgo;
 	if (log == 4) pOL = &m_wndOutput.m_wndOutputMidi;
