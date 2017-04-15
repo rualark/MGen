@@ -161,6 +161,7 @@ void CGenCA1::Generate()
 			v_cnt = 1;
 			// Go forward
 			Adapt(step - real_len - 1, step - 1);
+			ValidateVectors(t_generated, step - 1);
 			t_generated = step;
 			t_sent = t_generated;
 			continue;
@@ -356,6 +357,7 @@ void CGenCA1::Generate()
 					// Go forward
 					step += real_len + 1;
 					Adapt(step - real_len - 1, step - 1);
+					ValidateVectors(t_generated, step - 1);
 					t_generated = step;
 					t_sent = t_generated;
 				}
@@ -370,6 +372,7 @@ void CGenCA1::Generate()
 			// Go forward
 			step += real_len + 1;
 			Adapt(step - real_len - 1, step - 1);
+			ValidateVectors(t_generated, step - 1);
 			t_generated = step;
 			t_sent = t_generated;
 		}
