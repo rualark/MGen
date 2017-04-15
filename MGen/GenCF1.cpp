@@ -55,6 +55,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"Too wide range", // 37
 	"Too tight range", // 38
 	"Major seventh", // 39
+	"First steps without C", // 40
+	"First steps without CEG", // 41
 };
 
 const Color FlagColor[] = {
@@ -102,6 +104,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "random_seed", &random_seed);
 	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
 	CheckVar(sN, sV, "shuffle", &shuffle);
+	CheckVar(sN, sV, "first_steps_tonic", &first_steps_tonic);
 	CheckVar(sN, sV, "show_severity", &show_severity);
 	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
 	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
@@ -647,6 +650,25 @@ check:
 				culm_step = i;
 				if (culm_sum > 1) FLAG(12, i);
 			}
+		}
+		// Prohibit tonic miss at start
+		ok = 0;
+		ok2 = 0;
+		for (int i = 0; i < first_steps_tonic; i++) {
+			// Detect C note
+			if (pc[i] == 0) {
+				ok = 1;
+				break;
+			}
+			// Detect EG notes
+			if (pc[i] == 2 || pc[i] == 4) ok2 = 1;
+		}
+		// No C ?
+		if (!ok) {
+			// No EG ?
+			if (!ok2) FLAG(41, 0)
+			// No C, but we have EG
+			else FLAG(40, 0);
 		}
 		// Prohibit culminations at last steps
 		if (culm_step > c_len - 4) FLAG(21, culm_step);

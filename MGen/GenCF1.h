@@ -1,7 +1,7 @@
 #pragma once
 #include "GMidi.h"
 
-#define MAX_FLAGS 40
+#define MAX_FLAGS 42
 #define MAX_WIND 50
 #define MAX_NOTE 127
 
@@ -43,6 +43,7 @@ protected:
 	int random_key = 0; // Allow CF1 to select random key and CA1 to select any of possible keys regardless of last note
 	int min_tempo = 110;
 	int max_tempo = 120;
+	int first_steps_tonic = 3; // Number of first steps, which must contain tonic note
 	double random_choose = 100; // Percent of accepted canti to show and play
 	int random_seed = 0; // Seed melody with random numbers. This ensures giving different results if generation is very slow.
 	int calculate_correlation = 0; // Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
