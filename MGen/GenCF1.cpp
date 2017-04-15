@@ -814,7 +814,7 @@ check:
 		// Accept cantus
 		accepted++;
 		if (use_matrix == 1) {
-			LogCantus(c);
+			//LogCantus(c);
 			SaveCantus();
 		}
 		else if (use_matrix == 2) {
