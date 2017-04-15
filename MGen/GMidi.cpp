@@ -62,6 +62,12 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 void CGMidi::LoadMidi(CString path)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	if (!fileExists(path)) {
+		CString* est = new CString;
+		est->Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString* est = new CString;
@@ -200,6 +206,12 @@ void CGMidi::LoadMidi(CString path)
 void CGMidi::LoadCantus(CString path)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	if (!fileExists(path)) {
+		CString* est = new CString;
+		est->Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString* est = new CString;
