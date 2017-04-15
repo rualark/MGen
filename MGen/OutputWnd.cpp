@@ -232,8 +232,10 @@ void COutputWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void COutputList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	CFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CFrameWndEx, GetTopLevelFrame());
-	((CMGenView*)(pMainFrame->GetActiveView()))->OnKeyDown(nChar, nRepCnt, nFlags);
+	if (nChar != VK_NEXT && nChar != VK_PRIOR && nChar != VK_RIGHT && nChar != VK_LEFT && nChar != VK_END && nChar != VK_HOME) {
+		CFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CFrameWndEx, GetTopLevelFrame());
+		((CMGenView*)(pMainFrame->GetActiveView()))->OnKeyDown(nChar, nRepCnt, nFlags);
+	}
 
 	CListBox::OnKeyDown(nChar, nRepCnt, nFlags);
 }
