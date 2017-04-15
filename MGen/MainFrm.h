@@ -93,6 +93,7 @@ public:
 
 // Operations
 public:
+	void ClearLogs();
 	void WriteLog(int log, CString st);
 	int GetMidiI();
 	void LoadAlgo();

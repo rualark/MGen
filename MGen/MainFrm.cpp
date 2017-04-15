@@ -370,6 +370,12 @@ void CMainFrame::OnButtonParams()
 	}
 }
 
+void CMainFrame::ClearLogs() {
+	m_wndOutput.m_wndOutputDebug.ResetContent();
+	m_wndOutput.m_wndOutputWarn.ResetContent();
+	m_wndOutput.m_wndOutputAlgo.ResetContent();
+}
+
 void CMainFrame::LoadResults(CString path) {
 	if (m_state_gen == 1) {
 		AfxMessageBox("Please stop generation before opening saved results");
@@ -406,6 +412,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		// Initialize MIDI
 		pGen->StopMIDI();
+		ClearLogs();
 		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 100, 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		pGen->InitRandom();
@@ -503,6 +510,7 @@ void CMainFrame::OnButtonGen()
 		// Clear note minimax
 		ng_min = 0;
 		ng_max = 0;
+		ClearLogs();
 		// Clear scroll
 		CSize DocSize(0, 0);
 		((CMGenView*)(GetActiveView()))->SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));

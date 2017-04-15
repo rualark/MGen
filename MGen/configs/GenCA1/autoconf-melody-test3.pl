@@ -23,6 +23,7 @@ first_note = C5 # Starting note of each cantus
 last_diatonic_int = 0 # Diatonic interval between first and last note
 tempo = 100-130 # Tempo range
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+random_key = 1 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
