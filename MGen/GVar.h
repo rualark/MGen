@@ -1,7 +1,8 @@
 #pragma once
 #include "GLib.h"
 
-#define MAX_WARN_LOADVECTORS 500
+#define MAX_WARN_LOADVECTORS 10
+#define MAX_WARN_VALID 10
 
 class CGVar :
 	public CGLib
@@ -20,6 +21,7 @@ public:
 
 	// Warnings
 	int warning_loadvectors = 0;
+	int warning_valid = 0;
 
 	// Data interface
 	int m_algo_id = -1; // Current algorithm id
@@ -120,6 +122,7 @@ public:
 	int adapt_enable = 1;
 
 protected:
+	void ValidateVectors(int step1, int step2);
 	// File operations
 	void SaveVector2C(ofstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveVector2Color(ofstream & fs, vector<vector<Color>>& v2D, int i);

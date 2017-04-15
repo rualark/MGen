@@ -578,6 +578,109 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 	CString* est = new CString;
 	est->Format("Loaded result music from folder %s in %d ms", dir, time_stop - time_start);
 	WriteLog(0, est);
+	ValidateVectors(0, t_generated - 1);
+}
+
+void CGVar::ValidateVectors(int step1, int step2) {
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString st;
+	// Check first step
+	if (!step1) for (int v = 0; v < v_cnt; v++) {
+		if (coff[0][v] && warning_valid < MAX_WARN_VALID) {
+			st.Format("Validation failed at step 0 voice %d: coff must be zero", v);
+			WriteLog(1, st);
+			warning_valid++;
+		}
+	}
+	for (int i = step1; i <= step2; i++) {
+		for (int v = 0; v < v_cnt; v++) {
+			if (i > 0) {
+				// Check len, pause and note do not change with coff > 0, while coff increases, poff increases, noff decreases
+				if (coff[i][v]) {
+					if (pause[i][v] != pause[i - 1][v] && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: pause change requires coff=0", i, v);
+						WriteLog(1, st);
+						warning_valid++;
+					}
+					if (note[i][v] != note[i - 1][v] && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: note change requires coff=0", i, v);
+						WriteLog(1, st);
+						warning_valid++;
+					}
+					if (len[i][v] != len[i - 1][v] && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: len change requires coff=0", i, v);
+						WriteLog(1, st);
+						warning_valid++;
+					}
+					if (coff[i][v] != coff[i - 1][v] + 1 && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: coff must increase by 1 each step inside note/pause", i, v);
+						WriteLog(1, st);
+						warning_valid++;
+					}
+					if (poff[i][v] != poff[i - 1][v] + 1 && i != coff[i][v] && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: poff must increase by 1 each step inside note/pause", i, v);
+						WriteLog(1, st);
+						warning_valid++;
+					}
+					if (noff[i][v] != noff[i - 1][v] - 1 && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: noff must decrease by 1 each step inside note/pause", i, v);
+						WriteLog(1, st);
+						warning_valid++;
+					}
+				}
+				// Check poff and noff point at correct positions
+				else {
+					if (noff[i - 1][v] != 1 && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: noff must equal 1 one step before next note/pause", i, v);
+						WriteLog(1, st);
+						warning_valid++;
+					}
+					if (poff[i][v] != len[i-1][v] && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: poff must len of previous note at first step of note/pause", i, v);
+						WriteLog(1, st);
+						warning_valid++;
+					}
+				}
+			}
+			// Check len is not zero
+			if (!len[i][v] && warning_valid < MAX_WARN_VALID) {
+				st.Format("Validation failed at step %d voice %d: len cannot be zero", i, v);
+				WriteLog(1, st);
+				warning_valid++;
+			}
+		}
+		// Check tempo is not zero
+		if (!tempo[i] && warning_valid < MAX_WARN_VALID) {
+			st.Format("Validation failed at step %d: tempo cannot be zero", i);
+			WriteLog(1, st);
+			warning_valid++;
+		}
+		// Check stime is not zero
+		if (!stime[i] && i > 0 && warning_valid < MAX_WARN_VALID) {
+			st.Format("Validation failed at step %d: stime can be zero only at first step", i);
+			WriteLog(1, st);
+			warning_valid++;
+		}
+		// Check etime is not zero
+		if (!stime[i] && i > 0 && warning_valid < MAX_WARN_VALID) {
+			st.Format("Validation failed at step %d: etime cannot be zero", i);
+			WriteLog(1, st);
+			warning_valid++;
+		}
+		// Check etime is greater than stime
+		if (etime[i] <= stime[i] && warning_valid < MAX_WARN_VALID) {
+			st.Format("Validation failed at step %d: etime must be greater than stime", i);
+			WriteLog(1, st);
+			warning_valid++;
+		}
+	}
+	// Count time
+	if (debug_level > 1) {
+		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		CString* est = new CString;
+		est->Format("Validated vectors steps from %d to %d in %d ms", step1, step2, time_stop - time_start);
+		WriteLog(0, est);
+	}
 }
 
 void CGVar::LoadResults(CString dir, CString fname)
@@ -688,7 +791,7 @@ void CGVar::CountOff(int step1, int step2)
 	for (int i = step1; i <= step2; i++) {
 		for (int v = 0; v < v_cnt; v++) {
 			noff[i][v] = len[i][v] - coff[i][v];
-			if (i - coff[i][v] - 1 >= 0) poff[i][v] = len[i - coff[i][v] - 1][v] - coff[i][v];
+			if (i - coff[i][v] - 1 >= 0) poff[i][v] = len[i - coff[i][v] - 1][v] + coff[i][v];
 			else poff[i][v] = 0;
 		}
 	}
