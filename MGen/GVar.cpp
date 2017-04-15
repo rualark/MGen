@@ -499,6 +499,38 @@ void CGVar::LoadResults(CString dir, CString fname)
 		if (st != "") WriteLog(3, st);
 	}
 	fs.close();
+	// Load logs
+	path = dir + "\\debug.log";
+	if (!fileExists(path)) {
+		CString* est = new CString;
+		est->Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	fs.open(path);
+	pos = 0;
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st = pch;
+		if (st != "") WriteLog(0, st);
+	}
+	fs.close();
+	// Load logs
+	path = dir + "\\warning.log";
+	if (!fileExists(path)) {
+		CString* est = new CString;
+		est->Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	fs.open(path);
+	pos = 0;
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st = pch;
+		if (st != "") WriteLog(1, st);
+	}
+	fs.close();
 	// Load strings
 	path = dir + "\\" + fname + ".txt";
 	if (!fileExists(path)) {
