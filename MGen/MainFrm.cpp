@@ -406,7 +406,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		// Initialize MIDI
 		pGen->StopMIDI();
-		pGen->StartMIDI(GetMidiI(), 100, 0);
+		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 100, 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		pGen->InitRandom();
 		// Load results
@@ -524,7 +524,7 @@ void CMainFrame::OnButtonGen()
 		pGen->InitVectors();
 		// Initialize MIDI
 		pGen->StopMIDI();
-		pGen->StartMIDI(GetMidiI(), 100, 0);
+		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 100, 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Start generation
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
@@ -532,7 +532,7 @@ void CMainFrame::OnButtonGen()
 		m_state_play = 0;
 		// Start timer
 		SetTimer(TIMER1, m_view_timer, NULL);
-		if (pGen->shuffle == 0) SetTimer(TIMER2, 1000, NULL);
+		if (pGen->shuffle == 0 && m_play_enabled) SetTimer(TIMER2, 1000, NULL);
 	}
 }
 
@@ -759,11 +759,13 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 			CGLib::CheckVar(&st2, &st3, "step_dyn", &m_step_dyn);
 			CGLib::CheckVar(&st2, &st3, "debug_level", &m_debug_level);
+			CGLib::CheckVar(&st2, &st3, "playback_enabled", &m_play_enabled);
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
 	}
 	CGLib::debug_level = m_debug_level;
+	CGLib::play_enabled = m_play_enabled;
 	fs.close();
 }
 
@@ -804,6 +806,8 @@ void CMainFrame::SaveSettings()
 	st.Format("Step_dyn = %d # Show dynamics with note opacity for each step of note.Disable for slower computers.\n", m_step_dyn);
 	fs << st;
 	st.Format("Debug_level = %d # Increase to show more debug logs\n", m_debug_level);
+	fs << st;
+	st.Format("Playback_enabled = %d # Disable playback to MIDI port by setting this to 0\n", m_play_enabled);
 	fs << st;
 	//st.Format("Midi_program = %s # Path to program to use to open MIDI file. Leave blank to use default OS file association.\n", midi_program);
 	//fs << st;
@@ -962,6 +966,7 @@ void CMainFrame::StartPlay(int from)
 {
 	if (pGen->m_pspeed != pGen->adapt_pspeed) pGen->Adapt(0, pGen->t_generated - 1);
 	pGen->StopMIDI();
+	if (!m_play_enabled) return;
 	pGen->StartMIDI(GetMidiI(), 100, from);
 	m_state_play = 1;
 	// Start timer

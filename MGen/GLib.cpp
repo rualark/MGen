@@ -7,7 +7,8 @@
 
 int CGLib::can_send_log = 1;
 HWND CGLib::m_hWnd = 0;
-int CGLib::debug_level = 0;
+int CGLib::debug_level = 1;
+int CGLib::play_enabled = 1;
 UINT CGLib::WM_DEBUG_MSG = 0;
 vector<vector<CString>> CGLib::logs;
 
