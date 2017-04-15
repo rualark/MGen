@@ -370,6 +370,10 @@ void CGVar::SaveResults(CString dir, CString fname)
 			SaveVector2C(fs, lining, i);
 		}
 		SaveVector(fs, linecolor);
+		// Added in version 1.6.1
+		for (size_t i = 0; i < t_generated; i++) {
+			SaveVector2C(fs, tonic, i);
+		}
 	}
 	fs.close();
 	// Save strings
@@ -569,6 +573,12 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 				LoadVector2C(fs, lining, i);
 			}
 			LoadVector(fs, linecolor);
+		}
+		// Added in version 1.6.1
+		if (fs.peek() != EOF) {
+			for (size_t i = 0; i < t_generated; i++) {
+				LoadVector2C(fs, tonic, i);
+			}
 		}
 	}
 	CountOff(0, t_generated - 1);
