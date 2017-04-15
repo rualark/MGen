@@ -87,13 +87,13 @@ void CGenCF1::GetCantusKey(vector <char> &cc)
 	for (int i = 0; i < 12; i++) {
 		key_miss[i] = 0;
 		// Cycle all notes
-		for (int x = 0; x < c_len; x++) {
+		for (int x = 0; x < cc.size(); x++) {
 			if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
 		}
 	}
 	// Find minimum miss
 	int min_key = 0;
-	int min_miss = c_len;
+	int min_miss = cc.size();
 	for (int i = 0; i < 12; i++) {
 		if (key_miss[i] < min_miss) {
 			min_miss = key_miss[i];
@@ -112,7 +112,7 @@ void CGenCF1::GetCantusKey(vector <char> &cc)
 	if (key_count > 1) {
 		CString st;
 		CString* est = new CString;
-		for (int x = 0; x < min(c_len, 30); x++) {
+		for (int x = 0; x < min(cc.size(), 30); x++) {
 			st += NoteName[cc[x] % 12];
 			st += " ";
 		}
