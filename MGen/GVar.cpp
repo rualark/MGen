@@ -678,7 +678,7 @@ void CGVar::ValidateVectors(int step1, int step2) {
 	if (debug_level > 1) {
 		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		CString* est = new CString;
-		est->Format("Validated vectors steps from %d to %d in %d ms", step1, step2, time_stop - time_start);
+		est->Format("Validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
 		WriteLog(0, est);
 	}
 }
