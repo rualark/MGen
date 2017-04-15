@@ -158,7 +158,7 @@ void CGVar::LoadConfig(CString fname)
 	CString st, st2, st3;
 	ifstream fs;
 	// Check file exists
-	if (!CGVar::fileExists(fname)) {
+	if (!fileExists(fname)) {
 		CString* est = new CString;
 		est->Format("LoadConfig cannot find file: %s", fname);
 		WriteLog(1, est);
@@ -217,6 +217,12 @@ void CGVar::LoadInstruments()
 {
 	// Load strings
 	ifstream fs;
+	if (!fileExists("instruments.pl")) {
+		CString* est = new CString;
+		est->Format("Cannot find file instruments.pl");
+		WriteLog(1, est);
+		return;
+	}
 	fs.open("instruments.pl");
 	CString st, st2, st3;
 	char pch[2550];
@@ -474,11 +480,18 @@ void CGVar::LoadResults(CString dir, CString fname)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	ifstream fs;
-	CString st, st2, st3;
+	CString st, st2, st3, path;
 	int pos;
 	char pch[2550];
 	// Load logs
-	fs.open(dir + "\\algorithm.log");
+	path = dir + "\\algorithm.log";
+	if (!fileExists(path)) {
+		CString* est = new CString;
+		est->Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	fs.open(path);
 	pos = 0;
 	while (fs.good()) {
 		fs.getline(pch, 2550);
@@ -487,7 +500,14 @@ void CGVar::LoadResults(CString dir, CString fname)
 	}
 	fs.close();
 	// Load strings
-	fs.open(dir + "\\" + fname + ".txt");
+	path = dir + "\\" + fname + ".txt";
+	if (!fileExists(path)) {
+		CString* est = new CString;
+		est->Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	fs.open(path);
 	pos = 0;
 	while (fs.good()) {
 		fs.getline(pch, 2550);
@@ -523,7 +543,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
-	est->Format("Loaded result infor from folder %s in %d ms", dir, time_stop - time_start);
+	est->Format("Loaded result info from folder %s in %d ms", dir, time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -531,8 +551,16 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	ifstream fs;
+	CString path;
 	// Load binary
-	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
+	path = dir + "\\" + fname + ".mgr", std::ofstream::binary;
+	if (!fileExists(path)) {
+		CString* est = new CString;
+		est->Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	fs.open(path);
 	fs.unsetf(std::ios::skipws);
 	if (t_generated != 0) {
 		for (size_t i = 0; i < t_generated; i++) {
