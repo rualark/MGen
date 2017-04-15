@@ -9,6 +9,7 @@ show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
+random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters
 Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
@@ -79,6 +80,6 @@ midifile_in_mul = 1 # Multiply note length with this value when loading
 midifile_out_mul = 8 # Multiply note length with this value when saving
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
-calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
+calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time

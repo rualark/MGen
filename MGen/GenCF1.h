@@ -13,7 +13,6 @@ public:
 	~CGenCF1();
 	void Generate() override;
 protected:
-	void GetCantusKey(vector<char>& cc);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
 	void LogCantus(vector<char>& c);
 	void ScanCantus(vector<char>* pcantus, int use_matrix, int v);
@@ -42,6 +41,7 @@ protected:
 	int stag_note_steps = 7;
 	int minor = 0; // If mode is minor
 	int tonic = 0; // Tonic key
+	int random_key = 0; // Allow CF1 to select random key and CA1 to select any of possible keys regardless of last note
 	int min_tempo = 110;
 	int max_tempo = 120;
 	double random_choose = 100; // Percent of accepted canti to show and play

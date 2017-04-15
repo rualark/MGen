@@ -79,48 +79,6 @@ CGenCF1::~CGenCF1()
 {
 }
 
-void CGenCF1::GetCantusKey(vector <char> &cc) 
-{
-	minor = 0;
-	int key_miss[12];
-	// Cycle all keys and count miss
-	for (int i = 0; i < 12; i++) {
-		key_miss[i] = 0;
-		// Cycle all notes
-		for (int x = 0; x < cc.size(); x++) {
-			if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
-		}
-	}
-	// Find minimum miss
-	int min_key = 0;
-	int min_miss = cc.size();
-	for (int i = 0; i < 12; i++) {
-		if (key_miss[i] < min_miss) {
-			min_miss = key_miss[i];
-			min_key = i;
-		}
-	}
-	// Count best keys
-	int key_count = 0;
-	for (int i = 0; i < 12; i++) {
-		if (key_miss[i] == min_miss) {
-			tonic = i;
-			key_count++;
-		}
-	}
-	// Check ambiguous
-	if (key_count > 1) {
-		CString st;
-		CString* est = new CString;
-		for (int x = 0; x < min(cc.size(), 30); x++) {
-			st += NoteName[cc[x] % 12];
-			st += " ";
-		}
-		est->Format("Warning: key ambiguous (%d variants) for cantus %s", key_count, st);
-		WriteLog(1, est);
-	}
-}
-
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
 	CheckVar(sN, sV, "min_interval", &min_interval);
@@ -140,6 +98,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
 	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
+	CheckVar(sN, sV, "random_key", &random_key);
 	CheckVar(sN, sV, "random_seed", &random_seed);
 	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
 	CheckVar(sN, sV, "shuffle", &shuffle);

@@ -29,6 +29,98 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
 
+void CGenCA1::GetCantusKey(vector <char> &cc)
+{
+	int c_len = cc.size();
+	minor = 0;
+	int key_miss[12];
+	CString cst, kst, st2;
+	// Create melody string for log
+	for (int x = 0; x < min(c_len, 30); x++) {
+		st2.Format("%d", cc[x] / 12);
+		cst += NoteName[cc[x] % 12] + st2 + " ";
+	}
+	// Cycle all keys and count miss
+	for (int i = 0; i < 12; i++) {
+		key_miss[i] = 0;
+		// Cycle all notes
+		for (int x = 0; x < c_len; x++) {
+			if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
+		}
+	}
+	// Find minimum miss
+	int min_key = 0;
+	int min_miss = c_len;
+	for (int i = 0; i < 12; i++) {
+		if (key_miss[i] < min_miss) {
+			min_miss = key_miss[i];
+			min_key = i;
+		}
+	}
+	// Count best keys
+	vector <int> keys;
+	int key_count = 0;
+	for (int i = 0; i < 12; i++) {
+		if (key_miss[i] == min_miss) {
+			key_count++;
+			keys.push_back(i);
+			tonic = i;
+		}
+	}
+	// Create keys string for log
+	for (int x = 0; x < keys.size(); x++) {
+		if (kst != "") kst += " ";
+		kst += NoteName[keys[x]];
+	}
+	// Check if only one key
+	if (key_count == 1) {
+		CString* est = new CString;
+		est->Format("Single key %s selected for melody %s", NoteName[tonic], cst);
+		WriteLog(3, est);
+	}
+  // If no key selected
+	else if (key_count == 0) {
+		CString* est = new CString;
+		est->Format("Error: cannot detect key for melody %s", cst);
+		WriteLog(1, est);
+	}
+	// If multiple keys and random_key set
+	else if (random_key) {
+		tonic = keys[randbw(0, keys.size() - 1)];
+		CString* est = new CString;
+		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic], cst);
+		WriteLog(3, est);
+	}
+	// If multiple keys and random_key not set
+	else {
+		// Find accepted tonic same as last note
+		for (int i = 0; i < keys.size(); i++) {
+			if (cc[c_len - 1] % 12 == keys[i]) {
+				tonic = keys[i];
+				CString* est = new CString;
+				est->Format("Ambiguous %d keys (%s) resolved to %s as last note in melody %s", keys.size(), kst, NoteName[tonic], cst);
+				WriteLog(3, est);
+				return;
+			}
+		}
+		// Find accepted tonic same as first note
+		for (int i = 0; i < keys.size(); i++) {
+			if (cc[0] % 12 == keys[i]) {
+				tonic = keys[i];
+				CString* est = new CString;
+				est->Format("Ambiguous %d keys (%s) resolved to %s as first note in melody %s", keys.size(), kst, NoteName[tonic], cst);
+				WriteLog(3, est);
+				return;
+			}
+		}
+		// If nothing found, return random of accepted
+		tonic = keys[randbw(0, keys.size() - 1)];
+		CString* est = new CString;
+		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic], cst);
+		WriteLog(3, est);
+	}
+}
+
 void CGenCA1::Generate()
 {
 	CString st, st2;

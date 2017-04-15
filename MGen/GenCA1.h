@@ -12,14 +12,14 @@ public:
 	CGenCA1();
 	~CGenCA1();
 
-	void GetMinIDs(vector<double>& inv, int n, vector<long>& outv);
-
 	void Generate() override;
-	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
 	
 	CString midi_file;
 
 protected:
+	void GetCantusKey(vector<char>& cc);
+	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
+
 	int corrections = 3; // Number of corrections to show
 	int pre_bad = 6; // How many notes to recalculate before rule violation
 	int post_bad = 8; // How many notes to recalculate after rule violation

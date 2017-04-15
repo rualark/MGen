@@ -5,6 +5,7 @@ s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower v
 min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 key = C # Music key to use for generation
+random_key = 0 # Allow generator to select random key
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
 tempo = 100-130 # Tempo range
