@@ -77,6 +77,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_EDITINST, &CMainFrame::OnButtonEditinst)
 	ON_COMMAND(ID_BUTTON_RELOADALGO, &CMainFrame::OnButtonReloadalgo)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_RELOADALGO, &CMainFrame::OnUpdateButtonReloadalgo)
+	ON_COMMAND(ID_BUTTON_RSETTINGS, &CMainFrame::OnButtonRsettings)
+	ON_COMMAND(ID_BUTTON_SETTINGS_EDIT, &CMainFrame::OnButtonSettingsEdit)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -775,6 +777,8 @@ void CMainFrame::LoadSettings()
 	CGLib::debug_level = m_debug_level;
 	CGLib::play_enabled = m_play_enabled;
 	fs.close();
+	// Resave file to update format
+	SaveSettings();
 }
 
 int CMainFrame::GetAlgoById(int id) {
@@ -807,9 +811,11 @@ void CMainFrame::SaveSettings()
 	}
 	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 80 to 500\n", zoom_x);
 	fs << st;
-	st.Format("View_timer = %d # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers\n", m_view_timer);
-	fs << st;
 	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
+	fs << st;
+	fs << "\n";
+	fs << "# The following settings cannot be changed in GUI. You can change them only in this file\n";
+	st.Format("View_timer = %d # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers\n", m_view_timer);
 	fs << st;
 	st.Format("Step_dyn = %d # Show dynamics with note opacity for each step of note.Disable for slower computers.\n", m_step_dyn);
 	fs << st;
@@ -1116,8 +1122,17 @@ void CMainFrame::OnButtonReloadalgo()
 	LoadAlgo();
 }
 
-
 void CMainFrame::OnUpdateButtonReloadalgo(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_state_gen != 1);
+}
+
+void CMainFrame::OnButtonRsettings()
+{
+	LoadSettings();
+}
+
+void CMainFrame::OnButtonSettingsEdit()
+{
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "settings.pl", NULL, NULL, SW_SHOWNORMAL);
 }

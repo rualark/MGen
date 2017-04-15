@@ -176,6 +176,8 @@ public:
 	afx_msg void OnButtonEditinst();
 	afx_msg void OnButtonReloadalgo();
 	afx_msg void OnUpdateButtonReloadalgo(CCmdUI *pCmdUI);
+	afx_msg void OnButtonRsettings();
+	afx_msg void OnButtonSettingsEdit();
 };
 
 

@@ -85,11 +85,11 @@
 #define ID_BUTTON_EPARAMS               32798
 #define ID_CHECK_OUTPUTWND              32799
 #define ID_BUTTON2                      32800
-#define ID_BUTTON_HZOOM_DEC             32800
-#define ID_BUTTON_OPENMIDI              32800
+#define ID_BUTTON_SETTINGS_EDIT         32800
 #define ID_BUTTON_HZOOM_INC             32802
 #define ID_BUTTON3                      32807
 #define ID_BUTTON_RELOADALGO            32807
+#define ID_BUTTON_RSETTINGS             32807
 #define ID_BUTTON_SCONFIG               32808
 #define ID_SPIN_PSPEED                  32811
 #define ID_SPIN2                        32812
@@ -101,13 +101,17 @@
 #define ID_EDIT_SAVELINE                32817
 #define ID_POPUP_CLEARALL               32818
 #define ID_CLEARALL                     32819
+#define ID_BUTTON_HZOOM_DEC             32820
+#define ID_BUTTON_EDIT_SETTINGS         32821
+#define ID_BUTTON_OPENMIDI              32821
+#define ID_BUTTON_ESETTINGS             32822
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32820
+#define _APS_NEXT_COMMAND_VALUE         32821
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
