@@ -331,7 +331,25 @@ void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
 		midi_sent = 0;
 	}
 	TIME_START;
-	Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUF_SIZE, TIME_PROC, NULL, latency);
+	PmError pmerr = PmError();
+	if (debug_level > 1) {
+		CString* est = new CString;
+		est->Format("Trying to open midi device %d with output buf size %d and latency %d...", midi_device_i, OUTPUT_BUF_SIZE, latency);
+		WriteLog(4, est);
+	}
+	try {
+		pmerr = Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUF_SIZE, TIME_PROC, NULL, latency);
+	}
+	catch (...) {
+		CString* est = new CString;
+		est->Format("Cannot open midi device %d with output buf size %d and latency %d", midi_device_i, OUTPUT_BUF_SIZE, latency);
+		WriteLog(1, est);
+	}
+	if (pmerr) {
+		CString* est = new CString;
+		est->Format("Cannot open midi device %d with output buf size %d and latency %d", midi_device_i, OUTPUT_BUF_SIZE, latency);
+		WriteLog(1, est);
+	}
 	CString* est = new CString;
 	est->Format("Pm_OpenOutput: buf size %d, latency %d", OUTPUT_BUF_SIZE, latency);
 	WriteLog(4, est);

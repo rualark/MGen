@@ -151,7 +151,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	MidiCount = 0;
 	for (int i = 0; i < Pm_CountDevices(); i++) {
 		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-		if (info->output) {
+		if (info && info->output) {
 			st.Format("%s, %s", info->name, info->interf);
 			if (i == default_out) {
 				//st += " (default)";
