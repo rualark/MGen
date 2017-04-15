@@ -934,11 +934,9 @@ void CMainFrame::OnClose()
 	CFrameWndEx::OnClose();
 }
 
-
-
 void CMainFrame::OnUpdateComboMidiout(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable();
+	pCmdUI->Enable(m_state_play == 0);
 }
 
 void CMainFrame::OnButtonEparams()
@@ -946,7 +944,6 @@ void CMainFrame::OnButtonEparams()
 	//CEditParamsDlg dlg;
 	//dlg.DoModal();
 }
-
 
 void CMainFrame::OnUpdateButtonPlay(CCmdUI *pCmdUI)
 {
