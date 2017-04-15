@@ -261,15 +261,24 @@ void CMGenApp::OnFileOpen()
 	if (fileDlg.DoModal() == IDOK)
 	{
 		// Get name
-		CString path = fileDlg.GetPathName();
-		CString ext = CGLib::ext_from_path(path);
+		CString abs_path = fileDlg.GetPathName();
+		CString ext = CGLib::ext_from_path(abs_path);
 		if ((ext == "mid") || (ext == "midi")) {
+			// Convert absolute to relative
+			CString path, rel_path;
+			path = abs_path;
+			if (path.Find(path_old) > -1) {
+				rel_path = path.Mid(path_old.GetLength()+1);
+				mf->WriteLog(1, rel_path);
+				// Check relative exists
+				if (CGLib::fileExists(rel_path)) path = rel_path;
+			}
 			mf->LoadMidi(path);
 		}
 		else {
-			mf->LoadResults(path);
+			mf->LoadResults(abs_path);
 		}
-		AddToRecentFileList(path);
+		AddToRecentFileList(abs_path);
 	}
 }
 
