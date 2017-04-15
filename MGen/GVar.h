@@ -1,6 +1,8 @@
 #pragma once
 #include "GLib.h"
 
+#define MAX_WARN_LOADVECTORS 500
+
 class CGVar :
 	public CGLib
 {
@@ -15,6 +17,9 @@ public:
 	void LoadResults(CString dir, CString fname);
 
 	void LoadResultMusic(CString dir, CString fname);
+
+	// Warnings
+	int warning_loadvectors = 0;
 
 	// Data interface
 	int m_algo_id = -1; // Current algorithm id

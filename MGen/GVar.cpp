@@ -429,6 +429,13 @@ void CGVar::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int
 	char* pointer = reinterpret_cast<char*>(&(v2D[i][0]));
 	size_t bytes = v_cnt * sizeof(v2D[i][0]);
 	fs.read(pointer, bytes);
+	int read_count = fs.gcount();
+	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+		CString* est = new CString;
+		est->Format("LoadVector2C: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
+		WriteLog(1, est);
+		warning_loadvectors++;
+	}
 }
 
 void CGVar::LoadVector2Color(ifstream & fs, vector< vector<Color> > &v2D, int i) {
@@ -436,18 +443,48 @@ void CGVar::LoadVector2Color(ifstream & fs, vector< vector<Color> > &v2D, int i)
 	for (int v = 0; v < v_cnt; v++) {
 		DWORD color;
 		fs.read((char*)&color, bytes);
+		int read_count = fs.gcount();
+		if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+			CString* est = new CString;
+			est->Format("LoadVector2Color: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
+			WriteLog(1, est);
+			warning_loadvectors++;
+		}
 		v2D[i][v].SetValue(color);
 	}
 }
 
 void CGVar::LoadVector2ST(ifstream & fs, vector< vector<CString> > &v2D, int i) {
 	for (int v = 0; v < v_cnt; v++) {
-		unsigned short len;
+		WORD len = 0;
+		int bytes = sizeof(len);
 		char buf[5000];
-		fs.read((char*)&len, sizeof(len));
+		fs.read((char*)&len, bytes);
+		int read_count = fs.gcount();
+		if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+			CString* est = new CString;
+			est->Format("LoadVector2ST len: Error reading %d bytes from binary file (got %d bytes instead) at step %d: %d", bytes, read_count, i, len);
+			WriteLog(1, est);
+			warning_loadvectors++;
+		}
 		if (len != 0) {
-			fs.read((char*)&buf, len);
-			v2D[i][v] = buf;
+			bytes = len;
+			fs.read((char*)&buf, bytes);
+			v2D[i][v] = CString(buf, bytes);
+			string st = v2D[i][v];
+			int read_count = fs.gcount();
+			if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+				CString* est = new CString;
+				est->Format("LoadVector2ST: Error reading %d bytes from binary file (got %d bytes instead) at step %d: %s", bytes, read_count, i, v2D[i][v]);
+				WriteLog(1, est);
+				warning_loadvectors++;
+			}
+			if (st.find_first_not_of(" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890`-=[]\\';/.,~!@#$%^&*()_+|{}:<>?1234567890") != string::npos && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+				CString* est = new CString;
+				est->Format("LoadVector2ST: String contains unprintable characters at step %d: %s", i, v2D[i][v]);
+				WriteLog(1, est);
+				warning_loadvectors++;
+			}
 		}
 	}
 }
@@ -458,6 +495,13 @@ void CGVar::LoadVector(ifstream &fs, vector<double> &v) {
 	char* pointer = reinterpret_cast<char*>(&v[0]);
 	size_t bytes = t_generated * sizeof(v[0]);
 	fs.read(pointer, bytes);
+	int read_count = fs.gcount();
+	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+		CString* est = new CString;
+		est->Format("LoadVector double: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
+		WriteLog(1, est);
+		warning_loadvectors++;
+	}
 }
 
 void CGVar::LoadVector(ifstream &fs, vector<unsigned char> &v) {
@@ -466,6 +510,13 @@ void CGVar::LoadVector(ifstream &fs, vector<unsigned char> &v) {
 	char* pointer = reinterpret_cast<char*>(&v[0]);
 	size_t bytes = t_generated * sizeof(v[0]);
 	fs.read(pointer, bytes);
+	int read_count = fs.gcount();
+	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+		CString* est = new CString;
+		est->Format("LoadVector uchar: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
+		WriteLog(1, est);
+		warning_loadvectors++;
+	}
 }
 
 void CGVar::LoadVector(ifstream &fs, vector<Color> &v) {
@@ -474,6 +525,59 @@ void CGVar::LoadVector(ifstream &fs, vector<Color> &v) {
 	char* pointer = reinterpret_cast<char*>(&v[0]);
 	size_t bytes = t_generated * sizeof(v[0]);
 	fs.read(pointer, bytes);
+	int read_count = fs.gcount();
+	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+		CString* est = new CString;
+		est->Format("LoadVector Color: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
+		WriteLog(1, est);
+		warning_loadvectors++;
+	}
+}
+
+void CGVar::LoadResultMusic(CString dir, CString fname)
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	ifstream fs;
+	CString path;
+	// Load binary
+	path = dir + "\\" + fname + ".mgr";
+	if (!fileExists(path)) {
+		CString* est = new CString;
+		est->Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	fs.open(path, ifstream::binary);
+	fs.unsetf(ios::skipws);
+	if (t_generated != 0) {
+		for (size_t i = 0; i < t_generated; i++) {
+			LoadVector2C(fs, pause, i);
+			LoadVector2C(fs, note, i);
+			LoadVector2C(fs, len, i);
+			LoadVector2C(fs, coff, i);
+			LoadVector2C(fs, dyn, i);
+			LoadVector2ST(fs, comment, i);
+			LoadVector2Color(fs, color, i);
+		}
+		LoadVector(fs, tempo);
+		// Added with version 1.6
+		if (fs.peek() != EOF) {
+			for (size_t i = 0; i < t_generated; i++) {
+				LoadVector2C(fs, lining, i);
+			}
+			LoadVector(fs, linecolor);
+		}
+	}
+	CountOff(0, t_generated - 1);
+	CountTime(0, t_generated - 1);
+	UpdateNoteMinMax(0, t_generated - 1);
+	UpdateTempoMinMax(0, t_generated - 1);
+	fs.close();
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("Loaded result music from folder %s in %d ms", dir, time_stop - time_start);
+	WriteLog(0, est);
 }
 
 void CGVar::LoadResults(CString dir, CString fname)
@@ -576,52 +680,6 @@ void CGVar::LoadResults(CString dir, CString fname)
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
 	est->Format("Loaded result info from folder %s in %d ms", dir, time_stop - time_start);
-	WriteLog(0, est);
-}
-
-void CGVar::LoadResultMusic(CString dir, CString fname)
-{
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	ifstream fs;
-	CString path;
-	// Load binary
-	path = dir + "\\" + fname + ".mgr", std::ofstream::binary;
-	if (!fileExists(path)) {
-		CString* est = new CString;
-		est->Format("Cannot find file %s", path);
-		WriteLog(1, est);
-		return;
-	}
-	fs.open(path);
-	fs.unsetf(std::ios::skipws);
-	if (t_generated != 0) {
-		for (size_t i = 0; i < t_generated; i++) {
-			LoadVector2C(fs, pause, i);
-			LoadVector2C(fs, note, i);
-			LoadVector2C(fs, len, i);
-			LoadVector2C(fs, coff, i);
-			LoadVector2C(fs, dyn, i);
-			LoadVector2ST(fs, comment, i);
-			LoadVector2Color(fs, color, i);
-		}
-		LoadVector(fs, tempo);
-		// Added with version 1.6
-		if (fs.peek() != EOF) {
-			for (size_t i = 0; i < t_generated; i++) {
-				LoadVector2C(fs, lining, i);
-			}
-			LoadVector(fs, linecolor);
-		}
-	}
-	CountOff(0, t_generated - 1);
-	CountTime(0, t_generated - 1);
-	UpdateNoteMinMax(0, t_generated - 1);
-	UpdateTempoMinMax(0, t_generated - 1);
-	fs.close();
-	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("Loaded result music from folder %s in %d ms", dir, time_stop - time_start);
 	WriteLog(0, est);
 }
 
