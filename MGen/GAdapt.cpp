@@ -340,9 +340,11 @@ void CGAdapt::Adapt(int step1, int step2)
 		}
 	}
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* st = new CString;
-	st->Format("Adapt steps %d-%d in %d ms", step1, step2, time_stop - time_start);
-	WriteLog(0, st);
+	if (debug_level > 1) {
+		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		CString* st = new CString;
+		st->Format("Adapt steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+		WriteLog(0, st);
+	}
 }
 

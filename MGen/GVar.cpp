@@ -146,10 +146,12 @@ void CGVar::ResizeVectors(int size, int vsize)
 		color[i].resize(vsize, Color(0));
 	}
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* st = new CString;
-	st->Format("ResizeVectors from %d to %d steps, from %d to %d voices (in %d ms)", t_allocated, size, v_cnt, vsize, time_stop - time_start);
-	WriteLog(0, st);
+	if (debug_level > 1) {
+		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		CString* st = new CString;
+		st->Format("ResizeVectors from %d to %d steps, from %d to %d voices (in %d ms)", t_allocated, size, v_cnt, vsize, time_stop - time_start);
+		WriteLog(0, st);
+	}
 
 	t_allocated = size;
 	v_cnt = vsize;
