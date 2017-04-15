@@ -28,7 +28,7 @@ Prepared unresolved 3rd   = 1 #S! 3rd is unresolved, but was prepared by filling
 Two 3rds after 6/8        = 1 #S Chain of two thirds in one direction after 6th or octave
 Late <6th resolution      = 1 #S! Leap less than 6th is resolved after a second note
 Leap back <5th            = 1 #S Leap returns to same note (in case leap is equal or less than 4th)
-Leap pre-late fill        = 0 #S! Melody has unfilled gaps
+Leap pre-late fill        = 1 #S! Melody has unfilled gaps
 Many leaps                = 0 #S! Maximum allowed max_leaps during max_leap_steps
 3rd to last is CEG        = 1 #SC! Third to last note is not Subdominant (C E G forbidden)
 Last leap                 = 1 #S Last step is a leap
@@ -79,6 +79,6 @@ midifile_in_mul = 1 # Multiply note length with this value when loading
 midifile_out_mul = 8 # Multiply note length with this value when saving
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
-calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
+calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time

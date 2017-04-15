@@ -79,6 +79,48 @@ CGenCF1::~CGenCF1()
 {
 }
 
+void CGenCF1::GetCantusKey(vector <char> &cc) 
+{
+	minor = 0;
+	int key_miss[12];
+	// Cycle all keys and count miss
+	for (int i = 0; i < 12; i++) {
+		key_miss[i] = 0;
+		// Cycle all notes
+		for (int x = 0; x < c_len; x++) {
+			if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
+		}
+	}
+	// Find minimum miss
+	int min_key = 0;
+	int min_miss = c_len;
+	for (int i = 0; i < 12; i++) {
+		if (key_miss[i] < min_miss) {
+			min_miss = key_miss[i];
+			min_key = i;
+		}
+	}
+	// Count best keys
+	int key_count = 0;
+	for (int i = 0; i < 12; i++) {
+		if (key_miss[i] == min_miss) {
+			tonic = i;
+			key_count++;
+		}
+	}
+	// Check ambiguous
+	if (key_count > 1) {
+		CString st;
+		CString* est = new CString;
+		for (int x = 0; x < min(c_len, 30); x++) {
+			st += NoteName[cc[x] % 12];
+			st += " ";
+		}
+		est->Format("Warning: key ambiguous (%d variants) for cantus %s", key_count, st);
+		WriteLog(1, est);
+	}
+}
+
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 {
 	CheckVar(sN, sV, "min_interval", &min_interval);
@@ -228,8 +270,6 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		// Get diatonic steps from chromatic
 		first_note = cc[0];
 		last_note = cc[c_len - 1];
-		tonic = last_note % 12;
-		minor = 0;
 		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic) % 12];
 		first_note_oct = first_note / 12;
 		for (int i = 0; i < c_len; i++) {

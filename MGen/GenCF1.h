@@ -13,6 +13,7 @@ public:
 	~CGenCF1();
 	void Generate() override;
 protected:
+	void GetCantusKey(vector<char>& cc);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
 	void LogCantus(vector<char>& c);
 	void ScanCantus(vector<char>* pcantus, int use_matrix, int v);

@@ -48,10 +48,14 @@ void CGenCA1::Generate()
 	int t_generated2 = 0; // Saved t_generated
 	for (int i = 0; i < cantus.size(); i++) {
 		if (need_exit) break;
+		if (step < 0) step = 0;
 		milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 		milliseconds time_stop;
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
+		// Get key
+		GetCantusKey(cantus[i]);
+		minor = 0;
 		// Show imported melody
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];

@@ -26,8 +26,6 @@
 #define MAX_TEMPO_DISPLAY 140
 #define WARN_DRAW 0.8
 
-const char diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
-
 class CMGenDoc;
 
 class CMGenView : public CScrollView

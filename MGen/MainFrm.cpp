@@ -162,7 +162,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		}
 	}
 
-	WriteLog(0, "Started MGen version 1.1.5");
+	st.Format("Started MGen version %s", APP_VERSION);
+	WriteLog(0, st);
 	AfxInitRichEdit2();
 
 	LoadSettings();
