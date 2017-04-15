@@ -520,24 +520,26 @@ check:
 				// Do not check fill if search window is cut by end of current not-last scan window
 				if ((pos < ep2) || (c_len == ep2)) {
 					if (pos > ep2 - 1) pos = ep2 - 1;
-					// Zero array
-					fill(nstat2.begin(), nstat2.end(), 0);
-					fill(nstat3.begin(), nstat3.end(), 0);
-					// Fill all notes
+					// Clear stat
+					int pos1 = min(c[i], c[i + 1]);
+					int pos2 = max(c[i], c[i + 1]);
+					for (int x = pos1 + 1; x < pos2; x++) {
+						nstat2[x] = 0;
+						nstat3[x] = 0;
+					}
+					// Fill all notes (even those outside pos1-pos2 window)
 					for (int x = 0; x < ep2; x++) {
 						// Update local fill
-						if ((x > i + 1) && (x <= pos)) nstat3[c[x] - nmin]++;
+						if ((x > i + 1) && (x <= pos)) nstat3[c[x]]++;
 						// Update global fill
-						nstat2[c[x] - nmin]++;
+						nstat2[c[x]]++;
 					}
 					// Check if leap is filled
 					ok = 1; // Local fill
 					ok2 = 1; // Global fill
-					int pos1 = min(c[i], c[i + 1]);
-					int pos2 = max(c[i], c[i + 1]);
-					for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x - nmin]) {
+					for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x]) {
 						ok = 0;
-						if (!nstat2[x - nmin]) ok2 = 0;
+						if (!nstat2[x]) ok2 = 0;
 						break;
 					}
 					// Local not filled?
@@ -626,16 +628,16 @@ check:
 		}
 		// Clear nstat
 		for (int i = nmin; i <= nmax; i++) {
-			nstat[i - nmin] = 0;
+			nstat[i] = 0;
 		}
 		// Prohibit stagnation
 		for (int i = 0; i < ep2; i++) {
 			// Add new note
-			nstat[c[i] - nmin]++; // Stagnation array
+			nstat[c[i]]++; // Stagnation array
 														// Subtract old note
-			if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps] - nmin]--;
+			if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps]]--;
 			// Check if too many repeating notes
-			if (nstat[c[i] - nmin] > stag_notes) FLAG(10, i);
+			if (nstat[c[i]] > stag_notes) FLAG(10, i);
 		}
 		// Prohibit multiple culminations
 		culm_sum = 0;
