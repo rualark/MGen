@@ -9,7 +9,7 @@ show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
-random_key = 0 # Select any of possible keys regardless of last note
+random_key = 1 # Select any of possible keys regardless of last note
 
 # Main parameters
 Instruments = Violin,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano

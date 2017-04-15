@@ -32,7 +32,7 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 void CGenCA1::GetCantusKey(vector <char> &cc)
 {
 	int c_len = cc.size();
-	minor = 0;
+	//minor = 0;
 	int key_miss[12];
 	CString cst, kst, st2;
 	// Create melody string for log
@@ -64,7 +64,7 @@ void CGenCA1::GetCantusKey(vector <char> &cc)
 		if (key_miss[i] == min_miss) {
 			key_count++;
 			keys.push_back(i);
-			tonic = i;
+			tonic_cur = i;
 		}
 	}
 	// Create keys string for log
@@ -75,7 +75,7 @@ void CGenCA1::GetCantusKey(vector <char> &cc)
 	// Check if only one key
 	if (key_count == 1) {
 		CString* est = new CString;
-		est->Format("Single key %s selected for melody %s", NoteName[tonic], cst);
+		est->Format("Single key %s selected for melody %s", NoteName[tonic_cur], cst);
 		WriteLog(3, est);
 	}
   // If no key selected
@@ -86,9 +86,9 @@ void CGenCA1::GetCantusKey(vector <char> &cc)
 	}
 	// If multiple keys and random_key set
 	else if (random_key) {
-		tonic = keys[randbw(0, keys.size() - 1)];
+		tonic_cur = keys[randbw(0, keys.size() - 1)];
 		CString* est = new CString;
-		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic], cst);
+		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
 		WriteLog(3, est);
 	}
 	// If multiple keys and random_key not set
@@ -96,9 +96,9 @@ void CGenCA1::GetCantusKey(vector <char> &cc)
 		// Find accepted tonic same as last note
 		for (int i = 0; i < keys.size(); i++) {
 			if (cc[c_len - 1] % 12 == keys[i]) {
-				tonic = keys[i];
+				tonic_cur = keys[i];
 				CString* est = new CString;
-				est->Format("Ambiguous %d keys (%s) resolved to %s as last note in melody %s", keys.size(), kst, NoteName[tonic], cst);
+				est->Format("Ambiguous %d keys (%s) resolved to %s as last note in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
 				WriteLog(3, est);
 				return;
 			}
@@ -106,17 +106,17 @@ void CGenCA1::GetCantusKey(vector <char> &cc)
 		// Find accepted tonic same as first note
 		for (int i = 0; i < keys.size(); i++) {
 			if (cc[0] % 12 == keys[i]) {
-				tonic = keys[i];
+				tonic_cur = keys[i];
 				CString* est = new CString;
-				est->Format("Ambiguous %d keys (%s) resolved to %s as first note in melody %s", keys.size(), kst, NoteName[tonic], cst);
+				est->Format("Ambiguous %d keys (%s) resolved to %s as first note in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
 				WriteLog(3, est);
 				return;
 			}
 		}
 		// If nothing found, return random of accepted
-		tonic = keys[randbw(0, keys.size() - 1)];
+		tonic_cur = keys[randbw(0, keys.size() - 1)];
 		CString* est = new CString;
-		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic], cst);
+		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
 		WriteLog(3, est);
 	}
 }
@@ -147,7 +147,7 @@ void CGenCA1::Generate()
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Get key
 		GetCantusKey(cantus[i]);
-		minor = 0;
+		//minor = 0;
 		// Show imported melody
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];

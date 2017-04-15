@@ -59,6 +59,7 @@ public:
 	vector< vector <unsigned char> > coff; // Offset of current note start backward (0 = first timeslot of note)
 	vector< vector <unsigned char> > poff; // Offset of previous note start (backward)
 	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
+	vector< vector <unsigned char> > tonic; // Key tonic of current note (3 = D#)
 	vector< vector <unsigned char> > dyn; // Dynamics (velocity for piano)
 	vector< vector <unsigned char> > vel; // Velocity of midi notes
 	vector< vector <unsigned char> > artic; // Velocity of midi notes

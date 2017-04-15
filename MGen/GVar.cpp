@@ -67,6 +67,7 @@ void CGVar::InitVectors()
 	coff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	tonic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
@@ -108,6 +109,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	coff.resize(size);
 	poff.resize(size);
 	noff.resize(size);
+	tonic.resize(size);
 	tempo.resize(size);
 	stime.resize(size);
 	etime.resize(size);
@@ -131,6 +133,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		coff[i].resize(vsize);
 		poff[i].resize(vsize);
 		noff[i].resize(vsize);
+		tonic[i].resize(vsize);
 		dyn[i].resize(vsize);
 		vel[i].resize(vsize);
 		artic[i].resize(vsize);
@@ -645,6 +648,12 @@ void CGVar::ValidateVectors(int step1, int step2) {
 			// Check len is not zero
 			if (!len[i][v] && warning_valid < MAX_WARN_VALID) {
 				st.Format("Validation failed at step %d voice %d: len cannot be zero", i, v);
+				WriteLog(1, st);
+				warning_valid++;
+			}
+			// Check key is correct
+			if ((tonic[i][v]<0 || tonic[i][v]>11) && warning_valid < MAX_WARN_VALID) {
+				st.Format("Validation failed at step %d voice %d: tonic must be in range 0-11", i, v);
 				WriteLog(1, st);
 				warning_valid++;
 			}

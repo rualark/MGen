@@ -9,10 +9,10 @@
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
 
 // Convert chromatic to diatonic
-#define CC_C(note) (chrom_to_dia[(note + 12 - tonic) % 12] + ((note + 12 - tonic) / 12 - 1) * 7)
+#define CC_C(note) (chrom_to_dia[(note + 12 - tonic_cur) % 12] + ((note + 12 - tonic_cur) / 12 - 1) * 7)
 
 // Convert diatonic to chromatic
-#define C_CC(note) (dia_to_chrom[note % 7] + (note / 7) * 12 + tonic)
+#define C_CC(note) (dia_to_chrom[note % 7] + (note / 7) * 12 + tonic_cur)
 
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
@@ -111,9 +111,9 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	if (*sN == "key") {
 		if (sV->Right(1) == "m") {
 			*sV = sV->Left(sV->GetLength() - 1);
-			minor = 1;
+			//minor = 1;
 		}
-		tonic = GetPC(*sV);
+		tonic_cur = GetPC(*sV);
 	}
 	// Load accept
 	CString st;
@@ -229,7 +229,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		// Get diatonic steps from chromatic
 		first_note = cc[0];
 		last_note = cc[c_len - 1];
-		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic) % 12];
+		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
 		first_note_oct = first_note / 12;
 		for (int i = 0; i < c_len; i++) {
 			c[i] = CC_C(cc[i]);
@@ -304,7 +304,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			if (accept[i]) break;
 			if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
 		}
-		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic) % 12];
+		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
 		first_note_oct = first_note / 12;
 		// Set first and last notes
 		c[0] = CC_C(first_note);
@@ -979,6 +979,7 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = cc[x];
+			tonic[pos + i][v] = tonic_cur;
 			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; f++) {
 				if (!i) {
 					comment[pos + i][v] += FlagName[nflags[x][f]];
