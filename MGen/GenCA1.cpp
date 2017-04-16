@@ -58,6 +58,14 @@ void CGenCA1::GetCantusKey(vector <char> &cc)
 			min_key = i;
 		}
 	}
+	// If no key selected
+	if (min_miss > 0) {
+		CString* est = new CString;
+		est->Format("Error: due to chromatic alterations, cannot detect key for melody %s", cst);
+		WriteLog(1, est);
+		tonic_cur = -1;
+		return;
+	}
 	// Count best keys
 	vector <int> keys;
 	int key_count = 0;
@@ -78,12 +86,6 @@ void CGenCA1::GetCantusKey(vector <char> &cc)
 		CString* est = new CString;
 		est->Format("Single key %s selected for melody %s", NoteName[tonic_cur], cst);
 		WriteLog(3, est);
-	}
-  // If no key selected
-	else if (key_count == 0) {
-		CString* est = new CString;
-		est->Format("Error: cannot detect key for melody %s", cst);
-		WriteLog(1, est);
 	}
 	// If multiple keys and random_key set
 	else if (random_key) {
@@ -148,6 +150,7 @@ void CGenCA1::Generate()
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Get key
 		GetCantusKey(cantus[i]);
+		if (tonic_cur == -1) continue;
 		//minor = 0;
 		// Show imported melody
 		cc_len = cantus_len[i];
@@ -367,7 +370,7 @@ void CGenCA1::Generate()
 			time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			// Send log
 			CString* est = new CString;
-			est->Format("Sent corrections in %d ms with rp/dp/variants: %s", time_stop - time_start, st2);
+			est->Format("Sent corrections in %d ms to step %d with rp/dp/variants: %s", time_stop - time_start, step, st2);
 			WriteLog(3, est);
 		}
 		else {
