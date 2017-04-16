@@ -242,8 +242,8 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			// Check duplicate
 			if (i > 0 && c[i] == c[i - 1]) return;
 			// Set pitch limits
-			min_c[i] = c[0] - max_interval;
-			max_c[i] = c[0] + max_interval;
+			min_c[i] = c[i] - correct_range;
+			max_c[i] = c[i] + correct_range;
 		}
 		sp1 = 1;
 		sp2 = c_len - 1;

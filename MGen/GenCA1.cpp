@@ -25,6 +25,7 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CheckVar(sN, sV, "fullscan_max", &fullscan_max);
 	CheckVar(sN, sV, "approximations", &approximations);
 	CheckVar(sN, sV, "swa_steps", &swa_steps);
+	CheckVar(sN, sV, "correct_range", &correct_range);
 
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
