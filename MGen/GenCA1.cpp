@@ -187,6 +187,9 @@ void CGenCA1::Generate()
 					// Create matrix window
 					int pos1 = x - pre_bad;
 					int pos2 = x + post_bad;
+					// Increase post_bad if long leap
+					if (x > 0 && abs(cantus[i][x - 1] - cantus[i][x]) > 7) pos2 = x + 12;
+					if (x < c_len-1 && abs(cantus[i][x + 1] - cantus[i][x]) > 7) pos2 = x + 12;
 					// Do not rescan first and last step
 					if (pos1 < 1) pos1 = 1;
 					if (pos2 > c_len - 2) pos2 = c_len - 2;
