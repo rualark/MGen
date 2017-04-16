@@ -6,7 +6,7 @@ min_interval = 4 # Minimum diatonic interval in cantus (7 = octave)
 max_interval = 7 # Maximum diatonic interval in cantus (7 = octave)
 key = C # Music key to use for generation
 random_key = 0 # Allow generator to select random key
-first_note = F5 # Starting note of each cantus
+first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
 tempo = 100-130 # Tempo range
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
@@ -15,7 +15,7 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
 # ! means that this rule can produce results without other rules with c_len=9, interval 4-7
 # Flag order in list below goes from green - less severe (top) to red - more severe (bottom)
-Strict                    = 0 # No violated rules
+Strict                    = 1 # No violated rules
 Prepared unfilled 3rd     = 0 #S 3rd is unfilled, but was prepared by filling or leap before
 Prepared unresolved 3rd   = 0 #S! 3rd is unresolved, but was prepared by filling or leap before
 Two 3rds after 6/8        = 0 #S Chain of two thirds in one direction after 6th or octave
@@ -45,7 +45,7 @@ Major seventh             = 0 #U Major seventh interval leap
 >4 letters in a row       = 0 #U More than 4 same letters (TDS) in possible chord names in a row
 5 step miss               = 0 #C 5 steps missing one of 3 letters (TDS) in possible chord names in a row
 >5 step miss              = 0 #U More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row
-First steps without CEG   = 1 #U First first_steps_tonic steps do not have CEG notes
+First steps without CEG   = 0 #U First first_steps_tonic steps do not have CEG notes
 Late culmination          = 0 #L Culmination at last three steps
 Leap back >4th            = 0 #U Leap returns to same note (in case leap is larger than 4th)
 Many leaps+               = 0 #U Maximum allowed max_leaps2 during max_leap_steps
@@ -68,7 +68,7 @@ max_leap_steps = 7
 stag_notes = 2 # Maximum allowed stag_notes (same notes) during stag_note_steps
 stag_note_steps = 7
 repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
-first_steps_tonic = 4 # Number of first steps, which must contain tonic note
+first_steps_tonic = 3 # Number of first steps, which must contain tonic note
 
 # Technical parameters
 midifile_out_mul = 8 # All notes are made whole for midi export

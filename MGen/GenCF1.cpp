@@ -173,11 +173,11 @@ void CGenCF1::FillCantus(vector<char>& c, int step1, int step2, char value)
 	}
 }
 
-void CGenCF1::FillCantusMap(vector<char>& c, vector<unsigned short>& smap, int step1, int step2, char value)
+void CGenCF1::FillCantusMap(vector<char>& c, vector<unsigned short>& smap, int step1, int step2, vector<char>& value)
 {
 	// Step2 must be exclusive
 	for (int i = step1; i < step2; i++) {
-		c[smap[i]] = value;
+		c[smap[i]] = value[smap[i]];
 	}
 }
 
@@ -219,7 +219,8 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int wcount = 1; // Number of windows created
 	int sp1, sp2, ep1, ep2, p, pp;
-	int min_c, max_c;
+	vector<char> min_c(MAX_NOTE);
+	vector<char> max_c(MAX_NOTE);
 	accepted = 0;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
@@ -240,10 +241,10 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			c2[i] = c[i];
 			// Check duplicate
 			if (i > 0 && c[i] == c[i - 1]) return;
+			// Set pitch limits
+			min_c[i] = c[0] - max_interval;
+			max_c[i] = c[0] + max_interval;
 		}
-		// Set pitch limits
-		min_c = c[0] - max_interval;
-		max_c = c[0] + max_interval;
 		sp1 = 1;
 		sp2 = c_len - 1;
 		ep1 = sp1;
@@ -313,12 +314,14 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		c[0] = CC_C(first_note);
 		c[c_len - 1] = CC_C(last_note);
 		// Set pitch limits
-		min_c = c[0] - max_interval;
-		max_c = c[0] + max_interval;
+		for (int i = 0; i < c_len; i++) {
+			min_c[i] = c[0] - max_interval;
+			max_c[i] = c[0] + max_interval;
+		}
 		// Set middle notes to minimum
-		FillCantus(c, 1, c_len-1, min_c);
+		FillCantus(c, 1, c_len-1, min_c[0]);
 		if (random_seed)
-			for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(min_c, max_c);
+			for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(min_c[0], max_c[0]);
 		sp1 = 1; // Start of search window
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > c_len - 1) sp2 = c_len - 1;
@@ -815,9 +818,9 @@ check:
 		}
 	skip:
 		while (true) {
-			if (c[p] < max_c) break;
+			if (c[p] < max_c[p]) break;
 			// If current element is max, make it minimum
-			c[p] = min_c;
+			c[p] = min_c[p];
 			// Move left one element
 			if (use_matrix) {
 				if (pp == sp1) {
@@ -880,7 +883,7 @@ check:
 			// Normal full scan
 			else if (!use_matrix) {
 				// Clear current window
-				FillCantus(c, sp1, sp2, min_c);
+				FillCantus(c, sp1, sp2, min_c[0]);
 				// If this is not first window, go to previous window
 				if (wid > 0) wid--;
 				sp1 = wpos1[wid];

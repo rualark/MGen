@@ -1,5 +1,5 @@
 # Analysis
-Midi_file = load\known-cf-maj.mid # Path and file name of imported midi file
+Midi_file = load\test-melody4.mid # Path and file name of imported midi file
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
@@ -63,7 +63,7 @@ Late >5th resolution      = 0 #U Leap greater than 5th is resolved after a secon
 Tritone unresolved        = 0 #U Tritone is not resolved correctly
 Tritone culmination       = 0 #U Tritone is the highest leap
 3rd to last is leading    = 0 #C Third to last note is leading (B forbidden)
-Too wide range            = 0 #CV If range is greater than max_interval (diatonic interval)
+Too wide range            = 1 #CV If range is greater than max_interval (diatonic interval)
 Too tight range           = 0 #CV If range is lower than min_interval (diatonic interval)
 
 #Rule parameters

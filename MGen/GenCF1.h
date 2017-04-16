@@ -20,7 +20,7 @@ protected:
 	void SendCantus(int v, vector<char>* pcantus);
 	void InitCantus();
 	void FillCantus(vector<char>& c, int step1, int step2, char value);
-	void FillCantusMap(vector<char>& c, vector<unsigned short>& smap, int step1, int step2, char value);
+	void FillCantusMap(vector<char>& c, vector<unsigned short>& smap, int step1, int step2, vector<char>& value);
 
 	// Parameters
 	int min_interval = 1; // Minimum diatonic interval in cantus (7 = octave)

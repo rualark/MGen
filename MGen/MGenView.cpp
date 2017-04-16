@@ -136,7 +136,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	SolidBrush brush_agray(Color(20 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_ared(Color(20 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
 	Pen pen_agray(Color(100 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
-	Pen pen_ablue(Color(70 /*A*/, 0 /*R*/, 0 /*G*/, 170 /*B*/), 1);
+	Pen pen_ablue(Color(110 /*A*/, 0 /*R*/, 0 /*G*/, 170 /*B*/), 1);
 	Pen pen_ared(Color(127 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/), 1);
 	Pen pen_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/), 1);
