@@ -359,6 +359,13 @@ check:
 			if (c[i] < nmin) nmin = c[i];
 			if (c[i] > nmax) nmax = c[i];
 		}
+		// Clear flags
+		accepted3++;
+		if (!skip_flags) fill(flags.begin(), flags.end(), 0);
+		flags[0] = 1;
+		for (int i = 0; i < ep2; i++) {
+			nflagsc[i] = 0;
+		}
 		// Limit melody interval
 		if (pcantus) {
 			if (nmax - nmin > max_interval) FLAG(37, 0);
@@ -367,13 +374,6 @@ check:
 		else {
 			if (nmax - nmin > max_interval) goto skip;
 			if (nmax - nmin < min_interval) goto skip;
-		}
-		// Clear flags
-		accepted3++;
-		if (!skip_flags) fill(flags.begin(), flags.end(), 0);
-		flags[0] = 1;
-		for (int i = 0; i < ep2; i++) {
-			nflagsc[i] = 0;
 		}
 		for (int i = 0; i < ep2; i++) {
 			// Calculate pitch class
