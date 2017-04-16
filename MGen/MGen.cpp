@@ -269,7 +269,7 @@ void CMGenApp::OnFileOpen()
 			path = abs_path;
 			if (path.Find(path_old) > -1) {
 				rel_path = path.Mid(path_old.GetLength()+1);
-				mf->WriteLog(1, rel_path);
+				//mf->WriteLog(1, rel_path);
 				// Check relative exists
 				if (CGLib::fileExists(rel_path)) path = rel_path;
 			}

@@ -219,8 +219,8 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int wcount = 1; // Number of windows created
 	int sp1, sp2, ep1, ep2, p, pp;
-	vector<char> min_c(MAX_NOTE);
-	vector<char> max_c(MAX_NOTE);
+	vector<char> min_c(c_len);
+	vector<char> max_c(c_lenc);
 	accepted = 0;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
