@@ -290,8 +290,8 @@ void CGAdapt::Adapt(int step1, int step2)
 		slur_count = 0;
 		int i = step1;
 		for (int x = 0; x < ncount; x++) {
-			ei = i + len[i][v] - 1;
-			pi = i - poff[i][v];
+			ei = max(0, i + len[i][v] - 1);
+			pi = max(0, i - poff[i][v]);
 			pei = i - 1;
 			// Set nonlegato for separate notes
 			if ((i == 0) || (pause[pi][v])) {

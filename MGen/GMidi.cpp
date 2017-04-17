@@ -76,14 +76,14 @@ void CGMidi::LoadMidi(CString path)
 		return;
 	}
 	midifile.linkNotePairs();
-	midifile.joinTracks();
+	//midifile.joinTracks();
 	midifile.doTimeAnalysis();
 
 	midifile.absoluteTicks();
 
 	int tpq = midifile.getTicksPerQuarterNote();
 	int tpc = (double)tpq / (double)2 / (double)midifile_in_mul; // ticks per croche
-	vector<int> vlast_step(16);
+	vector<int> vlast_step(MAX_VOICE);
 
 	double lastNoteFinished = 0.0;
 	int last_step = 0;
@@ -116,7 +116,8 @@ void CGMidi::LoadMidi(CString path)
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			if (mev->isNoteOn()) {
-				int v = mev->getChannel();
+				//int v = mev->getChannel();
+				int v = max(0, track-1);
 				// Resize vectors for new voice number
 				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				int pos = round(mev->tick / (double)tpc);
@@ -411,11 +412,13 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 		// If it is not the last SendMIDI, postpone future events
 		if ((!midi_last_run) && (real_timestamp > midi_buf_lim)) {
 			midi_buf_next.push_back(event);
-			CString* est = new CString;
-			est->Format("Postponed AddMidiEvent to %d step %d, type %02X, data %d/%d (after %d step %d, type %02X, data %d/%d) [start = %d, lim = %d]",
-				timestamp, midi_current_step, mm_type, data1, data2, midi_sent_t - midi_start_time, midi_sent,
-				Pm_MessageStatus(midi_sent_msg), Pm_MessageData1(midi_sent_msg), Pm_MessageData2(midi_sent_msg), midi_start_time, midi_buf_lim - midi_start_time);
-			WriteLog(4, est);
+			if (debug_level > 1) {
+				CString* est = new CString;
+				est->Format("Postponed AddMidiEvent to %d step %d, type %02X, data %d/%d (after %d step %d, type %02X, data %d/%d) [start = %d, lim = %d]",
+					timestamp, midi_current_step, mm_type, data1, data2, midi_sent_t - midi_start_time, midi_sent,
+					Pm_MessageStatus(midi_sent_msg), Pm_MessageData1(midi_sent_msg), Pm_MessageData2(midi_sent_msg), midi_start_time, midi_buf_lim - midi_start_time);
+				WriteLog(4, est);
+			}
 		}
 		else {
 			midi_buf.push_back(event);
@@ -541,7 +544,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
 			midi_current_step = i;
-			ei = i + len[i][v] - 1;
+			ei = max(0, i + len[i][v] - 1);
 			if (!pause[i][v]) {
 				// Note ON if it is not blocked and was not yet sent
 				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
