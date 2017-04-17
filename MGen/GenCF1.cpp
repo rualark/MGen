@@ -336,7 +336,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		p = sp2 - 1; // Minimal position in array to cycle
 	}
 	// Check if too many windows
-	if ((c_len - 2) / (double)s_len > MAX_WIND) {
+	if (((c_len - 2) / (double)s_len > MAX_WIND && !pcantus) || (pcantus && use_matrix == 1 && smatrixc/s_len > MAX_WIND)) {
 		CString* est = new CString;
 		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
 			c_len, s_len, MAX_WIND);

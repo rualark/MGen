@@ -136,11 +136,13 @@ void CGMidi::LoadMidi(CString path)
 				}
 				int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
 				// Check if note too long
-				if (nlen > 255 && warning_loadmidi_align < 5) {
-					CString* st = new CString;
-					st->Format("Note too long and will be cut short at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", mev->tick, tpc, midifile_in_mul, pos, path);
-					WriteLog(1, st);
-					warning_loadmidi_align++;
+				if (nlen > 255) {
+					if (warning_loadmidi_align < 5) {
+						CString* st = new CString;
+						st->Format("Note too long and will be cut short at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", mev->tick, tpc, midifile_in_mul, pos, path);
+						WriteLog(1, st);
+						warning_loadmidi_align++;
+					}
 					nlen = 255;
 				}
 				if (nlen < 1) nlen = 1;
@@ -276,11 +278,11 @@ void CGMidi::LoadCantus(CString path)
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
 					}
-					bad = 0;
 					// Go to next cantus
 					nid = 0;
 				}
 				if (nid == 0) {
+					bad = 0;
 					// Add new cantus
 					cid++;
 					c.clear();
@@ -290,38 +292,46 @@ void CGMidi::LoadCantus(CString path)
 				// Add new note
 				if ((nid == 0) || (c[nid-1] != mev->getKeyNumber())) {
 					// Check if current note already set
-					if (!nlen && warning_loadmidi_align < 5) {
-						CString* st = new CString;
-						st->Format("Note too short at %d tick with %d tpc (mul %.03f) in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, path);
-						WriteLog(1, st);
-						warning_loadmidi_align++;
+					if (!nlen) {
+						if (warning_loadmidi_align < 5) {
+							CString* st = new CString;
+							st->Format("Note too short: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+							WriteLog(1, st);
+							warning_loadmidi_align++;
+						}
 						bad = 1;
 					}
 					int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
 					// Check if note too long
-					if (nlen > 255 && warning_loadmidi_align < 5) {
-						CString* st = new CString;
-						st->Format("Note too long at %d tick with %d tpc (mul %.03f) in file %s. Decreasing midifile_in_mul can help.", mev->tick, tpc, midifile_in_mul, path);
-						WriteLog(1, st);
-						warning_loadmidi_align++;
-						nlen = 255;
+					if (nlen > 255) {
+						if (warning_loadmidi_align < 5) {
+							CString* st = new CString;
+							st->Format("Note too long: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Decreasing midifile_in_mul can help.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+							WriteLog(1, st);
+							warning_loadmidi_align++;
+							nlen = 255;
+						}
 						bad = 1;
 					}
-					c.push_back(mev->getKeyNumber());
-					cl.push_back(nlen);
-					ct.push_back(tempo2[pos]);
-					nid++;
+					// Avoid repeats
+					if (c.size() == 0 || c[c.size() - 1] != mev->getKeyNumber()) {
+						c.push_back(mev->getKeyNumber());
+						cl.push_back(nlen);
+						ct.push_back(tempo2[pos]);
+						nid++;
+					}
 				}
 				// Save last time
 				last_tick = pos2 + nlen2;
 			}
 		}
-	}
-	// Add cantus if it is long
-	if (nid > 5 && !bad) {
-		cantus.push_back(c);
-		cantus_len.push_back(cl);
-		cantus_tempo.push_back(ct);
+		// Add cantus if it is long
+		if (nid > 5 && !bad) {
+			cantus.push_back(c);
+			cantus_len.push_back(cl);
+			cantus_tempo.push_back(ct);
+			nid = 0;
+		}
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());

@@ -13,8 +13,8 @@ pitch_penalty = 1 # Penalty for changing note one more diatonic step while corre
 show_transpose = 0,24 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
-swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
-correct_range = 5 # Maximum interval allowed between each source and corrected note
+swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
+correct_range = 3 # Maximum interval allowed between each source and corrected note
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters
