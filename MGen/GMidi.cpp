@@ -84,6 +84,8 @@ void CGMidi::LoadMidi(CString path)
 	int tpq = midifile.getTicksPerQuarterNote();
 	int tpc = (double)tpq / (double)2 / (double)midifile_in_mul; // ticks per croche
 	vector<int> vlast_step(MAX_VOICE);
+	vector<CString> tname(MAX_VOICE);
+	CString st, tnames = "";
 
 	double lastNoteFinished = 0.0;
 	int last_step = 0;
@@ -91,6 +93,19 @@ void CGMidi::LoadMidi(CString path)
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
+			// Get track names
+			if (mev->isMetaMessage()) {
+				if (mev->getMetaType() == 0x03) {
+					tname[track] = "";
+					for (int x = 0; x < mev->size(); x++) {
+						tname[track] += mev->data()[x];
+					}
+					// Remove first data items
+					tname[track] = tname[track].Mid(3);
+					st.Format("%d", track);
+					tnames += " \n" + st + "=" + tname[track];
+				}
+			}
 			if (mev->isTempo()) {
 				int pos = round(mev->tick / (double)tpc);
 				// Check alignment
@@ -199,11 +214,16 @@ void CGMidi::LoadMidi(CString path)
 	}
 	// Send last
 	t_generated = last_step + 1;
+	if (tnames != "") {
+		CString* est = new CString;
+		est->Format("MIDI file track names: %s", tnames);
+		WriteLog(0, est);
+	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* st = new CString;
-	st->Format("LoadMidi successfully loaded %d steps (in %d ms)", t_generated, time_stop - time_start);
-	WriteLog(0, st);
+	CString* est = new CString;
+	est->Format("LoadMidi successfully loaded %d steps (in %d ms)", t_generated, time_stop - time_start);
+	WriteLog(0, est);
 }
 
 void CGMidi::LoadCantus(CString path)
