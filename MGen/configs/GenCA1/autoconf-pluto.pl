@@ -10,11 +10,11 @@ pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
-show_transpose = 0,24 # Semitones to transpose each voice (separated with comma)
+show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
-swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
-correct_range = 5 # Maximum interval allowed between each source and corrected note
+swa_steps = 4 # Size of Sliding Window Approximation algorithm window in steps
+correct_range = 4 # Maximum interval allowed between each source and corrected note
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters
@@ -94,5 +94,5 @@ calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down g
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
 
 # This config was created from default config file configs\GenCA1.pl
-# Created at 2017-04-16 22-34-26
-Midi_file = load\beyond.mid
+# Created at 2017-04-17 21-57-07
+Midi_file = load\pluto.mid

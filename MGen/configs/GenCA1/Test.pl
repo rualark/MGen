@@ -1,5 +1,5 @@
 # Analysis
-Midi_file = load\test-melody4.mid # Path and file name of imported midi file
+Midi_file = load\test-melody5.mid # Path and file name of imported midi file
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
@@ -9,7 +9,7 @@ show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
 swa_steps = 6 # Size of Sliding Window Approximation algorithm window in steps
-correct_range = 4 # Maximum interval allowed between each source and corrected note
+correct_range = 10 # Maximum interval allowed between each source and corrected note
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters

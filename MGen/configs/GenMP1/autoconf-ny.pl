@@ -7,5 +7,5 @@ adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_tpq_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
-# Created at 2017-04-15 23-30-33
+# Created at 2017-04-17 22-02-43
 Midi_file = N:\Public\Critic\records\2016\Shegolev\ny.mid

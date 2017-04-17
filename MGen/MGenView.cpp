@@ -364,8 +364,10 @@ void CMGenView::OnDraw(CDC* pDC)
 							pGen->len[i][v] * nwidth - retrigger, nheight);
 					if (pGen->noff[i][v] == 0) break;
 					i = i + pGen->noff[i][v] - 1;
-				}
-			}
+					// Protect from infinite loop
+					if (i < step1) break;
+				} // for i
+			} // for v
 			// Show generated vertical lines
 			for (int v = 0; v < pGen->v_cnt; v++) {
 				for (int i = step1; i < step2; i++) {
