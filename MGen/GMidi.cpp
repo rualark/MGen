@@ -137,27 +137,27 @@ void CGMidi::LoadMidi(CString path)
 				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				int pos = round(mev->tick / (float)tpc);
 				// Check alignment
-				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
+				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
 					CString* st = new CString;
 					st->Format("Note not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, path);
 					WriteLog(1, st);
 					warning_loadmidi_align++;
 				}
 				// Check if current note already set
-				if ((note[pos][v] || pause[pos][v]) && warning_loadmidi_align < 5){
+				if ((note[pos][v] || pause[pos][v]) && warning_loadmidi_short < MAX_WARN_MIDI_SHORT){
 					CString* st = new CString;
 					st->Format("Note too short and is overwritten at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, path);
 					WriteLog(1, st);
-					warning_loadmidi_align++;
+					warning_loadmidi_short++;
 				}
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check if note too long
 				if (nlen > 255) {
-					if (warning_loadmidi_align < 5) {
+					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
 						CString* st = new CString;
 						st->Format("Note too long and will be cut short at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", mev->tick, tpc, midifile_in_mul, pos, path);
 						WriteLog(1, st);
-						warning_loadmidi_align++;
+						warning_loadmidi_long++;
 					}
 					nlen = 255;
 				}
@@ -172,10 +172,10 @@ void CGMidi::LoadMidi(CString path)
 					}
 					// Set previous pause
 					for (int z = last_pause; z < pos; z++) {
-						len[z][v] = pos - last_pause;
+						len[z][v] = 1;
 						dyn[z][v] = 0;
 						pause[z][v] = 1;
-						coff[z][v] = z - last_pause;
+						coff[z][v] = 0;
 						if (tempo[z] == 0) tempo[z] = tempo[z - 1];
 					}
 					// Set additional variables
@@ -207,8 +207,8 @@ void CGMidi::LoadMidi(CString path)
 			int len2 = last_step - vlast_step[v];
 			for (int i = 1; i <= len2; i++) {
 				pause[vlast_step[v] + i][v] = 1;
-				len[vlast_step[v] + i][v] = len2;
-				coff[vlast_step[v] + i][v] = i - 1;
+				len[vlast_step[v] + i][v] = 1;
+				coff[vlast_step[v] + i][v] = 0;
 			}
 		}
 	}
@@ -314,7 +314,7 @@ void CGMidi::LoadCantus(CString path)
 				if ((nid == 0) || (c[nid-1] != mev->getKeyNumber())) {
 					// Check if current note already set
 					if (!nlen) {
-						if (warning_loadmidi_align < 5) {
+						if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
 							CString* st = new CString;
 							st->Format("Note too short: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
 							WriteLog(1, st);
@@ -325,13 +325,13 @@ void CGMidi::LoadCantus(CString path)
 					int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 					// Check if note too long
 					if (nlen > 255) {
-						if (warning_loadmidi_align < 5) {
+						if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
 							CString* st = new CString;
 							st->Format("Note too long: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Decreasing midifile_in_mul can help.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
 							WriteLog(1, st);
-							warning_loadmidi_align++;
-							nlen = 255;
+							warning_loadmidi_long++;
 						}
+						nlen = 255;
 						bad = 1;
 					}
 					// Avoid repeats

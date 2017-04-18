@@ -4,6 +4,10 @@
 #include "portmidi.h"
 #include "porttime.h"
 
+#define MAX_WARN_MIDI_ALIGN 5
+#define MAX_WARN_MIDI_SHORT 5
+#define MAX_WARN_MIDI_LONG 5
+
 // PortMIDI
 #define OUTPUT_BUF_SIZE 10000
 #define MIN_MIDI_BUF_MSEC 10000
@@ -51,6 +55,8 @@ public:
 protected:
 	// Warnings
 	int warning_loadmidi_align = 0;
+	int warning_loadmidi_short = 0;
+	int warning_loadmidi_long = 0;
 
 	// PortMIDI internal
 	void AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2);
