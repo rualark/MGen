@@ -77,11 +77,11 @@ void CGVar::InitVectors()
 	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
 	adapt_comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
 	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
-	tempo = vector<double>(t_allocated);
-	stime = vector<double>(t_allocated);
-	etime = vector<double>(t_allocated);
-	dstime = vector<vector<double>>(t_allocated, vector<double>(v_cnt));
-	detime = vector<vector<double>>(t_allocated, vector<double>(v_cnt));
+	tempo = vector<float>(t_allocated);
+	stime = vector<float>(t_allocated);
+	etime = vector<float>(t_allocated);
+	dstime = vector<vector<float>>(t_allocated, vector<float>(v_cnt));
+	detime = vector<vector<float>>(t_allocated, vector<float>(v_cnt));
 	// Init ngv
 	for (int v = 0; v < MAX_VOICE; v++) {
 		ngv_min[v] = 1000;
@@ -196,7 +196,7 @@ void CGVar::LoadConfig(CString fname)
 			st2.MakeLower();
 			// Load general variables
 			int idata = atoi(st2);
-			double fdata = atof(st3);
+			float fdata = atof(st3);
 			CheckVar(&st2, &st3, "v_cnt", &v_cnt);
 			CheckVar(&st2, &st3, "t_cnt", &t_cnt);
 			CheckVar(&st2, &st3, "t_allocated", &t_allocated);
@@ -338,7 +338,7 @@ void CGVar::SaveVector2ST(ofstream & fs, vector< vector<CString> > &v2D, int i) 
 	}
 }
 
-void CGVar::SaveVector(ofstream &fs, vector<double> &v) {
+void CGVar::SaveVector(ofstream &fs, vector<float> &v) {
 	const char* pointer = reinterpret_cast<const char*>(&v[0]);
 	size_t bytes = t_generated * sizeof(v[0]);
 	fs.write(pointer, bytes);
@@ -498,7 +498,7 @@ void CGVar::LoadVector2ST(ifstream & fs, vector< vector<CString> > &v2D, int i) 
 	}
 }
 
-void CGVar::LoadVector(ifstream &fs, vector<double> &v) {
+void CGVar::LoadVector(ifstream &fs, vector<float> &v) {
 	v.clear();
 	v.resize(t_generated);
 	char* pointer = reinterpret_cast<char*>(&v[0]);
@@ -507,7 +507,7 @@ void CGVar::LoadVector(ifstream &fs, vector<double> &v) {
 	int read_count = fs.gcount();
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 		CString* est = new CString;
-		est->Format("LoadVector double: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
+		est->Format("LoadVector float: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
 		WriteLog(1, est);
 		warning_loadvectors++;
 	}

@@ -13,14 +13,14 @@ public:
 	~CGenCF1();
 	void Generate() override;
 protected:
-	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
-	void LogCantus(vector<char>& c);
-	void ScanCantus(vector<char>* pcantus, int use_matrix, int v);
+	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
+	void LogCantus(vector<int>& c);
+	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
-	void SendCantus(int v, vector<char>* pcantus);
+	void SendCantus(int v, vector<int>* pcantus);
 	void InitCantus();
-	void FillCantus(vector<char>& c, int step1, int step2, char value);
-	void FillCantusMap(vector<char>& c, vector<unsigned short>& smap, int step1, int step2, vector<char>& value);
+	void FillCantus(vector<int>& c, int step1, int step2, int value);
+	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 
 	// Parameters
 	int min_interval = 1; // Minimum diatonic interval in cantus (7 = octave)
@@ -29,7 +29,7 @@ protected:
 	int s_len = 4; // Maximum number of measures to full scan
 	int first_note = 72; // Starting note of each cantus
 	int last_note = 72; // Ending note of each cantus
-	vector <unsigned char> accept; // Each 1 allows showing canti with specific properties
+	vector <int> accept; // Each 1 allows showing canti with specific properties
 	int fill_steps_mul = 2; // Multiply number of notes between leap notes to get steps for filling
 	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
 	int max_smooth_direct = 5; // Maximum linear movement in one direction allowed (in steps)
@@ -45,7 +45,7 @@ protected:
 	int max_tempo = 120;
 	int first_steps_tonic = 3; // Number of first steps, which must contain tonic note
 	int correct_range = 4; // Maximum interval allowed between each source and corrected note
-	double random_choose = 100; // Percent of accepted canti to show and play
+	float random_choose = 100; // Percent of accepted canti to show and play
 	int random_seed = 0; // Seed melody with random numbers. This ensures giving different results if generation is very slow.
 	int calculate_correlation = 0; // Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 	int calculate_blocking = 0; // Enables blocking flags calculation algorithm. Slows down generation.
@@ -57,27 +57,28 @@ protected:
 
   // Local
 	int sev_to_flag[MAX_FLAGS]; // Get flag ID by severity
-	vector<unsigned char>  flag_to_sev; // Get severity by flag id
+	vector<int>  flag_to_sev; // Get severity by flag id
 	vector<Color>  flag_color; // Flag colors
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
 	int flags_need2 = 0; // Number of second level flags set
-	vector<char> c; // Cantus diatonic
-	vector<char> cc; // Cantus chromatic
-	vector<vector<unsigned char>> nflags; // Note flags
-	vector<unsigned char> nflagsc; // Note flags count
-	double rpenalty_cur = 0; // Rules penalty
-	double rpenalty_min; // Minimum rules penalty for this scan
-	vector <double> rpenalty; // Penalty in terms of sum of flag severity
-	vector <unsigned char> cc_len; // Length of each cantus step
-	vector <double> cc_tempo; // Tempo of each cantus step
+	vector<int> c; // Cantus diatonic
+	vector<int> cc; // Cantus chromatic
+	vector<vector<int>> nflags; // Note flags
+	vector<int> nflagsc; // Note flags count
+	float rpenalty_cur = 0; // Rules penalty
+	float rpenalty_min; // Minimum rules penalty for this scan
+	vector <float> rpenalty; // Penalty in terms of sum of flag severity
+	vector <int> cc_len; // Length of each cantus step
+	vector <float> cc_tempo; // Tempo of each cantus step
 	int real_len; // Total length of cantus in steps
+	vector<int> pc; // pitch class
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file
 
 	// Cantus correcting
-	vector <char> smatrix; // Vector of links to steps that were selected for recalculation
+	vector <int> smatrix; // Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix
-	vector<vector<char>> clib; // Library of cantus
+	vector<vector<int>> clib; // Library of cantus
 };

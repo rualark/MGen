@@ -7,7 +7,7 @@ class CGenRS1 :
 public:
 	CGenRS1();
 	~CGenRS1();
-	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
+	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void Generate() override;
 
 	int min_tempo = 160;

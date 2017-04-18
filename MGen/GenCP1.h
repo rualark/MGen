@@ -11,7 +11,7 @@ public:
 	void Generate() override;
 
 protected:
-	void LoadConfigLine(CString * sN, CString * sV, int idata, double fdata);
+	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 
 	int min_dyn = 80;
 	int max_dyn = 110;

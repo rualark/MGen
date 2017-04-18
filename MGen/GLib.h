@@ -84,7 +84,7 @@ public:
 	static void AppendLineToFile(CString fname, CString st);
 	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
 	static void LoadRange(CString * sName, CString * sValue, char * sSearch, int * vmin, int * vmax);
-	static void CheckVar(CString * sName, CString * sValue, char * sSearch, double * Dest);
+	static void CheckVar(CString * sName, CString * sValue, char * sSearch, float * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	static void LoadVarInstr(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
@@ -105,7 +105,7 @@ public:
 protected:
 	// Mathematics
 	int randbw(int n1, int n2); // Random between two numbers
-	double rand01(); // Random double between 0 and 1
+	float rand01(); // Random float between 0 and 1
 	// Random
 	void isaac();
 	void randinit(int flag);

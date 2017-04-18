@@ -138,14 +138,14 @@
     <ClInclude Include="GVar.h">
       <Filter>Header Files\Gen helpers</Filter>
     </ClInclude>
-    <ClInclude Include="GenCP1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MsgDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MFIDialog.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GenCP1.h">
+      <Filter>Header Files\Generators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -239,14 +239,14 @@
     <ClCompile Include="GVar.cpp">
       <Filter>Source Files\Gen helpers</Filter>
     </ClCompile>
-    <ClCompile Include="GenCP1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MsgDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MFIDialog.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GenCP1.cpp">
+      <Filter>Source Files\Generators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

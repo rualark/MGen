@@ -1,0 +1,12 @@
+		cc.clear();
+		cc_len.clear();
+		for (int x = 0; x < cantus[i].size(); ++x) {
+			cc.push_back(cantus[i][x]);
+			cc_len[x] = cantus_len[i][x];
+		}
+
+
+	vector <char> ccc;
+	for (int i = 0; i < cc.size(); ++i) ccc.push_back(cc[i]);
+	clib.push_back(ccc);
+

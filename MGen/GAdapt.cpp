@@ -124,11 +124,11 @@ void CGAdapt::AdaptRetriggerStep(int v, int x, int i, int ii, int ei, int pi, in
 {
 	// Retrigger notes
 	if ((i > 0) && (note[pi][v] == note[i][v])) {
-		double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Replace retrigger with non-legato
 		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) 
 		  || (ndur < retrigger_min_len[ii])) {
-			int max_shift = (etime[pei] - stime[pei]) * 100 / m_pspeed * (double)retrigger_rand_end[ii] / 100.0;
+			int max_shift = (etime[pei] - stime[pei]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
 			if (max_shift > retrigger_rand_max[ii]) max_shift = retrigger_rand_max[ii];
 			detime[pei][v] = -randbw(0, max_shift);
 			artic[i][v] = ARTIC_NONLEGATO;
@@ -166,7 +166,7 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 		if (comment_adapt) adapt_comment[i][v] += "Ahead start. ";
 		if (comment_adapt) adapt_comment[i-1][v] += "Ahead end. ";
 		// Add glissando if note is long
-		double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if ((ndur > gliss_minlen[ii]) && (randbw(0, 100) < gliss_freq[ii])) {
 			vel[i][v] = vel_gliss[ii];
 			if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
@@ -201,22 +201,22 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 {
 	// If nonlegato and short note, avoid slow sustain articulations for Friedlander violin
 	if (artic[i][v] == ARTIC_NONLEGATO) {
-		double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if (ndur < vel_normal_minlen[ii]) {
 			vel[i][v] = randbw(vel_immediate[ii], 127);
 			if (comment_adapt) adapt_comment[i][v] += "Vel random over normal. ";
 		}
-		//if (ndur < vel_normal_minlen[ii]) vel[i][v] = dyn[i][v] * (double)(127 - vel_immediate[ii]) / 127.0 + vel_immediate[ii];
-		//else vel[i][v] = dyn[i][v] * (double)(vel_immediate[ii] - 1) / 127.0;
+		//if (ndur < vel_normal_minlen[ii]) vel[i][v] = dyn[i][v] * (float)(127 - vel_immediate[ii]) / 127.0 + vel_immediate[ii];
+		//else vel[i][v] = dyn[i][v] * (float)(vel_immediate[ii] - 1) / 127.0;
 	}
 }
 
 void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
 {
-	double ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	// Create bell if long length, not high velocity, not pause and not first note
 	if ((ndur > vel_normal_minlen[ii]) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
-		int pos = i + (double)(len[i][v]) * bell_start_len[ii] / 100.0;
+		int pos = i + (float)(len[i][v]) * bell_start_len[ii] / 100.0;
 		int ok = 1;
 		// Check if dynamics is even
 		if (pos - i > 1) for (int z = i + 1; z < pos; z++) {
@@ -227,7 +227,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		}
 		if (ok) {
 			for (int z = i; z < pos; z++) {
-				dyn[z][v] = dyn[z][v] * (bell_start_mul[ii] + (double)(z - i) / (pos - i) * (1.0 - bell_start_mul[ii]));
+				dyn[z][v] = dyn[z][v] * (bell_start_mul[ii] + (float)(z - i) / (pos - i) * (1.0 - bell_start_mul[ii]));
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Long bell start. ";
 		}
@@ -235,7 +235,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 	int ni = i + noff[i][v];
 	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
 	if ((ndur > vel_normal_minlen[ii]) && (len[i][v] > 2) && (x == ncount-1 || pause[ni][v])) {
-		int pos = round(i + (double)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
+		int pos = round(i + (float)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
 		// Check if dynamics is even
@@ -247,7 +247,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		}
 		if (ok) {
 			for (int z = pos; z < end; z++) {
-				dyn[z][v] = dyn[z][v] * (bell_end_mul[ii] + (double)(end - z) / (end - pos) * (1.0 - bell_end_mul[ii]));
+				dyn[z][v] = dyn[z][v] * (bell_end_mul[ii] + (float)(end - z) / (end - pos) * (1.0 - bell_end_mul[ii]));
 			}
 			if (comment_adapt) adapt_comment[i + len[i][v] - 1][v] += "Long bell end. ";
 		}
@@ -312,13 +312,13 @@ void CGAdapt::Adapt(int step1, int step2)
 				}
 				// Randomize note starts
 				if (rand_start[ii] > 0) {
-					double max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
+					float max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
 					if ((rand_start_max[ii] > 0) && (max_shift > rand_start_max[ii])) max_shift = rand_start_max[ii];
 					dstime[i][v] += (rand01() - 0.5) * max_shift;
 				}
 				// Randomize note ends
 				if (rand_end[ii] > 0) {
-					double max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * rand_end[ii] / 100;
+					float max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * rand_end[ii] / 100;
 					if ((rand_end_max[ii] > 0) && (max_shift > rand_end_max[ii])) max_shift = rand_end_max[ii];
 					detime[ei][v] += (rand01() - 0.5) * max_shift;
 				}

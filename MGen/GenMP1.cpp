@@ -13,7 +13,7 @@ CGenMP1::~CGenMP1()
 {
 }
 
-void CGenMP1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
+void CGenMP1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	LoadVar(sN, sV, "midi_file", &midi_file);
 }

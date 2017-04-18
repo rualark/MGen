@@ -31,7 +31,7 @@ public:
 	CString save_format_version; // Version of save format loaded
 
   // Main constants
-	double m_pspeed = 100; // Playback speed in percent
+	float m_pspeed = 100; // Playback speed in percent
 	int v_cnt=1; // Voice count
 	int32_t time_started; // Time in milliseconds when generation started
 	int32_t time_stopped; // Time in milliseconds when generation stopped
@@ -44,11 +44,11 @@ public:
 	int ng_max = 0; // Maximum generated note
 	int ngv_min[MAX_VOICE]; // Minimum generated note per voice
 	int ngv_max[MAX_VOICE]; // Maximum generated note per voice
-	double tg_min = 1000; // Minimum generated tempo
-	double tg_max = 0; // Maximum generated tempo
+	float tg_min = 1000; // Minimum generated tempo
+	float tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
-	double midifile_in_mul = 1; // Multiply note length with this value when loading
-	double midifile_out_mul = 1; // Multiply note length with this value when saving
+	float midifile_in_mul = 1; // Multiply note length with this value when loading
+	float midifile_out_mul = 1; // Multiply note length with this value when saving
 	int shuffle = 0; // If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 	int comment_adapt = 1; // If you want to have each adaptation decision commented
 	
@@ -69,11 +69,11 @@ public:
 	vector< vector <CString> > comment; // Comment for note
 	vector< vector <CString> > adapt_comment; // Adaptation comment for note
 	vector< vector <Color> > color; // Note color (rgb ignored if all zero; alpha ignored if zero)
-	vector<double> tempo; // Tempo
-	vector<double> stime; // Time of current step start in ms
-	vector<double> etime; // Time of current step ending in ms
-	vector< vector <double> > dstime; // Delta of current step start in ms for playback
-	vector< vector <double> > detime; // Delta of current step ending in ms for playback
+	vector<float> tempo; // Tempo
+	vector<float> stime; // Time of current step start in ms
+	vector<float> etime; // Time of current step ending in ms
+	vector< vector <float> > dstime; // Delta of current step start in ms for playback
+	vector< vector <float> > detime; // Delta of current step ending in ms for playback
 	vector <int> show_transpose; // Semitone transpose for showing
 
 	// Instruments
@@ -94,15 +94,15 @@ public:
 	vector<int> max_slur_interval;
 	vector<int> slur_ks;
 	vector<int> legato_ahead;
-	vector<double> nonlegato_freq;
+	vector<float> nonlegato_freq;
 	vector<int> nonlegato_minlen;
 	vector<int> lengroup2;
 	vector<int> lengroup3;
 	vector<int> lengroup4;
 	vector<int> lengroup_edt1;
 	vector<int> lengroup_edt2;
-	vector<double> rand_start;
-	vector<double> rand_end;
+	vector<float> rand_start;
+	vector<float> rand_end;
 	vector<int> retrigger_min_len; // Minimum next note length in ms to use retrigger
 	vector<int> retrigger_rand_end; // Maximum percent of note length to move note end to the left in case of nonlegato
 	vector<int> retrigger_rand_max; // Maximum length in ms to move note end to the left in case of nonlegato retrigger
@@ -116,10 +116,10 @@ public:
 	vector<int> rand_start_max; // Maximum shift in ms
 	vector<int> rand_end_max; // Maximum shift in ms
 	vector<int> max_ahead_note; // Maximum chromatic interval having ahead property
-	vector<double> bell_start_mul; // Multiply dynamics by this parameter at bell start
-	vector<double> bell_end_mul; // Multiply dynamics by this parameter at bell end
-	vector<double> bell_start_len; // Percent of notelength to use for slope at bell start
-	vector<double> bell_end_len; // Percent of notelength to use for slope at bell end
+	vector<float> bell_start_mul; // Multiply dynamics by this parameter at bell start
+	vector<float> bell_end_mul; // Multiply dynamics by this parameter at bell end
+	vector<float> bell_start_len; // Percent of notelength to use for slope at bell start
+	vector<float> bell_end_len; // Percent of notelength to use for slope at bell end
 	int adapt_enable = 1;
 
 protected:
@@ -128,15 +128,15 @@ protected:
 	void SaveVector2C(ofstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveVector2Color(ofstream & fs, vector<vector<Color>>& v2D, int i);
 	void SaveVector2ST(ofstream & fs, vector<vector<CString>>& v2D, int i);
-	void SaveVector(ofstream &fs, vector<double> &v);
+	void SaveVector(ofstream &fs, vector<float> &v);
 	void SaveVector(ofstream &fs, vector<Color> &v);
 	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void LoadVector2Color(ifstream & fs, vector<vector<Color>>& v2D, int i);
 	void LoadVector2ST(ifstream & fs, vector<vector<CString>>& v2D, int i);
 	void LoadVector(ifstream & fs, vector<Color>& v);
-	void LoadVector(ifstream & fs, vector<double>& v);
+	void LoadVector(ifstream & fs, vector<float>& v);
 	void LoadVector(ifstream & fs, vector<unsigned char>& v);
-	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, double fdata) = 0;
+	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) = 0;
 	// Helper functions for child generators
 	void CountOff(int step1, int step2);
 	void CountTime(int step1, int step2);

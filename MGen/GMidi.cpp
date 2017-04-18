@@ -82,12 +82,12 @@ void CGMidi::LoadMidi(CString path)
 	midifile.absoluteTicks();
 
 	int tpq = midifile.getTicksPerQuarterNote();
-	int tpc = (double)tpq / (double)2 / (double)midifile_in_mul; // ticks per croche
+	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul; // ticks per croche
 	vector<int> vlast_step(MAX_VOICE);
 	vector<CString> tname(MAX_VOICE);
 	CString st, tnames = "";
 
-	double lastNoteFinished = 0.0;
+	float lastNoteFinished = 0.0;
 	int last_step = 0;
 	// Load tempo
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
@@ -107,7 +107,7 @@ void CGMidi::LoadMidi(CString path)
 				}
 			}
 			if (mev->isTempo()) {
-				int pos = round(mev->tick / (double)tpc);
+				int pos = round(mev->tick / (float)tpc);
 				// Check alignment
 				//if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
 					//CString* st = new CString;
@@ -135,7 +135,7 @@ void CGMidi::LoadMidi(CString path)
 				int v = max(0, track-1);
 				// Resize vectors for new voice number
 				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
-				int pos = round(mev->tick / (double)tpc);
+				int pos = round(mev->tick / (float)tpc);
 				// Check alignment
 				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
 					CString* st = new CString;
@@ -150,7 +150,7 @@ void CGMidi::LoadMidi(CString path)
 					WriteLog(1, st);
 					warning_loadmidi_align++;
 				}
-				int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
+				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check if note too long
 				if (nlen > 255) {
 					if (warning_loadmidi_align < 5) {
@@ -250,16 +250,16 @@ void CGMidi::LoadCantus(CString path)
 
 	int tpq = midifile.getTicksPerQuarterNote();
 	// ticks per croche
-	int tpc = (double)tpq / (double)2 / (double)midifile_in_mul; 
+	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul; 
 
-	vector <double> tempo2;
+	vector <float> tempo2;
 	long tempo_count = 0;
 	int last_step = 0;
 	// Load tempo
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
-			int pos = round(mev->tick / (double)tpc);
+			int pos = round(mev->tick / (float)tpc);
 			if (pos >= tempo_count) {
 				tempo_count = pos + 1;
 				tempo2.resize(tempo_count);
@@ -277,20 +277,20 @@ void CGMidi::LoadCantus(CString path)
 
 	int cid = 0;
 	int nid = 0;
-	vector <char> c;
-	vector <unsigned char> cl;
-	vector <double> ct;
+	vector <int> c;
+	vector <int> cl;
+	vector <float> ct;
 	int bad = 0;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
-		double last_tick = 0;
+		float last_tick = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
-			double time = midifile.getTimeInSeconds(mev->tick);
+			float time = midifile.getTimeInSeconds(mev->tick);
 			if (mev->isNoteOn()) {
-				double pos2 = mev->tick;
-				int pos = round(mev->tick / (double)tpc);
-				double nlen2 = mev->getTickDuration();
-				int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
+				float pos2 = mev->tick;
+				int pos = round(mev->tick / (float)tpc);
+				float nlen2 = mev->getTickDuration();
+				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check for pause
 				if (pos2 - last_tick > tpc / 2) {
 					// Add cantus if it is long
@@ -322,7 +322,7 @@ void CGMidi::LoadCantus(CString path)
 						}
 						bad = 1;
 					}
-					int nlen = round((mev->tick + mev->getTickDuration()) / (double)tpc) - pos;
+					int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 					// Check if note too long
 					if (nlen > 255) {
 						if (warning_loadmidi_align < 5) {
@@ -516,7 +516,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 	int step21; // Voice-dependent first step
 	int step22; // Voice-independent last step
 							// Find last step not too far
-	double time;
+	float time;
 	for (i = step1; i <= step2; i++) {
 		step22 = i;
 		if (i == 0) time = stime[i] * 100 / m_pspeed;
@@ -592,14 +592,14 @@ void CGMidi::SendMIDI(int step1, int step2)
 		// Send CC dynamics
 		if (CC_dyn[ii]) {
 			int cc_value;
-			double cc_step; // Length of cc interpolation step
-			double cc_pos1; // Middle of current note step
-			double cc_pos2; // Middle of next note step
+			float cc_step; // Length of cc interpolation step
+			float cc_pos1; // Middle of current note step
+			float cc_pos2; // Middle of next note step
 			for (int i = step21 - 2; i < step22 - 1; i++) {
 				if (i < 0) continue;
 				midi_current_step = i;
-				vector <double> cc_lin; // Linear interpolation
-				vector <double> cc_ma; // Moving average
+				vector <float> cc_lin; // Linear interpolation
+				vector <float> cc_ma; // Moving average
 				cc_lin.resize(CC_steps[ii] * 2);
 				cc_ma.resize(CC_steps[ii]);
 				// Calculate window
@@ -626,30 +626,30 @@ void CGMidi::SendMIDI(int step1, int step2)
 				if (!CC_dyn_ma[ii]) {
 					// Send linear CC
 					for (int c = 0; c < CC_steps[ii]; c++) {
-						AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(double)c / (double)CC_steps[ii], CC_dyn[ii], cc_lin[c]);
+						AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)CC_steps[ii], CC_dyn[ii], cc_lin[c]);
 					}
 				}
 				else {
 					// First moving average
 					cc_ma[0] = 0;
 					for (int c = 0; c < CC_steps[ii]; c++) {
-						cc_ma[0] += cc_lin[c] / (double)CC_steps[ii];
+						cc_ma[0] += cc_lin[c] / (float)CC_steps[ii];
 					}
 					// Extend moving average
 					for (int c = 1; c < CC_steps[ii]; c++) {
-						cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + CC_steps[ii] - 1] - cc_lin[c - 1]) / (double)CC_steps[ii];
+						cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + CC_steps[ii] - 1] - cc_lin[c - 1]) / (float)CC_steps[ii];
 					}
 					// Send starting CC
 					if (i == 0) AddCC(-1, CC_dyn[ii], dyn[i][v]);
 					// Send ma CC of first note
 					int hstep = CC_steps[ii] / 2;
 					if (i > step21 - 2) for (int c = 0; c < hstep + 1; c++) {
-						int t = stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(double)(c + hstep) / (double)CC_steps[ii];
+						int t = stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)(c + hstep) / (float)CC_steps[ii];
 						if (t >= midi_sent_t - midi_start_time) AddCC(t, CC_dyn[ii], cc_ma[c]);
 					}
 					// Send ma CC of second note
 					if (i <  step22 - 2) for (int c = hstep + 1; c < CC_steps[ii]; c++) {
-						int t = stime[i + 1] * 100 / m_pspeed + (etime[i + 1] - stime[i + 1]) * 100 / m_pspeed*(double)(c - hstep - 1) / (double)CC_steps[ii];
+						int t = stime[i + 1] * 100 / m_pspeed + (etime[i + 1] - stime[i + 1]) * 100 / m_pspeed*(float)(c - hstep - 1) / (float)CC_steps[ii];
 						if (t >= midi_sent_t - midi_start_time) AddCC(t, CC_dyn[ii], cc_ma[c]);
 					}
 				}

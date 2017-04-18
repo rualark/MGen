@@ -71,8 +71,8 @@ protected:
 	int midi_voice = 0;
 
 	// Cantus
-	vector< vector <char> > cantus; // Cantus loaded from midi file
-	vector< vector <unsigned char> > cantus_len; // Cantus loaded from midi file
-	vector< vector <double> > cantus_tempo; // Cantus loaded from midi file
+	vector< vector <int> > cantus; // Cantus loaded from midi file
+	vector< vector <int> > cantus_len; // Cantus loaded from midi file
+	vector< vector <float> > cantus_tempo; // Cantus loaded from midi file
 };
 

@@ -6,7 +6,7 @@
 #endif
 
 // Report violation
-#define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; nflagsc[i]++; }
+#define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; }
 
 // Convert chromatic to diatonic
 #define CC_C(note) (chrom_to_dia[(note + 12 - tonic_cur) % 12] + ((note + 12 - tonic_cur) / 12 - 1) * 7)
@@ -81,7 +81,7 @@ CGenCF1::~CGenCF1()
 {
 }
 
-void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
+void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "min_interval", &min_interval);
 	CheckVar(sN, sV, "max_interval", &max_interval);
@@ -120,7 +120,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	}
 	// Load accept
 	CString st;
-	for (int i = 0; i < MAX_FLAGS; i++) {
+	for (int i = 0; i < MAX_FLAGS; ++i) {
 		st = FlagName[i];
 		st.MakeLower();
 		if (*sN == st) {
@@ -147,7 +147,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 						//CString* est = new CString;
 						//est->Format("Flag '%s' gets severity %d", FlagName[i], cur_severity);
 						//WriteLog(1, est);
-						cur_severity++;
+						++cur_severity;
 					}
 				}
 			}
@@ -155,48 +155,48 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	}
 }
 
-void CGenCF1::LogCantus(vector<char> &c)
+void CGenCF1::LogCantus(vector<int> &c)
 {
 	CString st, st2;
-	for (int i = 0; i < c.size(); i++) {
+	for (int i = 0; i < c.size(); ++i) {
 		st.Format("%d ", c[i]);
 		st2 += st;
 	}
 	CGLib::AppendLineToFile("temp.log", st2 + " \n");
 }
 
-void CGenCF1::FillCantus(vector<char>& c, int step1, int step2, char value)
+void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, int value)
 {
 	// Step2 must be exclusive
-	for (int i = step1; i < step2; i++) {
+	for (int i = step1; i < step2; ++i) {
 		c[i] = value;
 	}
 }
 
-void CGenCF1::FillCantusMap(vector<char>& c, vector<unsigned short>& smap, int step1, int step2, vector<char>& value)
+void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value)
 {
 	// Step2 must be exclusive
-	for (int i = step1; i < step2; i++) {
+	for (int i = step1; i < step2; ++i) {
 		c[smap[i]] = value[smap[i]];
 	}
 }
 
-void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
+void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
 	// Resize global vectors
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
-	nflags.resize(c_len, vector<unsigned char>(MAX_FLAGS)); // Flags for each note
+	nflags.resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
 	nflagsc.resize(c_len); // number of flags for each note
 	// Local variables
 	CString st, st2;
 	int wid; // Window id
 	int seed_cycle = 0; // Number of cycles in case of random_seed
-	vector<char> c2(c_len); // Cantus diatonic saved for SWA
-	vector<unsigned char> pc(c_len); // pitch class
-	vector<char> leap(c_len);
-	vector<char> smooth(c_len);
+	vector<int> c2(c_len); // Cantus diatonic saved for SWA
+	pc.resize(c_len);
+	vector<int> leap(c_len);
+	vector<int> smooth(c_len);
 	vector<int> wpos1(c_len / s_len + 1);
 	vector<int> wpos2(c_len / s_len + 1);
 	vector<int> nstat(MAX_NOTE);
@@ -207,9 +207,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	vector<long long> accepted5(MAX_WIND); // number of canti with neede flags per window
 	vector<long long> fstat(MAX_FLAGS); // number of canti with each flag
 	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
-	vector<unsigned char>  flags(MAX_FLAGS); // Flags for whole cantus
+	vector<int>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
-	vector <unsigned short> smap; // Map of links from matrix local IDs to cantus step IDs
+	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	long long cycle = 0;
 	long long accepted2 = 0, accepted3 = 0;
@@ -219,8 +219,8 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
 	int wcount = 1; // Number of windows created
 	int sp1, sp2, ep1, ep2, p, pp;
-	vector<char> min_c(c_len);
-	vector<char> max_c(c_len);
+	vector<int> min_c(c_len);
+	vector<int> max_c(c_len);
 	accepted = 0;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
@@ -235,7 +235,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		last_note = cc[c_len - 1];
 		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
 		first_note_oct = first_note / 12;
-		for (int i = 0; i < c_len; i++) {
+		for (int i = 0; i < c_len; ++i) {
 			c[i] = CC_C(cc[i]);
 			// Save value for future use;
 			c2[i] = c[i];
@@ -250,10 +250,10 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		ep1 = sp1;
 		ep2 = c_len;
 		// Clear flags
-		accepted3++;
+		++accepted3;
 		fill(flags.begin(), flags.end(), 0);
 		flags[0] = 1;
-		for (int i = 0; i < ep2; i++) {
+		for (int i = 0; i < ep2; ++i) {
 			nflagsc[i] = 0;
 		}
 		// Matrix scan
@@ -263,9 +263,9 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 			// Create map
 			smap.resize(smatrixc);
 			int map_id = 0;
-			for (int i = 0; i < c_len; i++) if (smatrix[i]) {
+			for (int i = 0; i < c_len; ++i) if (smatrix[i]) {
 				smap[map_id] = i;
-				map_id++;
+				++map_id;
 			}
 			sp1 = 0;
 			sp2 = sp1 + s_len; // End of search window
@@ -304,7 +304,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 	// Full scan canti
 	else {
 		// Check that at least one rule accepted
-		for (int i = 0; i < MAX_FLAGS; i++) {
+		for (int i = 0; i < MAX_FLAGS; ++i) {
 			if (accept[i]) break;
 			if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
 		}
@@ -314,14 +314,14 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		c[0] = CC_C(first_note);
 		c[c_len - 1] = CC_C(last_note);
 		// Set pitch limits
-		for (int i = 0; i < c_len; i++) {
+		for (int i = 0; i < c_len; ++i) {
 			min_c[i] = c[0] - max_interval;
 			max_c[i] = c[0] + max_interval;
 		}
 		// Set middle notes to minimum
 		FillCantus(c, 1, c_len-1, min_c[0]);
 		if (random_seed)
-			for (int i = 1; i < c_len - 1; i++) c[i] = -randbw(min_c[0], max_c[0]);
+			for (int i = 1; i < c_len - 1; ++i) c[i] = -randbw(min_c[0], max_c[0]);
 		sp1 = 1; // Start of search window
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > c_len - 1) sp2 = c_len - 1;
@@ -336,7 +336,7 @@ void CGenCF1::ScanCantus(vector<char> *pcantus, int use_matrix, int v) {
 		p = sp2 - 1; // Minimal position in array to cycle
 	}
 	// Check if too many windows
-	if (((c_len - 2) / (double)s_len > MAX_WIND && !pcantus) || (pcantus && use_matrix == 1 && smatrixc/s_len > MAX_WIND)) {
+	if (((c_len - 2) / (float)s_len > MAX_WIND && !pcantus) || (pcantus && use_matrix == 1 && smatrixc/s_len > MAX_WIND)) {
 		CString* est = new CString;
 		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
 			c_len, s_len, MAX_WIND);
@@ -348,34 +348,40 @@ check:
 	while (true) {
 		//LogCantus(c);
 		// Detect repeating notes
-		for (int i = ep1 - 1; i < ep2 - 1; i++) {
+		for (int i = ep1 - 1; i < ep2 - 1; ++i) {
 			if (c[i] == c[i + 1]) goto skip;
 		}
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		// Count limits
 		nmin = MAX_NOTE;
 		nmax = 0;
-		for (int i = 0; i < ep2; i++) {
+		for (int i = 0; i < ep2; ++i) {
 			if (c[i] < nmin) nmin = c[i];
 			if (c[i] > nmax) nmax = c[i];
 		}
-		// Clear flags
-		accepted3++;
-		if (!skip_flags) fill(flags.begin(), flags.end(), 0);
-		flags[0] = 1;
-		for (int i = 0; i < ep2; i++) {
-			nflagsc[i] = 0;
-		}
+		++accepted3;
 		// Limit melody interval
 		if (pcantus) {
+			// Clear flags
+			if (!skip_flags) fill(flags.begin(), flags.end(), 0);
+			flags[0] = 1;
+			for (int i = 0; i < ep2; ++i) {
+				nflagsc[i] = 0;
+			}
 			if (nmax - nmin > max_interval) FLAG(37, 0);
 			if (nmax - nmin < min_interval) FLAG(38, 0);
 		}
 		else {
 			if (nmax - nmin > max_interval) goto skip;
 			if (nmax - nmin < min_interval) goto skip;
+			// Clear flags
+			if (!skip_flags) fill(flags.begin(), flags.end(), 0);
+			flags[0] = 1;
+			for (int i = 0; i < ep2; ++i) {
+				nflagsc[i] = 0;
+			}
 		}
-		for (int i = 0; i < ep2; i++) {
+		for (int i = 0; i < ep2; ++i) {
 			// Calculate pitch class
 			pc[i] = c[i] % 7;
 		}
@@ -394,13 +400,13 @@ check:
 		wdcount = 0;
 		wscount = 0;
 		wtcount = 0;
-		for (int i = 0; i < ep2; i++) {
+		for (int i = 0; i < ep2; ++i) {
 			// Count same and missing letters in a row
 			if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
 				if (wtcount == 4) FLAG(18, i - 1);
 				if (wtcount == 5) FLAG(19, i - 1);
 				if (wtcount > 5) FLAG(20, i - 1);
-				tcount++;
+				++tcount;
 				wtcount = 0;
 			}
 			else {
@@ -408,13 +414,13 @@ check:
 				if (tcount == 4) FLAG(16, i - 1);
 				if (tcount > 4) FLAG(17, i - 1);
 				tcount = 0;
-				wtcount++;
+				++wtcount;
 			}
 			if ((pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
 				if (wdcount == 4) FLAG(18, i - 1);
 				if (wdcount == 5) FLAG(19, i - 1);
 				if (wdcount > 5) FLAG(20, i - 1);
-				dcount++;
+				++dcount;
 				wdcount = 0;
 			}
 			else {
@@ -422,13 +428,13 @@ check:
 				if (dcount == 4) FLAG(16, i - 1);
 				if (dcount > 4) FLAG(17, i - 1);
 				dcount = 0;
-				wdcount++;
+				++wdcount;
 			}
 			if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) {
 				if (wscount == 4) FLAG(18, i - 1);
 				if (wscount == 5) FLAG(19, i - 1);
 				if (wscount > 5) FLAG(20, i - 1);
-				scount++;
+				++scount;
 				wscount = 0;
 			}
 			else {
@@ -436,7 +442,7 @@ check:
 				if (scount == 4) FLAG(16, i - 1);
 				if (scount > 4) FLAG(17, i - 1);
 				scount = 0;
-				wscount++;
+				++wscount;
 			}
 		}
 		// Check same letters
@@ -448,10 +454,10 @@ check:
 		if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, ep2 - 1);
 		if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
 		// Calculate chromatic positions
-		for (int i = 0; i < ep2; i++) {
+		for (int i = 0; i < ep2; ++i) {
 			cc[i] = C_CC(c[i]);
 		}
-		for (int i = 0; i < ep2 - 1; i++) {
+		for (int i = 0; i < ep2 - 1; ++i) {
 			// Tritone prohibit
 			if ((pc[i+1] == 6 && pc[i] == 3) || (pc[i+1] == 3 && pc[i] == 6)) {
 				// Check if tritone is highest leap if this is last window
@@ -486,7 +492,7 @@ check:
 		smooth_sum = 0;
 		smooth_sum2 = 0;
 		// Search for outstanding repeats
-		if (ep2 > 6) for (int i = 0; i < ep2 - 6; i++) {
+		if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
 			// Check if note changes direction or is a leap
 			if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
 				// Search for repeat of note at same beat until last three notes
@@ -503,10 +509,10 @@ check:
 				}
 			}
 		}
-		for (int i = 0; i < ep2 - 1; i++) {
+		for (int i = 0; i < ep2 - 1; ++i) {
 			// Add new leap
 			if (leap[i] != 0) {
-				leap_sum++;
+				++leap_sum;
 				// Check if this leap is 3rd
 				third_prepared = 0;
 				if (abs(c[i + 1] - c[i]) == 2) {
@@ -529,21 +535,21 @@ check:
 					// Clear stat
 					int pos1 = min(c[i], c[i + 1]);
 					int pos2 = max(c[i], c[i + 1]);
-					for (int x = pos1 + 1; x < pos2; x++) {
+					for (int x = pos1 + 1; x < pos2; ++x) {
 						nstat2[x] = 0;
 						nstat3[x] = 0;
 					}
 					// Fill all notes (even those outside pos1-pos2 window)
-					for (int x = 0; x < ep2; x++) {
+					for (int x = 0; x < ep2; ++x) {
 						// Update local fill
-						if ((x > i + 1) && (x <= pos)) nstat3[c[x]]++;
+						if ((x > i + 1) && (x <= pos)) ++nstat3[c[x]];
 						// Update global fill
-						nstat2[c[x]]++;
+						++nstat2[c[x]];
 					}
 					// Check if leap is filled
 					ok = 1; // Local fill
 					ok2 = 1; // Global fill
-					for (int x = pos1 + 1; x < pos2; x++) if (!nstat3[x]) {
+					for (int x = pos1 + 1; x < pos2; ++x) if (!nstat3[x]) {
 						ok = 0;
 						if (!nstat2[x]) ok2 = 0;
 						break;
@@ -567,12 +573,12 @@ check:
 				leap_sum_i = i;
 			}
 			// Prohibit long smooth movement
-			if (smooth[i] != 0) smooth_sum++;
+			if (smooth[i] != 0) ++smooth_sum;
 			else smooth_sum = 0;
 			if (smooth_sum >= max_smooth) FLAG(4, i);
 			if (i < ep2 - 2) {
 				// Prohibit long smooth movement in one direction
-				if (smooth[i] == smooth[i + 1]) smooth_sum2++;
+				if (smooth[i] == smooth[i + 1]) ++smooth_sum2;
 				else smooth_sum2 = 0;
 				if (smooth_sum2 >= max_smooth_direct - 1) FLAG(5, i);
 				// Check if leaps follow each other in same direction
@@ -633,13 +639,13 @@ check:
 			else FLAG(3, leap_sum_i);
 		}
 		// Clear nstat
-		for (int i = nmin; i <= nmax; i++) {
+		for (int i = nmin; i <= nmax; ++i) {
 			nstat[i] = 0;
 		}
 		// Prohibit stagnation
-		for (int i = 0; i < ep2; i++) {
+		for (int i = 0; i < ep2; ++i) {
 			// Add new note
-			nstat[c[i]]++; // Stagnation array
+			++nstat[c[i]]; // Stagnation array
 														// Subtract old note
 			if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps]]--;
 			// Check if too many repeating notes
@@ -647,9 +653,9 @@ check:
 		}
 		// Prohibit multiple culminations
 		culm_sum = 0;
-		for (int i = 0; i < ep2; i++) {
+		for (int i = 0; i < ep2; ++i) {
 			if (c[i] == nmax) {
-				culm_sum++;
+				++culm_sum;
 				culm_step = i;
 				if (culm_sum > 1) FLAG(12, i);
 			}
@@ -657,7 +663,7 @@ check:
 		// Prohibit tonic miss at start
 		ok = 0;
 		ok2 = 0;
-		for (int i = 0; i < first_steps_tonic; i++) {
+		for (int i = 0; i < first_steps_tonic; ++i) {
 			// Detect C note
 			if (pc[i] == 0) {
 				ok = 1;
@@ -679,15 +685,15 @@ check:
 		if (ep2 == c_len)
 			if (leap[c_len - 2]) FLAG(23, c_len - 1);
 		if ((!pcantus) || (use_matrix == 1)) {
-			accepted2++;
+			++accepted2;
 			// Calculate flag statistics
 			if (calculate_stat || calculate_correlation) {
-				if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; i++) {
+				if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; ++i) {
 					if (flags[i]) {
-						fstat[i]++;
+						++fstat[i];
 						// Calculate correlation
-						if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; z++) {
-							if (flags[z]) fcor[i][z]++;
+						if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; ++z) {
+							if (flags[z]) ++fcor[i][z];
 						}
 					}
 				}
@@ -698,10 +704,10 @@ check:
 				int flags_found2 = 0;
 				int flags_conflict = 0;
 				// Find if any of accepted flags set
-				for (int i = 0; i < MAX_FLAGS; i++) {
-					if ((flags[i]) && (accept[i])) flags_found++;
-					if ((flags[i]) && (!accept[i])) flags_conflict++;
-					if ((flags[i]) && (accept[i] == 2)) flags_found2++;
+				for (int i = 0; i < MAX_FLAGS; ++i) {
+					if ((flags[i]) && (accept[i])) ++flags_found;
+					if ((flags[i]) && (!accept[i])) ++flags_conflict;
+					if ((flags[i]) && (accept[i] == 2)) ++flags_found2;
 				}
 				// Skip only if flags required
 				if ((!late_require) || (ep2 == c_len)) {
@@ -710,20 +716,20 @@ check:
 					// Check if not enough 2 flags set
 					if (flags_found2 < flags_need2) goto skip;
 				}
-				accepted5[wid]++;
+				++accepted5[wid];
 				// Find flags that are blocking
-				for (int i = 0; i < MAX_FLAGS; i++) {
+				for (int i = 0; i < MAX_FLAGS; ++i) {
 					if ((flags[i]) && (!accept[i]))
-						fblock[wid][flags_conflict][i]++;
+						++fblock[wid][flags_conflict][i];
 				}
 			}
 			// Check if flags are accepted
-			for (int i = 0; i < MAX_FLAGS; i++) {
+			for (int i = 0; i < MAX_FLAGS; ++i) {
 				if ((flags[i]) && (!accept[i])) goto skip;
 				if ((!late_require) || (ep2 == c_len))
 					if ((!flags[i]) && (accept[i] == 2)) goto skip;
 			}
-			accepted4[wid]++;
+			++accepted4[wid];
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
 				if (use_matrix) {
@@ -733,10 +739,10 @@ check:
 					// Reserve last window with maximum length
 					if ((smatrixc - sp1 < s_len * 2) && (smatrixc - sp1 > s_len)) sp2 = (smatrixc + sp1) / 2;
 					// Record window
-					wid++;
+					++wid;
 					wpos1[wid] = sp1;
 					wpos2[wid] = sp2;
-					wscans[wid]++;
+					++wscans[wid];
 					// Add last note if this is last window
 					// End of evaluation window
 					ep1 = smap[sp1];
@@ -753,10 +759,10 @@ check:
 					// Reserve last window with maximum length
 					if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
 					// Record window
-					wid++;
+					++wid;
 					wpos1[wid] = sp1;
 					wpos2[wid] = sp2;
-					wscans[wid]++;
+					++wscans[wid];
 					// End of evaluation window
 					ep1 = sp1;
 					ep2 = sp2;
@@ -771,7 +777,7 @@ check:
 						// Show window statistics
 						CString* est = new CString;
 						CString st, st2;
-						for (int i = 0; i < wcount; i++) {
+						for (int i = 0; i < wcount; ++i) {
 							if (i > 0) st2 += ", ";
 							st.Format("%d-%d", wpos1[i], wpos2[i]);
 							st2 += st;
@@ -786,19 +792,19 @@ check:
 				goto skip;
 			}
 			// Check random_choose
-			if (random_choose < 100) if (rand2() >= (double)RAND_MAX*random_choose / 100.0) goto skip;
+			if (random_choose < 100) if (rand2() >= (float)RAND_MAX*random_choose / 100.0) goto skip;
 		}
 		// Calculate rules penalty if we analyze cantus without full scan
 		if (pcantus && (use_matrix == 2 || !use_matrix)) {
 			rpenalty_cur = 0;
-			for (int x = 0; x < ep2; x++) {
-				if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; i++) if (!accept[nflags[x][i]]) {
+			for (int x = 0; x < ep2; ++x) {
+				if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; ++i) if (!accept[nflags[x][i]]) {
 					rpenalty_cur += flag_to_sev[nflags[x][i]];
 				}
 			}
 		}
 		// Accept cantus
-		accepted++;
+		++accepted;
 		if (use_matrix == 1) {
 			//LogCantus(c);
 			SaveCantus();
@@ -844,8 +850,8 @@ check:
 				// If we slided to the end, break
 				if (sp2 == smatrixc) break;
 				// Slide window further
-				sp1++;
-				sp2++;
+				++sp1;
+				++sp2;
 				ep1 = smap[sp1];
 				// Minimal position in array to cycle
 				pp = sp2 - 1;
@@ -861,7 +867,7 @@ check:
 				if (random_seed) {
 					if (seed_cycle) break;
 					WriteLog(3, "Random seed allows one more full cycle: restarting");
-					seed_cycle++;
+					++seed_cycle;
 				}
 				else break;
 			}
@@ -905,7 +911,7 @@ check:
 			goto skip;
 		} // if (finished)
 		// Increase rightmost element, which was not reset to minimum
-		c[p]++;
+		++c[p];
 		// Go to rightmost element
 		if (use_matrix) {
 			pp = sp2 - 1;
@@ -914,18 +920,18 @@ check:
 		else {
 			p = sp2 - 1;
 		}
-		cycle++;
+		++cycle;
 	}
 	// Write flag correlation
 	if (calculate_correlation) {
 		DeleteFile("cf1-cor.csv");
 		CString st, st2, st3;
 		st3 = "Flag; Total; ";
-		for (int i = 0; i < MAX_FLAGS; i++) {
+		for (int i = 0; i < MAX_FLAGS; ++i) {
 			int f1 = sev_to_flag[i];
 			st2.Format("%s; %d; ", FlagName[f1], fcor[f1][f1]);
 			st3 += FlagName[f1] + "; ";
-			for (int z = 0; z < MAX_FLAGS; z++) {
+			for (int z = 0; z < MAX_FLAGS; ++z) {
 				int f2 = sev_to_flag[z];
 				st.Format("%lld; ", fcor[f1][f2]);
 				st2 += st;
@@ -937,7 +943,7 @@ check:
 	// Show flag statistics
 	if (calculate_stat) {
 		CString* est = new CString;
-		for (int i = 0; i < MAX_FLAGS; i++) {
+		for (int i = 0; i < MAX_FLAGS; ++i) {
 			int f1 = sev_to_flag[i];
 			st.Format("\n%lld %s ", fstat[f1], FlagName[f1]);
 			st2 += st;
@@ -949,25 +955,25 @@ check:
 	}
 	// Show blocking statistics
 	if (calculate_blocking) {
-		for (int w = 0; w < wcount; w++) {
+		for (int w = 0; w < wcount; ++w) {
 			int lines = 0;
 			CString* est = new CString;
 			st2 = "";
-			for (int d = 1; d < MAX_FLAGS; d++) {
+			for (int d = 1; d < MAX_FLAGS; ++d) {
 				if (lines > 100) break;
 				int flagc = 0;
-				for (int x = 0; x < MAX_FLAGS; x++) {
-					if (fblock[w][d][x] > 0) flagc++;
+				for (int x = 0; x < MAX_FLAGS; ++x) {
+					if (fblock[w][d][x] > 0) ++flagc;
 				}
 				if (!flagc) continue;
 				int max_flag = 0;
 				long max_value = -1;
 				st.Format("\nTIER %d: ", d);
 				st2 += st;
-				for (int x = 0; x < MAX_FLAGS; x++) {
+				for (int x = 0; x < MAX_FLAGS; ++x) {
 					max_value = -1;
 					// Find biggest value
-					for (int i = 0; i < MAX_FLAGS; i++) {
+					for (int i = 0; i < MAX_FLAGS; ++i) {
 						if (fblock[w][d][i] > max_value) {
 							max_value = fblock[w][d][i];
 							max_flag = i;
@@ -976,7 +982,7 @@ check:
 					if (max_value < 1) break;
 					st.Format("\n%ld %s, ", max_value, FlagName[max_flag]);
 					st2 += st;
-					lines++;
+					++lines;
 					// Clear biggest value to search for next
 					fblock[w][d][max_flag] = -1;
 				}
@@ -993,21 +999,21 @@ void CGenCF1::SaveCantus() {
 	rpenalty_min = rpenalty_cur;
 }
 
-void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
+void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 	CString st;
 	Sleep(sleep_ms);
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
-	for (int x = 0; x < c_len; x++) {
-		for (int i = 0; i < cc_len[x]; i++) {
+	for (int x = 0; x < c_len; ++x) {
+		for (int i = 0; i < cc_len[x]; ++i) {
 			// Set flag color
 			color[pos+i][v] = FlagColor[0];
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = cc[x];
 			tonic[pos + i][v] = tonic_cur;
-			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; f++) {
+			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; ++f) {
 				if (!i) {
 					comment[pos + i][v] += FlagName[nflags[x][f]];
 					st.Format(" [%d]", flag_to_sev[nflags[x][f]]);
@@ -1032,7 +1038,7 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 			// Generate tempo if no source
 			else {
 				if (pos + i == 0) {
-					tempo[pos + i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
+					tempo[pos + i] = min_tempo + (float)(max_tempo - min_tempo) * (float)rand2() / (float)RAND_MAX;
 				}
 				else {
 					tempo[pos + i] = tempo[pos + i - 1] + randbw(-1, 1);
@@ -1051,7 +1057,7 @@ void CGenCF1::SendCantus(int v, vector<char> *pcantus) {
 	dyn[step][v] = 0;
 	tempo[step] = tempo[step - 1];
 	coff[step][v] = 0;
-	step++;
+	++step;
 	// Count additional variables
 	CountOff(step - real_len - 1, step - 1);
 	CountTime(step - real_len - 1, step - 1);
@@ -1075,7 +1081,7 @@ void CGenCF1::InitCantus()
 {
 	// Check all flags severity loaded
 	if (cur_severity < MAX_FLAGS) {
-		for (int i = 1; i < MAX_FLAGS; i++) {
+		for (int i = 1; i < MAX_FLAGS; ++i) {
 			if (!flag_to_sev[i]) {
 				if (cur_severity == MAX_FLAGS) {
 					CString* est = new CString;
@@ -1089,7 +1095,7 @@ void CGenCF1::InitCantus()
 					CString* est = new CString;
 					est->Format("Warning: flag '%s' not found in config %s. Assigning severity %d to flag. Please add flag to file", FlagName[i], m_config, cur_severity);
 					WriteLog(1, est);
-					cur_severity++;
+					++cur_severity;
 				}
 			}
 		}
@@ -1097,11 +1103,11 @@ void CGenCF1::InitCantus()
 	// Global step
 	step = 0;
 	// Calculate second level flags count
-	for (int i = 0; i < MAX_FLAGS; i++) {
-		if (accept[i] == 2) flags_need2++;
+	for (int i = 0; i < MAX_FLAGS; ++i) {
+		if (accept[i] == 2) ++flags_need2;
 	}
 	// Set priority
-	for (int i = 0; i < MAX_FLAGS; i++) {
+	for (int i = 0; i < MAX_FLAGS; ++i) {
 		flag_to_sev[sev_to_flag[i]] = i;
 		flag_color[sev_to_flag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
 	}
@@ -1116,7 +1122,7 @@ void CGenCF1::Generate()
 	cc_len.resize(c_len);
 	cc_tempo.resize(c_len);
 	real_len = c_len;
-	for (int i = 0; i < c_len; i++) cc_len[i] = 1;
+	for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
 	ScanCantus(0, 0, 0);
 	// Random shuffle
 	if (shuffle) {
@@ -1124,14 +1130,14 @@ void CGenCF1::Generate()
 		vector<unsigned char> note2(t_generated);
 		vector<CString> comment2(t_generated);
 		vector<Color> color2(t_generated);
-		for (int i = 0; i < accepted; i++) ci[i] = i;
+		for (int i = 0; i < accepted; ++i) ci[i] = i;
 		// Shuffled indexes
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		::shuffle(ci.begin(), ci.end(), default_random_engine(seed));
 		// Swap
 		int i1, i2;
-		for (int i = 0; i < accepted; i++) {
-			for (int x = 0; x < c_len; x++) {
+		for (int i = 0; i < accepted; ++i) {
+			for (int x = 0; x < c_len; ++x) {
 				i1 = i*(c_len + 1) + x;
 				i2 = ci[i]*(c_len + 1) + x;
 				note2[i1] = note[i2][v];
@@ -1140,8 +1146,8 @@ void CGenCF1::Generate()
 			}
 		}
 		// Replace
-		for (int i = 0; i < accepted; i++) {
-			for (int x = 0; x < c_len; x++) {
+		for (int i = 0; i < accepted; ++i) {
+			for (int x = 0; x < c_len; ++x) {
 				i1 = i*(c_len + 1) + x;
 				note[i1][v] = note2[i1];
 				comment[i1][v] = comment2[i1];

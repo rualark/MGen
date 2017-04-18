@@ -17,7 +17,7 @@ CGenRS1::~CGenRS1()
 {
 }
 
-void CGenRS1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
+void CGenRS1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "min_tempo", &min_tempo);
 	CheckVar(sN, sV, "max_tempo", &max_tempo);
@@ -85,7 +85,7 @@ void CGenRS1::Generate()
 			coff[i][0] = 0;
 		}
 		if (i == 0) {
-			tempo[i] = min_tempo + (double)(max_tempo - min_tempo) * (double)rand2() / (double)RAND_MAX;
+			tempo[i] = min_tempo + (float)(max_tempo - min_tempo) * (float)rand2() / (float)RAND_MAX;
 		}
 		else {
 			tempo[i] = tempo[i - 1] + randbw(-7, 7);
@@ -109,9 +109,9 @@ void CGenRS1::Generate()
 		if (((i > t_send) && ((i-3) % t_send == 0)) || (i == t_cnt - 1)) {
 			// Moving average 7 <<<|>>>
 			int t_sent_old = t_sent;
-			double ma;
-			double ma_size;
-			double* tempo2 = new double[t_generated - t_sent];
+			float ma;
+			float ma_size;
+			float* tempo2 = new float[t_generated - t_sent];
 			int delta = 3;
 			if (i == t_cnt - 1) delta = 0;
 			for (int x = t_sent; x < t_generated-delta; x++) {

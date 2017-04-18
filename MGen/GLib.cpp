@@ -70,7 +70,7 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, int * vm
 	}
 }
 
-void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, double * Dest)
+void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, float * Dest)
 {
 	if (*sName == sSearch) {
 		*Dest = atof(*sValue);
@@ -457,13 +457,13 @@ void CGLib::WriteLog(int i, CString st)
 
 int CGLib::randbw(int n1, int n2)
 {
-	int re = (double)(n2 - n1 + 1) * rand2() / (double)RAND_MAX;
+	int re = (float)(n2 - n1 + 1) * rand2() / (float)RAND_MAX;
 	re = re + n1;
 	return re;
 }
 
-double CGLib::rand01()
+float CGLib::rand01()
 {
-	return (double) rand2() / (double)RAND_MAX;
+	return (float) rand2() / (float)RAND_MAX;
 }
 

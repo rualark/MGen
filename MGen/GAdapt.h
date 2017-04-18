@@ -9,7 +9,7 @@ public:
 
 	void Adapt(int step1, int step2);
 
-	double adapt_pspeed = 100; // Playback speed used during adaptation
+	float adapt_pspeed = 100; // Playback speed used during adaptation
 
 protected:
 	void CheckRange(int v, int ii);

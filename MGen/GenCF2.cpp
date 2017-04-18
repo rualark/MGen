@@ -18,6 +18,6 @@ void CGenCF2::Generate()
 {
 }
 
-void CGenCF2::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
+void CGenCF2::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 }

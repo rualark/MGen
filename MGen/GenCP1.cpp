@@ -14,7 +14,7 @@ CGenCP1::~CGenCP1()
 {
 }
 
-void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, double fdata)
+void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "min_dyn", &min_dyn);
 	CheckVar(sN, sV, "max_dyn", &max_dyn);

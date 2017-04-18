@@ -14,7 +14,7 @@ CGenCA1::~CGenCA1()
 {
 }
 
-void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
+void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	LoadVar(sN, sV, "midi_file", &midi_file);
 	CheckVar(sN, sV, "corrections", &corrections);
@@ -30,7 +30,7 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, double fdata)
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
 
-void CGenCA1::GetCantusKey(vector <char> &cc)
+void CGenCA1::GetCantusKey(vector <int> &cc)
 {
 	int c_len = cc.size();
 	//minor = 0;
@@ -127,15 +127,15 @@ void CGenCA1::GetCantusKey(vector <char> &cc)
 void CGenCA1::Generate()
 {
 	CString st, st2;
-	vector <double> dpenalty; // Penalty in terms of difference from user melody
-	vector<char> c; // Local cantus
+	vector <float> dpenalty; // Penalty in terms of difference from user melody
+	vector<int> c; // Local cantus
 	int ccount = 0;
 	vector <long> cids;
-	double dpenalty_min;
+	float dpenalty_min;
 	int s_len2 = s_len;
 	// These are temporary vectors for removing duplicates
-	vector<vector<char>> clib2; // Library of cantus
-	vector <double> rpenalty2;
+	vector<vector<int>> clib2; // Library of cantus
+	vector <float> rpenalty2;
 	InitCantus();
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
@@ -221,7 +221,7 @@ void CGenCA1::Generate()
 		if (smatrixc > fullscan_max) {
 			s_len = swa_steps;
 			// Save source rpenalty
-			double rpenalty_source = rpenalty_cur;
+			float rpenalty_source = rpenalty_cur;
 			long cnum;
 			// Save cantus only if its penalty is less or equal to source rpenalty
 			rpenalty_min = rpenalty_cur;
@@ -320,7 +320,7 @@ void CGenCA1::Generate()
 			for (int p = 0; p < corrections; p++) {
 				// Find minimum penalty
 				cids.clear();
-				double dpenalty_min = MAX_PENALTY;
+				float dpenalty_min = MAX_PENALTY;
 				for (int x = 0; x < cnum; x++) if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
 				// Get all best corrections
 				for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min) {
