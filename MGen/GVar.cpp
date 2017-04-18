@@ -49,6 +49,7 @@ CGVar::CGVar()
 	bell_end_mul.resize(MAX_VOICE);
 	bell_start_len.resize(MAX_VOICE);
 	bell_end_len.resize(MAX_VOICE);
+	tname.resize(MAX_VOICE);
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;

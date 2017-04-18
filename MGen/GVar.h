@@ -75,6 +75,7 @@ public:
 	vector< vector <float> > dstime; // Delta of current step start in ms for playback
 	vector< vector <float> > detime; // Delta of current step ending in ms for playback
 	vector <int> show_transpose; // Semitone transpose for showing
+	vector<CString> tname; // Track names from midi file
 
 	// Instruments
 	vector<int> instr; // Instruments for each voice

@@ -84,26 +84,26 @@ void CGMidi::LoadMidi(CString path)
 	int tpq = midifile.getTicksPerQuarterNote();
 	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul; // ticks per croche
 	vector<int> vlast_step(MAX_VOICE);
-	vector<CString> tname(MAX_VOICE);
 	CString st, tnames = "";
 
 	float lastNoteFinished = 0.0;
 	int last_step = 0;
 	// Load tempo
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		int v = max(0, track - 1);
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			// Get track names
 			if (mev->isMetaMessage()) {
 				if (mev->getMetaType() == 0x03) {
-					tname[track] = "";
+					tname[v] = "";
 					for (int x = 0; x < mev->size(); x++) {
-						tname[track] += mev->data()[x];
+						tname[v] += mev->data()[x];
 					}
 					// Remove first data items
-					tname[track] = tname[track].Mid(3);
-					st.Format("%d", track);
-					tnames += " \n" + st + "=" + tname[track];
+					tname[v] = tname[v].Mid(3);
+					st.Format("%d", v);
+					tnames += " \n" + st + "=" + tname[v];
 				}
 			}
 			if (mev->isTempo()) {
@@ -128,11 +128,11 @@ void CGMidi::LoadMidi(CString path)
 	UpdateTempoMinMax(0, last_step - 1);
 	last_step = 0;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		int v = max(0, track - 1);
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			if (mev->isNoteOn()) {
 				//int v = mev->getChannel();
-				int v = max(0, track-1);
 				// Resize vectors for new voice number
 				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				int pos = round(mev->tick / (float)tpc);
