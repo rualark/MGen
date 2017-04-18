@@ -305,6 +305,92 @@ void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2
 	}
 }
 
+// Search for outstanding repeats
+int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
+		// Check if note changes direction or is a leap
+		if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
+			// Search for repeat of note at same beat until last three notes
+			int finish = i + repeat_steps;
+			if (finish > ep2 - 2) finish = ep2 - 2;
+			for (int x = i + 2; x < finish; x += 2) {
+				// Check if same note with direction change or leap
+				if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
+					// Check that two more notes repeat
+					if ((c[x + 1] == c[i + 1]) && (c[x + 2] == c[i + 2])) {
+						FLAG2(36, i);
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+// Check if too many leaps
+int CGenCF1::FailManyLeaps(int max_leap_sum, int leap_sum_i, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	if (max_leap_sum > max_leaps) {
+		if (max_leap_sum > max_leaps2) FLAG2(25, leap_sum_i)
+		else FLAG2(3, leap_sum_i);
+	}
+	return 0;
+}
+
+int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int nmin, int nmax, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	// Clear nstat
+	for (int i = nmin; i <= nmax; ++i) {
+		nstat[i] = 0;
+	}
+	// Prohibit stagnation
+	for (int i = 0; i < ep2; ++i) {
+		// Add new note to stagnation array
+		++nstat[c[i]];
+		// Subtract old note
+		if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps]]--;
+		// Check if too many repeating notes
+		if (nstat[c[i]] > stag_notes) FLAG2(10, i);
+	}
+	return 0;
+}
+
+// Prohibit multiple culminations
+int CGenCF1::FailMultiCulm(vector<int> &c, int ep2, int nmax, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	int culm_sum = 0, culm_step;
+	for (int i = 0; i < ep2; ++i) {
+		if (c[i] == nmax) {
+			++culm_sum;
+			culm_step = i;
+			if (culm_sum > 1) FLAG2(12, i);
+		}
+	}
+	// Prohibit culminations at last steps
+	if (culm_step > c_len - 4) FLAG2(21, culm_step);
+	return 0;
+}
+
+int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	// Prohibit tonic miss at start
+	int ok = 0;
+	int ok2 = 0;
+	for (int i = 0; i < first_steps_tonic; ++i) {
+		// Detect C note
+		if (pc[i] == 0) {
+			ok = 1;
+			break;
+		}
+		// Detect EG notes
+		if (pc[i] == 2 || pc[i] == 4) ok2 = 1;
+	}
+	// No C ?
+	if (!ok) {
+		// No EG ?
+		if (!ok2) FLAG2(41, 0)
+			// No C, but we have EG
+		else FLAG2(40, 0);
+	}
+	return 0;
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -522,24 +608,7 @@ check:
 		max_leap_sum = 0;
 		smooth_sum = 0;
 		smooth_sum2 = 0;
-		// Search for outstanding repeats
-		if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
-			// Check if note changes direction or is a leap
-			if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
-				// Search for repeat of note at same beat until last three notes
-				int finish = i + repeat_steps;
-				if (finish > ep2 - 2) finish = ep2 - 2;
-				for (int x = i + 2; x < finish; x += 2) {
-					// Check if same note with direction change or leap
-					if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
-						// Check that two more notes repeat
-						if ((c[x + 1] == c[i + 1]) && (c[x + 2] == c[i + 2])) {
-							FLAG(36, i);
-						}
-					}
-				}
-			}
-		}
+		if (FailOutstandingLeap(c, leap, ep2, flags, nflags, nflagsc)) goto skip;
 		for (int i = 0; i < ep2 - 1; ++i) {
 			// Add new leap
 			if (leap[i] != 0) {
@@ -664,57 +733,14 @@ check:
 				if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG(9, i);
 			}
 		}
-		// Check if too many leaps
-		if (max_leap_sum > max_leaps) {
-			if (max_leap_sum > max_leaps2) FLAG(25, leap_sum_i)
-			else FLAG(3, leap_sum_i);
-		}
-		// Clear nstat
-		for (int i = nmin; i <= nmax; ++i) {
-			nstat[i] = 0;
-		}
-		// Prohibit stagnation
-		for (int i = 0; i < ep2; ++i) {
-			// Add new note
-			++nstat[c[i]]; // Stagnation array
-														// Subtract old note
-			if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps]]--;
-			// Check if too many repeating notes
-			if (nstat[c[i]] > stag_notes) FLAG(10, i);
-		}
-		// Prohibit multiple culminations
-		culm_sum = 0;
-		for (int i = 0; i < ep2; ++i) {
-			if (c[i] == nmax) {
-				++culm_sum;
-				culm_step = i;
-				if (culm_sum > 1) FLAG(12, i);
-			}
-		}
-		// Prohibit tonic miss at start
-		ok = 0;
-		ok2 = 0;
-		for (int i = 0; i < first_steps_tonic; ++i) {
-			// Detect C note
-			if (pc[i] == 0) {
-				ok = 1;
-				break;
-			}
-			// Detect EG notes
-			if (pc[i] == 2 || pc[i] == 4) ok2 = 1;
-		}
-		// No C ?
-		if (!ok) {
-			// No EG ?
-			if (!ok2) FLAG(41, 0)
-			// No C, but we have EG
-			else FLAG(40, 0);
-		}
-		// Prohibit culminations at last steps
-		if (culm_step > c_len - 4) FLAG(21, culm_step);
+		if (FailManyLeaps(max_leap_sum, leap_sum_i, flags, nflags, nflagsc)) goto skip;
+		if (FailStagnation(c, nstat, nmin, nmax, ep2, flags, nflags, nflagsc)) goto skip;
+		if (FailMultiCulm(c, ep2, nmax, flags, nflags, nflagsc)) goto skip;
+		if (FailFirstNotes(pc, ep2, flags, nflags, nflagsc)) goto skip;
 		// Prohibit last leap
 		if (ep2 == c_len)
 			if (leap[c_len - 2]) FLAG(23, c_len - 1);
+
 		if ((!pcantus) || (use_matrix == 1)) {
 			++accepted2;
 			// Calculate flag statistics
