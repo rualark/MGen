@@ -7,6 +7,7 @@
 
 // Report violation
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; }
+#define FLAG2(id, i) { if ((skip_flags) && (accept[id] < 1)) return 1; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; }
 
 // Convert chromatic to diatonic
 #define CC_C(note) (chrom_to_dia[(note + 12 - tonic_cur) % 12] + ((note + 12 - tonic_cur) / 12 - 1) * 7)
@@ -181,6 +182,129 @@ void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int st
 	}
 }
 
+// Detect repeating notes
+int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
+	for (int i = step1; i < step2; ++i) {
+		if (c[i] == c[i + 1]) return 1;
+	}
+	return 0;
+}
+
+// Count limits
+void CGenCF1::GetMelodyInterval(vector<int> &c, int step1, int step2, int &nmin, int &nmax) {
+	nmin = MAX_NOTE;
+	nmax = 0;
+	for (int i = step1; i < step2; ++i) {
+		if (c[i] < nmin) nmin = c[i];
+		if (c[i] > nmax) nmax = c[i];
+	}
+}
+
+// Clear flags
+void CGenCF1::ClearFlags(vector<int> &flags, vector<int> &nflagsc, int step1, int step2) {
+	if (!skip_flags) fill(flags.begin(), flags.end(), 0);
+	flags[0] = 1;
+	for (int i = step1; i < step2; ++i) {
+		nflagsc[i] = 0;
+	}
+}
+
+int CGenCF1::FailMelodyInterval(int nmin, int nmax, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	if (nmax - nmin > max_interval) FLAG2(37, 0);
+	if (nmax - nmin < min_interval) FLAG2(38, 0);
+	return 0;
+}
+
+// Calculate pitch class
+void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &pc, int step1, int step2) {
+	for (int i = step1; i < step2; ++i) {
+		pc[i] = c[i] % 7;
+	}
+}
+
+int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, int c_len, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	// Wrong second to last note
+	if (ep2 > c_len - 2)
+		if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG2(13, c_len - 2);
+	// Wrong third to last note
+	if (ep2 > c_len - 3) {
+		if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG2(14, c_len - 3);
+		// Leading third to last note
+		if (pc[c_len - 3] == 6) FLAG2(34, c_len - 3);
+	}
+	return 0;
+}
+
+int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	int dcount = 0;
+	int scount = 0;
+	int tcount = 0;
+	int wdcount = 0;
+	int wscount = 0;
+	int wtcount = 0;
+	for (int i = 0; i < ep2; ++i) {
+		// Count same and missing letters in a row
+		if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
+			if (wtcount == 4) FLAG2(18, i - 1);
+			if (wtcount == 5) FLAG2(19, i - 1);
+			if (wtcount > 5) FLAG2(20, i - 1);
+			++tcount;
+			wtcount = 0;
+		}
+		else {
+			if (tcount == 3) FLAG2(15, i - 1);
+			if (tcount == 4) FLAG2(16, i - 1);
+			if (tcount > 4) FLAG2(17, i - 1);
+			tcount = 0;
+			++wtcount;
+		}
+		if ((pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
+			if (wdcount == 4) FLAG2(18, i - 1);
+			if (wdcount == 5) FLAG2(19, i - 1);
+			if (wdcount > 5) FLAG2(20, i - 1);
+			++dcount;
+			wdcount = 0;
+		}
+		else {
+			if (dcount == 3) FLAG2(15, i - 1);
+			if (dcount == 4) FLAG2(16, i - 1);
+			if (dcount > 4) FLAG2(17, i - 1);
+			dcount = 0;
+			++wdcount;
+		}
+		if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) {
+			if (wscount == 4) FLAG2(18, i - 1);
+			if (wscount == 5) FLAG2(19, i - 1);
+			if (wscount > 5) FLAG2(20, i - 1);
+			++scount;
+			wscount = 0;
+		}
+		else {
+			if (scount == 3) FLAG2(15, i - 1);
+			if (scount == 4) FLAG2(16, i - 1);
+			if (scount > 4) FLAG2(17, i - 1);
+			scount = 0;
+			++wscount;
+		}
+	}
+	// Check same letters
+	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG2(15, ep2 - 1);
+	if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG2(16, ep2 - 1);
+	if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG2(17, ep2 - 1);
+	// Check missing letters
+	if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG2(18, ep2 - 1);
+	if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG2(19, ep2 - 1);
+	if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG2(20, ep2 - 1);
+	return 0;
+}
+
+// Calculate chromatic positions
+void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2) {
+	for (int i = step1; i < step2; ++i) {
+		cc[i] = C_CC(c[i]);
+	}
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -194,7 +318,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	int wid; // Window id
 	int seed_cycle = 0; // Number of cycles in case of random_seed
 	vector<int> c2(c_len); // Cantus diatonic saved for SWA
-	pc.resize(c_len);
+	vector<int> pc(c_len); // pitch class
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
 	vector<int> wpos1(c_len / s_len + 1);
@@ -210,15 +334,15 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<int>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
-	int skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	long long cycle = 0;
 	long long accepted2 = 0, accepted3 = 0;
 	int first_note_dia, first_note_oct;
 	int finished = 0;
 	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, third_prepared;
-	int wcount = 1; // Number of windows created
 	int sp1, sp2, ep1, ep2, p, pp;
+	int wcount = 1; // Number of windows created
 	vector<int> min_c(c_len);
 	vector<int> max_c(c_len);
 	accepted = 0;
@@ -347,116 +471,23 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 check:
 	while (true) {
 		//LogCantus(c);
-		// Detect repeating notes
-		for (int i = ep1 - 1; i < ep2 - 1; ++i) {
-			if (c[i] == c[i + 1]) goto skip;
-		}
+		if (FailNoteRepeat(c, ep1-1, ep2-1)) goto skip;
 		if ((need_exit) && (!pcantus || use_matrix)) break;
-		// Count limits
-		nmin = MAX_NOTE;
-		nmax = 0;
-		for (int i = 0; i < ep2; ++i) {
-			if (c[i] < nmin) nmin = c[i];
-			if (c[i] > nmax) nmax = c[i];
-		}
+		GetMelodyInterval(c, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
 		if (pcantus) {
-			// Clear flags
-			if (!skip_flags) fill(flags.begin(), flags.end(), 0);
-			flags[0] = 1;
-			for (int i = 0; i < ep2; ++i) {
-				nflagsc[i] = 0;
-			}
-			if (nmax - nmin > max_interval) FLAG(37, 0);
-			if (nmax - nmin < min_interval) FLAG(38, 0);
+			ClearFlags(flags, nflagsc, 0, ep2);
+			if (FailMelodyInterval(nmin, nmax, flags, nflags, nflagsc)) goto skip;
 		}
 		else {
-			if (nmax - nmin > max_interval) goto skip;
-			if (nmax - nmin < min_interval) goto skip;
-			// Clear flags
-			if (!skip_flags) fill(flags.begin(), flags.end(), 0);
-			flags[0] = 1;
-			for (int i = 0; i < ep2; ++i) {
-				nflagsc[i] = 0;
-			}
+			if (FailMelodyInterval(nmin, nmax, flags, nflags, nflagsc)) goto skip;
+			ClearFlags(flags, nflagsc, 0, ep2);
 		}
-		for (int i = 0; i < ep2; ++i) {
-			// Calculate pitch class
-			pc[i] = c[i] % 7;
-		}
-		// Wrong second to last note
-		if (ep2 > c_len - 2)
-			if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG(13, c_len - 2);
-		// Wrong third to last note
-		if (ep2 > c_len - 3) {
-			if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG(14, c_len - 3);
-			// Leading third to last note
-			if (pc[c_len - 3] == 6) FLAG(34, c_len - 3);
-		}
-		dcount = 0;
-		scount = 0;
-		tcount = 0;
-		wdcount = 0;
-		wscount = 0;
-		wtcount = 0;
-		for (int i = 0; i < ep2; ++i) {
-			// Count same and missing letters in a row
-			if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
-				if (wtcount == 4) FLAG(18, i - 1);
-				if (wtcount == 5) FLAG(19, i - 1);
-				if (wtcount > 5) FLAG(20, i - 1);
-				++tcount;
-				wtcount = 0;
-			}
-			else {
-				if (tcount == 3) FLAG(15, i - 1);
-				if (tcount == 4) FLAG(16, i - 1);
-				if (tcount > 4) FLAG(17, i - 1);
-				tcount = 0;
-				++wtcount;
-			}
-			if ((pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
-				if (wdcount == 4) FLAG(18, i - 1);
-				if (wdcount == 5) FLAG(19, i - 1);
-				if (wdcount > 5) FLAG(20, i - 1);
-				++dcount;
-				wdcount = 0;
-			}
-			else {
-				if (dcount == 3) FLAG(15, i - 1);
-				if (dcount == 4) FLAG(16, i - 1);
-				if (dcount > 4) FLAG(17, i - 1);
-				dcount = 0;
-				++wdcount;
-			}
-			if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) {
-				if (wscount == 4) FLAG(18, i - 1);
-				if (wscount == 5) FLAG(19, i - 1);
-				if (wscount > 5) FLAG(20, i - 1);
-				++scount;
-				wscount = 0;
-			}
-			else {
-				if (scount == 3) FLAG(15, i - 1);
-				if (scount == 4) FLAG(16, i - 1);
-				if (scount > 4) FLAG(17, i - 1);
-				scount = 0;
-				++wscount;
-			}
-		}
-		// Check same letters
-		if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG(15, ep2 - 1);
-		if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG(16, ep2 - 1);
-		if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG(17, ep2 - 1);
-		// Check missing letters
-		if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG(18, ep2 - 1);
-		if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG(19, ep2 - 1);
-		if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG(20, ep2 - 1);
-		// Calculate chromatic positions
-		for (int i = 0; i < ep2; ++i) {
-			cc[i] = C_CC(c[i]);
-		}
+		GetPitchClass(c, pc, 0, ep2);
+		if (FailLastNotes(pc, ep2, c_len, flags, nflags, nflagsc)) goto skip;
+		if (FailMelodyHarmSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
+		GetChromatic(c, cc, 0, ep2);
 		for (int i = 0; i < ep2 - 1; ++i) {
 			// Tritone prohibit
 			if ((pc[i+1] == 6 && pc[i] == 3) || (pc[i+1] == 3 && pc[i] == 6)) {

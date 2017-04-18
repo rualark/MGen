@@ -15,6 +15,14 @@ public:
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
+	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
+	inline void GetMelodyInterval(vector<int> &c, int step1, int step2, int &nmin, int &nmax);
+	inline void ClearFlags(vector<int>& flags, vector<int>& nflagsc, int step1, int step2);
+	inline int FailMelodyInterval(int nmin, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
+	inline int FailLastNotes(vector<int>& pc, int ep2, int c_len, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
@@ -72,7 +80,7 @@ protected:
 	vector <int> cc_len; // Length of each cantus step
 	vector <float> cc_tempo; // Tempo of each cantus step
 	int real_len; // Total length of cantus in steps
-	vector<int> pc; // pitch class
+	int skip_flags;
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file
