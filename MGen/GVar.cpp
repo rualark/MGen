@@ -439,6 +439,51 @@ void CGVar::SaveResults(CString dir, CString fname)
 	WriteLog(0, est);
 }
 
+void CGVar::ExportVectorsCSV(CString dir, CString fname)
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString st;
+	CreateDirectory(dir, NULL);
+	ofstream fs;
+	fs.open(dir + "\\" + fname + ".csv");
+	fs << "Step;Tempo;Stime;Etime;";
+	for (int v = 0; v < v_cnt; ++v) {
+		st.Format("%d", v);
+		fs << "Pause" + st + ";Note" + st + ";Len" + st + ";Dyn" + st +
+			";Coff" + st + ";Poff" + st + ";Noff" + st + ";Comment" + st + ";Color" + st
+			+ ";Lining" + st + ";Tonic" + st;
+	}
+	fs << "\n";
+	if (t_generated > 0) {
+		for (int i = 0; i < t_generated; ++i) {
+			fs << i << ";";
+			fs << tempo[i] << ";";
+			fs << stime[i] << ";";
+			fs << etime[i] << ";";
+			for (int v = 0; v < v_cnt; ++v) {
+				fs << (int)pause[i][v] << ";";
+				fs << (int)note[i][v] << ";";
+				fs << (int)len[i][v] << ";";
+				fs << (int)dyn[i][v] << ";";
+				fs << (int)coff[i][v] << ";";
+				fs << (int)poff[i][v] << ";";
+				fs << (int)noff[i][v] << ";";
+				fs << comment[i][v] << ";";
+				fs << color[i][v].GetValue() << ";";
+				fs << (int)lining[i][v] << ";";
+				fs << (int)tonic[i][v] << ";";
+				fs << "\n";
+			}
+		}
+	}
+	fs.close();
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("Saved results to files in %d ms", time_stop - time_start);
+	WriteLog(0, est);
+}
+
 void CGVar::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int i) {
 	v2D[i].resize(v_cnt);
 	char* pointer = reinterpret_cast<char*>(&(v2D[i][0]));

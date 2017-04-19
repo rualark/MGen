@@ -85,8 +85,9 @@
 #define ID_BUTTON_EPARAMS               32798
 #define ID_CHECK_OUTPUTWND              32799
 #define ID_BUTTON2                      32800
-#define ID_BUTTON_SETTINGS_EDIT         32800
+#define ID_BUTTON_SETTINGS_EDIT         32801
 #define ID_BUTTON_HZOOM_INC             32802
+#define ID_BUTTON_ECSV                  32803
 #define ID_BUTTON3                      32807
 #define ID_BUTTON_RELOADALGO            32807
 #define ID_BUTTON_RSETTINGS             32807

@@ -178,6 +178,8 @@ public:
 	afx_msg void OnUpdateButtonReloadalgo(CCmdUI *pCmdUI);
 	afx_msg void OnButtonRsettings();
 	afx_msg void OnButtonSettingsEdit();
+	afx_msg void OnUpdateButtonEcsv(CCmdUI *pCmdUI);
+	afx_msg void OnButtonEcsv();
 };
 
 

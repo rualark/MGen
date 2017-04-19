@@ -15,6 +15,7 @@ public:
 	void LoadInstruments(); // Load instruments config
 	void LoadConfig(CString fname);
 	void SaveResults(CString dir, CString fname);
+	void ExportVectorsCSV(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
 
 	void LoadResultMusic(CString dir, CString fname);

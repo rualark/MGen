@@ -79,6 +79,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_RELOADALGO, &CMainFrame::OnUpdateButtonReloadalgo)
 	ON_COMMAND(ID_BUTTON_RSETTINGS, &CMainFrame::OnButtonRsettings)
 	ON_COMMAND(ID_BUTTON_SETTINGS_EDIT, &CMainFrame::OnButtonSettingsEdit)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_ECSV, &CMainFrame::OnUpdateButtonEcsv)
+	ON_COMMAND(ID_BUTTON_ECSV, &CMainFrame::OnButtonEcsv)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1136,4 +1138,18 @@ void CMainFrame::OnButtonRsettings()
 void CMainFrame::OnButtonSettingsEdit()
 {
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "settings.pl", NULL, NULL, SW_SHOWNORMAL);
+}
+
+
+void CMainFrame::OnUpdateButtonEcsv(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_state_gen == 2);
+}
+
+
+void CMainFrame::OnButtonEcsv()
+{
+	if (m_state_gen == 2 && pGen && m_fname != "") {
+		pGen->ExportVectorsCSV(m_dir, m_fname);
+	}
 }
