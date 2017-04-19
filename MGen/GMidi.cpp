@@ -204,15 +204,14 @@ void CGMidi::LoadMidi(CString path)
 				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check if note too long
-				if (nlen > 255) {
-					// If note is only one step shorter, do not warn
-					if (nlen > 256 && warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
+				if (nlen > MAX_LEN) {
+					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
 						CString* st = new CString;
 						st->Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
 						WriteLog(1, st);
 						warning_loadmidi_long++;
 					}
-					nlen = 255;
+					nlen = MAX_LEN;
 				}
 				if (nlen < 1) nlen = 1;
 				if (pos + nlen >= t_allocated) ResizeVectors(max(pos + nlen, t_allocated * 2));
@@ -385,14 +384,14 @@ void CGMidi::LoadCantus(CString path)
 					}
 					int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 					// Check if note too long
-					if (nlen > 255) {
+					if (nlen > MAX_LEN) {
 						if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
 							CString* st = new CString;
 							st->Format("Note too long: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Decreasing midifile_in_mul can help.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
 							WriteLog(1, st);
 							warning_loadmidi_long++;
 						}
-						nlen = 255;
+						nlen = MAX_LEN;
 						bad = 1;
 					}
 					// Avoid repeats
