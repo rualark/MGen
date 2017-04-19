@@ -170,10 +170,10 @@ void CGMidi::LoadMidi(CString path)
 						voverlap[x] = 1;
 						vdist[x] = 1000;
 						// Check if note too short
-						if (len[pos][v] < 2) {
+						if (len[pos][x] < 2) {
 							if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
 								CString* st = new CString;
-								st->Format("Note too short and gets same step with next note at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
+								st->Format("Note %s too short and gets same step with next note %s at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", GetNoteName(note[pos][x]), GetNoteName(pitch), track, mev->tick, tpc, midifile_in_mul, pos, path);
 								WriteLog(1, st);
 								warning_loadmidi_short++;
 							}
@@ -205,7 +205,8 @@ void CGMidi::LoadMidi(CString path)
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check if note too long
 				if (nlen > 255) {
-					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
+					// If note is only one step shorter, do not warn
+					if (nlen > 256 && warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
 						CString* st = new CString;
 						st->Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
 						WriteLog(1, st);
