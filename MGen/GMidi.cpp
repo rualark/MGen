@@ -93,19 +93,6 @@ void CGMidi::LoadMidi(CString path)
 		int v = max(0, track - 1);
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
-			// Get track names
-			if (mev->isMetaMessage()) {
-				if (mev->getMetaType() == 0x03) {
-					tname[v] = "";
-					for (int x = 0; x < mev->size(); x++) {
-						tname[v] += mev->data()[x];
-					}
-					// Remove first data items
-					tname[v] = tname[v].Mid(3);
-					st.Format("%d", v);
-					tnames += " \n" + st + "=" + tname[v];
-				}
-			}
 			if (mev->isTempo()) {
 				int pos = round(mev->tick / (float)tpc);
 				// Check alignment
@@ -127,10 +114,34 @@ void CGMidi::LoadMidi(CString path)
 	}
 	UpdateTempoMinMax(0, last_step - 1);
 	last_step = 0;
+	int v1 = 0;
+	int v2 = 0;
+	int v = 0;
+
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
-		int v = max(0, track - 1);
+		if (track > 1) {
+			// Get next free voice
+			v1 = v2 + 1;
+			// Voice interval = 1
+			v2 = v1;
+			// Current voice is first voice in interval
+			v = v1;
+		}
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
+			// Get track names
+			if (mev->isMetaMessage()) {
+				if (mev->getMetaType() == 0x03) {
+					track_name[v] = "";
+					for (int x = 0; x < mev->size(); x++) {
+						track_name[v] += mev->data()[x];
+					}
+					// Remove first data items
+					track_name[v] = track_name[v].Mid(3);
+					st.Format("%d", v);
+					tnames += " \n" + st + "=" + track_name[v];
+				}
+			}
 			if (mev->isNoteOn()) {
 				//int v = mev->getChannel();
 				// Resize vectors for new voice number

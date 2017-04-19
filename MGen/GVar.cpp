@@ -49,7 +49,8 @@ CGVar::CGVar()
 	bell_end_mul.resize(MAX_VOICE);
 	bell_start_len.resize(MAX_VOICE);
 	bell_end_len.resize(MAX_VOICE);
-	tname.resize(MAX_VOICE);
+	track_name.resize(MAX_VOICE);
+	track_id.resize(MAX_VOICE);
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;
@@ -73,6 +74,7 @@ void CGVar::InitVectors()
 	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	lining = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	midi_ch = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	linecolor = vector<Color>(t_allocated);
 	lengroup = vector<vector<char>>(t_allocated, vector<char>(v_cnt));
 	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
@@ -124,6 +126,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	lengroup.resize(size);
 	comment.resize(size);
 	adapt_comment.resize(size);
+	midi_ch.resize(size);
 	color.resize(size);
 	int start = t_allocated;
 	if (vsize != v_cnt) start = 0;
@@ -142,6 +145,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		lengroup[i].resize(vsize);
 		comment[i].resize(vsize);
 		adapt_comment[i].resize(vsize);
+		midi_ch[i].resize(vsize);
 		dstime[i].resize(vsize);
 		detime[i].resize(vsize);
 		color[i].resize(vsize, Color(0));

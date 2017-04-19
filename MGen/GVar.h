@@ -64,6 +64,7 @@ public:
 	vector< vector <unsigned char> > vel; // Velocity of midi notes
 	vector< vector <unsigned char> > artic; // Velocity of midi notes
 	vector< vector <unsigned char> > lining; // Visual lining pattern
+	vector< vector <unsigned char> > midi_ch; // Midi channel of each note
 	vector< Color > linecolor; // Shows color of bar line if not zero
 	vector< vector <char> > lengroup; // How many notes left until last in lengroup
 	vector< vector <CString> > comment; // Comment for note
@@ -75,7 +76,8 @@ public:
 	vector< vector <float> > dstime; // Delta of current step start in ms for playback
 	vector< vector <float> > detime; // Delta of current step ending in ms for playback
 	vector <int> show_transpose; // Semitone transpose for showing
-	vector<CString> tname; // Track names from midi file
+	vector<CString> track_name; // Track names from midi file for each voice
+	vector<int> track_id; // Track id from midi file for each voice
 
 	// Instruments
 	vector<int> instr; // Instruments for each voice
