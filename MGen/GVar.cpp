@@ -451,7 +451,7 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 		st.Format("%d", v);
 		fs << "Pause" + st + ";Note" + st + ";Len" + st + ";Dyn" + st +
 			";Coff" + st + ";Poff" + st + ";Noff" + st + ";Comment" + st + ";Color" + st
-			+ ";Lining" + st + ";Tonic" + st;
+			+ ";Lining" + st + ";Tonic" + st + ";";
 	}
 	fs << "\n";
 	if (t_generated > 0) {
@@ -472,15 +472,15 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 				fs << color[i][v].GetValue() << ";";
 				fs << (int)lining[i][v] << ";";
 				fs << (int)tonic[i][v] << ";";
-				fs << "\n";
 			}
+			fs << "\n";
 		}
 	}
 	fs.close();
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
-	est->Format("Saved results to files in %d ms", time_stop - time_start);
+	est->Format("Saved CSV vectors to file %s\\%s.csv in %d ms", dir, fname, time_stop - time_start);
 	WriteLog(0, est);
 }
 
