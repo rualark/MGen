@@ -269,6 +269,10 @@ void CGMidi::LoadMidi(CString path)
 			}
 		}
 	}
+	// Set additional variables
+	CountOff(0, last_step);
+	CountTime(0, last_step);
+	//UpdateNoteMinMax(0, last_step);
 	// Send last
 	t_generated = last_step + 1;
 	if (tnames != "") {
