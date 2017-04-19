@@ -3,6 +3,8 @@
 
 #define MAX_WARN_LOADVECTORS 10
 #define MAX_WARN_VALID 10
+// Maximum allowed note length. Must be at least two times lower than 65 535 for poff to work
+#define MAX_LEN 1024 
 
 class CGVar :
 	public CGLib
@@ -56,10 +58,10 @@ public:
 	// Output
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
 	vector< vector <unsigned char> > note; // Note values (midi)
-	vector< vector <unsigned char> > len; // Note length in timeslots
-	vector< vector <unsigned char> > coff; // Offset of current note start backward (0 = first timeslot of note)
-	vector< vector <unsigned char> > poff; // Offset of previous note start (backward)
-	vector< vector <unsigned char> > noff; // Offset of next note start (forward)
+	vector< vector <unsigned short> > len; // Note length in timeslots
+	vector< vector <unsigned short> > coff; // Offset of current note start backward (0 = first timeslot of note)
+	vector< vector <unsigned short> > poff; // Offset of previous note start (backward)
+	vector< vector <unsigned short> > noff; // Offset of next note start (forward)
 	vector< vector <unsigned char> > tonic; // Key tonic of current note (3 = D#)
 	vector< vector <unsigned char> > dyn; // Dynamics (velocity for piano)
 	vector< vector <unsigned char> > vel; // Velocity of midi notes
@@ -131,11 +133,13 @@ protected:
 	void ValidateVectors(int step1, int step2);
 	// File operations
 	void SaveVector2C(ofstream & fs, vector<vector<unsigned char>>& v2D, int i);
+	void SaveVector2S(ofstream & fs, vector<vector<unsigned short>>& v2D, int i);
 	void SaveVector2Color(ofstream & fs, vector<vector<Color>>& v2D, int i);
 	void SaveVector2ST(ofstream & fs, vector<vector<CString>>& v2D, int i);
 	void SaveVector(ofstream &fs, vector<float> &v);
 	void SaveVector(ofstream &fs, vector<Color> &v);
 	void LoadVector2C(ifstream & fs, vector<vector<unsigned char>>& v2D, int i);
+	void LoadVector2S(ifstream & fs, vector<vector<unsigned short>>& v2D, int i);
 	void LoadVector2Color(ifstream & fs, vector<vector<Color>>& v2D, int i);
 	void LoadVector2ST(ifstream & fs, vector<vector<CString>>& v2D, int i);
 	void LoadVector(ifstream & fs, vector<Color>& v);

@@ -66,10 +66,10 @@ void CGVar::InitVectors()
 	// Create vectors
 	pause = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	note = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	len = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	coff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	poff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	noff = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	len = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
+	coff = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
+	poff = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
+	noff = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
 	tonic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
@@ -328,6 +328,12 @@ void CGVar::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, in
 	fs.write(pointer, bytes);
 }
 
+void CGVar::SaveVector2S(ofstream & fs, vector< vector<unsigned short> > &v2D, int i) {
+	const char* pointer = reinterpret_cast<const char*>(&v2D[i][0]);
+	size_t bytes = v_cnt * sizeof(v2D[i][0]);
+	fs.write(pointer, bytes);
+}
+
 void CGVar::SaveVector2Color(ofstream & fs, vector< vector<Color> > &v2D, int i) {
 	size_t bytes = 4;
 	for (int v = 0; v < v_cnt; v++) {
@@ -366,8 +372,8 @@ void CGVar::SaveResults(CString dir, CString fname)
 		for (size_t i = 0; i < t_generated; i++) {
 			SaveVector2C(fs, pause, i);
 			SaveVector2C(fs, note, i);
-			SaveVector2C(fs, len, i);
-			SaveVector2C(fs, coff, i);
+			SaveVector2S(fs, len, i);
+			SaveVector2S(fs, coff, i);
 			SaveVector2C(fs, dyn, i);
 			SaveVector2ST(fs, comment, i);
 			SaveVector2Color(fs, color, i);
@@ -498,6 +504,20 @@ void CGVar::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int
 	}
 }
 
+void CGVar::LoadVector2S(ifstream& fs, vector< vector<unsigned short> > &v2D, int i) {
+	v2D[i].resize(v_cnt);
+	char* pointer = reinterpret_cast<char*>(&(v2D[i][0]));
+	size_t bytes = v_cnt * sizeof(v2D[i][0]);
+	fs.read(pointer, bytes);
+	int read_count = fs.gcount();
+	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
+		CString* est = new CString;
+		est->Format("LoadVector2S: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
+		WriteLog(1, est);
+		warning_loadvectors++;
+	}
+}
+
 void CGVar::LoadVector2Color(ifstream & fs, vector< vector<Color> > &v2D, int i) {
 	size_t bytes = 4;
 	for (int v = 0; v < v_cnt; v++) {
@@ -613,8 +633,8 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 		for (size_t i = 0; i < t_generated; i++) {
 			LoadVector2C(fs, pause, i);
 			LoadVector2C(fs, note, i);
-			LoadVector2C(fs, len, i);
-			LoadVector2C(fs, coff, i);
+			LoadVector2S(fs, len, i);
+			LoadVector2S(fs, coff, i);
 			LoadVector2C(fs, dyn, i);
 			LoadVector2ST(fs, comment, i);
 			LoadVector2Color(fs, color, i);

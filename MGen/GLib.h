@@ -1,7 +1,7 @@
 #pragma once
 
-#define APP_VERSION "1.6"
-#define MGR_VERSION "1.6.1"
+#define APP_VERSION "1.7"
+#define MGR_VERSION "1.7"
 #define MAX_VOICE 100
 #define MAX_INSTR 16
 
