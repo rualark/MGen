@@ -56,16 +56,16 @@ BOOL CInfoDlg::OnInitDialog()
 		int mv = ((CMGenView*)(mf->GetActiveView()))->mouse_voice;
 		//SetWindowText("Dialog: some text");
 		CString st, st2;
-		st.Format("Step: %d (measure %d)\nVoice: %d (%s, channel %d, type %d) ", ms, ms / 8, mv,
+		st.Format("Step: %d (measure %d)\nVoice: %d (%s, channel %d, type %d)\n", ms, ms / 8, mv,
 			InstName[pGen->instr[mv]], pGen->instr_channel[pGen->instr[mv]], pGen->instr_type[pGen->instr[mv]]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		if (pGen->track_name[mv] != "") {
-			st.Format("\"%s\" in file", pGen->track_name[mv]);
-			m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		}
-		st.Format("\nNote: %s (midi %d)\nKey: %s\nNote length: %d\n",
+		st.Format("Note: %s (midi %d)\nKey: %s\nNote length: %d\n",
 			CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv], NoteName[pGen->tonic[ms][mv]], pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
+		if (pGen->track_name[mv] != "") {
+			st.Format("From MIDI file: track %d \"%s\" voice %d, channel %d\n", pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv]);
+			m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
+		}
 		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nDynamics: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->dyn[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Tempo: %.1f bpm\nStep start time: %.4f s (%.2f ms long)\nPause indicator: %d\nComment: %s\nAdapt comment: %s\n", 

@@ -51,6 +51,7 @@ CGVar::CGVar()
 	bell_end_len.resize(MAX_VOICE);
 	track_name.resize(MAX_VOICE);
 	track_id.resize(MAX_VOICE);
+	track_vid.resize(MAX_VOICE);
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;

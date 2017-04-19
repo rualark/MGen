@@ -133,6 +133,7 @@ void CGMidi::LoadMidi(CString path)
 			if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 			// Save track id
 			track_id[v] = track;
+			track_vid[v] = 0;
 		}
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
@@ -185,6 +186,7 @@ void CGMidi::LoadMidi(CString path)
 					v2++;
 					v = v2;
 					track_id[v] = track;
+					track_vid[v] = v - v1;
 					track_name[v] = track_name[v1];
 				}
 				// Resize vectors for new voice number
@@ -214,6 +216,7 @@ void CGMidi::LoadMidi(CString path)
 				}
 				if (nlen < 1) nlen = 1;
 				if (pos + nlen >= t_allocated) ResizeVectors(max(pos + nlen, t_allocated * 2));
+				midi_ch[pos][v] = mev->getChannel();
 				// Search for last note
 				if ((pos > 0) && (note[pos - 1][v] == 0)) {
 					int last_pause = pos - 1;

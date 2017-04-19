@@ -78,6 +78,7 @@ public:
 	vector <int> show_transpose; // Semitone transpose for showing
 	vector<CString> track_name; // Track names from midi file for each voice
 	vector<int> track_id; // Track id from midi file for each voice
+	vector<int> track_vid; // Voice id inside track from midi file for each voice
 
 	// Instruments
 	vector<int> instr; // Instruments for each voice
