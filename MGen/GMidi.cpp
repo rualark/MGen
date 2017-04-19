@@ -156,10 +156,10 @@ void CGMidi::LoadMidi(CString path)
 				int pos = round(mev->tick / (float)tpc);
 				int pitch = mev->getKeyNumber();
 				int myvel = mev->getVelocity();
-				// Check alignment
-				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
+				// Fail alignment if more than 1/3 of chroche approximated
+				if ((abs(mev->tick - pos*tpc) > round(tpc / 3.0)) && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
 					CString* st = new CString;
-					st->Format("Note not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, path);
+					st->Format("Note not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d) in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
 					WriteLog(1, st);
 					warning_loadmidi_align++;
 				}
