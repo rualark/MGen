@@ -551,7 +551,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		// Find voice
 		mouse_voice = -1;
 		int off = 0;
-		if ((mouse_step_old > -1) && (mouse_voice_old > -1)) {
+		if ((mouse_step_old > -1) && (mouse_voice_old > -1) && mouse_voice_old < pGen->v_cnt) {
 			step21 = mouse_step_old - pGen->coff[mouse_step_old][mouse_voice_old];
 			step22 = step21 + pGen->len[mouse_step_old][mouse_voice_old];
 		}

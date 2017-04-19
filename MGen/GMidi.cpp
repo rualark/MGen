@@ -136,6 +136,7 @@ void CGMidi::LoadMidi(CString path)
 			track_vid[v] = 0;
 		}
 		for (int i = 0; i<midifile[track].size(); i++) {
+			if (need_exit) break;
 			MidiEvent* mev = &midifile[track][i];
 			// Get track names
 			if (mev->isMetaMessage()) {
@@ -164,6 +165,7 @@ void CGMidi::LoadMidi(CString path)
 				}
 				// Find overlaps and distance
 				for (int x = v1; x <= v2; ++x) {
+					// Overlap happens only in case when real overlap time is greater than half of croche
 					if (note[pos][x]) {
 						voverlap[x] = 1;
 						vdist[x] = 1000;
@@ -251,7 +253,7 @@ void CGMidi::LoadMidi(CString path)
 				UpdateNoteMinMax(pos, pos + nlen - 1);
 				if (pos + nlen - 1 > last_step) last_step = pos + nlen - 1;
 				if (pos + nlen - 1 > vlast_step[v]) vlast_step[v] = pos + nlen - 1;
-				t_generated = pos;
+				if (t_generated < pos) t_generated = pos;
 				// Save last pitch
 				vlast_pitch[v] = pitch;
 			}
