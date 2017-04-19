@@ -84,6 +84,9 @@ void CGMidi::LoadMidi(CString path)
 	int tpq = midifile.getTicksPerQuarterNote();
 	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul; // ticks per croche
 	vector<int> vlast_step(MAX_VOICE);
+	vector<int> vlast_pitch(MAX_VOICE);
+	vector<int> voverlap(MAX_VOICE);
+	vector<int> vdist(MAX_VOICE);
 	CString st, tnames = "";
 
 	float lastNoteFinished = 0.0;
@@ -126,6 +129,10 @@ void CGMidi::LoadMidi(CString path)
 			v2 = v1;
 			// Current voice is first voice in interval
 			v = v1;
+			// Resize vectors for new voice number
+			if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
+			// Save track id
+			track_id[v] = track;
 		}
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
@@ -144,9 +151,9 @@ void CGMidi::LoadMidi(CString path)
 			}
 			if (mev->isNoteOn()) {
 				//int v = mev->getChannel();
-				// Resize vectors for new voice number
-				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				int pos = round(mev->tick / (float)tpc);
+				int pitch = mev->getKeyNumber();
+				int myvel = mev->getVelocity();
 				// Check alignment
 				if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
 					CString* st = new CString;
@@ -154,12 +161,45 @@ void CGMidi::LoadMidi(CString path)
 					WriteLog(1, st);
 					warning_loadmidi_align++;
 				}
+				// Find overlaps and distance
+				for (int x = v1; x <= v2; ++x) {
+					if (note[pos][x]) {
+						voverlap[x] = 1;
+						vdist[x] = 1000;
+					}
+					else {
+						voverlap[x] = 0;
+						vdist[x] = abs(vlast_pitch[x] - pitch);
+					}
+				}
+			  // Find best voice
+				int min_vdist = 1000;
+				for (int x = v1; x <= v2; ++x) {
+					if (vdist[x] < min_vdist) {
+						min_vdist = vdist[x];
+						v = x;
+					}
+				}
+				// If no voice without overlaps, create new
+				if (min_vdist == 1000) {
+					v2++;
+					v = v2;
+					track_id[v] = track;
+					track_name[v] = track_name[v1];
+				}
+				// Resize vectors for new voice number
+				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				// Check if current note already set
-				if ((note[pos][v] || pause[pos][v]) && warning_loadmidi_short < MAX_WARN_MIDI_SHORT){
-					CString* st = new CString;
-					st->Format("Note too short and is overwritten at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, path);
-					WriteLog(1, st);
-					warning_loadmidi_short++;
+				if (note[pos][v] || pause[pos][v]) {
+					// Check if note too short
+					if (len[pos][v] < 2) {
+						if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
+							CString* st = new CString;
+							st->Format("Note too short and is overwritten at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, path);
+							WriteLog(1, st);
+							warning_loadmidi_short++;
+						}
+					}
 				}
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check if note too long
@@ -195,9 +235,9 @@ void CGMidi::LoadMidi(CString path)
 				}
 				// Set note steps
 				for (int z = 0; z < nlen; z++) {
-					note[pos + z][v] = mev->getKeyNumber();
+					note[pos + z][v] = pitch;
 					len[pos + z][v] = nlen;
-					dyn[pos + z][v] = mev->getVelocity();
+					dyn[pos + z][v] = myvel;
 					pause[pos + z][v] = 0;
 					coff[pos + z][v] = z;
 					if (tempo[pos + z] == 0) tempo[pos + z] = tempo[pos + z - 1];
@@ -209,6 +249,8 @@ void CGMidi::LoadMidi(CString path)
 				if (pos + nlen - 1 > last_step) last_step = pos + nlen - 1;
 				if (pos + nlen - 1 > vlast_step[v]) vlast_step[v] = pos + nlen - 1;
 				t_generated = pos;
+				// Save last pitch
+				vlast_pitch[v] = pitch;
 			}
 		}
 	}
