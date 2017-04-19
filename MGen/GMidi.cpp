@@ -169,6 +169,15 @@ void CGMidi::LoadMidi(CString path)
 					if (note[pos][x]) {
 						voverlap[x] = 1;
 						vdist[x] = 1000;
+						// Check if note too short
+						if (len[pos][v] < 2) {
+							if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
+								CString* st = new CString;
+								st->Format("Note too short and gets same step with next note at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
+								WriteLog(1, st);
+								warning_loadmidi_short++;
+							}
+						}
 					}
 					else {
 						voverlap[x] = 0;
@@ -193,24 +202,12 @@ void CGMidi::LoadMidi(CString path)
 				}
 				// Resize vectors for new voice number
 				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
-				// Check if current note already set
-				if (note[pos][v] || pause[pos][v]) {
-					// Check if note too short
-					if (len[pos][v] < 2) {
-						if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
-							CString* st = new CString;
-							st->Format("Note too short and is overwritten at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, tpc, midifile_in_mul, pos, path);
-							WriteLog(1, st);
-							warning_loadmidi_short++;
-						}
-					}
-				}
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check if note too long
 				if (nlen > 255) {
 					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
 						CString* st = new CString;
-						st->Format("Note too long and will be cut short at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", mev->tick, tpc, midifile_in_mul, pos, path);
+						st->Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
 						WriteLog(1, st);
 						warning_loadmidi_long++;
 					}
@@ -218,7 +215,7 @@ void CGMidi::LoadMidi(CString path)
 				}
 				if (nlen < 1) nlen = 1;
 				if (pos + nlen >= t_allocated) ResizeVectors(max(pos + nlen, t_allocated * 2));
-				midi_ch[pos][v] = mev->getChannel();
+				int chan = mev->getChannel();
 				// Search for last note
 				if ((pos > 0) && (note[pos - 1][v] == 0)) {
 					int last_pause = pos - 1;
@@ -243,6 +240,7 @@ void CGMidi::LoadMidi(CString path)
 					note[pos + z][v] = pitch;
 					len[pos + z][v] = nlen;
 					dyn[pos + z][v] = myvel;
+					midi_ch[pos + z][v] = chan;
 					pause[pos + z][v] = 0;
 					coff[pos + z][v] = z;
 					if (tempo[pos + z] == 0) tempo[pos + z] = tempo[pos + z - 1];

@@ -11,7 +11,7 @@ n_min = 21 # Lowest note
 n_max = 108 # Highest note
 t_min = 20 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
-poly = 6 # Maximum number of simultaneous voices
+poly = 100 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap
 #dying = 5 # Seconds to fade out at mf
 library = Native Instruments Gentleman # For which library algorithm is optimized

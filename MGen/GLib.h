@@ -2,7 +2,7 @@
 
 #define APP_VERSION "1.6"
 #define MGR_VERSION "1.6.1"
-#define MAX_VOICE 64
+#define MAX_VOICE 100
 #define MAX_INSTR 16
 
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
