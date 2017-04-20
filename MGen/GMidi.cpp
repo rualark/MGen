@@ -169,9 +169,9 @@ void CGMidi::LoadMidi(CString path)
 				if (!tempo[pos]) tempo[pos] = 100;
 				int delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
 				// Check alignment
-				if (delta > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
+				if (abs(delta) > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
 					CString* st = new CString;
-					st->Format("Note not aligned at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d) in file %s. Increasing midifile_in_mul will improve approximation.", track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
+					st->Format("Note moved %d ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d) in file %s. Increasing midifile_in_mul will improve approximation.", delta, track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
 					WriteLog(1, st);
 					warning_loadmidi_align++;
 				}
@@ -259,11 +259,12 @@ void CGMidi::LoadMidi(CString path)
 					len[pos + z][v] = nlen;
 					dyn[pos + z][v] = myvel;
 					midi_ch[pos + z][v] = chan;
-					midi_delta[pos + z][v] = delta;
 					pause[pos + z][v] = 0;
 					coff[pos + z][v] = z;
 					if (tempo[pos + z] == 0) tempo[pos + z] = tempo[pos + z - 1];
 				}
+				// Set midi delta only to first step of note, because later you can get different calculations for different tempo
+				midi_delta[pos][v] = delta;
 				// Set additional variables
 				CountOff(pos, pos + nlen - 1);
 				CountTime(pos, pos + nlen - 1);

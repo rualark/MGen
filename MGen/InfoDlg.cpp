@@ -63,7 +63,7 @@ BOOL CInfoDlg::OnInitDialog()
 			CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv], NoteName[pGen->tonic[ms][mv]], pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		if (pGen->track_name[mv] != "") {
-			st.Format("From MIDI file: track %d \"%s\" voice %d, channel %d, delta %d (%.0f%% croche)\n", pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], pGen->midi_delta[ms][mv], (float)(pGen->midi_delta[ms][mv])/300.0*(float)(pGen->tempo[ms]));
+			st.Format("From MIDI file: track %d \"%s\" voice %d, channel %d, delta %d ms (%.0f%% croche)\n", pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], pGen->midi_delta[ms][mv], (float)(pGen->midi_delta[ms][mv])/300.0*(float)(pGen->tempo[ms]));
 			m_info.AddText(st, RGB(0, 0, 200), CFE_BOLD);
 		}
 		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nDynamics: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->dyn[ms][mv]);
