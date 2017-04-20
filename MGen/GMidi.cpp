@@ -129,6 +129,12 @@ void CGMidi::LoadMidi(CString path)
 			v2 = v1;
 			// Current voice is first voice in interval
 			v = v1;
+			if (v >= MAX_VOICE) {
+				CString* st = new CString;
+				st->Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
+				WriteLog(1, st);
+				break;
+			}
 			// Resize vectors for new voice number
 			if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 			// Save track id
@@ -196,6 +202,12 @@ void CGMidi::LoadMidi(CString path)
 				if (min_vdist == 1000) {
 					v2++;
 					v = v2;
+					if (v >= MAX_VOICE) {
+						CString* st = new CString;
+						st->Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
+						WriteLog(1, st);
+						break;
+					}
 					track_id[v] = track;
 					track_vid[v] = v - v1;
 					track_name[v] = track_name[v1];
