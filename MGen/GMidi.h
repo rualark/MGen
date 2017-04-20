@@ -7,6 +7,8 @@
 #define MAX_WARN_MIDI_ALIGN 5
 #define MAX_WARN_MIDI_SHORT 5
 #define MAX_WARN_MIDI_LONG 5
+// Maximum delta from midi file position in ms without warning
+#define MAX_ALLOW_DELTA 30
 
 // PortMIDI
 #define OUTPUT_BUF_SIZE 10000

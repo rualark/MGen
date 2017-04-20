@@ -158,12 +158,18 @@ void CGMidi::LoadMidi(CString path)
 				}
 			}
 			if (mev->isNoteOn()) {
-				//int v = mev->getChannel();
 				int pos = round(mev->tick / (float)tpc);
 				int pitch = mev->getKeyNumber();
 				int myvel = mev->getVelocity();
-				// Fail alignment if more than 1/3 of chroche approximated
-				if ((abs(mev->tick - pos*tpc) > round(tpc / 3.0)) && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
+				// Fill tempo
+				if (!tempo[pos]) for (int z = pos; z > 0; --z) {
+					if (tempo[z] != 0) break;
+					tempo[z] = tempo[z - 1];
+				}
+				if (!tempo[pos]) tempo[pos] = 100;
+				int delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
+				// Check alignment
+				if (delta > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
 					CString* st = new CString;
 					st->Format("Note not aligned at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d) in file %s. Increasing midifile_in_mul will improve approximation.", track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
 					WriteLog(1, st);
@@ -253,6 +259,7 @@ void CGMidi::LoadMidi(CString path)
 					len[pos + z][v] = nlen;
 					dyn[pos + z][v] = myvel;
 					midi_ch[pos + z][v] = chan;
+					midi_delta[pos + z][v] = delta;
 					pause[pos + z][v] = 0;
 					coff[pos + z][v] = z;
 					if (tempo[pos + z] == 0) tempo[pos + z] = tempo[pos + z - 1];

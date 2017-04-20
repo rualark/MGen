@@ -76,6 +76,7 @@ void CGVar::InitVectors()
 	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	lining = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	midi_ch = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	midi_delta = vector<vector<short>>(t_allocated, vector<short>(v_cnt));
 	linecolor = vector<Color>(t_allocated);
 	lengroup = vector<vector<char>>(t_allocated, vector<char>(v_cnt));
 	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
@@ -128,6 +129,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	comment.resize(size);
 	adapt_comment.resize(size);
 	midi_ch.resize(size);
+	midi_delta.resize(size);
 	color.resize(size);
 	int start = t_allocated;
 	if (vsize != v_cnt) start = 0;
@@ -147,6 +149,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		comment[i].resize(vsize);
 		adapt_comment[i].resize(vsize);
 		midi_ch[i].resize(vsize);
+		midi_delta[i].resize(vsize);
 		dstime[i].resize(vsize);
 		detime[i].resize(vsize);
 		color[i].resize(vsize, Color(0));
