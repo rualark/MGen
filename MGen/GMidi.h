@@ -54,6 +54,9 @@ public:
 	int buf_underrun = 0; // Shows if current playback had an issue with buffer underrun
 	int midi_play_step = 0; // Current step being played by midi
 
+	// Midi files
+	int midifile_loaded = 0; // If MIDI was loaded from file
+
 protected:
 	// Warnings
 	int warning_loadmidi_align = 0;

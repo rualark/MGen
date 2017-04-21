@@ -62,7 +62,7 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Note: %s (midi %d)\nKey: %s\nNote length: %d\n",
 			CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv], NoteName[pGen->tonic[ms][mv]], pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		if (pGen->track_name[mv] != "") {
+		if (pGen->midifile_loaded) {
 			st.Format("From MIDI file: track %d \"%s\" voice %d, channel %d, delta %d ms (%.0f%% croche)\n", pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], pGen->midi_delta[ms][mv], (float)(pGen->midi_delta[ms][mv])/300.0*(float)(pGen->tempo[ms]));
 			m_info.AddText(st, RGB(0, 0, 200), CFE_BOLD);
 		}

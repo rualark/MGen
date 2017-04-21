@@ -87,14 +87,15 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> vlast_pitch(MAX_VOICE);
 	vector<int> voverlap(MAX_VOICE);
 	vector<int> vdist(MAX_VOICE);
-	CString st, tnames = "";
+	CString st, tnames = "", inames = "";
 
 	if (midifile.getTrackCount() < 2) {
 		CString* st = new CString;
-		st->Format("Detected only %d tracks while loading file %s. Probably wrong file format. Should be MIDI Type 1", midifile.getTrackCount(), path);
-		WriteLog(1, st);
-		//return;
+		st->Format("Detected only %d tracks while loading file %s. Probably MIDI type 0. Splitting midi tracks by channels.", midifile.getTrackCount(), path);
+		WriteLog(0, st);
+		midifile.splitTracksByChannel();
 	}
+	midifile_loaded = 1;
 	float lastNoteFinished = 0.0;
 	int last_step = 0;
 	// Load tempo
@@ -143,10 +144,10 @@ void CGMidi::LoadMidi(CString path)
 			}
 			// Resize vectors for new voice number
 			if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
-			// Save track id
-			track_id[v] = track;
-			track_vid[v] = 0;
 		}
+		// Save track id
+		track_id[v] = track;
+		track_vid[v] = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {
 			if (need_exit) break;
 			MidiEvent* mev = &midifile[track][i];
@@ -161,6 +162,16 @@ void CGMidi::LoadMidi(CString path)
 					track_name[v] = track_name[v].Mid(3);
 					st.Format("%d", v);
 					tnames += " \n" + st + "=" + track_name[v];
+				}
+				if (mev->getMetaType() == 0x04) {
+					track_name[v] = "";
+					for (int x = 0; x < mev->size(); x++) {
+						track_name[v] += mev->data()[x];
+					}
+					// Remove first data items
+					track_name[v] = track_name[v].Mid(3);
+					st.Format("%d", v);
+					inames += " \n" + st + "=" + track_name[v];
 				}
 			}
 			if (mev->isNoteOn()) {
@@ -303,6 +314,11 @@ void CGMidi::LoadMidi(CString path)
 	if (tnames != "") {
 		CString* est = new CString;
 		est->Format("MIDI file track names: %s", tnames);
+		WriteLog(0, est);
+	}
+	if (inames != "") {
+		CString* est = new CString;
+		est->Format("MIDI file instrument names: %s", inames);
 		WriteLog(0, est);
 	}
 	// Count time
