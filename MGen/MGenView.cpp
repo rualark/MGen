@@ -66,7 +66,7 @@ CMGenView::CMGenView()
 	v_color[11] = { 255, 100, 160 };
 	v_color[12] = { 255, 160, 100 };
 	v_color[13] = { 90, 170, 255 };
-	v_color[14] = { 170, 255, 90 };
+	v_color[14] = { 130, 200, 40 };
 	v_color[15] = { 160, 100, 255 };
 	// Dummy set to avoid assertion failure on first OnPaint
 	SetScrollSizes(MM_TEXT, CSize(20000, 20000));
@@ -278,14 +278,18 @@ void CMGenView::OnDraw(CDC* pDC)
 			Color ncolor;
 			int alpha;
 			int step_dyn = mf->m_step_dyn;
+			int ci_old = -1;
 			for (int v = 0; v < pGen->v_cnt; v++) {
 				int ci = v;
 				if (pGen->midifile_loaded) ci = pGen->track_id[v] - 1;
 				// Show instrument name
-				ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
-				SolidBrush brush_v(ncolor);
-				st = InstName[pGen->instr[v]];
-				g.DrawString(A2W(st), -1, &font, PointF(1150+100*v, 0), &brush_v);
+				if (ci_old != ci) {
+					ci_old = ci;
+					ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
+					SolidBrush brush_v(ncolor);
+					st = InstName[pGen->instr[v]];
+					g.DrawString(A2W(st), -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
+				}
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
 					// Check if note steps have different dynamics
