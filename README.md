@@ -9,4 +9,4 @@ English: https://www.youtube.com/watch?v=j_olI5RVeW0
 
 Russian: https://www.youtube.com/watch?v=s4gBu4e2FFE
 
-This is a fork
+High priotiry issues: https://github.com/rualark/MGen/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20-label%3Alow-priority
