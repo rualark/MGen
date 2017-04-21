@@ -279,8 +279,10 @@ void CMGenView::OnDraw(CDC* pDC)
 			int alpha;
 			int step_dyn = mf->m_step_dyn;
 			for (int v = 0; v < pGen->v_cnt; v++) {
+				int ci = v;
+				if (pGen->midifile_loaded) ci = pGen->track_id[v];
 				// Show instrument name
-				ncolor = Color(255 /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+				ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 				SolidBrush brush_v(ncolor);
 				st = InstName[pGen->instr[v]];
 				g.DrawString(A2W(st), -1, &font, PointF(1150+100*v, 0), &brush_v);
@@ -304,7 +306,7 @@ void CMGenView::OnDraw(CDC* pDC)
 							else ncolor = pGen->color[i][v];
 						}
 						else {
-							ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+							ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 						}
 						SolidBrush brush(ncolor);
 						retrigger = 0;
@@ -330,7 +332,7 @@ void CMGenView::OnDraw(CDC* pDC)
 								else ncolor = pGen->color[x][v];
 							}
 							else {
-								ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+								ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 							}
 							SolidBrush brush(ncolor);
 							retrigger = 0;
