@@ -81,8 +81,8 @@ void CGMidi::LoadMidi(CString path)
 
 	if (midifile.getTrackCount() < 2) {
 		CString* st = new CString;
-		st->Format("Detected only %d tracks while loading file %s. Probably MIDI type 0. Splitting midi tracks by channels.", midifile.getTrackCount(), path);
-		WriteLog(0, st);
+		st->Format("Detected only %d tracks while loading file %s. Probably MIDI type 0. Splitting midi tracks by channels. Track names are not supported for MIDI type 0 yet.", midifile.getTrackCount(), path);
+		WriteLog(1, st);
 		midifile.splitTracksByChannel();
 		midifile_type = 0;
 	}
@@ -616,6 +616,10 @@ void CGMidi::SendMIDI(int step1, int step2)
 		//WriteLog(4, st);
 		return;
 	}
+	CString* est = new CString;
+	est->Format("SendMIDI: need to send (full buf = %d ms) (steps %d - %d) playback is at %d", 
+		midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
+	WriteLog(4, est);
 	int i;
 	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
 		WriteLog(0, new CString("SendMIDI mutex timed out: will try later"));
@@ -665,8 +669,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}
-		// Set midi_buf_lim only for first voice. Other voices use same midi_buf_lim
-		if (midi_buf_lim == 0) midi_buf_lim = midi_start_time + stime[last_i] * 100 / m_pspeed;
+		// Set midi_buf_lim only for first voice. Other voices use same midi_buf_lim if first voice exists
+		if (midi_buf_lim == 0 || midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[last_i] * 100 / m_pspeed;
 		// Send notes
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
