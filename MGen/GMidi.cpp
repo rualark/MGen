@@ -626,8 +626,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 	}
 	int step21; // Voice-dependent first step
 	int step22; // Voice-independent last step
-							// Find last step not too far
 	float time;
+	// Find last step not too far
 	for (i = step1; i <= step2; i++) {
 		step22 = i;
 		if (i == 0) time = stime[i] * 100 / m_pspeed;
@@ -643,7 +643,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		midi_buf_next.clear();
 		WriteLog(4, new CString("Postponed notes sent"));
 	}
-	midi_buf_lim = 0;
+	midi_buf_lim = midi_start_time + stime[step22] * 100 / m_pspeed;
 	for (int v = 0; v < v_cnt; v++) {
 		// Initialize voice
 		PmEvent event;
@@ -664,13 +664,13 @@ void CGMidi::SendMIDI(int step1, int step2)
 		for (i = step21; i < step22; i++) {
 			ncount++;
 			if (i + len[i][v] > step22) break;
-			last_i = i;
+			//last_i = i;
 			// Set new buffer limit to beginning of last note
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}
 		// Set midi_buf_lim only for first voice. Other voices use same midi_buf_lim if first voice exists
-		if (midi_buf_lim == 0 || midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[last_i] * 100 / m_pspeed;
+		//if (midi_buf_lim == 0 || midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[last_i] * 100 / m_pspeed;
 		// Send notes
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
