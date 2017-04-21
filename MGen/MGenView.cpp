@@ -280,7 +280,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			int step_dyn = mf->m_step_dyn;
 			for (int v = 0; v < pGen->v_cnt; v++) {
 				int ci = v;
-				if (pGen->midifile_loaded) ci = pGen->track_id[v];
+				if (pGen->midifile_loaded) ci = pGen->track_id[v] - 1;
 				// Show instrument name
 				ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 				SolidBrush brush_v(ncolor);

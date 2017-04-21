@@ -1015,7 +1015,8 @@ void MidiFile::splitTracks(void) {
 void MidiFile::splitTracksByChannel(void) {
    joinTracks();
    if (getTrackState() == TRACK_STATE_SPLIT) {
-      return;
+     // Alexey Arkhipenko commented this out 
+		 //return;
    }
 
    int oldTimeState = getTickState();

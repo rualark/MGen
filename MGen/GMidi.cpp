@@ -75,12 +75,18 @@ void CGMidi::LoadMidi(CString path)
 		WriteLog(1, est);
 		return;
 	}
-	midifile.linkNotePairs();
 	//midifile.joinTracks();
+	midifile.linkNotePairs();
 	midifile.doTimeAnalysis();
 
-	midifile.absoluteTicks();
+	if (midifile.getTrackCount() < 2) {
+		CString* st = new CString;
+		st->Format("Detected only %d tracks while loading file %s. Probably MIDI type 0. Splitting midi tracks by channels.", midifile.getTrackCount(), path);
+		WriteLog(0, st);
+		midifile.splitTracksByChannel();
+	}
 
+	midifile.absoluteTicks();
 	int tpq = midifile.getTicksPerQuarterNote();
 	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul; // ticks per croche
 	vector<int> vlast_step(MAX_VOICE);
@@ -89,29 +95,15 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> vdist(MAX_VOICE);
 	CString st, tnames = "", inames = "";
 
-	if (midifile.getTrackCount() < 2) {
-		CString* st = new CString;
-		st->Format("Detected only %d tracks while loading file %s. Probably MIDI type 0. Splitting midi tracks by channels.", midifile.getTrackCount(), path);
-		WriteLog(0, st);
-		midifile.splitTracksByChannel();
-	}
 	midifile_loaded = 1;
 	float lastNoteFinished = 0.0;
 	int last_step = 0;
 	// Load tempo
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
-		int v = max(0, track - 1);
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			if (mev->isTempo()) {
 				int pos = round(mev->tick / (float)tpc);
-				// Check alignment
-				//if ((abs(mev->tick - pos*tpc) > round(tpc / 100.0)) && (warning_loadmidi_align < 5)) {
-					//CString* st = new CString;
-					//st->Format("Tempo not aligned at %d tick with %d tpc (mul %.03f) approximated to %d step in file %s", mev->tick, tpc, midifile_tpq_mul, pos, path);
-					//WriteLog(1, st);
-					//warning_loadmidi_align++;
-				//}
 				if (pos >= t_allocated) ResizeVectors(max(t_allocated * 2, pos + 1));
 				tempo[pos] = mev->getTempoBPM() * midifile_in_mul;
 				if (pos > last_step) last_step = pos;
