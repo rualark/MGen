@@ -84,6 +84,7 @@ void CGMidi::LoadMidi(CString path)
 		st->Format("Detected only %d tracks while loading file %s. Probably MIDI type 0. Splitting midi tracks by channels.", midifile.getTrackCount(), path);
 		WriteLog(0, st);
 		midifile.splitTracksByChannel();
+		midifile_type = 0;
 	}
 
 	midifile.absoluteTicks();
@@ -94,6 +95,7 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> voverlap(MAX_VOICE);
 	vector<int> vdist(MAX_VOICE);
 	CString st, tnames = "", inames = "";
+	vector <CString> track_name2(MAX_VOICE);
 
 	midifile_loaded = 1;
 	float lastNoteFinished = 0.0;
@@ -136,6 +138,10 @@ void CGMidi::LoadMidi(CString path)
 			}
 			// Resize vectors for new voice number
 			if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
+			// Load name if we have MIDI type 0
+			if (!midifile_type) {
+				track_name[v] = track_name2[track];
+			}
 		}
 		// Save track id
 		track_id[v] = track;
@@ -143,6 +149,7 @@ void CGMidi::LoadMidi(CString path)
 		for (int i = 0; i<midifile[track].size(); i++) {
 			if (need_exit) break;
 			MidiEvent* mev = &midifile[track][i];
+			int chan = mev->getChannel();
 			// Get track names
 			if (mev->isMetaMessage()) {
 				if (mev->getMetaType() == 0x03) {
@@ -156,14 +163,15 @@ void CGMidi::LoadMidi(CString path)
 					tnames += " \n" + st + "=" + track_name[v];
 				}
 				if (mev->getMetaType() == 0x04) {
-					track_name[v] = "";
+					track_name2[chan] = "";
 					for (int x = 0; x < mev->size(); x++) {
-						track_name[v] += mev->data()[x];
+						track_name2[chan] += mev->data()[x];
 					}
 					// Remove first data items
-					track_name[v] = track_name[v].Mid(3);
-					st.Format("%d", v);
-					inames += " \n" + st + "=" + track_name[v];
+					track_name2[chan] = track_name2[chan].Mid(3);
+					st.Format("%d", chan);
+					inames += " \n" + st + "=" + track_name2[chan];
+					if (!v) track_name[0] = track_name2[0];
 				}
 			}
 			if (mev->isNoteOn()) {
@@ -242,7 +250,6 @@ void CGMidi::LoadMidi(CString path)
 				}
 				if (nlen < 1) nlen = 1;
 				if (pos + nlen >= t_allocated) ResizeVectors(max(pos + nlen, t_allocated * 2));
-				int chan = mev->getChannel();
 				// Search for last note
 				if ((pos > 0) && (note[pos - 1][v] == 0)) {
 					int last_pause = pos - 1;

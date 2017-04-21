@@ -56,6 +56,7 @@ public:
 
 	// Midi files
 	int midifile_loaded = 0; // If MIDI was loaded from file
+	int midifile_type = 1; // Type of MIDI file loaded
 
 protected:
 	// Warnings
