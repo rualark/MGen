@@ -261,13 +261,19 @@ void CMGenView::OnDraw(CDC* pDC)
 			for (int i = max(0, step1-16); i < step2_3; i++) {
 				if (i % 8 == 0) {
 					if ((i % 16 == 0) || (mf->zoom_x > 120)) {
-						g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, ClientRect.top + Y_HEADER,
-							X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE);
-						st.Format("%d", i / 8 + 1);
-						g.DrawString(A2W(st), -1, &font_small, PointF(X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE + 1), &brush_dddgray);
+						if ((i % 64 == 0) || (mf->zoom_x > 80)) {
+							g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, ClientRect.top + Y_HEADER,
+								X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE);
+							st.Format("%d", i / 8 + 1);
+							g.DrawString(A2W(st), -1, &font_small, PointF(X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE + 1), &brush_dddgray);
+						}
+						g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start - 1,
+							X_FIELD + i * nwidth, ClientRect.top + Y_HEADER + 1);
 					}
-					g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start - 1,
-						X_FIELD + i * nwidth, ClientRect.top + Y_HEADER + 1);
+					else if (mf->zoom_x >= 100) {
+						g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start - 1,
+							X_FIELD + i * nwidth, ClientRect.top + Y_HEADER + 1);
+					}
 				}
 				else if ((mf->zoom_x >= 200) && (i % 2 == 0)) g.DrawLine(&pen_dgray, X_FIELD + i * nwidth, y_start,
 					X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);

@@ -21,7 +21,7 @@
 #include "GenCA1.h"
 #include "GenCP1.h"
 
-#define MIN_HZOOM 80
+#define MIN_HZOOM 1
 #define MAX_HZOOM 500
 #define MIN_PSPEED 1
 #define MAX_PSPEED 5000
