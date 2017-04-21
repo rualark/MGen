@@ -52,25 +52,22 @@ END_MESSAGE_MAP()
 CMGenView::CMGenView()
 {
 	v_color = vector<vector<unsigned char>>(MAX_VOICE, vector<unsigned char>(3));
-	//Color(0, 100, 100, 100), // 0 S
-	//Color(0, 180, 100, 100), // 1 p
-	//Color(0, 255, 0, 0), // 2 t
-	//Color(0, 0, 255, 0), // 3 j
-	//Color(0, 120, 120, 255), // 4 o
-	//Color(0, 120, 120, 0), // 5 l
-	//Color(0, 255, 0, 255), // 6 c
-	//Color(0, 0, 255, 255), // 7 a
-	//Color(0, 0, 150, 150), // 8 r
-	//Color(0, 150, 0, 150), // 9 d
-	//Color(0, 0, 150, 0), // 10 g
-	//Color(0, 120, 0, 250), // 11 f
-	//Color(0, 250, 100, 160) // 12 m
 	v_color[0] = {   0,   0, 255 };
 	v_color[1] = { 255,   0, 255 };
 	v_color[2] = {   0, 255, 255 };
 	v_color[3] = {   0, 255,   0 };
 	v_color[4] = { 120, 120,   0 };
-	v_color[5] = {   0, 120, 120 };
+	v_color[5] = { 0, 120, 120 };
+	v_color[6] = { 180, 100, 100 };
+	v_color[7] = { 90, 255, 170 };
+	v_color[8] = { 150, 0, 150 };
+	v_color[9] = { 0, 150, 0 };
+	v_color[10] = { 120, 120, 255 };
+	v_color[11] = { 255, 100, 160 };
+	v_color[12] = { 255, 160, 100 };
+	v_color[13] = { 90, 170, 255 };
+	v_color[14] = { 170, 255, 90 };
+	v_color[15] = { 160, 100, 255 };
 	// Dummy set to avoid assertion failure on first OnPaint
 	SetScrollSizes(MM_TEXT, CSize(20000, 20000));
 }
