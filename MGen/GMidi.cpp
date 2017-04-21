@@ -89,6 +89,12 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> vdist(MAX_VOICE);
 	CString st, tnames = "";
 
+	if (midifile.getTrackCount() < 2) {
+		CString* st = new CString;
+		st->Format("Detected only %d tracks while loading file %s. Probably wrong file format. Should be MIDI Type 1", midifile.getTrackCount(), path);
+		WriteLog(1, st);
+		//return;
+	}
 	float lastNoteFinished = 0.0;
 	int last_step = 0;
 	// Load tempo
