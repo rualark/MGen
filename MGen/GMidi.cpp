@@ -95,7 +95,7 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> voverlap(MAX_VOICE);
 	vector<int> vdist(MAX_VOICE);
 	CString st, tnames = "", inames = "";
-	vector <CString> track_name2(MAX_VOICE);
+	//vector <CString> track_name2(MAX_VOICE);
 
 	midifile_loaded = 1;
 	float lastNoteFinished = 0.0;
@@ -121,6 +121,7 @@ void CGMidi::LoadMidi(CString path)
 	int v1 = 0;
 	int v2 = 0;
 	int v = 0;
+	int iname_id = 1;
 
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		if (track > 1) {
@@ -139,9 +140,11 @@ void CGMidi::LoadMidi(CString path)
 			// Resize vectors for new voice number
 			if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 			// Load name if we have MIDI type 0
+			/*
 			if (!midifile_type) {
 				track_name[v] = track_name2[track];
 			}
+			*/
 		}
 		// Save track id
 		track_id[v] = track;
@@ -162,17 +165,20 @@ void CGMidi::LoadMidi(CString path)
 					st.Format("%d", v);
 					tnames += " \n" + st + "=" + track_name[v];
 				}
+				/*
 				if (mev->getMetaType() == 0x04) {
-					track_name2[chan] = "";
+					track_name2[iname_id] = "";
 					for (int x = 0; x < mev->size(); x++) {
-						track_name2[chan] += mev->data()[x];
+						track_name2[iname_id] += mev->data()[x];
 					}
 					// Remove first data items
-					track_name2[chan] = track_name2[chan].Mid(3);
-					st.Format("%d", chan);
-					inames += " \n" + st + "=" + track_name2[chan];
-					if (!v) track_name[0] = track_name2[0];
+					track_name2[iname_id] = track_name2[iname_id].Mid(3);
+					st.Format("%d", iname_id);
+					inames += " \n" + st + "=" + track_name2[iname_id];
+					if (iname_id == 1) track_name[0] = track_name2[1];
+					++iname_id;
 				}
+				*/
 			}
 			if (mev->isNoteOn()) {
 				int pos = round(mev->tick / (float)tpc);
