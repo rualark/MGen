@@ -326,6 +326,11 @@ void CGMidi::LoadMidi(CString path)
 		est->Format("MIDI file instrument names: %s", inames);
 		WriteLog(0, est);
 	}
+	// Convert track instrument ids to voice instrument ids
+	vector<int> instr2 = instr;
+	for (int v = 0; v < v_cnt; ++v) {
+		instr[v] = instr2[track_id[v]];
+	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
