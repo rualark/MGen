@@ -23,11 +23,6 @@ const int diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
 #define INSTR_TRUMPET 11
 #define INSTR_FLUTE 6
 
-// MIDI PORT STATUS
-#define MIDI_NOTEON 0x90
-#define MIDI_NOTEOFF 0x90
-#define MIDI_CC 0xB0
-
 const CString InstName[] = {
 	"Piano", // 0
 	"Violin", // 1

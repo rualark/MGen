@@ -20,6 +20,11 @@
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
+// MIDI PORT STATUS
+#define MIDI_NOTEON 0x90
+#define MIDI_NOTEOFF 0x90
+#define MIDI_CC 0xB0
+
 class CGMidi :
 	public CGAdapt
 {

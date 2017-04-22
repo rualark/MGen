@@ -474,6 +474,7 @@ void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
 	midi_buf_next.clear();
 	midi_sent_msg = 0;
 	midi_sent_msg2 = 0;
+	midi_sent_t2 = 0;
 	// Clear flags
 	for (int i = 0; i < v_cnt; i++) warning_note_short[i] = 0;
 	midi_last_run = 1;
@@ -515,7 +516,7 @@ void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
 	est = new CString;
 	CString st, st2;
 	st2 = "Voice to instrument mapping: ";
-	for (int i = 0; i < MAX_VOICE; i++) {
+	for (int i = 0; i < v_cnt; i++) {
 		st.Format("%d ", instr[i]);
 		st2 += st;
 	}
@@ -549,16 +550,18 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 		}
 		else {
 			midi_buf.push_back(event);
-			// Save maximum message
-			if (real_timestamp > midi_sent_t2) midi_sent_t2 = real_timestamp;
-			midi_sent_msg2 = event.message;
+			// Save maximum message and its time
+			if (real_timestamp > midi_sent_t2) {
+				midi_sent_t2 = real_timestamp;
+				midi_sent_msg2 = event.message;
+			}
 		}
 	}
 	else {
 		CString* est = new CString;
 		est->Format("Blocked AddMidiEvent to past %d step %d, type %02X, data %d/%d (before %d step %d, type %02X, data %d/%d) [start = %d]",
 			timestamp, midi_current_step, mm_type, data1, data2, midi_sent_t - midi_start_time, midi_sent,
-			Pm_MessageStatus(midi_sent_msg), Pm_MessageData1(midi_sent_msg), Pm_MessageData2(midi_sent_msg), midi_start_time, midi_buf_lim - midi_start_time);
+			Pm_MessageStatus(midi_sent_msg), Pm_MessageData1(midi_sent_msg), Pm_MessageData2(midi_sent_msg), midi_start_time); // , midi_buf_lim - midi_start_time
 		WriteLog(1, est);
 	}
 	// Debug log
@@ -610,16 +613,20 @@ void CGMidi::SendMIDI(int step1, int step2)
 	}
 	// Check if buf is full
 	if (midi_sent_t - timestamp_current > MIN_MIDI_BUF_MSEC) {
-		//CString* st = new CString;
-		//st->Format("SendMIDI: no need to send (full buf = %d ms) (steps %d - %d) playback is at %d", 
-		//	midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
-		//WriteLog(4, st);
+		if (debug_level > 1) {
+			CString* st = new CString;
+			st->Format("SendMIDI: no need to send (full buf = %d ms) (steps %d - %d) playback is at %d",
+				midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
+			WriteLog(4, st);
+		}
 		return;
 	}
-	CString* est = new CString;
-	est->Format("SendMIDI: need to send (full buf = %d ms) (steps %d - %d) playback is at %d", 
-		midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
-	WriteLog(4, est);
+	if (debug_level > 1) {
+		CString* est = new CString;
+		est->Format("SendMIDI: need to send (full buf = %d ms) (steps %d - %d) playback is at %d",
+			midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
+		WriteLog(4, est);
+	}
 	int i;
 	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
 		WriteLog(0, new CString("SendMIDI mutex timed out: will try later"));
@@ -774,8 +781,10 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
-	st->Format("Pm_Write %d (%d postponed) events: steps %d/%d - %d/%d [to future %d to %d ms] (in %d ms) playback is at %d ms",
-		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, midi_sent_t - timestamp_current, midi_sent_t2 - timestamp_current,
+	st->Format("Pm_Write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms",
+		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, 
+		midi_sent_t-midi_start_time, midi_sent_t2 - midi_start_time, 
+		midi_sent_t - timestamp_current, midi_sent_t2 - timestamp_current,
 		time_stop - time_start, timestamp_current - midi_start_time);
 	WriteLog(4, st);
 	// Save last sent position
