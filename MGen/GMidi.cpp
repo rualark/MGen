@@ -552,6 +552,9 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 			midi_buf.push_back(event);
 			// Save maximum message and its time
 			if (real_timestamp > midi_sent_t2) {
+				if (timestamp == 19415) {
+					int a = 1;
+				}
 				midi_sent_t2 = real_timestamp;
 				midi_sent_msg2 = event.message;
 			}
@@ -566,7 +569,7 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 	}
 	// Debug log
 	//CString st;
-	//st.Format("%d: At %d type %d, data %d/%d\n", TIME_PROC(TIME_INFO), timestamp, mm_type, data1, data2);
+	//st.Format("%d: At %d type %d, data %d/%d blocked %d\n", TIME_PROC(TIME_INFO), timestamp, mm_type, data1, data2, midi_sent_t-midi_start_time);
 	//AppendLineToFile("midi.log", st);
 }
 
@@ -648,16 +651,37 @@ void CGMidi::SendMIDI(int step1, int step2)
 	if (midi_buf_next.size() > 0) {
 		midi_buf = midi_buf_next;
 		midi_buf_next.clear();
-		WriteLog(4, new CString("Postponed notes sent"));
+		WriteLog(4, new CString("Postponed event sent"));
 	}
-	midi_buf_lim = midi_start_time + stime[step22] * 100 / m_pspeed;
+	// Calculate midi right limit
+	midi_buf_lim = 0;
+	// first step of last full note
+	int last_i = step1; 
+	for (int v = 0; v < v_cnt; v++) {
+		// Move to note start
+		if (coff[step1][v] > 0) {
+			if (midi_first_run) step21 = step1 + noff[step1][v];
+			else step21 = step1 - coff[step1][v];
+		}
+		else step21 = step1;
+		for (i = step21; i < step22; i++) {
+			if (i + len[i][v] > step22) break;
+			if (i > last_i) last_i = i;
+			// Set new buffer limit to beginning of last note
+			if (noff[i][v] == 0) break;
+			i += noff[i][v] - 1;
+		}
+	}
+	// Set midi_buf_lim to first step of last note
+	midi_buf_lim = midi_start_time + stime[last_i] * 100.0 / m_pspeed;
+	// If nothing to send, allow to send anything
+	if (midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[step22] * 100.0 / m_pspeed;
 	for (int v = 0; v < v_cnt; v++) {
 		// Initialize voice
 		PmEvent event;
 		int ei;
 		int ndur;
 		int ncount = 0;
-		int last_i = step1; // first step of last full note
 		int ii = instr[v];
 		midi_channel = instr_channel[ii];
 		midi_voice = v;
@@ -671,13 +695,10 @@ void CGMidi::SendMIDI(int step1, int step2)
 		for (i = step21; i < step22; i++) {
 			ncount++;
 			if (i + len[i][v] > step22) break;
-			//last_i = i;
 			// Set new buffer limit to beginning of last note
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 		}
-		// Set midi_buf_lim only for first voice. Other voices use same midi_buf_lim if first voice exists
-		//if (midi_buf_lim == 0 || midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[last_i] * 100 / m_pspeed;
 		// Send notes
 		i = step21;
 		for (int x = 0; x < ncount; x++) {
