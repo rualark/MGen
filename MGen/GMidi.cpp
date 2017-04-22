@@ -330,6 +330,13 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> instr2 = instr;
 	for (int v = 0; v < v_cnt; ++v) {
 		instr[v] = instr2[track_id[v]];
+		// Map track names to instrument names
+		for (int i = 0; i < MAX_INSTR; i++) {
+			// Exact match
+			if (InstName[i] == track_name[v]) instr[v] = i;
+			// Search inside track name
+			else if (track_name[v].Find(InstName[i], 0) != -1) instr[v] = i;
+		}
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
