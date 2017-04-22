@@ -149,6 +149,7 @@ protected:
 	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) = 0;
 	// Helper functions for child generators
 	void CountOff(int step1, int step2);
+	void FixLen(int step1, int step2);
 	void CountTime(int step1, int step2);
 	void CopyVoice(int v1, int v2, int step1, int step2, int interval);
 	void UpdateNoteMinMax(int step1, int step2);

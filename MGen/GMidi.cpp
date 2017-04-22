@@ -189,49 +189,51 @@ void CGMidi::LoadMidi(CString path)
 					warning_loadmidi_align++;
 				}
 				// Find overlaps and distance
-				for (int x = v1; x <= v2; ++x) {
-					// Overlap happens only in case when real overlap time is greater than half of croche
-					if (note[pos][x]) {
-						voverlap[x] = 1;
-						vdist[x] = 1000;
-						// Check if note too short
-						if (len[pos][x] < 2) {
-							if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
-								CString* st = new CString;
-								st->Format("Note %s too short and gets same step with next note %s at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", GetNoteName(note[pos][x]), GetNoteName(pitch), track, mev->tick, tpc, midifile_in_mul, pos, path);
-								WriteLog(1, st);
-								warning_loadmidi_short++;
+				if (instr_poly[instr[v]] > 1) {
+					for (int x = v1; x <= v2; ++x) {
+						// Overlap happens only in case when real overlap time is greater than half of croche
+						if (note[pos][x]) {
+							voverlap[x] = 1;
+							vdist[x] = 1000;
+							// Check if note too short
+							if (len[pos][x] < 2) {
+								if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
+									CString* st = new CString;
+									st->Format("Note %s too short and gets same step with next note %s at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", GetNoteName(note[pos][x]), GetNoteName(pitch), track, mev->tick, tpc, midifile_in_mul, pos, path);
+									WriteLog(1, st);
+									warning_loadmidi_short++;
+								}
 							}
 						}
+						else {
+							voverlap[x] = 0;
+							vdist[x] = abs(vlast_pitch[x] - pitch);
+						}
 					}
-					else {
-						voverlap[x] = 0;
-						vdist[x] = abs(vlast_pitch[x] - pitch);
+					// Find best voice
+					int min_vdist = 1000;
+					for (int x = v1; x <= v2; ++x) {
+						if (vdist[x] < min_vdist) {
+							min_vdist = vdist[x];
+							v = x;
+						}
 					}
-				}
-			  // Find best voice
-				int min_vdist = 1000;
-				for (int x = v1; x <= v2; ++x) {
-					if (vdist[x] < min_vdist) {
-						min_vdist = vdist[x];
-						v = x;
+					// If no voice without overlaps, create new
+					if (min_vdist == 1000) {
+						v2++;
+						v = v2;
+						// Copy instrument
+						instr[v] = instr[v1];
+						if (v >= MAX_VOICE) {
+							CString* st = new CString;
+							st->Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
+							WriteLog(1, st);
+							break;
+						}
+						track_id[v] = track;
+						track_vid[v] = v - v1;
+						track_name[v] = track_name[v1];
 					}
-				}
-				// If no voice without overlaps, create new
-				if (min_vdist == 1000) {
-					v2++;
-					v = v2;
-					// Copy instrument
-					instr[v] = instr[v1];
-					if (v >= MAX_VOICE) {
-						CString* st = new CString;
-						st->Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
-						WriteLog(1, st);
-						break;
-					}
-					track_id[v] = track;
-					track_vid[v] = v - v1;
-					track_name[v] = track_name[v1];
 				}
 				// Resize vectors for new voice number
 				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
@@ -303,6 +305,7 @@ void CGMidi::LoadMidi(CString path)
 		}
 	}
 	// Set additional variables
+	FixLen(0, last_step);
 	CountOff(0, last_step);
 	CountTime(0, last_step);
 	//UpdateNoteMinMax(0, last_step);

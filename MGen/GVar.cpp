@@ -881,6 +881,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 	WriteLog(0, est);
 }
 
+// Calculate noff, poff
 void CGVar::CountOff(int step1, int step2)
 {
 	for (int i = step1; i <= step2; i++) {
@@ -888,6 +889,35 @@ void CGVar::CountOff(int step1, int step2)
 			noff[i][v] = len[i][v] - coff[i][v];
 			if (i - coff[i][v] - 1 >= 0) poff[i][v] = len[i - coff[i][v] - 1][v] + coff[i][v];
 			else poff[i][v] = 0;
+		}
+	}
+}
+
+// Find notes that have wrong len and cut them
+void CGVar::FixLen(int step1, int step2)
+{
+	int real_len;
+	for (int v = 0; v < v_cnt; v++) {
+		// Calculate real length
+		real_len = 1;
+		for (int i = step1; i <= step2; i++) {
+			// If this is not note start, increase real_length
+			if (coff[i][v]) {
+				++real_len;
+			}
+			// If this is note start, recalculate length of previous note
+			else {
+				// Has to be not first note
+				if (i > 0) {
+					// Does len differ?
+					if (real_len != len[i][v]) {
+						for (int x = i - real_len; x < i; ++x) {
+							if (x >= 0) len[x][v] = real_len;
+						}
+					}
+					real_len = 1;
+				}
+			}
 		}
 	}
 }

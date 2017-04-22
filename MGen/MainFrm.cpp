@@ -81,6 +81,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_SETTINGS_EDIT, &CMainFrame::OnButtonSettingsEdit)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_ECSV, &CMainFrame::OnUpdateButtonEcsv)
 	ON_COMMAND(ID_BUTTON_ECSV, &CMainFrame::OnButtonEcsv)
+	ON_COMMAND(ID_BUTTON_OPENCSV, &CMainFrame::OnButtonOpencsv)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_OPENCSV, &CMainFrame::OnUpdateButtonOpencsv)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -815,7 +817,7 @@ void CMainFrame::SaveSettings()
 		st.Format("MIDI_OUT = %s, %s # Name of MIDI device used for playing notes\n", info->name, info->interf);
 		fs << st;
 	}
-	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 80 to 500\n", zoom_x);
+	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 1 to 500\n", zoom_x);
 	fs << st;
 	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
 	fs << st;
@@ -1140,16 +1142,25 @@ void CMainFrame::OnButtonSettingsEdit()
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "settings.pl", NULL, NULL, SW_SHOWNORMAL);
 }
 
-
 void CMainFrame::OnUpdateButtonEcsv(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_state_gen == 2);
 }
-
 
 void CMainFrame::OnButtonEcsv()
 {
 	if (m_state_gen == 2 && pGen && m_fname != "") {
 		pGen->ExportVectorsCSV(m_dir, m_fname);
 	}
+}
+
+void CMainFrame::OnButtonOpencsv()
+{
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir + "\\" + m_fname + ".csv", NULL, NULL, SW_SHOWNORMAL);
+}
+
+
+void CMainFrame::OnUpdateButtonOpencsv(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(m_state_gen == 2 && CGLib::fileExists(m_dir + "\\" + m_fname + ".csv"));
 }
