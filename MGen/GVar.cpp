@@ -44,11 +44,11 @@ CGVar::CGVar()
 	rand_start_max.resize(MAX_INSTR);
 	rand_end_max.resize(MAX_INSTR);
 	max_ahead_note.resize(MAX_INSTR);
+	bell_start_mul.resize(MAX_INSTR);
+	bell_end_mul.resize(MAX_INSTR);
+	bell_start_len.resize(MAX_INSTR);
+	bell_end_len.resize(MAX_INSTR);
 	show_transpose.resize(MAX_VOICE);
-	bell_start_mul.resize(MAX_VOICE);
-	bell_end_mul.resize(MAX_VOICE);
-	bell_start_len.resize(MAX_VOICE);
-	bell_end_len.resize(MAX_VOICE);
 	track_name.resize(MAX_VOICE);
 	track_id.resize(MAX_VOICE);
 	track_vid.resize(MAX_VOICE);

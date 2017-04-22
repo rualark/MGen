@@ -655,6 +655,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 	}
 	// Calculate midi right limit
 	midi_buf_lim = 0;
+	/*
 	// first step of last full note
 	int last_i = step1; 
 	for (int v = 0; v < v_cnt; v++) {
@@ -674,8 +675,11 @@ void CGMidi::SendMIDI(int step1, int step2)
 	}
 	// Set midi_buf_lim to first step of last note
 	midi_buf_lim = midi_start_time + stime[last_i] * 100.0 / m_pspeed;
+	*/
 	// If nothing to send, allow to send anything
-	if (midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[step22] * 100.0 / m_pspeed;
+	if (midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[step22-2] * 100.0 / m_pspeed;
+	// Move midi_buf_lim back
+	//midi_buf_lim = midi_sent_t + (midi_buf_lim - midi_sent_t) * 0.75;
 	for (int v = 0; v < v_cnt; v++) {
 		// Initialize voice
 		PmEvent event;
@@ -707,17 +711,19 @@ void CGMidi::SendMIDI(int step1, int step2)
 			if (!pause[i][v]) {
 				// Note ON if it is not blocked and was not yet sent
 				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
-				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
+				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) {
+					AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
+					// Send slur
+					if (artic[i][v] == ARTIC_SLUR) {
+						AddTransitionKs(i, stimestamp, slur_ks[ii]);
+					}
+				}
 				// Note OFF if it is in window
 				if (ei <= step22) {
 					// Note OFF
 					// ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 					etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
 					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
-				}
-				// Send slur
-				if (artic[i][v] == ARTIC_SLUR) {
-					AddTransitionKs(i, stimestamp, slur_ks[ii]);
 				}
 				// Send retrigger
 				if ((instr[v] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_RETRIGGER)) {
