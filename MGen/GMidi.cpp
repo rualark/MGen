@@ -95,7 +95,8 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> voverlap(MAX_VOICE);
 	vector<int> vdist(MAX_VOICE);
 	CString st, tnames = "", inames = "";
-	//vector <CString> track_name2(MAX_VOICE);
+	// Convert track instrument ids to voice instrument ids
+	vector<int> instr2 = instr;
 
 	midifile_loaded = 1;
 	float lastNoteFinished = 0.0;
@@ -139,16 +140,12 @@ void CGMidi::LoadMidi(CString path)
 			}
 			// Resize vectors for new voice number
 			if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
-			// Load name if we have MIDI type 0
-			/*
-			if (!midifile_type) {
-				track_name[v] = track_name2[track];
-			}
-			*/
 		}
 		// Save track id
 		track_id[v] = track;
 		track_vid[v] = 0;
+		// Convert voice instrument to track instrument
+		instr[v] = instr2[track_id[v]];
 		for (int i = 0; i<midifile[track].size(); i++) {
 			if (need_exit) break;
 			MidiEvent* mev = &midifile[track][i];
@@ -164,21 +161,14 @@ void CGMidi::LoadMidi(CString path)
 					track_name[v] = track_name[v].Mid(3);
 					st.Format("%d", v);
 					tnames += " \n" + st + "=" + track_name[v];
-				}
-				/*
-				if (mev->getMetaType() == 0x04) {
-					track_name2[iname_id] = "";
-					for (int x = 0; x < mev->size(); x++) {
-						track_name2[iname_id] += mev->data()[x];
+					// Map track name to instrument name
+					for (int i = 0; i < MAX_INSTR; i++) {
+						// Exact match
+						//if (InstName[i] == track_name[v]) instr[v] = i;
+						// Search inside track name
+						//else if (track_name[v].Find(InstName[i], 0) != -1) instr[v] = i;
 					}
-					// Remove first data items
-					track_name2[iname_id] = track_name2[iname_id].Mid(3);
-					st.Format("%d", iname_id);
-					inames += " \n" + st + "=" + track_name2[iname_id];
-					if (iname_id == 1) track_name[0] = track_name2[1];
-					++iname_id;
 				}
-				*/
 			}
 			if (mev->isNoteOn()) {
 				int pos = round(mev->tick / (float)tpc);
@@ -231,6 +221,8 @@ void CGMidi::LoadMidi(CString path)
 				if (min_vdist == 1000) {
 					v2++;
 					v = v2;
+					// Copy instrument
+					instr[v] = instr[v1];
 					if (v >= MAX_VOICE) {
 						CString* st = new CString;
 						st->Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
@@ -325,18 +317,6 @@ void CGMidi::LoadMidi(CString path)
 		CString* est = new CString;
 		est->Format("MIDI file instrument names: %s", inames);
 		WriteLog(0, est);
-	}
-	// Convert track instrument ids to voice instrument ids
-	vector<int> instr2 = instr;
-	for (int v = 0; v < v_cnt; ++v) {
-		instr[v] = instr2[track_id[v]];
-		// Map track names to instrument names
-		for (int i = 0; i < MAX_INSTR; i++) {
-			// Exact match
-			if (InstName[i] == track_name[v]) instr[v] = i;
-			// Search inside track name
-			else if (track_name[v].Find(InstName[i], 0) != -1) instr[v] = i;
-		}
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
