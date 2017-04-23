@@ -9,6 +9,10 @@
 #define MAX_WARN_MIDI_LONG 5
 // Maximum delta from midi file position in ms without warning
 #define MAX_ALLOW_DELTA 30
+// Maximum delay (ms) between transition and keyswitch
+#define MAX_TRANS_DELAY 10
+// Maximum time (ms) allowed to move note and linked events (ks/cc) left
+#define MAX_AHEAD 100
 
 // PortMIDI
 #define OUTPUT_BUF_SIZE 10000

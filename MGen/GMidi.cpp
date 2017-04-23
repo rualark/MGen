@@ -573,8 +573,10 @@ void CGMidi::AddTransitionKs(int i, int stimestamp, int ks)
 	int v = midi_voice;
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
-	AddKsOn(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10, ks, 10);
-	AddKsOff(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10, ks, 0);
+	AddKsOn(stimestamp - min(MAX_TRANS_DELAY, 
+		((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10), ks, 10);
+	AddKsOff(stimestamp + min(MAX_TRANS_DELAY, 
+		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), ks, 0);
 }
 
 void CGMidi::AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2)
@@ -582,8 +584,10 @@ void CGMidi::AddTransitionCC(int i, int stimestamp, int CC, int value1, int valu
 	int v = midi_voice;
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
-	AddCC(stimestamp - ((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10, CC, value1);
-	AddCC(stimestamp + ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10, CC, value2);
+	AddCC(stimestamp - min(MAX_TRANS_DELAY, 
+		((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10), CC, value1);
+	AddCC(stimestamp + min(MAX_TRANS_DELAY, 
+		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), CC, value2);
 }
 
 void CGMidi::SendMIDI(int step1, int step2)
