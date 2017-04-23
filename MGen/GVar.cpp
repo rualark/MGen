@@ -215,6 +215,7 @@ void CGVar::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms);
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt);
+			LoadVar(&st2, &st3, "instr_layout", &instr_layout);
 			LoadVarInstr(&st2, &st3, "instruments", instr);
 			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose);
 			// Load algorithm-specific variables

@@ -85,6 +85,7 @@ public:
 	vector<int> track_vid; // Voice id inside track from midi file for each voice
 
 	// Instruments
+	CString instr_layout; // Name of instruments/*.txt file to load instrument layout from
 	vector<int> instr; // Instruments for each voice
 	vector<int> instr_channel;
 	vector<int> instr_type;
