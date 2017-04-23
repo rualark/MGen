@@ -590,6 +590,18 @@ void CGMidi::AddTransitionCC(int i, int stimestamp, int CC, int value1, int valu
 		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), CC, value2);
 }
 
+// Check that dstime is not too low
+void CGMidi::CheckDstime(int i, int v)
+{
+	if (dstime[i][v] - MAX_TRANS_DELAY < -MAX_AHEAD && warning_ahead > MAX_WARN_MIDI_AHEAD) {
+		CString* st = new CString;
+		st->Format("Warning: step %d, voice %d has dstime %.0f, while MAX_AHEAD=%d, MAX_TRANS_DELAY=%d. Risk of event blocking (can be not seen in logs)! Probably too long legato_ahead or random_start. Or you have to increase MAX_AHEAD.",
+			i, v, dstime[i][v], MAX_AHEAD, MAX_TRANS_DELAY);
+		WriteLog(1, st);
+		++warning_ahead;
+	}
+}
+
 void CGMidi::SendMIDI(int step1, int step2)
 {
 	if (step2 == step1) return;
@@ -710,6 +722,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 			if (!pause[i][v]) {
 				// Note ON if it is not blocked and was not yet sent
 				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
+				CheckDstime(i, v);
 				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) {
 					AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
 					// Send slur

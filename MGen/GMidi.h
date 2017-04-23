@@ -7,12 +7,13 @@
 #define MAX_WARN_MIDI_ALIGN 5
 #define MAX_WARN_MIDI_SHORT 5
 #define MAX_WARN_MIDI_LONG 5
+#define MAX_WARN_MIDI_AHEAD 5
 // Maximum delta from midi file position in ms without warning
 #define MAX_ALLOW_DELTA 30
 // Maximum delay (ms) between transition and keyswitch
 #define MAX_TRANS_DELAY 10
 // Maximum time (ms) allowed to move note and linked events (ks/cc) left
-#define MAX_AHEAD 100
+#define MAX_AHEAD 200
 
 // PortMIDI
 #define OUTPUT_BUF_SIZE 10000
@@ -45,6 +46,7 @@ public:
 
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency, int from);
+	void CheckDstime(int i, int v);
 	void SendMIDI(int step1, int step2);
 	void StopMIDI();
 	int GetPlayStep();
@@ -72,6 +74,7 @@ protected:
 	int warning_loadmidi_align = 0;
 	int warning_loadmidi_short = 0;
 	int warning_loadmidi_long = 0;
+	int warning_ahead = 0;
 
 	// PortMIDI internal
 	void AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2);
