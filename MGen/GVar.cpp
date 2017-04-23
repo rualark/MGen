@@ -266,6 +266,12 @@ void CGVar::LoadInstrumentLayout()
 		st.Trim();
 		pos = 0;
 		if (st.Find("|") != -1) {
+			if (InstCName.size() >= MAX_INSTR) {
+				CString* est = new CString;
+				est->Format("LoadInstrumentLayout found more instruments than MAX_INSTR (%d) in file: %s. Increase MAX_INSTR if needed", MAX_INSTR, fname);
+				WriteLog(1, est);
+				break;
+			}
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			//if (find(begin(InstGName), end(InstGName), st2) != InstGName.end()) {
