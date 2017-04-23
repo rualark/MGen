@@ -216,6 +216,7 @@ void CGVar::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt);
 			LoadVar(&st2, &st3, "instr_layout", &instr_layout);
+			LoadVar(&st2, &st3, "instruments", &m_config_insts);
 			LoadVarInstr(&st2, &st3, "instruments", instr);
 			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose);
 			// Load algorithm-specific variables
@@ -226,6 +227,61 @@ void CGVar::LoadConfig(CString fname)
 	CString* est = new CString;
 	est->Format("LoadConfig loaded %d lines from %s", i, fname);
 	WriteLog(0, est);
+	// Load instruments layout
+	if (instr_layout == "") instr_layout = "Default";
+	LoadInstrumentLayout();
+}
+
+void CGVar::LoadInstrumentLayout()
+{
+	CString fname = "instruments\\" + instr_layout + ".txt";
+	// Check file exists
+	if (!fileExists(fname)) {
+		CString* est = new CString;
+		est->Format("LoadInstrumentLayout cannot find file: %s", fname);
+		WriteLog(1, est);
+		return;
+	}
+	ifstream fs;
+	fs.open(fname);
+	CString st, st2, st3, st4, st5;
+	char pch[2550];
+	int pos = 0;
+	// Clear instrument group names
+	InstGName.clear();
+	// Clear instrument config names
+	InstCName.clear();
+	int ii = 0;
+	while (fs.good()) {
+		pos = 0;
+		fs.getline(pch, 2550);
+		st = pch;
+		// Remove unneeded
+		pos = st.Find("#");
+		// Check if it is first symbol
+		if (pos == 0)	st = st.Left(pos);
+		pos = st.Find(" #");
+		// Check if it is after space
+		if (pos > -1)	st = st.Left(pos);
+		st.Trim();
+		pos = 0;
+		if (st.Find("|") != -1) {
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			//if (find(begin(InstGName), end(InstGName), st2) != InstGName.end()) {
+			InstGName.push_back(st2);
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			InstCName.push_back(st2);
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			instr_channel[InstCName.size() - 1] = atoi(st2);
+		}
+	}
+	fs.close();
+	if (InstCName.size() == 0) {
+		WriteLog(1, "Error loading instrument layout from " + fname);
+	}
 }
 
 void CGVar::LoadInstruments()

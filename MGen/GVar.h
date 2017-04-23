@@ -16,6 +16,7 @@ public:
 	void InitVectors();
 	void LoadInstruments(); // Load instruments config
 	void LoadConfig(CString fname);
+	void LoadInstrumentLayout();
 	void SaveResults(CString dir, CString fname);
 	void ExportVectorsCSV(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
@@ -85,7 +86,10 @@ public:
 	vector<int> track_vid; // Voice id inside track from midi file for each voice
 
 	// Instruments
+	vector<CString> InstGName; // Instrument groups 
+	vector<CString> InstCName; // Instrument configs
 	CString instr_layout; // Name of instruments/*.txt file to load instrument layout from
+	CString m_config_insts; // String with instrument mapping from config
 	vector<int> instr; // Instruments for each voice
 	vector<int> instr_channel;
 	vector<int> instr_type;
