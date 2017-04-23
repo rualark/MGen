@@ -1,7 +1,11 @@
-ID   | Folder | MFI | Name                                | Group          | Instruments                   | Comment
+#ID  | Folder | MFI | Name                                | Group          | Instruments                   | Comment
 101  | GenCF1 | 0   | Cantus firmus Major full scan       | Counterpoint   | Violin                        | Major scale cantus firmus generator. Uses full scan to evaluate all possible note combinations.
 102  | GenCF2 | 0   | Cantus firmus 2                     | Counterpoint   | Piano                         | Second cantus firmus generator
 111  | GenCA1 | 1   | Cantus firmus Major Analysis        | Counterpoint   | Violin,Piano                  | Major scale cantus firmus analysis. Load midi file and analyze.
 121  | GenCP1 | 0   | Counterpoint 2 voices, species 1    | Counterpoint   | Violin                        | Counterpoint 2 voices, species 1
 1001 | GenRS1 | 0   | Random solo                         | Random         | Violin                        | This is the most simple solo random generator algorithm
 2001 | GenMP1 | 1   | MIDI file viewer/player             | Viewer         | Piano,Piano,Piano,Piano,Piano | Open and play MIDI file
+
+# This file contains all supported music generator algorithms
+# If you create new algorithm, you have to add it to this file
+# MFI is MIDI File Import support. If it is 1 than your algorithm must support Midi_file parameter in config

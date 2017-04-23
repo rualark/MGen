@@ -653,7 +653,7 @@ void CMainFrame::LoadAlgo()
 	char pch[2550];
 	int pos = 0;
 	// Load header
-	fs.getline(pch, 2550);
+	//fs.getline(pch, 2550);
 	ParamName.clear();
 	for (int i = 0; i < MAX_ALGO; i++) ParamCount[i] = 0;
 	AlgCount = 0;
@@ -663,7 +663,15 @@ void CMainFrame::LoadAlgo()
 		pos = 0;
 		fs.getline(pch, 2550);
 		st = pch;
+		// Remove unneeded
+		pos = st.Find("#");
+		// Check if it is first symbol
+		if (pos == 0)	st = st.Left(pos);
+		pos = st.Find(" #");
+		// Check if it is after space
+		if (pos > -1)	st = st.Left(pos);
 		st.Trim();
+		pos = 0;
 		if (st.Find("|") != -1) {
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
