@@ -470,6 +470,7 @@ void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
 	midi_sent_msg = 0;
 	midi_sent_msg2 = 0;
 	midi_sent_t2 = 0;
+	midi_sent_t3 = 0;
 	// Clear flags
 	for (int i = 0; i < v_cnt; i++) warning_note_short[i] = 0;
 	midi_last_run = 1;
@@ -535,6 +536,11 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 		// If it is not the last SendMIDI, postpone future events
 		if ((!midi_last_run) && (real_timestamp > midi_buf_lim)) {
 			midi_buf_next.push_back(event);
+			// Save maximum message and its time
+			if (real_timestamp > midi_sent_t3) {
+				midi_sent_t3 = real_timestamp;
+				midi_sent_msg3 = event.message;
+			}
 			if (debug_level > 1) {
 				CString* est = new CString;
 				est->Format("Postponed AddMidiEvent to %d step %d, type %02X, data %d/%d (after %d step %d, type %02X, data %d/%d) [start = %d, lim = %d]",
@@ -547,9 +553,6 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 			midi_buf.push_back(event);
 			// Save maximum message and its time
 			if (real_timestamp > midi_sent_t2) {
-				if (timestamp == 19415) {
-					int a = 1;
-				}
 				midi_sent_t2 = real_timestamp;
 				midi_sent_msg2 = event.message;
 			}
@@ -660,12 +663,17 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Send previous buffer if exists
 	midi_buf.clear();
 	if (midi_buf_next.size() > 0) {
-		midi_buf = midi_buf_next;
+		vector <PmEvent> mbn = midi_buf_next; 
 		midi_buf_next.clear();
-		WriteLog(4, new CString("Postponed event sent"));
+		//midi_buf = midi_buf_next;
+		for (int i = 0; i < mbn.size(); ++i) {
+			AddMidiEvent(mbn[i].timestamp - midi_start_time, Pm_MessageStatus(mbn[i].message),
+				Pm_MessageData1(mbn[i].message), Pm_MessageData2(mbn[i].message));
+		}
+		if (debug_level > 1) WriteLog(4, new CString("Postponed events sent"));
 	}
 	// Calculate midi right limit
-	if (midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[step22] * 100.0 / m_pspeed;
+	midi_buf_lim = midi_start_time + stime[step22] * 100.0 / m_pspeed;
 	// Decrease right limit to allow for legato ahead, random start and ks/cc transitions
 	if (midi_last_run) midi_buf_lim -= MAX_AHEAD;
 	// Move midi_buf_lim back
@@ -799,11 +807,12 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
-	st->Format("Pm_Write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms",
+	st->Format("Pm_Write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms. Limit %d. Last postponed %d. Step22 stopped increasing at %.0f ms. Start time: %d, current time: %d",
 		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, 
 		midi_sent_t-midi_start_time, midi_sent_t2 - midi_start_time, 
 		midi_sent_t - timestamp_current, midi_sent_t2 - timestamp_current,
-		time_stop - time_start, timestamp_current - midi_start_time);
+		time_stop - time_start, timestamp_current - midi_start_time, midi_buf_lim - midi_start_time, 
+		midi_sent_t3 - midi_start_time,	time, midi_start_time, timestamp_current);
 	WriteLog(4, st);
 	// Save last sent position
 	midi_sent = step22;
