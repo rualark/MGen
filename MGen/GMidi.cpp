@@ -665,30 +665,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 		WriteLog(4, new CString("Postponed event sent"));
 	}
 	// Calculate midi right limit
-	midi_buf_lim = 0;
-	/*
-	// first step of last full note
-	int last_i = step1; 
-	for (int v = 0; v < v_cnt; v++) {
-		// Move to note start
-		if (coff[step1][v] > 0) {
-			if (midi_first_run) step21 = step1 + noff[step1][v];
-			else step21 = step1 - coff[step1][v];
-		}
-		else step21 = step1;
-		for (i = step21; i < step22; i++) {
-			if (i + len[i][v] > step22) break;
-			if (i > last_i) last_i = i;
-			// Set new buffer limit to beginning of last note
-			if (noff[i][v] == 0) break;
-			i += noff[i][v] - 1;
-		}
-	}
-	// Set midi_buf_lim to first step of last note
-	midi_buf_lim = midi_start_time + stime[last_i] * 100.0 / m_pspeed;
-	*/
-	// If nothing to send, allow to send anything
-	if (midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[step22-2] * 100.0 / m_pspeed;
+	if (midi_buf_lim <= midi_sent_t) midi_buf_lim = midi_start_time + stime[step22] * 100.0 / m_pspeed;
+	// Decrease right limit to allow for legato ahead, random start and ks/cc transitions
+	if (midi_last_run) midi_buf_lim -= MAX_AHEAD;
 	// Move midi_buf_lim back
 	//midi_buf_lim = midi_sent_t + (midi_buf_lim - midi_sent_t) * 0.75;
 	for (int v = 0; v < v_cnt; v++) {
