@@ -420,7 +420,7 @@ BEGIN
     POPUP "Popup"
     BEGIN
         MENUITEM "Show full text",              ID_POPUP_SHOW
-        MENUITEM "Save this &line to mgen.log", ID_EDIT_SAVELINE
+        MENUITEM "Show all &lines",             ID_EDIT_SAVELINE
         MENUITEM SEPARATOR
         MENUITEM "Clear all",                   ID_CLEARALL
     END

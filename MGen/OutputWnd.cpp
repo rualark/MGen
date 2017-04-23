@@ -192,7 +192,9 @@ void COutputList::OnPopupShow()
 {
 	CString st;
 	GetText(GetCurSel(), st);
-	MessageBox(st);
+	CMsgDlg dlg;
+	dlg.m_text = st;
+	dlg.DoModal();
 }
 
 
@@ -204,20 +206,20 @@ void COutputList::OnUpdateEditSaveline(CCmdUI *pCmdUI)
 
 void COutputList::OnEditSaveline()
 {
-	CString st;
-	GetText(GetCurSel(), st);
-	CGLib::AppendLineToFile("mgen.log", st + "\n");
+	CString st, st2;
+	for (int i = 0; i < GetCount(); ++i) {
+		GetText(i, st);
+		st2 += st + "\n";
+	}
+	CMsgDlg dlg;
+	dlg.m_text = st2;
+	dlg.DoModal();
 }
 
 
 void COutputList::OnLbnDblclk()
 {
-	CString st;
-	GetText(GetCurSel(), st);
-	//MessageBox(st);
-	CMsgDlg dlg;
-	dlg.m_text = st;
-	dlg.DoModal();
+	OnPopupShow();
 }
 
 
