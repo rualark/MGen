@@ -1,6 +1,5 @@
 # Main
 Library = Native Instruments Gentleman # For which library algorithm is optimized
-Channel = 0 # MIDI channel
 Type = 0 # Instrument type
 
 # Instrument parameters

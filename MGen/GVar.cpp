@@ -230,6 +230,12 @@ void CGVar::LoadConfig(CString fname)
 	// Load instruments layout
 	if (instr_layout == "") instr_layout = "Default";
 	LoadInstrumentLayout();
+	// Load instruments
+	LoadInstruments();
+	// After loading global mapping of voices to instruments, load algorithm-specific mapping
+	st2 = "instruments";
+	LoadVarInstr(&st2, &m_algo_insts, "instruments", instr);
+	LoadVarInstr(&st2, &m_config_insts, "instruments", instr);
 }
 
 void CGVar::LoadInstrumentLayout()
@@ -282,6 +288,8 @@ void CGVar::LoadInstrumentLayout()
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			instr_channel[InstCName.size() - 1] = atoi(st2);
+			// Set default mapping
+			instr[InstCName.size() - 1] = InstCName.size() - 1;
 		}
 	}
 	fs.close();
@@ -292,47 +300,44 @@ void CGVar::LoadInstrumentLayout()
 
 void CGVar::LoadInstruments()
 {
-	// Load strings
-	ifstream fs;
-	if (!fileExists("instruments.pl")) {
-		CString* est = new CString;
-		est->Format("Cannot find file instruments.pl");
-		WriteLog(1, est);
+	CString st, st2, st3;
+	if (InstCName.size() == 0) {
+		WriteLog(1, "No instruments loaded: layout empty");
 		return;
 	}
-	fs.open("instruments.pl");
-	CString st, st2, st3;
-	char pch[2550];
-	int pos = 0;
-	int i = -1, x = 0;
-	while (fs.good()) {
-		x++;
-		fs.getline(pch, 2550);
-		st = pch;
-		// Remove comments
-		pos = st.Find("#");
-		// Check if it is first symbol
-		if (pos == 0)	st = st.Left(pos);
-		pos = st.Find(" #");
-		// Check if it is after space
-		if (pos > -1)	st = st.Left(pos);
-		st.Trim();
-		// Find equals
-		pos = st.Find("=");
-		if (pos != -1) {
-			st2 = st.Left(pos);
-			st3 = st.Mid(pos + 1);
-			st2.Trim();
-			st3.Trim();
-			st2.MakeLower();
-			int idata = atoi(st3);
-			if (st2 == "instrument") {
-				for (int x = 0; x<MAX_INSTR; x++) {
-					if (InstName[x] == st3) i = x;
-				}
-			}
-			LoadVarInstr(&st2, &st3, "instruments", instr);
-			if (i > -1) {
+	for (int i = 0; i < InstCName.size(); ++i) {
+		CString fname = "instruments\\" + InstGName[i] + "\\" + InstCName[i] + ".pl";
+		// Load strings
+		ifstream fs;
+		if (!fileExists(fname)) {
+			WriteLog(1, "Cannot find instrument config file " + fname);
+			continue;
+		}
+		fs.open(fname);
+		char pch[2550];
+		int pos = 0;
+		int x = 0;
+		while (fs.good()) {
+			x++;
+			fs.getline(pch, 2550);
+			st = pch;
+			// Remove comments
+			pos = st.Find("#");
+			// Check if it is first symbol
+			if (pos == 0)	st = st.Left(pos);
+			pos = st.Find(" #");
+			// Check if it is after space
+			if (pos > -1)	st = st.Left(pos);
+			st.Trim();
+			// Find equals
+			pos = st.Find("=");
+			if (pos != -1) {
+				st2 = st.Left(pos);
+				st3 = st.Mid(pos + 1);
+				st2.Trim();
+				st3.Trim();
+				st2.MakeLower();
+				int idata = atoi(st3);
 				LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
 				LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
 				CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
@@ -377,15 +382,13 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "bell_start_len", &bell_start_len[i]);
 				//CGVar::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
-		}
+		} // while (fs.good())
+		fs.close();
+		// Log
+		CString* est = new CString;
+		est->Format("LoadInstruments loaded %d lines from " + fname, x);
+		WriteLog(0, est);
 	}
-	st2 = "instruments";
-	// After loading global mapping of voices to instruments, load algorithm-specific mapping
-	LoadVarInstr(&st2, &m_algo_insts, "instruments", instr);
-	fs.close();
-	CString* est = new CString;
-	est->Format("LoadInstruments loaded %d lines from instruments.pl", x);
-	WriteLog(0, est);
 }
 
 void CGVar::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {

@@ -1,6 +1,5 @@
 # Main
 Instrument = Violin
-Channel = 1 # MIDI channel
 Type = 1 # Instrument type
 
 # Instrument parameters
