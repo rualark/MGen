@@ -182,4 +182,6 @@ public:
 	afx_msg void OnButtonEcsv();
 	afx_msg void OnButtonOpencsv();
 	afx_msg void OnUpdateButtonOpencsv(CCmdUI *pCmdUI);
+	afx_msg void OnButtonReloadSettings();
+	afx_msg void OnUpdateButtonReloadSettings(CCmdUI *pCmdUI);
 };

@@ -9,6 +9,8 @@ t_min = 160 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 1 # Maximum number of simultaneous voices
 leap_t_min = 1 # Shortest note after leap
+
+# Automation parameters
 library = Friedlander Violin 1.5 # For which library algorithm is optimized
 CC_dynamics = 11
 CC_dyn_ma = 1 # If we should use moving average to smooth CC dynamics curve before sending

@@ -83,6 +83,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_ECSV, &CMainFrame::OnButtonEcsv)
 	ON_COMMAND(ID_BUTTON_OPENCSV, &CMainFrame::OnButtonOpencsv)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_OPENCSV, &CMainFrame::OnUpdateButtonOpencsv)
+	ON_COMMAND(ID_BUTTON_RELOAD_SETTINGS, &CMainFrame::OnButtonReloadSettings)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_RELOAD_SETTINGS, &CMainFrame::OnUpdateButtonReloadSettings)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1171,4 +1173,16 @@ void CMainFrame::OnButtonOpencsv()
 void CMainFrame::OnUpdateButtonOpencsv(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_state_gen == 2 && CGLib::fileExists(m_dir + "\\" + m_fname + ".csv"));
+}
+
+
+void CMainFrame::OnButtonReloadSettings()
+{
+	LoadSettings();
+}
+
+
+void CMainFrame::OnUpdateButtonReloadSettings(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable();
 }

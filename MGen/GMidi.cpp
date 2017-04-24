@@ -184,7 +184,8 @@ void CGMidi::LoadMidi(CString path)
 				// Check alignment
 				if (abs(delta) > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
 					CString* st = new CString;
-					st->Format("Note moved %d ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d) in file %s. Increasing midifile_in_mul will improve approximation.", delta, track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
+					st->Format("Note moved %d ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d ticks) in file %s. Increasing midifile_in_mul will improve approximation.", 
+						delta, track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
 					WriteLog(1, st);
 					warning_loadmidi_align++;
 				}
@@ -662,22 +663,28 @@ void CGMidi::SendMIDI(int step1, int step2)
 	if (step22 < step2) midi_last_run = 0;
 	// Send previous buffer if exists
 	midi_buf.clear();
+	// Calculate midi right limit
+	midi_buf_lim = midi_start_time + stime[step22] * 100.0 / m_pspeed;
+	// Decrease right limit to allow for legato ahead, random start and ks/cc transitions
+	if (!midi_last_run) midi_buf_lim -= MAX_AHEAD;
+	// Sort by timestamp before sending
+	qsort(midi_buf_next.data(), midi_buf_next.size(), sizeof(PmEvent), PmEvent_comparator);
 	if (midi_buf_next.size() > 0) {
 		vector <PmEvent> mbn = midi_buf_next; 
 		midi_buf_next.clear();
 		//midi_buf = midi_buf_next;
 		for (int i = 0; i < mbn.size(); ++i) {
+
 			AddMidiEvent(mbn[i].timestamp - midi_start_time, Pm_MessageStatus(mbn[i].message),
 				Pm_MessageData1(mbn[i].message), Pm_MessageData2(mbn[i].message));
 		}
-		if (debug_level > 1) WriteLog(4, new CString("Postponed events sent"));
+		if (debug_level > 1) {
+			CString* est = new CString;
+			est->Format("Postponed events sent (%d) - now postponed %d",
+				mbn.size(), midi_buf_next.size());
+			WriteLog(4, est);
+		}
 	}
-	// Calculate midi right limit
-	midi_buf_lim = midi_start_time + stime[step22] * 100.0 / m_pspeed;
-	// Decrease right limit to allow for legato ahead, random start and ks/cc transitions
-	if (midi_last_run) midi_buf_lim -= MAX_AHEAD;
-	// Move midi_buf_lim back
-	//midi_buf_lim = midi_sent_t + (midi_buf_lim - midi_sent_t) * 0.75;
 	for (int v = 0; v < v_cnt; v++) {
 		// Initialize voice
 		PmEvent event;
