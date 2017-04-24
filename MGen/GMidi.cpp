@@ -672,9 +672,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 	if (midi_buf_next.size() > 0) {
 		vector <PmEvent> mbn = midi_buf_next; 
 		midi_buf_next.clear();
-		//midi_buf = midi_buf_next;
+		// Set step to zero, because we do not know real steps of postponed notes
+		midi_current_step = 0;
 		for (int i = 0; i < mbn.size(); ++i) {
-
 			AddMidiEvent(mbn[i].timestamp - midi_start_time, Pm_MessageStatus(mbn[i].message),
 				Pm_MessageData1(mbn[i].message), Pm_MessageData2(mbn[i].message));
 		}
