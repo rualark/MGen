@@ -23,6 +23,7 @@ const int diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
 #define INSTR_TRUMPET 11
 #define INSTR_FLUTE 6
 
+/*
 const CString InstName[] = {
 	"Piano", // 0
 	"Violin", // 1
@@ -41,6 +42,7 @@ const CString InstName[] = {
 	"Harp", // 14
 	"Percussion" // 15
 };
+*/
 
 const CString NoteName[] = {
 	"C", // 0
@@ -81,7 +83,6 @@ public:
 	static void LoadRange(CString * sName, CString * sValue, char * sSearch, int * vmin, int * vmax);
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, float * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
-	static void LoadVarInstr(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	static void LoadNote(CString * sName, CString * sValue, char * sSearch, int * Dest);
 	static CString FormatTime(int sec);
@@ -95,7 +96,6 @@ public:
 	static CString GetNoteName(int n);
 	static int GetNoteI(CString &st);
 	static int GetPC(CString &st);
-	static int GetInstrumentI(CString st);
 
 protected:
 	// Mathematics

@@ -54,7 +54,7 @@ void CGAdapt::CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pe
 		CString* st = new CString;
 		if (warning_note_short[v] < 4) {
 			st->Format("Recommended minimum note length for %s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
-				InstName[ii], instr_tmin[ii], v, i, ndur);
+				InstGName[ii], instr_tmin[ii], v, i, ndur);
 			warning_note_short[v] ++;
 			WriteLog(1, st);
 			if (comment_adapt) adapt_comment[i][v] += "Too short note. ";
@@ -301,7 +301,9 @@ void CGAdapt::Adapt(int step1, int step2)
 			if (!pause[i][v]) {
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation
-				if (instr_type[ii] == 0) AdaptLengroupStep(v, x, i, ii, ei, pi, pei);
+				if (instr_type[ii] == 0) {
+					AdaptLengroupStep(v, x, i, ii, ei, pi, pei);
+				}
 				if (instr_type[ii] == 1) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptSlurStep(v, x, i, ii, ei, pi, pei);
@@ -309,6 +311,9 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
+				}
+				if (instr_type[ii] == 2) {
+					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 				}
 				// Randomize note starts
 				if (rand_start[ii] > 0) {
@@ -334,7 +339,7 @@ void CGAdapt::Adapt(int step1, int step2)
 		// Check if sending multiple voices to monophonic instrument
 		if ((isent[ii] > instr_poly[ii]) && (!warning_poly[ii])) {
 			CString* est = new CString;
-			est->Format("Warning: sending %d voices to instrument %s [%d] with polyphony = %d", isent[ii], InstName[ii], ii, instr_poly[ii]);
+			est->Format("Warning: sending %d voices to instrument %s [%d] with polyphony = %d", isent[ii], InstGName[ii], ii, instr_poly[ii]);
 			WriteLog(1, est);
 			warning_poly[ii]++;
 		}

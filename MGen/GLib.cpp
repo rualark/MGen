@@ -84,25 +84,6 @@ void CGLib::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * 
 	}
 }
 
-void CGLib::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
-{
-	if (*sName == sSearch) {
-		int pos = 0;
-		CString st;
-		for (int ii=0; ii<MAX_VOICE; ii++) {
-			st = sValue->Tokenize(",", pos);
-			st.Trim();
-			if (st == "") break;
-			for (int i = 0; i < MAX_INSTR; i++) {
-				if (InstName[i] == st) {
-					Dest[ii] = i;
-					break;
-				}
-			}
-		}
-	}
-}
-
 void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
 {
 	if (*sName == sSearch) {
@@ -281,28 +262,6 @@ int CGLib::GetPC(CString &st)
 	else {
 		CString* est = new CString;
 		est->Format("Error parsing pitch class name %s: note symbol not recognized. Correct format examples: C# or C", st);
-		WriteLog(1, est);
-	}
-}
-
-int CGLib::GetInstrumentI(CString st)
-{
-	int ii = -1;
-	for (int i = 0; i < MAX_INSTR; i++) {
-		if (InstName[i] == st) {
-			ii = i;
-			break;
-		}
-	}
-	if (ii > -1) {
-		CString* est = new CString;
-		est->Format("Converted instrument name %s to %d", st, ii);
-		WriteLog(0, est);
-		return ii;
-	}
-	else {
-		CString* est = new CString;
-		est->Format("Error parsing instrument name %s: not recognized", st);
 		WriteLog(1, est);
 	}
 }

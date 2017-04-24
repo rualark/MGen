@@ -38,7 +38,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	for (int v = 0; v < v_cnt; v++) {
 		track = v + 1;
 		channel = v;
-		string st = InstName[instr[v]];
+		string st = InstGName[instr[v]];
 		// Replace piano with other instrument, because otherways it generates two-stave track in Sibelius
 		if (st == "Piano") st = "Vibraphone";
 		midifile.addTrackName(track, 0, st);
@@ -518,7 +518,7 @@ void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
 		st2 += st;
 	}
 	st2 += ". Instrument channels: ";
-	for (int i = 0; i < MAX_INSTR; i++) {
+	for (int i = 0; i < InstGName.size(); i++) {
 		st.Format("%d ", instr_channel[i]);
 		st2 += st;
 	}
@@ -567,9 +567,9 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 		WriteLog(1, est);
 	}
 	// Debug log
-	//CString st;
-	//st.Format("%d: At %d type %d, data %d/%d blocked %d\n", TIME_PROC(TIME_INFO), timestamp, mm_type, data1, data2, midi_sent_t-midi_start_time);
-	//AppendLineToFile("midi.log", st);
+	CString st;
+	st.Format("%d: At %d type %d, data %d/%d blocked %d\n", TIME_PROC(TIME_INFO), timestamp, mm_type, data1, data2, midi_sent_t-midi_start_time);
+	AppendLineToFile("midi.log", st);
 }
 
 void CGMidi::AddTransitionKs(int i, int stimestamp, int ks)

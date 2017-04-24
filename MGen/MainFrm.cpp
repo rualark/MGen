@@ -1128,7 +1128,8 @@ void CMainFrame::OnButtonEditalgo()
 
 void CMainFrame::OnButtonEditinst()
 {
-	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "instruments.pl", NULL, NULL, SW_SHOWNORMAL);
+	//::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "instruments.pl", NULL, NULL, SW_SHOWNORMAL);
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "instruments", NULL, NULL, SW_SHOWNORMAL);
 }
 
 

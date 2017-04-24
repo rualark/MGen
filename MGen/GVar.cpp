@@ -7,6 +7,7 @@ CGVar::CGVar()
 	// Init constant length arrays
 	instr.resize(MAX_VOICE);
 	instr_type.resize(MAX_INSTR);
+	instr_used.resize(MAX_INSTR);
 	instr_channel.resize(MAX_INSTR);
 	instr_poly.resize(MAX_INSTR);
 	instr_nmin.resize(MAX_INSTR);
@@ -238,6 +239,42 @@ void CGVar::LoadConfig(CString fname)
 	LoadVarInstr(&st2, &m_config_insts, "instruments", instr);
 }
 
+void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
+{
+	if (*sName == sSearch) {
+		int pos = 0;
+		CString st;
+		for (int ii = 0; ii<MAX_VOICE; ii++) {
+			st = sValue->Tokenize(",", pos);
+			st.Trim();
+			if (st == "") break;
+			int found = 0;
+			for (int i = 0; i < MAX_INSTR; i++) {
+				if (InstGName[i] == st) {
+					if (instr_used[i] < instr_poly[i]) {
+						++instr_used[i];
+						Dest[ii] = i;
+						break;
+					}
+					++found;
+				}
+				if (i == MAX_INSTR - 1) {
+					if (found) {
+						CString* est = new CString;
+						est->Format("Cannot find any instrument named %s (number %d) in layout %s.", st, ii, instr_layout);
+						WriteLog(1, est);
+					}
+					else {
+						CString* est = new CString;
+						est->Format("Cannot map instrument named %s (number %d) in layout %s. Probably too many voices for this instrument type.", st, ii, instr_layout);
+						WriteLog(1, est);
+					}
+				}
+			}
+		}
+	}
+}
+
 void CGVar::LoadInstrumentLayout()
 {
 	CString fname = "instruments\\" + instr_layout + ".txt";
@@ -306,6 +343,7 @@ void CGVar::LoadInstruments()
 		return;
 	}
 	for (int i = 0; i < InstCName.size(); ++i) {
+		milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 		CString fname = "instruments\\" + InstGName[i] + "\\" + InstCName[i] + ".pl";
 		// Load strings
 		ifstream fs;
@@ -385,8 +423,9 @@ void CGVar::LoadInstruments()
 		} // while (fs.good())
 		fs.close();
 		// Log
+		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		CString* est = new CString;
-		est->Format("LoadInstruments loaded %d lines from " + fname, x);
+		est->Format("LoadInstruments loaded %d lines from " + fname + " in %d ms", x, time_stop-time_start);
 		WriteLog(0, est);
 	}
 }

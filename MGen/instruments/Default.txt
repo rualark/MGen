@@ -1,6 +1,6 @@
 #GROUP  | CONFIG           | CHAN | 
 Piano   | Default          | 0    |
 Violin  | Friedlander      | 1    |
-#Trumpet | SampleModeling   | 2    |
+Trumpet | SampleModeling   | 2    |
 
 # CHAN is MIDI channel to send this instrument to

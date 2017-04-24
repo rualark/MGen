@@ -57,7 +57,7 @@ BOOL CInfoDlg::OnInitDialog()
 		//SetWindowText("Dialog: some text");
 		CString st, st2;
 		st.Format("Step: %d (measure %d)\nVoice: %d (%s, channel %d, type %d)\n", ms, ms / 8, mv,
-			InstName[pGen->instr[mv]], pGen->instr_channel[pGen->instr[mv]], pGen->instr_type[pGen->instr[mv]]);
+			pGen->InstGName[pGen->instr[mv]] + "/" + pGen->InstCName[pGen->instr[mv]], pGen->instr_channel[pGen->instr[mv]], pGen->instr_type[pGen->instr[mv]]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Note: %s (midi %d)\nKey: %s\nNote length: %d\n",
 			CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv], NoteName[pGen->tonic[ms][mv]], pGen->len[ms][mv]);

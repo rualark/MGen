@@ -5,14 +5,15 @@ Type = 1 # Instrument type
 # Instrument parameters
 n_min = G3 # Lowest note
 n_max = F7 # Highest note
-t_min = 160 # Shortest note in ms
+t_min = 100 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 1 # Maximum number of simultaneous voices
-leap_t_min = 1 # Shortest note after leap
+leap_t_min = 100 # Shortest note after leap in ms
 
 # Automation parameters
 CC_dynamics = 11
 CC_dyn_ma = 1 # If we should use moving average to smooth CC dynamics curve before sending
+CC_steps = 7 # Number of CC steps in one note step (please use only odd numbers)
 
 # Retrigger adaptor
 CC_retrigger = 64 # This CC will be set before note retriger and reset soon after
@@ -34,9 +35,6 @@ max_ahead_note = 12 # Maximum chromatic interval having ahead property
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
 
-# Technical parameters
-CC_steps = 9 # Number of CC steps in one note step (please use only odd numbers)
-
 # Transition types
 vel_harsh = 118 # Velocity equal or above this value triggers harsh sustain
 vel_immediate = 84 # Velocity equal or above this value triggers immediate sustain
@@ -57,4 +55,3 @@ bell_end_len = 30 # Percent of notelength to use for slope at bell end
 # This is not working yet
 CC_vib_intens = 1
 CC_vib_speed = 14
-dying = 0 # Seconds to fade out at mf

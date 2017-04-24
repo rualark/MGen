@@ -293,7 +293,7 @@ void CMGenView::OnDraw(CDC* pDC)
 					ci_old = ci;
 					ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 					SolidBrush brush_v(ncolor);
-					st = InstName[pGen->instr[v]];
+					st = pGen->InstGName[pGen->instr[v]];
 					g.DrawString(A2W(st), -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
 				}
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {

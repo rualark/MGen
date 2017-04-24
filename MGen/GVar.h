@@ -93,6 +93,7 @@ public:
 	vector<int> instr; // Instruments for each voice
 	vector<int> instr_channel;
 	vector<int> instr_type;
+	vector<int> instr_used; // For how many voices this instrument is already used
 	vector<int> instr_nmin;
 	vector<int> instr_nmax;
 	vector<int> instr_tmin;
@@ -151,6 +152,8 @@ protected:
 	void LoadVector(ifstream & fs, vector<Color>& v);
 	void LoadVector(ifstream & fs, vector<float>& v);
 	void LoadVector(ifstream & fs, vector<unsigned char>& v);
+	// Load config
+	void LoadVarInstr(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) = 0;
 	// Helper functions for child generators
 	void CountOff(int step1, int step2);

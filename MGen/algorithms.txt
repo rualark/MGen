@@ -1,5 +1,5 @@
 #ID  | Folder | MFI | Name                                | Group          | Instruments                   | Comment
-101  | GenCF1 | 0   | Cantus firmus Major full scan       | Counterpoint   | Violin                        | Major scale cantus firmus generator. Uses full scan to evaluate all possible note combinations.
+101  | GenCF1 | 0   | Cantus firmus Major full scan       | Counterpoint   | Trumpet                       | Major scale cantus firmus generator. Uses full scan to evaluate all possible note combinations.
 102  | GenCF2 | 0   | Cantus firmus 2                     | Counterpoint   | Piano                         | Second cantus firmus generator
 111  | GenCA1 | 1   | Cantus firmus Major Analysis        | Counterpoint   | Violin,Piano                  | Major scale cantus firmus analysis. Load midi file and analyze.
 121  | GenCP1 | 0   | Counterpoint 2 voices, species 1    | Counterpoint   | Violin                        | Counterpoint 2 voices, species 1
