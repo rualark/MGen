@@ -249,7 +249,7 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 			st.Trim();
 			if (st == "") break;
 			int found = 0;
-			for (int i = 0; i < MAX_INSTR; i++) {
+			for (int i = 0; i < InstGName.size(); i++) {
 				if (InstGName[i] == st) {
 					if (instr_used[i] < instr_poly[i]) {
 						++instr_used[i];
@@ -258,7 +258,7 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 					}
 					++found;
 				}
-				if (i == MAX_INSTR - 1) {
+				if (i == InstGName.size() - 1) {
 					if (found) {
 						CString* est = new CString;
 						est->Format("Cannot find any instrument named %s (number %d) in layout %s.", st, ii, instr_layout);

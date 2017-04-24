@@ -314,6 +314,7 @@ void CGAdapt::Adapt(int step1, int step2)
 				}
 				if (instr_type[ii] == 2) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
+					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 				}
 				// Randomize note starts
 				if (rand_start[ii] > 0) {

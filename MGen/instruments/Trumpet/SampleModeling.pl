@@ -19,6 +19,10 @@ CC_steps = 7 # Number of CC steps in one note step (please use only odd numbers)
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
 
+# Nonlegato adaptor
+nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
+nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonlegato
+
 # Bell adaptor
 bell_start_mul = 0.2 # Multiply dynamics by this parameter at bell start
 bell_end_mul = 0.2 # Multiply dynamics by this parameter at bell end

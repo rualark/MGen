@@ -567,9 +567,9 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 		WriteLog(1, est);
 	}
 	// Debug log
-	CString st;
-	st.Format("%d: At %d type %d, data %d/%d blocked %d\n", TIME_PROC(TIME_INFO), timestamp, mm_type, data1, data2, midi_sent_t-midi_start_time);
-	AppendLineToFile("midi.log", st);
+	//CString st;
+	//st.Format("%d: At %d type %d, data %d/%d blocked %d\n", TIME_PROC(TIME_INFO), timestamp, mm_type, data1, data2, midi_sent_t-midi_start_time);
+	//AppendLineToFile("midi.log", st);
 }
 
 void CGMidi::AddTransitionKs(int i, int stimestamp, int ks)
