@@ -18,6 +18,7 @@ CC_steps = 7 # Number of CC steps in one note step (please use only odd numbers)
 # Legato adaptor
 legato_ahead = 700 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 16 # Maximum chromatic interval having ahead property
+gliss_freq = 40 # Frequency of gliss articulation in percent
 
 # Nonlegato adaptor
 nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left

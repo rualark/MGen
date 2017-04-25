@@ -740,6 +740,14 @@ void CGMidi::SendMIDI(int step1, int step2)
 						AddTransitionKs(i, stimestamp, 48);
 						AddTransitionKs(i, stimestamp, 40);
 					}
+					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_GLISS)) {
+						AddTransitionKs(i, stimestamp, 48);
+						AddTransitionKs(i, stimestamp, 38);
+					}
+					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_GLISS2)) {
+						AddTransitionKs(i, stimestamp, 48);
+						AddTransitionKs(i, stimestamp, 41);
+					}
 					// Send rebow retrigger
 					if ((instr_type[ii] == 1) && (artic[i][v] == ARTIC_REBOW)) {
 						AddTransitionCC(i, stimestamp, CC_retrigger[ii], 100, 0);

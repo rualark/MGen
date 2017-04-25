@@ -246,6 +246,16 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
 			}
 		}
+		else if (randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq+0.001)*100) {
+			if (randbw(0, 100) < 50) {
+				artic[i][v] = ARTIC_GLISS;
+				if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
+			}
+			else {
+				artic[i][v] = ARTIC_GLISS2;
+				if (comment_adapt) adapt_comment[i][v] += "Gliss2. ";
+			}
+		}
 	}
 }
 
