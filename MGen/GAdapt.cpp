@@ -340,6 +340,36 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 	}
 }
 
+void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
+{
+	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+	int ni = i + noff[i][v];
+	// Create rbell if long length and no pauses
+	if ((pi < i) && (ni > i) && (ndur > rbell_mindur[ii]) && (len[i][v] > 2) && i && (!pause[pi][v]) && (!pause[ni][v])) {
+		int pos1 = i+1;
+		int pos2 = ei;
+		int ok = 1;
+		// Check if dynamics is even
+		for (int z = i + 1; z <= ei; z++) {
+			if (dyn[z][v] != dyn[z - 1][v]) {
+				ok = 0;
+				break;
+			}
+		}
+		if (ok) {
+			// Calculate multiplier
+			float mul = rbell_mul[ii] - (ndur - rbell_mindur[ii]) *
+				(rbell_mul[ii] - rbell_mul2[ii]) / (rbell_dur[ii] - rbell_mindur[ii] + 0.0001);
+			mul = max(min(mul, rbell_mul[ii]), rbell_mul2[ii]);
+			for (int z = pos1; z < pos2; z++) {
+				dyn[z][v] = dyn[z][v] *
+					(abs(z - (pos1 + pos2) / 2.0) / (pos2 - pos1) * 2.0 * (1.0 - mul) + mul);
+			}
+			if (comment_adapt) adapt_comment[i][v] += "Reverse bell. ";
+		}
+	}
+}
+
 void CGAdapt::AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
 {
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
@@ -425,6 +455,7 @@ void CGAdapt::Adapt(int step1, int step2)
 				}
 				if (instr_type[ii] == 2) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
+					AdaptReverseBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptRetriggerNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptFlexAheadStep(v, x, i, ii, ei, pi, pei);

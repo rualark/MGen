@@ -41,6 +41,12 @@ bell_end_mul = 0.2 # Multiply dynamics by this parameter at bell end
 bell_start_len = 30 # Percent of notelength to use for slope at bell start
 bell_end_len = 30 # Percent of notelength to use for slope at bell end
 
+# Reverse bell adaptor
+rbell_mindur = 300 # Minimum note duration (ms) that can have a reverse bell
+rbell_dur = 1000 # Minimum note duration (ms) that will have deepest reverse bell
+rbell_mul = 0.8 # Multiply dynamics by this parameter at bell center with mindur
+rbell_mul2 = 0.2 # Multiply dynamics by this parameter at bell center with dur
+
 # This is not working yet
 CC_vib_intens = 1
 CC_vib_speed = 14
