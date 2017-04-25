@@ -4,3 +4,7 @@ Violin  | Friedlander      | 1    |
 Trumpet | SampleModeling   | 2    |
 
 # CHAN is MIDI channel to send this instrument to
+
+# Randomization
+rnd_tempo = 5 # Randomize tempo not greater than this percent
+rnd_tempo_step = 1 # Maximum difference in tempo between adjacent steps while randomizing

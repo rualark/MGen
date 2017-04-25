@@ -65,8 +65,5 @@ rnd_vib_speed = 10 # Randomize vibrato speed not greater than this percent
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
 rnd_dyn = 8 # Randomize step dynamics not greater than this percent
-rnd_tempo = 5 # Randomize tempo not greater than this percent
-rnd_tempo_step = 1 # Maximum difference in tempo between adjacent steps while randomizing
-
 
 

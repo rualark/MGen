@@ -24,6 +24,10 @@ const int diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
 #define ARTIC_SPLITPO_PENT 10
 #define ARTIC_GLISS 11
 #define ARTIC_GLISS2 12
+#define ARTIC_END_SFL 13
+#define ARTIC_END_PBD 14
+#define ARTIC_END_VIB2 15
+#define ARTIC_END_VIB 16
 
 #define INSTR_PIANO 0
 #define INSTR_VIOLIN 1

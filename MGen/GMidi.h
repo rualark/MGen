@@ -85,6 +85,7 @@ protected:
 	void AddNoteOff(PmTimestamp timestamp, int data1, int data2);
 	void AddKsOff(PmTimestamp timestamp, int data1, int data2);
 	void AddCC(PmTimestamp timestamp, int data1, int data2);
+	void AddKs(int stimestamp, int ks);
 	void AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2);
 	void AddTransitionKs(int i, PmTimestamp timestamp, int ks);
 	static int PmEvent_comparator(const void *v1, const void *v2);

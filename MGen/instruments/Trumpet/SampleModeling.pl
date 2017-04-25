@@ -20,6 +20,16 @@ legato_ahead = 700 # Time in ms to stretch legato notes back to cope with legato
 max_ahead_note = 16 # Maximum chromatic interval having ahead property
 gliss_freq = 40 # Frequency of gliss articulation in percent
 
+# Note ending adaptor
+end_sfl_dur = 140 # Duration of short fall ending
+end_sfl_freq = 10 # Frequency of short fall ending
+end_pbd_dur = 200 # Duration of pitch bend down ending
+end_pbd_freq = 30 # Frequency of pitch bend down ending
+end_vib2_dur = 240 # Duration of vibrato ending2
+end_vib2_freq = 30 # Frequency of vibrato ending2
+end_vib_dur = 445 # Duration of vibrato ending
+end_vib_freq = 30 # Frequency of vibrato ending
+
 # Nonlegato adaptor
 nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonlegato

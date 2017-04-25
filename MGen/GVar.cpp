@@ -40,7 +40,6 @@ CGVar::CGVar()
 	vel_normal.resize(MAX_INSTR);
 	vel_gliss.resize(MAX_INSTR);
 	vel_normal_minlen.resize(MAX_INSTR);
-	bell_mindur.resize(MAX_INSTR);
 	gliss_minlen.resize(MAX_INSTR);
 	gliss_freq.resize(MAX_INSTR);
 	rand_start_max.resize(MAX_INSTR);
@@ -50,6 +49,15 @@ CGVar::CGVar()
 	bell_end_mul.resize(MAX_INSTR);
 	bell_start_len.resize(MAX_INSTR);
 	bell_end_len.resize(MAX_INSTR);
+	bell_mindur.resize(MAX_INSTR);
+	end_sfl_dur.resize(MAX_INSTR);
+	end_sfl_freq.resize(MAX_INSTR);
+	end_pbd_dur.resize(MAX_INSTR);
+	end_pbd_freq.resize(MAX_INSTR);
+	end_vib2_dur.resize(MAX_INSTR);
+	end_vib2_freq.resize(MAX_INSTR);
+	end_vib_dur.resize(MAX_INSTR);
+	end_vib_freq.resize(MAX_INSTR);
 	show_transpose.resize(MAX_VOICE);
 	track_name.resize(MAX_VOICE);
 	track_id.resize(MAX_VOICE);
@@ -420,6 +428,14 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "bell_end_mul", &bell_end_mul[i]);
 				CheckVar(&st2, &st3, "bell_end_len", &bell_end_len[i]);
 				CheckVar(&st2, &st3, "bell_start_len", &bell_start_len[i]);
+				CheckVar(&st2, &st3, "end_sfl_dur", &end_sfl_dur[i]);
+				CheckVar(&st2, &st3, "end_sfl_freq", &end_sfl_freq[i]);
+				CheckVar(&st2, &st3, "end_pbd_dur", &end_pbd_dur[i]);
+				CheckVar(&st2, &st3, "end_pbd_freq", &end_pbd_freq[i]);
+				CheckVar(&st2, &st3, "end_vib2_dur", &end_vib2_dur[i]);
+				CheckVar(&st2, &st3, "end_vib2_freq", &end_vib2_freq[i]);
+				CheckVar(&st2, &st3, "end_vib_dur", &end_vib_dur[i]);
+				CheckVar(&st2, &st3, "end_vib_freq", &end_vib_freq[i]);
 				//CGVar::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		} // while (fs.good())

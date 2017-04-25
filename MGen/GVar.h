@@ -142,6 +142,14 @@ public:
 	vector<float> bell_end_mul; // Multiply dynamics by this parameter at bell end
 	vector<float> bell_start_len; // Percent of notelength to use for slope at bell start
 	vector<float> bell_end_len; // Percent of notelength to use for slope at bell end
+	vector<float> end_sfl_dur; // Duration of short fall ending
+	vector<float> end_sfl_freq; // Frequency of short fall ending
+	vector<float> end_pbd_dur; // Duration of pitch bend down ending
+	vector<float> end_pbd_freq; // Frequency of pitch bend down ending
+	vector<float> end_vib2_dur; // Duration of vibrato ending2
+	vector<float> end_vib2_freq; // Frequency of vibrato ending2
+	vector<float> end_vib_dur; // Duration of vibrato ending
+	vector<float> end_vib_freq; // Frequency of vibrato ending
 	int adapt_enable = 1;
 
 protected:

@@ -301,7 +301,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 {
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	// Create bell if long length, not high velocity, not pause and not first note
-	if ((ndur > bell_mindur[ii]) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
+	if ((pi < i) && (ndur > bell_mindur[ii]) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
 		int pos = i + (float)(len[i][v]) * bell_start_len[ii] / 100.0;
 		int ok = 1;
 		// Check if dynamics is even
@@ -320,7 +320,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 	}
 	int ni = i + noff[i][v];
 	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
-	if ((ndur > bell_mindur[ii]) && (len[i][v] > 2) && (x == ncount-1 || pause[ni][v])) {
+	if ((ndur > bell_mindur[ii]) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
 		int pos = round(i + (float)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
@@ -336,6 +336,31 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 				dyn[z][v] = dyn[z][v] * (bell_end_mul[ii] + (float)(end - z) / (end - pos) * (1.0 - bell_end_mul[ii]));
 			}
 			if (comment_adapt) adapt_comment[i + len[i][v] - 1][v] += "Long bell end. ";
+		}
+	}
+}
+
+void CGAdapt::AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
+{
+	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+	int ni = i + noff[i][v];
+	// Check if it is last note in current melody
+	if (x == ncount - 1 || pause[ni][v]) {
+		if (ndur > end_sfl_dur[ii] * 2 && randbw(0, 100) < end_sfl_freq[ii]) {
+			artic[ei][v] = ARTIC_END_SFL;
+			if (comment_adapt) adapt_comment[ei][v] += "Short fall ending. ";
+		}
+		else if (ndur > end_pbd_dur[ii] * 2 && randbw(0, 100) < end_pbd_freq[ii]) {
+			artic[ei][v] = ARTIC_END_PBD;
+			if (comment_adapt) adapt_comment[ei][v] += "Pitchbend down ending. ";
+		}
+		else if (ndur > end_vib2_dur[ii] * 2 && randbw(0, 100) < end_vib2_freq[ii]) {
+			artic[ei][v] = ARTIC_END_VIB2;
+			if (comment_adapt) adapt_comment[ei][v] += "Vibrato2 ending. ";
+		}
+		else if (ndur > end_vib_dur[ii] * 2 && randbw(0, 100) < end_vib_freq[ii]) {
+			artic[ei][v] = ARTIC_END_VIB;
+			if (comment_adapt) adapt_comment[ei][v] += "Vibrato ending. ";
 		}
 	}
 }
@@ -403,6 +428,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptRetriggerNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptFlexAheadStep(v, x, i, ii, ei, pi, pei);
+					AdaptNoteEndStep(v, x, i, ii, ei, pi, pei, ncount);
 				}
 				// Randomize note starts
 				if (rand_start[ii] > 0) {

@@ -577,10 +577,16 @@ void CGMidi::AddTransitionKs(int i, int stimestamp, int ks)
 	int v = midi_voice;
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
-	AddKsOn(stimestamp - min(MAX_TRANS_DELAY, 
+	AddKsOn(stimestamp - min(MAX_TRANS_DELAY,
 		((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10), ks, 10);
-	AddKsOff(stimestamp + min(MAX_TRANS_DELAY, 
+	AddKsOff(stimestamp + min(MAX_TRANS_DELAY,
 		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), ks, 0);
+}
+
+void CGMidi::AddKs(int stimestamp, int ks)
+{
+	AddKsOn(stimestamp, ks, 100);
+	AddKsOff(stimestamp + 1, ks, 0);
 }
 
 void CGMidi::AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2)
@@ -759,6 +765,19 @@ void CGMidi::SendMIDI(int step1, int step2)
 					// ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 					etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
 					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
+					// Send note ending ks
+					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_SFL)) {
+						AddKs(etimestamp - end_sfl_dur[ii], 47);
+					}
+					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_PBD)) {
+						AddKs(etimestamp - end_pbd_dur[ii], 40);
+					}
+					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_VIB2)) {
+						AddKs(etimestamp - end_vib2_dur[ii], 42);
+					}
+					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_VIB)) {
+						AddKs(etimestamp - end_vib_dur[ii], 41);
+					}
 				}
 			}
 			// Go to next note

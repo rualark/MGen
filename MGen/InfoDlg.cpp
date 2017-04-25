@@ -90,6 +90,10 @@ BOOL CInfoDlg::OnInitDialog()
 		if (pGen->artic[ms][mv] == ARTIC_SPLITPO_PENT) st2 = "Split portamento pentatonic";
 		if (pGen->artic[ms][mv] == ARTIC_GLISS) st2 = "Gliss";
 		if (pGen->artic[ms][mv] == ARTIC_GLISS2) st2 = "Gliss2";
+		if (pGen->artic[ms][mv] == ARTIC_END_SFL) st2 = "Short fall ending";
+		if (pGen->artic[ms][mv] == ARTIC_END_PBD) st2 = "Pitchbend down ending";
+		if (pGen->artic[ms][mv] == ARTIC_END_VIB2) st2 = "Vibrato2 ending";
+		if (pGen->artic[ms][mv] == ARTIC_END_VIB) st2 = "Vibrato ending";
 		st.Format("Velocity: %d\nArticulation: %s\nLengroup: %d\n", pGen->vel[ms][mv], st2, pGen->lengroup[ms][mv]);
 		m_info.AddText(st, RGB(170, 0, 0), 0);
 		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
