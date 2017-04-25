@@ -88,6 +88,8 @@ void CGVar::InitVectors()
 	tonic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	vib = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	vibf = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	lining = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	midi_ch = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
@@ -137,6 +139,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 	detime.resize(size);
 	dyn.resize(size);
 	vel.resize(size);
+	vib.resize(size);
+	vibf.resize(size);
 	artic.resize(size);
 	lining.resize(size);
 	linecolor.resize(size, Color(0));
@@ -158,6 +162,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 		tonic[i].resize(vsize);
 		dyn[i].resize(vsize);
 		vel[i].resize(vsize);
+		vib[i].resize(vsize);
+		vibf[i].resize(vsize);
 		artic[i].resize(vsize);
 		lining[i].resize(vsize);
 		lengroup[i].resize(vsize);
@@ -434,10 +440,8 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "bell_end_len", &bell_end_len[i]);
 				CheckVar(&st2, &st3, "bell_start_len", &bell_start_len[i]);
 				CheckVar(&st2, &st3, "rbell_freq", &rbell_freq[i]);
-				CheckVar(&st2, &st3, "rbell_mindur", &rbell_mindur[i]);
-				CheckVar(&st2, &st3, "rbell_dur", &rbell_dur[i]);
-				CheckVar(&st2, &st3, "rbell_mul", &rbell_mul[i]);
-				CheckVar(&st2, &st3, "rbell_mul2", &rbell_mul2[i]);
+				LoadRange(&st2, &st3, "rbell_dur", &rbell_mindur[i], &rbell_dur[i]);
+				LoadRange(&st2, &st3, "rbell_mul", &rbell_mul[i], &rbell_mul2[i]);
 				CheckVar(&st2, &st3, "end_sfl_dur", &end_sfl_dur[i]);
 				CheckVar(&st2, &st3, "end_sfl_freq", &end_sfl_freq[i]);
 				CheckVar(&st2, &st3, "end_pbd_dur", &end_pbd_dur[i]);

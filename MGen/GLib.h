@@ -92,6 +92,7 @@ public:
 	static void AppendLineToFile(CString fname, CString st);
 	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int vmin = -1, int vmax = -1);
 	static void LoadRange(CString * sName, CString * sValue, char * sSearch, int * vmin, int * vmax);
+	static void LoadRange(CString * sName, CString * sValue, char * sSearch, float * vmin, float * vmax);
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, float * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);

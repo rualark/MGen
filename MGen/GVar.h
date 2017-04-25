@@ -66,6 +66,8 @@ public:
 	vector< vector <unsigned char> > tonic; // Key tonic of current note (3 = D#)
 	vector< vector <unsigned char> > dyn; // Dynamics (velocity for piano)
 	vector< vector <unsigned char> > vel; // Velocity of midi notes
+	vector< vector <unsigned char> > vib; // Vibrato intensity
+	vector< vector <unsigned char> > vibf; // Vibrato frequency
 	vector< vector <unsigned char> > artic; // Velocity of midi notes
 	vector< vector <unsigned char> > lining; // Visual lining pattern
 	vector< vector <unsigned char> > midi_ch; // Midi channel of each note
