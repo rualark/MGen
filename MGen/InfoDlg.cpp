@@ -85,6 +85,8 @@ BOOL CInfoDlg::OnInitDialog()
 		if (pGen->artic[ms][mv] == ARTIC_REBOW) st2 = "Retrigger rebow";
 		if (pGen->artic[ms][mv] == ARTIC_RETRIGGER) st2 = "Retrigger";
 		if (pGen->artic[ms][mv] == ARTIC_SPLITPO_CHROM) st2 = "Split portamento chromatic";
+		if (pGen->artic[ms][mv] == ARTIC_SPLITPO_MIX) st2 = "Split portamento mixed";
+		if (pGen->artic[ms][mv] == ARTIC_SPLITPO_ARAB) st2 = "Split portamento arabic";
 		if (pGen->artic[ms][mv] == ARTIC_SPLITPO_PENT) st2 = "Split portamento pentatonic";
 		st.Format("Velocity: %d\nArticulation: %s\nLengroup: %d\n", pGen->vel[ms][mv], st2, pGen->lengroup[ms][mv]);
 		m_info.AddText(st, RGB(170, 0, 0), 0);

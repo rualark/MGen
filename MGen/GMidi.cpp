@@ -728,6 +728,14 @@ void CGMidi::SendMIDI(int step1, int step2)
 						AddTransitionKs(i, stimestamp, 48);
 						AddTransitionKs(i, stimestamp, 36);
 					}
+					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_MIX)) {
+						AddTransitionKs(i, stimestamp, 48);
+						AddTransitionKs(i, stimestamp, 37);
+					}
+					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_ARAB)) {
+						AddTransitionKs(i, stimestamp, 48);
+						AddTransitionKs(i, stimestamp, 39);
+					}
 					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_PENT)) {
 						AddTransitionKs(i, stimestamp, 48);
 						AddTransitionKs(i, stimestamp, 40);

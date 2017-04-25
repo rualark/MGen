@@ -19,7 +19,9 @@ const int diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
 #define ARTIC_REBOW 5
 #define ARTIC_RETRIGGER 6
 #define ARTIC_SPLITPO_CHROM 7
-#define ARTIC_SPLITPO_PENT 8
+#define ARTIC_SPLITPO_MIX 8
+#define ARTIC_SPLITPO_ARAB 9
+#define ARTIC_SPLITPO_PENT 10
 
 #define INSTR_PIANO 0
 #define INSTR_VIOLIN 1

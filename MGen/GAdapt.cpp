@@ -233,6 +233,14 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
 			}
+			else if (nspeed < 12) {
+				artic[i][v] = ARTIC_SPLITPO_MIX;
+				if (comment_adapt) adapt_comment[i][v] += "Split portamento mixed. ";
+			}
+			else if (nspeed < 16) {
+				artic[i][v] = ARTIC_SPLITPO_ARAB;
+				if (comment_adapt) adapt_comment[i][v] += "Split portamento arabic. ";
+			}
 			else {
 				artic[i][v] = ARTIC_SPLITPO_PENT;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
