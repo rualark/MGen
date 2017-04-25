@@ -784,8 +784,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
 		}
-		// Send CC dynamics
+		// Send CC
 		InterpolateCC(CC_dyn[ii], CC_dyn_ma[ii], step21, step22, dyn, ii, v);
+		InterpolateCC(CC_vib[ii], 1, step21, step22, vib, ii, v);
 	}
 	// Sort by timestamp before sending
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
