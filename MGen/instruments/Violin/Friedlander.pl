@@ -40,18 +40,33 @@ vel_harsh = 118 # Velocity equal or above this value triggers harsh sustain
 vel_immediate = 84 # Velocity equal or above this value triggers immediate sustain
 vel_normal = 50 # Velocity equal or above this value triggers normal sustain
 vel_gliss = 18 # Velocity below this value triggers glissando transition
-vel_normal_minlen = 600 # Minimum note length that can have a normal or lower sustain
+vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
 
 # Gliss adaptor
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition
 gliss_freq = 50 # Frequency of gliss articulation in percent
 
 # Bell adaptor
+bell_mindur = 300 # Minimum note duration (ms) that can have a bell
 bell_start_mul = 0.2 # Multiply dynamics by this parameter at bell start
 bell_end_mul = 0.2 # Multiply dynamics by this parameter at bell end
 bell_start_len = 30 # Percent of notelength to use for slope at bell start
 bell_end_len = 30 # Percent of notelength to use for slope at bell end
 
-# This is not working yet
+# Vibrato adaptor
 CC_vib_intens = 1
 CC_vib_speed = 14
+vib_bell_mindur = 600 # Minimum note duration (ms) that can have a vibrato bell
+vib_bell_intens = 40 # Maximum vibrato intensity in vibrato bell
+vib_bell_speed = 30 # Max vibrato frequency in vibrato bell
+rnd_vib_intens = 10 # Randomize vibrato intensity not greater than this percent
+rnd_vib_speed = 10 # Randomize vibrato speed not greater than this percent
+
+# Randomization
+rnd_vel = 8 # Randomize note velocity not greater than this percent
+rnd_dyn = 8 # Randomize step dynamics not greater than this percent
+rnd_tempo = 5 # Randomize tempo not greater than this percent
+rnd_tempo_step = 1 # Maximum difference in tempo between adjacent steps while randomizing
+
+
+

@@ -82,7 +82,10 @@ BOOL CInfoDlg::OnInitDialog()
 		if (pGen->artic[ms][mv] == ARTIC_SLUR) st2 = "Slur";
 		if (pGen->artic[ms][mv] == ARTIC_NONLEGATO) st2 = "Nonlegato";
 		if (pGen->artic[ms][mv] == ARTIC_STACCATO) st2 = "Staccato";
+		if (pGen->artic[ms][mv] == ARTIC_REBOW) st2 = "Retrigger rebow";
 		if (pGen->artic[ms][mv] == ARTIC_RETRIGGER) st2 = "Retrigger";
+		if (pGen->artic[ms][mv] == ARTIC_SPLITPO_CHROM) st2 = "Split portamento chromatic";
+		if (pGen->artic[ms][mv] == ARTIC_SPLITPO_PENT) st2 = "Split portamento pentatonic";
 		st.Format("Velocity: %d\nArticulation: %s\nLengroup: %d\n", pGen->vel[ms][mv], st2, pGen->lengroup[ms][mv]);
 		m_info.AddText(st, RGB(170, 0, 0), 0);
 		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);

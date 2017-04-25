@@ -13,7 +13,7 @@
 // Maximum delay (ms) between transition and keyswitch
 #define MAX_TRANS_DELAY 10
 // Maximum time (ms) allowed to move note and linked events (ks/cc) left
-#define MAX_AHEAD 200
+#define MAX_AHEAD 1000
 
 // PortMIDI
 #define OUTPUT_BUF_SIZE 10000

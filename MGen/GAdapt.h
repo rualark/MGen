@@ -16,14 +16,13 @@ protected:
 	void CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei);
-	void AdaptRetriggerStep(int v, int x, int i, int ii, int ei, int pi, int pei);
+	void AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int pi, int pei);
+	void AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei);
-
+	void AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei);
-
 	void AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int pei);
-
 	void AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount);
 											 
   // Adapt local variables

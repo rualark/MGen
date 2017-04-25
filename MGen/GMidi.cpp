@@ -723,6 +723,19 @@ void CGMidi::SendMIDI(int step1, int step2)
 					if (artic[i][v] == ARTIC_SLUR) {
 						AddTransitionKs(i, stimestamp, slur_ks[ii]);
 					}
+					// Send transition ks
+					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_CHROM)) {
+						AddTransitionKs(i, stimestamp, 48);
+						AddTransitionKs(i, stimestamp, 36);
+					}
+					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_PENT)) {
+						AddTransitionKs(i, stimestamp, 48);
+						AddTransitionKs(i, stimestamp, 40);
+					}
+					// Send rebow retrigger
+					if ((instr_type[ii] == 1) && (artic[i][v] == ARTIC_REBOW)) {
+						AddTransitionCC(i, stimestamp, CC_retrigger[ii], 100, 0);
+					}
 				}
 				// Note OFF if it is in window
 				if (ei <= step22) {
@@ -730,10 +743,6 @@ void CGMidi::SendMIDI(int step1, int step2)
 					// ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 					etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
 					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
-				}
-				// Send retrigger
-				if ((instr[v] == INSTR_VIOLIN) && (artic[i][v] == ARTIC_RETRIGGER)) {
-					AddTransitionCC(i, stimestamp, CC_retrigger[ii], 100, 0);
 				}
 			}
 			// Go to next note

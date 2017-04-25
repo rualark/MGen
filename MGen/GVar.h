@@ -99,6 +99,13 @@ public:
 	vector<int> instr_tmin;
 	vector<int> instr_tmax;
 	vector<int> instr_poly; // Maximum number of simultaneous voices
+	vector<int> splitpo_freq;
+	vector<int> splitpo_mixed_minint;
+	vector<int> splitpo_pent_minint;
+	vector<int> art_freq;
+	vector<int> art_mindur;
+	vector<int> art_minint;
+	vector<int> art_maxint;
 	vector<int> CC_steps;
 	vector<int> CC_dyn_ma;
 	vector<int> CC_dyn;
@@ -125,6 +132,7 @@ public:
 	vector<int> vel_normal; // Velocity equal or above this value triggers normal sustain
 	vector<int> vel_gliss; // Velocity below this value triggers glissando transition
 	vector<int> vel_normal_minlen; // Minimum note length that can have a normal or lower sustain
+	vector<int> bell_mindur; // Minimum note duration (ms) that can have a bell
 	vector<int> gliss_minlen; // Minimum note length that can have a gliss transition
 	vector<int> gliss_freq; // Frequency of gliss articulation in percent
 	vector<int> rand_start_max; // Maximum shift in ms

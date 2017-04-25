@@ -114,20 +114,21 @@ void CGAdapt::AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei
 		(slur_count <= max_slur_count[ii])) {
 		artic[i][v] = ARTIC_SLUR;
 		slur_count++;
+		if (comment_adapt) adapt_comment[i][v] += "Slur. ";
 	}
 	else {
 		slur_count = 0;
 	}
 }
 
-void CGAdapt::AdaptRetriggerStep(int v, int x, int i, int ii, int ei, int pi, int pei)
+void CGAdapt::AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Retrigger notes
-	if ((i > 0) && (note[pi][v] == note[i][v])) {
+	if ((i > 0) && (pi < i) && (note[pi][v] == note[i][v])) {
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Replace retrigger with non-legato
-		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii])) 
-		  || (ndur < retrigger_min_len[ii])) {
+		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii]))
+			|| (ndur < retrigger_min_len[ii])) {
 			int max_shift = (etime[pei] - stime[pei]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
 			if (max_shift > retrigger_rand_max[ii]) max_shift = retrigger_rand_max[ii];
 			detime[pei][v] = -randbw(0, max_shift);
@@ -136,6 +137,29 @@ void CGAdapt::AdaptRetriggerStep(int v, int x, int i, int ii, int ei, int pi, in
 		}
 		else {
 			if (comment_adapt) adapt_comment[i][v] += "Rebow retrigger. ";
+			artic[i][v] = ARTIC_REBOW;
+			detime[pei][v] = -1;
+			dstime[i][v] = 0;
+		}
+	}
+}
+
+void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei)
+{
+	// Retrigger notes
+	if ((i > 0) && (pi < i) && (note[pi][v] == note[i][v])) {
+		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+		// Replace retrigger with non-legato
+		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii]))
+			|| (ndur < retrigger_min_len[ii])) {
+			int max_shift = (etime[pei] - stime[pei]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
+			if (max_shift > retrigger_rand_max[ii]) max_shift = retrigger_rand_max[ii];
+			detime[pei][v] = -randbw(0, max_shift);
+			artic[i][v] = ARTIC_NONLEGATO;
+			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
+		}
+		else {
+			if (comment_adapt) adapt_comment[i][v] += "Retrigger. ";
 			artic[i][v] = ARTIC_RETRIGGER;
 			detime[pei][v] = -1;
 			dstime[i][v] = 0;
@@ -158,13 +182,13 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Advance start for legato (not longer than previous note length)
-	if ((i > 0) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) && 
-		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i-1][v]) <= max_ahead_note[ii])) {
+	if ((i > 0) && (pi < i) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= max_ahead_note[ii])) {
 		dstime[i][v] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		detime[i - 1][v] = 0.9 * dstime[i][v];
 		if (comment_adapt) adapt_comment[i][v] += "Ahead start. ";
-		if (comment_adapt) adapt_comment[i-1][v] += "Ahead end. ";
+		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead end. ";
 		// Add glissando if note is long
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if ((ndur > gliss_minlen[ii]) && (randbw(0, 100) < gliss_freq[ii])) {
@@ -174,12 +198,56 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 	}
 }
 
+// For Samplemodeling
+void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei)
+{
+	int splitpo_freq = 50;
+	float legato_ahead_exp = 6;
+	// Advance start for legato (not longer than previous note length)
+	if ((i > 0) && (pi < i) && (legato_ahead[ii]) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= max_ahead_note[ii])) {
+		// Get current note length
+		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+		// Get previous note length
+		float pdur = (etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
+		// Get maximum legato_ahead possible
+		float max_adur = min(ndur, pdur / 2);
+		// Get minimum velocity possible
+		float min_vel = max(1, 128 - 
+			pow(max_adur * pow(127, legato_ahead_exp) / legato_ahead[ii], 1 / legato_ahead_exp));
+		// Make random velocity inside allowed range
+		vel[i][v] = randbw(min_vel, min(min_vel + 50, 127));
+		// Get ahead duration
+		float adur = pow(128 - vel[i][v], legato_ahead_exp) * legato_ahead[ii] / pow(127, legato_ahead_exp);
+		// Move notes
+		dstime[i][v] = -adur;
+		detime[i - 1][v] = 0.9 * dstime[i][v];
+		// Add comments
+		if (comment_adapt) adapt_comment[i][v] += "Ahead flex start. ";
+		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead flex end. ";
+		// Select articulation
+		if (randbw(0, 100) < splitpo_freq) {
+			// How many chromatic pitches per second
+			float nspeed = abs(note[i][v] - note[pi][v]) / adur * 1000.0;
+			if (nspeed < 8) {
+				artic[i][v] = ARTIC_SPLITPO_CHROM;
+				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
+			}
+			else {
+				artic[i][v] = ARTIC_SPLITPO_PENT;
+				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
+			}
+		}
+	}
+}
+
 void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Check if note overlapping occured
 	if (i > 0) {
-		int lpi = pi; // Local previous id
-									// Cycle through all notes backwards
+		// Local previous id
+		int lpi = pi; 
+		// Cycle through all notes backwards
 		while (lpi >= 0) {
 			if (note[lpi][v] == note[i][v]) {
 				int lpei = lpi + len[lpi][v] - 1;
@@ -215,7 +283,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 {
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	// Create bell if long length, not high velocity, not pause and not first note
-	if ((ndur > vel_normal_minlen[ii]) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
+	if ((ndur > bell_mindur[ii]) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
 		int pos = i + (float)(len[i][v]) * bell_start_len[ii] / 100.0;
 		int ok = 1;
 		// Check if dynamics is even
@@ -234,7 +302,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 	}
 	int ni = i + noff[i][v];
 	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
-	if ((ndur > vel_normal_minlen[ii]) && (len[i][v] > 2) && (x == ncount-1 || pause[ni][v])) {
+	if ((ndur > bell_mindur[ii]) && (len[i][v] > 2) && (x == ncount-1 || pause[ni][v])) {
 		int pos = round(i + (float)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
@@ -307,14 +375,16 @@ void CGAdapt::Adapt(int step1, int step2)
 				if (instr_type[ii] == 1) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptSlurStep(v, x, i, ii, ei, pi, pei);
-					AdaptRetriggerStep(v, x, i, ii, ei, pi, pei);
+					AdaptRetriggerRebowStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
 				if (instr_type[ii] == 2) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
+					AdaptRetriggerNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
+					AdaptFlexAheadStep(v, x, i, ii, ei, pi, pei);
 				}
 				// Randomize note starts
 				if (rand_start[ii] > 0) {
