@@ -378,14 +378,14 @@ void CGAdapt::AdaptVibBell(int v, int x, int i, int ii, int ei, int pi, int pei)
 	// Create rbell if long length and no pauses
 	if ((ndur > vib_bell_mindur[ii]) && (len[i][v] > 2) && (randbw(0, 100) < vib_bell_freq[ii])) {
 		// Steps range
-		int pos1 = i + 1;
-		int pos2 = ei;
+		int pos1 = i;
+		int pos2 = ei + 1;
 		// Center positions
-		int pos = (pos1 + pos2) / 2;
-		int posf = (pos1 + pos2) / 2;
+		int pos = pos1 + (pos2 - pos1) * randbw(vib_bell_top1[ii], vib_bell_top2[ii]) / 100.0;
+		int posf = pos1 + (pos2 - pos1) * randbw(vibf_bell_top1[ii], vibf_bell_top2[ii]) / 100.0;
 		int ok = 1;
 		// Check if vib and vibf are zero
-		for (int z = i + 1; z <= ei; z++) {
+		for (int z = i; z <= ei; z++) {
 			if (vib[z][v] || vibf[z][v]) {
 				ok = 0;
 				break;
@@ -399,6 +399,14 @@ void CGAdapt::AdaptVibBell(int v, int x, int i, int ii, int ei, int pi, int pei)
 			// Right part
 			for (int z = pos; z < pos2; z++) {
 				vib[z][v] = vib_bell[ii] * (float)(pos2 - z) / (float)(pos2 - pos);
+			}
+			// Left part speed
+			for (int z = pos1; z < posf; z++) {
+				vibf[z][v] = vibf_bell[ii] * (float)(z - pos1) / (float)(posf - pos1);
+			}
+			// Right part speed
+			for (int z = posf; z < pos2; z++) {
+				vibf[z][v] = vibf_bell[ii] * (float)(pos2 - z) / (float)(pos2 - posf);
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Vibrato bell. ";
 		}

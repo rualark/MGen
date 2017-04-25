@@ -415,10 +415,8 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "poly", &instr_poly[i]);
 				CheckVar(&st2, &st3, "type", &instr_type[i]);
 				CheckVar(&st2, &st3, "channel", &instr_channel[i]);
-				CheckVar(&st2, &st3, "vib_bell_top1", &vib_bell_top1[i]);
-				CheckVar(&st2, &st3, "vib_bell_top2", &vib_bell_top2[i]);
-				CheckVar(&st2, &st3, "vibf_bell_top1", &vibf_bell_top1[i]);
-				CheckVar(&st2, &st3, "vibf_bell_top2", &vibf_bell_top2[i]);
+				LoadRange(&st2, &st3, "vib_bell_top", &vib_bell_top1[i], &vib_bell_top2[i]);
+				LoadRange(&st2, &st3, "vibf_bell_top", &vibf_bell_top1[i], &vibf_bell_top2[i]);
 				CheckVar(&st2, &st3, "vib_bell_freq", &vib_bell_freq[i]);
 				CheckVar(&st2, &st3, "vib_bell_mindur", &vib_bell_mindur[i]);
 				CheckVar(&st2, &st3, "vib_bell", &vib_bell[i]);

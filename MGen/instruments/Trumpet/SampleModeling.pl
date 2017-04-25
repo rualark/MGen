@@ -49,8 +49,8 @@ rbell_mul = 0.8-0.2 # Multiply dynamics by this parameter at bell center with mi
 # Vibrato adaptor
 CC_vib = 1 # CC number for vibrato intensity
 CC_vibf = 14 # CC number for vibrato speed
-vib_bell_top = 30-70 # Leftmost-rightmost maximum vibrato intensity in note (percent of note duration)
-vibf_bell_top = 30-70 # Leftmost-rightmost maximum vibrato speed in note (percent of note duration)
+vib_bell_top = 10-90 # Leftmost-rightmost maximum vibrato intensity in note (percent of note duration)
+vibf_bell_top = 10-90 # Leftmost-rightmost maximum vibrato speed in note (percent of note duration)
 vib_bell_freq = 80 # Frequency to apply vibrato bell when all conditions met
 vib_bell_mindur = 600 # Minimum note duration (ms) that can have a vibrato bell
 vib_bell = 40 # Maximum vibrato intensity in vibrato bell
