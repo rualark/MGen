@@ -340,14 +340,14 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 	}
 }
 
-void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
+void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	int ni = i + noff[i][v];
 	// Create rbell if long length and no pauses
-	if ((pi < i) && (ni > i) && (ndur > rbell_mindur[ii]) && (len[i][v] > 2) && 
+	if ((pi < i) && (ni > i) && (ndur > rbell_mindur[ii]) && (len[i][v] > 2) &&
 		i && (!pause[pi][v]) && (!pause[ni][v]) && (randbw(0, 100) < rbell_freq[ii])) {
-		int pos1 = i+1;
+		int pos1 = i + 1;
 		int pos2 = ei;
 		int ok = 1;
 		// Check if dynamics is even
@@ -367,6 +367,40 @@ void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int 
 					(abs(z - (pos1 + pos2) / 2.0) / (pos2 - pos1) * 2.0 * (1.0 - mul) + mul);
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Reverse bell. ";
+		}
+	}
+}
+
+void CGAdapt::AdaptVibBell(int v, int x, int i, int ii, int ei, int pi, int pei)
+{
+	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+	int ni = i + noff[i][v];
+	// Create rbell if long length and no pauses
+	if ((ndur > vib_bell_mindur[ii]) && (len[i][v] > 2) && (randbw(0, 100) < vib_bell_freq[ii])) {
+		// Steps range
+		int pos1 = i + 1;
+		int pos2 = ei;
+		// Center positions
+		int pos = (pos1 + pos2) / 2;
+		int posf = (pos1 + pos2) / 2;
+		int ok = 1;
+		// Check if vib and vibf are zero
+		for (int z = i + 1; z <= ei; z++) {
+			if (vib[z][v] || vibf[z][v]) {
+				ok = 0;
+				break;
+			}
+		}
+		if (ok) {
+			// Left part
+			for (int z = pos1; z < pos; z++) {
+				vib[z][v] = vib_bell[ii] * (float)(z - pos1) / (float)(pos - pos1);
+			}
+			// Right part
+			for (int z = pos; z < pos2; z++) {
+				vib[z][v] = vib_bell[ii] * (float)(pos2 - z) / (float)(pos2 - pos);
+			}
+			if (comment_adapt) adapt_comment[i][v] += "Vibrato bell. ";
 		}
 	}
 }
@@ -456,7 +490,8 @@ void CGAdapt::Adapt(int step1, int step2)
 				}
 				if (instr_type[ii] == 2) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
-					AdaptReverseBell(v, x, i, ii, ei, pi, pei, ncount);
+					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
+					AdaptVibBell(v, x, i, ii, ei, pi, pei);
 					AdaptRetriggerNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptFlexAheadStep(v, x, i, ii, ei, pi, pei);

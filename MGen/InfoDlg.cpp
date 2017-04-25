@@ -94,7 +94,8 @@ BOOL CInfoDlg::OnInitDialog()
 		if (pGen->artic[ms][mv] == ARTIC_END_PBD) st2 = "Pitchbend down ending";
 		if (pGen->artic[ms][mv] == ARTIC_END_VIB2) st2 = "Vibrato2 ending";
 		if (pGen->artic[ms][mv] == ARTIC_END_VIB) st2 = "Vibrato ending";
-		st.Format("Velocity: %d\nArticulation: %s\nLengroup: %d\n", pGen->vel[ms][mv], st2, pGen->lengroup[ms][mv]);
+		st.Format("Velocity: %d\nVibrato intensity: %d\nVibrato speed: %d\nArticulation: %s\nLengroup: %d\n", 
+			pGen->vel[ms][mv], pGen->vib[ms][mv], pGen->vibf[ms][mv], st2, pGen->lengroup[ms][mv]);
 		m_info.AddText(st, RGB(170, 0, 0), 0);
 		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
 		m_info.AddText(st, RGB(170, 0, 0), 0);

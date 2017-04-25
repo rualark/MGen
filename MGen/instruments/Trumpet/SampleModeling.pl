@@ -47,14 +47,16 @@ rbell_dur = 300-1000 # Minimum note duration (ms) that can have a reverse bell -
 rbell_mul = 0.8-0.2 # Multiply dynamics by this parameter at bell center with mindur - with longer dur
 
 # Vibrato adaptor
-CC_vib_intens = 1
-CC_vib_speed = 14
-vib_top = 30-70 # Leftmost-rightmost maximum vibrato in note (percent of note duration)
+CC_vib = 1 # CC number for vibrato intensity
+CC_vibf = 14 # CC number for vibrato speed
+vib_bell_top = 30-70 # Leftmost-rightmost maximum vibrato intensity in note (percent of note duration)
+vibf_bell_top = 30-70 # Leftmost-rightmost maximum vibrato speed in note (percent of note duration)
+vib_bell_freq = 80 # Frequency to apply vibrato bell when all conditions met
 vib_bell_mindur = 600 # Minimum note duration (ms) that can have a vibrato bell
-vib_bell_intens = 40 # Maximum vibrato intensity in vibrato bell
-vib_bell_speed = 30 # Max vibrato frequency in vibrato bell
-rnd_vib_intens = 10 # Randomize vibrato intensity not greater than this percent
-rnd_vib_speed = 10 # Randomize vibrato speed not greater than this percent
+vib_bell = 40 # Maximum vibrato intensity in vibrato bell
+vibf_bell = 30 # Max vibrato frequency in vibrato bell
+rnd_vib = 10 # Randomize vibrato intensity not greater than this percent
+rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent

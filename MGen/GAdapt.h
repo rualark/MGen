@@ -24,7 +24,8 @@ protected:
 	void FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount);
-	void AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount);
+	void AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int pei);
+	void AdaptVibBell(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount);
 											 
   // Adapt local variables

@@ -108,6 +108,18 @@ public:
 	vector<int> art_mindur;
 	vector<int> art_minint;
 	vector<int> art_maxint;
+	vector<int> CC_vib; // CC number for vibrato intensity
+	vector<int> CC_vibf; // CC number for vibrato speed
+	vector<float> vib_bell_top1; // Leftmost - rightmost maximum vibrato intensity in note(percent of note duration)
+	vector<float> vib_bell_top2; // Leftmost - rightmost maximum vibrato intensity in note(percent of note duration)
+	vector<float> vibf_bell_top1; // Leftmost - rightmost maximum vibrato speed in note(percent of note duration)
+	vector<float> vibf_bell_top2; // Leftmost - rightmost maximum vibrato speed in note(percent of note duration)
+	vector<float> vib_bell_freq; // Frequency to apply vibrato bell when all conditions met
+	vector<float> vib_bell_mindur; // Minimum note duration(ms) that can have a vibrato bell
+	vector<float> vib_bell; // Maximum vibrato intensity in vibrato bell
+	vector<float> vibf_bell; // Max vibrato frequency in vibrato bell
+	vector<float> rnd_vib; // Randomize vibrato intensity not greater than this percent
+	vector<float> rnd_vibf; // Randomize vibrato speed not greater than this percent
 	vector<int> CC_steps;
 	vector<int> CC_dyn_ma;
 	vector<int> CC_dyn;
