@@ -345,7 +345,8 @@ void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int 
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	int ni = i + noff[i][v];
 	// Create rbell if long length and no pauses
-	if ((pi < i) && (ni > i) && (ndur > rbell_mindur[ii]) && (len[i][v] > 2) && i && (!pause[pi][v]) && (!pause[ni][v])) {
+	if ((pi < i) && (ni > i) && (ndur > rbell_mindur[ii]) && (len[i][v] > 2) && 
+		i && (!pause[pi][v]) && (!pause[ni][v]) && (randbw(0, 100) < rbell_freq[ii])) {
 		int pos1 = i+1;
 		int pos2 = ei;
 		int ok = 1;

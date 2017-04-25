@@ -50,6 +50,7 @@ CGVar::CGVar()
 	bell_start_len.resize(MAX_INSTR);
 	bell_end_len.resize(MAX_INSTR);
 	bell_mindur.resize(MAX_INSTR);
+	rbell_freq.resize(MAX_INSTR);
 	rbell_mindur.resize(MAX_INSTR);
 	rbell_dur.resize(MAX_INSTR);
 	rbell_mul.resize(MAX_INSTR);
@@ -432,6 +433,7 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "bell_end_mul", &bell_end_mul[i]);
 				CheckVar(&st2, &st3, "bell_end_len", &bell_end_len[i]);
 				CheckVar(&st2, &st3, "bell_start_len", &bell_start_len[i]);
+				CheckVar(&st2, &st3, "rbell_freq", &rbell_freq[i]);
 				CheckVar(&st2, &st3, "rbell_mindur", &rbell_mindur[i]);
 				CheckVar(&st2, &st3, "rbell_dur", &rbell_dur[i]);
 				CheckVar(&st2, &st3, "rbell_mul", &rbell_mul[i]);

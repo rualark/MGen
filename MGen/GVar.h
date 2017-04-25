@@ -146,6 +146,7 @@ public:
 	vector<float> rbell_dur; // Minimum note duration(ms) that will have deepest reverse bell
 	vector<float> rbell_mul; // Multiply dynamics by this parameter at bell center with mindur
 	vector<float> rbell_mul2; // Multiply dynamics by this parameter at bell center with dur
+	vector<float> rbell_freq; // Frequency to apply reverse bell when all conditions met
 	vector<float> end_sfl_dur; // Duration of short fall ending
 	vector<float> end_sfl_freq; // Frequency of short fall ending
 	vector<float> end_pbd_dur; // Duration of pitch bend down ending
