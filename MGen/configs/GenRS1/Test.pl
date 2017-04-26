@@ -12,5 +12,5 @@ sleep_ms = 3 # Artificial pause in ms after generating each step
 min_dyn = 40 # Minimum dynamics
 max_dyn = 125 # Maximum dynamics
 pause_freq = 10 # Percent of notes that will be replaced with pauses
-Instruments = Violin,Piano # Instruments separated with comma
+Instruments = Trumpet,Piano # Instruments separated with comma
 dyn_step = 20 # Maximum dynamic change per step

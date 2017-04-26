@@ -299,7 +299,10 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 			if (st == "") break;
 			int found = 0;
 			// Set all instruments to default instrument
-			if (!ii) for (int i = 0; i < MAX_VOICE; i++) instr[i] = InstGName.size() - 1;
+			if (!ii) {
+				for (int i = 0; i < MAX_VOICE; i++) instr[i] = InstGName.size() - 1;
+				for (int i = 0; i < MAX_INSTR; i++) instr_used[i] = 0;
+			}
 			// Load
 			for (int i = 0; i < InstGName.size(); i++) {
 				if (InstGName[i] == st) {
@@ -434,8 +437,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 		fs.getline(pch, 2550);
 		st = pch;
 		// Load include
-		if (CheckInclude(st, fname, iname)) 
-			LoadInstrument(i, iname);
+		if (CheckInclude(st, fname, iname)) LoadInstrument(i, iname);
 		// Remove comments
 		pos = st.Find("#");
 		// Check if it is first symbol

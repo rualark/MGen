@@ -1,10 +1,10 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 1001 # Id of the currently selected algorithm
-Config = Test # Name of configuration file for selected algorithm
+Algorithm = 2001 # Id of the currently selected algorithm
+Config = autoconf-hamlet # Name of configuration file for selected algorithm
 MIDI_OUT = loopMIDI Port, MMSystem # Name of MIDI device used for playing notes
-Horizontal_zoom = 100 # Zoom of the piano roll. Can be from 1 to 500
+Horizontal_zoom = 200 # Zoom of the piano roll. Can be from 1 to 500
 playback_speed = 100 # Playback speed in percent
 
 # The following settings cannot be changed in GUI. You can change them only in this file

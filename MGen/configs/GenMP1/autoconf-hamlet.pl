@@ -9,4 +9,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-24 19-15-17
 Midi_file = load\hamlet.mid
-Instruments = Violin,Violin,Piano
+Instruments = Trumpet,Piano,Piano,Piano,Piano,Piano,Piano
