@@ -85,6 +85,8 @@ const CString NoteName2[] = {
 	"B" // 11
 };
 
+#define SQR(x) pow(x, 2)
+
 class CGLib
 {
 public:
@@ -117,6 +119,8 @@ protected:
 	void isaac();
 	void randinit(int flag);
 	unsigned int rand2();
+	// Load
+	static int parameter_found;
 
 public:
 	CGLib();

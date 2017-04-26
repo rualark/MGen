@@ -7,6 +7,8 @@ public:
 	CGAdapt();
 	~CGAdapt();
 
+	void AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei);
+
 	void Adapt(int step1, int step2);
 
 	float adapt_pspeed = 100; // Playback speed used during adaptation

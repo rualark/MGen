@@ -124,7 +124,7 @@ void CGMidi::LoadMidi(CString path)
 	int v = 0;
 	int iname_id = 1;
 
-	for (int track = 0; track < midifile.getTrackCount(); track++) {
+	for (int track = 1; track < midifile.getTrackCount(); track++) {
 		if (track > 1) {
 			// Get next free voice
 			v1 = v2 + 1;
@@ -145,7 +145,7 @@ void CGMidi::LoadMidi(CString path)
 		track_id[v] = track;
 		track_vid[v] = 0;
 		// Convert voice instrument to track instrument
-		instr[v] = instr2[track_id[v]];
+		instr[v] = instr2[track_id[v]-1];
 		for (int i = 0; i<midifile[track].size(); i++) {
 			if (need_exit) break;
 			MidiEvent* mev = &midifile[track][i];
@@ -509,9 +509,22 @@ void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
 	CString* est = new CString;
 	est->Format("Pm_OpenOutput: buf size %d, latency %d", OUTPUT_BUF_SIZE, latency);
 	WriteLog(4, est);
+}
+
+void CGMidi::LogInstruments() {
 	// Show instruments
-	est = new CString;
+	CString* est = new CString;
 	CString st, st2;
+	/*
+	int v_cnt2;
+	// Get maximum voice mapped
+	for (int i = MAX_VOICE - 1; i >= 0; --i) {
+		if (instr[i] < InstGName.size() - 1) {
+			v_cnt2 = i + 1;
+			break;
+		}
+	}
+	*/
 	st2 = "Voice to instrument mapping: ";
 	for (int i = 0; i < v_cnt; i++) {
 		st.Format("%d ", instr[i]);
@@ -623,6 +636,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 													// Check if this is first run
 	if ((step1 == 0) || (!midi_sent_t) || (!midi_start_time)) midi_first_run = 1;
 	else midi_first_run = 0;
+	if (midi_first_run) LogInstruments();
 	// Set real time when playback started
 	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - stime[step1] / m_pspeed * 100;
 	// Set real time when playback started

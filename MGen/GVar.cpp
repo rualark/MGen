@@ -6,6 +6,7 @@ CGVar::CGVar()
 {
 	// Init constant length arrays
 	instr.resize(MAX_VOICE);
+	instr_lib.resize(MAX_VOICE);
 	instr_type.resize(MAX_INSTR);
 	instr_used.resize(MAX_INSTR);
 	instr_channel.resize(MAX_INSTR);
@@ -20,8 +21,15 @@ CGVar::CGVar()
 	vibf_bell_top2.resize(MAX_INSTR);
 	vib_bell_freq.resize(MAX_INSTR);
 	vib_bell_mindur.resize(MAX_INSTR);
-	vib_bell.resize(MAX_INSTR);
-	vibf_bell.resize(MAX_INSTR);
+	vib_bell_dur.resize(MAX_INSTR);
+	vib_bell1.resize(MAX_INSTR);
+	vibf_bell1.resize(MAX_INSTR);
+	vib_bell2.resize(MAX_INSTR);
+	vibf_bell2.resize(MAX_INSTR);
+	vib_bell_exp.resize(MAX_INSTR);
+	vibf_bell_exp.resize(MAX_INSTR);
+	rnd_vel.resize(MAX_INSTR);
+	rnd_dyn.resize(MAX_INSTR);
 	rnd_vib.resize(MAX_INSTR);
 	rnd_vibf.resize(MAX_INSTR);
 	CC_vib.resize(MAX_INSTR);
@@ -35,6 +43,8 @@ CGVar::CGVar()
 	max_slur_interval.resize(MAX_INSTR);
 	slur_ks.resize(MAX_INSTR);
 	legato_ahead.resize(MAX_INSTR);
+	legato_ahead_exp.resize(MAX_INSTR);
+	splitpo_freq.resize(MAX_INSTR);
 	nonlegato_freq.resize(MAX_INSTR);
 	nonlegato_minlen.resize(MAX_INSTR);
 	lengroup2.resize(MAX_INSTR);
@@ -239,6 +249,7 @@ void CGVar::LoadConfig(CString fname)
 			// Load general variables
 			int idata = atoi(st2);
 			float fdata = atof(st3);
+			parameter_found = 0;
 			CheckVar(&st2, &st3, "v_cnt", &v_cnt);
 			CheckVar(&st2, &st3, "t_cnt", &t_cnt);
 			CheckVar(&st2, &st3, "t_allocated", &t_allocated);
@@ -250,10 +261,13 @@ void CGVar::LoadConfig(CString fname)
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt);
 			LoadVar(&st2, &st3, "instr_layout", &instr_layout);
 			LoadVar(&st2, &st3, "instruments", &m_config_insts);
-			LoadVarInstr(&st2, &st3, "instruments", instr);
+			//LoadVarInstr(&st2, &st3, "instruments", instr);
 			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose);
 			// Load algorithm-specific variables
 			LoadConfigLine(&st2, &st3, idata, fdata);
+			if (!parameter_found) {
+				WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+			}
 		}
 	}
 	fs.close();
@@ -283,22 +297,24 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 			int found = 0;
 			for (int i = 0; i < InstGName.size(); i++) {
 				if (InstGName[i] == st) {
+					++found;
 					if (instr_used[i] < instr_poly[i]) {
 						++instr_used[i];
 						Dest[ii] = i;
 						break;
 					}
-					++found;
 				}
 				if (i == InstGName.size() - 1) {
-					if (found) {
+					if (!found) {
 						CString* est = new CString;
-						est->Format("Cannot find any instrument named %s (number %d) in layout %s.", st, ii, instr_layout);
+						est->Format("Cannot find any instrument named %s (%d) in layout %s. Mapped to default instrument %s/%s (%d)", 
+							st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size()-1);
 						WriteLog(1, est);
 					}
 					else {
 						CString* est = new CString;
-						est->Format("Cannot map instrument named %s (number %d) in layout %s. Probably too many voices for this instrument type.", st, ii, instr_layout);
+						est->Format("Cannot map instrument named %s (%d) in layout %s. Probably too many voices for this instrument type.  Mapped to default instrument %s/%s (%d)", 
+							st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size() - 1);
 						WriteLog(1, est);
 					}
 				}
@@ -365,6 +381,8 @@ void CGVar::LoadInstrumentLayout()
 	if (InstCName.size() == 0) {
 		WriteLog(1, "Error loading instrument layout from " + fname);
 	}
+	// Set all instruments to default instrument
+	for (int ii = 0; ii < MAX_VOICE; ii++) instr[ii] = InstGName.size() - 1;
 }
 
 void CGVar::LoadInstruments()
@@ -408,6 +426,9 @@ void CGVar::LoadInstruments()
 				st3.Trim();
 				st2.MakeLower();
 				int idata = atoi(st3);
+				// Initialize loading
+				parameter_found = 0;
+				LoadVar(&st2, &st3, "library", &instr_lib[i]);
 				LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
 				LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
 				CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
@@ -417,10 +438,14 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "channel", &instr_channel[i]);
 				LoadRange(&st2, &st3, "vib_bell_top", &vib_bell_top1[i], &vib_bell_top2[i]);
 				LoadRange(&st2, &st3, "vibf_bell_top", &vibf_bell_top1[i], &vibf_bell_top2[i]);
+				LoadRange(&st2, &st3, "vib_bell", &vib_bell1[i], &vib_bell2[i]);
+				LoadRange(&st2, &st3, "vibf_bell", &vibf_bell1[i], &vibf_bell2[i]);
+				LoadRange(&st2, &st3, "vib_bell_dur", &vib_bell_mindur[i], &vib_bell_dur[i]);
 				CheckVar(&st2, &st3, "vib_bell_freq", &vib_bell_freq[i]);
-				CheckVar(&st2, &st3, "vib_bell_mindur", &vib_bell_mindur[i]);
-				CheckVar(&st2, &st3, "vib_bell", &vib_bell[i]);
-				CheckVar(&st2, &st3, "vibf_bell", &vibf_bell[i]);
+				CheckVar(&st2, &st3, "vib_bell_exp", &vib_bell_exp[i]);
+				CheckVar(&st2, &st3, "vibf_bell_exp", &vibf_bell_exp[i]);
+				CheckVar(&st2, &st3, "rnd_vel", &rnd_vel[i]);
+				CheckVar(&st2, &st3, "rnd_dyn", &rnd_dyn[i]);
 				CheckVar(&st2, &st3, "rnd_vib", &rnd_vib[i]);
 				CheckVar(&st2, &st3, "rnd_vibf", &rnd_vibf[i]);
 				CheckVar(&st2, &st3, "cc_vib", &CC_vib[i]);
@@ -434,6 +459,8 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
 				CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
 				CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
+				CheckVar(&st2, &st3, "legato_ahead_exp", &legato_ahead_exp[i]);
+				CheckVar(&st2, &st3, "splitpo_freq", &splitpo_freq[i]);
 				CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
 				CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
 				CheckVar(&st2, &st3, "lengroup2", &lengroup2[i]);
@@ -441,8 +468,8 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "lengroup4", &lengroup4[i]);
 				CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
 				CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
-				CheckVar(&st2, &st3, "rand_start", &rand_start[i]);
-				CheckVar(&st2, &st3, "rand_end", &rand_end[i]);
+				LoadRange(&st2, &st3, "rand_pos", &rand_start[i], &rand_end[i]);
+				LoadRange(&st2, &st3, "rand_pos_max", &rand_start_max[i], &rand_end_max[i]);
 				CheckVar(&st2, &st3, "retrigger_min_len", &retrigger_min_len[i]);
 				CheckVar(&st2, &st3, "retrigger_rand_end", &retrigger_rand_end[i]);
 				CheckVar(&st2, &st3, "retrigger_rand_max", &retrigger_rand_max[i]);
@@ -454,13 +481,9 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "gliss_minlen", &gliss_minlen[i]);
 				CheckVar(&st2, &st3, "bell_mindur", &bell_mindur[i]);
 				CheckVar(&st2, &st3, "gliss_freq", &gliss_freq[i]);
-				CheckVar(&st2, &st3, "rand_start_max", &rand_start_max[i]);
-				CheckVar(&st2, &st3, "rand_end_max", &rand_end_max[i]);
 				CheckVar(&st2, &st3, "max_ahead_note", &max_ahead_note[i]);
-				CheckVar(&st2, &st3, "bell_start_mul", &bell_start_mul[i]);
-				CheckVar(&st2, &st3, "bell_end_mul", &bell_end_mul[i]);
-				CheckVar(&st2, &st3, "bell_end_len", &bell_end_len[i]);
-				CheckVar(&st2, &st3, "bell_start_len", &bell_start_len[i]);
+				LoadRange(&st2, &st3, "bell_mul", &bell_start_mul[i], &bell_end_mul[i]);
+				LoadRange(&st2, &st3, "bell_len", &bell_start_len[i], &bell_end_len[i]);
 				CheckVar(&st2, &st3, "rbell_freq", &rbell_freq[i]);
 				LoadRange(&st2, &st3, "rbell_dur", &rbell_mindur[i], &rbell_dur[i]);
 				LoadRange(&st2, &st3, "rbell_mul", &rbell_mul[i], &rbell_mul2[i]);
@@ -472,6 +495,9 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "end_vib2_freq", &end_vib2_freq[i]);
 				CheckVar(&st2, &st3, "end_vib_dur", &end_vib_dur[i]);
 				CheckVar(&st2, &st3, "end_vib_freq", &end_vib_freq[i]);
+				if (!parameter_found) {
+					WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+				}
 				//CGVar::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			}
 		} // while (fs.good())
@@ -1016,6 +1042,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 			st3.Trim();
 			st2.MakeLower();
 			int idata = atoi(st3);
+			parameter_found = 0;
 			CheckVar(&st2, &st3, "t_cnt", &t_cnt);
 			CheckVar(&st2, &st3, "m_algo_id", &m_algo_id);
 			CheckVar(&st2, &st3, "v_cnt", &v_cnt);
@@ -1027,6 +1054,9 @@ void CGVar::LoadResults(CString dir, CString fname)
 			CheckVar(&st2, &st3, "time_stopped", &time_stopped);
 			LoadVar(&st2, &st3, "m_config", &m_config);
 			LoadVar(&st2, &st3, "save_format_version", &save_format_version);
+			if (!parameter_found) {
+				WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + path);
+			}
 		}
 	}
 	fs.close();

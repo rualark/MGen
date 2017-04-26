@@ -91,7 +91,9 @@ END_MESSAGE_MAP()
 
 CMainFrame::CMainFrame()
 {
-	// TODO: add member initialization code here
+	//HANDLE hThread = GetCurrentThread();
+	//SetThreadPriority(hThread, THREAD_PRIORITY_TIME_CRITICAL);
+
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
 }
 

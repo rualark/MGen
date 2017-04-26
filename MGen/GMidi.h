@@ -46,6 +46,7 @@ public:
 
 	// PortMIDI
 	void StartMIDI(int midi_device_i, int latency, int from);
+	void LogInstruments();
 	void CheckDstime(int i, int v);
 	void SendMIDI(int step1, int step2);
 	void InterpolateCC(int CC, int ma, int step1, int step2, vector<vector<unsigned char>>& dv, int ii, int v);

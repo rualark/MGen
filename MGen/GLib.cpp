@@ -8,6 +8,7 @@
 int CGLib::can_send_log = 1;
 HWND CGLib::m_hWnd = 0;
 int CGLib::debug_level = 1;
+int CGLib::parameter_found = 0;
 int CGLib::play_enabled = 1;
 UINT CGLib::WM_DEBUG_MSG = 0;
 vector<vector<CString>> CGLib::logs;
@@ -38,6 +39,7 @@ CGLib::~CGLib()
 void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int vmin, int vmax)
 {
 	if (*sName == sSearch) {
+		++parameter_found;
 		*Dest = atoi(*sValue);
 		if ((vmin != -1) && (vmax != -1)) {
 			if (*Dest < vmin) *Dest = vmin;
@@ -49,6 +51,7 @@ void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Des
 void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, int * vmin, int* vmax)
 {
 	if (*sName == sSearch) {
+		++parameter_found;
 		int pos = sValue->Find("-");
 		if (pos == -1) {
 			CString* est = new CString;
@@ -73,6 +76,7 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, int * vm
 void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, float * vmin, float * vmax)
 {
 	if (*sName == sSearch) {
+		++parameter_found;
 		int pos = sValue->Find("-");
 		if (pos == -1) {
 			CString* est = new CString;
@@ -97,6 +101,7 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, float * 
 void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, float * Dest)
 {
 	if (*sName == sSearch) {
+		++parameter_found;
 		*Dest = atof(*sValue);
 	}
 }
@@ -104,6 +109,7 @@ void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, float * D
 void CGLib::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * Dest)
 {
 	if (*sName == sSearch) {
+		++parameter_found;
 		*Dest = *sValue;
 	}
 }
@@ -111,6 +117,7 @@ void CGLib::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * 
 void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
 {
 	if (*sName == sSearch) {
+		++parameter_found;
 		int pos = 0;
 		CString st;
 		for (int i = 0; i<1000; i++) {
@@ -125,7 +132,9 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 void CGLib::LoadNote(CString * sName, CString * sValue, char* sSearch, int * Dest)
 {
 	if (*sName == sSearch) {
+		++parameter_found;
 		*Dest = CGLib::GetNoteI(*sValue);
+		++parameter_found;
 	}
 }
 

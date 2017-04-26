@@ -100,8 +100,9 @@ public:
 	vector<int> instr_nmax;
 	vector<int> instr_tmin;
 	vector<int> instr_tmax;
+	vector<CString> instr_lib;
 	vector<int> instr_poly; // Maximum number of simultaneous voices
-	vector<int> splitpo_freq;
+	vector<int> splitpo_freq; // Frequency of split portamento in percent
 	vector<int> splitpo_mixed_minint;
 	vector<int> splitpo_pent_minint;
 	vector<int> art_freq;
@@ -116,8 +117,13 @@ public:
 	vector<float> vibf_bell_top2; // Leftmost - rightmost maximum vibrato speed in note(percent of note duration)
 	vector<float> vib_bell_freq; // Frequency to apply vibrato bell when all conditions met
 	vector<float> vib_bell_mindur; // Minimum note duration(ms) that can have a vibrato bell
-	vector<float> vib_bell; // Maximum vibrato intensity in vibrato bell
-	vector<float> vibf_bell; // Max vibrato frequency in vibrato bell
+	vector<float> vib_bell_dur; // Minimum note duration(ms) that can have a highest vibrato bell
+	vector<float> vib_bell1; // Maximum vibrato intensity in vibrato bell
+	vector<float> vibf_bell1; // Max vibrato frequency in vibrato bell
+	vector<float> vib_bell2; // Maximum vibrato intensity in vibrato bell
+	vector<float> vibf_bell2; // Max vibrato frequency in vibrato bell
+	vector<float> vib_bell_exp; // Exponent to create non - linear bell shape
+	vector<float> vibf_bell_exp; // Exponent to create non - linear bell shape
 	vector<float> rnd_vib; // Randomize vibrato intensity not greater than this percent
 	vector<float> rnd_vibf; // Randomize vibrato speed not greater than this percent
 	vector<int> CC_steps;
@@ -129,6 +135,7 @@ public:
 	vector<int> max_slur_interval;
 	vector<int> slur_ks;
 	vector<int> legato_ahead;
+	vector<float> legato_ahead_exp; // Exponent to interpolate note movement ahead from note velocity
 	vector<float> nonlegato_freq;
 	vector<int> nonlegato_minlen;
 	vector<int> lengroup2;
@@ -138,6 +145,8 @@ public:
 	vector<int> lengroup_edt2;
 	vector<float> rand_start;
 	vector<float> rand_end;
+	vector<float> rnd_vel; // Randomize note velocity not greater than this percent
+	vector<float> rnd_dyn; // Randomize step dynamics not greater than this percent
 	vector<int> retrigger_min_len; // Minimum next note length in ms to use retrigger
 	vector<int> retrigger_rand_end; // Maximum percent of note length to move note end to the left in case of nonlegato
 	vector<int> retrigger_rand_max; // Maximum length in ms to move note end to the left in case of nonlegato retrigger

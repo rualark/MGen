@@ -8,7 +8,7 @@ n_max = F7 # Highest note
 t_min = 100 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 1 # Maximum number of simultaneous voices
-leap_t_min = 100 # Shortest note after leap in ms
+#leap_t_min = 100 # Shortest note after leap in ms
 
 # Automation parameters
 CC_dynamics = 11
@@ -48,9 +48,9 @@ gliss_freq = 50 # Frequency of gliss articulation in percent
 
 # Bell adaptor
 bell_mindur = 300 # Minimum note duration (ms) that can have a bell
-bell_start_mul = 0.2 # Multiply dynamics by this parameter at bell start
-bell_end_mul = 0.2 # Multiply dynamics by this parameter at bell end
-bell_start_len = 30 # Percent of notelength to use for slope at bell start
-bell_end_len = 30 # Percent of notelength to use for slope at bell end
+bell_mul = 0.2-0.2 # Multiply dynamics by this parameter at bell start-end
+bell_len = 30-30 # Percent of notelength to use for slope at bell start-end
 
-
+# Randomization
+rnd_vel = 8 # Randomize note velocity not greater than this percent
+rnd_dyn = 8 # Randomize step dynamics not greater than this percent

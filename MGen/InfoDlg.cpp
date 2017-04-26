@@ -77,6 +77,8 @@ BOOL CInfoDlg::OnInitDialog()
 			pGen->dstime[ms][mv]/1000.0, pGen->stime[ms] / pGen->m_pspeed / 10 + pGen->dstime[ms][mv]/1000.0,
 			pGen->detime[ms][mv]/1000.0, pGen->etime[ms] / pGen->m_pspeed / 10 + pGen->detime[ms][mv]/1000.0);
 		m_info.AddText(st, RGB(0, 170, 0), 0);
+		st.Format("Instrument library: %s\n", pGen->instr_lib[pGen->instr[mv]]);
+		m_info.AddText(st, RGB(0, 170, 0), 0);
 		if (pGen->artic[ms][mv] == ARTIC_LEGATO) st2 = "Legato";
 		if (pGen->artic[ms][mv] == ARTIC_EXACT) st2 = "Exact";
 		if (pGen->artic[ms][mv] == ARTIC_SLUR) st2 = "Slur";
