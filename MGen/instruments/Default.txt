@@ -1,9 +1,9 @@
 #GROUP   | CONFIG           | CHAN | 
 Violin   | Friedlander      | 1    |
-Trumpet  | SampleModeling   | 2    |
-Horn     | SampleModeling   | 3    |
-Trombone | SampleModeling   | 4    |
-Tuba     | SampleModeling   | 5    |
+Trumpet  | SM Trumpet       | 2    |
+Horn     | SM Horn          | 3    |
+Trombone | SM Trombone      | 4    |
+Tuba     | SM Tuba          | 5    |
 Piano    | Default          | 0    | # Default instrument for unmapped instruments
 
 # CHAN is MIDI channel to send this instrument to
