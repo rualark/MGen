@@ -13,6 +13,8 @@ legato_ahead_exp = 6 # Exponent to interpolate note movement ahead from note vel
 max_ahead_note = 16 # Maximum chromatic interval having ahead property
 gliss_freq = 40 # Frequency of gliss articulation in percent
 splitpo_freq = 40 # Frequency of split portamento in percent
+splitpo_mindur = 50 # Minimum legato duration to use split portamento
+gliss_mindur = 50 # Minimum legato duration to use gliss
 
 # Note ending adaptor
 end_sfl_dur = 140 # Duration of short fall ending

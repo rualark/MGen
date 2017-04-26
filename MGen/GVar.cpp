@@ -46,6 +46,8 @@ CGVar::CGVar()
 	legato_ahead.resize(MAX_INSTR);
 	legato_ahead_exp.resize(MAX_INSTR);
 	splitpo_freq.resize(MAX_INSTR);
+	splitpo_mindur.resize(MAX_INSTR);
+	gliss_mindur.resize(MAX_INSTR);
 	nonlegato_freq.resize(MAX_INSTR);
 	nonlegato_minlen.resize(MAX_INSTR);
 	lengroup2.resize(MAX_INSTR);
@@ -491,6 +493,8 @@ void CGVar::LoadInstrument(int i, CString fname)
 			CheckVar(&st2, &st3, "legato_ahead", &legato_ahead[i]);
 			CheckVar(&st2, &st3, "legato_ahead_exp", &legato_ahead_exp[i]);
 			CheckVar(&st2, &st3, "splitpo_freq", &splitpo_freq[i]);
+			CheckVar(&st2, &st3, "splitpo_mindur", &splitpo_mindur[i]);
+			CheckVar(&st2, &st3, "gliss_mindur", &gliss_mindur[i]);
 			CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
 			CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
 			CheckVar(&st2, &st3, "lengroup2", &lengroup2[i]);

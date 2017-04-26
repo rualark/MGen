@@ -211,7 +211,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		// Get previous note length
 		float pdur = (etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 		// Get maximum legato_ahead possible
-		float max_adur = min(ndur, pdur / 2);
+		float max_adur = min(ndur / 2, pdur / 4);
 		// Get minimum velocity possible
 		float min_vel = max(1, 128 - 
 			pow(max_adur * pow(127, legato_ahead_exp[ii]) / legato_ahead[ii], 1 / legato_ahead_exp[ii]));
@@ -226,29 +226,27 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		if (comment_adapt) adapt_comment[i][v] += "Ahead flex start. ";
 		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead flex end. ";
 		// Select articulation
-		if (randbw(0, 100) < splitpo_freq[ii]) {
+		if (adur > splitpo_mindur[ii] && randbw(0, 100) < splitpo_freq[ii]) {
 			// How many chromatic pitches per second
 			float nspeed = abs(note[i][v] - note[pi][v]) / adur * 1000.0;
-			if (nspeed < 8) {
+			if (nspeed < 4) {
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
 			}
-			else if (nspeed < 12) {
+			else if (nspeed < 6) {
 				artic[i][v] = ARTIC_SPLITPO_MIX;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento mixed. ";
 			}
-			/*
-			else if (nspeed < 16) {
+			else if (nspeed < 8) {
 				artic[i][v] = ARTIC_SPLITPO_ARAB;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento arabic. ";
 			}
-			*/
 			else {
 				artic[i][v] = ARTIC_SPLITPO_PENT;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
 			}
 		}
-		else if (randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq[ii]+0.001)*100) {
+		else if (adur > gliss_mindur[ii] && randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq[ii]+0.001)*100) {
 			if (randbw(0, 100) < 50) {
 				artic[i][v] = ARTIC_GLISS;
 				if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
