@@ -131,7 +131,7 @@ void CGAdapt::AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int p
 		// Replace retrigger with non-legato
 		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii]))
 			|| (ndur < retrigger_min_len[ii])) {
-			int max_shift = (etime[pei] - stime[pei]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
+			int max_shift = (etime[pei] - stime[pi]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
 			if (max_shift > retrigger_rand_max[ii]) max_shift = retrigger_rand_max[ii];
 			detime[pei][v] = -randbw(0, max_shift);
 			artic[i][v] = ARTIC_NONLEGATO;
@@ -154,7 +154,7 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 		// Replace retrigger with non-legato
 		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii]))
 			|| (ndur < retrigger_min_len[ii])) {
-			int max_shift = (etime[pei] - stime[pei]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
+			int max_shift = (etime[pei] - stime[pi]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
 			if (max_shift > retrigger_rand_max[ii]) max_shift = retrigger_rand_max[ii];
 			detime[pei][v] = -randbw(0, max_shift);
 			artic[i][v] = ARTIC_NONLEGATO;

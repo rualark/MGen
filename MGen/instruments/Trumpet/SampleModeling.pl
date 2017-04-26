@@ -35,6 +35,9 @@ end_vib_freq = 30 # Frequency of vibrato ending
 # Nonlegato adaptor
 nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonlegato
+retrigger_min_len = 600 # Minimum next note length in ms to use retrigger
+retrigger_rand_max = 300 # Maximum length in ms to move note end to the left in case of nonlegato retrigger
+retrigger_rand_end = 30 # Maximum percent of note length to move note end to the left in case of nonlegato retrigger
 
 # Bell adaptor
 bell_mindur = 300 # Minimum note duration (ms) that can have a bell
