@@ -331,7 +331,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		}
 		if (ok) {
 			for (int z = pos; z < end; z++) {
-				dyn[z][v] = dyn[z][v] * (bell_end_mul[ii] + (float)(end - z) / (end - pos) * (1.0 - bell_end_mul[ii]));
+				dyn[z][v] = dyn[z][v] * (bell_end_mul[ii] + (float)(end - z - 1) / (end - pos) * (1.0 - bell_end_mul[ii]));
 			}
 			if (comment_adapt) adapt_comment[i + len[i][v] - 1][v] += "Long bell end. ";
 		}
@@ -350,17 +350,17 @@ void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int 
 		// Find even dynamics window
 		for (int z = i + 1; z <= (i + ei) / 2; z++) {
 			if (dyn[z][v] != dyn[z - 1][v]) {
-				pos1 = z + 1;
+				pos1 = z;
 			}
 		}
-		for (int z = ei - 1; z > (i + ei) / 2; --z) {
-			if (dyn[z][v] != dyn[z - 1][v]) {
-				pos2 = z - 1;
+		for (int z = ei - 1; z >= (i + ei) / 2; --z) {
+			if (dyn[z][v] != dyn[z + 1][v]) {
+				pos2 = z;
 			}
 		}
 		// Check if window too small
 		float ndur2 = (etime[pos2] - stime[pos1]) * 100 / m_pspeed + detime[pos2][v] - dstime[pos1][v];
-		if (pos2 - pos1 < 1 || ndur2 < rbell_mindur[ii]) return;
+		if (pos2 - pos1 < 2 || ndur2 < rbell_mindur[ii]) return;
 		// Calculate multiplier
 		float mul = rbell_mul[ii] - (ndur2 - rbell_mindur[ii]) *
 			(rbell_mul[ii] - rbell_mul2[ii]) / (rbell_dur[ii] - rbell_mindur[ii] + 0.0001);
