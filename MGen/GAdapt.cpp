@@ -30,17 +30,19 @@ void CGAdapt::CheckRange(int v, int ii)
 		CString* st = new CString;
 		if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
 			if (!warning_note_range[v]) {
-				st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Cannot transpose automatically: range too wide.",
-					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), GetNoteName(instr_nmin[ii]),
-					GetNoteName(instr_nmax[ii]), play_transpose[v]);
+				st->Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Cannot transpose automatically: range too wide.",
+					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
+					InstGName[ii], InstCName[ii], v,
+					GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
 				warning_note_range[v] = 1;
 				WriteLog(1, st);
 			}
 		}
 		else {
-			st->Format("Generated notes range (%s - %s) is outside instrument range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
-				GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), GetNoteName(instr_nmin[ii]),
-				GetNoteName(instr_nmax[ii]), play_transpose[v]);
+			st->Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
+				GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
+				InstGName[ii], InstCName[ii], v,
+				GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
 			WriteLog(1, st);
 		}
 	}
