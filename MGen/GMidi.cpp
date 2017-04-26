@@ -309,7 +309,8 @@ void CGMidi::LoadMidi(CString path)
 	FixLen(0, last_step);
 	CountOff(0, last_step);
 	CountTime(0, last_step);
-	//UpdateNoteMinMax(0, last_step);
+	UpdateNoteMinMax(0, last_step);
+	UpdateTempoMinMax(0, last_step);
 	// Send last
 	t_generated = last_step + 1;
 	if (tnames != "") {
