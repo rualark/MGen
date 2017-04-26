@@ -1,5 +1,4 @@
 #GROUP   | CONFIG           | CHAN | 
-Piano    | Default          | 0    |
 Violin   | Friedlander      | 1    |
 Trumpet  | SampleModeling   | 2    |
 Horn     | SampleModeling   | 3    |

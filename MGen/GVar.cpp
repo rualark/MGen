@@ -295,6 +295,9 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 			st.Trim();
 			if (st == "") break;
 			int found = 0;
+			// Set all instruments to default instrument
+			if (!ii) for (int i = 0; i < MAX_VOICE; i++) instr[i] = InstGName.size() - 1;
+			// Load
 			for (int i = 0; i < InstGName.size(); i++) {
 				if (InstGName[i] == st) {
 					++found;
@@ -381,8 +384,6 @@ void CGVar::LoadInstrumentLayout()
 	if (InstCName.size() == 0) {
 		WriteLog(1, "Error loading instrument layout from " + fname);
 	}
-	// Set all instruments to default instrument
-	for (int ii = 0; ii < MAX_VOICE; ii++) instr[ii] = InstGName.size() - 1;
 }
 
 void CGVar::LoadInstruments()
