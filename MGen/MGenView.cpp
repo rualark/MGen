@@ -133,8 +133,9 @@ void CMGenView::OnDraw(CDC* pDC)
 	SolidBrush brush_agray(Color(20 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_ared(Color(20 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
 	Pen pen_agray(Color(100 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
-	Pen pen_ablue(Color(110 /*A*/, 0 /*R*/, 0 /*G*/, 170 /*B*/), 1);
+	Pen pen_ablue(Color(90 /*A*/, 0 /*R*/, 0 /*G*/, 170 /*B*/), 1);
 	Pen pen_ared(Color(127 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/), 1);
+	Pen pen_aared(Color(70 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/), 1);
 	Pen pen_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/), 1);
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
@@ -395,16 +396,27 @@ void CMGenView::OnDraw(CDC* pDC)
 			if (step2t < pGen->t_generated-1) step2t++;
 			// Show tempo
 			for (int i = step1t; i < step2t; i++)  {
-				if (i>0) g.DrawLine(&pen_ablue, X_FIELD + i * nwidth + nwidth / 2, 
-					y_start - 2 - (y_start-Y_HEADER-4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
-					X_FIELD + (i - 1) * nwidth + nwidth / 2, 
-					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
+				if (i > 0) {
+					g.DrawLine(&pen_ablue, X_FIELD + i * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
+						X_FIELD + (i - 1) * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
+					g.DrawLine(&pen_aared, X_FIELD + i * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i] - pGen->tempo_rnd[i] - tg_min) / (tg_max - tg_min),
+						X_FIELD + (i - 1) * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - pGen->tempo_rnd[i - 1] - tg_min) / (tg_max - tg_min));
+				}
 			}
-			if (step2t < pGen->t_generated - 1) 
+			if (step2t < pGen->t_generated - 1) {
 				g.DrawLine(&pen_ablue, X_FIELD + step2t * nwidth + nwidth / 2,
 					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t] - tg_min) / (tg_max - tg_min),
-				X_FIELD + (step2t + 1) * nwidth + nwidth / 2, 
+					X_FIELD + (step2t + 1) * nwidth + nwidth / 2,
 					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t + 1] - tg_min) / (tg_max - tg_min));
+				g.DrawLine(&pen_aared, X_FIELD + step2t * nwidth + nwidth / 2,
+					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t] - pGen->tempo_rnd[step2t] - tg_min) / (tg_max - tg_min),
+					X_FIELD + (step2t + 1) * nwidth + nwidth / 2,
+					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t + 1] - pGen->tempo_rnd[step2t + 1] - tg_min) / (tg_max - tg_min));
+			}
 			// Highlight draft notes
 			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			if ((step2t > pGen->t_sent) || (pGen->need_exit == 1)) {

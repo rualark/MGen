@@ -29,6 +29,7 @@ CGVar::CGVar()
 	vib_bell_exp.resize(MAX_INSTR);
 	vibf_bell_exp.resize(MAX_INSTR);
 	rnd_vel.resize(MAX_INSTR);
+	rnd_vel_repeat.resize(MAX_INSTR);
 	rnd_dyn.resize(MAX_INSTR);
 	rnd_vib.resize(MAX_INSTR);
 	rnd_vibf.resize(MAX_INSTR);
@@ -122,6 +123,7 @@ void CGVar::InitVectors()
 	adapt_comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
 	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
 	tempo = vector<float>(t_allocated);
+	tempo_rnd = vector<float>(t_allocated);
 	stime = vector<float>(t_allocated);
 	etime = vector<float>(t_allocated);
 	dstime = vector<vector<float>>(t_allocated, vector<float>(v_cnt));
@@ -155,6 +157,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	noff.resize(size);
 	tonic.resize(size);
 	tempo.resize(size);
+	tempo_rnd.resize(size);
 	stime.resize(size);
 	etime.resize(size);
 	dstime.resize(size);
@@ -379,6 +382,20 @@ void CGVar::LoadInstrumentLayout()
 			// Set default mapping
 			instr[InstCName.size() - 1] = InstCName.size() - 1;
 		}
+		pos = st.Find("=");
+		if (pos != -1) {
+			st2 = st.Left(pos);
+			st3 = st.Mid(pos + 1);
+			st2.Trim();
+			st3.Trim();
+			st2.MakeLower();
+			parameter_found = 0;
+			CheckVar(&st2, &st3, "rnd_tempo", &rnd_tempo);
+			CheckVar(&st2, &st3, "rnd_tempo_step", &rnd_tempo_step);
+			if (!parameter_found) {
+				WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+			}
+		}
 	}
 	fs.close();
 	if (InstCName.size() == 0) {
@@ -446,6 +463,7 @@ void CGVar::LoadInstruments()
 				CheckVar(&st2, &st3, "vib_bell_exp", &vib_bell_exp[i]);
 				CheckVar(&st2, &st3, "vibf_bell_exp", &vibf_bell_exp[i]);
 				CheckVar(&st2, &st3, "rnd_vel", &rnd_vel[i]);
+				CheckVar(&st2, &st3, "rnd_vel_repeat", &rnd_vel_repeat[i]);
 				CheckVar(&st2, &st3, "rnd_dyn", &rnd_dyn[i]);
 				CheckVar(&st2, &st3, "rnd_vib", &rnd_vib[i]);
 				CheckVar(&st2, &st3, "rnd_vibf", &rnd_vibf[i]);

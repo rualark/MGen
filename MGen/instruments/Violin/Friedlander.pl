@@ -20,7 +20,7 @@ CC_retrigger = 64 # This CC will be set before note retriger and reset soon afte
 retrigger_freq = 50 # Percent to use CC retrigger instead of non-legato when repeating notes
 retrigger_min_len = 600 # Minimum next note length in ms to use retrigger
 retrigger_rand_max = 300 # Maximum length in ms to move note end to the left in case of nonlegato retrigger
-retrigger_rand_end = 30 # Maximum percent of note length to move note end to the left in case of nonlegato retrigger
+retrigger_rand_end = 50 # Maximum percent of note length to move note end to the left in case of nonlegato retrigger
 
 # Slur adaptor
 max_slur_count = 2 # Use slur for 2nd moves, but no longer than X moves

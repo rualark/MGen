@@ -459,12 +459,15 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 	int ok = 1;
 	if (rnd_vel[ii] > 0) {
 		if (instr_type[ii] == 1) {
-			if (i && !pause[i - 1][v]) ok = 0;
+			if (i && !pause[i - 1][v] && note[i-1][v] != note[i][v]) ok = 0;
 		}
 		if (instr_type[ii] == 2) {
-			if (i && !pause[i - 1][v]) ok = 0;
+			if (i && !pause[i - 1][v] && note[i - 1][v] != note[i][v]) ok = 0;
 		}
 		if (ok) {
+			// If note repeats, increase randomization range
+			if (i > 0 && note[i - 1][v] == note[i][v] && rnd_vel_repeat[ii]) 
+				rv = rnd_vel_repeat[ii];
 			int max_shift = vel[i][v] * rv / 100.0;
 			vel[i][v] = randbw(max(1, vel[i][v] - max_shift), min(127, vel[i][v] + max_shift));
 		}
@@ -580,6 +583,17 @@ void CGAdapt::Adapt(int step1, int step2)
 			vibf[i][v] = randbw(max(1, vibf[i][v] - max_shift), min(127, vibf[i][v] + max_shift));
 		} // for i
 	} // for v
+	for (int i = step1; i <= step2; i++) {
+		// Randomize tempo
+		if (i > 0) {
+			tempo_rnd[i] = tempo_rnd[i - 1] + randbw(-rnd_tempo_step * tempo[i] / 100.0, rnd_tempo_step * tempo[i] / 100.0);
+			// Correct tempo range
+			tempo_rnd[i] = max(tempo_rnd[i], -tempo[i] * (rnd_tempo / 2.0) / 100.0);
+			tempo_rnd[i] = min(tempo_rnd[i], tempo[i] * (rnd_tempo / 2.0) / 100.0);
+			// Apply tempo randomization
+			tempo[i] += tempo_rnd[i];
+		}
+	}
 	for (int v = 0; v < v_cnt; v++) {
 		// Instrument id
 		int ii = instr[v]; 
@@ -598,5 +612,7 @@ void CGAdapt::Adapt(int step1, int step2)
 		st->Format("Adapt steps %d-%d in %d ms", step1, step2, time_stop - time_start);
 		WriteLog(0, st);
 	}
+	// Tempo could change
+	UpdateTempoMinMax(step1, step2);
 }
 

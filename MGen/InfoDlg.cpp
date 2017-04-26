@@ -68,8 +68,8 @@ BOOL CInfoDlg::OnInitDialog()
 		}
 		st.Format("Current offset: %d steps\nPrevious offset: %d steps\nNext offset: %d steps\nDynamics: %d\n", pGen->coff[ms][mv], pGen->poff[ms][mv], pGen->noff[ms][mv], pGen->dyn[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Tempo: %.1f bpm\nStep start time: %.3f s (%.2f ms long), end time %.3f\nPause indicator: %d\nComment: %s\nAdapt comment: %s\n", 
-			pGen->tempo[ms], pGen->stime[ms] / pGen->m_pspeed / 10,
+		st.Format("Tempo: %.1f bpm (randomized %.1f bpm)\nStep start time: %.3f s (%.2f ms long), end time %.3f\nPause indicator: %d\nComment: %s\nAdapt comment: %s\n", 
+			pGen->tempo[ms], pGen->tempo_rnd[ms], pGen->stime[ms] / pGen->m_pspeed / 10,
 			(pGen->etime[ms] - pGen->stime[ms]) * 100 / pGen->m_pspeed, pGen->etime[ms] / pGen->m_pspeed / 10, pGen->pause[ms][mv],
 			pGen->comment[ms][mv], pGen->adapt_comment[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);

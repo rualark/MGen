@@ -78,6 +78,7 @@ public:
 	vector< vector <CString> > adapt_comment; // Adaptation comment for note
 	vector< vector <Color> > color; // Note color (rgb ignored if all zero; alpha ignored if zero)
 	vector<float> tempo; // Tempo
+	vector<float> tempo_rnd; // Tempo randomization added
 	vector<float> stime; // Time of current step start in ms
 	vector<float> etime; // Time of current step ending in ms
 	vector< vector <float> > dstime; // Delta of current step start in ms for playback
@@ -146,6 +147,7 @@ public:
 	vector<float> rand_start;
 	vector<float> rand_end;
 	vector<float> rnd_vel; // Randomize note velocity not greater than this percent
+	vector<float> rnd_vel_repeat; // Randomize note velocity not greater than this percent for note retriggers
 	vector<float> rnd_dyn; // Randomize step dynamics not greater than this percent
 	vector<int> retrigger_min_len; // Minimum next note length in ms to use retrigger
 	vector<int> retrigger_rand_end; // Maximum percent of note length to move note end to the left in case of nonlegato
@@ -179,6 +181,10 @@ public:
 	vector<float> end_vib_dur; // Duration of vibrato ending
 	vector<float> end_vib_freq; // Frequency of vibrato ending
 	int adapt_enable = 1;
+
+	// Global config
+	int rnd_tempo = 6; // Randomize tempo not greater than this percent
+	int rnd_tempo_step = 1; // Maximum difference in tempo between adjacent steps while randomizing
 
 protected:
 	void ValidateVectors(int step1, int step2);
