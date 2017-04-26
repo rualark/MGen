@@ -129,6 +129,23 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 	}
 }
 
+int CGLib::CheckInclude(CString st, CString fname, CString &iname) {
+	iname = "";
+	if (st.Left(8) == "include ") {
+		st = st.Mid(8);
+		st.Replace("\"", "");
+		st.Replace("/", "\\");
+		st.Trim();
+		char szDir[1024];
+		char *fileExt;
+		CString st4 = dir_from_path(fname) + "\\" + st;
+		GetFullPathName(st4, 1024, szDir, &fileExt);
+		iname = szDir;
+		return 1;
+	}
+	return 0;
+}
+
 void CGLib::LoadNote(CString * sName, CString * sValue, char* sSearch, int * Dest)
 {
 	if (*sName == sSearch) {

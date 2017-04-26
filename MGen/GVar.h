@@ -15,6 +15,7 @@ public:
 
 	void InitVectors();
 	void LoadInstruments(); // Load instruments config
+	void LoadInstrument(int i, CString fname);
 	void LoadConfig(CString fname);
 	void LoadInstrumentLayout();
 	void SaveResults(CString dir, CString fname);

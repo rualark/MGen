@@ -98,6 +98,7 @@ public:
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, float * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
+	static int CheckInclude(CString st, CString fname, CString & iname);
 	static void LoadNote(CString * sName, CString * sValue, char * sSearch, int * Dest);
 	static CString FormatTime(int sec);
 	static bool dirExists(CString dirName_in);
