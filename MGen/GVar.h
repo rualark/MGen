@@ -140,6 +140,8 @@ public:
 	vector<int> slur_ks;
 	vector<int> legato_ahead;
 	vector<float> legato_ahead_exp; // Exponent to interpolate note movement ahead from note velocity
+	vector<float> leg_pdur; // Maximum percent of previous note duration, that legato transition can take
+	vector<float> leg_cdur; // Maximum percent of current note duration, that legato transition can take
 	vector<float> nonlegato_freq;
 	vector<int> nonlegato_minlen;
 	vector<int> lengroup2;

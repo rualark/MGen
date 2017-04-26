@@ -211,7 +211,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		// Get previous note length
 		float pdur = (etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 		// Get maximum legato_ahead possible
-		float max_adur = min(ndur / 2, pdur / 4);
+		float max_adur = min(ndur * leg_cdur[ii] / 100.0, pdur * leg_pdur[ii] / 100.0);
 		// Get minimum velocity possible
 		float min_vel = max(1, 128 - 
 			pow(max_adur * pow(127, legato_ahead_exp[ii]) / legato_ahead[ii], 1 / legato_ahead_exp[ii]));

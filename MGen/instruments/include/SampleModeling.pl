@@ -9,12 +9,14 @@ CC_steps = 7 # Number of CC steps in one note step (please use only odd numbers)
 
 # Legato adaptor
 legato_ahead = 700 # Time in ms to stretch legato notes back to cope with legato delay
+leg_pdur = 30 # Maximum percent of previous note duration, that legato transition can take
+leg_cdur = 30 # Maximum percent of current note duration, that legato transition can take
 legato_ahead_exp = 6 # Exponent to interpolate note movement ahead from note velocity
 max_ahead_note = 16 # Maximum chromatic interval having ahead property
 gliss_freq = 40 # Frequency of gliss articulation in percent
 splitpo_freq = 40 # Frequency of split portamento in percent
-splitpo_mindur = 50 # Minimum legato duration to use split portamento
-gliss_mindur = 50 # Minimum legato duration to use gliss
+splitpo_mindur = 30 # Minimum legato duration to use split portamento
+gliss_mindur = 30 # Minimum legato duration to use gliss
 
 # Note ending adaptor
 end_sfl_dur = 140 # Duration of short fall ending
