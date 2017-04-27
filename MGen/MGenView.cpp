@@ -288,7 +288,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			int ci_old = -1;
 			for (int v = 0; v < pGen->v_cnt; v++) {
 				int ci = v;
-				if (pGen->midifile_loaded) ci = pGen->track_id[v] - 1;
+				if (pGen->midifile_loaded && pGen->track_id[v] > 0) ci = pGen->track_id[v] - 1;
 				// Show instrument name
 				if (ci_old != ci) {
 					ci_old = ci;

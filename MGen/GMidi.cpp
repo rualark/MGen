@@ -807,7 +807,12 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Sort by timestamp before sending
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
 	// Send
-	Pm_Write(midi, midi_buf.data(), midi_buf.size());
+	PmError pmerr = Pm_Write(midi, midi_buf.data(), midi_buf.size());
+	if (pmerr) {
+		CString* est = new CString;
+		est->Format("Error writing %d events to midi device", midi_buf.size());
+		WriteLog(1, est);
+	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
@@ -1015,4 +1020,9 @@ int CGMidi::PmEvent_comparator(const void * v1, const void * v2)
 		return +1;
 	else
 		return 0;
+}
+
+void CGMidi::LoadWav(CString fname)
+{
+
 }

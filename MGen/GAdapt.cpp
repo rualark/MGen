@@ -173,8 +173,8 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 {
 	// Randomly make some notes non-legato if they have enough length
 	if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > nonlegato_minlen[ii]) &&
-		(randbw(0, 100) < nonlegato_freq[ii])) {
-		detime[pei][v] = -min(300, (etime[pei] - stime[pei]) * 100 / m_pspeed / 3);
+		(randbw(0, 100) < nonlegato_freq[ii] * pow(abs(note[i][v] - note[pi][v]), 0.3))) {
+		detime[pei][v] = -min(300, (etime[pei] - stime[pi]) * 100 / m_pspeed / 3);
 		dstime[i][v] = 0;
 		artic[i][v] = ARTIC_NONLEGATO;
 		if (comment_adapt) adapt_comment[i][v] += "Random nonlegato. ";
@@ -229,18 +229,20 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		if (adur > splitpo_mindur[ii] && randbw(0, 100) < splitpo_freq[ii]) {
 			// How many chromatic pitches per second
 			float nspeed = abs(note[i][v] - note[pi][v]) / adur * 1000.0;
-			if (nspeed < 4) {
+			if (nspeed < 8) {
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
 			}
-			else if (nspeed < 6) {
+			else if (nspeed < 12) {
 				artic[i][v] = ARTIC_SPLITPO_MIX;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento mixed. ";
 			}
-			else if (nspeed < 8) {
+			/*
+			else if (nspeed < 16) {
 				artic[i][v] = ARTIC_SPLITPO_ARAB;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento arabic. ";
 			}
+			*/
 			else {
 				artic[i][v] = ARTIC_SPLITPO_PENT;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
@@ -433,19 +435,19 @@ void CGAdapt::AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int 
 	int ni = i + noff[i][v];
 	// Check if it is last note in current melody
 	if (x == ncount - 1 || pause[ni][v]) {
-		if (ndur > end_sfl_dur[ii] * 2 && randbw(0, 100) < end_sfl_freq[ii]) {
+		if (ndur > end_sfl_dur[ii] * 3 && randbw(0, 100) < end_sfl_freq[ii]) {
 			artic[ei][v] = ARTIC_END_SFL;
 			if (comment_adapt) adapt_comment[ei][v] += "Short fall ending. ";
 		}
-		else if (ndur > end_pbd_dur[ii] * 2 && randbw(0, 100) < end_pbd_freq[ii]) {
+		else if (ndur > end_pbd_dur[ii] * 3 && randbw(0, 100) < end_pbd_freq[ii]) {
 			artic[ei][v] = ARTIC_END_PBD;
 			if (comment_adapt) adapt_comment[ei][v] += "Pitchbend down ending. ";
 		}
-		else if (ndur > end_vib2_dur[ii] * 2 && randbw(0, 100) < end_vib2_freq[ii]) {
+		else if (ndur > end_vib2_dur[ii] * 3 && randbw(0, 100) < end_vib2_freq[ii]) {
 			artic[ei][v] = ARTIC_END_VIB2;
 			if (comment_adapt) adapt_comment[ei][v] += "Vibrato2 ending. ";
 		}
-		else if (ndur > end_vib_dur[ii] * 2 && randbw(0, 100) < end_vib_freq[ii]) {
+		else if (ndur > end_vib_dur[ii] * 3 && randbw(0, 100) < end_vib_freq[ii]) {
 			artic[ei][v] = ARTIC_END_VIB;
 			if (comment_adapt) adapt_comment[ei][v] += "Vibrato ending. ";
 		}

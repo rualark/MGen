@@ -16,9 +16,9 @@
 #define MAX_AHEAD 1000
 
 // PortMIDI
-#define OUTPUT_BUF_SIZE 10000
-#define MIN_MIDI_BUF_MSEC 10000
-#define MAX_MIDI_BUF_MSEC 20000
+#define OUTPUT_BUF_SIZE 100000
+#define MIN_MIDI_BUF_MSEC 3000
+#define MAX_MIDI_BUF_MSEC 6000
 #define MIDI_BUF_PROTECT 500 // Number of ms to postpone playback on start
 #define DRIVER_INFO NULL
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
@@ -91,6 +91,7 @@ protected:
 	void AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2);
 	void AddTransitionKs(int i, PmTimestamp timestamp, int ks);
 	static int PmEvent_comparator(const void *v1, const void *v2);
+	void LoadWav(CString fname);
 
 	// Information for current note in SendMIDI
 	vector <PmEvent> midi_buf;
