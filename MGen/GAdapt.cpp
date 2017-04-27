@@ -437,6 +437,8 @@ void CGAdapt::AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int 
 {
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	int ni = i + noff[i][v];
+	// Create ending articulation only if ending dynamics is low
+	if (dyn[ei][v] > 40) return;
 	// Check if it is last note in current melody
 	if (x == ncount - 1 || pause[ni][v]) {
 		if (ndur > end_sfl_dur[ii] * 3 && randbw(0, 100) < end_sfl_freq[ii]) {
