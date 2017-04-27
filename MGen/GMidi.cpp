@@ -959,7 +959,7 @@ void CGMidi::AddNoteOn(PmTimestamp timestamp, int data1, int data2)
 void CGMidi::AddKsOn(PmTimestamp timestamp, int data1, int data2)
 {
 	// Check if range valid
-	if ((data1 == 0) || ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]]))) {
+	if ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]])) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString* st = new CString;
 			st->Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
@@ -991,7 +991,7 @@ void CGMidi::AddNoteOff(PmTimestamp timestamp, int data1, int data2)
 void CGMidi::AddKsOff(PmTimestamp timestamp, int data1, int data2)
 {
 	// Check if range valid
-	if ((data1 == 0) || ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]]))) {
+	if ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]])) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString* st = new CString;
 			st->Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",

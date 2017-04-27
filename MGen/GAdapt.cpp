@@ -234,7 +234,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
 			}
-			else if (abs(note[pi][v] - note[i][v]) > 3) {
+			else if (abs(note[pi][v] - note[i][v]) > splitpo_pent_minint[ii]) {
 				artic[i][v] = ARTIC_SPLITPO_PENT;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
 			}

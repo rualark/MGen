@@ -17,6 +17,7 @@ gliss_freq = 40 # Frequency of gliss articulation in percent
 splitpo_freq = 40 # Frequency of split portamento in percent
 splitpo_mindur = 50 # Minimum legato duration to use split portamento
 gliss_mindur = 30 # Minimum legato duration to use gliss
+splitpo_pent_minint = 3 # Minimum allowed interval in semitones for split portamento pentatonic
 
 # Nonlegato adaptor
 nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left

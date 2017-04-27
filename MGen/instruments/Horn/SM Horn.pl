@@ -14,12 +14,14 @@ ks1 = 12 # First keyswitch position
 # Note ending adaptor
 end_sfl_dur = 140 # Duration of short fall ending
 end_sfl_freq = 10 # Frequency of short fall ending
-end_pbd_dur = 200 # Duration of pitch bend down ending
-end_pbd_freq = 30 # Frequency of pitch bend down ending
-end_vib2_dur = 240 # Duration of vibrato ending2
-end_vib2_freq = 30 # Frequency of vibrato ending2
-end_vib_dur = 445 # Duration of vibrato ending
+end_pbd_dur = 640 # Duration of vibrato ending2
+end_pbd_freq = 30 # Frequency of vibrato ending2
+end_vib_dur = 640 # Duration of vibrato ending
 end_vib_freq = 30 # Frequency of vibrato ending
+end_vib2_dur = 0 # Disable
+end_vib2_freq = 0 # Disable
 
 # Legato adaptor
-legato_ahead = 700 # Time in ms to stretch legato notes back to cope with legato delay
+splitpo_freq = 90 # Frequency of split portamento in percent
+splitpo_pent_minint = 100 # Disable
+gliss_freq = 0 # Disable

@@ -26,6 +26,7 @@ CGVar::CGVar()
 	vib_bell1.resize(MAX_INSTR);
 	vibf_bell1.resize(MAX_INSTR);
 	vib_bell2.resize(MAX_INSTR);
+	splitpo_pent_minint.resize(MAX_INSTR);
 	vibf_bell2.resize(MAX_INSTR);
 	vib_bell_exp.resize(MAX_INSTR);
 	vibf_bell_exp.resize(MAX_INSTR);
@@ -484,6 +485,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 			CheckVar(&st2, &st3, "rnd_dyn", &rnd_dyn[i]);
 			CheckVar(&st2, &st3, "rnd_vib", &rnd_vib[i]);
 			CheckVar(&st2, &st3, "rnd_vibf", &rnd_vibf[i]);
+			CheckVar(&st2, &st3, "splitpo_pent_minint", &splitpo_pent_minint[i]);
 			CheckVar(&st2, &st3, "cc_vib", &CC_vib[i]);
 			CheckVar(&st2, &st3, "cc_vibf", &CC_vibf[i]);
 			CheckVar(&st2, &st3, "cc_steps", &CC_steps[i]);
