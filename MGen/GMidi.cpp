@@ -746,28 +746,28 @@ void CGMidi::SendMIDI(int step1, int step2)
 					}
 					// Send transition ks
 					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_CHROM)) {
-						AddTransitionKs(i, stimestamp, 48);
-						AddTransitionKs(i, stimestamp, 36);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 0);
 					}
 					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_MIX)) {
-						AddTransitionKs(i, stimestamp, 48);
-						AddTransitionKs(i, stimestamp, 37);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 1);
 					}
 					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_ARAB)) {
-						AddTransitionKs(i, stimestamp, 48);
-						AddTransitionKs(i, stimestamp, 39);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 3);
 					}
 					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_PENT)) {
-						AddTransitionKs(i, stimestamp, 48);
-						AddTransitionKs(i, stimestamp, 40);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 4);
 					}
 					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_GLISS)) {
-						AddTransitionKs(i, stimestamp, 48);
-						AddTransitionKs(i, stimestamp, 38);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 2);
 					}
 					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_GLISS2)) {
-						AddTransitionKs(i, stimestamp, 48);
-						AddTransitionKs(i, stimestamp, 41);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
+						AddTransitionKs(i, stimestamp, ks1[ii] + 5);
 					}
 					// Send rebow retrigger
 					if ((instr_type[ii] == 1) && (artic[i][v] == ARTIC_REBOW)) {
@@ -782,16 +782,16 @@ void CGMidi::SendMIDI(int step1, int step2)
 					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
 					// Send note ending ks
 					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_SFL)) {
-						AddKs(etimestamp - end_sfl_dur[ii], 47);
+						AddKs(etimestamp - end_sfl_dur[ii], ks1[ii] + 11);
 					}
 					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_PBD)) {
-						AddKs(etimestamp - end_pbd_dur[ii], 40);
+						AddKs(etimestamp - end_pbd_dur[ii], ks1[ii] + 4);
 					}
 					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_VIB2)) {
-						AddKs(etimestamp - end_vib2_dur[ii], 42);
+						AddKs(etimestamp - end_vib2_dur[ii], ks1[ii] + 6);
 					}
 					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_VIB)) {
-						AddKs(etimestamp - end_vib_dur[ii], 41);
+						AddKs(etimestamp - end_vib_dur[ii], ks1[ii] + 5);
 					}
 				}
 			}

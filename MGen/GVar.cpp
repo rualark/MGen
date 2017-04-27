@@ -6,6 +6,7 @@ CGVar::CGVar()
 {
 	// Init constant length arrays
 	instr.resize(MAX_VOICE);
+	ks1.resize(MAX_VOICE);
 	instr_lib.resize(MAX_VOICE);
 	instr_type.resize(MAX_INSTR);
 	instr_used.resize(MAX_INSTR);
@@ -462,6 +463,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 			// Initialize loading
 			parameter_found = 0;
 			LoadVar(&st2, &st3, "library", &instr_lib[i]);
+			CheckVar(&st2, &st3, "ks1", &ks1[i]);
 			LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
 			LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
 			CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);

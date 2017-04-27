@@ -97,6 +97,7 @@ public:
 	vector<int> instr; // Instruments for each voice
 	vector<int> instr_channel;
 	vector<int> instr_type;
+	vector<int> ks1; // First keyswitch pitch
 	vector<int> instr_used; // For how many voices this instrument is already used
 	vector<int> instr_nmin;
 	vector<int> instr_nmax;
