@@ -226,37 +226,41 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		if (comment_adapt) adapt_comment[i][v] += "Ahead flex start. ";
 		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead flex end. ";
 		// Select articulation
-		if (adur > splitpo_mindur[ii] && randbw(0, 100) < splitpo_freq[ii]) {
+		if (adur > splitpo_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 13 &&
+			randbw(0, 100) < splitpo_freq[ii]) {
 			// How many chromatic pitches per second
 			float nspeed = abs(note[i][v] - note[pi][v]) / adur * 1000.0;
 			if (nspeed < 8) {
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
 			}
+			/*
 			else if (nspeed < 12) {
 				artic[i][v] = ARTIC_SPLITPO_MIX;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento mixed. ";
 			}
-			/*
 			else if (nspeed < 16) {
 				artic[i][v] = ARTIC_SPLITPO_ARAB;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento arabic. ";
 			}
 			*/
-			else {
+			else if (abs(note[pi][v] - note[i][v]) > 2) {
 				artic[i][v] = ARTIC_SPLITPO_PENT;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
 			}
 		}
-		else if (adur > gliss_mindur[ii] && randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq[ii]+0.001)*100) {
+		else if (adur > gliss_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 6 &&
+			randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq[ii]+0.001)*100) {
 			if (randbw(0, 100) < 50) {
-				artic[i][v] = ARTIC_GLISS;
-				if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
-			}
-			else {
 				artic[i][v] = ARTIC_GLISS2;
 				if (comment_adapt) adapt_comment[i][v] += "Gliss2. ";
 			}
+			/*
+			else {
+				artic[i][v] = ARTIC_GLISS;
+				if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
+			}
+			*/
 		}
 	}
 }
