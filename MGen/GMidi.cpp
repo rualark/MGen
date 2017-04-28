@@ -834,64 +834,75 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 {
 	if (CC) {
 		int cc_value;
+		int steps, skip;
+		float fsteps;
 		float cc_step; // Length of cc interpolation step
 		float cc_pos1; // Middle of current note step
 		float cc_pos2; // Middle of next note step
 		for (int i = step1 - 2; i < step2 - 1; i++) {
 			if (i < 0) continue;
 			midi_current_step = i;
-			vector <float> cc_lin; // Linear interpolation
-			vector <float> cc_ma; // Moving average
-			cc_lin.resize(CC_steps[ii] * 2);
-			cc_ma.resize(CC_steps[ii]);
+			// Linear interpolation
+			vector <float> cc_lin; 
+			// Moving average
+			vector <float> cc_ma; 
+			// Get CC steps count
+			fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
+			// Check if need to skip note steps
+			skip = 1.0 / max(0.0000001, fsteps);
+			if (skip > 1 && i % skip) continue;
+			steps = max(1, fsteps);
+			if (steps % 2 == 0) steps++;
+			cc_lin.resize(steps * 2);
+			cc_ma.resize(steps);
 			// Calculate window
 			cc_pos1 = (etime[i] + stime[i]) * 100 / m_pspeed / 2;
 			cc_pos2 = (etime[i + 1] + stime[i + 1]) * 100 / m_pspeed / 2;
-			cc_step = (cc_pos2 - cc_pos1) / CC_steps[ii];
+			cc_step = (cc_pos2 - cc_pos1) / steps;
 			// Linear interpolation
-			for (int c = 0; c < CC_steps[ii] * 2; c++) {
+			for (int c = 0; c < steps * 2; c++) {
 				// Left cc steps
-				if (c < CC_steps[ii] / 2) {
+				if (c < steps / 2) {
 					if (i == 0) cc_lin[c] = dv[i][v];
-					else cc_lin[c] = (floor(CC_steps[ii] * 0.5 - c) * dv[i - 1][v] + floor(c + 1 + CC_steps[ii] / 2) * dv[i][v]) / CC_steps[ii];
+					else cc_lin[c] = (floor(steps * 0.5 - c) * dv[i - 1][v] + floor(c + 1 + steps / 2) * dv[i][v]) / steps;
 				}
 				// Mid cc steps
-				else if (c < CC_steps[ii] * 1.5) {
-					cc_lin[c] = (floor(CC_steps[ii] * 1.5 - c) * dv[i][v] + floor(c - CC_steps[ii] / 2) * dv[i + 1][v]) / CC_steps[ii];
+				else if (c < steps * 1.5) {
+					cc_lin[c] = (floor(steps * 1.5 - c) * dv[i][v] + floor(c - steps / 2) * dv[i + 1][v]) / steps;
 				}
 				// Right cc steps
 				else {
 					if (i == step2 - 2) cc_lin[c] = dv[i + 1][v];
-					else cc_lin[c] = (floor(CC_steps[ii] * 2.5 - c) * dv[i + 1][v] + floor(c - CC_steps[ii] * 1.5 + 1) * dv[i + 2][v]) / CC_steps[ii];
+					else cc_lin[c] = (floor(steps * 2.5 - c) * dv[i + 1][v] + floor(c - steps * 1.5 + 1) * dv[i + 2][v]) / steps;
 				}
 			}
 			if (!ma) {
 				// Send linear CC
-				for (int c = 0; c < CC_steps[ii]; c++) {
-					AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)CC_steps[ii], CC, cc_lin[c]);
+				for (int c = 0; c < steps; c++) {
+					AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)steps, CC, cc_lin[c]);
 				}
 			}
 			else {
 				// First moving average
 				cc_ma[0] = 0;
-				for (int c = 0; c < CC_steps[ii]; c++) {
-					cc_ma[0] += cc_lin[c] / (float)CC_steps[ii];
+				for (int c = 0; c < steps; c++) {
+					cc_ma[0] += cc_lin[c] / (float)steps;
 				}
 				// Extend moving average
-				for (int c = 1; c < CC_steps[ii]; c++) {
-					cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + CC_steps[ii] - 1] - cc_lin[c - 1]) / (float)CC_steps[ii];
+				for (int c = 1; c < steps; c++) {
+					cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + steps - 1] - cc_lin[c - 1]) / (float)steps;
 				}
 				// Send starting CC
 				if (i == 0) AddCC(-1, CC, dv[i][v]);
 				// Send ma CC of first note
-				int hstep = CC_steps[ii] / 2;
+				int hstep = steps / 2;
 				if (i > step1 - 2) for (int c = 0; c < hstep + 1; c++) {
-					int t = stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)(c + hstep) / (float)CC_steps[ii];
+					int t = stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)(c + hstep) / (float)steps;
 					if (t >= midi_sent_t - midi_start_time) AddCC(t, CC, cc_ma[c]);
 				}
 				// Send ma CC of second note
-				if (i <  step2 - 2) for (int c = hstep + 1; c < CC_steps[ii]; c++) {
-					int t = stime[i + 1] * 100 / m_pspeed + (etime[i + 1] - stime[i + 1]) * 100 / m_pspeed*(float)(c - hstep - 1) / (float)CC_steps[ii];
+				if (i <  step2 - 2) for (int c = hstep + 1; c < steps; c++) {
+					int t = stime[i + 1] * 100 / m_pspeed + (etime[i + 1] - stime[i + 1]) * 100 / m_pspeed*(float)(c - hstep - 1) / (float)steps;
 					if (t >= midi_sent_t - midi_start_time) AddCC(t, CC, cc_ma[c]);
 				}
 			}
