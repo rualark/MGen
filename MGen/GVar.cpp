@@ -406,6 +406,7 @@ void CGVar::LoadInstrumentLayout()
 			}
 		}
 	}
+	for (int i = InstGName.size(); i < MAX_VOICE; i++) instr[i] = InstGName.size() - 1;
 	fs.close();
 	if (InstCName.size() == 0) {
 		WriteLog(1, "Error loading instrument layout from " + fname);

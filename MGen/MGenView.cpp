@@ -446,7 +446,7 @@ void CMGenView::OnDraw(CDC* pDC)
 		pGen->mutex_output.unlock();
 	}
 	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if ((time_stop - time_start).count() > 80) {
+	if ((time_stop - time_start).count() > 80 && mf->m_debug_level > 1) {
 		st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
 		mf->WriteLog(2, st);
 	}
@@ -454,7 +454,7 @@ void CMGenView::OnDraw(CDC* pDC)
 		max_draw_time = (time_stop - time_start).count();
 		if (max_draw_time > WARN_DRAW * (double)(mf->m_view_timer)) {
 			st.Format("Warning: drawing takes %d ms. Your delay between drawings (View_timer) is %d ms. It is recommended to increase zoom or increase View_timer or set step_dyn to 0 in settings.pl if you face performance issues.", time_stop - time_start, mf->m_view_timer);
-			mf->WriteLog(1, st);
+			mf->WriteLog(2, st);
 		}
 	}
 }
