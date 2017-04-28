@@ -11,3 +11,4 @@ midifile_in_mul = 32 # How much you want to decrease minimum step length
 Midi_file = N:\Public\Critic\records\2016\Shegolev\ny.mid
 
 #Instruments = Trumpet,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
+Instruments = Trumpet,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano

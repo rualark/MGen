@@ -52,6 +52,9 @@ public:
 	void InterpolateCC(int CC, int ma, int step1, int step2, vector<vector<unsigned char>>& dv, int ii, int v);
 	void StopMIDI();
 	int GetPlayStep();
+	
+	// MIDI output
+	CString driver;
 
 	// PortMIDI
 	PmStream * midi = 0;

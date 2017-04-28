@@ -424,6 +424,7 @@ void CMainFrame::LoadResults(CString path) {
 		// Set pGen variables
 		CGLib::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
+		pGen->driver = m_driver;
 		// Initialize MIDI
 		pGen->StopMIDI();
 		ClearLogs();
@@ -535,6 +536,7 @@ void CMainFrame::OnButtonGen()
 		// Set pGen variables
 		CGLib::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
+		pGen->driver = m_driver;
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_algo_insts = AlgInsts[m_algo];
 		pGen->m_config = m_config;
@@ -791,6 +793,7 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "debug_level", &m_debug_level);
 			CGLib::CheckVar(&st2, &st3, "playback_enabled", &m_play_enabled);
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
+			CGLib::LoadVar(&st2, &st3, "midi_driver", &m_driver);
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
 	}
@@ -842,6 +845,8 @@ void CMainFrame::SaveSettings()
 	st.Format("Debug_level = %d # Increase to show more debug logs\n", m_debug_level);
 	fs << st;
 	st.Format("Playback_enabled = %d # Disable playback to MIDI port by setting this to 0\n", m_play_enabled);
+	fs << st;
+	st.Format("Midi_driver = %s # Midi playback driver to use: portmidi and rtmidi are supported\n", m_driver);
 	fs << st;
 	//st.Format("Midi_program = %s # Path to program to use to open MIDI file. Leave blank to use default OS file association.\n", midi_program);
 	//fs << st;

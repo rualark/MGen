@@ -12,3 +12,4 @@ View_timer = 100 # ms between each screen update during generation and playback.
 Step_dyn = 1 # Show dynamics with note opacity for each step of note.Disable for slower computers.
 Debug_level = 1 # Increase to show more debug logs
 Playback_enabled = 1 # Disable playback to MIDI port by setting this to 0
+Midi_driver =  # Midi playback driver to use: portmidi and rtmidi are supported
