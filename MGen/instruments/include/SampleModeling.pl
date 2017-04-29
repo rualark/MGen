@@ -5,14 +5,14 @@ poly = 1 # Maximum number of simultaneous voices
 # Automation parameters
 CC_dynamics = 11
 CC_dyn_ma = 1 # If we should use moving average to smooth CC dynamics curve before sending
-CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
+CC_steps = 1 # Number of CC steps in one note step (please use only odd numbers)
 
 # Legato adaptor
 legato_ahead = 700 # Time in ms to stretch legato notes back to cope with legato delay
 leg_pdur = 50 # Maximum percent of previous note duration, that legato transition can take
 leg_cdur = 70 # Maximum percent of current note duration, that legato transition can take
 legato_ahead_exp = 6 # Exponent to interpolate note movement ahead from note velocity
-max_ahead_note = 16 # Maximum chromatic interval having ahead property
+max_ahead_note = 64 # Maximum chromatic interval having ahead property
 gliss_freq = 40 # Frequency of gliss articulation in percent
 splitpo_freq = 40 # Frequency of split portamento in percent
 splitpo_mindur = 50 # Minimum legato duration to use split portamento

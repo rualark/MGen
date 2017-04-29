@@ -842,7 +842,7 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 			fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
 			// Check if need to skip note steps
 			skip = 1.0 / max(0.0000001, fsteps);
-			if (skip > 1 && i % skip) continue;
+			if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1) continue;
 			steps = max(1, fsteps);
 			if (steps % 2 == 0) steps++;
 			cc_lin.resize(steps * 2);
