@@ -13,7 +13,7 @@ poly = 1 # Maximum number of simultaneous voices
 # Automation parameters
 CC_dynamics = 11
 CC_dyn_ma = 1 # If we should use moving average to smooth CC dynamics curve before sending
-CC_steps = 7 # Number of CC steps in one note step (please use only odd numbers)
+CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 
 # Retrigger adaptor
 CC_retrigger = 64 # This CC will be set before note retriger and reset soon after
