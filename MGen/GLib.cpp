@@ -468,6 +468,8 @@ int CGLib::randbw(int n1, int n2)
 {
 	int re = (float)(n2 - n1 + 1) * rand2() / (float)RAND_MAX;
 	re = re + n1;
+	if (re < n1) re = n1;
+	if (re > n2) re = n2;
 	return re;
 }
 

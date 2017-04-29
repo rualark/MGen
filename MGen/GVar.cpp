@@ -46,6 +46,7 @@ CGVar::CGVar()
 	max_slur_interval.resize(MAX_INSTR);
 	slur_ks.resize(MAX_INSTR);
 	legato_ahead = vector<vector<int>>(MAX_INSTR, vector<int>(10));;
+	ahead_chrom = vector<vector<int>>(MAX_INSTR, vector<int>(16));;
 	legato_ahead_exp.resize(MAX_INSTR);
 	leg_pdur.resize(MAX_INSTR);
 	leg_cdur.resize(MAX_INSTR);
@@ -500,6 +501,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 			CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
 			CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
 			LoadVectorPar(&st2, &st3, "legato_ahead", legato_ahead[i]);
+			LoadVectorPar(&st2, &st3, "ahead_chrom", ahead_chrom[i]);
 			CheckVar(&st2, &st3, "leg_pdur", &leg_pdur[i]);
 			CheckVar(&st2, &st3, "leg_cdur", &leg_cdur[i]);
 			CheckVar(&st2, &st3, "legato_ahead_exp", &legato_ahead_exp[i]);

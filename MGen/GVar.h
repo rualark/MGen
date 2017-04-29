@@ -140,6 +140,7 @@ public:
 	vector<int> max_slur_interval;
 	vector<int> slur_ks;
 	vector<vector<int>> legato_ahead;
+	vector<vector<int>> ahead_chrom;
 	vector<float> legato_ahead_exp; // Exponent to interpolate note movement ahead from note velocity
 	vector<float> leg_pdur; // Maximum percent of previous note duration, that legato transition can take
 	vector<float> leg_cdur; // Maximum percent of current note duration, that legato transition can take

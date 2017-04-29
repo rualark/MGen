@@ -220,12 +220,14 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		if (max_adur > splitpo_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 13 &&
 			randbw(0, 100) < splitpo_freq[ii]) {
 			// How many chromatic pitches per second
-			float nspeed = abs(note[i][v] - note[pi][v]) / max_adur * 1000.0;
+			int iv = abs(note[i][v] - note[pi][v]);
+			float nspeed = iv / max_adur * 1000.0;
 			if (nspeed < 8) {
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
 				min_adur = max(splitpo_mindur[ii], abs(note[i][v] - note[pi][v]) / 8 * 1000);
 				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][1];
+				if (iv < ahead_chrom[ii].size() && ahead_chrom[ii][iv]) adur0 = ahead_chrom[ii][iv];
 			}
 			else if (abs(note[pi][v] - note[i][v]) > splitpo_pent_minint[ii]) {
 				artic[i][v] = ARTIC_SPLITPO_PENT;
