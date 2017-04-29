@@ -1,8 +1,6 @@
 #pragma once
 #include "GAdapt.h"
-
-#include "portmidi.h"
-#include "porttime.h"
+#include "MidiOut.h"
 
 #define MAX_WARN_MIDI_ALIGN 5
 #define MAX_WARN_MIDI_SHORT 5
@@ -21,8 +19,6 @@
 #define MAX_MIDI_BUF_MSEC 6000
 #define MIDI_BUF_PROTECT 500 // Number of ms to postpone playback on start
 #define DRIVER_INFO NULL
-#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
-#define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
 // MIDI PORT STATUS

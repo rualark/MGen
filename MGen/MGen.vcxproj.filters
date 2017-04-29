@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Gen helpers">
       <UniqueIdentifier>{6bc2cbcb-2f43-4776-a62a-c09bafc21bb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\rtmidi">
+      <UniqueIdentifier>{be20c704-dfc0-427b-a204-9690c5fc512d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\rtmidi">
+      <UniqueIdentifier>{f3f9fd14-d9fd-4cee-bffc-2b10bacaa230}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -80,21 +86,6 @@
     </ClInclude>
     <ClInclude Include="TreeColorCtrl.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="porttime.h">
-      <Filter>Header Files\Portmidi</Filter>
-    </ClInclude>
-    <ClInclude Include="pminternal.h">
-      <Filter>Header Files\Portmidi</Filter>
-    </ClInclude>
-    <ClInclude Include="pmutil.h">
-      <Filter>Header Files\Portmidi</Filter>
-    </ClInclude>
-    <ClInclude Include="pmwinmm.h">
-      <Filter>Header Files\Portmidi</Filter>
-    </ClInclude>
-    <ClInclude Include="portmidi.h">
-      <Filter>Header Files\Portmidi</Filter>
     </ClInclude>
     <ClInclude Include="midifile\MidiEvent.h">
       <Filter>Header Files\midifile</Filter>
@@ -147,6 +138,27 @@
     <ClInclude Include="GenCP1.h">
       <Filter>Header Files\Generators</Filter>
     </ClInclude>
+    <ClInclude Include="MidiOut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="portmidi\pminternal.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="portmidi\pmutil.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="portmidi\pmwinmm.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="portmidi\portmidi.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="portmidi\porttime.h">
+      <Filter>Header Files\Portmidi</Filter>
+    </ClInclude>
+    <ClInclude Include="rtmidi\RtMidi.h">
+      <Filter>Header Files\rtmidi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -181,21 +193,6 @@
     </ClCompile>
     <ClCompile Include="TreeColorCtrl.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ptwinmm.c">
-      <Filter>Source Files\Portmidi</Filter>
-    </ClCompile>
-    <ClCompile Include="pmutil.c">
-      <Filter>Source Files\Portmidi</Filter>
-    </ClCompile>
-    <ClCompile Include="pmwin.c">
-      <Filter>Source Files\Portmidi</Filter>
-    </ClCompile>
-    <ClCompile Include="pmwinmm.c">
-      <Filter>Source Files\Portmidi</Filter>
-    </ClCompile>
-    <ClCompile Include="portmidi.c">
-      <Filter>Source Files\Portmidi</Filter>
     </ClCompile>
     <ClCompile Include="midifile\MidiEvent.cpp">
       <Filter>Source Files\midifile</Filter>
@@ -247,6 +244,27 @@
     </ClCompile>
     <ClCompile Include="GenCP1.cpp">
       <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="MidiOut.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="portmidi\pmutil.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="portmidi\pmwin.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="portmidi\pmwinmm.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="portmidi\portmidi.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="portmidi\ptwinmm.c">
+      <Filter>Source Files\Portmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="rtmidi\RtMidi.cpp">
+      <Filter>Source Files\rtmidi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

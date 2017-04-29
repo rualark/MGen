@@ -632,9 +632,11 @@ void CGMidi::SendMIDI(int step1, int step2)
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	PmTimestamp timestamp_current = TIME_PROC(TIME_INFO);
 	PmTimestamp timestamp;
-	PmTimestamp stimestamp; // Note start timestamp
-	PmTimestamp etimestamp; // Note end timestamp
-													// Check if this is first run
+	// Note start timestamp
+	PmTimestamp stimestamp; 
+	// Note end timestamp
+	PmTimestamp etimestamp; 
+	// Check if this is first run
 	if ((step1 == 0) || (!midi_sent_t) || (!midi_start_time)) midi_first_run = 1;
 	else midi_first_run = 0;
 	if (midi_first_run) LogInstruments();
