@@ -831,6 +831,26 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 		float cc_step; // Length of cc interpolation step
 		float cc_pos1; // Middle of current note step
 		float cc_pos2; // Middle of next note step
+		/*
+		// If we are sending first step, send it separately
+		if (!step1) {
+			midi_current_step = 0;
+			int i = 0;
+			// Get CC steps count
+			fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
+			steps = max(1, fsteps);
+			if (steps % 2 == 0) steps++;
+			// Calculate window
+			cc_pos1 = stime[i] * 100 / m_pspeed;
+			cc_pos2 = (etime[i] + stime[i]) * 100 / m_pspeed / 2;
+			cc_step = (cc_pos2 - cc_pos1) / steps / 2;
+			// Send linear CC
+			for (int c = 0; c < steps/2; c++) {
+				AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)steps, CC, 
+					((steps - c) * dv[i][v] + c * dv[i + 1][v]) / steps);
+			}
+		}
+		*/
 		for (int i = step1 - 2; i < step2 - 1; i++) {
 			if (i < 0) continue;
 			midi_current_step = i;
@@ -847,10 +867,6 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 			if (steps % 2 == 0) steps++;
 			cc_lin.resize(steps * 2);
 			cc_ma.resize(steps);
-			// Calculate window
-			cc_pos1 = (etime[i] + stime[i]) * 100 / m_pspeed / 2;
-			cc_pos2 = (etime[i + 1] + stime[i + 1]) * 100 / m_pspeed / 2;
-			cc_step = (cc_pos2 - cc_pos1) / steps;
 			// Linear interpolation
 			for (int c = 0; c < steps * 2; c++) {
 				// Left cc steps
@@ -885,7 +901,7 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 					cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + steps - 1] - cc_lin[c - 1]) / (float)steps;
 				}
 				// Send starting CC
-				if (i == 0) AddCC(-1, CC, dv[i][v]);
+				if (i == 0) AddCC(-1, CC, cc_ma[0]);
 				// Send ma CC of first note
 				int hstep = steps / 2;
 				if (i > step1 - 2) for (int c = 0; c < hstep + 1; c++) {
