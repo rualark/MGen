@@ -178,6 +178,8 @@ public:
 	vector<float> rbell_mul; // Multiply dynamics by this parameter at bell center with mindur
 	vector<float> rbell_mul2; // Multiply dynamics by this parameter at bell center with dur
 	vector<float> rbell_freq; // Frequency to apply reverse bell when all conditions met
+	vector<float> rbell_pos1; // Leftmost - rightmost minimum reverse bell position inside window(percent of window duration)
+	vector<float> rbell_pos2; // Leftmost - rightmost minimum reverse bell position inside window(percent of window duration)
 	vector<float> end_sfl_dur; // Duration of short fall ending
 	vector<float> end_sfl_freq; // Frequency of short fall ending
 	vector<float> end_pbd_dur; // Duration of pitch bend down ending

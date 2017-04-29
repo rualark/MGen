@@ -353,15 +353,23 @@ void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int 
 		// Check if window too small
 		float ndur2 = (etime[pos2] - stime[pos1]) * 100 / m_pspeed + detime[pos2][v] - dstime[pos1][v];
 		if (pos2 - pos1 < 2 || ndur2 < rbell_mindur[ii]) return;
+		// Center position
+		int pos = pos1 + (pos2 - pos1) * randbw(rbell_pos1[ii], rbell_pos2[ii]) / 100.0;
 		// Calculate multiplier
 		float mul0 = rbell_mul[ii] - (ndur2 - rbell_mindur[ii]) *
 			(rbell_mul[ii] - rbell_mul2[ii]) / (rbell_dur[ii] - rbell_mindur[ii] + 0.0001);
 		mul0 = max(min(mul0, rbell_mul[ii]), rbell_mul2[ii]);
 		// Calculate random maximum
 		float mul = 1.0 - rand01() * (1.0 - mul0);
-		for (int z = pos1; z <= pos2; z++) {
+		// Left part
+		for (int z = pos1; z < pos; z++) {
 			dyn[z][v] = dyn[z][v] *
-				(abs(z - (pos1 + pos2) / 2.0) / (pos2 - pos1) * 2.0 * (1.0 - mul) + mul);
+				(abs(z - pos) / (float)(pos - pos1) * (1.0 - mul) + mul);
+		}
+		// Right part
+		for (int z = pos; z <= pos2; z++) {
+			dyn[z][v] = dyn[z][v] *
+				(abs(z - pos) / (float)(pos2 - pos) * (1.0 - mul) + mul);
 		}
 		if (comment_adapt) adapt_comment[i][v] += "Reverse bell. ";
 	}

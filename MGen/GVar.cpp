@@ -79,6 +79,8 @@ CGVar::CGVar()
 	bell_start_len.resize(MAX_INSTR);
 	bell_end_len.resize(MAX_INSTR);
 	bell_mindur.resize(MAX_INSTR);
+	rbell_pos1.resize(MAX_INSTR);
+	rbell_pos2.resize(MAX_INSTR);
 	rbell_freq.resize(MAX_INSTR);
 	rbell_mindur.resize(MAX_INSTR);
 	rbell_dur.resize(MAX_INSTR);
@@ -528,6 +530,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 			LoadRange(&st2, &st3, "bell_mul", &bell_start_mul[i], &bell_end_mul[i]);
 			LoadRange(&st2, &st3, "bell_len", &bell_start_len[i], &bell_end_len[i]);
 			CheckVar(&st2, &st3, "rbell_freq", &rbell_freq[i]);
+			LoadRange(&st2, &st3, "rbell_pos", &rbell_pos1[i], &rbell_pos2[i]);
 			LoadRange(&st2, &st3, "rbell_dur", &rbell_mindur[i], &rbell_dur[i]);
 			LoadRange(&st2, &st3, "rbell_mul", &rbell_mul[i], &rbell_mul2[i]);
 			CheckVar(&st2, &st3, "end_sfl_dur", &end_sfl_dur[i]);
