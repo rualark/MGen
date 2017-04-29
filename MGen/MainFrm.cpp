@@ -157,19 +157,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// MIDI port
 	CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,	m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
 	CString st;
-	int default_out = Pm_GetDefaultOutputDeviceID();
 	MidiCount = 0;
-	for (int i = 0; i < Pm_CountDevices(); i++) {
-		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-		if (info && info->output) {
-			st.Format("%s, %s", info->name, info->interf);
-			if (i == default_out) {
-				//st += " (default)";
-			}
-			pCombo->AddItem(st, i);
-			MidiName[MidiCount] = st;
-			MidiCount++;
-		}
+	CString portName;
+	RtMidiOut rtmidi;
+	unsigned int i = 0, nPorts = rtmidi.getPortCount();
+	for (i = 0; i<nPorts; i++) {
+		portName = rtmidi.getPortName(i).c_str();
+		pCombo->AddItem(portName, i);
+		MidiName[MidiCount] = portName;
+		MidiCount++;
 	}
 
 	st.Format("Started MGen version %s", APP_VERSION);
@@ -775,7 +771,6 @@ void CMainFrame::LoadSettings()
 			if (st2 == "midi_out") {
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
-				//int id = distance(MidiName, find(begin(MidiName), end(MidiName), st3));
 				pCombo->SelectItem(st3);
 			}
 			if (st2 == "playback_speed") {
@@ -828,8 +823,7 @@ void CMainFrame::SaveSettings()
 	//st.Format("MIDI_OUT_ID = %d\n", i);
 	//fs << st;
 	if (i > -1) {
-		const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-		st.Format("MIDI_OUT = %s, %s # Name of MIDI device used for playing notes\n", info->name, info->interf);
+		st.Format("MIDI_OUT = %s # Name of MIDI device used for playing notes\n", MidiName[i]);
 		fs << st;
 	}
 	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 1 to 500\n", zoom_x);
