@@ -40,16 +40,22 @@ int CMidiOut::StopMidi()
 	need_exit = 1;
 	// Wait for thread to exit
 	WaitForSingleObject(m_MidiThread->m_hThread, 10000);
-	// Send all notes off after thread is stopped so that no other event goes after this
-	mMessage message = { MIDI_ALLOFF, 0, 0 };
-	rmo->sendMessage(&message);
-	message[2] = 0;
-	for (int c = 0; c < 16; ++c) {
-		message[0] = MIDI_NOTEOFF + c;
-		for (int i = 0; i < 128; ++i) if (note_on[c][i]) {
-			message[1] = i;
-			rmo->sendMessage(&message);
+	try {
+		// Send all notes off after thread is stopped so that no other event goes after this
+		mMessage message = { MIDI_ALLOFF, 0, 0 };
+		rmo->sendMessage(&message);
+		message[2] = 0;
+		for (int c = 0; c < 16; ++c) {
+			message[0] = MIDI_NOTEOFF + c;
+			for (int i = 0; i < 128; ++i) if (note_on[c][i]) {
+				message[1] = i;
+				rmo->sendMessage(&message);
+			}
 		}
+	}
+	catch (RtMidiError &error) {
+		m_error = error.getMessage().c_str();
+		m_error_type = error.getType();
 	}
 	// Clear if needed
 	if (rmo) {
@@ -107,7 +113,13 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 				else pMO->note_on[message[0] - MIDI_NOTEON][message[1]] = 0;
 			}
 			// Send event
-			pMO->rmo->sendMessage(&message);
+			try {
+				pMO->rmo->sendMessage(&message);
+			}
+			catch (RtMidiError &error) {
+				pMO->m_error = error.getMessage().c_str();
+				pMO->m_error_type = error.getType();
+			}
 		}
 	}
 	return 0;

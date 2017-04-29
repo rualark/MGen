@@ -512,6 +512,7 @@ void CGAdapt::Adapt(int step1, int step2)
 		slur_count = 0;
 		int i = step1;
 		for (int x = 0; x < ncount; x++) {
+			if (need_exit) break;
 			ei = max(0, i + len[i][v] - 1);
 			pi = max(0, i - poff[i][v]);
 			pei = i - 1;

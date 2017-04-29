@@ -295,6 +295,7 @@ void CGMidi::LoadMidi(CString path)
 			}
 		}
 	}
+	if (need_exit) return;
 	// Add closing pauses
 	for (int v = 0; v < v_cnt; v++) {
 		if (vlast_step[v] < last_step) {
