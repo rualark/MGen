@@ -21,10 +21,11 @@ void CGAdapt::CheckRange(int v, int ii)
 	// Check if notes are in instrument range
 	if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
 		if (ngv_min[v] < instr_nmin[ii]) {
-			play_transpose[v] = ((instr_nmin[ii] - ngv_min[v]) / 12) * 12 + 12;
+			play_transpose[v] = ceil((instr_nmin[ii] - ngv_min[v]) / 12.0) * 12;
 		}
 		if (ngv_max[v] > instr_nmax[ii]) {
-			play_transpose[v] = -((ngv_max[v] - instr_nmax[ii]) / 12) * 12 - 12;
+			int tr = -ceil((ngv_max[v] - instr_nmax[ii]) / 12.0) * 12;
+			if (tr != 0) play_transpose[v] = tr;
 		}
 		// Check if still have problem
 		CString* st = new CString;
