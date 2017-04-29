@@ -11,6 +11,12 @@
 
 #define WAIT_MS 50
 
+// MIDI PORT STATUS
+#define MIDI_NOTEON 0x90
+#define MIDI_NOTEOFF 0x90
+#define MIDI_CC 0xB0
+#define MIDI_ALLOFF 123
+
 using namespace moodycamel;
 
 typedef vector<unsigned char> mMessage;
@@ -35,5 +41,7 @@ protected:
 	RtMidiOut *rmo;
 	CWinThread* m_MidiThread;
 
+	// Which notes need to get OFF
+	vector< vector <int> > note_on; // 1 = note is ON
 };
 

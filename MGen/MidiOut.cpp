@@ -7,6 +7,7 @@
 
 CMidiOut::CMidiOut()
 {
+	note_on = vector<vector<int>>(16, vector<int>(128));
 	rmo = 0;
 }
 
@@ -39,6 +40,17 @@ int CMidiOut::StopMidi()
 	need_exit = 1;
 	// Wait for thread to exit
 	WaitForSingleObject(m_MidiThread->m_hThread, 10000);
+	// Send all notes off after thread is stopped so that no other event goes after this
+	mMessage message = { MIDI_ALLOFF, 0, 0 };
+	rmo->sendMessage(&message);
+	message[2] = 0;
+	for (int c = 0; c < 16; ++c) {
+		message[0] = MIDI_NOTEOFF + c;
+		for (int i = 0; i < 128; ++i) if (note_on[c][i]) {
+			message[1] = i;
+			rmo->sendMessage(&message);
+		}
+	}
 	// Clear if needed
 	if (rmo) {
 		delete rmo;
@@ -89,6 +101,11 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 			message[0] = Pm_MessageStatus(event.message);
 			message[1] = Pm_MessageData1(event.message);
 			message[2] = Pm_MessageData2(event.message);
+			// Set note ON flag
+			if (message[0] >= MIDI_NOTEON && message[0] < MIDI_NOTEON + 16) {
+				if (message[2]) pMO->note_on[message[0] - MIDI_NOTEON][message[1]] = 1;
+				else pMO->note_on[message[0] - MIDI_NOTEON][message[1]] = 0;
+			}
 			// Send event
 			pMO->rmo->sendMessage(&message);
 		}
