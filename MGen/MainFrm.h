@@ -60,7 +60,6 @@ public:
 	int m_pspeed = 100; // Playback speed in percent
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
-	CString m_driver; // Midi playback driver
 	CString m_dir; // Current saved results dir
 	//CString midi_program; // Path to MIDI program to use
 	int m_state_gen=0;

@@ -9,6 +9,7 @@
 
 CGMidi::CGMidi()
 {
+	mo = 0;
 }
 
 
@@ -465,7 +466,7 @@ void CGMidi::LoadCantus(CString path)
 	WriteLog(0, st);
 }
 
-void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
+void CGMidi::StartMIDI(int midi_device_i, int from)
 {
 	// Clear old sent messages
 	midi_buf_next.clear();
@@ -488,27 +489,19 @@ void CGMidi::StartMIDI(int midi_device_i, int latency, int from)
 		midi_sent = 0;
 	}
 	TIME_START;
-	PmError pmerr = PmError();
 	if (debug_level > 1) {
 		CString* est = new CString;
-		est->Format("Trying to open midi device %d with output buf size %d and latency %d...", midi_device_i, OUTPUT_BUF_SIZE, latency);
+		est->Format("Trying to open midi device %d...", midi_device_i);
 		WriteLog(4, est);
 	}
-	try {
-		pmerr = Pm_OpenOutput(&midi, midi_device_i, NULL, OUTPUT_BUF_SIZE, TIME_PROC, NULL, latency);
-	}
-	catch (...) {
+	mo = new CMidiOut;
+	if (mo->StartMidi(midi_device_i)) {
 		CString* est = new CString;
-		est->Format("Cannot open midi device %d with output buf size %d and latency %d", midi_device_i, OUTPUT_BUF_SIZE, latency);
-		WriteLog(1, est);
-	}
-	if (pmerr) {
-		CString* est = new CString;
-		est->Format("Cannot open midi device %d with output buf size %d and latency %d", midi_device_i, OUTPUT_BUF_SIZE, latency);
+		est->Format("Cannot open midi device %d: %s", midi_device_i, mo->m_error);
 		WriteLog(1, est);
 	}
 	CString* est = new CString;
-	est->Format("Pm_OpenOutput: buf size %d, latency %d", OUTPUT_BUF_SIZE, latency);
+	est->Format("Open MIDI: device %d", midi_device_i);
 	WriteLog(4, est);
 }
 
@@ -809,16 +802,13 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Sort by timestamp before sending
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
 	// Send
-	PmError pmerr = Pm_Write(midi, midi_buf.data(), midi_buf.size());
-	if (pmerr) {
-		CString* est = new CString;
-		est->Format("Error writing %d events to midi device", midi_buf.size());
-		WriteLog(1, est);
+	for (int i = 0; i < midi_buf.size(); i++) {
+		mo->QueueEvent(midi_buf[i]);
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* st = new CString;
-	st->Format("Pm_Write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms. Limit %d. Last postponed %d. Step22 stopped increasing at %.0f ms. Start time: %d, current time: %d",
+	st->Format("MIDI write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms. Limit %d. Last postponed %d. Step22 stopped increasing at %.0f ms. Start time: %d, current time: %d",
 		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, 
 		midi_sent_t-midi_start_time, midi_sent_t2 - midi_start_time, 
 		midi_sent_t - timestamp_current, midi_sent_t2 - timestamp_current,
@@ -914,9 +904,9 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 
 void CGMidi::StopMIDI()
 {
-	WriteLog(4, new CString("Pm_Close"));
-	if (midi != 0) Pm_Close(midi);
-	midi = 0;
+	WriteLog(4, new CString("Stop MIDI"));
+	if (mo) delete mo;
+	mo = 0;
 }
 
 int CGMidi::GetPlayStep() {
@@ -925,11 +915,6 @@ int CGMidi::GetPlayStep() {
 	}
 	else {
 		// Don't need lock, because this function is called from OnDraw, which already has lock
-		/*
-		if (!mutex_output.try_lock_for(chrono::milliseconds(100))) {
-		WriteLog(1, new CString("GetPlayStep mutex timed out"));
-		}
-		*/
 		int step1 = midi_play_step;
 		int step2 = midi_sent;
 		int cur_step, currentElement;

@@ -15,13 +15,21 @@ CMidiOut::~CMidiOut()
 	StopMidi();
 }
 
-int CMidiOut::StartMidi()
+int CMidiOut::StartMidi(int port)
 {
-	// Open RtMidi
-	rmo = new RtMidiOut();
-	rmo->openPort(0);
-	// Begin MIDI playback thread
-	m_MidiThread = AfxBeginThread(MidiThread, this, THREAD_PRIORITY_TIME_CRITICAL);
+	try {
+		// Open RtMidi
+		rmo = new RtMidiOut();
+		rmo->openPort(port);
+		// Begin MIDI playback thread
+		m_MidiThread = AfxBeginThread(MidiThread, this, THREAD_PRIORITY_TIME_CRITICAL);
+	}
+	catch (RtMidiError &error) {
+		m_error = error.getMessage().c_str();
+		m_error_type = error.getType();
+		return 1;
+	}
+
 	return 0;
 }
 
@@ -39,7 +47,7 @@ int CMidiOut::StopMidi()
 	return 0;
 }
 
-int CMidiOut::QueueEvent(mEvent event)
+int CMidiOut::QueueEvent(PmEvent event)
 {
 	q.enqueue(event);
 	return 0;
@@ -51,7 +59,8 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 	CMidiOut* pMO = (CMidiOut*)pParam;
 	// if Object is not valid  
 	if (pMO == NULL) return 1;
-	mEvent event;
+	PmEvent event;
+	mMessage message(3);
 	PmTimestamp timestamp_current;
 	int wait_time, wait_time_left;
 	while (true) {
@@ -76,8 +85,12 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 				}
 				Sleep(wait_time_left);
 			}
+			// Convert to mMessage
+			message[0] = Pm_MessageStatus(event.message);
+			message[1] = Pm_MessageData1(event.message);
+			message[2] = Pm_MessageData2(event.message);
 			// Send event
-			pMO->rmo->sendMessage(&event.message);
+			pMO->rmo->sendMessage(&message);
 		}
 	}
 	return 0;

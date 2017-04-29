@@ -159,13 +159,18 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CString st;
 	MidiCount = 0;
 	CString portName;
-	RtMidiOut rtmidi;
-	unsigned int i = 0, nPorts = rtmidi.getPortCount();
-	for (i = 0; i<nPorts; i++) {
-		portName = rtmidi.getPortName(i).c_str();
-		pCombo->AddItem(portName, i);
-		MidiName[MidiCount] = portName;
-		MidiCount++;
+	try {
+		RtMidiOut rtmidi;
+		unsigned int i = 0, nPorts = rtmidi.getPortCount();
+		for (i = 0; i<nPorts; i++) {
+			portName = rtmidi.getPortName(i).c_str();
+			pCombo->AddItem(portName, i);
+			MidiName[MidiCount] = portName;
+			MidiCount++;
+		}
+	}
+	catch (RtMidiError &error) {
+		WriteLog(1, error.getMessage().c_str());
 	}
 
 	st.Format("Started MGen version %s", APP_VERSION);
@@ -420,11 +425,10 @@ void CMainFrame::LoadResults(CString path) {
 		// Set pGen variables
 		CGLib::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
-		pGen->driver = m_driver;
 		// Initialize MIDI
 		pGen->StopMIDI();
 		ClearLogs();
-		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 100, 0);
+		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		pGen->InitRandom();
 		// Load results
@@ -532,7 +536,6 @@ void CMainFrame::OnButtonGen()
 		// Set pGen variables
 		CGLib::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
-		pGen->driver = m_driver;
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_algo_insts = AlgInsts[m_algo];
 		pGen->m_config = m_config;
@@ -544,7 +547,7 @@ void CMainFrame::OnButtonGen()
 		pGen->InitVectors();
 		// Initialize MIDI
 		pGen->StopMIDI();
-		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 100, 0);
+		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Start generation
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
@@ -788,7 +791,6 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "debug_level", &m_debug_level);
 			CGLib::CheckVar(&st2, &st3, "playback_enabled", &m_play_enabled);
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
-			CGLib::LoadVar(&st2, &st3, "midi_driver", &m_driver);
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
 	}
@@ -839,8 +841,6 @@ void CMainFrame::SaveSettings()
 	st.Format("Debug_level = %d # Increase to show more debug logs\n", m_debug_level);
 	fs << st;
 	st.Format("Playback_enabled = %d # Disable playback to MIDI port by setting this to 0\n", m_play_enabled);
-	fs << st;
-	st.Format("Midi_driver = %s # Midi playback driver to use: portmidi and rtmidi are supported\n", m_driver);
 	fs << st;
 	//st.Format("Midi_program = %s # Path to program to use to open MIDI file. Leave blank to use default OS file association.\n", midi_program);
 	//fs << st;
@@ -997,7 +997,7 @@ void CMainFrame::StartPlay(int from)
 	if (pGen->m_pspeed != pGen->adapt_pspeed) pGen->Adapt(0, pGen->t_generated - 1);
 	pGen->StopMIDI();
 	if (!m_play_enabled) return;
-	pGen->StartMIDI(GetMidiI(), 100, from);
+	pGen->StartMIDI(GetMidiI(), from);
 	m_state_play = 1;
 	// Start timer
 	pGen->m_pspeed = m_pspeed;

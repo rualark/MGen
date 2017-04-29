@@ -14,11 +14,9 @@
 #define MAX_AHEAD 1000
 
 // PortMIDI
-#define OUTPUT_BUF_SIZE 100000
 #define MIN_MIDI_BUF_MSEC 3000
 #define MAX_MIDI_BUF_MSEC 6000
 #define MIDI_BUF_PROTECT 500 // Number of ms to postpone playback on start
-#define DRIVER_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
 // MIDI PORT STATUS
@@ -40,8 +38,9 @@ public:
 
 	void LoadCantus(CString path);
 
-	// PortMIDI
-	void StartMIDI(int midi_device_i, int latency, int from);
+	// RtMidi
+	CMidiOut *mo;
+	void StartMIDI(int midi_device_i, int from);
 	void LogInstruments();
 	void CheckDstime(int i, int v);
 	void SendMIDI(int step1, int step2);
@@ -49,11 +48,7 @@ public:
 	void StopMIDI();
 	int GetPlayStep();
 	
-	// MIDI output
-	CString driver;
-
 	// PortMIDI
-	PmStream * midi = 0;
 	int midi_sent = 0; // Steps already sent to midi
 	int midi_sent_t = 0; // Timestamp of last event sent to midi in previous SendMIDI
 	int midi_sent_t2 = 0; // Timestamp of last event sent to midi in current SendMIDI

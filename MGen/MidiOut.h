@@ -15,26 +15,23 @@ using namespace moodycamel;
 
 typedef vector<unsigned char> mMessage;
 
-typedef struct {
-	mMessage      message;
-	PmTimestamp   timestamp;
-} mEvent;
-
 class CMidiOut
 {
 public:
 	CMidiOut();
 	~CMidiOut();
 
-	int StartMidi();
+	int StartMidi(int port);
 	int StopMidi();
-	int QueueEvent(mEvent event);
+	int QueueEvent(PmEvent event);
 
-	int need_exit;
+	int need_exit = 0;
+	CString m_error;
+	int m_error_type;
 
 protected:
 	static UINT MidiThread(LPVOID pParam);
-	BlockingReaderWriterQueue<mEvent> q;
+	BlockingReaderWriterQueue<PmEvent> q;
 	RtMidiOut *rmo;
 	CWinThread* m_MidiThread;
 
