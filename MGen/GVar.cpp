@@ -1144,13 +1144,13 @@ void CGVar::FixLen(int step1, int step2)
 				// Has to be not first note
 				if (i > 0) {
 					// Does len differ?
-					if (real_len != len[i][v]) {
+					if (real_len != len[i-1][v]) {
 						for (int x = i - real_len; x < i; ++x) {
 							if (x >= 0) len[x][v] = real_len;
 						}
 					}
-					real_len = 1;
 				}
+				real_len = 1;
 			}
 		}
 	}

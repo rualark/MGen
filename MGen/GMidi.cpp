@@ -193,7 +193,7 @@ void CGMidi::LoadMidi(CString path)
 				// Find overlaps and distance
 				if (instr_poly[instr[v]] > 1) {
 					for (int x = v1; x <= v2; ++x) {
-						// Overlap happens only in case when real overlap time is greater than half of croche
+						// Overlap happens only in case when positions overlap
 						if (note[pos][x]) {
 							voverlap[x] = 1;
 							vdist[x] = 1000;
