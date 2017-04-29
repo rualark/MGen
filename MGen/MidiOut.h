@@ -9,6 +9,8 @@
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL
 
+#define WAIT_MS 50
+
 using namespace moodycamel;
 
 typedef vector<unsigned char> mMessage;
@@ -28,12 +30,13 @@ public:
 	int StopMidi();
 	int QueueEvent(mEvent event);
 
-	int need_exit = 0;
+	int need_exit;
 
 protected:
 	static UINT MidiThread(LPVOID pParam);
 	BlockingReaderWriterQueue<mEvent> q;
 	RtMidiOut *rmo;
+	CWinThread* m_MidiThread;
 
 };
 
