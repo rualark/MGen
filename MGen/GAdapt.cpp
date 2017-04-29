@@ -185,9 +185,9 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Advance start for legato (not longer than previous note length)
-	if ((i > 0) && (pi < i) && (legato_ahead[ii] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+	if ((i > 0) && (pi < i) && (legato_ahead[ii][0] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
 		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= max_ahead_note[ii])) {
-		dstime[i][v] = -min(legato_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+		dstime[i][v] = -min(legato_ahead[ii][0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		detime[i - 1][v] = 0.9 * dstime[i][v];
 		if (comment_adapt) adapt_comment[i][v] += "Ahead start. ";
@@ -205,7 +205,7 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Advance start for legato (not longer than previous note length)
-	if ((i > 0) && (pi < i) && (legato_ahead[ii]) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+	if ((i > 0) && (pi < i) && (legato_ahead[ii][0]) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
 		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= max_ahead_note[ii])) {
 		// Get current note length
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
@@ -215,11 +215,11 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		float max_adur = min(ndur * leg_cdur[ii] / 100.0, pdur * leg_pdur[ii] / 100.0);
 		// Get minimum velocity possible
 		float min_vel = max(1, 128 - 
-			pow(max_adur * pow(127, legato_ahead_exp[ii]) / legato_ahead[ii], 1 / legato_ahead_exp[ii]));
+			pow(max_adur * pow(127, legato_ahead_exp[ii]) / legato_ahead[ii][0], 1 / legato_ahead_exp[ii]));
 		// Make random velocity inside allowed range
 		vel[i][v] = randbw(min_vel, min(min_vel + 50, 127));
 		// Get ahead duration
-		float adur = pow(128 - vel[i][v], legato_ahead_exp[ii]) * legato_ahead[ii] / pow(127, legato_ahead_exp[ii]);
+		float adur = pow(128 - vel[i][v], legato_ahead_exp[ii]) * legato_ahead[ii][0] / pow(127, legato_ahead_exp[ii]);
 		// Move notes
 		dstime[i][v] = -adur;
 		detime[i - 1][v] = 0.9 * dstime[i][v];
