@@ -246,9 +246,9 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 			}
 		}
 		// Get minimum and maximum velocity possible
-		float min_vel = max(1, 128 -
+		float min_vel = max(1, 127 -
 			pow(max_adur * pow(127, legato_ahead_exp[ii]) / adur0, 1 / legato_ahead_exp[ii]));
-		float max_vel = max(1, 128 -
+		float max_vel = max(1, 127 -
 			pow(min_adur * pow(127, legato_ahead_exp[ii]) / adur0, 1 / legato_ahead_exp[ii]));
 		// Make random velocity inside allowed range
 		vel[i][v] = randbw(min_vel, max_vel);
@@ -474,6 +474,7 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 	float rv = rnd_vel[ii];
 	int ok = 1;
 	if (rnd_vel[ii] > 0) {
+		// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 		if (instr_type[ii] == 1) {
 			if (i && !pause[i - 1][v] && note[i-1][v] != note[i][v]) ok = 0;
 		}
@@ -631,5 +632,7 @@ void CGAdapt::Adapt(int step1, int step2)
 	}
 	// Tempo could change
 	UpdateTempoMinMax(step1, step2);
+	// Check adaptation results
+	ValidateVectors2(step1, step2);
 }
 

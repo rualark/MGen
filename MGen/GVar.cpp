@@ -902,6 +902,34 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 	ValidateVectors(0, t_generated - 1);
 }
 
+void CGVar::ValidateVectors2(int step1, int step2) {
+	milliseconds time_start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	CString st;
+	for (int i = step1; i <= step2; i++) {
+		for (int v = 0; v < v_cnt; v++) {
+			// Check vel is zero
+			if (!vel[i][v] && !pause[i][v] && warning_valid < MAX_WARN_VALID) {
+				st.Format("Validation failed at step %d voice %d: velocity cannot be zero", i, v);
+				WriteLog(1, st);
+				warning_valid++;
+			}
+			// Check vel is above 127
+			if (vel[i][v] > 127 && !pause[i][v] && warning_valid < MAX_WARN_VALID) {
+				st.Format("Validation failed at step %d voice %d: velocity cannot be above 127", i, v);
+				WriteLog(1, st);
+				warning_valid++;
+			}
+		}
+	}
+	// Count time
+	if (debug_level > 1) {
+		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		CString* est = new CString;
+		est->Format("Post-validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+		WriteLog(0, est);
+	}
+}
+
 void CGVar::ValidateVectors(int step1, int step2) {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString st;

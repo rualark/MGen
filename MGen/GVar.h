@@ -21,7 +21,6 @@ public:
 	void SaveResults(CString dir, CString fname);
 	void ExportVectorsCSV(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
-
 	void LoadResultMusic(CString dir, CString fname);
 
 	// Warnings
@@ -197,6 +196,7 @@ public:
 
 protected:
 	void ValidateVectors(int step1, int step2);
+	void ValidateVectors2(int step1, int step2);
 	// File operations
 	void SaveVector2C(ofstream & fs, vector<vector<unsigned char>>& v2D, int i);
 	void SaveVector2S(ofstream & fs, vector<vector<unsigned short>>& v2D, int i);
