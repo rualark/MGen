@@ -212,41 +212,52 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		// Get previous note length
 		float pdur = (etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 		// Get maximum legato_ahead possible
+		float min_adur = 0;
 		float max_adur = min(ndur * leg_cdur[ii] / 100.0, pdur * leg_pdur[ii] / 100.0);
-		// Get minimum velocity possible
-		float min_vel = max(1, 128 - 
-			pow(max_adur * pow(127, legato_ahead_exp[ii]) / legato_ahead[ii][0], 1 / legato_ahead_exp[ii]));
+		// Set default ahead type to non-ks
+		int adur0 = legato_ahead[ii][0];
+		// Select articulation
+		if (max_adur > splitpo_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 13 &&
+			randbw(0, 100) < splitpo_freq[ii]) {
+			// How many chromatic pitches per second
+			float nspeed = abs(note[i][v] - note[pi][v]) / max_adur * 1000.0;
+			if (nspeed < 8) {
+				artic[i][v] = ARTIC_SPLITPO_CHROM;
+				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
+				min_adur = max(splitpo_mindur[ii], abs(note[i][v] - note[pi][v]) / 8 * 1000);
+				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][1];
+			}
+			else if (abs(note[pi][v] - note[i][v]) > splitpo_pent_minint[ii]) {
+				artic[i][v] = ARTIC_SPLITPO_PENT;
+				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
+				min_adur = splitpo_mindur[ii];
+				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][2];
+			}
+		}
+		else if (max_adur > gliss_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 6 &&
+			randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq[ii]+0.001)*100) {
+			if (randbw(0, 100) < 50) {
+				artic[i][v] = ARTIC_GLISS2;
+				if (comment_adapt) adapt_comment[i][v] += "Gliss2. ";
+				min_adur = gliss_mindur[ii];
+				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][3];
+			}
+		}
+		// Get minimum and maximum velocity possible
+		float min_vel = max(1, 128 -
+			pow(max_adur * pow(127, legato_ahead_exp[ii]) / adur0, 1 / legato_ahead_exp[ii]));
+		float max_vel = max(1, 128 -
+			pow(min_adur * pow(127, legato_ahead_exp[ii]) / adur0, 1 / legato_ahead_exp[ii]));
 		// Make random velocity inside allowed range
-		vel[i][v] = randbw(min_vel, min(min_vel + 50, 127));
+		vel[i][v] = randbw(min_vel, max_vel);
 		// Get ahead duration
-		float adur = pow(128 - vel[i][v], legato_ahead_exp[ii]) * legato_ahead[ii][0] / pow(127, legato_ahead_exp[ii]);
+		float adur = pow(128 - vel[i][v], legato_ahead_exp[ii]) * adur0 / pow(127, legato_ahead_exp[ii]);
 		// Move notes
 		dstime[i][v] = -adur;
 		detime[i - 1][v] = 0.9 * dstime[i][v];
 		// Add comments
 		if (comment_adapt) adapt_comment[i][v] += "Ahead flex start. ";
 		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead flex end. ";
-		// Select articulation
-		if (adur > splitpo_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 13 &&
-			randbw(0, 100) < splitpo_freq[ii]) {
-			// How many chromatic pitches per second
-			float nspeed = abs(note[i][v] - note[pi][v]) / adur * 1000.0;
-			if (nspeed < 8) {
-				artic[i][v] = ARTIC_SPLITPO_CHROM;
-				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
-			}
-			else if (abs(note[pi][v] - note[i][v]) > splitpo_pent_minint[ii]) {
-				artic[i][v] = ARTIC_SPLITPO_PENT;
-				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
-			}
-		}
-		else if (adur > gliss_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 6 &&
-			randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq[ii]+0.001)*100) {
-			if (randbw(0, 100) < 50) {
-				artic[i][v] = ARTIC_GLISS2;
-				if (comment_adapt) adapt_comment[i][v] += "Gliss2. ";
-			}
-		}
 	}
 }
 
