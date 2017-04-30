@@ -132,7 +132,7 @@ void CGVar::InitVectors()
 	adapt_comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
 	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
 	tempo = vector<float>(t_allocated);
-	tempo_rnd = vector<float>(t_allocated);
+	tempo_src = vector<float>(t_allocated);
 	stime = vector<float>(t_allocated);
 	etime = vector<float>(t_allocated);
 	dstime = vector<vector<float>>(t_allocated, vector<float>(v_cnt));
@@ -166,7 +166,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	noff.resize(size);
 	tonic.resize(size);
 	tempo.resize(size);
-	tempo_rnd.resize(size);
+	tempo_src.resize(size);
 	stime.resize(size);
 	etime.resize(size);
 	dstime.resize(size);

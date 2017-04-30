@@ -619,15 +619,21 @@ void CGAdapt::Adapt(int step1, int step2)
 			vibf[i][v] = randbw(max(1, vibf[i][v] - max_shift), min(127, vibf[i][v] + max_shift));
 		} // for i
 	} // for v
+	float tr;
 	for (int i = step1; i <= step2; i++) {
+		// Load tempo if it was randomized before
+		if (tempo_src[i]) {
+			tempo[i] = tempo_src[i];
+		}
 		// Randomize tempo
 		if (i > 0) {
-			tempo_rnd[i] = tempo_rnd[i - 1] + randbw(-rnd_tempo_step * tempo[i] / 100.0, rnd_tempo_step * tempo[i] / 100.0);
+			tempo_src[i] = tempo[i];
+			tr = tempo[i - 1] - tempo_src[i - 1] + randbw(-rnd_tempo_step * tempo[i] / 100.0, rnd_tempo_step * tempo[i] / 100.0);
 			// Correct tempo range
-			tempo_rnd[i] = max(tempo_rnd[i], -tempo[i] * (rnd_tempo / 2.0) / 100.0);
-			tempo_rnd[i] = min(tempo_rnd[i], tempo[i] * (rnd_tempo / 2.0) / 100.0);
+			tr = max(tr, -tempo[i] * (rnd_tempo / 2.0) / 100.0);
+			tr = min(tr, tempo[i] * (rnd_tempo / 2.0) / 100.0);
 			// Apply tempo randomization
-			tempo[i] += tempo_rnd[i];
+			tempo[i] += tr;
 		}
 	}
 	for (int v = 0; v < v_cnt; v++) {

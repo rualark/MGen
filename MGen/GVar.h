@@ -78,7 +78,7 @@ public:
 	vector< vector <CString> > adapt_comment; // Adaptation comment for note
 	vector< vector <Color> > color; // Note color (rgb ignored if all zero; alpha ignored if zero)
 	vector<float> tempo; // Tempo
-	vector<float> tempo_rnd; // Tempo randomization added
+	vector<float> tempo_src; // Source tempo before randomization
 	vector<float> stime; // Time of current step start in ms
 	vector<float> etime; // Time of current step ending in ms
 	vector< vector <float> > dstime; // Delta of current step start in ms for playback
