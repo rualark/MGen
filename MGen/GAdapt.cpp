@@ -310,7 +310,7 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 	if (artic[i][v] == ARTIC_NONLEGATO) {
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if (ndur < vel_normal_minlen[ii]) {
-			vel[i][v] = randbw(vel_immediate[ii], 127);
+			vel[i][v] = randbw(vel_immediate[ii], vel_immediate[ii] + 2);
 			if (comment_adapt) adapt_comment[i][v] += "Vel random over normal. ";
 		}
 		//if (ndur < vel_normal_minlen[ii]) vel[i][v] = dyn[i][v] * (float)(127 - vel_immediate[ii]) / 127.0 + vel_immediate[ii];
