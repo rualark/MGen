@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GLib.h"
+#include "SmRnd.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW 
@@ -12,6 +13,16 @@ int CGLib::parameter_found = 0;
 int CGLib::play_enabled = 1;
 UINT CGLib::WM_DEBUG_MSG = 0;
 vector<vector<CString>> CGLib::logs;
+
+// Random
+int CGLib::cur_rand = 0;
+int CGLib::cur_rand2 = 0;
+ub4 CGLib::aa = 0;
+ub4 CGLib::bb = 0;
+ub4 CGLib::cc = 0;
+ub4 CGLib::randrsl[256];
+ub4 CGLib::randcnt = 0;
+ub4 CGLib::mm[256];
 
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
@@ -445,6 +456,30 @@ void CGLib::TestRandom()
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
 	est->Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
+	WriteLog(0, est);
+}
+
+void CGLib::TestSmoothRandom()
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int n_samples = 1000;
+	CSmoothRandom sr;
+	// Show results
+	ofstream fs;
+	fs.open("test-smrandom.csv");
+	CString st;
+	fs << "Sig;Vel;Acc;Acc2;\n";
+	for (int i = 0; i < n_samples; i++) {
+		sr.MakeNext();
+		st.Format("%.0f;%.0f;%.0f;%.0f;", sr.sig * 1000, sr.vel * 1000, sr.acc * 1000, sr.acc2 * 1000);
+		fs << st;
+		fs << "\n";
+	}
+	fs.close();
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("TestSmoothRandom with %d samples took %d ms", n_samples, time_stop - time_start);
 	WriteLog(0, est);
 }
 

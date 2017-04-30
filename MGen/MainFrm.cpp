@@ -180,9 +180,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	LoadSettings();
 	//m_wndRibbonBar.GetQuickAccessToolbar()->SetCompactMode(1);
 
-	CGLib::can_send_log = 0;
+	CGLib::can_send_log = 1;
 	CGLib::m_hWnd = m_hWnd;
 	CGLib::WM_DEBUG_MSG = WM_DEBUG_MSG;
+	CGLib::InitRandom();
+
+	// Tests
+	CGLib::TestSmoothRandom();
 
 	return 0;
 }
@@ -423,14 +427,12 @@ void CMainFrame::LoadResults(CString path) {
 		((CMGenView*)(GetActiveView()))->SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 		WriteLog(0, _T("Loading file: ") + path);
 		// Set pGen variables
-		CGLib::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		// Initialize MIDI
 		pGen->StopMIDI();
 		ClearLogs();
 		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
-		pGen->InitRandom();
 		// Load results
 		pGen->LoadResults(dir, fname);
 		if (pGen->save_format_version != MGR_VERSION) MessageBox("This file was created with a different file format " + pGen->save_format_version + "\nYou can get errors trying to load it. This application version " + APP_VERSION + " works with file format version " + MGR_VERSION + ". Loading of older file formats is sometimes supported.", "Error");
@@ -534,14 +536,12 @@ void CMainFrame::OnButtonGen()
 		m_fname = "";
 		m_dir = "";
 		// Set pGen variables
-		CGLib::can_send_log = 1;
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_algo_insts = AlgInsts[m_algo];
 		pGen->m_config = m_config;
 		pGen->m_pspeed = m_pspeed;
 		// Initialize variables
-		pGen->InitRandom();
 		//pGen->LoadInstruments();
 		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		pGen->InitVectors();

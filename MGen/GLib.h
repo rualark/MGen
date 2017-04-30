@@ -114,12 +114,12 @@ public:
 
 protected:
 	// Mathematics
-	int randbw(int n1, int n2); // Random between two numbers
-	float rand01(); // Random float between 0 and 1
+	static int randbw(int n1, int n2); // Random between two numbers
+	static float rand01(); // Random float between 0 and 1
 	// Random
-	void isaac();
-	void randinit(int flag);
-	unsigned int rand2();
+	static void isaac();
+	static void randinit(int flag);
+	static unsigned int rand2();
 	// Load
 	static int parameter_found;
 
@@ -127,8 +127,9 @@ public:
 	CGLib();
 	virtual ~CGLib();
 
-	void InitRandom();
-	void TestRandom(); // Tests random generator
+	static void InitRandom();
+	static void TestRandom(); // Tests random generator
+	static void TestSmoothRandom(); // Tests smooth random generator
 	static void WriteLog(int i, CString * pST);
 	static void WriteLog(int i, CString st);
 
@@ -145,10 +146,10 @@ public:
 
 protected:
   // Random generator
-	ub4 randrsl[256], randcnt; // external results
-	ub4 mm[256];  // internal state
-	ub4 aa = 0, bb = 0, cc = 0;
-	int cur_rand = 0, cur_rand2 = 0;
+	static ub4 randrsl[256], randcnt; // external results
+	static ub4 mm[256];  // internal state
+	static ub4 aa, bb, cc;
+	static int cur_rand, cur_rand2;
 	static vector<vector<CString>> logs; // Logs array
 
 };

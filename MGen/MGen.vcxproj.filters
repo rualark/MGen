@@ -159,6 +159,9 @@
     <ClInclude Include="rtmidi\RtMidi.h">
       <Filter>Header Files\rtmidi</Filter>
     </ClInclude>
+    <ClInclude Include="SmRnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -265,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="rtmidi\RtMidi.cpp">
       <Filter>Source Files\rtmidi</Filter>
+    </ClCompile>
+    <ClCompile Include="SmRnd.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

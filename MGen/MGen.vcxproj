@@ -219,6 +219,7 @@
     <ClInclude Include="portmidi\porttime.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="rtmidi\RtMidi.h" />
+    <ClInclude Include="SmRnd.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TreeColorCtrl.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="portmidi\portmidi.c" />
     <ClCompile Include="portmidi\ptwinmm.c" />
     <ClCompile Include="rtmidi\RtMidi.cpp" />
+    <ClCompile Include="SmRnd.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

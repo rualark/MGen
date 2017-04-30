@@ -95,4 +95,4 @@ late_require = 0 # Allow not-last scan window to have no needed tags, but no blo
 
 # This config was created from default config file configs\GenCA1.pl
 # Created at 2017-04-16 20-51-02
-Midi_file = N:\Public\Critic\app\GitHub\MGen\MGen\load\cloud.mid
+Midi_file = load\cloud.mid

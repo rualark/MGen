@@ -113,6 +113,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "late_require", &late_require);
 	// Load tonic
 	if (*sN == "key") {
+		++parameter_found;
 		if (sV->Right(1) == "m") {
 			*sV = sV->Left(sV->GetLength() - 1);
 			//minor = 1;
