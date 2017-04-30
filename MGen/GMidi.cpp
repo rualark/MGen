@@ -176,8 +176,6 @@ void CGMidi::LoadMidi(CString path)
 				int pos = round(mev->tick / (float)tpc);
 				int pitch = mev->getKeyNumber();
 				int myvel = mev->getVelocity();
-				// Resize vectors for new voice number
-				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check if note too long
 				if (nlen > MAX_LEN) {
@@ -190,7 +188,8 @@ void CGMidi::LoadMidi(CString path)
 					nlen = MAX_LEN;
 				}
 				if (nlen < 1) nlen = 1;
-				if (pos + nlen >= t_allocated) ResizeVectors(max(pos + nlen, t_allocated * 2));
+				// Allocate one more step for note overwrite checking
+				if (pos + nlen + 1 >= t_allocated) ResizeVectors(max(pos + nlen + 1, t_allocated * 2));
 				// Fill tempo
 				if (!tempo[pos + nlen - 1]) {
 					for (int z = last_step_tempo + 1; z < pos + nlen; ++z) {
@@ -256,7 +255,25 @@ void CGMidi::LoadMidi(CString path)
 						track_vid[v] = v - v1;
 						track_name[v] = track_name[v1];
 					}
+				} // if (instr_poly[instr[v]] > 1)
+				else {
+					// Clear any garbage after this note (can build up due to overwriting a longer note)
+					if (len[pos + nlen][v]) {
+						// Safe right limit
+						for (int z = pos + nlen; z < len.size(); ++z) {
+							// Stop clearing if current step is free
+							if (!len[z][v]) break;
+							// Clear step
+							len[z][v] = 0;
+							note[z][v] = 0;
+							pause[z][v] = 0;
+							dyn[z][v] = 0;
+							coff[z][v] = 0;
+						}
+					}
 				}
+				// Resize vectors for new voice number
+				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 				// Search for last note
 				if ((pos > 0) && (note[pos - 1][v] == 0)) {
 					int last_pause = pos - 1;
@@ -286,7 +303,7 @@ void CGMidi::LoadMidi(CString path)
 					coff[pos + z][v] = z;
 					if (tempo[pos + z] == 0) tempo[pos + z] = tempo[pos + z - 1];
 				}
-				// Set midi delta only to first step of note, because later you can get different calculations for different tempo
+				// Set midi delta only to first step of note, because in in-note steps you can get different calculations for different tempo
 				midi_delta[pos][v] = delta;
 				// Set additional variables
 				CountOff(pos, pos + nlen - 1);
