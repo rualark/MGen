@@ -115,9 +115,10 @@ void CGMidi::LoadMidi(CString path)
 		}
 	}
 	// Fill tempo
-	for (int z = 1; z < last_step; z++) {
+	for (int z = 1; z <= last_step; z++) {
 		if (tempo[z] == 0) tempo[z] = tempo[z - 1];
 	}
+	int last_step_tempo = last_step;
 	UpdateTempoMinMax(0, last_step - 1);
 	last_step = 0;
 	int v1 = 0;
@@ -175,11 +176,30 @@ void CGMidi::LoadMidi(CString path)
 				int pos = round(mev->tick / (float)tpc);
 				int pitch = mev->getKeyNumber();
 				int myvel = mev->getVelocity();
-				// Fill tempo
-				if (!tempo[pos]) for (int z = pos; z > 0; --z) {
-					if (tempo[z] != 0) break;
-					tempo[z] = tempo[z - 1];
+				// Resize vectors for new voice number
+				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
+				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
+				// Check if note too long
+				if (nlen > MAX_LEN) {
+					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
+						CString* st = new CString;
+						st->Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
+						WriteLog(1, st);
+						warning_loadmidi_long++;
+					}
+					nlen = MAX_LEN;
 				}
+				if (nlen < 1) nlen = 1;
+				if (pos + nlen >= t_allocated) ResizeVectors(max(pos + nlen, t_allocated * 2));
+				// Fill tempo
+				if (!tempo[pos + nlen - 1]) {
+					for (int z = last_step_tempo + 1; z < pos + nlen; ++z) {
+						if (!tempo[z]) tempo[z] = tempo[z - 1];
+					}
+					// Set last step that has tempo
+					last_step_tempo = pos + nlen - 1;
+				}
+				// Fallback
 				if (!tempo[pos]) tempo[pos] = 100;
 				int delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
 				// Check alignment
@@ -237,21 +257,6 @@ void CGMidi::LoadMidi(CString path)
 						track_name[v] = track_name[v1];
 					}
 				}
-				// Resize vectors for new voice number
-				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
-				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
-				// Check if note too long
-				if (nlen > MAX_LEN) {
-					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
-						CString* st = new CString;
-						st->Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
-						WriteLog(1, st);
-						warning_loadmidi_long++;
-					}
-					nlen = MAX_LEN;
-				}
-				if (nlen < 1) nlen = 1;
-				if (pos + nlen >= t_allocated) ResizeVectors(max(pos + nlen, t_allocated * 2));
 				// Search for last note
 				if ((pos > 0) && (note[pos - 1][v] == 0)) {
 					int last_pause = pos - 1;

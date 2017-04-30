@@ -47,7 +47,7 @@ gliss_minlen = 1000 # Minimum note length that can have a gliss transition
 gliss_freq = 50 # Frequency of gliss articulation in percent
 
 # Bell adaptor
-bell_mindur = 300 # Minimum note duration (ms) that can have a bell
+bell_mindur = 700 # Minimum note duration (ms) that can have a bell
 bell_mul = 0.2-0.2 # Multiply dynamics by this parameter at bell start-end
 bell_len = 30-30 # Percent of notelength to use for slope at bell start-end
 

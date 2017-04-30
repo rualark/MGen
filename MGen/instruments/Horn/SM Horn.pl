@@ -21,15 +21,14 @@ end_vib_freq = 30 # Frequency of vibrato ending
 end_vib2_dur = 0 # Disable
 end_vib2_freq = 0 # Disable
 
-# Legato adaptor
-splitpo_freq = 100 # Frequency of split portamento in percent
-splitpo_pent_minint = 100 # Disable
-gliss_freq = 0 # Disable
-
 # Vibrato adaptor
 vib_bell = 20-60 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
 
 # Legato adaptor
+splitpo_freq = 80 # Frequency of split portamento in percent
+splitpo_pent_minint = 100 # Disable
+gliss_freq = 0 # Disable
+splitpo_mindur = 20 # Minimum legato duration to use split portamento
 leg_pdur = 30 # Maximum percent of previous note duration, that legato transition can take
 leg_cdur = 10 # Maximum percent of current note duration, that legato transition can take
 legato_ahead = 80,640 # Time in ms to stretch legato notes back to cope with legato delay [norm,chrom,penta,gliss]
