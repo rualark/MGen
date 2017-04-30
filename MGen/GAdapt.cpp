@@ -311,7 +311,7 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if (ndur < vel_normal_minlen[ii]) {
 			vel[i][v] = randbw(vel_immediate[ii], vel_immediate[ii] + 2);
-			if (comment_adapt) adapt_comment[i][v] += "Vel random over normal. ";
+			if (comment_adapt) adapt_comment[i][v] += "Vel immediate. ";
 		}
 		//if (ndur < vel_normal_minlen[ii]) vel[i][v] = dyn[i][v] * (float)(127 - vel_immediate[ii]) / 127.0 + vel_immediate[ii];
 		//else vel[i][v] = dyn[i][v] * (float)(vel_immediate[ii] - 1) / 127.0;
@@ -491,11 +491,14 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 	float rv = rnd_vel[ii];
 	int ok = 1;
 	if (rnd_vel[ii] > 0) {
-		// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 		if (instr_type[ii] == 1) {
+			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 			if (i && !pause[i - 1][v] && note[i-1][v] != note[i][v]) ok = 0;
+			// Prevent velocity randomization of short nonlegato notes, because they sound bad at low velocity with Friedlander
+			if ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] < vel_normal_minlen[ii]) ok = 0;
 		}
 		if (instr_type[ii] == 2) {
+			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 			if (i && !pause[i - 1][v] && note[i - 1][v] != note[i][v]) ok = 0;
 		}
 		if (ok) {

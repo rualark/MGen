@@ -9,3 +9,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-30 11-48-38
 Midi_file = load\This way up.mid
+Instruments = Violin,Piano,Piano,Piano,Piano,Piano

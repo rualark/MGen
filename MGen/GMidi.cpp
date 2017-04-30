@@ -316,7 +316,12 @@ void CGMidi::LoadMidi(CString path)
 				vlast_pitch[v] = pitch;
 			}
 		}
-	}
+		// If track is empty, create a single pause
+		if (!note[0][v] && !pause[0][v] && !len[0][v]) {
+			len[0][v] = 1;
+			pause[0][v] = 1;
+		}
+	} // for track
 	if (need_exit) return;
 	// Add closing pauses
 	for (int v = 0; v < v_cnt; v++) {
