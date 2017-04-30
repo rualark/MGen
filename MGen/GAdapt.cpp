@@ -625,9 +625,10 @@ void CGAdapt::Adapt(int step1, int step2)
 		if (tempo_src[i]) {
 			tempo[i] = tempo_src[i];
 		}
+		// Save source tempo
+		tempo_src[i] = tempo[i];
 		// Randomize tempo
 		if (i > 0) {
-			tempo_src[i] = tempo[i];
 			tr = tempo[i - 1] - tempo_src[i - 1] + randbw(-rnd_tempo_step * tempo[i] / 100.0, rnd_tempo_step * tempo[i] / 100.0);
 			// Correct tempo range
 			tr = max(tr, -tempo[i] * (rnd_tempo / 2.0) / 100.0);

@@ -401,10 +401,11 @@ void CMGenView::OnDraw(CDC* pDC)
 						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
 						X_FIELD + (i - 1) * nwidth + nwidth / 2,
 						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
-					g.DrawLine(&pen_aared, X_FIELD + i * nwidth + nwidth / 2,
-						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i] - tg_min) / (tg_max - tg_min),
-						X_FIELD + (i - 1) * nwidth + nwidth / 2,
-						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i - 1] - tg_min) / (tg_max - tg_min));
+					if (pGen->tempo_src[i])
+						g.DrawLine(&pen_aared, X_FIELD + i * nwidth + nwidth / 2,
+							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i] - tg_min) / (tg_max - tg_min),
+							X_FIELD + (i - 1) * nwidth + nwidth / 2,
+							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i - 1] - tg_min) / (tg_max - tg_min));
 				}
 			}
 			if (step2t < pGen->t_generated - 1) {
@@ -412,10 +413,11 @@ void CMGenView::OnDraw(CDC* pDC)
 					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t] - tg_min) / (tg_max - tg_min),
 					X_FIELD + (step2t + 1) * nwidth + nwidth / 2,
 					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t + 1] - tg_min) / (tg_max - tg_min));
-				g.DrawLine(&pen_aared, X_FIELD + step2t * nwidth + nwidth / 2,
-					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[step2t] - tg_min) / (tg_max - tg_min),
-					X_FIELD + (step2t + 1) * nwidth + nwidth / 2,
-					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[step2t + 1] - tg_min) / (tg_max - tg_min));
+				if (pGen->tempo_src[step2t + 1])
+					g.DrawLine(&pen_aared, X_FIELD + step2t * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[step2t] - tg_min) / (tg_max - tg_min),
+						X_FIELD + (step2t + 1) * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[step2t + 1] - tg_min) / (tg_max - tg_min));
 			}
 			// Highlight draft notes
 			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
