@@ -125,6 +125,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 		st = FlagName[i];
 		st.MakeLower();
 		if (*sN == st) {
+			++parameter_found;
 			accept[i] = atoi(*sV);
 			// Check if not Strict flag
 			if (i) {
