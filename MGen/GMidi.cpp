@@ -855,9 +855,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 // Last cc sent by this function is with i = step2 - 2, time = (stime[i+1] + etime[i+1]) / 2, which is half step to step2
 void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector <unsigned char> > & dv, int ii, int v)
 {
-	CString st;
-	st.Format("Send CC%d from %d to %d", CC, step1, step2);
-	WriteLog(4, st);
+	//CString st;
+	//st.Format("Send CC%d from %d to %d", CC, step1, step2);
+	//WriteLog(4, st);
 	if (!CC) return;
 	CSmoothRandom sr;
 	int cc_value;
@@ -929,8 +929,7 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 					if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
 					// Add random
 					sr.MakeNext();
-					cc_ma[c] = 64;
-					cc_ma[c] += sr.sig / sr.s_range * (float)rnd_dyn[ii] * 2.0 * fadeout;
+					cc_ma[c] += sr.sig / sr.s_range * (float)rnd_dyn[ii] / 2.0 * fadeout;
 					// Check limits
 					if (cc_ma[c] < 1) cc_ma[c] = 1;
 					if (cc_ma[c] > 127) cc_ma[c] = 127;
@@ -947,8 +946,7 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 					if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
 					// Add random
 					sr.MakeNext();
-					cc_ma[c] = 64;
-					cc_ma[c] += sr.sig / sr.s_range * (float)rnd_dyn[ii] * 2.0 * fadeout;
+					cc_ma[c] += sr.sig / sr.s_range * (float)rnd_dyn[ii] / 2.0 * fadeout;
 					// Check limits
 					if (cc_ma[c] < 1) cc_ma[c] = 1;
 					if (cc_ma[c] > 127) cc_ma[c] = 127;
