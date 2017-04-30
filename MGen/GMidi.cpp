@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GMidi.h"
+#include "SmRnd.h"
 
 #include "midifile/MidiFile.h"
 
@@ -823,9 +824,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 			i += noff[i][v];
 		}
 		// Send CC
-		InterpolateCC(CC_dyn[ii], CC_dyn_ma[ii], step21, step22, dyn, ii, v);
-		InterpolateCC(CC_vib[ii], 1, step21, step22, vib, ii, v);
-		InterpolateCC(CC_vibf[ii], 1, step21, step22, vibf, ii, v);
+		InterpolateCC(CC_dyn[ii], CC_dyn_ma[ii], step1, step22, dyn, ii, v);
+		InterpolateCC(CC_vib[ii], 1, step1, step22, vib, ii, v);
+		InterpolateCC(CC_vibf[ii], 1, step1, step22, vibf, ii, v);
 	}
 	// Sort by timestamp before sending
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
@@ -850,100 +851,113 @@ void CGMidi::SendMIDI(int step1, int step2)
 	mutex_output.unlock();
 }
 
+// First cc sent by this function is with i = step1 - 1, time = (stime[i] + etime[i]) / 2, which is half step to step1
+// Last cc sent by this function is with i = step2 - 2, time = (stime[i+1] + etime[i+1]) / 2, which is half step to step2
 void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector <unsigned char> > & dv, int ii, int v)
 {
-	if (CC) {
-		int cc_value;
-		int steps, skip;
-		float fsteps;
-		float cc_step; // Length of cc interpolation step
-		float cc_pos1; // Middle of current note step
-		float cc_pos2; // Middle of next note step
-		/*
-		// If we are sending first step, send it separately
-		if (!step1) {
-			midi_current_step = 0;
-			int i = 0;
-			// Get CC steps count
-			fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
-			steps = max(1, fsteps);
-			if (steps % 2 == 0) steps++;
-			// Calculate window
-			cc_pos1 = stime[i] * 100 / m_pspeed;
-			cc_pos2 = (etime[i] + stime[i]) * 100 / m_pspeed / 2;
-			cc_step = (cc_pos2 - cc_pos1) / steps / 2;
-			// Send linear CC
-			for (int c = 0; c < steps/2; c++) {
-				AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)steps, CC, 
-					((steps - c) * dv[i][v] + c * dv[i + 1][v]) / steps);
+	CString st;
+	st.Format("Send CC%d from %d to %d", CC, step1, step2);
+	WriteLog(4, st);
+	if (!CC) return;
+	CSmoothRandom sr;
+	int cc_value;
+	int steps, skip;
+	float fsteps;
+	// Time of last cc sent here
+	float last_time = (stime[step2 - 1] + etime[step2 - 1]) / 2;
+	float cc_step; // Length of cc interpolation step
+	float cc_pos1; // Middle of current note step
+	float cc_pos2; // Middle of next note step
+	for (int i = step1 - 2; i < step2 - 1; i++) {
+		if (i < 0) continue;
+		midi_current_step = i;
+		// Linear interpolation
+		vector <float> cc_lin; 
+		// Moving average
+		vector <float> cc_ma; 
+		// Get CC steps count
+		fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
+		// Check if need to skip note steps
+		skip = 1.0 / max(0.0000001, fsteps);
+		if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1) continue;
+		steps = max(1, fsteps);
+		if (steps % 2 == 0) steps++;
+		cc_lin.resize(steps * 2);
+		cc_ma.resize(steps);
+		// Linear interpolation
+		for (int c = 0; c < steps * 2; c++) {
+			// Left cc steps
+			if (c < steps / 2) {
+				if (i == 0) cc_lin[c] = dv[i][v];
+				else cc_lin[c] = (floor(steps * 0.5 - c) * dv[i - 1][v] + floor(c + 1 + steps / 2) * dv[i][v]) / steps;
 			}
-		}
-		*/
-		for (int i = step1 - 2; i < step2 - 1; i++) {
-			if (i < 0) continue;
-			midi_current_step = i;
-			// Linear interpolation
-			vector <float> cc_lin; 
-			// Moving average
-			vector <float> cc_ma; 
-			// Get CC steps count
-			fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
-			// Check if need to skip note steps
-			skip = 1.0 / max(0.0000001, fsteps);
-			if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1) continue;
-			steps = max(1, fsteps);
-			if (steps % 2 == 0) steps++;
-			cc_lin.resize(steps * 2);
-			cc_ma.resize(steps);
-			// Linear interpolation
-			for (int c = 0; c < steps * 2; c++) {
-				// Left cc steps
-				if (c < steps / 2) {
-					if (i == 0) cc_lin[c] = dv[i][v];
-					else cc_lin[c] = (floor(steps * 0.5 - c) * dv[i - 1][v] + floor(c + 1 + steps / 2) * dv[i][v]) / steps;
-				}
-				// Mid cc steps
-				else if (c < steps * 1.5) {
-					cc_lin[c] = (floor(steps * 1.5 - c) * dv[i][v] + floor(c - steps / 2) * dv[i + 1][v]) / steps;
-				}
-				// Right cc steps
-				else {
-					if (i == step2 - 2) cc_lin[c] = dv[i + 1][v];
-					else cc_lin[c] = (floor(steps * 2.5 - c) * dv[i + 1][v] + floor(c - steps * 1.5 + 1) * dv[i + 2][v]) / steps;
-				}
+			// Mid cc steps
+			else if (c < steps * 1.5) {
+				cc_lin[c] = (floor(steps * 1.5 - c) * dv[i][v] + floor(c - steps / 2) * dv[i + 1][v]) / steps;
 			}
-			if (!ma) {
-				// Send linear CC
-				for (int c = 0; c < steps; c++) {
-					AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)steps, CC, cc_lin[c]);
-				}
-			}
+			// Right cc steps
 			else {
-				// First moving average
-				cc_ma[0] = 0;
-				for (int c = 0; c < steps; c++) {
-					cc_ma[0] += cc_lin[c] / (float)steps;
-				}
-				// Extend moving average
-				for (int c = 1; c < steps; c++) {
-					cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + steps - 1] - cc_lin[c - 1]) / (float)steps;
-				}
-				// Send starting CC
-				if (i == 0) AddCC(-1, CC, cc_ma[0]);
-				// Send ma CC of first note
-				int hstep = steps / 2;
-				if (i > step1 - 2) for (int c = 0; c < hstep + 1; c++) {
-					int t = stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)(c + hstep) / (float)steps;
-					if (t >= midi_sent_t - midi_start_time) AddCC(t, CC, cc_ma[c]);
-				}
-				// Send ma CC of second note
-				if (i <  step2 - 2) for (int c = hstep + 1; c < steps; c++) {
-					int t = stime[i + 1] * 100 / m_pspeed + (etime[i + 1] - stime[i + 1]) * 100 / m_pspeed*(float)(c - hstep - 1) / (float)steps;
-					if (t >= midi_sent_t - midi_start_time) AddCC(t, CC, cc_ma[c]);
-				}
+				if (i == step2 - 2) cc_lin[c] = dv[i + 1][v];
+				else cc_lin[c] = (floor(steps * 2.5 - c) * dv[i + 1][v] + floor(c - steps * 1.5 + 1) * dv[i + 2][v]) / steps;
 			}
 		}
-	}
+		if (!ma) {
+			// Send linear CC
+			for (int c = 0; c < steps; c++) {
+				AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)steps, CC, cc_lin[c]);
+			}
+		}
+		else {
+			// First moving average
+			cc_ma[0] = 0;
+			for (int c = 0; c < steps; c++) {
+				cc_ma[0] += cc_lin[c] / (float)steps;
+			}
+			// Extend moving average
+			for (int c = 1; c < steps; c++) {
+				cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + steps - 1] - cc_lin[c - 1]) / (float)steps;
+			}
+			// Send starting CC
+			if (i == 0) AddCC(-1, CC, cc_ma[0]);
+			int hstep = steps / 2;
+			// Send ma CC of first note
+			if (i > step1 - 2) for (int c = 0; c < hstep + 1; c++) {
+				int t = stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)(c + hstep) / (float)steps;
+				if (t >= midi_sent_t - midi_start_time) {
+					// Calculate fadeout
+					float fadeout = 1;
+					if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
+					// Add random
+					sr.MakeNext();
+					cc_ma[c] = 64;
+					cc_ma[c] += sr.sig / sr.s_range * (float)rnd_dyn[ii] * 2.0 * fadeout;
+					// Check limits
+					if (cc_ma[c] < 1) cc_ma[c] = 1;
+					if (cc_ma[c] > 127) cc_ma[c] = 127;
+					// Send
+					AddCC(t, CC, cc_ma[c]);
+				}
+			}
+			// Send ma CC of second note
+			if (i <  step2 - 2) for (int c = hstep + 1; c < steps; c++) {
+				int t = stime[i + 1] * 100 / m_pspeed + (etime[i + 1] - stime[i + 1]) * 100 / m_pspeed*(float)(c - hstep - 1) / (float)steps;
+				if (t >= midi_sent_t - midi_start_time) {
+					// Calculate fadeout
+					float fadeout = 1;
+					if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
+					// Add random
+					sr.MakeNext();
+					cc_ma[c] = 64;
+					cc_ma[c] += sr.sig / sr.s_range * (float)rnd_dyn[ii] * 2.0 * fadeout;
+					// Check limits
+					if (cc_ma[c] < 1) cc_ma[c] = 1;
+					if (cc_ma[c] > 127) cc_ma[c] = 127;
+					// Send
+					AddCC(t, CC, cc_ma[c]);
+				}
+			} // for c
+		} // Moving average
+	} // for i
 }
 
 void CGMidi::StopMIDI()

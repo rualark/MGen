@@ -611,9 +611,10 @@ void CGAdapt::Adapt(int step1, int step2)
 			i += noff[i][v];
 		} // for x
 		for (int i = step1; i <= step2; i++) {
+			int max_shift;
 			// Randomize dynamics
-			int max_shift = dyn[i][v] * rnd_dyn[ii] / 100.0;
-			dyn[i][v] = randbw(max(1, dyn[i][v] - max_shift), min(127, dyn[i][v] + max_shift));
+			//max_shift = dyn[i][v] * rnd_dyn[ii] / 100.0;
+			//dyn[i][v] = randbw(max(1, dyn[i][v] - max_shift), min(127, dyn[i][v] + max_shift));
 			// Randomize vib
 			max_shift = vib[i][v] * rnd_dyn[ii] / 100.0;
 			vib[i][v] = randbw(max(1, vib[i][v] - max_shift), min(127, vib[i][v] + max_shift));

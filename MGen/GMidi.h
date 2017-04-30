@@ -12,10 +12,14 @@
 #define MAX_TRANS_DELAY 10
 // Maximum time (ms) allowed to move note and linked events (ks/cc) left
 #define MAX_AHEAD 1000
+// Time to fade out smooth random cc (must be lower than MAX_MIDI_BUF_MSEC - MIN_MIDI_BUF_MSEC)
+#define CC_FADEOUT 500
+// Time to end fadeout before last cc is sent (must be lower than 1000 / CC_steps)
+#define CC_FADEOUT_RESERVE 200
 
 // PortMIDI
-#define MIN_MIDI_BUF_MSEC 3000
-#define MAX_MIDI_BUF_MSEC 6000
+#define MIN_MIDI_BUF_MSEC 6000
+#define MAX_MIDI_BUF_MSEC 12000
 #define MIDI_BUF_PROTECT 500 // Number of ms to postpone playback on start
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
