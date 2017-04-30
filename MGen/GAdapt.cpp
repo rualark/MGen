@@ -611,6 +611,7 @@ void CGAdapt::Adapt(int step1, int step2)
 			i += noff[i][v];
 		} // for x
 	} // for v
+	CSmoothRandom sr;
 	float tr;
 	for (int i = step1; i <= step2; i++) {
 		// Load tempo if it was randomized before
@@ -623,15 +624,17 @@ void CGAdapt::Adapt(int step1, int step2)
 		if (i > 0) {
 			// Calculate fadeout
 			float fadeout = 1;
-			//if (stime[step2] - CC_FADEOUT_RESERVE - stime[i] < CC_FADEOUT) fadeout = max(0, stime[step2] - CC_FADEOUT_RESERVE - stime[i]) / CC_FADEOUT;
+			if (stime[step2] - CC_FADEOUT_RESERVE - stime[i] < CC_FADEOUT) 
+				fadeout = max(0, stime[step2] - CC_FADEOUT_RESERVE - stime[i]) / CC_FADEOUT;
 			// Create random
-			//tr = sr.sig / sr.s_range * (float)rnd_tempo * (float)tempo_src[i] / 200.0 * fadeout;
+			sr.MakeNext();
+			tr = sr.sig / sr.s_range * (float)rnd_tempo * (float)tempo_src[i] / 200.0 * fadeout;
 			//tr = tempo[i - 1] - tempo_src[i - 1] + randbw(-rnd_tempo_step * tempo[i] / 100.0, rnd_tempo_step * tempo[i] / 100.0);
 			// Correct tempo range
 			//tr = max(tr, -tempo[i] * (rnd_tempo / 2.0) / 100.0);
 			//tr = min(tr, tempo[i] * (rnd_tempo / 2.0) / 100.0);
 			// Apply tempo randomization
-			//tempo[i] += tr;
+			tempo[i] += tr;
 		}
 	}
 	for (int v = 0; v < v_cnt; v++) {
