@@ -1,5 +1,11 @@
 #pragma once
 #include "GVar.h"
+
+// Time to fade out smooth random cc (must be lower than MAX_MIDI_BUF_MSEC - MIN_MIDI_BUF_MSEC)
+#define CC_FADEOUT 500
+// Time to end fadeout before last cc is sent (must be lower than 1000 / CC_steps)
+#define CC_FADEOUT_RESERVE 200
+
 class CGAdapt :
 	public CGVar
 {

@@ -12,10 +12,6 @@
 #define MAX_TRANS_DELAY 10
 // Maximum time (ms) allowed to move note and linked events (ks/cc) left
 #define MAX_AHEAD 1000
-// Time to fade out smooth random cc (must be lower than MAX_MIDI_BUF_MSEC - MIN_MIDI_BUF_MSEC)
-#define CC_FADEOUT 500
-// Time to end fadeout before last cc is sent (must be lower than 1000 / CC_steps)
-#define CC_FADEOUT_RESERVE 200
 
 // PortMIDI
 #define MIN_MIDI_BUF_MSEC 6000
@@ -43,7 +39,7 @@ public:
 	void LogInstruments();
 	void CheckDstime(int i, int v);
 	void SendMIDI(int step1, int step2);
-	void InterpolateCC(int CC, int ma, int step1, int step2, vector<vector<unsigned char>>& dv, int ii, int v);
+	void InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vector<vector<unsigned char>>& dv, int ii, int v);
 	void StopMIDI();
 	int GetPlayStep();
 	

@@ -824,9 +824,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 			i += noff[i][v];
 		}
 		// Send CC
-		InterpolateCC(CC_dyn[ii], CC_dyn_ma[ii], step1, step22, dyn, ii, v);
-		InterpolateCC(CC_vib[ii], 1, step1, step22, vib, ii, v);
-		InterpolateCC(CC_vibf[ii], 1, step1, step22, vibf, ii, v);
+		InterpolateCC(CC_dyn[ii], CC_dyn_ma[ii], rnd_dyn[ii], step1, step22, dyn, ii, v);
+		InterpolateCC(CC_vib[ii], 1, rnd_vib[ii], step1, step22, vib, ii, v);
+		InterpolateCC(CC_vibf[ii], 1, rnd_vibf[ii], step1, step22, vibf, ii, v);
 	}
 	// Sort by timestamp before sending
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
@@ -853,7 +853,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 
 // First cc sent by this function is with i = step1 - 1, time = (stime[i] + etime[i]) / 2, which is half step to step1
 // Last cc sent by this function is with i = step2 - 2, time = (stime[i+1] + etime[i+1]) / 2, which is half step to step2
-void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector <unsigned char> > & dv, int ii, int v)
+void CGMidi::InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vector< vector <unsigned char> > & dv, int ii, int v)
 {
 	//CString st;
 	//st.Format("Send CC%d from %d to %d", CC, step1, step2);
@@ -929,7 +929,7 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 					if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
 					// Add random
 					sr.MakeNext();
-					cc_ma[c] += sr.sig / sr.s_range * (float)rnd_dyn[ii] / 2.0 * fadeout;
+					cc_ma[c] += sr.sig / sr.s_range * (float)rnd * (float)cc_ma[c] / 200.0 * fadeout;
 					// Check limits
 					if (cc_ma[c] < 1) cc_ma[c] = 1;
 					if (cc_ma[c] > 127) cc_ma[c] = 127;
@@ -946,7 +946,7 @@ void CGMidi::InterpolateCC(int CC, int ma, int step1, int step2, vector< vector 
 					if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
 					// Add random
 					sr.MakeNext();
-					cc_ma[c] += sr.sig / sr.s_range * (float)rnd_dyn[ii] / 2.0 * fadeout;
+					cc_ma[c] += sr.sig / sr.s_range * (float)rnd * (float)cc_ma[c] / 200.0 * fadeout;
 					// Check limits
 					if (cc_ma[c] < 1) cc_ma[c] = 1;
 					if (cc_ma[c] > 127) cc_ma[c] = 127;

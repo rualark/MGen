@@ -50,10 +50,10 @@ vib_bell_freq = 100 # Frequency to apply vibrato bell when all conditions met
 vib_bell_dur = 600-1200 # Minimum note duration (ms) that can have a vibrato bell - that can have highest vibrato bell
 vib_bell = 30-90 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
 vibf_bell = 20-80 # Max vibrato frequency in vibrato bell (for minimum and highest duration)
-rnd_vib = 10 # Randomize vibrato intensity not greater than this percent
+rnd_vib = 100 # Randomize vibrato intensity not greater than this percent
 rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
 rnd_vel_repeat = 70 # Randomize note velocity not greater than this percent for note retriggers
-rnd_dyn = 8 # Randomize step dynamics not greater than this percent
+rnd_dyn = 15 # Randomize step dynamics not greater than this percent
