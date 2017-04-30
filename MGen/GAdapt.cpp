@@ -341,7 +341,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 	}
 	int ni = i + noff[i][v];
 	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
-	if ((ndur > bell_mindur[ii]) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
+	if ((ndur > bell_mindur[ii]/2) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
 		int pos = round(i + (float)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
