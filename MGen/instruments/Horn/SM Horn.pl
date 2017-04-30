@@ -22,7 +22,7 @@ end_vib2_dur = 0 # Disable
 end_vib2_freq = 0 # Disable
 
 # Legato adaptor
-splitpo_freq = 50 # Frequency of split portamento in percent
+splitpo_freq = 100 # Frequency of split portamento in percent
 splitpo_pent_minint = 100 # Disable
 gliss_freq = 0 # Disable
 
@@ -30,6 +30,9 @@ gliss_freq = 0 # Disable
 vib_bell = 20-60 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
 
 # Legato adaptor
-legato_ahead = 375,640 # Time in ms to stretch legato notes back to cope with legato delay [norm,chrom,penta,gliss]
+leg_pdur = 30 # Maximum percent of previous note duration, that legato transition can take
+leg_cdur = 10 # Maximum percent of current note duration, that legato transition can take
+legato_ahead = 80,640 # Time in ms to stretch legato notes back to cope with legato delay [norm,chrom,penta,gliss]
+legato_ahead_exp = 2 # Exponent to interpolate note movement ahead from note velocity
 # Time in ms to stretch legato notes back for chromatic split portamento (for each pitch interval)
 ahead_chrom = 0,250,310,440,500,520,560,570,625,630,635,640,640
