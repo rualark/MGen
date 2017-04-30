@@ -7,6 +7,7 @@
 
 CSmoothRandom::CSmoothRandom()
 {
+	InitRandom();
 }
 
 CSmoothRandom::~CSmoothRandom()

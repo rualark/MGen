@@ -12,17 +12,6 @@ int CGLib::debug_level = 1;
 int CGLib::parameter_found = 0;
 int CGLib::play_enabled = 1;
 UINT CGLib::WM_DEBUG_MSG = 0;
-vector<vector<CString>> CGLib::logs;
-
-// Random
-int CGLib::cur_rand = 0;
-int CGLib::cur_rand2 = 0;
-ub4 CGLib::aa = 0;
-ub4 CGLib::bb = 0;
-ub4 CGLib::cc = 0;
-ub4 CGLib::randrsl[256];
-ub4 CGLib::randcnt = 0;
-ub4 CGLib::mm[256];
 
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
@@ -485,9 +474,6 @@ void CGLib::TestSmoothRandom()
 
 void CGLib::WriteLog(int i, CString* pST)
 {
-	// Add log to vector
-	if (logs.size() < 2) logs.resize(10);
-	logs[i].push_back(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + *pST);
 	if (can_send_log)	::PostMessage(m_hWnd, WM_DEBUG_MSG, i, (LPARAM)pST);
 	else delete pST;
 }

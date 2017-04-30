@@ -610,21 +610,8 @@ void CGAdapt::Adapt(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
 		} // for x
-		for (int i = step1; i <= step2; i++) {
-			int max_shift;
-			// Randomize dynamics
-			//max_shift = dyn[i][v] * rnd_dyn[ii] / 100.0;
-			//dyn[i][v] = randbw(max(1, dyn[i][v] - max_shift), min(127, dyn[i][v] + max_shift));
-			// Randomize vib
-			//max_shift = vib[i][v] * rnd_dyn[ii] / 100.0;
-			//vib[i][v] = randbw(max(1, vib[i][v] - max_shift), min(127, vib[i][v] + max_shift));
-			// Randomize vibf
-			//max_shift = vibf[i][v] * rnd_dyn[ii] / 100.0;
-			//vibf[i][v] = randbw(max(1, vibf[i][v] - max_shift), min(127, vibf[i][v] + max_shift));
-		} // for i
 	} // for v
-	float tr = 0;
-	//CSmoothRandom sr;
+	float tr;
 	for (int i = step1; i <= step2; i++) {
 		// Load tempo if it was randomized before
 		if (tempo_src[i]) {

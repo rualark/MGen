@@ -183,16 +183,17 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CGLib::can_send_log = 1;
 	CGLib::m_hWnd = m_hWnd;
 	CGLib::WM_DEBUG_MSG = WM_DEBUG_MSG;
-	CGLib::InitRandom();
-
-	// Tests
-	CGLib::TestSmoothRandom();
 
 	return 0;
 }
 
 void CMainFrame::WriteLog(int log, CString st)
 {
+	// Add log to vector from this thread only
+	if (pGen && pGen->can_send_log) {
+		if (pGen->logs.size() < 2) pGen->logs.resize(10);
+		pGen->logs[log].push_back(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
+	}
 	COutputList* pOL=0;
 	if (log == 0) pOL = &m_wndOutput.m_wndOutputDebug;
 	if (log == 1) {
@@ -427,6 +428,7 @@ void CMainFrame::LoadResults(CString path) {
 		((CMGenView*)(GetActiveView()))->SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 		WriteLog(0, _T("Loading file: ") + path);
 		// Set pGen variables
+		pGen->InitRandom();
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		// Initialize MIDI
 		pGen->StopMIDI();
@@ -536,6 +538,7 @@ void CMainFrame::OnButtonGen()
 		m_fname = "";
 		m_dir = "";
 		// Set pGen variables
+		pGen->InitRandom();
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_algo_insts = AlgInsts[m_algo];
