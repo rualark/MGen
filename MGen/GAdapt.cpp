@@ -8,6 +8,7 @@ CGAdapt::CGAdapt()
 	warning_note_range.resize(MAX_VOICE);
 	warning_note_wrong.resize(MAX_VOICE);
 	warning_note_short.resize(MAX_VOICE);
+	warning_note_long.resize(MAX_VOICE);
 	warning_poly.resize(MAX_INSTR);
 }
 
@@ -56,11 +57,27 @@ void CGAdapt::CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pe
 	if (ndur < instr_tmin[ii]) {
 		CString* st = new CString;
 		if (warning_note_short[v] < 4) {
-			st->Format("Recommended minimum note length for %s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
-				InstGName[ii], instr_tmin[ii], v, i, ndur);
+			st->Format("Recommended minimum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
+				InstGName[ii], InstCName[ii], instr_tmin[ii], v, i, ndur);
 			warning_note_short[v] ++;
 			WriteLog(1, st);
 			if (comment_adapt) adapt_comment[i][v] += "Too short note. ";
+		}
+	}
+}
+
+void CGAdapt::CheckNoteBreath(int v, int x, int i, int ii, int ei, int pi, int pei)
+{
+	// Check if note is too long for this instrument
+	int ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+	if (instr_tmax[ii] && ndur > instr_tmax[ii]) {
+		CString* st = new CString;
+		if (warning_note_long[v] < 4) {
+			st->Format("Recommended maximum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config. Some instruments may cut this note shorter.",
+				InstGName[ii], InstCName[ii], instr_tmax[ii], v, i, ndur);
+			warning_note_long[v] ++;
+			WriteLog(1, st);
+			if (comment_adapt) adapt_comment[i][v] += "Too long note. ";
 		}
 	}
 }
@@ -586,6 +603,7 @@ void CGAdapt::Adapt(int step1, int step2)
 				AdaptRndVel(v, x, i, ii, ei, pi, pei);
 				FixOverlap(v, x, i, ii, ei, pi, pei);
 			}
+			CheckNoteBreath(v, x, i, ii, ei, pi, pei);
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
 		} // for x

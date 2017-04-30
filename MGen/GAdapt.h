@@ -16,6 +16,7 @@ public:
 protected:
 	void CheckRange(int v, int ii);
 	void CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pei);
+	void CheckNoteBreath(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int pi, int pei);
@@ -36,6 +37,7 @@ protected:
 	// MIDI play warnings for each voice show if warning was already fired to prevent repeated warnings
 	vector<int> warning_note_range;
 	vector<int> warning_note_short;
+	vector<int> warning_note_long;
 	vector<int> warning_note_wrong;
 	vector<int> warning_poly;
 
