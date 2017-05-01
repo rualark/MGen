@@ -21,4 +21,4 @@ lengroup_edt2 = -100 # delta to alter note ending time of last note in group (ms
 # Randomization
 rand_pos = 8-8 # Randomize note starts-ends not greater than percent of note length 
 rand_pos_max = 70-70 # Maximum shift in ms (start-end)
-rnd_vel = 0 # Randomize note velocity not greater than this percent
+rnd_vel = 8 # Randomize note velocity not greater than this percent

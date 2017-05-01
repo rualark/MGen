@@ -24,6 +24,7 @@ public:
 	float s_range = 25;
 
 	// Gravitation
-	float a2_grav = 1;
+	float a2_grav = 2; // 2 = maximum gravity, 0 = no gravity
+	float a_grav = 2; // 2 = maximum gravity, 0 = no gravity
 };
 

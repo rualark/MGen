@@ -239,28 +239,38 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 			// How many chromatic pitches per second
 			int iv = abs(note[i][v] - note[pi][v]);
 			float nspeed = iv / max_adur * 1000.0;
+			//CString st;
+			//st.Format("nspeed %f, max_adur %f, step %d", nspeed, max_adur, i);
+			//WriteLog(1, st);
 			if (nspeed < 8) {
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
 				min_adur = max(splitpo_mindur[ii], abs(note[i][v] - note[pi][v]) / 8 * 1000);
 				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][1];
 				if (iv < ahead_chrom[ii].size() && ahead_chrom[ii][iv]) adur0 = ahead_chrom[ii][iv];
+				//CString st;
+				//st.Format("Added chromatic split portamento at step %d", i);
+				//WriteLog(0, st);
 			}
 			else if (abs(note[pi][v] - note[i][v]) > splitpo_pent_minint[ii]) {
 				artic[i][v] = ARTIC_SPLITPO_PENT;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
 				min_adur = splitpo_mindur[ii];
 				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][2];
+				//CString st;
+				//st.Format("Added pentatonic split portamento at step %d", i);
+				//WriteLog(0, st);
 			}
 		}
 		else if (max_adur > gliss_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 6 &&
 			randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq[ii]+0.001)*100) {
-			if (randbw(0, 100) < 50) {
-				artic[i][v] = ARTIC_GLISS2;
-				if (comment_adapt) adapt_comment[i][v] += "Gliss2. ";
-				min_adur = gliss_mindur[ii];
-				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][3];
-			}
+			artic[i][v] = ARTIC_GLISS2;
+			if (comment_adapt) adapt_comment[i][v] += "Gliss2. ";
+			min_adur = gliss_mindur[ii];
+			if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][3];
+			//CString st;
+			//st.Format("Added gliss2 at step %d", i);
+			//WriteLog(0, st);
 		}
 		// Get minimum and maximum velocity possible
 		float min_vel = max(1, 127 -
