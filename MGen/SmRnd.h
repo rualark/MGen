@@ -18,13 +18,17 @@ public:
 	float sig = 0; // Signal
 
 	// Constants
-	float a2_range = 0.1;
-	float a_range = 0.5;
-	float v_range = 2.5;
-	float s_range = 25;
+	float a2_range;
+	float a_range;
+	float v_range;
+	float s_range;
+
+	// Cycles
+	int cycles;
 
 	// Gravitation
-	float a2_grav = 2; // 2 = maximum gravity, 0 = no gravity
-	float a_grav = 2; // 2 = maximum gravity, 0 = no gravity
+	float v_grav; // 1 = maximum gravity, 0 = no gravity
+	float s_grav; // 1 = maximum gravity, 0 = no gravity
+	float a_grav; // 1 = maximum gravity, 0 = no gravity
 };
 

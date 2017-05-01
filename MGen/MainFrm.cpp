@@ -184,6 +184,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CGLib::m_hWnd = m_hWnd;
 	CGLib::WM_DEBUG_MSG = WM_DEBUG_MSG;
 
+	CGenRS1 gen;
+	gen.TestSmoothRandom();
+
 	return 0;
 }
 

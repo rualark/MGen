@@ -445,7 +445,7 @@ void CGLib::TestRandom()
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
 	est->Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
-	WriteLog(0, est);
+	WriteLog(1, est);
 }
 
 void CGLib::TestSmoothRandom()
@@ -469,7 +469,7 @@ void CGLib::TestSmoothRandom()
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
 	est->Format("TestSmoothRandom with %d samples took %d ms", n_samples, time_stop - time_start);
-	WriteLog(0, est);
+	WriteLog(1, est);
 }
 
 void CGLib::WriteLog(int i, CString* pST)
