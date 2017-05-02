@@ -905,6 +905,24 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 			}
 		} // for c
 	} // for i
+	// Detect abrupt changes and additionally smoothen them
+	for (int c = 2; c < cc_lin.size(); ++c) {
+		// Wait until change is abrupt
+		if (abs(cc_lin[c] - cc_lin[c - 1]) < 20) continue;
+		int left = c;
+		int left0 = max(0, c - 10);
+		// Find leftmost unchanged value
+		for (int i = c-2; i >= left0; --i) {
+			if (cc_lin[c - 1] != cc_lin[i]) break;
+			left = i;
+		}
+		// Exit if value is unstable
+		if (left > c-1) continue;
+		// Interpolate
+		for (int i = left; i < c; ++i) {
+			cc_lin[i] = cc_lin[left] + (cc_lin[c] - cc_lin[left]) * (float)(i - left) / (c - left);
+		}
+	}
 	cc_ma.resize(cc_lin.size());
 	int CC_ma2 = CC_ma[ii] / 2;
 	// Set border ma
