@@ -851,8 +851,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 	mutex_output.unlock();
 }
 
-// First cc sent by this function is with i = step1 - 1, time = (stime[i] + etime[i]) / 2, which is half step to step1
-// Last cc sent by this function is with i = step2 - 2, time = (stime[i+1] + etime[i+1]) / 2, which is half step to step2
+// First cc sent by this function is with i = step1 - 2, time = stime[i + 1] = stime[step1-1]
+// Last cc sent by this function is with i = step2 - 2, time = etime[i] = etime[step2-2] = stime[step2-1]
 void CGMidi::InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vector< vector <unsigned char> > & dv, int ii, int v)
 {
 	//CString st;
@@ -863,99 +863,74 @@ void CGMidi::InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vect
 	int cc_value;
 	int steps, skip;
 	float fsteps;
+	// Linear interpolation
+	vector <float> cc_lin;
+	// Moving average
+	vector <float> cc_ma;
+	// Time of cc step
+	vector <float> cc_time;
 	// Time of last cc sent here
-	float last_time = (stime[step2 - 1] + etime[step2 - 1]) / 2;
+	float last_time = stime[step2 - 1];
 	float cc_step; // Length of cc interpolation step
 	float cc_pos1; // Middle of current note step
 	float cc_pos2; // Middle of next note step
-	for (int i = step1 - 2; i < step2 - 1; i++) {
+	for (int i = step1 - 2; i < step2; i++) {
 		if (i < 0) continue;
 		midi_current_step = i;
-		// Linear interpolation
-		vector <float> cc_lin; 
-		// Moving average
-		vector <float> cc_ma; 
 		// Get CC steps count
 		fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
 		// Check if need to skip note steps
 		skip = 1.0 / max(0.0000001, fsteps);
-		if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1) continue;
+		if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1 && i != step1 - 2 && i != step2 - 2) continue;
 		steps = max(1, fsteps);
+		int hstep = steps / 2;
 		if (steps % 2 == 0) steps++;
-		cc_lin.resize(steps * 2);
-		cc_ma.resize(steps);
 		// Linear interpolation
-		for (int c = 0; c < steps * 2; c++) {
+		for (int c = 0; c < steps; c++) {
+			cc_time.push_back(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)steps);
 			// Left cc steps
 			if (c < steps / 2) {
-				if (i == 0) cc_lin[c] = dv[i][v];
-				else cc_lin[c] = (floor(steps * 0.5 - c) * dv[i - 1][v] + floor(c + 1 + steps / 2) * dv[i][v]) / steps;
+				if (i == 0) cc_lin.push_back(dv[i][v]);
+				else cc_lin.push_back((floor(steps * 0.5 - c) * dv[i - 1][v] + floor(c + 1 + steps / 2) * dv[i][v]) / steps);
 			}
 			// Mid cc steps
-			else if (c < steps * 1.5) {
-				cc_lin[c] = (floor(steps * 1.5 - c) * dv[i][v] + floor(c - steps / 2) * dv[i + 1][v]) / steps;
-			}
-			// Right cc steps
 			else {
-				if (i == step2 - 2) cc_lin[c] = dv[i + 1][v];
-				else cc_lin[c] = (floor(steps * 2.5 - c) * dv[i + 1][v] + floor(c - steps * 1.5 + 1) * dv[i + 2][v]) / steps;
+				cc_lin.push_back((floor(steps * 1.5 - c) * dv[i][v] + floor(c - steps / 2) * dv[i + 1][v]) / steps);
 			}
-		}
-		if (!ma) {
-			// Send linear CC
-			for (int c = 0; c < steps; c++) {
-				AddCC(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)steps, CC, cc_lin[c]);
-			}
-		}
-		else {
-			// First moving average
-			cc_ma[0] = 0;
-			for (int c = 0; c < steps; c++) {
-				cc_ma[0] += cc_lin[c] / (float)steps;
-			}
-			// Extend moving average
-			for (int c = 1; c < steps; c++) {
-				cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + steps - 1] - cc_lin[c - 1]) / (float)steps;
-			}
-			// Send starting CC
-			if (i == 0) AddCC(-1, CC, cc_ma[0]);
-			int hstep = steps / 2;
-			// Send ma CC of first note
-			if (i > step1 - 2) for (int c = 0; c < hstep + 1; c++) {
-				int t = stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)(c + hstep) / (float)steps;
-				if (t >= midi_sent_t - midi_start_time) {
-					// Calculate fadeout
-					float fadeout = 1;
-					if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
-					// Add random
-					sr.MakeNext();
-					cc_ma[c] += sr.sig / sr.s_range * (float)rnd * (float)cc_ma[c] / 200.0 * fadeout;
-					// Check limits
-					if (cc_ma[c] < 1) cc_ma[c] = 1;
-					if (cc_ma[c] > 127) cc_ma[c] = 127;
-					// Send
-					AddCC(t, CC, cc_ma[c]);
-				}
-			}
-			// Send ma CC of second note
-			if (i <  step2 - 2) for (int c = hstep + 1; c < steps; c++) {
-				int t = stime[i + 1] * 100 / m_pspeed + (etime[i + 1] - stime[i + 1]) * 100 / m_pspeed*(float)(c - hstep - 1) / (float)steps;
-				if (t >= midi_sent_t - midi_start_time) {
-					// Calculate fadeout
-					float fadeout = 1;
-					if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
-					// Add random
-					sr.MakeNext();
-					cc_ma[c] += sr.sig / sr.s_range * (float)rnd * (float)cc_ma[c] / 200.0 * fadeout;
-					// Check limits
-					if (cc_ma[c] < 1) cc_ma[c] = 1;
-					if (cc_ma[c] > 127) cc_ma[c] = 127;
-					// Send
-					AddCC(t, CC, cc_ma[c]);
-				}
-			} // for c
-		} // Moving average
+		} // for c
 	} // for i
+	cc_ma.resize(cc_lin.size());
+	// First moving average
+	cc_ma[0] = 0;
+	for (int c = 0; c < steps; c++) {
+		cc_ma[0] += cc_lin[c] / (float)steps;
+	}
+	// Extend moving average
+	for (int c = 1; c < cc_lin.size(); ++c) {
+		cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + steps - 1] - cc_lin[c - 1]) / (float)steps;
+	}
+	// Randomize
+	for (int c = 0; c < cc_lin.size(); ++c) {
+		float t = cc_time[c];
+		// Calculate fadeout
+		float fadeout = 1;
+		if (last_time - CC_FADEOUT_RESERVE - t < CC_FADEOUT) fadeout = max(0, last_time - CC_FADEOUT_RESERVE - t) / CC_FADEOUT;
+		// Add random
+		sr.MakeNext();
+		cc_ma[c] += sr.sig / sr.s_range * (float)rnd * (float)cc_ma[c] / 200.0 * fadeout;
+		// Check limits
+		if (cc_ma[c] < 1) cc_ma[c] = 1;
+		if (cc_ma[c] > 127) cc_ma[c] = 127;
+	}
+	// Send starting CC
+	if (step1 == 0) AddCC(-1, CC, cc_ma[0]);
+	// Send ma CC
+	for (int c = 0; c < cc_lin.size(); c++) {
+		float t = cc_time[c];
+		if (t >= midi_sent_t - midi_start_time) {
+			AddCC(t, CC, cc_ma[c]);
+		}
+	}
 }
 
 void CGMidi::StopMIDI()
