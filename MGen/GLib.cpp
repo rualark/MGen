@@ -41,9 +41,21 @@ void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Des
 	if (*sName == sSearch) {
 		++parameter_found;
 		*Dest = atoi(*sValue);
-		if ((vmin != -1) && (vmax != -1)) {
-			if (*Dest < vmin) *Dest = vmin;
-			if (*Dest > vmax) *Dest = vmax;
+		if (vmin != -1) {
+			if (*Dest < vmin) {
+				*Dest = vmin;
+				CString st;
+				st.Format("Variable %s is %d (below minimum allowed value %d) - corrected to %d", *sName, *sValue, vmin, vmin);
+				WriteLog(1, st);
+			}
+		}
+		if (vmax != -1) {
+			if (*Dest > vmax) {
+				*Dest = vmax;
+				CString st;
+				st.Format("Variable %s is %d (above maximum allowed value %d) - corrected to %d", *sName, *sValue, vmax, vmax);
+				WriteLog(1, st);
+			}
 		}
 	}
 }

@@ -131,7 +131,7 @@ public:
 	vector<float> rnd_vib; // Randomize vibrato intensity not greater than this percent
 	vector<float> rnd_vibf; // Randomize vibrato speed not greater than this percent
 	vector<int> CC_steps;
-	vector<int> CC_dyn_ma;
+	vector<int> CC_ma;
 	vector<int> CC_dyn;
 	vector<int> CC_retrigger;
 	vector<int> retrigger_freq;

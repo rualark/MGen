@@ -824,9 +824,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 			i += noff[i][v];
 		}
 		// Send CC
-		InterpolateCC(CC_dyn[ii], CC_dyn_ma[ii], rnd_dyn[ii], step1, step22, dyn, ii, v);
-		InterpolateCC(CC_vib[ii], 1, rnd_vib[ii], step1, step22, vib, ii, v);
-		InterpolateCC(CC_vibf[ii], 1, rnd_vibf[ii], step1, step22, vibf, ii, v);
+		InterpolateCC(CC_dyn[ii], rnd_dyn[ii], step1, step22, dyn, ii, v);
+		InterpolateCC(CC_vib[ii], rnd_vib[ii], step1, step22, vib, ii, v);
+		InterpolateCC(CC_vibf[ii], rnd_vibf[ii], step1, step22, vibf, ii, v);
 	}
 	// Sort by timestamp before sending
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
@@ -853,7 +853,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 
 // First cc sent by this function is with i = step1 - 2, time = stime[i + 1] = stime[step1-1]
 // Last cc sent by this function is with i = step2 - 2, time = etime[i] = etime[step2-2] = stime[step2-1]
-void CGMidi::InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vector< vector <unsigned char> > & dv, int ii, int v)
+void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vector <unsigned char> > & dv, int ii, int v)
 {
 	//CString st;
 	//st.Format("Send CC%d from %d to %d", CC, step1, step2);
@@ -874,6 +874,8 @@ void CGMidi::InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vect
 	float cc_step; // Length of cc interpolation step
 	float cc_pos1; // Middle of current note step
 	float cc_pos2; // Middle of next note step
+	int first_cc = 0;
+	int last_cc = 0;
 	for (int i = step1 - 2; i < step2; i++) {
 		if (i < 0) continue;
 		midi_current_step = i;
@@ -883,8 +885,12 @@ void CGMidi::InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vect
 		skip = 1.0 / max(0.0000001, fsteps);
 		if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1 && i != step1 - 2 && i != step2 - 2) continue;
 		steps = max(1, fsteps);
-		int hstep = steps / 2;
 		if (steps % 2 == 0) steps++;
+		// Half steps
+		int hstep = steps / 2;
+		// Calculate first and last ma positions to send
+		if (i == step1 - 1) first_cc = cc_lin.size();
+		if (i == step2 - 1) last_cc = cc_lin.size() - 1;
 		// Linear interpolation
 		for (int c = 0; c < steps; c++) {
 			cc_time.push_back(stime[i] * 100 / m_pspeed + (etime[i] - stime[i]) * 100 / m_pspeed*(float)c / (float)steps);
@@ -900,14 +906,30 @@ void CGMidi::InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vect
 		} // for c
 	} // for i
 	cc_ma.resize(cc_lin.size());
-	// First moving average
-	cc_ma[0] = 0;
-	for (int c = 0; c < steps; c++) {
-		cc_ma[0] += cc_lin[c] / (float)steps;
+	int CC_ma2 = CC_ma[ii] / 2;
+	// Set border ma
+	cc_ma[0] = cc_lin[0];
+	cc_ma[cc_lin.size()-1] = cc_lin[cc_lin.size() - 1];
+	// First moving averages
+	for (int c = 1; c <= CC_ma2; c++) {
+		int lsteps = c * 2 + 1;
+		cc_ma[c] = 0;
+		for (int i = 0; i < lsteps; ++i) {
+			cc_ma[c] += cc_lin[i] / (float)lsteps;
+		}
 	}
 	// Extend moving average
-	for (int c = 1; c < cc_lin.size(); ++c) {
-		cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + steps - 1] - cc_lin[c - 1]) / (float)steps;
+	for (int c = CC_ma2 + 1; c < cc_lin.size() - CC_ma2 - 1; ++c) {
+		cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + CC_ma2] - cc_lin[c  - CC_ma2 - 1]) / (float)CC_ma[ii];
+	}
+	// Last moving averages
+	cc_ma[0] = cc_lin[0];
+	for (int c = cc_lin.size() - CC_ma2 - 1; c < cc_lin.size() - 1; c++) {
+		int lsteps = (cc_lin.size() - 1 - c) * 2 + 1;
+		cc_ma[c] = 0;
+		for (int i = cc_lin.size() - lsteps; i < cc_lin.size(); ++i) {
+			cc_ma[c] += cc_lin[i] / (float)lsteps;
+		}
 	}
 	// Randomize
 	for (int c = 0; c < cc_lin.size(); ++c) {
@@ -925,7 +947,7 @@ void CGMidi::InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vect
 	// Send starting CC
 	if (step1 == 0) AddCC(-1, CC, cc_ma[0]);
 	// Send ma CC
-	for (int c = 0; c < cc_lin.size(); c++) {
+	for (int c = first_cc; c <= last_cc; c++) {
 		float t = cc_time[c];
 		if (t >= midi_sent_t - midi_start_time) {
 			AddCC(t, CC, cc_ma[c]);

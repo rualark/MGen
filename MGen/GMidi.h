@@ -39,7 +39,7 @@ public:
 	void LogInstruments();
 	void CheckDstime(int i, int v);
 	void SendMIDI(int step1, int step2);
-	void InterpolateCC(int CC, int ma, float rnd, int step1, int step2, vector<vector<unsigned char>>& dv, int ii, int v);
+	void InterpolateCC(int CC, float rnd, int step1, int step2, vector<vector<unsigned char>>& dv, int ii, int v);
 	void StopMIDI();
 	int GetPlayStep();
 	
