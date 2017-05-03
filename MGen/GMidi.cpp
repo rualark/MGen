@@ -335,8 +335,55 @@ void CGMidi::LoadMidi(CString path)
 			}
 		}
 	}
-	// Set additional variables
+	// Merge small overlaps
+	for (int i = 0; i <= last_step; ++i) {
+		// Cycle through steps to ensure that moved note is checked later
+		for (int v = 0; v < v_cnt; ++v) if (instr_poly[instr[v]] > 1) {
+			// Look for note start
+			if (!coff[i][v] && !pause[i][v]) {
+			  // Do not include dstime/detime in time calculation, because it can change result
+				// Do not use playback speed in time calculation, because all calculateion are relative in this algorithm
+				float nlen = etime[i + noff[i][v] - 1] - stime[i];
+				// Find other voices of same track having notes at same step
+				for (int v2 = 0; v2 <= v_cnt; ++v2) if (v != v2 && track_id[v] == track_id[v2] && !pause[i][v2]) {
+					float nlen2 = etime[i + noff[i][v2] - 1] - stime[i - coff[i][v2]];
+					// Calculate overlap (abs is protection from bugs)
+					float ov = abs(etime[i + noff[i][v2] - 1] - stime[i]);
+					// Is overlap small?
+					if (ov > nlen * 0.2 || ov > nlen2 * 0.2) continue;
+					int free = 0;
+					// Move note from v to v2 voice
+					for (int z = i; z <= i + noff[i][v] - 1; ++z) {
+						// Check if overwritten note finished
+						if (pause[z][v2]) free = 1;
+						// If overwritten note finished, do not overwrite next note
+						if (free && !pause[z][v2]) break;
+						// Copy note
+						note[z][v2] = note[z][v];
+						len[z][v2] = len[z][v];
+						coff[z][v2] = coff[z][v];
+						pause[z][v2] = pause[z][v];
+						dyn[z][v2] = dyn[z][v];
+						midi_ch[z][v2] = midi_ch[z][v];
+						// Clear old note
+						note[z][v] = 0;
+						pause[z][v] = 1;
+						dyn[z][v] = 0;
+					}
+					// Log
+					if (debug_level > 0) {
+						CString st;
+						st.Format("Merged note %s at step %d to note %s from voice %d to voice %d (track %d)",
+							GetNoteName(note[i][v2]), i, GetNoteName(note[i - 1][v2]), v, v2, track_id[v]);
+						WriteLog(0, st);
+					}
+				}
+			}
+		}
+	}
+	// Check length of notes is correct
 	FixLen(0, last_step);
+	// Set additional variables
 	CountOff(0, last_step);
 	CountTime(0, last_step);
 	UpdateNoteMinMax(0, last_step);

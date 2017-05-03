@@ -29,6 +29,26 @@ const int diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
 #define ARTIC_END_VIB2 15
 #define ARTIC_END_VIB 16
 
+const CString ArticName[] = {
+	"Legato", // 0
+	"Slur", // 1
+	"Nonlegato", // 2
+	"Exact", // 3
+	"Staccato", // 4
+	"Retrigger rebow", // 5
+	"Retrigger", // 6
+	"Split portamento chromatic", // 7
+	"Split portamento mixed", // 8
+	"Split portamento arabic", // 9
+	"Split portamento pentatonic", // 10
+	"Gliss", // 11
+	"Gliss2", // 12
+	"Short fall ending", // 13
+	"Pitchbend down ending", // 14
+	"Vibrato2 ending", // 15
+	"Vibrato ending" // 16
+};
+
 #define INSTR_PIANO 0
 #define INSTR_VIOLIN 1
 #define INSTR_TRUMPET 11

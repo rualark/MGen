@@ -79,6 +79,8 @@ CGVar::CGVar()
 	bell_end_mul.resize(MAX_INSTR);
 	bell_start_len.resize(MAX_INSTR);
 	bell_end_len.resize(MAX_INSTR);
+	bell_start_vel.resize(MAX_INSTR);
+	bell_end_vel.resize(MAX_INSTR);
 	bell_mindur.resize(MAX_INSTR);
 	rbell_pos1.resize(MAX_INSTR);
 	rbell_pos2.resize(MAX_INSTR);
@@ -531,6 +533,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 			CheckVar(&st2, &st3, "max_ahead_note", &max_ahead_note[i]);
 			LoadRange(&st2, &st3, "bell_mul", &bell_start_mul[i], &bell_end_mul[i]);
 			LoadRange(&st2, &st3, "bell_len", &bell_start_len[i], &bell_end_len[i]);
+			LoadRange(&st2, &st3, "bell_vel", &bell_start_vel[i], &bell_end_vel[i]);
 			CheckVar(&st2, &st3, "rbell_freq", &rbell_freq[i]);
 			LoadRange(&st2, &st3, "rbell_pos", &rbell_pos1[i], &rbell_pos2[i]);
 			LoadRange(&st2, &st3, "rbell_dur", &rbell_mindur[i], &rbell_dur[i]);
@@ -691,8 +694,9 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 	for (int v = 0; v < v_cnt; ++v) {
 		st.Format("%d", v);
 		fs << "Pause" + st + ";Note" + st + ";Len" + st + ";Dyn" + st +
-			";Coff" + st + ";Poff" + st + ";Noff" + st + ";Comment" + st + ";Color" + st
-			+ ";Lining" + st + ";Tonic" + st + ";";
+			";Coff" + st + ";Poff" + st + ";Noff" + st + ";Comment" + st + ";AComment" + st + ";Color" + st
+			+ ";Lining" + st + ";Tonic" + st + ";Dstime" + st + ";Detime" + st + ";Lengroup" + st + ";Articulation" + st + 
+			";Vib" + st + ";Vibf" + st + ";";
 	}
 	fs << "\n";
 	if (t_generated > 0) {
@@ -710,9 +714,16 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 				fs << (int)poff[i][v] << ";";
 				fs << (int)noff[i][v] << ";";
 				fs << comment[i][v] << ";";
+				fs << adapt_comment[i][v] << ";";
 				fs << color[i][v].GetValue() << ";";
 				fs << (int)lining[i][v] << ";";
 				fs << (int)tonic[i][v] << ";";
+				fs << dstime[i][v] << ";";
+				fs << detime[i][v] << ";";
+				fs << (int)lengroup[i][v] << ";";
+				fs << ArticName[artic[i][v]] << ";";
+				fs << (int)vib[i][v] << ";";
+				fs << (int)vibf[i][v] << ";";
 			}
 			fs << "\n";
 		}

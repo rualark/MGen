@@ -173,6 +173,8 @@ public:
 	vector<float> bell_end_mul; // Multiply dynamics by this parameter at bell end
 	vector<float> bell_start_len; // Percent of notelength to use for slope at bell start
 	vector<float> bell_end_len; // Percent of notelength to use for slope at bell end
+	vector<float> bell_start_vel; // Set belled note velocity to random between these percents of starting dynamics
+	vector<float> bell_end_vel; // Set belled note velocity to random between these percents of starting dynamics
 	vector<float> rbell_mindur; // Minimum note duration(ms) that can have a reverse bell
 	vector<float> rbell_dur; // Minimum note duration(ms) that will have deepest reverse bell
 	vector<float> rbell_mul; // Multiply dynamics by this parameter at bell center with mindur

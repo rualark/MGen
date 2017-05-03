@@ -347,6 +347,8 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 				dyn[z][v] = dyn[z][v] * (bell_start_mul[ii] + (float)(z - i) / (pos - i) * (1.0 - bell_start_mul[ii]));
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Long bell start. ";
+			// Decrease starting velocity
+			if (bell_end_vel[ii]) vel[i][v] = randbw(dyn[i][v] * bell_end_vel[ii] / 100.0, dyn[i][v] * bell_start_vel[ii] / 100.0);
 		}
 	}
 	int ni = i + noff[i][v];
@@ -564,7 +566,7 @@ void CGAdapt::Adapt(int step1, int step2)
 			// Set nonlegato for separate notes
 			if ((i == 0) || (pause[pi][v])) {
 				artic[i][v] = ARTIC_NONLEGATO;
-				if (comment_adapt) adapt_comment[i][v] += "Separate note nonlegato. ";
+				if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Separate note nonlegato. ";
 			}
 			if (!pause[i][v]) {
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
