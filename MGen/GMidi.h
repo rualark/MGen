@@ -2,6 +2,7 @@
 #include "GAdapt.h"
 #include "MidiOut.h"
 
+#define MAX_WARN_MIDI_OVERLAP 5
 #define MAX_WARN_MIDI_ALIGN 5
 #define MAX_WARN_MIDI_SHORT 5
 #define MAX_WARN_MIDI_LONG 5
@@ -12,6 +13,10 @@
 #define MAX_TRANS_DELAY 10
 // Maximum time (ms) allowed to move note and linked events (ks/cc) left
 #define MAX_AHEAD 1000
+// Maximum allowed overlap for monophonic instrument (1 = 100% note length)
+#define MAX_OVERLAP_MONO 0.2
+// Maximum allowed overlap for melody in polyphonic instrument (1 = 100% note length)
+#define MAX_OVERLAP_POLY 0.2
 
 // PortMIDI
 #define MIN_MIDI_BUF_MSEC 6000
@@ -68,6 +73,7 @@ protected:
 	int warning_loadmidi_short = 0;
 	int warning_loadmidi_long = 0;
 	int warning_ahead = 0;
+	int warning_loadmidi_overlap = 0;
 
 	// PortMIDI internal
 	void AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2);

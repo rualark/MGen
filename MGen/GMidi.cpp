@@ -120,7 +120,8 @@ void CGMidi::LoadMidi(CString path)
 		if (tempo[z] == 0) tempo[z] = tempo[z - 1];
 	}
 	int last_step_tempo = last_step;
-	UpdateTempoMinMax(0, last_step - 1);
+	UpdateTempoMinMax(0, last_step);
+	CountTime(0, last_step);
 	last_step = 0;
 	int v1 = 0;
 	int v2 = 0;
@@ -196,6 +197,8 @@ void CGMidi::LoadMidi(CString path)
 					for (int z = last_step_tempo + 1; z < pos + nlen; ++z) {
 						if (!tempo[z]) tempo[z] = tempo[z - 1];
 					}
+					// Count new time
+					CountTime(last_step_tempo + 1, pos + nlen - 1);
 					// Set last step that has tempo
 					last_step_tempo = pos + nlen - 1;
 				}
@@ -258,6 +261,21 @@ void CGMidi::LoadMidi(CString path)
 					}
 				} // if (instr_poly[instr[v]] > 1)
 				else {
+					// Check if overwriting long overlap
+					if (!pause[pos][v] && noff[pos][v]) {
+						float ndur = etime[pos + nlen - 1] - stime[pos];
+						float ndur2 = etime[pos + noff[pos][v] - 1] - stime[pos - coff[pos][v]];
+						// Calculate overlap (abs is protection from bugs)
+						float ov = abs(etime[pos + noff[pos][v] - 1] - stime[pos]);
+						// Is overlap long?
+						if (ov > ndur * MAX_OVERLAP_MONO || ov > ndur2 * MAX_OVERLAP_MONO) if (warning_loadmidi_overlap < MAX_WARN_MIDI_OVERLAP) {
+							CString st;
+							st.Format("Error: too long overlap (voice %d) %.0f ms at step %d (note lengths %.0f, %.0f ms) in monophonic instrument %s/%s. Probably sending polyphonic instrument to monophonic.",
+								v, ov, pos, ndur, ndur2, InstGName[instr[v]], InstCName[instr[v]]);
+							WriteLog(1, st);
+							++warning_loadmidi_overlap;
+						}
+					}
 					// Clear any garbage after this note (can build up due to overwriting a longer note)
 					if (len[pos + nlen][v]) {
 						// Safe right limit
@@ -288,12 +306,11 @@ void CGMidi::LoadMidi(CString path)
 						dyn[z][v] = 0;
 						pause[z][v] = 1;
 						coff[z][v] = 0;
-						if (tempo[z] == 0) tempo[z] = tempo[z - 1];
 					}
 					// Set additional variables
 					CountOff(last_pause, pos - 1);
-					CountTime(last_pause, pos - 1);
 				}
+				float ov = 0;
 				// Set note steps
 				for (int z = 0; z < nlen; z++) {
 					note[pos + z][v] = pitch;
@@ -302,13 +319,11 @@ void CGMidi::LoadMidi(CString path)
 					midi_ch[pos + z][v] = chan;
 					pause[pos + z][v] = 0;
 					coff[pos + z][v] = z;
-					if (tempo[pos + z] == 0) tempo[pos + z] = tempo[pos + z - 1];
 				}
 				// Set midi delta only to first step of note, because in in-note steps you can get different calculations for different tempo
 				midi_delta[pos][v] = delta;
 				// Set additional variables
 				CountOff(pos, pos + nlen - 1);
-				CountTime(pos, pos + nlen - 1);
 				UpdateNoteMinMax(pos, pos + nlen - 1);
 				if (pos + nlen - 1 > last_step) last_step = pos + nlen - 1;
 				if (pos + nlen - 1 > vlast_step[v]) vlast_step[v] = pos + nlen - 1;
@@ -341,7 +356,7 @@ void CGMidi::LoadMidi(CString path)
 		for (int v = 0; v < v_cnt; ++v) if (instr_poly[instr[v]] > 1) {
 			// Look for note start
 			if (!coff[i][v] && !pause[i][v]) {
-			  // Do not include dstime/detime in time calculation, because it can change result
+				// Do not include dstime/detime in time calculation, because it can change result
 				// Do not use playback speed in time calculation, because all calculateion are relative in this algorithm
 				float nlen = etime[i + noff[i][v] - 1] - stime[i];
 				// Find other voices of same track having notes at same step
@@ -350,7 +365,7 @@ void CGMidi::LoadMidi(CString path)
 					// Calculate overlap (abs is protection from bugs)
 					float ov = abs(etime[i + noff[i][v2] - 1] - stime[i]);
 					// Is overlap small?
-					if (ov > nlen * 0.2 || ov > nlen2 * 0.2) continue;
+					if (ov > nlen * MAX_OVERLAP_POLY || ov > nlen2 * MAX_OVERLAP_POLY) continue;
 					int free = 0;
 					// Move note from v to v2 voice
 					for (int z = i; z <= i + noff[i][v] - 1; ++z) {
@@ -371,7 +386,7 @@ void CGMidi::LoadMidi(CString path)
 						dyn[z][v] = 0;
 					}
 					// Log
-					if (debug_level > 0) {
+					if (debug_level > 1) {
 						CString st;
 						st.Format("Merged note %s at step %d to note %s from voice %d to voice %d (track %d)",
 							GetNoteName(note[i][v2]), i, GetNoteName(note[i - 1][v2]), v, v2, track_id[v]);
@@ -385,9 +400,9 @@ void CGMidi::LoadMidi(CString path)
 	FixLen(0, last_step);
 	// Set additional variables
 	CountOff(0, last_step);
-	CountTime(0, last_step);
+	//CountTime(0, last_step);
 	UpdateNoteMinMax(0, last_step);
-	UpdateTempoMinMax(0, last_step);
+	//UpdateTempoMinMax(0, last_step);
 	// Send last
 	t_generated = last_step + 1;
 	if (tnames != "") {

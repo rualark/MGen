@@ -59,9 +59,9 @@ BOOL CInfoDlg::OnInitDialog()
 		int ei = ms + pGen->noff[ms][mv] - 1;
 		CString st, st2;
 
-		//SetWindowText("Dialog: some text");
-		st.Format("Step: %d (measure %d)\n", ms, ms / 8);
-		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
+		st.Format("Step: %d (measure %d)", ms, ms / 8);
+		SetWindowText(st);
+		//m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Tempo: %.1f bpm (randomized from %.1f bpm)\nStep start time: %.3f s (%.2f ms long), end time %.3f s\n",
 			pGen->tempo[ms], pGen->tempo_src[ms], pGen->stime[ms] / pGen->m_pspeed / 10,
 			(pGen->etime[ms] - pGen->stime[ms]) * 100 / pGen->m_pspeed, pGen->etime[ms] / pGen->m_pspeed / 10);
