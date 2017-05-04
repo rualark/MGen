@@ -945,14 +945,27 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 	float cc_pos2; // Middle of next note step
 	int first_cc = 0;
 	int last_cc = 0;
-	for (int i = step1 - 2; i < step2; i++) {
+	// Find step that will give enough information for ma junction
+	int pre_cc = 0;
+	int first_step = step1 - 2;
+	for (int i = step1 - 3; i >= 0; --i) {
+		// Get CC steps count
+		fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
+		steps = max(1, fsteps);
+		pre_cc += steps;
+		if (pre_cc > CC_ma[ii]) {
+			first_step = i;
+			break;
+		}
+	}
+	for (int i = first_step; i < step2; i++) {
 		if (i < 0) continue;
 		midi_current_step = i;
 		// Get CC steps count
 		fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
 		// Check if need to skip note steps
-		skip = 1.0 / max(0.0000001, fsteps);
-		if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1 && i != step1 - 2 && i != step2 - 2) continue;
+		//skip = 1.0 / max(0.0000001, fsteps);
+		//if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1 && i != step1 - 2 && i != step2 - 2) continue;
 		steps = max(1, fsteps);
 		if (steps % 2 == 0) steps++;
 		// Half steps
@@ -968,7 +981,7 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 				if (i == 0) cc_lin.push_back(dv[i][v]);
 				else cc_lin.push_back((floor(steps * 0.5 - c) * dv[i - 1][v] + floor(c + 1 + steps / 2) * dv[i][v]) / steps);
 			}
-			// Mid cc steps
+			// Right cc steps
 			else {
 				cc_lin.push_back((floor(steps * 1.5 - c) * dv[i][v] + floor(c - steps / 2) * dv[i + 1][v]) / steps);
 			}
@@ -994,6 +1007,9 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 	}
 	cc_ma.resize(cc_lin.size());
 	int CC_ma2 = CC_ma[ii] / 2;
+	// Move cc sending ma window to the left
+	first_cc = max(0, first_cc - CC_ma2 - 1);
+	last_cc = max(0, last_cc - CC_ma2 - 1);
 	// Set border ma
 	cc_ma[0] = cc_lin[0];
 	cc_ma[cc_lin.size()-1] = cc_lin[cc_lin.size() - 1];
