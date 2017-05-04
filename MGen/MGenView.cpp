@@ -23,7 +23,7 @@
 #include "MGenView.h"
 #include "MainFrm.h"
 #include "InfoDlg.h"
-#include "MemDC2.cpp"
+#include "GLibrary/MemDC2.cpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

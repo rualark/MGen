@@ -201,7 +201,7 @@ void CMainFrame::WriteLog(int log, CString st)
 	if (log == 0) pOL = &m_wndOutput.m_wndOutputDebug;
 	if (log == 1) {
 		pOL = &m_wndOutput.m_wndOutputWarn;
-		CGLib::AppendLineToFile("warning.log", 
+		CGLib::AppendLineToFile("log\\warning.log", 
 			CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st + "\n");
 	}
 	if (log == 2) pOL = &m_wndOutput.m_wndOutputPerf;
@@ -659,7 +659,7 @@ int CMainFrame::GetMidiI()
 void CMainFrame::LoadAlgo()
 {
 	ifstream fs;
-	fs.open("algorithms.txt");
+	fs.open("configs\\algorithms.txt");
 	CString st, st2, st3, st4, st5;
 	char pch[2550];
 	int pos = 0;
@@ -753,7 +753,7 @@ void CMainFrame::LoadAlgo()
 void CMainFrame::LoadSettings()
 {
 	ifstream fs;
-	fs.open("settings.pl");
+	fs.open("configs\\settings.pl");
 	CString st, st2, st3;
 	char pch[2550];
 	int pos = 0;
@@ -818,7 +818,7 @@ int CMainFrame::GetAlgoById(int id) {
 void CMainFrame::SaveSettings()
 {
 	ofstream fs;
-	fs.open("settings.pl");
+	fs.open("configs\\settings.pl");
 	CString st;
 	fs << "# Settings of MGen\n";
 	fs << "# This file is loaded on MGen startup and automatically saved on every setting change\n";

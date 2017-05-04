@@ -28,20 +28,20 @@
     <Filter Include="Header Files\Generators">
       <UniqueIdentifier>{226a89c3-64f0-4b1a-b04d-8793b332f133}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Gen helpers">
-      <UniqueIdentifier>{9cb0a150-a7a7-4fac-8e56-232c54cf906b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Generators">
       <UniqueIdentifier>{5b08b15f-5dff-48ff-a250-0f25bf22c16c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Gen helpers">
-      <UniqueIdentifier>{6bc2cbcb-2f43-4776-a62a-c09bafc21bb3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\rtmidi">
       <UniqueIdentifier>{be20c704-dfc0-427b-a204-9690c5fc512d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\rtmidi">
       <UniqueIdentifier>{f3f9fd14-d9fd-4cee-bffc-2b10bacaa230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLibrary">
+      <UniqueIdentifier>{6bc2cbcb-2f43-4776-a62a-c09bafc21bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GLibrary">
+      <UniqueIdentifier>{9cb0a150-a7a7-4fac-8e56-232c54cf906b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,43 +102,10 @@
     <ClInclude Include="midifile\Binasc.h">
       <Filter>Header Files\midifile</Filter>
     </ClInclude>
-    <ClInclude Include="GenCA1.h">
-      <Filter>Header Files\Generators</Filter>
-    </ClInclude>
-    <ClInclude Include="GenCF1.h">
-      <Filter>Header Files\Generators</Filter>
-    </ClInclude>
-    <ClInclude Include="GenCF2.h">
-      <Filter>Header Files\Generators</Filter>
-    </ClInclude>
-    <ClInclude Include="GenMP1.h">
-      <Filter>Header Files\Generators</Filter>
-    </ClInclude>
-    <ClInclude Include="GenRS1.h">
-      <Filter>Header Files\Generators</Filter>
-    </ClInclude>
-    <ClInclude Include="GAdapt.h">
-      <Filter>Header Files\Gen helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="GLib.h">
-      <Filter>Header Files\Gen helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="GMidi.h">
-      <Filter>Header Files\Gen helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="GVar.h">
-      <Filter>Header Files\Gen helpers</Filter>
-    </ClInclude>
     <ClInclude Include="MsgDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MFIDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GenCP1.h">
-      <Filter>Header Files\Generators</Filter>
-    </ClInclude>
-    <ClInclude Include="MidiOut.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="portmidi\pminternal.h">
@@ -159,8 +126,41 @@
     <ClInclude Include="rtmidi\RtMidi.h">
       <Filter>Header Files\rtmidi</Filter>
     </ClInclude>
-    <ClInclude Include="SmRnd.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Generators\GenCA1.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\GenCF1.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\GenCF2.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\GenCP1.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\GenMP1.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\GenRS1.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\GAdapt.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\GLib.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\GMidi.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\GVar.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\MidiOut.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\SmRnd.h">
+      <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -212,43 +212,10 @@
     <ClCompile Include="midifile\Binasc.cpp">
       <Filter>Source Files\midifile</Filter>
     </ClCompile>
-    <ClCompile Include="GenCA1.cpp">
-      <Filter>Source Files\Generators</Filter>
-    </ClCompile>
-    <ClCompile Include="GenCF1.cpp">
-      <Filter>Source Files\Generators</Filter>
-    </ClCompile>
-    <ClCompile Include="GenCF2.cpp">
-      <Filter>Source Files\Generators</Filter>
-    </ClCompile>
-    <ClCompile Include="GenMP1.cpp">
-      <Filter>Source Files\Generators</Filter>
-    </ClCompile>
-    <ClCompile Include="GenRS1.cpp">
-      <Filter>Source Files\Generators</Filter>
-    </ClCompile>
-    <ClCompile Include="GAdapt.cpp">
-      <Filter>Source Files\Gen helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="GLib.cpp">
-      <Filter>Source Files\Gen helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="GMidi.cpp">
-      <Filter>Source Files\Gen helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="GVar.cpp">
-      <Filter>Source Files\Gen helpers</Filter>
-    </ClCompile>
     <ClCompile Include="MsgDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MFIDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GenCP1.cpp">
-      <Filter>Source Files\Generators</Filter>
-    </ClCompile>
-    <ClCompile Include="MidiOut.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="portmidi\pmutil.c">
@@ -269,8 +236,41 @@
     <ClCompile Include="rtmidi\RtMidi.cpp">
       <Filter>Source Files\rtmidi</Filter>
     </ClCompile>
-    <ClCompile Include="SmRnd.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GLibrary\GAdapt.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\GLib.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\GMidi.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\GVar.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\MidiOut.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\SmRnd.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenCA1.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenCF1.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenCF2.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenCP1.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenMP1.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenRS1.cpp">
+      <Filter>Source Files\Generators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

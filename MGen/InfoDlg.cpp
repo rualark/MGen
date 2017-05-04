@@ -6,7 +6,7 @@
 #include "InfoDlg.h"
 #include "afxdialogex.h"
 #include "MainFrm.h"
-#include "GMidi.h"
+#include "GLibrary/GMidi.h"
 #include "MGenView.h"
 
 #ifdef _DEBUG

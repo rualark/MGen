@@ -187,16 +187,18 @@
   <ItemGroup>
     <ClInclude Include="AlgoDlg.h" />
     <ClInclude Include="EditParamsDlg.h" />
-    <ClInclude Include="GAdapt.h" />
-    <ClInclude Include="GenCA1.h" />
-    <ClInclude Include="GenCF1.h" />
-    <ClInclude Include="GenCF2.h" />
-    <ClInclude Include="GenCP1.h" />
-    <ClInclude Include="GenMP1.h" />
-    <ClInclude Include="GenRS1.h" />
-    <ClInclude Include="GLib.h" />
-    <ClInclude Include="GMidi.h" />
-    <ClInclude Include="GVar.h" />
+    <ClInclude Include="Generators\GenCA1.h" />
+    <ClInclude Include="Generators\GenCF1.h" />
+    <ClInclude Include="Generators\GenCF2.h" />
+    <ClInclude Include="Generators\GenCP1.h" />
+    <ClInclude Include="Generators\GenMP1.h" />
+    <ClInclude Include="Generators\GenRS1.h" />
+    <ClInclude Include="GLibrary\GAdapt.h" />
+    <ClInclude Include="GLibrary\GLib.h" />
+    <ClInclude Include="GLibrary\GMidi.h" />
+    <ClInclude Include="GLibrary\GVar.h" />
+    <ClInclude Include="GLibrary\MidiOut.h" />
+    <ClInclude Include="GLibrary\SmRnd.h" />
     <ClInclude Include="InfoDlg.h" />
     <ClInclude Include="InfoEditCtrl.h" />
     <ClInclude Include="MainFrm.h" />
@@ -209,7 +211,6 @@
     <ClInclude Include="midifile\MidiEventList.h" />
     <ClInclude Include="midifile\MidiFile.h" />
     <ClInclude Include="midifile\MidiMessage.h" />
-    <ClInclude Include="MidiOut.h" />
     <ClInclude Include="MsgDlg.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="portmidi\pminternal.h" />
@@ -219,7 +220,6 @@
     <ClInclude Include="portmidi\porttime.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="rtmidi\RtMidi.h" />
-    <ClInclude Include="SmRnd.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TreeColorCtrl.h" />
@@ -227,16 +227,18 @@
   <ItemGroup>
     <ClCompile Include="AlgoDlg.cpp" />
     <ClCompile Include="EditParamsDlg.cpp" />
-    <ClCompile Include="GAdapt.cpp" />
-    <ClCompile Include="GenCA1.cpp" />
-    <ClCompile Include="GenCF1.cpp" />
-    <ClCompile Include="GenCF2.cpp" />
-    <ClCompile Include="GenCP1.cpp" />
-    <ClCompile Include="GenMP1.cpp" />
-    <ClCompile Include="GenRS1.cpp" />
-    <ClCompile Include="GLib.cpp" />
-    <ClCompile Include="GMidi.cpp" />
-    <ClCompile Include="GVar.cpp" />
+    <ClCompile Include="Generators\GenCA1.cpp" />
+    <ClCompile Include="Generators\GenCF1.cpp" />
+    <ClCompile Include="Generators\GenCF2.cpp" />
+    <ClCompile Include="Generators\GenCP1.cpp" />
+    <ClCompile Include="Generators\GenMP1.cpp" />
+    <ClCompile Include="Generators\GenRS1.cpp" />
+    <ClCompile Include="GLibrary\GAdapt.cpp" />
+    <ClCompile Include="GLibrary\GLib.cpp" />
+    <ClCompile Include="GLibrary\GMidi.cpp" />
+    <ClCompile Include="GLibrary\GVar.cpp" />
+    <ClCompile Include="GLibrary\MidiOut.cpp" />
+    <ClCompile Include="GLibrary\SmRnd.cpp" />
     <ClCompile Include="InfoDlg.cpp" />
     <ClCompile Include="InfoEditCtrl.cpp" />
     <ClCompile Include="MainFrm.cpp" />
@@ -249,7 +251,6 @@
     <ClCompile Include="midifile\MidiEventList.cpp" />
     <ClCompile Include="midifile\MidiFile.cpp" />
     <ClCompile Include="midifile\MidiMessage.cpp" />
-    <ClCompile Include="MidiOut.cpp" />
     <ClCompile Include="MsgDlg.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="portmidi\pmutil.c" />
@@ -258,7 +259,6 @@
     <ClCompile Include="portmidi\portmidi.c" />
     <ClCompile Include="portmidi\ptwinmm.c" />
     <ClCompile Include="rtmidi\RtMidi.cpp" />
-    <ClCompile Include="SmRnd.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -20,7 +20,7 @@
 
 #include "MGenDoc.h"
 #include "MGenView.h"
-#include "GLib.h"
+#include "GLibrary/GLib.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
