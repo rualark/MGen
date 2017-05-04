@@ -1034,8 +1034,8 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 			cc_ma[c] += cc_lin[i] / (float)lsteps;
 		}
 	}
-	// Randomize
-	for (int c = 0; c < cc_lin.size(); ++c) {
+	// Randomize from first_cc
+	for (int c = first_cc; c < cc_lin.size(); ++c) {
 		float t = cc_time[c];
 		// Calculate fadeout
 		float fadeout = 1;
