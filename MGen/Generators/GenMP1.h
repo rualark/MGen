@@ -1,13 +1,14 @@
 #pragma once
-#include "GMidi.h"
 
-class CGenCF2 :
+#include "../GLibrary/GMidi.h"
+class CGenMP1 :
 	public CGMidi
 {
 public:
-	CGenCF2();
-	~CGenCF2();
+	CGenMP1();
+	~CGenMP1();
 	void Generate() override;
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
-};
 
+	CString midi_file;
+};

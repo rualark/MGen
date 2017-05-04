@@ -1,6 +1,6 @@
 #pragma once
 #include "afxcmn.h"
-#include "GLib.h"
+#include "GLibrary/GLib.h"
 #include "afxwin.h"
 #include "InfoEditCtrl.h"
 

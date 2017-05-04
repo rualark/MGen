@@ -1,10 +1,10 @@
 #pragma once
 
-#include "portmidi/portmidi.h"
-#include "portmidi/porttime.h"
-#include "rtmidi/RtMidi.h"
-#include "readerwriterqueue/readerwriterqueue.h"
-#include "readerwriterqueue/atomicops.h"
+#include "../portmidi/portmidi.h"
+#include "../portmidi/porttime.h"
+#include "../rtmidi/RtMidi.h"
+#include "../readerwriterqueue/readerwriterqueue.h"
+#include "../readerwriterqueue/atomicops.h"
 
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL

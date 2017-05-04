@@ -14,12 +14,12 @@
 
 #pragma once
 #include "OutputWnd.h"
-#include "GenCF1.h"
-#include "GenCF2.h"
-#include "GenRS1.h"
-#include "GenMP1.h"
-#include "GenCA1.h"
-#include "GenCP1.h"
+#include "Generators/GenCF1.h"
+#include "Generators/GenCF2.h"
+#include "Generators/GenRS1.h"
+#include "Generators/GenMP1.h"
+#include "Generators/GenCA1.h"
+#include "Generators/GenCP1.h"
 
 #define MIN_HZOOM 1
 #define MAX_HZOOM 500

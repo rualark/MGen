@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "GVar.h"
 
 
@@ -226,7 +226,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 
 void CGVar::LoadConfig(CString fname)
 {
-	CString st, st2, st3;
+	CString st, st2, st3, iname;
 	ifstream fs;
 	// Check file exists
 	if (!fileExists(fname)) {
@@ -252,6 +252,8 @@ void CGVar::LoadConfig(CString fname)
 		// Check if it is after space
 		if (pos > -1)	st = st.Left(pos);
 		st.Trim();
+		// Load include
+		if (CheckInclude(st, fname, iname)) LoadConfig(iname);
 		pos = st.Find("=");
 		if (pos != -1) {
 			// Get variable name and value
@@ -448,8 +450,6 @@ void CGVar::LoadInstrument(int i, CString fname)
 		x++;
 		fs.getline(pch, 2550);
 		st = pch;
-		// Load include
-		if (CheckInclude(st, fname, iname)) LoadInstrument(i, iname);
 		// Remove comments
 		pos = st.Find("#");
 		// Check if it is first symbol
@@ -458,6 +458,8 @@ void CGVar::LoadInstrument(int i, CString fname)
 		// Check if it is after space
 		if (pos > -1)	st = st.Left(pos);
 		st.Trim();
+		// Load include
+		if (CheckInclude(st, fname, iname)) LoadInstrument(i, iname);
 		// Find equals
 		pos = st.Find("=");
 		if (pos != -1) {

@@ -1,8 +1,8 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "GMidi.h"
 #include "SmRnd.h"
 
-#include "midifile/MidiFile.h"
+#include "../midifile/MidiFile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW 
@@ -340,6 +340,13 @@ void CGMidi::LoadMidi(CString path)
 	} // for track
 	if (need_exit) return;
 	// Add closing pauses
+	if (last_step + TAIL_STEPS + 1 >= t_allocated) ResizeVectors(max(last_step + TAIL_STEPS + 1, t_allocated * 2));
+	for (int z = last_step + 1; z <= last_step + TAIL_STEPS; ++z) {
+		if (!tempo[z]) tempo[z] = tempo[z - 1];
+	}
+	// Count new time
+	CountTime(last_step + 1, last_step + TAIL_STEPS);
+	last_step = last_step + TAIL_STEPS;
 	for (int v = 0; v < v_cnt; v++) {
 		if (vlast_step[v] < last_step) {
 			int len2 = last_step - vlast_step[v];

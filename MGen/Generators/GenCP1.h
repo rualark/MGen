@@ -1,14 +1,18 @@
 #pragma once
+#include "../GLibrary/GMidi.h"
 
-#include "GMidi.h"
-class CGenMP1 :
+class CGenCP1 :
 	public CGMidi
 {
 public:
-	CGenMP1();
-	~CGenMP1();
+	CGenCP1();
+	~CGenCP1();
+
 	void Generate() override;
+
+protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 
-	CString midi_file;
+	int min_dyn = 80;
+	int max_dyn = 110;
 };

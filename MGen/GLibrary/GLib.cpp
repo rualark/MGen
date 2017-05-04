@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "GLib.h"
 #include "SmRnd.h"
 

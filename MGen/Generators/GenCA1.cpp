@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "GenCA1.h"
 
 #ifdef _DEBUG

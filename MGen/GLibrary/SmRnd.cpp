@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "SmRnd.h"
 
 #ifdef _DEBUG

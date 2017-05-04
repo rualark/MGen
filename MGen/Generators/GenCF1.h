@@ -1,5 +1,5 @@
 #pragma once
-#include "GMidi.h"
+#include "../GLibrary/GMidi.h"
 
 #define MAX_FLAGS 42
 #define MAX_WIND 50

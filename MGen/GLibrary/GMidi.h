@@ -17,6 +17,8 @@
 #define MAX_OVERLAP_MONO 0.2
 // Maximum allowed overlap for melody in polyphonic instrument (1 = 100% note length)
 #define MAX_OVERLAP_POLY 0.2
+// Trailing pauses to add at the end of track. Should be 2 or greater
+#define TAIL_STEPS 4
 
 // PortMIDI
 #define MIN_MIDI_BUF_MSEC 6000

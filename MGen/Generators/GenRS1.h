@@ -1,5 +1,5 @@
 #pragma once
-#include "GMidi.h"
+#include "../GLibrary/GMidi.h"
 
 class CGenRS1 :
 	public CGMidi
