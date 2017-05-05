@@ -57,12 +57,12 @@ Tritone culmination       = 0 #U Tritone is the highest leap
 3rd to last is leading    = 0 #C Third to last note is leading (B forbidden)
 Too wide range            = 0 #CV If range is greater than max_interval (diatonic interval)
 Too tight range           = 0 #CV If range is lower than min_interval (diatonic interval)
-3 letters in a row [V]    = 1 # 3 same letters (TDS) in possible chord names in a row (variants)
-4 step miss [C]           = 1 # 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
-4 letters in a row [V]    = 1 # 4 same letters (TDS) in possible chord names in a row (variants)
->4 letters in a row [V]   = 1 # More than 4 same letters (TDS) in possible chord names in a row (variants)
-5 step miss [C]           = 1 # 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
->5 step miss [C]          = 1 # More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+3 letters in a row [V]    = X # 3 same letters (TDS) in possible chord names in a row (variants)
+4 step miss [C]           = X # 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+4 letters in a row [V]    = X # 4 same letters (TDS) in possible chord names in a row (variants)
+>4 letters in a row [V]   = X # More than 4 same letters (TDS) in possible chord names in a row (variants)
+5 step miss [C]           = X # 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+>5 step miss [C]          = X # More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
 
 # Rule parameters
 # Lower voice
