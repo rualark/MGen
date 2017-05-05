@@ -16,6 +16,12 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # ! means that this rule can produce results without other rules with c_len=9, interval 4-7
 # Flag order in list below goes from green - less severe (top) to red - more severe (bottom)
 Strict                    = 1 # No violated rules
+3 letters in a row [V]    = 1 # 3 same letters (TDS) in possible chord names in a row (variants)
+4 step miss [C]           = 1 # 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+4 letters in a row [V]    = 1 # 4 same letters (TDS) in possible chord names in a row (variants)
+>4 letters in a row [V]   = 1 # More than 4 same letters (TDS) in possible chord names in a row (variants)
+5 step miss [C]           = 1 # 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+>5 step miss [C]          = 1 # More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
 Prepared unfilled 3rd     = 0 #S 3rd is unfilled, but was prepared by filling or leap before
 Prepared unresolved 3rd   = 0 #S! 3rd is unresolved, but was prepared by filling or leap before
 Two 3rds after 6/8        = 0 #S Chain of two thirds in one direction after 6th or octave
@@ -57,12 +63,7 @@ Tritone culmination       = 0 #U Tritone is the highest leap
 3rd to last is leading    = 0 #C Third to last note is leading (B forbidden)
 Too wide range            = 0 #CV If range is greater than max_interval (diatonic interval)
 Too tight range           = 0 #CV If range is lower than min_interval (diatonic interval)
-3 letters in a row [V]    = X # 3 same letters (TDS) in possible chord names in a row (variants)
-4 step miss [C]           = X # 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
-4 letters in a row [V]    = X # 4 same letters (TDS) in possible chord names in a row (variants)
->4 letters in a row [V]   = X # More than 4 same letters (TDS) in possible chord names in a row (variants)
-5 step miss [C]           = X # 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
->5 step miss [C]          = X # More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+"G-C before cadence"      = 1 #L G note goes to C note before final cadence
 
 # Rule parameters
 # Lower voice
