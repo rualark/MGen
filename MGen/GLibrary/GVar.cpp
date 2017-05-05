@@ -244,6 +244,7 @@ void CGVar::LoadConfig(CString fname)
 		// Get line
 		fs.getline(pch, 2550);
 		st = pch;
+		st.Replace("\"", "");
 		// Remove unneeded
 		pos = st.Find("#");
 		// Check if it is first symbol
