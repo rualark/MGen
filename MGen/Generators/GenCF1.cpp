@@ -6,8 +6,8 @@
 #endif
 
 // Report violation
-#define FLAG(id, i) { if ((skip_flags) && (accept[id] < 1)) goto skip; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; }
-#define FLAG2(id, i) { if ((skip_flags) && (accept[id] < 1)) return 1; flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; }
+#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > 0) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
+#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > 0) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
 
 // Convert chromatic to diatonic
 #define CC_C(note) (chrom_to_dia[(note + 12 - tonic_cur) % 12] + ((note + 12 - tonic_cur) / 12 - 1) * 7)
@@ -162,6 +162,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 		if (*sN == st) {
 			++parameter_found;
 			accept[i] = atoi(*sV);
+			if (*sV == "X") accept[i] = -1;
 			// Check if not Strict flag
 			if (i) {
 				if (cur_severity == MAX_FLAGS) {
