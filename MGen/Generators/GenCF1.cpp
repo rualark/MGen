@@ -31,12 +31,12 @@ const CString FlagName[MAX_FLAGS] = {
 	"Multiple culminations", // 12 
 	"2nd to last not GBD", // 13
 	"3rd to last is CEG", // 14
-	"3 letters in a row", // 15
-	"4 letters in a row", // 16
-	">4 letters in a row", // 17
-	"4 step miss", // 18
-	"5 step miss", // 19
-	">5 step miss", // 20
+	"3 letters in a row [C]", // 15
+	"4 letters in a row [C]", // 16
+	">4 letters in a row [C]", // 17
+	"4 step miss [V]", // 18
+	"5 step miss [V]", // 19
+	">5 step miss [V]", // 20
 	"Late culmination", // 21
 	"Leap back >4th", // 22
 	"Last leap", // 23
@@ -58,6 +58,12 @@ const CString FlagName[MAX_FLAGS] = {
 	"Major seventh", // 39
 	"First steps without C", // 40
 	"First steps without CEG", // 41
+	"3 letters in a row [V]", // 42
+	"4 letters in a row [V]", // 43
+	">4 letters in a row [V]", // 44
+	"4 step miss [C]", // 45
+	"5 step miss [C]", // 46
+	">5 step miss [C]", // 47
 };
 
 const Color FlagColor[] = {
@@ -182,6 +188,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 					}
 				}
 			}
+			// Do not load flag multiple times
+			break;
 		}
 	}
 }
@@ -265,23 +273,11 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, int c_len, vector<int> &fla
 	return 0;
 }
 
-int CGenCF1::FlagMelodyHarmW(int i, int wcount, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
-	if (wcount == 4) FLAG2(18, i - 1);
-	if (wcount == 5) FLAG2(19, i - 1);
-	if (wcount > 5) FLAG2(20, i - 1);
-	return 0;
-}
-
-int CGenCF1::FlagMelodyHarm(int i, int count, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
-	if (count == 3) FLAG2(15, i - 1);
-	if (count == 4) FLAG2(16, i - 1);
-	if (count > 4) FLAG2(17, i - 1);
-	return 0;
-}
-
 int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hv, vector<int> &hc, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	if (find(hv.begin(), hv.end(), pc[i]) != hv.end()) {
-		if (FlagMelodyHarmW(i, wcount, flags, nflags, nflagsc)) return 1;
+		if (wcount == 4) FLAG2(18, i - 1);
+		if (wcount == 5) FLAG2(19, i - 1);
+		if (wcount > 5) FLAG2(20, i - 1);
 		wcount = 0;
 	}
 	else {
@@ -291,7 +287,9 @@ int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcou
 		++count;
 	}
 	else {
-		if (FlagMelodyHarmW(i, count, flags, nflags, nflagsc)) return 1;
+		if (count == 3) FLAG2(15, i - 1);
+		if (count == 4) FLAG2(16, i - 1);
+		if (count > 4) FLAG2(17, i - 1);
 		count = 0;
 	}
 	return 0;
@@ -318,6 +316,52 @@ int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2, vector<int> &f
 	if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG2(18, ep2 - 1);
 	if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG2(19, ep2 - 1);
 	if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG2(20, ep2 - 1);
+	return 0;
+}
+
+int CGenCF1::FailMelodyHarmSeqStep2(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hc, vector<int> &hv, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	if (find(hv.begin(), hv.end(), pc[i]) != hv.end()) {
+		if (wcount == 4) FLAG2(45, i - 1);
+		if (wcount == 5) FLAG2(46, i - 1);
+		if (wcount > 5) FLAG2(47, i - 1);
+		wcount = 0;
+	}
+	else {
+		++wcount;
+	}
+	if (find(hc.begin(), hc.end(), pc[i]) != hc.end()) {
+		++count;
+	}
+	else {
+		if (count == 3) FLAG2(42, i - 1);
+		if (count == 4) FLAG2(43, i - 1);
+		if (count > 4) FLAG2(44, i - 1);
+		count = 0;
+	}
+	return 0;
+}
+
+int CGenCF1::FailMelodyHarmSeq2(vector<int> &pc, int ep1, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	int dcount = 0;
+	int scount = 0;
+	int tcount = 0;
+	int wdcount = 0;
+	int wscount = 0;
+	int wtcount = 0;
+	for (int i = 0; i < ep2; ++i) {
+		// Count same and missing letters in a row
+		if (FailMelodyHarmSeqStep2(pc, i, tcount, wtcount, hvt, hct, flags, nflags, nflagsc)) return 1;
+		if (FailMelodyHarmSeqStep2(pc, i, dcount, wdcount, hvd, hcd, flags, nflags, nflagsc)) return 1;
+		if (FailMelodyHarmSeqStep2(pc, i, scount, wscount, hvs, hcs, flags, nflags, nflagsc)) return 1;
+	}
+	// Check same letters
+	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG2(42, ep2 - 1);
+	if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG2(43, ep2 - 1);
+	if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG2(44, ep2 - 1);
+	// Check missing letters
+	if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG2(45, ep2 - 1);
+	if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG2(46, ep2 - 1);
+	if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG2(47, ep2 - 1);
 	return 0;
 }
 
@@ -596,6 +640,7 @@ check:
 		GetPitchClass(c, pc, 0, ep2);
 		if (FailLastNotes(pc, ep2, c_len, flags, nflags, nflagsc)) goto skip;
 		if (FailMelodyHarmSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
+		if (FailMelodyHarmSeq2(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		GetChromatic(c, cc, 0, ep2);
 		for (int i = 0; i < ep2 - 1; ++i) {
 			// Tritone prohibit

@@ -1,7 +1,7 @@
 #pragma once
 #include "../GLibrary/GMidi.h"
 
-#define MAX_FLAGS 42
+#define MAX_FLAGS 48
 #define MAX_WIND 50
 #define MAX_NOTE 127
 
@@ -21,10 +21,10 @@ protected:
 	inline int FailMelodyInterval(int nmin, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
 	inline int FailLastNotes(vector<int>& pc, int ep2, int c_len, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
-	inline int FlagMelodyHarmW(int i, int wcount, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
-	inline int FlagMelodyHarm(int i, int count, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	int FailMelodyHarmSeqStep2(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hc, vector<int>& hv, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2);
 	inline int FailOutstandingLeap(vector<int>& c, vector<int>& leap, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailManyLeaps(int max_leap_sum, int leap_sum_i, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);

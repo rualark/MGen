@@ -15,7 +15,7 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
 # ! means that this rule can produce results without other rules with c_len=9, interval 4-7
 # Flag order in list below goes from green - less severe (top) to red - more severe (bottom)
-Strict                    = 0 # No violated rules
+Strict                    = 1 # No violated rules
 Prepared unfilled 3rd     = 0 #S 3rd is unfilled, but was prepared by filling or leap before
 Prepared unresolved 3rd   = 0 #S! 3rd is unresolved, but was prepared by filling or leap before
 Two 3rds after 6/8        = 0 #S Chain of two thirds in one direction after 6th or octave
@@ -26,11 +26,11 @@ Many leaps                = 0 #S! Maximum allowed max_leaps during max_leap_step
 3rd to last is CEG        = 0 #SC! Third to last note is not Subdominant (C E G forbidden)
 Last leap                 = 0 #S Last step is a leap
 Tritone resolved          = 0 #S Tritone is prepared by E and resolved to C
-3 letters in a row        = 0 #L! 3 same letters (TDS) in possible chord names in a row
+3 letters in a row [C]    = 0 #L! 3 same letters (TDS) in possible chord names in a row (constant)
 Unfilled leap             = 0 #U! Leap is not filled
 Leap to leap resolution   = 0 #S Resolution of leap with another leap
 Two 3rds                  = 0 #U Chain of two thirds in one direction
-4 step miss               = 1 #L 4 steps missing one of 3 letters (TDS) in possible chord names in a row
+4 step miss [V]           = 0 #L 4 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
 Minor seventh             = 0 #U Minor seventh interval leap
 Outstanding repeat        = 0 #U Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 Long smooth               = 0 #U Too long smooth movement
@@ -41,10 +41,10 @@ Stagnation                = 0 #U Stagnation on one note
 Multiple culminations     = 0 #U Melody has more than one culmination with the same note
 Major seventh             = 0 #U Major seventh interval leap
 2nd to last not GBD       = 0 #C Second to last note is not Dominant (C E F A forbidden)
-4 letters in a row        = 0 #C 4 same letters (TDS) in possible chord names in a row
->4 letters in a row       = 0 #U More than 4 same letters (TDS) in possible chord names in a row
-5 step miss               = 1 #C 5 steps missing one of 3 letters (TDS) in possible chord names in a row
->5 step miss              = 1 #U More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row
+4 letters in a row [C]    = 0 #C 4 same letters (TDS) in possible chord names in a row (constant)
+>4 letters in a row [C]   = 0 #U More than 4 same letters (TDS) in possible chord names in a row (constant)
+5 step miss [V]           = 0 #C 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
+>5 step miss [V]          = 0 #U More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
 First steps without CEG   = 0 #U First first_steps_tonic steps do not have CEG notes
 Late culmination          = 0 #L Culmination at last three steps
 Leap back >4th            = 0 #U Leap returns to same note (in case leap is larger than 4th)
@@ -57,6 +57,12 @@ Tritone culmination       = 0 #U Tritone is the highest leap
 3rd to last is leading    = 0 #C Third to last note is leading (B forbidden)
 Too wide range            = 0 #CV If range is greater than max_interval (diatonic interval)
 Too tight range           = 0 #CV If range is lower than min_interval (diatonic interval)
+3 letters in a row [V]    = 1 # 3 same letters (TDS) in possible chord names in a row (variants)
+4 step miss [C]           = 1 # 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+4 letters in a row [V]    = 1 # 4 same letters (TDS) in possible chord names in a row (variants)
+>4 letters in a row [V]   = 1 # More than 4 same letters (TDS) in possible chord names in a row (variants)
+5 step miss [C]           = 1 # 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+>5 step miss [C]          = 1 # More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
 
 # Rule parameters
 # Lower voice
