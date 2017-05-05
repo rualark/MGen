@@ -136,6 +136,12 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 			st = sValue->Tokenize(",", pos);
 			st.Trim();
 			if (st == "") break;
+			if (i >= Dest.size()) {
+				CString* est = new CString;
+				est->Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
+				WriteLog(1, est);
+				return;
+			}
 			Dest[i] = atoi(st);
 		}
 	}

@@ -111,6 +111,34 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
+	// Load variants of possible harmonic meaning
+	if (*sN == "harm_var") {
+		++parameter_found;
+		int pos = 0;
+		CString st;
+		for (int i = 0; i<1000; i++) {
+			if (pos == -1) break;
+			st = sV->Tokenize(",", pos);
+			st.Trim();
+			if (st.Find("D") >= 0) hvd.push_back(i);
+			if (st.Find("S") >= 0) hvs.push_back(i);
+			if (st.Find("T") >= 0) hvt.push_back(i);
+		}
+	}
+	// Load constant harmonic meaning
+	if (*sN == "harm_const") {
+		++parameter_found;
+		int pos = 0;
+		CString st;
+		for (int i = 0; i<1000; i++) {
+			if (pos == -1) break;
+			st = sV->Tokenize(",", pos);
+			st.Trim();
+			if (st.Find("D") >= 0) hcd.push_back(i);
+			if (st.Find("S") >= 0) hcs.push_back(i);
+			if (st.Find("T") >= 0) hct.push_back(i);
+		}
+	}
 	// Load tonic
 	if (*sN == "key") {
 		++parameter_found;
@@ -237,6 +265,38 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, int c_len, vector<int> &fla
 	return 0;
 }
 
+int CGenCF1::FlagMelodyHarmW(int i, int wcount, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	if (wcount == 4) FLAG2(18, i - 1);
+	if (wcount == 5) FLAG2(19, i - 1);
+	if (wcount > 5) FLAG2(20, i - 1);
+	return 0;
+}
+
+int CGenCF1::FlagMelodyHarm(int i, int count, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	if (count == 3) FLAG2(15, i - 1);
+	if (count == 4) FLAG2(16, i - 1);
+	if (count > 4) FLAG2(17, i - 1);
+	return 0;
+}
+
+int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hv, vector<int> &hc, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	if (find(hv.begin(), hv.end(), pc[i]) != hv.end()) {
+		if (FlagMelodyHarmW(i, wcount, flags, nflags, nflagsc)) return 1;
+		wcount = 0;
+	}
+	else {
+		++wcount;
+	}
+	if (find(hc.begin(), hc.end(), pc[i]) != hc.end()) {
+		++count;
+	}
+	else {
+		if (FlagMelodyHarmW(i, count, flags, nflags, nflagsc)) return 1;
+		count = 0;
+	}
+	return 0;
+}
+
 int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	int dcount = 0;
 	int scount = 0;
@@ -246,48 +306,9 @@ int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2, vector<int> &f
 	int wtcount = 0;
 	for (int i = 0; i < ep2; ++i) {
 		// Count same and missing letters in a row
-		if ((pc[i] == 0) || (pc[i] == 2) || (pc[i] == 5)) {
-			if (wtcount == 4) FLAG2(18, i - 1);
-			if (wtcount == 5) FLAG2(19, i - 1);
-			if (wtcount > 5) FLAG2(20, i - 1);
-			++tcount;
-			wtcount = 0;
-		}
-		else {
-			if (tcount == 3) FLAG2(15, i - 1);
-			if (tcount == 4) FLAG2(16, i - 1);
-			if (tcount > 4) FLAG2(17, i - 1);
-			tcount = 0;
-			++wtcount;
-		}
-		if ((pc[i] == 2) || (pc[i] == 4) || (pc[i] == 6)) {
-			if (wdcount == 4) FLAG2(18, i - 1);
-			if (wdcount == 5) FLAG2(19, i - 1);
-			if (wdcount > 5) FLAG2(20, i - 1);
-			++dcount;
-			wdcount = 0;
-		}
-		else {
-			if (dcount == 3) FLAG2(15, i - 1);
-			if (dcount == 4) FLAG2(16, i - 1);
-			if (dcount > 4) FLAG2(17, i - 1);
-			dcount = 0;
-			++wdcount;
-		}
-		if ((pc[i] == 1) || (pc[i] == 3) || (pc[i] == 5)) {
-			if (wscount == 4) FLAG2(18, i - 1);
-			if (wscount == 5) FLAG2(19, i - 1);
-			if (wscount > 5) FLAG2(20, i - 1);
-			++scount;
-			wscount = 0;
-		}
-		else {
-			if (scount == 3) FLAG2(15, i - 1);
-			if (scount == 4) FLAG2(16, i - 1);
-			if (scount > 4) FLAG2(17, i - 1);
-			scount = 0;
-			++wscount;
-		}
+		if (FailMelodyHarmSeqStep(pc, i, tcount, wtcount, hvt, hct, flags, nflags, nflagsc)) return 1;
+		if (FailMelodyHarmSeqStep(pc, i, dcount, wdcount, hvd, hcd, flags, nflags, nflagsc)) return 1;
+		if (FailMelodyHarmSeqStep(pc, i, scount, wscount, hvs, hcs, flags, nflags, nflagsc)) return 1;
 	}
 	// Check same letters
 	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG2(15, ep2 - 1);

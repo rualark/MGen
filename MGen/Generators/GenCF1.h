@@ -21,6 +21,9 @@ protected:
 	inline int FailMelodyInterval(int nmin, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
 	inline int FailLastNotes(vector<int>& pc, int ep2, int c_len, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FlagMelodyHarmW(int i, int wcount, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FlagMelodyHarm(int i, int count, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2);
 	inline int FailOutstandingLeap(vector<int>& c, vector<int>& leap, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
@@ -67,6 +70,7 @@ protected:
 	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes(if beats are same)
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
+	vector <int> hvd, hvs, hvt, hcd, hcs, hct; //  Variants and constant harmonic meaning
 
   // Local
 	int sev_to_flag[MAX_FLAGS]; // Get flag ID by severity
