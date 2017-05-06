@@ -528,6 +528,7 @@ void CMainFrame::OnButtonGen()
 	if (m_algo_id == 121) pGen = new CGenCP1();
 	if (m_algo_id == 1001) pGen = new CGenRS1();
 	if (m_algo_id == 2001) pGen = new CGenMP1();
+	if (m_algo_id == 1101) pGen = new CGenRL1();
 	if (pGen != 0) {
 		// Clear note minimax
 		ng_min = 0;
@@ -1157,7 +1158,7 @@ void CMainFrame::OnButtonRsettings()
 
 void CMainFrame::OnButtonSettingsEdit()
 {
-	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "settings.pl", NULL, NULL, SW_SHOWNORMAL);
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "configs\\settings.pl", NULL, NULL, SW_SHOWNORMAL);
 }
 
 void CMainFrame::OnUpdateButtonEcsv(CCmdUI *pCmdUI)
