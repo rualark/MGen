@@ -651,10 +651,12 @@ check:
 		// Limit melody interval
 		if (pcantus) {
 			ClearFlags(flags, nflagsc, 0, ep2);
-			if (FailMelodyInterval(nmin, nmax, flags, nflags, nflagsc)) goto skip;
+			if (nmax - nmin > max_interval) FLAG(37, 0);
+			if (nmax - nmin < min_interval) FLAG(38, 0);
 		}
 		else {
-			if (FailMelodyInterval(nmin, nmax, flags, nflags, nflagsc)) goto skip;
+			if (nmax - nmin > max_interval) goto skip;
+			if (nmax - nmin < min_interval) goto skip;
 			ClearFlags(flags, nflagsc, 0, ep2);
 		}
 		GetPitchClass(c, pc, 0, ep2);
