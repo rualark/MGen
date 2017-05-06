@@ -4,7 +4,7 @@
 111  | GenCA1 | 1   | Cantus firmus Major Analysis        | Counterpoint   | Violin,Piano       | Major scale cantus firmus analysis. Load midi file and analyze.
 121  | GenCP1 | 0   | Counterpoint 2 voices, species 1    | Counterpoint   | Violin             | Counterpoint 2 voices, species 1
 1001 | GenRS1 | 0   | Random solo                         | Random         | Violin             | This is the most simple solo random generator algorithm
-1101 | GenRL1 | 0   | Random Line Distr                   | Random         | Violin	        |  					 | Solo random generator algo with linear distribution function (i.e. bigger numbers appear more often than smaller)
+1101 | GenRL1 | 0   | Random Line Distr                   | Random         | Violin	      			| Solo random generator algo with linear distribution function (i.e. bigger numbers appear more often than smaller)
 2001 | GenMP1 | 1   | MIDI file viewer/player             | Viewer         |                    | Open and play MIDI file
 
 # This file contains all supported music generator algorithms
