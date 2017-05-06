@@ -67,6 +67,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"G-C before cadence", // 48
 	"First not C", // 49
 	"Last not C", // 50
+	"2nd to last is G", // 51
 };
 
 const Color FlagColor[] = {
@@ -464,8 +465,10 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, int c_len, vector<int> &fla
 	if (ep2 > c_len - 1)
 		if (pc[c_len - 1] != 0) FLAG2(50, 0);
 	// Wrong second to last note
-	if (ep2 > c_len - 2)
+	if (ep2 > c_len - 2) {
 		if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG2(13, c_len - 2);
+		if (pc[c_len - 2] == 4) FLAG2(51, c_len - 2);
+	}
 	// Wrong third to last note
 	if (ep2 > c_len - 3) {
 		if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG2(14, c_len - 3);
