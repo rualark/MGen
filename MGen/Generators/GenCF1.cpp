@@ -68,8 +68,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"First not C", // 49
 	"Last not C", // 50
 	"2nd to last is G", // 51
-	"C not prepared by BDG", // 52
-	"E not prepared by DG", // 53
+	"Start tonic unprepared", // 52
 };
 
 const Color FlagColor[] = {
@@ -455,22 +454,27 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector
 		}
 		int ok = 0;
 		// No C ?
-		if (accept[40] != 0)
 		if (c_pos == -1) FLAG2(40, 0)
 		else {
 			// If C found, check previous note
 			if (c_pos > 0) {
-				if (pc[c_pos - 1] != 6 && pc[c_pos - 1] != 1 && pc[c_pos - 1] != 4) FLAG2(52, c_pos - 1);
+				if (pc[c_pos - 1] != 6 || pc[c_pos - 1] != 1 || pc[c_pos - 1] == 4) ok = 1;
 			}
+			// If C is first note, it does not need to be prepared (actually, this cannot happen because of flag 49)
+			else ok = 1;
 		}
 		// No E ?
 		if (e_pos == -1) FLAG2(41, 0)
 		else {
 			// If E found, check previous note
 			if (e_pos > 0) {
-				if (pc[e_pos - 1] != 1 && pc[e_pos - 1] != 4) FLAG2(52, e_pos - 1);
+				if (pc[e_pos - 1] == 1 || pc[e_pos - 1] == 4) ok = 1;
 			}
+			// If E is first note, it does not need to be prepared
+			else ok = 1;
 		}
+		// Is E or C prepared?
+		if (!ok) FLAG2(52, 0);
 	}
 	return 0;
 }

@@ -30,10 +30,10 @@ Leap back <5th             = 0 #S Leap returns to same note (in case leap is equ
 Leap pre-late fill         = 0 #S! Melody has unfilled gaps
 Many leaps                 = 0 #S! Maximum allowed max_leaps during max_leap_steps
 "3rd to last is CEG"       = 0 #SC! Third to last note is not Subdominant (C E G forbidden)
-Last leap                  = 1 #S Last step is a leap
+Last leap                  = 0 #S Last step is a leap
 Tritone resolved           = 0 #S Tritone is prepared by E and resolved to C
 3 letters in a row [C]     = 0 #L! 3 same letters (TDS) in possible chord names in a row (constant)
-Unfilled leap              = 1 #U! Leap is not filled
+Unfilled leap              = 0 #U! Leap is not filled
 Leap to leap resolution    = 0 #S Resolution of leap with another leap
 Two 3rds                   = 0 #U Chain of two thirds in one direction
 4 step miss [V]            = 0 #L 4 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
@@ -48,7 +48,7 @@ Stagnation                 = 0 #U Stagnation on one note
 Multiple culminations      = 0 #U Melody has more than one culmination with the same note
 Major seventh              = 0 #U Major seventh interval leap
 "2nd to last not GBD"      = 0 #C Second to last note is not GBD (C E F A forbidden)
-"2nd to last is G"         = 1 #H Second to last note is G (G forbidden)
+"2nd to last is G"         = 0 #H Second to last note is G (G forbidden)
 4 letters in a row [C]     = 0 #C 4 same letters (TDS) in possible chord names in a row (constant)
 >4 letters in a row [C]    = 0 #U More than 4 same letters (TDS) in possible chord names in a row (constant)
 5 step miss [V]            = 0 #C 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
@@ -67,6 +67,7 @@ Too tight range            = 0 #CV If range is lower than min_interval (diatonic
 "G-C before cadence"       = 0 #L G note goes to C note before final cadence
 "First not C"              = 0 # First note is not tonic
 "Last not C"               = 0 # Last note is not tonic
+"Start tonic unprepared"   = 1 # If tonic is not the very first note, it has to be prepared with BD or GBD notes
 
 # Rule parameters
 # Lower voice

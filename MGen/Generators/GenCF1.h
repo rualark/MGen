@@ -1,7 +1,7 @@
 #pragma once
 #include "../GLibrary/GMidi.h"
 
-#define MAX_FLAGS 54
+#define MAX_FLAGS 53
 #define MAX_WIND 50
 #define MAX_NOTE 127
 
