@@ -1,7 +1,7 @@
 #pragma once
 #include "../GLibrary/GMidi.h"
 
-#define MAX_FLAGS 52
+#define MAX_FLAGS 54
 #define MAX_WIND 50
 #define MAX_NOTE 127
 
@@ -21,7 +21,6 @@ protected:
 	inline void ClearFlags(vector<int>& flags, vector<int>& nflagsc, int step1, int step2);
 	inline int FailMelodyInterval(int nmin, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
-	inline int FailLastNotes(vector<int>& pc, int ep2, int c_len, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	int FailMelodyHarmSeqStep2(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hc, vector<int>& hv, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
@@ -32,6 +31,7 @@ protected:
 	inline int FailStagnation(vector<int>& c, vector<int>& nstat, int nmin, int nmax, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMultiCulm(vector<int>& c, int ep2, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailFirstNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FailLastNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);

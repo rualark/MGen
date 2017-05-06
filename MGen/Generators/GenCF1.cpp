@@ -57,7 +57,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Too tight range", // 38
 	"Major seventh", // 39
 	"First steps without C", // 40
-	"First steps without CEG", // 41
+	"First steps without E", // 41
 	"3 letters in a row [V]", // 42
 	"4 letters in a row [V]", // 43
 	">4 letters in a row [V]", // 44
@@ -68,6 +68,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"First not C", // 49
 	"Last not C", // 50
 	"2nd to last is G", // 51
+	"C not prepared by BDG", // 52
+	"E not prepared by DG", // 53
 };
 
 const Color FlagColor[] = {
@@ -437,30 +439,43 @@ int CGenCF1::FailMultiCulm(vector<int> &c, int ep2, int nmax, vector<int> &flags
 
 int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	// Prohibit first note not tonic
-	if (pc[0] != 0) FLAG2(49, 0);
-	// Prohibit tonic miss at start
-	int ok = 0;
-	int ok2 = 0;
-	for (int i = 0; i < first_steps_tonic; ++i) {
-		// Detect C note
-		if (pc[i] == 0) {
-			ok = 1;
-			break;
+	if (pc[0] != 0) {
+		FLAG2(49, 0);
+		// Calculate steps to search for tonic
+		int fst = first_steps_tonic;
+		if (c_len > 10) fst = 4;
+		// Prohibit tonic miss at start
+		int c_pos = -1;
+		int e_pos = -1;
+		for (int i = 0; i < fst; ++i) {
+			// Detect C note
+			if (pc[i] == 0) c_pos = i;
+			// Detect E note
+			if (pc[i] == 2) e_pos = i;
 		}
-		// Detect EG notes
-		if (pc[i] == 2 || pc[i] == 4) ok2 = 1;
-	}
-	// No C ?
-	if (!ok) {
-		// No EG ?
-		if (!ok2) FLAG2(41, 0)
-			// No C, but we have EG
-		else FLAG2(40, 0);
+		int ok = 0;
+		// No C ?
+		if (accept[40] != 0)
+		if (c_pos == -1) FLAG2(40, 0)
+		else {
+			// If C found, check previous note
+			if ( && c_pos > 0) {
+				if (pc[c_pos - 1] != 6 && pc[c_pos - 1] != 1 && pc[c_pos - 1] != 4) FLAG2(52, c_pos - 1);
+			}
+		}
+		// No E ?
+		if (e_pos == -1) FLAG2(41, 0)
+		else {
+			// If E found, check previous note
+			if (e_pos > 0) {
+				if (pc[e_pos - 1] != 1 && pc[e_pos - 1] != 4) FLAG2(52, e_pos - 1);
+			}
+		}
 	}
 	return 0;
 }
 
-int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, int c_len, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	// Prohibit first note not tonic
 	if (ep2 > c_len - 1)
 		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1); 
@@ -660,7 +675,7 @@ check:
 			ClearFlags(flags, nflagsc, 0, ep2);
 		}
 		GetPitchClass(c, pc, 0, ep2);
-		if (FailLastNotes(pc, ep2, c_len, flags, nflags, nflagsc)) goto skip;
+		if (FailLastNotes(pc, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailMelodyHarmSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailMelodyHarmSeq2(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
