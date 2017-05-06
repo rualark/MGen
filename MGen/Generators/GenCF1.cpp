@@ -6,8 +6,8 @@
 #endif
 
 // Report violation
-#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > 0) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
-#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > 0) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
+#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
+#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
 
 // Convert chromatic to diatonic
 #define CC_C(note) (chrom_to_dia[(note + 12 - tonic_cur) % 12] + ((note + 12 - tonic_cur) / 12 - 1) * 7)
@@ -64,6 +64,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"4 step miss [C]", // 45
 	"5 step miss [C]", // 46
 	">5 step miss [C]", // 47
+	"G-C before cadence" // 48
 };
 
 const Color FlagColor[] = {
@@ -225,6 +226,14 @@ void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int st
 int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
 		if (c[i] == c[i + 1]) return 1;
+	}
+	return 0;
+}
+
+// Detect prohibited note sequences
+int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	for (int i = step1; i < step2-2; ++i) {
+		if (pc[i] == 4 && pc[i + 1] == 0) FLAG2(48, i)
 	}
 	return 0;
 }
@@ -642,6 +651,7 @@ check:
 		if (FailLastNotes(pc, ep2, c_len, flags, nflags, nflagsc)) goto skip;
 		if (FailMelodyHarmSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailMelodyHarmSeq2(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
+		if (FailNoteSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		GetChromatic(c, cc, 0, ep2);
 		for (int i = 0; i < ep2 - 1; ++i) {
 			// Tritone prohibit
