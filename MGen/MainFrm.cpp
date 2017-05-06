@@ -1130,7 +1130,7 @@ void CMainFrame::OnButtonOpenmidi()
 
 void CMainFrame::OnButtonEditalgo()
 {
-	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "algorithms.txt", NULL, NULL, SW_SHOWNORMAL);
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "configs\\algorithms.txt", NULL, NULL, SW_SHOWNORMAL);
 }
 
 
