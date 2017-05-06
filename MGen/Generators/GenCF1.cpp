@@ -459,7 +459,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector
 		if (c_pos == -1) FLAG2(40, 0)
 		else {
 			// If C found, check previous note
-			if ( && c_pos > 0) {
+			if (c_pos > 0) {
 				if (pc[c_pos - 1] != 6 && pc[c_pos - 1] != 1 && pc[c_pos - 1] != 4) FLAG2(52, c_pos - 1);
 			}
 		}
