@@ -41,7 +41,8 @@ Minor seventh              = 0 #U Minor seventh interval leap
 Outstanding repeat         = 0 #U Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 Long smooth                = 0 #U Too long smooth movement
 Long line                  = 0 #U Too long smooth movement in one direction (linear)
-First steps without C      = 0 #L First first_steps_tonic steps do not have C note
+First steps without C      = 0 #L First first_steps_tonic (see comment) steps do not have C note
+First steps without E      = 0 #H First first_steps_tonic (see comment) steps do not have E note
 Close repeat               = 0 #U Two notes repeat in contact
 Stagnation                 = 0 #U Stagnation on one note
 Multiple culminations      = 0 #U Melody has more than one culmination with the same note
@@ -52,7 +53,6 @@ Major seventh              = 0 #U Major seventh interval leap
 >4 letters in a row [C]    = 0 #U More than 4 same letters (TDS) in possible chord names in a row (constant)
 5 step miss [V]            = 0 #C 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
 >5 step miss [V]           = 0 #U More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
-First steps without CEG    = 0 #U First first_steps_tonic steps do not have CEG notes
 Late culmination           = 0 #L Culmination at last three steps
 Leap back >4th             = 0 #U Leap returns to same note (in case leap is larger than 4th)
 Many leaps+                = 0 #U Maximum allowed max_leaps2 during max_leap_steps
@@ -85,7 +85,7 @@ max_leap_steps = 7
 stag_notes = 2 # Maximum allowed stag_notes (same notes) during stag_note_steps
 stag_note_steps = 7
 repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
-first_steps_tonic = 3 # Number of first steps, which must contain tonic note
+first_steps_tonic = 3 # Number of first steps, which must contain tonic note (will increase by one if cantus is longer than 10 notes)
 
 # Technical parameters
 midifile_out_mul = 8 # All notes are made whole for midi export

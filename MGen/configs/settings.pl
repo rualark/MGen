@@ -3,7 +3,7 @@
 
 Algorithm = 101 # Id of the currently selected algorithm
 Config = Test # Name of configuration file for selected algorithm
-MIDI_OUT = Microsoft GS Wavetable Synth 0 # Name of MIDI device used for playing notes
+MIDI_OUT = loopMIDI Port 6 # Name of MIDI device used for playing notes
 Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 500
 playback_speed = 100 # Playback speed in percent
 
