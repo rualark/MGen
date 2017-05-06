@@ -64,7 +64,9 @@ const CString FlagName[MAX_FLAGS] = {
 	"4 step miss [C]", // 45
 	"5 step miss [C]", // 46
 	">5 step miss [C]", // 47
-	"G-C before cadence" // 48
+	"G-C before cadence", // 48
+	"First not C", // 49
+	"Last not C", // 50
 };
 
 const Color FlagColor[] = {
@@ -270,19 +272,6 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &pc, int step1, int step
 	}
 }
 
-int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, int c_len, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
-	// Wrong second to last note
-	if (ep2 > c_len - 2)
-		if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG2(13, c_len - 2);
-	// Wrong third to last note
-	if (ep2 > c_len - 3) {
-		if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG2(14, c_len - 3);
-		// Leading third to last note
-		if (pc[c_len - 3] == 6) FLAG2(34, c_len - 3);
-	}
-	return 0;
-}
-
 int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hv, vector<int> &hc, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	if (find(hv.begin(), hv.end(), pc[i]) != hv.end()) {
 		if (wcount == 4) FLAG2(18, i - 1);
@@ -446,6 +435,8 @@ int CGenCF1::FailMultiCulm(vector<int> &c, int ep2, int nmax, vector<int> &flags
 }
 
 int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	// Prohibit first note not tonic
+	if (pc[0] != 0) FLAG2(49, 0);
 	// Prohibit tonic miss at start
 	int ok = 0;
 	int ok2 = 0;
@@ -464,6 +455,22 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector
 		if (!ok2) FLAG2(41, 0)
 			// No C, but we have EG
 		else FLAG2(40, 0);
+	}
+	return 0;
+}
+
+int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, int c_len, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	// Prohibit first note not tonic
+	if (ep2 > c_len - 1)
+		if (pc[c_len - 1] != 0) FLAG2(50, 0);
+	// Wrong second to last note
+	if (ep2 > c_len - 2)
+		if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG2(13, c_len - 2);
+	// Wrong third to last note
+	if (ep2 > c_len - 3) {
+		if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG2(14, c_len - 3);
+		// Leading third to last note
+		if (pc[c_len - 3] == 6) FLAG2(34, c_len - 3);
 	}
 	return 0;
 }
