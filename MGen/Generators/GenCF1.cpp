@@ -463,7 +463,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector
 int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, int c_len, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	// Prohibit first note not tonic
 	if (ep2 > c_len - 1)
-		if (pc[c_len - 1] != 0) FLAG2(50, 0);
+		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1); 
 	// Wrong second to last note
 	if (ep2 > c_len - 2) {
 		if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG2(13, c_len - 2);

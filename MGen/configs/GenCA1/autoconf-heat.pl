@@ -14,7 +14,7 @@ show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 10 # Maximum number of approximations to run if penalty decreases
 swa_steps = 6 # Size of Sliding Window Approximation algorithm window in steps
-correct_range = 8 # Maximum interval allowed between each source and corrected note
+correct_range = 4 # Maximum interval allowed between each source and corrected note
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters
@@ -94,5 +94,5 @@ calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down g
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
 
 # This config was created from default config file configs\GenCA1.pl
-# Created at 2017-04-17 21-56-08
+# Created at 2017-05-06 11-03-55
 Midi_file = load\heat.mid
