@@ -77,7 +77,7 @@ harm_const = T,DS,T,S,D,S,D # Constant harmonic meaning that is always possible 
 #harm_var = TS,DS,DST,S,DT,TS,DT # Variants of possible harmonic meaning of each note
 #harm_const = TS,DS,T,S,DT,S,D # Constant harmonic meaning that is always possible for particular note (must be after harm_var)
 
-fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling
+fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling (+2)
 max_smooth_direct = 5 # Maximum linear movement in one direction allowed (in steps)
 max_smooth = 7 # Maximum linear movement allowed (in steps)
 max_leaps = 2 # Maximum allowed max_leaps during max_leap_steps
