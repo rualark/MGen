@@ -104,6 +104,7 @@ public:
 	void LoadResults(CString path);
 	void LoadMidi(CString path);
 	bool NewDocument();
+	void NewGen();
 	static UINT GenThread(LPVOID pParam);
 	void StartPlay(int from);
 
