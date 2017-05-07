@@ -15,25 +15,32 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
 # ! means that this rule can produce results without other rules with c_len=9, interval 4-7
 # Flag order in list below goes from green - less severe (top) to red - more severe (bottom)
-Strict                     = 0 # No violated rules
+# Groups:
+# S - strict rules that can usually be violated
+# U - universal for all melodies
+# C - rules specifially for cantus firmus
+# L - rules specifially for lower cantus firmus
+# H - rules specifially for higher cantus firmus
+
+Strict                     = 1 # No violated rules
 3 letters in a row [V]     = X # 3 same letters (TDS) in possible chord names in a row (variants)
 4 step miss [C]            = X # 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
 4 letters in a row [V]     = X # 4 same letters (TDS) in possible chord names in a row (variants)
 >4 letters in a row [V]    = X # More than 4 same letters (TDS) in possible chord names in a row (variants)
 5 step miss [C]            = X # 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
 >5 step miss [C]           = X # More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
-Prepared unfilled 3rd      = 0 #S 3rd is unfilled, but was prepared by filling or leap before
-Prepared unresolved 3rd    = 0 #S! 3rd is unresolved, but was prepared by filling or leap before
+Preleaped unfilled 3rd     = 0 #S 3rd is unfilled, but was prepared by leap before
+Preleaped unresolved 3rd   = 0 #S! 3rd is unresolved, but was prepared by filling or leap before
 Two 3rds after 6/8         = 0 #S Chain of two thirds in one direction after 6th or octave
 Late <6th resolution       = 0 #S! Leap less than 6th is resolved after a second note
-Leap back <5th             = 0 #S Leap returns to same note (in case leap is equal or less than 4th)
-Leap pre-late fill         = 0 #S! Melody has unfilled gaps
+Leap back <7th             = 0 #S Leap returns to same note (in case leap is equal or less than 4th)
+Early-late filled >4th     = 0 #S! Melody has unfilled gaps
 Many leaps                 = 0 #S! Maximum allowed max_leaps during max_leap_steps
 "3rd to last is CEG"       = 0 #SC! Third to last note is not Subdominant (C E G forbidden)
 Last leap                  = 0 #S Last step is a leap
 Tritone resolved           = 0 #S Tritone is prepared by E and resolved to C
 3 letters in a row [C]     = 0 #L! 3 same letters (TDS) in possible chord names in a row (constant)
-Unfilled leap              = 0 #U! Leap is not filled
+Unfilled leap >4th         = 0 #U! Leap is not filled
 Leap to leap resolution    = 0 #S Resolution of leap with another leap
 Two 3rds                   = 0 #U Chain of two thirds in one direction
 4 step miss [V]            = 0 #L 4 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
@@ -54,7 +61,7 @@ Major seventh              = 0 #U Major seventh interval leap
 5 step miss [V]            = 0 #C 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
 >5 step miss [V]           = 0 #U More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
 Late culmination           = 0 #L Culmination at last three steps
-Leap back >4th             = 0 #U Leap returns to same note (in case leap is larger than 4th)
+Leap back >6th             = 0 #U Leap returns to same note (in case leap is larger than 4th)
 Many leaps+                = 0 #U Maximum allowed max_leaps2 during max_leap_steps
 Leap unresolved            = 0 #U Leap unresolved during two next steps (movement direction does not change)
 Leap chain                 = 0 #U Chain of two leaps in one direction
@@ -67,7 +74,26 @@ Too tight range            = 0 #CV If range is lower than min_interval (diatonic
 "G-C before cadence"       = 0 #L G note goes to C note before final cadence
 "First not C"              = 0 # First note is not tonic
 "Last not C"               = 0 # Last note is not tonic
-"Start tonic unprepared"   = 1 # If tonic is not the very first note, it has to be prepared with BD or GBD notes
+"Start tonic unprepared"   = 0 # If tonic is not the very first note, it has to be prepared with BD or GBD notes
+"Prefilled unresolved 3rd" = 0 # 
+"Unresolved 3rd"           = 0 # 
+"Preleaped unresolved 4th" = 0 # 
+"Prefilled unresolved 4th" = 0 # 
+"Unresolved 4th"           = 0 # 
+"Leap back overflow"       = 0 # 
+Preleaped unresolved >4th  = 0 # 
+Prefilled unresolved >4th  = 0 # 
+"Prefilled unfilled 3rd"   = 0 # 
+"Prefilled unfilled 4th"   = 0 # 
+"Prefilled unfilled >4th"  = 0 # 
+"Preleaped unfilled 4th"   = 0 # 
+"Preleaped unfilled >4th"  = 0 # 
+"Early-late filled 3rd"    = 0 # 
+"Early-late filled 4th"    = 0 # 
+"Unfilled 3rd"             = 0 # 
+"Unfilled 4th"             = 0 # 
+"Consecutive leaps"        = 0 # 
+"Consecutive leaps+"       = 0 # 
 
 # Rule parameters
 # Lower voice
@@ -94,6 +120,6 @@ first_steps_tonic = 3 # Number of first steps, which must contain tonic note (wi
 midifile_out_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
-calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
+calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time

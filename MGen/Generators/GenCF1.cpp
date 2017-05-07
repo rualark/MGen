@@ -23,8 +23,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"Long smooth", // 4 
 	"Long line", // 5 
 	"Two 3rds", // 6 
-	"Late <=5th resolution", // 7 
-	"Leap back <=6th", // 8 
+	"Late <6th resolution", // 7 
+	"Leap back <7th", // 8 
 	"Close repeat", // 9 
 	"Stagnation", // 10 
 	"Early-late filled >4th", // 11 
