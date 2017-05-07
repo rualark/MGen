@@ -27,7 +27,7 @@ protected:
 	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2);
 	inline int FailOutstandingLeap(vector<int>& c, vector<int>& leap, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
-	inline int FailManyLeaps(int max_leap_sum, int leap_sum_i, int max_leap_sum2, int leap_sum_i2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailStagnation(vector<int>& c, vector<int>& nstat, int nmin, int nmax, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMultiCulm(vector<int>& c, int ep2, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailFirstNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);

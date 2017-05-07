@@ -417,7 +417,57 @@ int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2, vec
 }
 
 // Check if too many leaps
-int CGenCF1::FailManyLeaps(int max_leap_sum, int leap_sum_i, int max_leap_sum2, int leap_sum_i2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+	// Clear variables
+	int leap_sum = 0;
+	int leap_sum2 = 0;
+	int max_leap_sum = 0;
+	int max_leap_sum2 = 0;
+	int smooth_sum = 0;
+	int smooth_sum2 = 0;
+	int leap_sum_i = 0;
+	int leap_sum_i2 = 0;
+	for (int i = 0; i < ep2 - 1; ++i) {
+		// Find all leaps
+		leap[i] = 0;
+		smooth[i] = 0;
+		if (c[i + 1] - c[i] > 1) leap[i] = 1;
+		else if (c[i + 1] - c[i] < -1) leap[i] = -1;
+		// Find all smooth
+		else if (c[i + 1] - c[i] == 1) smooth[i] = 1;
+		else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
+		// Add new leap
+		if (leap[i] != 0) {
+			++leap_sum;
+			++leap_sum2;
+		}
+		else {
+			leap_sum2 = 0;
+		}
+		// Subtract old leap
+		if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
+		// Get maximum leap_sum
+		if (leap_sum > max_leap_sum) {
+			max_leap_sum = leap_sum;
+			leap_sum_i = i;
+		}
+		if (leap_sum2 > max_leap_sum2) {
+			max_leap_sum2 = leap_sum2;
+			leap_sum_i2 = i;
+		}
+		// Prohibit long smooth movement
+		if (smooth[i] != 0) ++smooth_sum;
+		else smooth_sum = 0;
+		if (smooth_sum >= max_smooth) FLAG2(4, i);
+		if (i < ep2 - 2) {
+			// Prohibit long smooth movement in one direction
+			if (smooth[i] == smooth[i + 1]) ++smooth_sum2;
+			else smooth_sum2 = 0;
+			if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, i);
+			// Check if two notes repeat
+			if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG2(9, i);
+		}
+	}
 	if (max_leap_sum > max_leaps) {
 		if (max_leap_sum > max_leaps2) FLAG2(25, leap_sum_i)
 		else FLAG2(3, leap_sum_i);
@@ -582,8 +632,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	long long accepted2 = 0, accepted3 = 0;
 	int first_note_dia, first_note_oct;
 	int finished = 0;
-	int nmin, nmax, leap_sum, leap_sum2, max_leap_sum, max_leap_sum2, leap_sum_i, leap_sum_i2,
-		culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
+	int nmin, nmax, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, preleap , second_third, leap_size, 
 		leap_start, leap_next, leap_prev, unresolved, prefilled, skips, skips2;
 	int sp1, sp2, ep1, ep2, p, pp;
@@ -758,34 +807,14 @@ check:
 			// Sept prohibit
 			if (abs(cc[i + 1] - cc[i]) == 10) FLAG(1, i)
 			else if (abs(cc[i + 1] - cc[i]) == 11) FLAG(39, i);
-			// Find all leaps
-			leap[i] = 0;
-			smooth[i] = 0;
-			if (c[i + 1] - c[i] > 1) leap[i] = 1;
-			else if (c[i + 1] - c[i] < -1) leap[i] = -1;
-			// Find all smooth
-			else if (c[i + 1] - c[i] == 1) smooth[i] = 1;
-			else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
 		}
-		leap_sum = 0;
-		leap_sum2 = 0;
-		max_leap_sum = 0;
-		max_leap_sum2 = 0;
-		smooth_sum = 0;
-		smooth_sum2 = 0;
+		if (FailLeapSmooth(ep2, leap, smooth, flags, nflags, nflagsc)) goto skip;
 		if (FailOutstandingLeap(c, leap, ep2, flags, nflags, nflagsc)) goto skip;
 		// Calculate global fill
-		for (int x = 0; x < ep2; ++x) {
-			nstat2[x] = 0;
-		}
-		for (int x = 0; x < ep2; ++x) {
-			++nstat2[c[x]];
-		}
+		for (int x = 0; x < ep2; ++x) nstat2[x] = 0;
+		for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 		for (int i = 0; i < ep2 - 1; ++i) {
-			// Add new leap
 			if (leap[i] != 0) {
-				++leap_sum;
-				++leap_sum2;
 				// Check if this leap is 3rd
 				leap_size = abs(c[i + 1] - c[i]);
 				leap_start = i;
@@ -930,34 +959,7 @@ check:
 					// Next linear back - no flag
 				}
 			}
-			else {
-				leap_sum2 = 0;
-			}
-			// Subtract old leap
-			if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
-			// Get maximum leap_sum
-			if (leap_sum > max_leap_sum) {
-				max_leap_sum = leap_sum;
-				leap_sum_i = i;
-			}
-			if (leap_sum2 > max_leap_sum2) {
-				max_leap_sum2 = leap_sum2;
-				leap_sum_i2 = i;
-			}
-			// Prohibit long smooth movement
-			if (smooth[i] != 0) ++smooth_sum;
-			else smooth_sum = 0;
-			if (smooth_sum >= max_smooth) FLAG(4, i);
-			if (i < ep2 - 2) {
-				// Prohibit long smooth movement in one direction
-				if (smooth[i] == smooth[i + 1]) ++smooth_sum2;
-				else smooth_sum2 = 0;
-				if (smooth_sum2 >= max_smooth_direct - 1) FLAG(5, i);
-				// Check if two notes repeat
-				if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG(9, i);
-			}
 		}
-		if (FailManyLeaps(max_leap_sum, leap_sum_i, max_leap_sum2, leap_sum_i2, flags, nflags, nflagsc)) goto skip;
 		if (FailStagnation(c, nstat, nmin, nmax, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailMultiCulm(c, ep2, nmax, flags, nflags, nflagsc)) goto skip;
 		if (FailFirstNotes(pc, ep2, flags, nflags, nflagsc)) goto skip;
