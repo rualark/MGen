@@ -21,8 +21,9 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # C - rules specifially for cantus firmus
 # L - rules specifially for lower cantus firmus
 # H - rules specifially for higher cantus firmus
+# V - rules appropriate for vocal melody
 
-Strict                     = 1 # No violated rules
+Strict                     = 0 # No violated rules
 3 letters in a row [V]     = X #SC 3 same letters (TDS) in possible chord names in a row (variants)
 4 step miss [C]            = X #SC 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
 4 letters in a row [V]     = X #SC 4 same letters (TDS) in possible chord names in a row (variants)
@@ -39,7 +40,7 @@ Early-late filled >4th     = 0 #S! Leap longer than 4th is not filled or prefill
 Many leaps                 = 0 #S! Maximum allowed max_leaps during max_leap_steps
 "3rd to last is CEG"       = 0 #SC! Third to last note is not Subdominant (C E G forbidden)
 Last leap                  = 0 #S Last step is a leap
-Tritone resolved           = 0 #S Tritone is prepared by E and resolved to C
+Tritone resolved           = 2 #S Tritone is prepared by E and resolved to C
 "Prefilled unresolved 3rd" = 0 #S 3rd is not resolved by backward movement, but it was filled before
 "Prefilled unresolved 4th" = 0 #S 4th is not resolved by backward movement, but it was filled before
 3 letters in a row [C]     = 0 #L! 3 same letters (TDS) in possible chord names in a row (constant)
@@ -48,7 +49,7 @@ Leap to leap resolution    = 0 #S Resolution of leap with another leap
 "Leap back overflow"       = 0 #S Leap back is going farther than starting note of a previous leap
 "Prefilled unfilled 3rd"   = 0 #S 3rd is not filled, but it was filled before
 "Prefilled unfilled 4th"   = 0 #S 4th is not filled, but it was filled before
-"Prefilled unfilled >4th"  = 0 #S Leap longer than 4th is not filled, but it was filled before
+"Prefilled unfilled >4th"  = 1 #S Leap longer than 4th is not filled, but it was filled before
 "Preleaped unfilled 4th"   = 0 #S 4th is not filled, but it has a greater leap as neighbour
 "Preleaped unfilled >4th"  = 0 #S Leap longer than 4th is not filled, but it has a greater leap as neighbour
 Two 3rds                   = 0 #U Chain of two thirds in one direction
@@ -120,6 +121,6 @@ first_steps_tonic = 3 # Number of first steps, which must contain tonic note (wi
 midifile_out_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
-calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
+calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time

@@ -280,10 +280,12 @@ void CGVar::LoadConfig(CString fname)
 			LoadVar(&st2, &st3, "instruments", &m_config_insts);
 			//LoadVarInstr(&st2, &st3, "instruments", instr);
 			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose);
-			// Load algorithm-specific variables
-			LoadConfigLine(&st2, &st3, idata, fdata);
-			if (!parameter_found) {
-				WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+			// Load algorithm-specific variables if we are not loading saved results
+			if (!m_loading) {
+				LoadConfigLine(&st2, &st3, idata, fdata);
+				if (!parameter_found) {
+					WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+				}
 			}
 		}
 	}
@@ -1117,6 +1119,8 @@ void CGVar::LoadResults(CString dir, CString fname)
 	}
 	fs.open(path);
 	pos = 0;
+	int itemp;
+	float ftemp;
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
@@ -1132,6 +1136,10 @@ void CGVar::LoadResults(CString dir, CString fname)
 			st2.MakeLower();
 			int idata = atoi(st3);
 			parameter_found = 0;
+			CheckVar(&st2, &st3, "ng_min", &itemp);
+			CheckVar(&st2, &st3, "ng_max", &itemp);
+			CheckVar(&st2, &st3, "tg_min", &ftemp);
+			CheckVar(&st2, &st3, "tg_max", &ftemp);
 			CheckVar(&st2, &st3, "t_cnt", &t_cnt);
 			CheckVar(&st2, &st3, "m_algo_id", &m_algo_id);
 			CheckVar(&st2, &st3, "v_cnt", &v_cnt);

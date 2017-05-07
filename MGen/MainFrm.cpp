@@ -421,9 +421,18 @@ void CMainFrame::LoadResults(CString path) {
 		delete pGen;
 		m_state_gen = 0;
 	}
-	pGen = 0;
-	pGen = new CGenRS1();
+	// Load algorithm
+	m_algo_id = 101;
+	NewGen();
 	if (pGen != 0) {
+		pGen->LoadResults(dir, fname);
+		m_algo_id = pGen->m_algo_id;
+		delete pGen;
+	}
+	NewGen();
+	// Create algorithm
+	if (pGen != 0) {
+		pGen->m_loading = 1;
 		// Clear note minimax
 		ng_min = 0;
 		ng_max = 0;
@@ -508,6 +517,18 @@ bool CMainFrame::NewDocument()
 	return false;
 }
 
+void CMainFrame::NewGen()
+{
+	pGen = 0;
+	if (m_algo_id == 101) pGen = new CGenCF1();
+	if (m_algo_id == 102) pGen = new CGenCF2();
+	if (m_algo_id == 111) pGen = new CGenCA1();
+	if (m_algo_id == 121) pGen = new CGenCP1();
+	if (m_algo_id == 1001) pGen = new CGenRS1();
+	if (m_algo_id == 2001) pGen = new CGenMP1();
+	if (m_algo_id == 1101) pGen = new CGenRL1();
+}
+
 void CMainFrame::OnButtonGen()
 {
 	if (m_state_gen == 1) {
@@ -522,14 +543,7 @@ void CMainFrame::OnButtonGen()
 		delete pGen;
 		m_state_gen = 0;
 	}
-	pGen = 0;
-	if (m_algo_id == 101) pGen = new CGenCF1();
-	if (m_algo_id == 102) pGen = new CGenCF2();
-	if (m_algo_id == 111) pGen = new CGenCA1();
-	if (m_algo_id == 121) pGen = new CGenCP1();
-	if (m_algo_id == 1001) pGen = new CGenRS1();
-	if (m_algo_id == 2001) pGen = new CGenMP1();
-	if (m_algo_id == 1101) pGen = new CGenRL1();
+	NewGen();
 	if (pGen != 0) {
 		// Clear note minimax
 		ng_min = 0;
