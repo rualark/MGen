@@ -1,7 +1,7 @@
 #pragma once
 #include "../GLibrary/GMidi.h"
 
-#define MAX_FLAGS 53
+#define MAX_FLAGS 70
 #define MAX_WIND 50
 #define MAX_NOTE 127
 
@@ -32,6 +32,7 @@ protected:
 	inline int FailMultiCulm(vector<int>& c, int ep2, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailFirstNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailLastNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
