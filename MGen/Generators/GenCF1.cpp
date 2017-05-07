@@ -754,19 +754,32 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 
 int CGenCF1::FailIntervals(int ep2, int nmax, vector<int> &pc, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc)
 {
+	int leap_start;
+	int found;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		// Tritone prohibit
-		if ((pc[i + 1] == 6 && pc[i] == 3) || (pc[i + 1] == 3 && pc[i] == 6)) {
+		leap_start = i;
+		found = 0;
+		// Check consecutive tritone
+		if ((pc[i + 1] == 6 && pc[i] == 3) || (pc[i + 1] == 3 && pc[i] == 6)) found = 1;
+		// Check tritone with additional note inside
+		if (i > 0) {
+			if ((pc[i + 1] == 6 && pc[i - 1] == 3) || (pc[i + 1] == 3 && pc[i - 1] == 6)) {
+				found = 1;
+				leap_start = i - 1;
+			}
+		}
+		if (found) {
 			// Check if tritone is highest leap if this is last window
 			if (ep2 == c_len)
-				if ((c[i] == nmax) || (c[i + 1] == nmax)) FLAG2(32, i)
+				if ((c[leap_start] == nmax) || (c[i + 1] == nmax)) FLAG2(32, i)
 					// Check if tritone is last step
 					if (i > c_len - 3) FLAG2(31, i)
-						// Check if resolution is correct
+					// Check if resolution is correct
 					else if (i < ep2 - 2) {
 						if (pc[i + 1] == 3) FLAG2(31, i)
 						else if (pc[i + 2] != 0) FLAG2(31, i)
-						else if (i > 0 && pc[i - 1] != 2) FLAG2(31, i)
+						else if (i > 0 && pc[leap_start - 1] != 2) FLAG2(31, i)
 							// Record resolved tritone
 						else FLAG2(2, i);
 					}
