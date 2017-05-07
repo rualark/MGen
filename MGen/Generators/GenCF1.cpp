@@ -598,6 +598,164 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 	}
 }
 
+int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc)
+{
+	int preleap, leap_size, leap_start, leap_next, leap_prev, unresolved, prefilled, skips, skips2, pos;
+	for (int i = 0; i < ep2 - 1; ++i) {
+		if (leap[i] != 0) {
+			// Check if this leap is 3rd
+			leap_size = abs(c[i + 1] - c[i]);
+			leap_start = i;
+			preleap = 0;
+			prefilled = 0;
+			leap_next = 0;
+			leap_prev = 0;
+			// Prev is leap?
+			if (i > 0) leap_prev = leap[i] * leap[i - 1];
+			// Check preleap (current leap does not exceed previous close leap)
+			if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) preleap = 1;
+			else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) preleap = 1;
+			else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) preleap = 1;
+			// Check if leap is third
+			if (leap_size == 2) {
+				// Check if leap is second third
+				if (i > 0 && abs(c[i + 1] - c[i - 1]) == 4) {
+					// Set leap start to first note of first third
+					leap_start = i - 1;
+					// Set leap size to be compound
+					leap_size = 4;
+					// If 6/8 goes before 2 thirds
+					if ((i > 1) && ((leap[i] * (c[i - 1] - c[i - 2]) == -5) || (leap[i] * (c[i - 1] - c[i - 2]) == -7))) FLAG2(28, i)
+						// Else mark simple 2x3rds
+					else FLAG2(6, i);
+				}
+			}
+			// Check if we have a greater neighbouring leap
+			if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size) ||
+				(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size)) {
+				// Set that we are preleaped (even if we are postleaped)
+				preleap = 1;
+			}
+			if (i > 0) {
+				// Check if  leap is prefilled
+				pos = i - 2 - (leap_size - 1) * fill_steps_mul;
+				if (pos < 0) pos = 0;
+				CountFill(i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2);
+				if (skips <= 0) prefilled = 1;
+			}
+			if (i < ep2 - 2) {
+				// Check if  leap is filled
+				pos = i + 2 + (leap_size - 1) * fill_steps_mul;
+				// Do not check fill if search window is cut by end of current not-last scan window
+				if ((pos < ep2) || (c_len == ep2)) {
+					if (pos > ep2 - 1) pos = ep2 - 1;
+					CountFill(i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2);
+					// Local not filled?
+					if (skips > 0) {
+						// Local not filled. Prefilled?
+						if (prefilled) {
+							if (leap_size == 2) FLAG2(61, i)
+							else if (leap_size == 3) FLAG2(62, i)
+							else FLAG2(63, i);
+						}
+						// Local not filled. Not prefilled. Preleaped?
+						else if (preleap) {
+							if (leap_size == 2) FLAG2(35, i)
+							else if (leap_size == 3) FLAG2(64, i)
+							else FLAG2(65, i);
+						}
+						// Local not filled. Not prefilled. Not preleaped. Global filled?
+						else if (skips2 <= 0) {
+							if (leap_size == 2) FLAG2(66, i)
+							else if (leap_size == 3) FLAG2(67, i)
+							else FLAG2(11, i);
+						}
+						// Local not filled. Not prefilled. Not preleaped. Global not filled.
+						else {
+							if (leap_size == 2) FLAG2(68, i)
+							else if (leap_size == 3) FLAG2(69, i)
+							else FLAG2(24, i);
+						}
+					}
+				}
+			}
+			// Check leap resolution if it is not last note
+			if (i < ep2 - 2) {
+				leap_next = leap[i] * leap[i + 1];
+				// Next leap in same direction
+				if (leap_next > 0) {
+					// Flag if greater than two thirds
+					if (abs(c[i + 2] - c[i]) > 4) FLAG2(27, i + 2);
+					// Allow if both thirds, without flags (will process next cycle)
+				}
+				// Next leap back
+				else if (leap_next < 0) {
+					// Flag if back leap greater than 6th
+					int leap_size2 = abs(c[i + 2] - c[i + 1]);
+					if (leap_size2 > 5) FLAG2(22, i + 1)
+						// Flag if back leap equal or smaller than 6th
+					else FLAG2(8, i + 1);
+					if (leap_size2 > leap_size) FLAG2(58, i + 1);
+				}
+				// Next linear in same direction
+				else if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
+					// Flag if 2nd after next back
+					unresolved = 0;
+					if (i < ep2 - 3) {
+						// Check if melody direction does not change second note after leap
+						if (leap[i] * (c[i + 3] - c[i + 2]) > 0) unresolved = 1;
+						// If direction changes second note after leap
+						else {
+							// Check leap size
+							if (leap_size > 4) FLAG2(29, i)
+							else FLAG2(7, i);
+						}
+					}
+					else {
+						// Mark leap unresolved if this is end of cantus
+						if (c_len == ep2) unresolved = 1;
+					}
+					if (unresolved) {
+						if (leap_size == 2) {
+							// Flag if third preleaped unresolved
+							if (preleap) FLAG2(30, i)
+								// Flag if third prefilled unresolved
+							else if (prefilled) FLAG2(53, i)
+								// Flag if third unresolved
+							else FLAG2(54, i);
+						}
+						else if (leap_size == 3) {
+							// Flag if 4th preleaped unresolved
+							if (preleap) FLAG2(55, i)
+								// Flag if 4th prefilled unresolved
+							else if (prefilled) FLAG2(56, i)
+								// Flag if 4th unresolved
+							else FLAG2(57, i);
+						}
+						else {
+							// Flag if >4th preleaped unresolved
+							if (preleap) FLAG2(59, i)
+								// Flag if >4th prefilled unresolved
+							else if (prefilled) FLAG2(60, i)
+								// Flag if >4th unresolved
+							else FLAG2(26, i);
+						}
+					} // if unresolved
+				}
+				// Next linear back - no flag
+			}
+		}
+	}
+	return 0;
+}
+
+// Calculate global fill
+void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
+{
+	for (int x = 0; x < ep2; ++x) nstat2[x] = 0;
+	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -633,8 +791,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	int first_note_dia, first_note_oct;
 	int finished = 0;
 	int nmin, nmax, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
-	int dcount, scount, tcount, wdcount, wscount, wtcount, preleap , second_third, leap_size, 
-		leap_start, leap_next, leap_prev, unresolved, prefilled, skips, skips2;
+	int dcount, scount, tcount, wdcount, wscount, wtcount;
 	int sp1, sp2, ep1, ep2, p, pp;
 	int wcount = 1; // Number of windows created
 	vector<int> min_c(c_len);
@@ -810,156 +967,8 @@ check:
 		}
 		if (FailLeapSmooth(ep2, leap, smooth, flags, nflags, nflagsc)) goto skip;
 		if (FailOutstandingLeap(c, leap, ep2, flags, nflags, nflagsc)) goto skip;
-		// Calculate global fill
-		for (int x = 0; x < ep2; ++x) nstat2[x] = 0;
-		for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
-		for (int i = 0; i < ep2 - 1; ++i) {
-			if (leap[i] != 0) {
-				// Check if this leap is 3rd
-				leap_size = abs(c[i + 1] - c[i]);
-				leap_start = i;
-				preleap = 0;
-				prefilled = 0;
-				second_third = 0;
-				leap_next = 0;
-				leap_prev = 0;
-				// Prev is leap?
-				if (i > 0) leap_prev = leap[i] * leap[i - 1];
-				// Check preleap (current leap does not exceed previous close leap)
-				if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) preleap = 1;
-				else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) preleap = 1;
-				else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) preleap = 1;
-				// Check if leap is third
-				if (leap_size == 2) {
-					// Check if leap is second third
-					if (i > 0 && abs(c[i + 1] - c[i - 1]) == 4) {
-						second_third = 1;
-						// Set leap start to first note of first third
-						leap_start = i - 1;
-						// Set leap size to be compound
-						leap_size = 4;
-						// If 6/8 goes before 2 thirds
-						if ((i > 1) && ((leap[i] * (c[i-1] - c[i-2]) == -5) || (leap[i] * (c[i-1] - c[i - 2]) == -7))) FLAG(28, i)
-						// Else mark simple 2x3rds
-						else FLAG(6, i);
-					}
-				}
-				// Check if we have a greater neighbouring leap
-				if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size) || 
-					(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size)) {
-					// Set that we are preleaped (even if we are postleaped)
-					preleap = 1;
-				}
-				if (i > 0) {
-					// Check if  leap is prefilled
-					pos = i - 2 - (leap_size - 1) * fill_steps_mul;
-					if (pos < 0) pos = 0;
-					CountFill(i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2);
-					if (skips <= 0) prefilled = 1;
-				}
-				if (i < ep2 - 2) {
-					// Check if  leap is filled
-					pos = i + 2 + (leap_size - 1) * fill_steps_mul;
-					// Do not check fill if search window is cut by end of current not-last scan window
-					if ((pos < ep2) || (c_len == ep2)) {
-						if (pos > ep2 - 1) pos = ep2 - 1;
-						CountFill(i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2);
-						// Local not filled?
-						if (skips > 0) {
-							// Local not filled. Prefilled?
-							if (prefilled) {
-								if (leap_size == 2) FLAG(61, i)
-								else if (leap_size == 3) FLAG(62, i)
-								else FLAG(63, i);
-							}
-							// Local not filled. Not prefilled. Preleaped?
-							else if (preleap) {
-								if (leap_size == 2) FLAG(35, i)
-								else if (leap_size == 3) FLAG(64, i)
-								else FLAG(65, i);
-							}
-							// Local not filled. Not prefilled. Not preleaped. Global filled?
-							else if (skips2 <= 0) {
-								if (leap_size == 2) FLAG(66, i)
-								else if (leap_size == 3) FLAG(67, i)
-								else FLAG(11, i);
-							}
-							// Local not filled. Not prefilled. Not preleaped. Global not filled.
-							else {
-								if (leap_size == 2) FLAG(68, i)
-								else if (leap_size == 3) FLAG(69, i)
-								else FLAG(24, i);
-							}
-						}
-					}
-				}
-				// Check leap resolution if it is not last note
-				if (i < ep2 - 2) {
-					leap_next = leap[i] * leap[i + 1];
-					// Next leap in same direction
-					if (leap_next > 0) {
-						// Flag if greater than two thirds
-						if (abs(c[i + 2] - c[i]) > 4) FLAG(27, i + 2);
-						// Allow if both thirds, without flags (will process next cycle)
-					}
-					// Next leap back
-					else if (leap_next < 0) {
-						// Flag if back leap greater than 6th
-						int leap_size2 = abs(c[i + 2] - c[i + 1]);
-						if (leap_size2 > 5) FLAG(22, i + 1)
-						// Flag if back leap equal or smaller than 6th
-						else FLAG(8, i + 1);
-						if (leap_size2 > leap_size) FLAG(58, i + 1);
-					}
-					// Next linear in same direction
-					else if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
-						// Flag if 2nd after next back
-						unresolved = 0;
-						if (i < ep2 - 3) {
-							// Check if melody direction does not change second note after leap
-							if (leap[i] * (c[i + 3] - c[i + 2]) > 0) unresolved = 1;
-							// If direction changes second note after leap
-							else {
-								// Check leap size
-								if (leap_size > 4) FLAG(29, i)
-								else FLAG(7, i);
-							}
-						}
-						else {
-							// Mark leap unresolved if this is end of cantus
-							if (c_len == ep2) unresolved = 1;
-						}
-						if (unresolved) {
-							if (leap_size == 2) {
-								// Flag if third preleaped unresolved
-								if (preleap) FLAG(30, i)
-								// Flag if third prefilled unresolved
-								else if (prefilled) FLAG(53, i)
-								// Flag if third unresolved
-								else FLAG(54, i);
-							}
-							else if (leap_size == 3) {
-								// Flag if 4th preleaped unresolved
-								if (preleap) FLAG(55, i)
-								// Flag if 4th prefilled unresolved
-								else if (prefilled) FLAG(56, i)
-								// Flag if 4th unresolved
-								else FLAG(57, i);
-							}
-							else {
-								// Flag if >4th preleaped unresolved
-								if (preleap) FLAG(59, i)
-								// Flag if >4th prefilled unresolved
-								else if (prefilled) FLAG(60, i)
-								// Flag if >4th unresolved
-								else FLAG(26, i);
-							}
-						} // if unresolved
-					}
-					// Next linear back - no flag
-				}
-			}
-		}
+		GlobalFill(ep2, nstat2);
+		if (FailLeap(ep2, leap, smooth, nstat2, nstat3, flags, nflags, nflagsc)) goto skip;
 		if (FailStagnation(c, nstat, nmin, nmax, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailMultiCulm(c, ep2, nmax, flags, nflags, nflagsc)) goto skip;
 		if (FailFirstNotes(pc, ep2, flags, nflags, nflagsc)) goto skip;
