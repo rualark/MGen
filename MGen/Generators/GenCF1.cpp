@@ -86,6 +86,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"Early-late filled 4th", // 67
 	"Unfilled 3rd", // 68
 	"Unfilled 4th", // 69
+	"Consecutive leaps", // 70
+	"Consecutive leaps+", // 71
 };
 
 const Color FlagColor[] = {
@@ -124,6 +126,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "max_smooth", &max_smooth);
 	CheckVar(sN, sV, "max_leaps", &max_leaps);
 	CheckVar(sN, sV, "max_leaps2", &max_leaps2);
+	CheckVar(sN, sV, "cse_leaps", &cse_leaps);
+	CheckVar(sN, sV, "cse_leaps2", &cse_leaps2);
 	CheckVar(sN, sV, "max_leap_steps", &max_leap_steps);
 	CheckVar(sN, sV, "stag_notes", &stag_notes);
 	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
@@ -413,10 +417,14 @@ int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2, vec
 }
 
 // Check if too many leaps
-int CGenCF1::FailManyLeaps(int max_leap_sum, int leap_sum_i, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailManyLeaps(int max_leap_sum, int leap_sum_i, int max_leap_sum2, int leap_sum_i2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	if (max_leap_sum > max_leaps) {
 		if (max_leap_sum > max_leaps2) FLAG2(25, leap_sum_i)
 		else FLAG2(3, leap_sum_i);
+	}
+	if (max_leap_sum2 > cse_leaps) {
+		if (max_leap_sum2 > cse_leaps2) FLAG2(71, leap_sum_i2)
+		else FLAG2(70, leap_sum_i2);
 	}
 	return 0;
 }
@@ -574,7 +582,8 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	long long accepted2 = 0, accepted3 = 0;
 	int first_note_dia, first_note_oct;
 	int finished = 0;
-	int nmin, nmax, leap_sum, max_leap_sum, leap_sum_i, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
+	int nmin, nmax, leap_sum, leap_sum2, max_leap_sum, max_leap_sum2, leap_sum_i, leap_sum_i2,
+		culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount, preleap , second_third, leap_size, 
 		leap_start, leap_next, leap_prev, unresolved, prefilled, skips, skips2;
 	int sp1, sp2, ep1, ep2, p, pp;
@@ -759,7 +768,9 @@ check:
 			else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
 		}
 		leap_sum = 0;
+		leap_sum2 = 0;
 		max_leap_sum = 0;
+		max_leap_sum2 = 0;
 		smooth_sum = 0;
 		smooth_sum2 = 0;
 		if (FailOutstandingLeap(c, leap, ep2, flags, nflags, nflagsc)) goto skip;
@@ -774,6 +785,7 @@ check:
 			// Add new leap
 			if (leap[i] != 0) {
 				++leap_sum;
+				++leap_sum2;
 				// Check if this leap is 3rd
 				leap_size = abs(c[i + 1] - c[i]);
 				leap_start = i;
@@ -918,12 +930,19 @@ check:
 					// Next linear back - no flag
 				}
 			}
+			else {
+				leap_sum2 = 0;
+			}
 			// Subtract old leap
 			if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
 			// Get maximum leap_sum
 			if (leap_sum > max_leap_sum) {
 				max_leap_sum = leap_sum;
 				leap_sum_i = i;
+			}
+			if (leap_sum2 > max_leap_sum2) {
+				max_leap_sum2 = leap_sum2;
+				leap_sum_i2 = i;
 			}
 			// Prohibit long smooth movement
 			if (smooth[i] != 0) ++smooth_sum;
@@ -938,7 +957,7 @@ check:
 				if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG(9, i);
 			}
 		}
-		if (FailManyLeaps(max_leap_sum, leap_sum_i, flags, nflags, nflagsc)) goto skip;
+		if (FailManyLeaps(max_leap_sum, leap_sum_i, max_leap_sum2, leap_sum_i2, flags, nflags, nflagsc)) goto skip;
 		if (FailStagnation(c, nstat, nmin, nmax, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailMultiCulm(c, ep2, nmax, flags, nflags, nflagsc)) goto skip;
 		if (FailFirstNotes(pc, ep2, flags, nflags, nflagsc)) goto skip;

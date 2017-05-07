@@ -1,7 +1,7 @@
 #pragma once
 #include "../GLibrary/GMidi.h"
 
-#define MAX_FLAGS 70
+#define MAX_FLAGS 72
 #define MAX_WIND 50
 #define MAX_NOTE 127
 
@@ -27,12 +27,12 @@ protected:
 	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2);
 	inline int FailOutstandingLeap(vector<int>& c, vector<int>& leap, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
-	inline int FailManyLeaps(int max_leap_sum, int leap_sum_i, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FailManyLeaps(int max_leap_sum, int leap_sum_i, int max_leap_sum2, int leap_sum_i2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailStagnation(vector<int>& c, vector<int>& nstat, int nmin, int nmax, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMultiCulm(vector<int>& c, int ep2, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailFirstNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailLastNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
-	void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2);
+	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
@@ -54,6 +54,8 @@ protected:
 	int max_smooth = 7; // Maximum linear movement allowed (in steps)
 	int max_leaps = 2; // Maximum allowed max_leaps during max_leap_steps
 	int max_leaps2 = 3; // Maximum allowed max_leaps2 during max_leap_steps for Many leaps+
+	int cse_leaps = 2; // Maximum allowed consecutive leaps for Consecutive leaps
+	int cse_leaps2 = 3; // Maximum allowed consecutive leaps for Consecutive leaps+
 	int max_leap_steps = 7;
 	int stag_notes = 2; // Maximum allowed stag_notes (same notes) during stag_note_steps
 	int stag_note_steps = 7;
