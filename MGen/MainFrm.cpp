@@ -159,6 +159,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CString st;
 	MidiCount = 0;
 	CString portName;
+	pCombo->AddItem(DISABLE_PLAYBACK, -1);
 	try {
 		RtMidiOut rtmidi;
 		unsigned int i = 0, nPorts = rtmidi.getPortCount();
@@ -436,7 +437,7 @@ void CMainFrame::LoadResults(CString path) {
 		// Initialize MIDI
 		pGen->StopMIDI();
 		ClearLogs();
-		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 0);
+		pGen->StartMIDI(GetMidiI(), 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Load results
 		pGen->LoadResults(dir, fname);
@@ -554,7 +555,7 @@ void CMainFrame::OnButtonGen()
 		pGen->InitVectors();
 		// Initialize MIDI
 		pGen->StopMIDI();
-		if (m_play_enabled) pGen->StartMIDI(GetMidiI(), 0);
+		pGen->StartMIDI(GetMidiI(), 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Start generation
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
@@ -562,14 +563,13 @@ void CMainFrame::OnButtonGen()
 		m_state_play = 0;
 		// Start timer
 		SetTimer(TIMER1, m_view_timer, NULL);
-		if (pGen->shuffle == 0 && m_play_enabled) SetTimer(TIMER2, 1000, NULL);
+		if (pGen->shuffle == 0 && GetMidiI() != -1) SetTimer(TIMER2, 1000, NULL);
 	}
 }
 
 void CMainFrame::OnButtonSettings()
 {
 }
-
 
 void CMainFrame::OnButtonAlgo()
 {
@@ -782,6 +782,9 @@ void CMainFrame::LoadSettings()
 				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
 					m_wndRibbonBar.FindByID(ID_COMBO_MIDIOUT));
 				pCombo->SelectItem(st3);
+				if (GetMidiI() == -1) {
+					pCombo->SelectItem(DISABLE_PLAYBACK);
+				}
 			}
 			if (st2 == "playback_speed") {
 				CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_PSPEED));
@@ -796,13 +799,11 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 			CGLib::CheckVar(&st2, &st3, "step_dyn", &m_step_dyn);
 			CGLib::CheckVar(&st2, &st3, "debug_level", &m_debug_level);
-			CGLib::CheckVar(&st2, &st3, "playback_enabled", &m_play_enabled);
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
 	}
 	CGLib::debug_level = m_debug_level;
-	CGLib::play_enabled = m_play_enabled;
 	fs.close();
 	// Resave file to update format
 	SaveSettings();
@@ -835,6 +836,10 @@ void CMainFrame::SaveSettings()
 		st.Format("MIDI_OUT = %s # Name of MIDI device used for playing notes\n", MidiName[i]);
 		fs << st;
 	}
+	else {
+		st.Format("MIDI_OUT = %s # Name of MIDI device used for playing notes\n", DISABLE_PLAYBACK);
+		fs << st;
+	}
 	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 1 to 500\n", zoom_x);
 	fs << st;
 	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
@@ -843,14 +848,10 @@ void CMainFrame::SaveSettings()
 	fs << "# The following settings cannot be changed in GUI. You can change them only in this file\n";
 	st.Format("View_timer = %d # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers\n", m_view_timer);
 	fs << st;
-	st.Format("Step_dyn = %d # Show dynamics with note opacity for each step of note.Disable for slower computers.\n", m_step_dyn);
+	st.Format("Step_dyn = %d # Show dynamics with note opacity for each step of note. Disable for slower computers.\n", m_step_dyn);
 	fs << st;
 	st.Format("Debug_level = %d # Increase to show more debug logs\n", m_debug_level);
 	fs << st;
-	st.Format("Playback_enabled = %d # Disable playback to MIDI port by setting this to 0\n", m_play_enabled);
-	fs << st;
-	//st.Format("Midi_program = %s # Path to program to use to open MIDI file. Leave blank to use default OS file association.\n", midi_program);
-	//fs << st;
 	fs.close();
 }
 
@@ -1003,7 +1004,7 @@ void CMainFrame::StartPlay(int from)
 {
 	if (pGen->m_pspeed != pGen->adapt_pspeed) pGen->Adapt(0, pGen->t_generated - 1);
 	pGen->StopMIDI();
-	if (!m_play_enabled) return;
+	if (GetMidiI() == -1) return;
 	pGen->StartMIDI(GetMidiI(), from);
 	m_state_play = 1;
 	// Start timer

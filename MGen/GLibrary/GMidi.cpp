@@ -566,6 +566,7 @@ void CGMidi::LoadCantus(CString path)
 
 void CGMidi::StartMIDI(int midi_device_i, int from)
 {
+	if (midi_device_i == -1) return;
 	// Clear old sent messages
 	midi_buf_next.clear();
 	midi_sent_msg = 0;
