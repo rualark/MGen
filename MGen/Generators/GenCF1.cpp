@@ -282,7 +282,7 @@ void CGenCF1::ClearFlags(vector<int> &flags, vector<int> &nflagsc, int step1, in
 	}
 }
 
-int CGenCF1::FailMelodyInterval(int nmin, int nmax, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailRange(int nmin, int nmax, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	if (nmax - nmin > max_interval) FLAG2(37, 0);
 	if (nmax - nmin < min_interval) FLAG2(38, 0);
 	return 0;
@@ -746,6 +746,36 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 			}
 		}
 	}
+	// Prohibit last leap
+	if (ep2 == c_len)
+		if (leap[c_len - 2]) FLAG2(23, c_len - 1);
+	return 0;
+}
+
+int CGenCF1::FailIntervals(int ep2, int nmax, vector<int> &pc, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc)
+{
+	for (int i = 0; i < ep2 - 1; ++i) {
+		// Tritone prohibit
+		if ((pc[i + 1] == 6 && pc[i] == 3) || (pc[i + 1] == 3 && pc[i] == 6)) {
+			// Check if tritone is highest leap if this is last window
+			if (ep2 == c_len)
+				if ((c[i] == nmax) || (c[i + 1] == nmax)) FLAG2(32, i)
+					// Check if tritone is last step
+					if (i > c_len - 3) FLAG2(31, i)
+						// Check if resolution is correct
+					else if (i < ep2 - 2) {
+						if (pc[i + 1] == 3) FLAG2(31, i)
+						else if (pc[i + 2] != 0) FLAG2(31, i)
+						else if (i > 0 && pc[i - 1] != 2) FLAG2(31, i)
+							// Record resolved tritone
+						else FLAG2(2, i);
+					}
+			// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
+		}
+		// Sept prohibit
+		if (abs(cc[i + 1] - cc[i]) == 10) FLAG2(1, i)
+		else if (abs(cc[i + 1] - cc[i]) == 11) FLAG2(39, i);
+	}
 	return 0;
 }
 
@@ -943,28 +973,7 @@ check:
 		if (FailMelodyHarmSeq2(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		GetChromatic(c, cc, 0, ep2);
-		for (int i = 0; i < ep2 - 1; ++i) {
-			// Tritone prohibit
-			if ((pc[i+1] == 6 && pc[i] == 3) || (pc[i+1] == 3 && pc[i] == 6)) {
-				// Check if tritone is highest leap if this is last window
-				if (ep2 == c_len)
-					if ((c[i] == nmax) || (c[i + 1] == nmax)) FLAG(32, i)
-						// Check if tritone is last step
-						if (i > c_len - 3) FLAG(31, i)
-						// Check if resolution is correct
-						else if (i < ep2 - 2) {
-							if (pc[i + 1] == 3) FLAG(31, i)
-							else if (pc[i + 2] != 0) FLAG(31, i)
-							else if (i>0 && pc[i - 1] != 2) FLAG(31, i)
-								// Record resolved tritone
-							else FLAG(2, i);
-						}
-				// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
-			}
-			// Sept prohibit
-			if (abs(cc[i + 1] - cc[i]) == 10) FLAG(1, i)
-			else if (abs(cc[i + 1] - cc[i]) == 11) FLAG(39, i);
-		}
+		if (FailIntervals(ep2, nmax, pc, flags, nflags, nflagsc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth, flags, nflags, nflagsc)) goto skip;
 		if (FailOutstandingLeap(c, leap, ep2, flags, nflags, nflagsc)) goto skip;
 		GlobalFill(ep2, nstat2);
@@ -972,9 +981,6 @@ check:
 		if (FailStagnation(c, nstat, nmin, nmax, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailMultiCulm(c, ep2, nmax, flags, nflags, nflagsc)) goto skip;
 		if (FailFirstNotes(pc, ep2, flags, nflags, nflagsc)) goto skip;
-		// Prohibit last leap
-		if (ep2 == c_len)
-			if (leap[c_len - 2]) FLAG(23, c_len - 1);
 
 		if ((!pcantus) || (use_matrix == 1)) {
 			++accepted2;

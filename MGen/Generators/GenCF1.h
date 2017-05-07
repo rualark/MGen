@@ -19,7 +19,7 @@ protected:
 	inline int FailNoteSeq(vector<int>& pc, int step1, int step2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetMelodyInterval(vector<int> &c, int step1, int step2, int &nmin, int &nmax);
 	inline void ClearFlags(vector<int>& flags, vector<int>& nflagsc, int step1, int step2);
-	inline int FailMelodyInterval(int nmin, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FailRange(int nmin, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
 	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
@@ -34,6 +34,7 @@ protected:
 	inline int FailLastNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2);
 	inline int FailLeap(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
+	inline int FailIntervals(int ep2, int nmax, vector<int>& pc, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GlobalFill(int ep2, vector<int>& nstat2);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
