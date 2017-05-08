@@ -113,6 +113,42 @@ CGenCF1::~CGenCF1()
 {
 }
 
+// Load variants of possible harmonic meaning
+void CGenCF1::LoadHarmVar(CString* sN, CString* sV)
+{
+	if (*sN == "harm_var") {
+		++parameter_found;
+		int pos = 0;
+		CString st;
+		for (int i = 0; i<1000; i++) {
+			if (pos == -1) break;
+			st = sV->Tokenize(",", pos);
+			st.Trim();
+			if (st.Find("D") >= 0) hvd.push_back(i);
+			if (st.Find("S") >= 0) hvs.push_back(i);
+			if (st.Find("T") >= 0) hvt.push_back(i);
+		}
+	}
+}
+
+// Load constant harmonic meaning
+void CGenCF1::LoadHarmConst(CString* sN, CString* sV)
+{
+	if (*sN == "harm_const") {
+		++parameter_found;
+		int pos = 0;
+		CString st;
+		for (int i = 0; i<1000; i++) {
+			if (pos == -1) break;
+			st = sV->Tokenize(",", pos);
+			st.Trim();
+			if (st.Find("D") >= 0) hcd.push_back(i);
+			if (st.Find("S") >= 0) hcs.push_back(i);
+			if (st.Find("T") >= 0) hct.push_back(i);
+		}
+	}
+}
+
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "min_interval", &min_interval);
@@ -144,34 +180,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
-	// Load variants of possible harmonic meaning
-	if (*sN == "harm_var") {
-		++parameter_found;
-		int pos = 0;
-		CString st;
-		for (int i = 0; i<1000; i++) {
-			if (pos == -1) break;
-			st = sV->Tokenize(",", pos);
-			st.Trim();
-			if (st.Find("D") >= 0) hvd.push_back(i);
-			if (st.Find("S") >= 0) hvs.push_back(i);
-			if (st.Find("T") >= 0) hvt.push_back(i);
-		}
-	}
-	// Load constant harmonic meaning
-	if (*sN == "harm_const") {
-		++parameter_found;
-		int pos = 0;
-		CString st;
-		for (int i = 0; i<1000; i++) {
-			if (pos == -1) break;
-			st = sV->Tokenize(",", pos);
-			st.Trim();
-			if (st.Find("D") >= 0) hcd.push_back(i);
-			if (st.Find("S") >= 0) hcs.push_back(i);
-			if (st.Find("T") >= 0) hct.push_back(i);
-		}
-	}
+	LoadHarmVar(sN, sV);
+	LoadHarmConst(sN, sV);
 	// Load tonic
 	if (*sN == "key") {
 		++parameter_found;
@@ -1436,6 +1446,23 @@ void CGenCF1::InitCantus()
 	for (int i = 0; i < MAX_FLAGS; ++i) {
 		flag_to_sev[sev_to_flag[i]] = i;
 		flag_color[sev_to_flag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
+	}
+	// Check harmonic meaning loaded
+	if (hvd.size() + hvt.size() + hvs.size() == 0) {
+		CString h_default = "TS,DS,DT,S,DT,TS,D";
+		CString vname = "harm_var";
+		CString* est = new CString;
+		est->Format("Warning: no harmonic meaning (variants) in configuration file. Loading default: %s", h_default);
+		WriteLog(1, est);
+		LoadHarmVar(&vname, &h_default);
+	}
+	if (hcd.size() + hct.size() + hcs.size() == 0) {
+		CString h_default = "T,DS,T,S,D,S,D";
+		CString vname = "harm_const";
+		CString* est = new CString;
+		est->Format("Warning: no harmonic meaning (constant) in configuration file. Loading default: %s", h_default);
+		WriteLog(1, est);
+		LoadHarmConst(&vname, &h_default);
 	}
 }
 
