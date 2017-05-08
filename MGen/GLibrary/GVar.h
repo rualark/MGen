@@ -216,6 +216,7 @@ protected:
 	void LoadVector(ifstream & fs, vector<float>& v);
 	void LoadVector(ifstream & fs, vector<unsigned char>& v);
 	// Load config
+	void LoadConfigFile(CString fname);
 	void LoadVarInstr(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) = 0;
 	// Helper functions for child generators

@@ -227,7 +227,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	mutex_output.unlock();
 }
 
-void CGVar::LoadConfig(CString fname)
+void CGVar::LoadConfigFile(CString fname)
 {
 	CString st, st2, st3, iname;
 	ifstream fs;
@@ -257,7 +257,7 @@ void CGVar::LoadConfig(CString fname)
 		if (pos > -1)	st = st.Left(pos);
 		st.Trim();
 		// Load include
-		if (CheckInclude(st, fname, iname)) LoadConfig(iname);
+		if (CheckInclude(st, fname, iname)) LoadConfigFile(iname);
 		pos = st.Find("=");
 		if (pos != -1) {
 			// Get variable name and value
@@ -294,8 +294,14 @@ void CGVar::LoadConfig(CString fname)
 	}
 	fs.close();
 	CString* est = new CString;
-	est->Format("LoadConfig loaded %d lines from %s", i, fname);
+	est->Format("LoadConfigFile loaded %d lines from %s", i, fname);
 	WriteLog(0, est);
+}
+
+void CGVar::LoadConfig(CString fname)
+{
+	CString st2;
+	LoadConfigFile(fname);
 	// Load instruments layout
 	if (instr_layout == "") instr_layout = "Default";
 	LoadInstrumentLayout();
@@ -354,6 +360,7 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 void CGVar::LoadInstrumentLayout()
 {
 	CString fname = "instruments\\" + instr_layout + ".txt";
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	// Check file exists
 	if (!fileExists(fname)) {
 		CString* est = new CString;
@@ -366,12 +373,14 @@ void CGVar::LoadInstrumentLayout()
 	CString st, st2, st3, st4, st5;
 	char pch[2550];
 	int pos = 0;
+	int x = 0;
 	// Clear instrument group names
 	InstGName.clear();
 	// Clear instrument config names
 	InstCName.clear();
 	int ii = 0;
 	while (fs.good()) {
+		++x;
 		pos = 0;
 		fs.getline(pch, 2550);
 		st = pch;
@@ -424,6 +433,11 @@ void CGVar::LoadInstrumentLayout()
 	if (InstCName.size() == 0) {
 		WriteLog(1, "Error loading instrument layout from " + fname);
 	}
+	// Log
+	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("LoadInstrumentsLayout loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
+	WriteLog(0, est);
 }
 
 void CGVar::LoadInstruments()
