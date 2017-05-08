@@ -150,8 +150,7 @@ void CGenCF1::LoadHarmConst(CString* sN, CString* sV)
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
-	CheckVar(sN, sV, "min_interval", &min_interval);
-	CheckVar(sN, sV, "max_interval", &max_interval);
+	LoadRange(sN, sV, "interval", &min_interval, &max_interval);
 	CheckVar(sN, sV, "c_len", &c_len);
 	CheckVar(sN, sV, "s_len", &s_len);
 	LoadNote(sN, sV, "first_note", &first_note);
