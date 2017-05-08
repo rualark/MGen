@@ -414,6 +414,22 @@ void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2
 	}
 }
 
+// Add minor alterations
+void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
+	int pcc;
+	int pos1 = (tonic_cur + 10) % 12;
+	int pos2 = (tonic_cur + 8) % 12;
+	for (int i = ep2 - 2; i > 0; --i) {
+		pcc = cc[i] % 12;
+		if (pcc == pos1) {
+			if (cc[i + 1] % 12 == tonic_cur) ++cc[i];
+		}
+		if (pcc == pos2) {
+			if (cc[i + 1] % 12 == pos1+1) ++cc[i];
+		}
+	}
+}
+
 // Search for outstanding repeats
 int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
 	if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
@@ -1020,6 +1036,7 @@ check:
 		if (FailMelodyHarmSeq2(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
 		GetChromatic(c, cc, 0, ep2, minor_cur);
+		if (minor_cur) AlterMinor(ep2, cc);
 		if (FailIntervals(ep2, nmax, pc, flags, nflags, nflagsc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth, flags, nflags, nflagsc)) goto skip;
 		if (FailOutstandingLeap(c, leap, ep2, flags, nflags, nflagsc)) goto skip;
