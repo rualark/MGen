@@ -11,9 +11,10 @@ class CGenCF1 :
 public:
 	CGenCF1();
 	~CGenCF1();
-	void LoadHarmVar(CString * sN, CString * sV);
 	void Generate() override;
+
 protected:
+	void LoadHarmVar(CString * sN, CString * sV);
 	void LoadHarmConst(CString * sN, CString * sV);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);

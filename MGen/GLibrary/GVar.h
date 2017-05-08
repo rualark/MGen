@@ -65,6 +65,7 @@ public:
 	vector< vector <unsigned short> > poff; // Offset of previous note start (backward)
 	vector< vector <unsigned short> > noff; // Offset of next note start (forward)
 	vector< vector <unsigned char> > tonic; // Key tonic of current note (3 = D#)
+	vector< vector <unsigned char> > mode; // Key mode indicator of current note (0 = major, 9 = minor)
 	vector< vector <unsigned char> > dyn; // Dynamics (velocity for piano)
 	vector< vector <unsigned char> > vel; // Velocity of midi notes
 	vector< vector <unsigned char> > vib; // Vibrato intensity
