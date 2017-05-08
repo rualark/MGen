@@ -1,7 +1,7 @@
 #pragma once
 #include "../GLibrary/GMidi.h"
 
-#define MAX_FLAGS 72
+#define MAX_FLAGS 73
 #define MAX_WIND 50
 #define MAX_NOTE 127
 
@@ -32,7 +32,7 @@ protected:
 	inline int FailMultiCulm(vector<int>& c, int ep2, int nmax, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailFirstNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailLastNotes(vector<int>& pc, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
-	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2);
+	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & ffinished);
 	inline int FailLeap(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailIntervals(int ep2, int nmax, vector<int>& pc, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GlobalFill(int ep2, vector<int>& nstat2);

@@ -88,6 +88,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Unfilled 4th", // 69
 	"Consecutive leaps", // 70
 	"Consecutive leaps+", // 71
+	"Unfinished fill", // 72
 };
 
 const Color FlagColor[] = {
@@ -572,12 +573,16 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, vector<int> &flags, vector<
 	return 0;
 }
 
-void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2)
+void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &ffinished)
 {
 	if (pos2 < pos1) pos2 = pos1;
 	// Clear stat
 	int c1 = min(c[leap_start], c[i + 1]);
 	int c2 = max(c[leap_start], c[i + 1]);
+	// Calculate finishing pitch
+	int c3 = c[leap_start];
+	if (c[i + 1] < c[leap_start]) --c3;
+	else ++c3;
 	for (int x = c1 + 1; x < c2; ++x) {
 		nstat3[x] = 0;
 	}
@@ -596,11 +601,15 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 		++skips;
 		if (!nstat2[x]) ++skips2;
 	}
+	// Check if fill is finished
+	ffinished = 0;
+	if (nstat3[c3] || nstat3[leap_start]) ffinished = 1;
+	if (!nstat2[c3] && !nstat2[leap_start]) skips2 += 10;
 }
 
 int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc)
 {
-	int preleap, leap_size, leap_start, leap_next, leap_prev, unresolved, prefilled, skips, skips2, pos;
+	int preleap, leap_size, leap_start, leap_next, leap_prev, unresolved, prefilled, skips, skips2, pos, ffinished;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
 			// Check if this leap is 3rd
@@ -640,8 +649,12 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 				// Check if  leap is prefilled
 				pos = i - 2 - (leap_size - 1) * fill_steps_mul;
 				if (pos < 0) pos = 0;
-				CountFill(i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2);
-				if (skips <= 0) prefilled = 1;
+				CountFill(i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished);
+				// Do we have not too many skips?
+				if (skips <= 0) {
+					// Is fill finished or unfinished leaps allowed?
+					if (ffinished || accept[72]) prefilled = 1;
+				}
 			}
 			if (i < ep2 - 2) {
 				// Check if  leap is filled
@@ -649,9 +662,9 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 				// Do not check fill if search window is cut by end of current not-last scan window
 				if ((pos < ep2) || (c_len == ep2)) {
 					if (pos > ep2 - 1) pos = ep2 - 1;
-					CountFill(i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2);
+					CountFill(i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished);
 					// Local not filled?
-					if (skips > 0) {
+					if (skips > 0 || (!ffinished && !accept[72])) {
 						// Local not filled. Prefilled?
 						if (prefilled) {
 							if (leap_size == 2) FLAG2(61, i)
@@ -677,6 +690,8 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 							else FLAG2(24, i);
 						}
 					}
+					// Flag unfinished fill if it is not blocking
+					if (!ffinished && accept[72] > 0) FLAG2(72, i);
 				}
 			}
 			// Check leap resolution if it is not last note
