@@ -23,7 +23,7 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # H - rules specifially for higher cantus firmus
 # V - rules appropriate for vocal melody
 
-Strict                     = 0 # No violated rules
+Strict                     = 1 # No violated rules
 3 letters in a row [V]     = X #SC 3 same letters (TDS) in possible chord names in a row (variants)
 4 step miss [C]            = X #SC 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
 4 letters in a row [V]     = X #SC 4 same letters (TDS) in possible chord names in a row (variants)
@@ -76,7 +76,7 @@ Late culmination           = 0 #L Culmination at last three steps
 Leap back >6th             = 0 #U Leap returns to same note (in case leap is larger than 4th)
 Many leaps+                = 0 #U Maximum allowed max_leaps2 during max_leap_steps
 "Last not C"               = 0 #C Last note is not tonic
-Unfinished fill            = 1 #U Fill does not have last or prelast note (this flag is set only if not blocking)
+Unfinished fill            = 0 #U Fill does not have last or prelast note (this flag is set only if not blocking)
 "Unresolved 3rd"           = 0 #U 3rd is not resolved by backward movement
 "Preleaped unresolved 4th" = 0 #U 4th is not resolved by backward movement, but it has a greater leap as neighbour
 "Unresolved 4th"           = 0 #U 4th is not resolved by backward movement
