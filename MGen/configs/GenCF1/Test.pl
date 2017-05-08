@@ -5,7 +5,7 @@ include "include/hmean-low.pl"
 c_len = 9 # Number of measures in each cantus. Usually 9 to 11
 s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 interval = 4-7 # Minimum-maximum diatonic interval in cantus (7 = octave)
-key = C # Music key to use for generation
+key = Am # Music key to use for generation
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
