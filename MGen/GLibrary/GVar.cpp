@@ -120,7 +120,7 @@ void CGVar::InitVectors()
 	poff = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
 	noff = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
 	tonic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	mode = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	minor = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	vib = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
@@ -168,7 +168,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	poff.resize(size);
 	noff.resize(size);
 	tonic.resize(size);
-	mode.resize(size);
+	minor.resize(size);
 	tempo.resize(size);
 	tempo_src.resize(size);
 	stime.resize(size);
@@ -198,7 +198,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		poff[i].resize(vsize);
 		noff[i].resize(vsize);
 		tonic[i].resize(vsize);
-		mode[i].resize(vsize);
+		minor[i].resize(vsize);
 		dyn[i].resize(vsize);
 		vel[i].resize(vsize);
 		vib[i].resize(vsize);
@@ -636,7 +636,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 		}
 		// Added in MGR version 1.9
 		for (size_t i = 0; i < t_generated; i++) {
-			SaveVector2C(fs, mode, i);
+			SaveVector2C(fs, minor, i);
 		}
 	}
 	fs.close();
@@ -730,7 +730,7 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 				fs << color[i][v].GetValue() << ";";
 				fs << (int)lining[i][v] << ";";
 				fs << (int)tonic[i][v] << ";";
-				fs << (int)mode[i][v] << ";";
+				fs << (int)minor[i][v] << ";";
 				fs << dstime[i][v] << ";";
 				fs << detime[i][v] << ";";
 				fs << (int)lengroup[i][v] << ";";
@@ -915,7 +915,7 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 		// Added in version 1.9
 		if (fs.peek() != EOF) {
 			for (size_t i = 0; i < t_generated; i++) {
-				LoadVector2C(fs, mode, i);
+				LoadVector2C(fs, minor, i);
 			}
 		}
 	}
@@ -1034,8 +1034,8 @@ void CGVar::ValidateVectors(int step1, int step2) {
 				warning_valid++;
 			}
 			// Check mode is correct
-			if ((mode[i][v]<0 || mode[i][v]>11) && warning_valid < MAX_WARN_VALID) {
-				st.Format("Validation failed at step %d voice %d: mode must be in range 0-11", i, v);
+			if ((minor[i][v]<0 || minor[i][v]>1) && warning_valid < MAX_WARN_VALID) {
+				st.Format("Validation failed at step %d voice %d: minor must be in range 0-1", i, v);
 				WriteLog(1, st);
 				warning_valid++;
 			}

@@ -28,7 +28,7 @@ protected:
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	int FailMelodyHarmSeqStep2(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hc, vector<int>& hv, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
-	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2);
+	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailOutstandingLeap(vector<int>& c, vector<int>& leap, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailStagnation(vector<int>& c, vector<int>& nstat, int nmin, int nmax, int ep2, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
@@ -43,6 +43,7 @@ protected:
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
 	void InitCantus();
+	void TestDiatonic();
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 
@@ -66,6 +67,7 @@ protected:
 	int stag_notes = 2; // Maximum allowed stag_notes (same notes) during stag_note_steps
 	int stag_note_steps = 7;
 	int tonic_cur = 0; // Tonic key
+	int minor_cur = 0; // Key minor indicator (0 = major, 1 = minor)
 	int random_key = 0; // Allow CF1 to select random key and CA1 to select any of possible keys regardless of last note
 	int min_tempo = 110;
 	int max_tempo = 120;
