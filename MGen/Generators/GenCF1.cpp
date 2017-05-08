@@ -49,7 +49,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Preleaped unresolved 3rd", // 30
 	"Tritone unresolved", // 31
 	"Tritone culmination", // 32
-	"Leap to leap resolution", // 33
+	"Unfinished fill", // 33
 	"3rd to last is leading", // 34
 	"Preleaped unfilled 3rd", // 35
 	"Outstanding repeat", // 36
@@ -88,7 +88,6 @@ const CString FlagName[MAX_FLAGS] = {
 	"Unfilled 4th", // 69
 	"Consecutive leaps", // 70
 	"Consecutive leaps+", // 71
-	"Unfinished fill", // 72
 };
 
 const Color FlagColor[] = {
@@ -663,7 +662,7 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 				// Do we have not too many skips?
 				if (skips <= 0) {
 					// Is fill finished or unfinished leaps allowed?
-					if (ffinished || accept[72]) prefilled = 1;
+					if (ffinished || accept[33]) prefilled = 1;
 				}
 			}
 			if (i < ep2 - 2) {
@@ -674,7 +673,7 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 					if (pos > ep2 - 1) pos = ep2 - 1;
 					CountFill(i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished);
 					// Local not filled?
-					if (skips > 0 || (!ffinished && !accept[72])) {
+					if (skips > 0 || (!ffinished && !accept[33])) {
 						// Local not filled. Prefilled?
 						if (prefilled) {
 							if (leap_size == 2) FLAG2(61, i)
@@ -701,7 +700,7 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 						}
 					}
 					// Flag unfinished fill if it is not blocking
-					if (!ffinished && accept[72] > 0) FLAG2(72, i);
+					if (!ffinished && accept[33] > 0) FLAG2(33, i);
 				}
 			}
 			// Check leap resolution if it is not last note
