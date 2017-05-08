@@ -436,7 +436,7 @@ void CGVar::LoadInstrumentLayout()
 	// Log
 	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 	CString* est = new CString;
-	est->Format("LoadInstrumentsLayout loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
+	est->Format("LoadInstrumentLayout loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
 	WriteLog(0, est);
 }
 
