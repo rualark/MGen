@@ -3,7 +3,7 @@ include "include/hmean-low.pl"
 include "include/rules-low.pl"
 #include "include/hmean-high.pl"
 
-c_len = 9 # Number of measures in each cantus. Usually 9 to 11
+c_len = 13 # Number of measures in each cantus. Usually 9 to 11
 s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 interval = 4-7 # Minimum-maximum diatonic interval in cantus (7 = octave)
 key = Am # Music key to use for generation
