@@ -63,6 +63,7 @@ protected:
 	inline void BackWindow();
 	inline int NextSWA();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
+	void WriteFlagCor();
 	void ShowFlagStat();
 	void ShowFlagBlock();
 	void SaveCantus();
