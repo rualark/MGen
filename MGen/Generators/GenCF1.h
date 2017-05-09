@@ -106,6 +106,7 @@ protected:
 	int flags_need2 = 0; // Number of second level flags set
 	vector<int> c; // Cantus diatonic
 	vector<int> cc; // Cantus chromatic
+	vector<int>  flags; // Flags for whole cantus
 	vector<vector<int>> nflags; // Note flags
 	vector<int> nflagsc; // Note flags count
 	float rpenalty_cur = 0; // Rules penalty

@@ -14,5 +14,5 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 
 # Technical parameters
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
-calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
+calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.

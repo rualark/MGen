@@ -944,7 +944,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<long long> accepted5(MAX_WIND); // number of canti with neede flags per window
 	vector<long long> fstat(MAX_FLAGS); // number of canti with each flag
 	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
-	vector<int>  flags(MAX_FLAGS); // Flags for whole cantus
+	flags.resize(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	long long cycle = 0;
