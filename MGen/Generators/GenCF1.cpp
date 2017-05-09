@@ -961,6 +961,21 @@ void CGenCF1::MultiCantusInit() {
 	p = sp2 - 1; // Minimal position in array to cycle
 }
 
+// Calculate flag statistics
+void CGenCF1::CalcFlagStat() {
+	if (calculate_stat || calculate_correlation) {
+		if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; ++i) {
+			if (flags[i]) {
+				++fstat[i];
+				// Calculate correlation
+				if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; ++z) {
+					if (flags[z]) ++fcor[i][z];
+				}
+			}
+		}
+	}
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -982,9 +997,9 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<long long> wscans(MAX_WIND); // number of full scans per window
 	vector<long long> accepted4(MAX_WIND); // number of accepted canti per window
 	vector<long long> accepted5(MAX_WIND); // number of canti with neede flags per window
-	vector<long long> fstat(MAX_FLAGS); // number of canti with each flag
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
-	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
+	fstat.resize(MAX_FLAGS); // number of canti with each flag
+	fcor.resize(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
 	long long cycle = 0;
 	accepted2 = 0, accepted3 = 0;
 	int finished = 0;
@@ -1045,18 +1060,7 @@ check:
 
 		if ((!pcantus) || (use_matrix == 1)) {
 			++accepted2;
-			// Calculate flag statistics
-			if (calculate_stat || calculate_correlation) {
-				if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; ++i) {
-					if (flags[i]) {
-						++fstat[i];
-						// Calculate correlation
-						if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; ++z) {
-							if (flags[z]) ++fcor[i][z];
-						}
-					}
-				}
-			}
+			CalcFlagStat();
 			// Calculate flag blocking
 			if (calculate_blocking) {
 				int flags_found = 0;

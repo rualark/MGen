@@ -53,6 +53,7 @@ protected:
 	void ScanCantusInit();
 	void SingleCantusInit(vector<int>* pcantus, int use_matrix);
 	void MultiCantusInit();
+	void CalcFlagStat();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
@@ -128,6 +129,8 @@ protected:
 	vector<int> min_c;
 	vector<int> max_c;
 	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
+	vector<long long> fstat; // number of canti with each flag
+	vector<vector<long long>> fcor; // Flags correlation matrix
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file
