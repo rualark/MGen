@@ -976,8 +976,8 @@ void CGenCF1::CalcFlagStat() {
 	}
 }
 
+// Calculate flag blocking
 int CGenCF1::FailFlagBlock() {
-	// Calculate flag blocking
 	if (calculate_blocking) {
 		int flags_found = 0;
 		int flags_found2 = 0;
@@ -1005,8 +1005,8 @@ int CGenCF1::FailFlagBlock() {
 	return 0;
 }
 
+// Check if flags are accepted
 int CGenCF1::FailAccept() {
-	// Check if flags are accepted
 	for (int i = 0; i < MAX_FLAGS; ++i) {
 		if ((flags[i]) && (!accept[i])) return 1;
 		if ((!late_require) || (ep2 == c_len))
@@ -1015,6 +1015,74 @@ int CGenCF1::FailAccept() {
 	return 0;
 }
 
+// Check if too many windows
+int CGenCF1::FailWindowsLimit(vector<int> *pcantus, int use_matrix) {
+	if (((c_len - 2) / (float)s_len > MAX_WIND && !pcantus) || (pcantus && use_matrix == 1 && smatrixc / s_len > MAX_WIND)) {
+		CString* est = new CString;
+		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
+			c_len, s_len, MAX_WIND);
+		WriteLog(1, est);
+		return 1;
+	}
+	return 0;
+}
+
+void CGenCF1::NextWindow(int use_matrix) {
+	if (use_matrix) {
+		sp1 = sp2;
+		sp2 = sp1 + s_len; // End of search window
+		if (sp2 > smatrixc) sp2 = smatrixc;
+		// Reserve last window with maximum length
+		if ((smatrixc - sp1 < s_len * 2) && (smatrixc - sp1 > s_len)) sp2 = (smatrixc + sp1) / 2;
+		// Record window
+		++wid;
+		wpos1[wid] = sp1;
+		wpos2[wid] = sp2;
+		++wscans[wid];
+		// Add last note if this is last window
+		// End of evaluation window
+		ep1 = smap[sp1];
+		ep2 = smap[sp2 - 1] + 1;
+		if (sp2 == smatrixc) ep2 = c_len;
+		// Minimal position in array to cycle
+		pp = sp2 - 1;
+		p = smap[pp];
+	}
+	else {
+		sp1 = sp2;
+		sp2 = sp1 + s_len; // End of search window
+		if (sp2 > c_len - 1) sp2 = c_len - 1;
+		// Reserve last window with maximum length
+		if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
+		// Record window
+		++wid;
+		wpos1[wid] = sp1;
+		wpos2[wid] = sp2;
+		++wscans[wid];
+		// End of evaluation window
+		ep1 = sp1;
+		ep2 = sp2;
+		// Add last note if this is last window
+		if (ep2 == c_len - 1) ep2 = c_len;
+		// Go to rightmost element
+		p = sp2 - 1;
+	}
+	if (wcount < wid + 1) {
+		wcount = wid + 1;
+		if (ep2 == c_len) {
+			// Show window statistics
+			CString* est = new CString;
+			CString st, st2;
+			for (int i = 0; i < wcount; ++i) {
+				if (i > 0) st2 += ", ";
+				st.Format("%d-%d", wpos1[i], wpos2[i]);
+				st2 += st;
+			}
+			est->Format("Algorithm created %d windows: %s", wcount, st2);
+			WriteLog(3, est);
+		}
+	}
+}
 
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
@@ -1034,7 +1102,6 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<int> nstat(MAX_NOTE);
 	vector<int> nstat2(MAX_NOTE);
 	vector<int> nstat3(MAX_NOTE);
-	vector<long long> wscans(MAX_WIND); // number of full scans per window
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
@@ -1045,7 +1112,8 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	int finished = 0;
 	int nmin, nmax, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
-	int wcount = 1; // Number of windows created
+	wscans.resize(MAX_WIND); // number of full scans per window
+	wcount = 1; // Number of windows created
 	accepted = 0;
 	// Analyze single cantus
 	if (pcantus) {
@@ -1055,14 +1123,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	else {
 		MultiCantusInit();
 	}
-	// Check if too many windows
-	if (((c_len - 2) / (float)s_len > MAX_WIND && !pcantus) || (pcantus && use_matrix == 1 && smatrixc/s_len > MAX_WIND)) {
-		CString* est = new CString;
-		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
-			c_len, s_len, MAX_WIND);
-		WriteLog(1, est);
-		return;
-	}
+	if (FailWindowsLimit(pcantus, use_matrix)) return;
 	// Analyze combination
 check:
 	while (true) {
@@ -1106,63 +1167,7 @@ check:
 			++accepted4[wid];
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
-				if (use_matrix) {
-					sp1 = sp2;
-					sp2 = sp1 + s_len; // End of search window
-					if (sp2 > smatrixc) sp2 = smatrixc;
-					// Reserve last window with maximum length
-					if ((smatrixc - sp1 < s_len * 2) && (smatrixc - sp1 > s_len)) sp2 = (smatrixc + sp1) / 2;
-					// Record window
-					++wid;
-					wpos1[wid] = sp1;
-					wpos2[wid] = sp2;
-					++wscans[wid];
-					// Add last note if this is last window
-					// End of evaluation window
-					ep1 = smap[sp1];
-					ep2 = smap[sp2 - 1] + 1;
-					if (sp2 == smatrixc) ep2 = c_len;
-					// Minimal position in array to cycle
-					pp = sp2 - 1;
-					p = smap[pp];
-				}
-				else {
-					sp1 = sp2;
-					sp2 = sp1 + s_len; // End of search window
-					if (sp2 > c_len - 1) sp2 = c_len - 1;
-					// Reserve last window with maximum length
-					if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
-					// Record window
-					++wid;
-					wpos1[wid] = sp1;
-					wpos2[wid] = sp2;
-					++wscans[wid];
-					// End of evaluation window
-					ep1 = sp1;
-					ep2 = sp2;
-					// Add last note if this is last window
-					if (ep2 == c_len - 1) ep2 = c_len;
-					// Go to rightmost element
-					p = sp2 - 1;
-				}
-				if (wcount < wid + 1) {
-					wcount = wid + 1;
-					if (ep2 == c_len) {
-						// Show window statistics
-						CString* est = new CString;
-						CString st, st2;
-						for (int i = 0; i < wcount; ++i) {
-							if (i > 0) st2 += ", ";
-							st.Format("%d-%d", wpos1[i], wpos2[i]);
-							st2 += st;
-						}
-						est->Format("Algorithm created %d windows: %s", wcount, st2);
-						WriteLog(3, est);
-					}
-				}
-				// Clear minimax so that it is recalculated
-				nmin = 0;
-				nmax = 0;
+				NextWindow(use_matrix);
 				goto skip;
 			}
 			// Check random_choose

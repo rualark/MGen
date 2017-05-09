@@ -53,9 +53,11 @@ protected:
 	void ScanCantusInit();
 	void SingleCantusInit(vector<int>* pcantus, int use_matrix);
 	void MultiCantusInit();
+	int FailWindowsLimit(vector<int>* pcantus, int use_matrix);
 	inline void CalcFlagStat();
 	inline int FailFlagBlock();
 	inline int FailAccept();
+	inline void NextWindow(int use_matrix);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
@@ -135,6 +137,8 @@ protected:
 	vector<vector<long long>> fcor; // Flags correlation matrix
 	vector<long long> accepted4; // number of accepted canti per window
 	vector<long long> accepted5; // number of canti with neede flags per window
+	vector<long long> wscans; // number of full scans per window
+	int wcount = 1; // Number of windows created
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file
