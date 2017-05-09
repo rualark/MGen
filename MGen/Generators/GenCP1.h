@@ -1,8 +1,8 @@
 #pragma once
-#include "../GLibrary/GMidi.h"
+#include "GenCF1.h"
 
 class CGenCP1 :
-	public CGMidi
+	public CGenCF1
 {
 public:
 	CGenCP1();
@@ -13,6 +13,4 @@ public:
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 
-	int min_dyn = 80;
-	int max_dyn = 110;
 };

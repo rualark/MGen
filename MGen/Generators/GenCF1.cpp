@@ -602,13 +602,13 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 {
 	if (pos2 < pos1) pos2 = pos1;
 	// Clear stat
-	int c1 = min(c[leap_start], c[i + 1]);
-	int c2 = max(c[leap_start], c[i + 1]);
+	int n1 = min(c[leap_start], c[i + 1]);
+	int n2 = max(c[leap_start], c[i + 1]);
 	// Calculate finishing pitch
 	int c3 = c[leap_start];
 	if (c[i + 1] < c[leap_start]) --c3;
 	else ++c3;
-	for (int x = c1 + 1; x < c2; ++x) {
+	for (int x = n1 + 1; x < n2; ++x) {
 		nstat3[x] = 0;
 	}
 	// Fill all notes (even those outside pos1-pos2 window)
@@ -622,7 +622,7 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 	if (leap_size > 6) --skips;
 	// Global fill
 	skips2 = skips;
-	for (int x = c1 + 1; x < c2; ++x) if (!nstat3[x]) {
+	for (int x = n1 + 1; x < n2; ++x) if (!nstat3[x]) {
 		++skips;
 		if (!nstat2[x]) ++skips2;
 	}
@@ -851,7 +851,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	CString st, st2;
 	int wid; // Window id
 	int seed_cycle = 0; // Number of cycles in case of random_seed
-	vector<int> c2(c_len); // Cantus diatonic saved for SWA
+	vector<int> c_old(c_len); // Cantus diatonic saved for SWA
 	vector<int> pc(c_len); // pitch class
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
@@ -896,7 +896,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 		for (int i = 0; i < c_len; ++i) {
 			c[i] = CC_C(cc[i], tonic_cur, minor_cur);
 			// Save value for future use;
-			c2[i] = c[i];
+			c_old[i] = c[i];
 			// Check duplicate
 			if (i > 0 && c[i] == c[i - 1]) return;
 			// Set pitch limits
@@ -1209,7 +1209,7 @@ check:
 				pp = sp2 - 1;
 				p = smap[pp];
 				// Restore previous step after sliding window
-				c[smap[sp1 - 1]] = c2[smap[sp1 - 1]];
+				c[smap[sp1 - 1]] = c_old[smap[sp1 - 1]];
 				// Clear scan steps of current window
 				FillCantusMap(c, smap, sp1, sp2, min_c);
 			}
