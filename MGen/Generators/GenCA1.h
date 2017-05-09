@@ -17,8 +17,11 @@ public:
 	CString midi_file;
 
 protected:
-	void GetCantusKey(vector<int>& cc);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
+
+	void GetCantusKey(vector<int>& cc);
+	int GetCantusKeyMajor(vector<int>& cc, int & tonic_cur, int & minor_cur);
+	int GetCantusKeyMinor(vector<int>& cc, int & tonic_cur, int & minor_cur);
 
 	int corrections = 3; // Number of corrections to show
 	int pre_bad = 6; // How many notes to recalculate before rule violation

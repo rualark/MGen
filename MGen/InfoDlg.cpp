@@ -84,7 +84,7 @@ BOOL CInfoDlg::OnInitDialog()
 
 		st.Format("Note: %s (midi %d)\n", CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		st.Format("Key: %s\n", NoteName[pGen->tonic[i][mv]]);
+		st.Format("Key: %s%s\n", NoteName[pGen->tonic[i][mv]], pGen->minor[i][mv]?"m":"");
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note length: %d steps\n", pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);

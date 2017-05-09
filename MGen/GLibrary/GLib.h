@@ -13,6 +13,7 @@ const int diatonic[] = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1 };
 const int m_dia_to_chrom[] = { 0, 2, 3, 5, 7, 8, 10 };
 const int m_chrom_to_dia[] = { 0, 0, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6 };
 const int m_diatonic[] = { 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0 };
+const int m_diatonic_full[] = { 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1 };
 
 #define ARTIC_LEGATO 0
 #define ARTIC_SLUR 1

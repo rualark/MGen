@@ -9,16 +9,6 @@
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
 #define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
 
-// Convert chromatic to diatonic
-#define CC_C(note, minor) (minor?m_CC_C(note):maj_CC_C(note))
-#define maj_CC_C(note) (chrom_to_dia[(note + 12 - tonic_cur) % 12] + ((note + 12 - tonic_cur) / 12) * 7)
-#define m_CC_C(note) (m_chrom_to_dia[(note + 12 - tonic_cur) % 12] + ((note + 12 - tonic_cur) / 12) * 7)
-
-// Convert diatonic to chromatic
-#define C_CC(note, minor) (minor?m_C_CC(note):maj_C_CC(note))
-#define maj_C_CC(note) (dia_to_chrom[note % 7] + (note / 7 - 1) * 12 + tonic_cur)
-#define m_C_CC(note) (m_dia_to_chrom[note % 7] + (note / 7 - 1) * 12 + tonic_cur)
-
 const CString FlagName[MAX_FLAGS] = {
 	"Strict", // 0
 	"Minor seventh", // 1
@@ -404,12 +394,12 @@ int CGenCF1::FailMelodyHarmSeq2(vector<int> &pc, int ep1, int ep2, vector<int> &
 void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
 	if (minor_cur) {
 		for (int i = step1; i < step2; ++i) {
-			cc[i] = m_C_CC(c[i]);
+			cc[i] = m_C_CC(c[i], tonic_cur);
 		}
 	}
 	else {
 		for (int i = step1; i < step2; ++i) {
-			cc[i] = maj_C_CC(c[i]);
+			cc[i] = maj_C_CC(c[i], tonic_cur);
 		}
 	}
 }
@@ -904,7 +894,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
 		first_note_oct = first_note / 12;
 		for (int i = 0; i < c_len; ++i) {
-			c[i] = CC_C(cc[i], minor_cur);
+			c[i] = CC_C(cc[i], tonic_cur, minor_cur);
 			// Save value for future use;
 			c2[i] = c[i];
 			// Check duplicate
@@ -979,8 +969,8 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
 		first_note_oct = first_note / 12;
 		// Set first and last notes
-		c[0] = CC_C(first_note, minor_cur);
-		c[c_len - 1] = CC_C(last_note, minor_cur);
+		c[0] = CC_C(first_note, tonic_cur, minor_cur);
+		c[c_len - 1] = CC_C(last_note, tonic_cur, minor_cur);
 		// Set pitch limits
 		for (int i = 0; i < c_len; ++i) {
 			min_c[i] = c[0] - max_interval;
@@ -1375,6 +1365,7 @@ void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 			// Set nflag color
 			note[pos + i][v] = cc[x];
 			tonic[pos + i][v] = tonic_cur;
+			minor[pos + i][v] = minor_cur;
 			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; ++f) {
 				if (!i) {
 					comment[pos + i][v] += FlagName[nflags[x][f]];
@@ -1498,8 +1489,8 @@ void CGenCF1::TestDiatonic()
 	tonic_cur = 2;
 	minor_cur = 1;
 	for (int i = 0; i < 32; ++i) {
-		int d = CC_C(i, minor_cur);
-		int cc = C_CC(d, minor_cur);
+		int d = CC_C(i, tonic_cur, minor_cur);
+		int cc = C_CC(d, tonic_cur, minor_cur);
 		st.Format("Test diatonic: %d [to d]-> %d [to c]-> %d", i, d, cc);
 		WriteLog(1, st);
 	}
