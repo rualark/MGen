@@ -923,6 +923,40 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 	}
 }
 
+void CGenCF1::MultiCantusInit() {
+	// Check that at least one rule accepted
+	for (int i = 0; i < MAX_FLAGS; ++i) {
+		if (accept[i]) break;
+		if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
+	}
+	first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
+	first_note_oct = first_note / 12;
+	// Set first and last notes
+	c[0] = CC_C(first_note, tonic_cur, minor_cur);
+	c[c_len - 1] = CC_C(last_note, tonic_cur, minor_cur);
+	// Set pitch limits
+	for (int i = 0; i < c_len; ++i) {
+		min_c[i] = c[0] - max_interval;
+		max_c[i] = c[0] + max_interval;
+	}
+	// Set middle notes to minimum
+	FillCantus(c, 1, c_len - 1, min_c[0]);
+	if (random_seed)
+		for (int i = 1; i < c_len - 1; ++i) c[i] = -randbw(min_c[0], max_c[0]);
+	sp1 = 1; // Start of search window
+	sp2 = sp1 + s_len; // End of search window
+	if (sp2 > c_len - 1) sp2 = c_len - 1;
+	// Record window
+	wid = 0;
+	wpos1[wid] = sp1;
+	wpos2[wid] = sp2;
+	// Add last note if this is last window
+	ep1 = sp1;
+	ep2 = sp2; // End of evaluation window
+	if (ep2 == c_len - 1) ep2 = c_len;
+	p = sp2 - 1; // Minimal position in array to cycle
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -965,37 +999,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	}
 	// Full scan canti
 	else {
-		// Check that at least one rule accepted
-		for (int i = 0; i < MAX_FLAGS; ++i) {
-			if (accept[i]) break;
-			if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
-		}
-		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
-		first_note_oct = first_note / 12;
-		// Set first and last notes
-		c[0] = CC_C(first_note, tonic_cur, minor_cur);
-		c[c_len - 1] = CC_C(last_note, tonic_cur, minor_cur);
-		// Set pitch limits
-		for (int i = 0; i < c_len; ++i) {
-			min_c[i] = c[0] - max_interval;
-			max_c[i] = c[0] + max_interval;
-		}
-		// Set middle notes to minimum
-		FillCantus(c, 1, c_len-1, min_c[0]);
-		if (random_seed)
-			for (int i = 1; i < c_len - 1; ++i) c[i] = -randbw(min_c[0], max_c[0]);
-		sp1 = 1; // Start of search window
-		sp2 = sp1 + s_len; // End of search window
-		if (sp2 > c_len - 1) sp2 = c_len - 1;
-		// Record window
-		wid = 0;
-		wpos1[wid] = sp1;
-		wpos2[wid] = sp2;
-		// Add last note if this is last window
-		ep1 = sp1;
-		ep2 = sp2; // End of evaluation window
-		if (ep2 == c_len - 1) ep2 = c_len;
-		p = sp2 - 1; // Minimal position in array to cycle
+		MultiCantusInit();
 	}
 	// Check if too many windows
 	if (((c_len - 2) / (float)s_len > MAX_WIND && !pcantus) || (pcantus && use_matrix == 1 && smatrixc/s_len > MAX_WIND)) {

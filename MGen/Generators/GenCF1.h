@@ -52,6 +52,7 @@ protected:
 	inline void GlobalFill(int ep2, vector<int>& nstat2);
 	void ScanCantusInit();
 	void SingleCantusInit(vector<int>* pcantus, int use_matrix);
+	void MultiCantusInit();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
