@@ -1117,20 +1117,38 @@ void CGenCF1::ScanLeft(int use_matrix, int &finished) {
 	} // while (true)
 }
 
-void CGenCF1::BackWindow() {
-	// Clear current window
-	FillCantusMap(c, smap, sp1, sp2, min_c);
-	// If this is not first window, go to previous window
-	if (wid > 0) wid--;
-	sp1 = wpos1[wid];
-	sp2 = wpos2[wid];
-	// End of evaluation window
-	ep1 = smap[sp1];
-	ep2 = smap[sp2 - 1] + 1;
-	if (sp2 == smatrixc) ep2 = c_len;
-	// Minimal position in array to cycle
-	pp = sp2 - 1;
-	p = smap[pp];
+void CGenCF1::BackWindow(int use_matrix) {
+	if (use_matrix == 1) {
+		// Clear current window
+		FillCantusMap(c, smap, sp1, sp2, min_c);
+		// If this is not first window, go to previous window
+		if (wid > 0) wid--;
+		sp1 = wpos1[wid];
+		sp2 = wpos2[wid];
+		// End of evaluation window
+		ep1 = smap[sp1];
+		ep2 = smap[sp2 - 1] + 1;
+		if (sp2 == smatrixc) ep2 = c_len;
+		// Minimal position in array to cycle
+		pp = sp2 - 1;
+		p = smap[pp];
+	}
+	// Normal full scan
+	else if (!use_matrix) {
+		// Clear current window
+		FillCantus(c, sp1, sp2, min_c[0]);
+		// If this is not first window, go to previous window
+		if (wid > 0) wid--;
+		sp1 = wpos1[wid];
+		sp2 = wpos2[wid];
+		// End of evaluation window
+		ep1 = sp1;
+		ep2 = sp2;
+		// Add last note if this is last window
+		if (ep2 == c_len - 1) ep2 = c_len;
+		// Go to rightmost element
+		p = sp2 - 1;
+	}
 }
 
 int CGenCF1::NextSWA() {
@@ -1279,30 +1297,9 @@ check:
 				}
 				else break;
 			}
-			if (use_matrix == 1) {
-				BackWindow();
-			}
-			// Normal full scan
-			else if (!use_matrix) {
-				// Clear current window
-				FillCantus(c, sp1, sp2, min_c[0]);
-				// If this is not first window, go to previous window
-				if (wid > 0) wid--;
-				sp1 = wpos1[wid];
-				sp2 = wpos2[wid];
-				// End of evaluation window
-				ep1 = sp1;
-				ep2 = sp2;
-				// Add last note if this is last window
-				if (ep2 == c_len - 1) ep2 = c_len;
-				// Go to rightmost element
-				p = sp2 - 1;
-			}
+			BackWindow(use_matrix);
 			// Clear flag to prevent coming here again
 			finished = 0;
-			// Clear minimax so that it is recalculated
-			nmin = 0;
-			nmax = 0;
 			// Goto next variant calculation
 			goto skip;
 		} // if (finished)
@@ -1318,6 +1315,12 @@ check:
 		}
 		++cycle;
 	}
+	WriteFlagCor();
+	ShowFlagStat();
+	ShowFlagBlock();
+}
+
+void CGenCF1::WriteFlagCor() {
 	// Write flag correlation
 	if (calculate_correlation) {
 		DeleteFile("cf1-cor.csv");
@@ -1336,8 +1339,6 @@ check:
 		}
 		CGLib::AppendLineToFile("cf1-cor.csv", st3 + "\n");
 	}
-	ShowFlagStat();
-	ShowFlagBlock();
 }
 
 void CGenCF1::ShowFlagStat() {

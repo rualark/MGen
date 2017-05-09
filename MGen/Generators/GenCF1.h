@@ -60,7 +60,7 @@ protected:
 	inline void NextWindow(int use_matrix);
 	inline void CalcRpenalty();
 	inline void ScanLeft(int use_matrix, int &finished);
-	inline void BackWindow();
+	inline void BackWindow(int use_matrix);
 	inline int NextSWA();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void WriteFlagCor();
