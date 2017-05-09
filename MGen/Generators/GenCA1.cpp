@@ -285,11 +285,82 @@ void CGenCA1::SWA(int i) {
 	clib = clib2;
 }
 
+void CGenCA1::SendCorrections(int i, milliseconds time_start) {
+	CString st, st2;
+	// Count penalty
+	long cnum = clib.size();
+	dpenalty.resize(cnum);
+	for (int x = 0; x < cnum; x++) {
+		dpenalty[x] = 0;
+		for (int z = 0; z < c_len; z++) {
+			int dif = abs(cantus[i][z] - clib[x][z]);
+			if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
+		}
+	}
+	// Find minimum penalty
+	int ccount = 0;
+	// Cycle through all best matches
+	st2 = "";
+	for (int p = 0; p < corrections; p++) {
+		// Find minimum penalty
+		cids.clear();
+		float dpenalty_min = MAX_PENALTY;
+		for (int x = 0; x < cnum; x++) if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
+		// Get all best corrections
+		for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min) {
+			cids.push_back(x);
+		}
+		if (!cids.size() || dpenalty_min == MAX_PENALTY) break;
+		// Shuffle cids
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
+		for (int x = 0; x < cids.size(); x++) {
+			ccount++;
+			if (ccount > corrections) break;
+			// Write log
+			st.Format("%.0f/%.0f/%d ", rpenalty_min, dpenalty_min, cids.size());
+			st2 += st;
+			// Clear penalty
+			dpenalty[cids[x]] = MAX_PENALTY;
+			// Show initial melody again if this is not first iteration
+			if (ccount > 1) {
+				ScanCantus(&(cantus[i]), 0, 0);
+				step -= real_len + 1;
+			}
+			// Get cantus
+			cc = clib[cids[x]];
+			// Show result
+			ScanCantus(&(cc), 0, 1);
+			// Go back
+			step -= real_len + 1;
+			if (step < 0) break;
+			// Add lining
+			int pos = step;
+			for (int z = 0; z < c_len; z++) {
+				if (cantus[i][z] != clib[cids[x]][z]) {
+					for (int g = 0; g < cc_len[z]; g++) {
+						lining[pos + g][0] = 1;
+					}
+				}
+				pos += cc_len[z];
+			}
+			// Go forward
+			step += real_len + 1;
+			Adapt(step - real_len - 1, step - 1);
+			t_generated = step;
+			t_sent = t_generated;
+		}
+	}
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	// Send log
+	CString* est = new CString;
+	est->Format("Sent corrections in %d ms to step %d with rp/dp/variants: %s", time_stop - time_start, step, st2);
+	WriteLog(3, est);
+}
+
 void CGenCA1::Generate()
 {
 	CString st, st2;
-	milliseconds time_stop;
-	int ccount = 0;
 	int s_len2 = s_len;
 	InitCantus();
 	LoadCantus(midi_file);
@@ -345,75 +416,7 @@ void CGenCA1::Generate()
 		}
 		// Check if we have results
 		if (clib.size()) {
-			// Count penalty
-			long cnum = clib.size();
-			dpenalty.resize(cnum);
-			for (int x = 0; x < cnum; x++) {
-				dpenalty[x] = 0;
-				for (int z = 0; z < c_len; z++) {
-					int dif = abs(cantus[i][z] - clib[x][z]);
-					if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
-				}
-			}
-			// Find minimum penalty
-			ccount = 0;
-			// Cycle through all best matches
-			st2 = "";
-			for (int p = 0; p < corrections; p++) {
-				// Find minimum penalty
-				cids.clear();
-				float dpenalty_min = MAX_PENALTY;
-				for (int x = 0; x < cnum; x++) if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
-				// Get all best corrections
-				for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min) {
-					cids.push_back(x);
-				}
-				if (!cids.size() || dpenalty_min == MAX_PENALTY) break;
-				// Shuffle cids
-				unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-				::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
-				for (int x = 0; x < cids.size(); x++) {
-					ccount++;
-					if (ccount > corrections) break;
-					// Write log
-					st.Format("%.0f/%.0f/%d ", rpenalty_min, dpenalty_min, cids.size());
-					st2 += st;
-					// Clear penalty
-					dpenalty[cids[x]] = MAX_PENALTY;
-					// Show initial melody again if this is not first iteration
-					if (ccount > 1) {
-						ScanCantus(&(cantus[i]), 0, 0);
-						step -= real_len + 1;
-					}
-					// Get cantus
-					cc = clib[cids[x]];
-					// Show result
-					ScanCantus(&(cc), 0, 1);
-					// Go back
-					step -= real_len + 1;
-					if (step < 0) break;
-					// Add lining
-					int pos = step;
-					for (int z = 0; z < c_len; z++) {
-						if (cantus[i][z] != clib[cids[x]][z]) {
-							for (int g = 0; g < cc_len[z]; g++) {
-								lining[pos + g][0] = 1;
-							}
-						}
-						pos += cc_len[z];
-					}
-					// Go forward
-					step += real_len + 1;
-					Adapt(step - real_len - 1, step - 1);
-					t_generated = step;
-					t_sent = t_generated;
-				}
-			}
-			time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-			// Send log
-			CString* est = new CString;
-			est->Format("Sent corrections in %d ms to step %d with rp/dp/variants: %s", time_stop - time_start, step, st2);
-			WriteLog(3, est);
+			SendCorrections(i, time_start);
 		}
 		else {
 			// Go forward

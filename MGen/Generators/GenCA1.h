@@ -18,13 +18,11 @@ public:
 
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
-
 	void GetCantusKey(vector<int>& cc);
 	int GetCantusKey2(vector<int>& cc, int & tonic_cur, int minor_cur);
-
 	void CreateScanMatrix(int i);
-
 	void SWA(int i);
+	void SendCorrections(int i, milliseconds time_start);
 
 	int corrections = 3; // Number of corrections to show
 	int pre_bad = 6; // How many notes to recalculate before rule violation
