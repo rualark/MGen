@@ -846,6 +846,10 @@ void CGenCF1::ScanCantusInit() {
 	nflags.resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
 	nflagsc.resize(c_len); // number of flags for each note
 	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+	// Initialize fblock if calculation is needed
+	if (calculate_blocking) {
+		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
+	}
 }
 
 void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
@@ -979,7 +983,6 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<long long> accepted4(MAX_WIND); // number of accepted canti per window
 	vector<long long> accepted5(MAX_WIND); // number of canti with neede flags per window
 	vector<long long> fstat(MAX_FLAGS); // number of canti with each flag
-	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
 	long long cycle = 0;
@@ -989,10 +992,6 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
 	int wcount = 1; // Number of windows created
 	accepted = 0;
-	// Initialize fblock if calculation is needed
-	if (calculate_blocking) {
-		fblock = vector<vector<vector<long>>> (MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
-	}
 	// Analyze single cantus
 	if (pcantus) {
 		SingleCantusInit(pcantus, use_matrix);

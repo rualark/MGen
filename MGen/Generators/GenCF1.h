@@ -127,6 +127,7 @@ protected:
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	vector<int> min_c;
 	vector<int> max_c;
+	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file
