@@ -55,6 +55,7 @@ protected:
 	void MultiCantusInit();
 	inline void CalcFlagStat();
 	inline int FailFlagBlock();
+	inline int FailAccept();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);

@@ -1005,6 +1005,17 @@ int CGenCF1::FailFlagBlock() {
 	return 0;
 }
 
+int CGenCF1::FailAccept() {
+	// Check if flags are accepted
+	for (int i = 0; i < MAX_FLAGS; ++i) {
+		if ((flags[i]) && (!accept[i])) return 1;
+		if ((!late_require) || (ep2 == c_len))
+			if ((!flags[i]) && (accept[i] == 2)) return 1;
+	}
+	return 0;
+}
+
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -1091,12 +1102,7 @@ check:
 			++accepted2;
 			CalcFlagStat();
 			if (FailFlagBlock()) goto skip;
-			// Check if flags are accepted
-			for (int i = 0; i < MAX_FLAGS; ++i) {
-				if ((flags[i]) && (!accept[i])) goto skip;
-				if ((!late_require) || (ep2 == c_len))
-					if ((!flags[i]) && (accept[i] == 2)) goto skip;
-			}
+			if (FailAccept()) goto skip;
 			++accepted4[wid];
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
