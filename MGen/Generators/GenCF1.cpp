@@ -839,17 +839,96 @@ void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 }
 
-void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
-	// Get cantus size
-	if (pcantus) c_len = pcantus->size();
+void CGenCF1::ScanCantusInit() {
 	// Resize global vectors
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
 	nflags.resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
 	nflagsc.resize(c_len); // number of flags for each note
+	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+}
+
+void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix, vector<int> &c_old, vector<int> &min_c, vector<int> &max_c, vector<int> &smap, vector<int> &flags, vector<int> &wpos1, vector<int> &wpos2) {
+	// Copy cantus
+	cc = *pcantus;
+	// Get diatonic steps from chromatic
+	first_note = cc[0];
+	last_note = cc[c_len - 1];
+	first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
+	first_note_oct = first_note / 12;
+	for (int i = 0; i < c_len; ++i) {
+		c[i] = CC_C(cc[i], tonic_cur, minor_cur);
+		// Save value for future use;
+		c_old[i] = c[i];
+		// Check duplicate
+		if (i > 0 && c[i] == c[i - 1]) return;
+		// Set pitch limits
+		min_c[i] = c[i] - correct_range;
+		max_c[i] = c[i] + correct_range;
+	}
+	sp1 = 1;
+	sp2 = c_len - 1;
+	ep1 = sp1;
+	ep2 = c_len;
+	// Clear flags
+	++accepted3;
+	fill(flags.begin(), flags.end(), 0);
+	flags[0] = 1;
+	for (int i = 0; i < ep2; ++i) {
+		nflagsc[i] = 0;
+	}
+	// Matrix scan
+	if (use_matrix) {
+		// Exit if no violations
+		if (!smatrixc) return;
+		// Create map
+		smap.resize(smatrixc);
+		int map_id = 0;
+		for (int i = 0; i < c_len; ++i) if (smatrix[i]) {
+			smap[map_id] = i;
+			++map_id;
+		}
+		sp1 = 0;
+		sp2 = sp1 + s_len; // End of search window
+		if (sp2 > smatrixc) sp2 = smatrixc;
+		// Record window
+		wid = 0;
+		wpos1[wid] = sp1;
+		wpos2[wid] = sp2;
+		// Add last note if this is last window
+		// End of evaluation window
+		ep1 = smap[sp1];
+		if (use_matrix == 1) {
+			ep2 = smap[sp2 - 1] + 1;
+			if (sp2 == smatrixc) ep2 = c_len;
+			// Clear scan steps
+			FillCantusMap(c, smap, 0, smatrixc, min_c);
+			// Can skip flags - full scan must remove all flags
+		}
+		// For sliding windows algorithm evaluate whole melody
+		if (use_matrix == 2) {
+			ep2 = c_len;
+			// Cannot skip flags - need them for penalty if cannot remove all flags
+			skip_flags = 0;
+			// Clear scan steps of current window
+			FillCantusMap(c, smap, sp1, sp2, min_c);
+		}
+		// Minimal position in array to cycle
+		pp = sp2 - 1;
+		p = smap[pp];
+	}
+	else {
+		// For single cantus scan - cannot skip flags - must show all
+		skip_flags = 0;
+	}
+}
+
+void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
+	// Get cantus size
+	if (pcantus) c_len = pcantus->size();
+	ScanCantusInit();
 	// Local variables
 	CString st, st2;
-	int wid; // Window id
 	int seed_cycle = 0; // Number of cycles in case of random_seed
 	vector<int> c_old(c_len); // Cantus diatonic saved for SWA
 	vector<int> pc(c_len); // pitch class
@@ -868,14 +947,11 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<int>  flags(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
-	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	long long cycle = 0;
-	long long accepted2 = 0, accepted3 = 0;
-	int first_note_dia, first_note_oct;
+	accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
-	int sp1, sp2, ep1, ep2, p, pp;
 	int wcount = 1; // Number of windows created
 	vector<int> min_c(c_len);
 	vector<int> max_c(c_len);
@@ -886,78 +962,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	}
 	// Analyze single cantus
 	if (pcantus) {
-		// Copy cantus
-		cc = *pcantus;
-		// Get diatonic steps from chromatic
-		first_note = cc[0];
-		last_note = cc[c_len - 1];
-		first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
-		first_note_oct = first_note / 12;
-		for (int i = 0; i < c_len; ++i) {
-			c[i] = CC_C(cc[i], tonic_cur, minor_cur);
-			// Save value for future use;
-			c_old[i] = c[i];
-			// Check duplicate
-			if (i > 0 && c[i] == c[i - 1]) return;
-			// Set pitch limits
-			min_c[i] = c[i] - correct_range;
-			max_c[i] = c[i] + correct_range;
-		}
-		sp1 = 1;
-		sp2 = c_len - 1;
-		ep1 = sp1;
-		ep2 = c_len;
-		// Clear flags
-		++accepted3;
-		fill(flags.begin(), flags.end(), 0);
-		flags[0] = 1;
-		for (int i = 0; i < ep2; ++i) {
-			nflagsc[i] = 0;
-		}
-		// Matrix scan
-		if (use_matrix) {
-			// Exit if no violations
-			if (!smatrixc) return;
-			// Create map
-			smap.resize(smatrixc);
-			int map_id = 0;
-			for (int i = 0; i < c_len; ++i) if (smatrix[i]) {
-				smap[map_id] = i;
-				++map_id;
-			}
-			sp1 = 0;
-			sp2 = sp1 + s_len; // End of search window
-			if (sp2 > smatrixc) sp2 = smatrixc;
-			// Record window
-			wid = 0;
-			wpos1[wid] = sp1;
-			wpos2[wid] = sp2;
-			// Add last note if this is last window
-			// End of evaluation window
-			ep1 = smap[sp1];
-			if (use_matrix == 1) {
-				ep2 = smap[sp2 - 1] + 1;
-				if (sp2 == smatrixc) ep2 = c_len;
-				// Clear scan steps
-				FillCantusMap(c, smap, 0, smatrixc, min_c);
-				// Can skip flags - full scan must remove all flags
-			}
-			// For sliding windows algorithm evaluate whole melody
-			if (use_matrix == 2) {
-				ep2 = c_len;
-				// Cannot skip flags - need them for penalty if cannot remove all flags
-				skip_flags = 0;
-				// Clear scan steps of current window
-				FillCantusMap(c, smap, sp1, sp2, min_c);
-			}
-			// Minimal position in array to cycle
-			pp = sp2 - 1;
-			p = smap[pp]; 
-		}
-		else {
-			// For single cantus scan - cannot skip flags - must show all
-			skip_flags = 0;
-		}
+		SingleCantusInit(pcantus, use_matrix, c_old, min_c, max_c, smap, flags, wpos1, wpos2);
 	}
 	// Full scan canti
 	else {

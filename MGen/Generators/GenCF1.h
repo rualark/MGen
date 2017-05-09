@@ -50,6 +50,8 @@ protected:
 	inline int FailLeap(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline int FailIntervals(int ep2, int nmax, vector<int>& pc, vector<int>& flags, vector<vector<int>>& nflags, vector<int>& nflagsc);
 	inline void GlobalFill(int ep2, vector<int>& nstat2);
+	void ScanCantusInit();
+	void SingleCantusInit(vector<int>* pcantus, int use_matrix, vector<int>& c_old, vector<int>& min_c, vector<int>& max_c, vector<int>& smap, vector<int>& flags, vector<int>& wpos1, vector<int>& wpos2);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
@@ -113,6 +115,10 @@ protected:
 	vector <float> cc_tempo; // Tempo of each cantus step
 	int real_len; // Total length of cantus in steps
 	int skip_flags;
+	int sp1, sp2, ep1, ep2, p, pp;
+	long long accepted2 = 0, accepted3 = 0;
+	int first_note_dia, first_note_oct;
+	int wid; // Window id
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file
