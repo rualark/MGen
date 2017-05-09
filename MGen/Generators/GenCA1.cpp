@@ -171,19 +171,126 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 	}
 }
 
+void CGenCA1::CreateScanMatrix(int i) {
+	CString st, st2;
+	// Clear scan matrix
+	smatrixc = 0;
+	smatrix.resize(c_len);
+	fill(smatrix.begin(), smatrix.end(), 0);
+	// Search each note
+	for (int x = 0; x < c_len; x++) {
+		// Search each flag
+		if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; f++) {
+			// Find prohibited flag
+			if (accept[nflags[x][f]] == 0) {
+				// Create matrix window
+				int pos1 = x - pre_bad;
+				int pos2 = x + post_bad;
+				// Increase post_bad if long leap
+				if (x > 0 && abs(cantus[i][x - 1] - cantus[i][x]) > 7) pos2 = x + 12;
+				if (x < c_len - 1 && abs(cantus[i][x + 1] - cantus[i][x]) > 7) pos2 = x + 12;
+				// Do not rescan first and last step
+				if (pos1 < 1) pos1 = 1;
+				if (pos2 > c_len - 2) pos2 = c_len - 2;
+				// Set smatrix values
+				for (int z = pos1; z <= pos2; z++) {
+					if (smatrix[z] == 0) smatrixc++;
+					smatrix[z] = 1;
+				}
+			}
+		}
+	}
+	st2 = "";
+	for (int x = 0; x < c_len; x++) {
+		st.Format("%d ", smatrix[x]);
+		st2 += st;
+	}
+	CString* est = new CString;
+	est->Format("Scan matrix for cantus %d created with %d steps of %d: %s", i + 1, smatrixc, c_len, st2);
+	WriteLog(3, est);
+}
+
+void CGenCA1::SWA(int i) {
+	s_len = swa_steps;
+	// Save source rpenalty
+	float rpenalty_source = rpenalty_cur;
+	long cnum;
+	// Save cantus only if its penalty is less or equal to source rpenalty
+	rpenalty_min = rpenalty_cur;
+	dpenalty_min = MAX_PENALTY;
+	cc = cantus[i];
+	for (int a = 0; a < approximations; a++) {
+		// Save previous minimum penalty
+		int rpenalty_min_old = rpenalty_min;
+		int dpenalty_min_old = dpenalty_min;
+		// Clear before scan
+		clib.clear();
+		rpenalty.clear();
+		dpenalty_min = MAX_PENALTY;
+		// Add current cantus if this is not first run
+		if (a > 0) {
+			clib.push_back(cc);
+			rpenalty.push_back(rpenalty_min_old);
+		}
+		// Sliding Windows Approximation
+		ScanCantus(&cc, 2, 0);
+		cnum = clib.size();
+		if (cnum == 0) break;
+		// Count dpenalty for results, where rpenalty is minimal
+		dpenalty.resize(cnum);
+		for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
+			dpenalty[x] = 0;
+			for (int z = 0; z < c_len; z++) {
+				int dif = abs(cantus[i][z] - clib[x][z]);
+				if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
+			}
+			if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
+			//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
+			//AppendLineToFile("temp.log", st);
+			//LogCantus(clib[x]);
+		}
+		// Get all best corrections
+		cids.clear();
+		for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && dpenalty[x] == dpenalty_min) {
+			cids.push_back(x);
+		}
+		// Get random cid
+		int cid = randbw(0, cids.size() - 1);
+		// Get random cantus to continue
+		cc = clib[cids[cid]];
+		// Send log
+		CString* est = new CString;
+		est->Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+		WriteLog(3, est);
+		// Abort SWA if dpenalty and rpenalty not decreasing
+		if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) break;
+	}
+	// Remove duplicates
+	clib2.clear();
+	rpenalty2.clear();
+	for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
+		int good = 1;
+		for (int z = 0; z < clib2.size(); z++) {
+			if (clib[x] == clib2[z]) {
+				good = 0;
+				break;
+			}
+		}
+		if (good) {
+			clib2.push_back(clib[x]);
+			rpenalty2.push_back(rpenalty[x]);
+		}
+	}
+	rpenalty = rpenalty2;
+	clib = clib2;
+}
+
 void CGenCA1::Generate()
 {
 	CString st, st2;
-	vector <float> dpenalty; // Penalty in terms of difference from user melody
-	vector<int> c; // Local cantus
 	milliseconds time_stop;
 	int ccount = 0;
-	vector <long> cids;
-	float dpenalty_min;
 	int s_len2 = s_len;
-	// These are temporary vectors for removing duplicates
-	vector<vector<int>> clib2; // Library of cantus
-	vector <float> rpenalty2;
 	InitCantus();
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
@@ -218,120 +325,14 @@ void CGenCA1::Generate()
 		step -= real_len + 1;
 		// Fill pauses if no results generated
 		FillPause(step, real_len, 1);
-		// Clear scan matrix
-		smatrixc = 0;
-		smatrix.resize(c_len);
-		fill(smatrix.begin(), smatrix.end(), 0);
-		// Search each note
-		for (int x = 0; x < c_len; x++) {
-			// Search each flag
-			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; f++) {
-				// Find prohibited flag
-				if (accept[nflags[x][f]] == 0) {
-					// Create matrix window
-					int pos1 = x - pre_bad;
-					int pos2 = x + post_bad;
-					// Increase post_bad if long leap
-					if (x > 0 && abs(cantus[i][x - 1] - cantus[i][x]) > 7) pos2 = x + 12;
-					if (x < c_len-1 && abs(cantus[i][x + 1] - cantus[i][x]) > 7) pos2 = x + 12;
-					// Do not rescan first and last step
-					if (pos1 < 1) pos1 = 1;
-					if (pos2 > c_len - 2) pos2 = c_len - 2;
-					// Set smatrix values
-					for (int z = pos1; z <= pos2; z++) {
-						if (smatrix[z] == 0) smatrixc++;
-						smatrix[z] = 1;
-					}
-				}
-			}
-		}
-		st2 = "";
-		for (int x = 0; x < c_len; x++) {
-			st.Format("%d ", smatrix[x]);
-			st2 += st;
-		}
-		CString* est = new CString;
-		est->Format("Scan matrix for cantus %d created with %d steps of %d: %s", i+1, smatrixc, c_len, st2);
-		WriteLog(3, est);
+		CreateScanMatrix(i);
 		// Count additional variables
 		CountOff(step, step + real_len);
 		CountTime(step, step + real_len);
 		UpdateNoteMinMax(step, step + real_len);
 		UpdateTempoMinMax(step, step + real_len);
-		// Sliding windows approximation
 		if (smatrixc > fullscan_max) {
-			s_len = swa_steps;
-			// Save source rpenalty
-			float rpenalty_source = rpenalty_cur;
-			long cnum;
-			// Save cantus only if its penalty is less or equal to source rpenalty
-			rpenalty_min = rpenalty_cur;
-			dpenalty_min = MAX_PENALTY;
-			cc = cantus[i];
-			for (int a = 0; a < approximations; a++) {
-				// Save previous minimum penalty
-				int rpenalty_min_old = rpenalty_min;
-				int dpenalty_min_old = dpenalty_min;
-				// Clear before scan
-				clib.clear();
-				rpenalty.clear();
-				dpenalty_min = MAX_PENALTY;
-				// Add current cantus if this is not first run
-				if (a > 0) {
-					clib.push_back(cc);
-					rpenalty.push_back(rpenalty_min_old);
-				}
-				// Sliding Windows Approximation
-				ScanCantus(&cc, 2, 0);
-				cnum = clib.size();
-				if (cnum == 0) break;
-				// Count dpenalty for results, where rpenalty is minimal
-				dpenalty.resize(cnum);
-				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
-					dpenalty[x] = 0;
-					for (int z = 0; z < c_len; z++) {
-						int dif = abs(cantus[i][z] - clib[x][z]);
-						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
-					}
-					if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
-					//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
-					//AppendLineToFile("temp.log", st);
-					//LogCantus(clib[x]);
-				}
-				// Get all best corrections
-				cids.clear();
-				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && dpenalty[x] == dpenalty_min) {
-					cids.push_back(x);
-				}
-				// Get random cid
-				int cid = randbw(0, cids.size() - 1);
-				// Get random cantus to continue
-				cc = clib[cids[cid]];
-				// Send log
-				CString* est = new CString;
-				est->Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
-				WriteLog(3, est);
-				// Abort SWA if dpenalty and rpenalty not decreasing
-				if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) break;
-			}
-			// Remove duplicates
-			clib2.clear();
-			rpenalty2.clear();
-			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
-				int good = 1;
-				for (int z = 0; z < clib2.size(); z++) {
-					if (clib[x] == clib2[z]) {
-						good = 0;
-						break;
-					}
-				}
-				if (good) {
-					clib2.push_back(clib[x]);
-					rpenalty2.push_back(rpenalty[x]);
-				}
-			}
-			rpenalty = rpenalty2;
-			clib = clib2;
+			SWA(i);
 		}
 		else {
 			s_len = s_len2;

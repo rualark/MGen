@@ -22,6 +22,10 @@ protected:
 	void GetCantusKey(vector<int>& cc);
 	int GetCantusKey2(vector<int>& cc, int & tonic_cur, int minor_cur);
 
+	void CreateScanMatrix(int i);
+
+	void SWA(int i);
+
 	int corrections = 3; // Number of corrections to show
 	int pre_bad = 6; // How many notes to recalculate before rule violation
 	int post_bad = 8; // How many notes to recalculate after rule violation
@@ -30,5 +34,14 @@ protected:
 	int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases
 	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
+
+	// Local
+	vector <float> dpenalty; // Penalty in terms of difference from user melody
+	vector <long> cids;
+	float dpenalty_min;
+	// These are temporary vectors for removing duplicates
+	vector<vector<int>> clib2; // Library of cantus
+	vector <float> rpenalty2;
+	vector<int> c; // Local cantus
 };
 
