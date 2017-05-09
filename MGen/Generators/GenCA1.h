@@ -29,9 +29,6 @@ protected:
 	int post_bad = 8; // How many notes to recalculate after rule violation
 	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
-	int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
-	int approximations = 30; // Maximum number of approximations to run if penalty decreases
-	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
 
 	// Local
 	vector <float> dpenalty; // Penalty in terms of difference from user melody

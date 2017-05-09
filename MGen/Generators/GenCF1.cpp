@@ -172,6 +172,12 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
+	// Random SWA
+	CheckVar(sN, sV, "fullscan_max", &fullscan_max);
+	CheckVar(sN, sV, "approximations", &approximations);
+	CheckVar(sN, sV, "swa_steps", &swa_steps);
+	CheckVar(sN, sV, "correct_range", &correct_range);
+
 	LoadHarmVar(sN, sV);
 	LoadHarmConst(sN, sV);
 	// Load tonic

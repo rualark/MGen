@@ -22,10 +22,6 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "post_bad", &post_bad);
 	CheckVar(sN, sV, "step_penalty", &step_penalty);
 	CheckVar(sN, sV, "pitch_penalty", &pitch_penalty);
-	CheckVar(sN, sV, "fullscan_max", &fullscan_max);
-	CheckVar(sN, sV, "approximations", &approximations);
-	CheckVar(sN, sV, "swa_steps", &swa_steps);
-	CheckVar(sN, sV, "correct_range", &correct_range);
 
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }

@@ -109,6 +109,10 @@ protected:
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <int> hvd, hvs, hvt, hcd, hcs, hct; //  Variants and constant harmonic meaning
+	// Random SWA
+	int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
+	int approximations = 30; // Maximum number of approximations to run if penalty decreases
+	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
 
   // Local
 	int sev_to_flag[MAX_FLAGS]; // Get flag ID by severity

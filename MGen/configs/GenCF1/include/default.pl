@@ -11,6 +11,12 @@ tempo = 100-130 # Tempo range
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
+# Random SWA
+fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
+approximations = 50 # Maximum number of approximations to run if rpenalty decreases
+swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
+correct_range = 7 # Maximum interval allowed between each source and corrected note
+
 # Rule parameters
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling (+2)
 max_smooth_direct = 5 # Maximum linear movement in one direction allowed (in steps)
