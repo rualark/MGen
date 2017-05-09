@@ -976,6 +976,35 @@ void CGenCF1::CalcFlagStat() {
 	}
 }
 
+int CGenCF1::FailFlagBlock() {
+	// Calculate flag blocking
+	if (calculate_blocking) {
+		int flags_found = 0;
+		int flags_found2 = 0;
+		int flags_conflict = 0;
+		// Find if any of accepted flags set
+		for (int i = 0; i < MAX_FLAGS; ++i) {
+			if ((flags[i]) && (accept[i])) ++flags_found;
+			if ((flags[i]) && (!accept[i])) ++flags_conflict;
+			if ((flags[i]) && (accept[i] == 2)) ++flags_found2;
+		}
+		// Skip only if flags required
+		if ((!late_require) || (ep2 == c_len)) {
+			// Check if no needed flags set
+			if (flags_found == 0) return 1;
+			// Check if not enough 2 flags set
+			if (flags_found2 < flags_need2) return 1;
+		}
+		++accepted5[wid];
+		// Find flags that are blocking
+		for (int i = 0; i < MAX_FLAGS; ++i) {
+			if ((flags[i]) && (!accept[i]))
+				++fblock[wid][flags_conflict][i];
+		}
+	}
+	return 0;
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -995,8 +1024,8 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<int> nstat2(MAX_NOTE);
 	vector<int> nstat3(MAX_NOTE);
 	vector<long long> wscans(MAX_WIND); // number of full scans per window
-	vector<long long> accepted4(MAX_WIND); // number of accepted canti per window
-	vector<long long> accepted5(MAX_WIND); // number of canti with neede flags per window
+	accepted4.resize(MAX_WIND); // number of accepted canti per window
+	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
 	fstat.resize(MAX_FLAGS); // number of canti with each flag
 	fcor.resize(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
@@ -1061,31 +1090,7 @@ check:
 		if ((!pcantus) || (use_matrix == 1)) {
 			++accepted2;
 			CalcFlagStat();
-			// Calculate flag blocking
-			if (calculate_blocking) {
-				int flags_found = 0;
-				int flags_found2 = 0;
-				int flags_conflict = 0;
-				// Find if any of accepted flags set
-				for (int i = 0; i < MAX_FLAGS; ++i) {
-					if ((flags[i]) && (accept[i])) ++flags_found;
-					if ((flags[i]) && (!accept[i])) ++flags_conflict;
-					if ((flags[i]) && (accept[i] == 2)) ++flags_found2;
-				}
-				// Skip only if flags required
-				if ((!late_require) || (ep2 == c_len)) {
-					// Check if no needed flags set
-					if (flags_found == 0) goto skip;
-					// Check if not enough 2 flags set
-					if (flags_found2 < flags_need2) goto skip;
-				}
-				++accepted5[wid];
-				// Find flags that are blocking
-				for (int i = 0; i < MAX_FLAGS; ++i) {
-					if ((flags[i]) && (!accept[i]))
-						++fblock[wid][flags_conflict][i];
-				}
-			}
+			if (FailFlagBlock()) goto skip;
 			// Check if flags are accepted
 			for (int i = 0; i < MAX_FLAGS; ++i) {
 				if ((flags[i]) && (!accept[i])) goto skip;
