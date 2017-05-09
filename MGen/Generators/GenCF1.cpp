@@ -1199,14 +1199,9 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	wscans.resize(MAX_WIND); // number of full scans per window
 	wcount = 1; // Number of windows created
 	accepted = 0;
-	// Analyze single cantus
-	if (pcantus) {
-		SingleCantusInit(pcantus, use_matrix);
-	}
-	// Full scan canti
-	else {
-		MultiCantusInit();
-	}
+	// Init
+	if (pcantus) SingleCantusInit(pcantus, use_matrix);
+	else MultiCantusInit();
 	if (FailWindowsLimit(pcantus, use_matrix)) return;
 	// Analyze combination
 check:

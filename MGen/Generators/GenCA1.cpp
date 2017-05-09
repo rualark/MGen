@@ -40,7 +40,10 @@ void CGenCA1::GetCantusKey(vector <int> &cc)
 	CString* est = new CString;
 	est->Format("Key selection: major confidence %d, minor confidence %d", c1, c2);
 	WriteLog(3, est);
-	if (c1 == 0 && c2 == 0) return;
+	if (c1 == 0 && c2 == 0) {
+		tonic_cur = -1;
+		return;
+	}
 	// Cope with same confidence
 	while (c1 == c2) {
 		c1 = randbw(0, 100);
@@ -173,6 +176,7 @@ void CGenCA1::Generate()
 	CString st, st2;
 	vector <float> dpenalty; // Penalty in terms of difference from user melody
 	vector<int> c; // Local cantus
+	milliseconds time_stop;
 	int ccount = 0;
 	vector <long> cids;
 	float dpenalty_min;
@@ -189,13 +193,11 @@ void CGenCA1::Generate()
 		if (need_exit) break;
 		if (step < 0) step = 0;
 		milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-		milliseconds time_stop;
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Get key
 		GetCantusKey(cantus[i]);
 		if (tonic_cur == -1) continue;
-		//minor = 0;
 		// Show imported melody
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
@@ -208,19 +210,14 @@ void CGenCA1::Generate()
 		if (!corrections) {
 			v_cnt = 1;
 			// Go forward
-			Adapt(step - real_len - 1, step - 1);
 			t_generated = step;
+			Adapt(step - real_len - 1, step - 1);
 			t_sent = t_generated;
 			continue;
 		}
 		step -= real_len + 1;
 		// Fill pauses if no results generated
-		for (int x = step; x <= step + real_len; x++) {
-			pause[x][1] = 1;
-			note[x][1] = 0;
-			len[x][1] = 1;
-			coff[x][1] = 0;
-		}
+		FillPause(step, real_len, 1);
 		// Clear scan matrix
 		smatrixc = 0;
 		smatrix.resize(c_len);

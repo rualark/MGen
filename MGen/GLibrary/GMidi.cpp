@@ -301,12 +301,7 @@ void CGMidi::LoadMidi(CString path)
 						last_pause = z;
 					}
 					// Set previous pause
-					for (int z = last_pause; z < pos; z++) {
-						len[z][v] = 1;
-						dyn[z][v] = 0;
-						pause[z][v] = 1;
-						coff[z][v] = 0;
-					}
+					FillPause(last_pause, pos - last_pause - 1, v);
 					// Set additional variables
 					CountOff(last_pause, pos - 1);
 				}
@@ -334,8 +329,7 @@ void CGMidi::LoadMidi(CString path)
 		}
 		// If track is empty, create a single pause
 		if (!note[0][v] && !pause[0][v] && !len[0][v]) {
-			len[0][v] = 1;
-			pause[0][v] = 1;
+			FillPause(0, 1, v);
 		}
 	} // for track
 	if (need_exit) return;
@@ -350,11 +344,7 @@ void CGMidi::LoadMidi(CString path)
 	for (int v = 0; v < v_cnt; v++) {
 		if (vlast_step[v] < last_step) {
 			int len2 = last_step - vlast_step[v];
-			for (int i = 1; i <= len2; i++) {
-				pause[vlast_step[v] + i][v] = 1;
-				len[vlast_step[v] + i][v] = 1;
-				coff[vlast_step[v] + i][v] = 0;
-			}
+			FillPause(vlast_step[v]+1, len2, v);
 		}
 	}
 	// Merge small overlaps

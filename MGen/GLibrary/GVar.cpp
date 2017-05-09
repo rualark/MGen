@@ -1295,3 +1295,14 @@ void CGVar::AddNote(int pos, int v, char note2, int len2, int dyn2)
 		dyn[pos][v] = dyn2;
 	}
 }
+
+// Fill pause from start step to (start+length) step inclusive
+void CGVar::FillPause(int start, int length, int v) {
+	for (int x = start; x <= start + length; ++x) {
+		pause[x][v] = 1;
+		note[x][v] = 0;
+		len[x][v] = 1;
+		coff[x][v] = 0;
+		dyn[x][v] = 0;
+	}
+}

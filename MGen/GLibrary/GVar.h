@@ -227,6 +227,7 @@ protected:
 	void UpdateNoteMinMax(int step1, int step2);
 	void UpdateTempoMinMax(int step1, int step2);
 	void AddNote(int pos, int v, char note2, int len2, int dyn2);
+	void FillPause(int start, int length, int v);
 	void ResizeVectors(int size, int vsize = -1);
 
 };
