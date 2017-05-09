@@ -259,7 +259,7 @@ int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
 }
 
 // Detect prohibited note sequences
-int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
 	for (int i = step1; i < step2-2; ++i) {
 		if (pc[i] == 4 && pc[i + 1] == 0) FLAG2(48, i)
 	}
@@ -277,7 +277,7 @@ void CGenCF1::GetMelodyInterval(vector<int> &c, int step1, int step2, int &nmin,
 }
 
 // Clear flags
-void CGenCF1::ClearFlags(vector<int> &flags, vector<int> &nflagsc, int step1, int step2) {
+void CGenCF1::ClearFlags(int step1, int step2) {
 	if (!skip_flags) fill(flags.begin(), flags.end(), 0);
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
@@ -285,7 +285,7 @@ void CGenCF1::ClearFlags(vector<int> &flags, vector<int> &nflagsc, int step1, in
 	}
 }
 
-int CGenCF1::FailRange(int nmin, int nmax, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailRange(int nmin, int nmax) {
 	if (nmax - nmin > max_interval) FLAG2(37, 0);
 	if (nmax - nmin < min_interval) FLAG2(38, 0);
 	return 0;
@@ -298,7 +298,7 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &pc, int step1, int step
 	}
 }
 
-int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hv, vector<int> &hc, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hv, vector<int> &hc) {
 	if (find(hv.begin(), hv.end(), pc[i]) != hv.end()) {
 		if (wcount == 4) FLAG2(18, i - 1);
 		if (wcount == 5) FLAG2(19, i - 1);
@@ -320,7 +320,7 @@ int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcou
 	return 0;
 }
 
-int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2) {
 	int dcount = 0;
 	int scount = 0;
 	int tcount = 0;
@@ -329,9 +329,9 @@ int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2, vector<int> &f
 	int wtcount = 0;
 	for (int i = 0; i < ep2; ++i) {
 		// Count same and missing letters in a row
-		if (FailMelodyHarmSeqStep(pc, i, tcount, wtcount, hvt, hct, flags, nflags, nflagsc)) return 1;
-		if (FailMelodyHarmSeqStep(pc, i, dcount, wdcount, hvd, hcd, flags, nflags, nflagsc)) return 1;
-		if (FailMelodyHarmSeqStep(pc, i, scount, wscount, hvs, hcs, flags, nflags, nflagsc)) return 1;
+		if (FailMelodyHarmSeqStep(pc, i, tcount, wtcount, hvt, hct)) return 1;
+		if (FailMelodyHarmSeqStep(pc, i, dcount, wdcount, hvd, hcd)) return 1;
+		if (FailMelodyHarmSeqStep(pc, i, scount, wscount, hvs, hcs)) return 1;
 	}
 	// Check same letters
 	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG2(15, ep2 - 1);
@@ -344,7 +344,7 @@ int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2, vector<int> &f
 	return 0;
 }
 
-int CGenCF1::FailMelodyHarmSeqStep2(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hc, vector<int> &hv, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailMelodyHarmSeqStep2(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hc, vector<int> &hv) {
 	if (find(hv.begin(), hv.end(), pc[i]) != hv.end()) {
 		if (wcount == 4) FLAG2(45, i - 1);
 		if (wcount == 5) FLAG2(46, i - 1);
@@ -366,7 +366,7 @@ int CGenCF1::FailMelodyHarmSeqStep2(vector<int> &pc, int i, int &count, int &wco
 	return 0;
 }
 
-int CGenCF1::FailMelodyHarmSeq2(vector<int> &pc, int ep1, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailMelodyHarmSeq2(vector<int> &pc, int ep1, int ep2) {
 	int dcount = 0;
 	int scount = 0;
 	int tcount = 0;
@@ -375,9 +375,9 @@ int CGenCF1::FailMelodyHarmSeq2(vector<int> &pc, int ep1, int ep2, vector<int> &
 	int wtcount = 0;
 	for (int i = 0; i < ep2; ++i) {
 		// Count same and missing letters in a row
-		if (FailMelodyHarmSeqStep2(pc, i, tcount, wtcount, hvt, hct, flags, nflags, nflagsc)) return 1;
-		if (FailMelodyHarmSeqStep2(pc, i, dcount, wdcount, hvd, hcd, flags, nflags, nflagsc)) return 1;
-		if (FailMelodyHarmSeqStep2(pc, i, scount, wscount, hvs, hcs, flags, nflags, nflagsc)) return 1;
+		if (FailMelodyHarmSeqStep2(pc, i, tcount, wtcount, hvt, hct)) return 1;
+		if (FailMelodyHarmSeqStep2(pc, i, dcount, wdcount, hvd, hcd)) return 1;
+		if (FailMelodyHarmSeqStep2(pc, i, scount, wscount, hvs, hcs)) return 1;
 	}
 	// Check same letters
 	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG2(42, ep2 - 1);
@@ -421,7 +421,7 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 }
 
 // Search for outstanding repeats
-int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2) {
 	if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
 		// Check if note changes direction or is a leap
 		if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
@@ -443,7 +443,7 @@ int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2, vec
 }
 
 // Check if too many leaps
-int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
 	// Clear variables
 	int leap_sum = 0;
 	int leap_sum2 = 0;
@@ -505,7 +505,7 @@ int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth, vec
 	return 0;
 }
 
-int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int nmin, int nmax, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int nmin, int nmax, int ep2) {
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) {
 		nstat[i] = 0;
@@ -523,7 +523,7 @@ int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int nmin, int nm
 }
 
 // Prohibit multiple culminations
-int CGenCF1::FailMultiCulm(vector<int> &c, int ep2, int nmax, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailMultiCulm(vector<int> &c, int ep2, int nmax) {
 	int culm_sum = 0, culm_step;
 	for (int i = 0; i < ep2; ++i) {
 		if (c[i] == nmax) {
@@ -537,7 +537,7 @@ int CGenCF1::FailMultiCulm(vector<int> &c, int ep2, int nmax, vector<int> &flags
 	return 0;
 }
 
-int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 	// Prohibit first note not tonic
 	if (pc[0] != 0) {
 		FLAG2(49, 0);
@@ -580,7 +580,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector
 	return 0;
 }
 
-int CGenCF1::FailLastNotes(vector<int> &pc, int ep2, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc) {
+int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 	// Prohibit first note not tonic
 	if (ep2 > c_len - 1)
 		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1); 
@@ -632,7 +632,7 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 	if (!nstat2[c3] && !nstat2[leap_start]) skips2 += 10;
 }
 
-int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc)
+int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
 {
 	int preleap, leap_size, leap_start, leap_next, leap_prev, unresolved, prefilled, skips, skips2, pos, ffinished;
 	for (int i = 0; i < ep2 - 1; ++i) {
@@ -792,7 +792,7 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 	return 0;
 }
 
-int CGenCF1::FailIntervals(int ep2, int nmax, vector<int> &pc, vector<int> &flags, vector<vector<int>> &nflags, vector<int> &nflagsc)
+int CGenCF1::FailIntervals(int ep2, int nmax, vector<int> &pc)
 {
 	int leap_start;
 	int found;
@@ -1016,30 +1016,30 @@ check:
 		++accepted3;
 		// Limit melody interval
 		if (pcantus) {
-			ClearFlags(flags, nflagsc, 0, ep2);
+			ClearFlags(0, ep2);
 			if (nmax - nmin > max_interval) FLAG(37, 0);
 			if (nmax - nmin < min_interval) FLAG(38, 0);
 		}
 		else {
 			if (nmax - nmin > max_interval) goto skip;
 			if (nmax - nmin < min_interval) goto skip;
-			ClearFlags(flags, nflagsc, 0, ep2);
+			ClearFlags(0, ep2);
 		}
 		GetPitchClass(c, pc, 0, ep2);
-		if (FailLastNotes(pc, ep2, flags, nflags, nflagsc)) goto skip;
-		if (FailMelodyHarmSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
-		if (FailMelodyHarmSeq2(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
-		if (FailNoteSeq(pc, 0, ep2, flags, nflags, nflagsc)) goto skip;
+		if (FailLastNotes(pc, ep2)) goto skip;
+		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
+		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
+		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		GetChromatic(c, cc, 0, ep2, minor_cur);
 		if (minor_cur) AlterMinor(ep2, cc);
-		if (FailIntervals(ep2, nmax, pc, flags, nflags, nflagsc)) goto skip;
-		if (FailLeapSmooth(ep2, leap, smooth, flags, nflags, nflagsc)) goto skip;
-		if (FailOutstandingLeap(c, leap, ep2, flags, nflags, nflagsc)) goto skip;
+		if (FailIntervals(ep2, nmax, pc)) goto skip;
+		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
+		if (FailOutstandingLeap(c, leap, ep2)) goto skip;
 		GlobalFill(ep2, nstat2);
-		if (FailLeap(ep2, leap, smooth, nstat2, nstat3, flags, nflags, nflagsc)) goto skip;
-		if (FailStagnation(c, nstat, nmin, nmax, ep2, flags, nflags, nflagsc)) goto skip;
-		if (FailMultiCulm(c, ep2, nmax, flags, nflags, nflagsc)) goto skip;
-		if (FailFirstNotes(pc, ep2, flags, nflags, nflagsc)) goto skip;
+		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
+		if (FailStagnation(c, nstat, nmin, nmax, ep2)) goto skip;
+		if (FailMultiCulm(c, ep2, nmax)) goto skip;
+		if (FailFirstNotes(pc, ep2)) goto skip;
 
 		if ((!pcantus) || (use_matrix == 1)) {
 			++accepted2;
