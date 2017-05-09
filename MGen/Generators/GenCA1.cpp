@@ -112,7 +112,13 @@ int CGenCA1::GetCantusKeyMajor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 		CString* est = new CString;
 		est->Format("Single key %s selected for melody %s", NoteName[tonic_cur], cst);
 		WriteLog(3, est);
-		return 500;
+		if (cc[c_len - 1] % 12 == tonic_cur) {
+			return 500 - key_count;
+		}
+		else if (cc[0] % 12 == tonic_cur) {
+			return 400 - key_count;
+		}
+		else return 300 - key_count;
 	}
 	// If multiple keys and random_key set
 	else if (random_key) {
@@ -215,7 +221,13 @@ int CGenCA1::GetCantusKeyMinor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 		CString* est = new CString;
 		est->Format("Single key %s selected for melody %s", NoteName[tonic_cur], cst);
 		WriteLog(3, est);
-		return 500;
+		if (cc[c_len - 1] % 12 == tonic_cur) {
+			return 500 - key_count;
+		}
+		else if (cc[0] % 12 == tonic_cur) {
+			return 400 - key_count;
+		}
+		else return 300 - key_count;
 	}
 	// If multiple keys and random_key set
 	else if (random_key) {
