@@ -1093,6 +1093,30 @@ void CGenCF1::CalcRpenalty() {
 	}
 }
 
+void CGenCF1::ScanLeft(int use_matrix, int &finished) {
+	while (true) {
+		if (c[p] < max_c[p]) break;
+		// If current element is max, make it minimum
+		c[p] = min_c[p];
+		// Move left one element
+		if (use_matrix) {
+			if (pp == sp1) {
+				finished = 1;
+				break;
+			}
+			pp--;
+			p = smap[pp];
+		}
+		else {
+			if (p == sp1) {
+				finished = 1;
+				break;
+			}
+			p--;
+		}
+	} // while (true)
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -1206,27 +1230,7 @@ check:
 			if ((pcantus) && (!use_matrix)) return;
 		}
 	skip:
-		while (true) {
-			if (c[p] < max_c[p]) break;
-			// If current element is max, make it minimum
-			c[p] = min_c[p];
-			// Move left one element
-			if (use_matrix) {
-				if (pp == sp1) {
-					finished = 1;
-					break;
-				}
-				pp--;
-				p = smap[pp];
-			}
-			else {
-				if (p == sp1) {
-					finished = 1;
-					break;
-				}
-				p--;
-			}
-		} // while (true)
+		ScanLeft(use_matrix, finished);
 		if (finished) {
 			// Sliding Windows Approximation
 			if (use_matrix == 2) {

@@ -59,6 +59,7 @@ protected:
 	inline int FailAccept();
 	inline void NextWindow(int use_matrix);
 	inline void CalcRpenalty();
+	inline void ScanLeft(int use_matrix, int &finished);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
