@@ -543,7 +543,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2, vector<int> &flags, vector
 		FLAG2(49, 0);
 		// Calculate steps to search for tonic
 		int fst = first_steps_tonic;
-		if (c_len > 10) fst = 4;
+		if (c_len > 10) ++fst;
 		// Prohibit tonic miss at start
 		int c_pos = -1;
 		int e_pos = -1;

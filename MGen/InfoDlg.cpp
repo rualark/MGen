@@ -99,9 +99,11 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);
 		m_info.AddText(st, RGB(0, 170, 0), 0);
-		st.Format("Note comment: %s\nAdapt comment (start): %s\nAdapt comment (end): %s\n",
-			pGen->comment[i][mv], pGen->adapt_comment[i][mv], pGen->adapt_comment[ei][mv]);
+		st.Format("Adapt comment(start) : %s\nAdapt comment(end) : %s\n",
+			pGen->adapt_comment[i][mv], pGen->adapt_comment[ei][mv]);
 		m_info.AddText(st, RGB(0, 170, 0), 0);
+		st.Format("Note comment: %s\n", pGen->comment[i][mv]);
+		m_info.AddText(st, RGB(180, 0, 0), 0);
 		m_info.AddText("\n", RGB(0, 0, 0), 0);
 
 		st.Format("Current offset: %d steps\n", pGen->coff[ms][mv]);
