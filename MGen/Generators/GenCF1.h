@@ -63,6 +63,8 @@ protected:
 	inline void BackWindow();
 	inline int NextSWA();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
+	void ShowFlagStat();
+	void ShowFlagBlock();
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
 	void InitCantus();
@@ -143,6 +145,7 @@ protected:
 	vector<long long> accepted5; // number of canti with neede flags per window
 	vector<long long> wscans; // number of full scans per window
 	int wcount = 1; // Number of windows created
+	long long cycle = 0;
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file

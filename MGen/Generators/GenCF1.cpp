@@ -1173,7 +1173,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
 	fstat.resize(MAX_FLAGS); // number of canti with each flag
 	fcor.resize(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
-	long long cycle = 0;
+	cycle = 0;
 	accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
@@ -1336,6 +1336,12 @@ check:
 		}
 		CGLib::AppendLineToFile("cf1-cor.csv", st3 + "\n");
 	}
+	ShowFlagStat();
+	ShowFlagBlock();
+}
+
+void CGenCF1::ShowFlagStat() {
+	CString st, st2;
 	// Show flag statistics
 	if (calculate_stat) {
 		CString* est = new CString;
@@ -1349,6 +1355,10 @@ check:
 			accepted3, cycle, st2);
 		WriteLog(3, est);
 	}
+}
+
+void CGenCF1::ShowFlagBlock() {
+	CString st, st2;
 	// Show blocking statistics
 	if (calculate_blocking) {
 		for (int w = 0; w < wcount; ++w) {
