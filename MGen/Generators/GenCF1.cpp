@@ -1117,6 +1117,39 @@ void CGenCF1::ScanLeft(int use_matrix, int &finished) {
 	} // while (true)
 }
 
+void CGenCF1::BackWindow() {
+	// Clear current window
+	FillCantusMap(c, smap, sp1, sp2, min_c);
+	// If this is not first window, go to previous window
+	if (wid > 0) wid--;
+	sp1 = wpos1[wid];
+	sp2 = wpos2[wid];
+	// End of evaluation window
+	ep1 = smap[sp1];
+	ep2 = smap[sp2 - 1] + 1;
+	if (sp2 == smatrixc) ep2 = c_len;
+	// Minimal position in array to cycle
+	pp = sp2 - 1;
+	p = smap[pp];
+}
+
+int CGenCF1::NextSWA() {
+	// If we slided to the end, break
+	if (sp2 == smatrixc) return 1;
+	// Slide window further
+	++sp1;
+	++sp2;
+	ep1 = smap[sp1];
+	// Minimal position in array to cycle
+	pp = sp2 - 1;
+	p = smap[pp];
+	// Restore previous step after sliding window
+	c[smap[sp1 - 1]] = c_old[smap[sp1 - 1]];
+	// Clear scan steps of current window
+	FillCantusMap(c, smap, sp1, sp2, min_c);
+	return 0;
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -1234,19 +1267,7 @@ check:
 		if (finished) {
 			// Sliding Windows Approximation
 			if (use_matrix == 2) {
-				// If we slided to the end, break
-				if (sp2 == smatrixc) break;
-				// Slide window further
-				++sp1;
-				++sp2;
-				ep1 = smap[sp1];
-				// Minimal position in array to cycle
-				pp = sp2 - 1;
-				p = smap[pp];
-				// Restore previous step after sliding window
-				c[smap[sp1 - 1]] = c_old[smap[sp1 - 1]];
-				// Clear scan steps of current window
-				FillCantusMap(c, smap, sp1, sp2, min_c);
+				if (NextSWA()) break;
 			}
 			// Finish if this is last variant in first window and not SWA
 			else if ((p == 1) || (wid == 0)) {
@@ -1259,19 +1280,7 @@ check:
 				else break;
 			}
 			if (use_matrix == 1) {
-				// Clear current window
-				FillCantusMap(c, smap, sp1, sp2, min_c);
-				// If this is not first window, go to previous window
-				if (wid > 0) wid--;
-				sp1 = wpos1[wid];
-				sp2 = wpos2[wid];
-				// End of evaluation window
-				ep1 = smap[sp1];
-				ep2 = smap[sp2 - 1] + 1;
-				if (sp2 == smatrixc) ep2 = c_len;
-				// Minimal position in array to cycle
-				pp = sp2 - 1;
-				p = smap[pp];
+				BackWindow();
 			}
 			// Normal full scan
 			else if (!use_matrix) {
