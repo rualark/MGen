@@ -1084,6 +1084,15 @@ void CGenCF1::NextWindow(int use_matrix) {
 	}
 }
 
+void CGenCF1::CalcRpenalty() {
+	rpenalty_cur = 0;
+	for (int x = 0; x < ep2; ++x) {
+		if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; ++i) if (!accept[nflags[x][i]]) {
+			rpenalty_cur += flag_to_sev[nflags[x][i]];
+		}
+	}
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -1175,12 +1184,7 @@ check:
 		}
 		// Calculate rules penalty if we analyze cantus without full scan
 		if (pcantus && (use_matrix == 2 || !use_matrix)) {
-			rpenalty_cur = 0;
-			for (int x = 0; x < ep2; ++x) {
-				if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; ++i) if (!accept[nflags[x][i]]) {
-					rpenalty_cur += flag_to_sev[nflags[x][i]];
-				}
-			}
+			CalcRpenalty();
 		}
 		// Accept cantus
 		++accepted;
