@@ -848,7 +848,7 @@ void CGenCF1::ScanCantusInit() {
 	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 }
 
-void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix, vector<int> &c_old, vector<int> &min_c, vector<int> &max_c, vector<int> &smap, vector<int> &flags, vector<int> &wpos1, vector<int> &wpos2) {
+void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 	// Copy cantus
 	cc = *pcantus;
 	// Get diatonic steps from chromatic
@@ -930,12 +930,14 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Local variables
 	CString st, st2;
 	int seed_cycle = 0; // Number of cycles in case of random_seed
-	vector<int> c_old(c_len); // Cantus diatonic saved for SWA
 	vector<int> pc(c_len); // pitch class
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
-	vector<int> wpos1(c_len / s_len + 1);
-	vector<int> wpos2(c_len / s_len + 1);
+	c_old.resize(c_len); // Cantus diatonic saved for SWA
+	wpos1.resize(c_len / s_len + 1);
+	wpos2.resize(c_len / s_len + 1);
+	min_c.resize(c_len);
+	max_c.resize(c_len);
 	vector<int> nstat(MAX_NOTE);
 	vector<int> nstat2(MAX_NOTE);
 	vector<int> nstat3(MAX_NOTE);
@@ -946,15 +948,12 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
 	vector<vector<long long>> fcor(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
-	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	long long cycle = 0;
 	accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
 	int wcount = 1; // Number of windows created
-	vector<int> min_c(c_len);
-	vector<int> max_c(c_len);
 	accepted = 0;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
@@ -962,7 +961,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	}
 	// Analyze single cantus
 	if (pcantus) {
-		SingleCantusInit(pcantus, use_matrix, c_old, min_c, max_c, smap, flags, wpos1, wpos2);
+		SingleCantusInit(pcantus, use_matrix);
 	}
 	// Full scan canti
 	else {
