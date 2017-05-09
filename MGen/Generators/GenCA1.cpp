@@ -32,9 +32,11 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 
 void CGenCA1::GetCantusKey(vector <int> &cc)
 {
-	int t1, t2, m1, m2;
-	int c1 = GetCantusKeyMajor(cc, t1, m1);
-	int c2 = GetCantusKeyMinor(cc, t2, m2);
+	int t1, t2;
+	// Major
+	int c1 = GetCantusKey2(cc, t1, 0);
+	// Minor
+	int c2 = GetCantusKey2(cc, t2, 1);
 	CString* est = new CString;
 	est->Format("Key selection: major confidence %d, minor confidence %d", c1, c2);
 	WriteLog(3, est);
@@ -47,19 +49,17 @@ void CGenCA1::GetCantusKey(vector <int> &cc)
 	// Select best confidence
 	if (c1 > c2) {
 		tonic_cur = t1;
-		minor_cur = m1;
+		minor_cur = 0;
 	}
 	else {
 		tonic_cur = t2;
-		minor_cur = m2;
+		minor_cur = 1;
 	}
 }
 
-// Returns confidence in key
-int CGenCA1::GetCantusKeyMajor(vector <int> &cc, int &tonic_cur, int &minor_cur)
+int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 {
 	int c_len = cc.size();
-	minor_cur = 0;
 	int key_miss[12];
 	CString cst, kst, st2;
 	// Create melody string for log
@@ -72,116 +72,16 @@ int CGenCA1::GetCantusKeyMajor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 		key_miss[i] = 0;
 		// Cycle all notes
 		for (int x = 0; x < c_len; x++) {
-			if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
-		}
-	}
-	// Find minimum miss
-	int min_key = 0;
-	int min_miss = c_len;
-	for (int i = 0; i < 12; i++) {
-		if (key_miss[i] < min_miss) {
-			min_miss = key_miss[i];
-			min_key = i;
-		}
-	}
-	// If no key selected
-	if (min_miss > 0) {
-		CString* est = new CString;
-		est->Format("Error: due to chromatic alterations, cannot detect key for melody %s", cst);
-		WriteLog(1, est);
-		tonic_cur = -1;
-		return 0;
-	}
-	// Count best keys
-	vector <int> keys;
-	int key_count = 0;
-	for (int i = 0; i < 12; i++) {
-		if (key_miss[i] == min_miss) {
-			key_count++;
-			keys.push_back(i);
-			tonic_cur = i;
-		}
-	}
-	// Create keys string for log
-	for (int x = 0; x < keys.size(); x++) {
-		if (kst != "") kst += " ";
-		kst += NoteName[keys[x]];
-	}
-	// Check if only one key
-	if (key_count == 1) {
-		CString* est = new CString;
-		est->Format("Single key %s selected for melody %s", NoteName[tonic_cur], cst);
-		WriteLog(3, est);
-		if (cc[c_len - 1] % 12 == tonic_cur) {
-			return 500 - key_count;
-		}
-		else if (cc[0] % 12 == tonic_cur) {
-			return 400 - key_count;
-		}
-		else return 300 - key_count;
-	}
-	// If multiple keys and random_key set
-	else if (random_key) {
-		tonic_cur = keys[randbw(0, keys.size() - 1)];
-		CString* est = new CString;
-		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
-		WriteLog(3, est);
-		return 100 - keys.size();
-	}
-	// If multiple keys and random_key not set
-	else {
-		// Find accepted tonic same as last note
-		for (int i = 0; i < keys.size(); i++) {
-			if (cc[c_len - 1] % 12 == keys[i]) {
-				tonic_cur = keys[i];
-				CString* est = new CString;
-				est->Format("Ambiguous %d keys (%s) resolved to %s as last note in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
-				WriteLog(3, est);
-				return 400 - keys.size();
+			if (minor_cur) {
+				// Check all possible pitches for minor
+				if (!m_diatonic_full[(cc[x] - i) % 12]) key_miss[i]++;
 			}
-		}
-		// Find accepted tonic same as first note
-		for (int i = 0; i < keys.size(); i++) {
-			if (cc[0] % 12 == keys[i]) {
-				tonic_cur = keys[i];
-				CString* est = new CString;
-				est->Format("Ambiguous %d keys (%s) resolved to %s as first note in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
-				WriteLog(3, est);
-				return 300 - keys.size();
+			else {
+				// Check normal pitches for major
+				if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
 			}
-		}
-		// If nothing found, return random of accepted
-		tonic_cur = keys[randbw(0, keys.size() - 1)];
-		CString* est = new CString;
-		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
-		WriteLog(3, est);
-		return 100 - keys.size();
-	}
-}
-
-int CGenCA1::GetCantusKeyMinor(vector <int> &cc, int &tonic_cur, int &minor_cur)
-{
-	int c_len = cc.size();
-	minor_cur = 1;
-	int key_miss[12];
-	CString cst, kst, st2;
-	// Create melody string for log
-	for (int x = 0; x < min(c_len, 30); x++) {
-		st2.Format("%d", cc[x] / 12);
-		cst += NoteName[cc[x] % 12] + st2 + " ";
-	}
-	// Cycle all keys and count miss
-	for (int i = 0; i < 12; i++) {
-		key_miss[i] = 0;
-		// Cycle all notes
-		for (int x = 0; x < c_len; x++) {
-			if (!m_diatonic_full[(cc[x] - i) % 12]) key_miss[i]++;
 			// Check if diatonic repeats
-			if (x) {
-				int c1 = m_CC_C(cc[x], i);
-				int c2 = m_CC_C(cc[x - 1], i);
-				if (x && m_CC_C(cc[x], i) == m_CC_C(cc[x - 1], i)) key_miss[i]++;
-			}
+			if (x && CC_C(cc[x], i, minor_cur) == CC_C(cc[x - 1], i, minor_cur)) key_miss[i]++;
 		}
 	}
 	// Find minimum miss
@@ -196,8 +96,8 @@ int CGenCA1::GetCantusKeyMinor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 	// If no key selected
 	if (min_miss > 0) {
 		CString* est = new CString;
-		est->Format("Error: due to chromatic alterations, cannot detect key for melody %s", cst);
-		WriteLog(1, est);
+		est->Format("Error: due to chromatic alterations, cannot detect key (m%d) for melody %s", minor_cur, cst);
+		WriteLog(3, est);
 		tonic_cur = -1;
 		return 0;
 	}
@@ -219,7 +119,7 @@ int CGenCA1::GetCantusKeyMinor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 	// Check if only one key
 	if (key_count == 1) {
 		CString* est = new CString;
-		est->Format("Single key %s selected for melody %s", NoteName[tonic_cur], cst);
+		est->Format("Single key %s selected for melody %s (m%d)", NoteName[tonic_cur], cst, minor_cur);
 		WriteLog(3, est);
 		if (cc[c_len - 1] % 12 == tonic_cur) {
 			return 500 - key_count;
@@ -233,7 +133,7 @@ int CGenCA1::GetCantusKeyMinor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 	else if (random_key) {
 		tonic_cur = keys[randbw(0, keys.size() - 1)];
 		CString* est = new CString;
-		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
+		est->Format("Ambiguous %d keys m%d (%s) resolved to %s (random) in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
 		WriteLog(3, est);
 		return 100 - keys.size();
 	}
@@ -244,7 +144,7 @@ int CGenCA1::GetCantusKeyMinor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 			if (cc[c_len - 1] % 12 == keys[i]) {
 				tonic_cur = keys[i];
 				CString* est = new CString;
-				est->Format("Ambiguous %d keys (%s) resolved to %s as last note in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
+				est->Format("Ambiguous %d keys m%d (%s) resolved to %s as last note in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
 				WriteLog(3, est);
 				return 400 - keys.size();
 			}
@@ -254,7 +154,7 @@ int CGenCA1::GetCantusKeyMinor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 			if (cc[0] % 12 == keys[i]) {
 				tonic_cur = keys[i];
 				CString* est = new CString;
-				est->Format("Ambiguous %d keys (%s) resolved to %s as first note in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
+				est->Format("Ambiguous %d keys m%d (%s) resolved to %s as first note in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
 				WriteLog(3, est);
 				return 300 - keys.size();
 			}
@@ -262,7 +162,7 @@ int CGenCA1::GetCantusKeyMinor(vector <int> &cc, int &tonic_cur, int &minor_cur)
 		// If nothing found, return random of accepted
 		tonic_cur = keys[randbw(0, keys.size() - 1)];
 		CString* est = new CString;
-		est->Format("Ambiguous %d keys (%s) resolved to %s (random) in melody %s", keys.size(), kst, NoteName[tonic_cur], cst);
+		est->Format("Ambiguous %d keys m%d (%s) resolved to %s (random) in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
 		WriteLog(3, est);
 		return 100 - keys.size();
 	}
