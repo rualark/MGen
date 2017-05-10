@@ -56,6 +56,7 @@ protected:
 	void ScanCantusInit(vector<int>* pcantus);
 	int GetMinSmap();
 	int GetMaxSmap();
+	void GetRealRange();
 	void SingleCantusInit(vector<int>* pcantus, int use_matrix);
 	void MakeNewCantus();
 	void MultiCantusInit();
@@ -158,6 +159,7 @@ protected:
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	vector<int> min_c;
 	vector<int> max_c;
+	int minc, maxc; // Real possible limits
 	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
 	vector<long long> fstat; // number of canti with each flag
 	vector<vector<long long>> fcor; // Flags correlation matrix

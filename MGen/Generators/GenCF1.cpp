@@ -899,6 +899,24 @@ int CGenCF1::GetMaxSmap() {
 	return my_ep2;
 }
 
+// Calculate real possible range
+void CGenCF1::GetRealRange() {
+	// If first and last notes are the same, you cannot go to the lowest note to avoid multiple culminations flag
+	if (c[0] == c[c_len - 1]) {
+		minc = c[0] - max_interval + 1;
+		maxc = c[0] + max_interval;
+	}
+	// If notes differ, interval decreases
+	else if (c[0] < c[c_len - 1]) {
+		minc = c[c_len - 1] - max_interval;
+		maxc = c[0] + max_interval;
+	}
+	else {
+		minc = c[0] - max_interval;
+		maxc = c[c_len - 1] + max_interval;
+	}
+}
+
 void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 	// Copy cantus
 	cc = *pcantus;
@@ -911,11 +929,12 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 		c_old[i] = c[i];
 		// Check duplicate
 		if (i > 0 && c[i] == c[i - 1]) return;
-		// Set pitch limits
-		//min_c[i] = c[i] - correct_range;
-		//max_c[i] = c[i] + correct_range;
-		min_c[i] = max(c[0] - max_interval, c[i] - correct_range);
-		max_c[i] = min(c[0] + max_interval, c[i] + correct_range);
+	}
+	GetRealRange();
+	// Set pitch limits
+	for (int i = 0; i < c_len; ++i) {
+		min_c[i] = max(minc, c[i] - correct_range);
+		max_c[i] = min(maxc, c[i] + correct_range);
 	}
 	sp1 = 1;
 	sp2 = c_len - 1;
@@ -982,10 +1001,11 @@ void CGenCF1::MakeNewCantus() {
 	// Set first and last notes
 	c[0] = CC_C(first_note, tonic_cur, minor_cur);
 	c[c_len - 1] = CC_C(last_note, tonic_cur, minor_cur);
+	GetRealRange();
 	// Set pitch limits
 	for (int i = 0; i < c_len; ++i) {
-		min_c[i] = c[0] - max_interval;
-		max_c[i] = c[0] + max_interval;
+		min_c[i] = minc;
+		max_c[i] = maxc;
 	}
 	if (random_seed) {
 		for (int i = 1; i < c_len - 1; ++i) {
@@ -1187,8 +1207,15 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 				nflags = br_nf;
 				nflagsc = br_nfc;
 				SendCantus(0, 0);
-				WriteLog(3, "Showing best rejected results");
+				// Log
+				if (debug_level > 0) {
+					CString st;
+					st.Format("Showing best rejected results with rpenalty %.0f", rpenalty_min);
+					WriteLog(3, st);
+				}
+				// Clear
 				br_cc.clear();
+				rpenalty_min = MAX_PENALTY;
 			}
 			else {
 				WriteLog(3, "No best rejected results to show");
@@ -1346,12 +1373,18 @@ check:
 		if (best_rejected && !pcantus && ep2 == c_len) {
 			CalcRpenalty();
 			// Add result only if there is penalty, it is low and there are not note repeats
-			if (rpenalty_cur <= rpenalty_min && rpenalty_cur && !FailNoteRepeat(c, ep1 - 1, ep2 - 1)) {
+			if (rpenalty_cur < rpenalty_min && rpenalty_cur && !FailNoteRepeat(c, ep1 - 1, ep2 - 1)) {
 				br_cc = cc;
 				br_f = flags;
 				br_nf = nflags;
 				br_nfc = nflagsc;
 				rpenalty_min = rpenalty_cur;
+				// Log
+				if (debug_level > 1) {
+					CString st;
+					st.Format("Saving best rejected results with rpenalty %.0f", rpenalty_min);
+					WriteLog(3, st);
+				}
 			}
 		}
 		ScanLeft(use_matrix, finished);
