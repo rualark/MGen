@@ -1,6 +1,9 @@
 #pragma once
 #include "../GLibrary/GMidi.h"
 
+// This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
+#define MAX_PENALTY 10000000.0
+
 #define MAX_FLAGS 72
 #define MAX_WIND 50
 #define MAX_NOTE 127
@@ -51,7 +54,10 @@ protected:
 	inline int FailIntervals(int ep2, int nmax, vector<int>& pc);
 	inline void GlobalFill(int ep2, vector<int>& nstat2);
 	void ScanCantusInit();
+	int GetMinSmap();
+	int GetMaxSmap();
 	void SingleCantusInit(vector<int>* pcantus, int use_matrix);
+	void MakeNewCantus();
 	void MultiCantusInit();
 	int FailWindowsLimit(vector<int>* pcantus, int use_matrix);
 	inline void CalcFlagStat();
@@ -70,6 +76,8 @@ protected:
 	void SendCantus(int v, vector<int>* pcantus);
 	void InitCantus();
 	void TestDiatonic();
+	void RandomSWA();
+	void SWA(int i, int dp);
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 
@@ -113,6 +121,8 @@ protected:
 	int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases
 	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
+	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
+	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 
   // Local
 	int sev_to_flag[MAX_FLAGS]; // Get flag ID by severity
@@ -129,8 +139,8 @@ protected:
 	float rpenalty_cur = 0; // Rules penalty
 	float rpenalty_min; // Minimum rules penalty for this scan
 	vector <float> rpenalty; // Penalty in terms of sum of flag severity
-	vector <int> cc_len; // Length of each cantus step
-	vector <float> cc_tempo; // Tempo of each cantus step
+	vector <int> cc_len; // Length of each cantus note
+	vector <float> cc_tempo; // Tempo of each cantus note
 	int real_len; // Total length of cantus in steps
 	int skip_flags;
 	int sp1, sp2, ep1, ep2, p, pp;
@@ -151,6 +161,14 @@ protected:
 	vector<long long> wscans; // number of full scans per window
 	int wcount = 1; // Number of windows created
 	long long cycle = 0;
+
+	// Local SWA
+	vector <float> dpenalty; // Penalty in terms of difference from user melody
+	vector <long> cids;
+	float dpenalty_min;
+	// These are temporary vectors for removing duplicates
+	vector<vector<int>> clib2; // Library of cantus
+	vector <float> rpenalty2;
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file

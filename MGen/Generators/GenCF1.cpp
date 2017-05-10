@@ -851,11 +851,45 @@ void CGenCF1::ScanCantusInit() {
 	cc.resize(c_len); // cantus (chromatic)
 	nflags.resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
 	nflagsc.resize(c_len); // number of flags for each note
+	c_old.resize(c_len); // Cantus diatonic saved for SWA
+	wpos1.resize(c_len / s_len + 1);
+	wpos2.resize(c_len / s_len + 1);
+	min_c.resize(c_len);
+	max_c.resize(c_len);
+	accepted4.resize(MAX_WIND); // number of accepted canti per window
+	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
+	flags.resize(MAX_FLAGS); // Flags for whole cantus
+	fstat.resize(MAX_FLAGS); // number of canti with each flag
+	fcor.resize(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
+	cycle = 0;
+	wscans.resize(MAX_WIND); // number of full scans per window
+	wcount = 1; // Number of windows created
+	accepted = 0;
+	accepted2 = 0;
+	accepted3 = 0;
 	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
 		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
 	}
+}
+
+// Get minimum element in SWA window
+int CGenCF1::GetMinSmap() {
+	int my_ep1 = ep2;
+	for (int i = sp1; i < sp2; ++i) {
+		if (my_ep1 > smap[i]) my_ep1 = smap[i];
+	}
+	return my_ep1;
+}
+
+// Get maximum element in SWA window
+int CGenCF1::GetMaxSmap() {
+	int my_ep2 = 0;
+	for (int i = sp1; i < sp2; ++i) {
+		if (my_ep2 < smap[i]) my_ep2 = smap[i];
+	}
+	return my_ep2;
 }
 
 void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
@@ -864,8 +898,6 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 	// Get diatonic steps from chromatic
 	first_note = cc[0];
 	last_note = cc[c_len - 1];
-	first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
-	first_note_oct = first_note / 12;
 	for (int i = 0; i < c_len; ++i) {
 		c[i] = CC_C(cc[i], tonic_cur, minor_cur);
 		// Save value for future use;
@@ -873,8 +905,10 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 		// Check duplicate
 		if (i > 0 && c[i] == c[i - 1]) return;
 		// Set pitch limits
-		min_c[i] = c[i] - correct_range;
-		max_c[i] = c[i] + correct_range;
+		//min_c[i] = c[i] - correct_range;
+		//max_c[i] = c[i] + correct_range;
+		min_c[i] = max(c[0] - max_interval, c[i] - correct_range);
+		max_c[i] = min(c[0] + max_interval, c[i] + correct_range);
 	}
 	sp1 = 1;
 	sp2 = c_len - 1;
@@ -898,6 +932,9 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 			smap[map_id] = i;
 			++map_id;
 		}
+		// Shuffled smap
+		//unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		//::shuffle(smap.begin(), smap.end(), default_random_engine(seed));
 		sp1 = 0;
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > smatrixc) sp2 = smatrixc;
@@ -907,9 +944,8 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 		wpos2[wid] = sp2;
 		// Add last note if this is last window
 		// End of evaluation window
-		ep1 = smap[sp1];
 		if (use_matrix == 1) {
-			ep2 = smap[sp2 - 1] + 1;
+			ep2 = GetMaxSmap() + 1;
 			if (sp2 == smatrixc) ep2 = c_len;
 			// Clear scan steps
 			FillCantusMap(c, smap, 0, smatrixc, min_c);
@@ -923,6 +959,8 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 			// Clear scan steps of current window
 			FillCantusMap(c, smap, sp1, sp2, min_c);
 		}
+		// Minimum element
+		ep1 = GetMinSmap();
 		// Minimal position in array to cycle
 		pp = sp2 - 1;
 		p = smap[pp];
@@ -933,14 +971,7 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 	}
 }
 
-void CGenCF1::MultiCantusInit() {
-	// Check that at least one rule accepted
-	for (int i = 0; i < MAX_FLAGS; ++i) {
-		if (accept[i]) break;
-		if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
-	}
-	first_note_dia = chrom_to_dia[(first_note % 12 + 12 - tonic_cur) % 12];
-	first_note_oct = first_note / 12;
+void CGenCF1::MakeNewCantus() {
 	// Set first and last notes
 	c[0] = CC_C(first_note, tonic_cur, minor_cur);
 	c[c_len - 1] = CC_C(last_note, tonic_cur, minor_cur);
@@ -949,10 +980,23 @@ void CGenCF1::MultiCantusInit() {
 		min_c[i] = c[0] - max_interval;
 		max_c[i] = c[0] + max_interval;
 	}
-	// Set middle notes to minimum
-	FillCantus(c, 1, c_len - 1, min_c[0]);
-	if (random_seed)
-		for (int i = 1; i < c_len - 1; ++i) c[i] = -randbw(min_c[0], max_c[0]);
+	if (random_seed) {
+		for (int i = 1; i < c_len - 1; ++i) {
+			for (int x = 0; x < 1000; ++x) {
+				c[i] = randbw(min_c[0], max_c[0]);
+				// Prevent note repeats in the starting cantus
+				if (c[i] != c[i - 1] && (i < c_len - 2 || c[i] != c[i + 1])) break;
+			}
+		}
+	}
+	else {
+		// Set middle notes to minimum
+		FillCantus(c, 1, c_len - 1, min_c[0]);
+	}
+}
+
+void CGenCF1::MultiCantusInit() {
+	MakeNewCantus();
 	sp1 = 1; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len - 1) sp2 = c_len - 1;
@@ -1047,8 +1091,8 @@ void CGenCF1::NextWindow(int use_matrix) {
 		++wscans[wid];
 		// Add last note if this is last window
 		// End of evaluation window
-		ep1 = smap[sp1];
-		ep2 = smap[sp2 - 1] + 1;
+		ep2 = GetMaxSmap() + 1;
+		ep1 = GetMinSmap();
 		if (sp2 == smatrixc) ep2 = c_len;
 		// Minimal position in array to cycle
 		pp = sp2 - 1;
@@ -1132,8 +1176,8 @@ void CGenCF1::BackWindow(int use_matrix) {
 		sp1 = wpos1[wid];
 		sp2 = wpos2[wid];
 		// End of evaluation window
-		ep1 = smap[sp1];
-		ep2 = smap[sp2 - 1] + 1;
+		ep2 = GetMaxSmap() + 1;
+		ep1 = GetMinSmap();
 		if (sp2 == smatrixc) ep2 = c_len;
 		// Minimal position in array to cycle
 		pp = sp2 - 1;
@@ -1163,7 +1207,7 @@ int CGenCF1::NextSWA() {
 	// Slide window further
 	++sp1;
 	++sp2;
-	ep1 = smap[sp1];
+	ep1 = GetMinSmap();
 	// Minimal position in array to cycle
 	pp = sp2 - 1;
 	p = smap[pp];
@@ -1184,27 +1228,12 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<int> pc(c_len); // pitch class
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
-	c_old.resize(c_len); // Cantus diatonic saved for SWA
-	wpos1.resize(c_len / s_len + 1);
-	wpos2.resize(c_len / s_len + 1);
-	min_c.resize(c_len);
-	max_c.resize(c_len);
 	vector<int> nstat(MAX_NOTE);
 	vector<int> nstat2(MAX_NOTE);
 	vector<int> nstat3(MAX_NOTE);
-	accepted4.resize(MAX_WIND); // number of accepted canti per window
-	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
-	flags.resize(MAX_FLAGS); // Flags for whole cantus
-	fstat.resize(MAX_FLAGS); // number of canti with each flag
-	fcor.resize(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
-	cycle = 0;
-	accepted2 = 0, accepted3 = 0;
 	int finished = 0;
 	int nmin, nmax, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
-	wscans.resize(MAX_WIND); // number of full scans per window
-	wcount = 1; // Number of windows created
-	accepted = 0;
 	// Init
 	if (pcantus) SingleCantusInit(pcantus, use_matrix);
 	else MultiCantusInit();
@@ -1488,6 +1517,11 @@ void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 
 void CGenCF1::InitCantus()
 {
+	// Check that at least one rule accepted
+	for (int i = 0; i < MAX_FLAGS; ++i) {
+		if (accept[i]) break;
+		if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
+	}
 	// Check all flags severity loaded
 	if (cur_severity < MAX_FLAGS) {
 		for (int i = 1; i < MAX_FLAGS; ++i) {
@@ -1552,18 +1586,195 @@ void CGenCF1::TestDiatonic()
 	}
 }
 
+// Create random cantus and optimize it using SWA
+void CGenCF1::RandomSWA()
+{
+	// Create single cantus
+	cantus.resize(1);
+	cantus[0].resize(c_len);
+	ScanCantusInit();
+	for (int i = 0; i < t_cnt; ++i) {
+		if (need_exit) break;
+		// Set random_seed to initiate random cantus
+		random_seed = 1;
+		// Create random cantus
+		MakeNewCantus();
+		// Convert cantus to chromatic
+		for (int x = 0; x < c_len; ++x) {
+			cantus[0][x] = C_CC(c[x], tonic_cur, minor_cur);
+		}
+		// Set scan matrix to scan all
+		smatrixc = c_len - 2;
+		smatrix.resize(c_len);
+		smatrix[0] = 0;
+		smatrix[c_len - 1] = 0;
+		for (int x = 1; x < c_len - 1; ++x) {
+			smatrix[x] = 1;
+		}
+		// Optimize cantus
+		rpenalty_cur = MAX_PENALTY;
+		SWA(0, 0);
+		// Show cantus if it is perfect
+		if (rpenalty_min == 0) 
+			ScanCantus(&(cc), 0, 0);
+		//SendCantus(0, 0);
+	}
+}
+
+// Do not calculate dpenalty (dp = 0). Calculate dpenalty (dp = 1).
+void CGenCF1::SWA(int i, int dp) {
+	int nmin, nmax;
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	s_len = 1;
+	// Save source rpenalty
+	float rpenalty_source = rpenalty_cur;
+	long cnum;
+	// Save cantus only if its penalty is less or equal to source rpenalty
+	rpenalty_min = rpenalty_cur;
+	dpenalty_min = MAX_PENALTY;
+	cc = cantus[i];
+	int a;
+	int randomized = 0;
+	for (a = 0; a < approximations; a++) {
+		// Save previous minimum penalty
+		int rpenalty_min_old = rpenalty_min;
+		int dpenalty_min_old = dpenalty_min;
+		// Clear before scan
+		clib.clear();
+		rpenalty.clear();
+		dpenalty_min = MAX_PENALTY;
+		// Add current cantus if this is not first run
+		if (a > 0 && !randomized) {
+			clib.push_back(cc);
+			rpenalty.push_back(rpenalty_min_old);
+		}
+		randomized = 0;
+		// Sliding Windows Approximation
+		ScanCantus(&cc, 2, 0);
+		cnum = clib.size();
+		if (cnum == 0) break;
+		if (dp) {
+			// Count dpenalty for results, where rpenalty is minimal
+			dpenalty.resize(cnum);
+			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
+				dpenalty[x] = 0;
+				for (int z = 0; z < c_len; z++) {
+					int dif = abs(cantus[i][z] - clib[x][z]);
+					if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
+				}
+				if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
+				//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
+				//AppendLineToFile("temp.log", st);
+				//LogCantus(clib[x]);
+			}
+		}
+		// Get all best corrections
+		cids.clear();
+		for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && (!dp || dpenalty[x] == dpenalty_min)) {
+			cids.push_back(x);
+		}
+		// Get random cid
+		int cid = randbw(0, cids.size() - 1);
+		// Get random cantus to continue
+		cc = clib[cids[cid]];
+		// Send log
+		if (s_len >= swa_steps && debug_level > 1) {
+			CString* est = new CString;
+			est->Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+			WriteLog(3, est);
+		}
+		if (dp) {
+			// Abort SWA if dpenalty and rpenalty not decreasing
+			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
+				if (s_len >= swa_steps)	break;
+				++s_len;
+			}
+		}
+		else {
+			// Abort SWA if rpenalty zero or not decreasing
+			if (!rpenalty_min) break;
+			if (rpenalty_min >= rpenalty_min_old) {
+				if (s_len >= swa_steps) {
+					// Make diatonic
+					for (int i = 0; i < c_len; i++) c[i] = CC_C(cc[i], tonic_cur, minor_cur);
+					// Is problem with range?
+					GetMelodyInterval(c, 0, c_len, nmin, nmax);
+					if (nmax - nmin > max_interval) {
+						// Get weighted average
+						int nav = 0;
+						for (int i = 0; i < c_len; i++) nav += c[i];
+						nav = nav / c_len;
+						// Cut notes significantly out of range
+						for (int i = 0; i < c_len; i++) {
+							if (c[i] > nav + max_interval / 2 + 1) c[i] = nav + max_interval / 2 + 1;
+							if (c[i] < nav - max_interval / 2 - 1) c[i] = nav - max_interval / 2 - 1;
+						}
+					}
+					for (int i = 1; i < c_len - 1; i++) {
+						for (int x = 0; x < 1000; ++x) {
+							// Randomize
+							c[i] = c[i] + randbw(-1, 1);
+							// Check limits
+							if (c[i] > c[0] + max_interval) c[i] = c[0] + max_interval;
+							if (c[i] < c[0] - max_interval) c[i] = c[0] - max_interval;
+							if (c[i] != c[i - 1] && c[i] != c[i + 1]) break;
+						}
+					}
+					// Make chromatic
+					for (int i = 0; i < c_len; i++) cc[i] = C_CC(c[i], tonic_cur, minor_cur);
+					rpenalty_min = MAX_PENALTY;
+					s_len = 1;
+					//WriteLog(3, "Randomized");
+					randomized = 1;
+				}
+				else ++s_len;
+			}
+		}
+	}
+	// Remove duplicates
+	clib2.clear();
+	rpenalty2.clear();
+	for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
+		int good = 1;
+		for (int z = 0; z < clib2.size(); z++) {
+			if (clib[x] == clib2[z]) {
+				good = 0;
+				break;
+			}
+		}
+		if (good) {
+			clib2.push_back(clib[x]);
+			rpenalty2.push_back(rpenalty[x]);
+		}
+	}
+	rpenalty = rpenalty2;
+	clib = clib2;
+	// Log
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString* est = new CString;
+	est->Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms)", 
+		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start);
+	WriteLog(3, est);
+}
+
+
 void CGenCF1::Generate()
 {
 	// Voice
 	int v = 0;
 	//TestDiatonic();
 	InitCantus();
-	// Set uniform length
+	// Set uniform length of each cantus note
 	cc_len.resize(c_len);
 	cc_tempo.resize(c_len);
 	real_len = c_len;
 	for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
-	ScanCantus(0, 0, 0);
+	if (c_len - 2 > fullscan_max) {
+		RandomSWA();
+	}
+	else {
+		ScanCantus(0, 0, 0);
+	}
 	// Random shuffle
 	if (shuffle) {
 		vector<unsigned short> ci(accepted); // cantus indexes

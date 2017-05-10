@@ -206,81 +206,6 @@ void CGenCA1::CreateScanMatrix(int i) {
 	WriteLog(3, est);
 }
 
-void CGenCA1::SWA(int i) {
-	s_len = swa_steps;
-	// Save source rpenalty
-	float rpenalty_source = rpenalty_cur;
-	long cnum;
-	// Save cantus only if its penalty is less or equal to source rpenalty
-	rpenalty_min = rpenalty_cur;
-	dpenalty_min = MAX_PENALTY;
-	cc = cantus[i];
-	for (int a = 0; a < approximations; a++) {
-		// Save previous minimum penalty
-		int rpenalty_min_old = rpenalty_min;
-		int dpenalty_min_old = dpenalty_min;
-		// Clear before scan
-		clib.clear();
-		rpenalty.clear();
-		dpenalty_min = MAX_PENALTY;
-		// Add current cantus if this is not first run
-		if (a > 0) {
-			clib.push_back(cc);
-			rpenalty.push_back(rpenalty_min_old);
-		}
-		// Sliding Windows Approximation
-		ScanCantus(&cc, 2, 0);
-		cnum = clib.size();
-		if (cnum == 0) break;
-		// Count dpenalty for results, where rpenalty is minimal
-		dpenalty.resize(cnum);
-		for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
-			dpenalty[x] = 0;
-			for (int z = 0; z < c_len; z++) {
-				int dif = abs(cantus[i][z] - clib[x][z]);
-				if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
-			}
-			if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
-			//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
-			//AppendLineToFile("temp.log", st);
-			//LogCantus(clib[x]);
-		}
-		// Get all best corrections
-		cids.clear();
-		for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && dpenalty[x] == dpenalty_min) {
-			cids.push_back(x);
-		}
-		// Get random cid
-		int cid = randbw(0, cids.size() - 1);
-		// Get random cantus to continue
-		cc = clib[cids[cid]];
-		// Send log
-		CString* est = new CString;
-		est->Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
-		WriteLog(3, est);
-		// Abort SWA if dpenalty and rpenalty not decreasing
-		if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) break;
-	}
-	// Remove duplicates
-	clib2.clear();
-	rpenalty2.clear();
-	for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
-		int good = 1;
-		for (int z = 0; z < clib2.size(); z++) {
-			if (clib[x] == clib2[z]) {
-				good = 0;
-				break;
-			}
-		}
-		if (good) {
-			clib2.push_back(clib[x]);
-			rpenalty2.push_back(rpenalty[x]);
-		}
-	}
-	rpenalty = rpenalty2;
-	clib = clib2;
-}
-
 void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 	CString st, st2;
 	// Count penalty
@@ -399,7 +324,7 @@ void CGenCA1::Generate()
 		UpdateNoteMinMax(step, step + real_len);
 		UpdateTempoMinMax(step, step + real_len);
 		if (smatrixc > fullscan_max) {
-			SWA(i);
+			SWA(i, 1);
 		}
 		else {
 			s_len = s_len2;
