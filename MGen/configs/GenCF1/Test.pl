@@ -3,7 +3,7 @@ include "include/hmean-low.pl"
 include "include/rules-low.pl"
 #include "include/hmean-high.pl"
 
-c_len = 27 # Number of measures in each cantus. Usually 9 to 11
+c_len = 37 # Number of measures in each cantus. Usually 9 to 11
 s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 interval = 4-7 # Minimum-maximum diatonic interval in cantus (7 = octave)
 key = C # Music key to use for generation
@@ -13,7 +13,7 @@ random_seed = 1 # Seed melody with random numbers. This ensures giving different
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
-fullscan_max = 50 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note
