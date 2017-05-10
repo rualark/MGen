@@ -53,7 +53,7 @@ protected:
 	inline int FailLeap(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailIntervals(int ep2, int nmax, vector<int>& pc);
 	inline void GlobalFill(int ep2, vector<int>& nstat2);
-	void ScanCantusInit();
+	void ScanCantusInit(vector<int>* pcantus);
 	int GetMinSmap();
 	int GetMaxSmap();
 	void SingleCantusInit(vector<int>* pcantus, int use_matrix);
@@ -66,7 +66,7 @@ protected:
 	inline void NextWindow(int use_matrix);
 	inline void CalcRpenalty();
 	inline void ScanLeft(int use_matrix, int &finished);
-	inline void BackWindow(int use_matrix);
+	inline void BackWindow(vector<int>* pcantus, int use_matrix);
 	inline int NextSWA();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void WriteFlagCor();
@@ -112,6 +112,7 @@ protected:
 	int calculate_correlation = 0; // Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 	int calculate_blocking = 0; // Enables blocking flags calculation algorithm. Slows down generation.
 	int calculate_stat = 0; // Enables flag statistics calculation algorithm. Slows down generation.
+	int best_rejected = 0; // Show best rejected results if rejecting more than X ms. Set to 0 to disable. Slows down generation
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes(if beats are same)
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
@@ -136,6 +137,10 @@ protected:
 	vector<int>  flags; // Flags for whole cantus
 	vector<vector<int>> nflags; // Note flags
 	vector<int> nflagsc; // Note flags count
+	vector<int> br_cc; // Cantus chromatic (best rejected)
+	vector<int>  br_f; // Flags for whole cantus (best rejected)
+	vector<vector<int>> br_nf; // Note flags (best rejected)
+	vector<int> br_nfc; // Note flags count (best rejected)
 	float rpenalty_cur = 0; // Rules penalty
 	float rpenalty_min; // Minimum rules penalty for this scan
 	vector <float> rpenalty; // Penalty in terms of sum of flag severity
@@ -160,7 +165,9 @@ protected:
 	vector<long long> accepted5; // number of canti with neede flags per window
 	vector<long long> wscans; // number of full scans per window
 	int wcount = 1; // Number of windows created
-	long long cycle = 0;
+	long long cycle = 0; // Cycle number of full scan
+	milliseconds accept_time; // Last accepted timestamp
+	int rcycle = 0; // Rejected time divided by best_rejected (ms)
 
 	// Local SWA
 	vector <float> dpenalty; // Penalty in terms of difference from user melody

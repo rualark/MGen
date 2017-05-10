@@ -13,7 +13,7 @@ random_seed = 1 # Seed melody with random numbers. This ensures giving different
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
-fullscan_max = 30 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 50 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note
@@ -21,4 +21,5 @@ correct_range = 7 # Maximum interval allowed between each source and corrected n
 # Technical parameters
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
-calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
+calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
+best_rejected = 2000 # Show best rejected results if rejecting more than X ms. Set to 0 to disable. Slows down generation. Requires calculate_stat

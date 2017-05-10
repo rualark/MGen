@@ -170,6 +170,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "show_severity", &show_severity);
 	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
 	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
+	CheckVar(sN, sV, "best_rejected", &best_rejected);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
 	// Random SWA
@@ -845,7 +846,7 @@ void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 }
 
-void CGenCF1::ScanCantusInit() {
+void CGenCF1::ScanCantusInit(vector<int> *pcantus) {
 	// Resize global vectors
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
@@ -871,6 +872,12 @@ void CGenCF1::ScanCantusInit() {
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
 		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
+	}
+	// Init best rejected results
+	if (!pcantus && best_rejected) {
+		rcycle = 0;
+		accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		rpenalty_min = MAX_PENALTY;
 	}
 }
 
@@ -1167,7 +1174,27 @@ void CGenCF1::ScanLeft(int use_matrix, int &finished) {
 	} // while (true)
 }
 
-void CGenCF1::BackWindow(int use_matrix) {
+void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
+	// Show rejected variants
+	if (!pcantus && best_rejected) {
+		milliseconds time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		int rc = (time - accept_time).count() / best_rejected;
+		if (rc > rcycle) {
+			rcycle = rc;
+			if (br_cc.size() > 0) {
+				cc = br_cc;
+				flags = br_f;
+				nflags = br_nf;
+				nflagsc = br_nfc;
+				SendCantus(0, 0);
+				WriteLog(3, "Showing best rejected results");
+				br_cc.clear();
+			}
+			else {
+				WriteLog(3, "No best rejected results to show");
+			}
+		}
+	}
 	if (use_matrix == 1) {
 		// Clear current window
 		FillCantusMap(c, smap, sp1, sp2, min_c);
@@ -1221,7 +1248,7 @@ int CGenCF1::NextSWA() {
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
-	ScanCantusInit();
+	ScanCantusInit(pcantus);
 	// Local variables
 	CString st, st2;
 	int seed_cycle = 0; // Number of cycles in case of random_seed
@@ -1293,6 +1320,10 @@ check:
 		}
 		// Accept cantus
 		++accepted;
+		// Save accepted time if we are showing best rejected
+		if (!pcantus && best_rejected) {
+			accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		}
 		if (use_matrix == 1) {
 			//LogCantus(c);
 			SaveCantus();
@@ -1311,6 +1342,18 @@ check:
 			if ((pcantus) && (!use_matrix)) return;
 		}
 	skip:
+		// Find best rejected results
+		if (best_rejected && !pcantus && ep2 == c_len) {
+			CalcRpenalty();
+			// Add result only if there is penalty, it is low and there are not note repeats
+			if (rpenalty_cur <= rpenalty_min && rpenalty_cur && !FailNoteRepeat(c, ep1 - 1, ep2 - 1)) {
+				br_cc = cc;
+				br_f = flags;
+				br_nf = nflags;
+				br_nfc = nflagsc;
+				rpenalty_min = rpenalty_cur;
+			}
+		}
 		ScanLeft(use_matrix, finished);
 		if (finished) {
 			// Sliding Windows Approximation
@@ -1327,7 +1370,7 @@ check:
 				}
 				else break;
 			}
-			BackWindow(use_matrix);
+			BackWindow(pcantus, use_matrix);
 			// Clear flag to prevent coming here again
 			finished = 0;
 			// Goto next variant calculation
@@ -1592,7 +1635,7 @@ void CGenCF1::RandomSWA()
 	// Create single cantus
 	cantus.resize(1);
 	cantus[0].resize(c_len);
-	ScanCantusInit();
+	ScanCantusInit(0);
 	for (int i = 0; i < t_cnt; ++i) {
 		if (need_exit) break;
 		// Set random_seed to initiate random cantus
