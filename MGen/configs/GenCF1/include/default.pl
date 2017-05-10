@@ -12,7 +12,7 @@ random_seed = 0 # Seed melody with random numbers. This ensures giving different
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
-fullscan_max = 5 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 11 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 50 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note
