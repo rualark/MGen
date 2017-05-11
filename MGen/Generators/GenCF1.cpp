@@ -565,9 +565,7 @@ int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
 
 int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int ep2) {
 	// Clear nstat
-	for (int i = nmin; i <= nmax; ++i) {
-		nstat[i] = 0;
-	}
+	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
 	// Prohibit stagnation
 	for (int i = 0; i < ep2; ++i) {
 		// Add new note to stagnation array
@@ -893,7 +891,8 @@ int CGenCF1::FailIntervals(int ep2, vector<int> &pc)
 // Calculate global fill
 void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
 {
-	for (int x = 0; x < ep2; ++x) nstat2[x] = 0;
+	// Clear nstat
+	for (int i = nmin; i <= nmax; ++i) nstat2[i] = 0;
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 }
 
@@ -966,6 +965,13 @@ void CGenCF1::GetRealRange() {
 	else {
 		minc = c[0] - max_interval;
 		maxc = c[c_len - 1] + max_interval;
+	}
+	if (random_range) {
+		if (maxc - minc > max_interval) {
+			int rstart = randbw(0, maxc - minc - max_interval);
+			minc += rstart;
+			maxc = minc + max_interval;
+		}
 	}
 }
 
@@ -1806,10 +1812,12 @@ void CGenCF1::RandomSWA()
 	cantus.resize(1);
 	cantus[0].resize(c_len);
 	ScanCantusInit(0);
+	// Set random_seed to initiate random cantus
+	random_seed = 1;
+	// Set random_range to limit scanning to one of possible fast-scan ranges
+	random_range = 1;
 	for (int i = 0; i < t_cnt; ++i) {
 		if (need_exit) break;
-		// Set random_seed to initiate random cantus
-		random_seed = 1;
 		// Create random cantus
 		MakeNewCantus();
 		// Convert cantus to chromatic
