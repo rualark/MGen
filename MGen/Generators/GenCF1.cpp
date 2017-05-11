@@ -1836,8 +1836,12 @@ void CGenCF1::RandomSWA()
 		rpenalty_cur = MAX_PENALTY;
 		SWA(0, 0);
 		// Show cantus if it is perfect
-		if (rpenalty_min == 0) 
+		if (rpenalty_min == 0) {
+			int step = t_generated;
 			ScanCantus(&(cc), 0, 0);
+			Adapt(step, t_generated - 1);
+			t_sent = t_generated;
+		}
 		//SendCantus(0, 0);
 	}
 	ShowStuck();
