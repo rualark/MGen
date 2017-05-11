@@ -9,7 +9,7 @@ include "include/rules-low.pl"
 # window scan - scan using consecutive windows (can randomize starting vector with random_seed and random_range)
 
 algorithm = rswa
-c_len = 107 # Number of measures in each cantus. Usually 9 to 11
+c_len = 57 # Number of measures in each cantus. Usually 9 to 11
 interval = 4-7 # Minimum-maximum diatonic interval in cantus (7 = octave)
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
