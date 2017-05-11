@@ -65,6 +65,7 @@ Too wide range             = 0 #CV If range is greater than max_interval (diaton
 Too tight range            = 0 #CV If range is lower than min_interval (diatonic interval)
 Two 3rds                   = 0 #U Chain of two thirds in one direction
 Close repeat               = 0 #U Two notes repeat in contact
+Long repeat                = 0 #C 5 notes repeat 
 Stagnation                 = 0 #U Stagnation on one note
 Multiple culminations      = 0 #U Melody has more than one culmination with the same note
 "3rd to last is leading"   = 0 #C Third to last note is leading (B forbidden)

@@ -4,7 +4,7 @@
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
 
-#define MAX_FLAGS 72
+#define MAX_FLAGS 73
 #define MAX_WIND 50
 #define MAX_NOTE 127
 
@@ -33,8 +33,9 @@ protected:
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
 	inline int FailNoteSeq(vector<int>& pc, int step1, int step2);
-	inline void GetMelodyInterval(vector<int> &c, int step1, int step2, int &nmin, int &nmax);
+	inline void GetMelodyInterval(vector<int>& c, int step1, int step2);
 	inline void ClearFlags(int step1, int step2);
+	inline int FailRange();
 	inline int FailRange(int nmin, int nmax);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
 	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc);
@@ -43,15 +44,16 @@ protected:
 	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2);
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline void AlterMinor(int ep2, vector<int>& cc);
-	inline int FailOutstandingLeap(vector<int>& c, vector<int>& leap, int ep2);
+	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& leap, int ep2);
+	inline int FailLongRepeat(vector<int>& c, vector<int>& leap, int ep2);
 	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth);
-	inline int FailStagnation(vector<int>& c, vector<int>& nstat, int nmin, int nmax, int ep2);
-	inline int FailMultiCulm(vector<int>& c, int ep2, int nmax);
+	inline int FailStagnation(vector<int>& c, vector<int>& nstat, int ep2);
+	inline int FailMultiCulm(vector<int>& c, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
 	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & ffinished);
 	inline int FailLeap(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
-	inline int FailIntervals(int ep2, int nmax, vector<int>& pc);
+	inline int FailIntervals(int ep2, vector<int>& pc);
 	inline void GlobalFill(int ep2, vector<int>& nstat2);
 	void ScanCantusInit(vector<int>* pcantus);
 	int GetMinSmap();
@@ -72,6 +74,8 @@ protected:
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void WriteFlagCor();
 	void ShowFlagStat();
+	void ShowStuck();
+	CString GetStuck();
 	void ShowFlagBlock();
 	void SaveCantus();
 	void SendCantus(int v, vector<int>* pcantus);
@@ -80,6 +84,7 @@ protected:
 	void RandomSWA();
 	void SWA(int i, int dp);
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
+	void RandCantus(vector<int>& c, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 
 	// Parameters
@@ -113,9 +118,11 @@ protected:
 	int calculate_correlation = 0; // Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 	int calculate_blocking = 0; // Enables blocking flags calculation algorithm. Slows down generation.
 	int calculate_stat = 0; // Enables flag statistics calculation algorithm. Slows down generation.
+	int calculate_ssf = 1; // Enables SWA stuck flags statistics calculation algorithm.
 	int best_rejected = 0; // Show best rejected results if rejecting more than X ms. Set to 0 to disable. Slows down generation
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
-	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes(if beats are same)
+	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
+	int repeat_steps2 = 8; // Prohibit repeating of 5 notes closer than repeat_steps between first notes
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <int> hvd, hvs, hvt, hcd, hcs, hct; //  Variants and constant harmonic meaning
@@ -135,11 +142,14 @@ protected:
 	int flags_need2 = 0; // Number of second level flags set
 	vector<int> c; // Cantus diatonic
 	vector<int> cc; // Cantus chromatic
+	vector<float> fpenalty; // Additional penalty for flags
 	vector<int>  flags; // Flags for whole cantus
 	vector<vector<int>> nflags; // Note flags
 	vector<int> nflagsc; // Note flags count
 	vector<int> br_cc; // Cantus chromatic (best rejected)
 	vector<int>  br_f; // Flags for whole cantus (best rejected)
+	vector<long>  ssf; // SWA stuck flags
+	vector<int>  best_flags; // best flags of saved cantus for swa
 	vector<vector<int>> br_nf; // Note flags (best rejected)
 	vector<int> br_nfc; // Note flags count (best rejected)
 	float rpenalty_cur = 0; // Rules penalty
@@ -170,6 +180,7 @@ protected:
 	long long cycle = 0; // Cycle number of full scan
 	milliseconds accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
+	int nmin, nmax;
 
 	// Local SWA
 	vector <float> dpenalty; // Penalty in terms of difference from user melody

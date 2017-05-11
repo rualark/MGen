@@ -347,4 +347,5 @@ void CGenCA1::Generate()
 			t_sent = t_generated;
 		}
 	}
+	ShowStuck();
 }

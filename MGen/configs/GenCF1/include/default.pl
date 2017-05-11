@@ -29,6 +29,7 @@ max_leap_steps = 7
 stag_notes = 2 # Maximum allowed stag_notes (same notes) during stag_note_steps
 stag_note_steps = 7
 repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
+repeat_steps2 = 11 # Prohibit repeating of 5 notes closer than repeat_steps2 between first notes
 first_steps_tonic = 3 # Number of first steps, which must contain tonic note (will increase by one if cantus is longer than 10 notes)
 
 # Technical parameters

@@ -82,6 +82,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Unfilled 4th", // 69
 	"Consecutive leaps", // 70
 	"Consecutive leaps+", // 71
+	"Long repeat", // 72
 };
 
 const Color FlagColor[] = {
@@ -95,6 +96,7 @@ CGenCF1::CGenCF1()
 {
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
+	ssf.resize(MAX_FLAGS);
 	flag_to_sev.resize(MAX_FLAGS);
 	flag_color.resize(MAX_FLAGS);
 	// Start severity
@@ -165,11 +167,13 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "random_key", &random_key);
 	CheckVar(sN, sV, "random_seed", &random_seed);
 	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
+	CheckVar(sN, sV, "repeat_steps2", &repeat_steps2);
 	CheckVar(sN, sV, "shuffle", &shuffle);
 	CheckVar(sN, sV, "first_steps_tonic", &first_steps_tonic);
 	CheckVar(sN, sV, "show_severity", &show_severity);
 	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
 	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
+	CheckVar(sN, sV, "calculate_ssf", &calculate_ssf);
 	CheckVar(sN, sV, "best_rejected", &best_rejected);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
@@ -241,11 +245,23 @@ void CGenCF1::LogCantus(vector<int> &c)
 	CGLib::AppendLineToFile("temp.log", st2 + " \n");
 }
 
+// Step2 must be exclusive
 void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, int value)
 {
-	// Step2 must be exclusive
 	for (int i = step1; i < step2; ++i) {
 		c[i] = value;
+	}
+}
+
+// Step2 must be exclusive
+void CGenCF1::RandCantus(vector<int>& c, int step1, int step2)
+{
+	for (int i = step1; i < step2; ++i) {
+		for (int x = 0; x < 1000; ++x) {
+			c[i] = randbw(min_c[0], max_c[0]);
+			// Prevent note repeats in the starting cantus
+			if (c[i] != c[i - 1] && (i < c_len - 2 || c[i] != c[i + 1])) break;
+		}
 	}
 }
 
@@ -274,7 +290,8 @@ int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
 }
 
 // Count limits
-void CGenCF1::GetMelodyInterval(vector<int> &c, int step1, int step2, int &nmin, int &nmax) {
+void CGenCF1::GetMelodyInterval(vector<int> &c, int step1, int step2) {
+	// Calculate range
 	nmin = MAX_NOTE;
 	nmax = 0;
 	for (int i = step1; i < step2; ++i) {
@@ -285,14 +302,17 @@ void CGenCF1::GetMelodyInterval(vector<int> &c, int step1, int step2, int &nmin,
 
 // Clear flags
 void CGenCF1::ClearFlags(int step1, int step2) {
-	if (!skip_flags) fill(flags.begin(), flags.end(), 0);
+	if (!skip_flags) {
+		fill(flags.begin(), flags.end(), 0);
+		fill(fpenalty.begin(), fpenalty.end(), 0);
+	}
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
 		nflagsc[i] = 0;
 	}
 }
 
-int CGenCF1::FailRange(int nmin, int nmax) {
+int CGenCF1::FailRange() {
 	if (nmax - nmin > max_interval) FLAG2(37, 0);
 	if (nmax - nmin < min_interval) FLAG2(38, 0);
 	return 0;
@@ -428,7 +448,7 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 }
 
 // Search for outstanding repeats
-int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2) {
+int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2) {
 	if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
 		// Check if note changes direction or is a leap
 		if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
@@ -442,6 +462,32 @@ int CGenCF1::FailOutstandingLeap(vector<int> &c, vector<int> &leap, int ep2) {
 					if ((c[x + 1] == c[i + 1]) && (c[x + 2] == c[i + 2])) {
 						FLAG2(36, i);
 					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+int CGenCF1::FailLongRepeat(vector<int> &c, vector<int> &leap, int ep2) {
+	int ok;
+	if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
+		// Search for repeat of note at same beat until last three notes
+		int finish = i + repeat_steps2;
+		if (finish > ep2 - 4) finish = ep2 - 4;
+		for (int x = i + 5; x < finish; ++x) {
+			// Check if same note
+			if (c[x] == c[i]) {
+				// Check that four more notes repeat
+				ok = 0;
+				for (int z = 1; z < 5; ++z) {
+					if (c[x + z] != c[i + z]) {
+						ok = 1;
+						break;
+					}
+				}
+				if (!ok) {
+					FLAG2(72, i);
 				}
 			}
 		}
@@ -488,6 +534,11 @@ int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
 			max_leap_sum2 = leap_sum2;
 			leap_sum_i2 = i;
 		}
+		// Calculate penalty
+		if (leap_sum > max_leaps) ++fpenalty[3];
+		if (leap_sum > max_leaps2) ++fpenalty[25];
+		if (leap_sum2 > cse_leaps) ++fpenalty[70];
+		if (leap_sum2 > cse_leaps2) ++fpenalty[71];
 		// Prohibit long smooth movement
 		if (smooth[i] != 0) ++smooth_sum;
 		else smooth_sum = 0;
@@ -512,7 +563,7 @@ int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
 	return 0;
 }
 
-int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int nmin, int nmax, int ep2) {
+int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int ep2) {
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) {
 		nstat[i] = 0;
@@ -530,7 +581,7 @@ int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int nmin, int nm
 }
 
 // Prohibit multiple culminations
-int CGenCF1::FailMultiCulm(vector<int> &c, int ep2, int nmax) {
+int CGenCF1::FailMultiCulm(vector<int> &c, int ep2) {
 	int culm_sum = 0, culm_step;
 	for (int i = 0; i < ep2; ++i) {
 		if (c[i] == nmax) {
@@ -799,7 +850,7 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 	return 0;
 }
 
-int CGenCF1::FailIntervals(int ep2, int nmax, vector<int> &pc)
+int CGenCF1::FailIntervals(int ep2, vector<int> &pc)
 {
 	int leap_start;
 	int found;
@@ -852,6 +903,7 @@ void CGenCF1::ScanCantusInit(vector<int> *pcantus) {
 	cc.resize(c_len); // cantus (chromatic)
 	nflags.resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
 	nflagsc.resize(c_len); // number of flags for each note
+	fpenalty.resize(MAX_FLAGS);
 	c_old.resize(c_len); // Cantus diatonic saved for SWA
 	wpos1.resize(c_len / s_len + 1);
 	wpos2.resize(c_len / s_len + 1);
@@ -1008,13 +1060,7 @@ void CGenCF1::MakeNewCantus() {
 		max_c[i] = maxc;
 	}
 	if (random_seed) {
-		for (int i = 1; i < c_len - 1; ++i) {
-			for (int x = 0; x < 1000; ++x) {
-				c[i] = randbw(min_c[0], max_c[0]);
-				// Prevent note repeats in the starting cantus
-				if (c[i] != c[i - 1] && (i < c_len - 2 || c[i] != c[i + 1])) break;
-			}
-		}
+		RandCantus(c, 1, c_len - 1);
 	}
 	else {
 		// Set middle notes to minimum
@@ -1159,14 +1205,37 @@ void CGenCF1::NextWindow(int use_matrix) {
 			WriteLog(3, est);
 		}
 	}
+	/*
+	if (debug_level > 0) {
+		CString st;
+		st.Format("Next window with ep2 %d", ep2);
+		WriteLog(3, st);
+		SendCantus(0, 0);
+	}
+	*/
 }
 
 void CGenCF1::CalcRpenalty() {
+	// Calculate out of range penalty
+	int real_range = nmax - nmin;
+	if (!accept[37] && real_range > max_interval) {
+		int nminr = nmin + (real_range - max_interval) / 2;
+		int nmaxr = nminr + max_interval;
+		for (int i = 0; i < ep2; ++i) {
+			if (c[i] < nminr) fpenalty[37] += nminr - c[i];
+			if (c[i] > nmaxr) fpenalty[37] += c[i] - nmaxr;
+		}
+	}
+	// Calculate flags penalty
 	rpenalty_cur = 0;
 	for (int x = 0; x < ep2; ++x) {
 		if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; ++i) if (!accept[nflags[x][i]]) {
 			rpenalty_cur += flag_to_sev[nflags[x][i]];
 		}
+	}
+	// Add flags penalty
+	for (int x = 0; x < MAX_FLAGS; ++x) {
+		if (!accept[x]) rpenalty_cur += fpenalty[x];
 	}
 }
 
@@ -1195,10 +1264,15 @@ void CGenCF1::ScanLeft(int use_matrix, int &finished) {
 }
 
 void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
-	// Show rejected variants
+	// Show best rejected variant
 	if (!pcantus && best_rejected) {
 		milliseconds time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		int rc = (time - accept_time).count() / best_rejected;
+		if (debug_level > 2) {
+			CString st;
+			st.Format("Back window with rc %d", rc);
+			WriteLog(3, st);
+		}
 		if (rc > rcycle) {
 			rcycle = rc;
 			if (br_cc.size() > 0) {
@@ -1218,7 +1292,8 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 				rpenalty_min = MAX_PENALTY;
 			}
 			else {
-				WriteLog(3, "No best rejected results to show");
+				if (debug_level > 1) 
+					WriteLog(3, "No best rejected results to show");
 			}
 		}
 	}
@@ -1240,7 +1315,13 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 	// Normal full scan
 	else if (!use_matrix) {
 		// Clear current window
-		FillCantus(c, sp1, sp2, min_c[0]);
+		if (random_seed) {
+			// When random seeding, even back window movement should be randomized to avoid autorestart window cycle
+			RandCantus(c, sp1, sp2);
+		}
+		else {
+			FillCantus(c, sp1, sp2, min_c[0]);
+		}
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
@@ -1286,7 +1367,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	vector<int> nstat2(MAX_NOTE);
 	vector<int> nstat3(MAX_NOTE);
 	int finished = 0;
-	int nmin, nmax, culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
+	int culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
 	// Init
 	if (pcantus) SingleCantusInit(pcantus, use_matrix);
@@ -1298,7 +1379,7 @@ check:
 		//LogCantus(c);
 		if (FailNoteRepeat(c, ep1-1, ep2-1)) goto skip;
 		if ((need_exit) && (!pcantus || use_matrix)) break;
-		GetMelodyInterval(c, 0, ep2, nmin, nmax);
+		GetMelodyInterval(c, 0, ep2);
 		++accepted3;
 		// Limit melody interval
 		if (pcantus) {
@@ -1318,15 +1399,34 @@ check:
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		GetChromatic(c, cc, 0, ep2, minor_cur);
 		if (minor_cur) AlterMinor(ep2, cc);
-		if (FailIntervals(ep2, nmax, pc)) goto skip;
+		if (FailIntervals(ep2, pc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
-		if (FailOutstandingLeap(c, leap, ep2)) goto skip;
+		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
+		if (FailLongRepeat(c, leap, ep2)) goto skip;
 		GlobalFill(ep2, nstat2);
 		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
-		if (FailStagnation(c, nstat, nmin, nmax, ep2)) goto skip;
-		if (FailMultiCulm(c, ep2, nmax)) goto skip;
+		if (FailStagnation(c, nstat, ep2)) goto skip;
+		if (FailMultiCulm(c, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 
+		// Find best rejected results if we can analyze full cantus
+		if (best_rejected && !pcantus && ep2 == c_len) {
+			CalcRpenalty();
+			// Add result only if there is penalty, it is low and there are not note repeats
+			if (rpenalty_cur < rpenalty_min && rpenalty_cur) {
+				br_cc = cc;
+				br_f = flags;
+				br_nf = nflags;
+				br_nfc = nflagsc;
+				rpenalty_min = rpenalty_cur;
+				// Log
+				if (debug_level > 1) {
+					CString st;
+					st.Format("Saving best rejected results with rpenalty %.0f", rpenalty_min);
+					WriteLog(3, st);
+				}
+			}
+		}
 		if ((!pcantus) || (use_matrix == 1)) {
 			++accepted2;
 			CalcFlagStat();
@@ -1350,6 +1450,7 @@ check:
 		// Save accepted time if we are showing best rejected
 		if (!pcantus && best_rejected) {
 			accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+			rcycle = 0;
 		}
 		if (use_matrix == 1) {
 			//LogCantus(c);
@@ -1362,6 +1463,8 @@ check:
 				if (!skip_flags && rpenalty_cur == 0) 
 					skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 				SaveCantus();
+				// Save flags for SWA stuck flags
+				if (rpenalty_cur) best_flags = flags;
 			}
 		}
 		else {
@@ -1369,24 +1472,6 @@ check:
 			if ((pcantus) && (!use_matrix)) return;
 		}
 	skip:
-		// Find best rejected results
-		if (best_rejected && !pcantus && ep2 == c_len) {
-			CalcRpenalty();
-			// Add result only if there is penalty, it is low and there are not note repeats
-			if (rpenalty_cur < rpenalty_min && rpenalty_cur && !FailNoteRepeat(c, ep1 - 1, ep2 - 1)) {
-				br_cc = cc;
-				br_f = flags;
-				br_nf = nflags;
-				br_nfc = nflagsc;
-				rpenalty_min = rpenalty_cur;
-				// Log
-				if (debug_level > 1) {
-					CString st;
-					st.Format("Saving best rejected results with rpenalty %.0f", rpenalty_min);
-					WriteLog(3, st);
-				}
-			}
-		}
 		ScanLeft(use_matrix, finished);
 		if (finished) {
 			// Sliding Windows Approximation
@@ -1462,6 +1547,54 @@ void CGenCF1::ShowFlagStat() {
 			accepted3, cycle, st2);
 		WriteLog(3, est);
 	}
+}
+
+void CGenCF1::ShowStuck() {
+	CString st, st2;
+	// Show flag statistics
+	if (calculate_ssf) {
+		st2 = "SWA stuck flags: ";
+		int max_flag = 0;
+		long max_value = -1;
+		for (int x = 0; x < MAX_FLAGS; ++x) {
+			max_value = -1;
+			// Find biggest value
+			for (int i = 0; i < MAX_FLAGS; ++i) {
+				if (ssf[i] > max_value) {
+					max_value = ssf[i];
+					max_flag = i;
+				}
+			}
+			if (max_value < 1) break;
+			st.Format("\n%ld %s, ", max_value, FlagName[max_flag]);
+			st2 += st;
+			// Clear biggest value to search for next
+			ssf[max_flag] = -1;
+		}
+		WriteLog(3, st2);
+	}
+}
+
+CString CGenCF1::GetStuck() {
+	CString st, st2;
+	int max_flag = 0;
+	long max_value = -1;
+	for (int x = 0; x < MAX_FLAGS; ++x) {
+		max_value = -1;
+		// Find biggest value
+		for (int i = 0; i < MAX_FLAGS; ++i) {
+			if (best_flags[i] > max_value) {
+				max_value = best_flags[i];
+				max_flag = i;
+			}
+		}
+		if (max_value < 1) break;
+		st.Format("\n%ld %s, ", max_value, FlagName[max_flag]);
+		st2 += st;
+		// Clear biggest value to search for next
+		best_flags[max_flag] = -1;
+	}
+	return st2;
 }
 
 void CGenCF1::ShowFlagBlock() {
@@ -1665,6 +1798,10 @@ void CGenCF1::TestDiatonic()
 // Create random cantus and optimize it using SWA
 void CGenCF1::RandomSWA()
 {
+	// Disable debug flags
+	calculate_blocking = 0;
+	calculate_correlation = 0;
+	calculate_stat = 0;
 	// Create single cantus
 	cantus.resize(1);
 	cantus[0].resize(c_len);
@@ -1695,6 +1832,7 @@ void CGenCF1::RandomSWA()
 			ScanCantus(&(cc), 0, 0);
 		//SendCantus(0, 0);
 	}
+	ShowStuck();
 }
 
 // Do not calculate dpenalty (dp = 0). Calculate dpenalty (dp = 1).
@@ -1771,37 +1909,11 @@ void CGenCF1::SWA(int i, int dp) {
 			if (!rpenalty_min) break;
 			if (rpenalty_min >= rpenalty_min_old) {
 				if (s_len >= swa_steps) {
-					// Make diatonic
-					for (int i = 0; i < c_len; i++) c[i] = CC_C(cc[i], tonic_cur, minor_cur);
-					// Is problem with range?
-					GetMelodyInterval(c, 0, c_len, nmin, nmax);
-					if (nmax - nmin > max_interval) {
-						// Get weighted average
-						int nav = 0;
-						for (int i = 0; i < c_len; i++) nav += c[i];
-						nav = nav / c_len;
-						// Cut notes significantly out of range
-						for (int i = 0; i < c_len; i++) {
-							if (c[i] > nav + max_interval / 2 + 1) c[i] = nav + max_interval / 2 + 1;
-							if (c[i] < nav - max_interval / 2 - 1) c[i] = nav - max_interval / 2 - 1;
-						}
+					// Record SWA stuck flags
+					for (int x = 0; x < MAX_FLAGS; ++x) {
+						if (best_flags[x]) ++ssf[x];
 					}
-					for (int i = 1; i < c_len - 1; i++) {
-						for (int x = 0; x < 1000; ++x) {
-							// Randomize
-							c[i] = c[i] + randbw(-1, 1);
-							// Check limits
-							if (c[i] > c[0] + max_interval) c[i] = c[0] + max_interval;
-							if (c[i] < c[0] - max_interval) c[i] = c[0] - max_interval;
-							if (c[i] != c[i - 1] && c[i] != c[i + 1]) break;
-						}
-					}
-					// Make chromatic
-					for (int i = 0; i < c_len; i++) cc[i] = C_CC(c[i], tonic_cur, minor_cur);
-					rpenalty_min = MAX_PENALTY;
-					s_len = 1;
-					//WriteLog(3, "Randomized");
-					randomized = 1;
+					break;
 				}
 				else ++s_len;
 			}
@@ -1828,7 +1940,7 @@ void CGenCF1::SWA(int i, int dp) {
 	// Log
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString* est = new CString;
-	est->Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms)", 
+	est->Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): " + GetStuck(), 
 		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start);
 	WriteLog(3, est);
 }
