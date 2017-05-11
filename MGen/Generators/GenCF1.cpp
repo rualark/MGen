@@ -166,6 +166,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "random_key", &random_key);
 	CheckVar(sN, sV, "random_seed", &random_seed);
+	CheckVar(sN, sV, "random_range", &random_range);
 	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
 	CheckVar(sN, sV, "repeat_steps2", &repeat_steps2);
 	CheckVar(sN, sV, "shuffle", &shuffle);
@@ -1323,13 +1324,10 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 	// Normal full scan
 	else if (!use_matrix) {
 		// Clear current window
-		if (random_seed) {
-			// When random seeding, even back window movement should be randomized to avoid autorestart window cycle
-			RandCantus(c, sp1, sp2);
-		}
-		else {
+		// When random seeding, even back window movement should be randomized to avoid autorestart window cycle
+		//if (random_seed) RandCantus(c, sp1, sp2);
+		//else
 			FillCantus(c, sp1, sp2, min_c[0]);
-		}
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
