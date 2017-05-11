@@ -4,19 +4,20 @@ include "include/rules-low.pl"
 #include "include/hmean-high.pl"
 
 # Choose one of algorithms:
-# rswa - Random Sliding Windows Approximation. 
-# full scan - full scan all possible combinations (can randomize starting vector with random_seed)
-# window scan - scan using consecutive windows (can randomize starting vector with random_seed)
+# rswa - Random Sliding Windows Approximation (random_seed and random_range are activated automatically)
+# full scan - full scan all possible combinations (can randomize starting vector with random_seed and random_range)
+# window scan - scan using consecutive windows (can randomize starting vector with random_seed and random_range)
 
-algorithm = RSWA
+algorithm = rswa
+c_len = 107 # Number of measures in each cantus. Usually 9 to 11
 interval = 4-7 # Minimum-maximum diatonic interval in cantus (7 = octave)
-c_len = 71 # Number of measures in each cantus. Usually 9 to 11
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
 
 s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+random_range = 1 # Limit scanning to one of possible fast-scan ranges
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
