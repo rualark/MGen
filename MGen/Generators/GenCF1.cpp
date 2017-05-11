@@ -988,7 +988,9 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 		// Check duplicate
 		if (i > 0 && c[i] == c[i - 1]) return;
 	}
-	GetRealRange();
+	if (!swa_inrange) {
+		GetRealRange();
+	}
 	// Set pitch limits
 	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = max(minc, c[i] - correct_range);
@@ -1816,6 +1818,8 @@ void CGenCF1::RandomSWA()
 	random_seed = 1;
 	// Set random_range to limit scanning to one of possible fast-scan ranges
 	random_range = 1;
+	// Prohibit limits recalculation during SWA
+	swa_inrange = 1;
 	for (int i = 0; i < t_cnt; ++i) {
 		if (need_exit) break;
 		// Create random cantus

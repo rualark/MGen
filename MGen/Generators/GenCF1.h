@@ -116,6 +116,7 @@ protected:
 	float random_choose = 100; // Percent of accepted canti to show and play
 	int random_seed = 0; // Seed melody with random numbers. This ensures giving different results if generation is very slow.
 	int random_range = 0; // Limit scanning to one of possible fast-scan ranges
+	int swa_inrange = 0; // Do not update minc/maxc - stay with existing limits (used for Random SWA)
 	int calculate_correlation = 0; // Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 	int calculate_blocking = 0; // Enables blocking flags calculation algorithm. Slows down generation.
 	int calculate_stat = 0; // Enables flag statistics calculation algorithm. Slows down generation.
