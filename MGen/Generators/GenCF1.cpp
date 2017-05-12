@@ -1725,6 +1725,8 @@ void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 	t_generated = step;
 	if (!pcantus) {
 		if (!shuffle) {
+			// Add line
+			linecolor[t_sent] = Color(255, 0, 0, 0);
 			t_sent = t_generated;
 		}
 	}
@@ -1840,6 +1842,8 @@ void CGenCF1::RandomSWA()
 		// Show cantus if it is perfect
 		if (rpenalty_min == 0) {
 			int step = t_generated;
+			// Add line
+			linecolor[t_generated] = Color(255, 0, 0, 0);
 			ScanCantus(&(cc), 0, 0);
 			Adapt(step, t_generated - 1);
 			t_sent = t_generated;
