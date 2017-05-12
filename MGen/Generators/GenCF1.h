@@ -40,7 +40,7 @@ protected:
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
 	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc);
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2);
-	int FailMelodyHarmSeqStep2(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hc, vector<int>& hv);
+	inline int FailMelodyHarmSeqStep2(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hc, vector<int>& hv);
 	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2);
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline void AlterMinor(int ep2, vector<int>& cc);

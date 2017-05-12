@@ -1400,8 +1400,6 @@ check:
 		}
 		GetPitchClass(c, pc, 0, ep2);
 		if (FailLastNotes(pc, ep2)) goto skip;
-		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
-		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		GetChromatic(c, cc, 0, ep2, minor_cur);
 		if (minor_cur) AlterMinor(ep2, cc);
@@ -1410,10 +1408,12 @@ check:
 		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
 		if (FailLongRepeat(c, leap, ep2)) goto skip;
 		GlobalFill(ep2, nstat2);
-		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
 		if (FailStagnation(c, nstat, ep2)) goto skip;
 		if (FailMultiCulm(c, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
+		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
+		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
+		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
 		// Find best rejected results if we can analyze full cantus
 		if (best_rejected && !pcantus && ep2 == c_len) {
