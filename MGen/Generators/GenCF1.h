@@ -74,6 +74,7 @@ protected:
 	inline void BackWindow(vector<int>* pcantus, int use_matrix);
 	inline int NextSWA();
 	inline void SaveBestRejected(vector<int>* pcantus);
+	inline int FailMinor();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void WriteFlagCor();
 	void ShowFlagStat();
@@ -191,6 +192,8 @@ protected:
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
 	int nmin, nmax, nmind, nmaxd;
 	int cc_incr[MAX_NOTE]; // cc increments for each step
+	vector<int> pc; // pitch class (diatonic)
+	vector<int> pcc; // pitch class (chromatic)
 
 	// Local SWA
 	vector <float> dpenalty; // Penalty in terms of difference from user melody

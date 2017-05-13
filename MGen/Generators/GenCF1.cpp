@@ -323,6 +323,7 @@ int CGenCF1::FailRange() {
 void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &pc, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
 		pc[i] = c[i] % 7;
+		pcc[i] = (cc[i] + 12 - tonic_cur) % 12;
 	}
 }
 
@@ -422,8 +423,14 @@ void CGenCF1::CalcCcIncrement() {
 	int pos;
 	for (int i = 0; i < 127; ++i) {
 		pos = (i + 13 - tonic_cur) % 12;
-		if (diatonic[pos]) cc_incr[i] = 1;
-		else cc_incr[i] = 2;
+		if (minor_cur) {
+			if (m_diatonic_full[pos]) cc_incr[i] = 1;
+			else cc_incr[i] = 2;
+		}
+		else {
+			if (diatonic[pos]) cc_incr[i] = 1;
+			else cc_incr[i] = 2;
+		}
 	}
 }
 
@@ -1426,6 +1433,18 @@ void CGenCF1::SaveBestRejected(vector<int> *pcantus) {
 	}
 }
 
+int CGenCF1::FailMinor() {
+	for (int i = 1; i < c_len; ++i) {
+		// Prohibit major second up before I (in last steps and other places)
+		if  (pc[i]) {}
+		// Prohibit minor second up before VII - absorbed
+		// Prohibit augmented second up before VII - absorbed
+		// Prohibit unaltered VI or VII two steps from altered VI or VII
+		// Prohibit unresolved minor tritone DG# (direct or with inserted note)
+	}
+	return 0;
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -1433,7 +1452,8 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Local variables
 	CString st, st2;
 	int seed_cycle = 0; // Number of cycles in case of random_seed
-	vector<int> pc(c_len); // pitch class
+	pc.resize(c_len);
+	pcc.resize(c_len);
 	vector<int> leap(c_len);
 	vector<int> smooth(c_len);
 	vector<int> nstat(MAX_NOTE);
@@ -1469,6 +1489,7 @@ check:
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(c, pc, 0, ep2);
+		if (minor_cur && FailMinor()) goto skip;
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
