@@ -9,7 +9,7 @@ include "include/rules-low.pl"
 
 algorithm = rswa
 c_len = 9 # Number of measures in each cantus. Usually 9 to 11
-interval = 4-7 # Minimum-maximum diatonic interval in cantus (7 = octave)
+interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus

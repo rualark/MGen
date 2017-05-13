@@ -90,8 +90,10 @@ protected:
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 
 	// Parameters
-	int min_interval = 1; // Minimum diatonic interval in cantus (7 = octave)
-	int max_interval = 5; // Maximum diatonic interval in cantus (7 = octave)
+	int min_interval = 7; // Minimum chromatic interval in cantus (12 = octave)
+	int max_interval = 12; // Maximum chromatic interval in cantus (12 = octave)
+	int min_intervald = 4; // Minimum diatonic interval in cantus (7 = octave)
+	int max_intervald = 7; // Maximum diatonic interval in cantus (7 = octave)
 	int c_len = 9; // Number of measures in each cantus. Usually 9 to 11
 	int s_len = 4; // Maximum number of measures to full scan
 	int first_note = 72; // Starting note of each cantus

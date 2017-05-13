@@ -978,25 +978,28 @@ int CGenCF1::GetMaxSmap() {
 
 // Calculate real possible range
 void CGenCF1::GetRealRange() {
+	// Get diatonic interval
+	max_intervald = CC_C(cc[0] + max_interval, tonic_cur, minor_cur) - c[0];
+	min_intervald = CC_C(cc[0] + min_interval, tonic_cur, minor_cur) - c[0];
 	// If first and last notes are the same, you cannot go to the lowest note to avoid multiple culminations flag
 	if (c[0] == c[c_len - 1]) {
-		minc = c[0] - max_interval + 1;
-		maxc = c[0] + max_interval;
+		minc = c[0] - max_intervald + 1;
+		maxc = c[0] + max_intervald;
 	}
 	// If notes differ, interval decreases
 	else if (c[0] < c[c_len - 1]) {
-		minc = c[c_len - 1] - max_interval;
-		maxc = c[0] + max_interval;
+		minc = c[c_len - 1] - max_intervald;
+		maxc = c[0] + max_intervald;
 	}
 	else {
-		minc = c[0] - max_interval;
-		maxc = c[c_len - 1] + max_interval;
+		minc = c[0] - max_intervald;
+		maxc = c[c_len - 1] + max_intervald;
 	}
 	if (random_range) {
-		if (maxc - minc > max_interval) {
-			int rstart = randbw(0, maxc - minc - max_interval);
+		if (maxc - minc > max_intervald) {
+			int rstart = randbw(0, maxc - minc - max_intervald);
 			minc += rstart;
-			maxc = minc + max_interval;
+			maxc = minc + max_intervald;
 		}
 	}
 }
@@ -1268,8 +1271,8 @@ void CGenCF1::CalcRpenalty() {
 		int nminr = nmin + (real_range - max_interval) / 2;
 		int nmaxr = nminr + max_interval;
 		for (int i = 0; i < ep2; ++i) {
-			if (c[i] < nminr) fpenalty[37] += nminr - c[i];
-			if (c[i] > nmaxr) fpenalty[37] += c[i] - nmaxr;
+			if (cc[i] < nminr) fpenalty[37] += nminr - cc[i];
+			if (cc[i] > nmaxr) fpenalty[37] += cc[i] - nmaxr;
 		}
 	}
 	// Calculate flags penalty
