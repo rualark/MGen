@@ -418,6 +418,15 @@ int CGenCF1::FailMelodyHarmSeq2(vector<int> &pc, int ep1, int ep2) {
 	return 0;
 }
 
+void CGenCF1::CalcCcIncrement() {
+	int pos;
+	for (int i = 0; i < 127; ++i) {
+		pos = (i + 13 - tonic_cur) % 12;
+		if (diatonic[pos]) cc_incr[i] = 1;
+		else cc_incr[i] = 2;
+	}
+}
+
 // Calculate chromatic positions
 void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
 	if (minor_cur) {
@@ -428,6 +437,20 @@ void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2
 	else {
 		for (int i = step1; i < step2; ++i) {
 			cc[i] = maj_C_CC(c[i], tonic_cur);
+		}
+	}
+}
+
+// Calculate diatonic positions
+void CGenCF1::GetDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
+	if (minor_cur) {
+		for (int i = step1; i < step2; ++i) {
+			c[i] = m_CC_C(cc[i], tonic_cur);
+		}
+	}
+	else {
+		for (int i = step1; i < step2; ++i) {
+			c[i] = maj_CC_C(cc[i], tonic_cur);
 		}
 	}
 }
@@ -909,6 +932,8 @@ void CGenCF1::ScanCantusInit(vector<int> *pcantus) {
 	wpos2.resize(c_len / s_len + 1);
 	min_c.resize(c_len);
 	max_c.resize(c_len);
+	min_cc.resize(c_len);
+	max_cc.resize(c_len);
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
@@ -997,6 +1022,11 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 		min_c[i] = max(minc, c[i] - correct_range);
 		max_c[i] = min(maxc, c[i] + correct_range);
 	}
+	// Convert limits to chromatic
+	for (int i = 0; i < c_len; ++i) {
+		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
+		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
+	}
 	sp1 = 1;
 	sp2 = c_len - 1;
 	ep1 = sp1;
@@ -1062,18 +1092,25 @@ void CGenCF1::MakeNewCantus() {
 	// Set first and last notes
 	c[0] = CC_C(first_note, tonic_cur, minor_cur);
 	c[c_len - 1] = CC_C(last_note, tonic_cur, minor_cur);
+	cc[0] = first_note;
+	cc[c_len - 1] = last_note;
 	GetRealRange();
 	// Set pitch limits
 	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = minc;
 		max_c[i] = maxc;
 	}
+	// Convert limits to chromatic
+	for (int i = 0; i < c_len; ++i) {
+		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
+		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
+	}
 	if (random_seed) {
 		RandCantus(c, 1, c_len - 1);
 	}
 	else {
 		// Set middle notes to minimum
-		FillCantus(c, 1, c_len - 1, min_c[0]);
+		FillCantus(cc, 1, c_len - 1, min_cc[0]);
 	}
 }
 
@@ -1250,9 +1287,9 @@ void CGenCF1::CalcRpenalty() {
 
 void CGenCF1::ScanLeft(int use_matrix, int &finished) {
 	while (true) {
-		if (c[p] < max_c[p]) break;
+		if (cc[p] < max_cc[p]) break;
 		// If current element is max, make it minimum
-		c[p] = min_c[p];
+		cc[p] = min_cc[p];
 		// Move left one element
 		if (use_matrix) {
 			if (pp == sp1) {
@@ -1382,6 +1419,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Analyze combination
 check:
 	while (true) {
+		GetDiatonic(c, cc, 0, ep2, minor_cur);
 		//LogCantus(c);
 		if (FailNoteRepeat(c, ep1-1, ep2-1)) goto skip;
 		if ((need_exit) && (!pcantus || use_matrix)) break;
@@ -1501,7 +1539,7 @@ check:
 			goto skip;
 		} // if (finished)
 		// Increase rightmost element, which was not reset to minimum
-		++c[p];
+		cc[p] += cc_incr[cc[p]];
 		// Go to rightmost element
 		if (use_matrix) {
 			pp = sp2 - 1;
@@ -1970,6 +2008,7 @@ void CGenCF1::Generate()
 	int v = 0;
 	//TestDiatonic();
 	InitCantus();
+	CalcCcIncrement();
 	// Set uniform length of each cantus note
 	cc_len.resize(c_len);
 	cc_tempo.resize(c_len);

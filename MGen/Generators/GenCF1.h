@@ -42,7 +42,9 @@ protected:
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2);
 	inline int FailMelodyHarmSeqStep2(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hc, vector<int>& hv);
 	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2);
+	void CalcCcIncrement();
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
+	inline void GetDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline void AlterMinor(int ep2, vector<int>& cc);
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& leap, int ep2);
 	inline int FailLongRepeat(vector<int>& c, vector<int>& leap, int ep2);
@@ -171,6 +173,8 @@ protected:
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	vector<int> min_c;
 	vector<int> max_c;
+	vector<int> min_cc;
+	vector<int> max_cc;
 	int minc, maxc; // Real possible limits
 	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
 	vector<long long> fstat; // number of canti with each flag
@@ -183,6 +187,7 @@ protected:
 	milliseconds accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
 	int nmin, nmax;
+	int cc_incr[MAX_NOTE]; // cc increments for each step
 
 	// Local SWA
 	vector <float> dpenalty; // Penalty in terms of difference from user melody
