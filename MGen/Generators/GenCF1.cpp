@@ -493,7 +493,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2) {
 	return 0;
 }
 
-int CGenCF1::FailLongRepeat(vector<int> &c, vector<int> &leap, int ep2) {
+int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2) {
 	int ok;
 	if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
 		// Search for repeat of note at same beat until last three notes
@@ -501,11 +501,11 @@ int CGenCF1::FailLongRepeat(vector<int> &c, vector<int> &leap, int ep2) {
 		if (finish > ep2 - 4) finish = ep2 - 4;
 		for (int x = i + 5; x < finish; ++x) {
 			// Check if same note
-			if (c[x] == c[i]) {
+			if (cc[x] == cc[i]) {
 				// Check that four more notes repeat
 				ok = 0;
 				for (int z = 1; z < 5; ++z) {
-					if (c[x + z] != c[i + z]) {
+					if (cc[x + z] != cc[i + z]) {
 						ok = 1;
 						break;
 					}
@@ -1445,11 +1445,10 @@ check:
 		GetPitchClass(c, pc, 0, ep2);
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
-		if (minor_cur) AlterMinor(ep2, cc);
 		if (FailIntervals(ep2, pc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
 		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
-		if (FailLongRepeat(c, leap, ep2)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2)) goto skip;
 		GlobalFill(ep2, nstat2);
 		if (FailStagnation(cc, nstat, ep2)) goto skip;
 		if (FailMultiCulm(cc, ep2)) goto skip;

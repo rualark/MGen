@@ -47,7 +47,7 @@ protected:
 	inline void GetDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline void AlterMinor(int ep2, vector<int>& cc);
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& leap, int ep2);
-	inline int FailLongRepeat(vector<int>& c, vector<int>& leap, int ep2);
+	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2);
 	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int ep2);
 	inline int FailMultiCulm(vector<int>& cc, int ep2);
