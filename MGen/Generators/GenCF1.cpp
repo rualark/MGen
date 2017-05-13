@@ -1399,6 +1399,27 @@ int CGenCF1::NextSWA() {
 	return 0;
 }
 
+void CGenCF1::SaveBestRejected(vector<int> *pcantus) {
+	// Save best rejected results if we can analyze full cantus
+	if (best_rejected && !pcantus && ep2 == c_len) {
+		CalcRpenalty();
+		// Add result only if there is penalty, it is low and there are not note repeats
+		if (rpenalty_cur < rpenalty_min && rpenalty_cur) {
+			br_cc = cc;
+			br_f = flags;
+			br_nf = nflags;
+			br_nfc = nflagsc;
+			rpenalty_min = rpenalty_cur;
+			// Log
+			if (debug_level > 1) {
+				CString st;
+				st.Format("Saving best rejected results with rpenalty %.0f", rpenalty_min);
+				WriteLog(3, st);
+			}
+		}
+	}
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -1457,24 +1478,7 @@ check:
 		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
 		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
-		// Find best rejected results if we can analyze full cantus
-		if (best_rejected && !pcantus && ep2 == c_len) {
-			CalcRpenalty();
-			// Add result only if there is penalty, it is low and there are not note repeats
-			if (rpenalty_cur < rpenalty_min && rpenalty_cur) {
-				br_cc = cc;
-				br_f = flags;
-				br_nf = nflags;
-				br_nfc = nflagsc;
-				rpenalty_min = rpenalty_cur;
-				// Log
-				if (debug_level > 1) {
-					CString st;
-					st.Format("Saving best rejected results with rpenalty %.0f", rpenalty_min);
-					WriteLog(3, st);
-				}
-			}
-		}
+		SaveBestRejected(pcantus);
 		if ((!pcantus) || (use_matrix == 1)) {
 			++accepted2;
 			CalcFlagStat();
