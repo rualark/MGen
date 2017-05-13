@@ -572,10 +572,14 @@ int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
 			leap_sum_i2 = i;
 		}
 		// Calculate penalty
-		if (leap_sum > max_leaps) ++fpenalty[3];
-		if (leap_sum > max_leaps2) ++fpenalty[25];
-		if (leap_sum2 > cse_leaps) ++fpenalty[70];
-		if (leap_sum2 > cse_leaps2) ++fpenalty[71];
+		if (leap_sum > max_leaps) {
+			++fpenalty[3];
+			if (leap_sum > max_leaps2) ++fpenalty[25];
+		}
+		if (leap_sum2 > cse_leaps) {
+			++fpenalty[70];
+			if (leap_sum2 > cse_leaps2) ++fpenalty[71];
+		}
 		// Prohibit long smooth movement
 		if (smooth[i] != 0) ++smooth_sum;
 		else smooth_sum = 0;
@@ -1436,10 +1440,19 @@ void CGenCF1::SaveBestRejected(vector<int> *pcantus) {
 int CGenCF1::FailMinor() {
 	for (int i = 1; i < c_len; ++i) {
 		// Prohibit major second up before I (in last steps and other places)
-		if  (pc[i]) {}
+		if (pcc[i] == 0 && pcc[i - 1] == 10) FLAG2(27, i);
 		// Prohibit minor second up before VII - absorbed
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
+		if (pcc[i] == 11 || pcc[i] == 9) {
+			if (pcc[i - 1] == 10 || pcc[i - 1] == 8) FLAG2(27, i);
+			if (i > 1) if (pcc[i - 2] == 10 || pcc[i - 2] == 8) FLAG2(27, i);
+			if (i < c_len - 1) {
+				if (pcc[i + 1] == 10 || pcc[i + 1] == 8) FLAG2(27, i);
+				if (i < c_len - 2) 
+					if (pcc[i + 2] == 10 || pcc[i + 2] == 8) FLAG2(27, i);
+			}
+		}
 		// Prohibit unresolved minor tritone DG# (direct or with inserted note)
 	}
 	return 0;
