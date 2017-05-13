@@ -442,10 +442,15 @@ void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2
 }
 
 // Calculate diatonic positions
-void CGenCF1::GetDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
+int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
 	if (minor_cur) {
+		// First note calculaed separately because it does not need to be checked
+		c[0] = m_CC_C(cc[0], tonic_cur);
+		int step12 = step1 < 1 ? 1 : step1;
 		for (int i = step1; i < step2; ++i) {
 			c[i] = m_CC_C(cc[i], tonic_cur);
+			// Check if diatonic step is the same
+			if (c[i] == c[i - 1]) return 1;
 		}
 	}
 	else {
@@ -453,6 +458,7 @@ void CGenCF1::GetDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2,
 			c[i] = maj_CC_C(cc[i], tonic_cur);
 		}
 	}
+	return 0;
 }
 
 // Add minor alterations
@@ -1443,7 +1449,6 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Analyze combination
 check:
 	while (true) {
-		//LogCantus(c);
 		if (FailNoteRepeat(cc, ep1-1, ep2-1)) goto skip;
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		GetMelodyInterval(cc, 0, ep2);
@@ -1462,7 +1467,7 @@ check:
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
-		GetDiatonic(c, cc, 0, ep2, minor_cur);
+		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(c, pc, 0, ep2);
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
