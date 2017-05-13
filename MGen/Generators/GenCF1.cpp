@@ -1419,9 +1419,9 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Analyze combination
 check:
 	while (true) {
-		GetDiatonic(c, cc, 0, ep2, minor_cur);
 		//LogCantus(c);
-		if (FailNoteRepeat(c, ep1-1, ep2-1)) goto skip;
+		if (FailNoteRepeat(cc, ep1-1, ep2-1)) goto skip;
+		GetDiatonic(c, cc, 0, ep2, minor_cur);
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		GetMelodyInterval(c, 0, ep2);
 		++accepted3;
