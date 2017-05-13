@@ -291,13 +291,13 @@ int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
 }
 
 // Count limits
-void CGenCF1::GetMelodyInterval(vector<int> &c, int step1, int step2) {
+void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2) {
 	// Calculate range
 	nmin = MAX_NOTE;
 	nmax = 0;
 	for (int i = step1; i < step2; ++i) {
-		if (c[i] < nmin) nmin = c[i];
-		if (c[i] > nmax) nmax = c[i];
+		if (cc[i] < nmin) nmin = cc[i];
+		if (cc[i] > nmax) nmax = cc[i];
 	}
 }
 
@@ -587,26 +587,26 @@ int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
 	return 0;
 }
 
-int CGenCF1::FailStagnation(vector<int> &c, vector<int> &nstat, int ep2) {
+int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
 	// Prohibit stagnation
 	for (int i = 0; i < ep2; ++i) {
 		// Add new note to stagnation array
-		++nstat[c[i]];
+		++nstat[cc[i]];
 		// Subtract old note
-		if ((i >= stag_note_steps)) nstat[c[i - stag_note_steps]]--;
+		if ((i >= stag_note_steps)) nstat[cc[i - stag_note_steps]]--;
 		// Check if too many repeating notes
-		if (nstat[c[i]] > stag_notes) FLAG2(10, i);
+		if (nstat[cc[i]] > stag_notes) FLAG2(10, i);
 	}
 	return 0;
 }
 
 // Prohibit multiple culminations
-int CGenCF1::FailMultiCulm(vector<int> &c, int ep2) {
+int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
 	int culm_sum = 0, culm_step;
 	for (int i = 0; i < ep2; ++i) {
-		if (c[i] == nmax) {
+		if (cc[i] == nmax) {
 			++culm_sum;
 			culm_step = i;
 			if (culm_sum > 1) FLAG2(12, i);
@@ -916,7 +916,7 @@ int CGenCF1::FailIntervals(int ep2, vector<int> &pc)
 void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
 {
 	// Clear nstat
-	for (int i = nmin; i <= nmax; ++i) nstat2[i] = 0;
+	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 }
 
@@ -1421,9 +1421,8 @@ check:
 	while (true) {
 		//LogCantus(c);
 		if (FailNoteRepeat(cc, ep1-1, ep2-1)) goto skip;
-		GetDiatonic(c, cc, 0, ep2, minor_cur);
 		if ((need_exit) && (!pcantus || use_matrix)) break;
-		GetMelodyInterval(c, 0, ep2);
+		GetMelodyInterval(cc, 0, ep2);
 		++accepted3;
 		// Limit melody interval
 		if (pcantus) {
@@ -1436,18 +1435,21 @@ check:
 			if (nmax - nmin < min_interval) goto skip;
 			ClearFlags(0, ep2);
 		}
+		// Calculate diatonic limits
+		nmind = CC_C(nmin, tonic_cur, minor_cur);
+		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
+		GetDiatonic(c, cc, 0, ep2, minor_cur);
 		GetPitchClass(c, pc, 0, ep2);
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
-		GetChromatic(c, cc, 0, ep2, minor_cur);
 		if (minor_cur) AlterMinor(ep2, cc);
 		if (FailIntervals(ep2, pc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
 		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
 		if (FailLongRepeat(c, leap, ep2)) goto skip;
 		GlobalFill(ep2, nstat2);
-		if (FailStagnation(c, nstat, ep2)) goto skip;
-		if (FailMultiCulm(c, ep2)) goto skip;
+		if (FailStagnation(cc, nstat, ep2)) goto skip;
+		if (FailMultiCulm(cc, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
 		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
@@ -1893,7 +1895,6 @@ void CGenCF1::RandomSWA()
 
 // Do not calculate dpenalty (dp = 0). Calculate dpenalty (dp = 1).
 void CGenCF1::SWA(int i, int dp) {
-	int nmin, nmax;
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	s_len = 1;
 	// Save source rpenalty

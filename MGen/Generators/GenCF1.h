@@ -33,7 +33,7 @@ protected:
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
 	inline int FailNoteSeq(vector<int>& pc, int step1, int step2);
-	inline void GetMelodyInterval(vector<int>& c, int step1, int step2);
+	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2);
 	inline void ClearFlags(int step1, int step2);
 	inline int FailRange();
 	inline int FailRange(int nmin, int nmax);
@@ -49,8 +49,8 @@ protected:
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& leap, int ep2);
 	inline int FailLongRepeat(vector<int>& c, vector<int>& leap, int ep2);
 	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth);
-	inline int FailStagnation(vector<int>& c, vector<int>& nstat, int ep2);
-	inline int FailMultiCulm(vector<int>& c, int ep2);
+	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int ep2);
+	inline int FailMultiCulm(vector<int>& cc, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
 	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & ffinished);
@@ -186,7 +186,7 @@ protected:
 	long long cycle = 0; // Cycle number of full scan
 	milliseconds accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
-	int nmin, nmax;
+	int nmin, nmax, nmind, nmaxd;
 	int cc_incr[MAX_NOTE]; // cc increments for each step
 
 	// Local SWA
