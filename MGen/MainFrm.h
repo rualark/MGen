@@ -28,6 +28,8 @@
 #define MAX_PSPEED 5000
 #define MIN_VIEW_TIMER 50
 #define MAX_VIEW_TIMER 3000
+// Check for new logs every X ms
+#define LOG_TIMER 1000
 
 #define MAX_ALGO 100
 #define MAX_MIDI_DEVICES 100
@@ -65,6 +67,9 @@ public:
 	CString m_oinfo; // Strings of algorithm output status
 	CString m_oinfo2;
 	CString m_oinfo3;
+	int m_oinfo_changed; // If string changed
+	int m_oinfo2_changed;
+	int m_oinfo3_changed;
 	//CString midi_program; // Path to MIDI program to use
 	int m_state_gen=0;
 	// 0 = No music
@@ -98,6 +103,7 @@ public:
 // Operations
 public:
 	void SetStatusText(int line, CString st);
+	void ShowStatusText(int line, CString st);
 	void ClearLogs();
 	void WriteLog(int log, CString st);
 	int GetMidiI();
