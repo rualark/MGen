@@ -13,6 +13,13 @@ int CGLib::parameter_found = 0;
 int CGLib::play_enabled = 1;
 UINT CGLib::WM_DEBUG_MSG = 0;
 UINT CGLib::WM_STATUS_MSG = 0;
+timed_mutex CGLib::mutex_log;
+CString CGLib::m_oinfo; // Strings of algorithm output status
+CString CGLib::m_oinfo2;
+CString CGLib::m_oinfo3;
+int CGLib::m_oinfo_changed = 0; // If string changed
+int CGLib::m_oinfo2_changed = 0;
+int CGLib::m_oinfo3_changed = 0;
 
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
@@ -514,12 +521,25 @@ void CGLib::WriteLog(int i, CString st)
 	WriteLog(i, est);
 }
 
-void CGLib::SetStatusText(int i, CString st)
+void CGLib::SetStatusText(int line, CString st)
 {
 	if (can_send_log) {
-		CString *est = new CString;
-		*est = st;
-		if (can_send_log)	::PostMessage(m_hWnd, WM_STATUS_MSG, i, (LPARAM)est);
+		if (!mutex_log.try_lock_for(chrono::milliseconds(2000))) {
+			return;
+		}
+		if (line == 0) {
+			m_oinfo = st;
+			m_oinfo_changed = 1;
+		}
+		if (line == 1) {
+			m_oinfo2 = st;
+			m_oinfo2_changed = 1;
+		}
+		if (line == 2) {
+			m_oinfo3 = st;
+			m_oinfo3_changed = 1;
+		}
+		mutex_log.unlock();
 	}
 }
 

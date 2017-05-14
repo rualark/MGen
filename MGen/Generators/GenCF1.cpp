@@ -1480,7 +1480,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Analyze combination
 check:
 	while (true) {
-		if (cycle % 100 == 0) {
+		if (cycle % 1 == 0) {
 			st.Format("Cycle %lld", cycle);
 			SetStatusText(1, st);
 		}

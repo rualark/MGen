@@ -64,12 +64,6 @@ public:
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
 	CString m_dir; // Current saved results dir
-	CString m_oinfo; // Strings of algorithm output status
-	CString m_oinfo2;
-	CString m_oinfo3;
-	int m_oinfo_changed; // If string changed
-	int m_oinfo2_changed;
-	int m_oinfo3_changed;
 	//CString midi_program; // Path to MIDI program to use
 	int m_state_gen=0;
 	// 0 = No music

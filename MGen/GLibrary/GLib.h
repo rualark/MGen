@@ -157,7 +157,7 @@ public:
 	void TestSmoothRandom(); // Tests smooth random generator
 	static void WriteLog(int i, CString * pST);
 	static void WriteLog(int i, CString st);
-	static void SetStatusText(int i, CString st);
+	static void SetStatusText(int line, CString st);
 
 public:
 	// Thread interface
@@ -168,8 +168,17 @@ public:
 	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
 	UINT WM_GEN_FINISH;
 	timed_mutex mutex_output;
+	static timed_mutex mutex_log;
 	int need_exit = 0; // If thread needs to exit due to generation abort
 	vector<vector<CString>> logs; // Logs array
+
+	// Status output
+	static CString m_oinfo; // Strings of algorithm output status
+	static CString m_oinfo2;
+	static CString m_oinfo3;
+	static int m_oinfo_changed; // If string changed
+	static int m_oinfo2_changed;
+	static int m_oinfo3_changed;
 
 protected:
   // Random generator
