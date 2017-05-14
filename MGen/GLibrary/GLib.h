@@ -135,6 +135,7 @@ public:
 	static CString GetNoteName(int n);
 	static int GetNoteI(CString &st);
 	static int GetPC(CString &st);
+	static int MatchVectors(vector <int> &v1, vector <int> &v2, int i1, int i2);
 
 protected:
 	// Mathematics

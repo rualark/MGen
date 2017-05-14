@@ -192,6 +192,7 @@ protected:
 	int cc_incr[MAX_NOTE]; // cc increments for each step
 	vector<int> pc; // pitch class (diatonic)
 	vector<int> pcc; // pitch class (chromatic)
+	vector<int> test_cc;
 
 	// Local SWA
 	vector <float> dpenalty; // Penalty in terms of difference from user melody

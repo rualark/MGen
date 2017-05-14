@@ -547,7 +547,9 @@ int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
 		// Find all smooth
 		else if (c[i + 1] - c[i] == 1) smooth[i] = 1;
 		else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
-		// Add new leap
+	}
+	for (int i = 0; i < ep2 - 1; ++i) {
+			// Add new leap
 		if (leap[i] != 0) {
 			++leap_sum;
 			++leap_sum2;
@@ -1498,6 +1500,8 @@ check:
 		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(c, pc, 0, ep2);
 		if (minor_cur && FailMinor()) goto skip;
+		if (MatchVectors(cc, test_cc, 0, 3)) 
+			WriteLog(1, "Found");
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
@@ -2045,6 +2049,16 @@ void CGenCF1::SWA(int i, int dp) {
 
 void CGenCF1::Generate()
 {
+	test_cc.resize(9);
+	test_cc[0] = 72;
+	test_cc[1] = 69;
+	test_cc[2] = 71;
+	test_cc[3] = 72;
+	test_cc[4] = 74;
+	test_cc[5] = 67;
+	test_cc[6] = 69;
+	test_cc[7] = 71;
+	test_cc[8] = 72;
 	// Voice
 	int v = 0;
 	//TestDiatonic();

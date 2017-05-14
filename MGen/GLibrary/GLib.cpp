@@ -334,6 +334,16 @@ int CGLib::GetPC(CString &st)
 	}
 }
 
+int CGLib::MatchVectors(vector<int>& v1, vector<int>& v2, int i1, int i2)
+{
+	if (v1.size() <= i2) return 0;
+	if (v2.size() <= i2) return 0;
+	for (int i = i1; i <= i2; ++i) {
+		if (v1[i] != v2[i]) return 0;
+	}
+	return 1;
+}
+
 void CGLib::isaac()
 {
 	register ub4 i, x, y;
