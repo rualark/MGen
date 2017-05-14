@@ -209,18 +209,6 @@ void CMainFrame::ShowStatusText(int line, CString st)
 
 void CMainFrame::SetStatusText(int line, CString st)
 {
-	if (line == 0) {
-		m_oinfo = st;
-		m_oinfo_changed = 1;
-	}
-	if (line == 1) {
-		m_oinfo2 = st;
-		m_oinfo2_changed = 1;
-	}
-	if (line == 2) {
-		m_oinfo3 = st;
-		m_oinfo3_changed = 1;
-	}
 }
 
 void CMainFrame::WriteLog(int log, CString st)
@@ -972,17 +960,20 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 		}
 	}
 	if (nIDEvent == TIMER3 && CGLib::can_send_log) {
-		if (m_oinfo_changed) {
-			ShowStatusText(0, m_oinfo);
-			m_oinfo_changed = 0;
-		}
-		if (m_oinfo2_changed) {
-			ShowStatusText(1, m_oinfo2);
-			m_oinfo2_changed = 0;
-		}
-		if (m_oinfo3_changed) {
-			ShowStatusText(2, m_oinfo3);
-			m_oinfo3_changed = 0;
+		if (CGLib::mutex_log.try_lock_for(chrono::milliseconds(100))) {
+			if (CGLib::m_oinfo_changed) {
+				ShowStatusText(0, CGLib::m_oinfo);
+				CGLib::m_oinfo_changed = 0;
+			}
+			if (CGLib::m_oinfo2_changed) {
+				ShowStatusText(1, CGLib::m_oinfo2);
+				CGLib::m_oinfo2_changed = 0;
+			}
+			if (CGLib::m_oinfo3_changed) {
+				ShowStatusText(2, CGLib::m_oinfo3);
+				CGLib::m_oinfo3_changed = 0;
+			}
+			CGLib::mutex_log.unlock();
 		}
 	}
 }
