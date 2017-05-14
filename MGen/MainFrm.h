@@ -62,6 +62,9 @@ public:
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
 	CString m_dir; // Current saved results dir
+	CString m_oinfo; // Strings of algorithm output status
+	CString m_oinfo2;
+	CString m_oinfo3;
 	//CString midi_program; // Path to MIDI program to use
 	int m_state_gen=0;
 	// 0 = No music
@@ -94,6 +97,7 @@ public:
 
 // Operations
 public:
+	void SetStatusText(int line, CString st);
 	void ClearLogs();
 	void WriteLog(int log, CString st);
 	int GetMidiI();
@@ -155,6 +159,7 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg LRESULT OnGenFinish(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnDebugMsg(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnStatusMsg(WPARAM wParam, LPARAM lParam);
 
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
 	afx_msg void OnClose();

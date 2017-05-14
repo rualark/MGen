@@ -108,13 +108,16 @@
 #define ID_BUTTON_ESETTINGS             32822
 #define ID_BUTTON_RELOAD_SETTINGS       32822
 #define ID_BUTTON_OPENCSV               32823
+#define ID_OINFO                        32824
+#define ID_OINFO2                       32825
+#define ID_OINFO3                       32826
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32823
+#define _APS_NEXT_COMMAND_VALUE         32826
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
