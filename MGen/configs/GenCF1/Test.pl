@@ -15,9 +15,9 @@ first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
 
 s_len = 1 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
-random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow. (automatically enabled for RSWA)
+random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow. (automatically enabled for RSWA)
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
-shuffle = 1 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
+shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
 fullscan_max = 5000 # Maximum steps length to full scan. If melody is longer, use SWA
