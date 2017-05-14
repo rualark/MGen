@@ -285,6 +285,7 @@ int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
 // Detect prohibited note sequences
 int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
 	for (int i = step1; i < step2-2; ++i) {
+		// Prohibit GC before cadence
 		if (pc[i] == 4 && pc[i + 1] == 0) FLAG2(48, i)
 	}
 	return 0;
@@ -311,12 +312,6 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
 		nflagsc[i] = 0;
 	}
-}
-
-int CGenCF1::FailRange() {
-	if (nmax - nmin > max_interval) FLAG2(37, 0);
-	if (nmax - nmin < min_interval) FLAG2(38, 0);
-	return 0;
 }
 
 // Calculate pitch class
@@ -1490,11 +1485,11 @@ check:
 		if (pcantus) {
 			ClearFlags(0, ep2);
 			if (nmax - nmin > max_interval) FLAG(37, 0);
-			if (nmax - nmin < min_interval) FLAG(38, 0);
+			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
 		else {
 			if (nmax - nmin > max_interval) goto skip;
-			if (nmax - nmin < min_interval) goto skip;
+			if (c_len == ep2 && nmax - nmin < min_interval) goto skip;
 			ClearFlags(0, ep2);
 		}
 		// Calculate diatonic limits

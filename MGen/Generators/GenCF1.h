@@ -35,8 +35,6 @@ protected:
 	inline int FailNoteSeq(vector<int>& pc, int step1, int step2);
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2);
 	inline void ClearFlags(int step1, int step2);
-	inline int FailRange();
-	inline int FailRange(int nmin, int nmax);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
 	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc);
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2);
