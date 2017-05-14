@@ -8,13 +8,13 @@ include "include/rules-low.pl"
 # scan - full (or window) scan all possible combinations (can randomize starting vector with random_seed and random_range)
 
 algorithm = rswa
-c_len = 9 # Number of measures in each cantus. Usually 9 to 11
+c_len = 10 # Number of measures in each cantus. Usually 9 to 11
 interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
 
-s_len = 3 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+s_len = 10 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow. (automatically enabled for RSWA)
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
