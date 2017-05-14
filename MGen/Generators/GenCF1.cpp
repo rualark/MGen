@@ -619,6 +619,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
 // Prohibit multiple culminations
 int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
 	int culm_sum = 0, culm_step;
+	if (ep2 < c_len) return 0;
 	for (int i = 0; i < ep2; ++i) {
 		if (cc[i] == nmax) {
 			++culm_sum;
@@ -1500,8 +1501,8 @@ check:
 		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(c, pc, 0, ep2);
 		if (minor_cur && FailMinor()) goto skip;
-		if (MatchVectors(cc, test_cc, 0, 3)) 
-			WriteLog(1, "Found");
+		//if (MatchVectors(cc, test_cc, 0, 3)) 
+			//WriteLog(1, "Found");
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
