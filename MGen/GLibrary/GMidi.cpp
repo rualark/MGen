@@ -65,15 +65,15 @@ void CGMidi::LoadMidi(CString path)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (!fileExists(path)) {
-		CString* est = new CString;
-		est->Format("Cannot find file %s", path);
+		CString est;
+		est.Format("Cannot find file %s", path);
 		WriteLog(1, est);
 		return;
 	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
-		CString* est = new CString;
-		est->Format("Error reading midi file %s", path);
+		CString est;
+		est.Format("Error reading midi file %s", path);
 		WriteLog(1, est);
 		return;
 	}
@@ -82,8 +82,8 @@ void CGMidi::LoadMidi(CString path)
 	midifile.doTimeAnalysis();
 
 	if (midifile.getTrackCount() < 2) {
-		CString* st = new CString;
-		st->Format("Detected only %d tracks while loading file %s. Probably MIDI type 0. Splitting midi tracks by channels. Track names are not supported for MIDI type 0 yet.", midifile.getTrackCount(), path);
+		CString st;
+		st.Format("Detected only %d tracks while loading file %s. Probably MIDI type 0. Splitting midi tracks by channels. Track names are not supported for MIDI type 0 yet.", midifile.getTrackCount(), path);
 		WriteLog(1, st);
 		midifile.splitTracksByChannel();
 		midifile_type = 0;
@@ -137,8 +137,8 @@ void CGMidi::LoadMidi(CString path)
 			// Current voice is first voice in interval
 			v = v1;
 			if (v >= MAX_VOICE) {
-				CString* st = new CString;
-				st->Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
+				CString st;
+				st.Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
 				WriteLog(1, st);
 				break;
 			}
@@ -182,8 +182,8 @@ void CGMidi::LoadMidi(CString path)
 				// Check if note too long
 				if (nlen > MAX_LEN) {
 					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
-						CString* st = new CString;
-						st->Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
+						CString st;
+						st.Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
 						WriteLog(1, st);
 						warning_loadmidi_long++;
 					}
@@ -207,8 +207,8 @@ void CGMidi::LoadMidi(CString path)
 				int delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
 				// Check alignment
 				if (abs(delta) > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
-					CString* st = new CString;
-					st->Format("Note moved %d ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d ticks) in file %s. Increasing midifile_in_mul will improve approximation.", 
+					CString st;
+					st.Format("Note moved %d ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d ticks) in file %s. Increasing midifile_in_mul will improve approximation.", 
 						delta, track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
 					WriteLog(1, st);
 					warning_loadmidi_align++;
@@ -223,8 +223,8 @@ void CGMidi::LoadMidi(CString path)
 							// Check if note too short
 							if (len[pos][x] < 2) {
 								if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
-									CString* st = new CString;
-									st->Format("Note %s too short and gets same step with next note %s at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", GetNoteName(note[pos][x]), GetNoteName(pitch), track, mev->tick, tpc, midifile_in_mul, pos, path);
+									CString st;
+									st.Format("Note %s too short and gets same step with next note %s at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", GetNoteName(note[pos][x]), GetNoteName(pitch), track, mev->tick, tpc, midifile_in_mul, pos, path);
 									WriteLog(1, st);
 									warning_loadmidi_short++;
 								}
@@ -250,8 +250,8 @@ void CGMidi::LoadMidi(CString path)
 						// Copy instrument
 						instr[v] = instr[v1];
 						if (v >= MAX_VOICE) {
-							CString* st = new CString;
-							st->Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
+							CString st;
+							st.Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
 							WriteLog(1, st);
 							break;
 						}
@@ -403,19 +403,19 @@ void CGMidi::LoadMidi(CString path)
 	// Send last
 	t_generated = last_step + 1;
 	if (tnames != "") {
-		CString* est = new CString;
-		est->Format("MIDI file track names: %s", tnames);
+		CString est;
+		est.Format("MIDI file track names: %s", tnames);
 		WriteLog(0, est);
 	}
 	if (inames != "") {
-		CString* est = new CString;
-		est->Format("MIDI file instrument names: %s", inames);
+		CString est;
+		est.Format("MIDI file instrument names: %s", inames);
 		WriteLog(0, est);
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("LoadMidi successfully loaded %d steps (in %d ms)", t_generated, time_stop - time_start);
+	CString est;
+	est.Format("LoadMidi successfully loaded %d steps (in %d ms)", t_generated, time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -423,15 +423,15 @@ void CGMidi::LoadCantus(CString path)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (!fileExists(path)) {
-		CString* est = new CString;
-		est->Format("Cannot find file %s", path);
+		CString est;
+		est.Format("Cannot find file %s", path);
 		WriteLog(1, est);
 		return;
 	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
-		CString* est = new CString;
-		est->Format("Error reading midi file %s", path);
+		CString est;
+		est.Format("Error reading midi file %s", path);
 		WriteLog(1, est);
 		return;
 	}
@@ -508,8 +508,8 @@ void CGMidi::LoadCantus(CString path)
 					// Check if current note already set
 					if (!nlen) {
 						if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
-							CString* st = new CString;
-							st->Format("Note too short: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+							CString st;
+							st.Format("Note too short: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
 							WriteLog(1, st);
 							warning_loadmidi_short++;
 						}
@@ -519,8 +519,8 @@ void CGMidi::LoadCantus(CString path)
 					// Check if note too long
 					if (nlen > MAX_LEN) {
 						if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
-							CString* st = new CString;
-							st->Format("Note too long: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Decreasing midifile_in_mul can help.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+							CString st;
+							st.Format("Note too long: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Decreasing midifile_in_mul can help.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
 							WriteLog(1, st);
 							warning_loadmidi_long++;
 						}
@@ -549,8 +549,8 @@ void CGMidi::LoadCantus(CString path)
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* st = new CString;
-	st->Format("LoadCantus successfully loaded %d canti (in %d ms)", cid+1, time_stop - time_start);
+	CString st;
+	st.Format("LoadCantus successfully loaded %d canti (in %d ms)", cid+1, time_stop - time_start);
 	WriteLog(0, st);
 }
 
@@ -579,24 +579,24 @@ void CGMidi::StartMIDI(int midi_device_i, int from)
 	}
 	TIME_START;
 	if (debug_level > 1) {
-		CString* est = new CString;
-		est->Format("Trying to open midi device %d...", midi_device_i);
+		CString est;
+		est.Format("Trying to open midi device %d...", midi_device_i);
 		WriteLog(4, est);
 	}
 	mo = new CMidiOut;
 	if (mo->StartMidi(midi_device_i)) {
-		CString* est = new CString;
-		est->Format("Cannot open midi device %d: %s", midi_device_i, mo->m_error);
+		CString est;
+		est.Format("Cannot open midi device %d: %s", midi_device_i, mo->m_error);
 		WriteLog(1, est);
 	}
-	CString* est = new CString;
-	est->Format("Open MIDI: device %d", midi_device_i);
+	CString est;
+	est.Format("Open MIDI: device %d", midi_device_i);
 	WriteLog(4, est);
 }
 
 void CGMidi::LogInstruments() {
 	// Show instruments
-	CString* est = new CString;
+	CString est;
 	CString st, st2;
 	/*
 	int v_cnt2;
@@ -618,7 +618,7 @@ void CGMidi::LogInstruments() {
 		st.Format("%d ", instr_channel[i]);
 		st2 += st;
 	}
-	est->Format("%s", st2);
+	est.Format("%s", st2);
 	WriteLog(4, est);
 }
 
@@ -639,8 +639,8 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 				midi_sent_msg3 = event.message;
 			}
 			if (debug_level > 1) {
-				CString* est = new CString;
-				est->Format("Postponed AddMidiEvent to %d step %d, type %02X, data %d/%d (after %d step %d, type %02X, data %d/%d) [start = %d, lim = %d]",
+				CString est;
+				est.Format("Postponed AddMidiEvent to %d step %d, type %02X, data %d/%d (after %d step %d, type %02X, data %d/%d) [start = %d, lim = %d]",
 					timestamp, midi_current_step, mm_type, data1, data2, midi_sent_t - midi_start_time, midi_sent,
 					Pm_MessageStatus(midi_sent_msg), Pm_MessageData1(midi_sent_msg), Pm_MessageData2(midi_sent_msg), midi_start_time, midi_buf_lim - midi_start_time);
 				WriteLog(4, est);
@@ -656,8 +656,8 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 		}
 	}
 	else {
-		CString* est = new CString;
-		est->Format("Blocked AddMidiEvent to past %d step %d, type %02X, data %d/%d (before %d step %d, type %02X, data %d/%d) [start = %d]",
+		CString est;
+		est.Format("Blocked AddMidiEvent to past %d step %d, type %02X, data %d/%d (before %d step %d, type %02X, data %d/%d) [start = %d]",
 			timestamp, midi_current_step, mm_type, data1, data2, midi_sent_t - midi_start_time, midi_sent,
 			Pm_MessageStatus(midi_sent_msg), Pm_MessageData1(midi_sent_msg), Pm_MessageData2(midi_sent_msg), midi_start_time); // , midi_buf_lim - midi_start_time
 		WriteLog(1, est);
@@ -700,8 +700,8 @@ void CGMidi::AddTransitionCC(int i, int stimestamp, int CC, int value1, int valu
 void CGMidi::CheckDstime(int i, int v)
 {
 	if (dstime[i][v] - MAX_TRANS_DELAY < -MAX_AHEAD && warning_ahead > MAX_WARN_MIDI_AHEAD) {
-		CString* st = new CString;
-		st->Format("Warning: step %d, voice %d has dstime %.0f, while MAX_AHEAD=%d, MAX_TRANS_DELAY=%d. Risk of event blocking (can be not seen in logs)! Probably too long legato_ahead or random_start. Or you have to increase MAX_AHEAD.",
+		CString st;
+		st.Format("Warning: step %d, voice %d has dstime %.0f, while MAX_AHEAD=%d, MAX_TRANS_DELAY=%d. Risk of event blocking (can be not seen in logs)! Probably too long legato_ahead or random_start. Or you have to increase MAX_AHEAD.",
 			i, v, dstime[i][v], MAX_AHEAD, MAX_TRANS_DELAY);
 		WriteLog(1, st);
 		++warning_ahead;
@@ -728,8 +728,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 	if (!midi_sent_t) midi_sent_t = stime[step1] / m_pspeed * 100 + midi_start_time - 100;
 	// Check if we have buf underrun
 	if (midi_sent_t < timestamp_current) {
-		CString* st = new CString;
-		st->Format("SendMIDI got buf underrun in %d ms (steps %d - %d)", timestamp_current - midi_sent_t, step1, step2);
+		CString st;
+		st.Format("SendMIDI got buf underrun in %d ms (steps %d - %d)", timestamp_current - midi_sent_t, step1, step2);
 		WriteLog(1, st);
 		buf_underrun = 1;
 		return;
@@ -737,22 +737,22 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Check if buf is full
 	if (midi_sent_t - timestamp_current > MIN_MIDI_BUF_MSEC) {
 		if (debug_level > 1) {
-			CString* st = new CString;
-			st->Format("SendMIDI: no need to send (full buf = %d ms) (steps %d - %d) playback is at %d",
+			CString st;
+			st.Format("SendMIDI: no need to send (full buf = %d ms) (steps %d - %d) playback is at %d",
 				midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
 			WriteLog(4, st);
 		}
 		return;
 	}
 	if (debug_level > 1) {
-		CString* est = new CString;
-		est->Format("SendMIDI: need to send (full buf = %d ms) (steps %d - %d) playback is at %d",
+		CString est;
+		est.Format("SendMIDI: need to send (full buf = %d ms) (steps %d - %d) playback is at %d",
 			midi_sent_t - timestamp_current, step1, step2, timestamp_current - midi_start_time);
 		WriteLog(4, est);
 	}
 	int i;
 	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
-		WriteLog(0, new CString("SendMIDI mutex timed out: will try later"));
+		WriteLog(0, "SendMIDI mutex timed out: will try later");
 	}
 	int step21; // Voice-dependent first step
 	int step22; // Voice-independent last step
@@ -784,8 +784,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 				Pm_MessageData1(mbn[i].message), Pm_MessageData2(mbn[i].message));
 		}
 		if (debug_level > 1) {
-			CString* est = new CString;
-			est->Format("Postponed events sent (%d) - now postponed %d",
+			CString est;
+			est.Format("Postponed events sent (%d) - now postponed %d",
 				mbn.size(), midi_buf_next.size());
 			WriteLog(4, est);
 		}
@@ -896,8 +896,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* st = new CString;
-	st->Format("MIDI write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms. Limit %d. Last postponed %d. Step22 stopped increasing at %.0f ms. Start time: %d, current time: %d",
+	CString st;
+	st.Format("MIDI write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms. Limit %d. Last postponed %d. Step22 stopped increasing at %.0f ms. Start time: %d, current time: %d",
 		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, 
 		midi_sent_t-midi_start_time, midi_sent_t2 - midi_start_time, 
 		midi_sent_t - timestamp_current, midi_sent_t2 - timestamp_current,
@@ -1051,7 +1051,7 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 
 void CGMidi::StopMIDI()
 {
-	WriteLog(4, new CString("Stop MIDI"));
+	WriteLog(4, "Stop MIDI");
 	if (mo) delete mo;
 	mo = 0;
 }
@@ -1090,8 +1090,8 @@ void CGMidi::AddNoteOn(PmTimestamp timestamp, int data1, int data2)
 	// Check if range valid
 	if ((data1 < instr_nmin[instr[midi_voice]]) || (data1 > instr_nmax[instr[midi_voice]])) {
 		if (warning_note_wrong[midi_voice] < 4) {
-			CString* st = new CString;
-			st->Format("Blocked note %d/%d time %d in voice %d instrument %d out of range %d-%d",
+			CString st;
+			st.Format("Blocked note %d/%d time %d in voice %d instrument %d out of range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
 			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;
@@ -1106,8 +1106,8 @@ void CGMidi::AddKsOn(PmTimestamp timestamp, int data1, int data2)
 	// Check if range valid
 	if ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]])) {
 		if (warning_note_wrong[midi_voice] < 4) {
-			CString* st = new CString;
-			st->Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
+			CString st;
+			st.Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
 			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;
@@ -1122,8 +1122,8 @@ void CGMidi::AddNoteOff(PmTimestamp timestamp, int data1, int data2)
 	// Check if range valid
 	if ((data1 < instr_nmin[instr[midi_voice]]) || (data1 > instr_nmax[instr[midi_voice]])) {
 		if (warning_note_wrong[midi_voice] < 4) {
-			CString* st = new CString;
-			st->Format("Blocked note %d/%d time %d in voice %d instrument %d out of range %d-%d",
+			CString st;
+			st.Format("Blocked note %d/%d time %d in voice %d instrument %d out of range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
 			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;
@@ -1138,8 +1138,8 @@ void CGMidi::AddKsOff(PmTimestamp timestamp, int data1, int data2)
 	// Check if range valid
 	if ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]])) {
 		if (warning_note_wrong[midi_voice] < 4) {
-			CString* st = new CString;
-			st->Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
+			CString st;
+			st.Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
 			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;

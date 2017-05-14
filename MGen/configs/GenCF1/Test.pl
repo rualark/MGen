@@ -20,7 +20,7 @@ random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatic
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
-fullscan_max = 10 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 1 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note

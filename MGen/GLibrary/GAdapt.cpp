@@ -29,10 +29,10 @@ void CGAdapt::CheckRange(int v, int ii)
 			if (tr != 0) play_transpose[v] = tr;
 		}
 		// Check if still have problem
-		CString* st = new CString;
+		CString st;
 		if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
 			if (!warning_note_range[v]) {
-				st->Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Cannot transpose automatically: range too wide.",
+				st.Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Cannot transpose automatically: range too wide.",
 					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
 					InstGName[ii], InstCName[ii], v,
 					GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
@@ -41,7 +41,7 @@ void CGAdapt::CheckRange(int v, int ii)
 			}
 		}
 		else {
-			st->Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
+			st.Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
 				GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
 				InstGName[ii], InstCName[ii], v,
 				GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
@@ -55,9 +55,9 @@ void CGAdapt::CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pe
 	// Check if note is too short
 	int ndur = (etime[ei] - stime[i]) * 100 / m_pspeed;
 	if (ndur < instr_tmin[ii]) {
-		CString* st = new CString;
+		CString st;
 		if (warning_note_short[v] < 4) {
-			st->Format("Recommended minimum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
+			st.Format("Recommended minimum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
 				InstGName[ii], InstCName[ii], instr_tmin[ii], v, i, ndur);
 			warning_note_short[v] ++;
 			WriteLog(1, st);
@@ -71,9 +71,9 @@ void CGAdapt::CheckNoteBreath(int v, int x, int i, int ii, int ei, int pi, int p
 	// Check if note is too long for this instrument
 	int ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	if (instr_tmax[ii] && ndur > instr_tmax[ii]) {
-		CString* st = new CString;
+		CString st;
 		if (warning_note_long[v] < 4) {
-			st->Format("Recommended maximum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config. Some instruments may cut this note shorter.",
+			st.Format("Recommended maximum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config. Some instruments may cut this note shorter.",
 				InstGName[ii], InstCName[ii], instr_tmax[ii], v, i, ndur);
 			warning_note_long[v] ++;
 			WriteLog(1, st);
@@ -654,8 +654,8 @@ void CGAdapt::Adapt(int step1, int step2)
 		int ii = instr[v]; 
 		// Check if sending multiple voices to monophonic instrument
 		if ((isent[ii] > instr_poly[ii]) && (!warning_poly[ii])) {
-			CString* est = new CString;
-			est->Format("Warning: sending %d voices to instrument %s [%d] with polyphony = %d", isent[ii], InstGName[ii], ii, instr_poly[ii]);
+			CString est;
+			est.Format("Warning: sending %d voices to instrument %s [%d] with polyphony = %d", isent[ii], InstGName[ii], ii, instr_poly[ii]);
 			WriteLog(1, est);
 			warning_poly[ii]++;
 		}
@@ -663,8 +663,8 @@ void CGAdapt::Adapt(int step1, int step2)
 	// Count time
 	if (debug_level > 1) {
 		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-		CString* st = new CString;
-		st->Format("Adapt steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+		CString st;
+		st.Format("Adapt steps %d-%d in %d ms", step1, step2, time_stop - time_start);
 		WriteLog(0, st);
 	}
 	// Tempo could change

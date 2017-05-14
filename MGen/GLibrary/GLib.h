@@ -4,6 +4,16 @@
 #define MGR_VERSION "1.9" // Version of MGR file format (should change only when format changes)
 #define MAX_VOICE 200
 #define MAX_INSTR 100
+// Number of log tabs
+#define LOG_TABS 5
+// Check for new logs every X ms
+#define LOG_TIMER 50
+// Send no more than Y logs every time when checking (maximum stable frequency is LOG_MAX_SEND / LOG_TIMER)
+#define LOG_MAX_SEND 1
+// Maximum number of logs in buffer (maximum burst)
+#define MAX_LOG_BUFFER 100
+// Maximum number of logs saved to file on autosave in each tab
+#define MAX_SAVED_LOGS 10000
 
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
@@ -155,7 +165,6 @@ public:
 	void InitRandom();
 	void TestRandom(); // Tests random generator
 	void TestSmoothRandom(); // Tests smooth random generator
-	static void WriteLog(int i, CString * pST);
 	static void WriteLog(int i, CString st);
 	static void SetStatusText(int line, CString st);
 
@@ -179,6 +188,11 @@ public:
 	static int m_oinfo_changed; // If string changed
 	static int m_oinfo2_changed;
 	static int m_oinfo3_changed;
+
+	// Log output
+	static vector<queue<CString>> log_buffer; // Logs buffer
+	static vector<int> log_buffer_size; // Logs buffer size
+	static vector<int> warn_log_buffer; // =1 if Log buffer overflow
 
 protected:
   // Random generator

@@ -158,7 +158,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
-		WriteLog(1, new CString("Critical error: ResizeVectors mutex timed out"));
+		WriteLog(1, "Critical error: ResizeVectors mutex timed out");
 	}
 	if (vsize == -1) vsize = v_cnt;
 	pause.resize(size);
@@ -217,8 +217,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 	// Count time
 	if (debug_level > 1) {
 		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-		CString* st = new CString;
-		st->Format("ResizeVectors from %d to %d steps, from %d to %d voices (in %d ms)", t_allocated, size, v_cnt, vsize, time_stop - time_start);
+		CString st;
+		st.Format("ResizeVectors from %d to %d steps, from %d to %d voices (in %d ms)", t_allocated, size, v_cnt, vsize, time_stop - time_start);
 		WriteLog(0, st);
 	}
 
@@ -233,8 +233,8 @@ void CGVar::LoadConfigFile(CString fname)
 	ifstream fs;
 	// Check file exists
 	if (!fileExists(fname)) {
-		CString* est = new CString;
-		est->Format("LoadConfig cannot find file: %s", fname);
+		CString est;
+		est.Format("LoadConfig cannot find file: %s", fname);
 		WriteLog(1, est);
 		return;
 	}
@@ -293,8 +293,8 @@ void CGVar::LoadConfigFile(CString fname)
 		}
 	}
 	fs.close();
-	CString* est = new CString;
-	est->Format("LoadConfigFile loaded %d lines from %s", i, fname);
+	CString est;
+	est.Format("LoadConfigFile loaded %d lines from %s", i, fname);
 	WriteLog(0, est);
 }
 
@@ -340,14 +340,14 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 				}
 				if (i == InstGName.size() - 1) {
 					if (!found) {
-						CString* est = new CString;
-						est->Format("Cannot find any instrument named %s (%d) in layout %s. Mapped to default instrument %s/%s (%d)", 
+						CString est;
+						est.Format("Cannot find any instrument named %s (%d) in layout %s. Mapped to default instrument %s/%s (%d)", 
 							st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size()-1);
 						WriteLog(1, est);
 					}
 					else {
-						CString* est = new CString;
-						est->Format("Cannot map instrument named %s (%d) in layout %s. Probably too many voices for this instrument type.  Mapped to default instrument %s/%s (%d)", 
+						CString est;
+						est.Format("Cannot map instrument named %s (%d) in layout %s. Probably too many voices for this instrument type.  Mapped to default instrument %s/%s (%d)", 
 							st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size() - 1);
 						WriteLog(1, est);
 					}
@@ -363,8 +363,8 @@ void CGVar::LoadInstrumentLayout()
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	// Check file exists
 	if (!fileExists(fname)) {
-		CString* est = new CString;
-		est->Format("LoadInstrumentLayout cannot find file: %s", fname);
+		CString est;
+		est.Format("LoadInstrumentLayout cannot find file: %s", fname);
 		WriteLog(1, est);
 		return;
 	}
@@ -395,8 +395,8 @@ void CGVar::LoadInstrumentLayout()
 		pos = 0;
 		if (st.Find("|") != -1) {
 			if (InstCName.size() >= MAX_INSTR) {
-				CString* est = new CString;
-				est->Format("LoadInstrumentLayout found more instruments than MAX_INSTR (%d) in file: %s. Increase MAX_INSTR if needed", MAX_INSTR, fname);
+				CString est;
+				est.Format("LoadInstrumentLayout found more instruments than MAX_INSTR (%d) in file: %s. Increase MAX_INSTR if needed", MAX_INSTR, fname);
 				WriteLog(1, est);
 				break;
 			}
@@ -435,8 +435,8 @@ void CGVar::LoadInstrumentLayout()
 	}
 	// Log
 	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("LoadInstrumentLayout loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
+	CString est;
+	est.Format("LoadInstrumentLayout loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -577,8 +577,8 @@ void CGVar::LoadInstrument(int i, CString fname)
 	fs.close();
 	// Log
 	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("LoadInstruments loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
+	CString est;
+	est.Format("LoadInstruments loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -687,25 +687,27 @@ void CGVar::SaveResults(CString dir, CString fname)
 	fs << st;
 	fs.close();
 	// Save logs
-	fs.open(dir + "\\debug.log");
-	for (int i = 0; i<logs[0].size(); i++) fs << logs[0][i] << "\n";
-	fs.close();
-	fs.open(dir + "\\warning.log");
-	for (int i = 0; i<logs[1].size(); i++) fs << logs[1][i] << "\n";
-	fs.close();
-	fs.open(dir + "\\gui.log");
-	for (int i = 0; i<logs[2].size(); i++) fs << logs[2][i] << "\n";
-	fs.close();
-	fs.open(dir + "\\algorithm.log");
-	for (int i = 0; i<logs[3].size(); i++) fs << logs[3][i] << "\n";
-	fs.close();
-	fs.open(dir + "\\midi.log");
-	for (int i = 0; i<logs[4].size(); i++) fs << logs[4][i] << "\n";
-	fs.close();
+	if (logs.size()) {
+		fs.open(dir + "\\debug.log");
+		for (int i = 0; i < logs[0].size(); i++) fs << logs[0][i] << "\n";
+		fs.close();
+		fs.open(dir + "\\warning.log");
+		for (int i = 0; i < logs[1].size(); i++) fs << logs[1][i] << "\n";
+		fs.close();
+		fs.open(dir + "\\gui.log");
+		for (int i = 0; i < logs[2].size(); i++) fs << logs[2][i] << "\n";
+		fs.close();
+		fs.open(dir + "\\algorithm.log");
+		for (int i = 0; i < logs[3].size(); i++) fs << logs[3][i] << "\n";
+		fs.close();
+		fs.open(dir + "\\midi.log");
+		for (int i = 0; i < logs[4].size(); i++) fs << logs[4][i] << "\n";
+		fs.close();
+	}
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("Saved results to files in %d ms", time_stop - time_start);
+	CString est;
+	est.Format("Saved results to files in %d ms", time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -758,8 +760,8 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 	fs.close();
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("Saved CSV vectors to file %s\\%s.csv in %d ms", dir, fname, time_stop - time_start);
+	CString est;
+	est.Format("Saved CSV vectors to file %s\\%s.csv in %d ms", dir, fname, time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -770,8 +772,8 @@ void CGVar::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int
 	fs.read(pointer, bytes);
 	int read_count = fs.gcount();
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-		CString* est = new CString;
-		est->Format("LoadVector2C: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
+		CString est;
+		est.Format("LoadVector2C: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
 		WriteLog(1, est);
 		warning_loadvectors++;
 	}
@@ -784,8 +786,8 @@ void CGVar::LoadVector2S(ifstream& fs, vector< vector<unsigned short> > &v2D, in
 	fs.read(pointer, bytes);
 	int read_count = fs.gcount();
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-		CString* est = new CString;
-		est->Format("LoadVector2S: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
+		CString est;
+		est.Format("LoadVector2S: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
 		WriteLog(1, est);
 		warning_loadvectors++;
 	}
@@ -798,8 +800,8 @@ void CGVar::LoadVector2Color(ifstream & fs, vector< vector<Color> > &v2D, int i)
 		fs.read((char*)&color, bytes);
 		int read_count = fs.gcount();
 		if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-			CString* est = new CString;
-			est->Format("LoadVector2Color: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
+			CString est;
+			est.Format("LoadVector2Color: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
 			WriteLog(1, est);
 			warning_loadvectors++;
 		}
@@ -815,8 +817,8 @@ void CGVar::LoadVector2ST(ifstream & fs, vector< vector<CString> > &v2D, int i) 
 		fs.read((char*)&len, bytes);
 		int read_count = fs.gcount();
 		if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-			CString* est = new CString;
-			est->Format("LoadVector2ST len: Error reading %d bytes from binary file (got %d bytes instead) at step %d: %d", bytes, read_count, i, len);
+			CString est;
+			est.Format("LoadVector2ST len: Error reading %d bytes from binary file (got %d bytes instead) at step %d: %d", bytes, read_count, i, len);
 			WriteLog(1, est);
 			warning_loadvectors++;
 		}
@@ -827,14 +829,14 @@ void CGVar::LoadVector2ST(ifstream & fs, vector< vector<CString> > &v2D, int i) 
 			string st = v2D[i][v];
 			int read_count = fs.gcount();
 			if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-				CString* est = new CString;
-				est->Format("LoadVector2ST: Error reading %d bytes from binary file (got %d bytes instead) at step %d: %s", bytes, read_count, i, v2D[i][v]);
+				CString est;
+				est.Format("LoadVector2ST: Error reading %d bytes from binary file (got %d bytes instead) at step %d: %s", bytes, read_count, i, v2D[i][v]);
 				WriteLog(1, est);
 				warning_loadvectors++;
 			}
 			if (st.find_first_not_of(" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890`-=[]\\';/.,~!@#$%^&*()_+|{}:<>?1234567890") != string::npos && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-				CString* est = new CString;
-				est->Format("LoadVector2ST: String contains unprintable characters at step %d: %s", i, v2D[i][v]);
+				CString est;
+				est.Format("LoadVector2ST: String contains unprintable characters at step %d: %s", i, v2D[i][v]);
 				WriteLog(1, est);
 				warning_loadvectors++;
 			}
@@ -850,8 +852,8 @@ void CGVar::LoadVector(ifstream &fs, vector<float> &v) {
 	fs.read(pointer, bytes);
 	int read_count = fs.gcount();
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-		CString* est = new CString;
-		est->Format("LoadVector float: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
+		CString est;
+		est.Format("LoadVector float: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
 		WriteLog(1, est);
 		warning_loadvectors++;
 	}
@@ -865,8 +867,8 @@ void CGVar::LoadVector(ifstream &fs, vector<unsigned char> &v) {
 	fs.read(pointer, bytes);
 	int read_count = fs.gcount();
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-		CString* est = new CString;
-		est->Format("LoadVector uchar: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
+		CString est;
+		est.Format("LoadVector uchar: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
 		WriteLog(1, est);
 		warning_loadvectors++;
 	}
@@ -880,8 +882,8 @@ void CGVar::LoadVector(ifstream &fs, vector<Color> &v) {
 	fs.read(pointer, bytes);
 	int read_count = fs.gcount();
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
-		CString* est = new CString;
-		est->Format("LoadVector Color: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
+		CString est;
+		est.Format("LoadVector Color: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
 		WriteLog(1, est);
 		warning_loadvectors++;
 	}
@@ -895,8 +897,8 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 	// Load binary
 	path = dir + "\\" + fname + ".mgr";
 	if (!fileExists(path)) {
-		CString* est = new CString;
-		est->Format("Cannot find file %s", path);
+		CString est;
+		est.Format("Cannot find file %s", path);
 		WriteLog(1, est);
 		return;
 	}
@@ -940,8 +942,8 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 	fs.close();
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("Loaded result music from folder %s in %d ms", dir, time_stop - time_start);
+	CString est;
+	est.Format("Loaded result music from folder %s in %d ms", dir, time_stop - time_start);
 	WriteLog(0, est);
 	ValidateVectors(0, t_generated - 1);
 }
@@ -968,8 +970,8 @@ void CGVar::ValidateVectors2(int step1, int step2) {
 	// Count time
 	if (debug_level > 1) {
 		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-		CString* est = new CString;
-		est->Format("Post-validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+		CString est;
+		est.Format("Post-validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
 		WriteLog(0, est);
 	}
 }
@@ -1082,8 +1084,8 @@ void CGVar::ValidateVectors(int step1, int step2) {
 	// Count time
 	if (debug_level > 1) {
 		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-		CString* est = new CString;
-		est->Format("Validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+		CString est;
+		est.Format("Validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
 		WriteLog(0, est);
 	}
 }
@@ -1098,8 +1100,8 @@ void CGVar::LoadResults(CString dir, CString fname)
 	// Load logs
 	path = dir + "\\algorithm.log";
 	if (!fileExists(path)) {
-		CString* est = new CString;
-		est->Format("Cannot find file %s", path);
+		CString est;
+		est.Format("Cannot find file %s", path);
 		WriteLog(1, est);
 		return;
 	}
@@ -1114,8 +1116,8 @@ void CGVar::LoadResults(CString dir, CString fname)
 	// Load logs
 	path = dir + "\\debug.log";
 	if (!fileExists(path)) {
-		CString* est = new CString;
-		est->Format("Cannot find file %s", path);
+		CString est;
+		est.Format("Cannot find file %s", path);
 		WriteLog(1, est);
 		return;
 	}
@@ -1130,8 +1132,8 @@ void CGVar::LoadResults(CString dir, CString fname)
 	// Load logs
 	path = dir + "\\warning.log";
 	if (!fileExists(path)) {
-		CString* est = new CString;
-		est->Format("Cannot find file %s", path);
+		CString est;
+		est.Format("Cannot find file %s", path);
 		WriteLog(1, est);
 		return;
 	}
@@ -1146,8 +1148,8 @@ void CGVar::LoadResults(CString dir, CString fname)
 	// Load strings
 	path = dir + "\\" + fname + ".txt";
 	if (!fileExists(path)) {
-		CString* est = new CString;
-		est->Format("Cannot find file %s", path);
+		CString est;
+		est.Format("Cannot find file %s", path);
 		WriteLog(1, est);
 		return;
 	}
@@ -1196,8 +1198,8 @@ void CGVar::LoadResults(CString dir, CString fname)
 	InitVectors();
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("Loaded result info from folder %s in %d ms", dir, time_stop - time_start);
+	CString est;
+	est.Format("Loaded result info from folder %s in %d ms", dir, time_stop - time_start);
 	WriteLog(0, est);
 }
 

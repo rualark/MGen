@@ -33,8 +33,8 @@ void CGenCA1::GetCantusKey(vector <int> &cc)
 	int c1 = GetCantusKey2(cc, t1, 0);
 	// Minor
 	int c2 = GetCantusKey2(cc, t2, 1);
-	CString* est = new CString;
-	est->Format("Key selection: major confidence %d, minor confidence %d", c1, c2);
+	CString est;
+	est.Format("Key selection: major confidence %d, minor confidence %d", c1, c2);
 	WriteLog(3, est);
 	if (c1 == 0 && c2 == 0) {
 		tonic_cur = -1;
@@ -94,8 +94,8 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 	}
 	// If no key selected
 	if (min_miss > 0) {
-		CString* est = new CString;
-		est->Format("Error: due to chromatic alterations, cannot detect key (m%d) for melody %s", minor_cur, cst);
+		CString est;
+		est.Format("Error: due to chromatic alterations, cannot detect key (m%d) for melody %s", minor_cur, cst);
 		WriteLog(3, est);
 		tonic_cur = -1;
 		return 0;
@@ -117,8 +117,8 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 	}
 	// Check if only one key
 	if (key_count == 1) {
-		CString* est = new CString;
-		est->Format("Single key %s selected for melody %s (m%d)", NoteName[tonic_cur], cst, minor_cur);
+		CString est;
+		est.Format("Single key %s selected for melody %s (m%d)", NoteName[tonic_cur], cst, minor_cur);
 		WriteLog(3, est);
 		if (cc[c_len - 1] % 12 == tonic_cur) {
 			return 500 - key_count;
@@ -131,8 +131,8 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 	// If multiple keys and random_key set
 	else if (random_key) {
 		tonic_cur = keys[randbw(0, keys.size() - 1)];
-		CString* est = new CString;
-		est->Format("Ambiguous %d keys m%d (%s) resolved to %s (random) in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
+		CString est;
+		est.Format("Ambiguous %d keys m%d (%s) resolved to %s (random) in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
 		WriteLog(3, est);
 		return 100 - keys.size();
 	}
@@ -142,8 +142,8 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 		for (int i = 0; i < keys.size(); i++) {
 			if (cc[c_len - 1] % 12 == keys[i]) {
 				tonic_cur = keys[i];
-				CString* est = new CString;
-				est->Format("Ambiguous %d keys m%d (%s) resolved to %s as last note in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
+				CString est;
+				est.Format("Ambiguous %d keys m%d (%s) resolved to %s as last note in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
 				WriteLog(3, est);
 				return 400 - keys.size();
 			}
@@ -152,16 +152,16 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 		for (int i = 0; i < keys.size(); i++) {
 			if (cc[0] % 12 == keys[i]) {
 				tonic_cur = keys[i];
-				CString* est = new CString;
-				est->Format("Ambiguous %d keys m%d (%s) resolved to %s as first note in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
+				CString est;
+				est.Format("Ambiguous %d keys m%d (%s) resolved to %s as first note in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
 				WriteLog(3, est);
 				return 300 - keys.size();
 			}
 		}
 		// If nothing found, return random of accepted
 		tonic_cur = keys[randbw(0, keys.size() - 1)];
-		CString* est = new CString;
-		est->Format("Ambiguous %d keys m%d (%s) resolved to %s (random) in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
+		CString est;
+		est.Format("Ambiguous %d keys m%d (%s) resolved to %s (random) in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
 		WriteLog(3, est);
 		return 100 - keys.size();
 	}
@@ -201,8 +201,8 @@ void CGenCA1::CreateScanMatrix(int i) {
 		st.Format("%d ", smatrix[x]);
 		st2 += st;
 	}
-	CString* est = new CString;
-	est->Format("Scan matrix for cantus %d created with %d steps of %d: %s", i + 1, smatrixc, c_len, st2);
+	CString est;
+	est.Format("Scan matrix for cantus %d created with %d steps of %d: %s", i + 1, smatrixc, c_len, st2);
 	WriteLog(3, est);
 }
 
@@ -274,8 +274,8 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 	}
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	// Send log
-	CString* est = new CString;
-	est->Format("Sent corrections in %d ms to step %d with rp/dp/variants: %s", time_stop - time_start, step, st2);
+	CString est;
+	est.Format("Sent corrections in %d ms to step %d with rp/dp/variants: %s", time_stop - time_start, step, st2);
 	WriteLog(3, est);
 }
 

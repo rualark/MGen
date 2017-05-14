@@ -57,8 +57,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_COMBO_ALGO, &CMainFrame::OnUpdateComboAlgo)
 	ON_COMMAND(ID_COMBO_ALGO, &CMainFrame::OnComboAlgo)
 	ON_REGISTERED_MESSAGE(WM_GEN_FINISH, &CMainFrame::OnGenFinish)
-	ON_REGISTERED_MESSAGE(WM_DEBUG_MSG, &CMainFrame::OnDebugMsg)
-	ON_REGISTERED_MESSAGE(WM_STATUS_MSG, &CMainFrame::OnStatusMsg)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_GEN, &CMainFrame::OnUpdateButtonGen)
 	ON_WM_CLOSE()
 	ON_UPDATE_COMMAND_UI(ID_COMBO_MIDIOUT, &CMainFrame::OnUpdateComboMidiout)
@@ -213,22 +211,28 @@ void CMainFrame::SetStatusText(int line, CString st)
 
 void CMainFrame::WriteLog(int log, CString st)
 {
+	CGLib::WriteLog(log, st);
+}
+
+void CMainFrame::ShowLog(int log, CString st)
+{
 	// Add log to vector from this thread only
 	if (pGen && pGen->can_send_log) {
-		if (pGen->logs.size() < 2) pGen->logs.resize(10);
-		pGen->logs[log].push_back(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
+		if (!pGen->logs.size()) pGen->logs.resize(LOG_TABS);
+		// Save log if not too much already
+		if (pGen->logs[log].size() < MAX_SAVED_LOGS) 
+			pGen->logs[log].push_back(st);
 	}
 	COutputList* pOL=0;
 	if (log == 0) pOL = &m_wndOutput.m_wndOutputDebug;
 	if (log == 1) {
 		pOL = &m_wndOutput.m_wndOutputWarn;
-		CGLib::AppendLineToFile("log\\warning.log", 
-			CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st + "\n");
+		CGLib::AppendLineToFile("log\\warning.log", st + "\n");
 	}
 	if (log == 2) pOL = &m_wndOutput.m_wndOutputPerf;
 	if (log == 3) pOL = &m_wndOutput.m_wndOutputAlgo;
 	if (log == 4) pOL = &m_wndOutput.m_wndOutputMidi;
-	pOL->AddString(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
+	pOL->AddString(st);
 	if (pOL->GetCount() > 1000) pOL->DeleteString(0);
 	pOL->SetTopIndex(pOL->GetCount() - 1);
 }
@@ -661,29 +665,12 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-LRESULT CMainFrame::OnDebugMsg(WPARAM wParam, LPARAM lParam)
-{
-	CString* pSt = (CString*)lParam;
-	WriteLog(wParam, *pSt);
-	delete pSt;
-	return LRESULT();
-}
-
-LRESULT CMainFrame::OnStatusMsg(WPARAM wParam, LPARAM lParam)
-{
-	CString* pSt = (CString*)lParam;
-	SetStatusText(wParam, *pSt);
-	delete pSt;
-	return LRESULT();
-}
-
 void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI)
 {
 	BOOL bEnable = m_wndOutput.IsVisible();
 	pCmdUI->Enable();
 	pCmdUI->SetCheck(bEnable);
 }
-
 
 void CMainFrame::OnUpdateComboAlgo(CCmdUI *pCmdUI)
 {
@@ -961,6 +948,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	}
 	if (nIDEvent == TIMER3 && CGLib::can_send_log) {
 		if (CGLib::mutex_log.try_lock_for(chrono::milliseconds(100))) {
+			// Show status
 			if (CGLib::m_oinfo_changed) {
 				ShowStatusText(0, CGLib::m_oinfo);
 				CGLib::m_oinfo_changed = 0;
@@ -972,6 +960,19 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 			if (CGLib::m_oinfo3_changed) {
 				ShowStatusText(2, CGLib::m_oinfo3);
 				CGLib::m_oinfo3_changed = 0;
+			}
+			// Show logs
+			for (int log = 0; log < LOG_TABS; ++log) {
+				if (CGLib::log_buffer_size[log]) {
+					int sent = 0;
+					while (!CGLib::log_buffer[log].empty()) {
+						ShowLog(log, CGLib::log_buffer[log].front());
+						CGLib::log_buffer[log].pop();
+						--CGLib::log_buffer_size[log];
+						++sent;
+						if (sent >= LOG_MAX_SEND) break;
+					}
+				}
 			}
 			CGLib::mutex_log.unlock();
 		}

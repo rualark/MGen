@@ -20,6 +20,9 @@ CString CGLib::m_oinfo3;
 int CGLib::m_oinfo_changed = 0; // If string changed
 int CGLib::m_oinfo2_changed = 0;
 int CGLib::m_oinfo3_changed = 0;
+vector<queue<CString>> CGLib::log_buffer;
+vector<int> CGLib::warn_log_buffer;
+vector<int> CGLib::log_buffer_size;
 
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
@@ -74,8 +77,8 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, int * vm
 		++parameter_found;
 		int pos = sValue->Find("-");
 		if (pos == -1) {
-			CString* est = new CString;
-			est->Format("Error parsing range variable '%s'. Range format must be 'X-Y'. Not found '-' symbol in string '%s'.", *sName, *sValue);
+			CString est;
+			est.Format("Error parsing range variable '%s'. Range format must be 'X-Y'. Not found '-' symbol in string '%s'.", *sName, *sValue);
 			WriteLog(1, est);
 		}
 		else {
@@ -99,8 +102,8 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, float * 
 		++parameter_found;
 		int pos = sValue->Find("-");
 		if (pos == -1) {
-			CString* est = new CString;
-			est->Format("Error parsing range variable '%s'. Range format must be 'X-Y'. Not found '-' symbol in string '%s'.", *sName, *sValue);
+			CString est;
+			est.Format("Error parsing range variable '%s'. Range format must be 'X-Y'. Not found '-' symbol in string '%s'.", *sName, *sValue);
 			WriteLog(1, est);
 		}
 		else {
@@ -145,8 +148,8 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 			st.Trim();
 			if (st == "") break;
 			if (i >= Dest.size()) {
-				CString* est = new CString;
-				est->Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
+				CString est;
+				est.Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
 				WriteLog(1, est);
 				return;
 			}
@@ -300,14 +303,14 @@ int CGLib::GetNoteI(CString &st)
 		}
 		if ((nid > -1) && (isdigit(st[pos]))) {
 			int i = nid + (atoi(st.Mid(pos, 1))+1) * 12;
-			//CString* est = new CString;
-			//est->Format("Converted note name %s to %d", st, i);
+			//CString est;
+			//est.Format("Converted note name %s to %d", st, i);
 			//WriteLog(0, est);
 			return i;
 		} else {
-			CString* est = new CString;
-			if (nid > -1)	est->Format("Error parsing note name %s: not found octave indicator after note. Correct format examples: C#2 or C3", st);
-			else est->Format("Error parsing note name %s: note symbol not recognized. Correct format examples: C#2 or C3", st);
+			CString est;
+			if (nid > -1)	est.Format("Error parsing note name %s: not found octave indicator after note. Correct format examples: C#2 or C3", st);
+			else est.Format("Error parsing note name %s: note symbol not recognized. Correct format examples: C#2 or C3", st);
 			WriteLog(1, est);
 			return -1;
 		}
@@ -330,14 +333,14 @@ int CGLib::GetPC(CString &st)
 		}
 	}
 	if (nid > -1) {
-		//CString* est = new CString;
-		//est->Format("Converted pitch class name %s to %d", st, nid);
+		//CString est;
+		//est.Format("Converted pitch class name %s to %d", st, nid);
 		//WriteLog(0, est);
 		return nid;
 	}
 	else {
-		CString* est = new CString;
-		est->Format("Error parsing pitch class name %s: note symbol not recognized. Correct format examples: C# or C", st);
+		CString est;
+		est.Format("Error parsing pitch class name %s: note symbol not recognized. Correct format examples: C# or C", st);
 		WriteLog(1, est);
 	}
 }
@@ -411,10 +414,10 @@ void CGLib::randinit(int flag)
 		for (i = 0; i<256; i += 8)
 		{
 			a += mm[i]; b += mm[i + 1]; c += mm[i + 2]; d += mm[i + 3];
-			e += mm[i + 4]; f += mm[i + 5]; g += mm[i + 6]; h += mm[i + 7];
-			mix(a, b, c, d, e, f, g, h);
-			mm[i] = a; mm[i + 1] = b; mm[i + 2] = c; mm[i + 3] = d;
-			mm[i + 4] = e; mm[i + 5] = f; mm[i + 6] = g; mm[i + 7] = h;
+e += mm[i + 4]; f += mm[i + 5]; g += mm[i + 6]; h += mm[i + 7];
+mix(a, b, c, d, e, f, g, h);
+mm[i] = a; mm[i + 1] = b; mm[i + 2] = c; mm[i + 3] = d;
+mm[i + 4] = e; mm[i + 5] = f; mm[i + 6] = g; mm[i + 7] = h;
 		}
 	}
 
@@ -441,8 +444,8 @@ void CGLib::InitRandom()
 	// Init rand
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	srand(seed);
-	//CString* est = new CString;
-	//est->Format("Random test: %d", rand());
+	//CString est;
+	//est.Format("Random test: %d", rand());
 	//WriteLog(1, est);
 	// Init ISAAC
 	ub4 i;
@@ -454,11 +457,11 @@ void CGLib::InitRandom()
 
 void CGLib::TestRandom()
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	milliseconds time_start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 	int n_buckets = 30;
 	int n_samples = 100000;
 	int n_variants = 3;
-	vector< vector <int> > test = vector<vector<int>>(n_buckets, vector<int>(n_variants+1));
+	vector< vector <int> > test = vector<vector<int>>(n_buckets, vector<int>(n_variants + 1));
 	// Fill test
 	for (int v = 0; v < n_samples; v++) {
 		for (int i = 0; i < n_buckets; i++) {
@@ -478,15 +481,15 @@ void CGLib::TestRandom()
 	}
 	fs.close();
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
+	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	CString est;
+	est.Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
 	WriteLog(1, est);
 }
 
 void CGLib::TestSmoothRandom()
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	milliseconds time_start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 	int n_samples = 1000;
 	CSmoothRandom sr;
 	// Show results
@@ -502,23 +505,39 @@ void CGLib::TestSmoothRandom()
 	}
 	fs.close();
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("TestSmoothRandom with %d samples took %d ms", n_samples, time_stop - time_start);
+	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	CString est;
+	est.Format("TestSmoothRandom with %d samples took %d ms", n_samples, time_stop - time_start);
 	WriteLog(1, est);
-}
-
-void CGLib::WriteLog(int i, CString* pST)
-{
-	if (can_send_log)	::PostMessage(m_hWnd, WM_DEBUG_MSG, i, (LPARAM)pST);
-	else delete pST;
 }
 
 void CGLib::WriteLog(int i, CString st)
 {
-	CString *est = new CString;
-	*est = st;
-	WriteLog(i, est);
+	if (can_send_log) {
+		if (!mutex_log.try_lock_for(chrono::milliseconds(2000))) {
+			return;
+		}
+		if (log_buffer.size() < 2) {
+			log_buffer.resize(LOG_TABS);
+			log_buffer_size.resize(LOG_TABS);
+			warn_log_buffer.resize(LOG_TABS);
+		}
+		if (log_buffer_size[i] >= MAX_LOG_BUFFER) {
+			if (!warn_log_buffer[i]) {
+				CString st2;
+				st2.Format("WARNING: MAXIMUM LOGS FREQUENCY %d in %d MS EXCEEDED FOR THIS LOG: SOME LOG ENTRIES LOST. Please check your algorithm or increase MAX_LOG_BUFFER", MAX_LOG_BUFFER, LOG_TIMER);
+				log_buffer[i].push(st2);
+				++log_buffer_size[i];
+				warn_log_buffer[i] = 1;
+			}
+			// Exit to prevent buffer overflow
+			mutex_log.unlock();
+			return;
+		}
+		log_buffer[i].push(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
+		++log_buffer_size[i];
+		mutex_log.unlock();
+	}
 }
 
 void CGLib::SetStatusText(int line, CString st)

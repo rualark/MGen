@@ -207,15 +207,15 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 			// Check if not Strict flag
 			if (i) {
 				if (cur_severity == MAX_FLAGS) {
-					CString* est = new CString;
-					est->Format("Warning: more flags in config than in algorithm. Possibly duplicate flags in config. Please correct config %s", m_config);
+					CString est;
+					est.Format("Warning: more flags in config than in algorithm. Possibly duplicate flags in config. Please correct config %s", m_config);
 					WriteLog(1, est);
 				}
 				else {
 					// Check if flag already has severity
 					if (flag_to_sev[i]) {
-						CString* est = new CString;
-						est->Format("Warning: detected duplicate flag %s. Please correct config %s", FlagName[i], m_config);
+						CString est;
+						est.Format("Warning: detected duplicate flag %s. Please correct config %s", FlagName[i], m_config);
 						WriteLog(1, est);
 					}
 					else {
@@ -223,8 +223,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 						sev_to_flag[cur_severity] = i;
 						flag_to_sev[i] = cur_severity;
 						// Log
-						//CString* est = new CString;
-						//est->Format("Flag '%s' gets severity %d", FlagName[i], cur_severity);
+						//CString est;
+						//est.Format("Flag '%s' gets severity %d", FlagName[i], cur_severity);
 						//WriteLog(1, est);
 						++cur_severity;
 					}
@@ -1205,8 +1205,8 @@ int CGenCF1::FailAccept() {
 // Check if too many windows
 int CGenCF1::FailWindowsLimit(vector<int> *pcantus, int use_matrix) {
 	if (((c_len - 2) / (float)s_len > MAX_WIND && !pcantus) || (pcantus && use_matrix == 1 && smatrixc / s_len > MAX_WIND)) {
-		CString* est = new CString;
-		est->Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
+		CString est;
+		est.Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
 			c_len, s_len, MAX_WIND);
 		WriteLog(1, est);
 		return 1;
@@ -1258,14 +1258,14 @@ void CGenCF1::NextWindow(int use_matrix) {
 		wcount = wid + 1;
 		if (ep2 == c_len) {
 			// Show window statistics
-			CString* est = new CString;
+			CString est;
 			CString st, st2;
 			for (int i = 0; i < wcount; ++i) {
 				if (i > 0) st2 += ", ";
 				st.Format("%d-%d", wpos1[i], wpos2[i]);
 				st2 += st;
 			}
-			est->Format("Algorithm created %d windows: %s", wcount, st2);
+			est.Format("Algorithm created %d windows: %s", wcount, st2);
 			WriteLog(3, est);
 		}
 	}
@@ -1480,10 +1480,6 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Analyze combination
 check:
 	while (true) {
-		if (cycle % 1 == 0) {
-			st.Format("Cycle %lld", cycle);
-			SetStatusText(1, st);
-		}
 		if (FailNoteRepeat(cc, ep1-1, ep2-1)) goto skip;
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		GetMelodyInterval(cc, 0, ep2);
@@ -1631,13 +1627,13 @@ void CGenCF1::ShowFlagStat() {
 	CString st, st2;
 	// Show flag statistics
 	if (calculate_stat) {
-		CString* est = new CString;
+		CString est;
 		for (int i = 0; i < MAX_FLAGS; ++i) {
 			int f1 = sev_to_flag[i];
 			st.Format("\n%lld %s ", fstat[f1], FlagName[f1]);
 			st2 += st;
 		}
-		est->Format("%d/%d: Accepted %lld/%lld/%lld/%lld variants of %lld: %s",
+		est.Format("%d/%d: Accepted %lld/%lld/%lld/%lld variants of %lld: %s",
 			c_len, max_interval, accepted4[wcount - 1], accepted, accepted2,
 			accepted3, cycle, st2);
 		WriteLog(3, est);
@@ -1698,7 +1694,7 @@ void CGenCF1::ShowFlagBlock() {
 	if (calculate_blocking) {
 		for (int w = 0; w < wcount; ++w) {
 			int lines = 0;
-			CString* est = new CString;
+			CString est;
 			st2 = "";
 			for (int d = 1; d < MAX_FLAGS; ++d) {
 				if (lines > 100) break;
@@ -1728,7 +1724,7 @@ void CGenCF1::ShowFlagBlock() {
 					fblock[w][d][max_flag] = -1;
 				}
 			}
-			est->Format("Window %d: %lld scans, %lld of %lld variants blocked: %s", w, wscans[w], accepted5[w] - accepted4[w], accepted5[w], st2);
+			est.Format("Window %d: %lld scans, %lld of %lld variants blocked: %s", w, wscans[w], accepted5[w] - accepted4[w], accepted5[w], st2);
 			WriteLog(3, est);
 		}
 	}
@@ -1817,11 +1813,11 @@ void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 			// Add line
 			linecolor[t_sent] = Color(255, 0, 0, 0);
 			t_sent = t_generated;
-			++cantus_sent;
-			st.Format("Sent melodies: %ld", cantus_sent);
-			SetStatusText(0, st);
 		}
 	}
+	++cantus_sent;
+	st.Format("Sent melodies: %ld", cantus_sent);
+	SetStatusText(0, st);
 }
 
 void CGenCF1::InitCantus()
@@ -1836,16 +1832,16 @@ void CGenCF1::InitCantus()
 		for (int i = 1; i < MAX_FLAGS; ++i) {
 			if (!flag_to_sev[i]) {
 				if (cur_severity == MAX_FLAGS) {
-					CString* est = new CString;
-					est->Format("Warning: more flags in config than in algorithm. Possibly duplicate flags inc config. Please correct config %s", m_config);
+					CString est;
+					est.Format("Warning: more flags in config than in algorithm. Possibly duplicate flags inc config. Please correct config %s", m_config);
 					WriteLog(1, est);
 				}
 				else {
 					sev_to_flag[cur_severity] = i;
 					flag_to_sev[i] = cur_severity;
 					// Log
-					CString* est = new CString;
-					est->Format("Warning: flag '%s' not found in config %s. Assigning severity %d to flag. Please add flag to file", FlagName[i], m_config, cur_severity);
+					CString est;
+					est.Format("Warning: flag '%s' not found in config %s. Assigning severity %d to flag. Please add flag to file", FlagName[i], m_config, cur_severity);
 					WriteLog(1, est);
 					++cur_severity;
 				}
@@ -1867,16 +1863,16 @@ void CGenCF1::InitCantus()
 	if (hvd.size() + hvt.size() + hvs.size() == 0) {
 		CString h_default = "TS,DS,DT,S,DT,TS,D";
 		CString vname = "harm_var";
-		CString* est = new CString;
-		est->Format("Warning: no harmonic meaning (variants) in configuration file. Loading default: %s", h_default);
+		CString est;
+		est.Format("Warning: no harmonic meaning (variants) in configuration file. Loading default: %s", h_default);
 		WriteLog(1, est);
 		LoadHarmVar(&vname, &h_default);
 	}
 	if (hcd.size() + hct.size() + hcs.size() == 0) {
 		CString h_default = "T,DS,T,S,D,S,D";
 		CString vname = "harm_const";
-		CString* est = new CString;
-		est->Format("Warning: no harmonic meaning (constant) in configuration file. Loading default: %s", h_default);
+		CString est;
+		est.Format("Warning: no harmonic meaning (constant) in configuration file. Loading default: %s", h_default);
 		WriteLog(1, est);
 		LoadHarmConst(&vname, &h_default);
 	}
@@ -2002,8 +1998,8 @@ void CGenCF1::SWA(int i, int dp) {
 		cc = clib[cids[cid]];
 		// Send log
 		if (s_len >= swa_steps && debug_level > 1) {
-			CString* est = new CString;
-			est->Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+			CString est;
+			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
 		}
 		if (dp) {
@@ -2048,8 +2044,8 @@ void CGenCF1::SWA(int i, int dp) {
 	clib = clib2;
 	// Log
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	CString* est = new CString;
-	est->Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): " + GetStuck(), 
+	CString est;
+	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): " + GetStuck(), 
 		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start);
 	WriteLog(3, est);
 }
@@ -2118,8 +2114,8 @@ void CGenCF1::Generate()
 		// Send
 		t_sent = t_generated;
 		::PostMessage(m_hWnd, WM_GEN_FINISH, 2, 0);
-		CString* est = new CString;
-		est->Format("Shuffle of %lld melodies finished", accepted);
+		CString est;
+		est.Format("Shuffle of %lld melodies finished", accepted);
 		WriteLog(3, est);
 	}
 }

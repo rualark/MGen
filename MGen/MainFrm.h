@@ -28,8 +28,6 @@
 #define MAX_PSPEED 5000
 #define MIN_VIEW_TIMER 50
 #define MAX_VIEW_TIMER 3000
-// Check for new logs every X ms
-#define LOG_TIMER 1000
 
 #define MAX_ALGO 100
 #define MAX_MIDI_DEVICES 100
@@ -100,6 +98,7 @@ public:
 	void ShowStatusText(int line, CString st);
 	void ClearLogs();
 	void WriteLog(int log, CString st);
+	void ShowLog(int log, CString st);
 	int GetMidiI();
 	void LoadAlgo();
 	void LoadSettings();
@@ -158,8 +157,6 @@ public:
 	afx_msg void OnComboAlgo();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg LRESULT OnGenFinish(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnDebugMsg(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnStatusMsg(WPARAM wParam, LPARAM lParam);
 
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
 	afx_msg void OnClose();
