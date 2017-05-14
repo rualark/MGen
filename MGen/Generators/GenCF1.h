@@ -73,6 +73,7 @@ protected:
 	inline int NextSWA();
 	inline void SaveBestRejected(vector<int>* pcantus);
 	inline int FailMinor();
+	inline void ShowScanStatus();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void WriteFlagCor();
 	void ShowFlagStat();

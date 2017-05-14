@@ -1271,6 +1271,10 @@ void CGenCF1::NextWindow(int use_matrix) {
 			WriteLog(3, est);
 		}
 	}
+	// Show
+	CString st;
+	st.Format("Window %d of %d", wid+1, wcount);
+	SetStatusText(1, st);
 	/*
 	if (debug_level > 0) {
 		CString st;
@@ -1384,7 +1388,7 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 		// When random seeding, even back window movement should be randomized to avoid autorestart window cycle
 		//if (random_seed) RandCantus(c, sp1, sp2);
 		//else
-			FillCantus(c, sp1, sp2, min_c[0]);
+		FillCantus(c, sp1, sp2, min_c[0]);
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
@@ -1397,6 +1401,10 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 		// Go to rightmost element
 		p = sp2 - 1;
 	}
+	// Show
+	CString st;
+	st.Format("Window %d of %d", wid + 1, wcount);
+	SetStatusText(1, st);
 }
 
 int CGenCF1::NextSWA() {
@@ -1458,6 +1466,15 @@ int CGenCF1::FailMinor() {
 	return 0;
 }
 
+void CGenCF1::ShowScanStatus() {
+	CString st;
+	st.Format("Scan progress: %d of %d", cc[sp1] - min_cc[sp1],
+		max_cc[sp1] - min_cc[sp1]);
+	SetStatusText(2, st);
+	st.Format("Cycles: %lld", cycle);
+	SetStatusText(5, st);
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
@@ -1497,6 +1514,8 @@ check:
 			if (c_len == ep2 && nmax - nmin < min_interval) goto skip;
 			ClearFlags(0, ep2);
 		}
+		// Show status
+		if (accepted3 % 100000 == 0) ShowScanStatus();
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
@@ -1567,6 +1586,7 @@ check:
 	skip:
 		ScanLeft(use_matrix, finished);
 		if (finished) {
+			ShowScanStatus();
 			// Sliding Windows Approximation
 			if (use_matrix == 2) {
 				if (NextSWA()) break;
