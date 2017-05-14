@@ -94,7 +94,6 @@ public:
 
 // Operations
 public:
-	void SetStatusText(int line, CString st);
 	void ShowStatusText(int line, CString st);
 	void ClearLogs();
 	void WriteLog(int log, CString st);

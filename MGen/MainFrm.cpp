@@ -208,10 +208,6 @@ void CMainFrame::ShowStatusText(int line, CString st)
 	if (pEdit) pEdit->SetEditText(st);
 }
 
-void CMainFrame::SetStatusText(int line, CString st)
-{
-}
-
 void CMainFrame::WriteLog(int log, CString st)
 {
 	CGLib::WriteLog(log, st);
@@ -422,9 +418,12 @@ void CMainFrame::OnButtonParams()
 }
 
 void CMainFrame::ClearLogs() {
+	// Clear only log tabs that are specific to an algorithm run
 	m_wndOutput.m_wndOutputDebug.ResetContent();
 	m_wndOutput.m_wndOutputWarn.ResetContent();
 	m_wndOutput.m_wndOutputAlgo.ResetContent();
+	// Clear status lines
+	for (int i=0; i<STATUS_LINES; ++i) CGLib::SetStatusText(i, "");
 }
 
 void CMainFrame::LoadResults(CString path) {

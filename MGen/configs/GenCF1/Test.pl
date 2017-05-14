@@ -14,13 +14,13 @@ key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
 
-s_len = 10 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow. (automatically enabled for RSWA)
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
-fullscan_max = 1 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 10 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note
