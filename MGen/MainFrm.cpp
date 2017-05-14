@@ -189,6 +189,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//CGenRS1 gen;
 	//gen.TestSmoothRandom();
+	//ShowStatusText(0, "0");
+	//ShowStatusText(1, "1");
+	//ShowStatusText(2, "2");
+	//ShowStatusText(3, "3");
+	//ShowStatusText(4, "4");
+	//ShowStatusText(5, "5");
 
 	// Start log/status timer
 	SetTimer(TIMER3, LOG_TIMER, NULL);
