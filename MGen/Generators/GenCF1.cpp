@@ -260,6 +260,8 @@ void CGenCF1::RandCantus(vector<int>& c, int step1, int step2)
 	for (int i = step1; i < step2; ++i) {
 		for (int x = 0; x < 1000; ++x) {
 			c[i] = randbw(min_c[0], max_c[0]);
+			// Convert to chromatic
+			cc[i] = C_CC(c[i], tonic_cur, minor_cur);
 			// Prevent note repeats in the starting cantus
 			if (c[i] != c[i - 1] && (i < c_len - 2 || c[i] != c[i + 1])) break;
 		}
@@ -1501,8 +1503,8 @@ check:
 		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(c, pc, 0, ep2);
 		if (minor_cur && FailMinor()) goto skip;
-		if (MatchVectors(cc, test_cc, 0, 2)) 
-			WriteLog(1, "Found");
+		//if (MatchVectors(cc, test_cc, 0, 2)) 
+			//WriteLog(1, "Found");
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
