@@ -26,6 +26,7 @@
 
 #define TIMER1 1
 #define TIMER2 2
+#define TIMER3 3
 
 // CMainFrame
 
@@ -191,16 +192,35 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//CGenRS1 gen;
 	//gen.TestSmoothRandom();
 
+	// Start log/status timer
+	SetTimer(TIMER3, LOG_TIMER, NULL);
+
 	return 0;
 }
 
-void CMainFrame::SetStatusText(int line, CString st)
+void CMainFrame::ShowStatusText(int line, CString st)
 {
 	CMFCRibbonEdit *pEdit = 0;
 	if (line == 0) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO));
 	if (line == 1) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO2));
 	if (line == 2) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO3));
 	if (pEdit) pEdit->SetEditText(st);
+}
+
+void CMainFrame::SetStatusText(int line, CString st)
+{
+	if (line == 0) {
+		m_oinfo = st;
+		m_oinfo_changed = 1;
+	}
+	if (line == 1) {
+		m_oinfo2 = st;
+		m_oinfo2_changed = 1;
+	}
+	if (line == 2) {
+		m_oinfo3 = st;
+		m_oinfo3_changed = 1;
+	}
 }
 
 void CMainFrame::WriteLog(int log, CString st)
@@ -951,6 +971,20 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 			}
 		}
 	}
+	if (nIDEvent == TIMER3 && CGLib::can_send_log) {
+		if (m_oinfo_changed) {
+			ShowStatusText(0, m_oinfo);
+			m_oinfo_changed = 0;
+		}
+		if (m_oinfo2_changed) {
+			ShowStatusText(1, m_oinfo2);
+			m_oinfo2_changed = 0;
+		}
+		if (m_oinfo3_changed) {
+			ShowStatusText(2, m_oinfo3);
+			m_oinfo3_changed = 0;
+		}
+	}
 }
 
 UINT CMainFrame::GenThread(LPVOID pParam)
@@ -974,15 +1008,17 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 
 void CMainFrame::OnClose()
 {
+	// Stop log/status timer
+	::KillTimer(m_hWnd, TIMER3);
+	// Prevent new logs to be added
+	CGLib::can_send_log = 0;
 	if (m_state_gen == 1) {
-		CGLib::can_send_log = 0;
 		OnButtonGen();
 		WaitForSingleObject(m_GenThread->m_hThread, 10000);
 		delete pGen;
 		pGen = 0;
 	}
 	if (pGen != 0) {
-		CGLib::can_send_log = 0;
 		delete pGen;
 		pGen = 0;
 	}

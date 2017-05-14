@@ -1480,6 +1480,10 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Analyze combination
 check:
 	while (true) {
+		if (cycle % 100 == 0) {
+			st.Format("Cycle %lld", cycle);
+			SetStatusText(1, st);
+		}
 		if (FailNoteRepeat(cc, ep1-1, ep2-1)) goto skip;
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		GetMelodyInterval(cc, 0, ep2);
