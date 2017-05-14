@@ -5,7 +5,7 @@
 #define MAX_PENALTY 10000000.0
 
 #define MAX_FLAGS 73
-#define MAX_WIND 50
+#define MAX_WIND 500
 #define MAX_NOTE 127
 
 // Convert chromatic to diatonic

@@ -1501,8 +1501,8 @@ check:
 		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(c, pc, 0, ep2);
 		if (minor_cur && FailMinor()) goto skip;
-		//if (MatchVectors(cc, test_cc, 0, 3)) 
-			//WriteLog(1, "Found");
+		if (MatchVectors(cc, test_cc, 0, 2)) 
+			WriteLog(1, "Found");
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
@@ -1527,7 +1527,7 @@ check:
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
 				NextWindow(use_matrix);
-				goto skip;
+				goto check;
 			}
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (float)RAND_MAX*random_choose / 100.0) goto skip;
@@ -2053,16 +2053,17 @@ void CGenCF1::SWA(int i, int dp) {
 
 void CGenCF1::Generate()
 {
-	test_cc.resize(9);
+	test_cc.resize(10);
 	test_cc[0] = 72;
-	test_cc[1] = 69;
-	test_cc[2] = 71;
-	test_cc[3] = 72;
-	test_cc[4] = 74;
-	test_cc[5] = 67;
-	test_cc[6] = 69;
-	test_cc[7] = 71;
-	test_cc[8] = 72;
+	test_cc[1] = 74;
+	test_cc[2] = 62;
+	test_cc[3] = 64;
+	test_cc[4] = 65;
+	test_cc[5] = 69;
+	test_cc[6] = 67;
+	test_cc[7] = 69;
+	test_cc[8] = 71;
+	test_cc[9] = 72;
 	// Voice
 	int v = 0;
 	//TestDiatonic();
