@@ -12,6 +12,7 @@ int CGLib::debug_level = 1;
 int CGLib::parameter_found = 0;
 int CGLib::play_enabled = 1;
 UINT CGLib::WM_DEBUG_MSG = 0;
+UINT CGLib::WM_STATUS_MSG = 0;
 
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
@@ -511,6 +512,15 @@ void CGLib::WriteLog(int i, CString st)
 	CString *est = new CString;
 	*est = st;
 	WriteLog(i, est);
+}
+
+void CGLib::SetStatusText(int i, CString st)
+{
+	if (can_send_log) {
+		CString *est = new CString;
+		*est = st;
+		if (can_send_log)	::PostMessage(m_hWnd, WM_STATUS_MSG, i, (LPARAM)est);
+	}
 }
 
 int CGLib::randbw(int n1, int n2)

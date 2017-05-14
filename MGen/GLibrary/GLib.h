@@ -157,13 +157,14 @@ public:
 	void TestSmoothRandom(); // Tests smooth random generator
 	static void WriteLog(int i, CString * pST);
 	static void WriteLog(int i, CString st);
+	static void SetStatusText(int i, CString st);
 
 public:
 	// Thread interface
 	static int debug_level;
 	static int play_enabled;
 	static HWND m_hWnd;
-	static UINT WM_DEBUG_MSG;
+	static UINT WM_DEBUG_MSG, WM_STATUS_MSG;
 	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
 	UINT WM_GEN_FINISH;
 	timed_mutex mutex_output;

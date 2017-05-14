@@ -140,6 +140,7 @@ protected:
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 
   // Local
+	long cantus_sent = 0; // How many cantus have been sent
 	int sev_to_flag[MAX_FLAGS]; // Get flag ID by severity
 	vector<int>  flag_to_sev; // Get severity by flag id
 	vector<Color>  flag_color; // Flag colors

@@ -31,6 +31,7 @@
 
 static UINT WM_GEN_FINISH = RegisterWindowMessage("MGEN_GEN_FINISH_MSG");
 static UINT WM_DEBUG_MSG = RegisterWindowMessage("MGEN_DEBUG_MSG");
+static UINT WM_STATUS_MSG = RegisterWindowMessage("MGEN_STATUS_MSG");
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 
@@ -56,6 +57,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_COMBO_ALGO, &CMainFrame::OnComboAlgo)
 	ON_REGISTERED_MESSAGE(WM_GEN_FINISH, &CMainFrame::OnGenFinish)
 	ON_REGISTERED_MESSAGE(WM_DEBUG_MSG, &CMainFrame::OnDebugMsg)
+	ON_REGISTERED_MESSAGE(WM_STATUS_MSG, &CMainFrame::OnStatusMsg)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_GEN, &CMainFrame::OnUpdateButtonGen)
 	ON_WM_CLOSE()
 	ON_UPDATE_COMMAND_UI(ID_COMBO_MIDIOUT, &CMainFrame::OnUpdateComboMidiout)
@@ -184,11 +186,21 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CGLib::can_send_log = 1;
 	CGLib::m_hWnd = m_hWnd;
 	CGLib::WM_DEBUG_MSG = WM_DEBUG_MSG;
+	CGLib::WM_STATUS_MSG = WM_STATUS_MSG;
 
 	//CGenRS1 gen;
 	//gen.TestSmoothRandom();
 
 	return 0;
+}
+
+void CMainFrame::SetStatusText(int line, CString st)
+{
+	CMFCRibbonEdit *pEdit = 0;
+	if (line == 0) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO));
+	if (line == 1) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO2));
+	if (line == 2) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO3));
+	if (pEdit) pEdit->SetEditText(st);
 }
 
 void CMainFrame::WriteLog(int log, CString st)
@@ -645,6 +657,14 @@ LRESULT CMainFrame::OnDebugMsg(WPARAM wParam, LPARAM lParam)
 {
 	CString* pSt = (CString*)lParam;
 	WriteLog(wParam, *pSt);
+	delete pSt;
+	return LRESULT();
+}
+
+LRESULT CMainFrame::OnStatusMsg(WPARAM wParam, LPARAM lParam)
+{
+	CString* pSt = (CString*)lParam;
+	SetStatusText(wParam, *pSt);
 	delete pSt;
 	return LRESULT();
 }

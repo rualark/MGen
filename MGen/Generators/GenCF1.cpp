@@ -1813,6 +1813,9 @@ void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 			// Add line
 			linecolor[t_sent] = Color(255, 0, 0, 0);
 			t_sent = t_generated;
+			++cantus_sent;
+			st.Format("Sent melodies: %ld", cantus_sent);
+			SetStatusText(0, st);
 		}
 	}
 }
