@@ -14,12 +14,8 @@ int CGLib::play_enabled = 1;
 UINT CGLib::WM_DEBUG_MSG = 0;
 UINT CGLib::WM_STATUS_MSG = 0;
 timed_mutex CGLib::mutex_log;
-CString CGLib::m_oinfo; // Strings of algorithm output status
-CString CGLib::m_oinfo2;
-CString CGLib::m_oinfo3;
-int CGLib::m_oinfo_changed = 0; // If string changed
-int CGLib::m_oinfo2_changed = 0;
-int CGLib::m_oinfo3_changed = 0;
+vector<CString> CGLib::oinfo; // Strings of algorithm output status
+vector<int> CGLib::oinfo_changed; // If string changed
 vector<queue<CString>> CGLib::log_buffer;
 vector<int> CGLib::warn_log_buffer;
 vector<int> CGLib::log_buffer_size;
@@ -446,13 +442,13 @@ void CGLib::InitRandom()
 	srand(seed);
 	//CString est;
 	//est.Format("Random test: %d", rand());
-	//WriteLog(1, est);
-	// Init ISAAC
-	ub4 i;
-	aa = bb = cc = (ub4)0;
-	for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
-	randinit(1);
-	//TestRandom();
+//WriteLog(1, est);
+// Init ISAAC
+ub4 i;
+aa = bb = cc = (ub4)0;
+for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
+randinit(1);
+//TestRandom();
 }
 
 void CGLib::TestRandom()
@@ -546,17 +542,13 @@ void CGLib::SetStatusText(int line, CString st)
 		if (!mutex_log.try_lock_for(chrono::milliseconds(2000))) {
 			return;
 		}
-		if (line == 0) {
-			m_oinfo = st;
-			m_oinfo_changed = 1;
+		if (!oinfo.size()) {
+			oinfo.resize(STATUS_LINES);
+			oinfo_changed.resize(STATUS_LINES);
 		}
-		if (line == 1) {
-			m_oinfo2 = st;
-			m_oinfo2_changed = 1;
-		}
-		if (line == 2) {
-			m_oinfo3 = st;
-			m_oinfo3_changed = 1;
+		if (line < STATUS_LINES) {
+			oinfo[line] = st;
+			oinfo_changed[line] = 1;
 		}
 		mutex_log.unlock();
 	}

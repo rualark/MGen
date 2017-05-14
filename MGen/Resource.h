@@ -111,13 +111,16 @@
 #define ID_OINFO                        32824
 #define ID_OINFO2                       32825
 #define ID_OINFO3                       32826
+#define ID_OINFO4                       32827
+#define ID_OINFO5                       32828
+#define ID_OINFO6                       32829
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32826
+#define _APS_NEXT_COMMAND_VALUE         32829
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

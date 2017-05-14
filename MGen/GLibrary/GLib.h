@@ -4,6 +4,8 @@
 #define MGR_VERSION "1.9" // Version of MGR file format (should change only when format changes)
 #define MAX_VOICE 200
 #define MAX_INSTR 100
+// Number of status lines
+#define STATUS_LINES 6
 // Number of log tabs
 #define LOG_TABS 5
 // Check for new logs every X ms
@@ -182,13 +184,9 @@ public:
 	vector<vector<CString>> logs; // Logs array
 
 	// Status output
-	static CString m_oinfo; // Strings of algorithm output status
-	static CString m_oinfo2;
-	static CString m_oinfo3;
-	static int m_oinfo_changed; // If string changed
-	static int m_oinfo2_changed;
-	static int m_oinfo3_changed;
-
+	static vector<CString> oinfo; // Strings of algorithm output status
+	static vector<int> oinfo_changed; // If string changed
+	
 	// Log output
 	static vector<queue<CString>> log_buffer; // Logs buffer
 	static vector<int> log_buffer_size; // Logs buffer size
