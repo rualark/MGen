@@ -202,6 +202,9 @@ void CMainFrame::ShowStatusText(int line, CString st)
 	if (line == 0) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO));
 	if (line == 1) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO2));
 	if (line == 2) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO3));
+	if (line == 3) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO4));
+	if (line == 4) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO5));
+	if (line == 5) pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO6));
 	if (pEdit) pEdit->SetEditText(st);
 }
 
@@ -949,17 +952,11 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == TIMER3 && CGLib::can_send_log) {
 		if (CGLib::mutex_log.try_lock_for(chrono::milliseconds(100))) {
 			// Show status
-			if (CGLib::m_oinfo_changed) {
-				ShowStatusText(0, CGLib::m_oinfo);
-				CGLib::m_oinfo_changed = 0;
-			}
-			if (CGLib::m_oinfo2_changed) {
-				ShowStatusText(1, CGLib::m_oinfo2);
-				CGLib::m_oinfo2_changed = 0;
-			}
-			if (CGLib::m_oinfo3_changed) {
-				ShowStatusText(2, CGLib::m_oinfo3);
-				CGLib::m_oinfo3_changed = 0;
+			if (CGLib::oinfo.size()) for (int line=0; line<STATUS_LINES; ++line) {
+				if (CGLib::oinfo_changed[line]) {
+					ShowStatusText(line, CGLib::oinfo[line]);
+					CGLib::oinfo_changed[line] = 0;
+				}
 			}
 			// Show logs
 			for (int log = 0; log < LOG_TABS; ++log) {
