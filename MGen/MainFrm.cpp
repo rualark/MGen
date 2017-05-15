@@ -987,16 +987,56 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 
 	if (pGen == NULL) return 1;   // if Object is not valid  
 
-	if (pGen->debug_level > 1 && pGen->can_send_log) 
-		::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread started"));
+	// Clear frequency stats
+	fill(CGLib::status_updates.begin(), CGLib::status_updates.end(), (long long)0);
+	fill(CGLib::logs_sent.begin(), CGLib::logs_sent.end(), (long long)0);
+
 	pGen->Generate();
-	//Sleep(2000);
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
-	//pGen->time_stopped = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	pGen->time_stopped = TIME_PROC(TIME_INFO);
 
-	if (pGen->debug_level > 1 && pGen->can_send_log)
-		::PostMessage(pGen->m_hWnd, WM_DEBUG_MSG, 0, (LPARAM)new CString("Thread stopped"));
+	// Show updates frequency
+	CString st, st2;
+	long long total = 0;
+	for (int i = 0; i < STATUS_LINES; ++i) {
+		total += CGLib::status_updates[i];
+		st.Format("\n%d per second (%lld in %d seconds) ",
+			CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->time_started),
+			CGLib::status_updates[i], (pGen->time_stopped - pGen->time_started) / 1000);
+		st2 += st;
+	}
+	st.Format("Status updates: %d per second (%lld in %d seconds). Detailed: ",
+		total * 1000 / (pGen->time_stopped - pGen->time_started),
+		total, (pGen->time_stopped - pGen->time_started) / 1000);
+	st2 = st + st2;
+	CGLib::WriteLog(2, st2);
+	if (total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_STATUS_FREQ) {
+		st.Format("Algorithm status update is %d per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
+			total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_STATUS_FREQ);
+		CGLib::WriteLog(1, st);
+	}
+
+	// Show logs frequency
+	st2 = "";
+	total = 0;
+	for (int i = 0; i < LOG_TABS; ++i) {
+		total += CGLib::logs_sent[i];
+		st.Format("\n%d per second (%lld in %d seconds) ",
+			CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->time_started),
+			CGLib::logs_sent[i], (pGen->time_stopped - pGen->time_started) / 1000);
+		st2 += st;
+	}
+	st.Format("Logs sent: %d per second (%lld in %d seconds). Detailed: ",
+		total * 1000 / (pGen->time_stopped - pGen->time_started),
+		total, (pGen->time_stopped - pGen->time_started) / 1000);
+	st2 = st + st2;
+	CGLib::WriteLog(2, st2);
+	if (total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_LOG_FREQ) {
+		st.Format("Algorithm sends %d logs per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
+			total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_LOG_FREQ);
+		CGLib::WriteLog(1, st);
+	}
+
 	return 0;   // thread completed successfully 
 }
 
