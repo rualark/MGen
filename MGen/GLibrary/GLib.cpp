@@ -19,6 +19,8 @@ vector<int> CGLib::oinfo_changed; // If string changed
 vector<queue<CString>> CGLib::log_buffer;
 vector<int> CGLib::warn_log_buffer;
 vector<int> CGLib::log_buffer_size;
+vector<long long> CGLib::status_updates;
+vector<long long> CGLib::logs_sent;
 
 /* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
@@ -517,7 +519,9 @@ void CGLib::WriteLog(int i, CString st)
 			log_buffer.resize(LOG_TABS);
 			log_buffer_size.resize(LOG_TABS);
 			warn_log_buffer.resize(LOG_TABS);
+			logs_sent.resize(LOG_TABS);
 		}
+		++logs_sent[i];
 		if (log_buffer_size[i] >= MAX_LOG_BUFFER) {
 			if (!warn_log_buffer[i]) {
 				CString st2;
@@ -545,7 +549,9 @@ void CGLib::SetStatusText(int line, CString st)
 		if (!oinfo.size()) {
 			oinfo.resize(STATUS_LINES);
 			oinfo_changed.resize(STATUS_LINES);
+			status_updates.resize(STATUS_LINES);
 		}
+		++status_updates[line];
 		if (line < STATUS_LINES) {
 			oinfo[line] = st;
 			oinfo_changed[line] = 1;

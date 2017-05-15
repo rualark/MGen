@@ -73,7 +73,7 @@ protected:
 	inline int NextSWA();
 	inline void SaveBestRejected(vector<int>* pcantus);
 	inline int FailMinor();
-	inline void ShowScanStatus();
+	inline void ShowScanStatus(int use_matrix);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void WriteFlagCor();
 	void ShowFlagStat();
@@ -171,7 +171,7 @@ protected:
 	long long accepted2 = 0, accepted3 = 0;
 	int first_note_dia, first_note_oct;
 	int wid; // Window id
-	vector<int> c_old; // Cantus diatonic saved for SWA
+	vector<int> cc_old; // Cantus chromatic saved for SWA
 	vector<int> wpos1;
 	vector<int> wpos2;
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs

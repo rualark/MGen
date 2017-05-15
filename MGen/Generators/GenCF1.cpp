@@ -243,7 +243,7 @@ void CGenCF1::LogCantus(vector<int> &c)
 		st.Format("%d ", c[i]);
 		st2 += st;
 	}
-	CGLib::AppendLineToFile("temp.log", st2 + " \n");
+	CGLib::AppendLineToFile("log/temp.log", st2 + " \n");
 }
 
 // Step2 must be exclusive
@@ -944,7 +944,7 @@ void CGenCF1::ScanCantusInit(vector<int> *pcantus) {
 	nflags.resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
 	nflagsc.resize(c_len); // number of flags for each note
 	fpenalty.resize(MAX_FLAGS);
-	c_old.resize(c_len); // Cantus diatonic saved for SWA
+	cc_old.resize(c_len); // Cantus diatonic saved for SWA
 	wpos1.resize(c_len / s_len + 1);
 	wpos2.resize(c_len / s_len + 1);
 	min_c.resize(c_len);
@@ -1030,8 +1030,10 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 	for (int i = 0; i < c_len; ++i) {
 		c[i] = CC_C(cc[i], tonic_cur, minor_cur);
 		// Save value for future use;
-		c_old[i] = c[i];
+		cc_old[i] = cc[i];
 		// Check duplicate
+		if (i > 0 && cc[i] == cc[i - 1]) return;
+		// Check minor step repeated
 		if (i > 0 && c[i] == c[i - 1]) return;
 	}
 	if (!swa_inrange) {
@@ -1085,7 +1087,7 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 			ep2 = GetMaxSmap() + 1;
 			if (sp2 == smatrixc) ep2 = c_len;
 			// Clear scan steps
-			FillCantusMap(c, smap, 0, smatrixc, min_c);
+			FillCantusMap(cc, smap, 0, smatrixc, min_cc);
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
@@ -1094,7 +1096,7 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
 			// Clear scan steps of current window
-			FillCantusMap(c, smap, sp1, sp2, min_c);
+			FillCantusMap(cc, smap, sp1, sp2, min_cc);
 		}
 		// Minimum element
 		ep1 = GetMinSmap();
@@ -1271,10 +1273,6 @@ void CGenCF1::NextWindow(int use_matrix) {
 			WriteLog(3, est);
 		}
 	}
-	// Show
-	CString st;
-	st.Format("Window %d of %d", wid+1, wcount);
-	SetStatusText(1, st);
 	/*
 	if (debug_level > 0) {
 		CString st;
@@ -1401,10 +1399,6 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 		// Go to rightmost element
 		p = sp2 - 1;
 	}
-	// Show
-	CString st;
-	st.Format("Window %d of %d", wid + 1, wcount);
-	SetStatusText(1, st);
 }
 
 int CGenCF1::NextSWA() {
@@ -1418,9 +1412,9 @@ int CGenCF1::NextSWA() {
 	pp = sp2 - 1;
 	p = smap[pp];
 	// Restore previous step after sliding window
-	c[smap[sp1 - 1]] = c_old[smap[sp1 - 1]];
+	cc[smap[sp1 - 1]] = cc_old[smap[sp1 - 1]];
 	// Clear scan steps of current window
-	FillCantusMap(c, smap, sp1, sp2, min_c);
+	FillCantusMap(cc, smap, sp1, sp2, min_cc);
 	return 0;
 }
 
@@ -1466,13 +1460,17 @@ int CGenCF1::FailMinor() {
 	return 0;
 }
 
-void CGenCF1::ShowScanStatus() {
+void CGenCF1::ShowScanStatus(int use_matrix) {
 	CString st;
-	st.Format("Scan progress: %d of %d", cc[sp1] - min_cc[sp1],
-		max_cc[sp1] - min_cc[sp1]);
-	SetStatusText(2, st);
+	if (!use_matrix) {
+		st.Format("Scan progress: %d of %d", cc[sp1] - min_cc[sp1],
+			max_cc[sp1] - min_cc[sp1]);
+		SetStatusText(2, st);
+	}
 	st.Format("Cycles: %lld", cycle);
 	SetStatusText(5, st);
+	st.Format("Window %d of %d", wid + 1, wcount);
+	SetStatusText(1, st);
 }
 
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
@@ -1499,6 +1497,7 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Analyze combination
 check:
 	while (true) {
+		//LogCantus(cc);
 		if (FailNoteRepeat(cc, ep1-1, ep2-1)) goto skip;
 		if ((need_exit) && (!pcantus || use_matrix)) break;
 		GetMelodyInterval(cc, 0, ep2);
@@ -1515,7 +1514,7 @@ check:
 			ClearFlags(0, ep2);
 		}
 		// Show status
-		if (accepted3 % 100000 == 0) ShowScanStatus();
+		if (accepted3 % 100000 == 0) ShowScanStatus(use_matrix);
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
@@ -1586,7 +1585,7 @@ check:
 	skip:
 		ScanLeft(use_matrix, finished);
 		if (finished) {
-			ShowScanStatus();
+			//if (cycle > 100000 && s_len > 6) ShowScanStatus(use_matrix);
 			// Sliding Windows Approximation
 			if (use_matrix == 2) {
 				if (NextSWA()) break;
@@ -1619,6 +1618,7 @@ check:
 		}
 		++cycle;
 	}
+	if (accepted3 > 100000) ShowScanStatus(use_matrix);
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
@@ -1916,6 +1916,7 @@ void CGenCF1::TestDiatonic()
 // Create random cantus and optimize it using SWA
 void CGenCF1::RandomSWA()
 {
+	CString st;
 	// Disable debug flags
 	calculate_blocking = 0;
 	calculate_correlation = 0;
@@ -1958,6 +1959,8 @@ void CGenCF1::RandomSWA()
 			Adapt(step, t_generated - 1);
 			t_sent = t_generated;
 		}
+		st.Format("Random SWA: %d", i);
+		SetStatusText(3, st);
 		//SendCantus(0, 0);
 	}
 	ShowStuck();
@@ -1965,6 +1968,7 @@ void CGenCF1::RandomSWA()
 
 // Do not calculate dpenalty (dp = 0). Calculate dpenalty (dp = 1).
 void CGenCF1::SWA(int i, int dp) {
+	CString st;
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	s_len = 1;
 	// Save source rpenalty
@@ -2023,6 +2027,10 @@ void CGenCF1::SWA(int i, int dp) {
 			CString est;
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
+		}
+		if (cc.size() > 60) {
+			st.Format("SWA%d attempt: %d", s_len, a);
+			SetStatusText(4, st);
 		}
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
