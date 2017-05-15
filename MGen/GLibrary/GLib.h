@@ -17,9 +17,9 @@
 // Maximum number of logs saved to file on autosave in each tab
 #define MAX_SAVED_LOGS 10000
 // Warn if status frequency is above this value
-#define WARN_STATUS_FREQ 10000
+#define WARN_STATUS_FREQ 1000
 // Warn if log frequency is above this value
-#define WARN_LOG_FREQ 1000
+#define WARN_LOG_FREQ 100
 
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 

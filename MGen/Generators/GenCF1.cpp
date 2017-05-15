@@ -1663,6 +1663,7 @@ void CGenCF1::ShowFlagStat() {
 }
 
 void CGenCF1::ShowStuck() {
+	if (!ssf.size()) return;
 	CString st, st2;
 	// Show flag statistics
 	if (calculate_ssf) {
@@ -1689,6 +1690,7 @@ void CGenCF1::ShowStuck() {
 }
 
 CString CGenCF1::GetStuck() {
+	if (!best_flags.size()) return "";
 	CString st, st2;
 	int max_flag = 0;
 	long max_value = -1;

@@ -297,6 +297,7 @@ void CGenCA1::Generate()
 		// Get key
 		GetCantusKey(cantus[i]);
 		if (tonic_cur == -1) continue;
+		CalcCcIncrement();
 		// Show imported melody
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
