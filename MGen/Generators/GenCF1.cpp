@@ -1440,7 +1440,7 @@ void CGenCF1::SaveBestRejected(vector<int> *pcantus) {
 }
 
 int CGenCF1::FailMinor() {
-	for (int i = 1; i < c_len; ++i) {
+	for (int i = 1; i < ep2; ++i) {
 		// Prohibit major second up before I (in last steps and other places)
 		if (pcc[i] == 0 && pcc[i - 1] == 10) FLAG2(27, i);
 		// Prohibit minor second up before VII - absorbed
@@ -1449,9 +1449,9 @@ int CGenCF1::FailMinor() {
 		if (pcc[i] == 11 || pcc[i] == 9) {
 			if (pcc[i - 1] == 10 || pcc[i - 1] == 8) FLAG2(27, i);
 			if (i > 1) if (pcc[i - 2] == 10 || pcc[i - 2] == 8) FLAG2(27, i);
-			if (i < c_len - 1) {
+			if (i < ep2 - 1) {
 				if (pcc[i + 1] == 10 || pcc[i + 1] == 8) FLAG2(27, i);
-				if (i < c_len - 2) 
+				if (i < ep2 - 2)
 					if (pcc[i + 2] == 10 || pcc[i + 2] == 8) FLAG2(27, i);
 			}
 		}

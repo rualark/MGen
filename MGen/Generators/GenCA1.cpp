@@ -281,7 +281,7 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 
 void CGenCA1::Generate()
 {
-	CString st, st2;
+	CString st;
 	int s_len2 = s_len;
 	InitCantus();
 	LoadCantus(midi_file);
@@ -289,6 +289,8 @@ void CGenCA1::Generate()
 	// Transpose corrected voice up for display
 	int t_generated2 = 0; // Saved t_generated
 	for (int i = 0; i < cantus.size(); i++) {
+		st.Format("Analyzing: %d of %d", i, cantus.size());
+		SetStatusText(3, st);
 		if (need_exit) break;
 		if (step < 0) step = 0;
 		milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
@@ -348,5 +350,7 @@ void CGenCA1::Generate()
 			t_sent = t_generated;
 		}
 	}
+	st.Format("Analyzed %d", cantus.size());
+	SetStatusText(3, st);
 	ShowStuck();
 }
