@@ -174,6 +174,9 @@ public:
 	static void WriteLog(int i, CString st);
 	static void SetStatusText(int line, CString st);
 
+	//Test
+	static void TestVSet();
+
 public:
 	// Thread interface
 	static int debug_level;

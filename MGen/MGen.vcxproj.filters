@@ -165,6 +165,9 @@
     <ClInclude Include="Generators\GenRL1.h">
       <Filter>Header Files\Generators</Filter>
     </ClInclude>
+    <ClInclude Include="GLibrary\VSet.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -277,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="Generators\GenRL1.cpp">
       <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\VSet.cpp">
+      <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

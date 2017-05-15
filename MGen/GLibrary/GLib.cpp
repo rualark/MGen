@@ -1,6 +1,7 @@
 #include "../stdafx.h"
 #include "GLib.h"
 #include "SmRnd.h"
+#include "VSet.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW 
@@ -525,7 +526,7 @@ void CGLib::WriteLog(int i, CString st)
 		if (log_buffer_size[i] >= MAX_LOG_BUFFER) {
 			if (!warn_log_buffer[i]) {
 				CString st2;
-				st2.Format("WARNING: MAXIMUM LOGS FREQUENCY %d in %d MS EXCEEDED FOR THIS LOG: SOME LOG ENTRIES LOST. Please check your algorithm or increase MAX_LOG_BUFFER", MAX_LOG_BUFFER, LOG_TIMER);
+				st2.Format("WARNING: MAXIMUM LOGS FREQUENCY %d in %d MS EXCEEDED FOR LONG TIME IN LOG: SOME LOG ENTRIES LOST. Please check your algorithm or increase MAX_LOG_BUFFER or LOG_MAX_SEND", LOG_MAX_SEND, LOG_TIMER);
 				log_buffer[i].push(st2);
 				++log_buffer_size[i];
 				warn_log_buffer[i] = 1;
@@ -574,3 +575,30 @@ float CGLib::rand01()
 	return (float) rand2() / (float)RAND_MAX;
 }
 
+void CGLib::TestVSet()
+{
+	// Init rand
+	CString st;
+	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	srand(seed);
+	VSet<int> vs;
+	vector<int> v;
+	int vsize = 3;
+	int vmax = 4;
+	int vs_size = 0;
+	for (int i = 0; i < 64; ++i) {
+		v.clear();
+		for (int x = 0; x < vsize; ++x) {
+			v.push_back(rand()*vmax/RAND_MAX);
+		}
+		if (vs.Insert(v)) {
+			vs_size = vs.s.size();
+		}
+		// Duplicate
+		else {
+			//WriteLog(1, "Found duplicate");
+		}
+	}
+	st.Format("Total elements: %d", vs.s.size());
+	WriteLog(1, st);
+}
