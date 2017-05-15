@@ -199,6 +199,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Start log/status timer
 	SetTimer(TIMER3, LOG_TIMER, NULL);
 
+	//CGLib::TestVSet();
+
 	return 0;
 }
 
