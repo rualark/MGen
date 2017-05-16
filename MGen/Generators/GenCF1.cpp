@@ -1467,7 +1467,8 @@ void CGenCF1::ShowScanStatus(int use_matrix) {
 			max_cc[sp1] - min_cc[sp1]);
 		SetStatusText(2, st);
 	}
-	st.Format("Cycles: %lld", cycle);
+	if (clib.size() > 0) st.Format("Cycles: %lld (clib %d)", cycle, clib.size());
+	else st.Format("Cycles: %lld", cycle);
 	SetStatusText(5, st);
 	st.Format("Window %d of %d", wid + 1, wcount);
 	SetStatusText(1, st);
