@@ -333,7 +333,9 @@ void CGenCA1::Generate()
 			s_len = s_len2;
 			clib.clear();
 			rpenalty.clear();
+			dpenalty.clear();
 			rpenalty_min = 0;
+			dpenalty_min = MAX_PENALTY;
 			// Full scan marked notes
 			ScanCantus(&(cantus[i]), 1, 0);
 			rpenalty_min = 0;

@@ -1566,7 +1566,7 @@ check:
 		}
 		if (use_matrix == 1) {
 			//LogCantus(c);
-			SaveCantus();
+			SaveCantus(pcantus);
 		}
 		else if (use_matrix == 2) {
 			// Is penalty not greater than minimum of all previous?
@@ -1574,7 +1574,9 @@ check:
 				// If rpenalty 0, we can skip_flags (if allowed)
 				if (!skip_flags && rpenalty_cur == 0) 
 					skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
-				SaveCantus();
+				// Insert only if cc is unique
+				if (clib_vs.Insert(cc))	
+					SaveCantus(pcantus);
 				// Save flags for SWA stuck flags
 				if (rpenalty_cur) best_flags = flags;
 			}
@@ -1755,9 +1757,28 @@ void CGenCF1::ShowFlagBlock() {
 	}
 }
 
-void CGenCF1::SaveCantus() {
+void CGenCF1::SaveCantus(vector<int> * pcantus) {
+	// If rpenalty is same as min, calculate dpenalty
+	if (rpenalty_cur == rpenalty_min) {
+		dpenalty_cur = 0;
+		for (int z = 0; z < c_len; z++) {
+			int dif = abs(cc_old[z] - cc[z]);
+			if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
+		}
+		// Do not save cantus if it has higher dpenalty
+		if (dpenalty_cur > dpenalty_min) return;
+		// Do not save cantus if it is same as source
+		if (!dpenalty_cur) return;
+		dpenalty_min = dpenalty_cur;
+	}
+	// If rpenalty lowered, clear dpenalty
+	else {
+		dpenalty_min = MAX_PENALTY;
+		dpenalty_cur = MAX_PENALTY;
+	}
 	clib.push_back(cc);
 	rpenalty.push_back(rpenalty_cur);
+	dpenalty.push_back(dpenalty_cur);
 	rpenalty_min = rpenalty_cur;
 }
 
@@ -1988,23 +2009,26 @@ void CGenCF1::SWA(int i, int dp) {
 	dpenalty_min = MAX_PENALTY;
 	cc = cantus[i];
 	int a;
-	int randomized = 0;
 	for (a = 0; a < approximations; a++) {
 		// Save previous minimum penalty
 		int rpenalty_min_old = rpenalty_min;
 		int dpenalty_min_old = dpenalty_min;
 		// Clear before scan
 		clib.clear();
+		clib_vs.clear();
 		rpenalty.clear();
+		dpenalty.clear();
 		dpenalty_min = MAX_PENALTY;
 		// Add current cantus if this is not first run
-		if (a > 0 && !randomized) {
+		if (a > 0) {
 			clib.push_back(cc);
+			clib_vs.Insert(cc);
 			rpenalty.push_back(rpenalty_min_old);
+			dpenalty.push_back(dpenalty_min_old);
 		}
-		randomized = 0;
 		// Sliding Windows Approximation
 		ScanCantus(&cc, 2, 0);
+		dpenalty_min = MAX_PENALTY;
 		cnum = clib.size();
 		if (cnum == 0) break;
 		if (dp) {
@@ -2016,7 +2040,7 @@ void CGenCF1::SWA(int i, int dp) {
 					int dif = abs(cantus[i][z] - clib[x][z]);
 					if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
 				}
-				if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
+				if (dpenalty[x] && dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
 				//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
 				//AppendLineToFile("temp.log", st);
 				//LogCantus(clib[x]);

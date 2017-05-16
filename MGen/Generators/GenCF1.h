@@ -81,7 +81,7 @@ protected:
 	void ShowStuck();
 	CString GetStuck();
 	void ShowFlagBlock();
-	void SaveCantus();
+	void SaveCantus(vector<int> *pcantus);
 	void SendCantus(int v, vector<int>* pcantus);
 	void InitCantus();
 	void TestDiatonic();
@@ -165,6 +165,9 @@ protected:
 	float rpenalty_cur = 0; // Rules penalty
 	float rpenalty_min; // Minimum rules penalty for this scan
 	vector <float> rpenalty; // Penalty in terms of sum of flag severity
+	float dpenalty_cur = 0; // Distance from source penalty
+	float dpenalty_min; // Minimum distance penalty for this scan
+	vector <float> dpenalty; // Penalty in terms of distance from source
 	vector <int> cc_len; // Length of each cantus note
 	vector <float> cc_tempo; // Tempo of each cantus note
 	int real_len; // Total length of cantus in steps
@@ -199,9 +202,7 @@ protected:
 	vector<int> test_cc;
 
 	// Local SWA
-	vector <float> dpenalty; // Penalty in terms of difference from user melody
 	vector <long> cids;
-	float dpenalty_min;
 	// These are temporary vectors for removing duplicates
 	vector<vector<int>> clib2; // Library of cantus
 	vector <float> rpenalty2;
@@ -213,4 +214,5 @@ protected:
 	vector <int> smatrix; // Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix
 	vector<vector<int>> clib; // Library of cantus
+	VSet<int> clib_vs; // Unique clib set
 };
