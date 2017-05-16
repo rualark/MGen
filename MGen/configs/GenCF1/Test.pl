@@ -8,7 +8,7 @@ include "include/rules-low.pl"
 # scan - full (or window) scan all possible combinations (can randomize starting vector with random_seed and random_range)
 
 algorithm = rswa
-c_len = 100 # Number of measures in each cantus. Usually 9 to 11
+c_len = 9 # Number of measures in each cantus. Usually 9 to 11
 interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
@@ -20,7 +20,7 @@ random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatic
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
-fullscan_max = 400 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 4 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note

@@ -1840,7 +1840,7 @@ void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 		}
 	}
 	++cantus_sent;
-	st.Format("Sent melodies: %ld", cantus_sent);
+	st.Format("Sent melodies: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
 }
 
@@ -1919,6 +1919,7 @@ void CGenCF1::TestDiatonic()
 void CGenCF1::RandomSWA()
 {
 	CString st;
+	VSet<int> vs; // Unique checker
 	// Disable debug flags
 	calculate_blocking = 0;
 	calculate_correlation = 0;
@@ -1954,12 +1955,17 @@ void CGenCF1::RandomSWA()
 		SWA(0, 0);
 		// Show cantus if it is perfect
 		if (rpenalty_min == 0) {
-			int step = t_generated;
-			// Add line
-			linecolor[t_generated] = Color(255, 0, 0, 0);
-			ScanCantus(&(cc), 0, 0);
-			Adapt(step, t_generated - 1);
-			t_sent = t_generated;
+			if (vs.Insert(cc)) {
+				int step = t_generated;
+				// Add line
+				linecolor[t_generated] = Color(255, 0, 0, 0);
+				ScanCantus(&(cc), 0, 0);
+				Adapt(step, t_generated - 1);
+				t_sent = t_generated;
+			}
+			else {
+				++cantus_ignored;
+			}
 		}
 		st.Format("Random SWA: %d", i);
 		SetStatusText(3, st);
