@@ -2087,24 +2087,6 @@ void CGenCF1::SWA(int i, int dp) {
 			}
 		}
 	}
-	// Remove duplicates
-	clib2.clear();
-	rpenalty2.clear();
-	for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
-		int good = 1;
-		for (int z = 0; z < clib2.size(); z++) {
-			if (clib[x] == clib2[z]) {
-				good = 0;
-				break;
-			}
-		}
-		if (good) {
-			clib2.push_back(clib[x]);
-			rpenalty2.push_back(rpenalty[x]);
-		}
-	}
-	rpenalty = rpenalty2;
-	clib = clib2;
 	// Log
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString est;

@@ -1,7 +1,7 @@
 include "../../GenCF1/include/default.pl"
 
 # Analysis
-corrections = 1 # Number of corrections to show. Set to 0 to disable corrections
+corrections = 3 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
@@ -9,7 +9,7 @@ pitch_penalty = 1 # Penalty for changing note one more diatonic step while corre
 show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 fullscan_max = 1 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 50 # Maximum number of approximations to run if rpenalty decreases
-swa_steps = 6 # Size of Sliding Window Approximation algorithm window in steps
+swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 6 # Maximum interval allowed between each source and corrected note
 random_key = 0 # Select any of possible keys regardless of last note
 

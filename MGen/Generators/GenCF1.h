@@ -203,9 +203,6 @@ protected:
 
 	// Local SWA
 	vector <long> cids;
-	// These are temporary vectors for removing duplicates
-	vector<vector<int>> clib2; // Library of cantus
-	vector <float> rpenalty2;
 
 	// Load severity
 	int cur_severity = 0; // Current severity loaded from configuration file
