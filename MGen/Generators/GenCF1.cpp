@@ -1041,8 +1041,8 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 	}
 	// Set pitch limits
 	for (int i = 0; i < c_len; ++i) {
-		min_c[i] = max(minc, c[i] - correct_range);
-		max_c[i] = min(maxc, c[i] + correct_range);
+		min_c[i] = c[i] - correct_range;
+		max_c[i] = c[i] + correct_range;
 	}
 	// Convert limits to chromatic
 	for (int i = 0; i < c_len; ++i) {
