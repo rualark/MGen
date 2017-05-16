@@ -239,7 +239,7 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 			ccount++;
 			if (ccount > corrections) break;
 			// Write log
-			st.Format("%.0f/%.0f/%d ", rpenalty_min, dpenalty_min, cids.size());
+			st.Format("%.0f/%.0f/%d/%d ", rpenalty_min, dpenalty_min, cids.size(), clib.size());
 			st2 += st;
 			// Clear penalty
 			dpenalty[cids[x]] = MAX_PENALTY;
@@ -275,7 +275,7 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	// Send log
 	CString est;
-	est.Format("Sent corrections in %d ms to step %d with rp/dp/variants: %s", time_stop - time_start, step, st2);
+	est.Format("Sent corrections in %d ms to step %d with rp/dp/variants/lib: %s", time_stop - time_start, step, st2);
 	WriteLog(3, est);
 }
 
