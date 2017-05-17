@@ -5,7 +5,7 @@
 algorithm = rswa
 
 # Main parameters
-c_len = 20 # Number of measures in each cantus. Usually 9 to 11 for cantus
+c_len = 151 # Number of measures in each cantus. Usually 9 to 11 for cantus
 interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
@@ -17,11 +17,11 @@ random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
 accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
 random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
-random_range = 1 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
+random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
-fullscan_max = 101 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 1001 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note
@@ -49,4 +49,4 @@ calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows dow
 calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 1 # Enables SWA stuck flags statistics calculation algorithm.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
-best_rejected = 1000 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
+best_rejected = 5000 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
