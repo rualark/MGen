@@ -1345,11 +1345,13 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 		if (rc > rcycle) {
 			rcycle = rc;
 			if (br_cc.size() > 0) {
+				vector<int> cc_saved = cc;
 				cc = br_cc;
 				flags = br_f;
 				nflags = br_nf;
 				nflagsc = br_nfc;
 				SendCantus(0, 0);
+				cc = cc_saved;
 				// Log
 				if (debug_level > 0) {
 					CString st;
@@ -1477,13 +1479,25 @@ void CGenCF1::ShowScanStatus(int use_matrix) {
 	SetStatusText(0, st);
 }
 
+void CGenCF1::ReseedCantus()
+{
+	CString st;
+	MultiCantusInit();
+	// Allow two seed cycles for each accept
+	seed_cycle = 0;
+	++reseed_count;
+	st.Format("Reseed: %d", reseed_count);
+	SetStatusText(4, st);
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
 	ScanCantusInit(pcantus);
 	// Local variables
 	CString st, st2;
-	int seed_cycle = 0; // Number of cycles in case of random_seed
+	seed_cycle = 0; // Number of cycles in case of random_seed
+	reseed_count = 0;
 	pc.resize(c_len);
 	pcc.resize(c_len);
 	vector<int> leap(c_len);
@@ -1588,9 +1602,7 @@ check:
 			if (!pcantus && accept_reseed) {
 				if (clib_vs.Insert(cc)) {
 					SendCantus(v, pcantus);
-					MultiCantusInit();
-					// Allow two seed cycles for each accept
-					seed_cycle = 0;
+					ReseedCantus();
 					// Start evaluating without scan
 					goto check;
 				}
@@ -1618,15 +1630,13 @@ check:
 					if (seed_cycle) {
 						// Infinitely cycle through ranges
 						if (random_range && accept_reseed) {
-							MultiCantusInit();
-							// Allow two seed cycles for each accept
-							seed_cycle = 0;
+							ReseedCantus();
 							// Start evaluating without scan
 							goto check;
 						}
 						break;
 					}
-					// Dont
+					// Dont show log if we are reseeding after each accept
 					if (!accept_reseed) WriteLog(3, "Random seed allows one more full cycle: restarting");
 					++seed_cycle;
 				}

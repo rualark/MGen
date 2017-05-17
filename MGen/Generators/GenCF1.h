@@ -75,6 +75,7 @@ protected:
 	inline void SaveBestRejected(vector<int>* pcantus);
 	inline int FailMinor();
 	inline void ShowScanStatus(int use_matrix);
+	inline void ReseedCantus();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
 	void WriteFlagCor();
 	void ShowFlagStat();
@@ -143,6 +144,7 @@ protected:
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 
   // Local
+	int seed_cycle, reseed_count;
 	long cantus_ignored = 0; // How many canti ignored and not sent
 	long cantus_sent = 0; // How many cantus have been sent
 	int sev_to_flag[MAX_FLAGS]; // Get flag ID by severity
