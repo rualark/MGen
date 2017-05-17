@@ -167,6 +167,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "random_key", &random_key);
 	CheckVar(sN, sV, "random_seed", &random_seed);
 	CheckVar(sN, sV, "random_range", &random_range);
+	CheckVar(sN, sV, "accept_reseed", &accept_reseed);
 	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
 	CheckVar(sN, sV, "repeat_steps2", &repeat_steps2);
 	CheckVar(sN, sV, "shuffle", &shuffle);
@@ -1468,10 +1469,12 @@ void CGenCF1::ShowScanStatus(int use_matrix) {
 		SetStatusText(2, st);
 	}
 	if (clib.size() > 0) st.Format("Cycles: %lld (clib %d)", cycle, clib.size());
-	else st.Format("Cycles: %lld", cycle);
+	else st.Format("Cycles: %lld (rp %.0f)", cycle, rpenalty_min);
 	SetStatusText(5, st);
 	st.Format("Window %d of %d", wid + 1, wcount);
 	SetStatusText(1, st);
+	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
+	SetStatusText(0, st);
 }
 
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
@@ -1582,8 +1585,23 @@ check:
 			}
 		}
 		else {
-			SendCantus(v, pcantus);
-			if ((pcantus) && (!use_matrix)) return;
+			if (!pcantus && accept_reseed) {
+				if (clib_vs.Insert(cc)) {
+					SendCantus(v, pcantus);
+					MultiCantusInit();
+					// Allow two seed cycles for each accept
+					seed_cycle = 0;
+					// Start evaluating without scan
+					goto check;
+				}
+				else {
+					++cantus_ignored;
+				}
+			}
+			else {
+				SendCantus(v, pcantus);
+			}
+			if (pcantus) return;
 		}
 	skip:
 		ScanLeft(use_matrix, finished);
@@ -1597,8 +1615,19 @@ check:
 			else if ((p == 1) || (wid == 0)) {
 				// If we started from random seed, allow one more full cycle
 				if (random_seed) {
-					if (seed_cycle) break;
-					WriteLog(3, "Random seed allows one more full cycle: restarting");
+					if (seed_cycle) {
+						// Infinitely cycle through ranges
+						if (random_range && accept_reseed) {
+							MultiCantusInit();
+							// Allow two seed cycles for each accept
+							seed_cycle = 0;
+							// Start evaluating without scan
+							goto check;
+						}
+						break;
+					}
+					// Dont
+					if (!accept_reseed) WriteLog(3, "Random seed allows one more full cycle: restarting");
 					++seed_cycle;
 				}
 				else break;
@@ -1862,7 +1891,7 @@ void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 		}
 	}
 	++cantus_sent;
-	st.Format("Sent melodies: %ld (ignored %ld)", cantus_sent, cantus_ignored);
+	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
 }
 
@@ -1991,6 +2020,8 @@ void CGenCF1::RandomSWA()
 		}
 		st.Format("Random SWA: %d", i);
 		SetStatusText(3, st);
+		st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
+		SetStatusText(0, st);
 		//SendCantus(0, 0);
 	}
 	ShowStuck();
