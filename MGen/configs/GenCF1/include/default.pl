@@ -1,19 +1,28 @@
+# Choose one of algorithms:
+# rswa - Random Sliding Windows Approximation (random_seed and random_range are activated automatically). Shuffle not needed
+# scan - full (or window) scan all possible combinations (can randomize starting vector with random_seed and random_range)
+
+algorithm = rswa
+
 # Main parameters
-t_cnt = 1000000 # Maximum number of canti generated
-c_len = 9 # Number of measures in each cantus. Usually 9 to 11
-s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
-interval = 4-7 # Minimum-maximum diatonic interval in cantus (7 = octave)
+c_len = 20 # Number of measures in each cantus. Usually 9 to 11 for cantus
+interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = C # Music key to use for generation
-random_key = 0 # Allow generator to select random key
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
+
+t_cnt = 1000000 # Maximum number of canti generated
+s_len = 1 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
-random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
+random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+random_range = 1 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
-fullscan_max = 11 # Maximum steps length to full scan. If melody is longer, use SWA
-approximations = 50 # Maximum number of approximations to run if rpenalty decreases
+fullscan_max = 101 # Maximum steps length to full scan. If melody is longer, use SWA
+approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note
 
@@ -37,5 +46,7 @@ midifile_out_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
-calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
+calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
+calculate_ssf = 1 # Enables SWA stuck flags statistics calculation algorithm.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
+best_rejected = 1000 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
