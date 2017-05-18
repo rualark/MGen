@@ -83,6 +83,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Consecutive leaps", // 70
 	"Consecutive leaps+", // 71
 	"Long repeat", // 72
+	"Long repeat+", // 73
 };
 
 const Color FlagColor[] = {
@@ -170,6 +171,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "accept_reseed", &accept_reseed);
 	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
 	CheckVar(sN, sV, "repeat_steps2", &repeat_steps2);
+	CheckVar(sN, sV, "repeat_steps3", &repeat_steps3);
 	CheckVar(sN, sV, "shuffle", &shuffle);
 	CheckVar(sN, sV, "first_steps_tonic", &first_steps_tonic);
 	CheckVar(sN, sV, "show_severity", &show_severity);
@@ -504,25 +506,25 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2) {
 	return 0;
 }
 
-int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2) {
+int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok;
-	if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
+	if (ep2 > rlen + 1) for (int i = 0; i < ep2 - rlen - 1; ++i) {
 		// Search for repeat of note at same beat until last three notes
-		int finish = i + repeat_steps2;
-		if (finish > ep2 - 4) finish = ep2 - 4;
-		for (int x = i + 5; x < finish; ++x) {
+		int finish = i + scan_len;
+		if (finish > ep2 - rlen + 1) finish = ep2 - rlen + 1;
+		for (int x = i + rlen; x < finish; ++x) {
 			// Check if same note
 			if (cc[x] == cc[i]) {
-				// Check that four more notes repeat
+				// Check that more notes repeat
 				ok = 0;
-				for (int z = 1; z < 5; ++z) {
+				for (int z = 1; z < rlen; ++z) {
 					if (cc[x + z] != cc[i + z]) {
 						ok = 1;
 						break;
 					}
 				}
 				if (!ok) {
-					FLAG2(72, i);
+					FLAG2(fid, i);
 				}
 			}
 		}
@@ -950,7 +952,7 @@ void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 }
 
-void CGenCF1::ScanCantusInit(vector<int> *pcantus) {
+void CGenCF1::ScanCantusInit(vector<int> *pcantus, int use_matrix) {
 	// Resize global vectors
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
@@ -981,7 +983,7 @@ void CGenCF1::ScanCantusInit(vector<int> *pcantus) {
 		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
 	}
 	// Init best rejected results
-	if (!pcantus && best_rejected) {
+	if ((!pcantus || use_matrix) && best_rejected) {
 		rcycle = 0;
 		accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		rpenalty_min = MAX_PENALTY;
@@ -1053,9 +1055,18 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 		GetRealRange();
 	}
 	// Set pitch limits
-	for (int i = 0; i < c_len; ++i) {
-		min_c[i] = c[i] - correct_range;
-		max_c[i] = c[i] + correct_range;
+	// If too wide range is not accepted, correct range to increase scan performance
+	if (!accept[37]) {
+		for (int i = 0; i < c_len; ++i) {
+			min_c[i] = max(minc, c[i] - correct_range);
+			max_c[i] = min(maxc, c[i] + correct_range);
+		}
+	}
+	else {
+		for (int i = 0; i < c_len; ++i) {
+			min_c[i] = c[i] - correct_range;
+			max_c[i] = c[i] + correct_range;
+		}
 	}
 	// Convert limits to chromatic
 	for (int i = 0; i < c_len; ++i) {
@@ -1346,7 +1357,7 @@ void CGenCF1::ScanLeft(int use_matrix, int &finished) {
 
 void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 	// Show best rejected variant
-	if (!pcantus && best_rejected) {
+	if ((!pcantus || use_matrix) && best_rejected) {
 		milliseconds time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		int rc = (time - accept_time).count() / best_rejected;
 		if (debug_level > 2) {
@@ -1433,9 +1444,9 @@ int CGenCF1::NextSWA() {
 	return 0;
 }
 
-void CGenCF1::SaveBestRejected(vector<int> *pcantus) {
+void CGenCF1::SaveBestRejected(vector<int> *pcantus, int use_matrix) {
 	// Save best rejected results if we can analyze full cantus
-	if (best_rejected && !pcantus && ep2 == c_len) {
+	if (best_rejected && (!pcantus || use_matrix) && ep2 == c_len) {
 		CalcRpenalty();
 		// Add result only if there is penalty, it is low and there are not note repeats
 		if (rpenalty_cur < rpenalty_min && rpenalty_cur) {
@@ -1477,15 +1488,27 @@ int CGenCF1::FailMinor() {
 
 void CGenCF1::ShowScanStatus(int use_matrix) {
 	CString st;
-	if (!use_matrix) {
+	if (wcount) {
+		if (use_matrix < 2) {
+			st.Format("Scan progress: %d of %d", cc[wpos1[0]] - min_cc[wpos1[0]],
+				max_cc[wpos1[0]] - min_cc[wpos1[0]]);
+			SetStatusText(2, st);
+		}
+		else {
+			st.Format("Scan progress: %d of %d", cc[smap[wpos1[0]]] - min_cc[smap[wpos1[0]]],
+				max_cc[smap[wpos1[0]]] - min_cc[smap[wpos1[0]]]);
+			SetStatusText(2, st);
+		}
+	}
+	else {
 		st.Format("Scan progress: %d of %d", cc[sp1] - min_cc[sp1],
 			max_cc[sp1] - min_cc[sp1]);
 		SetStatusText(2, st);
 	}
 	if (clib.size() > 0) st.Format("Cycles: %lld (clib %d)", cycle, clib.size());
-	else st.Format("Cycles: %lld (rp %.0f)", cycle, rpenalty_min);
+	else st.Format("Cycles: %lld", cycle);
 	SetStatusText(5, st);
-	st.Format("Window %d of %d", wid + 1, wcount);
+	st.Format("Window %d of %d (rp %.0f)", wid + 1, wcount, rpenalty_min);
 	SetStatusText(1, st);
 	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
@@ -1505,7 +1528,7 @@ void CGenCF1::ReseedCantus()
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	// Get cantus size
 	if (pcantus) c_len = pcantus->size();
-	ScanCantusInit(pcantus);
+	ScanCantusInit(pcantus, use_matrix);
 	// Local variables
 	CString st, st2;
 	seed_cycle = 0; // Number of cycles in case of random_seed
@@ -1558,7 +1581,8 @@ check:
 		if (FailIntervals(ep2, pc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
 		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
-		if (FailLongRepeat(cc, leap, ep2)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2, repeat_steps2, 5, 72)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2, repeat_steps3, 7, 73)) goto skip;
 		GlobalFill(ep2, nstat2);
 		if (FailStagnation(cc, nstat, ep2)) goto skip;
 		if (FailMultiCulm(cc, ep2, pcantus, use_matrix)) goto skip;
@@ -1567,7 +1591,7 @@ check:
 		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
 		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
-		SaveBestRejected(pcantus);
+		SaveBestRejected(pcantus, use_matrix);
 		if ((!pcantus) || (use_matrix == 1)) {
 			++accepted2;
 			CalcFlagStat();
@@ -1589,7 +1613,7 @@ check:
 		// Accept cantus
 		++accepted;
 		// Save accepted time if we are showing best rejected
-		if (!pcantus && best_rejected) {
+		if ((!pcantus || use_matrix) && best_rejected) {
 			accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 			rcycle = 0;
 		}
@@ -2006,7 +2030,7 @@ void CGenCF1::RandomSWA()
 	// Create single cantus
 	cantus.resize(1);
 	cantus[0].resize(c_len);
-	ScanCantusInit(0);
+	ScanCantusInit(0, 0);
 	// Set random_seed to initiate random cantus
 	random_seed = 1;
 	// Set random_range to limit scanning to one of possible fast-scan ranges
@@ -2105,17 +2129,22 @@ void CGenCF1::SWA(int i, int dp) {
 				//LogCantus(clib[x]);
 			}
 		}
-		// Get all best corrections
-		cids.clear();
-		for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && (!dp || dpenalty[x] == dpenalty_min)) {
-			cids.push_back(x);
+		if (cids.size()) {
+			// Get all best corrections
+			cids.clear();
+			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && (!dp || dpenalty[x] == dpenalty_min)) {
+				cids.push_back(x);
+			}
+			// Get random cid
+			int cid = randbw(0, cids.size() - 1);
+			// Get random cantus to continue
+			cc = clib[cids[cid]];
 		}
-		// Get random cid
-		int cid = randbw(0, cids.size() - 1);
-		// Get random cantus to continue
-		cc = clib[cids[cid]];
+		else {
+			WriteLog(3, "WARNING: cids vector empty. This is not a normal condition. Please check algorithm.");
+		}
 		// Send log
-		if (s_len >= swa_steps && debug_level > 1) {
+		if (debug_level > 0) {
 			CString est;
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);

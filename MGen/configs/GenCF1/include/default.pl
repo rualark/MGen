@@ -5,7 +5,7 @@
 algorithm = rswa
 
 # Main parameters
-c_len = 151 # Number of measures in each cantus. Usually 9 to 11 for cantus
+c_len = 501 # Number of measures in each cantus. Usually 9 to 11 for cantus
 interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
@@ -38,7 +38,8 @@ max_leap_steps = 7
 stag_notes = 2 # Maximum allowed stag_notes (same notes) during stag_note_steps
 stag_note_steps = 7
 repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
-repeat_steps2 = 11 # Prohibit repeating of 5 notes closer than repeat_steps2 between first notes
+repeat_steps2 = 15 # Prohibit repeating of 5 notes closer than repeat_steps2 between first notes
+repeat_steps3 = 100 # Prohibit repeating of  notes closer than repeat_steps2 3between first notes
 first_steps_tonic = 3 # Number of first steps, which must contain tonic note (will increase by one if cantus is longer than 10 notes)
 
 # Technical parameters
