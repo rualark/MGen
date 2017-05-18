@@ -2014,11 +2014,11 @@ void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	reseed_count = 0;
 	pc.resize(c_len);
 	pcc.resize(c_len);
-	vector<int> leap(c_len);
-	vector<int> smooth(c_len);
-	vector<int> nstat(MAX_NOTE);
-	vector<int> nstat2(MAX_NOTE);
-	vector<int> nstat3(MAX_NOTE);
+	leap.resize(c_len);
+	smooth.resize(c_len);
+	nstat.resize(MAX_NOTE);
+	nstat2.resize(MAX_NOTE);
+	nstat3.resize(MAX_NOTE);
 	int finished = 0;
 	int culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
 	int dcount, scount, tcount, wdcount, wscount, wtcount;
@@ -2133,7 +2133,6 @@ check:
 	skip:
 		ScanLeft(use_matrix, finished);
 		if (finished) {
-			//if (cycle > 100000 && s_len > 6) ShowScanStatus(use_matrix);
 			// Sliding Windows Approximation
 			if (use_matrix == 2) {
 				if (NextSWA()) break;
@@ -2163,7 +2162,7 @@ check:
 			// Goto next variant calculation
 			goto skip;
 		} // if (finished)
-			// Increase rightmost element, which was not reset to minimum
+		// Increase rightmost element, which was not reset to minimum
 		cc[p] += cc_incr[cc[p]];
 		// Go to rightmost element
 		if (use_matrix) {

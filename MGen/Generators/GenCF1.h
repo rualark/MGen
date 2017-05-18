@@ -228,6 +228,11 @@ protected:
 	vector<int> pc; // pitch class (diatonic)
 	vector<int> pcc; // pitch class (chromatic)
 	vector<int> test_cc;
+	vector<int> leap;
+	vector<int> smooth;
+	vector<int> nstat;
+	vector<int> nstat2;
+	vector<int> nstat3;
 
 	// Local SWA
 	vector <long> cids;
