@@ -1,7 +1,7 @@
 include "../../GenCF1/include/default.pl"
 
 # Analysis
-corrections = 3 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
