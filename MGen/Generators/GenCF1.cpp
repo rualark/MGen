@@ -954,6 +954,8 @@ void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
 }
 
 void CGenCF1::ScanCantusInit(vector<int> *pcantus, int use_matrix) {
+	// Get cantus size
+	if (pcantus) c_len = pcantus->size();
 	// Resize global vectors
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
@@ -972,6 +974,15 @@ void CGenCF1::ScanCantusInit(vector<int> *pcantus, int use_matrix) {
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
 	fstat.resize(MAX_FLAGS); // number of canti with each flag
 	fcor.resize(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
+	seed_cycle = 0; // Number of cycles in case of random_seed
+	reseed_count = 0;
+	pc.resize(c_len);
+	pcc.resize(c_len);
+	leap.resize(c_len);
+	smooth.resize(c_len);
+	nstat.resize(MAX_NOTE);
+	nstat2.resize(MAX_NOTE);
+	nstat3.resize(MAX_NOTE);
 	cycle = 0;
 	wscans.resize(MAX_WIND); // number of full scans per window
 	wcount = 1; // Number of windows created
@@ -2005,24 +2016,9 @@ void CGenCF1::SWA(int i, int dp) {
 }
 
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
-	// Get cantus size
-	if (pcantus) c_len = pcantus->size();
-	ScanCantusInit(pcantus, use_matrix);
-	// Local variables
 	CString st, st2;
-	seed_cycle = 0; // Number of cycles in case of random_seed
-	reseed_count = 0;
-	pc.resize(c_len);
-	pcc.resize(c_len);
-	leap.resize(c_len);
-	smooth.resize(c_len);
-	nstat.resize(MAX_NOTE);
-	nstat2.resize(MAX_NOTE);
-	nstat3.resize(MAX_NOTE);
 	int finished = 0;
-	int culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
-	int dcount, scount, tcount, wdcount, wscount, wtcount;
-	// Init
+	ScanCantusInit(pcantus, use_matrix);
 	if (pcantus) SingleCantusInit(pcantus, use_matrix);
 	else MultiCantusInit();
 	if (FailWindowsLimit(pcantus, use_matrix)) return;
