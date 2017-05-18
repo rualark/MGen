@@ -451,10 +451,10 @@ void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2
 // Calculate diatonic positions
 int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
 	if (minor_cur) {
-		// First note calculaed separately because it does not need to be checked
+		// First note calculated separately because it does not need to be checked
 		c[0] = m_CC_C(cc[0], tonic_cur);
 		int step12 = step1 < 1 ? 1 : step1;
-		for (int i = step1; i < step2; ++i) {
+		for (int i = step12; i < step2; ++i) {
 			c[i] = m_CC_C(cc[i], tonic_cur);
 			// Check if diatonic step is the same
 			if (c[i] == c[i - 1]) return 1;

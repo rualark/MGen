@@ -281,6 +281,7 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 
 void CGenCA1::Generate()
 {
+	int analyzed = 0;
 	CString st;
 	int s_len2 = s_len;
 	InitCantus();
@@ -351,8 +352,14 @@ void CGenCA1::Generate()
 			t_generated = step;
 			t_sent = t_generated;
 		}
+		// Check limit
+		++analyzed;
+		if (t_generated >= t_cnt) {
+			WriteLog(3, "Reached t_cnt steps. Generation stopped");
+			break;
+		}
 	}
-	st.Format("Analyzed %d", cantus.size());
+	st.Format("Analyzed %d", analyzed);
 	SetStatusText(3, st);
 	ShowStuck();
 }
