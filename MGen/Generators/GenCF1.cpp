@@ -1613,7 +1613,7 @@ check:
 		else {
 			if (!pcantus && accept_reseed) {
 				if (clib_vs.Insert(cc)) {
-					SendCantus(v, pcantus);
+					if (SendCantus(v, pcantus)) break;
 					ReseedCantus();
 					// Start evaluating without scan
 					goto check;
@@ -1623,7 +1623,7 @@ check:
 				}
 			}
 			else {
-				SendCantus(v, pcantus);
+				if (SendCantus(v, pcantus)) break;
 			}
 			if (pcantus) return;
 		}
@@ -1833,7 +1833,7 @@ void CGenCF1::SaveCantus(vector<int> * pcantus) {
 	rpenalty_min = rpenalty_cur;
 }
 
-void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
+int CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 	CString st;
 	Sleep(sleep_ms);
 	// Copy cantus to output
@@ -1915,6 +1915,12 @@ void CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 	++cantus_sent;
 	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
+	// Check limit
+	if (t_generated >= t_cnt) {
+		WriteLog(3, "Reached t_cnt steps. Generation stopped");
+		return 1;
+	}
+	return 0;
 }
 
 void CGenCF1::InitCantus()

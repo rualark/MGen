@@ -11,7 +11,7 @@ key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
 
-t_cnt = 1000000 # Maximum number of canti generated
+t_cnt = 1000 # Maximum number of steps generated
 s_len = 1 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
@@ -46,7 +46,7 @@ midifile_out_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
-calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
+calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 1 # Enables SWA stuck flags statistics calculation algorithm.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
-best_rejected = 5000 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
+best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation

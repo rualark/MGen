@@ -83,7 +83,7 @@ protected:
 	CString GetStuck();
 	void ShowFlagBlock();
 	void SaveCantus(vector<int> *pcantus);
-	void SendCantus(int v, vector<int>* pcantus);
+	int SendCantus(int v, vector<int>* pcantus);
 	void InitCantus();
 	void TestDiatonic();
 	void RandomSWA();
