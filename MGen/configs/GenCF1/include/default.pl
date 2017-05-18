@@ -2,23 +2,24 @@
 # rswa - Random Sliding Windows Approximation (random_seed and random_range are activated automatically). Shuffle not needed
 # scan - full (or window) scan all possible combinations (can randomize starting vector with random_seed and random_range)
 
-algorithm = rswa
+# Method parameters
+method = window-scan
+accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
+random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
+s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+t_cnt = 1000 # Maximum number of steps generated
+
+shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Main parameters
-c_len = 12 # Number of measures in each cantus. Usually 9 to 11 for cantus
+c_len = 9 # Number of measures in each cantus. Usually 9 to 11 for cantus
 interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
 last_note = C5 # Ending note of each cantus
-
-t_cnt = 1000 # Maximum number of steps generated
-s_len = 1 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
-accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
-random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
-random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
-shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA
 fullscan_max = 1001 # Maximum steps length to full scan. If melody is longer, use SWA
