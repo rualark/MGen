@@ -49,7 +49,7 @@ protected:
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2);
 	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int ep2);
-	inline int FailMultiCulm(vector<int>& cc, int ep2);
+	inline int FailMultiCulm(vector<int>& cc, int ep2, vector<int>* pcantus, int use_matrix);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
 	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & ffinished);

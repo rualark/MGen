@@ -17,7 +17,7 @@ random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
 accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
 random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
-random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
+random_range = 1 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Random SWA

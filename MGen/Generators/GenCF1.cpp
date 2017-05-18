@@ -620,18 +620,30 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
 }
 
 // Prohibit multiple culminations
-int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
+int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2, vector<int> *pcantus, int use_matrix) {
 	int culm_sum = 0, culm_step;
-	if (ep2 < c_len) return 0;
-	for (int i = 0; i < ep2; ++i) {
-		if (cc[i] == nmax) {
-			++culm_sum;
-			culm_step = i;
-			if (culm_sum > 1) FLAG2(12, i);
+	if (ep2 < c_len) {
+		if ((nmax == max_cc[0] || nmax - nmin == max_interval) && (!pcantus || use_matrix == 1)) {
+			for (int i = 0; i < ep2; ++i) {
+				if (cc[i] == nmax) {
+					++culm_sum;
+					culm_step = i;
+					if (culm_sum > 1) FLAG2(12, culm_step);
+				}
+			}
 		}
 	}
-	// Prohibit culminations at last steps
-	if (culm_step > c_len - 4) FLAG2(21, culm_step);
+	else {
+		for (int i = 0; i < ep2; ++i) {
+			if (cc[i] == nmax) {
+				++culm_sum;
+				culm_step = i;
+				if (culm_sum > 1) FLAG2(12, culm_step);
+			}
+		}
+		// Prohibit culminations at last steps
+		if (culm_step > c_len - 4) FLAG2(21, culm_step);
+	}
 	return 0;
 }
 
@@ -1549,7 +1561,7 @@ check:
 		if (FailLongRepeat(cc, leap, ep2)) goto skip;
 		GlobalFill(ep2, nstat2);
 		if (FailStagnation(cc, nstat, ep2)) goto skip;
-		if (FailMultiCulm(cc, ep2)) goto skip;
+		if (FailMultiCulm(cc, ep2, pcantus, use_matrix)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
 		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
