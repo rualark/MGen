@@ -625,7 +625,8 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
 int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2, vector<int> *pcantus, int use_matrix) {
 	int culm_sum = 0, culm_step;
 	if (ep2 < c_len) {
-		if ((nmax == max_cc[0] || nmax - nmin == max_interval) && (!pcantus || use_matrix == 1)) {
+		// Find multiple culminations at highest note
+		if (nmax == max_cc[0] || nmax - nmin == max_interval) {
 			for (int i = 0; i < ep2; ++i) {
 				if (cc[i] == nmax) {
 					++culm_sum;
