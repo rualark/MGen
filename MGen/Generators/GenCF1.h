@@ -93,7 +93,10 @@ protected:
 	inline int FailMinor();
 	inline void ShowScanStatus(int use_matrix);
 	inline void ReseedCantus();
+	inline void TimeBestRejected();
+	inline void SaveCantusIfRp(vector<int>* pcantus, int use_matrix);
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
+	inline void ScanRight(int use_matrix);
 	void StartScan(int t, int v, vector<int>* pcantus);
 	void WriteFlagCor();
 	void ShowFlagStat();

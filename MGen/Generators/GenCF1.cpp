@@ -2057,6 +2057,28 @@ int CGenCF1::FailCantus(vector<int> *pcantus, int use_matrix) {
 	return 0;
 }
 
+// Save accepted time if we are showing best rejected
+void CGenCF1::TimeBestRejected() {
+	if (best_rejected) {
+		accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		rcycle = 0;
+	}
+}
+
+void CGenCF1::SaveCantusIfRp(vector<int> *pcantus, int use_matrix) {
+	// Is penalty not greater than minimum of all previous?
+	if (rpenalty_cur <= rpenalty_min) {
+		// If rpenalty 0, we can skip_flags (if allowed)
+		if (!skip_flags && rpenalty_cur == 0)
+			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+		// Insert only if cc is unique
+		if (clib_vs.Insert(cc))
+			SaveCantus(pcantus);
+		// Save flags for SWA stuck flags
+		if (rpenalty_cur) best_flags = flags;
+	}
+}
+
 void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -2092,27 +2114,12 @@ check:
 		}
 		// Accept cantus
 		++accepted;
-		// Save accepted time if we are showing best rejected
-		if (best_rejected) {
-			accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-			rcycle = 0;
-		}
+		TimeBestRejected();
 		if (use_matrix == 1) {
-			//LogCantus(c);
 			SaveCantus(pcantus);
 		}
 		else if (use_matrix == 2) {
-			// Is penalty not greater than minimum of all previous?
-			if (rpenalty_cur <= rpenalty_min) {
-				// If rpenalty 0, we can skip_flags (if allowed)
-				if (!skip_flags && rpenalty_cur == 0)
-					skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
-				// Insert only if cc is unique
-				if (clib_vs.Insert(cc))
-					SaveCantus(pcantus);
-				// Save flags for SWA stuck flags
-				if (rpenalty_cur) best_flags = flags;
-			}
+			SaveCantusIfRp(pcantus, use_matrix);
 		}
 		else {
 			if (!pcantus && accept_reseed) {
@@ -2129,6 +2136,7 @@ check:
 			else {
 				if (SendCantus(v, pcantus)) break;
 			}
+			// Exit if this is evaluation
 			if (pcantus) return;
 		}
 	skip:
@@ -2163,22 +2171,26 @@ check:
 			// Goto next variant calculation
 			goto skip;
 		} // if (finished)
-		// Increase rightmost element, which was not reset to minimum
-		cc[p] += cc_incr[cc[p]];
-		// Go to rightmost element
-		if (use_matrix) {
-			pp = sp2 - 1;
-			p = smap[pp];
-		}
-		else {
-			p = sp2 - 1;
-		}
-		++cycle;
+		ScanRight(use_matrix);
 	}
 	if (accepted3 > 100000) ShowScanStatus(use_matrix);
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
+}
+
+void CGenCF1::ScanRight(int use_matrix) {
+	// Increase rightmost element, which was not reset to minimum
+	cc[p] += cc_incr[cc[p]];
+	// Go to rightmost element
+	if (use_matrix) {
+		pp = sp2 - 1;
+		p = smap[pp];
+	}
+	else {
+		p = sp2 - 1;
+	}
+	++cycle;
 }
 
 void CGenCF1::StartScan(int t, int v, vector<int>* pcantus)
