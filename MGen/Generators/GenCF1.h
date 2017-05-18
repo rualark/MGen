@@ -23,9 +23,9 @@ const CString TaskNames[] = {
 	"generate" // 2
 };
 
-#define tEval 0
-#define tCor 0
 #define tGen 0
+#define tEval 1
+#define tCor 2
 
 // Convert chromatic to diatonic
 #define CC_C(note, tonic, minor) (minor?m_CC_C(note, tonic):maj_CC_C(note, tonic))
@@ -66,56 +66,55 @@ protected:
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& leap, int ep2);
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int ep2);
-	inline int FailMultiCulm(vector<int>& cc, int ep2, vector<int>* pcantus, int use_matrix);
+	inline int FailMultiCulm(vector<int>& cc, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
 	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & ffinished);
 	inline int FailLeap(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailIntervals(int ep2, vector<int>& pc);
 	inline void GlobalFill(int ep2, vector<int>& nstat2);
-	void ScanCantusInit(vector<int>* pcantus, int use_matrix);
+	void ScanCantusInit();
 	int GetMinSmap();
 	int GetMaxSmap();
 	void GetRealRange();
-	void SingleCantusInit(vector<int>* pcantus, int use_matrix);
+	void SingleCantusInit();
 	void MakeNewCantus();
 	void MultiCantusInit();
-	int FailWindowsLimit(vector<int>* pcantus, int use_matrix);
+	int FailWindowsLimit();
 	inline void CalcFlagStat();
 	inline int FailFlagBlock();
 	inline int FailAccept();
-	inline void NextWindow(int use_matrix);
+	inline void NextWindow();
 	inline void CalcRpenalty();
-	inline void ScanLeft(int use_matrix, int &finished);
-	inline void BackWindow(vector<int>* pcantus, int use_matrix);
+	inline void ScanLeft(int &finished);
+	inline void BackWindow();
 	inline int NextSWA();
-	inline void SaveBestRejected(vector<int>* pcantus, int use_matrix);
+	inline void SaveBestRejected();
 	inline int FailMinor();
-	inline void ShowScanStatus(int use_matrix);
+	inline void ShowScanStatus();
 	inline void ReseedCantus();
 	inline void TimeBestRejected();
-	inline void SaveCantusIfRp(vector<int>* pcantus, int use_matrix);
-	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
-	inline void ScanRight(int use_matrix);
-	void StartScan(int t, int v, vector<int>* pcantus);
+	inline void SaveCantusIfRp();
+	void ScanCantus(int t, int v, vector<int>* pcantus);
+	inline void ScanRight();
 	void WriteFlagCor();
 	void ShowFlagStat();
 	void ShowStuck();
 	CString GetStuck();
 	void ShowFlagBlock();
-	void SaveCantus(vector<int> *pcantus);
-	int SendCantus(int v, vector<int>* pcantus);
+	void SaveCantus();
+	int SendCantus();
 	void InitCantus();
 	void TestDiatonic();
 	void RandomSWA();
 	void SWA(int i, int dp);
-	inline int FailCantus(vector<int>* pcantus, int use_matrix);
+	inline int FailCantus();
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
 	void RandCantus(vector<int>& c, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 
 	// Parameters
-	int method; // Which generation / analysis method to use
+	int method = -1; // Which generation / analysis method to use
 	int min_interval = 7; // Minimum chromatic interval in cantus (12 = octave)
 	int max_interval = 12; // Maximum chromatic interval in cantus (12 = octave)
 	int min_intervald = 4; // Minimum diatonic interval in cantus (7 = octave)
@@ -161,14 +160,14 @@ protected:
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <int> hvd, hvs, hvt, hcd, hcs, hct; //  Variants and constant harmonic meaning
 	// Random SWA
-	int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
+	//int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases
 	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
 	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 
 	// Master parameters
-	vector <int> scantus; // Source cantus for processing
+	vector <int> *scantus; // Source cantus for processing
 	int task; // What task to accomplish using the method
 	int svoice; // Voice to send cantus to
 

@@ -245,13 +245,13 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show initial melody again if this is not first iteration
 			if (ccount > 1) {
-				ScanCantus(&(cantus[i]), 0, 0);
+				ScanCantus(tEval, 0, &(cantus[i]));
 				step -= real_len + 1;
 			}
 			// Get cantus
 			cc = clib[cids[x]];
 			// Show result
-			ScanCantus(&(cc), 0, 1);
+			ScanCantus(tEval, 1, &(cc));
 			// Go back
 			step -= real_len + 1;
 			if (step < 0) break;
@@ -305,7 +305,7 @@ void CGenCA1::Generate()
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
-		ScanCantus(&(cantus[i]), 0, 0);
+		ScanCantus(tEval, 0, &(cantus[i]));
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
 		t_generated2 = t_generated;
@@ -327,7 +327,7 @@ void CGenCA1::Generate()
 		CountTime(step, step + real_len);
 		UpdateNoteMinMax(step, step + real_len);
 		UpdateTempoMinMax(step, step + real_len);
-		if (smatrixc > fullscan_max) {
+		if (method == mSWA) {
 			SWA(i, 1);
 		}
 		else {
@@ -338,7 +338,7 @@ void CGenCA1::Generate()
 			rpenalty_min = 0;
 			dpenalty_min = MAX_PENALTY;
 			// Full scan marked notes
-			ScanCantus(&(cantus[i]), 1, 0);
+			ScanCantus(tCor, 0, &(cantus[i]));
 			rpenalty_min = 0;
 		}
 		// Check if we have results

@@ -182,13 +182,24 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
 	// Random SWA
-	CheckVar(sN, sV, "fullscan_max", &fullscan_max);
+	//CheckVar(sN, sV, "fullscan_max", &fullscan_max);
 	CheckVar(sN, sV, "approximations", &approximations);
 	CheckVar(sN, sV, "swa_steps", &swa_steps);
 	CheckVar(sN, sV, "correct_range", &correct_range);
 
 	LoadHarmVar(sN, sV);
 	LoadHarmConst(sN, sV);
+	// Load method
+	if (*sN == "method") {
+		++parameter_found;
+		if (*sV == "window-scan") method = mScan;
+		else if (*sV == "swa") method = mSWA;
+		else {
+			CString est;
+			est.Format("Warning: method name unrecognized: %s", *sV);
+			WriteLog(1, est);
+		}
+	}
 	// Load tonic
 	if (*sN == "key") {
 		++parameter_found;
@@ -622,7 +633,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
 }
 
 // Prohibit multiple culminations
-int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2, vector<int> *pcantus, int use_matrix) {
+int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
 	int culm_sum = 0, culm_step;
 	if (ep2 < c_len) {
 		// Find multiple culminations at highest note
@@ -953,9 +964,9 @@ void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 }
 
-void CGenCF1::ScanCantusInit(vector<int> *pcantus, int use_matrix) {
+void CGenCF1::ScanCantusInit() {
 	// Get cantus size
-	if (pcantus) c_len = pcantus->size();
+	if (task != tGen) c_len = scantus->size();
 	// Resize global vectors
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
@@ -1048,9 +1059,9 @@ void CGenCF1::GetRealRange() {
 	}
 }
 
-void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
+void CGenCF1::SingleCantusInit() {
 	// Copy cantus
-	cc = *pcantus;
+	cc = *scantus;
 	// Get diatonic steps from chromatic
 	first_note = cc[0];
 	last_note = cc[c_len - 1];
@@ -1097,7 +1108,7 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 		nflagsc[i] = 0;
 	}
 	// Matrix scan
-	if (use_matrix) {
+	if (task != tEval) {
 		// Exit if no violations
 		if (!smatrixc) return;
 		// Create map
@@ -1119,7 +1130,7 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 		wpos2[wid] = sp2;
 		// Add last note if this is last window
 		// End of evaluation window
-		if (use_matrix == 1) {
+		if (method == mScan) {
 			ep2 = GetMaxSmap() + 1;
 			if (sp2 == smatrixc) ep2 = c_len;
 			// Clear scan steps
@@ -1127,7 +1138,7 @@ void CGenCF1::SingleCantusInit(vector<int> *pcantus, int use_matrix) {
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
-		if (use_matrix == 2) {
+		if (method == mSWA) {
 			ep2 = c_len;
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
@@ -1243,8 +1254,8 @@ int CGenCF1::FailAccept() {
 }
 
 // Check if too many windows
-int CGenCF1::FailWindowsLimit(vector<int> *pcantus, int use_matrix) {
-	if (((c_len - 2) / (float)s_len > MAX_WIND && !pcantus) || (pcantus && use_matrix == 1 && smatrixc / s_len > MAX_WIND)) {
+int CGenCF1::FailWindowsLimit() {
+	if (((c_len - 2) / (float)s_len > MAX_WIND && task == tGen) || (method == mScan && task == tCor && smatrixc / s_len > MAX_WIND)) {
 		CString est;
 		est.Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
 			c_len, s_len, MAX_WIND);
@@ -1254,8 +1265,8 @@ int CGenCF1::FailWindowsLimit(vector<int> *pcantus, int use_matrix) {
 	return 0;
 }
 
-void CGenCF1::NextWindow(int use_matrix) {
-	if (use_matrix) {
+void CGenCF1::NextWindow() {
+	if (task == tCor) {
 		sp1 = sp2;
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > smatrixc) sp2 = smatrixc;
@@ -1343,13 +1354,13 @@ void CGenCF1::CalcRpenalty() {
 	}
 }
 
-void CGenCF1::ScanLeft(int use_matrix, int &finished) {
+void CGenCF1::ScanLeft(int &finished) {
 	while (true) {
 		if (cc[p] < max_cc[p]) break;
 		// If current element is max, make it minimum
 		cc[p] = min_cc[p];
 		// Move left one element
-		if (use_matrix) {
+		if (task == tCor) {
 			if (pp == sp1) {
 				finished = 1;
 				break;
@@ -1367,7 +1378,7 @@ void CGenCF1::ScanLeft(int use_matrix, int &finished) {
 	} // while (true)
 }
 
-void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
+void CGenCF1::BackWindow() {
 	// Show best rejected variant
 	if (best_rejected) {
 		milliseconds time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
@@ -1385,7 +1396,7 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 				flags = br_f;
 				nflags = br_nf;
 				nflagsc = br_nfc;
-				SendCantus(0, 0);
+				SendCantus();
 				cc = cc_saved;
 				// Log
 				if (debug_level > 0) {
@@ -1403,7 +1414,8 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 			}
 		}
 	}
-	if (use_matrix == 1) {
+	if (method != mScan) return;
+	if (task == tCor) {
 		// Clear current window
 		FillCantusMap(c, smap, sp1, sp2, min_c);
 		// If this is not first window, go to previous window
@@ -1419,7 +1431,7 @@ void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 		p = smap[pp];
 	}
 	// Normal full scan
-	else if (!use_matrix) {
+	else {
 		// Clear current window
 		// When random seeding, even back window movement should be randomized to avoid autorestart window cycle
 		//if (random_seed) RandCantus(c, sp1, sp2);
@@ -1456,7 +1468,7 @@ int CGenCF1::NextSWA() {
 	return 0;
 }
 
-void CGenCF1::SaveBestRejected(vector<int> *pcantus, int use_matrix) {
+void CGenCF1::SaveBestRejected() {
 	// Save best rejected results if we can analyze full cantus
 	if (best_rejected && ep2 == c_len) {
 		CalcRpenalty();
@@ -1498,10 +1510,10 @@ int CGenCF1::FailMinor() {
 	return 0;
 }
 
-void CGenCF1::ShowScanStatus(int use_matrix) {
+void CGenCF1::ShowScanStatus() {
 	CString st;
-	if (wcount) {
-		if (use_matrix == 0) {
+	if (method == mScan) {
+		if (task == tGen) {
 			st.Format("Scan progress: %d of %d", cc[wpos1[0]] - min_cc[wpos1[0]],
 				max_cc[wpos1[0]] - min_cc[wpos1[0]]);
 			SetStatusText(2, st);
@@ -1667,7 +1679,7 @@ void CGenCF1::ShowFlagBlock() {
 	}
 }
 
-void CGenCF1::SaveCantus(vector<int> * pcantus) {
+void CGenCF1::SaveCantus() {
 	// If rpenalty is same as min, calculate dpenalty
 	if (rpenalty_cur == rpenalty_min) {
 		dpenalty_cur = 0;
@@ -1692,8 +1704,9 @@ void CGenCF1::SaveCantus(vector<int> * pcantus) {
 	rpenalty_min = rpenalty_cur;
 }
 
-int CGenCF1::SendCantus(int v, vector<int> *pcantus) {
+int CGenCF1::SendCantus() {
 	CString st;
+	int v = svoice;
 	Sleep(sleep_ms);
 	// Copy cantus to output
 	int pos = step;
@@ -1757,14 +1770,14 @@ int CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 	CountTime(step - real_len - 1, step - 1);
 	UpdateNoteMinMax(step - real_len - 1, step - 1);
 	UpdateTempoMinMax(step - real_len - 1, step - 1);
-	if (!pcantus) {
+	if (task == tGen) {
 		if (!shuffle) {
 			Adapt(step - real_len - 1, step - 1);
 		}
 	}
 	// Send
 	t_generated = step;
-	if (!pcantus) {
+	if (task == tGen) {
 		if (!shuffle) {
 			// Add line
 			linecolor[t_sent] = Color(255, 0, 0, 0);
@@ -1784,6 +1797,8 @@ int CGenCF1::SendCantus(int v, vector<int> *pcantus) {
 
 void CGenCF1::InitCantus()
 {
+	// Check that method selected
+	if (method == -1) WriteLog(1, "Error: method not specified in algorithm configuration file");
 	// Check that at least one rule accepted
 	for (int i = 0; i < MAX_FLAGS; ++i) {
 		if (accept[i]) break;
@@ -1865,14 +1880,14 @@ void CGenCF1::RandomSWA()
 	// Create single cantus
 	cantus.resize(1);
 	cantus[0].resize(c_len);
-	ScanCantusInit(0, 0);
+	ScanCantusInit();
 	// Set random_seed to initiate random cantus
 	random_seed = 1;
 	// Set random_range to limit scanning to one of possible fast-scan ranges
 	random_range = 1;
 	// Prohibit limits recalculation during SWA
 	swa_inrange = 1;
-	for (int i = 0; i < t_cnt; ++i) {
+	for (int i = 0; i < INT_MAX; ++i) {
 		if (need_exit) break;
 		// Create random cantus
 		MakeNewCantus();
@@ -1897,7 +1912,7 @@ void CGenCF1::RandomSWA()
 				int step = t_generated;
 				// Add line
 				linecolor[t_generated] = Color(255, 0, 0, 0);
-				ScanCantus(&(cc), 0, 0);
+				ScanCantus(tEval, 0, &(cc));
 				Adapt(step, t_generated - 1);
 				t_sent = t_generated;
 			}
@@ -1945,7 +1960,7 @@ void CGenCF1::SWA(int i, int dp) {
 			dpenalty.push_back(dpenalty_min_old);
 		}
 		// Sliding Windows Approximation
-		ScanCantus(&cc, 2, 0);
+		ScanCantus(tCor, 0, &cc);
 		dpenalty_min = MAX_PENALTY;
 		cnum = clib.size();
 		if (cnum == 0) break;
@@ -2015,23 +2030,23 @@ void CGenCF1::SWA(int i, int dp) {
 	WriteLog(3, est);
 }
 
-int CGenCF1::FailCantus(vector<int> *pcantus, int use_matrix) {
+int CGenCF1::FailCantus() {
 	if (FailNoteRepeat(cc, ep1 - 1, ep2 - 1)) return 1;
 	GetMelodyInterval(cc, 0, ep2);
 	++accepted3;
 	// Limit melody interval
-	if (pcantus) {
-		ClearFlags(0, ep2);
-		if (nmax - nmin > max_interval) FLAG2(37, 0);
-		if (c_len == ep2 && nmax - nmin < min_interval) FLAG2(38, 0);
-	}
-	else {
+	if (task == tGen) {
 		if (nmax - nmin > max_interval) return 1;
 		if (c_len == ep2 && nmax - nmin < min_interval) return 1;
 		ClearFlags(0, ep2);
 	}
+	else {
+		ClearFlags(0, ep2);
+		if (nmax - nmin > max_interval) FLAG2(37, 0);
+		if (c_len == ep2 && nmax - nmin < min_interval) FLAG2(38, 0);
+	}
 	// Show status
-	if (accepted3 % 100000 == 0) ShowScanStatus(use_matrix);
+	if (accepted3 % 100000 == 0) ShowScanStatus();
 	// Calculate diatonic limits
 	nmind = CC_C(nmin, tonic_cur, minor_cur);
 	nmaxd = CC_C(nmax, tonic_cur, minor_cur);
@@ -2049,7 +2064,7 @@ int CGenCF1::FailCantus(vector<int> *pcantus, int use_matrix) {
 	if (FailLongRepeat(cc, leap, ep2, repeat_steps3, 7, 73)) return 1;
 	GlobalFill(ep2, nstat2);
 	if (FailStagnation(cc, nstat, ep2)) return 1;
-	if (FailMultiCulm(cc, ep2, pcantus, use_matrix)) return 1;
+	if (FailMultiCulm(cc, ep2)) return 1;
 	if (FailFirstNotes(pc, ep2)) return 1;
 	if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) return 1;
 	if (FailMelodyHarmSeq(pc, 0, ep2)) return 1;
@@ -2065,7 +2080,7 @@ void CGenCF1::TimeBestRejected() {
 	}
 }
 
-void CGenCF1::SaveCantusIfRp(vector<int> *pcantus, int use_matrix) {
+void CGenCF1::SaveCantusIfRp() {
 	// Is penalty not greater than minimum of all previous?
 	if (rpenalty_cur <= rpenalty_min) {
 		// If rpenalty 0, we can skip_flags (if allowed)
@@ -2073,28 +2088,35 @@ void CGenCF1::SaveCantusIfRp(vector<int> *pcantus, int use_matrix) {
 			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 		// Insert only if cc is unique
 		if (clib_vs.Insert(cc))
-			SaveCantus(pcantus);
+			SaveCantus();
 		// Save flags for SWA stuck flags
 		if (rpenalty_cur) best_flags = flags;
 	}
 }
 
-void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
+void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	CString st, st2;
 	int finished = 0;
-	ScanCantusInit(pcantus, use_matrix);
-	if (pcantus) SingleCantusInit(pcantus, use_matrix);
-	else MultiCantusInit();
-	if (FailWindowsLimit(pcantus, use_matrix)) return;
+	// Load master parameters
+	task = t;
+	svoice = v;
+	if (pcantus) scantus = pcantus;
+	else scantus = 0;
+
+	ScanCantusInit();
+	if (task == tGen) MultiCantusInit();
+	else SingleCantusInit();
+	if (FailWindowsLimit()) return;
 	// Analyze combination
 check:
 	while (true) {
 		//LogCantus(cc);
-		if ((need_exit) && (!pcantus || use_matrix)) break;
-		if (FailCantus(pcantus, use_matrix)) goto skip;
+		if (need_exit && task != tEval) break;
+		if (FailCantus()) goto skip;
 
-		SaveBestRejected(pcantus, use_matrix);
-		if ((!pcantus) || (use_matrix == 1)) {
+		SaveBestRejected();
+		// If we are window-scanning
+		if ((task == tGen || task == tCor) && method == mScan) {
 			++accepted2;
 			CalcFlagStat();
 			if (FailFlagBlock()) goto skip;
@@ -2102,29 +2124,29 @@ check:
 			++accepted4[wid];
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
-				NextWindow(use_matrix);
+				NextWindow();
 				goto check;
 			}
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (float)RAND_MAX*random_choose / 100.0) goto skip;
 		}
-		// Calculate rules penalty if we analyze cantus without full scan
-		if (pcantus && (use_matrix == 2 || !use_matrix)) {
+		// Calculate rules penalty if we evaluate or correct cantus without full scan
+		else {
 			CalcRpenalty();
 		}
 		// Accept cantus
 		++accepted;
 		TimeBestRejected();
-		if (use_matrix == 1) {
-			SaveCantus(pcantus);
+		if (method == mScan && task == tCor) {
+			SaveCantus();
 		}
-		else if (use_matrix == 2) {
-			SaveCantusIfRp(pcantus, use_matrix);
+		else if (method == mSWA && task == tCor) {
+			SaveCantusIfRp();
 		}
 		else {
-			if (!pcantus && accept_reseed) {
+			if (task == tGen && accept_reseed) {
 				if (clib_vs.Insert(cc)) {
-					if (SendCantus(v, pcantus)) break;
+					if (SendCantus()) break;
 					ReseedCantus();
 					// Start evaluating without scan
 					goto check;
@@ -2134,16 +2156,16 @@ check:
 				}
 			}
 			else {
-				if (SendCantus(v, pcantus)) break;
+				if (SendCantus()) break;
 			}
 			// Exit if this is evaluation
-			if (pcantus) return;
+			if (task == tEval) return;
 		}
 	skip:
-		ScanLeft(use_matrix, finished);
+		ScanLeft(finished);
 		if (finished) {
 			// Sliding Windows Approximation
-			if (use_matrix == 2) {
+			if (method == mSWA) {
 				if (NextSWA()) break;
 			}
 			// Finish if this is last variant in first window and not SWA
@@ -2165,40 +2187,32 @@ check:
 				}
 				else break;
 			}
-			BackWindow(pcantus, use_matrix);
+			BackWindow();
 			// Clear flag to prevent coming here again
 			finished = 0;
 			// Goto next variant calculation
 			goto skip;
 		} // if (finished)
-		ScanRight(use_matrix);
+		ScanRight();
 	}
-	if (accepted3 > 100000) ShowScanStatus(use_matrix);
+	if (accepted3 > 100000) ShowScanStatus();
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
 }
 
-void CGenCF1::ScanRight(int use_matrix) {
+void CGenCF1::ScanRight() {
 	// Increase rightmost element, which was not reset to minimum
 	cc[p] += cc_incr[cc[p]];
 	// Go to rightmost element
-	if (use_matrix) {
+	if (task == tGen) {
+		p = sp2 - 1;
+	}
+	else {
 		pp = sp2 - 1;
 		p = smap[pp];
 	}
-	else {
-		p = sp2 - 1;
-	}
 	++cycle;
-}
-
-void CGenCF1::StartScan(int t, int v, vector<int>* pcantus)
-{
-	// Load master parameters
-	task = t;
-	svoice = v;
-	if (pcantus) scantus = *pcantus;
 }
 
 void CGenCF1::Generate()
@@ -2224,11 +2238,11 @@ void CGenCF1::Generate()
 	cc_tempo.resize(c_len);
 	real_len = c_len;
 	for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
-	if (c_len - 2 > fullscan_max) {
+	if (method == mSWA) {
 		RandomSWA();
 	}
 	else {
-		ScanCantus(0, 0, 0);
+		ScanCantus(tGen, 0, 0);
 	}
 	// Random shuffle
 	if (shuffle) {
