@@ -9,6 +9,24 @@
 #define MAX_WIND 500
 #define MAX_NOTE 127
 
+const CString MethodNames[] = {
+	"window-scan", // 0
+	"swa" // 1
+};
+
+#define mScan 0
+#define mSWA 1
+
+const CString TaskNames[] = {
+	"evaluate", // 0
+	"correct", // 1
+	"generate" // 2
+};
+
+#define tEval 0
+#define tCor 0
+#define tGen 0
+
 // Convert chromatic to diatonic
 #define CC_C(note, tonic, minor) (minor?m_CC_C(note, tonic):maj_CC_C(note, tonic))
 #define maj_CC_C(note, tonic) (chrom_to_dia[(note + 12 - tonic) % 12] + ((note + 12 - tonic) / 12) * 7)
@@ -142,6 +160,12 @@ protected:
 	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
 	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
+
+	// Master variables
+	vector <int> scantus; // Source cantus for processing
+	int method; // Which generation / analysis method to use
+	int task; // What task to accomplish using the method
+	int svoice; // Voice to send cantus to
 
   // Local
 	int seed_cycle, reseed_count;

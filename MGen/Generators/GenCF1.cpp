@@ -983,7 +983,7 @@ void CGenCF1::ScanCantusInit(vector<int> *pcantus, int use_matrix) {
 		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
 	}
 	// Init best rejected results
-	if ((!pcantus || use_matrix) && best_rejected) {
+	if (best_rejected) {
 		rcycle = 0;
 		accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		rpenalty_min = MAX_PENALTY;
@@ -1357,7 +1357,7 @@ void CGenCF1::ScanLeft(int use_matrix, int &finished) {
 
 void CGenCF1::BackWindow(vector<int> *pcantus, int use_matrix) {
 	// Show best rejected variant
-	if ((!pcantus || use_matrix) && best_rejected) {
+	if (best_rejected) {
 		milliseconds time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		int rc = (time - accept_time).count() / best_rejected;
 		if (debug_level > 2) {
@@ -1446,7 +1446,7 @@ int CGenCF1::NextSWA() {
 
 void CGenCF1::SaveBestRejected(vector<int> *pcantus, int use_matrix) {
 	// Save best rejected results if we can analyze full cantus
-	if (best_rejected && (!pcantus || use_matrix) && ep2 == c_len) {
+	if (best_rejected && ep2 == c_len) {
 		CalcRpenalty();
 		// Add result only if there is penalty, it is low and there are not note repeats
 		if (rpenalty_cur < rpenalty_min && rpenalty_cur) {
@@ -1523,183 +1523,6 @@ void CGenCF1::ReseedCantus()
 	++reseed_count;
 	st.Format("Reseed: %d", reseed_count);
 	SetStatusText(4, st);
-}
-
-void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
-	// Get cantus size
-	if (pcantus) c_len = pcantus->size();
-	ScanCantusInit(pcantus, use_matrix);
-	// Local variables
-	CString st, st2;
-	seed_cycle = 0; // Number of cycles in case of random_seed
-	reseed_count = 0;
-	pc.resize(c_len);
-	pcc.resize(c_len);
-	vector<int> leap(c_len);
-	vector<int> smooth(c_len);
-	vector<int> nstat(MAX_NOTE);
-	vector<int> nstat2(MAX_NOTE);
-	vector<int> nstat3(MAX_NOTE);
-	int finished = 0;
-	int culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
-	int dcount, scount, tcount, wdcount, wscount, wtcount;
-	// Init
-	if (pcantus) SingleCantusInit(pcantus, use_matrix);
-	else MultiCantusInit();
-	if (FailWindowsLimit(pcantus, use_matrix)) return;
-	// Analyze combination
-check:
-	while (true) {
-		//LogCantus(cc);
-		if (FailNoteRepeat(cc, ep1-1, ep2-1)) goto skip;
-		if ((need_exit) && (!pcantus || use_matrix)) break;
-		GetMelodyInterval(cc, 0, ep2);
-		++accepted3;
-		// Limit melody interval
-		if (pcantus) {
-			ClearFlags(0, ep2);
-			if (nmax - nmin > max_interval) FLAG(37, 0);
-			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
-		}
-		else {
-			if (nmax - nmin > max_interval) goto skip;
-			if (c_len == ep2 && nmax - nmin < min_interval) goto skip;
-			ClearFlags(0, ep2);
-		}
-		// Show status
-		if (accepted3 % 100000 == 0) ShowScanStatus(use_matrix);
-		// Calculate diatonic limits
-		nmind = CC_C(nmin, tonic_cur, minor_cur);
-		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
-		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
-		GetPitchClass(c, pc, 0, ep2);
-		if (minor_cur && FailMinor()) goto skip;
-		//if (MatchVectors(cc, test_cc, 0, 2)) 
-			//WriteLog(1, "Found");
-		if (FailLastNotes(pc, ep2)) goto skip;
-		if (FailNoteSeq(pc, 0, ep2)) goto skip;
-		if (FailIntervals(ep2, pc)) goto skip;
-		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
-		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
-		if (FailLongRepeat(cc, leap, ep2, repeat_steps2, 5, 72)) goto skip;
-		if (FailLongRepeat(cc, leap, ep2, repeat_steps3, 7, 73)) goto skip;
-		GlobalFill(ep2, nstat2);
-		if (FailStagnation(cc, nstat, ep2)) goto skip;
-		if (FailMultiCulm(cc, ep2, pcantus, use_matrix)) goto skip;
-		if (FailFirstNotes(pc, ep2)) goto skip;
-		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
-		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
-		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
-
-		SaveBestRejected(pcantus, use_matrix);
-		if ((!pcantus) || (use_matrix == 1)) {
-			++accepted2;
-			CalcFlagStat();
-			if (FailFlagBlock()) goto skip;
-			if (FailAccept()) goto skip;
-			++accepted4[wid];
-			// If this is not last window, go to next window
-			if (ep2 < c_len) {
-				NextWindow(use_matrix);
-				goto check;
-			}
-			// Check random_choose
-			if (random_choose < 100) if (rand2() >= (float)RAND_MAX*random_choose / 100.0) goto skip;
-		}
-		// Calculate rules penalty if we analyze cantus without full scan
-		if (pcantus && (use_matrix == 2 || !use_matrix)) {
-			CalcRpenalty();
-		}
-		// Accept cantus
-		++accepted;
-		// Save accepted time if we are showing best rejected
-		if ((!pcantus || use_matrix) && best_rejected) {
-			accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-			rcycle = 0;
-		}
-		if (use_matrix == 1) {
-			//LogCantus(c);
-			SaveCantus(pcantus);
-		}
-		else if (use_matrix == 2) {
-			// Is penalty not greater than minimum of all previous?
-			if (rpenalty_cur <= rpenalty_min) {
-				// If rpenalty 0, we can skip_flags (if allowed)
-				if (!skip_flags && rpenalty_cur == 0) 
-					skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
-				// Insert only if cc is unique
-				if (clib_vs.Insert(cc))	
-					SaveCantus(pcantus);
-				// Save flags for SWA stuck flags
-				if (rpenalty_cur) best_flags = flags;
-			}
-		}
-		else {
-			if (!pcantus && accept_reseed) {
-				if (clib_vs.Insert(cc)) {
-					if (SendCantus(v, pcantus)) break;
-					ReseedCantus();
-					// Start evaluating without scan
-					goto check;
-				}
-				else {
-					++cantus_ignored;
-				}
-			}
-			else {
-				if (SendCantus(v, pcantus)) break;
-			}
-			if (pcantus) return;
-		}
-	skip:
-		ScanLeft(use_matrix, finished);
-		if (finished) {
-			//if (cycle > 100000 && s_len > 6) ShowScanStatus(use_matrix);
-			// Sliding Windows Approximation
-			if (use_matrix == 2) {
-				if (NextSWA()) break;
-			}
-			// Finish if this is last variant in first window and not SWA
-			else if ((p == 1) || (wid == 0)) {
-				// If we started from random seed, allow one more full cycle
-				if (random_seed) {
-					if (seed_cycle) {
-						// Infinitely cycle through ranges
-						if (random_range && accept_reseed) {
-							ReseedCantus();
-							// Start evaluating without scan
-							goto check;
-						}
-						break;
-					}
-					// Dont show log if we are reseeding after each accept
-					if (!accept_reseed) WriteLog(3, "Random seed allows one more full cycle: restarting");
-					++seed_cycle;
-				}
-				else break;
-			}
-			BackWindow(pcantus, use_matrix);
-			// Clear flag to prevent coming here again
-			finished = 0;
-			// Goto next variant calculation
-			goto skip;
-		} // if (finished)
-		// Increase rightmost element, which was not reset to minimum
-		cc[p] += cc_incr[cc[p]];
-		// Go to rightmost element
-		if (use_matrix) {
-			pp = sp2 - 1;
-			p = smap[pp];
-		}
-		else {
-			p = sp2 - 1;
-		}
-		++cycle;
-	}
-	if (accepted3 > 100000) ShowScanStatus(use_matrix);
-	WriteFlagCor();
-	ShowFlagStat();
-	ShowFlagBlock();
 }
 
 void CGenCF1::WriteFlagCor() {
@@ -2180,6 +2003,182 @@ void CGenCF1::SWA(int i, int dp) {
 	WriteLog(3, est);
 }
 
+void CGenCF1::ScanCantus(vector<int> *pcantus, int use_matrix, int v) {
+	// Get cantus size
+	if (pcantus) c_len = pcantus->size();
+	ScanCantusInit(pcantus, use_matrix);
+	// Local variables
+	CString st, st2;
+	seed_cycle = 0; // Number of cycles in case of random_seed
+	reseed_count = 0;
+	pc.resize(c_len);
+	pcc.resize(c_len);
+	vector<int> leap(c_len);
+	vector<int> smooth(c_len);
+	vector<int> nstat(MAX_NOTE);
+	vector<int> nstat2(MAX_NOTE);
+	vector<int> nstat3(MAX_NOTE);
+	int finished = 0;
+	int culm_sum, culm_step, smooth_sum, smooth_sum2, pos, ok, ok2;
+	int dcount, scount, tcount, wdcount, wscount, wtcount;
+	// Init
+	if (pcantus) SingleCantusInit(pcantus, use_matrix);
+	else MultiCantusInit();
+	if (FailWindowsLimit(pcantus, use_matrix)) return;
+	// Analyze combination
+check:
+	while (true) {
+		//LogCantus(cc);
+		if (FailNoteRepeat(cc, ep1 - 1, ep2 - 1)) goto skip;
+		if ((need_exit) && (!pcantus || use_matrix)) break;
+		GetMelodyInterval(cc, 0, ep2);
+		++accepted3;
+		// Limit melody interval
+		if (pcantus) {
+			ClearFlags(0, ep2);
+			if (nmax - nmin > max_interval) FLAG(37, 0);
+			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
+		}
+		else {
+			if (nmax - nmin > max_interval) goto skip;
+			if (c_len == ep2 && nmax - nmin < min_interval) goto skip;
+			ClearFlags(0, ep2);
+		}
+		// Show status
+		if (accepted3 % 100000 == 0) ShowScanStatus(use_matrix);
+		// Calculate diatonic limits
+		nmind = CC_C(nmin, tonic_cur, minor_cur);
+		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
+		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
+		GetPitchClass(c, pc, 0, ep2);
+		if (minor_cur && FailMinor()) goto skip;
+		//if (MatchVectors(cc, test_cc, 0, 2)) 
+		//WriteLog(1, "Found");
+		if (FailLastNotes(pc, ep2)) goto skip;
+		if (FailNoteSeq(pc, 0, ep2)) goto skip;
+		if (FailIntervals(ep2, pc)) goto skip;
+		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
+		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2, repeat_steps2, 5, 72)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2, repeat_steps3, 7, 73)) goto skip;
+		GlobalFill(ep2, nstat2);
+		if (FailStagnation(cc, nstat, ep2)) goto skip;
+		if (FailMultiCulm(cc, ep2, pcantus, use_matrix)) goto skip;
+		if (FailFirstNotes(pc, ep2)) goto skip;
+		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
+		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
+		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
+
+		SaveBestRejected(pcantus, use_matrix);
+		if ((!pcantus) || (use_matrix == 1)) {
+			++accepted2;
+			CalcFlagStat();
+			if (FailFlagBlock()) goto skip;
+			if (FailAccept()) goto skip;
+			++accepted4[wid];
+			// If this is not last window, go to next window
+			if (ep2 < c_len) {
+				NextWindow(use_matrix);
+				goto check;
+			}
+			// Check random_choose
+			if (random_choose < 100) if (rand2() >= (float)RAND_MAX*random_choose / 100.0) goto skip;
+		}
+		// Calculate rules penalty if we analyze cantus without full scan
+		if (pcantus && (use_matrix == 2 || !use_matrix)) {
+			CalcRpenalty();
+		}
+		// Accept cantus
+		++accepted;
+		// Save accepted time if we are showing best rejected
+		if (best_rejected) {
+			accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+			rcycle = 0;
+		}
+		if (use_matrix == 1) {
+			//LogCantus(c);
+			SaveCantus(pcantus);
+		}
+		else if (use_matrix == 2) {
+			// Is penalty not greater than minimum of all previous?
+			if (rpenalty_cur <= rpenalty_min) {
+				// If rpenalty 0, we can skip_flags (if allowed)
+				if (!skip_flags && rpenalty_cur == 0)
+					skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+				// Insert only if cc is unique
+				if (clib_vs.Insert(cc))
+					SaveCantus(pcantus);
+				// Save flags for SWA stuck flags
+				if (rpenalty_cur) best_flags = flags;
+			}
+		}
+		else {
+			if (!pcantus && accept_reseed) {
+				if (clib_vs.Insert(cc)) {
+					if (SendCantus(v, pcantus)) break;
+					ReseedCantus();
+					// Start evaluating without scan
+					goto check;
+				}
+				else {
+					++cantus_ignored;
+				}
+			}
+			else {
+				if (SendCantus(v, pcantus)) break;
+			}
+			if (pcantus) return;
+		}
+	skip:
+		ScanLeft(use_matrix, finished);
+		if (finished) {
+			//if (cycle > 100000 && s_len > 6) ShowScanStatus(use_matrix);
+			// Sliding Windows Approximation
+			if (use_matrix == 2) {
+				if (NextSWA()) break;
+			}
+			// Finish if this is last variant in first window and not SWA
+			else if ((p == 1) || (wid == 0)) {
+				// If we started from random seed, allow one more full cycle
+				if (random_seed) {
+					if (seed_cycle) {
+						// Infinitely cycle through ranges
+						if (random_range && accept_reseed) {
+							ReseedCantus();
+							// Start evaluating without scan
+							goto check;
+						}
+						break;
+					}
+					// Dont show log if we are reseeding after each accept
+					if (!accept_reseed) WriteLog(3, "Random seed allows one more full cycle: restarting");
+					++seed_cycle;
+				}
+				else break;
+			}
+			BackWindow(pcantus, use_matrix);
+			// Clear flag to prevent coming here again
+			finished = 0;
+			// Goto next variant calculation
+			goto skip;
+		} // if (finished)
+			// Increase rightmost element, which was not reset to minimum
+		cc[p] += cc_incr[cc[p]];
+		// Go to rightmost element
+		if (use_matrix) {
+			pp = sp2 - 1;
+			p = smap[pp];
+		}
+		else {
+			p = sp2 - 1;
+		}
+		++cycle;
+	}
+	if (accepted3 > 100000) ShowScanStatus(use_matrix);
+	WriteFlagCor();
+	ShowFlagStat();
+	ShowFlagBlock();
+}
 
 void CGenCF1::Generate()
 {
