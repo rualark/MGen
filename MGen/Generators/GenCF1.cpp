@@ -1489,14 +1489,14 @@ int CGenCF1::FailMinor() {
 void CGenCF1::ShowScanStatus(int use_matrix) {
 	CString st;
 	if (wcount) {
-		if (use_matrix < 2) {
+		if (use_matrix == 0) {
 			st.Format("Scan progress: %d of %d", cc[wpos1[0]] - min_cc[wpos1[0]],
 				max_cc[wpos1[0]] - min_cc[wpos1[0]]);
 			SetStatusText(2, st);
 		}
 		else {
-			st.Format("Scan progress: %d of %d", cc[smap[wpos1[0]]] - min_cc[smap[wpos1[0]]],
-				max_cc[smap[wpos1[0]]] - min_cc[smap[wpos1[0]]]);
+			st.Format("Scan progress: %d of %d", cc[smap[0]] - min_cc[smap[0]],
+				max_cc[smap[wpos1[0]]] - min_cc[smap[0]]);
 			SetStatusText(2, st);
 		}
 	}
