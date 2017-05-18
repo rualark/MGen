@@ -3,11 +3,13 @@
 # scan - full (or window) scan all possible combinations (can randomize starting vector with random_seed and random_range)
 
 # Method parameters
-method = window-scan
-accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
-random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+#method = window-scan # This method is fastest random generator with s_len=1, accept_reseed=1, random_seed=1
+method = swa # This method is mainly used for testing (same algorithm used as in CA1)
+
+accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
+random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
-s_len = 7 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+s_len = 1 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
 t_cnt = 1000 # Maximum number of steps generated
 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
@@ -22,7 +24,6 @@ random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
 
 # Random SWA
-fullscan_max = 1001 # Maximum steps length to full scan. If melody is longer, use SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note
