@@ -94,6 +94,7 @@ protected:
 	inline void ShowScanStatus(int use_matrix);
 	inline void ReseedCantus();
 	void ScanCantus(vector<int>* pcantus, int use_matrix, int v);
+	void StartScan(int t, int v, vector<int>* pcantus);
 	void WriteFlagCor();
 	void ShowFlagStat();
 	void ShowStuck();
@@ -110,6 +111,7 @@ protected:
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 
 	// Parameters
+	int method; // Which generation / analysis method to use
 	int min_interval = 7; // Minimum chromatic interval in cantus (12 = octave)
 	int max_interval = 12; // Maximum chromatic interval in cantus (12 = octave)
 	int min_intervald = 4; // Minimum diatonic interval in cantus (7 = octave)
@@ -161,9 +163,8 @@ protected:
 	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 
-	// Master variables
+	// Master parameters
 	vector <int> scantus; // Source cantus for processing
-	int method; // Which generation / analysis method to use
 	int task; // What task to accomplish using the method
 	int svoice; // Voice to send cantus to
 

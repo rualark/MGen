@@ -2181,6 +2181,14 @@ check:
 	ShowFlagBlock();
 }
 
+void CGenCF1::StartScan(int t, int v, vector<int>* pcantus)
+{
+	// Load master parameters
+	task = t;
+	svoice = v;
+	if (pcantus) scantus = *pcantus;
+}
+
 void CGenCF1::Generate()
 {
 	test_cc.resize(10);
