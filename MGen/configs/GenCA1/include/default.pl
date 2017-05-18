@@ -7,7 +7,8 @@ post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
-fullscan_max = 1 # Maximum steps length to full scan. If melody is longer, use SWA
+fullscan_max = 100 # Maximum steps length to full scan. If melody is longer, use SWA
+interval = 3-19 # Minimum-maximum chromatic interval in cantus (12 = octave)
 approximations = 50 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 6 # Maximum interval allowed between each source and corrected note

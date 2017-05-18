@@ -47,7 +47,7 @@ midifile_out_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
-calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
+calculate_stat = 1 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 1 # Enables SWA stuck flags statistics calculation algorithm.
 late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
-best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
+best_rejected = 1000 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
