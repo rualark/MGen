@@ -2129,22 +2129,19 @@ void CGenCF1::SWA(int i, int dp) {
 				//LogCantus(clib[x]);
 			}
 		}
+		// Get all best corrections
+		cids.clear();
+		for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && (!dp || dpenalty[x] == dpenalty_min)) {
+			cids.push_back(x);
+		}
 		if (cids.size()) {
-			// Get all best corrections
-			cids.clear();
-			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && (!dp || dpenalty[x] == dpenalty_min)) {
-				cids.push_back(x);
-			}
-			// Get random cid
+		// Get random cid
 			int cid = randbw(0, cids.size() - 1);
 			// Get random cantus to continue
 			cc = clib[cids[cid]];
 		}
-		else {
-			WriteLog(3, "WARNING: cids vector empty. This is not a normal condition. Please check algorithm.");
-		}
 		// Send log
-		if (debug_level > 0) {
+		if (s_len >= swa_steps && debug_level > 1) {
 			CString est;
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
