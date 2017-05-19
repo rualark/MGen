@@ -187,6 +187,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "swa_steps", &swa_steps);
 	CheckVar(sN, sV, "correct_range", &correct_range);
 	CheckVar(sN, sV, "correct_inrange", &correct_inrange);
+	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
 
 	LoadHarmVar(sN, sV);
 	LoadHarmConst(sN, sV);
@@ -1704,26 +1705,28 @@ void CGenCF1::ShowFlagBlock() {
 
 void CGenCF1::SaveCantus() {
 	// If rpenalty is same as min, calculate dpenalty
-	if (rpenalty_cur == rpenalty_min) {
-		dpenalty_cur = 0;
-		for (int z = 0; z < c_len; z++) {
-			int dif = abs(cc_old[z] - cc[z]);
-			if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
+	if (optimize_dpenalty) {
+		if (rpenalty_cur == rpenalty_min) {
+			dpenalty_cur = 0;
+			for (int z = 0; z < c_len; z++) {
+				int dif = abs(cc_old[z] - cc[z]);
+				if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
+			}
+			// Do not save cantus if it has higher dpenalty
+			if (dpenalty_cur > dpenalty_min) return;
+			// Do not save cantus if it is same as source
+			if (!dpenalty_cur) return;
+			dpenalty_min = dpenalty_cur;
 		}
-		// Do not save cantus if it has higher dpenalty
-		if (dpenalty_cur > dpenalty_min) return;
-		// Do not save cantus if it is same as source
-		if (!dpenalty_cur) return;
-		dpenalty_min = dpenalty_cur;
-	}
-	// If rpenalty lowered, clear dpenalty
-	else {
-		dpenalty_min = MAX_PENALTY;
-		dpenalty_cur = MAX_PENALTY;
+		// If rpenalty lowered, clear dpenalty
+		else {
+			dpenalty_min = MAX_PENALTY;
+			dpenalty_cur = MAX_PENALTY;
+		}
+		dpenalty.push_back(dpenalty_cur);
 	}
 	clib.push_back(cc);
 	rpenalty.push_back(rpenalty_cur);
-	dpenalty.push_back(dpenalty_cur);
 	rpenalty_min = rpenalty_cur;
 }
 

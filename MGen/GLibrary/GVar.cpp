@@ -227,7 +227,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	mutex_output.unlock();
 }
 
-void CGVar::LoadConfigFile(CString fname)
+void CGVar::LoadConfigFile(CString fname, int load_includes)
 {
 	CString st, st2, st3, iname;
 	ifstream fs;
@@ -257,7 +257,7 @@ void CGVar::LoadConfigFile(CString fname)
 		if (pos > -1)	st = st.Left(pos);
 		st.Trim();
 		// Load include
-		if (CheckInclude(st, fname, iname)) LoadConfigFile(iname);
+		if (load_includes && CheckInclude(st, fname, iname)) LoadConfigFile(iname);
 		pos = st.Find("=");
 		if (pos != -1) {
 			// Get variable name and value
@@ -298,10 +298,10 @@ void CGVar::LoadConfigFile(CString fname)
 	WriteLog(0, est);
 }
 
-void CGVar::LoadConfig(CString fname)
+void CGVar::LoadConfig(CString fname, int load_includes)
 {
 	CString st2;
-	LoadConfigFile(fname);
+	LoadConfigFile(fname, load_includes);
 	// Load instruments layout
 	if (instr_layout == "") instr_layout = "Default";
 	LoadInstrumentLayout();
@@ -1090,12 +1090,11 @@ void CGVar::ValidateVectors(int step1, int step2) {
 	}
 }
 
-void CGVar::LoadResults(CString dir, CString fname)
+void CGVar::LoadResultLogs(CString dir, CString fname)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	ifstream fs;
 	CString st, st2, st3, path;
-	int pos;
+	int pos, i;
 	char pch[2550];
 	// Load logs
 	path = dir + "\\algorithm.log";
@@ -1107,10 +1106,12 @@ void CGVar::LoadResults(CString dir, CString fname)
 	}
 	fs.open(path);
 	pos = 0;
+	i = 0;
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
 		if (st != "") WriteLog(3, st);
+		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();
 	// Load logs
@@ -1123,10 +1124,12 @@ void CGVar::LoadResults(CString dir, CString fname)
 	}
 	fs.open(path);
 	pos = 0;
+	i = 0;
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
 		if (st != "") WriteLog(0, st);
+		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();
 	// Load logs
@@ -1139,12 +1142,23 @@ void CGVar::LoadResults(CString dir, CString fname)
 	}
 	fs.open(path);
 	pos = 0;
+	i = 0;
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
 		if (st != "") WriteLog(1, st);
+		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();
+}
+
+void CGVar::LoadResults(CString dir, CString fname)
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	ifstream fs;
+	CString st, st2, st3, path;
+	int pos, i;
+	char pch[2550];
 	// Load strings
 	path = dir + "\\" + fname + ".txt";
 	if (!fileExists(path)) {

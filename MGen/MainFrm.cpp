@@ -485,6 +485,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Load results
 		pGen->LoadResults(dir, fname);
+		pGen->LoadResultLogs(dir, fname);
 		if (pGen->save_format_version != MGR_VERSION) MessageBox("This file was created with a different file format " + pGen->save_format_version + "\nYou can get errors trying to load it. This application version " + APP_VERSION + " works with file format version " + MGR_VERSION + ". Loading of older file formats is sometimes supported.", "Error");
 		m_algo_id = pGen->m_algo_id;
 		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
@@ -493,7 +494,7 @@ void CMainFrame::LoadResults(CString path) {
 		// Load configs
 		//pGen->LoadInstruments();
 		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
-		pGen->LoadConfig(dir + "\\" + fname + ".pl");
+		pGen->LoadConfig(dir + "\\" + fname + ".pl", 0);
 		// Load music
 		pGen->LoadResultMusic(dir, fname);
 		// Adapt

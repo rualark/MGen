@@ -166,6 +166,7 @@ protected:
 	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
 	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
+	int optimize_dpenalty = 1; // Saves only melodies closest to source melody. Decreases memory usage. Resetting allows for more close results when corrections>1
 
 	// Master parameters
 	vector <int> *scantus; // Source cantus for processing

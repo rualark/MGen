@@ -1,6 +1,9 @@
 #pragma once
 #include "GLib.h"
 
+// Maximum number of lines to load from saved logs
+#define MAX_LOAD_LOG 10
+
 #define MAX_WARN_LOADVECTORS 10
 #define MAX_WARN_VALID 10
 // Maximum allowed note length. Must be at least two times lower than 65 535 for poff to work
@@ -16,11 +19,12 @@ public:
 	void InitVectors();
 	void LoadInstruments(); // Load instruments config
 	void LoadInstrument(int i, CString fname);
-	void LoadConfig(CString fname);
+	void LoadConfig(CString fname, int load_includes = 1);
 	void LoadInstrumentLayout();
 	void SaveResults(CString dir, CString fname);
 	void ExportVectorsCSV(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
+	void LoadResultLogs(CString dir, CString fname);
 	void LoadResultMusic(CString dir, CString fname);
 
 	// Warnings
@@ -216,7 +220,7 @@ protected:
 	void LoadVector(ifstream & fs, vector<float>& v);
 	void LoadVector(ifstream & fs, vector<unsigned char>& v);
 	// Load config
-	void LoadConfigFile(CString fname);
+	void LoadConfigFile(CString fname, int load_includes = 1);
 	void LoadVarInstr(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) = 0;
 	// Helper functions for child generators
