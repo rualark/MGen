@@ -2000,7 +2000,7 @@ void CGenCF1::SWA(int i, int dp) {
 			}
 		}
 		// Send log
-		if (debug_level > 0) {
+		if (debug_level > 1) {
 			CString est;
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
