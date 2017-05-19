@@ -326,7 +326,7 @@ void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2) {
 
 // Clear flags
 void CGenCF1::ClearFlags(int step1, int step2) {
-	if (clear_flags) {
+	if (!skip_flags || flags_need2) {
 		fill(flags.begin(), flags.end(), 0);
 		fill(fpenalty.begin(), fpenalty.end(), 0);
 	}
@@ -1016,8 +1016,6 @@ void CGenCF1::ScanCantusInit() {
 	accepted3 = 0;
 	// Can we skip flags?
 	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
-	// We need to clear flags if we are not skipping, or have strict=0 or require flags
-	clear_flags = !skip_flags || flags_need2;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
 		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
