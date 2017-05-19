@@ -4,7 +4,7 @@ include "../../GenCF1/include/default.pl"
 #method = window-scan # This method can be faster in some cases
 method = swa # This method is best for analysis and corrections in most cases
 
-accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
+accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
@@ -22,7 +22,7 @@ pitch_penalty = 1 # Penalty for changing note one more diatonic step while corre
 show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 interval = 3-19 # Minimum-maximum chromatic interval in cantus (12 = octave)
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
-swa_steps = 6 # Size of Sliding Window Approximation algorithm window in steps
+swa_steps = 4 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 6 # Maximum interval allowed between each source and corrected note
 random_key = 0 # Select any of possible keys regardless of last note
 
