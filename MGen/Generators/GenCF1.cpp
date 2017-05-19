@@ -186,6 +186,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "approximations", &approximations);
 	CheckVar(sN, sV, "swa_steps", &swa_steps);
 	CheckVar(sN, sV, "correct_range", &correct_range);
+	CheckVar(sN, sV, "correct_inrange", &correct_inrange);
 
 	LoadHarmVar(sN, sV);
 	LoadHarmConst(sN, sV);
@@ -1062,6 +1063,18 @@ void CGenCF1::GetRealRange() {
 	}
 }
 
+// Calculate source melody range
+void CGenCF1::GetSourceRange() {
+	// Get source melody range
+	GetMelodyInterval(cc, 0, c_len);
+	// Convert range to diatonic
+	int nminc = CC_C(nmin, tonic_cur, minor_cur);
+	int nmaxc = CC_C(nmax, tonic_cur, minor_cur);
+	// Decrease current range if it is bigger
+	if (minc < nminc) minc = nminc;
+	if (maxc > nmaxc) maxc = nmaxc;
+}
+
 void CGenCF1::SingleCantusInit() {
 	// Copy cantus
 	cc = *scantus;
@@ -1079,6 +1092,9 @@ void CGenCF1::SingleCantusInit() {
 	}
 	if (!swa_inrange) {
 		GetRealRange();
+	}
+	if (correct_inrange) {
+		GetSourceRange();
 	}
 	// Set pitch limits
 	// If too wide range is not accepted, correct range to increase scan performance

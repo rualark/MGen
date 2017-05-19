@@ -23,6 +23,7 @@ approximations = 50 # Maximum number of approximations to run if rpenalty decrea
 swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 6 # Maximum interval allowed between each source and corrected note
 random_key = 0 # Select any of possible keys regardless of last note
+correct_inrange = 0 # Limit allowed range of corrected melody to range of source melody
 
 # Technical parameters
 midifile_in_mul = 1 # Multiply note length with this value when loading

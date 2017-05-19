@@ -77,6 +77,7 @@ protected:
 	int GetMinSmap();
 	int GetMaxSmap();
 	void GetRealRange();
+	void GetSourceRange();
 	void SingleCantusInit();
 	void MakeNewCantus();
 	void MultiCantusInit();
@@ -108,7 +109,6 @@ protected:
 	void TestDiatonic();
 	void RandomSWA();
 	void SWA(int i, int dp);
-	inline int FailCantus();
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
 	void RandCantus(vector<int>& c, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
@@ -142,6 +142,7 @@ protected:
 	int max_tempo = 120;
 	int first_steps_tonic = 3; // Number of first steps, which must contain tonic note
 	int correct_range = 4; // Maximum interval allowed between each source and corrected note
+	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
 	float random_choose = 100; // Percent of accepted canti to show and play
 	int random_seed = 0; // Seed melody with random numbers. This ensures giving different results if generation is very slow.
 	int random_range = 0; // Limit scanning to one of possible fast-scan ranges
