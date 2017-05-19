@@ -10,7 +10,7 @@ accept_reseed = 0 # After accepting first result reseed (if random_seed) and cho
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 late_require = 1 # Allow not-last scan window to have no needed flags or strict when strict=0 (blocked flags are always disallowed). This calculation usually requires more time
-s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
+s_len = 7 # Maximum number of measures to full scan. Higher values are slow to compute
 t_cnt = 1000 # Maximum number of steps generated
 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
