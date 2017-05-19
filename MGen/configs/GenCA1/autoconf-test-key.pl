@@ -10,5 +10,5 @@ include "../GenCF1/include/rules-low.pl"
 
 
 # This config was created from default config file configs\GenCA1.pl
-# Created at 2017-05-19 20-17-05
-Midi_file = load\test-tritone.mid
+# Created at 2017-05-19 20-04-53
+Midi_file = load\test-key.mid

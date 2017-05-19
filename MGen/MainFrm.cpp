@@ -507,7 +507,7 @@ void CMainFrame::LoadResults(CString path) {
 void CMainFrame::LoadMidi(CString path)
 {
 	if (m_state_gen == 1) {
-		AfxMessageBox("Please stop generation before opening saved results");
+		AfxMessageBox("Please stop generation before opening midi file");
 		return;
 	}
 	CMFIDialog dlg;
@@ -623,7 +623,9 @@ void CMainFrame::OnButtonAlgo()
 {
 	if (m_state_gen != 1) {
 		CAlgoDlg dlg;
-		dlg.DoModal();
+		if (dlg.DoModal() == IDOK) {
+			OnButtonGen();
+		}
 	}
 }
 
@@ -1012,7 +1014,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 		total, (pGen->time_stopped - pGen->time_started) / 1000);
 	st2 = st + st2;
 	CGLib::WriteLog(2, st2);
-	if (total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_STATUS_FREQ) {
+	if (pGen->time_stopped - pGen->time_started > 1000 && total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_STATUS_FREQ) {
 		st.Format("Algorithm status update is %d per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
 			total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_STATUS_FREQ);
 		CGLib::WriteLog(1, st);
@@ -1033,7 +1035,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 		total, (pGen->time_stopped - pGen->time_started) / 1000);
 	st2 = st + st2;
 	CGLib::WriteLog(2, st2);
-	if (total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_LOG_FREQ) {
+	if (pGen->time_stopped - pGen->time_started > 1000 && total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_LOG_FREQ) {
 		st.Format("Algorithm sends %d logs per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
 			total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_LOG_FREQ);
 		CGLib::WriteLog(1, st);
@@ -1139,8 +1141,10 @@ void CMainFrame::OnUpdateButtonAlgo(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateButtonParams(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_state_gen != 1 && m_algo > -1 && m_config != "");
-	if (m_config != "") pCmdUI->SetText("Config: " + m_config);
-	else pCmdUI->SetText("Config: ");
+	if (m_config != "") {
+		pCmdUI->SetText("Config: " + m_config + "                                       ");
+	}
+	else pCmdUI->SetText("Config:                             ");
 }
 
 void CMainFrame::OnUpdateButtonEparams(CCmdUI *pCmdUI)
