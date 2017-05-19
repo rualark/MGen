@@ -10,5 +10,5 @@ include "../GenCF1/include/rules-low.pl"
 
 
 # This config was created from default config file configs\GenCA1.pl
-# Created at 2017-05-11 15-17-34
+# Created at 2017-05-20 00-16-02
 Midi_file = load\test-repeat.mid

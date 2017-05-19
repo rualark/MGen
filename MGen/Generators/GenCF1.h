@@ -5,7 +5,7 @@
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
 
-#define MAX_FLAGS 76
+#define MAX_FLAGS 77
 #define MAX_WIND 500
 #define MAX_NOTE 127
 
@@ -63,7 +63,7 @@ protected:
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline void AlterMinor(int ep2, vector<int>& cc);
-	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& leap, int ep2);
+	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int ep2);
 	inline int FailMultiCulm(vector<int>& cc, int ep2);
@@ -154,9 +154,10 @@ protected:
 	int calculate_ssf = 1; // Enables SWA stuck flags statistics calculation algorithm.
 	int best_rejected = 0; // Show best rejected results if rejecting more than X ms. Set to 0 to disable. Slows down generation
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
-	int repeat_steps = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
-	int repeat_steps2 = 15; // Prohibit repeating of 5 notes closer than repeat_steps between first notes
-	int repeat_steps3 = 100; // Prohibit repeating of 7 notes closer than repeat_steps between first notes
+	int repeat_steps2 = 8; // Prohibit repeating of 2 notes closer than repeat_steps between first notes (if beats are same)
+	int repeat_steps3 = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
+	int repeat_steps5 = 15; // Prohibit repeating of 5 notes closer than repeat_steps between first notes
+	int repeat_steps7 = 100; // Prohibit repeating of 7 notes closer than repeat_steps between first notes
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <int> hvd, hvs, hvt, hcd, hcs, hct; //  Variants and constant harmonic meaning

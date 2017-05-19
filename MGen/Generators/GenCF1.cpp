@@ -46,7 +46,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Unfinished fill", // 33
 	"3rd to last is leading", // 34
 	"Preleaped unfilled 3rd", // 35
-	"Outstanding repeat", // 36
+	"Outstanding repeat 3", // 36
 	"Too wide range", // 37
 	"Too tight range", // 38
 	"Major seventh", // 39
@@ -86,6 +86,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Long repeat+", // 73
 	"Unaltered VII before Im", // 74
 	"Unaltered near altered (m)", // 75
+	"Outstanding repeat 2", // 76
 };
 
 const Color FlagColor[] = {
@@ -171,9 +172,10 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "random_seed", &random_seed);
 	CheckVar(sN, sV, "random_range", &random_range);
 	CheckVar(sN, sV, "accept_reseed", &accept_reseed);
-	CheckVar(sN, sV, "repeat_steps", &repeat_steps);
 	CheckVar(sN, sV, "repeat_steps2", &repeat_steps2);
 	CheckVar(sN, sV, "repeat_steps3", &repeat_steps3);
+	CheckVar(sN, sV, "repeat_steps5", &repeat_steps5);
+	CheckVar(sN, sV, "repeat_steps7", &repeat_steps7);
 	CheckVar(sN, sV, "shuffle", &shuffle);
 	CheckVar(sN, sV, "first_steps_tonic", &first_steps_tonic);
 	CheckVar(sN, sV, "show_severity", &show_severity);
@@ -500,19 +502,27 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 }
 
 // Search for outstanding repeats
-int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2) {
-	if (ep2 > 6) for (int i = 0; i < ep2 - 6; ++i) {
+int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
+	int ok;
+	if (ep2 > rlen*2) for (int i = 0; i < ep2 - rlen * 2; ++i) {
 		// Check if note changes direction or is a leap
 		if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
 			// Search for repeat of note at same beat until last three notes
-			int finish = i + repeat_steps;
+			int finish = i + scan_len;
 			if (finish > ep2 - 2) finish = ep2 - 2;
 			for (int x = i + 2; x < finish; x += 2) {
 				// Check if same note with direction change or leap
 				if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
-					// Check that two more notes repeat
-					if ((c[x + 1] == c[i + 1]) && (c[x + 2] == c[i + 2])) {
-						FLAG2(36, i);
+					// Check that more notes repeat
+					ok = 0;
+					for (int z = 1; z < rlen; ++z) {
+						if (cc[x + z] != cc[i + z]) {
+							ok = 1;
+							break;
+						}
+					}
+					if (!ok) {
+						FLAG2(fid, i);
 					}
 				}
 			}
@@ -569,7 +579,7 @@ int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
 		else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
 	}
 	for (int i = 0; i < ep2 - 1; ++i) {
-			// Add new leap
+		// Add new leap
 		if (leap[i] != 0) {
 			++leap_sum;
 			++leap_sum2;
@@ -2128,9 +2138,10 @@ check:
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
-		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
-		if (FailLongRepeat(cc, leap, ep2, repeat_steps2, 5, 72)) goto skip;
-		if (FailLongRepeat(cc, leap, ep2, repeat_steps3, 7, 73)) goto skip;
+		if (FailOutstandingRepeat(c, leap, ep2, repeat_steps2, 2, 76)) goto skip;
+		if (FailOutstandingRepeat(c, leap, ep2, repeat_steps3, 3, 36)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
 		GlobalFill(ep2, nstat2);
 		if (FailStagnation(cc, nstat, ep2)) goto skip;
 		if (FailMultiCulm(cc, ep2)) goto skip;
