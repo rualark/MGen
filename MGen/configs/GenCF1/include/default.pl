@@ -3,13 +3,14 @@
 # scan - full (or window) scan all possible combinations (can randomize starting vector with random_seed and random_range)
 
 # Method parameters
-#method = window-scan # This method is fastest random generator with s_len=1, accept_reseed=1, random_seed=1
-method = swa # This method is mainly used for testing (same algorithm used as in CA1)
+method = window-scan # This method is fastest random generator with s_len=1, accept_reseed=1, random_seed=1
+#method = swa # This method is mainly used for testing (same algorithm used as in CA1)
 
-accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
-random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
+random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
-s_len = 1 # Maximum number of measures to full scan. 6-7 is recommended. Lower values can create less melodic results. Higher values are slow to compute
+late_require = 1 # Allow not-last scan window to have no needed flags or strict when strict=0 (blocked flags are always disallowed). This calculation usually requires more time
+s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 t_cnt = 1000 # Maximum number of steps generated
 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
@@ -51,5 +52,4 @@ calculate_correlation = 0 # Enables correlation calculation algorithm. Slows dow
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 1 # Enables SWA stuck flags statistics calculation algorithm.
-late_require = 0 # Allow not-last scan window to have no needed tags, but no blocked tags. This calculation usually requires much more time
 best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation

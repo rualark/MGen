@@ -9,7 +9,7 @@
 # H - rules specifially for higher cantus firmus
 # V - rules appropriate for vocal melody
 
-Strict                     = 1 # No violated rules
+Strict                     = 0 # No violated rules
 3 letters in a row [V]     = X #SC 3 same letters (TDS) in possible chord names in a row (variants)
 4 step miss [C]            = X #SC 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
 4 letters in a row [V]     = X #SC 4 same letters (TDS) in possible chord names in a row (variants)
@@ -21,18 +21,18 @@ Preleaped unfilled 3rd     = 0 #S 3rd is unfilled, but was prepared by leap befo
 Preleaped unresolved 3rd   = 0 #S! 3rd is unresolved, but was prepared by leap before
 "Prefilled unresolved 3rd" = 0 #S 3rd is not resolved by backward movement, but it was filled before
 "Prefilled unfilled 3rd"   = 0 #S 3rd is not filled, but it was filled before
-Late <6th resolution       = 0 #S! Leap less than 6th is resolved after a second note
-Leap back <7th             = 0 #S Leap returns to same note (in case leap is equal or less than 4th)
+Late <6th resolution       = 1 #S! Leap less than 6th is resolved after a second note
+Leap back <7th             = 1 #S Leap returns to same note (in case leap is equal or less than 4th)
 Last leap                  = 0 #S Last step is a leap
-"Consecutive leaps"        = 0 #S More than cse_leaps consecutive leaps
-Many leaps                 = 0 #S! Maximum allowed max_leaps during max_leap_steps
+Many leaps                 = 1 #S! Maximum allowed max_leaps during max_leap_steps
 Two 3rds after 6/8         = 0 #S Chain of two thirds in one direction after 6th or octave
 3 letters in a row [C]     = 0 #C! 3 same letters (TDS) in possible chord names in a row (constant)
 Tritone resolved           = 0 #S Tritone is prepared by E and resolved to C
-"Leap back overflow"       = 0 #S Leap back is going farther than starting note of a previous leap
+"Leap back overflow"       = 2 #S Leap back is going farther than starting note of a previous leap
 "Prefilled unresolved 4th" = 0 #S 4th is not resolved by backward movement, but it was filled before
 "Prefilled unfilled 4th"   = 0 #S 4th is not filled, but it was filled before
 4 step miss [V]            = 0 #L 4 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
+"Consecutive leaps"        = 1 #S More than cse_leaps consecutive leaps
 "First not C"              = 0 #C First note is not tonic
 Minor seventh              = 0 #U Minor seventh interval leap
 Outstanding repeat         = 0 #U Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
