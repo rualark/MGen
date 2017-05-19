@@ -327,6 +327,7 @@ void CGenCA1::Generate()
 		CountTime(step, step + real_len);
 		UpdateNoteMinMax(step, step + real_len);
 		UpdateTempoMinMax(step, step + real_len);
+		GetSourceRange();
 		if (method == mSWA) {
 			SWA(i, 1);
 		}

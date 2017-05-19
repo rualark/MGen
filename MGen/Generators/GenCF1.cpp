@@ -1081,11 +1081,16 @@ void CGenCF1::GetSourceRange() {
 	// Get source melody range
 	GetMelodyInterval(cc, 0, c_len);
 	// Convert range to diatonic
-	int nminc = CC_C(nmin, tonic_cur, minor_cur) - correct_inrange;
-	int nmaxc = CC_C(nmax, tonic_cur, minor_cur) + correct_inrange;
+	src_nminc = CC_C(nmin, tonic_cur, minor_cur) - correct_inrange;
+	src_nmaxc = CC_C(nmax, tonic_cur, minor_cur) + correct_inrange;
+}
+
+// Calculate source melody range
+void CGenCF1::ApplySourceRange() {
+	if (!src_nmaxc) return;
 	// Decrease current range if it is bigger
-	if (minc < nminc) minc = nminc;
-	if (maxc > nmaxc) maxc = nmaxc;
+	if (minc < src_nminc) minc = src_nminc;
+	if (maxc > src_nmaxc) maxc = src_nmaxc;
 }
 
 void CGenCF1::SingleCantusInit() {
@@ -1105,7 +1110,7 @@ void CGenCF1::SingleCantusInit() {
 	}
 	if (!swa_inrange) {
 		GetRealRange();
-		GetSourceRange();
+		ApplySourceRange();
 	}
 	// Set pitch limits
 	// If too wide range is not accepted, correct range to increase scan performance
@@ -2136,8 +2141,8 @@ check:
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
-		if (FailOutstandingRepeat(c, leap, ep2, repeat_steps2, 2, 76)) goto skip;
-		if (FailOutstandingRepeat(c, leap, ep2, repeat_steps3, 3, 36)) goto skip;
+		//if (FailOutstandingRepeat(c, leap, ep2, repeat_steps2, 2, 76)) goto skip;
+		//if (FailOutstandingRepeat(c, leap, ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
 		GlobalFill(ep2, nstat2);

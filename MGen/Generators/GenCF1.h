@@ -78,6 +78,7 @@ protected:
 	int GetMaxSmap();
 	void GetRealRange();
 	void GetSourceRange();
+	void ApplySourceRange();
 	void SingleCantusInit();
 	void MakeNewCantus();
 	void MultiCantusInit();
@@ -230,6 +231,7 @@ protected:
 	milliseconds accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
 	int nmin, nmax, nmind, nmaxd;
+	int src_nminc = 0, src_nmaxc = 0; // Source range (chromatic)
 	int cc_incr[MAX_NOTE]; // cc increments for each step
 	vector<int> pc; // pitch class (diatonic)
 	vector<int> pcc; // pitch class (chromatic)
