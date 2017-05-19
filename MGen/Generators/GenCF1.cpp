@@ -2039,48 +2039,6 @@ void CGenCF1::SWA(int i, int dp) {
 	WriteLog(3, est);
 }
 
-int CGenCF1::FailCantus() {
-	if (FailNoteRepeat(cc, ep1 - 1, ep2 - 1)) return 1;
-	GetMelodyInterval(cc, 0, ep2);
-	++accepted3;
-	// Limit melody interval
-	if (task == tGen) {
-		if (nmax - nmin > max_interval) return 1;
-		if (c_len == ep2 && nmax - nmin < min_interval) return 1;
-		ClearFlags(0, ep2);
-	}
-	else {
-		ClearFlags(0, ep2);
-		if (nmax - nmin > max_interval) FLAG2(37, 0);
-		if (c_len == ep2 && nmax - nmin < min_interval) FLAG2(38, 0);
-	}
-	// Show status
-	if (accepted3 % 100000 == 0) ShowScanStatus();
-	// Calculate diatonic limits
-	nmind = CC_C(nmin, tonic_cur, minor_cur);
-	nmaxd = CC_C(nmax, tonic_cur, minor_cur);
-	if (FailDiatonic(c, cc, 0, ep2, minor_cur)) return 1;
-	GetPitchClass(c, pc, 0, ep2);
-	if (minor_cur && FailMinor()) return 1;
-	//if (MatchVectors(cc, test_cc, 0, 2)) 
-	//WriteLog(1, "Found");
-	if (FailLastNotes(pc, ep2)) return 1;
-	if (FailNoteSeq(pc, 0, ep2)) return 1;
-	if (FailIntervals(ep2, pc)) return 1;
-	if (FailLeapSmooth(ep2, leap, smooth)) return 1;
-	if (FailOutstandingRepeat(c, leap, ep2)) return 1;
-	if (FailLongRepeat(cc, leap, ep2, repeat_steps2, 5, 72)) return 1;
-	if (FailLongRepeat(cc, leap, ep2, repeat_steps3, 7, 73)) return 1;
-	GlobalFill(ep2, nstat2);
-	if (FailStagnation(cc, nstat, ep2)) return 1;
-	if (FailMultiCulm(cc, ep2)) return 1;
-	if (FailFirstNotes(pc, ep2)) return 1;
-	if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) return 1;
-	if (FailMelodyHarmSeq(pc, 0, ep2)) return 1;
-	if (FailMelodyHarmSeq2(pc, 0, ep2)) return 1;
-	return 0;
-}
-
 // Save accepted time if we are showing best rejected
 void CGenCF1::TimeBestRejected() {
 	if (best_rejected) {
@@ -2120,8 +2078,45 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 check:
 	while (true) {
 		//LogCantus(cc);
+		if (FailNoteRepeat(cc, ep1 - 1, ep2 - 1)) goto skip;
+		GetMelodyInterval(cc, 0, ep2);
+		++accepted3;
+		// Limit melody interval
+		if (task == tGen) {
+			if (nmax - nmin > max_interval) goto skip;
+			if (c_len == ep2 && nmax - nmin < min_interval) goto skip;
+			ClearFlags(0, ep2);
+		}
+		else {
+			ClearFlags(0, ep2);
+			if (nmax - nmin > max_interval) FLAG(37, 0);
+			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
+		}
 		if (need_exit && task != tEval) break;
-		if (FailCantus()) goto skip;
+		// Show status
+		if (accepted3 % 100000 == 0) ShowScanStatus();
+		// Calculate diatonic limits
+		nmind = CC_C(nmin, tonic_cur, minor_cur);
+		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
+		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
+		GetPitchClass(c, pc, 0, ep2);
+		if (minor_cur && FailMinor()) goto skip;
+		//if (MatchVectors(cc, test_cc, 0, 2)) 
+		//WriteLog(1, "Found");
+		if (FailLastNotes(pc, ep2)) goto skip;
+		if (FailNoteSeq(pc, 0, ep2)) goto skip;
+		if (FailIntervals(ep2, pc)) goto skip;
+		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
+		if (FailOutstandingRepeat(c, leap, ep2)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2, repeat_steps2, 5, 72)) goto skip;
+		if (FailLongRepeat(cc, leap, ep2, repeat_steps3, 7, 73)) goto skip;
+		GlobalFill(ep2, nstat2);
+		if (FailStagnation(cc, nstat, ep2)) goto skip;
+		if (FailMultiCulm(cc, ep2)) goto skip;
+		if (FailFirstNotes(pc, ep2)) goto skip;
+		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
+		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
+		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
 		SaveBestRejected();
 		// If we are window-scanning
