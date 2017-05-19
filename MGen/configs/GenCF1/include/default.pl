@@ -3,6 +3,7 @@
 # scan - full (or window) scan all possible combinations (can randomize starting vector with random_seed and random_range)
 
 # Method parameters
+# Recommended: method=window-scan, accept_reseed=1, random_seed=1, late_require=1, s_len=1, random_range=0
 method = window-scan # This method is fastest random generator with s_len=1, accept_reseed=1, random_seed=1
 #method = swa # This method is mainly used for testing (same algorithm used as in CA1)
 
@@ -40,9 +41,10 @@ cse_leaps2 = 3 # Maximum allowed consecutive leaps for Consecutive leaps+
 max_leap_steps = 7
 stag_notes = 2 # Maximum allowed stag_notes (same notes) during stag_note_steps
 stag_note_steps = 7
-repeat_steps = 8 # Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
-repeat_steps2 = 15 # Prohibit repeating of 5 notes closer than repeat_steps2 between first notes
-repeat_steps3 = 100 # Prohibit repeating of  notes closer than repeat_steps2 3between first notes
+repeat_steps2 = 7 # Prohibit repeating of 2 notes closer than repeat_steps2 between first notes (if beats are same)
+repeat_steps3 = 8 # Prohibit repeating of 3 notes closer than repeat_steps3 between first notes (if beats are same)
+repeat_steps5 = 15 # Prohibit repeating of 5 notes closer than repeat_steps5 between first notes
+repeat_steps7 = 100 # Prohibit repeating of 7 notes closer than repeat_steps7 between first notes
 first_steps_tonic = 3 # Number of first steps, which must contain tonic note (will increase by one if cantus is longer than 10 notes)
 
 # Technical parameters
