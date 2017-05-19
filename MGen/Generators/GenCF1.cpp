@@ -1081,8 +1081,8 @@ void CGenCF1::GetSourceRange() {
 	// Get source melody range
 	GetMelodyInterval(cc, 0, c_len);
 	// Convert range to diatonic
-	int nminc = CC_C(nmin, tonic_cur, minor_cur);
-	int nmaxc = CC_C(nmax, tonic_cur, minor_cur);
+	int nminc = CC_C(nmin, tonic_cur, minor_cur) - correct_inrange;
+	int nmaxc = CC_C(nmax, tonic_cur, minor_cur) + correct_inrange;
 	// Decrease current range if it is bigger
 	if (minc < nminc) minc = nminc;
 	if (maxc > nmaxc) maxc = nmaxc;
@@ -1105,8 +1105,6 @@ void CGenCF1::SingleCantusInit() {
 	}
 	if (!swa_inrange) {
 		GetRealRange();
-	}
-	if (correct_inrange) {
 		GetSourceRange();
 	}
 	// Set pitch limits
