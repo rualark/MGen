@@ -92,6 +92,7 @@ END_MESSAGE_MAP()
 
 CMainFrame::CMainFrame()
 {
+	AlgGroups.resize(MAX_ALGO);
 	//HANDLE hThread = GetCurrentThread();
 	//SetThreadPriority(hThread, THREAD_PRIORITY_TIME_CRITICAL);
 
@@ -710,7 +711,8 @@ void CMainFrame::LoadAlgo()
 	ParamName.clear();
 	for (int i = 0; i < MAX_ALGO; i++) ParamCount[i] = 0;
 	AlgCount = 0;
-	if (AlgGCount > 0) for (int i = 0; i < AlgGCount; i++) AlgGroups[i] = "@#(*&#$%@&*(^@#)(&*@$#)(*&%@#)&*#$";
+	AlgGroups.clear();
+	AlgGroups.resize(MAX_ALGO);
 	AlgGCount = 0;
 	while (fs.good()) {
 		pos = 0;
@@ -742,13 +744,12 @@ void CMainFrame::LoadAlgo()
 			st2.Trim();
 			AlgGroup[AlgCount] = st2;
 			// Load groups
-			CString* pst = find(begin(AlgGroups), end(AlgGroups), st2);
-			if (*pst != st2) {
+			if (find(AlgGroups.begin(), AlgGroups.end(), st2) == AlgGroups.end()) {
 				AlgGroups[AlgGCount] = st2;
 				AlgGCount++;
 			}
 			if (AlgMFI[AlgCount]) {
-				pst = find(begin(AlgMFIGroups), end(AlgMFIGroups), st2);
+				CString* pst = find(begin(AlgMFIGroups), end(AlgMFIGroups), st2);
 				if (*pst != st2) {
 					AlgMFIGroups[AlgMFIGCount] = st2;
 					AlgMFIGCount++;

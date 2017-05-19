@@ -77,7 +77,7 @@ public:
 	CString AlgName[MAX_ALGO];
 	CString AlgGroup[MAX_ALGO];
 	CString AlgInsts[MAX_ALGO];
-	CString AlgGroups[MAX_ALGO];
+	vector<CString> AlgGroups;
 	CString AlgMFIGroups[MAX_ALGO];
 	CString AlgComment[MAX_ALGO];
 	CString AlgFolder[MAX_ALGO];
