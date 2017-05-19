@@ -202,7 +202,7 @@ protected:
 	vector <int> cc_len; // Length of each cantus note
 	vector <float> cc_tempo; // Tempo of each cantus note
 	int real_len; // Total length of cantus in steps
-	int skip_flags;
+	int skip_flags, clear_flags;
 	int sp1, sp2, ep1, ep2, p, pp;
 	long long accepted2 = 0, accepted3 = 0;
 	int first_note_dia, first_note_oct;

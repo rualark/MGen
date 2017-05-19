@@ -320,7 +320,7 @@ void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2) {
 
 // Clear flags
 void CGenCF1::ClearFlags(int step1, int step2) {
-	if (!skip_flags) {
+	if (clear_flags) {
 		fill(flags.begin(), flags.end(), 0);
 		fill(fpenalty.begin(), fpenalty.end(), 0);
 	}
@@ -1000,7 +1000,10 @@ void CGenCF1::ScanCantusInit() {
 	accepted = 0;
 	accepted2 = 0;
 	accepted3 = 0;
+	// Can we skip flags?
 	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+	// We need to clear flags if we are not skipping, or have strict=0 or require flags
+	clear_flags = !skip_flags || flags_need2;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
 		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
@@ -1222,7 +1225,7 @@ int CGenCF1::FailFlagBlock() {
 		int flags_conflict = 0;
 		// Find if any of accepted flags set
 		for (int i = 0; i < MAX_FLAGS; ++i) {
-			if ((flags[i]) && (accept[i])) ++flags_found;
+			if ((flags[i]) && (accept[i] > 0)) ++flags_found;
 			if ((flags[i]) && (!accept[i])) ++flags_conflict;
 			if ((flags[i]) && (accept[i] == 2)) ++flags_found2;
 		}
@@ -1245,10 +1248,14 @@ int CGenCF1::FailFlagBlock() {
 
 // Check if flags are accepted
 int CGenCF1::FailAccept() {
-	for (int i = 0; i < MAX_FLAGS; ++i) {
-		if ((flags[i]) && (!accept[i])) return 1;
-		if ((!late_require) || (ep2 == c_len))
-			if ((!flags[i]) && (accept[i] == 2)) return 1;
+	// Check prohibited strict flag only if not late_require or last window
+	if ((!late_require) || (ep2 == c_len))
+		if (flags[0] && !accept[0]) return 1;
+	for (int i = 1; i < MAX_FLAGS; ++i) {
+		if (flags[i] && !accept[i]) return 1;
+		if (!late_require || ep2 == c_len)
+			if (!flags[i] && accept[i] == 2) 
+				return 1;
 	}
 	return 0;
 }
@@ -1828,6 +1835,7 @@ void CGenCF1::InitCantus()
 	// Global step
 	step = 0;
 	// Calculate second level flags count
+	flags_need2 = 0;
 	for (int i = 0; i < MAX_FLAGS; ++i) {
 		if (accept[i] == 2) ++flags_need2;
 	}

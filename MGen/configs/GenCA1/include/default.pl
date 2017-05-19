@@ -1,8 +1,8 @@
 include "../../GenCF1/include/default.pl"
 
 # Method parameters
-#method = window-scan # This method is fastest random generator with s_len=1, accept_reseed=1, random_seed=1
-method = swa # This method is mainly used for testing (same algorithm used as in CA1)
+#method = window-scan # This method can be faster in some cases
+method = swa # This method is best for analysis and corrections in most cases
 
 accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
