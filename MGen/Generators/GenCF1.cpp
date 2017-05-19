@@ -84,6 +84,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"Consecutive leaps+", // 71
 	"Long repeat", // 72
 	"Long repeat+", // 73
+	"Unaltered VII before Im", // 74
+	"Unaltered near altered (m)", // 75
 };
 
 const Color FlagColor[] = {
@@ -1516,17 +1518,17 @@ void CGenCF1::SaveBestRejected() {
 int CGenCF1::FailMinor() {
 	for (int i = 1; i < ep2; ++i) {
 		// Prohibit major second up before I (in last steps and other places)
-		if (pcc[i] == 0 && pcc[i - 1] == 10) FLAG2(27, i);
+		if (pcc[i] == 0 && pcc[i - 1] == 10) FLAG2(74, i);
 		// Prohibit minor second up before VII - absorbed
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
 		if (pcc[i] == 11 || pcc[i] == 9) {
-			if (pcc[i - 1] == 10 || pcc[i - 1] == 8) FLAG2(27, i);
-			if (i > 1) if (pcc[i - 2] == 10 || pcc[i - 2] == 8) FLAG2(27, i);
+			if (pcc[i - 1] == 10 || pcc[i - 1] == 8) FLAG2(75, i);
+			if (i > 1) if (pcc[i - 2] == 10 || pcc[i - 2] == 8) FLAG2(75, i);
 			if (i < ep2 - 1) {
-				if (pcc[i + 1] == 10 || pcc[i + 1] == 8) FLAG2(27, i);
+				if (pcc[i + 1] == 10 || pcc[i + 1] == 8) FLAG2(75, i);
 				if (i < ep2 - 2)
-					if (pcc[i + 2] == 10 || pcc[i + 2] == 8) FLAG2(27, i);
+					if (pcc[i + 2] == 10 || pcc[i + 2] == 8) FLAG2(75, i);
 			}
 		}
 		// Prohibit unresolved minor tritone DG# (direct or with inserted note)
