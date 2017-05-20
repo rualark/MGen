@@ -5,6 +5,9 @@
 #define new DEBUG_NEW 
 #endif
 
+// Checks if we have leap or melody direction change here: needs to be not first and not last note
+#define MELODY_SEPARATION(i) ((leap[i - 1]) || i >= ep2-1 || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0))
+
 // Report violation
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
 #define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
@@ -506,13 +509,13 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2, i
 	int ok;
 	if (ep2 > rlen*2) for (int i = 0; i < ep2 - rlen * 2; ++i) {
 		// Check if note changes direction or is a leap
-		if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
+		if ((i == 0) || MELODY_SEPARATION(i) || MELODY_SEPARATION(i+rlen)) {
 			// Search for repeat of note at same beat until last three notes
 			int finish = i + scan_len;
-			if (finish > ep2 - rlen - 1) finish = ep2 - rlen - 1;
+			if (finish > ep2 - rlen) finish = ep2 - rlen;
 			for (int x = i + 2; x < finish; x += 2) {
 				// Check if same note with direction change or leap
-				if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
+				if ((c[x] == c[i]) && (MELODY_SEPARATION(x) || MELODY_SEPARATION(x+rlen))) {
 					// Check that more notes repeat
 					ok = 0;
 					for (int z = 1; z < rlen; ++z) {
