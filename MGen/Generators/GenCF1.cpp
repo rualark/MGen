@@ -90,6 +90,7 @@ const CString FlagName[MAX_FLAGS] = {
 	"Unaltered VII before Im", // 74
 	"Unaltered near altered (m)", // 75
 	"Outstanding repeat 2", // 76
+	"Subdominant after dominant" // 77
 };
 
 const Color FlagColor[] = {
@@ -332,7 +333,9 @@ int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
 int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
 	for (int i = step1; i < step2-2; ++i) {
 		// Prohibit GC before cadence
-		if (pc[i] == 4 && pc[i + 1] == 0) FLAG2(48, i)
+		if (pc[i] == 4 && pc[i + 1] == 0) FLAG2(48, i);
+		// Prohibit D-S
+		if (hconst[pc[i]] == hDom && hconst[pc[i + 1]] == hSub) FLAG2(77, i);
 	}
 	return 0;
 }
