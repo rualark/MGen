@@ -56,6 +56,7 @@ First steps without C                = 0 #L First first_steps_tonic (see comment
 First steps without E                = 0 #H First first_steps_tonic (see comment) steps do not have E note
 "2nd to last not GBD"                = 0 #C Second to last note is not GBD (C E F A forbidden)
 "2nd to last is G"                   = 0 #L Second to last note is G (G forbidden)
+Subdominant after dominant           = 0 #C Subdominant harmony goes after dominant (uses harm_const2 to calculate)
 4 letters in a row [C]               = 0 #C 4 same letters (TDS) in possible chord names in a row (constant)
 5 step miss [V]                      = 0 #C 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
 "Unresolved 4th"                     = 0 #U 4th is not resolved by backward movement
