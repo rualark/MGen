@@ -742,10 +742,17 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 	// Clear stat
 	int n1 = min(c[leap_start], c[i + 1]);
 	int n2 = max(c[leap_start], c[i + 1]);
-	// Calculate finishing pitch
-	int c3 = c[leap_start];
-	if (c[i + 1] < c[leap_start]) --c3;
-	else ++c3;
+	// Calculate finishing pitches
+	int c3 = c[leap_start + 1]; // compensation start
+	int c4 = c[leap_start]; // compensation finish
+	if (c[i + 1] < c[leap_start]) {
+		++c3;
+		--c4;
+	}
+	else {
+		--c3;
+		++c4;
+	}
 	for (int x = n1 + 1; x < n2; ++x) {
 		nstat3[x] = 0;
 	}
@@ -766,8 +773,9 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 	}
 	// Check if fill is finished
 	ffinished = 0;
-	if (nstat3[c3] || nstat3[leap_start]) ffinished = 1;
-	if (!nstat2[c3] && !nstat2[leap_start]) skips2 += 10;
+	if ((nstat3[c3] || nstat3[leap_start]) && (nstat3[c4] || nstat3[i + 1])) ffinished = 1;
+	// Add skip penalty for not starting/finishing globally
+	if ((!nstat2[c3] && !nstat2[leap_start]) && (!nstat2[c4] && !nstat2[i + 1])) skips2 += 10;
 }
 
 int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
