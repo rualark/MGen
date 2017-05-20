@@ -106,6 +106,8 @@ CGenCF1::CGenCF1()
 	ssf.resize(MAX_FLAGS);
 	flag_to_sev.resize(MAX_FLAGS);
 	flag_color.resize(MAX_FLAGS);
+	hconst.resize(7);
+	for (int i = 0; i < 7; ++i) hconst[i] = hUndefined;
 	// Start severity
 	sev_to_flag[0] = 0;
 	cur_severity = 1;
@@ -147,6 +149,24 @@ void CGenCF1::LoadHarmConst(CString* sN, CString* sV)
 			if (st.Find("D") >= 0) hcd.push_back(i);
 			if (st.Find("S") >= 0) hcs.push_back(i);
 			if (st.Find("T") >= 0) hct.push_back(i);
+		}
+	}
+}
+
+// Load absolute constant harmonic meaning
+void CGenCF1::LoadHarmConst2(CString* sN, CString* sV)
+{
+	if (*sN == "harm_const2") {
+		++parameter_found;
+		int pos = 0;
+		CString st;
+		for (int i = 0; i<1000; i++) {
+			if (pos == -1) break;
+			st = sV->Tokenize(",", pos);
+			st.Trim();
+			if (st.Find("D") >= 0) hconst[i] = hDom;
+			if (st.Find("S") >= 0) hconst[i] = hSub;
+			if (st.Find("T") >= 0) hconst[i] = hTon;
 		}
 	}
 }
@@ -198,6 +218,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 
 	LoadHarmVar(sN, sV);
 	LoadHarmConst(sN, sV);
+	LoadHarmConst2(sN, sV);
 	// Load method
 	if (*sN == "method") {
 		++parameter_found;
@@ -1904,7 +1925,7 @@ int CGenCF1::SendCantus() {
 void CGenCF1::InitCantus()
 {
 	// Check that method selected
-	if (method == -1) WriteLog(1, "Error: method not specified in algorithm configuration file");
+	if (method == mUndefined) WriteLog(1, "Error: method not specified in algorithm configuration file");
 	// Check that at least one rule accepted
 	for (int i = 0; i < MAX_FLAGS; ++i) {
 		if (accept[i]) break;

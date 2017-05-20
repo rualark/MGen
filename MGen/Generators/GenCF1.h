@@ -14,6 +14,7 @@ const CString MethodNames[] = {
 	"swa" // 1
 };
 
+#define mUndefined -1
 #define mScan 0
 #define mSWA 1
 
@@ -26,6 +27,12 @@ const CString TaskNames[] = {
 #define tGen 0
 #define tEval 1
 #define tCor 2
+
+// Harmonic functions
+#define hUndefined -1
+#define hTon 0
+#define hSub 1
+#define hDom 2
 
 // Convert chromatic to diatonic
 #define CC_C(note, tonic, minor) (minor?m_CC_C(note, tonic):maj_CC_C(note, tonic))
@@ -48,6 +55,7 @@ public:
 protected:
 	void LoadHarmVar(CString * sN, CString * sV);
 	void LoadHarmConst(CString * sN, CString * sV);
+	void LoadHarmConst2(CString * sN, CString * sV);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
@@ -115,7 +123,7 @@ protected:
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 
 	// Parameters
-	int method = -1; // Which generation / analysis method to use
+	int method = mUndefined; // Which generation / analysis method to use
 	int min_interval = 7; // Minimum chromatic interval in cantus (12 = octave)
 	int max_interval = 12; // Maximum chromatic interval in cantus (12 = octave)
 	int min_intervald = 4; // Minimum diatonic interval in cantus (7 = octave)
@@ -162,6 +170,7 @@ protected:
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <int> hvd, hvs, hvt, hcd, hcs, hct; //  Variants and constant harmonic meaning
+	vector <int> hconst; // Absolute constant harmonic meaning by note
 	// Random SWA
 	//int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases
