@@ -5,7 +5,7 @@
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
 
-#define MAX_FLAGS 78
+#define MAX_FLAGS 79
 #define MAX_WIND 500
 #define MAX_NOTE 127
 
