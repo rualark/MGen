@@ -321,13 +321,14 @@ void CGenCA1::Generate()
 		step -= real_len + 1;
 		// Fill pauses if no results generated
 		FillPause(step, real_len, 1);
-		CreateScanMatrix(i);
 		// Count additional variables
 		CountOff(step, step + real_len);
 		CountTime(step, step + real_len);
 		UpdateNoteMinMax(step, step + real_len);
 		UpdateTempoMinMax(step, step + real_len);
 		GetSourceRange();
+		CreateScanMatrix(i);
+		if (smatrixc == 0) continue;
 		if (method == mSWA) {
 			SWA(i, 1);
 		}
