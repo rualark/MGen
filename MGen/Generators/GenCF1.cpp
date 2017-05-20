@@ -756,7 +756,7 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 	// Local fill
 	skips = 0; 
 	// Add allowed skips
-	if (leap_size > 3) --skips;
+	if (leap_size > 2) --skips;
 	if (leap_size > 6) --skips;
 	// Global fill
 	skips2 = skips;
