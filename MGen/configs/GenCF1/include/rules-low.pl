@@ -50,6 +50,7 @@ Unfilled 3rd                         = 0 #U 3rd is not filled
 Unfilled 4th                         = 0 #U 4th is not filled
 Unfilled leap >4th                   = 0 #U! Leap is not filled
 Late culmination                     = 0 #L Culmination at last three steps
+Early culmination                    = 0 #L Culmination at first three steps
 Long smooth                          = 0 #U Too long smooth movement
 Long line                            = 0 #U Too long smooth movement in one direction (linear)
 First steps without C                = 0 #L First first_steps_tonic (see comment) steps do not have C note
