@@ -509,7 +509,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2, i
 		if ((i == 0) || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0)) {
 			// Search for repeat of note at same beat until last three notes
 			int finish = i + scan_len;
-			if (finish > ep2 - 2) finish = ep2 - 2;
+			if (finish > ep2 - rlen - 1) finish = ep2 - rlen - 1;
 			for (int x = i + 2; x < finish; x += 2) {
 				// Check if same note with direction change or leap
 				if ((c[x] == c[i]) && ((leap[x - 1]) || ((c[x] - c[x - 1])*(c[x + 1] - c[x]) < 0))) {
@@ -2203,8 +2203,8 @@ check:
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
 		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
-		//if (FailOutstandingRepeat(c, leap, ep2, repeat_steps2, 2, 76)) goto skip;
-		//if (FailOutstandingRepeat(c, leap, ep2, repeat_steps3, 3, 36)) goto skip;
+		if (FailOutstandingRepeat(c, leap, ep2, repeat_steps2, 2, 76)) goto skip;
+		if (FailOutstandingRepeat(c, leap, ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
 		GlobalFill(ep2, nstat2);
