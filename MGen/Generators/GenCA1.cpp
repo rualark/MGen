@@ -309,9 +309,16 @@ void CGenCA1::Generate()
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
 		t_generated2 = t_generated;
+		// Fill pauses if no results generated
+		FillPause(step - real_len - 1, real_len, 1);
+		// Count additional variables
+		CountOff(step - real_len - 1, step - 1);
+		CountTime(step - real_len - 1, step - 1);
+		UpdateNoteMinMax(step - real_len - 1, step - 1);
+		UpdateTempoMinMax(step - real_len - 1, step - 1);
+		CreateScanMatrix(i);
 		// If no corrections needed
-		if (!corrections) {
-			v_cnt = 1;
+		if (!corrections || !smatrixc) {
 			// Go forward
 			t_generated = step;
 			Adapt(step - real_len - 1, step - 1);
@@ -319,16 +326,7 @@ void CGenCA1::Generate()
 			continue;
 		}
 		step -= real_len + 1;
-		// Fill pauses if no results generated
-		FillPause(step, real_len, 1);
-		// Count additional variables
-		CountOff(step, step + real_len);
-		CountTime(step, step + real_len);
-		UpdateNoteMinMax(step, step + real_len);
-		UpdateTempoMinMax(step, step + real_len);
 		GetSourceRange();
-		CreateScanMatrix(i);
-		if (smatrixc == 0) continue;
 		if (method == mSWA) {
 			SWA(i, 1);
 		}

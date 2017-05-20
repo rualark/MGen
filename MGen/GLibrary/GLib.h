@@ -11,9 +11,9 @@
 // Check for new logs every X ms
 #define LOG_TIMER 50
 // Send no more than Y logs every time when checking (maximum stable frequency is LOG_MAX_SEND / LOG_TIMER)
-#define LOG_MAX_SEND 1
+#define LOG_MAX_SEND 5
 // Maximum number of logs in buffer (maximum burst)
-#define MAX_LOG_BUFFER 100
+#define MAX_LOG_BUFFER 400
 // Maximum number of logs saved to file on autosave in each tab
 #define MAX_SAVED_LOGS 10000
 // Warn if status frequency is above this value

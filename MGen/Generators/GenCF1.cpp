@@ -736,7 +736,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 	return 0;
 }
 
-void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &ffinished)
+void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &ffinished, int pre)
 {
 	int leap_finish = i + 1;
 	if (pos2 < pos1) pos2 = pos1;
@@ -755,12 +755,22 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 		++c4;
 	}
 	int fill_finish = leap_finish;
-	for (int x = n1 + 1; x < n2; ++x) nstat3[x] = 0;
+	for (int x = n1; x <= n2; ++x) nstat3[x] = 0;
 	// Fill all notes (even those outside pos1-pos2 window)
-	for (int x = pos1; x <= pos2; ++x) {
-		++nstat3[c[x]];
-		if (fill_finish <= leap_finish && (c[x] == c4 || c[x] == c[leap_start])) {
-			fill_finish = x;
+	if (pre) {
+		for (int x = pos2; x >= pos1; --x) {
+			++nstat3[c[x]];
+			if (fill_finish >= leap_finish && (c[x] == c3 || c[x] == c[leap_finish])) {
+				fill_finish = x;
+			}
+		}
+	}
+	else {
+		for (int x = pos1; x <= pos2; ++x) {
+			++nstat3[c[x]];
+			if (fill_finish <= leap_finish && (c[x] == c4 || c[x] == c[leap_start])) {
+				fill_finish = x;
+			}
 		}
 	}
 	// Local fill
@@ -776,29 +786,52 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 	}
 	// Check if fill does not deviate
 	ffinished = 1;
-	int pos3 = leap_finish + 2;
-	if (pos3 > ep2) pos3 = ep2;
-	if (pos3 < fill_finish) {
-		int npoint = c[leap_finish];
-		if (c[leap_finish] < c[leap_start]) {
-			// Get note point
-			if (c[leap_finish + 1] < npoint) npoint = c[leap_finish + 1];
-			// Detect deviation below note point
-			for (int x = pos3; x < fill_finish; ++x)
-				if (c[x] < npoint) ffinished = 0;
+	if (pre) {
+		int pos3 = leap_finish - 2;
+		if (pos3 < 0) pos3 = 0;
+		if (pos3 > fill_finish) {
+			int npoint = c[leap_start];
+			if (c[leap_finish] > c[leap_start]) {
+				// Get note point
+				if (c[leap_start - 1] < npoint) npoint = c[leap_start - 1];
+				// Detect deviation below note point
+				for (int x = fill_finish+1; x <= pos3; ++x)
+					if (c[x] < npoint) ffinished = 0;
+			}
+			else {
+				// Get note point
+				if (c[leap_start - 1] > npoint) npoint = c[leap_start - 1];
+				// Detect deviation below note point
+				for (int x = fill_finish + 1; x <= pos3; ++x)
+					if (c[x] > npoint) ffinished = 0;
+			}
 		}
-		else {
-			// Get note point
-			if (c[leap_finish + 1] > npoint) npoint = c[leap_finish + 1];
-			// Detect deviation below note point
-			for (int x = pos3; x < fill_finish; ++x)
-				if (c[x] > npoint) ffinished = 0;
+	}
+	else {
+		int pos3 = leap_finish + 2;
+		if (pos3 > ep2) pos3 = ep2;
+		if (pos3 < fill_finish) {
+			int npoint = c[leap_finish];
+			if (c[leap_finish] < c[leap_start]) {
+				// Get note point
+				if (c[leap_finish + 1] < npoint) npoint = c[leap_finish + 1];
+				// Detect deviation below note point
+				for (int x = pos3; x < fill_finish; ++x)
+					if (c[x] < npoint) ffinished = 0;
+			}
+			else {
+				// Get note point
+				if (c[leap_finish + 1] > npoint) npoint = c[leap_finish + 1];
+				// Detect deviation below note point
+				for (int x = pos3; x < fill_finish; ++x)
+					if (c[x] > npoint) ffinished = 0;
+			}
 		}
 	}
 	// Check if fill is finished
-	if ((!nstat3[c3] && !nstat3[leap_start]) && (!nstat3[c4] && !nstat3[leap_finish])) ffinished = 0;
+	if ((!nstat3[c3] && !nstat3[c[leap_finish]]) || (!nstat3[c4] && !nstat3[c[leap_start]])) ffinished = 0;
 	// Add skip penalty for not starting/finishing globally
-	if ((!nstat2[c3] && !nstat2[leap_start]) && (!nstat2[c4] && !nstat2[leap_finish])) skips2 += 10;
+	if ((!nstat2[c3] && !nstat2[c[leap_finish]]) || (!nstat2[c4] && !nstat2[c[leap_start]])) skips2 += 10;
 }
 
 int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
@@ -843,7 +876,7 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 				// Check if  leap is prefilled
 				pos = i - 2 - (leap_size - 1) * fill_steps_mul;
 				if (pos < 0) pos = 0;
-				CountFill(i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished);
+				CountFill(i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 1);
 				// Do we have not too many skips?
 				if (skips <= 0) {
 					// Is fill finished or unfinished leaps allowed?
@@ -856,7 +889,7 @@ int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<in
 				// Do not check fill if search window is cut by end of current not-last scan window
 				if ((pos < ep2) || (c_len == ep2)) {
 					if (pos > ep2 - 1) pos = ep2 - 1;
-					CountFill(i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished);
+					CountFill(i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 0);
 					// Local not filled?
 					if (skips > 0 || (!ffinished && !accept[33])) {
 						// Local not filled. Prefilled?

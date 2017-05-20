@@ -1314,6 +1314,7 @@ void CGVar::AddNote(int pos, int v, char note2, int len2, int dyn2)
 
 // Fill pause from start step to (start+length) step inclusive
 void CGVar::FillPause(int start, int length, int v) {
+	if (start + length >= t_allocated) ResizeVectors(max(start + length + 1, t_allocated * 2));
 	for (int x = start; x <= start + length; ++x) {
 		pause[x][v] = 1;
 		note[x][v] = 0;
