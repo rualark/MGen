@@ -28,3 +28,4 @@ random_key = 0 # Select any of possible keys regardless of last note
 
 # Technical parameters
 midifile_in_mul = 1 # Multiply note length with this value when loading
+t_cnt = 100000 # Maximum number of steps generated

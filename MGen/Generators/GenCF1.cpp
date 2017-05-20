@@ -738,14 +738,15 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 
 void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &ffinished)
 {
+	int leap_finish = i + 1;
 	if (pos2 < pos1) pos2 = pos1;
 	// Clear stat
-	int n1 = min(c[leap_start], c[i + 1]);
-	int n2 = max(c[leap_start], c[i + 1]);
+	int n1 = min(c[leap_start], c[leap_finish]);
+	int n2 = max(c[leap_start], c[leap_finish]);
 	// Calculate finishing pitches
-	int c3 = c[leap_start + 1]; // compensation start
+	int c3 = c[leap_finish]; // compensation start
 	int c4 = c[leap_start]; // compensation finish
-	if (c[i + 1] < c[leap_start]) {
+	if (c[leap_finish] < c[leap_start]) {
 		++c3;
 		--c4;
 	}
@@ -753,13 +754,9 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 		--c3;
 		++c4;
 	}
-	for (int x = n1 + 1; x < n2; ++x) {
-		nstat3[x] = 0;
-	}
+	for (int x = n1 + 1; x < n2; ++x) nstat3[x] = 0;
 	// Fill all notes (even those outside pos1-pos2 window)
-	for (int x = pos1; x <= pos2; ++x) {
-		++nstat3[c[x]];
-	}
+	for (int x = pos1; x <= pos2; ++x) ++nstat3[c[x]];
 	// Local fill
 	skips = 0; 
 	// Add allowed skips
@@ -771,11 +768,33 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 		++skips;
 		if (!nstat2[x]) ++skips2;
 	}
+	// Check if fill does not deviate
+	ffinished = 1;
+	int pos3 = leap_finish + 3;
+	if (pos3 > ep2) pos3 = ep2;
+	if (pos3 <= pos2) {
+		int npoint = c[leap_start];
+		if (c[leap_finish] < c[leap_start]) {
+			// Get note point
+			for (int i = leap_start + 1; i < pos3; ++i) 
+				if (c[i] < npoint) npoint = c[i];
+			// Detect deviation below note point
+			for (int x = pos3; x <= pos2; ++x)
+				if (c[x] < npoint) ffinished = 0;
+		}
+		else {
+			// Get note point
+			for (int i = leap_start + 1; i < pos3; ++i)
+				if (c[i] > npoint) npoint = c[i];
+			// Detect deviation below note point
+			for (int x = pos3; x <= pos2; ++x)
+				if (c[x] > npoint) ffinished = 0;
+		}
+	}
 	// Check if fill is finished
-	ffinished = 0;
-	if ((nstat3[c3] || nstat3[leap_start]) && (nstat3[c4] || nstat3[i + 1])) ffinished = 1;
+	if ((!nstat3[c3] && !nstat3[leap_start]) && (!nstat3[c4] && !nstat3[leap_finish])) ffinished = 0;
 	// Add skip penalty for not starting/finishing globally
-	if ((!nstat2[c3] && !nstat2[leap_start]) && (!nstat2[c4] && !nstat2[i + 1])) skips2 += 10;
+	if ((!nstat2[c3] && !nstat2[leap_start]) && (!nstat2[c4] && !nstat2[leap_finish])) skips2 += 10;
 }
 
 int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
