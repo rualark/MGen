@@ -61,6 +61,7 @@ protected:
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
+	inline void UpdateNoteHarm(int i);
 	inline int FailMelodyHarm(vector<int>& pc, int ep1, int ep2);
 	void CalcCcIncrement();
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);

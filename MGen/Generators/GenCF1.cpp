@@ -364,6 +364,38 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &pc, int step1, int step
 	}
 }
 
+void CGenCF1::UpdateNoteHarm(int  i) {
+	// We can't be T
+	if (!hm2[i][hTon]) {
+		if (i < ep2 - 1) {
+			// Remove S
+			hm2[i + 1][hSub] = 0;
+		}
+	}
+	// We can be only D
+	if (hm2[i][hDom] && !hm2[i][hSub] && !hm2[i][hTon]) {
+		// Remove duplicates
+		if (i>0) hm2[i - 1][hDom] = 0;
+		if (i < ep2 - 1) {
+			hm2[i + 1][hDom] = 0;
+			// Remove S
+			hm2[i + 1][hSub] = 0;
+		}
+	}
+	// We can be only T
+	if (hm2[i][hTon] && !hm2[i][hSub] && !hm2[i][hDom]) {
+		// Remove duplicates
+		if (i>0) hm2[i - 1][hTon] = 0;
+		if (i < ep2 - 1) hm2[i + 1][hTon] = 0;
+	}
+	// We can be only S
+	if (hm2[i][hSub] && !hm2[i][hTon] && !hm2[i][hDom]) {
+		// Remove duplicates
+		if (i>0) hm2[i - 1][hSub] = 0;
+		if (i < ep2 - 1) hm2[i + 1][hSub] = 0;
+	}
+}
+
 int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
 	// Calculate available harmonic meanings
 	for (int i = 0; i < ep2; ++i) {
@@ -411,34 +443,12 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
 		hm2[first_tonic - 1][hSub] = 0;
 	}
 	// Remove wrong meanings
-	for (int i = 1; i < ep2; ++i) {
-		// We can be only D
-		if (hm2[i][hDom] && !hm2[i][hSub] && !hm2[i][hTon]) {
-			// Remove duplicates
-			hm2[i - 1][hDom] = 0;
-			if (i < ep2 - 1) {
-				hm2[i + 1][hDom] = 0;
-				// Remove S
-				hm2[i + 1][hSub] = 0;
-			}
-		}
-		// We can be only T
-		if (hm2[i][hTon] && !hm2[i][hSub] && !hm2[i][hDom]) {
-			// Remove duplicates
-			hm2[i - 1][hTon] = 0;
-			if (i < ep2 - 1) hm2[i + 1][hTon] = 0;
-		}
-		// We can be only S
-		if (hm2[i][hSub] && !hm2[i][hTon] && !hm2[i][hDom]) {
-			// Remove duplicates
-			hm2[i - 1][hSub] = 0;
-			if (i < ep2 - 1) hm2[i + 1][hSub] = 0;
-		}
-	}
+	for (int i = 0; i < ep2; ++i) UpdateNoteHarm(i);
+	for (int i = ep2-1; i >= 0; --i) UpdateNoteHarm(i);
 	// Detect conflicts
-	for (int i = 1; i < ep2; ++i) {
+	for (int i = 0; i < ep2; ++i) {
 		if (!hm2[i][hDom] && !hm2[i][hSub] && !hm2[i][hTon]) {
-			FLAG2(47, i);
+			FLAG2(20, i);
 		}
 	}
 	return 0;
