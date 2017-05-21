@@ -105,6 +105,7 @@ CGenCF1::CGenCF1()
 {
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
+	accepts.resize(MAX_FLAGS);
 	ssf.resize(MAX_FLAGS);
 	flag_to_sev.resize(MAX_FLAGS);
 	flag_color.resize(MAX_FLAGS);
@@ -217,6 +218,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "correct_range", &correct_range);
 	CheckVar(sN, sV, "correct_inrange", &correct_inrange);
 	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
+	CheckVar(sN, sV, "rule_sets", &rule_sets);
+	CheckVar(sN, sV, "rule_set", &rule_set);
 
 	LoadHarmVar(sN, sV);
 	LoadHarmConst(sN, sV);
@@ -241,15 +244,38 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 		}
 		tonic_cur = GetPC(*sV);
 	}
+	// Load rule set
+	if (*sN == "rule_set") {
+		++parameter_found;
+		if (rule_set > rule_sets) {
+			CString est;
+			est.Format("Warning: maximum specified number of rule sets is %d. Cannot load rule set %d. Please correct config %s", rule_sets, rule_set, m_config);
+			WriteLog(1, est);
+		}
+		else {
+			// Load rule set
+			for (int i = 0; i < MAX_FLAGS; ++i) {
+				if (accepts[i].GetLength() < rule_set) {
+					CString est;
+					est.Format("Cannot load rule set for rule '%s' (%d) with rule sets number %d. Rule set string is only %d in length. Please correct config %s", FlagName[i], i, rule_sets, accepts[i].GetLength(), m_config);
+					WriteLog(1, est);
+				}
+				else {
+					accept[i] = atoi(accepts[i].Mid(rule_set, 1));
+					if (accepts[i].Mid(rule_set, 1) == "-") accept[i] = -1;
+				}
+			}
+		}
+	}
 	// Load accept
-	CString st;
+	CString st, st2;
+	st2 = sV->MakeLower();
 	for (int i = 0; i < MAX_FLAGS; ++i) {
 		st = FlagName[i];
 		st.MakeLower();
-		if (*sN == st) {
+		if (st2 == st) {
 			++parameter_found;
-			accept[i] = atoi(*sV);
-			if (*sV == "X") accept[i] = -1;
+			accepts[i] = *sN;
 			// Check if not Strict flag
 			if (i) {
 				if (cur_severity == MAX_FLAGS) {

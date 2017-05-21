@@ -133,6 +133,7 @@ protected:
 	int first_note = 72; // Starting note of each cantus
 	int last_note = 72; // Ending note of each cantus
 	vector <int> accept; // Each 1 allows showing canti with specific properties
+	vector <CString> accepts; // Each 1 allows showing canti with specific properties
 	int fill_steps_mul = 2; // Multiply number of notes between leap notes to get steps for filling
 	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
 	int max_smooth_direct = 5; // Maximum linear movement in one direction allowed (in steps)
@@ -178,6 +179,8 @@ protected:
 	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int optimize_dpenalty = 1; // Saves only melodies closest to source melody. Decreases memory usage. Resetting allows for more close results when corrections>1
+	int rule_sets; // Number of rule sets
+	int rule_set; // id of current rule set
 
 	// Master parameters
 	vector <int> *scantus; // Source cantus for processing
