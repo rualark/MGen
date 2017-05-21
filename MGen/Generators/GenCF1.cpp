@@ -91,7 +91,8 @@ const CString FlagName[MAX_FLAGS] = {
 	"Unaltered near altered (m)", // 75
 	"Outstanding repeat 2", // 76
 	"Subdominant after dominant", // 77
-	"Early culmination", // 78
+	"Steps 1-2 culmination", // 78
+	"Step 3 culmination", // 79
 };
 
 const Color FlagColor[] = {
@@ -724,7 +725,8 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
 			}
 		}
 		// Prohibit culminations at first steps
-		if (culm_step < 3) FLAG2(78, culm_step);
+		if (culm_step < 2) FLAG2(78, culm_step);
+		if (culm_step == 2) FLAG2(79, culm_step);
 		// Prohibit culminations at last steps
 		if (culm_step > c_len - 4) FLAG2(21, culm_step);
 	}
