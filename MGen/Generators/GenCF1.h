@@ -54,8 +54,6 @@ public:
 
 protected:
 	void LoadHarmVar(CString * sN, CString * sV);
-	void LoadHarmConst(CString * sN, CString * sV);
-	void LoadHarmConst2(CString * sN, CString * sV);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
@@ -63,11 +61,7 @@ protected:
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
-	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc);
 	inline int FailMelodyHarm(vector<int>& pc, int ep1, int ep2);
-	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2);
-	inline int FailMelodyHarmSeqStep2(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hc, vector<int>& hv);
-	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2);
 	void CalcCcIncrement();
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
@@ -171,7 +165,7 @@ protected:
 	int repeat_steps7 = 100; // Prohibit repeating of 7 notes closer than repeat_steps between first notes
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
-	vector <int> hvd, hvs, hvt, hcd, hcs, hct; //  Variants and constant harmonic meaning
+	vector <int> hvd, hvs, hvt; //  Variants and constant harmonic meaning
 	vector <int> hconst; // Absolute constant harmonic meaning by note
 	// Random SWA
 	//int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
@@ -254,8 +248,8 @@ protected:
 	vector<int> nstat;
 	vector<int> nstat2;
 	vector<int> nstat3;
-	vector<int[3]> hm; // Available harmonic meanings for each note
-	vector<int[3]> hm2; // Approved harmonic meanings for each note
+	vector<vector<int>> hm; // Available harmonic meanings for each note
+	vector<vector<int>> hm2; // Approved harmonic meanings for each note
 
 	// Local SWA
 	vector <long> cids;

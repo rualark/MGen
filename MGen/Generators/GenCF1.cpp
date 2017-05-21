@@ -110,6 +110,9 @@ CGenCF1::CGenCF1()
 	ssf.resize(MAX_FLAGS);
 	flag_to_sev.resize(MAX_FLAGS);
 	flag_color.resize(MAX_FLAGS);
+	hvd.resize(7);
+	hvs.resize(7);
+	hvt.resize(7);
 	hconst.resize(7);
 	for (int i = 0; i < 7; ++i) hconst[i] = hUndefined;
 	// Start severity
@@ -135,42 +138,6 @@ void CGenCF1::LoadHarmVar(CString* sN, CString* sV)
 			if (st.Find("D") >= 0) hvd[i] = 1;
 			if (st.Find("S") >= 0) hvs[i] = 1;
 			if (st.Find("T") >= 0) hvt[i] = 1;
-		}
-	}
-}
-
-// Load constant harmonic meaning
-void CGenCF1::LoadHarmConst(CString* sN, CString* sV)
-{
-	if (*sN == "harm_const") {
-		++parameter_found;
-		int pos = 0;
-		CString st;
-		for (int i = 0; i<1000; i++) {
-			if (pos == -1) break;
-			st = sV->Tokenize(",", pos);
-			st.Trim();
-			if (st.Find("D") >= 0) hcd.push_back(i);
-			if (st.Find("S") >= 0) hcs.push_back(i);
-			if (st.Find("T") >= 0) hct.push_back(i);
-		}
-	}
-}
-
-// Load absolute constant harmonic meaning
-void CGenCF1::LoadHarmConst2(CString* sN, CString* sV)
-{
-	if (*sN == "harm_const2") {
-		++parameter_found;
-		int pos = 0;
-		CString st;
-		for (int i = 0; i<1000; i++) {
-			if (pos == -1) break;
-			st = sV->Tokenize(",", pos);
-			st.Trim();
-			if (st.Find("D") >= 0) hconst[i] = hDom;
-			if (st.Find("S") >= 0) hconst[i] = hSub;
-			if (st.Find("T") >= 0) hconst[i] = hTon;
 		}
 	}
 }
@@ -223,8 +190,6 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "rule_set", &rule_set);
 
 	LoadHarmVar(sN, sV);
-	LoadHarmConst(sN, sV);
-	LoadHarmConst2(sN, sV);
 	// Load method
 	if (*sN == "method") {
 		++parameter_found;
@@ -399,28 +364,6 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &pc, int step1, int step
 	}
 }
 
-int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hv, vector<int> &hc) {
-	if (find(hv.begin(), hv.end(), pc[i]) != hv.end()) {
-		if (wcount == 4) FLAG2(18, i - 1);
-		if (wcount == 5) FLAG2(19, i - 1);
-		if (wcount > 5) FLAG2(20, i - 1);
-		wcount = 0;
-	}
-	else {
-		++wcount;
-	}
-	if (find(hc.begin(), hc.end(), pc[i]) != hc.end()) {
-		++count;
-	}
-	else {
-		if (count == 3) FLAG2(15, i - 1);
-		if (count == 4) FLAG2(16, i - 1);
-		if (count > 4) FLAG2(17, i - 1);
-		count = 0;
-	}
-	return 0;
-}
-
 int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
 	// Calculate available harmonic meanings
 	for (int i = 0; i < ep2; ++i) {
@@ -498,75 +441,6 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
 			FLAG2(47, i);
 		}
 	}
-}
-
-int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2) {
-	int dcount = 0;
-	int scount = 0;
-	int tcount = 0;
-	int wdcount = 0;
-	int wscount = 0;
-	int wtcount = 0;
-	for (int i = 0; i < ep2; ++i) {
-		// Count same and missing letters in a row
-		if (FailMelodyHarmSeqStep(pc, i, tcount, wtcount, hvt, hct)) return 1;
-		if (FailMelodyHarmSeqStep(pc, i, dcount, wdcount, hvd, hcd)) return 1;
-		if (FailMelodyHarmSeqStep(pc, i, scount, wscount, hvs, hcs)) return 1;
-	}
-	// Check same letters
-	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG2(15, ep2 - 1);
-	if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG2(16, ep2 - 1);
-	if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG2(17, ep2 - 1);
-	// Check missing letters
-	if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG2(18, ep2 - 1);
-	if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG2(19, ep2 - 1);
-	if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG2(20, ep2 - 1);
-	return 0;
-}
-
-int CGenCF1::FailMelodyHarmSeqStep2(vector<int> &pc, int i, int &count, int &wcount, vector<int> &hc, vector<int> &hv) {
-	if (find(hv.begin(), hv.end(), pc[i]) != hv.end()) {
-		if (wcount == 4) FLAG2(45, i - 1);
-		if (wcount == 5) FLAG2(46, i - 1);
-		if (wcount > 5) FLAG2(47, i - 1);
-		wcount = 0;
-	}
-	else {
-		++wcount;
-	}
-	if (find(hc.begin(), hc.end(), pc[i]) != hc.end()) {
-		++count;
-	}
-	else {
-		if (count == 3) FLAG2(42, i - 1);
-		if (count == 4) FLAG2(43, i - 1);
-		if (count > 4) FLAG2(44, i - 1);
-		count = 0;
-	}
-	return 0;
-}
-
-int CGenCF1::FailMelodyHarmSeq2(vector<int> &pc, int ep1, int ep2) {
-	int dcount = 0;
-	int scount = 0;
-	int tcount = 0;
-	int wdcount = 0;
-	int wscount = 0;
-	int wtcount = 0;
-	for (int i = 0; i < ep2; ++i) {
-		// Count same and missing letters in a row
-		if (FailMelodyHarmSeqStep2(pc, i, tcount, wtcount, hvt, hct)) return 1;
-		if (FailMelodyHarmSeqStep2(pc, i, dcount, wdcount, hvd, hcd)) return 1;
-		if (FailMelodyHarmSeqStep2(pc, i, scount, wscount, hvs, hcs)) return 1;
-	}
-	// Check same letters
-	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG2(42, ep2 - 1);
-	if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG2(43, ep2 - 1);
-	if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG2(44, ep2 - 1);
-	// Check missing letters
-	if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG2(45, ep2 - 1);
-	if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG2(46, ep2 - 1);
-	if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG2(47, ep2 - 1);
 	return 0;
 }
 
@@ -1197,6 +1071,10 @@ void CGenCF1::ScanCantusInit() {
 	max_cc.resize(c_len);
 	hm.resize(c_len);
 	hm2.resize(c_len);
+	for (int i = 0; i < c_len; ++i) {
+		hm[i].resize(3);
+		hm2[i].resize(3);
+	}
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
@@ -1955,8 +1833,11 @@ int CGenCF1::SendCantus() {
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = 0; x < c_len; ++x) {
 		for (int i = 0; i < cc_len[x]; ++i) {
-			// Set flag color
-			color[pos+i][v] = FlagColor[0];
+			// Set color
+			color[pos + i][v] = FlagColor[0];
+			if (hm2[x][hDom]) mark[pos + i][v] += "D";
+			if (hm2[x][hTon]) mark[pos + i][v] += "T";
+			if (hm2[x][hSub]) mark[pos + i][v] += "S";
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = cc[x];
@@ -2080,21 +1961,10 @@ void CGenCF1::InitCantus()
 		flag_color[sev_to_flag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
 	}
 	// Check harmonic meaning loaded
-	if (hvd.size() + hvt.size() + hvs.size() == 0) {
-		CString h_default = "TS,DS,DT,S,DT,TS,D";
-		CString vname = "harm_var";
+	if (hvd[0] + hvt[0] + hvs[0] == 0) {
 		CString est;
-		est.Format("Warning: no harmonic meaning (variants) in configuration file. Loading default: %s", h_default);
+		est.Format("Warning: no harmonic meaning (variants) in configuration file.");
 		WriteLog(1, est);
-		LoadHarmVar(&vname, &h_default);
-	}
-	if (hcd.size() + hct.size() + hcs.size() == 0) {
-		CString h_default = "T,DS,T,S,D,S,D";
-		CString vname = "harm_const";
-		CString est;
-		est.Format("Warning: no harmonic meaning (constant) in configuration file. Loading default: %s", h_default);
-		WriteLog(1, est);
-		LoadHarmConst(&vname, &h_default);
 	}
 }
 

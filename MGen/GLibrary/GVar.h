@@ -76,6 +76,8 @@ public:
 	vector< vector <unsigned char> > vibf; // Vibrato frequency
 	vector< vector <unsigned char> > artic; // Velocity of midi notes
 	vector< vector <unsigned char> > lining; // Visual lining pattern
+	vector< vector <CString> > mark; // Mark on note
+	vector< vector <Color> > mark_color; // Mark color
 	vector< vector <unsigned char> > midi_ch; // Midi channel of each note
 	vector< vector <short> > midi_delta; // Midi file delta in ms
 	vector< Color > linecolor; // Shows color of bar line if not zero

@@ -127,6 +127,8 @@ void CGVar::InitVectors()
 	vibf = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	lining = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
+	mark = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
+	mark_color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
 	midi_ch = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
 	midi_delta = vector<vector<short>>(t_allocated, vector<short>(v_cnt));
 	linecolor = vector<Color>(t_allocated);
@@ -150,6 +152,7 @@ void CGVar::InitVectors()
 		linecolor[i] = Color(0);
 		for (int v = 0; v < v_cnt; v++) {
 			color[i][v] = Color(0);
+			mark_color[i][v] = Color(0);
 		}
 	}
 }
@@ -181,6 +184,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 	vibf.resize(size);
 	artic.resize(size);
 	lining.resize(size);
+	mark.resize(size);
+	mark_color.resize(size);
 	linecolor.resize(size, Color(0));
 	lengroup.resize(size);
 	comment.resize(size);
@@ -213,6 +218,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 		dstime[i].resize(vsize);
 		detime[i].resize(vsize);
 		color[i].resize(vsize, Color(0));
+		mark[i].resize(vsize);
+		mark_color[i].resize(vsize, Color(0));
 	}
 	// Count time
 	if (debug_level > 1) {

@@ -143,6 +143,7 @@ void CMGenView::OnDraw(CDC* pDC)
 
 	Gdiplus::Font font(&FontFamily(L"Arial"), 10);
 	Gdiplus::Font font_small(&FontFamily(L"Arial"), 8);
+	Gdiplus::Font font_small2(&FontFamily(L"Arial"), 6);
 	milliseconds current_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
   USES_CONVERSION;
 	CString st;
@@ -283,7 +284,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Show notes
 			time_stop4 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			int retrigger;
-			Color ncolor;
+			Color ncolor, mcolor;
 			int alpha;
 			int step_dyn = mf->m_step_dyn;
 			int ci_old = -1;
@@ -373,6 +374,20 @@ void CMGenView::OnDraw(CDC* pDC)
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - retrigger, nheight);
+					// Show mark
+					if (pGen->mark[i][v] != "") {
+						if (pGen->mark_color[i][v].GetValue() != 0) {
+							if (pGen->mark_color[i][v].GetAlpha() == 0)
+								mcolor = Color(210, pGen->mark_color[i][v].GetR(), pGen->mark_color[i][v].GetG(), pGen->mark_color[i][v].GetB());
+							else mcolor = pGen->mark_color[i][v];
+						}
+						else {
+							mcolor = Color(210, ncolor.GetR(), ncolor.GetG(), ncolor.GetB());
+						}
+						SolidBrush brush_v(mcolor);
+						g.DrawString(A2W(pGen->mark[i][v]), -1, &font_small2, PointF(X_FIELD + i * nwidth, 
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight), &brush_v);
+					}
 					if (pGen->noff[i][v] == 0) break;
 					i = i + pGen->noff[i][v] - 1;
 					// Protect from infinite loop

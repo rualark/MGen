@@ -4,7 +4,7 @@
 Algorithm = 111 # Id of the currently selected algorithm
 Config = autoconf-result-cf2 # Name of configuration file for selected algorithm
 MIDI_OUT = [DISABLE PLAYBACK] # Name of MIDI device used for playing notes
-Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 500
+Horizontal_zoom = 500 # Zoom of the piano roll. Can be from 1 to 500
 playback_speed = 100 # Playback speed in percent
 
 # The following settings cannot be changed in GUI. You can change them only in this file
