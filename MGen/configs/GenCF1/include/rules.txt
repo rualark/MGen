@@ -1,0 +1,97 @@
+# Rules: 0 - show only without violation, 1 - show with or without violation, 2 - show only violations
+# ! means that this rule can produce results without other rules with c_len = 9, interval 4-7
+# Flag order in list below goes from green - less severe (top) to red - more severe (bottom)
+# Groups:
+# S - strict rules that can usually be violated
+# U - universal for all melodies
+# C - rules specifially for cantus firmus
+# L - rules specifially for lower cantus firmus
+# H - rules specifially for higher cantus firmus
+# V - rules appropriate for vocal melody
+
+rule_sets = 10 # Number of rulesets
+
+# Rule sets:
+# 0 - strict
+# 1 - Alexey Shegolev
+
+#1234567890
+11000 00000 = Strict                               # No violated rules
+--000 00000 = 3 letters in a row [V]               #SC 3 same letters (TDS) in possible chord names in a row (variants)
+--000 00000 = 4 step miss [C]                      #SC 4 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+--000 00000 = 4 letters in a row [V]               #SC 4 same letters (TDS) in possible chord names in a row (variants)
+--000 00000 = >4 letters in a row [V]              #SC More than 4 same letters (TDS) in possible chord names in a row (variants)
+--000 00000 = 5 step miss [C]                      #SC 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+--000 00000 = >5 step miss [C]                     #SC More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (constant)
+0-000 00000 = 3rd to last is CEG                   #SC! Third to last note is not Subdominant (C E G forbidden). Resetting this flag greatly decreases performance
+0-000 00000 = Preleaped unfilled 3rd               #S 3rd is unfilled, but was prepared by leap before
+0-000 00000 = Preleaped unresolved 3rd             #S! 3rd is unresolved, but was prepared by leap before
+0-000 00000 = Prefilled unresolved 3rd             #S 3rd is not resolved by backward movement, but it was filled before
+0-000 00000 = Prefilled unfilled 3rd               #S 3rd is not filled, but it was filled before
+0-000 00000 = Late <6th resolution                 #S! Leap less than 6th is resolved after a second note
+0-000 00000 = Leap back <7th                       #S Leap returns to same note (in case leap is equal or less than 4th)
+0-000 00000 = Last leap                            #S Last step is a leap
+0-000 00000 = Many leaps                           #S! Maximum allowed max_leaps during max_leap_steps
+00000 00000 = Two 3rds after 6/8                   #S Chain of two thirds in one direction after 6th or octave
+00000 00000 = 3 letters in a row [C]               #C! 3 same letters (TDS) in possible chord names in a row (constant)
+00000 00000 = Tritone resolved                     #S Tritone is prepared by E and resolved to C
+00000 00000 = Leap back overflow                   #S Leap back is going farther than starting note of a previous leap
+0-000 00000 = Prefilled unresolved 4th             #S 4th is not resolved by backward movement, but it was filled before
+0-000 00000 = Prefilled unfilled 4th               #S 4th is not filled, but it was filled before
+00000 00000 = 4 step miss [V]                      #L 4 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
+00000 00000 = Consecutive leaps                    #S More than cse_leaps consecutive leaps
+00000 00000 = First not C                          #C First note is not tonic
+00000 00000 = Minor seventh                        #U Minor seventh interval leap
+00000 00000 = Outstanding repeat 2                 #U Prohibit repeating of 2 notes closer than repeat_steps2 between first notes (if beats are same)
+00000 00000 = Outstanding repeat 3                 #U Prohibit repeating of 3 notes closer than repeat_steps3 between first notes (if beats are same)
+0-000 00000 = Preleaped unfilled 4th               #S 4th is not filled, but it has a greater leap as neighbour
+0-000 00000 = Preleaped unresolved 4th             #U 4th is not resolved by backward movement, but it has a greater leap as neighbour
+0-000 00000 = Prefilled unfilled >4th              #S Leap longer than 4th is not filled, but it was filled before
+0-000 00000 = Prefilled unresolved >4th            #U Leap longer than 4th is not resolved by backward movement, but it was filled before
+00000 00000 = Preleaped unfilled >4th              #S Leap longer than 4th is not filled, but it has a greater leap as neighbour
+00000 00000 = Early-late filled 3rd                #U 3rd is not filled or prefilled, but it is filled somewhere else in the melody
+00000 00000 = Early-late filled 4th                #U 4th is not filled or prefilled, but it is filled somewhere else in the melody
+00000 00000 = Early-late filled >4th               #S! Leap longer than 4th is not filled or prefilled, but it is filled somewhere else in the melody
+00000 00000 = Unresolved 3rd                       #U 3rd is not resolved by backward movement
+00000 00000 = Unfilled 3rd                         #U 3rd is not filled
+00000 00000 = Unfilled 4th                         #U 4th is not filled
+00000 00000 = Unfilled leap >4th                   #U! Leap is not filled
+00000 00000 = Late culmination                     #L Culmination at last three steps
+00000 00000 = Early culmination                    #L Culmination at first three steps
+00000 00000 = Long smooth                          #U Too long smooth movement
+00000 00000 = Long line                            #U Too long smooth movement in one direction (linear)
+00000 00000 = First steps without C                #L First first_steps_tonic (see comment) steps do not have C note
+00000 00000 = First steps without E                #H First first_steps_tonic (see comment) steps do not have E note
+00000 00000 = 2nd to last not GBD                  #C Second to last note is not GBD (C E F A forbidden)
+00000 00000 = 2nd to last is G                     #L Second to last note is G (G forbidden)
+00000 00000 = Subdominant after dominant           #C Subdominant harmony goes after dominant (uses harm_const2 to calculate)
+00000 00000 = 4 letters in a row [C]               #C 4 same letters (TDS) in possible chord names in a row (constant)
+00000 00000 = 5 step miss [V]                      #C 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
+00000 00000 = Unresolved 4th                       #U 4th is not resolved by backward movement
+00000 00000 = Late >5th resolution                 #U Leap greater than 5th is resolved after a second note
+00000 00000 = Leap back >6th                       #U Leap returns to same note (in case leap is larger than 4th)
+00000 00000 = Many leaps+                          #U Maximum allowed max_leaps2 during max_leap_steps
+00000 00000 = Too wide range                       #CV If range is greater than max_interval (diatonic interval)
+00000 00000 = Too tight range                      #CV If range is lower than min_interval (diatonic interval)
+00000 00000 = Two 3rds                             #U Chain of two thirds in one direction
+00000 00000 = Close repeat                         #U Two notes repeat in contact
+00000 00000 = Long repeat                          #C 5 notes repeat within repeat_steps5
+00000 00000 = Long repeat+                         #C 7 notes repeat within repeat_steps7 
+00000 00000 = Stagnation                           #U Stagnation on one note
+00000 00000 = Multiple culminations                #U Melody has more than one culmination with the same note
+00000 00000 = 3rd to last is leading               #C Third to last note is leading (B forbidden)
+00000 00000 = Start tonic unprepared               #C If tonic is not the very first note, it has to be prepared with BD or GBD notes
+00000 00000 = Last not C                           #C Last note is not tonic
+00000 00000 = Consecutive leaps+                   #U More than cse_leaps2 consecutive leaps
+00000 00000 = >4 letters in a row [C]              #U More than 4 same letters (TDS) in possible chord names in a row (constant)
+00000 00000 = >5 step miss [V]                     #U More than 5 steps missing one of 3 letters (TDS) in possible chord names in a row (variants)
+00000 00000 = Unfinished fill                      #U Fill does not have last or prelast note (this flag is set only if not blocking)
+00000 00000 = Major seventh                        #U Major seventh interval leap
+00000 00000 = Preleaped unresolved >4th            #U Leap longer than 4th is not resolved by backward movement, but it has a greater leap as neighbour
+00000 00000 = G-C before cadence                   #L G note goes to C note before final cadence
+00000 00000 = Leap unresolved                      #U Leap unresolved during two next steps (movement direction does not change)
+00000 00000 = Leap chain                           #U Chain of two leaps in one direction
+00000 00000 = Tritone unresolved                   #U Tritone is not resolved correctly
+00000 00000 = Tritone culmination                  #U Tritone is the highest leap
+00000 00000 = Unaltered VII before Im              #U Major second from VII up before Im
+00000 00000 = Unaltered near altered (m)           #U Unaltered VI or VII two adjacent steps near altered VI or VII

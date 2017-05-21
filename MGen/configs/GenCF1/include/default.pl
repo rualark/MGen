@@ -6,6 +6,8 @@
 # Recommended: method=window-scan, accept_reseed=1, random_seed=1, late_require=1, s_len=1, random_range=0
 # Full scan: method=window-scan, accept_reseed=0, random_seed=0, s_len>c_len-3
 
+rule_set = 1 # Specify which set of rules to use (see rules.txt)
+
 method = window-scan # This method is fastest random generator with s_len=1, accept_reseed=1, random_seed=1
 #method = swa # This method is mainly used for testing (same algorithm used as in CA1)
 
@@ -21,9 +23,9 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # Main parameters
 c_len = 9 # Number of measures in each cantus. Usually 9 to 11 for cantus
 interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
-key = C # Music key to use for generation
-first_note = C5 # Starting note of each cantus
-last_note = C5 # Ending note of each cantus
+key = A # Music key to use for generation
+first_note = A5 # Starting note of each cantus
+last_note = A5 # Ending note of each cantus
 random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
 

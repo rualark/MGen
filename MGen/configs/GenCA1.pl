@@ -4,7 +4,7 @@
 # Template configs are not accessible from MGen GUI, you will need to change it outside of the program
 # Template config was created by removing Midi_file parameter from source config
 
+include "../GenCF1/include/rules.txt"
 include "include/default.pl"
 include "../GenCF1/include/hmean-low.pl"
-include "../GenCF1/include/rules-low.pl"
 
