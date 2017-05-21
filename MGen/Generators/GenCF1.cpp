@@ -132,9 +132,9 @@ void CGenCF1::LoadHarmVar(CString* sN, CString* sV)
 			if (pos == -1) break;
 			st = sV->Tokenize(",", pos);
 			st.Trim();
-			if (st.Find("D") >= 0) hvd.push_back(i);
-			if (st.Find("S") >= 0) hvs.push_back(i);
-			if (st.Find("T") >= 0) hvt.push_back(i);
+			if (st.Find("D") >= 0) hvd[i] = 1;
+			if (st.Find("S") >= 0) hvs[i] = 1;
+			if (st.Find("T") >= 0) hvt[i] = 1;
 		}
 	}
 }
@@ -419,6 +419,85 @@ int CGenCF1::FailMelodyHarmSeqStep(vector<int> &pc, int i, int &count, int &wcou
 		count = 0;
 	}
 	return 0;
+}
+
+int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
+	// Calculate available harmonic meanings
+	for (int i = 0; i < ep2; ++i) {
+		if (hvd[pc[i]]) {
+			hm[i][hDom] = 1;
+			hm2[i][hDom] = 1;
+		}
+		else {
+			hm[i][hDom] = 0;
+			hm2[i][hDom] = 0;
+		}
+		if (hvs[pc[i]]) {
+			hm[i][hSub] = 1;
+			hm2[i][hSub] = 1;
+		}
+		else {
+			hm[i][hSub] = 0;
+			hm2[i][hSub] = 0;
+		}
+		if (hvt[pc[i]]) {
+			hm[i][hTon] = 1;
+			hm2[i][hTon] = 1;
+		}
+		else {
+			hm[i][hTon] = 0;
+			hm2[i][hTon] = 0;
+		}
+	}
+	// Position of first tonic
+	int first_tonic = 0;
+	int last_tonic = 0;
+	// Fix first tonic
+	for (int i = 0; i < 4; ++i) {
+		if (hm[i][hTon]) {
+			first_tonic = i;
+			// Zero other meanings
+			hm2[i][hDom] = 0;
+			hm2[i][hSub] = 0;
+			break;
+		}
+	}
+	// Fix dominant before tonic
+	if (first_tonic && hm2[first_tonic - 1][hDom]) {
+		hm2[first_tonic - 1][hTon] = 0;
+		hm2[first_tonic - 1][hSub] = 0;
+	}
+	// Remove wrong meanings
+	for (int i = 1; i < ep2; ++i) {
+		// We can be only D
+		if (hm2[i][hDom] && !hm2[i][hSub] && !hm2[i][hTon]) {
+			// Remove duplicates
+			hm2[i - 1][hDom] = 0;
+			if (i < ep2 - 1) {
+				hm2[i + 1][hDom] = 0;
+				// Remove S
+				hm2[i + 1][hSub] = 0;
+			}
+		}
+		// We can be only T
+		if (hm2[i][hTon] && !hm2[i][hSub] && !hm2[i][hDom]) {
+			// Remove duplicates
+			hm2[i - 1][hTon] = 0;
+			if (i < ep2 - 1) hm2[i + 1][hTon] = 0;
+		}
+		// We can be only S
+		if (hm2[i][hSub] && !hm2[i][hTon] && !hm2[i][hDom]) {
+			// Remove duplicates
+			hm2[i - 1][hSub] = 0;
+			if (i < ep2 - 1) hm2[i + 1][hSub] = 0;
+		}
+	}
+	// Detect conflicts
+	for (int i = 1; i < ep2; ++i) {
+		if (!hm2[i][hDom] && !hm2[i][hSub] && !hm2[i][hTon]) {
+			FLAG2(47, i);
+		}
+	}
 }
 
 int CGenCF1::FailMelodyHarmSeq(vector<int> &pc, int ep1, int ep2) {
@@ -1116,6 +1195,8 @@ void CGenCF1::ScanCantusInit() {
 	max_c.resize(c_len);
 	min_cc.resize(c_len);
 	max_cc.resize(c_len);
+	hm.resize(c_len);
+	hm2.resize(c_len);
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(MAX_FLAGS); // Flags for whole cantus
@@ -2270,8 +2351,9 @@ check:
 		if (FailMultiCulm(cc, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
-		if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
-		if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
+		if (FailMelodyHarm(pc, 0, ep2)) goto skip;
+		//if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
+		//if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
 		SaveBestRejected();
 		// If we are window-scanning

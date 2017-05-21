@@ -64,6 +64,7 @@ protected:
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
 	inline int FailMelodyHarmSeqStep(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hv, vector<int>& hc);
+	inline int FailMelodyHarm(vector<int>& pc, int ep1, int ep2);
 	inline int FailMelodyHarmSeq(vector<int>& pc, int ep1, int ep2);
 	inline int FailMelodyHarmSeqStep2(vector<int>& pc, int i, int & count, int & wcount, vector<int>& hc, vector<int>& hv);
 	inline int FailMelodyHarmSeq2(vector<int>& pc, int ep1, int ep2);
@@ -253,6 +254,8 @@ protected:
 	vector<int> nstat;
 	vector<int> nstat2;
 	vector<int> nstat3;
+	vector<int[3]> hm; // Available harmonic meanings for each note
+	vector<int[3]> hm2; // Approved harmonic meanings for each note
 
 	// Local SWA
 	vector <long> cids;
