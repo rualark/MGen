@@ -6,9 +6,9 @@
 
 include "../GenCF1/include/rules.txt"
 include "include/default.pl"
-include "../GenCF1/include/hmean-high.pl"
+include "../GenCF1/include/hmean-low.pl"
 
 
 # This config was created from default config file configs\GenCA1.pl
-# Created at 2017-05-21 10-31-56
-Midi_file = load\result-cf2.mid
+# Created at 2017-05-22 21-27-53
+Midi_file = load\test-fill.mid

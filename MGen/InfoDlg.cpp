@@ -104,6 +104,8 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 170, 0), 0);
 		st.Format("Note comment: %s\n", pGen->comment[i][mv]);
 		m_info.AddText(st, RGB(180, 0, 0), 0);
+		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
+		m_info.AddText(st, RGB(180, 0, 0), 0);
 		m_info.AddText("\n", RGB(0, 0, 0), 0);
 
 		st.Format("Current offset: %d steps\n", pGen->coff[ms][mv]);
