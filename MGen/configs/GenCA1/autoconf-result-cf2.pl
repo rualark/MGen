@@ -12,3 +12,4 @@ include "../GenCF1/include/hmean-high.pl"
 # This config was created from default config file configs\GenCA1.pl
 # Created at 2017-05-21 10-31-56
 Midi_file = load\result-cf2.mid
+midifile_in_mul = 0.125 # Multiply note length with this value when loading
