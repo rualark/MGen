@@ -114,14 +114,20 @@
 #define ID_OINFO4                       32827
 #define ID_OINFO5                       32828
 #define ID_OINFO6                       32829
-#define ID_EDIT2                        32829
+#define ID_CHECK_MARKS                  32831
+#define ID_CHECK_TEMPO                  32832
+#define ID_CHECK_COMMENTS               32833
+#define ID_CHECK_LINING                 32834
+#define ID_CHECK_LINES                  32835
+#define ID_CHECK_VEL                    32836
+#define ID_CHECK10                      32837
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32830
+#define _APS_NEXT_COMMAND_VALUE         32839
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
