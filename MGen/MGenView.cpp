@@ -183,8 +183,8 @@ void CMGenView::OnDraw(CDC* pDC)
 			double tg_min = MIN_TEMPO_DISPLAY;
 			double tg_max = MAX_TEMPO_DISPLAY;
 			// Increase if generated bigger tempo window
-			if (pGen->tg_min < tg_min) tg_min = pGen->tg_min-1;
-			if (pGen->tg_max > tg_max) tg_max = pGen->tg_max+1;
+			if (pGen->tg_min < tg_min) tg_min = pGen->tg_min - 1;
+			if (pGen->tg_max > tg_max) tg_max = pGen->tg_max + 1;
 			// Get generator window
 			int ng_min = pGen->ng_min;
 			int ng_max = pGen->ng_max;
@@ -312,9 +312,10 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 					}
 					// Show without step dynamics
-					if (!step_dyn2) {
-						alpha = 40 + (80 * pGen->dyn[i][v] / 127);
-						if (pGen->color[i][v].GetValue() != 0) {
+					if (!step_dyn2 || !mf->show_vel) {
+						if (mf->show_vel) alpha = 40 + (80 * pGen->dyn[i][v] / 127);
+						else alpha = 100;
+						if (mf->show_notecolors && pGen->color[i][v].GetValue() != 0) {
 							if (pGen->color[i][v].GetAlpha() == 0) ncolor = Color(alpha, pGen->color[i][v].GetR(), pGen->color[i][v].GetG(), pGen->color[i][v].GetB());
 							else ncolor = pGen->color[i][v];
 						}
@@ -339,7 +340,7 @@ void CMGenView::OnDraw(CDC* pDC)
 					else {
 						for (int x = i; x < i + pGen->len[i][v]; x++) {
 							alpha = 40 + (80 * pGen->dyn[x][v] / 127);
-							if (pGen->color[x][v].GetValue() != 0) {
+							if (mf->show_notecolors && pGen->color[x][v].GetValue() != 0) {
 								if (pGen->color[x][v].GetAlpha() == 0)
 									ncolor = Color(alpha, pGen->color[x][v].GetR(), pGen->color[x][v].GetG(), pGen->color[x][v].GetB());
 								else ncolor = pGen->color[x][v];
@@ -363,19 +364,19 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 					}
 					// Show lining
-					if (pGen->lining[i][v] == 1) {
+					if (mf->show_lining && pGen->lining[i][v] == 1) {
 						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight);
 						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight,
 							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
 					}
 					// Show comment
-					if (pGen->comment[i][v] != "")
+					if (mf->show_comments && pGen->comment[i][v] != "")
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - retrigger, nheight);
 					// Show mark
-					if (pGen->mark[i][v] != "") {
+					if (mf->show_marks && pGen->mark[i][v] != "") {
 						if (pGen->mark_color[i][v].GetValue() != 0) {
 							if (pGen->mark_color[i][v].GetAlpha() == 0)
 								mcolor = Color(210, pGen->mark_color[i][v].GetR(), pGen->mark_color[i][v].GetG(), pGen->mark_color[i][v].GetB());
@@ -395,7 +396,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				} // for i
 			} // for v
 			// Show generated vertical lines
-			for (int v = 0; v < pGen->v_cnt; v++) {
+			if (mf->show_lines) for (int v = 0; v < pGen->v_cnt; v++) {
 				for (int i = step1; i < step2; i++) {
 					if (pGen->linecolor[i].GetAlpha() != 0) {
 						Pen pen_line(pGen->linecolor[i]);
@@ -411,29 +412,31 @@ void CMGenView::OnDraw(CDC* pDC)
 			if (step1t > 0) step1t--;
 			if (step2t < pGen->t_generated-1) step2t++;
 			// Show tempo
-			for (int i = step1t; i < step2t; i++)  {
-				if (i > 0) {
-					g.DrawLine(&pen_ablue, X_FIELD + i * nwidth + nwidth / 2,
-						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
-						X_FIELD + (i - 1) * nwidth + nwidth / 2,
-						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
-					if (pGen->tempo_src[i])
-						g.DrawLine(&pen_aared, X_FIELD + i * nwidth + nwidth / 2,
-							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i] - tg_min) / (tg_max - tg_min),
+			if (mf->show_tempo) {
+				for (int i = step1t; i < step2t; i++) {
+					if (i > 0) {
+						g.DrawLine(&pen_ablue, X_FIELD + i * nwidth + nwidth / 2,
+							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
 							X_FIELD + (i - 1) * nwidth + nwidth / 2,
-							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i - 1] - tg_min) / (tg_max - tg_min));
+							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
+						if (pGen->tempo_src[i])
+							g.DrawLine(&pen_aared, X_FIELD + i * nwidth + nwidth / 2,
+								y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i] - tg_min) / (tg_max - tg_min),
+								X_FIELD + (i - 1) * nwidth + nwidth / 2,
+								y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i - 1] - tg_min) / (tg_max - tg_min));
+					}
 				}
-			}
-			if (step2t < pGen->t_generated - 1) {
-				g.DrawLine(&pen_ablue, X_FIELD + step2t * nwidth + nwidth / 2,
-					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t] - tg_min) / (tg_max - tg_min),
-					X_FIELD + (step2t + 1) * nwidth + nwidth / 2,
-					y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t + 1] - tg_min) / (tg_max - tg_min));
-				if (pGen->tempo_src[step2t + 1])
-					g.DrawLine(&pen_aared, X_FIELD + step2t * nwidth + nwidth / 2,
-						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[step2t] - tg_min) / (tg_max - tg_min),
+				if (step2t < pGen->t_generated - 1) {
+					g.DrawLine(&pen_ablue, X_FIELD + step2t * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t] - tg_min) / (tg_max - tg_min),
 						X_FIELD + (step2t + 1) * nwidth + nwidth / 2,
-						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[step2t + 1] - tg_min) / (tg_max - tg_min));
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[step2t + 1] - tg_min) / (tg_max - tg_min));
+					if (pGen->tempo_src[step2t + 1])
+						g.DrawLine(&pen_aared, X_FIELD + step2t * nwidth + nwidth / 2,
+							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[step2t] - tg_min) / (tg_max - tg_min),
+							X_FIELD + (step2t + 1) * nwidth + nwidth / 2,
+							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[step2t + 1] - tg_min) / (tg_max - tg_min));
+				}
 			}
 			// Highlight draft notes
 			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
