@@ -59,6 +59,13 @@ public:
 	int m_debug_level = 1; // Increase to show more debug logs
 
 	int m_pspeed = 100; // Playback speed in percent
+	int show_marks = 1;
+	int show_comments = 1;
+	int show_lining = 1;
+	int show_lines = 1;
+	int show_tempo = 1;
+	int show_vel = 1;
+	int show_notecolors = 1;
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
 	CString m_dir; // Current saved results dir
@@ -187,4 +194,18 @@ public:
 	afx_msg void OnUpdateButtonOpencsv(CCmdUI *pCmdUI);
 	afx_msg void OnButtonReloadSettings();
 	afx_msg void OnUpdateButtonReloadSettings(CCmdUI *pCmdUI);
+	afx_msg void OnCheckTempo();
+	afx_msg void OnUpdateCheckTempo(CCmdUI *pCmdUI);
+	afx_msg void OnCheckLines();
+	afx_msg void OnUpdateCheckLines(CCmdUI *pCmdUI);
+	afx_msg void OnCheckMarks();
+	afx_msg void OnUpdateCheckMarks(CCmdUI *pCmdUI);
+	afx_msg void OnCheckComments();
+	afx_msg void OnUpdateCheckComments(CCmdUI *pCmdUI);
+	afx_msg void OnCheckLining();
+	afx_msg void OnUpdateCheckLining(CCmdUI *pCmdUI);
+	afx_msg void OnCheckVel();
+	afx_msg void OnUpdateCheckVel(CCmdUI *pCmdUI);
+	afx_msg void OnCheckNcolors();
+	afx_msg void OnUpdateCheckNcolors(CCmdUI *pCmdUI);
 };

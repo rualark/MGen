@@ -86,6 +86,20 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_OPENCSV, &CMainFrame::OnUpdateButtonOpencsv)
 	ON_COMMAND(ID_BUTTON_RELOAD_SETTINGS, &CMainFrame::OnButtonReloadSettings)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_RELOAD_SETTINGS, &CMainFrame::OnUpdateButtonReloadSettings)
+	ON_COMMAND(ID_CHECK_TEMPO, &CMainFrame::OnCheckTempo)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_TEMPO, &CMainFrame::OnUpdateCheckTempo)
+	ON_COMMAND(ID_CHECK_LINES, &CMainFrame::OnCheckLines)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_LINES, &CMainFrame::OnUpdateCheckLines)
+	ON_COMMAND(ID_CHECK_MARKS, &CMainFrame::OnCheckMarks)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_MARKS, &CMainFrame::OnUpdateCheckMarks)
+	ON_COMMAND(ID_CHECK_COMMENTS, &CMainFrame::OnCheckComments)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_COMMENTS, &CMainFrame::OnUpdateCheckComments)
+	ON_COMMAND(ID_CHECK_LINING, &CMainFrame::OnCheckLining)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_LINING, &CMainFrame::OnUpdateCheckLining)
+	ON_COMMAND(ID_CHECK_VEL, &CMainFrame::OnCheckVel)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_VEL, &CMainFrame::OnUpdateCheckVel)
+	ON_COMMAND(ID_CHECK_NCOLORS, &CMainFrame::OnCheckNcolors)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_NCOLORS, &CMainFrame::OnUpdateCheckNcolors)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -841,6 +855,13 @@ void CMainFrame::LoadSettings()
 			}
 			CGLib::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 			CGLib::CheckVar(&st2, &st3, "step_dyn", &m_step_dyn);
+			CGLib::CheckVar(&st2, &st3, "show_marks", &show_marks);
+			CGLib::CheckVar(&st2, &st3, "show_comments", &show_comments);
+			CGLib::CheckVar(&st2, &st3, "show_lining", &show_lining);
+			CGLib::CheckVar(&st2, &st3, "show_lines", &show_lines);
+			CGLib::CheckVar(&st2, &st3, "show_tempo", &show_tempo);
+			CGLib::CheckVar(&st2, &st3, "show_vel", &show_vel);
+			CGLib::CheckVar(&st2, &st3, "show_notecolors", &show_notecolors);
 			CGLib::CheckVar(&st2, &st3, "debug_level", &m_debug_level);
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
@@ -886,6 +907,20 @@ void CMainFrame::SaveSettings()
 	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 1 to 500\n", zoom_x);
 	fs << st;
 	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
+	fs << st;
+	st.Format("show_marks = %d # Set to 1 to show note mark strings\n", show_marks);
+	fs << st;
+	st.Format("show_comments = %d # Set to 1 to surround notes which have comments with rectangles\n", show_comments);
+	fs << st;
+	st.Format("show_lining = %d # Set to 1 to show note lining\n", show_lining);
+	fs << st;
+	st.Format("show_lines = %d # Set to 1 to show line separators\n", show_lines);
+	fs << st;
+	st.Format("show_vel = %d # Set to 1 to show note velocity using alpha\n", show_vel);
+	fs << st;
+	st.Format("show_tempo = %d # Set to 1 to show tempo\n", show_tempo);
+	fs << st;
+	st.Format("show_notecolors = %d # Set to 1 to show note colors instead of instrument colors\n", show_notecolors);
 	fs << st;
 	fs << "\n";
 	fs << "# The following settings cannot be changed in GUI. You can change them only in this file\n";
@@ -1307,4 +1342,75 @@ void CMainFrame::OnButtonReloadSettings()
 void CMainFrame::OnUpdateButtonReloadSettings(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable();
+}
+
+
+void CMainFrame::OnCheckTempo() {
+	show_tempo = !show_tempo;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckTempo(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_tempo);
+}
+
+void CMainFrame::OnCheckLines() {
+	show_lines = !show_lines;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckLines(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_lines);
+}
+
+void CMainFrame::OnCheckMarks() {
+	show_marks = !show_marks;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckMarks(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_marks);
+}
+
+void CMainFrame::OnCheckComments() {
+	show_comments = !show_comments;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckComments(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_comments);
+}
+
+void CMainFrame::OnCheckLining() {
+	show_lining = !show_lining;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckLining(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_lining);
+}
+
+void CMainFrame::OnCheckVel() {
+	show_vel = !show_vel;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckVel(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_vel);
+}
+
+void CMainFrame::OnCheckNcolors() {
+	show_notecolors = !show_notecolors;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckNcolors(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_notecolors);
 }

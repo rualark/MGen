@@ -120,7 +120,7 @@
 #define ID_CHECK_LINING                 32834
 #define ID_CHECK_LINES                  32835
 #define ID_CHECK_VEL                    32836
-#define ID_CHECK10                      32837
+#define ID_CHECK_NCOLORS                32837
 
 // Next default values for new objects
 // 
