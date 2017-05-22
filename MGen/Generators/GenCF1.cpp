@@ -497,23 +497,23 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
 		// Assign variables of previous step
 		proposed_old = proposed;
 		approved_old = approved;
+		// Calculate how many harmonies proposed and approved
+		proposed = hm[i][hTon] + hm[i][hSub] + hm[i][hDom];
+		approved = hm2[i][hTon] + hm2[i][hSub] + hm2[i][hDom];
 		if (i > 0) {
-			// Calculate how many harmonies proposed and approved
-			proposed = hm[i][hTon] + hm[i][hSub] + hm[i][hDom];
-			approved = hm2[i][hTon] + hm2[i][hSub] + hm2[i][hDom];
-			if (approved_old) {
+			if (approved_old > 0.9) {
 				// Decrease approved count
 				if (hm2[i - 1][hDom] && hm2[i][hDom]) approved -= 1.0 / approved_old;
 				if (hm2[i - 1][hTon] && hm2[i][hTon]) approved -= 1.0 / approved_old;
 				if (hm2[i - 1][hSub] && hm2[i][hSub]) approved -= 1.0 / approved_old;
 				if (hm2[i - 1][hDom] && hm2[i][hSub]) approved -= 1.0 / approved_old;
 			}
-			proposed_total += proposed;
-			approved_total += approved;
 		}
+		proposed_total += proposed;
+		approved_total += approved;
 	}
 	CString st;
-	st.Format("Approved %f of %f", approved_total, proposed_total);
+	st.Format("Harmonic difficulty %.0f%%. Approved %f of %f", (proposed_total-approved_total)/proposed_total*100.0, approved_total, proposed_total);
 	WriteLog(1, st);
 	return 0;
 }
