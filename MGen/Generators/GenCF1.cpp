@@ -499,8 +499,8 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
 		approved_old = approved;
 		if (i > 0) {
 			// Calculate how many harmonies proposed and approved
-			proposed = hm[i][hTon] + hm[i][hSub] + hm[i][hDom] - 1;
-			approved = hm2[i][hTon] + hm2[i][hSub] + hm2[i][hDom] - 1;
+			proposed = hm[i][hTon] + hm[i][hSub] + hm[i][hDom];
+			approved = hm2[i][hTon] + hm2[i][hSub] + hm2[i][hDom];
 			if (approved_old) {
 				// Decrease approved count
 				if (hm2[i - 1][hDom] && hm2[i][hDom]) approved -= 1.0 / approved_old;
