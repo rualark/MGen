@@ -361,7 +361,7 @@ void CGenCA1::Generate()
 			break;
 		}
 	}
-	st.Format("Analyzed %d", analyzed);
+	st.Format("Analyzed %d of %d", analyzed, cantus.size());
 	SetStatusText(3, st);
 	ShowStuck();
 }

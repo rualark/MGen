@@ -5,7 +5,7 @@
 #define MAX_VOICE 200
 #define MAX_INSTR 100
 // Number of status lines
-#define STATUS_LINES 6
+#define STATUS_LINES 9
 // Number of log tabs
 #define LOG_TABS 5
 // Check for new logs every X ms
