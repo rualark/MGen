@@ -8,6 +8,8 @@
 CGenCA1::CGenCA1()
 {
 	v_cnt = 2;
+	track_id[0] = 2;
+	track_id[1] = 1;
 }
 
 CGenCA1::~CGenCA1()

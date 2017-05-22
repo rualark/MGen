@@ -39,6 +39,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	// Save notes
 	for (int v = 0; v < v_cnt; v++) {
 		track = v + 1;
+		if (track_id[v]) track = track_id[v];
 		channel = v;
 		string st = InstGName[instr[v]];
 		// Replace piano with other instrument, because otherways it generates two-stave track in Sibelius
