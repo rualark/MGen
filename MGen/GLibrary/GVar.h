@@ -36,18 +36,28 @@ public:
 	int m_algo_id = -1; // Current algorithm id
 	CString m_algo_insts; // Instruments of current algorithm from algorithms.txt
 	CString m_config;
-	int sleep_ms = 0;
 	CString save_format_version; // Version of save format loaded
 
-  // Main constants
+	// Configuration parameters
+	int t_cnt = 1600; // Timeslot count (eighth notes) to stop generation
+	int v_cnt = 1; // Voice count
+	int t_allocated = 1600; // Timeslot count to initialize vectors
+	int t_send = 60; // Timeslot count to send
+	float midifile_in_mul = 1; // Multiply note length with this value when loading
+	float midifile_out_mul = 1; // Multiply note length with this value when saving
+	int shuffle = 0; // If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
+	int sleep_ms = 0;
+	int adapt_enable = 1;
+	int comment_adapt = 1; // If you want to have each adaptation decision commented
+	vector <int> show_transpose; // Semitone transpose for showing
+	int midifile_export_marks = 0; // Set to export marks (harmony) to midifile lyrics
+	int midifile_export_comments = 1; // Set to export comments (violations) to midifile lyrics
+
+  // Main variables
 	float m_pspeed = 100; // Playback speed in percent
-	int v_cnt=1; // Voice count
 	int32_t time_started; // Time in milliseconds when generation started
 	int32_t time_stopped; // Time in milliseconds when generation stopped
-	int t_cnt = 1600; // Timeslot count (eighth notes) to stop generation
-	int t_allocated = 1600; // Timeslot count to initialize vectors
 	int t_generated = 0; // Timeslots generated
-	int t_send = 60; // Timeslot count to send
 	int t_sent = 0; // Timeslot count sent to mainframe
 	int ng_min = 1000; // Minimum generated note
 	int ng_max = 0; // Maximum generated note
@@ -56,10 +66,6 @@ public:
 	float tg_min = 1000; // Minimum generated tempo
 	float tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
-	float midifile_in_mul = 1; // Multiply note length with this value when loading
-	float midifile_out_mul = 1; // Multiply note length with this value when saving
-	int shuffle = 0; // If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
-	int comment_adapt = 1; // If you want to have each adaptation decision commented
 	
 	// Output
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
@@ -91,7 +97,6 @@ public:
 	vector<float> etime; // Time of current step ending in ms
 	vector< vector <float> > dstime; // Delta of current step start in ms for playback
 	vector< vector <float> > detime; // Delta of current step ending in ms for playback
-	vector <int> show_transpose; // Semitone transpose for showing
 	vector<CString> track_name; // Track names from midi file for each voice
 	vector<int> track_id; // Track id from midi file for each voice
 	vector<int> track_vid; // Voice id inside track from midi file for each voice
@@ -198,7 +203,6 @@ public:
 	vector<float> end_vib2_freq; // Frequency of vibrato ending2
 	vector<float> end_vib_dur; // Duration of vibrato ending
 	vector<float> end_vib_freq; // Frequency of vibrato ending
-	int adapt_enable = 1;
 
 	// Global config
 	int rnd_tempo = 6; // Randomize tempo not greater than this percent

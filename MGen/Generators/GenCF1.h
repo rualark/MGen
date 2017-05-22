@@ -63,6 +63,8 @@ protected:
 	inline void GetPitchClass(vector<int>& c, vector<int>& pc, int step1, int step2);
 	inline void UpdateNoteHarm(int i);
 	inline int FailMelodyHarm(vector<int>& pc, int ep1, int ep2);
+	inline int FailMelodyHarmMiss(vector<int>& pc, int i, int harm, int & count, int & wcount);
+	inline int FixNoteHarmRepeat(vector<int>& pc, int i, int harm, int & count, int & wcount);
 	void CalcCcIncrement();
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);

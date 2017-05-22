@@ -391,7 +391,11 @@ void CGenCF1::UpdateNoteHarm(int  i) {
 	// We can be only S
 	if (hm2[i][hSub] && !hm2[i][hTon] && !hm2[i][hDom]) {
 		// Remove duplicates
-		if (i>0) hm2[i - 1][hSub] = 0;
+		if (i > 0) {
+			hm2[i - 1][hSub] = 0;
+			// Remove D
+			hm2[i - 1][hDom] = 0;
+		}
 		if (i < ep2 - 1) hm2[i + 1][hSub] = 0;
 	}
 }
@@ -442,14 +446,131 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
 		hm2[first_tonic - 1][hTon] = 0;
 		hm2[first_tonic - 1][hSub] = 0;
 	}
-	// Remove wrong meanings
+	// Remove wrong harmony
+	for (int i = 0; i < ep2; ++i) UpdateNoteHarm(i);
+	for (int i = ep2 - 1; i >= 0; --i) UpdateNoteHarm(i);
+	// Remove long repeats and limit misses
+	int dcount = 0;
+	int scount = 0;
+	int tcount = 0;
+	int wdcount = 0;
+	int wscount = 0;
+	int wtcount = 0;
+	for (int i = 0; i < ep2; ++i) {
+		if (FixNoteHarmRepeat(pc, i, hTon, tcount, wtcount)) return 1;
+		if (FixNoteHarmRepeat(pc, i, hDom, dcount, wdcount)) return 1;
+		if (FixNoteHarmRepeat(pc, i, hSub, scount, wscount)) return 1;
+	}
+	// Remove wrong harmony again
 	for (int i = 0; i < ep2; ++i) UpdateNoteHarm(i);
 	for (int i = ep2-1; i >= 0; --i) UpdateNoteHarm(i);
 	// Detect conflicts
 	for (int i = 0; i < ep2; ++i) {
 		if (!hm2[i][hDom] && !hm2[i][hSub] && !hm2[i][hTon]) {
-			FLAG2(20, i);
+			FLAG2(77, i);
 		}
+	}
+	// Detect long miss or repeat
+	dcount = 0;
+	scount = 0;
+	tcount = 0;
+	wdcount = 0;
+	wscount = 0;
+	wtcount = 0;
+	for (int i = 0; i < ep2; ++i) {
+		// Count same and missing letters in a row
+		if (FailMelodyHarmMiss(pc, i, hTon, tcount, wtcount)) return 1;
+		if (FailMelodyHarmMiss(pc, i, hDom, dcount, wdcount)) return 1;
+		if (FailMelodyHarmMiss(pc, i, hSub, scount, wscount)) return 1;
+	}
+	// Check same letters
+	if ((tcount == 3) || (dcount == 3) || (scount == 3)) FLAG2(15, ep2 - 1);
+	if ((tcount == 4) || (dcount == 4) || (scount == 4)) FLAG2(16, ep2 - 1);
+	if ((tcount > 4) || (dcount > 4) || (scount > 4)) FLAG2(17, ep2 - 1);
+	// Check missing letters
+	if ((wtcount == 4) || (wdcount == 4) || (wscount == 4)) FLAG2(18, ep2 - 1);
+	if ((wtcount == 5) || (wdcount == 5) || (wscount == 5)) FLAG2(19, ep2 - 1);
+	if ((wtcount > 5) || (wdcount > 5) || (wscount > 5)) FLAG2(20, ep2 - 1);
+	// Calculate harmonic difficulty
+	float proposed=0, approved=0, proposed_old, approved_old, proposed_total=0, approved_total=0;
+	for (int i = 0; i < ep2; ++i) {
+		// Assign variables of previous step
+		proposed_old = proposed;
+		approved_old = approved;
+		if (i > 0) {
+			// Calculate how many harmonies proposed and approved
+			proposed = hm[i][hTon] + hm[i][hSub] + hm[i][hDom] - 1;
+			approved = hm2[i][hTon] + hm2[i][hSub] + hm2[i][hDom] - 1;
+			if (approved_old) {
+				// Decrease approved count
+				if (hm2[i - 1][hDom] && hm2[i][hDom]) approved -= 1.0 / approved_old;
+				if (hm2[i - 1][hTon] && hm2[i][hTon]) approved -= 1.0 / approved_old;
+				if (hm2[i - 1][hSub] && hm2[i][hSub]) approved -= 1.0 / approved_old;
+				if (hm2[i - 1][hDom] && hm2[i][hSub]) approved -= 1.0 / approved_old;
+			}
+			proposed_total += proposed;
+			approved_total += approved;
+		}
+	}
+	CString st;
+	st.Format("Approved %f of %f", approved_total, proposed_total);
+	WriteLog(1, st);
+	return 0;
+}
+
+int CGenCF1::FailMelodyHarmMiss(vector<int> &pc, int i, int harm, int &count, int &wcount) {
+	if (hm2[i][harm]) {
+		if (wcount == 4) FLAG2(18, i - 1);
+		if (wcount == 5) FLAG2(19, i - 1);
+		if (wcount > 5) FLAG2(20, i - 1);
+		wcount = 0;
+		++count;
+	}
+	else {
+		++wcount;
+		if (count == 3) FLAG2(15, i - 1);
+		if (count == 4) FLAG2(16, i - 1);
+		if (count > 4) FLAG2(17, i - 1);
+		count = 0;
+	}
+	return 0;
+}
+
+int CGenCF1::FixNoteHarmRepeat(vector<int> &pc, int i, int harm, int &count, int &wcount) {
+	if (hm2[i][harm]) {
+		++count;
+		// Try to resolve harmony repeat
+		if (count > 2) {
+			// Get other two harmonies
+			int h1 = (harm + 1) % 3;
+			int h2 = (harm + 2) % 3;
+			// Find harmony that can be removed
+			for (int x = i; x > i - count; --x) {
+				// There must be an alternative harmony to remove
+				if (hm2[x][h1] || hm2[x][h2]) {
+					// Remove my harmony
+					hm2[x][harm] = 0;
+					// Now there are less repeats
+					count = i - x;
+					// Stop searching
+					break;
+				}
+			}
+		}
+		// Try to limit harmony miss
+		if (count == 1 && wcount > 3) {
+			// Get other two harmonies
+			int h1 = (harm + 1) % 3;
+			int h2 = (harm + 2) % 3;
+			// Remove alternative melodies
+			hm2[i][h1] = 0;
+			hm2[i][h2] = 0;
+		}
+		wcount = 0;
+	}
+	else {
+		count = 0;
+		wcount++;
 	}
 	return 0;
 }
