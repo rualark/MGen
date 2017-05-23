@@ -503,18 +503,24 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc, int ep1, int ep2) {
 		if (i > 0) {
 			if (approved_old > 0.9) {
 				// Decrease approved count
-				if (hm2[i - 1][hDom] && hm2[i][hDom]) approved -= 1.0 / approved_old;
-				if (hm2[i - 1][hTon] && hm2[i][hTon]) approved -= 1.0 / approved_old;
-				if (hm2[i - 1][hSub] && hm2[i][hSub]) approved -= 1.0 / approved_old;
-				if (hm2[i - 1][hDom] && hm2[i][hSub]) approved -= 1.0 / approved_old;
+				if (hm2[i - 1][hDom] && hm2[i][hDom]) approved -= abs(1.0 / approved_old);
+				if (hm2[i - 1][hTon] && hm2[i][hTon]) approved -= abs(1.0 / approved_old);
+				if (hm2[i - 1][hSub] && hm2[i][hSub]) approved -= abs(1.0 / approved_old);
+				if (hm2[i - 1][hDom] && hm2[i][hSub]) approved -= abs(1.0 / approved_old);
 			}
 		}
+		//CString st;
+		//st.Format("%d step %d Approved %f of %f", cantus_id, i, approved, proposed);
+		//WriteLog(1, st);
 		proposed_total += proposed;
 		approved_total += approved;
 	}
-	CString st;
-	st.Format("Harmonic difficulty %.0f%%. Approved %f of %f", (proposed_total-approved_total)/proposed_total*100.0, approved_total, proposed_total);
-	WriteLog(1, st);
+	hdif = (proposed_total - approved_total) / (proposed_total + 0.00001) * 100.0;
+	if (debug_level > 1) {
+		CString st;
+		st.Format("%d Harmonic difficulty %.0f%%. Approved %f of %f", cantus_id, hdif, approved_total, proposed_total);
+		WriteLog(1, st);
+	}
 	return 0;
 }
 
@@ -1148,10 +1154,11 @@ int CGenCF1::FailIntervals(int ep2, vector<int> &pc)
 		if ((pc[i + 1] == 6 && pc[i] == 3) || (pc[i + 1] == 3 && pc[i] == 6)) found = 1;
 		// Check tritone with additional note inside
 		if (i > 0) {
-			if ((pc[i + 1] == 6 && pc[i - 1] == 3) || (pc[i + 1] == 3 && pc[i - 1] == 6)) {
-				found = 1;
-				leap_start = i - 1;
-			}
+			if ((pc[i + 1] == 6 && pc[i - 1] == 3) || (pc[i + 1] == 3 && pc[i - 1] == 6)) 
+			  if ((c[i] > c[i+1] && c[i] < c[i-1]) || (c[i] < c[i+1] && c[i] > c[i-1])) {
+					found = 1;
+					leap_start = i - 1;
+				}
 		}
 		if (found) {
 			// Check if tritone is highest leap if this is last window
@@ -1928,15 +1935,19 @@ void CGenCF1::ShowFlagBlock() {
 	}
 }
 
+void CGenCF1::CalcDpenalty() {
+	dpenalty_cur = 0;
+	for (int z = 0; z < c_len; z++) {
+		int dif = abs(cc_old[z] - cc[z]);
+		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
+	}
+}
+
 void CGenCF1::SaveCantus() {
 	// If rpenalty is same as min, calculate dpenalty
 	if (optimize_dpenalty) {
 		if (rpenalty_cur == rpenalty_min) {
-			dpenalty_cur = 0;
-			for (int z = 0; z < c_len; z++) {
-				int dif = abs(cc_old[z] - cc[z]);
-				if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
-			}
+			CalcDpenalty();
 			// Do not save cantus if it has higher dpenalty
 			if (dpenalty_cur > dpenalty_min) return;
 			// Do not save cantus if it is same as source
@@ -1956,7 +1967,7 @@ void CGenCF1::SaveCantus() {
 }
 
 int CGenCF1::SendCantus() {
-	CString st;
+	CString st, info;
 	int v = svoice;
 	Sleep(sleep_ms);
 	// Copy cantus to output
@@ -2024,10 +2035,31 @@ int CGenCF1::SendCantus() {
 	CountTime(step - real_len - 1, step - 1);
 	UpdateNoteMinMax(step - real_len - 1, step - 1);
 	UpdateTempoMinMax(step - real_len - 1, step - 1);
+	++cantus_sent;
 	if (task == tGen) {
 		if (!shuffle) {
 			Adapt(step - real_len - 1, step - 1);
 		}
+		// If  window-scan
+		st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
+		AddMelody(step - real_len - 1, step - 1, v, st);
+	}
+	else if (task == tEval) {
+		if (m_algo_id == 101) {
+			// If RSWA
+			st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
+		}
+		else {
+			if (key_eval == "") {
+				// If SWA
+				st.Format("#%d\nRule penalty: %.0f\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id, rpenalty_cur, dpenalty_cur, hdif);
+			}
+			else {
+				// If evaluating
+				st.Format("#%d\nRule penalty: %.0f\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id, rpenalty_cur, hdif, key_eval);
+			}
+		}
+		AddMelody(step - real_len - 1, step - 1, v, st);
 	}
 	// Send
 	t_generated = step;
@@ -2038,7 +2070,6 @@ int CGenCF1::SendCantus() {
 			t_sent = t_generated;
 		}
 	}
-	++cantus_sent;
 	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
 	// Check limit
@@ -2169,6 +2200,11 @@ void CGenCF1::RandomSWA()
 		st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 		SetStatusText(0, st);
 		//SendCantus(0, 0);
+		// Check limit
+		if (t_generated >= t_cnt) {
+			WriteLog(3, "Reached t_cnt steps. Generation stopped");
+			return;
+		}
 	}
 	ShowStuck();
 }

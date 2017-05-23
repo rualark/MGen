@@ -112,49 +112,19 @@ CGVar::~CGVar()
 
 void CGVar::InitVectors()
 {
-	// Create vectors
-	pause = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	note = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	len = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
-	coff = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
-	poff = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
-	noff = vector<vector<unsigned short>>(t_allocated, vector<unsigned short>(v_cnt));
-	tonic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	minor = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	dyn = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	vel = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	vib = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	vibf = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	artic = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	lining = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	mark = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
-	mark_color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
-	midi_ch = vector<vector<unsigned char>>(t_allocated, vector<unsigned char>(v_cnt));
-	midi_delta = vector<vector<short>>(t_allocated, vector<short>(v_cnt));
-	linecolor = vector<Color>(t_allocated);
-	lengroup = vector<vector<char>>(t_allocated, vector<char>(v_cnt));
-	comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
-	adapt_comment = vector<vector<CString>>(t_allocated, vector<CString>(v_cnt));
-	color = vector<vector<Color>>(t_allocated, vector<Color>(v_cnt));
-	tempo = vector<float>(t_allocated);
-	tempo_src = vector<float>(t_allocated);
-	stime = vector<float>(t_allocated);
-	etime = vector<float>(t_allocated);
-	dstime = vector<vector<float>>(t_allocated, vector<float>(v_cnt));
-	detime = vector<vector<float>>(t_allocated, vector<float>(v_cnt));
+	ResizeVectors(t_allocated);
 	// Init ngv
 	for (int v = 0; v < MAX_VOICE; v++) {
 		ngv_min[v] = 1000;
 		ngv_max[v] = 0;
 	}
-	// Init color
-	for (int i = 0; i < t_allocated; i++) {
-		linecolor[i] = Color(0);
-		for (int v = 0; v < v_cnt; v++) {
-			color[i][v] = Color(0);
-			mark_color[i][v] = Color(0);
-		}
+}
+
+void CGVar::AddMelody(int step1, int step2, int v, CString info) {
+	for (int i = step1; i <= step2; ++i) {
+		mel_id[i][v] = mel_info.size();
 	}
+	mel_info.push_back(info);
 }
 
 void CGVar::ResizeVectors(int size, int vsize)
@@ -184,6 +154,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	vibf.resize(size);
 	artic.resize(size);
 	lining.resize(size);
+	mel_id.resize(size);
 	mark.resize(size);
 	mark_color.resize(size);
 	linecolor.resize(size, Color(0));
@@ -194,6 +165,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 	midi_delta.resize(size);
 	color.resize(size);
 	int start = t_allocated;
+	// Start from zero if we are allocating first time
+	if (size == t_allocated) start = 0;
 	if (vsize != v_cnt) start = 0;
 	for (int i = start; i < size; i++) {
 		pause[i].resize(vsize);
@@ -218,6 +191,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		dstime[i].resize(vsize);
 		detime[i].resize(vsize);
 		color[i].resize(vsize, Color(0));
+		mel_id[i].resize(vsize, -1);
 		mark[i].resize(vsize);
 		mark_color[i].resize(vsize, Color(0));
 	}

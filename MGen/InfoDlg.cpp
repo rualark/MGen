@@ -108,6 +108,12 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(180, 0, 0), 0);
 		m_info.AddText("\n", RGB(0, 0, 0), 0);
 
+		if (pGen->mel_id[i][mv] > -1) {
+			st.Format("Melody: %s\n", pGen->mel_info[pGen->mel_id[i][mv]]);
+			m_info.AddText(st, RGB(0, 0, 180), 0);
+			m_info.AddText("\n", RGB(0, 0, 0), 0);
+		}
+
 		st.Format("Current offset: %d steps\n", pGen->coff[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Previous offset : %d steps\nNext offset : %d steps\n",

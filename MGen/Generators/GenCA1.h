@@ -16,7 +16,7 @@ public:
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void GetCantusKey(vector<int>& cc);
-	int GetCantusKey2(vector<int>& cc, int & tonic_cur, int minor_cur);
+	int GetCantusKey2(vector<int>& cc, int & tonic_cur, CString & st, int minor_cur);
 	void CreateScanMatrix(int i);
 	void SendCorrections(int i, milliseconds time_start);
 

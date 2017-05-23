@@ -110,6 +110,7 @@ protected:
 	void ShowStuck();
 	CString GetStuck();
 	void ShowFlagBlock();
+	void CalcDpenalty();
 	void SaveCantus();
 	int SendCantus();
 	void InitCantus();
@@ -253,6 +254,9 @@ protected:
 	vector<int> nstat3;
 	vector<vector<int>> hm; // Available harmonic meanings for each note
 	vector<vector<int>> hm2; // Approved harmonic meanings for each note
+	float hdif;
+	int cantus_id = 0;
+	CString key_eval; // Results of key evaluation
 
 	// Local SWA
 	vector <long> cids;

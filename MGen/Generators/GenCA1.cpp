@@ -30,14 +30,13 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 
 void CGenCA1::GetCantusKey(vector <int> &cc)
 {
+	CString kst1, kst2;
 	int t1, t2;
 	// Major
-	int c1 = GetCantusKey2(cc, t1, 0);
+	int c1 = GetCantusKey2(cc, t1, kst1, 0);
 	// Minor
-	int c2 = GetCantusKey2(cc, t2, 1);
-	CString est;
-	est.Format("Key selection: major confidence %d, minor confidence %d", c1, c2);
-	WriteLog(3, est);
+	int c2 = GetCantusKey2(cc, t2, kst2, 1);
+	key_eval.Format("major confidence %d [%s], minor confidence %d [%s]", c1, kst1, c2, kst2);
 	if (c1 == 0 && c2 == 0) {
 		tonic_cur = -1;
 		return;
@@ -58,7 +57,7 @@ void CGenCA1::GetCantusKey(vector <int> &cc)
 	}
 }
 
-int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
+int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, int minor_cur)
 {
 	int c_len = cc.size();
 	int key_miss[12];
@@ -96,9 +95,7 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 	}
 	// If no key selected
 	if (min_miss > 0) {
-		CString est;
-		est.Format("Error: due to chromatic alterations, cannot detect key (m%d) for melody %s", minor_cur, cst);
-		WriteLog(3, est);
+		ext_st.Format("Cannot detect key due to chromatic alterations");
 		tonic_cur = -1;
 		return 0;
 	}
@@ -119,9 +116,7 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 	}
 	// Check if only one key
 	if (key_count == 1) {
-		CString est;
-		est.Format("Single key %s selected for melody %s (m%d)", NoteName[tonic_cur], cst, minor_cur);
-		WriteLog(3, est);
+		ext_st.Format("Single key %s selected", NoteName[tonic_cur]);
 		if (cc[c_len - 1] % 12 == tonic_cur) {
 			return 500 - key_count;
 		}
@@ -133,9 +128,7 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 	// If multiple keys and random_key set
 	else if (random_key) {
 		tonic_cur = keys[randbw(0, keys.size() - 1)];
-		CString est;
-		est.Format("Ambiguous %d keys m%d (%s) resolved to %s (random) in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
-		WriteLog(3, est);
+		ext_st.Format("Ambiguous %d keys (%s) resolved to %s (random)", keys.size(), kst, NoteName[tonic_cur]);
 		return 100 - keys.size();
 	}
 	// If multiple keys and random_key not set
@@ -144,9 +137,7 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 		for (int i = 0; i < keys.size(); i++) {
 			if (cc[c_len - 1] % 12 == keys[i]) {
 				tonic_cur = keys[i];
-				CString est;
-				est.Format("Ambiguous %d keys m%d (%s) resolved to %s as last note in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
-				WriteLog(3, est);
+				ext_st.Format("Ambiguous %d keys (%s) resolved to %s as last note", keys.size(), kst, NoteName[tonic_cur]);
 				return 400 - keys.size();
 			}
 		}
@@ -154,17 +145,13 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, int minor_cur)
 		for (int i = 0; i < keys.size(); i++) {
 			if (cc[0] % 12 == keys[i]) {
 				tonic_cur = keys[i];
-				CString est;
-				est.Format("Ambiguous %d keys m%d (%s) resolved to %s as first note in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
-				WriteLog(3, est);
+				ext_st.Format("Ambiguous %d keys (%s) resolved to %s as first note", keys.size(), kst, NoteName[tonic_cur]);
 				return 300 - keys.size();
 			}
 		}
 		// If nothing found, return random of accepted
 		tonic_cur = keys[randbw(0, keys.size() - 1)];
-		CString est;
-		est.Format("Ambiguous %d keys m%d (%s) resolved to %s (random) in melody %s", keys.size(), minor_cur, kst, NoteName[tonic_cur], cst);
-		WriteLog(3, est);
+		ext_st.Format("Ambiguous %d keys (%s) resolved to %s (random)", keys.size(), kst, NoteName[tonic_cur]);
 		return 100 - keys.size();
 	}
 }
@@ -243,15 +230,17 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 			// Write log
 			st.Format("%.0f/%.0f/%d/%d ", rpenalty_min, dpenalty_min, cids.size(), clib.size());
 			st2 += st;
-			// Clear penalty
-			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show initial melody again if this is not first iteration
 			if (ccount > 1) {
+				dpenalty_cur = 0;
 				ScanCantus(tEval, 0, &(cantus[i]));
 				step -= real_len + 1;
 			}
 			// Get cantus
 			cc = clib[cids[x]];
+			dpenalty_cur = dpenalty[cids[x]];
+			// Clear penalty
+			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result
 			ScanCantus(tEval, 1, &(cc));
 			// Go back
@@ -283,7 +272,6 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 
 void CGenCA1::Generate()
 {
-	int analyzed = 0;
 	CString st;
 	int s_len2 = s_len;
 	InitCantus();
@@ -292,7 +280,13 @@ void CGenCA1::Generate()
 	// Transpose corrected voice up for display
 	int t_generated2 = 0; // Saved t_generated
 	for (int i = 0; i < cantus.size(); i++) {
-		st.Format("Analyzing: %d of %d", i, cantus.size());
+		++cantus_id;
+		// Check limit
+		if (t_generated >= t_cnt) {
+			WriteLog(3, "Reached t_cnt steps. Generation stopped");
+			break;
+		}
+		st.Format("Analyzing: %d of %d", cantus_id, cantus.size());
 		SetStatusText(3, st);
 		if (need_exit) break;
 		if (step < 0) step = 0;
@@ -307,7 +301,9 @@ void CGenCA1::Generate()
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
+		dpenalty_cur = 0;
 		ScanCantus(tEval, 0, &(cantus[i]));
+		key_eval = "";
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
 		t_generated2 = t_generated;
@@ -354,14 +350,8 @@ void CGenCA1::Generate()
 			t_generated = step;
 			t_sent = t_generated;
 		}
-		// Check limit
-		++analyzed;
-		if (t_generated >= t_cnt) {
-			WriteLog(3, "Reached t_cnt steps. Generation stopped");
-			break;
-		}
 	}
-	st.Format("Analyzed %d of %d", analyzed, cantus.size());
+	st.Format("Analyzed %d of %d", cantus_id, cantus.size());
 	SetStatusText(3, st);
 	ShowStuck();
 }
