@@ -14,7 +14,7 @@ optimize_dpenalty = 0 # Saves only melodies closest to source melody. Decreases 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Analysis
-corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 8 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
@@ -27,7 +27,7 @@ correct_range = 6 # Maximum interval allowed between each source and corrected n
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Technical parameters
-midifile_in_mul = 0.5 # Multiply note length with this value when loading
+midifile_in_mul = 1 # Multiply note length with this value when loading
 t_cnt = 100000 # Maximum number of steps generated
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
