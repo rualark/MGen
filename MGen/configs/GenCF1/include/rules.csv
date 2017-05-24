@@ -1,0 +1,142 @@
+2;0;;;Strict;;1
+2;0;Melody;Leap compensation;Uncompensated: precompensated (3rd);0
+2;0;Melody;Leap compensation;Uncompensated: precompensated (4th);0
+2;60;Melody;Leap compensation;Uncompensated: precompensated (5th);0
+2;100;Melody;Leap compensation;Uncompensated: precompensated (> 5th);0
+2;0;Melody;Leap compensation;Uncompensated: preceded by leap (3rd);0
+2;60;Melody;Leap compensation;Uncompensated: preceded by leap (4th);0
+2;100;Melody;Leap compensation;Uncompensated: preceded by leap (> 4th);0
+2;0;Melody;Leap compensation;Uncompensated: early-late filled (3rd);0
+2;60;Melody;Leap compensation;Uncompensated: early-late filled (4th);0
+2;100;Melody;Leap compensation;Uncompensated: early-late filled (> 4th);0
+2;0;Melody;Leap compensation;Uncompensated (3rd);0
+2;60;Melody;Leap compensation;Uncompensated (4th);0
+2;100;Melody;Leap compensation;Uncompensated (> 4th);0
+2;60;Melody;Leap compensation;Unfinished fill (Any);0
+2;0;Melody;Change of melodic direction after leap;Late compensation (<= 5th);0
+2;60;Melody;Change of melodic direction after leap;Late compensation (> 5th);0
+2;0;Melody;Change of melodic direction after leap;Leap back (<= 6th);0
+2;60;Melody;Change of melodic direction after leap;Leap back (> 6th);0
+2;0;Melody;Change of melodic direction after leap;Leap back (overflow);0
+2;0;Melody;Change of melodic direction after leap;Prefilled uncompensated (3rd);0
+2;0;Melody;Change of melodic direction after leap;Prefilled uncompensated (4th);0
+2;60;Melody;Change of melodic direction after leap;Prefilled uncompensated (5th);0
+2;100;Melody;Change of melodic direction after leap;Prefilled uncompensated (> 5th);0
+2;0;Melody;Change of melodic direction after leap;Preleaped uncompens. (3rd);0
+2;60;Melody;Change of melodic direction after leap;Preleaped uncompens. (4th);0
+2;60;Melody;Change of melodic direction after leap;Preleaped uncompens. (more);0
+2;30;Melody;Change of melodic direction after leap;Other uncompensated (3rd);0
+2;60;Melody;Change of melodic direction after leap;Other uncompensated (4th);0
+2;100;Melody;Change of melodic direction after leap;Other uncompensated (> 4th);0
+2;30;Melody;Leaps;Seventh (m7);0
+2;100;Melody;Leaps;Seventh (maj7);0
+2;0;Melody;Leaps;Many leaps (> 2);0
+2;60;Melody;Leaps;Many leaps (> 3);0
+2;60;Melody;Leaps;Consecutive leaps (> 2);0
+2;100;Melody;Leaps;Consecutive leaps (> 3);0
+2;60;Melody;Leaps;Consecutive unidirectional leaps (Sum <= 6th);0
+2;100;Melody;Leaps;Consecutive unidirectional leaps (Sum > 6th);0
+2;60;Melody;Leaps;Two consecutive 3rds (plain);0
+2;0;Melody;Leaps;Two consecutive 3rds (after 6/8);0
+2;60;Melody;Stepwise;Long stepwise motion (any direction);0
+2;60;Melody;Stepwise;Long stepwise motion (one direction);0
+2;60;Melody;Repeats;Adjacent repeat of notes (2);0
+2;100;Melody;Repeats;Multiple culminations (> 1);0
+2;60;Melody;Repeats;Notes repeat (2 (sym));0
+2;60;Melody;Repeats;Notes repeat (3 (sym));0
+2;60;Melody;Repeats;Notes repeat (4);0
+2;60;Melody;Repeats;Notes repeat (5);0
+2;60;Melody;Repeats;Note stagnation (> 2);0
+2;40;Melody;Tritone;Tritone (prepared);0
+2;100;Melody;Tritone;Tritone (unprepared);0
+2;100;Melody;Tritone;Tritone (on climax);0
+2;0;Melody;Range;Out of range (Tight);0
+2;70;Melody;Range;Out of range (Wide);0
+2;0;Cantus;Harmony;Repeating letters in a row (3);0
+2;30;Cantus;Harmony;Repeating letters in a row (4);0
+2;70;Cantus;Harmony;Repeating letters in a row (> 4);0
+2;0;Cantus;Harmony;Missing letters in a row (4);0
+2;30;Cantus;Harmony;Missing letters in a row (5);0
+2;70;Cantus;Harmony;Missing letters in a row (> 5);0
+2;30;Cantus;Harmony;Early cadence (G-C);0
+2;70;Cantus;Border;Start steps tonic (unprepared);0
+2;70;Cantus;Border;Start steps tonic (no C);0
+2;70;Cantus;Border;Start steps tonic (no E);0
+2;30;Cantus;Border;No C (First);0
+2;30;Cantus;Border;No C (Last);0
+2;0;Cantus;Border;3rd to last notes (CEG);0
+2;0;Cantus;Border;3rd to last notes (leading);0
+2;30;Cantus;Border;2nd to last notes (G);0
+2;30;Cantus;Border;2nd to last notes (not GBD);0
+2;0;Cantus;Border;Leap (Last);0
+1;0;;;Strict;;1
+1;0;Melody;Leap compensation;Uncompensated: precompensated (3rd);0
+1;0;Melody;Leap compensation;Uncompensated: precompensated (4th);0
+1;60;Melody;Leap compensation;Uncompensated: precompensated (5th);0
+1;100;Melody;Leap compensation;Uncompensated: precompensated (> 5th);0
+1;0;Melody;Leap compensation;Uncompensated: preceded by leap (3rd);0
+1;60;Melody;Leap compensation;Uncompensated: preceded by leap (4th);0
+1;100;Melody;Leap compensation;Uncompensated: preceded by leap (> 4th);0
+1;0;Melody;Leap compensation;Uncompensated: early-late filled (3rd);0
+1;60;Melody;Leap compensation;Uncompensated: early-late filled (4th);0
+1;100;Melody;Leap compensation;Uncompensated: early-late filled (> 4th);0
+1;0;Melody;Leap compensation;Uncompensated (3rd);0
+1;60;Melody;Leap compensation;Uncompensated (4th);0
+1;100;Melody;Leap compensation;Uncompensated (> 4th);0
+1;60;Melody;Leap compensation;Unfinished fill (Any);0
+1;0;Melody;Change of melodic direction after leap;Late compensation (<= 5th);0
+1;60;Melody;Change of melodic direction after leap;Late compensation (> 5th);0
+1;0;Melody;Change of melodic direction after leap;Leap back (<= 6th);0
+1;60;Melody;Change of melodic direction after leap;Leap back (> 6th);0
+1;0;Melody;Change of melodic direction after leap;Leap back (overflow);0
+1;0;Melody;Change of melodic direction after leap;Prefilled uncompensated (3rd);0
+1;0;Melody;Change of melodic direction after leap;Prefilled uncompensated (4th);0
+1;60;Melody;Change of melodic direction after leap;Prefilled uncompensated (5th);0
+1;100;Melody;Change of melodic direction after leap;Prefilled uncompensated (> 5th);0
+1;0;Melody;Change of melodic direction after leap;Preleaped uncompens. (3rd);0
+1;60;Melody;Change of melodic direction after leap;Preleaped uncompens. (4th);0
+1;60;Melody;Change of melodic direction after leap;Preleaped uncompens. (more);0
+1;30;Melody;Change of melodic direction after leap;Other uncompensated (3rd);0
+1;60;Melody;Change of melodic direction after leap;Other uncompensated (4th);0
+1;100;Melody;Change of melodic direction after leap;Other uncompensated (> 4th);0
+1;30;Melody;Leaps;Seventh (m7);0
+1;100;Melody;Leaps;Seventh (maj7);0
+1;0;Melody;Leaps;Many leaps (> 2);0
+1;60;Melody;Leaps;Many leaps (> 3);0
+1;60;Melody;Leaps;Consecutive leaps (> 2);0
+1;100;Melody;Leaps;Consecutive leaps (> 3);0
+1;60;Melody;Leaps;Consecutive unidirectional leaps (Sum <= 6th);0
+1;100;Melody;Leaps;Consecutive unidirectional leaps (Sum > 6th);0
+1;60;Melody;Leaps;Two consecutive 3rds (plain);0
+1;0;Melody;Leaps;Two consecutive 3rds (after 6/8);0
+1;60;Melody;Stepwise;Long stepwise motion (any direction);0
+1;60;Melody;Stepwise;Long stepwise motion (one direction);0
+1;60;Melody;Repeats;Adjacent repeat of notes (2);0
+1;100;Melody;Repeats;Multiple culminations (> 1);0
+1;60;Melody;Repeats;Notes repeat (2 (sym));0
+1;60;Melody;Repeats;Notes repeat (3 (sym));0
+1;60;Melody;Repeats;Notes repeat (4);0
+1;60;Melody;Repeats;Notes repeat (5);0
+1;60;Melody;Repeats;Note stagnation (> 2);0
+1;40;Melody;Tritone;Tritone (prepared);0
+1;100;Melody;Tritone;Tritone (unprepared);0
+1;100;Melody;Tritone;Tritone (on climax);0
+1;0;Melody;Range;Out of range (Tight);0
+1;70;Melody;Range;Out of range (Wide);0
+1;0;Cantus;Harmony;Repeating letters in a row (3);0
+1;30;Cantus;Harmony;Repeating letters in a row (4);0
+1;70;Cantus;Harmony;Repeating letters in a row (> 4);0
+1;0;Cantus;Harmony;Missing letters in a row (4);0
+1;30;Cantus;Harmony;Missing letters in a row (5);0
+1;70;Cantus;Harmony;Missing letters in a row (> 5);0
+1;30;Cantus;Harmony;Early cadence (G-C);0
+1;70;Cantus;Border;Start steps tonic (unprepared);0
+1;70;Cantus;Border;Start steps tonic (no C);0
+1;70;Cantus;Border;Start steps tonic (no E);0
+1;30;Cantus;Border;No C (First);0
+1;30;Cantus;Border;No C (Last);0
+1;0;Cantus;Border;3rd to last notes (CEG);0
+1;0;Cantus;Border;3rd to last notes (leading);0
+1;30;Cantus;Border;2nd to last notes (G);0
+1;30;Cantus;Border;2nd to last notes (not GBD);0
+1;0;Cantus;Border;Leap (Last);0
