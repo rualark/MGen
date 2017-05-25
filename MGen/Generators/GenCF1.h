@@ -57,6 +57,7 @@ public:
 protected:
 	void LoadHarmVar(CString * sN, CString * sV);
 	void LoadRules(CString fname);
+	void SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);

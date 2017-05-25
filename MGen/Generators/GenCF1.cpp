@@ -119,6 +119,23 @@ void CGenCF1::LoadRules(CString fname)
 	WriteLog(0, est);
 }
 
+// Select rules
+void CGenCF1::SelectRuleSet(int rs)
+{
+	rule_set = rs;
+	if (!accepts[rule_set].size()) {
+		CString est;
+		est.Format("Cannot select rule set %d. It was not loaded from rules configuration file.", rule_set);
+		WriteLog(1, est);
+	}
+	else {
+		// Load rule set
+		for (int i = 0; i < MAX_FLAGS; ++i) {
+			accept[i] = accepts[rule_set][i];
+		}
+	}
+}
+
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	LoadRange(sN, sV, "interval", &min_interval, &max_interval);
@@ -163,7 +180,6 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "correct_range", &correct_range);
 	CheckVar(sN, sV, "correct_inrange", &correct_inrange);
 	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
-	CheckVar(sN, sV, "rule_set", &rule_set);
 
 	LoadHarmVar(sN, sV);
 	// Load rules
@@ -194,22 +210,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	// Load rule set
 	if (*sN == "rule_set") {
 		++parameter_found;
-		if (rule_set > MAX_RULESETS) {
-			CString est;
-			est.Format("Maximum allowed number of rule sets is %d. Cannot load rule set %d. Please increase MAX_RULESETS.", MAX_RULESETS, rule_set);
-			WriteLog(1, est);
-		}
-		else if (!accepts[rule_set].size()) {
-			CString est;
-			est.Format("Cannot select rule set %d. It was not loaded from rules configuration file.", rule_set);
-			WriteLog(1, est);
-		}
-		else {
-			// Load rule set
-			for (int i = 0; i < MAX_FLAGS; ++i) {
-				accept[i] = accepts[rule_set][i];
-			}
-		}
+		SelectRuleSet(atoi(*sV));
 	}
 }
 
