@@ -100,6 +100,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_VEL, &CMainFrame::OnUpdateCheckVel)
 	ON_COMMAND(ID_CHECK_NCOLORS, &CMainFrame::OnCheckNcolors)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_NCOLORS, &CMainFrame::OnUpdateCheckNcolors)
+	ON_COMMAND(ID_BUTTON_ERULES, &CMainFrame::OnButtonErules)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1416,4 +1417,10 @@ void CMainFrame::OnCheckNcolors() {
 
 void CMainFrame::OnUpdateCheckNcolors(CCmdUI *pCmdUI) {
 	pCmdUI->SetCheck(show_notecolors);
+}
+
+
+void CMainFrame::OnButtonErules()
+{
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "configs\\GenCF1\\include\\rules.xlsm", NULL, NULL, SW_SHOWNORMAL);
 }
