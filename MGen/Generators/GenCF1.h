@@ -265,9 +265,6 @@ protected:
 	// Local SWA
 	vector <long> cids;
 
-	// Load severity
-	int cur_severity = 0; // Current severity loaded from configuration file
-
 	// Cantus correcting
 	vector <int> smatrix; // Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix

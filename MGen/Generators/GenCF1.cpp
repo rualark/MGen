@@ -31,7 +31,6 @@ CGenCF1::CGenCF1()
 	for (int i = 0; i < 7; ++i) hconst[i] = hUndefined;
 	// Start severity
 	severity[0] = 0;
-	cur_severity = 1;
 }
 
 CGenCF1::~CGenCF1()
@@ -106,8 +105,8 @@ void CGenCF1::LoadRules(CString fname)
 				return;
 			}
 			else {
-				est.Format("Found rule %s - %d", rule, rid);
-				WriteLog(1, est);
+				//est.Format("Found rule %s - %d", rule, rid);
+				//WriteLog(1, est);
 				FlagName[rid] = rule;
 				if (accepts[set].size() < MAX_FLAGS) accepts[set].resize(MAX_FLAGS);
 				accepts[set][rid] = flag;
@@ -1928,8 +1927,10 @@ int CGenCF1::SendCantus() {
 			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; ++f) {
 				if (!i) {
 					comment[pos + i][v] += FlagName[nflags[x][f]];
-					st.Format(" [%d]", severity[nflags[x][f]]);
-					if (show_severity) comment[pos + i][v] += st;
+					if (show_severity) {
+						st.Format(" [%d]", severity[nflags[x][f]]);
+						comment[pos + i][v] += st;
+					}
 					comment[pos + i][v] += ". ";
 				}
 				// Set note color if this is maximum flag severity
@@ -2028,26 +2029,6 @@ void CGenCF1::InitCantus()
 	for (int i = 0; i < MAX_FLAGS; ++i) {
 		if (accept[i]) break;
 		if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
-	}
-	// Check all flags severity loaded
-	if (cur_severity < MAX_FLAGS) {
-		for (int i = 1; i < MAX_FLAGS; ++i) {
-			if (!severity[i]) {
-				if (cur_severity == MAX_FLAGS) {
-					CString est;
-					est.Format("Warning: more flags in config than in algorithm. Possibly duplicate flags inc config. Please correct config %s", m_config);
-					WriteLog(1, est);
-				}
-				else {
-					severity[i] = cur_severity;
-					// Log
-					CString est;
-					est.Format("Warning: flag '%s' not found in config %s. Assigning severity %d to flag. Please add flag to file", FlagName[i], m_config, cur_severity);
-					WriteLog(1, est);
-					++cur_severity;
-				}
-			}
-		}
 	}
 	// Global step
 	step = 0;
