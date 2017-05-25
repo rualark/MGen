@@ -33,6 +33,7 @@ public:
 	int warning_valid = 0;
 
 	// Data interface
+	CString m_current_config; // Current loading config
 	int m_loading = 0; // If we are loading saved results
 	int m_algo_id = -1; // Current algorithm id
 	CString m_algo_insts; // Instruments of current algorithm from algorithms.txt

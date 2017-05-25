@@ -6,6 +6,8 @@
 #define MAX_PENALTY 10000000.0
 
 #define MAX_FLAGS 80
+#define MAX_RULESETS 80
+#define MAX_SEVERITY 100
 #define MAX_WIND 500
 #define MAX_NOTE 127
 
@@ -54,6 +56,7 @@ public:
 
 protected:
 	void LoadHarmVar(CString * sN, CString * sV);
+	void LoadRules(CString fname);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
@@ -120,6 +123,13 @@ protected:
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
 	void RandCantus(vector<int>& c, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
+	
+	// Rules
+	vector <int> accept; // Each 1 allows showing canti with specific properties
+	vector <int> severity; // Get severity by flag id
+	vector <vector<int>> accepts; // Each 1 allows showing canti with specific properties
+	int rule_set = 0; // id of current rule set
+	vector <CString> FlagName; // Names of all rules
 
 	// Parameters
 	int method = mUndefined; // Which generation / analysis method to use
@@ -131,8 +141,6 @@ protected:
 	int s_len = 4; // Maximum number of measures to full scan
 	int first_note = 72; // Starting note of each cantus
 	int last_note = 72; // Ending note of each cantus
-	vector <int> accept; // Each 1 allows showing canti with specific properties
-	vector <CString> accepts; // Each 1 allows showing canti with specific properties
 	int fill_steps_mul = 2; // Multiply number of notes between leap notes to get steps for filling
 	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
 	int max_smooth_direct = 5; // Maximum linear movement in one direction allowed (in steps)
@@ -178,8 +186,6 @@ protected:
 	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int optimize_dpenalty = 1; // Saves only melodies closest to source melody. Decreases memory usage. Resetting allows for more close results when corrections>1
-	int rule_sets; // Number of rule sets
-	int rule_set; // id of current rule set
 
 	// Master parameters
 	vector <int> *scantus; // Source cantus for processing
@@ -190,8 +196,6 @@ protected:
 	int seed_cycle, reseed_count;
 	long cantus_ignored = 0; // How many canti ignored and not sent
 	long cantus_sent = 0; // How many cantus have been sent
-	int sev_to_flag[MAX_FLAGS]; // Get flag ID by severity
-	vector<int>  flag_to_sev; // Get severity by flag id
 	vector<Color>  flag_color; // Flag colors
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti

@@ -157,21 +157,41 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 	}
 }
 
+void CGLib::Tokenize(const CString& s, vector<CString>& tokens, const CString delim)
+{
+	int pos = 0;
+	int end = pos;
+	int len = s.GetLength();
+	tokens.clear();
+
+	while (end != len)
+	{
+		end = s.Find(delim, pos);
+		if (end == -1) end = len;
+		tokens.push_back(s.Mid(pos, end-pos));
+		pos = end + 1;
+	}
+}
+
 int CGLib::CheckInclude(CString st, CString fname, CString &iname) {
 	iname = "";
 	if (st.Left(8) == "include ") {
 		st = st.Mid(8);
-		st.Replace("\"", "");
-		st.Replace("/", "\\");
-		st.Trim();
-		char szDir[1024];
-		char *fileExt;
-		CString st4 = dir_from_path(fname) + "\\" + st;
-		GetFullPathName(st4, 1024, szDir, &fileExt);
-		iname = szDir;
+		iname = GetLinkedPath(st, fname);
 		return 1;
 	}
 	return 0;
+}
+
+CString CGLib::GetLinkedPath(CString st, CString fname) {
+	st.Replace("\"", "");
+	st.Replace("/", "\\");
+	st.Trim();
+	char szDir[1024];
+	char *fileExt;
+	CString st4 = dir_from_path(fname) + "\\" + st;
+	GetFullPathName(st4, 1024, szDir, &fileExt);
+	return szDir;
 }
 
 void CGLib::LoadNote(CString * sName, CString * sValue, char* sSearch, int * Dest)

@@ -12,93 +12,6 @@
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
 #define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
 
-const CString FlagName[MAX_FLAGS] = {
-	"Strict", // 0
-	"Minor seventh", // 1
-	"Tritone resolved", // 2 
-	"Many leaps", // 3 
-	"Long smooth", // 4 
-	"Long line", // 5 
-	"Two 3rds", // 6 
-	"Late <6th resolution", // 7 
-	"Leap back <7th", // 8 
-	"Close repeat", // 9 
-	"Stagnation", // 10 
-	"Early-late filled >4th", // 11 
-	"Multiple culminations", // 12 
-	"2nd to last not GBD", // 13
-	"3rd to last is CEG", // 14
-	"3 letters in a row [C]", // 15
-	"4 letters in a row [C]", // 16
-	">4 letters in a row [C]", // 17
-	"4 step miss [V]", // 18
-	"5 step miss [V]", // 19
-	">5 step miss [V]", // 20
-	"Late culmination", // 21
-	"Leap back >6th", // 22
-	"Last leap", // 23
-	"Unfilled leap >4th", // 24
-	"Many leaps+", // 25
-	"Leap unresolved", // 26
-	"Leap chain", // 27
-	"Two 3rds after 6/8", // 28
-	"Late >5th resolution", // 29
-	"Preleaped unresolved 3rd", // 30
-	"Tritone unresolved", // 31
-	"Tritone culmination", // 32
-	"Unfinished fill", // 33
-	"3rd to last is leading", // 34
-	"Preleaped unfilled 3rd", // 35
-	"Outstanding repeat 3", // 36
-	"Too wide range", // 37
-	"Too tight range", // 38
-	"Major seventh", // 39
-	"First steps without C", // 40
-	"First steps without E", // 41
-	"3 letters in a row [V]", // 42
-	"4 letters in a row [V]", // 43
-	">4 letters in a row [V]", // 44
-	"4 step miss [C]", // 45
-	"5 step miss [C]", // 46
-	">5 step miss [C]", // 47
-	"G-C before cadence", // 48
-	"First not C", // 49
-	"Last not C", // 50
-	"2nd to last is G", // 51
-	"Start tonic unprepared", // 52
-	"Prefilled unresolved 3rd", // 53
-	"Unresolved 3rd", // 54
-	"Preleaped unresolved 4th", // 55
-	"Prefilled unresolved 4th", // 56
-	"Unresolved 4th", // 57
-	"Leap back overflow", // 58
-	"Preleaped unresolved >4th", // 59
-	"Prefilled unresolved >4th", // 60
-	"Prefilled unfilled 3rd", // 61
-	"Prefilled unfilled 4th", // 62
-	"Prefilled unfilled >4th", // 63
-	"Preleaped unfilled 4th", // 64
-	"Preleaped unfilled >4th", // 65
-	"Early-late filled 3rd", // 66
-	"Early-late filled 4th", // 67
-	"Unfilled 3rd", // 68
-	"Unfilled 4th", // 69
-	"Consecutive leaps", // 70
-	"Consecutive leaps+", // 71
-	"Long repeat", // 72
-	"Long repeat+", // 73
-	"Unaltered VII before Im", // 74
-	"Unaltered near altered (m)", // 75
-	"Outstanding repeat 2", // 76
-	"Subdominant after dominant", // 77
-	"Steps 1-2 culmination", // 78
-	"Step 3 culmination", // 79
-};
-
-const Color FlagColor[] = {
-	Color(0, 100, 100, 100), // 0 S
-};
-
 // Unskippable internal rules:
 // Note repeats note of previous measure
 
@@ -106,17 +19,18 @@ CGenCF1::CGenCF1()
 {
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
-	accepts.resize(MAX_FLAGS);
+	FlagName.resize(MAX_FLAGS);
+	accepts.resize(MAX_RULESETS);
 	ssf.resize(MAX_FLAGS);
-	flag_to_sev.resize(MAX_FLAGS);
-	flag_color.resize(MAX_FLAGS);
+	severity.resize(MAX_FLAGS);
+	flag_color.resize(MAX_SEVERITY);
 	hvd.resize(7);
 	hvs.resize(7);
 	hvt.resize(7);
 	hconst.resize(7);
 	for (int i = 0; i < 7; ++i) hconst[i] = hUndefined;
 	// Start severity
-	sev_to_flag[0] = 0;
+	severity[0] = 0;
 	cur_severity = 1;
 }
 
@@ -140,6 +54,70 @@ void CGenCF1::LoadHarmVar(CString* sN, CString* sV)
 			if (st.Find("T") >= 0) hvt[i] = 1;
 		}
 	}
+}
+
+// Load rules
+void CGenCF1::LoadRules(CString fname)
+{
+	CString st, st2, st3, iname, est, rule;
+	vector<CString> ast;
+	int pos = 0;
+	int i = 0;
+	int sev = 0;
+	int set = 0;
+	int flag = 0;
+	int rid;
+	ifstream fs;
+	// Check file exists
+	if (!fileExists(fname)) {
+		CString est;
+		est.Format("LoadRules cannot find file: %s", fname);
+		WriteLog(1, est);
+		return;
+	}
+	fs.open(fname);
+	char pch[2550];
+	// Load header
+	fs.getline(pch, 2550);
+	while (fs.good()) {
+		i++;
+		// Get line
+		fs.getline(pch, 2550);
+		st = pch;
+		st.Trim();
+		pos = 0;
+		if (st.Find(";") != -1) {
+			Tokenize(st, ast, ";");
+			if (ast.size() != 7) {
+				est.Format("Wrong line in rules file %s: '%s'", fname, st);
+				WriteLog(1, est);
+				return;
+			}
+			set = atoi(ast[0]);
+			rid = atoi(ast[1]);
+			sev = atoi(ast[2]);
+			rule = ast[5];
+			flag = atoi(ast[6]);
+			// Find rule id
+			//rid = distance(FlagName.begin(), find(FlagName.begin(), FlagName.end(), rule));
+			if (rid >= MAX_FLAGS) {
+				est.Format("Rule id (%d) is greater than MAX_FLAGS (%d). Consider increaseing MAX_FLAGS", rid, MAX_FLAGS);
+				WriteLog(1, est);
+				return;
+			}
+			else {
+				est.Format("Found rule %s - %d", rule, rid);
+				WriteLog(1, est);
+				FlagName[rid] = rule;
+				if (accepts[set].size() < MAX_FLAGS) accepts[set].resize(MAX_FLAGS);
+				accepts[set][rid] = flag;
+				severity[rid] = sev;
+			}
+		}
+	}
+	fs.close();
+	est.Format("LoadConfigFile loaded %d lines from %s", i, fname);
+	WriteLog(0, est);
 }
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
@@ -186,10 +164,14 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "correct_range", &correct_range);
 	CheckVar(sN, sV, "correct_inrange", &correct_inrange);
 	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
-	CheckVar(sN, sV, "rule_sets", &rule_sets);
 	CheckVar(sN, sV, "rule_set", &rule_set);
 
 	LoadHarmVar(sN, sV);
+	// Load rules
+	if (*sN == "rules_file") {
+		++parameter_found;
+		LoadRules(GetLinkedPath(*sV, m_current_config));
+	}
 	// Load method
 	if (*sN == "method") {
 		++parameter_found;
@@ -213,63 +195,21 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	// Load rule set
 	if (*sN == "rule_set") {
 		++parameter_found;
-		if (rule_set > rule_sets) {
+		if (rule_set > MAX_RULESETS) {
 			CString est;
-			est.Format("Warning: maximum specified number of rule sets is %d. Cannot load rule set %d. Please correct config %s", rule_sets, rule_set, m_config);
+			est.Format("Maximum allowed number of rule sets is %d. Cannot load rule set %d. Please increase MAX_RULESETS.", MAX_RULESETS, rule_set);
+			WriteLog(1, est);
+		}
+		else if (!accepts[rule_set].size()) {
+			CString est;
+			est.Format("Cannot select rule set %d. It was not loaded from rules configuration file.", rule_set);
 			WriteLog(1, est);
 		}
 		else {
 			// Load rule set
 			for (int i = 0; i < MAX_FLAGS; ++i) {
-				if (accepts[i].GetLength() < rule_set) {
-					CString est;
-					est.Format("Cannot load rule set for rule '%s' (%d) with rule sets number %d. Rule set string is only %d in length. Please correct config %s", FlagName[i], i, rule_sets, accepts[i].GetLength(), m_config);
-					WriteLog(1, est);
-				}
-				else {
-					accept[i] = atoi(accepts[i].Mid(rule_set, 1));
-					if (accepts[i].Mid(rule_set, 1) == "-") accept[i] = -1;
-				}
+				accept[i] = accepts[rule_set][i];
 			}
-		}
-	}
-	// Load accept
-	CString st, st2;
-	st2 = sV->MakeLower();
-	for (int i = 0; i < MAX_FLAGS; ++i) {
-		st = FlagName[i];
-		st.MakeLower();
-		if (st2 == st) {
-			++parameter_found;
-			accepts[i] = *sN;
-			// Check if not Strict flag
-			if (i) {
-				if (cur_severity == MAX_FLAGS) {
-					CString est;
-					est.Format("Warning: more flags in config than in algorithm. Possibly duplicate flags in config. Please correct config %s", m_config);
-					WriteLog(1, est);
-				}
-				else {
-					// Check if flag already has severity
-					if (flag_to_sev[i]) {
-						CString est;
-						est.Format("Warning: detected duplicate flag %s. Please correct config %s", FlagName[i], m_config);
-						WriteLog(1, est);
-					}
-					else {
-						// Load severity based on position in file
-						sev_to_flag[cur_severity] = i;
-						flag_to_sev[i] = cur_severity;
-						// Log
-						//CString est;
-						//est.Format("Flag '%s' gets severity %d", FlagName[i], cur_severity);
-						//WriteLog(1, est);
-						++cur_severity;
-					}
-				}
-			}
-			// Do not load flag multiple times
-			break;
 		}
 	}
 }
@@ -1601,7 +1541,7 @@ void CGenCF1::CalcRpenalty() {
 	rpenalty_cur = 0;
 	for (int x = 0; x < ep2; ++x) {
 		if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; ++i) if (!accept[nflags[x][i]]) {
-			rpenalty_cur += flag_to_sev[nflags[x][i]];
+			rpenalty_cur += severity[nflags[x][i]];
 		}
 	}
 	// Add flags penalty
@@ -1812,11 +1752,11 @@ void CGenCF1::WriteFlagCor() {
 		CString st, st2, st3;
 		st3 = "Flag; Total; ";
 		for (int i = 0; i < MAX_FLAGS; ++i) {
-			int f1 = sev_to_flag[i];
+			int f1 = i;
 			st2.Format("%s; %d; ", FlagName[f1], fcor[f1][f1]);
 			st3 += FlagName[f1] + "; ";
 			for (int z = 0; z < MAX_FLAGS; ++z) {
-				int f2 = sev_to_flag[z];
+				int f2 = i;
 				st.Format("%lld; ", fcor[f1][f2]);
 				st2 += st;
 			}
@@ -1832,7 +1772,7 @@ void CGenCF1::ShowFlagStat() {
 	if (calculate_stat) {
 		CString est;
 		for (int i = 0; i < MAX_FLAGS; ++i) {
-			int f1 = sev_to_flag[i];
+			int f1 = i;
 			st.Format("\n%lld %s ", fstat[f1], FlagName[f1]);
 			st2 += st;
 		}
@@ -1976,7 +1916,7 @@ int CGenCF1::SendCantus() {
 	for (int x = 0; x < c_len; ++x) {
 		for (int i = 0; i < cc_len[x]; ++i) {
 			// Set color
-			color[pos + i][v] = FlagColor[0];
+			color[pos + i][v] = Color(0, 100, 100, 100);
 			if (hm2[x][hDom]) mark[pos + i][v] += "D";
 			if (hm2[x][hTon]) mark[pos + i][v] += "T";
 			if (hm2[x][hSub]) mark[pos + i][v] += "S";
@@ -1988,14 +1928,14 @@ int CGenCF1::SendCantus() {
 			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; ++f) {
 				if (!i) {
 					comment[pos + i][v] += FlagName[nflags[x][f]];
-					st.Format(" [%d]", flag_to_sev[nflags[x][f]]);
+					st.Format(" [%d]", severity[nflags[x][f]]);
 					if (show_severity) comment[pos + i][v] += st;
 					comment[pos + i][v] += ". ";
 				}
 				// Set note color if this is maximum flag severity
-				if (flag_to_sev[nflags[x][f]] > current_severity) {
-					current_severity = flag_to_sev[nflags[x][f]];
-					color[pos + i][v] = flag_color[nflags[x][f]];
+				if (severity[nflags[x][f]] > current_severity) {
+					current_severity = severity[nflags[x][f]];
+					color[pos + i][v] = flag_color[severity[nflags[x][f]]];
 				}
 			}
 			len[pos + i][v] = cc_len[x];
@@ -2092,15 +2032,14 @@ void CGenCF1::InitCantus()
 	// Check all flags severity loaded
 	if (cur_severity < MAX_FLAGS) {
 		for (int i = 1; i < MAX_FLAGS; ++i) {
-			if (!flag_to_sev[i]) {
+			if (!severity[i]) {
 				if (cur_severity == MAX_FLAGS) {
 					CString est;
 					est.Format("Warning: more flags in config than in algorithm. Possibly duplicate flags inc config. Please correct config %s", m_config);
 					WriteLog(1, est);
 				}
 				else {
-					sev_to_flag[cur_severity] = i;
-					flag_to_sev[i] = cur_severity;
+					severity[i] = cur_severity;
 					// Log
 					CString est;
 					est.Format("Warning: flag '%s' not found in config %s. Assigning severity %d to flag. Please add flag to file", FlagName[i], m_config, cur_severity);
@@ -2118,9 +2057,8 @@ void CGenCF1::InitCantus()
 		if (accept[i] == 2) ++flags_need2;
 	}
 	// Set priority
-	for (int i = 0; i < MAX_FLAGS; ++i) {
-		flag_to_sev[sev_to_flag[i]] = i;
-		flag_color[sev_to_flag[i]] = Color(0, 255.0 / MAX_FLAGS*i, 255 - 255.0 / MAX_FLAGS*i, 0);
+	for (int i = 0; i < MAX_SEVERITY; ++i) {
+		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
 	}
 	// Check harmonic meaning loaded
 	if (hvd[0] + hvt[0] + hvs[0] == 0) {

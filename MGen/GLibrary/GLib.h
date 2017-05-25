@@ -138,7 +138,9 @@ public:
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, float * Dest);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
+	static void Tokenize(const CString & s, vector<CString>& tokens, const CString delim);
 	static int CheckInclude(CString st, CString fname, CString & iname);
+	static CString GetLinkedPath(CString st, CString fname);
 	static void LoadNote(CString * sName, CString * sValue, char * sSearch, int * Dest);
 	static CString FormatTime(int sec);
 	static bool dirExists(CString dirName_in);

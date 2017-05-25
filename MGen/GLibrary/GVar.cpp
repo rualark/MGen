@@ -212,6 +212,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 {
 	CString st, st2, st3, iname;
 	ifstream fs;
+	m_current_config = fname;
 	// Check file exists
 	if (!fileExists(fname)) {
 		CString est;
