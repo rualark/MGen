@@ -1,8 +1,8 @@
 #pragma once
-#include "GenCF1.h"
+#include "GenCA1.h"
 
 class CGenCP1 :
-	public CGenCF1
+	public CGenCA1
 {
 public:
 	CGenCP1();

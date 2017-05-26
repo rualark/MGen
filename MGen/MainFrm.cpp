@@ -1419,7 +1419,6 @@ void CMainFrame::OnUpdateCheckNcolors(CCmdUI *pCmdUI) {
 	pCmdUI->SetCheck(show_notecolors);
 }
 
-
 void CMainFrame::OnButtonErules()
 {
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "configs\\GenCF1\\include\\rules.xlsm", NULL, NULL, SW_SHOWNORMAL);

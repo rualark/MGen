@@ -133,6 +133,20 @@ void CGenCF1::SelectRuleSet(int rs)
 		for (int i = 0; i < MAX_FLAGS; ++i) {
 			accept[i] = accepts[rule_set][i];
 		}
+		// Check that at least one rule is accepted
+		for (int i = 0; i < MAX_FLAGS; ++i) {
+			if (accept[i]) break;
+			if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
+		}
+		// Calculate second level flags count
+		flags_need2 = 0;
+		for (int i = 0; i < MAX_FLAGS; ++i) {
+			if (accept[i] == 2) ++flags_need2;
+		}
+		// Set rule colors
+		for (int i = 0; i < MAX_SEVERITY; ++i) {
+			flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
+		}
 	}
 }
 
@@ -2024,24 +2038,8 @@ int CGenCF1::SendCantus() {
 
 void CGenCF1::InitCantus()
 {
-	// Check that method selected
+	// Check that method is selected
 	if (method == mUndefined) WriteLog(1, "Error: method not specified in algorithm configuration file");
-	// Check that at least one rule accepted
-	for (int i = 0; i < MAX_FLAGS; ++i) {
-		if (accept[i]) break;
-		if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
-	}
-	// Global step
-	step = 0;
-	// Calculate second level flags count
-	flags_need2 = 0;
-	for (int i = 0; i < MAX_FLAGS; ++i) {
-		if (accept[i] == 2) ++flags_need2;
-	}
-	// Set priority
-	for (int i = 0; i < MAX_SEVERITY; ++i) {
-		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
-	}
 	// Check harmonic meaning loaded
 	if (hvd[0] + hvt[0] + hvs[0] == 0) {
 		CString est;

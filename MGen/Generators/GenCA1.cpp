@@ -277,8 +277,8 @@ void CGenCA1::Generate()
 	InitCantus();
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
-	// Transpose corrected voice up for display
-	int t_generated2 = 0; // Saved t_generated
+	// Saved t_generated
+	int t_generated2 = 0; 
 	for (int i = 0; i < cantus.size(); i++) {
 		++cantus_id;
 		// Check limit
