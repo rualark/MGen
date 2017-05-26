@@ -1,4 +1,6 @@
-include "../../GenCF1/include/default.pl"
+include "../../GenCF1/include/CF1.pl"
+
+rule_set = 1 # Specify which set of rules to use (see rules.xlsx)
 
 # Method parameters
 #method = window-scan # This method can be faster in some cases

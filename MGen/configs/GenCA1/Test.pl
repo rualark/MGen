@@ -1,5 +1,4 @@
-include "../GenCF1/include/rules.txt"
-include "include/default.pl"
+include "include/CA1.pl"
 include "../GenCF1/include/hmean-low.pl"
 
 # Analysis
