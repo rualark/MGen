@@ -94,7 +94,7 @@ void CGenCF1::LoadRules(CString fname)
 			// Find rule id
 			//rid = distance(FlagName.begin(), find(FlagName.begin(), FlagName.end(), rule));
 			if (rid >= MAX_FLAGS) {
-				est.Format("Rule id (%d) is greater than MAX_FLAGS (%d). Consider increaseing MAX_FLAGS", rid, MAX_FLAGS);
+				est.Format("Rule id (%d) is greater than MAX_FLAGS (%d). Consider increasing MAX_FLAGS", rid, MAX_FLAGS);
 				WriteLog(1, est);
 				return;
 			}
@@ -249,11 +249,11 @@ void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> value
 }
 
 // Step2 must be exclusive
-void CGenCF1::RandCantus(vector<int>& c, int step1, int step2)
+void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 {
 	for (int i = step1; i < step2; ++i) {
 		for (int x = 0; x < 1000; ++x) {
-			c[i] = randbw(min_c[0], max_c[0]);
+			c[i] = randbw(min_c[i], max_c[i]);
 			// Convert to chromatic
 			cc[i] = C_CC(c[i], tonic_cur, minor_cur);
 			// Prevent note repeats in the starting cantus
@@ -1119,17 +1119,17 @@ int CGenCF1::FailIntervals(int ep2, vector<int> &c, vector<int> &cc, vector<int>
 		if (found) {
 			// Check if tritone is highest leap if this is last window
 			if (ep2 == c_len)
-				if ((c[leap_start] == nmax) || (c[i + 1] == nmax)) FLAG2(32, i)
-					// Check if tritone is last step
-					if (i > c_len - 3) FLAG2(31, i)
-					// Check if resolution is correct
-					else if (i < ep2 - 2) {
-						if (pc[i + 1] == 3) FLAG2(31, i)
-						else if (pc[i + 2] != 0) FLAG2(31, i)
-						else if (i > 0 && pc[leap_start - 1] != 2) FLAG2(31, i)
-							// Record resolved tritone
-						else FLAG2(2, i);
-					}
+				if ((c[leap_start] == nmax) || (c[i + 1] == nmax)) FLAG2(32, i);
+				// Check if tritone is last step
+				if (i > c_len - 3) FLAG2(31, i)
+				// Check if resolution is correct
+				else if (i < ep2 - 2) {
+					if (pc[i + 1] == 3) FLAG2(31, i)
+					else if (pc[i + 2] != 0) FLAG2(31, i)
+					else if (!leap_start || pc[leap_start - 1] != 2) FLAG2(31, i)
+					// Record resolved tritone
+					else FLAG2(2, i);
+				}
 			// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
 		}
 		// Sept prohibit
@@ -1382,11 +1382,11 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
 	if (random_seed) {
-		RandCantus(c, 0, c_len);
+		RandCantus(c, cc, 0, c_len);
 	}
 	else {
 		// Set middle notes to minimum
-		FillCantus(cc, 0, c_len, min_cc[0]);
+		FillCantus(cc, 0, c_len, min_cc);
 	}
 }
 
@@ -1586,7 +1586,7 @@ void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 	} // while (true)
 }
 
-void CGenCF1::BackWindow() {
+void CGenCF1::BackWindow(vector<int> &cc) {
 	// Show best rejected variant
 	if (best_rejected) {
 		milliseconds time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
@@ -1625,7 +1625,7 @@ void CGenCF1::BackWindow() {
 	if (method != mScan) return;
 	if (task == tCor) {
 		// Clear current window
-		FillCantusMap(c, smap, sp1, sp2, min_c);
+		FillCantusMap(cc, smap, sp1, sp2, min_cc);
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
@@ -1644,7 +1644,7 @@ void CGenCF1::BackWindow() {
 		// When random seeding, even back window movement should be randomized to avoid autorestart window cycle
 		//if (random_seed) RandCantus(c, sp1, sp2);
 		//else
-		FillCantus(c, sp1, sp2, min_c[0]);
+		FillCantus(cc, sp1, sp2, min_cc);
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
@@ -1718,7 +1718,7 @@ int CGenCF1::FailMinor() {
 	return 0;
 }
 
-void CGenCF1::ShowScanStatus() {
+void CGenCF1::ShowScanStatus(vector<int> &cc) {
 	CString st;
 	if (method == mScan) {
 		if (task == tGen) {
@@ -1919,6 +1919,7 @@ void CGenCF1::SaveCantus() {
 }
 
 int CGenCF1::SendCantus() {
+	if (svoice < 0) return 0;
 	CString st, info;
 	int v = svoice;
 	Sleep(sleep_ms);
@@ -2282,7 +2283,7 @@ check:
 		}
 		if (need_exit && task != tEval) break;
 		// Show status
-		if (accepted3 % 100000 == 0) ShowScanStatus();
+		if (accepted3 % 100000 == 0) ShowScanStatus(cc);
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
@@ -2381,7 +2382,7 @@ check:
 				}
 				else break;
 			}
-			BackWindow();
+			BackWindow(cc);
 			// Clear flag to prevent coming here again
 			finished = 0;
 			// Goto next variant calculation
@@ -2389,7 +2390,7 @@ check:
 		} // if (finished)
 		ScanRight(cc);
 	}
-	if (accepted3 > 100000) ShowScanStatus();
+	if (accepted3 > 100000) ShowScanStatus(cc);
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();

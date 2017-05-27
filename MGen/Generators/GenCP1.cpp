@@ -47,7 +47,7 @@ void CGenCP1::MakeNewCP() {
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
 	if (random_seed) {
-		RandCantus(ac[1], 0, c_len);
+		RandCantus(ac[1], acc[1], 0, c_len);
 	}
 	else {
 		FillCantus(acc[1], 0, c_len, min_cc);
@@ -143,7 +143,7 @@ int CGenCP1::SendCP() {
 				color[pos + i][v] = Color(0, 100, 100, 100);
 				int current_severity = -1;
 				// Set nflag color
-				note[pos + i][v] = cc[x];
+				note[pos + i][v] = acc[av][x];
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
 				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
@@ -189,7 +189,7 @@ int CGenCP1::SendCP() {
 		len[pos][v] = 1;
 		pause[pos][v] = 1;
 		dyn[pos][v] = 0;
-		tempo[pos] = tempo[step - 1];
+		tempo[pos] = tempo[pos - 1];
 		coff[pos][v] = 0;
 	}
 	step = pos;
@@ -244,6 +244,17 @@ int CGenCP1::SendCP() {
 	return 0;
 }
 
+void CGenCP1::ReseedCP()
+{
+	CString st;
+	MultiCPInit();
+	// Allow two seed cycles for each accept
+	seed_cycle = 0;
+	++reseed_count;
+	st.Format("Reseed: %d", reseed_count);
+	SetStatusText(4, st);
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -252,7 +263,7 @@ void CGenCP1::ScanCP(int t, int v) {
 	svoice = v;
 
 	ScanCPInit();
-	if (task == tGen) MultiCantusInit(ac[1], acc[1]);
+	if (task == tGen) MultiCPInit();
 	//else SingleCantusInit();
 	if (FailWindowsLimit()) return;
 	// Analyze combination
@@ -263,13 +274,13 @@ check:
 		++accepted3;
 		if (need_exit && task != tEval) break;
 		// Show status
-		if (accepted3 % 100000 == 0) ShowScanStatus();
 		if (FailDiatonic(ac[1], acc[1], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[1], acc[1], apc[1], apcc[1], 0, ep2);
+		ClearFlags(0, ep2);
 		if (minor_cur && FailMinor()) goto skip;
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
-		//if (FailLastNotes(pc, ep2)) goto skip;
+		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(apc[1], 0, ep2)) goto skip;
 		if (FailIntervals(ep2, ac[1], acc[1], apc[1])) goto skip;
 		if (FailLeapSmooth(ac[1], ep2, aleap[1], asmooth[1])) goto skip;
@@ -319,9 +330,9 @@ check:
 		}
 		else {
 			if (task == tGen && accept_reseed) {
-				if (clib_vs.Insert(cc)) {
+				if (clib_vs.Insert(acc[1])) {
 					if (SendCantus()) break;
-					ReseedCantus();
+					ReseedCP();
 					// Start evaluating without scan
 					goto check;
 				}
@@ -349,7 +360,7 @@ check:
 					if (seed_cycle) {
 						// Infinitely cycle through ranges
 						if (random_range && accept_reseed) {
-							ReseedCantus();
+							ReseedCP();
 							// Start evaluating without scan
 							goto check;
 						}
@@ -361,7 +372,7 @@ check:
 				}
 				else break;
 			}
-			BackWindow();
+			BackWindow(acc[1]);
 			// Clear flag to prevent coming here again
 			finished = 0;
 			// Goto next variant calculation
@@ -369,7 +380,7 @@ check:
 		} // if (finished)
 		ScanRight(acc[1]);
 	}
-	if (accepted3 > 100000) ShowScanStatus();
+	if (accepted3 > 100000) ShowScanStatus(acc[1]);
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
@@ -382,18 +393,35 @@ void CGenCP1::Generate() {
 	if (cantus.size() < 1) return;
 	// Choose cantus to use
 	cantus_id = randbw(0, cantus.size() - 1);
+	c_len = cantus[cantus_id].size();
 	// Get key
 	GetCantusKey(cantus[cantus_id]);
 	if (tonic_cur == -1) return;
 	CalcCcIncrement();
+	// Show imported melody
+	cc_len = cantus_len[cantus_id];
+	cc_tempo = cantus_tempo[cantus_id];
+	real_len = accumulate(cantus_len[cantus_id].begin(), cantus_len[cantus_id].end(), 0);
+	dpenalty_cur = 0;
+	// Create pause
+	FillPause(0, real_len, 1);
+	ScanCantus(tEval, 0, &(cantus[cantus_id]));
+	// Go forward
+	Adapt(0, real_len);
+	t_generated = real_len;
+	t_sent = t_generated;
 	// Load first voice
-	acc[0] = cantus[cantus_id];
+	ac[0] = c;
+	acc[0] = cc;
+	apc[0] = pc;
+	apcc[0] = pcc;
 	// Set uniform length of each cantus note
-	cc_len.resize(c_len);
-	cc_tempo.resize(c_len);
-	real_len = c_len;
-	for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
+	//cc_len.resize(c_len);
+	//cc_tempo.resize(c_len);
+	//real_len = c_len;
+	//for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
 	// Generate second voice
+	rpenalty_cur = MAX_PENALTY;
 	av = 1;
 	ScanCP(tGen, 0);
 }

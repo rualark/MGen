@@ -14,7 +14,7 @@
 
 #define MAX_FLAGS 82
 #define MAX_RULESETS 80
-#define MAX_SEVERITY 100
+#define MAX_SEVERITY 101
 #define MAX_WIND 500
 #define MAX_NOTE 127
 
@@ -107,11 +107,11 @@ protected:
 	inline void NextWindow();
 	inline void CalcRpenalty();
 	inline void ScanLeft(vector<int> &cc, int &finished);
-	inline void BackWindow();
+	inline void BackWindow(vector<int>& cc);
 	inline int NextSWA();
 	inline void SaveBestRejected();
 	inline int FailMinor();
-	inline void ShowScanStatus();
+	inline void ShowScanStatus(vector<int>& cc);
 	inline void ReseedCantus();
 	inline void TimeBestRejected();
 	inline void SaveCantusIfRp();
@@ -131,7 +131,7 @@ protected:
 	void SWA(int i, int dp);
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
 	void FillCantus(vector<int>& c, int step1, int step2, vector<int> value);
-	void RandCantus(vector<int>& c, int step1, int step2);
+	void RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 	
 	// Rules
@@ -281,6 +281,5 @@ protected:
 	vector <int> smatrix; // Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix
 	vector<vector<int>> clib; // Library of cantus
-	VSet<int> clib_vs;
-	// Unique clib set
+	VSet<int> clib_vs; // Unique clib set
 };

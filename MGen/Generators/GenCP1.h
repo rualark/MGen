@@ -15,6 +15,7 @@ protected:
 	void InitCP();
 	void MakeNewCP();
 	void MultiCPInit();
+	void ReseedCP();
 	void ScanCPInit();
 	inline int SendCP();
 	void ScanCP(int t, int v);
