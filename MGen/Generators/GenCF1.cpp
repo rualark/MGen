@@ -10,6 +10,7 @@
 
 CGenCF1::CGenCF1()
 {
+	av = 0;
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
 	FlagName.resize(MAX_FLAGS);
@@ -307,7 +308,7 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 	}
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
-		nflagsc[i] = 0;
+		anflagsc[av][i] = 0;
 	}
 }
 
@@ -1150,10 +1151,14 @@ void CGenCF1::ScanCantusInit() {
 	// Get cantus size
 	if (task != tGen) c_len = scantus->size();
 	// Resize global vectors
+	anflags.resize(av_cnt);
+	anflagsc.resize(av_cnt);
+	for (int i = 0; i < av_cnt; ++i) {
+		anflags[i].resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
+		anflagsc[i].resize(c_len); // number of flags for each note
+	}
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
-	nflags.resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
-	nflagsc.resize(c_len); // number of flags for each note
 	fpenalty.resize(MAX_FLAGS);
 	cc_old.resize(c_len); // Cantus diatonic saved for SWA
 	wpos1.resize(c_len / s_len + 1);
@@ -1307,7 +1312,7 @@ void CGenCF1::SingleCantusInit() {
 	fill(flags.begin(), flags.end(), 0);
 	flags[0] = 1;
 	for (int i = 0; i < ep2; ++i) {
-		nflagsc[i] = 0;
+		anflagsc[av][i] = 0;
 	}
 	// Matrix scan
 	if (task != tEval) {
@@ -1547,8 +1552,8 @@ void CGenCF1::CalcRpenalty() {
 	// Calculate flags penalty
 	rpenalty_cur = 0;
 	for (int x = 0; x < ep2; ++x) {
-		if (nflagsc[x] > 0) for (int i = 0; i < nflagsc[x]; ++i) if (!accept[nflags[x][i]]) {
-			rpenalty_cur += severity[nflags[x][i]];
+		if (anflagsc[av][x] > 0) for (int i = 0; i < anflagsc[av][x]; ++i) if (!accept[anflags[av][x][i]]) {
+			rpenalty_cur += severity[anflags[av][x][i]];
 		}
 	}
 	// Add flags penalty
@@ -1597,8 +1602,8 @@ void CGenCF1::BackWindow() {
 				vector<int> cc_saved = cc;
 				cc = br_cc;
 				flags = br_f;
-				nflags = br_nf;
-				nflagsc = br_nfc;
+				anflags[av] = br_nf;
+				anflagsc[av] = br_nfc;
 				SendCantus();
 				cc = cc_saved;
 				// Log
@@ -1679,8 +1684,8 @@ void CGenCF1::SaveBestRejected() {
 		if (rpenalty_cur < rpenalty_min && rpenalty_cur) {
 			br_cc = cc;
 			br_f = flags;
-			br_nf = nflags;
-			br_nfc = nflagsc;
+			br_nf = anflags[av];
+			br_nfc = anflagsc[av];
 			rpenalty_min = rpenalty_cur;
 			// Log
 			if (debug_level > 1) {
@@ -1932,19 +1937,19 @@ int CGenCF1::SendCantus() {
 			note[pos + i][v] = cc[x];
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
-			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; ++f) {
+			if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 				if (!i) {
-					comment[pos][v] += FlagName[nflags[x][f]];
+					comment[pos][v] += FlagName[anflags[av][x][f]];
 					if (show_severity) {
-						st.Format(" [%d]", severity[nflags[x][f]]);
+						st.Format(" [%d]", severity[anflags[av][x][f]]);
 						comment[pos][v] += st;
 					}
 					comment[pos][v] += ". ";
 				}
 				// Set note color if this is maximum flag severity
-				if (severity[nflags[x][f]] > current_severity) {
-					current_severity = severity[nflags[x][f]];
-					color[pos + i][v] = flag_color[severity[nflags[x][f]]];
+				if (severity[anflags[av][x][f]] > current_severity) {
+					current_severity = severity[anflags[av][x][f]];
+					color[pos + i][v] = flag_color[severity[anflags[av][x][f]]];
 				}
 			}
 			len[pos + i][v] = cc_len[x];

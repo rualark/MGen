@@ -6,8 +6,8 @@
 #define MELODY_SEPARATION(i) ((leap[i - 1]) || i >= ep2-1 || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0))
 
 // Report violation
-#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
-#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
+#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[av][i][anflagsc[av][i]] = id; ++anflagsc[av][i]; } }
+#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[av][i][anflagsc[av][i]] = id; ++anflagsc[av][i]; } }
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
@@ -203,6 +203,8 @@ protected:
 	int svoice; // Voice to send cantus to
 
   // Local
+	int av; // Current counterpoint voice
+	int av_cnt = 1; // Number of voices in counterpoint
 	int seed_cycle, reseed_count;
 	long cantus_ignored = 0; // How many canti ignored and not sent
 	long cantus_sent = 0; // How many cantus have been sent
@@ -218,8 +220,8 @@ protected:
 	vector<int> smooth;
 	vector<float> fpenalty; // Additional penalty for flags
 	vector<int>  flags; // Flags for whole cantus
-	vector<vector<int>> nflags; // Note flags
-	vector<int> nflagsc; // Note flags count
+	vector<vector<vector<int>>> anflags; // Note flags
+	vector<vector<int>> anflagsc; // Note flags count
 	vector<int> br_cc; // Cantus chromatic (best rejected)
 	vector<int>  br_f; // Flags for whole cantus (best rejected)
 	vector<long>  ssf; // SWA stuck flags

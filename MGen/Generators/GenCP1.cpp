@@ -6,6 +6,7 @@
 #endif
 
 CGenCP1::CGenCP1() {
+	av_cnt = 2;
 	v_cnt = 2;
 	track_id[0] = 2;
 	track_id[1] = 1;
@@ -145,19 +146,19 @@ int CGenCP1::SendCP() {
 				note[pos + i][v] = cc[x];
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
-				if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; ++f) {
+				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 					if (!i) {
-						comment[pos][v] += FlagName[nflags[x][f]];
+						comment[pos][v] += FlagName[anflags[av][x][f]];
 						if (show_severity) {
-							st.Format(" [%d]", severity[nflags[x][f]]);
+							st.Format(" [%d]", severity[anflags[av][x][f]]);
 							comment[pos][v] += st;
 						}
 						comment[pos][v] += ". ";
 					}
 					// Set note color if this is maximum flag severity
-					if (severity[nflags[x][f]] > current_severity) {
-						current_severity = severity[nflags[x][f]];
-						color[pos + i][v] = flag_color[severity[nflags[x][f]]];
+					if (severity[anflags[av][x][f]] > current_severity) {
+						current_severity = severity[anflags[av][x][f]];
+						color[pos + i][v] = flag_color[severity[anflags[av][x][f]]];
 					}
 				}
 				len[pos + i][v] = cc_len[x];
@@ -393,5 +394,6 @@ void CGenCP1::Generate() {
 	real_len = c_len;
 	for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
 	// Generate second voice
+	av = 1;
 	ScanCP(tGen, 0);
 }

@@ -27,10 +27,6 @@ protected:
 	vector<vector<int>> apcc; // Pitch class (chromatic)
 	vector<vector<int>> aleap;
 	vector<vector<int>> asmooth;
-	int av_cnt = 2; // Number of voices in counterpoint
-
-	vector<vector<vector<int>>> anflags; // Note flags
-	vector<vector<int>> anflagsc; // Note flags count
 
 	// Parameters
 	int cantus_high; // Set to 1 to generate counterpoint under cantus
