@@ -13,12 +13,10 @@ public:
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void InitCP();
-
 	void MakeNewCP();
-
 	void MultiCPInit();
-
 	void ScanCPInit();
+	inline int SendCP();
 	void ScanCP(int t, int v);
 
 	// Counterpoint
@@ -31,8 +29,6 @@ protected:
 	vector<vector<int>> asmooth;
 	int av_cnt = 2; // Number of voices in counterpoint
 
-	vector<vector<vector<int>>> ahm; // Approved harmonic meanings for each step
-	vector<vector<vector<int>>> ahm2; // Approved harmonic meanings for each step
 	vector<vector<vector<int>>> anflags; // Note flags
 	vector<vector<int>> anflagsc; // Note flags count
 

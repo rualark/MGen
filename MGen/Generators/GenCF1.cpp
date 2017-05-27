@@ -312,7 +312,7 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 }
 
 // Calculate pitch class
-void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &pc, int step1, int step2) {
+void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
 		pc[i] = c[i] % 7;
 		pcc[i] = (cc[i] + 12 - tonic_cur) % 12;
@@ -602,7 +602,7 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 }
 
 // Search for outstanding repeats
-int CGenCF1::FailOutstandingRepeat(vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
+int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok;
 	if (ep2 > rlen*2) for (int i = 0; i < ep2 - rlen * 2; ++i) {
 		// Check if note changes direction or is a leap
@@ -839,7 +839,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 	return 0;
 }
 
-void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &ffinished, int pre)
+void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &ffinished, int pre)
 {
 	int leap_finish = i + 1;
 	if (pos2 < pos1) pos2 = pos1;
@@ -979,7 +979,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Check if  leap is prefilled
 				pos = i - 2 - (leap_size - 1) * fill_steps_mul;
 				if (pos < 0) pos = 0;
-				CountFill(i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 1);
+				CountFill(c, i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 1);
 				// Do we have not too many skips?
 				if (skips <= 0) {
 					// Is fill finished or unfinished leaps allowed?
@@ -992,7 +992,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Do not check fill if search window is cut by end of current not-last scan window
 				if ((pos < ep2) || (c_len == ep2)) {
 					if (pos > ep2 - 1) pos = ep2 - 1;
-					CountFill(i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 0);
+					CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 0);
 					// Local not filled?
 					if (skips > 0 || (!ffinished && !accept[33])) {
 						// Local not filled. Prefilled?
@@ -1097,7 +1097,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	return 0;
 }
 
-int CGenCF1::FailIntervals(int ep2, vector<int> &pc)
+int CGenCF1::FailIntervals(int ep2, vector<int> &c, vector<int> &cc, vector<int> &pc)
 {
 	int leap_start;
 	int found;
@@ -1221,7 +1221,7 @@ int CGenCF1::GetMaxSmap() {
 }
 
 // Calculate real possible range
-void CGenCF1::GetRealRange() {
+void CGenCF1::GetRealRange(vector<int>& c, vector<int>& cc) {
 	// Get diatonic interval
 	max_intervald = CC_C(cc[0] + max_interval, tonic_cur, minor_cur) - c[0];
 	min_intervald = CC_C(cc[0] + min_interval, tonic_cur, minor_cur) - c[0];
@@ -1276,7 +1276,7 @@ void CGenCF1::SingleCantusInit() {
 		if (i > 0 && c[i] == c[i - 1]) return;
 	}
 	if (!swa_inrange) {
-		GetRealRange();
+		GetRealRange(c, cc);
 		ApplySourceRange();
 	}
 	// Set pitch limits
@@ -1359,13 +1359,13 @@ void CGenCF1::SingleCantusInit() {
 	}
 }
 
-void CGenCF1::MakeNewCantus() {
+void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	// Set first and last notes
 	c[0] = CC_C(first_note, tonic_cur, minor_cur);
 	c[c_len - 1] = CC_C(last_note, tonic_cur, minor_cur);
 	cc[0] = first_note;
 	cc[c_len - 1] = last_note;
-	GetRealRange();
+	GetRealRange(c, cc);
 	// Set pitch limits
 	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = minc;
@@ -1385,8 +1385,8 @@ void CGenCF1::MakeNewCantus() {
 	}
 }
 
-void CGenCF1::MultiCantusInit() {
-	MakeNewCantus();
+void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
+	MakeNewCantus(c, cc);
 	sp1 = 0; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len) sp2 = c_len;
@@ -1557,7 +1557,7 @@ void CGenCF1::CalcRpenalty() {
 	}
 }
 
-void CGenCF1::ScanLeft(int &finished) {
+void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 	while (true) {
 		if (cc[p] < max_cc[p]) break;
 		// If current element is max, make it minimum
@@ -1744,7 +1744,7 @@ void CGenCF1::ShowScanStatus() {
 void CGenCF1::ReseedCantus()
 {
 	CString st;
-	MultiCantusInit();
+	MultiCantusInit(c, cc);
 	// Allow two seed cycles for each accept
 	seed_cycle = 0;
 	++reseed_count;
@@ -1921,12 +1921,12 @@ int CGenCF1::SendCantus() {
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = 0; x < c_len; ++x) {
+		if (hm2[x][hDom]) mark[pos][v] += "D";
+		if (hm2[x][hTon]) mark[pos][v] += "T";
+		if (hm2[x][hSub]) mark[pos][v] += "S";
 		for (int i = 0; i < cc_len[x]; ++i) {
 			// Set color
 			color[pos + i][v] = Color(0, 100, 100, 100);
-			if (hm2[x][hDom]) mark[pos + i][v] += "D";
-			if (hm2[x][hTon]) mark[pos + i][v] += "T";
-			if (hm2[x][hSub]) mark[pos + i][v] += "S";
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = cc[x];
@@ -1934,12 +1934,12 @@ int CGenCF1::SendCantus() {
 			minor[pos + i][v] = minor_cur;
 			if (nflagsc[x] > 0) for (int f = 0; f < nflagsc[x]; ++f) {
 				if (!i) {
-					comment[pos + i][v] += FlagName[nflags[x][f]];
+					comment[pos][v] += FlagName[nflags[x][f]];
 					if (show_severity) {
 						st.Format(" [%d]", severity[nflags[x][f]]);
-						comment[pos + i][v] += st;
+						comment[pos][v] += st;
 					}
-					comment[pos + i][v] += ". ";
+					comment[pos][v] += ". ";
 				}
 				// Set note color if this is maximum flag severity
 				if (severity[nflags[x][f]] > current_severity) {
@@ -2076,7 +2076,7 @@ void CGenCF1::RandomSWA()
 	for (int i = 0; i < INT_MAX; ++i) {
 		if (need_exit) break;
 		// Create random cantus
-		MakeNewCantus();
+		MakeNewCantus(c, cc);
 		// Convert cantus to chromatic
 		for (int x = 0; x < c_len; ++x) {
 			cantus[0][x] = C_CC(c[x], tonic_cur, minor_cur);
@@ -2254,7 +2254,7 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	else scantus = 0;
 
 	ScanCantusInit();
-	if (task == tGen) MultiCantusInit();
+	if (task == tGen) MultiCantusInit(c, cc);
 	else SingleCantusInit();
 	if (FailWindowsLimit()) return;
 	// Analyze combination
@@ -2282,16 +2282,16 @@ check:
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
-		GetPitchClass(c, pc, 0, ep2);
+		GetPitchClass(c, cc, pc, pcc, 0, ep2);
 		if (minor_cur && FailMinor()) goto skip;
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
-		if (FailIntervals(ep2, pc)) goto skip;
+		if (FailIntervals(ep2, c, cc, pc)) goto skip;
 		if (FailLeapSmooth(c, ep2, leap, smooth)) goto skip;
-		if (FailOutstandingRepeat(cc, leap, ep2, repeat_steps2, 2, 76)) goto skip;
-		if (FailOutstandingRepeat(cc, leap, ep2, repeat_steps3, 3, 36)) goto skip;
+		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps2, 2, 76)) goto skip;
+		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
 		GlobalFill(c, ep2, nstat2);
@@ -2299,7 +2299,7 @@ check:
 		if (FailMultiCulm(cc, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(c, ep2, leap, smooth, nstat2, nstat3)) goto skip;
-		//if (FailMelodyHarm(pc, 0, ep2)) goto skip;
+		if (FailMelodyHarm(pc, 0, ep2)) goto skip;
 		//if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
 		//if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
@@ -2351,7 +2351,7 @@ check:
 			if (task == tEval) return;
 		}
 	skip:
-		ScanLeft(finished);
+		ScanLeft(cc, finished);
 		if (finished) {
 			// Sliding Windows Approximation
 			if (method == mSWA) {
@@ -2382,7 +2382,7 @@ check:
 			// Goto next variant calculation
 			goto skip;
 		} // if (finished)
-		ScanRight();
+		ScanRight(cc);
 	}
 	if (accepted3 > 100000) ShowScanStatus();
 	WriteFlagCor();
@@ -2390,7 +2390,7 @@ check:
 	ShowFlagBlock();
 }
 
-void CGenCF1::ScanRight() {
+void CGenCF1::ScanRight(vector<int> &cc) {
 	// Increase rightmost element, which was not reset to minimum
 	cc[p] += cc_incr[cc[p]];
 	// Go to rightmost element
