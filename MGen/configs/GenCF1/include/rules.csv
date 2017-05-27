@@ -76,8 +76,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;23;0;Cantus;Border;Leap (last);0
 1;74;60;Cantus;Minor;Unaltered VII (before Im);0
 1;75;60;Cantus;Minor;Unaltered near altered (m);0
-1;80;60;Cantus;Minor;Unaltered VII (before Im);0
-1;81;60;Cantus;Minor;Unaltered near altered (m);0
+1;80;60;Cantus;Counterpoint;Ideal consonance (downbeat);0
+1;81;70;Cantus;Counterpoint;Ideal consonance (culmination);0
+1;82;100;Cantus;Counterpoint;Ideal consonance (db. culm.);0
+1;83;60;Cantus;Counterpoint;Dissonance (downbeat);0
 2;0;0;;;Strict;1
 2;61;0;Melody;Leap compensation;Uncompensated: precompensated (3rd);0
 2;62;0;Melody;Leap compensation;Uncompensated: precompensated (4th);0
@@ -155,5 +157,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;23;0;Cantus;Border;Leap (last);0
 2;74;60;Cantus;Minor;Unaltered VII (before Im);0
 2;75;60;Cantus;Minor;Unaltered near altered (m);0
-2;80;60;Cantus;Minor;Unaltered VII (before Im);0
-2;81;60;Cantus;Minor;Unaltered near altered (m);0
+2;80;60;Cantus;Counterpoint;Ideal consonance (downbeat);0
+2;81;70;Cantus;Counterpoint;Ideal consonance (culmination);0
+2;82;100;Cantus;Counterpoint;Ideal consonance (db. culm.);0
+2;83;60;Cantus;Counterpoint;Dissonance (downbeat);0

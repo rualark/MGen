@@ -16,6 +16,10 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # Analysis
 random_key = 0 # Select any of possible keys regardless of last note
 
+# Main parameters
+interval = 2-9 # Minimum-maximum diatonic interval in counterpoint (7 = octave)
+cantus_high = 0 # Set to 1 to generate counterpoint under cantus
+
 # Technical parameters
 midifile_in_mul = 1 # Multiply note length with this value when loading
 t_cnt = 1000 # Maximum number of steps generated

@@ -12,21 +12,21 @@ rule_set = 1 # Specify which set of rules to use (see rules.xlsx)
 method = window-scan # This method is fastest random generator with s_len=1, accept_reseed=1, random_seed=1
 #method = swa # This method is mainly used for testing (same algorithm used as in CA1)
 
-accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
-random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
+random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 late_require = 1 # Allow not-last scan window to have no needed flags or strict when strict=0 (blocked flags are always disallowed). This calculation usually requires more time
-s_len = 7 # Maximum number of measures to full scan. Higher values are slow to compute
+s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 t_cnt = 1000 # Maximum number of steps generated
 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Main parameters
-c_len = 9 # Number of measures in each cantus. Usually 9 to 11 for cantus
+c_len = 20 # Number of measures in each cantus. Usually 9 to 11 for cantus
 interval = 7-12 # Minimum-maximum chromatic interval in cantus (12 = octave)
-key = A # Music key to use for generation
-first_note = A5 # Starting note of each cantus
-last_note = A5 # Ending note of each cantus
+key = C # Music key to use for generation
+first_note = C5 # Starting note of each cantus
+last_note = C5 # Ending note of each cantus
 random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
 
@@ -59,4 +59,4 @@ calculate_correlation = 0 # Enables correlation calculation algorithm. Slows dow
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 1 # Enables SWA stuck flags statistics calculation algorithm.
-best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
+best_rejected = 1 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
