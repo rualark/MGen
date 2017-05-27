@@ -2,6 +2,13 @@
 #include "../GLibrary/GMidi.h"
 #include "../GLibrary/VSet.h"
 
+// Checks if we have leap or melody direction change here: needs to be not first and not last note
+#define MELODY_SEPARATION(i) ((leap[i - 1]) || i >= ep2-1 || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0))
+
+// Report violation
+#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
+#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
+
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
 
@@ -73,16 +80,17 @@ protected:
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline void AlterMinor(int ep2, vector<int>& cc);
-	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);
-	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);	inline int FailLeapSmooth(int ep2, vector<int>& leap, vector<int>& smooth);
+	inline int FailOutstandingRepeat(vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);
+	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);	
+	inline int FailLeapSmooth(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int ep2);
 	inline int FailMultiCulm(vector<int>& cc, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
 	inline void CountFill(int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & ffinished, int pre);
-	inline int FailLeap(int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
+	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailIntervals(int ep2, vector<int>& pc);
-	inline void GlobalFill(int ep2, vector<int>& nstat2);
+	inline void GlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
 	void ScanCantusInit();
 	int GetMinSmap();
 	int GetMaxSmap();
@@ -122,6 +130,7 @@ protected:
 	void RandomSWA();
 	void SWA(int i, int dp);
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
+	void FillCantus(vector<int>& c, int step1, int step2, vector<int> value);
 	void RandCantus(vector<int>& c, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 	
@@ -203,6 +212,10 @@ protected:
 	int flags_need2 = 0; // Number of second level flags set
 	vector<int> c; // Cantus diatonic
 	vector<int> cc; // Cantus chromatic
+	vector<int> pc; // pitch class (diatonic)
+	vector<int> pcc; // pitch class (chromatic)
+	vector<int> leap;
+	vector<int> smooth;
 	vector<float> fpenalty; // Additional penalty for flags
 	vector<int>  flags; // Flags for whole cantus
 	vector<vector<int>> nflags; // Note flags
@@ -249,11 +262,7 @@ protected:
 	int nmin, nmax, nmind, nmaxd;
 	int src_nminc = 0, src_nmaxc = 0; // Source range (chromatic)
 	int cc_incr[MAX_NOTE]; // cc increments for each step
-	vector<int> pc; // pitch class (diatonic)
-	vector<int> pcc; // pitch class (chromatic)
 	vector<int> test_cc;
-	vector<int> leap;
-	vector<int> smooth;
 	vector<int> nstat;
 	vector<int> nstat2;
 	vector<int> nstat3;
@@ -270,5 +279,6 @@ protected:
 	vector <int> smatrix; // Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix
 	vector<vector<int>> clib; // Library of cantus
-	VSet<int> clib_vs; // Unique clib set
+	VSet<int> clib_vs;
+	// Unique clib set
 };

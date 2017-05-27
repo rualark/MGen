@@ -5,13 +5,6 @@
 #define new DEBUG_NEW 
 #endif
 
-// Checks if we have leap or melody direction change here: needs to be not first and not last note
-#define MELODY_SEPARATION(i) ((leap[i - 1]) || i >= ep2-1 || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0))
-
-// Report violation
-#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
-#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; nflags[i][nflagsc[i]] = id; ++nflagsc[i]; } }
-
 // Unskippable internal rules:
 // Note repeats note of previous measure
 
@@ -247,6 +240,14 @@ void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, int value)
 }
 
 // Step2 must be exclusive
+void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> value)
+{
+	for (int i = step1; i < step2; ++i) {
+		c[i] = value[i];
+	}
+}
+
+// Step2 must be exclusive
 void CGenCF1::RandCantus(vector<int>& c, int step1, int step2)
 {
 	for (int i = step1; i < step2; ++i) {
@@ -255,7 +256,7 @@ void CGenCF1::RandCantus(vector<int>& c, int step1, int step2)
 			// Convert to chromatic
 			cc[i] = C_CC(c[i], tonic_cur, minor_cur);
 			// Prevent note repeats in the starting cantus
-			if (c[i] != c[i - 1] && (i < c_len - 2 || c[i] != c[i + 1])) break;
+			if ((i == 0 || c[i] != c[i - 1]) && (i > c_len - 2 || c[i] != c[i + 1])) break;
 		}
 	}
 }
@@ -268,7 +269,7 @@ void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int st
 	}
 }
 
-// Detect repeating notes
+// Detect repeating notes. Step2 excluding
 int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
 		if (c[i] == c[i + 1]) return 1;
@@ -601,7 +602,7 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 }
 
 // Search for outstanding repeats
-int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
+int CGenCF1::FailOutstandingRepeat(vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok;
 	if (ep2 > rlen*2) for (int i = 0; i < ep2 - rlen * 2; ++i) {
 		// Check if note changes direction or is a leap
@@ -611,7 +612,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &leap, int ep2, i
 			if (finish > ep2 - rlen) finish = ep2 - rlen;
 			for (int x = i + 2; x < finish; x += 2) {
 				// Check if same note with direction change or leap
-				if ((c[x] == c[i]) && (MELODY_SEPARATION(x) || MELODY_SEPARATION(x+rlen))) {
+				if ((cc[x] == cc[i]) && (MELODY_SEPARATION(x) || MELODY_SEPARATION(x+rlen))) {
 					// Check that more notes repeat
 					ok = 0;
 					for (int z = 1; z < rlen; ++z) {
@@ -657,7 +658,7 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int sca
 }
 
 // Check if too many leaps
-int CGenCF1::FailLeapSmooth(int ep2, vector<int> &leap, vector<int> &smooth) {
+int CGenCF1::FailLeapSmooth(vector<int> &c, int ep2, vector<int> &leap, vector<int> &smooth) {
 	// Clear variables
 	int leap_sum = 0;
 	int leap_sum2 = 0;
@@ -936,7 +937,7 @@ void CGenCF1::CountFill(int i, int pos1, int pos2, int leap_size, int leap_start
 	if ((!nstat2[c3] && !nstat2[c[leap_finish]]) || (!nstat2[c4] && !nstat2[c[leap_start]])) skips2 += 10;
 }
 
-int CGenCF1::FailLeap(int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
+int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
 {
 	int preleap, leap_size, leap_start, leap_next, leap_prev, unresolved, prefilled, skips, skips2, pos, ffinished;
 	for (int i = 0; i < ep2 - 1; ++i) {
@@ -1138,7 +1139,7 @@ int CGenCF1::FailIntervals(int ep2, vector<int> &pc)
 }
 
 // Calculate global fill
-void CGenCF1::GlobalFill(int ep2, vector<int> &nstat2)
+void CGenCF1::GlobalFill(vector<int> &c, int ep2, vector<int> &nstat2)
 {
 	// Clear nstat
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
@@ -1224,14 +1225,9 @@ void CGenCF1::GetRealRange() {
 	// Get diatonic interval
 	max_intervald = CC_C(cc[0] + max_interval, tonic_cur, minor_cur) - c[0];
 	min_intervald = CC_C(cc[0] + min_interval, tonic_cur, minor_cur) - c[0];
-	// If first and last notes are the same, you cannot go to the lowest note to avoid multiple culminations flag
-	if (c[0] == c[c_len - 1]) {
+	// If max_interval is below octave, you cannot go to the lowest note to avoid multiple culminations flag
+	if (max_interval < 12) {
 		minc = c[0] - max_intervald + 1;
-		maxc = c[0] + max_intervald;
-	}
-	// If notes differ, interval decreases
-	else if (c[0] < c[c_len - 1]) {
-		minc = c[c_len - 1] - max_intervald;
 		maxc = c[0] + max_intervald;
 	}
 	else {
@@ -1256,7 +1252,7 @@ void CGenCF1::GetSourceRange() {
 	src_nmaxc = CC_C(nmax, tonic_cur, minor_cur) + correct_inrange;
 }
 
-// Calculate source melody range
+// Apply source melody range
 void CGenCF1::ApplySourceRange() {
 	if (!src_nmaxc) return;
 	// Decrease current range if it is bigger
@@ -1302,9 +1298,9 @@ void CGenCF1::SingleCantusInit() {
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
-	sp1 = 1;
-	sp2 = c_len - 1;
-	ep1 = sp1;
+	sp1 = 0;
+	sp2 = c_len;
+	ep1 = max(0, sp1 - 1);
 	ep2 = c_len;
 	// Clear flags
 	++accepted3;
@@ -1352,7 +1348,7 @@ void CGenCF1::SingleCantusInit() {
 			FillCantusMap(cc, smap, sp1, sp2, min_cc);
 		}
 		// Minimum element
-		ep1 = GetMinSmap();
+		ep1 = max(0, GetMinSmap() - 1);
 		// Minimal position in array to cycle
 		pp = sp2 - 1;
 		p = smap[pp];
@@ -1381,27 +1377,26 @@ void CGenCF1::MakeNewCantus() {
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
 	if (random_seed) {
-		RandCantus(c, 1, c_len - 1);
+		RandCantus(c, 0, c_len);
 	}
 	else {
 		// Set middle notes to minimum
-		FillCantus(cc, 1, c_len - 1, min_cc[0]);
+		FillCantus(cc, 0, c_len, min_cc[0]);
 	}
 }
 
 void CGenCF1::MultiCantusInit() {
 	MakeNewCantus();
-	sp1 = 1; // Start of search window
+	sp1 = 0; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
-	if (sp2 > c_len - 1) sp2 = c_len - 1;
+	if (sp2 > c_len) sp2 = c_len;
 	// Record window
 	wid = 0;
 	wpos1[wid] = sp1;
 	wpos2[wid] = sp2;
 	// Add last note if this is last window
-	ep1 = sp1;
+	ep1 = max(0, sp1 - 1);
 	ep2 = sp2; // End of evaluation window
-	if (ep2 == c_len - 1) ep2 = c_len;
 	p = sp2 - 1; // Minimal position in array to cycle
 }
 
@@ -1490,7 +1485,7 @@ void CGenCF1::NextWindow() {
 		// Add last note if this is last window
 		// End of evaluation window
 		ep2 = GetMaxSmap() + 1;
-		ep1 = GetMinSmap();
+		ep1 = max(0, GetMinSmap() - 1);
 		if (sp2 == smatrixc) ep2 = c_len;
 		// Minimal position in array to cycle
 		pp = sp2 - 1;
@@ -1499,19 +1494,17 @@ void CGenCF1::NextWindow() {
 	else {
 		sp1 = sp2;
 		sp2 = sp1 + s_len; // End of search window
-		if (sp2 > c_len - 1) sp2 = c_len - 1;
+		if (sp2 > c_len) sp2 = c_len;
 		// Reserve last window with maximum length
-		if ((c_len - sp1 - 1 < s_len * 2) && (c_len - sp1 - 1 > s_len)) sp2 = (c_len + sp1) / 2;
+		if ((c_len - sp1 < s_len * 2) && (c_len - sp1 > s_len)) sp2 = (c_len + sp1) / 2;
 		// Record window
 		++wid;
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
 		++wscans[wid];
 		// End of evaluation window
-		ep1 = sp1;
+		ep1 = max(0, sp1 - 1);
 		ep2 = sp2;
-		// Add last note if this is last window
-		if (ep2 == c_len - 1) ep2 = c_len;
 		// Go to rightmost element
 		p = sp2 - 1;
 	}
@@ -1634,7 +1627,7 @@ void CGenCF1::BackWindow() {
 		sp2 = wpos2[wid];
 		// End of evaluation window
 		ep2 = GetMaxSmap() + 1;
-		ep1 = GetMinSmap();
+		ep1 = max(0, GetMinSmap() - 1);
 		if (sp2 == smatrixc) ep2 = c_len;
 		// Minimal position in array to cycle
 		pp = sp2 - 1;
@@ -1652,7 +1645,7 @@ void CGenCF1::BackWindow() {
 		sp1 = wpos1[wid];
 		sp2 = wpos2[wid];
 		// End of evaluation window
-		ep1 = sp1;
+		ep1 = max(0, sp1 - 1);
 		ep2 = sp2;
 		// Add last note if this is last window
 		if (ep2 == c_len - 1) ep2 = c_len;
@@ -1667,7 +1660,7 @@ int CGenCF1::NextSWA() {
 	// Slide window further
 	++sp1;
 	++sp2;
-	ep1 = GetMinSmap();
+	ep1 = max(0, GetMinSmap() - 1);
 	// Minimal position in array to cycle
 	pp = sp2 - 1;
 	p = smap[pp];
@@ -2268,7 +2261,7 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 check:
 	while (true) {
 		//LogCantus(cc);
-		if (FailNoteRepeat(cc, ep1 - 1, ep2 - 1)) goto skip;
+		if (FailNoteRepeat(cc, ep1, ep2 - 1)) goto skip;
 		GetMelodyInterval(cc, 0, ep2);
 		++accepted3;
 		// Limit melody interval
@@ -2296,17 +2289,17 @@ check:
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, pc)) goto skip;
-		if (FailLeapSmooth(ep2, leap, smooth)) goto skip;
-		if (FailOutstandingRepeat(c, leap, ep2, repeat_steps2, 2, 76)) goto skip;
-		if (FailOutstandingRepeat(c, leap, ep2, repeat_steps3, 3, 36)) goto skip;
+		if (FailLeapSmooth(c, ep2, leap, smooth)) goto skip;
+		if (FailOutstandingRepeat(cc, leap, ep2, repeat_steps2, 2, 76)) goto skip;
+		if (FailOutstandingRepeat(cc, leap, ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
-		GlobalFill(ep2, nstat2);
+		GlobalFill(c, ep2, nstat2);
 		if (FailStagnation(cc, nstat, ep2)) goto skip;
 		if (FailMultiCulm(cc, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
-		if (FailLeap(ep2, leap, smooth, nstat2, nstat3)) goto skip;
-		if (FailMelodyHarm(pc, 0, ep2)) goto skip;
+		if (FailLeap(c, ep2, leap, smooth, nstat2, nstat3)) goto skip;
+		//if (FailMelodyHarm(pc, 0, ep2)) goto skip;
 		//if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
 		//if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
