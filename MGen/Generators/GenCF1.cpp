@@ -2365,7 +2365,7 @@ check:
 				if (NextSWA()) break;
 			}
 			// Finish if this is last variant in first window and not SWA
-			else if ((p == 1) || (wid == 0)) {
+			else if ((p == 0) || (wid == 0)) {
 				// If we started from random seed, allow one more full cycle
 				if (random_seed) {
 					if (seed_cycle) {

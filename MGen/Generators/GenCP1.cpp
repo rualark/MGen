@@ -57,7 +57,7 @@ void CGenCP1::MakeNewCP() {
 
 void CGenCP1::MultiCPInit() {
 	MakeNewCP();
-	sp1 = 1; // Start of search window
+	sp1 = 0; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len - 1) sp2 = c_len - 1;
 	// Record window
@@ -317,10 +317,10 @@ int CGenCP1::FailVIntervals() {
 			}
 		}
 		// Long parallel ico
-		if (tivl[i] == iIco && civl[i] == civl[i - 1]) {
+		if (tivl[i] == iIco && ivl[i] == ivl[i - 1]) {
 			++pco_count;
 			if (pco_count > 2) {
-				FLAG2(86, i)
+				FLAG2(89, i)
 			}
 		}
 		else pco_count = 0;
@@ -428,7 +428,7 @@ check:
 				if (NextSWA()) break;
 			}
 			// Finish if this is last variant in first window and not SWA
-			else if ((p == 1) || (wid == 0)) {
+			else if ((p == 0) || (wid == 0)) {
 				// If we started from random seed, allow one more full cycle
 				if (random_seed) {
 					if (seed_cycle) {

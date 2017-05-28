@@ -76,7 +76,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;23;0;Cantus;Border;Leap (last);-1
 1;74;60;Cantus;Minor;Unaltered VII (before Im);0
 1;75;60;Cantus;Minor;Unaltered near altered (m);0
-1;80;0;Cantus;Counterpoint;Perfect consonance (downbeat);1
+1;80;0;Cantus;Counterpoint;Perfect consonance (downbeat);0
 1;81;60;Cantus;Counterpoint;Perfect consonance (culmination);0
 1;82;60;Cantus;Counterpoint;Perfect consonance (db. culm.);0
 1;84;60;Cantus;Counterpoint;Perfect consonance (parallel);0
@@ -85,6 +85,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;87;60;Cantus;Counterpoint;Perfect consonance (direct);0
 1;83;60;Cantus;Counterpoint;Dissonance (downbeat);0
 1;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
+1;89;60;Cantus;Counterpoint;Imperfect consonance (long parallel);0
 2;0;0;;;Strict;1
 2;61;0;Melody;Leap compensation;Uncompensated: precompensated (3rd);-1
 2;62;0;Melody;Leap compensation;Uncompensated: precompensated (4th);0
@@ -162,7 +163,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;23;0;Cantus;Border;Leap (last);-1
 2;74;60;Cantus;Minor;Unaltered VII (before Im);0
 2;75;60;Cantus;Minor;Unaltered near altered (m);0
-2;80;0;Cantus;Counterpoint;Perfect consonance (downbeat);1
+2;80;0;Cantus;Counterpoint;Perfect consonance (downbeat);0
 2;81;60;Cantus;Counterpoint;Perfect consonance (culmination);0
 2;82;60;Cantus;Counterpoint;Perfect consonance (db. culm.);0
 2;84;60;Cantus;Counterpoint;Perfect consonance (parallel);0
@@ -171,3 +172,4 @@ Set;Severity;Class;Group;Rule;Flag
 2;87;60;Cantus;Counterpoint;Perfect consonance (direct);0
 2;83;60;Cantus;Counterpoint;Dissonance (downbeat);0
 2;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
+2;89;60;Cantus;Counterpoint;Imperfect consonance (long parallel);0
