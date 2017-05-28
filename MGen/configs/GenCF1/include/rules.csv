@@ -84,7 +84,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;86;60;Cantus;Counterpoint;Perfect consonance (different);1
 1;87;60;Cantus;Counterpoint;Perfect consonance (direct);1
 1;83;60;Cantus;Counterpoint;Dissonance (downbeat);1
-1;88;60;Cantus;Counterpoint;Dissonance (upbeat);1
+1;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
 2;0;0;;;Strict;1
 2;61;0;Melody;Leap compensation;Uncompensated: precompensated (3rd);-1
 2;62;0;Melody;Leap compensation;Uncompensated: precompensated (4th);0
@@ -170,4 +170,4 @@ Set;Severity;Class;Group;Rule;Flag
 2;86;60;Cantus;Counterpoint;Perfect consonance (different);1
 2;87;60;Cantus;Counterpoint;Perfect consonance (direct);1
 2;83;60;Cantus;Counterpoint;Dissonance (downbeat);1
-2;88;60;Cantus;Counterpoint;Dissonance (upbeat);1
+2;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
