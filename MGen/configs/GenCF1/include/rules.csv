@@ -67,7 +67,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;52;70;Cantus;Border;Start steps tonic (unprepared);-1
 1;40;70;Cantus;Border;Start steps tonic (no C);-1
 1;41;70;Cantus;Border;Start steps tonic (no E);-1
-1;50;30;Cantus;Border;Last note (not C);1
+1;50;30;Cantus;Border;Last note (not C);0
 1;14;0;Cantus;Border;3rd to last note (CEG);-1
 1;34;0;Cantus;Border;3rd to last note (leading);-1
 1;51;30;Cantus;Border;2nd to last note (not BD);-1
@@ -85,7 +85,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;83;60;Cantus;Counterpoint;Dissonance (downbeat);0
 1;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
 1;89;60;Cantus;Counterpoint;Imperfect consonance (long parallel);0
-1;49;60;Cantus;Counterpoint;First note (not C);1
+1;49;60;Cantus;Counterpoint;First note (not C);0
 1;90;50;Cantus;Counterpoint;First note (not GC);1
 1;91;60;Cantus;Counterpoint;Unison (inside);0
 1;92;60;Cantus;Counterpoint;Unison (direct exit);0
@@ -157,7 +157,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;52;70;Cantus;Border;Start steps tonic (unprepared);-1
 2;40;70;Cantus;Border;Start steps tonic (no C);-1
 2;41;70;Cantus;Border;Start steps tonic (no E);-1
-2;50;30;Cantus;Border;Last note (not C);1
+2;50;30;Cantus;Border;Last note (not C);0
 2;14;0;Cantus;Border;3rd to last note (CEG);-1
 2;34;0;Cantus;Border;3rd to last note (leading);-1
 2;51;30;Cantus;Border;2nd to last note (not BD);-1
@@ -175,7 +175,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;83;60;Cantus;Counterpoint;Dissonance (downbeat);0
 2;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
 2;89;60;Cantus;Counterpoint;Imperfect consonance (long parallel);0
-2;49;60;Cantus;Counterpoint;First note (not C);1
+2;49;60;Cantus;Counterpoint;First note (not C);0
 2;90;50;Cantus;Counterpoint;First note (not GC);1
 2;91;60;Cantus;Counterpoint;Unison (inside);0
 2;92;60;Cantus;Counterpoint;Unison (direct exit);0
