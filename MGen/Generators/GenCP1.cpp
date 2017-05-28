@@ -98,6 +98,7 @@ void CGenCP1::ScanCPInit() {
 	ivlc.resize(c_len);
 	civl.resize(c_len);
 	civlc.resize(c_len);
+	tivl.resize(c_len);
 	min_c.resize(c_len);
 	max_c.resize(c_len);
 	min_cc.resize(c_len);
@@ -260,15 +261,63 @@ void CGenCP1::ReseedCP()
 }
 
 int CGenCP1::FailVIntervals() {
+	int pco_count = 0;
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = abs(ac[1][i] - ac[0][i]);
 		ivlc[i] = ivl[i] % 7;
 		civl[i] = abs(acc[1][i] - acc[0][i]);
 		civlc[i] = civl[i] % 12;
+		//if (civlc[i] == 1 || civlc[i] == 2 || civlc[i] == 5 || civlc[i] == 6 || civlc[i] == 10 || civlc[i] == 11) tivl[i] = iDis;
+		if (civlc[i] == 3 || civlc[i] == 4 || civlc[i] == 8 || civlc[i] == 9) tivl[i] = iIco;
+		else if (civlc[i] == 7 || civlc[i] == 0) tivl[i] = iPco;
+		else tivl[i] = iDis;
 	}
-	for (int i = 0; i < ep2 - 1; ++i) {
-		if (civlc[i] == civlc[i + 1]) FLAG2(84, i);
+	// Check first step
+	if (tivl[0] == iDis) FLAG2(83, 0);
+	for (int i = 1; i < ep2; ++i) {
+		// Disonnance
+		if (tivl[i] == iDis) {
+			// Upbeat
+			if (i % 2) FLAG2(88, i)
+			// Downbeat
+			else FLAG2(83, i);
+		}
+		// Perfect consonance
+		else if (tivl[i] == iPco) {
+			// Prohibit parallel 
+			if (civl[i] == civl[i - 1]) FLAG2(84, i)
+			// Prohibit combinatory
+			else if (civlc[i] == civlc[i - 1]) FLAG2(85, i)
+			// Prohibit different
+			else if (tivl[i-1] == iPco) FLAG2(86, i)
+			// All other cases if previous interval is not pco
+			else {
+				// Direct movement to pco
+				if ((acc[0][i] - acc[0][i - 1])*(acc[1][i] - acc[1][i - 1]) > 0) FLAG2(87, i);
+				// Prohibit downbeats and culminations only if not last step
+				if (i < ep2 - 1) {
+					if (i % 2) {
+						// Prohibit culmination
+						if (acc[1][i] == nmax || acc[0][i] == nmax) FLAG2(81, i);
+					}
+					else {
+						// Prohibit downbeat culmination
+						if (acc[1][i] == nmax || acc[0][i] == nmax) FLAG2(82, i)
+						// Prohibit downbeat
+						else FLAG2(80, i);
+					}
+				}
+			}
+		}
+		// Long parallel ico
+		if (tivl[i] == iIco && civl[i] == civl[i - 1]) {
+			++pco_count;
+			if (pco_count > 2) {
+				FLAG2(86, i)
+			}
+		}
+		else pco_count = 0;
 	}
 	return 0;
 }
@@ -311,6 +360,7 @@ check:
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		GlobalFill(ac[1], ep2, nstat2);
+		if (FailVIntervals()) goto skip;
 		if (FailStagnation(acc[1], nstat, ep2)) goto skip;
 		if (FailMultiCulm(acc[1], ep2)) goto skip;
 		if (FailFirstNotes(apc[1], ep2)) goto skip;

@@ -101,18 +101,16 @@ void CGenCF1::LoadRules(CString fname)
 					return;
 				}
 			}
-			else {
-				//est.Format("Found rule %s - %d", rule, rid);
-				//WriteLog(1, est);
-				FlagName[rid] = rule;
-				if (accepts[set].size() < MAX_FLAGS) accepts[set].resize(MAX_FLAGS);
-				accepts[set][rid] = flag;
-				severity[rid] = sev;
-			}
+			//est.Format("Found rule %s - %d", rule, rid);
+			//WriteLog(1, est);
+			FlagName[rid] = rule;
+			if (accepts[set].size() < MAX_FLAGS) accepts[set].resize(MAX_FLAGS);
+			accepts[set][rid] = flag;
+			severity[rid] = sev;
 		}
 	}
 	fs.close();
-	est.Format("LoadConfigFile loaded %d lines from %s", i, fname);
+	est.Format("LoadRules loaded %d lines from %s", i, fname);
 	WriteLog(0, est);
 }
 

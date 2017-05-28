@@ -11,7 +11,7 @@
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
-#define MAX_FLAGS 300
+#define MAX_FLAGS 200
 
 #define MAX_RULESETS 80
 #define MAX_SEVERITY 101
@@ -42,6 +42,11 @@ const CString TaskNames[] = {
 #define hTon 0
 #define hSub 1
 #define hDom 2
+
+// Interval types
+#define iDis 0 // Dissonance
+#define iPco 1 // Perfect consonance
+#define iIco 2 // Imperfect consonance
 
 // Convert chromatic to diatonic
 #define CC_C(note, tonic, minor) (minor?m_CC_C(note, tonic):maj_CC_C(note, tonic))

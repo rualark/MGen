@@ -34,6 +34,7 @@ protected:
 	vector<int> civl; // Chromatic interval between voices
 	vector<int> ivlc; // Diatonic interval between voices (class)
 	vector<int> civlc; // Chromatic interval between voices (class)
+	vector<int> tivl; // Type of interval between voices
 
 	// Parameters
 	int cantus_high; // Set to 1 to generate counterpoint under cantus
