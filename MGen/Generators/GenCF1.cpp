@@ -1932,6 +1932,7 @@ int CGenCF1::SendCantus() {
 		if (hm2[x][hDom]) mark[pos][v] += "D";
 		if (hm2[x][hTon]) mark[pos][v] += "T";
 		if (hm2[x][hSub]) mark[pos][v] += "S";
+		mark_color[pos][v] = Color(120, 120, 120);
 		for (int i = 0; i < cc_len[x]; ++i) {
 			// Set color
 			color[pos + i][v] = Color(0, 100, 100, 100);

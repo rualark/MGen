@@ -31,7 +31,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;26;100;Melody;Change of melodic direction after leap;Other uncompensated (>4th);0
 1;1;30;Melody;Leaps;Seventh (m7);0
 1;39;100;Melody;Leaps;Seventh (maj7);0
-1;3;0;Melody;Leaps;Many leaps (>2);0
+1;3;0;Melody;Leaps;Many leaps (>2);1
 1;25;60;Melody;Leaps;Many leaps (>3);0
 1;70;60;Melody;Leaps;Consecutive leaps (>2);0
 1;71;100;Melody;Leaps;Consecutive leaps (>3);0
@@ -80,13 +80,13 @@ Set;Severity;Class;Group;Rule;Flag
 1;82;60;Cantus;Counterpoint;Perfect consonance (db. culm.);0
 1;84;60;Cantus;Counterpoint;Perfect consonance (parallel);0
 1;85;60;Cantus;Counterpoint;Perfect consonance (combined);1
-1;86;60;Cantus;Counterpoint;Perfect consonance (different);1
+1;86;60;Cantus;Counterpoint;Perfect consonance (different);0
 1;87;60;Cantus;Counterpoint;Perfect consonance (direct);0
 1;83;60;Cantus;Counterpoint;Dissonance (downbeat);0
 1;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
 1;89;60;Cantus;Counterpoint;Imperfect consonance (long parallel);0
-1;49;60;Cantus;Counterpoint;First note (not C);0
-1;90;50;Cantus;Counterpoint;First note (not GC);1
+1;49;60;Cantus;Counterpoint;First note (not C);1
+1;90;50;Cantus;Counterpoint;First note (not GC);0
 1;91;60;Cantus;Counterpoint;Unison (inside);0
 1;92;60;Cantus;Counterpoint;Unison (direct exit);0
 2;0;0;;;Strict;1
@@ -121,7 +121,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;26;100;Melody;Change of melodic direction after leap;Other uncompensated (>4th);0
 2;1;30;Melody;Leaps;Seventh (m7);0
 2;39;100;Melody;Leaps;Seventh (maj7);0
-2;3;0;Melody;Leaps;Many leaps (>2);0
+2;3;0;Melody;Leaps;Many leaps (>2);1
 2;25;60;Melody;Leaps;Many leaps (>3);0
 2;70;60;Melody;Leaps;Consecutive leaps (>2);0
 2;71;100;Melody;Leaps;Consecutive leaps (>3);0
@@ -170,12 +170,12 @@ Set;Severity;Class;Group;Rule;Flag
 2;82;60;Cantus;Counterpoint;Perfect consonance (db. culm.);0
 2;84;60;Cantus;Counterpoint;Perfect consonance (parallel);0
 2;85;60;Cantus;Counterpoint;Perfect consonance (combined);1
-2;86;60;Cantus;Counterpoint;Perfect consonance (different);1
+2;86;60;Cantus;Counterpoint;Perfect consonance (different);0
 2;87;60;Cantus;Counterpoint;Perfect consonance (direct);0
 2;83;60;Cantus;Counterpoint;Dissonance (downbeat);0
 2;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
 2;89;60;Cantus;Counterpoint;Imperfect consonance (long parallel);0
-2;49;60;Cantus;Counterpoint;First note (not C);0
-2;90;50;Cantus;Counterpoint;First note (not GC);1
+2;49;60;Cantus;Counterpoint;First note (not C);1
+2;90;50;Cantus;Counterpoint;First note (not GC);0
 2;91;60;Cantus;Counterpoint;Unison (inside);0
 2;92;60;Cantus;Counterpoint;Unison (direct exit);0
