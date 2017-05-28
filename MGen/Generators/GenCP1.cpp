@@ -360,9 +360,9 @@ check:
 		GetPitchClass(ac[1], acc[1], apc[1], apcc[1], 0, ep2);
 		ClearFlags(0, ep2);
 		if (minor_cur && FailMinor()) goto skip;
-		//if (MatchVectors(cc, test_cc, 0, 2)) 
+		//if (MatchVectors(acc[1], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
-		if (FailLastNotes(pc, ep2)) goto skip;
+		if (FailLastNotes(apc[1], ep2)) goto skip;
 		if (FailNoteSeq(apc[1], 0, ep2)) goto skip;
 		if (FailIntervals(ep2, ac[1], acc[1], apc[1])) goto skip;
 		if (FailLeapSmooth(ac[1], ep2, aleap[1], asmooth[1])) goto skip;
@@ -380,7 +380,7 @@ check:
 		if (FailMultiCulm(acc[1], ep2)) goto skip;
 		if (FailFirstNotes(apc[1], ep2)) goto skip;
 		if (FailLeap(ac[1], ep2, aleap[1], asmooth[1], nstat2, nstat3)) goto skip;
-		//if (FailMelodyHarm(pc, 0, ep2)) goto skip;
+		//if (FailMelodyHarm(apc[1], 0, ep2)) goto skip;
 
 		SaveBestRejected();
 		// If we are window-scanning

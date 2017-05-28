@@ -784,6 +784,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 	// Prohibit first note not tonic
 	if (pc[0] != 0) {
 		FLAG2(49, 0);
+		if (pc[0] != 4) FLAG2(90, 0);
 		// Calculate steps to search for tonic
 		int fst = first_steps_tonic;
 		if (c_len > 10) ++fst;
@@ -824,7 +825,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 }
 
 int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
-	// Prohibit first note not tonic
+	// Prohibit last note not tonic
 	if (ep2 > c_len - 1)
 		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1); 
 	// Wrong second to last note
