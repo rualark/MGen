@@ -144,9 +144,11 @@ int CGenCP1::SendCP() {
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < c_len; ++x) {
 			for (int i = 0; i < cc_len[x]; ++i) {
-				// Set color
-				color[pos + i][v] = Color(0, 100, 100, 100);
 				int current_severity = -1;
+				if (av) {
+					// Set color
+					color[pos + i][v] = Color(0, 100, 100, 100);
+				}
 				// Set nflag color
 				note[pos + i][v] = acc[av][x];
 				tonic[pos + i][v] = tonic_cur;
@@ -160,10 +162,13 @@ int CGenCP1::SendCP() {
 						}
 						comment[pos][v] += ". ";
 					}
-					// Set note color if this is maximum flag severity
-					if (severity[anflags[av][x][f]] > current_severity) {
-						current_severity = severity[anflags[av][x][f]];
-						color[pos + i][v] = flag_color[severity[anflags[av][x][f]]];
+					// Do not show colors for base voice
+					if (av) {
+						// Set note color if this is maximum flag severity
+						if (severity[anflags[av][x][f]] > current_severity) {
+							current_severity = severity[anflags[av][x][f]];
+							color[pos + i][v] = flag_color[severity[anflags[av][x][f]]];
+						}
 					}
 				}
 				len[pos + i][v] = cc_len[x];
