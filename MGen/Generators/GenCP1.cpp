@@ -100,6 +100,7 @@ void CGenCP1::ScanCPInit() {
 	civl.resize(c_len);
 	civlc.resize(c_len);
 	tivl.resize(c_len);
+	direct.resize(c_len);
 	min_c.resize(c_len);
 	max_c.resize(c_len);
 	min_cc.resize(c_len);
@@ -278,10 +279,18 @@ int CGenCP1::FailVIntervals() {
 		if (civlc[i] == 3 || civlc[i] == 4 || civlc[i] == 8 || civlc[i] == 9) tivl[i] = iIco;
 		else if (civlc[i] == 7 || civlc[i] == 0) tivl[i] = iPco;
 		else tivl[i] = iDis;
+		if (i < ep2-1) direct[i] = (acc[0][i+1] - acc[0][i])*(acc[1][i+1] - acc[1][i]);
 	}
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
 	for (int i = 1; i < ep2; ++i) {
+		// Unison
+		if (!civl[i-1]) {
+			// Inside
+			if (i && i < c_len - 1) FLAG2(91, i-1);
+			// Direct exit
+			if (direct[i - 1] > 0) FLAG2(92, i);
+		}
 		// Disonnance
 		if (tivl[i] == iDis) {
 			// Upbeat
@@ -300,7 +309,7 @@ int CGenCP1::FailVIntervals() {
 			// All other cases if previous interval is not pco
 			else {
 				// Direct movement to pco
-				if ((acc[0][i] - acc[0][i - 1])*(acc[1][i] - acc[1][i - 1]) > 0) FLAG2(87, i);
+				if (direct[i-1] > 0) FLAG2(87, i);
 				// Prohibit downbeats and culminations only if not last step
 				if (i < ep2 - 1) {
 					if (i % 2) {
@@ -492,6 +501,9 @@ void CGenCP1::Generate() {
 	// Create pause
 	FillPause(0, real_len, 1);
 	ScanCantus(tEval, 0, &(cantus[cantus_id]));
+	// Show cantus id
+	st.Format("Cantus %d. ", cantus_id + 1);
+	comment[0][0] = st + comment[0][0];
 	// Go forward
 	Adapt(0, real_len);
 	t_generated = real_len;
