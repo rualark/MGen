@@ -17,6 +17,7 @@ CGenCP1::~CGenCP1() {
 
 void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata) {
 	CheckVar(sN, sV, "cantus_high", &cantus_high);
+	CheckVar(sN, sV, "cantus_id", &cantus_id2);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -466,6 +467,18 @@ void CGenCP1::Generate() {
 	if (cantus.size() < 1) return;
 	// Choose cantus to use
 	cantus_id = randbw(0, cantus.size() - 1);
+	if (cantus_id2) {
+		if (cantus_id2 < cantus.size()) {
+			cantus_id = cantus_id2 - 1;
+		}
+		else {
+			CString est;
+			est.Format("Warning: cantus_id in configuration file (%d) is greater than number of canti loaded (%d). Selecting highest cantus.", 
+				cantus_id2, cantus.size());
+			WriteLog(1, est);
+			cantus_id = cantus.size() - 1;
+		}
+	}
 	c_len = cantus[cantus_id].size();
 	// Get key
 	GetCantusKey(cantus[cantus_id]);
