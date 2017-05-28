@@ -94,9 +94,9 @@ void CGenCF1::LoadRules(CString fname)
 			// Find rule id
 			//rid = distance(FlagName.begin(), find(FlagName.begin(), FlagName.end(), rule));
 			if (rid >= max_flags) {
-				max_flags = rid;
+				max_flags = rid + 1;
 				if (max_flags >= MAX_FLAGS) {
-					est.Format("Rule id (%d) is greater than MAX_FLAGS (%d). Consider increasing MAX_FLAGS", rid, MAX_FLAGS);
+					est.Format("Rule id (%d) is equal or greater than MAX_FLAGS (%d). Consider increasing MAX_FLAGS", rid, MAX_FLAGS);
 					WriteLog(1, est);
 					return;
 				}
