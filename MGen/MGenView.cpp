@@ -283,7 +283,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			// Show notes
 			time_stop4 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-			int retrigger;
+			int cutend;
 			Color ncolor, mcolor;
 			int alpha;
 			int step_dyn = mf->m_step_dyn;
@@ -323,17 +323,17 @@ void CMGenView::OnDraw(CDC* pDC)
 							ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 						}
 						SolidBrush brush(ncolor);
-						retrigger = 0;
-						if (i + pGen->noff[i][v] < pGen->t_generated)
-							if (pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v]) retrigger = 1;
+						cutend = 0;
+						// Cut long notes end to prevent glueing with other voices
+						if (pGen->len[i][v] * nwidth > 2) cutend = 1;
 						g.FillRectangle(&brush, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-							pGen->len[i][v] * nwidth - retrigger, nheight);
+							pGen->len[i][v] * nwidth - cutend, nheight);
 						// Highlight selected note
 						if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
 							g.FillRectangle(&brush, X_FIELD + i * nwidth,
 								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-								pGen->len[i][v] * nwidth - retrigger, nheight);
+								pGen->len[i][v] * nwidth - cutend, nheight);
 						}
 					}
 					// Show with step dynamics
@@ -349,32 +349,32 @@ void CMGenView::OnDraw(CDC* pDC)
 								ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 							}
 							SolidBrush brush(ncolor);
-							retrigger = 0;
+							cutend = 0;
 							if ((x == i + pGen->len[i][v] - 1) && (i + pGen->noff[i][v] < pGen->t_generated) &&
-								(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) retrigger = 1;
+								(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) cutend = 1;
 							g.FillRectangle(&brush, X_FIELD + x * nwidth,
 								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-								nwidth - retrigger, nheight);
+								nwidth - cutend, nheight);
 							// Highlight selected note
 							if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
 								g.FillRectangle(&brush, X_FIELD + x * nwidth,
 									y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-									nwidth - retrigger, nheight);
+									nwidth - cutend, nheight);
 							}
 						}
 					}
 					// Show lining
 					if (mf->show_lining && pGen->lining[i][v] == 1) {
 						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight);
+							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - cutend, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight);
 						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight,
-							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - retrigger, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
+							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - cutend, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
 					}
 					// Show comment
 					if (mf->show_comments && pGen->comment[i][v] != "")
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-							pGen->len[i][v] * nwidth - retrigger, nheight);
+							pGen->len[i][v] * nwidth - cutend, nheight);
 					// Show mark
 					if (mf->show_marks && pGen->mark[i][v] != "") {
 						if (pGen->mark_color[i][v].GetValue() != 0) {
