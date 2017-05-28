@@ -94,6 +94,10 @@ void CGenCP1::ScanCPInit() {
 	fpenalty.resize(MAX_FLAGS);
 	wpos1.resize(c_len / s_len + 1);
 	wpos2.resize(c_len / s_len + 1);
+	ivl.resize(c_len);
+	ivlc.resize(c_len);
+	civl.resize(c_len);
+	civlc.resize(c_len);
 	min_c.resize(c_len);
 	max_c.resize(c_len);
 	min_cc.resize(c_len);
@@ -253,6 +257,20 @@ void CGenCP1::ReseedCP()
 	++reseed_count;
 	st.Format("Reseed: %d", reseed_count);
 	SetStatusText(4, st);
+}
+
+int CGenCP1::FailVIntervals() {
+	// Calculate intervals
+	for (int i = 0; i < ep2; ++i) {
+		ivl[i] = abs(ac[1][i] - ac[0][i]);
+		ivlc[i] = ivl[i] % 7;
+		civl[i] = abs(acc[1][i] - acc[0][i]);
+		civlc[i] = civl[i] % 12;
+	}
+	for (int i = 0; i < ep2 - 1; ++i) {
+		if (civlc[i] == civlc[i + 1]) FLAG2(84, i);
+	}
+	return 0;
 }
 
 void CGenCP1::ScanCP(int t, int v) {

@@ -11,8 +11,8 @@
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
+#define MAX_FLAGS 300
 
-#define MAX_FLAGS 82
 #define MAX_RULESETS 80
 #define MAX_SEVERITY 101
 #define MAX_WIND 500
@@ -140,6 +140,7 @@ protected:
 	vector <vector<int>> accepts; // Each 1 allows showing canti with specific properties
 	int rule_set = 0; // id of current rule set
 	vector <CString> FlagName; // Names of all rules
+	int max_flags = 82; // Maximum number of rules
 
 	// Parameters
 	int method = mUndefined; // Which generation / analysis method to use

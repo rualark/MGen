@@ -14,10 +14,10 @@ CGenCF1::CGenCF1()
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
 	FlagName.resize(MAX_FLAGS);
-	accepts.resize(MAX_RULESETS);
 	ssf.resize(MAX_FLAGS);
 	severity.resize(MAX_FLAGS);
 	flag_color.resize(MAX_SEVERITY);
+	accepts.resize(MAX_RULESETS);
 	hvd.resize(7);
 	hvs.resize(7);
 	hvt.resize(7);
@@ -93,10 +93,13 @@ void CGenCF1::LoadRules(CString fname)
 			flag = atoi(ast[6]);
 			// Find rule id
 			//rid = distance(FlagName.begin(), find(FlagName.begin(), FlagName.end(), rule));
-			if (rid >= MAX_FLAGS) {
-				est.Format("Rule id (%d) is greater than MAX_FLAGS (%d). Consider increasing MAX_FLAGS", rid, MAX_FLAGS);
-				WriteLog(1, est);
-				return;
+			if (rid >= max_flags) {
+				max_flags = rid;
+				if (max_flags >= MAX_FLAGS) {
+					est.Format("Rule id (%d) is greater than MAX_FLAGS (%d). Consider increasing MAX_FLAGS", rid, MAX_FLAGS);
+					WriteLog(1, est);
+					return;
+				}
 			}
 			else {
 				//est.Format("Found rule %s - %d", rule, rid);
@@ -124,17 +127,17 @@ void CGenCF1::SelectRuleSet(int rs)
 	}
 	else {
 		// Load rule set
-		for (int i = 0; i < MAX_FLAGS; ++i) {
+		for (int i = 0; i < max_flags; ++i) {
 			accept[i] = accepts[rule_set][i];
 		}
 		// Check that at least one rule is accepted
-		for (int i = 0; i < MAX_FLAGS; ++i) {
+		for (int i = 0; i < max_flags; ++i) {
 			if (accept[i]) break;
-			if (i == MAX_FLAGS - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
+			if (i == max_flags - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
 		}
 		// Calculate second level flags count
 		flags_need2 = 0;
-		for (int i = 0; i < MAX_FLAGS; ++i) {
+		for (int i = 0; i < max_flags; ++i) {
 			if (accept[i] == 2) ++flags_need2;
 		}
 		// Set rule colors
@@ -1159,7 +1162,7 @@ void CGenCF1::ScanCantusInit() {
 	}
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
-	fpenalty.resize(MAX_FLAGS);
+	fpenalty.resize(max_flags);
 	cc_old.resize(c_len); // Cantus diatonic saved for SWA
 	wpos1.resize(c_len / s_len + 1);
 	wpos2.resize(c_len / s_len + 1);
@@ -1175,9 +1178,9 @@ void CGenCF1::ScanCantusInit() {
 	}
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
-	flags.resize(MAX_FLAGS); // Flags for whole cantus
-	fstat.resize(MAX_FLAGS); // number of canti with each flag
-	fcor.resize(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
+	flags.resize(max_flags); // Flags for whole cantus
+	fstat.resize(max_flags); // number of canti with each flag
+	fcor.resize(max_flags, vector<long long>(max_flags)); // Flags correlation matrix
 	seed_cycle = 0; // Number of cycles in case of random_seed
 	reseed_count = 0;
 	pc.resize(c_len);
@@ -1197,7 +1200,7 @@ void CGenCF1::ScanCantusInit() {
 	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
-		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
+		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(max_flags, vector<long>(max_flags)));
 	}
 	// Init best rejected results
 	if (best_rejected) {
@@ -1408,11 +1411,11 @@ void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 // Calculate flag statistics
 void CGenCF1::CalcFlagStat() {
 	if (calculate_stat || calculate_correlation) {
-		if (ep2 == c_len) for (int i = 0; i < MAX_FLAGS; ++i) {
+		if (ep2 == c_len) for (int i = 0; i < max_flags; ++i) {
 			if (flags[i]) {
 				++fstat[i];
 				// Calculate correlation
-				if (calculate_correlation) for (int z = 0; z < MAX_FLAGS; ++z) {
+				if (calculate_correlation) for (int z = 0; z < max_flags; ++z) {
 					if (flags[z]) ++fcor[i][z];
 				}
 			}
@@ -1427,7 +1430,7 @@ int CGenCF1::FailFlagBlock() {
 		int flags_found2 = 0;
 		int flags_conflict = 0;
 		// Find if any of accepted flags set
-		for (int i = 0; i < MAX_FLAGS; ++i) {
+		for (int i = 0; i < max_flags; ++i) {
 			if ((flags[i]) && (accept[i] > 0)) ++flags_found;
 			if ((flags[i]) && (!accept[i])) ++flags_conflict;
 			if ((flags[i]) && (accept[i] == 2)) ++flags_found2;
@@ -1441,7 +1444,7 @@ int CGenCF1::FailFlagBlock() {
 		}
 		++accepted5[wid];
 		// Find flags that are blocking
-		for (int i = 0; i < MAX_FLAGS; ++i) {
+		for (int i = 0; i < max_flags; ++i) {
 			if ((flags[i]) && (!accept[i]))
 				++fblock[wid][flags_conflict][i];
 		}
@@ -1454,7 +1457,7 @@ int CGenCF1::FailAccept() {
 	// Check prohibited strict flag only if not late_require or last window
 	if ((!late_require) || (ep2 == c_len))
 		if (flags[0] && !accept[0]) return 1;
-	for (int i = 1; i < MAX_FLAGS; ++i) {
+	for (int i = 1; i < max_flags; ++i) {
 		if (flags[i] && !accept[i]) return 1;
 		if (!late_require || ep2 == c_len)
 			if (!flags[i] && accept[i] == 2) 
@@ -1557,7 +1560,7 @@ void CGenCF1::CalcRpenalty() {
 		}
 	}
 	// Add flags penalty
-	for (int x = 0; x < MAX_FLAGS; ++x) {
+	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x]) rpenalty_cur += fpenalty[x];
 	}
 }
@@ -1763,11 +1766,11 @@ void CGenCF1::WriteFlagCor() {
 		DeleteFile("cf1-cor.csv");
 		CString st, st2, st3;
 		st3 = "Flag; Total; ";
-		for (int i = 0; i < MAX_FLAGS; ++i) {
+		for (int i = 0; i < max_flags; ++i) {
 			int f1 = i;
 			st2.Format("%s; %d; ", FlagName[f1], fcor[f1][f1]);
 			st3 += FlagName[f1] + "; ";
-			for (int z = 0; z < MAX_FLAGS; ++z) {
+			for (int z = 0; z < max_flags; ++z) {
 				int f2 = i;
 				st.Format("%lld; ", fcor[f1][f2]);
 				st2 += st;
@@ -1783,7 +1786,7 @@ void CGenCF1::ShowFlagStat() {
 	// Show flag statistics
 	if (calculate_stat) {
 		CString est;
-		for (int i = 0; i < MAX_FLAGS; ++i) {
+		for (int i = 0; i < max_flags; ++i) {
 			int f1 = i;
 			st.Format("\n%lld %s ", fstat[f1], FlagName[f1]);
 			st2 += st;
@@ -1803,10 +1806,10 @@ void CGenCF1::ShowStuck() {
 		st2 = "SWA stuck flags: ";
 		int max_flag = 0;
 		long max_value = -1;
-		for (int x = 0; x < MAX_FLAGS; ++x) {
+		for (int x = 0; x < max_flags; ++x) {
 			max_value = -1;
 			// Find biggest value
-			for (int i = 0; i < MAX_FLAGS; ++i) {
+			for (int i = 0; i < max_flags; ++i) {
 				if (ssf[i] > max_value) {
 					max_value = ssf[i];
 					max_flag = i;
@@ -1827,10 +1830,10 @@ CString CGenCF1::GetStuck() {
 	CString st, st2;
 	int max_flag = 0;
 	long max_value = -1;
-	for (int x = 0; x < MAX_FLAGS; ++x) {
+	for (int x = 0; x < max_flags; ++x) {
 		max_value = -1;
 		// Find biggest value
-		for (int i = 0; i < MAX_FLAGS; ++i) {
+		for (int i = 0; i < max_flags; ++i) {
 			if (best_flags[i] > max_value) {
 				max_value = best_flags[i];
 				max_flag = i;
@@ -1853,10 +1856,10 @@ void CGenCF1::ShowFlagBlock() {
 			int lines = 0;
 			CString est;
 			st2 = "";
-			for (int d = 1; d < MAX_FLAGS; ++d) {
+			for (int d = 1; d < max_flags; ++d) {
 				if (lines > 100) break;
 				int flagc = 0;
-				for (int x = 0; x < MAX_FLAGS; ++x) {
+				for (int x = 0; x < max_flags; ++x) {
 					if (fblock[w][d][x] > 0) ++flagc;
 				}
 				if (!flagc) continue;
@@ -1864,10 +1867,10 @@ void CGenCF1::ShowFlagBlock() {
 				long max_value = -1;
 				st.Format("\nTIER %d: ", d);
 				st2 += st;
-				for (int x = 0; x < MAX_FLAGS; ++x) {
+				for (int x = 0; x < max_flags; ++x) {
 					max_value = -1;
 					// Find biggest value
-					for (int i = 0; i < MAX_FLAGS; ++i) {
+					for (int i = 0; i < max_flags; ++i) {
 						if (fblock[w][d][i] > max_value) {
 							max_value = fblock[w][d][i];
 							max_flag = i;
@@ -2211,7 +2214,7 @@ void CGenCF1::SWA(int i, int dp) {
 			if (rpenalty_min >= rpenalty_min_old) {
 				if (s_len >= swa_steps) {
 					// Record SWA stuck flags
-					for (int x = 0; x < MAX_FLAGS; ++x) {
+					for (int x = 0; x < max_flags; ++x) {
 						if (best_flags[x]) ++ssf[x];
 					}
 					break;

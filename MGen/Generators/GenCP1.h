@@ -16,6 +16,7 @@ protected:
 	void MakeNewCP();
 	void MultiCPInit();
 	void ReseedCP();
+	inline int FailVIntervals();
 	void ScanCPInit();
 	inline int SendCP();
 	void ScanCP(int t, int v);
@@ -28,6 +29,11 @@ protected:
 	vector<vector<int>> apcc; // Pitch class (chromatic)
 	vector<vector<int>> aleap;
 	vector<vector<int>> asmooth;
+
+	vector<int> ivl; // Diatonic interval between voices
+	vector<int> civl; // Chromatic interval between voices
+	vector<int> ivlc; // Diatonic interval between voices (class)
+	vector<int> civlc; // Chromatic interval between voices (class)
 
 	// Parameters
 	int cantus_high; // Set to 1 to generate counterpoint under cantus
