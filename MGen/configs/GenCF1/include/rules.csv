@@ -86,7 +86,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
 1;89;60;Cantus;Counterpoint;Imperfect consonance (long parallel);0
 1;49;60;Cantus;Counterpoint;First note (not C);1
-1;90;50;Cantus;Counterpoint;First note (not GC);0
+1;90;60;Cantus;Counterpoint;First note (not GC);0
 1;91;60;Cantus;Counterpoint;Unison (inside);0
 1;92;60;Cantus;Counterpoint;Unison (direct exit);0
 2;0;0;;;Strict;1
@@ -176,6 +176,6 @@ Set;Severity;Class;Group;Rule;Flag
 2;88;60;Cantus;Counterpoint;Dissonance (upbeat);0
 2;89;60;Cantus;Counterpoint;Imperfect consonance (long parallel);0
 2;49;60;Cantus;Counterpoint;First note (not C);1
-2;90;50;Cantus;Counterpoint;First note (not GC);0
+2;90;60;Cantus;Counterpoint;First note (not GC);0
 2;91;60;Cantus;Counterpoint;Unison (inside);0
 2;92;60;Cantus;Counterpoint;Unison (direct exit);0

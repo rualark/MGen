@@ -15,7 +15,7 @@
 #pragma once
 #include "OutputWnd.h"
 #include "Generators/GenCF1.h"
-#include "Generators/GenCF2.h"
+#include "Generators/GenCA2.h"
 #include "Generators/GenRS1.h"
 #include "Generators/GenMP1.h"
 #include "Generators/GenCA1.h"
