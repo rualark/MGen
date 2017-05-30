@@ -1,4 +1,4 @@
-include "../../GenCF1/include/CF1.pl"
+include "../../GenCP1/include/CP1.pl"
 
 rule_set = 1 # Specify which set of rules to use (see rules.xlsx)
 

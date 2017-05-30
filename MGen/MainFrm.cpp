@@ -575,7 +575,7 @@ void CMainFrame::NewGen()
 {
 	pGen = 0;
 	if (m_algo_id == 101) pGen = new CGenCF1();
-	if (m_algo_id == 102) pGen = new CGenCF2();
+	if (m_algo_id == 112) pGen = new CGenCA2();
 	if (m_algo_id == 111) pGen = new CGenCA1();
 	if (m_algo_id == 121) pGen = new CGenCP1();
 	if (m_algo_id == 1001) pGen = new CGenRS1();

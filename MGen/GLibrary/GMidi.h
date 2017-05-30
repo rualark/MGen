@@ -39,6 +39,7 @@ public:
 	void LoadMidi(CString path);
 
 	void LoadCantus(CString path);
+	void LoadCP(CString path);
 
 	// RtMidi
 	CMidiOut *mo;
@@ -101,5 +102,6 @@ protected:
 	vector< vector <int> > cantus; // Cantus loaded from midi file
 	vector< vector <int> > cantus_len; // Cantus loaded from midi file
 	vector< vector <float> > cantus_tempo; // Cantus loaded from midi file
+	vector< vector <vector<int>>> cpoint; // Counterpoint loaded from midi file
 };
 

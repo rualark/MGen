@@ -449,7 +449,7 @@ void CGMidi::LoadCantus(CString path)
 
 	int tpq = midifile.getTicksPerQuarterNote();
 	// ticks per croche
-	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul; 
+	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul;
 
 	vector <float> tempo2;
 	long tempo_count = 0;
@@ -510,7 +510,7 @@ void CGMidi::LoadCantus(CString path)
 					ct.clear();
 				}
 				// Add new note
-				if ((nid == 0) || (c[nid-1] != mev->getKeyNumber())) {
+				if ((nid == 0) || (c[nid - 1] != mev->getKeyNumber())) {
 					// Check if current note already set
 					if (!nlen) {
 						if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
@@ -556,7 +556,153 @@ void CGMidi::LoadCantus(CString path)
 	// Count time
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString st;
-	st.Format("LoadCantus successfully loaded %d canti (in %d ms)", cid+1, time_stop - time_start);
+	st.Format("LoadCantus successfully loaded %d canti (in %d ms)", cid + 1, time_stop - time_start);
+	WriteLog(0, st);
+}
+
+// Load counterpoint
+void CGMidi::LoadCP(CString path)
+{
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	if (!fileExists(path)) {
+		CString est;
+		est.Format("Cannot find file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	MidiFile midifile;
+	if (!midifile.read(path)) {
+		CString est;
+		est.Format("Error reading midi file %s", path);
+		WriteLog(1, est);
+		return;
+	}
+	midifile.linkNotePairs();
+	midifile.joinTracks();
+	midifile.doTimeAnalysis();
+
+	midifile.absoluteTicks();
+
+	int tpq = midifile.getTicksPerQuarterNote();
+	// ticks per croche
+	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul;
+
+	vector <float> tempo2;
+	long tempo_count = 0;
+	int last_step = 0;
+	// Load tempo
+	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		for (int i = 0; i < midifile[track].size(); i++) {
+			MidiEvent* mev = &midifile[track][i];
+			int pos = round(mev->tick / (float)tpc);
+			if (pos >= tempo_count) {
+				tempo_count = pos + 1;
+				tempo2.resize(tempo_count);
+			}
+			if (mev->isTempo()) {
+				tempo2[pos] = mev->getTempoBPM() * midifile_in_mul;
+			}
+			if (pos > last_step) last_step = pos;
+		}
+	}
+	// Fill tempo
+	for (int z = 1; z < last_step; z++) {
+		if (tempo2[z] == 0) tempo2[z] = tempo2[z - 1];
+	}
+
+	vector<vector<pair<int, int>>> inter; // Intermediate structure for loading counterpoint
+	vector<int> harm; // Harmony
+	vector<int> chan_to_voice; // Get voice by channel
+	int vcount = 0; // Number of voices
+	int v; // Current voice
+	int cid = 0; // counterpoint
+	int nid = 0; // note
+	int hid = 0; // harmony
+	int pos_old = 0;
+	vector <vector<int>> c;
+	vector <int> cl;
+	vector <float> ct;
+	chan_to_voice.resize(16, -1);
+	int bad = 0;
+	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		float last_tick = 0;
+		for (int i = 0; i<midifile[track].size(); i++) {
+			MidiEvent* mev = &midifile[track][i];
+			float time = midifile.getTimeInSeconds(mev->tick);
+			if (mev->isNoteOn()) {
+				float pos2 = mev->tick;
+				int pos = round(mev->tick / (float)tpc);
+				float nlen2 = mev->getTickDuration();
+				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
+				// Get voice
+				int chan = mev->track;
+				if (chan_to_voice[chan] == -1) {
+					chan_to_voice[chan] = vcount;
+					++vcount;
+					harm.resize(vcount);
+				}
+				v = chan_to_voice[chan];
+				// New position - send set
+				if (pos != pos_old) {
+					c.push_back(harm);
+					harm.clear();
+					harm.resize(vcount);
+				}
+				// Check for pause
+				if (pos2 - last_tick > tpc / 2) {
+					// Add cpoint if it is long
+					if (c.size() > 5 && !bad) {
+						cpoint.push_back(c);
+						cantus_len.push_back(cl);
+						cantus_tempo.push_back(ct);
+					}
+					// Go to next cantus
+					nid = 0;
+					hid = 0;
+				}
+				if (nid == 0) {
+					bad = 0;
+					// Add new cpoint
+					cid++;
+					c.clear();
+					cl.clear();
+					ct.clear();
+				}
+				// Add new note
+				if (!nlen) {
+					if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
+						CString st;
+						st.Format("Note too short: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+						WriteLog(1, st);
+						warning_loadmidi_short++;
+					}
+					bad = 1;
+				}
+				if (pos != pos_old) {
+					cl.push_back(nlen);
+					ct.push_back(tempo2[pos]);
+				}
+				harm[v] = mev->getKeyNumber();
+				nid++;
+				// Save last time
+				last_tick = pos2 + nlen2;
+				pos_old = pos;
+			}
+		}
+		// Add cantus if it is long
+		if (c.size() > 5 && !bad) {
+			if (harm.size()) {
+				c.push_back(harm);
+			}
+			cpoint.push_back(c);
+			cantus_len.push_back(cl);
+			cantus_tempo.push_back(ct);
+		}
+	}
+	// Count time
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString st;
+	st.Format("LoadCP successfully loaded %d cp (in %d ms)", cid + 1, time_stop - time_start);
 	WriteLog(0, st);
 }
 
