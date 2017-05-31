@@ -55,6 +55,102 @@ void CGenCP1::MakeNewCP() {
 	}
 }
 
+void CGenCP1::SingleCPInit() {
+	// Copy cantus
+	acc = scpoint;
+	// Get diatonic steps from chromatic
+	for (int v = 0; v < acc.size(); ++v) {
+		for (int i = 0; i < c_len; ++i) {
+			ac[v][i] = CC_C(acc[v][i], tonic_cur, minor_cur);
+		}
+	}
+	// Save value for future use;
+	acc_old = acc;
+	/*
+	if (!swa_inrange) {
+		GetRealRange(ac[0], acc[0]);
+		ApplySourceRange();
+	}
+	// Set pitch limits
+	// If too wide range is not accepted, correct range to increase scan performance
+	if (!accept[37]) {
+	for (int i = 0; i < c_len; ++i) {
+	min_c[i] = max(minc, c[i] - correct_range);
+	max_c[i] = min(maxc, c[i] + correct_range);
+	}
+	}
+	else {
+	*/
+	for (int i = 0; i < c_len; ++i) {
+		min_c[i] = ac[1][i] - correct_range;
+		max_c[i] = ac[1][i] + correct_range;
+	}
+	// Convert limits to chromatic
+	for (int i = 0; i < c_len; ++i) {
+		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
+		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
+	}
+	sp1 = 0;
+	sp2 = c_len;
+	ep1 = max(0, sp1 - 1);
+	ep2 = c_len;
+	// Clear flags
+	++accepted3;
+	fill(flags.begin(), flags.end(), 0);
+	flags[0] = 1;
+	for (int i = 0; i < ep2; ++i) {
+		anflagsc[av][i] = 0;
+	}
+	// Matrix scan
+	if (task != tEval) {
+		// Exit if no violations
+		if (!smatrixc) return;
+		// Create map
+		smap.resize(smatrixc);
+		int map_id = 0;
+		for (int i = 0; i < c_len; ++i) if (smatrix[i]) {
+			smap[map_id] = i;
+			++map_id;
+		}
+		// Shuffled smap
+		//unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		//::shuffle(smap.begin(), smap.end(), default_random_engine(seed));
+		sp1 = 0;
+		sp2 = sp1 + s_len; // End of search window
+		if (sp2 > smatrixc) sp2 = smatrixc;
+		// Record window
+		wid = 0;
+		wpos1[wid] = sp1;
+		wpos2[wid] = sp2;
+		// Add last note if this is last window
+		// End of evaluation window
+		if (method == mScan) {
+			ep2 = GetMaxSmap() + 1;
+			if (sp2 == smatrixc) ep2 = c_len;
+			// Clear scan steps
+			FillCantusMap(acc[1], smap, 0, smatrixc, min_cc);
+			// Can skip flags - full scan must remove all flags
+		}
+		// For sliding windows algorithm evaluate whole melody
+		if (method == mSWA) {
+			ep2 = c_len;
+			// Cannot skip flags - need them for penalty if cannot remove all flags
+			skip_flags = 0;
+			// Clear scan steps of current window
+			FillCantusMap(acc[1], smap, sp1, sp2, min_cc);
+		}
+		// Minimum element
+		ep1 = max(0, GetMinSmap() - 1);
+		// Minimal position in array to cycle
+		pp = sp2 - 1;
+		p = smap[pp];
+	}
+	else {
+		// For single cantus scan - cannot skip flags - must show all
+		skip_flags = 0;
+	}
+}
+
 void CGenCP1::MultiCPInit() {
 	MakeNewCP();
 	sp1 = 0; // Start of search window
@@ -73,7 +169,7 @@ void CGenCP1::MultiCPInit() {
 
 void CGenCP1::ScanCPInit() {
 	// Get cantus size
-	//if (task != tGen) c_len = scantus->size();
+	if (task != tGen) c_len = scpoint[0].size();
 	// Resize global vectors
 	for (int i = 0; i < av_cnt; ++i) {
 		ac[i].resize(c_len); // cantus (diatonic)
@@ -346,7 +442,7 @@ void CGenCP1::ScanCP(int t, int v) {
 
 	ScanCPInit();
 	if (task == tGen) MultiCPInit();
-	//else SingleCantusInit();
+	else SingleCPInit();
 	if (FailWindowsLimit()) return;
 	// Analyze combination
 check:

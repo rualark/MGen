@@ -7,6 +7,7 @@
 
 CGenCA2::CGenCA2()
 {
+	v_cnt = 4;
 }
 
 CGenCA2::~CGenCA2()
@@ -23,7 +24,7 @@ void CGenCA2::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 void CGenCA2::Generate() {
 	CString st;
 	int s_len2 = s_len;
-	InitCantus();
+	InitCP();
 	LoadCP(midi_file);
 	if (cpoint.size() < 1) return;
 	// Saved t_generated
@@ -51,13 +52,15 @@ void CGenCA2::Generate() {
 		cc_tempo = cantus_tempo[i];
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		dpenalty_cur = 0;
-		ScanCantus(tEval, 0, &(cantus[i]));
+		scpoint = cpoint[i];
+		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
 		t_generated2 = t_generated;
 		// Fill pauses if no results generated
-		FillPause(step - real_len - 1, real_len, 1);
+		FillPause(step - real_len - 1, real_len, 2);
+		FillPause(step - real_len - 1, real_len, 3);
 		// Count additional variables
 		CountOff(step - real_len - 1, step - 1);
 		CountTime(step - real_len - 1, step - 1);

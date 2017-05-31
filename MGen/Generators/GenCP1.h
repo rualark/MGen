@@ -14,6 +14,7 @@ protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void InitCP();
 	void MakeNewCP();
+	void SingleCPInit();
 	void MultiCPInit();
 	void ReseedCP();
 	inline int FailVIntervals();
@@ -36,6 +37,9 @@ protected:
 	vector<int> civlc; // Chromatic interval between voices (class)
 	vector<int> tivl; // Type of interval between voices
 	vector<int> direct; // Above zero if voices move in same direction
+
+	// Analysis
+	vector <vector<int>> scpoint; // Source cpoint for processing
 
 	// Parameters
 	int cantus_high = 0; // Set to 1 to generate counterpoint under cantus
