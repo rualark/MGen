@@ -1015,7 +1015,7 @@ void CGVar::ValidateVectors(int step1, int step2) {
 						warning_valid++;
 					}
 					if (poff[i][v] != len[i-1][v] && warning_valid < MAX_WARN_VALID) {
-						st.Format("Validation failed at step %d voice %d: poff must len of previous note at first step of note/pause", i, v);
+						st.Format("Validation failed at step %d voice %d: poff must equal len of previous note at first step of note/pause", i, v);
 						WriteLog(1, st);
 						warning_valid++;
 					}

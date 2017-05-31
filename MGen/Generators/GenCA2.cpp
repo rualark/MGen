@@ -52,23 +52,20 @@ void CGenCA2::Generate() {
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
-		// Show imported melody
-		cc_len = cantus_len[i];
-		cc_tempo = cantus_tempo[i];
-		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		dpenalty_cur = 0;
 		// Create pause
-		FillPause(0, real_len, 1);
-		FillPause(0, real_len, 2);
-		FillPause(0, real_len, 3);
+		FillPause(step, real_len, 1);
+		FillPause(step, real_len, 2);
+		FillPause(step, real_len, 3);
 		ScanCantus(tEval, 0, &(cpoint[i][0]));
 		// Show cantus id
 		st.Format("Counterpoint %d. ", cantus_id + 1);
 		comment[0][0] = st + comment[0][0];
 		// Go forward
-		Adapt(0, real_len);
-		t_generated = real_len;
+		t_generated = step;
+		Adapt(step - real_len - 1, step - 1);
 		t_sent = t_generated;
+		t_generated2 = t_generated;
 		// Load first voice
 		ac[0] = c;
 		acc[0] = cc;
