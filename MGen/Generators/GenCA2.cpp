@@ -29,6 +29,7 @@ void CGenCA2::Generate() {
 	if (cpoint.size() < 1) return;
 	// Saved t_generated
 	int t_generated2 = 0;
+	cantus_id = -1;
 	for (int i = 0; i < cpoint.size(); i++) {
 		++cantus_id;
 		// Check limit
@@ -51,8 +52,31 @@ void CGenCA2::Generate() {
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
+		// Show imported melody
+		cc_len = cantus_len[i];
+		cc_tempo = cantus_tempo[i];
+		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
+		dpenalty_cur = 0;
+		// Create pause
+		FillPause(0, real_len, 1);
+		FillPause(0, real_len, 2);
+		FillPause(0, real_len, 3);
+		ScanCantus(tEval, 0, &(cpoint[i][0]));
+		// Show cantus id
+		st.Format("Counterpoint %d. ", cantus_id + 1);
+		comment[0][0] = st + comment[0][0];
+		// Go forward
+		Adapt(0, real_len);
+		t_generated = real_len;
+		t_sent = t_generated;
+		// Load first voice
+		ac[0] = c;
+		acc[0] = cc;
+		apc[0] = pc;
+		apcc[0] = pcc;
 		dpenalty_cur = 0;
 		scpoint = cpoint[i];
+		av = 1;
 		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown
