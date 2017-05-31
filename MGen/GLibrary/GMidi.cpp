@@ -655,10 +655,8 @@ void CGMidi::LoadCP(CString path)
 					for (int i = 0; i < inter[hid - 1].size(); ++i) {
 						if (max_len[hid - 1] < inter[hid - 1][i].second) max_len[hid - 1] = inter[hid - 1][i].second;
 					}
-					for (int x = 0; x < inter.size() - 1; ++x) {
-						// Sort
-						sort(inter[x].begin(), inter[x].end());
-					}
+					// Sort
+					sort(inter[hid-1].begin(), inter[hid - 1].end());
 				}
 				// Check for pause
 				if (pos2 - last_tick > tpc / 2) {
@@ -725,6 +723,7 @@ void CGMidi::LoadCP(CString path)
 		}
 		// Add cpoint if it is long
 		if (inter.size() > 5 && !bad) {
+			sort(inter[hid - 1].begin(), inter[hid - 1].end());
 			cid++;
 			// Get maximum voice count
 			int max_voice = 0;

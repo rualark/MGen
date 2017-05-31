@@ -19,7 +19,7 @@ pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 12 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
-show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
+show_transpose = 0,0,24,24 # Semitones to transpose each voice (separated with comma)
 interval = 3-19 # Minimum-maximum chromatic interval in cantus (12 = octave)
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 4 # Size of Sliding Window Approximation algorithm window in steps
@@ -27,7 +27,7 @@ correct_range = 6 # Maximum interval allowed between each source and corrected n
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Technical parameters
-midifile_in_mul = 1 # Multiply note length with this value when loading
+midifile_in_mul = 0.25 # Multiply note length with this value when loading
 t_cnt = 100000 # Maximum number of steps generated
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
