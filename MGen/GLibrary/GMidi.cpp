@@ -612,20 +612,19 @@ void CGMidi::LoadCP(CString path)
 
 	vector<vector<pair<int, int>>> inter; // Intermediate structure for loading counterpoint
 	vector<int> harm; // Harmony
-	vector<int> chan_to_voice; // Get voice by channel
 	int vcount = 0; // Number of voices
 	int v; // Current voice
 	int cid = 0; // counterpoint
 	int nid = 0; // note
 	int hid = 0; // harmony
-	int pos_old = 0;
+	int pos_old = -1;
 	vector <vector<int>> c;
 	vector <int> cl;
 	vector <float> ct;
-	chan_to_voice.resize(16, -1);
+	vector <int> min_len, max_len;
 	int bad = 0;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
-		float last_tick = 0;
+		float last_tick = 0, last_tick2 = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			float time = midifile.getTimeInSeconds(mev->tick);
@@ -634,24 +633,38 @@ void CGMidi::LoadCP(CString path)
 				int pos = round(mev->tick / (float)tpc);
 				float nlen2 = mev->getTickDuration();
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
-				// Get voice
-				int chan = mev->track;
-				if (chan_to_voice[chan] == -1) {
-					chan_to_voice[chan] = vcount;
-					++vcount;
-					harm.resize(vcount);
-				}
-				v = chan_to_voice[chan];
-				// New position - send set
-				if (pos != pos_old) {
-					c.push_back(harm);
-					harm.clear();
-					harm.resize(vcount);
+				if (pos != pos_old && inter.size()) {
+					if (hid > 1) {
+						// Find slurred notes
+						for (int i = 0; i < inter[hid-2].size(); ++i) {
+							if (inter[hid - 2][i].second > 0) {
+								inter[hid - 1].push_back(make_pair(inter[hid - 2][i].first, inter[hid - 2][i].second));
+							}
+						}
+					}
+					// Get min len
+					min_len[hid - 1] = pos - pos_old;
+					for (int i = 0; i < inter[hid-1].size(); ++i) {
+						if (inter[hid - 1][i].second && min_len[hid - 1] > inter[hid - 1][i].second) min_len[hid - 1] = inter[hid - 1][i].second;
+					}
+					// Decrease length
+					for (int i = 0; i < inter[hid-1].size(); ++i) {
+						if (inter[hid - 1][i].second) inter[hid - 1][i].second -= min_len[hid - 1];
+					}
+					// Get max len
+					for (int i = 0; i < inter[hid - 1].size(); ++i) {
+						if (max_len[hid - 1] < inter[hid - 1][i].second) max_len[hid - 1] = inter[hid - 1][i].second;
+					}
+					for (int x = 0; x < inter.size() - 1; ++x) {
+						// Sort
+						sort(inter[x].begin(), inter[x].end());
+					}
 				}
 				// Check for pause
 				if (pos2 - last_tick > tpc / 2) {
 					// Add cpoint if it is long
-					if (c.size() > 5 && !bad) {
+					if (inter.size() > 5 && !bad) {
+						cpoint.resize(cpoint.size() + 1);
 						cpoint.push_back(c);
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
@@ -660,6 +673,12 @@ void CGMidi::LoadCP(CString path)
 					nid = 0;
 					hid = 0;
 				}
+				else if (pos2 - last_tick2 > tpc / 2) {
+					CString st;
+					st.Format("Pauses are prohibited inside counterpoint: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Cannot load.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+					WriteLog(1, st);
+					bad = 1;
+				}
 				if (nid == 0) {
 					bad = 0;
 					// Add new cpoint
@@ -667,6 +686,9 @@ void CGMidi::LoadCP(CString path)
 					c.clear();
 					cl.clear();
 					ct.clear();
+					inter.clear();
+					min_len.clear();
+					max_len.clear();
 				}
 				// Add new note
 				if (!nlen) {
@@ -679,13 +701,18 @@ void CGMidi::LoadCP(CString path)
 					bad = 1;
 				}
 				if (pos != pos_old) {
+					hid++;
+					inter.resize(hid);
 					cl.push_back(nlen);
 					ct.push_back(tempo2[pos]);
+					min_len.push_back(100000000);
+					max_len.push_back(0);
 				}
-				harm[v] = mev->getKeyNumber();
+				inter[hid-1].push_back(make_pair(mev->getKeyNumber(), nlen));
 				nid++;
 				// Save last time
-				last_tick = pos2 + nlen2;
+				last_tick = max(last_tick, pos2 + nlen2);
+				last_tick2 = pos2 + nlen2;
 				pos_old = pos;
 			}
 		}
