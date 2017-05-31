@@ -665,11 +665,14 @@ void CGMidi::LoadCP(CString path)
 					// Add cpoint if it is long
 					if (inter.size() > 5 && !bad) {
 						cid++;
+						// Get maximum voice count
+						int max_voice = 0;
+						for (int x = 0; x < inter.size(); ++x) max_voice = max(max_voice, inter[x].size());
 						cpoint.resize(cid);
-						cpoint[cid-1].resize(inter.size());
+						cpoint[cid-1].resize(max_voice, vector<int>(inter.size()));
 						for (int x = 0; x < inter.size(); ++x) {
 							for (int i = 0; i < inter[x].size(); ++i) {
-								cpoint[cid-1][x].push_back(inter[x][i].first);
+								cpoint[cid-1][i][x] = inter[x][i].first;
 							}
 						}
 						cantus_len.push_back(cl);
@@ -723,11 +726,14 @@ void CGMidi::LoadCP(CString path)
 		// Add cpoint if it is long
 		if (inter.size() > 5 && !bad) {
 			cid++;
+			// Get maximum voice count
+			int max_voice = 0;
+			for (int x = 0; x < inter.size(); ++x) max_voice = max(max_voice, inter[x].size());
 			cpoint.resize(cid);
-			cpoint[cid - 1].resize(inter.size());
+			cpoint[cid - 1].resize(max_voice, vector<int>(inter.size()));
 			for (int x = 0; x < inter.size(); ++x) {
 				for (int i = 0; i < inter[x].size(); ++i) {
-					cpoint[cid - 1][x].push_back(inter[x][i].first);
+					cpoint[cid - 1][i][x] = inter[x][i].first;
 				}
 			}
 			cantus_len.push_back(cl);
