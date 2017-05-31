@@ -664,8 +664,14 @@ void CGMidi::LoadCP(CString path)
 				if (pos2 - last_tick > tpc / 2) {
 					// Add cpoint if it is long
 					if (inter.size() > 5 && !bad) {
-						cpoint.resize(cpoint.size() + 1);
-						cpoint.push_back(c);
+						cid++;
+						cpoint.resize(cid);
+						cpoint[cid-1].resize(inter.size());
+						for (int x = 0; x < inter.size(); ++x) {
+							for (int i = 0; i < inter[x].size(); ++i) {
+								cpoint[cid-1][x].push_back(inter[x][i].first);
+							}
+						}
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
 					}
@@ -682,8 +688,6 @@ void CGMidi::LoadCP(CString path)
 				if (nid == 0) {
 					bad = 0;
 					// Add new cpoint
-					cid++;
-					c.clear();
 					cl.clear();
 					ct.clear();
 					inter.clear();
@@ -716,12 +720,16 @@ void CGMidi::LoadCP(CString path)
 				pos_old = pos;
 			}
 		}
-		// Add cantus if it is long
-		if (c.size() > 5 && !bad) {
-			if (harm.size()) {
-				c.push_back(harm);
+		// Add cpoint if it is long
+		if (inter.size() > 5 && !bad) {
+			cid++;
+			cpoint.resize(cid);
+			cpoint[cid - 1].resize(inter.size());
+			for (int x = 0; x < inter.size(); ++x) {
+				for (int i = 0; i < inter[x].size(); ++i) {
+					cpoint[cid - 1][x].push_back(inter[x][i].first);
+				}
 			}
-			cpoint.push_back(c);
 			cantus_len.push_back(cl);
 			cantus_tempo.push_back(ct);
 		}
