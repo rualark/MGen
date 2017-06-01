@@ -424,7 +424,7 @@ int CGenCP1::FailVIntervals() {
 		// Long parallel ico
 		if (tivl[i] == iIco && ivl[i] == ivl[i - 1]) {
 			++pco_count;
-			if (pco_count > 2) {
+			if (pco_count > 3) {
 				FLAG2(89, i)
 			}
 		}

@@ -82,7 +82,7 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, in
 				if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
 			}
 			// Check if diatonic repeats
-			if (x && CC_C(cc[x], i, minor_cur) == CC_C(cc[x - 1], i, minor_cur)) key_miss[i]++;
+			if (x && CC_C(cc[x], i, minor_cur) == CC_C(cc[x - 1], i, minor_cur) && abs(cc[x] - cc[x-1]) == 1) key_miss[i]++;
 		}
 	}
 	// Find minimum miss
