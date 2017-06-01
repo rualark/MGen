@@ -478,6 +478,21 @@ void CGenCP1::SaveCPIfRp() {
 	}
 }
 
+// Detect repeating notes. Step2 excluding
+int CGenCP1::FailSlurs(vector<int> &c, int step1, int step2) {
+	int scount = 0;
+	for (int i = step1; i < step2; ++i) {
+		if (c[i] == c[i + 1]) {
+			FLAG2(93, i);
+			++scount;
+			if (scount > 1) FLAG2(94, i)
+			else if (scount > 2) FLAG2(95, i);
+		}
+		else scount = 0;
+	}
+	return 0;
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -493,13 +508,13 @@ void CGenCP1::ScanCP(int t, int v) {
 check:
 	while (true) {
 		//LogCantus(cc);
-		if (FailNoteRepeat(acc[1], ep1, ep2 - 1)) goto skip;
+		ClearFlags(0, ep2);
+		if (FailSlurs(acc[1], ep1, ep2 - 1)) goto skip;
 		++accepted3;
 		if (need_exit && task != tEval) break;
 		// Show status
 		if (FailDiatonic(ac[1], acc[1], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[1], acc[1], apc[1], apcc[1], 0, ep2);
-		ClearFlags(0, ep2);
 		if (minor_cur && FailMinor()) goto skip;
 		//if (MatchVectors(acc[1], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
