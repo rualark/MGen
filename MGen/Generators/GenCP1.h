@@ -16,8 +16,11 @@ protected:
 	void MakeNewCP();
 	void SingleCPInit();
 	void MultiCPInit();
-	void ReseedCP();
+	inline void ReseedCP();
 	inline int FailVIntervals();
+	inline void CalcDpenaltyCP();
+	inline void SaveCP();
+	inline void SaveCPIfRp();
 	void ScanCPInit();
 	inline int SendCP();
 	void ScanCP(int t, int v);

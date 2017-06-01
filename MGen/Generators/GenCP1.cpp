@@ -82,7 +82,7 @@ void CGenCP1::SingleCPInit() {
 	else {
 	*/
 	for (int i = 0; i < c_len; ++i) {
-		min_c[i] = ac[1][i] - correct_range;
+		min_c[i] = max(ac[0][i], ac[1][i] - correct_range);
 		max_c[i] = ac[1][i] + correct_range;
 	}
 	// Convert limits to chromatic
@@ -314,7 +314,7 @@ int CGenCP1::SendCP() {
 		}
 		// If  window-scan
 		st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
-		AddMelody(step - real_len - 1, step - 1, svoice, st);
+		AddMelody(step - real_len - 1, step - 1, svoice + 1, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -331,7 +331,7 @@ int CGenCP1::SendCP() {
 				st.Format("#%d\nRule penalty: %.0f\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id, rpenalty_cur, hdif, key_eval);
 			}
 		}
-		AddMelody(step - real_len - 1, step - 1, svoice, st);
+		AddMelody(step - real_len - 1, step - 1, svoice+1, st);
 	}
 	// Send
 	t_generated = step;
@@ -433,6 +433,51 @@ int CGenCP1::FailVIntervals() {
 	return 0;
 }
 
+void CGenCP1::CalcDpenaltyCP() {
+	dpenalty_cur = 0;
+	for (int z = 0; z < c_len; z++) {
+		int dif = abs(acc_old[av][z] - acc[av][z]);
+		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
+	}
+}
+
+void CGenCP1::SaveCP() {
+	// If rpenalty is same as min, calculate dpenalty
+	if (optimize_dpenalty) {
+		if (rpenalty_cur == rpenalty_min) {
+			CalcDpenaltyCP();
+			// Do not save cantus if it has higher dpenalty
+			if (dpenalty_cur > dpenalty_min) return;
+			// Do not save cantus if it is same as source
+			if (!dpenalty_cur) return;
+			dpenalty_min = dpenalty_cur;
+		}
+		// If rpenalty lowered, clear dpenalty
+		else {
+			dpenalty_min = MAX_PENALTY;
+			dpenalty_cur = MAX_PENALTY;
+		}
+		dpenalty.push_back(dpenalty_cur);
+	}
+	clib.push_back(acc[1]);
+	rpenalty.push_back(rpenalty_cur);
+	rpenalty_min = rpenalty_cur;
+}
+
+void CGenCP1::SaveCPIfRp() {
+	// Is penalty not greater than minimum of all previous?
+	if (rpenalty_cur <= rpenalty_min) {
+		// If rpenalty 0, we can skip_flags (if allowed)
+		if (!skip_flags && rpenalty_cur == 0)
+			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+		// Insert only if cc is unique
+		if (clib_vs.Insert(acc[1]))
+			SaveCP();
+		// Save flags for SWA stuck flags
+		if (rpenalty_cur) best_flags = flags;
+	}
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -502,15 +547,15 @@ check:
 		++accepted;
 		TimeBestRejected();
 		if (method == mScan && task == tCor) {
-			SaveCantus();
+			SaveCP();
 		}
 		else if (method == mSWA && task == tCor) {
-			SaveCantusIfRp();
+			SaveCPIfRp();
 		}
 		else {
 			if (task == tGen && accept_reseed) {
 				if (clib_vs.Insert(acc[1])) {
-					if (SendCantus()) break;
+					if (SendCP()) break;
 					ReseedCP();
 					// Start evaluating without scan
 					goto check;

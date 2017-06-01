@@ -1555,7 +1555,7 @@ void CGenCF1::CalcRpenalty() {
 	rpenalty_cur = 0;
 	for (int x = 0; x < ep2; ++x) {
 		if (anflagsc[av][x] > 0) for (int i = 0; i < anflagsc[av][x]; ++i) if (!accept[anflags[av][x][i]]) {
-			rpenalty_cur += severity[anflags[av][x][i]];
+			rpenalty_cur += severity[anflags[av][x][i]] + 1;
 		}
 	}
 	// Add flags penalty

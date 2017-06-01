@@ -176,8 +176,8 @@ void CGenCA1::CreateScanMatrix(int i) {
 				//if (x > 0 && abs(cantus[i][x - 1] - cantus[i][x]) > 7) pos2 = x + 12;
 				//if (x < c_len - 1 && abs(cantus[i][x + 1] - cantus[i][x]) > 7) pos2 = x + 12;
 				// Do not rescan first and last step
-				if (pos1 < 1) pos1 = 1;
-				if (pos2 > c_len - 2) pos2 = c_len - 2;
+				if (pos1 < 0) pos1 = 0;
+				if (pos2 > c_len - 1) pos2 = c_len - 1;
 				// Set smatrix values
 				for (int z = pos1; z <= pos2; z++) {
 					if (smatrix[z] == 0) smatrixc++;

@@ -7,8 +7,11 @@ public:
 	CGenCA2();
 	~CGenCA2();
 
+	void SWACP(int i, int dp);
+
 	void Generate() override;
 
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
+	void SendCorrectionsCP(int i, milliseconds time_start);
 };
