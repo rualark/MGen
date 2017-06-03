@@ -145,6 +145,8 @@ protected:
 	vector <vector<int>> accepts; // Each 1 allows showing canti with specific properties
 	int rule_set = 0; // id of current rule set
 	vector <CString> FlagName; // Names of all rules
+	vector <CString> FlagGComment; // Comments for flag groups
+	vector <CString> FlagComment; // Comments for flags
 	int max_flags = 82; // Maximum number of rules
 
 	// Parameters

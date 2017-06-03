@@ -14,6 +14,8 @@ CGenCF1::CGenCF1()
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
 	FlagName.resize(MAX_FLAGS);
+	FlagComment.resize(MAX_FLAGS);
+	FlagGComment.resize(MAX_FLAGS);
 	ssf.resize(MAX_FLAGS);
 	severity.resize(MAX_FLAGS);
 	flag_color.resize(MAX_SEVERITY);
@@ -81,8 +83,8 @@ void CGenCF1::LoadRules(CString fname)
 		pos = 0;
 		if (st.Find(";") != -1) {
 			Tokenize(st, ast, ";");
-			if (ast.size() != 7) {
-				est.Format("Wrong line in rules file %s: '%s'", fname, st);
+			if (ast.size() != 9) {
+				est.Format("Wrong column count at line in rules file %s: '%s'", fname, st);
 				WriteLog(1, est);
 				return;
 			}
@@ -104,6 +106,8 @@ void CGenCF1::LoadRules(CString fname)
 			//est.Format("Found rule %s - %d", rule, rid);
 			//WriteLog(1, est);
 			FlagName[rid] = rule;
+			FlagGComment[rid] = ast[7];
+			FlagComment[rid] = ast[8];
 			if (accepts[set].size() < MAX_FLAGS) accepts[set].resize(MAX_FLAGS);
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
@@ -1942,18 +1946,21 @@ int CGenCF1::SendCantus() {
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
+				int fl = anflags[av][x][f];
 				if (!i) {
-					comment[pos][v] += FlagName[anflags[av][x][f]];
+					comment[pos][v] += FlagName[fl];
 					if (show_severity) {
-						st.Format(" [%d]", severity[anflags[av][x][f]]);
+						st.Format(" [%d]", severity[fl]);
 						comment[pos][v] += st;
 					}
+					if (FlagGComment[fl] != "") comment[pos][v] += ". " + FlagGComment[fl];
+					if (FlagComment[fl] != "") comment[pos][v] += ". " + FlagComment[fl];
 					comment[pos][v] += ". ";
 				}
 				// Set note color if this is maximum flag severity
-				if (severity[anflags[av][x][f]] > current_severity) {
-					current_severity = severity[anflags[av][x][f]];
-					color[pos + i][v] = flag_color[severity[anflags[av][x][f]]];
+				if (severity[fl] > current_severity) {
+					current_severity = severity[fl];
+					color[pos + i][v] = flag_color[severity[fl]];
 				}
 			}
 			len[pos + i][v] = cc_len[x];

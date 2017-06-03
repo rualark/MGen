@@ -252,22 +252,25 @@ int CGenCP1::SendCP() {
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
 				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
+					int fl = anflags[av][x][f];
 					if (!i) {
 						st = "+ ";
 						if (!accept[anflags[av][x][f]]) st = "- ";
-						comment[pos][v] += "\n" + st + FlagName[anflags[av][x][f]];
+						comment[pos][v] += "\n" + st + FlagName[fl];
 						if (show_severity) {
-							st.Format(" [%d]", severity[anflags[av][x][f]]);
+							st.Format(" [%d]", severity[fl]);
 							comment[pos][v] += st;
 						}
+						if (FlagGComment[fl] != "") comment[pos][v] += ". " + FlagGComment[fl];
+						if (FlagComment[fl] != "") comment[pos][v] += ". " + FlagComment[fl];
 						comment[pos][v] += ". ";
 					}
 					// Do not show colors for base voice
 					if (av) {
 						// Set note color if this is maximum flag severity
-						if (severity[anflags[av][x][f]] > current_severity) {
-							current_severity = severity[anflags[av][x][f]];
-							color[pos + i][v] = flag_color[severity[anflags[av][x][f]]];
+						if (severity[fl] > current_severity) {
+							current_severity = severity[fl];
+							color[pos + i][v] = flag_color[severity[fl]];
 						}
 					}
 				}
