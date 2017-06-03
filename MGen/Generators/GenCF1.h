@@ -115,7 +115,7 @@ protected:
 	inline void BackWindow(vector<int>& cc);
 	inline int NextSWA();
 	inline void SaveBestRejected();
-	inline int FailMinor();
+	inline int FailMinor(vector<int>& pcc);
 	inline void ShowScanStatus(vector<int>& cc);
 	inline void ReseedCantus();
 	inline void TimeBestRejected();

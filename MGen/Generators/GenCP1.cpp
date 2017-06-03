@@ -515,7 +515,7 @@ check:
 		// Show status
 		if (FailDiatonic(ac[1], acc[1], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[1], acc[1], apc[1], apcc[1], 0, ep2);
-		if (minor_cur && FailMinor()) goto skip;
+		if (minor_cur && FailMinor(apcc[1])) goto skip;
 		//if (MatchVectors(acc[1], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		if (FailLastNotes(apc[1], ep2)) goto skip;

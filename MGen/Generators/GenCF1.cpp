@@ -1699,20 +1699,20 @@ void CGenCF1::SaveBestRejected() {
 	}
 }
 
-int CGenCF1::FailMinor() {
+int CGenCF1::FailMinor(vector<int> &pcc) {
 	for (int i = 1; i < ep2; ++i) {
 		// Prohibit major second up before I (in last steps and other places)
-		if (pcc[i] == 0 && pcc[i - 1] == 10) FLAG2(74, i);
+		if (pcc[i] == 0 && pcc[i - 1] == 10) FLAG2(74, i-1);
 		// Prohibit minor second up before VII - absorbed
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
 		if (pcc[i] == 11 || pcc[i] == 9) {
-			if (pcc[i - 1] == 10 || pcc[i - 1] == 8) FLAG2(75, i);
-			if (i > 1) if (pcc[i - 2] == 10 || pcc[i - 2] == 8) FLAG2(75, i);
+			if (pcc[i - 1] == 10 || pcc[i - 1] == 8) FLAG2(75, i-1);
+			if (i > 1) if (pcc[i - 2] == 10 || pcc[i - 2] == 8) FLAG2(75, i-2);
 			if (i < ep2 - 1) {
-				if (pcc[i + 1] == 10 || pcc[i + 1] == 8) FLAG2(75, i);
+				if (pcc[i + 1] == 10 || pcc[i + 1] == 8) FLAG2(75, i+1);
 				if (i < ep2 - 2)
-					if (pcc[i + 2] == 10 || pcc[i + 2] == 8) FLAG2(75, i);
+					if (pcc[i + 2] == 10 || pcc[i + 2] == 8) FLAG2(75, i+2);
 			}
 		}
 		// Prohibit unresolved minor tritone DG# (direct or with inserted note)
@@ -2292,7 +2292,7 @@ check:
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(c, cc, pc, pcc, 0, ep2);
-		if (minor_cur && FailMinor()) goto skip;
+		if (minor_cur && FailMinor(pcc)) goto skip;
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		if (FailLastNotes(pc, ep2)) goto skip;
