@@ -215,6 +215,7 @@
     <ClInclude Include="midifile\MidiFile.h" />
     <ClInclude Include="midifile\MidiMessage.h" />
     <ClInclude Include="MsgDlg.h" />
+    <ClInclude Include="MyVisualManagerOffice2007.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="portmidi\pminternal.h" />
     <ClInclude Include="portmidi\pmutil.h" />
@@ -258,6 +259,7 @@
     <ClCompile Include="midifile\MidiFile.cpp" />
     <ClCompile Include="midifile\MidiMessage.cpp" />
     <ClCompile Include="MsgDlg.cpp" />
+    <ClCompile Include="MyVisualManagerOffice2007.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="portmidi\pmutil.c" />
     <ClCompile Include="portmidi\pmwin.c" />
