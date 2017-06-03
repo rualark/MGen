@@ -369,7 +369,7 @@ void CGenCP1::ReseedCP()
 }
 
 int CGenCP1::FailVIntervals() {
-	int pco_count = 0;
+	int pico_count = 0;
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = abs(ac[1][i] - ac[0][i]);
@@ -428,12 +428,16 @@ int CGenCP1::FailVIntervals() {
 		}
 		// Long parallel ico
 		if (tivl[i] == iIco && ivl[i] == ivl[i - 1]) {
-			++pco_count;
-			if (pco_count > 3) {
+			++pico_count;
+			// Two same ico transitions means three intervals already
+			if (pico_count == 2) {
 				FLAG2(89, i)
 			}
+			else if (pico_count > 2) {
+				FLAG2(96, i)
+			}
 		}
-		else pco_count = 0;
+		else pico_count = 0;
 	}
 	return 0;
 }
