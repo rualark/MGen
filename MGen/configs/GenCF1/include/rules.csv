@@ -62,7 +62,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;18;0;Cantus;Harmony;Missing letters in a row (4);1
 1;19;30;Cantus;Harmony;Missing letters in a row (5);0
 1;20;70;Cantus;Harmony;Missing letters in a row (>5);0
-1;48;30;Cantus;Harmony;Early cadence (G-C);0
+1;48;30;Cantus;Harmony;Early cadence (G-C);1
 1;77;30;Cantus;Harmony;Subdominant after (dominant);0
 1;52;70;Cantus;Border;Start steps tonic (unprepared);-1
 1;40;70;Cantus;Border;Start steps tonic (no C);-1
@@ -155,7 +155,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;18;0;Cantus;Harmony;Missing letters in a row (4);1
 2;19;30;Cantus;Harmony;Missing letters in a row (5);0
 2;20;70;Cantus;Harmony;Missing letters in a row (>5);0
-2;48;30;Cantus;Harmony;Early cadence (G-C);0
+2;48;30;Cantus;Harmony;Early cadence (G-C);1
 2;77;30;Cantus;Harmony;Subdominant after (dominant);0
 2;52;70;Cantus;Border;Start steps tonic (unprepared);-1
 2;40;70;Cantus;Border;Start steps tonic (no C);-1
@@ -182,3 +182,6 @@ Set;Severity;Class;Group;Rule;Flag
 2;90;60;Cantus;Counterpoint;First note (not GC);0
 2;91;60;Cantus;Counterpoint;Unison (inside);0
 2;92;60;Cantus;Counterpoint;Unison (direct exit);0
+2;93;60;Cantus;Counterpoint;Slurs (1);1
+2;94;50;Cantus;Counterpoint;Slurs (2);0
+2;95;50;Cantus;Counterpoint;Slurs (>2);0
