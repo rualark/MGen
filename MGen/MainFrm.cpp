@@ -19,6 +19,7 @@
 #include "AlgoDlg.h"
 #include "MGenView.h"
 #include "MFIDialog.h"
+#include "MyVisualManagerOffice2007.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -391,7 +392,7 @@ void CMainFrame::OnApplicationLook(UINT id)
 			break;
 		}
 
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMyVisualManagerOffice2007));
 		CDockingManager::SetDockingMode(DT_SMART);
 		m_wndRibbonBar.SetWindows7Look(FALSE);
 	}
