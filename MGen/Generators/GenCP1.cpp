@@ -253,7 +253,9 @@ int CGenCP1::SendCP() {
 				minor[pos + i][v] = minor_cur;
 				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 					if (!i) {
-						comment[pos][v] += FlagName[anflags[av][x][f]];
+						st = "+ ";
+						if (!accept[anflags[av][x][f]]) st = "- ";
+						comment[pos][v] += "\n" + st + FlagName[anflags[av][x][f]];
 						if (show_severity) {
 							st.Format(" [%d]", severity[anflags[av][x][f]]);
 							comment[pos][v] += st;
