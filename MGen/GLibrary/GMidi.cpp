@@ -24,7 +24,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	MidiFile midifile;
 	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
 	int tpq = 120;                // ticks per quarter note
-	int tpñ = 60 * midifile_out_mul; // ticks per croche
+	int tpc = 60 * midifile_out_mul; // ticks per croche
 	midifile.setTicksPerQuarterNote(tpq);
 	int track = 0;
 	int channel = 0;
@@ -34,7 +34,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	// Save tempo
 	midifile.addTempo(track, 0, tempo[0]);
 	for (int i = 0; i < t_generated; i++) {
-		midifile.addTempo(track, (tpq * 4) + tpñ * i, tempo[i]);
+		midifile.addTempo(track, (tpq * 4) + tpc * i, tempo[i]);
 	}
 	// Save notes
 	for (int v = 0; v < v_cnt; v++) {
@@ -47,17 +47,17 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 		midifile.addTrackName(track, 0, st);
 		midifile.addPatchChange(track, 0, channel, 0); // 40=violin
 		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
-			midifile.addNoteOn(track, (tpq * 4) + tpñ*i, channel, note[i][v], dyn[i][v]);
-			midifile.addNoteOff(track, (tpq * 4) + tpñ*(i + len[i][v]) - 1, channel, note[i][v], 0);
+			midifile.addNoteOn(track, (tpq * 4) + tpc*i, channel, note[i][v], dyn[i][v]);
+			midifile.addNoteOff(track, (tpq * 4) + tpc*(i + len[i][v]) - 1, channel, note[i][v], 0);
 			if (midifile_export_comments && comment[i][v] != "") {
 				string st;
 				st = comment[i][v];
-				midifile.addLyric(track, (tpq * 4) + tpñ*i, st);
+				midifile.addLyric(track, (tpq * 4) + tpc*i, st);
 			}
 			if (midifile_export_marks && mark[i][v] != "") {
 				string st;
 				st = mark[i][v];
-				midifile.addLyric(track, (tpq * 4) + tpñ*i, st);
+				midifile.addLyric(track, (tpq * 4) + tpc*i, st);
 			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
