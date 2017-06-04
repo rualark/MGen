@@ -74,8 +74,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;13;30;Cantus;Border;2nd to last note (not GBD);-1;;Rule for Lower cantus
 1;23;0;Cantus;Border;Leap (last);-1;;
 1;74;60;Cantus;Minor;Unaltered VII (before Im);0;;
-1;75;60;Cantus;Minor;Unaltered near altered (m);0;;
-1;99;100;Cantus;Minor;Unaltered near altered (tight);0;;
+1;75;60;Cantus;Minor;Unaltered near altered (1-2 steps);0;;
 1;80;0;Cantus;Counterpoint;Perfect consonance (downbeat);0;;
 1;81;60;Cantus;Counterpoint;Perfect consonance (culmination);0;;
 1;82;60;Cantus;Counterpoint;Perfect consonance (db. culm.);0;;
@@ -171,8 +170,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;13;30;Cantus;Border;2nd to last note (not GBD);-1;;Rule for Lower cantus
 2;23;0;Cantus;Border;Leap (last);-1;;
 2;74;60;Cantus;Minor;Unaltered VII (before Im);0;;
-2;75;60;Cantus;Minor;Unaltered near altered (m);0;;
-2;99;100;Cantus;Minor;Unaltered near altered (tight);0;;
+2;75;60;Cantus;Minor;Unaltered near altered (1-2 steps);0;;
 2;80;0;Cantus;Counterpoint;Perfect consonance (downbeat);0;;
 2;81;60;Cantus;Counterpoint;Perfect consonance (culmination);0;;
 2;82;60;Cantus;Counterpoint;Perfect consonance (db. culm.);0;;
