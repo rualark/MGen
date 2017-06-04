@@ -20,6 +20,7 @@ random_key = 0 # Select any of possible keys regardless of last note
 # Main parameters
 interval = 0-11 # Minimum-maximum diatonic interval between voices (7 = octave)
 cantus_high = 0 # Set to 1 to generate counterpoint under cantus
+slurs_window = 10 # Number of steps to check for slur limit
 
 # Technical parameters
 midifile_in_mul = 0.5 # Multiply note length with this value when loading
