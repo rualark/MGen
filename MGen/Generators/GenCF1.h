@@ -212,6 +212,7 @@ protected:
 
   // Local
 	int av; // Current counterpoint voice
+	int av2; // Current cantus voice
 	int av_cnt = 1; // Number of voices in counterpoint
 	int seed_cycle, reseed_count;
 	long cantus_ignored = 0; // How many canti ignored and not sent

@@ -234,6 +234,7 @@ void CGenCA2::Generate() {
 		FillPause(step, real_len, 2);
 		FillPause(step, real_len, 3);
 		av = 0;
+		av2 = 1;
 		ScanCantus(tEval, 0, &(cpoint[i][0]));
 		// Show cantus id
 		st.Format("Counterpoint %d. ", cantus_id + 1);
@@ -251,6 +252,7 @@ void CGenCA2::Generate() {
 		dpenalty_cur = 0;
 		scpoint = cpoint[i];
 		av = 1;
+		av2 = 0;
 		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown

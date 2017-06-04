@@ -580,7 +580,7 @@ int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2,
 		for (int i = step12; i < step2; ++i) {
 			c[i] = m_CC_C(cc[i], tonic_cur);
 			// Check if diatonic step is the same
-			if (c[i] == c[i - 1]) return 1;
+			if (c[i] == c[i - 1]) FLAG2(99, i);
 		}
 	}
 	else {

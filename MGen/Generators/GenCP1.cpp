@@ -489,13 +489,27 @@ void CGenCP1::SaveCPIfRp() {
 
 // Detect repeating notes. Step2 excluding
 int CGenCP1::FailSlurs(vector<int> &c, int step1, int step2) {
+  // Number of sequential slurs 
 	int scount = 0;
+	// Number of slurs in window
+	int scount2 = 0;
 	for (int i = step1; i < step2; ++i) {
 		if (c[i] == c[i + 1]) {
+		  // Check simultaneous slurs
+			if (ac[av2][i] == ac[av2][i + 1]) {
+				FLAG2(98, i);
+			}
+			// Check first slur
 			FLAG2(93, i);
+			// Check slurs sequence
 			++scount;
-			if (scount > 1) FLAG2(94, i)
-			else if (scount > 2) FLAG2(95, i);
+			if (scount > 1) FLAG2(97, i);
+			// Check slurs in window
+			++scount2;
+			// Subtract old slur
+			if ((i >= slurs_window) && (c[i] == c[i + 1])) --scount2;
+			if (scount2 > 1) FLAG2(94, i)
+			else if (scount2 > 2) FLAG2(95, i);
 		}
 		else scount = 0;
 	}
@@ -686,5 +700,6 @@ void CGenCP1::Generate() {
 	// Generate second voice
 	rpenalty_cur = MAX_PENALTY;
 	av = 1;
+	av2 = 0;
 	ScanCP(tGen, 0);
 }
