@@ -633,7 +633,7 @@ void CGMidi::LoadCP(CString path)
 				int pos = round(mev->tick / (float)tpc);
 				float nlen2 = mev->getTickDuration();
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
-				if (pos != pos_old && inter.size()) {
+				if (pos != pos_old && inter.size()) { 
 					if (hid > 1) {
 						// Find slurred notes
 						for (int i = 0; i < inter[hid-2].size(); ++i) {
@@ -706,6 +706,8 @@ void CGMidi::LoadCP(CString path)
 					bad = 1;
 				}
 				if (pos != pos_old) {
+					// Save old len
+					if (hid > 0) cl[hid-1] = min_len[hid-1];
 					hid++;
 					inter.resize(hid);
 					cl.push_back(nlen);
