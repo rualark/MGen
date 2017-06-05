@@ -1988,7 +1988,9 @@ int CGenCF1::SendCantus() {
 			if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 				int fl = anflags[av][x][f];
 				if (!i) {
-					comment[pos][v] += FlagName[fl];
+					st = "+ ";
+					if (!accept[fl]) st = "- ";
+					comment[pos][v] += "\n" + st + FlagName[fl];
 					if (show_severity) {
 						st.Format(" [%d]", severity[fl]);
 						comment[pos][v] += st;
