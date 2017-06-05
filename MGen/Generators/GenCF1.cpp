@@ -902,7 +902,7 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 	}
 	// Check that fill does not deviate
 	deviates = 0;
-	ffinished = 1;
+	ffinished = 2;
 	after3 = 0;
 	if (pre) {
 		int pos3 = leap_finish - 2;
@@ -978,6 +978,11 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 		if (!nstat3[c3]) after3 = 1;
 		// Check if fill is finished
 		if (!nstat3[c4] && !nstat3[c[leap_start]]) ffinished = 0;
+		// Check prepared unfinished fill
+		if (!ffinished) {
+			int pos = max(0, leap_start - 2);
+			for (int x = pos; x < leap_start; ++x) if (c[x] == c4) ffinished = 1;
+		}
 	}
 }
 
@@ -1050,7 +1055,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					if (pos > ep2 - 1) pos = ep2 - 1;
 					CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 0, after3, deviates);
 					// Local not filled?
-					if (skips > 0 || (!ffinished && !accept[33]) || (after3 && !accept[33]) || (deviates && !accept[33])) {
+					if (skips > 0 || (!ffinished && !accept[33]) || (ffinished==1 && !accept[33]) || (after3 && !accept[33]) || (deviates && !accept[33])) {
 						// Local not filled. Prefilled?
 						if (prefilled) {
 							if (leap_size == 2) FLAG2(61, i)
@@ -1082,6 +1087,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					}
 					// Flag unfinished fill if it is not blocking
 					if (!ffinished && accept[33] > 0) FLAG2(33, i);
+					// Flag prepared unfinished fill if it is not blocking
+					if (ffinished==1 && accept[33] > 0) FLAG2(33, i);
 					// Flag after 3rd if it is not blocking
 					if (after3 && accept[33] > 0) FLAG2(33, i);
 					// Flag flag deviation if it is not blocking
