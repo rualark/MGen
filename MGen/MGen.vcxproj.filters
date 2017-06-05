@@ -168,11 +168,11 @@
     <ClInclude Include="GLibrary\VSet.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
-    <ClInclude Include="Generators\GenCA2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MyVisualManagerOffice2007.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\GenCA2.h">
+      <Filter>Header Files\Generators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -290,11 +290,11 @@
     <ClCompile Include="GLibrary\VSet.cpp">
       <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
-    <ClCompile Include="Generators\GenCA2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MyVisualManagerOffice2007.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenCA2.cpp">
+      <Filter>Source Files\Generators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

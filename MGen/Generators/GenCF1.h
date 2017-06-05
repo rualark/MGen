@@ -92,7 +92,7 @@ protected:
 	inline int FailMultiCulm(vector<int>& cc, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
-	inline void CountFill(vector<int>& c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & ffinished, int pre);
+	inline void CountFill(vector<int>& c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & ffinished, int pre, int & after3, int & deviates);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailIntervals(int ep2, vector<int>& c, vector<int>& cc, vector<int>& pc);
 	inline void GlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
