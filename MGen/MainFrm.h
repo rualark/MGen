@@ -209,4 +209,5 @@ public:
 	afx_msg void OnCheckNcolors();
 	afx_msg void OnUpdateCheckNcolors(CCmdUI *pCmdUI);
 	afx_msg void OnButtonErules();
+	afx_msg void OnButtonSstatus2();
 };
