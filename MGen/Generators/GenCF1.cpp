@@ -1158,9 +1158,6 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			else if (mdc1*mdc2) FLAG2(136 + leap_id, i)
 		}
 	}
-	// Prohibit last leap
-	if (ep2 == c_len)
-		if (leap[c_len - 2]) FLAG2(23, c_len - 1);
 	return 0;
 }
 
