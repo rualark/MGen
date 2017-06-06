@@ -77,14 +77,14 @@ Set;Severity;Class;Group;Rule;Flag
 1;32;100;Melody;Tritone;Tritone (on climax);0;;
 1;38;0;Melody;Range;Out of range (tight);-1;;
 1;37;70;Melody;Range;Out of range (wide);0;;
-1;15;0;Cantus;Harmony;Repeating letters in a row (3);1;;
-1;16;30;Cantus;Harmony;Repeating letters in a row (4);0;;
-1;17;70;Cantus;Harmony;Repeating letters in a row (>4);0;;
-1;18;0;Cantus;Harmony;Missing letters in a row (4);1;;
-1;19;30;Cantus;Harmony;Missing letters in a row (5);0;;
-1;20;70;Cantus;Harmony;Missing letters in a row (>5);0;;
+1;15;0;Cantus;Harmony;Repeating letters in a row (3);-1;;
+1;16;30;Cantus;Harmony;Repeating letters in a row (4);-1;;
+1;17;70;Cantus;Harmony;Repeating letters in a row (>4);-1;;
+1;18;0;Cantus;Harmony;Missing letters in a row (4);-1;;
+1;19;30;Cantus;Harmony;Missing letters in a row (5);-1;;
+1;20;70;Cantus;Harmony;Missing letters in a row (>5);-1;;
 1;48;30;Cantus;Harmony;Early cadence (G-C);1;;G note goes to C note before final cadence
-1;77;30;Cantus;Harmony;Subdominant after (dominant);0;;
+1;77;30;Cantus;Harmony;Subdominant after (dominant);-1;;
 1;52;70;Cantus;Border;Start steps tonic (unprepared);-1;;
 1;40;70;Cantus;Border;Start steps tonic (no C);-1;;
 1;41;70;Cantus;Border;Start steps tonic (no E);-1;;

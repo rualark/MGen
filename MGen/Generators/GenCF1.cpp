@@ -911,24 +911,32 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 			int npoint = c[leap_start];
 			if (c[leap_finish] > c[leap_start]) {
 				// Get note point
-				if (c[leap_start - 1] < npoint) npoint = c[leap_start - 1];
+				//if (c[leap_start - 1] < npoint) npoint = c[leap_start - 1];
 				// Detect deviation below note point
 				for (int x = fill_finish+1; x <= pos3; ++x)
 					if (c[x] < npoint) {
 					  // Unfilled if deviation is far
-					  if (c[x] < npoint - 1) skips2 += 10;
+					  if (c[x] < npoint - 1) {
+							skips += 10;
+							deviates = 0;
+							break;
+						}
 						// Just deviateion if only one second
 						else deviates = 1;
 					}
 			}
 			else {
 				// Get note point
-				if (c[leap_start - 1] > npoint) npoint = c[leap_start - 1];
+				//if (c[leap_start - 1] > npoint) npoint = c[leap_start - 1];
 				// Detect deviation below note point
 				for (int x = fill_finish + 1; x <= pos3; ++x)
 					if (c[x] > npoint) {
 					  // Unfilled if deviation is far
-					  if (c[x] > npoint + 1) skips2 += 10;
+					  if (c[x] > npoint + 1) {
+							skips += 10;
+							deviates = 0;
+							break;
+						}
 						// Just deviateion if only one second
 						else deviates = 1;
 					}
@@ -943,24 +951,32 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 			int npoint = c[leap_finish];
 			if (c[leap_finish] < c[leap_start]) {
 				// Get note point
-				if (c[leap_finish + 1] < npoint) npoint = c[leap_finish + 1];
+				//if (c[leap_finish + 1] < npoint) npoint = c[leap_finish + 1];
 				// Detect deviation below note point
 				for (int x = pos3; x < fill_finish; ++x)
 					if (c[x] < npoint) {
 					  // Unfilled if deviation is far
-					  if (c[x] < npoint - 1) skips2 += 10;
+						if (c[x] < npoint - 1) {
+							skips += 10;
+							deviates = 0;
+							break;
+						}
 						// Just deviateion if only one second
 						else deviates = 1;
 					}
 			}
 			else {
 				// Get note point
-				if (c[leap_finish + 1] > npoint) npoint = c[leap_finish + 1];
+				//if (c[leap_finish + 1] > npoint) npoint = c[leap_finish + 1];
 				// Detect deviation below note point
 				for (int x = pos3; x < fill_finish; ++x)
 					if (c[x] > npoint) {
 						// Unfilled if deviation is far
-						if (c[x] > npoint + 1) skips2 += 10;
+						if (c[x] > npoint + 1) {
+							skips += 10;
+							deviates = 0;
+							break;
+						}
 						// Just deviateion if only one second
 						else deviates = 1;
 					}
@@ -1133,7 +1149,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			}
 			if (i < ep2 - 2) {
 				// Check if  leap is filled
-				pos = i + 2 + (leap_size - 1) * fill_steps_mul;
+				pos = i + 3 + (leap_size - 1) * fill_steps_mul;
 				// Do not check fill if search window is cut by end of current not-last scan window
 				if ((pos < ep2) || (c_len == ep2)) {
 					if (pos > ep2 - 1) pos = ep2 - 1;
@@ -1150,16 +1166,16 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 						// Local not filled. Not prefilled. Not preleaped. Global not filled.
 						else FLAG2(124+leap_id, i);
 					}
+					// Flag leap back compensated to 3rd
+					if (leap_prev < 0 && to3) FLAG2(108 + leap_id, i)
 					// Flag unfinished fill if it is not blocking
-					if (to3==2 && accept[100 + leap_id] > 0) FLAG2(100 + leap_id, i);
+					else if (to3==2 && accept[100 + leap_id] > 0) FLAG2(100 + leap_id, i)
 					// Flag prepared unfinished fill if it is not blocking
-					if (to3==1 && accept[104 + leap_id] > 0) FLAG2(104 + leap_id, i);
+					else if (to3==1 && accept[104 + leap_id] > 0) FLAG2(104 + leap_id, i);
 					// Flag after 3rd if it is not blocking
 					if (after3 && accept[53 + leap_id] > 0) FLAG2(53 + leap_id, i);
 					// Flag flag deviation if it is not blocking
 					if (deviates && accept[42 + leap_id] > 0) FLAG2(42 + leap_id, i);
-					// Flag leap back compensated to 3rd
-					if (leap_prev < 0 && to3) FLAG2(108 + leap_id, i);
 				}
 			}
 		}
