@@ -1085,9 +1085,9 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 						else FLAG2(124+leap_id, i);
 					}
 					// Flag unfinished fill if it is not blocking
-					if (to3==2 && accept[104 + leap_id] > 0) FLAG2(104 + leap_id, i);
+					if (to3==2 && accept[100 + leap_id] > 0) FLAG2(100 + leap_id, i);
 					// Flag prepared unfinished fill if it is not blocking
-					if (to3==1 && accept[100 + leap_id] > 0) FLAG2(100 + leap_id, i);
+					if (to3==1 && accept[104 + leap_id] > 0) FLAG2(104 + leap_id, i);
 					// Flag after 3rd if it is not blocking
 					if (after3 && accept[53 + leap_id] > 0) FLAG2(53 + leap_id, i);
 					// Flag flag deviation if it is not blocking
