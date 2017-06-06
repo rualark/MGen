@@ -256,7 +256,7 @@ int CGenCP1::SendCP() {
 					int fl = anflags[av][x][f];
 					if (!i) {
 						st = "+ ";
-						if (!accept[anflags[av][x][f]]) st = "- ";
+						if (!accept[fl]) st = "- ";
 						comment[pos][v] += "\n" + st + FlagName[fl];
 						if (show_severity) {
 							st.Format(" [%d]", severity[fl]);

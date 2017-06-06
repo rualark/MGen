@@ -846,7 +846,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 	return 0;
 }
 
-void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &ffinished, int pre, int &after3, int &deviates)
+void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &to3, int pre, int &after3, int &deviates)
 {
 	int leap_finish = i + 1;
 	if (pos2 < pos1) pos2 = pos1;
@@ -902,7 +902,7 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 	}
 	// Check that fill does not deviate
 	deviates = 0;
-	ffinished = 1;
+	to3 = 0;
 	after3 = 0;
 	if (pre) {
 		int pos3 = leap_finish - 2;
@@ -969,15 +969,36 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 	}
 	if (pre) {
 		// Check if fill start is after 3rd
-		if (!nstat3[c4]) after3 = 1;
+		if (!nstat3[c4]) {
+			if (nstat3[c6]) after3 = 1;
+			// If fill is finished further than 3rd, fill is incorrect
+			else skips += 10;
+		}
 		// Check if fill is finished
-		if (!nstat3[c3] && !nstat3[c[leap_finish]]) ffinished = 0;
+		if (!nstat3[c3] && !nstat3[c[leap_finish]]) {
+			if (nstat3[c5]) to3 = 1;
+			// If fill is finished further than 3rd, fill is incorrect
+			else skips += 10;
+		}
 	}
 	else {
 		// Check if fill start is after 3rd
-		if (!nstat3[c3]) after3 = 1;
+		if (!nstat3[c3]) {
+			if (nstat3[c5]) after3 = 1;
+			// If fill is finished further than 3rd, fill is incorrect
+			else skips += 10;
+		}
 		// Check if fill is finished
-		if (!nstat3[c4] && !nstat3[c[leap_start]]) ffinished = 0;
+		if (!nstat3[c4] && !nstat3[c[leap_start]]) {
+			if (nstat3[c6]) to3 = 1;
+			// If fill is finished further than 3rd, fill is incorrect
+			else skips += 10;
+		}
+		// Check prepared unfinished fill
+		if (to3) {
+			int pos = max(0, leap_start - 2);
+			for (int x = pos; x < leap_start; ++x) if (c[x] == c4) to3 = 2;
+		}
 	}
 }
 
@@ -988,12 +1009,12 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int preleap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
-	int skips, skips2, pos, ffinished, after3, deviates, leap_id, mdc1, mdc2;
+	int skips, skips2, pos, to3, after3, deviates, leap_id, mdc1, mdc2;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
 			// Check if this leap is 3rd
 			leap_size = abs(c[i + 1] - c[i]);
-			leap_id = min(leap_size-2, 4);
+			leap_id = min(leap_size - 2, 3);
 			leap_start = i; // First step of leap
 			leap_end = i+1; // Last step of leap
 			preleap = 0; // If we have a preleap
@@ -1022,8 +1043,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				}
 			}
 			// Check if we have a greater neighbouring leap
-			if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size) ||
-				(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size)) {
+			if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size && leap[i]*leap[i+1]<0) ||
+				(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i + 1]<0)) {
 				// Set that we are preleaped (even if we are postleaped)
 				preleap = 1;
 			}
@@ -1031,15 +1052,15 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Check if  leap is prefilled
 				pos = i - 2 - (leap_size - 1) * fill_steps_mul;
 				if (pos < 0) pos = 0;
-				CountFill(c, i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 1, after3, deviates);
+				CountFill(c, i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 1, after3, deviates);
 				// Do we have not too many skips?
 				if (skips <= 0) {
 				  // Is fill non deviated or deviated fill allowed?
-					if ((!deviates || accept[33])
+					if ((!deviates || accept[42+leap_id])
 					// Is fill started or unstarted fill allowed?
-					&& (!after3 || accept[33]) 
+					&& (!after3 || accept[53+leap_id]) 
 					// Is fill finished or unfinished fill allowed?
-					&& (ffinished || accept[33])) prefilled = 1;
+					&& (!to3 || accept[104+leap_id])) prefilled = 1;
 				}
 			}
 			if (i < ep2 - 2) {
@@ -1048,44 +1069,27 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Do not check fill if search window is cut by end of current not-last scan window
 				if ((pos < ep2) || (c_len == ep2)) {
 					if (pos > ep2 - 1) pos = ep2 - 1;
-					CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, ffinished, 0, after3, deviates);
+					CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 0, after3, deviates);
 					// Local not filled?
-					if (skips > 0 || (!ffinished && !accept[33]) || (after3 && !accept[33]) || (deviates && !accept[33])) {
+					if (skips > 0 || (to3==2 && !accept[104+leap_id]) || (to3==1 && !accept[100 + leap_id]) ||
+						(after3 && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
 						// Local not filled. Prefilled?
-						if (prefilled) {
-							if (leap_size == 2) FLAG2(61, i)
-							else if (leap_size == 3) FLAG2(62, i)
-							else if (leap_size == 4) FLAG2(62, i)
-							else FLAG2(63, i);
-						}
+						if (prefilled) FLAG2(112+leap_id, i)
 						// Local not filled. Not prefilled. Preleaped?
-						else if (preleap) {
-							if (leap_size == 2) FLAG2(61, i)
-							else if (leap_size == 3) FLAG2(62, i)
-							else if (leap_size == 4) FLAG2(62, i)
-							else FLAG2(63, i);
-						}
+						else if (preleap) FLAG2(116+leap_id, i)
 						// Local not filled. Not prefilled. Not preleaped. Global filled?
-						else if (skips2 <= 0) {
-							if (leap_size == 2) FLAG2(61, i)
-							else if (leap_size == 3) FLAG2(62, i)
-							else if (leap_size == 4) FLAG2(62, i)
-							else FLAG2(63, i);
-						}
+						else if (skips2 <= 0) FLAG2(120+leap_id, i)
 						// Local not filled. Not prefilled. Not preleaped. Global not filled.
-						else {
-							if (leap_size == 2) FLAG2(61, i)
-							else if (leap_size == 3) FLAG2(62, i)
-							else if (leap_size == 4) FLAG2(62, i)
-							else FLAG2(63, i);
-						}
+						else FLAG2(124+leap_id, i);
 					}
 					// Flag unfinished fill if it is not blocking
-					if (!ffinished && accept[33] > 0) FLAG2(33, i);
+					if (to3==2 && accept[104 + leap_id] > 0) FLAG2(104 + leap_id, i);
+					// Flag prepared unfinished fill if it is not blocking
+					if (to3==1 && accept[100 + leap_id] > 0) FLAG2(100 + leap_id, i);
 					// Flag after 3rd if it is not blocking
-					if (after3 && accept[33] > 0) FLAG2(33, i);
+					if (after3 && accept[53 + leap_id] > 0) FLAG2(53 + leap_id, i);
 					// Flag flag deviation if it is not blocking
-					if (deviates && accept[33] > 0) FLAG2(33, i);
+					if (deviates && accept[42 + leap_id] > 0) FLAG2(42 + leap_id, i);
 				}
 			}
 			mdc1 = 2;
@@ -1134,35 +1138,20 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				}
 				// Next leap back
 				else if (leap_next < 0) {
-					// Flag if back leap greater than 6th
 					int leap_size2 = abs(c[i + 2] - c[i + 1]);
+					// Flag if back leap greater than 6th
 					if (leap_size2 > 5) FLAG2(22, i + 1)
-						// Flag if back leap equal or smaller than 6th
+					// Flag if back leap equal or smaller than 6th
 					else FLAG2(8, i + 1);
 					if (leap_size2 > leap_size) FLAG2(58, i + 1);
 				}
 			}
 			// Close+far
-			if (mdc1 + mdc2 == 1) {
-				if (leap_size == 2) FLAG2(61, i)
-				else if (leap_size == 3) FLAG2(62, i)
-				else if (leap_size == 4) FLAG2(62, i)
-				else FLAG2(63, i);
-			}
+			if (mdc1 + mdc2 == 1) FLAG2(128+leap_id, i)
 			// Close+no
-			else if (mdc1 + mdc2 == 2 && mdc1*mdc2 == 0) {
-				if (leap_size == 2) FLAG2(61, i)
-				else if (leap_size == 3) FLAG2(62, i)
-				else if (leap_size == 4) FLAG2(62, i)
-				else FLAG2(63, i);
-			}
+			else if (mdc1 + mdc2 == 2 && mdc1*mdc2 == 0) FLAG2(132 + leap_id, i)
 			// No close
-			else if (mdc1*mdc2) {
-				if (leap_size == 2) FLAG2(61, i)
-				else if (leap_size == 3) FLAG2(62, i)
-				else if (leap_size == 4) FLAG2(62, i)
-				else FLAG2(63, i);
-			}
+			else if (mdc1*mdc2) FLAG2(136 + leap_id, i)
 		}
 	}
 	// Prohibit last leap
@@ -1227,7 +1216,7 @@ void CGenCF1::ScanCantusInit() {
 	anflags.resize(av_cnt);
 	anflagsc.resize(av_cnt);
 	for (int i = 0; i < av_cnt; ++i) {
-		anflags[i].resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
+		anflags[i].resize(c_len, vector<int>(max_flags)); // Flags for each note
 		anflagsc[i].resize(c_len); // number of flags for each note
 	}
 	c.resize(c_len); // cantus (diatonic)
@@ -2015,7 +2004,9 @@ int CGenCF1::SendCantus() {
 			if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 				int fl = anflags[av][x][f];
 				if (!i) {
-					comment[pos][v] += FlagName[fl];
+					st = "+ ";
+					if (!accept[fl]) st = "- ";
+					comment[pos][v] += "\n" + st + FlagName[fl];
 					if (show_severity) {
 						st.Format(" [%d]", severity[fl]);
 						comment[pos][v] += st;
