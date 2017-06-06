@@ -1022,6 +1022,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			presecond = 0; // If leap has a filled second
 			leap_next = 0; // Multiply consecutive leaps
 			leap_prev = 0; // Multiply consecutive leaps
+			overflow = 0; // Leap back overflow
 			// Next is leap?
 			if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
 			// Prev is leap?
