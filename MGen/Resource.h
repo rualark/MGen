@@ -84,7 +84,6 @@
 #define ID_CHECK2                       32797
 #define ID_BUTTON_EPARAMS               32798
 #define ID_CHECK_OUTPUTWND              32799
-#define ID_BUTTON2                      32800
 #define ID_BUTTON_ERULES                32800
 #define ID_BUTTON_SETTINGS_EDIT         32801
 #define ID_BUTTON_HZOOM_INC             32802
@@ -125,13 +124,15 @@
 #define ID_OINFO7                       32839
 #define ID_OINFO8                       32840
 #define ID_OINFO9                       32841
+#define ID_BUTTON_SSTATUS2              32842
+#define ID_BUTTON_SHOW_STATUS           32843
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32842
+#define _APS_NEXT_COMMAND_VALUE         32843
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

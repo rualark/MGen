@@ -20,6 +20,7 @@
 #include "MGenView.h"
 #include "MFIDialog.h"
 #include "MyVisualManagerOffice2007.h"
+#include "MsgDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -102,6 +103,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_CHECK_NCOLORS, &CMainFrame::OnCheckNcolors)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_NCOLORS, &CMainFrame::OnUpdateCheckNcolors)
 	ON_COMMAND(ID_BUTTON_ERULES, &CMainFrame::OnButtonErules)
+	ON_COMMAND(ID_BUTTON_SSTATUS2, &CMainFrame::OnButtonSstatus2)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1423,4 +1425,31 @@ void CMainFrame::OnUpdateCheckNcolors(CCmdUI *pCmdUI) {
 void CMainFrame::OnButtonErules()
 {
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "configs\\GenCF1\\include\\rules.xlsm", NULL, NULL, SW_SHOWNORMAL);
+}
+
+void CMainFrame::OnButtonSstatus2()
+{
+	CString st;
+	CMFCRibbonEdit* pEdit;
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO));
+	st += "1. " + pEdit->GetEditText() + "\n";
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO2));
+	st += "2. " + pEdit->GetEditText() + "\n";
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO3));
+	st += "3. " + pEdit->GetEditText() + "\n";
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO4));
+	st += "4. " + pEdit->GetEditText() + "\n";
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO5));
+	st += "5. " + pEdit->GetEditText() + "\n";
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO6));
+	st += "6. " + pEdit->GetEditText() + "\n";
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO7));
+	st += "7. " + pEdit->GetEditText() + "\n";
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO8));
+	st += "8. " + pEdit->GetEditText() + "\n";
+	pEdit = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_OINFO9));
+	st += "9. " + pEdit->GetEditText() + "\n";
+	CMsgDlg dlg;
+	dlg.m_text = st;
+	dlg.DoModal();
 }
