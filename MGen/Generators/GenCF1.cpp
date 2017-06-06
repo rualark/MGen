@@ -1022,6 +1022,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			presecond = 0; // If leap has a filled second
 			leap_next = 0; // Multiply consecutive leaps
 			leap_prev = 0; // Multiply consecutive leaps
+			// Next is leap?
+			if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
 			// Prev is leap?
 			if (i > 0) leap_prev = leap[i] * leap[i - 1];
 			// Check preleap (current leap does not exceed previous close leap: tight or 1-2 step far; only 1 step far if 2x3rds)
@@ -1090,6 +1092,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					if (after3 && accept[53 + leap_id] > 0) FLAG2(53 + leap_id, i);
 					// Flag flag deviation if it is not blocking
 					if (deviates && accept[42 + leap_id] > 0) FLAG2(42 + leap_id, i);
+					// Flag leap back compensated to 3rd
+					if (leap_prev < 0 && to3) FLAG2(108 + leap_id, i);
 				}
 			}
 			mdc1 = 2;
@@ -1129,7 +1133,6 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					}
 				}
 				else mdc2 = 0;
-				leap_next = leap[i] * leap[i + 1];
 				// Next leap in same direction
 				if (leap_next > 0) {
 					// Flag if greater than two thirds
@@ -1143,6 +1146,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					if (leap_size2 > 5) FLAG2(22, i + 1)
 					// Flag if back leap equal or smaller than 6th
 					else FLAG2(8, i + 1);
+					// Flag leap back overflow
 					if (leap_size2 > leap_size) FLAG2(58, i + 1);
 				}
 			}
