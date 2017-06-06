@@ -1009,7 +1009,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int preleap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
-	int skips, skips2, pos, to3, after3, deviates, leap_id, mdc1, mdc2;
+	int skips, skips2, pos, to3, after3, deviates, leap_id, mdc1, mdc2, overflow;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
 			// Check if this leap is 3rd
@@ -1050,6 +1050,71 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Set that we are preleaped (even if we are postleaped)
 				preleap = 1;
 			}
+			mdc1 = 2;
+			if (leap_start > 0) {
+				// Check leap mdc1 if it is not last note
+				// If direction does not change
+				if (leap[i] * (c[leap_start] - c[leap_start - 1]) > 0) {
+					// Not start of melody?
+					if (leap_start > 1) {
+						// Check if melody direction does not change second note after leap
+						if (leap[i] * (c[leap_start - 1] - c[leap_start - 2]) > 0) mdc1 = 2;
+						// Direction changes: mark far mdc
+						else mdc1 = 1;
+					}
+					else {
+						// Mark no mdc if this is end of cantus
+						mdc1 = 2;
+					}
+				}
+				else mdc1 = 0;
+			}
+			mdc2 = 2;
+			if (i < ep2 - 2) {
+				// Check leap mdc2 if it is not last note
+				// If direction does not change
+				if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
+					// Not end of melody?
+					if (i < ep2 - 3) {
+						// Check if melody direction does not change second note after leap
+						if (leap[i] * (c[i + 3] - c[i + 2]) > 0) mdc2 = 2;
+						// Direction changes: mark far mdc
+						else mdc2 = 1;
+					}
+					else {
+						// Mark no mdc if this is end of cantus
+						mdc2 = 2;
+					}
+				}
+				else mdc2 = 0;
+				// Next leap in same direction
+				if (leap_next > 0) {
+					// Flag if greater than two thirds
+					if (abs(c[i + 2] - c[i]) > 4) FLAG2(27, i + 2);
+					// Allow if both thirds, without flags (will process next cycle)
+				}
+				// Next leap back
+				else if (leap_next < 0) {
+					int leap_size2 = abs(c[i + 2] - c[i + 1]);
+					// Flag if back leap greater than 6th
+					if (leap_size2 > 5) FLAG2(22, i + 1)
+					// Flag if back leap equal or smaller than 6th
+					else FLAG2(8, i + 1);
+					// Flag leap back overflow
+					if (leap_size2 > leap_size) {
+						FLAG2(58, i + 1);
+						overflow = 1;
+					}
+				}
+			}
+			// Close+far
+			if (mdc1 + mdc2 == 1) FLAG2(128 + leap_id, i)
+			// Close+no
+			else if (mdc1 + mdc2 == 2 && mdc1*mdc2 == 0) FLAG2(132 + leap_id, i)
+			// No close
+			else if (mdc1*mdc2) FLAG2(136 + leap_id, i);
+			// If leap back overflow, do not check leap compensation, because compensating next leap will be enough
+			if (overflow) continue;
 			if (i > 0) {
 				// Check if  leap is prefilled
 				pos = i - 2 - (leap_size - 1) * fill_steps_mul;
@@ -1096,66 +1161,6 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					if (leap_prev < 0 && to3) FLAG2(108 + leap_id, i);
 				}
 			}
-			mdc1 = 2;
-			if (leap_start > 0) {
-				// Check leap mdc1 if it is not last note
-				// If direction does not change
-				if (leap[i] * (c[leap_start] - c[leap_start - 1]) > 0) {
-					// Not start of melody?
-					if (leap_start > 1) {
-						// Check if melody direction does not change second note after leap
-						if (leap[i] * (c[leap_start-1] - c[leap_start - 2]) > 0) mdc1 = 2;
-						// Direction changes: mark far mdc
-						else mdc1 = 1;
-					}
-					else {
-						// Mark no mdc if this is end of cantus
-						mdc1 = 2;
-					}
-				}
-				else mdc1 = 0;
-			}
-			mdc2 = 2;
-			if (i < ep2 - 2) {
-				// Check leap mdc2 if it is not last note
-				// If direction does not change
-				if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
-					// Not end of melody?
-					if (i < ep2 - 3) {
-						// Check if melody direction does not change second note after leap
-						if (leap[i] * (c[i + 3] - c[i + 2]) > 0) mdc2 = 2;
-						// Direction changes: mark far mdc
-						else mdc2 = 1;
-					}
-					else {
-						// Mark no mdc if this is end of cantus
-						mdc2 = 2;
-					}
-				}
-				else mdc2 = 0;
-				// Next leap in same direction
-				if (leap_next > 0) {
-					// Flag if greater than two thirds
-					if (abs(c[i + 2] - c[i]) > 4) FLAG2(27, i + 2);
-					// Allow if both thirds, without flags (will process next cycle)
-				}
-				// Next leap back
-				else if (leap_next < 0) {
-					int leap_size2 = abs(c[i + 2] - c[i + 1]);
-					// Flag if back leap greater than 6th
-					if (leap_size2 > 5) FLAG2(22, i + 1)
-					// Flag if back leap equal or smaller than 6th
-					else FLAG2(8, i + 1);
-					// Flag leap back overflow
-					if (leap_size2 > leap_size) FLAG2(58, i + 1);
-				}
-			}
-			// Close+far
-			if (mdc1 + mdc2 == 1) FLAG2(128+leap_id, i)
-			// Close+no
-			else if (mdc1 + mdc2 == 2 && mdc1*mdc2 == 0) FLAG2(132 + leap_id, i)
-			// No close
-			else if (mdc1*mdc2) FLAG2(136 + leap_id, i)
 		}
 	}
 	return 0;
