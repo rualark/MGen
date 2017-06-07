@@ -1155,7 +1155,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					if (pos > ep2 - 1) pos = ep2 - 1;
 					CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 0, after3, deviates);
 					// Local not filled?
-					if (skips > 0 || (to3==2 && !accept[104+leap_id]) || (to3==1 && !accept[100 + leap_id]) ||
+					if (skips > 0 || (leap_prev < 0 && to3 && !accept[108+leap_id]) || (to3==2 && !accept[100+leap_id]) || (to3==1 && !accept[104 + leap_id]) ||
 						(after3 && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
 						// Local not filled. Prefilled?
 						if (prefilled) FLAG2(112+leap_id, i)
@@ -1166,16 +1166,20 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 						// Local not filled. Not prefilled. Not preleaped. Global not filled.
 						else FLAG2(124+leap_id, i);
 					}
-					// Flag leap back compensated to 3rd
-					if (leap_prev < 0 && to3) FLAG2(108 + leap_id, i)
-					// Flag unfinished fill if it is not blocking
-					else if (to3==2 && accept[100 + leap_id] > 0) FLAG2(100 + leap_id, i)
-					// Flag prepared unfinished fill if it is not blocking
-					else if (to3==1 && accept[104 + leap_id] > 0) FLAG2(104 + leap_id, i);
-					// Flag after 3rd if it is not blocking
-					if (after3 && accept[53 + leap_id] > 0) FLAG2(53 + leap_id, i);
-					// Flag flag deviation if it is not blocking
-					if (deviates && accept[42 + leap_id] > 0) FLAG2(42 + leap_id, i);
+					// Show compensation flags only if successfully compensated
+					// This means that compensation errors are not shown if uncompensated (successfully or not)
+					else {
+						// Flag leap back compensated to 3rd
+						if (leap_prev < 0 && to3) FLAG2(108 + leap_id, i)
+						// Flag unfinished fill if it is not blocking
+						else if (to3 == 2) FLAG2(100 + leap_id, i)
+						// Flag prepared unfinished fill if it is not blocking
+						else if (to3 == 1) FLAG2(104 + leap_id, i);
+						// Flag after 3rd if it is not blocking
+						if (after3) FLAG2(53 + leap_id, i);
+						// Flag flag deviation if it is not blocking
+						if (deviates) FLAG2(42 + leap_id, i);
+					}
 				}
 			}
 		}
