@@ -846,7 +846,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 	return 0;
 }
 
-void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &to3, int pre, int &after3, int &deviates)
+void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &to3, int pre, int &after3, int &deviates, int leap_prev, int leap_id)
 {
 	int leap_finish = i + 1;
 	if (pos2 < pos1) pos2 = pos1;
@@ -891,9 +891,11 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 	}
 	// Local fill
 	skips = 0; 
-	// Add allowed skips
-	if (leap_size > 2) --skips;
-	if (leap_size > 6) --skips;
+	// Add allowed skips if this is not second leap and skips for second leap not allowed
+	if (!leap_prev || accept[108 + leap_id]) {
+		if (leap_size > 2) --skips;
+		if (leap_size > 6) --skips;
+	}
 	// Global fill
 	skips2 = skips;
 	for (int x = n1 + 1; x < n2; ++x) if (!nstat3[x]) {
@@ -1030,7 +1032,6 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 		if (leap[i] != 0) {
 			// Check if this leap is 3rd
 			leap_size = abs(c[i + 1] - c[i]);
-			leap_id = min(leap_size - 2, 3);
 			leap_start = i; // First step of leap
 			leap_end = i+1; // Last step of leap
 			preleap = 0; // If we have a preleap
@@ -1061,6 +1062,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					else FLAG2(6, i);
 				}
 			}
+			leap_id = min(leap_size - 2, 3);
 			// Check if we have a greater neighbouring leap
 			if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size && leap[i]*leap[i+1]<0) ||
 				(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i + 1]<0)) {
@@ -1107,8 +1109,9 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Next leap in same direction
 				if (leap_next > 0) {
 					// Flag if greater than two thirds
-					if (abs(c[i + 2] - c[i]) > 4) FLAG2(27, i + 2);
+					if (abs(c[i + 2] - c[i]) > 4) FLAG2(27, i + 2)
 					// Allow if both thirds, without flags (will process next cycle)
+					else continue;
 				}
 				// Next leap back
 				else if (leap_next < 0) {
@@ -1136,7 +1139,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Check if  leap is prefilled
 				pos = i - 2 - (leap_size - 1) * fill_steps_mul;
 				if (pos < 0) pos = 0;
-				CountFill(c, i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 1, after3, deviates);
+				CountFill(c, i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 1, after3, deviates, leap_prev, leap_id);
 				// Do we have not too many skips?
 				if (skips <= 0) {
 				  // Is fill non deviated or deviated fill allowed?
@@ -1153,9 +1156,9 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Do not check fill if search window is cut by end of current not-last scan window
 				if ((pos < ep2) || (c_len == ep2)) {
 					if (pos > ep2 - 1) pos = ep2 - 1;
-					CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 0, after3, deviates);
+					CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 0, after3, deviates, leap_prev, leap_id);
 					// Local not filled?
-					if (skips > 0 || (leap_prev < 0 && to3 && !accept[108+leap_id]) || (to3==2 && !accept[100+leap_id]) || (to3==1 && !accept[104 + leap_id]) ||
+					if (skips > 0 || (to3==2 && !accept[100+leap_id]) || (to3==1 && !accept[104 + leap_id]) ||
 						(after3 && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
 						// Local not filled. Prefilled?
 						if (prefilled) FLAG2(112+leap_id, i)
@@ -1169,10 +1172,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					// Show compensation flags only if successfully compensated
 					// This means that compensation errors are not shown if uncompensated (successfully or not)
 					else {
-						// Flag leap back compensated to 3rd
-						if (leap_prev < 0 && to3) FLAG2(108 + leap_id, i)
 						// Flag unfinished fill if it is not blocking
-						else if (to3 == 2) FLAG2(100 + leap_id, i)
+						if (to3 == 2) FLAG2(100 + leap_id, i)
 						// Flag prepared unfinished fill if it is not blocking
 						else if (to3 == 1) FLAG2(104 + leap_id, i);
 						// Flag after 3rd if it is not blocking
