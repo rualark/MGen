@@ -1204,7 +1204,6 @@ int CGenCF1::FailTritone(int i, int ta, int t1, int t2, int tb, vector<int> &c, 
 			// Check intermediate note and mdc
 			if ((c[i] > c[i + 1] && c[i] < c[i - 1] && (i<2 || c[i - 2] < c[i - 1]) && (i>ep2-3 || c[i + 2] > c[i + 1])) ||
 				(c[i] < c[i + 1] && c[i] > c[i - 1] && (i<2 || c[i - 2] > c[i - 1]) && (i>ep2 - 3 || c[i + 2] < c[i + 1]))) {
-
 				found = 1;
 				leap_start = i - 1;
 			}
@@ -1232,6 +1231,9 @@ int CGenCF1::FailIntervals(int ep2, vector<int> &c, vector<int> &cc, vector<int>
 {
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (FailTritone(i, 4, 5, 11, 0, c, cc, pc, pcc)) return 1;
+		if (minor_cur) {
+			if (FailTritone(i, 7, 8, 2, 3, c, cc, pc, pcc)) return 1;
+		}
 		// Sept prohibit
 		if (abs(cc[i + 1] - cc[i]) == 10) FLAG2(1, i)
 		else if (abs(cc[i + 1] - cc[i]) == 11) FLAG2(39, i);
