@@ -543,7 +543,7 @@ check:
 		//WriteLog(1, "Found");
 		if (FailLastNotes(apc[1], ep2)) goto skip;
 		if (FailNoteSeq(apc[1], 0, ep2)) goto skip;
-		if (FailIntervals(ep2, ac[1], acc[1], apc[1])) goto skip;
+		if (FailIntervals(ep2, ac[1], acc[1], apc[1], apcc[1])) goto skip;
 		if (FailLeapSmooth(ac[1], ep2, aleap[1], asmooth[1])) goto skip;
 		if (FailOutstandingRepeat(ac[1], acc[1], aleap[1], ep2, repeat_steps2, 2, 76)) goto skip;
 		if (FailOutstandingRepeat(ac[1], acc[1], aleap[1], ep2, repeat_steps3, 3, 36)) goto skip;
