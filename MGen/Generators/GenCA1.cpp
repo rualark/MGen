@@ -276,6 +276,7 @@ void CGenCA1::Generate()
 	CString st;
 	int s_len2 = s_len;
 	InitCantus();
+	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
 	// Saved t_generated
