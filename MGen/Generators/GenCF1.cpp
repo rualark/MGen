@@ -1199,8 +1199,12 @@ int CGenCF1::FailTritone(int i, int ta, int t1, int t2, int tb, vector<int> &c, 
 	if ((pcc[i + 1] == t2 && pcc[i] == t1) || (pcc[i + 1] == t1 && pcc[i] == t2)) found = 1;
 	// Check tritone with additional note inside
 	if (i > 0) {
+		// Check pitches
 		if ((pcc[i + 1] == t2 && pcc[i - 1] == t1) || (pcc[i + 1] == t1 && pcc[i - 1] == t2))
-			if ((c[i] > c[i + 1] && c[i] < c[i - 1]) || (c[i] < c[i + 1] && c[i] > c[i - 1])) {
+			// Check intermediate note and mdc
+			if ((c[i] > c[i + 1] && c[i] < c[i - 1] && (i<2 || c[i - 2] < c[i - 1]) && (i>ep2-3 || c[i + 2] > c[i + 1])) ||
+				(c[i] < c[i + 1] && c[i] > c[i - 1] && (i<2 || c[i - 2] > c[i - 1]) && (i>ep2 - 3 || c[i + 2] < c[i + 1]))) {
+
 				found = 1;
 				leap_start = i - 1;
 			}
