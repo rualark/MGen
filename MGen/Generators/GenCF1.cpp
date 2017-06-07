@@ -1188,7 +1188,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	return 0;
 }
 
-int CGenCF1::FailTritone(int i, int t1, int t2, int tb, int ta, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+// Check tritone t1-t2 which has to resolve from ta to tb
+int CGenCF1::FailTritone(int i, int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	int leap_start;
 	int found;
 	// Tritone prohibit
@@ -1213,8 +1214,8 @@ int CGenCF1::FailTritone(int i, int t1, int t2, int tb, int ta, vector<int> &c, 
 			// Check if resolution is correct
 		else if (i < ep2 - 2) {
 			if (pcc[i + 1] == t1) FLAG2(31, i)
-			else if (pcc[i + 2] != 0) FLAG2(31, i)
-			else if (!leap_start || pcc[leap_start - 1] != tb) FLAG2(31, i)
+			else if (pcc[i + 2] != tb) FLAG2(31, i)
+			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(31, i)
 				// Record resolved tritone
 			else FLAG2(2, i);
 		}

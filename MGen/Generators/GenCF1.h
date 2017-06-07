@@ -94,7 +94,7 @@ protected:
 	inline int FailLastNotes(vector<int>& pc, int ep2);
 	inline void CountFill(vector<int>& c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & skips2, int & to3, int pre, int & after3, int & deviates, int leap_prev, int leap_id);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
-	inline int FailTritone(int i, int t1, int t2, int tb, int ta, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline int FailTritone(int i, int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailIntervals(int ep2, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline void GlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
 	void ScanCantusInit();
