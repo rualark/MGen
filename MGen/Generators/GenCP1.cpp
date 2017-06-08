@@ -177,7 +177,7 @@ void CGenCP1::ScanCPInit() {
 	for (int i = 0; i < av_cnt; ++i) {
 		ac[i].resize(c_len); // cantus (diatonic)
 		acc[i].resize(c_len); // cantus (chromatic)
-		anflags[i].resize(c_len, vector<int>(MAX_FLAGS)); // Flags for each note
+		anflags[i].resize(c_len, vector<int>(max_flags)); // Flags for each note
 		anflagsc[i].resize(c_len); // number of flags for each note
 		acc_old[i].resize(c_len); // Cantus diatonic saved for SWA
 		apc[i].resize(c_len);
@@ -191,7 +191,7 @@ void CGenCP1::ScanCPInit() {
 		hm[x].resize(3);
 		hm2[x].resize(3);
 	}
-	fpenalty.resize(MAX_FLAGS);
+	fpenalty.resize(max_flags);
 	wpos1.resize(c_len / s_len + 1);
 	wpos2.resize(c_len / s_len + 1);
 	ivl.resize(c_len);
@@ -206,9 +206,9 @@ void CGenCP1::ScanCPInit() {
 	max_cc.resize(c_len);
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
-	flags.resize(MAX_FLAGS); // Flags for whole cantus
-	fstat.resize(MAX_FLAGS); // number of canti with each flag
-	fcor.resize(MAX_FLAGS, vector<long long>(MAX_FLAGS)); // Flags correlation matrix
+	flags.resize(max_flags); // Flags for whole cantus
+	fstat.resize(max_flags); // number of canti with each flag
+	fcor.resize(max_flags, vector<long long>(max_flags)); // Flags correlation matrix
 	seed_cycle = 0; // Number of cycles in case of random_seed
 	reseed_count = 0;
 	nstat.resize(MAX_NOTE);
@@ -224,7 +224,7 @@ void CGenCP1::ScanCPInit() {
 	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 	// Initialize fblock if calculation is needed
 	if (calculate_blocking) {
-		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(MAX_FLAGS, vector<long>(MAX_FLAGS)));
+		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(max_flags, vector<long>(max_flags)));
 	}
 	// Init best rejected results
 	if (best_rejected) {
@@ -529,6 +529,8 @@ void CGenCP1::ScanCP(int t, int v) {
 	if (task == tGen) MultiCPInit();
 	else SingleCPInit();
 	if (FailWindowsLimit()) return;
+	// Need to clear flags, because if skip_flags, they can contain previous prohibited flags
+	fill(flags.begin(), flags.end(), 0);
 	// Analyze combination
 check:
 	while (true) {
