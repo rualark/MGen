@@ -23,7 +23,7 @@ protected:
 	inline void SaveCPIfRp();
 	void ScanCPInit();
 	inline int SendCP();
-	inline int FailSlurs(vector<int>& c, int step1, int step2);
+	inline int FailSlurs(vector<int>& cc, int step1, int step2);
 	void ScanCP(int t, int v);
 
 	// Counterpoint

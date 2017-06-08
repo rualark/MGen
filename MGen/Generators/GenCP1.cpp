@@ -491,15 +491,15 @@ void CGenCP1::SaveCPIfRp() {
 }
 
 // Detect repeating notes. Step2 excluding
-int CGenCP1::FailSlurs(vector<int> &c, int step1, int step2) {
+int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
   // Number of sequential slurs 
 	int scount = 0;
 	// Number of slurs in window
 	int scount2 = 0;
 	for (int i = step1; i < step2; ++i) {
-		if (c[i] == c[i + 1]) {
+		if (cc[i] == cc[i + 1]) {
 		  // Check simultaneous slurs
-			if (ac[av2][i] == ac[av2][i + 1]) {
+			if (acc[av2][i] == acc[av2][i + 1]) {
 				FLAG2(98, i);
 			}
 			// Check slurs sequence
@@ -508,7 +508,7 @@ int CGenCP1::FailSlurs(vector<int> &c, int step1, int step2) {
 			// Check slurs in window
 			++scount2;
 			// Subtract old slur
-			if ((i >= slurs_window) && (c[i] == c[i + 1])) --scount2;
+			if ((i >= slurs_window) && (cc[i - slurs_window] == cc[i - slurs_window + 1])) --scount2;
 			if (scount2 == 1) FLAG2(93, i)
 			else if (scount2 == 2) FLAG2(94, i)
 			else if (scount2 > 2) FLAG2(95, i);
@@ -549,7 +549,7 @@ check:
 			if (nmax - cf_nmin > sum_interval) FLAG(37, 0);
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
-		if (FailSlurs(acc[1], ep1, ep2 - 1)) goto skip;
+		if (FailSlurs(acc[1], 0, ep2 - 1)) goto skip;
 		++accepted3;
 		if (need_exit && task != tEval) break;
 		// Show status
