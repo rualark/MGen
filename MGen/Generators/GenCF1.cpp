@@ -295,7 +295,7 @@ int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
 }
 
 // Count limits
-void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2) {
+void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2, int &nmin, int &nmax) {
 	// Calculate range
 	nmin = MAX_NOTE;
 	nmax = 0;
@@ -1360,9 +1360,9 @@ void CGenCF1::GetRealRange(vector<int>& c, vector<int>& cc) {
 }
 
 // Calculate source melody range
-void CGenCF1::GetSourceRange() {
+void CGenCF1::GetSourceRange(vector<int> &cc) {
 	// Get source melody range
-	GetMelodyInterval(cc, 0, c_len);
+	GetMelodyInterval(cc, 0, c_len, nmin, nmax);
 	// Convert range to diatonic
 	src_nminc = CC_C(nmin, tonic_cur, minor_cur) - correct_inrange;
 	src_nmaxc = CC_C(nmax, tonic_cur, minor_cur) + correct_inrange;
@@ -2385,7 +2385,7 @@ check:
 	while (true) {
 		//LogCantus(cc);
 		if (FailNoteRepeat(cc, ep1, ep2 - 1)) goto skip;
-		GetMelodyInterval(cc, 0, ep2);
+		GetMelodyInterval(cc, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
 		if (task == tGen) {

@@ -42,6 +42,10 @@ protected:
 	vector<int> tivl; // Type of interval between voices
 	vector<int> direct; // Above zero if voices move in same direction
 
+	// Cantus
+	int cf_nmin; // Minimum note in cantus (chromatic)
+	int cf_nmax; // Maximum note in cantus (chromatic)
+
 	// Analysis
 	vector <vector<int>> scpoint; // Source cpoint for processing
 
@@ -49,4 +53,7 @@ protected:
 	int cantus_high = 0; // Set to 1 to generate counterpoint under cantus
 	int cantus_id2 = 0; // Select particular cantus id. Set to -1 to select random
 	int slurs_window = 10; // Number of steps to check for slur limit
+	int min_between = 0; // Minimum diatonic interval between voices
+	int max_between = 11; // Maximum diatonic interval between voices
+	int sum_interval = 22; // Maximum chromatic range of cantus and counterpoint
 };

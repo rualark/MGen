@@ -18,7 +18,10 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters
-interval = 0-11 # Minimum-maximum diatonic interval between voices (7 = octave)
+interval = 7-14 # Minimum-maximum chromatic interval of counterpoint (12 = octave)
+sum_interval = 22 # Maximum total chromatic interval of counterpoint with cantus (12 = octave)
+between = 0-11 # Minimum-maximum diatonic interval between voices (7 = octave)
+
 cantus_high = 0 # Set to 1 to generate counterpoint under cantus
 slurs_window = 10 # Number of steps to check for slur limit
 

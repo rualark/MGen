@@ -277,7 +277,7 @@ void CGenCA2::Generate() {
 			continue;
 		}
 		step -= real_len + 1;
-		GetSourceRange();
+		//GetSourceRange();
 		if (method == mSWA) {
 			SWACP(i, 1);
 		}

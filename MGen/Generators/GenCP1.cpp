@@ -19,6 +19,8 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "cantus_high", &cantus_high);
 	CheckVar(sN, sV, "cantus_id", &cantus_id2);
 	CheckVar(sN, sV, "slurs_window", &slurs_window);
+	LoadRange(sN, sV, "between", &min_between, &max_between);
+	CheckVar(sN, sV, "sum_interval", &sum_interval);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -40,8 +42,8 @@ void CGenCP1::InitCP() {
 void CGenCP1::MakeNewCP() {
 	// Set pitch limits
 	for (int i = 0; i < c_len; ++i) {
-		min_c[i] = ac[0][i] + min_interval;
-		max_c[i] = ac[0][i] + max_interval;
+		min_c[i] = ac[0][i] + min_between;
+		max_c[i] = ac[0][i] + max_between;
 	}
 	// Convert limits to chromatic
 	for (int i = 0; i < c_len; ++i) {
@@ -531,7 +533,20 @@ void CGenCP1::ScanCP(int t, int v) {
 check:
 	while (true) {
 		//LogCantus(cc);
-		ClearFlags(0, ep2);
+		GetMelodyInterval(acc[1], 0, ep2, nmin, nmax);
+		// Limit melody interval
+		if (task == tGen) {
+			if (nmax - nmin > max_interval) goto skip;
+			if (nmax - cf_nmin > sum_interval) goto skip;
+			if (c_len == ep2 && nmax - nmin < min_interval) goto skip;
+			ClearFlags(0, ep2);
+		}
+		else {
+			ClearFlags(0, ep2);
+			if (nmax - nmin > max_interval) FLAG(37, 0);
+			if (nmax - cf_nmin > sum_interval) FLAG(37, 0);
+			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
+		}
 		if (FailSlurs(acc[1], ep1, ep2 - 1)) goto skip;
 		++accepted3;
 		if (need_exit && task != tEval) break;
@@ -549,7 +564,6 @@ check:
 		if (FailOutstandingRepeat(ac[1], acc[1], aleap[1], ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(acc[1], aleap[1], ep2, repeat_steps5, 5, 72)) goto skip;
 		if (FailLongRepeat(acc[1], aleap[1], ep2, repeat_steps7, 7, 73)) goto skip;
-		GetMelodyInterval(acc[1], 0, ep2);
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
@@ -670,6 +684,8 @@ void CGenCP1::Generate() {
 	c_len = cantus[cantus_id].size();
 	// Get key
 	GetCantusKey(cantus[cantus_id]);
+	// Get cantus interval
+	GetMelodyInterval(cantus[cantus_id], 0, cantus[cantus_id].size(), cf_nmin, cf_nmax);
 	if (tonic_cur == -1) return;
 	CalcCcIncrement();
 	// Show imported melody
