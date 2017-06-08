@@ -330,11 +330,11 @@ int CGenCP1::SendCP() {
 		else {
 			if (key_eval == "") {
 				// If SWA
-				st.Format("#%d\nRule penalty: %.0f\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id, rpenalty_cur, dpenalty_cur, hdif);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id, midi_file, rpenalty_cur, dpenalty_cur, hdif);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d\nRule penalty: %.0f\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id, rpenalty_cur, hdif, key_eval);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id, midi_file, rpenalty_cur, hdif, key_eval);
 			}
 		}
 		AddMelody(step - real_len - 1, step - 1, svoice+1, st);

@@ -211,6 +211,9 @@ protected:
 	int task; // What task to accomplish using the method
 	int svoice; // Voice to send cantus to
 
+	// CA1
+	CString midi_file;
+
   // Local
 	int av; // Current counterpoint voice
 	int av2; // Current cantus voice

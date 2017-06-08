@@ -1150,13 +1150,20 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					&& (!to3 || accept[104+leap_id])) prefilled = 1;
 				}
 			}
-			if (i < ep2 - 2) {
+			if (i < ep2 - 1) {
 				// Check if  leap is filled
 				pos = i + 3 + (leap_size - 1) * fill_steps_mul;
 				// Do not check fill if search window is cut by end of current not-last scan window
 				if ((pos < ep2) || (c_len == ep2)) {
 					if (pos > ep2 - 1) pos = ep2 - 1;
-					CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 0, after3, deviates, leap_prev, leap_id);
+					// Check leap compensation only if it is not last leap
+					if (i < ep2 - 2) {
+						CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, to3, 0, after3, deviates, leap_prev, leap_id);
+					}
+					else {
+						// If it is last leap, consider compensation to be unsuccessful
+						skips = 10;
+					}
 					// Local not filled?
 					if (skips > 0 || (to3==2 && !accept[100+leap_id]) || (to3==1 && !accept[104 + leap_id]) ||
 						(after3 && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
@@ -1230,6 +1237,8 @@ int CGenCF1::FailTritone(int i, int ta, int t1, int t2, int tb, vector<int> &c, 
 int CGenCF1::FailIntervals(int ep2, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
 	for (int i = 0; i < ep2 - 1; ++i) {
+		// Warning: tritone F#C in minor is not detected (can add FailTritone to detect) because it is already prohibited by Unaltered near altered.
+		// If you allow Unaltered near altered, you should implement FailTritone for F#C.
 		if (FailTritone(i, 4, 5, 11, 0, c, cc, pc, pcc)) return 1;
 		if (minor_cur) {
 			if (FailTritone(i, 7, 8, 2, 3, c, cc, pc, pcc)) return 1;
@@ -2115,11 +2124,11 @@ int CGenCF1::SendCantus() {
 		else {
 			if (key_eval == "") {
 				// If SWA
-				st.Format("#%d\nRule penalty: %.0f\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id, rpenalty_cur, dpenalty_cur, hdif);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id, midi_file, rpenalty_cur, dpenalty_cur, hdif);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d\nRule penalty: %.0f\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id, rpenalty_cur, hdif, key_eval);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id, midi_file, rpenalty_cur, hdif, key_eval);
 			}
 		}
 		AddMelody(step - real_len - 1, step - 1, v, st);

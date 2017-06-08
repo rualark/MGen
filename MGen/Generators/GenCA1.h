@@ -11,8 +11,6 @@ public:
 
 	void Generate() override;
 	
-	CString midi_file;
-
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void GetCantusKey(vector<int>& cc);
