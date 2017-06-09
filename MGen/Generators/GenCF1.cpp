@@ -10,7 +10,7 @@
 
 CGenCF1::CGenCF1()
 {
-	av = 0;
+	cpv = 0;
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_FLAGS);
 	FlagName.resize(MAX_FLAGS);
@@ -313,7 +313,7 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 	}
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
-		anflagsc[av][i] = 0;
+		anflagsc[cpv][i] = 0;
 	}
 }
 
@@ -1427,7 +1427,7 @@ void CGenCF1::SingleCantusInit() {
 	fill(flags.begin(), flags.end(), 0);
 	flags[0] = 1;
 	for (int i = 0; i < ep2; ++i) {
-		anflagsc[av][i] = 0;
+		anflagsc[cpv][i] = 0;
 	}
 	// Matrix scan
 	if (task != tEval) {
@@ -1667,8 +1667,8 @@ void CGenCF1::CalcRpenalty() {
 	// Calculate flags penalty
 	rpenalty_cur = 0;
 	for (int x = 0; x < ep2; ++x) {
-		if (anflagsc[av][x] > 0) for (int i = 0; i < anflagsc[av][x]; ++i) if (!accept[anflags[av][x][i]]) {
-			rpenalty_cur += severity[anflags[av][x][i]] + 1;
+		if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (!accept[anflags[cpv][x][i]]) {
+			rpenalty_cur += severity[anflags[cpv][x][i]] + 1;
 		}
 	}
 	// Add flags penalty
@@ -1717,8 +1717,8 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 				vector<int> cc_saved = cc;
 				cc = br_cc;
 				flags = br_f;
-				anflags[av] = br_nf;
-				anflagsc[av] = br_nfc;
+				anflags[cpv] = br_nf;
+				anflagsc[cpv] = br_nfc;
 				SendCantus();
 				cc = cc_saved;
 				// Log
@@ -1799,8 +1799,8 @@ void CGenCF1::SaveBestRejected() {
 		if (rpenalty_cur < rpenalty_min && rpenalty_cur) {
 			br_cc = cc;
 			br_f = flags;
-			br_nf = anflags[av];
-			br_nfc = anflagsc[av];
+			br_nf = anflags[cpv];
+			br_nfc = anflagsc[cpv];
 			rpenalty_min = rpenalty_cur;
 			// Log
 			if (debug_level > 1) {
@@ -2054,8 +2054,8 @@ int CGenCF1::SendCantus() {
 			note[pos + i][v] = cc[x];
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
-			if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
-				int fl = anflags[av][x][f];
+			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
+				int fl = anflags[cpv][x][f];
 				if (!i) {
 					st = "+ ";
 					if (!accept[fl]) st = "- ";

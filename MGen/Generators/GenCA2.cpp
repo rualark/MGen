@@ -120,8 +120,8 @@ void CGenCA2::SWACP(int i, int dp) {
 		rpenalty.clear();
 		dpenalty.clear();
 		dpenalty_min = MAX_PENALTY;
-		clib.push_back(acc[1]);
-		clib_vs.Insert(acc[1]);
+		clib.push_back(acc[cpv]);
+		clib_vs.Insert(acc[cpv]);
 		rpenalty.push_back(rpenalty_min_old);
 		dpenalty.push_back(dpenalty_min_old);
 		// Sliding Windows Approximation
@@ -154,7 +154,7 @@ void CGenCA2::SWACP(int i, int dp) {
 				// Get random cid
 				int cid = randbw(0, cids.size() - 1);
 				// Get random cantus to continue
-				acc[1] = clib[cids[cid]];
+				acc[cpv] = clib[cids[cid]];
 			}
 		}
 		// Send log
@@ -163,7 +163,7 @@ void CGenCA2::SWACP(int i, int dp) {
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
 		}
-		if (acc[0].size() > 60) {
+		if (acc[cfv].size() > 60) {
 			st.Format("SWA%d attempt: %d", s_len, a);
 			SetStatusText(4, st);
 		}
@@ -234,8 +234,8 @@ void CGenCA2::Generate() {
 		FillPause(step, real_len, 1);
 		FillPause(step, real_len, 2);
 		FillPause(step, real_len, 3);
-		av = 0;
-		av2 = 1;
+		cpv = 0;
+		cfv = 1;
 		ScanCantus(tEval, 0, &(cpoint[i][0]));
 		// Show cantus id
 		st.Format("Counterpoint %d. ", cantus_id + 1);
@@ -246,14 +246,14 @@ void CGenCA2::Generate() {
 		t_sent = t_generated;
 		t_generated2 = t_generated;
 		// Load first voice
-		ac[0] = c;
-		acc[0] = cc;
-		apc[0] = pc;
-		apcc[0] = pcc;
+		ac[cfv] = c;
+		acc[cfv] = cc;
+		apc[cfv] = pc;
+		apcc[cfv] = pcc;
 		dpenalty_cur = 0;
 		scpoint = cpoint[i];
-		av = 1;
-		av2 = 0;
+		cpv = 1;
+		cfv = 0;
 		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown

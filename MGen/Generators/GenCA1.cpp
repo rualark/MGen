@@ -166,9 +166,9 @@ void CGenCA1::CreateScanMatrix(int i) {
 	// Search each note
 	for (int x = 0; x < c_len; x++) {
 		// Search each flag
-		if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; f++) {
+		if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; f++) {
 			// Find prohibited flag
-			if (accept[anflags[av][x][f]] == 0) {
+			if (accept[anflags[cpv][x][f]] == 0) {
 				// Create matrix window
 				int pos1 = x - pre_bad;
 				int pos2 = x + post_bad;

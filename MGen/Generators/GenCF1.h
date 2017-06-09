@@ -6,8 +6,8 @@
 #define MELODY_SEPARATION(i) ((leap[i - 1]) || i >= ep2-1 || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0))
 
 // Report violation
-#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[av][i][anflagsc[av][i]] = id; ++anflagsc[av][i]; } }
-#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[av][i][anflagsc[av][i]] = id; ++anflagsc[av][i]; } }
+#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; } }
+#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; } }
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
@@ -215,8 +215,8 @@ protected:
 	CString midi_file;
 
   // Local
-	int av; // Current counterpoint voice
-	int av2; // Current cantus voice
+	int cpv; // Current counterpoint voice
+	int cfv; // Current cantus voice
 	int av_cnt = 1; // Number of voices in counterpoint
 	int seed_cycle, reseed_count;
 	long cantus_ignored = 0; // How many canti ignored and not sent
