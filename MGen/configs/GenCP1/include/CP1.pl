@@ -22,7 +22,7 @@ interval = 7-14 # Minimum-maximum chromatic interval of counterpoint (12 = octav
 sum_interval = 22 # Maximum total chromatic interval of counterpoint with cantus (12 = octave)
 between = 0-11 # Minimum-maximum diatonic interval between voices (7 = octave)
 
-cantus_high = 0 # Set to 1 to generate counterpoint under cantus
+cantus_high = 1 # Set to 1 to generate counterpoint under cantus
 slurs_window = 10 # Number of steps to check for slur limit
 
 # Technical parameters
