@@ -221,8 +221,15 @@ void CGenCA2::Generate() {
 		milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
+		// Choose level
+		if (cantus_high) {
+			cfv = 1;
+		}
+		else {
+			cfv = 0;
+		}
 		// Get key
-		GetCantusKey(cpoint[i][0]);
+		GetCantusKey(cpoint[i][cfv]);
 		if (tonic_cur == -1) continue;
 		CalcCcIncrement();
 		// Show imported melody
@@ -234,9 +241,8 @@ void CGenCA2::Generate() {
 		FillPause(step, real_len, 1);
 		FillPause(step, real_len, 2);
 		FillPause(step, real_len, 3);
-		cpv = 0;
-		cfv = 1;
-		ScanCantus(tEval, 0, &(cpoint[i][0]));
+		cpv = cfv;
+		ScanCantus(tEval, 0, &(cpoint[i][cfv]));
 		// Show cantus id
 		st.Format("Counterpoint %d. ", cantus_id + 1);
 		comment[step - real_len - 1][0] = st + comment[step - real_len - 1][0];
@@ -252,8 +258,13 @@ void CGenCA2::Generate() {
 		apcc[cfv] = pcc;
 		dpenalty_cur = 0;
 		scpoint = cpoint[i];
-		cpv = 1;
-		cfv = 0;
+		// Choose level
+		if (cantus_high) {
+			cpv = 0;
+		}
+		else {
+			cpv = 1;
+		}
 		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown
