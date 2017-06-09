@@ -289,7 +289,7 @@ int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
 		// Prohibit GC before cadence
 		if (pc[i] == 4 && pc[i + 1] == 0) FLAG2(48, i);
 		// Prohibit D-S
-		if (hconst[pc[i]] == hDom && hconst[pc[i + 1]] == hSub) FLAG2(77, i);
+		//if (hconst[pc[i]] == hDom && hconst[pc[i + 1]] == hSub) FLAG2(77, i);
 	}
 	return 0;
 }
@@ -714,14 +714,18 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, int ep2, vector<int> &leap, vector<i
 			if (leap_sum2 > cse_leaps2) ++fpenalty[71];
 		}
 		// Prohibit long smooth movement
-		if (smooth[i] != 0) ++smooth_sum;
-		else smooth_sum = 0;
-		if (smooth_sum >= max_smooth) FLAG2(4, i);
+		if (smooth[i] != 0) {
+			++smooth_sum;
+			if (smooth_sum >= max_smooth) FLAG2(4, i);
+		}
+		else if (leap[i]) smooth_sum = 0;
 		if (i < ep2 - 2) {
 			// Prohibit long smooth movement in one direction
-			if (smooth[i] == smooth[i + 1]) ++smooth_sum2;
-			else smooth_sum2 = 0;
-			if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, i);
+			if (smooth[i] == smooth[i + 1]) {
+				++smooth_sum2;
+				if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, i);
+			}
+			else if (leap[i]) smooth_sum2 = 0;
 			// Check if two notes repeat
 			if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG2(9, i);
 		}
