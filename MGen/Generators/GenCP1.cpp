@@ -43,8 +43,8 @@ void CGenCP1::MakeNewCP() {
 	// Set pitch limits
 	if (cantus_high) {
 		for (int i = 0; i < c_len; ++i) {
-			min_c[i] = ac[cfv][i] - min_between;
-			max_c[i] = ac[cfv][i] - max_between;
+			max_c[i] = ac[cfv][i] - min_between;
+			min_c[i] = ac[cfv][i] - max_between;
 		}
 	}
 	else {
@@ -245,25 +245,31 @@ void CGenCP1::ScanCPInit() {
 int CGenCP1::SendCP() {
 	CString st, info;
 	int pos;
+	int v;
 	Sleep(sleep_ms);
-	for (int cpv = 0; cpv < av_cnt; ++cpv) {
-		int v = svoice + cpv;
+	for (int av = 0; av < av_cnt; ++av) {
+		if (cpv) {
+			v = svoice + av;
+		}
+		else {
+			v = svoice + 1 - av;
+		}
 		// Copy cantus to output
 		pos = step;
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < c_len; ++x) {
 			for (int i = 0; i < cc_len[x]; ++i) {
 				int current_severity = -1;
-				if (cpv) {
+				if (av == cpv) {
 					// Set color
 					color[pos + i][v] = Color(0, 100, 100, 100);
 				}
 				// Set nflag color
-				note[pos + i][v] = acc[cpv][x];
+				note[pos + i][v] = acc[av][x];
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
-				if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
-					int fl = anflags[cpv][x][f];
+				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
+					int fl = anflags[av][x][f];
 					if (!i) {
 						st = "+ ";
 						if (!accept[fl]) st = "- ";
@@ -277,7 +283,7 @@ int CGenCP1::SendCP() {
 						comment[pos][v] += ". ";
 					}
 					// Do not show colors for base voice
-					if (cpv) {
+					if (av == cpv) {
 						// Set note color if this is maximum flag severity
 						if (severity[fl] > current_severity) {
 							current_severity = severity[fl];
