@@ -87,7 +87,7 @@ protected:
 	inline void AlterMinor(int ep2, vector<int>& cc);
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);
-	inline int FailLeapSmooth(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth);
+	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, int ep2, vector<int>& leap, vector<int>& smooth);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int ep2);
 	inline int FailMultiCulm(vector<int>& cc, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);

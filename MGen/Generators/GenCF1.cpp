@@ -664,7 +664,7 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int sca
 }
 
 // Check if too many leaps
-int CGenCF1::FailLeapSmooth(vector<int> &c, int ep2, vector<int> &leap, vector<int> &smooth) {
+int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int> &leap, vector<int> &smooth) {
 	// Clear variables
 	int leap_sum = 0;
 	int leap_sum2 = 0;
@@ -727,7 +727,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, int ep2, vector<int> &leap, vector<i
 			}
 			else if (leap[i]) smooth_sum2 = 0;
 			// Check if two notes repeat
-			if ((i > 0) && (c[i] == c[i + 2]) && (c[i - 1] == c[i + 1])) FLAG2(9, i);
+			if ((i > 0) && (cc[i] == cc[i + 2]) && (cc[i - 1] == cc[i + 1])) FLAG2(9, i);
 		}
 	}
 	if (max_leap_sum > max_leaps) {
@@ -2416,7 +2416,7 @@ check:
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, c, cc, pc, pcc)) goto skip;
-		if (FailLeapSmooth(c, ep2, leap, smooth)) goto skip;
+		if (FailLeapSmooth(c, cc, ep2, leap, smooth)) goto skip;
 		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps2, 2, 76)) goto skip;
 		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
