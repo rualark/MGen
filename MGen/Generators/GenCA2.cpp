@@ -214,7 +214,7 @@ void CGenCA2::Generate() {
 			WriteLog(3, "Reached t_cnt steps. Generation stopped");
 			break;
 		}
-		st.Format("Analyzing: %d of %d", cantus_id, cpoint.size());
+		st.Format("Analyzing: %d of %d", cantus_id+1, cpoint.size());
 		SetStatusText(3, st);
 		if (need_exit) break;
 		if (step < 0) step = 0;
@@ -304,7 +304,7 @@ void CGenCA2::Generate() {
 			t_sent = t_generated;
 		}
 	}
-	st.Format("Analyzed %d of %d", cantus_id, cantus.size());
+	st.Format("Analyzed %d of %d", cantus_id+1, cpoint.size());
 	SetStatusText(3, st);
 	ShowStuck();
 }
