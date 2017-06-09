@@ -88,7 +88,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;52;70;Cantus;Border;Start steps tonic (unprepared);-1;;
 1;40;70;Cantus;Border;Start steps tonic (no C);-1;;
 1;41;70;Cantus;Border;Start steps tonic (no E);-1;;
-1;50;30;Cantus;Border;Last note (not C);0;;
+1;50;30;Cantus;Border;Last note (not C);1;;
 1;14;0;Cantus;Border;3rd to last note (CEG);-1;;
 1;34;0;Cantus;Border;3rd to last note (leading);-1;;
 1;51;30;Cantus;Border;2nd to last note (not BD);-1;;Rule for Higher cantus
@@ -106,7 +106,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;83;60;Cantus;Counterpoint;Dissonance (downbeat);0;;
 1;88;60;Cantus;Counterpoint;Dissonance (upbeat);0;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances (3);1;More than X same imperfect consonances in a row;
-1;96;60;Cantus;Counterpoint;Parallel imperfect consonances (>3);0;More than X same imperfect consonances in a row;
+1;96;60;Cantus;Counterpoint;Parallel imperfect consonances (>3);1;More than X same imperfect consonances in a row;
 1;49;60;Cantus;Counterpoint;First note (not C);1;;
 1;90;60;Cantus;Counterpoint;First note (not GC);0;;
 1;91;60;Cantus;Counterpoint;Unison (inside);0;;
@@ -205,7 +205,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;52;70;Cantus;Border;Start steps tonic (unprepared);-1;;
 2;40;70;Cantus;Border;Start steps tonic (no C);-1;;
 2;41;70;Cantus;Border;Start steps tonic (no E);-1;;
-2;50;30;Cantus;Border;Last note (not C);0;;
+2;50;30;Cantus;Border;Last note (not C);1;;
 2;14;0;Cantus;Border;3rd to last note (CEG);-1;;
 2;34;0;Cantus;Border;3rd to last note (leading);-1;;
 2;51;30;Cantus;Border;2nd to last note (not BD);-1;;Rule for Higher cantus
@@ -223,7 +223,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;83;60;Cantus;Counterpoint;Dissonance (downbeat);0;;
 2;88;60;Cantus;Counterpoint;Dissonance (upbeat);0;;
 2;89;0;Cantus;Counterpoint;Parallel imperfect consonances (3);1;More than X same imperfect consonances in a row;
-2;96;60;Cantus;Counterpoint;Parallel imperfect consonances (>3);0;More than X same imperfect consonances in a row;
+2;96;60;Cantus;Counterpoint;Parallel imperfect consonances (>3);1;More than X same imperfect consonances in a row;
 2;49;60;Cantus;Counterpoint;First note (not C);1;;
 2;90;60;Cantus;Counterpoint;First note (not GC);0;;
 2;91;60;Cantus;Counterpoint;Unison (inside);0;;
