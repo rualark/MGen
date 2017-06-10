@@ -1,6 +1,7 @@
 include "../../GenCF1/include/CF1.pl"
 
-rule_set = 1 # Specify which set of rules to use (see rules.xlsx)
+cf_rule_set = 1 # Specify which set of rules to use for cantus (see rules.xlsm)
+cp_rule_set = 2 # Specify which set of rules to use for counterpoint (see rules.xlsm)
 
 # Method parameters
 method = window-scan # This method can be faster in some cases

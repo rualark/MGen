@@ -28,6 +28,10 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 }
 
 void CGenCP1::InitCP() {
+	// Set rule colors
+	for (int i = 0; i < MAX_SEVERITY; ++i) {
+		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
+	}
 	// Check that method is selected
 	if (method == mUndefined) WriteLog(1, "Error: method not specified in algorithm configuration file");
 	ac.resize(av_cnt);
@@ -765,6 +769,8 @@ void CGenCP1::Generate() {
 	dpenalty_cur = 0;
 	// Create pause
 	FillPause(0, real_len, 1);
+	// Select rule set
+	SelectRuleSet(cf_rule_set);
 	ScanCantus(tEval, 0, &(cantus[cantus_id]));
 	// Show cantus id
 	st.Format("Cantus %d. ", cantus_id + 1);
@@ -794,5 +800,6 @@ void CGenCP1::Generate() {
 	//for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
 	// Generate second voice
 	rpenalty_cur = MAX_PENALTY;
+	SelectRuleSet(cp_rule_set);
 	ScanCP(tGen, 0);
 }

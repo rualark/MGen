@@ -142,10 +142,6 @@ void CGenCF1::SelectRuleSet(int rs)
 		for (int i = 0; i < max_flags; ++i) {
 			if (accept[i] == 2) ++flags_need2;
 		}
-		// Set rule colors
-		for (int i = 0; i < MAX_SEVERITY; ++i) {
-			flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
-		}
 	}
 }
 
@@ -192,6 +188,9 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "swa_steps", &swa_steps);
 	CheckVar(sN, sV, "correct_range", &correct_range);
 	CheckVar(sN, sV, "correct_inrange", &correct_inrange);
+	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
+	CheckVar(sN, sV, "cf_rule_set", &cf_rule_set);
+	CheckVar(sN, sV, "cp_rule_set", &cp_rule_set);
 	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
 
 	LoadHarmVar(sN, sV);
@@ -2163,6 +2162,10 @@ int CGenCF1::SendCantus() {
 
 void CGenCF1::InitCantus()
 {
+	// Set rule colors
+	for (int i = 0; i < MAX_SEVERITY; ++i) {
+		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
+	}
 	// Check that method is selected
 	if (method == mUndefined) WriteLog(1, "Error: method not specified in algorithm configuration file");
 	// Check harmonic meaning loaded

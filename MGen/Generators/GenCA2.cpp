@@ -242,6 +242,7 @@ void CGenCA2::Generate() {
 		FillPause(step, real_len, 2);
 		FillPause(step, real_len, 3);
 		cpv = cfv;
+		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, 0, &(cpoint[i][cfv]));
 		// Show cantus id
 		st.Format("Counterpoint %d. ", cantus_id + 1);
@@ -265,6 +266,7 @@ void CGenCA2::Generate() {
 		else {
 			cpv = 1;
 		}
+		SelectRuleSet(cp_rule_set);
 		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown
