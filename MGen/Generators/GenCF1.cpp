@@ -725,7 +725,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 				++smooth_sum2;
 				if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, i);
 			}
-			else if (leap[i]) smooth_sum2 = 0;
+			else if (smooth[i] || leap[i]) smooth_sum2 = 0;
 			// Check if two notes repeat
 			if ((i > 0) && (cc[i] == cc[i + 2]) && (cc[i - 1] == cc[i + 1])) FLAG2(9, i);
 		}
@@ -2031,7 +2031,7 @@ void CGenCF1::SaveCantus() {
 
 int CGenCF1::SendCantus() {
 	if (svoice < 0) return 0;
-	CString st, info;
+	CString st, info, rpst;
 	int v = svoice;
 	Sleep(sleep_ms);
 	// Copy cantus to output
@@ -2122,13 +2122,22 @@ int CGenCF1::SendCantus() {
 			st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
 		}
 		else {
+			for (int x = 0; x < max_flags; ++x) {
+				if (!accept[x] && fpenalty[x]) {
+					st.Format("%d=%.0f", x, fpenalty[x]);
+					if (rpst != "") rpst += ", ";
+					rpst += st;
+				}
+			}
+			st.Format("%.0f (", rpenalty_cur);
+			rpst = st + rpst + ")";
 			if (key_eval == "") {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id+1, midi_file, rpenalty_cur, dpenalty_cur, hdif);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id+1, midi_file, rpst, dpenalty_cur, hdif);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id+1, midi_file, rpenalty_cur, hdif, key_eval);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id+1, midi_file, rpst, hdif, key_eval);
 			}
 		}
 		AddMelody(step - real_len - 1, step - 1, v, st);

@@ -251,7 +251,7 @@ void CGenCP1::ScanCPInit() {
 }
 
 int CGenCP1::SendCP() {
-	CString st, info;
+	CString st, info, rpst;
 	int pos;
 	int v;
 	Sleep(sleep_ms);
@@ -352,13 +352,22 @@ int CGenCP1::SendCP() {
 			st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
 		}
 		else {
+			for (int x = 0; x < max_flags; ++x) {
+				if (!accept[x] && fpenalty[x]) {
+					st.Format("%d=%.0f", x, fpenalty[x]);
+					if (rpst != "") rpst += ", ";
+					rpst += st;
+				}
+			}
+			st.Format("%.0f (", rpenalty_cur);
+			rpst = st + rpst + ")";
 			if (key_eval == "") {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id+1, midi_file, rpenalty_cur, dpenalty_cur, hdif);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id+1, midi_file, rpst, dpenalty_cur, hdif);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id+1, midi_file, rpenalty_cur, hdif, key_eval);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id+1, midi_file, rpst, hdif, key_eval);
 			}
 		}
 		AddMelody(step - real_len - 1, step - 1, svoice+1, st);
