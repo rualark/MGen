@@ -610,25 +610,22 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok;
 	if (ep2 > rlen*2) for (int i = 0; i < ep2 - rlen * 2; ++i) {
-		// Check if note changes direction or is a leap
-		if ((i == 0) || MELODY_SEPARATION(i) || MELODY_SEPARATION(i+rlen)) {
-			// Search for repeat of note at same beat until last three notes
-			int finish = i + scan_len;
-			if (finish > ep2 - rlen) finish = ep2 - rlen;
-			for (int x = i + 2; x < finish; x += 2) {
-				// Check if same note with direction change or leap
-				if ((cc[x] == cc[i]) && (MELODY_SEPARATION(x) || MELODY_SEPARATION(x+rlen))) {
-					// Check that more notes repeat
-					ok = 0;
-					for (int z = 1; z < rlen; ++z) {
-						if (cc[x + z] != cc[i + z]) {
-							ok = 1;
-							break;
-						}
+		// Search for repeat of note at same beat until last three notes
+		int finish = i + scan_len;
+		if (finish > ep2 - rlen) finish = ep2 - rlen;
+		for (int x = i + 2; x < finish; x += 2) {
+			// Check if same note
+			if (cc[x] == cc[i]) {
+				// Check that more notes repeat
+				ok = 0;
+				for (int z = 1; z < rlen; ++z) {
+					if (cc[x + z] != cc[i + z]) {
+						ok = 1;
+						break;
 					}
-					if (!ok) {
-						FLAG2(fid, i);
-					}
+				}
+				if (!ok) {
+					FLAG2(fid, i);
 				}
 			}
 		}
