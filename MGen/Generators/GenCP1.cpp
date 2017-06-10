@@ -92,9 +92,17 @@ void CGenCP1::SingleCPInit() {
 	}
 	else {
 	*/
-	for (int i = 0; i < c_len; ++i) {
-		min_c[i] = max(ac[cfv][i], ac[cpv][i] - correct_range);
-		max_c[i] = ac[cpv][i] + correct_range;
+	if (cantus_high) {
+		for (int i = 0; i < c_len; ++i) {
+			max_c[i] = min(ac[cfv][i], ac[cpv][i] + correct_range);
+			min_c[i] = ac[cpv][i] - correct_range;
+		}
+	}
+	else {
+		for (int i = 0; i < c_len; ++i) {
+			min_c[i] = max(ac[cfv][i], ac[cpv][i] - correct_range);
+			max_c[i] = ac[cpv][i] + correct_range;
+		}
 	}
 	// Convert limits to chromatic
 	for (int i = 0; i < c_len; ++i) {
