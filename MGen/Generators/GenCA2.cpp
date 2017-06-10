@@ -76,7 +76,7 @@ void CGenCA2::SendCorrectionsCP(int i, milliseconds time_start) {
 			// Add lining
 			int pos = step;
 			for (int z = 0; z < c_len; z++) {
-				if (cpoint[i][1][z] != clib[cids[x]][z]) {
+				if (cpoint[i][cpv][z] != clib[cids[x]][z]) {
 					for (int g = 0; g < cc_len[z]; g++) {
 						lining[pos + g][1] = 1;
 					}
