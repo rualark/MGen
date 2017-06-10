@@ -611,6 +611,7 @@ void CGMidi::LoadCP(CString path)
 	}
 
 	vector<vector<pair<int, int>>> inter; // Intermediate structure for loading counterpoint
+	vector<CString> incom; // Incoming comments
 	vector<int> harm; // Harmony
 	int vcount = 0; // Number of voices
 	int v; // Current voice
@@ -628,9 +629,27 @@ void CGMidi::LoadCP(CString path)
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			float time = midifile.getTimeInSeconds(mev->tick);
+			float pos2 = mev->tick;
+			int pos = round(mev->tick / (float)tpc);
+			if (mev->isMetaMessage()) {
+				// Lyrics
+				if (mev->getMetaType() == 5) {
+					CString st;
+					st = "";
+					for (int x = 0; x < mev->size(); x++) {
+						st += mev->data()[x];
+					}
+					// Remove first data items
+					st = st.Mid(3);
+					// Assign lyrics if this position was already sent
+					if (pos_old == pos) {
+						incom.resize(hid);
+						incom[hid - 1] = st;
+					}
+					// TODO: Assign lyrics if this position is new and notes will be sent later
+				}
+			}
 			if (mev->isNoteOn()) {
-				float pos2 = mev->tick;
-				int pos = round(mev->tick / (float)tpc);
 				float nlen2 = mev->getTickDuration();
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				if (pos != pos_old && inter.size()) { 
@@ -668,6 +687,7 @@ void CGMidi::LoadCP(CString path)
 						for (int x = 0; x < inter.size(); ++x) max_voice = max(max_voice, inter[x].size());
 						cpoint.resize(cid);
 						cpoint[cid-1].resize(max_voice, vector<int>(inter.size()));
+						// Send cpoint
 						for (int x = 0; x < inter.size(); ++x) {
 							for (int i = 0; i < inter[x].size(); ++i) {
 								cpoint[cid-1][i][x] = inter[x][i].first;
@@ -675,6 +695,9 @@ void CGMidi::LoadCP(CString path)
 						}
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
+						// Send incom
+						cp_incom.resize(cid);
+						cp_incom[cid - 1] = incom;
 					}
 					// Go to next cantus
 					nid = 0;
@@ -694,6 +717,7 @@ void CGMidi::LoadCP(CString path)
 					inter.clear();
 					min_len.clear();
 					max_len.clear();
+					incom.clear();
 				}
 				// Add new note
 				if (!nlen) {
@@ -739,6 +763,9 @@ void CGMidi::LoadCP(CString path)
 			}
 			cantus_len.push_back(cl);
 			cantus_tempo.push_back(ct);
+			// Send incom
+			cp_incom.resize(cid);
+			cp_incom[cid - 1] = incom;
 		}
 	}
 	// Count time
