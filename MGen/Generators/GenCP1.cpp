@@ -21,6 +21,8 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "slurs_window", &slurs_window);
 	LoadRange(sN, sV, "between", &min_between, &max_between);
 	CheckVar(sN, sV, "sum_interval", &sum_interval);
+	CheckVar(sN, sV, "burst_between", &burst_between);
+	CheckVar(sN, sV, "burst_steps", &burst_steps);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -406,9 +408,9 @@ int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
-		ivl[i] = abs(ac[cpv][i] - ac[cfv][i]);
+		ivl[i] = ac[1][i] - ac[0][i];
 		ivlc[i] = ivl[i] % 7;
-		civl[i] = abs(acc[cpv][i] - acc[cfv][i]);
+		civl[i] = acc[1][i] - acc[0][i];
 		civlc[i] = civl[i] % 12;
 		//if (civlc[i] == 1 || civlc[i] == 2 || civlc[i] == 5 || civlc[i] == 6 || civlc[i] == 10 || civlc[i] == 11) tivl[i] = iDis;
 		if (civlc[i] == 3 || civlc[i] == 4 || civlc[i] == 8 || civlc[i] == 9) tivl[i] = iIco;
@@ -549,6 +551,31 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 	return 0;
 }
 
+// Count limits
+int CGenCP1::FailCPInterval(int step1, int step2) {
+	// Calculate range
+	nmin = MAX_NOTE;
+	nmax = 0;
+	int bsteps = 0;
+	for (int i = step1; i < step2; ++i) {
+		if (acc[cpv][i] < nmin) nmin = acc[cpv][i];
+		if (acc[cpv][i] > nmax) nmax = acc[cpv][i];
+		// Check between
+		if (ac[1][i] - ac[0][i] > max_between) {
+			++bsteps;
+			if (ac[1][i] - ac[0][i] > burst_between) FLAG2(37, i);
+			if (bsteps > burst_steps) {
+				// Flag only first overrun
+				if (bsteps == burst_steps + 1) FLAG2(37, i)
+				// Next overruns are sent to fpenalty
+				else fpenalty[37] += bsteps - burst_steps;
+			}
+		}
+		else bsteps = 0;
+	}
+	return 0;
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -566,7 +593,6 @@ void CGenCP1::ScanCP(int t, int v) {
 check:
 	while (true) {
 		//LogCantus(cc);
-		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {
 			if (nmax - nmin > max_interval) goto skip;
@@ -590,6 +616,7 @@ check:
 			}
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
+		if (FailCPInterval(0, ep2)) goto skip;
 		if (FailSlurs(acc[cpv], 0, ep2 - 1)) goto skip;
 		++accepted3;
 		if (need_exit && task != tEval) break;

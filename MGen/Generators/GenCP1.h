@@ -24,6 +24,7 @@ protected:
 	void ScanCPInit();
 	inline int SendCP();
 	inline int FailSlurs(vector<int>& cc, int step1, int step2);
+	inline int FailCPInterval(int step1, int step2);
 	void ScanCP(int t, int v);
 
 	// Counterpoint
@@ -56,4 +57,6 @@ protected:
 	int min_between = 0; // Minimum diatonic interval between voices
 	int max_between = 11; // Maximum diatonic interval between voices
 	int sum_interval = 22; // Maximum chromatic range of cantus and counterpoint
+	int burst_steps = 3; // Maximum number of steps for which max_between can be exceeded
+	int burst_between = 11; // Maximum interval between voices for burst_steps steps
 };
