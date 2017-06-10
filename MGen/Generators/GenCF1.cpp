@@ -278,7 +278,7 @@ void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int st
 // Detect repeating notes. Step2 excluding
 int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
-		if (c[i] == c[i + 1]) return 1;
+		if (c[i] == c[i + 1]) FLAG2(93, i);
 	}
 	return 0;
 }
@@ -1390,10 +1390,6 @@ void CGenCF1::SingleCantusInit() {
 		c[i] = CC_C(cc[i], tonic_cur, minor_cur);
 		// Save value for future use;
 		cc_old[i] = cc[i];
-		// Check duplicate
-		if (i > 0 && cc[i] == cc[i - 1]) return;
-		// Check minor step repeated
-		if (i > 0 && c[i] == c[i - 1]) return;
 	}
 	if (!swa_inrange) {
 		GetRealRange(c, cc);
@@ -2392,16 +2388,9 @@ check:
 		GetMelodyInterval(cc, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
-		if (task == tGen) {
-			if (nmax - nmin > max_interval) goto skip;
-			if (c_len == ep2 && nmax - nmin < min_interval) goto skip;
-			ClearFlags(0, ep2);
-		}
-		else {
-			ClearFlags(0, ep2);
-			if (nmax - nmin > max_interval) FLAG(37, 0);
-			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
-		}
+		ClearFlags(0, ep2);
+		if (nmax - nmin > max_interval) FLAG(37, 0);
+		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		if (need_exit && task != tEval) break;
 		// Show status
 		if (accepted3 % 100000 == 0) ShowScanStatus(cc);

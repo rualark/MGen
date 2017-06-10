@@ -64,7 +64,7 @@ void CGenCA2::SendCorrectionsCP(int i, milliseconds time_start) {
 				step -= real_len + 1;
 			}
 			// Get cantus
-			scpoint[1] = clib[cids[x]];
+			scpoint[cpv] = clib[cids[x]];
 			dpenalty_cur = dpenalty[cids[x]];
 			// Clear penalty
 			dpenalty[cids[x]] = MAX_PENALTY;
