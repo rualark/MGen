@@ -295,6 +295,8 @@ void CGenCA2::Generate() {
 		}
 		step -= real_len + 1;
 		//GetSourceRange();
+		// Get cantus interval
+		GetMelodyInterval(cpoint[i][cfv], 0, cpoint[i][cfv].size(), cf_nmin, cf_nmax);
 		if (method == mSWA) {
 			SWACP(i, 1);
 		}
@@ -305,8 +307,9 @@ void CGenCA2::Generate() {
 			dpenalty.clear();
 			rpenalty_min = 0;
 			dpenalty_min = MAX_PENALTY;
+			scpoint = cpoint[i];
 			// Full scan marked notes
-			ScanCantus(tCor, 0, &(cantus[i]));
+			ScanCP(tCor, 0);
 			rpenalty_min = 0;
 		}
 		// Check if we have results
