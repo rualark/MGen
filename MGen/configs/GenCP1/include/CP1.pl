@@ -11,7 +11,7 @@ accept_reseed = 0 # After accepting first result reseed (if random_seed) and cho
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
-cantus_id = 4 # Select particular cantus id. Set to 0 to select random
+cantus_id = 16 # Select particular cantus id. Set to 0 to select random
 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
@@ -25,7 +25,7 @@ between = 0-12 # Minimum-maximum chromatic interval between voices (12 = octave)
 burst_between = 18 # Maximum chromatic interval between voices for burst_steps steps
 burst_steps = 3 # Maximum number of steps for which max_between can be exceeded
 
-cantus_high = 1 # Set to 1 to generate counterpoint under cantus
+cantus_high = 0 # Set to 1 to generate counterpoint under cantus
 slurs_window = 10 # Number of steps to check for slur limit
 
 # Technical parameters

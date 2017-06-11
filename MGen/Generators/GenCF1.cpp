@@ -1994,7 +1994,8 @@ void CGenCF1::ShowFlagBlock() {
 					fblock[w][d][max_flag] = -1;
 				}
 			}
-			est.Format("Window %d: %lld scans, %lld of %lld variants blocked: %s", w, wscans[w], accepted5[w] - accepted4[w], accepted5[w], st2);
+			est.Format("Window %d: %lld scans, %lld of %lld variants blocked: %s", w, wscans[w], 
+				accepted5[w] - accepted4[w], accepted5[w], st2);
 			WriteLog(3, est);
 		}
 	}

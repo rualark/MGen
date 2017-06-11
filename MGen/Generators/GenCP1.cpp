@@ -567,13 +567,8 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 
 // Count limits
 int CGenCP1::FailCPInterval(int step1, int step2) {
-	// Calculate range
-	nmin = MAX_NOTE;
-	nmax = 0;
 	int bsteps = 0;
 	for (int i = step1; i < step2; ++i) {
-		if (acc[cpv][i] < nmin) nmin = acc[cpv][i];
-		if (acc[cpv][i] > nmax) nmax = acc[cpv][i];
 		// Check between
 		if (acc[1][i] - acc[0][i] > max_between) {
 			++bsteps;
@@ -607,7 +602,8 @@ void CGenCP1::ScanCP(int t, int v) {
 	// Analyze combination
 check:
 	while (true) {
-	  //LogCantus(acc[cpv]);
+	  LogCantus(acc[cpv]);
+		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {
 			if (nmax - nmin > max_interval) goto skip;
