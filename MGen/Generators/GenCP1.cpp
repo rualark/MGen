@@ -438,7 +438,7 @@ int CGenCP1::FailVIntervals() {
 		// Unison
 		if (!civl[i-1]) {
 			// Inside
-			if (i && i < c_len - 1) FLAG2(91, i-1);
+			if (i>1) FLAG2(91, i-1);
 			// Direct exit
 			if (direct[i - 1] > 0) FLAG2(92, i);
 		}
@@ -607,7 +607,7 @@ void CGenCP1::ScanCP(int t, int v) {
 	// Analyze combination
 check:
 	while (true) {
-		//LogCantus(cc);
+	  //LogCantus(acc[cpv]);
 		// Limit melody interval
 		if (task == tGen) {
 			if (nmax - nmin > max_interval) goto skip;
