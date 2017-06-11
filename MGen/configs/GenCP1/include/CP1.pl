@@ -19,10 +19,10 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters
-interval = 7-14 # Minimum-maximum chromatic interval of counterpoint (12 = octave)
+interval = 7-14 # Minimum-maximum chromatic interval of voice (12 = octave)
 sum_interval = 22 # Maximum total chromatic interval of counterpoint with cantus (12 = octave)
-between = 0-7 # Minimum-maximum diatonic interval between voices (7 = octave)
-burst_between = 11 # Maximum diatonic interval between voices for burst_steps steps
+between = 0-12 # Minimum-maximum chromatic interval between voices (12 = octave)
+burst_between = 18 # Maximum chromatic interval between voices for burst_steps steps
 burst_steps = 3 # Maximum number of steps for which max_between can be exceeded
 
 cantus_high = 1 # Set to 1 to generate counterpoint under cantus
