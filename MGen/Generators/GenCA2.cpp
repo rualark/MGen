@@ -271,6 +271,8 @@ void CGenCA2::Generate() {
 			cpv = 1;
 		}
 		SelectRuleSet(cp_rule_set);
+		// Get cantus interval
+		GetMelodyInterval(cpoint[i][cfv], 0, cpoint[i][cfv].size(), cf_nmin, cf_nmax);
 		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown
@@ -295,8 +297,6 @@ void CGenCA2::Generate() {
 		}
 		step -= real_len + 1;
 		//GetSourceRange();
-		// Get cantus interval
-		GetMelodyInterval(cpoint[i][cfv], 0, cpoint[i][cfv].size(), cf_nmin, cf_nmax);
 		if (method == mSWA) {
 			SWACP(i, 1);
 		}

@@ -1343,18 +1343,18 @@ void CGenCF1::GetRealRange(vector<int>& c, vector<int>& cc) {
 	min_intervald = CC_C(cc[0] + min_interval, tonic_cur, minor_cur) - c[0];
 	// If max_interval is below octave, you cannot go to the lowest note to avoid multiple culminations flag
 	if (max_interval < 12) {
-		minc = c[0] - max_intervald + 1;
-		maxc = c[0] + max_intervald;
+		minc = cc[0] - max_interval + 1;
+		maxc = cc[0] + max_interval;
 	}
 	else {
-		minc = c[0] - max_intervald;
-		maxc = c[c_len - 1] + max_intervald;
+		minc = cc[0] - max_interval;
+		maxc = cc[c_len - 1] + max_interval;
 	}
 	if (random_range) {
-		if (maxc - minc > max_intervald) {
-			int rstart = randbw(0, maxc - minc - max_intervald);
+		if (maxc - minc > max_interval) {
+			int rstart = randbw(0, maxc - minc - max_interval);
 			minc += rstart;
-			maxc = minc + max_intervald;
+			maxc = minc + max_interval;
 		}
 	}
 }
@@ -1363,17 +1363,17 @@ void CGenCF1::GetRealRange(vector<int>& c, vector<int>& cc) {
 void CGenCF1::GetSourceRange(vector<int> &cc) {
 	// Get source melody range
 	GetMelodyInterval(cc, 0, c_len, nmin, nmax);
-	// Convert range to diatonic
-	src_nminc = CC_C(nmin, tonic_cur, minor_cur) - correct_inrange;
-	src_nmaxc = CC_C(nmax, tonic_cur, minor_cur) + correct_inrange;
+	// Widen range
+	src_nmin = nmin - correct_inrange;
+	src_nmax = nmax + correct_inrange;
 }
 
 // Apply source melody range
 void CGenCF1::ApplySourceRange() {
-	if (!src_nmaxc) return;
+	if (!src_nmax) return;
 	// Decrease current range if it is bigger
-	if (minc < src_nminc) minc = src_nminc;
-	if (maxc > src_nmaxc) maxc = src_nmaxc;
+	if (minc < src_nmin) minc = src_nmin;
+	if (maxc > src_nmax) maxc = src_nmax;
 }
 
 void CGenCF1::SingleCantusInit() {
@@ -1395,18 +1395,20 @@ void CGenCF1::SingleCantusInit() {
 	// If too wide range is not accepted, correct range to increase scan performance
 	if (!accept[37]) {
 		for (int i = 0; i < c_len; ++i) {
-			min_c[i] = max(minc, c[i] - correct_range);
-			max_c[i] = min(maxc, c[i] + correct_range);
+			min_cc[i] = max(minc, cc[i] - correct_range);
+			max_cc[i] = min(maxc, cc[i] + correct_range);
 		}
 	}
 	else {
 		for (int i = 0; i < c_len; ++i) {
-			min_c[i] = c[i] - correct_range;
-			max_c[i] = c[i] + correct_range;
+			min_cc[i] = cc[i] - correct_range;
+			max_cc[i] = cc[i] + correct_range;
 		}
 	}
-	// Convert limits to chromatic
+	// Convert limits to diatonic and recalibrate
 	for (int i = 0; i < c_len; ++i) {
+		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
+		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
@@ -1480,11 +1482,13 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	GetRealRange(c, cc);
 	// Set pitch limits
 	for (int i = 0; i < c_len; ++i) {
-		min_c[i] = minc;
-		max_c[i] = maxc;
+		min_cc[i] = minc;
+		max_cc[i] = maxc;
 	}
-	// Convert limits to chromatic
+	// Convert limits to diatonic and recalibrate
 	for (int i = 0; i < c_len; ++i) {
+		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
+		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
@@ -2398,11 +2402,11 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 check:
 	while (true) {
 		//LogCantus(cc);
+		ClearFlags(0, ep2);
 		if (FailNoteRepeat(cc, ep1, ep2 - 1)) goto skip;
 		GetMelodyInterval(cc, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
-		ClearFlags(0, ep2);
 		if (nmax - nmin > max_interval) FLAG(37, 0);
 		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		if (need_exit && task != tEval) break;

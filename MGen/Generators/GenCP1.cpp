@@ -49,18 +49,20 @@ void CGenCP1::MakeNewCP() {
 	// Set pitch limits
 	if (cantus_high) {
 		for (int i = 0; i < c_len; ++i) {
-			max_c[i] = ac[cfv][i] - min_between;
-			min_c[i] = ac[cfv][i] - max_between;
+			max_cc[i] = acc[cfv][i] - min_between;
+			min_cc[i] = acc[cfv][i] - max_between;
 		}
 	}
 	else {
 		for (int i = 0; i < c_len; ++i) {
-			min_c[i] = ac[cfv][i] + min_between;
-			max_c[i] = ac[cfv][i] + max_between;
+			min_cc[i] = acc[cfv][i] + min_between;
+			max_cc[i] = acc[cfv][i] + max_between;
 		}
 	}
-	// Convert limits to chromatic
+	// Convert limits to diatonic and recalibrate
 	for (int i = 0; i < c_len; ++i) {
+		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
+		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
@@ -98,20 +100,23 @@ void CGenCP1::SingleCPInit() {
 	}
 	else {
 	*/
+	// Calculate limits
 	if (cantus_high) {
 		for (int i = 0; i < c_len; ++i) {
-			max_c[i] = min(ac[cfv][i], ac[cpv][i] + correct_range);
-			min_c[i] = ac[cpv][i] - correct_range;
+			max_cc[i] = min(acc[cfv][i] - min_between, acc[cpv][i] + correct_range);
+			min_cc[i] = max(cf_nmax - sum_interval, acc[cpv][i] - correct_range);
 		}
 	}
 	else {
 		for (int i = 0; i < c_len; ++i) {
-			min_c[i] = max(ac[cfv][i], ac[cpv][i] - correct_range);
-			max_c[i] = ac[cpv][i] + correct_range;
+			min_cc[i] = max(acc[cfv][i], acc[cpv][i] - correct_range);
+			max_cc[i] = acc[cpv][i] + correct_range;
 		}
 	}
-	// Convert limits to chromatic
+	// Convert limits to diatonic and recalibrate
 	for (int i = 0; i < c_len; ++i) {
+		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
+		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
@@ -570,10 +575,10 @@ int CGenCP1::FailCPInterval(int step1, int step2) {
 		if (acc[cpv][i] < nmin) nmin = acc[cpv][i];
 		if (acc[cpv][i] > nmax) nmax = acc[cpv][i];
 		// Check between
-		if (ac[1][i] - ac[0][i] > max_between) {
+		if (acc[1][i] - acc[0][i] > max_between) {
 			++bsteps;
 			// Flag very far burst
-			if (ac[1][i] - ac[0][i] > burst_between) FLAG2(11, i);
+			if (acc[1][i] - acc[0][i] > burst_between) FLAG2(11, i);
 			if (bsteps > burst_steps) {
 				// Flag long burst only on first overrun
 				if (bsteps == burst_steps + 1) FLAG2(11, i)
