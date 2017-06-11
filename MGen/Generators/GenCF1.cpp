@@ -2066,6 +2066,11 @@ int CGenCF1::SendCantus() {
 					color[pos + i][v] = flag_color[severity[fl]];
 				}
 			}
+			// Add scan range
+			if (!i) {
+				st.Format("\nNote scan range: %d - %d", min_cc[x], max_cc[x]);
+				comment[pos][v] += st;
+			}
 			len[pos + i][v] = cc_len[x];
 			pause[pos + i][v] = 0;
 			coff[pos + i][v] = i;
