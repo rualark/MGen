@@ -572,10 +572,11 @@ int CGenCP1::FailCPInterval(int step1, int step2) {
 		// Check between
 		if (ac[1][i] - ac[0][i] > max_between) {
 			++bsteps;
-			if (ac[1][i] - ac[0][i] > burst_between) FLAG2(37, i);
+			// Flag very far burst
+			if (ac[1][i] - ac[0][i] > burst_between) FLAG2(11, i);
 			if (bsteps > burst_steps) {
-				// Flag only first overrun
-				if (bsteps == burst_steps + 1) FLAG2(37, i)
+				// Flag long burst only on first overrun
+				if (bsteps == burst_steps + 1) FLAG2(11, i)
 				// Next overruns are sent to fpenalty
 				else fpenalty[37] += bsteps - burst_steps;
 			}
@@ -618,10 +619,10 @@ check:
 			ClearFlags(0, ep2);
 			if (nmax - nmin > max_interval) FLAG(37, 0);
 			if (cantus_high) {
-				if (cf_nmax - nmin > sum_interval) FLAG(37, 0);
+				if (cf_nmax - nmin > sum_interval) FLAG(7, 0);
 			}
 			else {
-				if (nmax - cf_nmin > sum_interval) FLAG(37, 0);
+				if (nmax - cf_nmin > sum_interval) FLAG(7, 0);
 			}
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
