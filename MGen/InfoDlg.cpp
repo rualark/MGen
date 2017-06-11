@@ -95,6 +95,10 @@ BOOL CInfoDlg::OnInitDialog()
 			pGen->dstime[i][mv] / 1000.0, pGen->stime[i] / pGen->m_pspeed / 10 + pGen->dstime[i][mv] / 1000.0,
 			pGen->detime[ei][mv] / 1000.0, pGen->etime[ei] / pGen->m_pspeed / 10 + pGen->detime[ei][mv] / 1000.0);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
+		if (pGen->nsr1[i][mv] > 0) {
+			st.Format("Note scan range: %d - %d\n", pGen->nsr1[i][mv], pGen->nsr2[i][mv]);
+			m_info.AddText(st, RGB(0, 0, 0), 0);
+		}
 		st.Format("Lengroup: %d\n", pGen->lengroup[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);

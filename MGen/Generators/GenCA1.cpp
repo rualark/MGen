@@ -305,6 +305,8 @@ void CGenCA1::Generate()
 		cc_tempo = cantus_tempo[i];
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		dpenalty_cur = 0;
+		c_len = cantus[i].size();
+		GetSourceRange(cantus[i]);
 		ScanCantus(tEval, 0, &(cantus[i]));
 		key_eval = "";
 		// Check if cantus was shown
@@ -327,7 +329,6 @@ void CGenCA1::Generate()
 			continue;
 		}
 		step -= real_len + 1;
-		GetSourceRange(cc);
 		if (method == mSWA) {
 			SWA(i, 1);
 		}

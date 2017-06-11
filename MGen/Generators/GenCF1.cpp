@@ -1343,7 +1343,7 @@ void CGenCF1::GetRealRange(vector<int>& c, vector<int>& cc) {
 	min_intervald = CC_C(cc[0] + min_interval, tonic_cur, minor_cur) - c[0];
 	// If max_interval is below octave, you cannot go to the lowest note to avoid multiple culminations flag
 	if (max_interval < 12) {
-		minc = cc[0] - max_interval + 1;
+		minc = cc[0] - max_interval + 2;
 		maxc = cc[0] + max_interval;
 	}
 	else {
@@ -2072,8 +2072,8 @@ int CGenCF1::SendCantus() {
 			}
 			// Add scan range
 			if (!i) {
-				st.Format("\nNote scan range: %d - %d", min_cc[x], max_cc[x]);
-				comment[pos][v] += st;
+				nsr1[pos][v] = min_cc[x];
+				nsr2[pos][v] = max_cc[x];
 			}
 			len[pos + i][v] = cc_len[x];
 			pause[pos + i][v] = 0;

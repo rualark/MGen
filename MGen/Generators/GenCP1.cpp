@@ -312,8 +312,8 @@ int CGenCP1::SendCP() {
 				}
 				// Add scan range
 				if (!i) {
-					st.Format("\nNote scan range: %d - %d", min_cc[x], max_cc[x]);
-					comment[pos][v] += st;
+					nsr1[pos][v] = min_cc[x];
+					nsr2[pos][v] = max_cc[x];
 				}
 				len[pos + i][v] = cc_len[x];
 				pause[pos + i][v] = 0;
@@ -359,13 +359,13 @@ int CGenCP1::SendCP() {
 			Adapt(step - real_len - 1, step - 1);
 		}
 		// If  window-scan
-		st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
+		st.Format("#%d\nCantus: %s\nHarmonic difficulty: %.0f", cantus_sent, cantus_high?"high":"low", hdif);
 		AddMelody(step - real_len - 1, step - 1, svoice + 1, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
 			// If RSWA
-			st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
+			st.Format("#%d\nCantus: %s\nHarmonic difficulty: %.0f", cantus_sent, cantus_high ? "high" : "low", hdif);
 		}
 		else {
 			for (int x = 0; x < max_flags; ++x) {
@@ -379,11 +379,11 @@ int CGenCP1::SendCP() {
 			rpst = st + rpst + ")";
 			if (key_eval == "") {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id+1, midi_file, rpst, dpenalty_cur, hdif);
+				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nDistance penalty: %.0f\nHarmonic difficulty: %.0f", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, dpenalty_cur, hdif);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id+1, midi_file, rpst, hdif, key_eval);
+				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, hdif, key_eval);
 			}
 		}
 		AddMelody(step - real_len - 1, step - 1, svoice+1, st);
