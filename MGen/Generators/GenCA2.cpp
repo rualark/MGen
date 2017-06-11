@@ -222,6 +222,10 @@ void CGenCA2::Generate() {
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Choose level
+		if (cp_incom[i].size()) {
+			if (cp_incom[i][0] == "cf=low") cantus_high = 0;
+			if (cp_incom[i][0] == "cf=high") cantus_high = 1;
+		}
 		if (cantus_high) {
 			cfv = 1;
 		}

@@ -613,10 +613,10 @@ check:
 			ClearFlags(0, ep2);
 			if (nmax - nmin > max_interval) FLAG(37, 0);
 			if (cantus_high) {
-				if (cf_nmax - nmin > sum_interval) goto skip;
+				if (cf_nmax - nmin > sum_interval) FLAG(37, 0);
 			}
 			else {
-				if (nmax - cf_nmin > sum_interval) goto skip;
+				if (nmax - cf_nmin > sum_interval) FLAG(37, 0);
 			}
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}

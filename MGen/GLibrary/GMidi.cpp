@@ -641,6 +641,8 @@ void CGMidi::LoadCP(CString path)
 					}
 					// Remove first data items
 					st = st.Mid(3);
+					st = st.Trim();
+					st.MakeLower();
 					// Assign lyrics if this position was already sent
 					if (pos_old == pos) {
 						incom.resize(hid);
