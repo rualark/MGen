@@ -1069,7 +1069,9 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Set that we are preleaped (even if we are postleaped)
 				preleap = 1;
 			}
-			mdc1 = 2;
+			// Melody direction change (MDC)
+			// Default left mdc is close, because we do not need close mdc at the beginning
+			mdc1 = 0;
 			if (leap_start > 0) {
 				// Check leap mdc1 if it is not last note
 				// If direction does not change
@@ -1082,13 +1084,13 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 						else mdc1 = 1;
 					}
 					else {
-						// Mark no mdc if this is end of cantus
-						mdc1 = 2;
+						// Mark far mdc if this is start of cantus
+						mdc1 = 1;
 					}
 				}
 				else mdc1 = 0;
 			}
-			mdc2 = 2;
+			mdc2 = 0;
 			if (i < ep2 - 2) {
 				// Check leap mdc2 if it is not last note
 				// If direction does not change
@@ -1101,8 +1103,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 						else mdc2 = 1;
 					}
 					else {
-						// Mark no mdc if this is end of cantus
-						mdc2 = 2;
+						// Mark far mdc if this is end of cantus
+						mdc2 = 1;
 					}
 				}
 				else mdc2 = 0;

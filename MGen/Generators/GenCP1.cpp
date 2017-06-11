@@ -442,7 +442,7 @@ int CGenCP1::FailVIntervals() {
 			// Direct exit
 			if (direct[i - 1] > 0) FLAG2(92, i);
 		}
-		// Disonnance
+		// Discord
 		if (tivl[i] == iDis) {
 			// Upbeat
 			if (i % 2) FLAG2(88, i)
