@@ -710,7 +710,7 @@ check:
 			finished = 0;
 			// Sliding Windows Approximation
 			if (method == mSWA) {
-				if (NextSWA()) break;
+				if (NextSWA(acc[cpv], acc_old[cpv])) break;
 				goto check;
 			}
 			// Finish if this is last variant in first window and not SWA

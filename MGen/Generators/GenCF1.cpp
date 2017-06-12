@@ -1772,7 +1772,7 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 	}
 }
 
-int CGenCF1::NextSWA() {
+int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	// If we slided to the end, break
 	if (sp2 == smatrixc) return 1;
 	// Slide window further
@@ -2494,7 +2494,7 @@ check:
 			finished = 0;
 			// Sliding Windows Approximation
 			if (method == mSWA) {
-				if (NextSWA()) break;
+				if (NextSWA(cc, cc_old)) break;
 				goto check;
 			}
 			// Finish if this is last variant in first window and not SWA

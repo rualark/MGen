@@ -114,7 +114,7 @@ protected:
 	inline void CalcRpenalty();
 	inline void ScanLeft(vector<int> &cc, int &finished);
 	inline void BackWindow(vector<int>& cc);
-	inline int NextSWA();
+	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);
 	inline void SaveBestRejected();
 	inline int FailMinor(vector<int>& pcc);
 	inline void ShowScanStatus(vector<int>& cc);
