@@ -109,8 +109,8 @@ void CGenCP1::SingleCPInit() {
 	}
 	else {
 		for (int i = 0; i < c_len; ++i) {
-			min_cc[i] = max(acc[cfv][i], acc[cpv][i] - correct_range);
-			max_cc[i] = acc[cpv][i] + correct_range;
+			min_cc[i] = max(acc[cfv][i] + min_between, acc[cpv][i] - correct_range);
+			max_cc[i] = min(cf_nmin + sum_interval, acc[cpv][i] + correct_range);
 		}
 	}
 	// Convert limits to diatonic and recalibrate
