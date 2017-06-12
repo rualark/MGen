@@ -2404,7 +2404,7 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	// Analyze combination
 check:
 	while (true) {
-		//LogCantus(cc);
+		LogCantus(cc);
 		ClearFlags(0, ep2);
 		if (FailNoteRepeat(cc, ep1, ep2 - 1)) goto skip;
 		GetMelodyInterval(cc, 0, ep2, nmin, nmax);
@@ -2490,9 +2490,12 @@ check:
 	skip:
 		ScanLeft(cc, finished);
 		if (finished) {
+			// Clear flag to prevent coming here again
+			finished = 0;
 			// Sliding Windows Approximation
 			if (method == mSWA) {
 				if (NextSWA()) break;
+				goto check;
 			}
 			// Finish if this is last variant in first window and not SWA
 			else if ((p == 0) || (wid == 0)) {
@@ -2514,8 +2517,6 @@ check:
 				else break;
 			}
 			BackWindow(cc);
-			// Clear flag to prevent coming here again
-			finished = 0;
 			// Goto next variant calculation
 			goto skip;
 		} // if (finished)

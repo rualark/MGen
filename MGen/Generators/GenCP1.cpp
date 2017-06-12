@@ -706,9 +706,12 @@ check:
 	skip:
 		ScanLeft(acc[cpv], finished);
 		if (finished) {
+			// Clear flag to prevent coming here again
+			finished = 0;
 			// Sliding Windows Approximation
 			if (method == mSWA) {
 				if (NextSWA()) break;
+				goto check;
 			}
 			// Finish if this is last variant in first window and not SWA
 			else if ((p == 0) || (wid == 0)) {
@@ -730,8 +733,6 @@ check:
 				else break;
 			}
 			BackWindow(acc[cpv]);
-			// Clear flag to prevent coming here again
-			finished = 0;
 			// Goto next variant calculation
 			goto skip;
 		} // if (finished)
