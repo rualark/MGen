@@ -577,11 +577,28 @@ int CGenCP1::FailCPInterval(int step1, int step2) {
 			if (bsteps > burst_steps) {
 				// Flag long burst only on first overrun
 				if (bsteps == burst_steps + 1) FLAG2(11, i)
-				// Next overruns are sent to fpenalty
+					// Next overruns are sent to fpenalty
 				else fpenalty[37] += bsteps - burst_steps;
 			}
 		}
 		else bsteps = 0;
+	}
+	return 0;
+}
+
+// Find situations when one voice goes over previous note of another voice
+int CGenCP1::FailOverlap() {
+	if (cantus_high) {
+		for (int i = ep1; i < ep2; ++i) {
+			if (i > 0 && acc[cpv][i] >= acc[cfv][i - 1]) FLAG2(24, i)
+			else if (i < c_len - 1 && acc[cpv][i] >= acc[cfv][i + 1]) FLAG2(24, i);
+		}
+	}
+	else {
+		for (int i = ep1; i < ep2; ++i) {
+			if (i > 0 && acc[cpv][i] <= acc[cfv][i - 1]) FLAG2(24, i)
+			else if (i < c_len - 1 && acc[cpv][i] <= acc[cfv][i + 1]) FLAG2(24, i);
+		}
 	}
 	return 0;
 }
@@ -650,6 +667,7 @@ check:
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		GlobalFill(ac[cpv], ep2, nstat2);
 		if (FailVIntervals()) goto skip;
+		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, ep2)) goto skip;
 		if (FailMultiCulm(acc[cpv], ep2)) goto skip;
 		if (FailFirstNotes(apc[cpv], ep2)) goto skip;

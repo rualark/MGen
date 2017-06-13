@@ -25,6 +25,7 @@ protected:
 	inline int SendCP();
 	inline int FailSlurs(vector<int>& cc, int step1, int step2);
 	inline int FailCPInterval(int step1, int step2);
+	inline int FailOverlap();
 	void ScanCP(int t, int v);
 
 	// Counterpoint
