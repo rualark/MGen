@@ -2404,7 +2404,7 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	// Analyze combination
 check:
 	while (true) {
-		LogCantus(cc);
+		//LogCantus(cc);
 		ClearFlags(0, ep2);
 		if (FailNoteRepeat(cc, ep1, ep2 - 1)) goto skip;
 		GetMelodyInterval(cc, 0, ep2, nmin, nmax);

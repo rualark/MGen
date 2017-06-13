@@ -602,7 +602,7 @@ void CGenCP1::ScanCP(int t, int v) {
 	// Analyze combination
 check:
 	while (true) {
-	  LogCantus(acc[cpv]);
+	  //LogCantus(acc[cpv]);
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {
