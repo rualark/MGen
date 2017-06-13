@@ -37,6 +37,9 @@ protected:
 	vector<vector<int>> aleap;
 	vector<vector<int>> asmooth;
 
+	// Variables
+	int cp_culm = 0; // Position of counterpoint culmination
+
 	vector<int> ivl; // Diatonic interval between voices
 	vector<int> civl; // Chromatic interval between voices
 	vector<int> ivlc; // Diatonic interval between voices (class)

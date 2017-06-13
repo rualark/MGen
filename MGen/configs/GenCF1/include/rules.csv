@@ -67,6 +67,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;79;0;Melody;Repeats;Culmination (early 3);-1;;
 1;21;60;Melody;Repeats;Culmination (late);1;;
 1;12;100;Melody;Repeats;Culmination (multiple);0;;
+1;26;60;Melody;Repeats;Culmination (sync);0;;
 1;76;60;Melody;Repeats;Notes repeat (2 sym);0;;
 1;36;60;Melody;Repeats;Notes repeat (3 sym);0;;
 1;72;60;Melody;Repeats;Notes repeat (5);0;;
@@ -112,7 +113,6 @@ Set;Severity;Class;Group;Rule;Flag
 1;49;60;Cantus;Counterpoint;First note (not C);1;;
 1;90;60;Cantus;Counterpoint;First note (not GC);0;;
 1;91;60;Cantus;Counterpoint;Unison (inside);0;;
-1;92;60;Cantus;Counterpoint;Unison (direct exit);0;;
 1;97;60;Cantus;Counterpoint;Slurs (sequence);0;;
 1;98;60;Cantus;Counterpoint;Slurs (simult.);0;;
 1;93;0;Cantus;Counterpoint;Slurs (1);1;;
@@ -187,6 +187,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;79;0;Melody;Repeats;Culmination (early 3);-1;;
 2;21;60;Melody;Repeats;Culmination (late);1;;
 2;12;100;Melody;Repeats;Culmination (multiple);0;;
+2;26;60;Melody;Repeats;Culmination (sync);0;;
 2;76;60;Melody;Repeats;Notes repeat (2 sym);0;;
 2;36;60;Melody;Repeats;Notes repeat (3 sym);0;;
 2;72;60;Melody;Repeats;Notes repeat (5);0;;
@@ -232,7 +233,6 @@ Set;Severity;Class;Group;Rule;Flag
 2;49;60;Cantus;Counterpoint;First note (not C);1;;
 2;90;60;Cantus;Counterpoint;First note (not GC);0;;
 2;91;60;Cantus;Counterpoint;Unison (inside);0;;
-2;92;60;Cantus;Counterpoint;Unison (direct exit);0;;
 2;97;60;Cantus;Counterpoint;Slurs (sequence);0;;
 2;98;60;Cantus;Counterpoint;Slurs (simult.);0;;
 2;93;0;Cantus;Counterpoint;Slurs (1);1;;

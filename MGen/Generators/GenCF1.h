@@ -288,6 +288,8 @@ protected:
 	float hdif;
 	int cantus_id = 0;
 	CString key_eval; // Results of key evaluation
+	int culm_step; // Position of culmination after FailMultiCulm
+	int cf_culm = 0; // Position of cantus firmus culmination
 
 	// Local SWA
 	vector <long> cids;

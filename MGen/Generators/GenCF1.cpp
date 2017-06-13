@@ -754,7 +754,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
 
 // Prohibit multiple culminations
 int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
-	int culm_sum = 0, culm_step;
+	int culm_sum = 0;
 	if (ep2 < c_len) {
 		// Find multiple culminations at highest note
 		if (nmax == max_cc[0] || nmax - nmin == max_interval) {
@@ -780,6 +780,8 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
 		if (culm_step == 2) FLAG2(79, culm_step);
 		// Prohibit culminations at last steps
 		if (culm_step > c_len - 4) FLAG2(21, culm_step);
+		// Prohibit synchronized culminations
+		if (av_cnt > 1 && culm_step == cf_culm) FLAG2(26, culm_step);
 	}
 	return 0;
 }
@@ -2033,6 +2035,8 @@ void CGenCF1::SaveCantus() {
 }
 
 int CGenCF1::SendCantus() {
+	// Save culmination position
+	cf_culm = culm_step;
 	if (svoice < 0) return 0;
 	CString st, info, rpst;
 	int v = svoice;

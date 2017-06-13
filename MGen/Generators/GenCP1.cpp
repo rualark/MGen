@@ -439,8 +439,6 @@ int CGenCP1::FailVIntervals() {
 		if (!civl[i-1]) {
 			// Inside
 			if (i>1) FLAG2(91, i-1);
-			// Direct exit
-			if (direct[i - 1] > 0) FLAG2(92, i);
 		}
 		// Discord
 		if (tivl[i] == iDis) {
