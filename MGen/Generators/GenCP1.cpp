@@ -227,7 +227,7 @@ void CGenCP1::ScanCPInit() {
 	civl.resize(c_len);
 	civlc.resize(c_len);
 	tivl.resize(c_len);
-	direct.resize(c_len);
+	motion.resize(c_len);
 	min_c.resize(c_len);
 	max_c.resize(c_len);
 	min_cc.resize(c_len);
@@ -424,6 +424,7 @@ int CGenCP1::FailVIntervals() {
 	int tonic_sum = 0;
 	int tonic_sum_i = 0;
 	int first_tonic = 0;
+	int mtemp;
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = ac[1][i] - ac[0][i];
@@ -434,7 +435,15 @@ int CGenCP1::FailVIntervals() {
 		if (civlc[i] == 3 || civlc[i] == 4 || civlc[i] == 8 || civlc[i] == 9) tivl[i] = iIco;
 		else if (civlc[i] == 7 || civlc[i] == 0) tivl[i] = iPco;
 		else tivl[i] = iDis;
-		if (i < ep2-1) direct[i] = (acc[cfv][i+1] - acc[cfv][i])*(acc[cpv][i+1] - acc[cpv][i]);
+		if (i < ep2 - 1) {
+			motion[i] = mStay;
+			if (acc[cfv][i + 1] != acc[cfv][i] || acc[cpv][i + 1] != acc[cpv][i]) {
+				mtemp = (acc[cfv][i + 1] - acc[cfv][i])*(acc[cpv][i + 1] - acc[cpv][i]);
+				if (mtemp > 0) motion[i] = mDirect;
+				else if (mtemp < 0) motion[i] = mContrary;
+				else motion[i] = mOblique;
+			}
+		}
 		// Tonic chord
 		// TODO: do not calculate tonic chord twice - calculate and store in harmony vector
 		if (apcc[0][i] == 0 && (apcc[1][i] == 0 || apcc[1][i] == 4 || apcc[1][i] == 7) && i < ep2 - 1) {
@@ -479,7 +488,7 @@ int CGenCP1::FailVIntervals() {
 			// All other cases if previous interval is not pco
 			else {
 				// Direct movement to pco
-				if (direct[i - 1] > 0) {
+				if (motion[i - 1] == mDirect) {
 					// Last movement with stepwize
 					if (i == c_len-1 && (abs(acc[cpv][i]-acc[cpv][i-1]) < 3 || abs(acc[cfv][i]-acc[cfv][i-1]) < 3))
 						FLAG2(33, i)

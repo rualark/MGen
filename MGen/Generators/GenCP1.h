@@ -1,6 +1,12 @@
 #pragma once
 #include "GenCA1.h"
 
+// Movement types
+#define mStay 0
+#define mOblique 1
+#define mDirect 2
+#define mContrary 3
+
 class CGenCP1 :
 	public CGenCA1
 {
@@ -45,7 +51,7 @@ protected:
 	vector<int> ivlc; // Diatonic interval between voices (class)
 	vector<int> civlc; // Chromatic interval between voices (class)
 	vector<int> tivl; // Type of interval between voices
-	vector<int> direct; // Above zero if voices move in same direction
+	vector<int> motion; // Melody motion type
 
 	// Cantus
 	int cf_nmin; // Minimum note in cantus (chromatic)
