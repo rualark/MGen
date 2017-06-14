@@ -70,4 +70,6 @@ protected:
 	int burst_steps = 3; // Maximum number of steps for which max_between can be exceeded
 	int burst_between = 11; // Maximum interval between voices for burst_steps steps
 	int tonic_window = 15; // Number of steps to search for adjacent tonic chords
+	int contrary_min = 30; // Minimum percent of contrary motion (little)
+	int contrary_min2 = 60; // Minimum percent of contrary motion (medium)
 };

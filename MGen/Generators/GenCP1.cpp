@@ -24,6 +24,8 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "burst_between", &burst_between);
 	CheckVar(sN, sV, "burst_steps", &burst_steps);
 	CheckVar(sN, sV, "tonic_window", &tonic_window);
+	CheckVar(sN, sV, "contrary_min", &contrary_min);
+	CheckVar(sN, sV, "contrary_min2", &contrary_min2);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -425,6 +427,7 @@ int CGenCP1::FailVIntervals() {
 	int tonic_sum_i = 0;
 	int first_tonic = 0;
 	int mtemp;
+	int scontra = 0;
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = ac[1][i] - ac[0][i];
@@ -440,7 +443,10 @@ int CGenCP1::FailVIntervals() {
 			if (acc[cfv][i + 1] != acc[cfv][i] || acc[cpv][i + 1] != acc[cpv][i]) {
 				mtemp = (acc[cfv][i + 1] - acc[cfv][i])*(acc[cpv][i + 1] - acc[cpv][i]);
 				if (mtemp > 0) motion[i] = mDirect;
-				else if (mtemp < 0) motion[i] = mContrary;
+				else if (mtemp < 0) {
+					motion[i] = mContrary;
+					++scontra;
+				}
 				else motion[i] = mOblique;
 			}
 		}
@@ -461,6 +467,12 @@ int CGenCP1::FailVIntervals() {
 			(apcc[1][i-tonic_window] == 0 || apcc[1][i - tonic_window] == 4 || apcc[1][i - tonic_window] == 7)) {
 			--tonic_sum;
 		}
+	}
+	// Check how many contrary if full melody analyzed
+	if (ep2 == c_len) {
+		int pcontra = (scontra * 100) / (c_len - 1);
+		if (pcontra < contrary_min) FLAG2(46, 0)
+		else if (pcontra < contrary_min2) FLAG2(35, 0);
 	}
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
