@@ -98,7 +98,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;13;30;Cantus;Border;2nd to last note (not GBD);-1;;Rule for Lower cantus
 1;23;0;Cantus;Border;Leap (last);-1;;
 1;74;60;Cantus;Minor;Unaltered VII (before Im);0;;
-1;75;60;Cantus;Minor;Unaltered near altered (1-2 steps);0;;
+1;75;30;Cantus;Minor;Unaltered near altered (next but one);0;;
+1;47;60;Cantus;Minor;Unaltered near altered (next);0;;
 1;80;0;Cantus;Counterpoint;Perfect consonance (downbeat);1;;
 1;81;60;Cantus;Counterpoint;Perfect consonance (culmination);1;;
 1;82;60;Cantus;Counterpoint;Perfect consonance (db. culm.);1;;
@@ -122,7 +123,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;24;60;Cantus;Counterpoint;Overlap (voices);0;;
 1;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);0;Tonic chords in root positions inside melody (except borders);
 1;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);0;Tonic chords in root positions inside melody (except borders);
-1;35;0;Cantus;Counterpoint;Contrary motion (average);0;;
+1;35;0;Cantus;Counterpoint;Contrary motion (medium);0;;
 1;46;60;Cantus;Counterpoint;Contrary motion (little);0;;
 2;0;0;;;Strict;1;This rule is set to 1 only when all other prohibited rules are not violated;
 2;42;0;Melody;Compensated leap;Compensation deviation (3rd);1;Compensation can be deviated one note above last note;
@@ -223,7 +224,8 @@ Set;Severity;Class;Group;Rule;Flag
 2;13;30;Cantus;Border;2nd to last note (not GBD);-1;;Rule for Lower cantus
 2;23;0;Cantus;Border;Leap (last);-1;;
 2;74;60;Cantus;Minor;Unaltered VII (before Im);0;;
-2;75;60;Cantus;Minor;Unaltered near altered (1-2 steps);0;;
+2;75;30;Cantus;Minor;Unaltered near altered (next but one);0;;
+2;47;60;Cantus;Minor;Unaltered near altered (next);0;;
 2;80;0;Cantus;Counterpoint;Perfect consonance (downbeat);1;;
 2;81;60;Cantus;Counterpoint;Perfect consonance (culmination);1;;
 2;82;60;Cantus;Counterpoint;Perfect consonance (db. culm.);1;;
@@ -247,5 +249,5 @@ Set;Severity;Class;Group;Rule;Flag
 2;24;60;Cantus;Counterpoint;Overlap (voices);0;;
 2;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);0;Tonic chords in root positions inside melody (except borders);
 2;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);0;Tonic chords in root positions inside melody (except borders);
-2;35;0;Cantus;Counterpoint;Contrary motion (average);0;;
+2;35;0;Cantus;Counterpoint;Contrary motion (medium);0;;
 2;46;60;Cantus;Counterpoint;Contrary motion (little);0;;
