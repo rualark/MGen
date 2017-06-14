@@ -25,6 +25,8 @@ between = 0-12 # Minimum-maximum chromatic interval between voices (12 = octave)
 burst_between = 18 # Maximum chromatic interval between voices for burst_steps steps
 burst_steps = 3 # Maximum number of steps for which max_between can be exceeded
 tonic_window = 15 # Number of steps to search for adjacent tonic chords
+contrary_min = 30 # Minimum percent of contrary motion (little)
+contrary_min2 = 60 # Minimum percent of contrary motion (medium)
 
 cantus_high = 0 # Set to 1 to generate counterpoint under cantus
 slurs_window = 10 # Number of steps to check for slur limit
