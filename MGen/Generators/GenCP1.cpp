@@ -23,6 +23,7 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "sum_interval", &sum_interval);
 	CheckVar(sN, sV, "burst_between", &burst_between);
 	CheckVar(sN, sV, "burst_steps", &burst_steps);
+	CheckVar(sN, sV, "tonic_window", &tonic_window);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -420,6 +421,9 @@ void CGenCP1::ReseedCP()
 
 int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
+	int tonic_sum = 0;
+	int tonic_sum_i = 0;
+	int first_tonic = 0;
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = ac[1][i] - ac[0][i];
@@ -431,6 +435,23 @@ int CGenCP1::FailVIntervals() {
 		else if (civlc[i] == 7 || civlc[i] == 0) tivl[i] = iPco;
 		else tivl[i] = iDis;
 		if (i < ep2-1) direct[i] = (acc[cfv][i+1] - acc[cfv][i])*(acc[cpv][i+1] - acc[cpv][i]);
+		// Tonic chord
+		// TODO: do not calculate tonic chord twice - calculate and store in harmony vector
+		if (apcc[0][i] == 0 && (apcc[1][i] == 0 || apcc[1][i] == 4 || apcc[1][i] == 7) && i < ep2 - 1) {
+			++tonic_sum;
+			// Flag if this is not first tonic
+			if (first_tonic) {
+				// If this is not last tonic, flag first tonic
+				if (tonic_sum == 1 && i < ep2 - 1) FLAG2(29, i)
+				// Flag as multiple tonic even if it is last
+				else if (tonic_sum > 1) FLAG2(30, i);
+			}
+			first_tonic = 1;
+		}
+		if (i >= tonic_window && apcc[0][i - tonic_window] == 0 && 
+			(apcc[1][i-tonic_window] == 0 || apcc[1][i - tonic_window] == 4 || apcc[1][i - tonic_window] == 7)) {
+			--tonic_sum;
+		}
 	}
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
