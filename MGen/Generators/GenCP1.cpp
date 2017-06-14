@@ -442,7 +442,7 @@ int CGenCP1::FailVIntervals() {
 			// Flag if this is not first tonic
 			if (first_tonic) {
 				// If this is not last tonic, flag first tonic
-				if (tonic_sum == 1 && i < ep2 - 1) FLAG2(29, i)
+				if (tonic_sum == 1 && i < c_len - 1) FLAG2(29, i)
 				// Flag as multiple tonic even if it is last
 				else if (tonic_sum > 1) FLAG2(30, i);
 			}
@@ -479,7 +479,13 @@ int CGenCP1::FailVIntervals() {
 			// All other cases if previous interval is not pco
 			else {
 				// Direct movement to pco
-				if (direct[i-1] > 0) FLAG2(87, i);
+				if (direct[i - 1] > 0) {
+					// Last movement with stepwize
+					if (i == c_len-1 && (abs(acc[cpv][i]-acc[cpv][i-1]) < 3 || abs(acc[cfv][i]-acc[cfv][i-1]) < 3))
+						FLAG2(33, i)
+					// Other cases
+					else FLAG2(87, i);
+				}
 				// Prohibit downbeats and culminations only if not last step
 				if (i < ep2 - 1) {
 					if (i % 2) {
