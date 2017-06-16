@@ -1,10 +1,11 @@
 #ID  | Folder | MFI | Name                                | Group          | Instruments        | Comment
 101  | GenCF1 | 0   | Cantus firmus Generator             | Counterpoint   | Trumpet            | Cantus firmus generator. Evaluates all possible note combinations.
 111  | GenCA1 | 1   | Cantus firmus Analysis              | Counterpoint   | Violin,Piano       | Cantus firmus analysis. Load midi file and analyze.
-121  | GenCP1 | 0   | Counterpoint Generator              | Counterpoint   | Piano,Piano        | Counterpoint 2 voices, species 1
+121  | GenCP1 | 0   | Counterpoint Generator sp.1         | Counterpoint   | Piano,Piano        | Counterpoint 2 voices, species 1
 112  | GenCA2 | 1   | Counterpoint Analysis               | Counterpoint   | Violin,Piano       | Counterpoint analysis. Load midi file and analyze.
+122  | GenCP2 | 0   | Counterpoint Generator sp.2         | Counterpoint   | Piano,Piano        | Counterpoint 2 voices, species 2
 1001 | GenRS1 | 0   | Random solo                         | Random         | Violin             | This is the most simple solo random generator algorithm
-1101 | GenRL1 | 0   | Random Line Distr                   | Random         | Violin	    		| Solo random generator algo with linear distribution function (i.e. bigger numbers appear more often than smaller)
+1101 | GenRL1 | 0   | Random Line Distr                   | Random         | Violin	        | Solo random generator algo with linear distribution function (i.e. bigger numbers appear more often than smaller)
 2001 | GenMP1 | 1   | MIDI file viewer/player             | Viewer         |                    | Open and play MIDI file
 
 # This file contains all supported music generator algorithms

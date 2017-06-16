@@ -192,6 +192,7 @@
     <ClInclude Include="Generators\GenCF1.h" />
     <ClInclude Include="Generators\GenCF2.h" />
     <ClInclude Include="Generators\GenCP1.h" />
+    <ClInclude Include="Generators\GenCP2.h" />
     <ClInclude Include="Generators\GenMP1.h" />
     <ClInclude Include="Generators\GenRL1.h" />
     <ClInclude Include="Generators\GenRS1.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="Generators\GenCF1.cpp" />
     <ClCompile Include="Generators\GenCF2.cpp" />
     <ClCompile Include="Generators\GenCP1.cpp" />
+    <ClCompile Include="Generators\GenCP2.cpp" />
     <ClCompile Include="Generators\GenMP1.cpp" />
     <ClCompile Include="Generators\GenRL1.cpp" />
     <ClCompile Include="Generators\GenRS1.cpp" />
