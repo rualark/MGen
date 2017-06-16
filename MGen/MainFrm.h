@@ -20,6 +20,7 @@
 #include "Generators/GenMP1.h"
 #include "Generators/GenCA1.h"
 #include "Generators/GenCP1.h"
+#include "Generators/GenCP2.h"
 #include "Generators/GenRL1.h"
 
 #define MIN_HZOOM 1
