@@ -10,6 +10,7 @@ CGenCP1::CGenCP1() {
 	v_cnt = 2;
 	track_id[0] = 2;
 	track_id[1] = 1;
+	vsize.resize(av_cnt);
 }
 
 CGenCP1::~CGenCP1() {
@@ -88,21 +89,6 @@ void CGenCP1::SingleCPInit() {
 	}
 	// Save value for future use;
 	acc_old = acc;
-	/*
-	if (!swa_inrange) {
-		GetRealRange(ac[cfv], acc[cfv]);
-		ApplySourceRange();
-	}
-	// Set pitch limits
-	// If too wide range is not accepted, correct range to increase scan performance
-	if (!accept[37]) {
-	for (int i = 0; i < c_len; ++i) {
-	min_c[i] = max(minc, c[i] - correct_range);
-	max_c[i] = min(maxc, c[i] + correct_range);
-	}
-	}
-	else {
-	*/
 	// Calculate limits
 	if (cantus_high) {
 		for (int i = 0; i < c_len; ++i) {
@@ -145,9 +131,6 @@ void CGenCP1::SingleCPInit() {
 			smap[map_id] = i;
 			++map_id;
 		}
-		// Shuffled smap
-		//unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		//::shuffle(smap.begin(), smap.end(), default_random_engine(seed));
 		sp1 = 0;
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > smatrixc) sp2 = smatrixc;
@@ -203,6 +186,9 @@ void CGenCP1::MultiCPInit() {
 void CGenCP1::ScanCPInit() {
 	// Get cantus size
 	if (task != tGen) c_len = scpoint[0].size();
+	// Set real voice length
+	vsize[cfv] = c_len;
+	vsize[cpv] = c_len;
 	// Resize global vectors
 	for (int i = 0; i < av_cnt; ++i) {
 		ac[i].resize(c_len); // cantus (diatonic)
@@ -321,7 +307,7 @@ int CGenCP1::SendCP() {
 				len[pos + i][v] = cc_len[x];
 				pause[pos + i][v] = 0;
 				coff[pos + i][v] = i;
-				if (x < real_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
+				if (x < c_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
 				else dyn[pos + i][v] = 60 + 40 * (real_len - pos - i + step) / real_len + 20 * rand2() / RAND_MAX;
 				// Assign source tempo if exists
 				if (cc_tempo[x]) {
@@ -540,7 +526,7 @@ int CGenCP1::FailVIntervals() {
 
 void CGenCP1::CalcDpenaltyCP() {
 	dpenalty_cur = 0;
-	for (int z = 0; z < c_len; z++) {
+	for (int z = 0; z < vsize[cpv]; z++) {
 		int dif = abs(acc_old[cpv][z] - acc[cpv][z]);
 		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
 	}
@@ -865,11 +851,6 @@ void CGenCP1::Generate() {
 	acc[cfv] = cc;
 	apc[cfv] = pc;
 	apcc[cfv] = pcc;
-	// Set uniform length of each cantus note
-	//cc_len.resize(c_len);
-	//cc_tempo.resize(c_len);
-	//real_len = c_len;
-	//for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
 	// Generate second voice
 	rpenalty_cur = MAX_PENALTY;
 	SelectRuleSet(cp_rule_set);

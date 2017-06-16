@@ -2085,7 +2085,7 @@ int CGenCF1::SendCantus() {
 			len[pos + i][v] = cc_len[x];
 			pause[pos + i][v] = 0;
 			coff[pos + i][v] = i;
-			if (x < real_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
+			if (x < c_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
 			else dyn[pos + i][v] = 60 + 40 * (real_len - pos - i + step) / real_len + 20 * rand2() / RAND_MAX;
 			// Assign source tempo if exists
 			if (cc_tempo[x]) {
