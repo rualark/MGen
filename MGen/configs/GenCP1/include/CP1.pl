@@ -19,6 +19,7 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters
+notes_per_measure = 2 # Number of notes per measure (1 = species1, 2 = species2, 4 = species3, 8 = species5)
 interval = 7-14 # Minimum-maximum chromatic interval of voice (12 = octave)
 sum_interval = 22 # Maximum total chromatic interval of counterpoint with cantus (12 = octave)
 between = 0-12 # Minimum-maximum chromatic interval between voices (12 = octave)
