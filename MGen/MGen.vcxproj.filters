@@ -174,9 +174,6 @@
     <ClInclude Include="Generators\GenCA2.h">
       <Filter>Header Files\Generators</Filter>
     </ClInclude>
-    <ClInclude Include="Generators\GenCP2.h">
-      <Filter>Header Files\Generators</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -297,9 +294,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Generators\GenCA2.cpp">
-      <Filter>Source Files\Generators</Filter>
-    </ClCompile>
-    <ClCompile Include="Generators\GenCP2.cpp">
       <Filter>Source Files\Generators</Filter>
     </ClCompile>
   </ItemGroup>
