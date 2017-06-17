@@ -60,6 +60,9 @@ protected:
 	// Analysis
 	vector <vector<int>> scpoint; // Source cpoint for processing
 
+	// Cantus species
+	int npm = 1; // Number of notes per measure
+
 	// Parameters
 	int cantus_high = 0; // Set to 1 to generate counterpoint under cantus
 	int cantus_id2 = 0; // Select particular cantus id. Set to -1 to select random

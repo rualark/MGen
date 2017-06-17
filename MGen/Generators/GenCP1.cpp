@@ -26,6 +26,7 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "tonic_window", &tonic_window);
 	CheckVar(sN, sV, "contrary_min", &contrary_min);
 	CheckVar(sN, sV, "contrary_min2", &contrary_min2);
+	CheckVar(sN, sV, "notes_per_measure", &npm);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
@@ -268,6 +269,7 @@ int CGenCP1::SendCP() {
 	CString st, info, rpst;
 	int pos;
 	int v;
+	int real_len2 = real_len*npm;
 	Sleep(sleep_ms);
 	for (int av = 0; av < av_cnt; ++av) {
 		if (cpv) {
@@ -278,9 +280,9 @@ int CGenCP1::SendCP() {
 		}
 		// Copy cantus to output
 		pos = step;
-		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
+		if (step + real_len2 >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < c_len; ++x) {
-			for (int i = 0; i < cc_len[x]; ++i) {
+			for (int i = 0; i < cc_len[x/npm]; ++i) {
 				int current_severity = -1;
 				if (av == cpv) {
 					// Set color
@@ -318,14 +320,14 @@ int CGenCP1::SendCP() {
 					nsr1[pos][v] = min_cc[x];
 					nsr2[pos][v] = max_cc[x];
 				}
-				len[pos + i][v] = cc_len[x];
+				len[pos + i][v] = cc_len[x / npm];
 				pause[pos + i][v] = 0;
 				coff[pos + i][v] = i;
-				if (x < real_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
-				else dyn[pos + i][v] = 60 + 40 * (real_len - pos - i + step) / real_len + 20 * rand2() / RAND_MAX;
+				if (x < c_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len2 + 20 * rand2() / RAND_MAX;
+				else dyn[pos + i][v] = 60 + 40 * (real_len2 - pos - i + step) / real_len2 + 20 * rand2() / RAND_MAX;
 				// Assign source tempo if exists
-				if (cc_tempo[x]) {
-					tempo[pos + i] = cc_tempo[x];
+				if (cc_tempo[x / npm]) {
+					tempo[pos + i] = cc_tempo[x / npm];
 				}
 				// Generate tempo if no source
 				else {
@@ -339,7 +341,7 @@ int CGenCP1::SendCP() {
 					}
 				}
 			}
-			pos += cc_len[x];
+			pos += cc_len[x / npm];
 		}
 		// Create pause
 		note[pos][v] = 0;
@@ -352,18 +354,18 @@ int CGenCP1::SendCP() {
 	step = pos;
 	++step;
 	// Count additional variables
-	CountOff(step - real_len - 1, step - 1);
-	CountTime(step - real_len - 1, step - 1);
-	UpdateNoteMinMax(step - real_len - 1, step - 1);
-	UpdateTempoMinMax(step - real_len - 1, step - 1);
+	CountOff(step - real_len2 - 1, step - 1);
+	CountTime(step - real_len2 - 1, step - 1);
+	UpdateNoteMinMax(step - real_len2 - 1, step - 1);
+	UpdateTempoMinMax(step - real_len2 - 1, step - 1);
 	++cantus_sent;
 	if (task == tGen) {
 		if (!shuffle) {
-			Adapt(step - real_len - 1, step - 1);
+			Adapt(step - real_len2 - 1, step - 1);
 		}
 		// If  window-scan
 		st.Format("#%d\nCantus: %s\nHarmonic difficulty: %.0f", cantus_sent, cantus_high?"high":"low", hdif);
-		AddMelody(step - real_len - 1, step - 1, svoice + 1, st);
+		AddMelody(step - real_len2 - 1, step - 1, svoice + 1, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -389,7 +391,7 @@ int CGenCP1::SendCP() {
 				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nHarmonic difficulty: %.0f\nKey selection: %s", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, hdif, key_eval);
 			}
 		}
-		AddMelody(step - real_len - 1, step - 1, svoice+1, st);
+		AddMelody(step - real_len2 - 1, step - 1, svoice+1, st);
 	}
 	// Send
 	t_generated = step;
@@ -861,15 +863,19 @@ void CGenCP1::Generate() {
 		cfv = 0;
 	}
 	// Load first voice
-	ac[cfv] = c;
-	acc[cfv] = cc;
-	apc[cfv] = pc;
-	apcc[cfv] = pcc;
-	// Set uniform length of each cantus note
-	//cc_len.resize(c_len);
-	//cc_tempo.resize(c_len);
-	//real_len = c_len;
-	//for (int i = 0; i < c_len; ++i) cc_len[i] = 1;
+	c_len = c.size() * npm;
+	ac[cfv].clear();
+	acc[cfv].clear();
+	apc[cfv].clear();
+	apcc[cfv].clear();
+	for (int i = 0; i < c.size(); ++i) {
+		for (int x = 0; x < npm; ++x) {
+			ac[cfv].push_back(c[i]);
+			acc[cfv].push_back(cc[i]);
+			apc[cfv].push_back(pc[i]);
+			apcc[cfv].push_back(pcc[i]);
+		}
+	}
 	// Generate second voice
 	rpenalty_cur = MAX_PENALTY;
 	SelectRuleSet(cp_rule_set);
