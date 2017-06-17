@@ -13,11 +13,5 @@ public:
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 
-	// CP species 2
-	int notes_per_measure = 2; // How many notes in counterpoint per each measure
-
-	vector<int> mpos; // Position inside measure
-	vector<int> mid; // Measure id
-	vector<int> vsize; // Size of each counterpoint voice
 };
 
