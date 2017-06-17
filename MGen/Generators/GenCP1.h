@@ -56,7 +56,6 @@ protected:
 	// Cantus
 	int cf_nmin; // Minimum note in cantus (chromatic)
 	int cf_nmax; // Maximum note in cantus (chromatic)
-	vector<int> vsize; // Size of each counterpoint voice
 
 	// Analysis
 	vector <vector<int>> scpoint; // Source cpoint for processing
