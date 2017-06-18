@@ -430,6 +430,7 @@ int CGenCP1::FailVIntervals() {
 	int first_tonic = 0;
 	int mtemp;
 	int scontra = 0;
+	int sdirect = 0;
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = ac[1][i] - ac[0][i];
@@ -444,7 +445,10 @@ int CGenCP1::FailVIntervals() {
 			motion[i] = mStay;
 			if (acc[cfv][i + 1] != acc[cfv][i] || acc[cpv][i + 1] != acc[cpv][i]) {
 				mtemp = (acc[cfv][i + 1] - acc[cfv][i])*(acc[cpv][i + 1] - acc[cpv][i]);
-				if (mtemp > 0) motion[i] = mDirect;
+				if (mtemp > 0) {
+					motion[i] = mDirect;
+					++sdirect;
+				}
 				else if (mtemp < 0) {
 					motion[i] = mContrary;
 					++scontra;
@@ -472,9 +476,11 @@ int CGenCP1::FailVIntervals() {
 	}
 	// Check how many contrary if full melody analyzed
 	if (ep2 == c_len) {
-		int pcontra = (scontra * 100) / (c_len - 1);
-		if (pcontra < contrary_min) FLAG2(46, 0)
-		else if (pcontra < contrary_min2) FLAG2(35, 0);
+		if (scontra + sdirect) {
+		  int pcontra = (scontra * 100) / (scontra+sdirect);
+			if (pcontra < contrary_min) FLAG2(46, 0)
+			else if (pcontra < contrary_min2) FLAG2(35, 0);
+		}
 	}
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
