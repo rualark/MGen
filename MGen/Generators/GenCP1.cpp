@@ -873,17 +873,29 @@ void CGenCP1::Generate() {
 		cfv = 0;
 	}
 	// Load first voice
+	vector<int> anflagsc_old = anflagsc[cfv];
+	vector<vector<int>> anflags_old = anflags[cfv];
 	c_len = c.size() * npm;
 	ac[cfv].clear();
 	acc[cfv].clear();
 	apc[cfv].clear();
 	apcc[cfv].clear();
+	anflags[cfv].clear();
+	anflagsc[cfv].clear();
+	// Create empty arrays
+	anflags[cfv].resize(c.size()*npm);
+	anflagsc[cfv].resize(c.size()*npm);
 	for (int i = 0; i < c.size(); ++i) {
 		for (int x = 0; x < npm; ++x) {
 			ac[cfv].push_back(c[i]);
 			acc[cfv].push_back(cc[i]);
 			apc[cfv].push_back(pc[i]);
 			apcc[cfv].push_back(pcc[i]);
+			if (!x) {
+				int y = i*npm + x;
+				anflagsc[cfv][y] = anflagsc_old[i];
+				anflags[cfv][y] = anflags_old[i];
+			}
 		}
 	}
 	// Generate second voice
