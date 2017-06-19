@@ -740,8 +740,9 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
-	// Prohibit stagnation
-	for (int i = 0; i < ep2; ++i) {
+	// Prohibit stagnation only for non-slurred notes
+	++nstat[cc[0]];
+	for (int i = 1; i < ep2; ++i) if (cc[i-1] != cc[i]) {
 		// Add new note to stagnation array
 		++nstat[cc[i]];
 		// Subtract old note
