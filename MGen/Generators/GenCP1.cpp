@@ -428,6 +428,7 @@ int CGenCP1::FailVIntervals() {
 	int tonic_sum = 0;
 	int tonic_sum_i = 0;
 	int first_tonic = 0;
+	int mht = 0; // Measure has tonic
 	int mtemp;
 	int scontra = 0;
 	int sdirect = 0;
@@ -457,8 +458,11 @@ int CGenCP1::FailVIntervals() {
 			}
 		}
 		// Tonic chord
+		// Reset measure_has_tonic each measure
+		if (!(i % npm)) mht = 0;
 		// TODO: do not calculate tonic chord twice - calculate and store in harmony vector
-		if (apcc[0][i] == 0 && (apcc[1][i] == 0 || apcc[1][i] == 4 || apcc[1][i] == 7) && i < ep2 - 1) {
+		if (!mht && apcc[0][i] == 0 && (apcc[1][i] == 0 || apcc[1][i] == 4 || apcc[1][i] == 7) && i < ep2 - 1) {
+			++mht;
 			++tonic_sum;
 			// Flag if this is not first tonic
 			if (first_tonic) {
