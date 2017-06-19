@@ -267,8 +267,9 @@ void CGenCP1::ScanCPInit() {
 
 int CGenCP1::SendCP() {
 	CString st, info, rpst;
-	int pos;
+	int pos, clen;
 	int v;
+	int x2 = 0;
 	int real_len2 = real_len*npm;
 	Sleep(sleep_ms);
 	for (int av = 0; av < av_cnt; ++av) {
@@ -282,12 +283,23 @@ int CGenCP1::SendCP() {
 		pos = step;
 		if (step + real_len2 >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < c_len; ++x) {
+			// Detect ending of current note
+			x2 = x;
+			clen = cc_len[x / npm];
+			if (x < c_len - 1) for (x2 = x+1; x2 < c_len; ++x2) {
+				if (acc[av][x2] != acc[av][x]) {
+					--x2;
+					break;
+				}
+				clen += cc_len[x2 / npm];
+			}
 			for (int i = 0; i < cc_len[x/npm]; ++i) {
 				int current_severity = -1;
 				if (av == cpv) {
 					// Set color
 					color[pos + i][v] = Color(0, 100, 100, 100);
 				}
+				len[pos + i][v] = cc_len[x / npm];
 				// Set nflag color
 				note[pos + i][v] = acc[av][x];
 				tonic[pos + i][v] = tonic_cur;
@@ -320,7 +332,6 @@ int CGenCP1::SendCP() {
 					nsr1[pos][v] = min_cc[x];
 					nsr2[pos][v] = max_cc[x];
 				}
-				len[pos + i][v] = cc_len[x / npm];
 				pause[pos + i][v] = 0;
 				coff[pos + i][v] = i;
 				if (x < c_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len2 + 20 * rand2() / RAND_MAX;
