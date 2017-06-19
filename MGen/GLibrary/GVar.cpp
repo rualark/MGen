@@ -1311,3 +1311,23 @@ void CGVar::FillPause(int start, int length, int v) {
 		dyn[x][v] = 0;
 	}
 }
+
+// Merge notes of same pitch, that do not have pauses between them. Step2 inclusive
+void CGVar::MergeNotes(int step1, int step2, int v) {
+	// Start of current note
+	int first_pos = step1;
+	for (int x = step1+1; x <= step2; ++x) {
+		// Detect steps that have same pitch 
+		if (note[x][v] == note[x - 1][v]) {
+			// If notes have decreasing coff
+			if (coff[x][v] <= coff[x - 1][v]) {
+				coff[x][v] = coff[x - 1][v] + 1;
+				comment[first_pos][v] += comment[x][v];
+			}
+		}
+		// New note
+		else {
+			first_pos = x;
+		}
+	}
+}
