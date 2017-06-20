@@ -1316,18 +1316,30 @@ void CGVar::FillPause(int start, int length, int v) {
 void CGVar::MergeNotes(int step1, int step2, int v) {
 	// Start of current note
 	int first_pos = step1;
+	Color col = color[step1][v];
 	for (int x = step1+1; x <= step2; ++x) {
 		// Detect steps that have same pitch 
 		if (note[x][v] == note[x - 1][v]) {
 			// If notes have decreasing coff
 			if (coff[x][v] <= coff[x - 1][v]) {
+				// if first note step select best color
+				if (!coff[x][v] && color[x][v].GetRed() > col.GetRed()) {
+					col = color[x][v];
+					// update color of previous steps
+					for (int z = first_pos; z < x; ++z) {
+						color[z][v] = col;
+					}
+				}
 				coff[x][v] = coff[x - 1][v] + 1;
 				comment[first_pos][v] += comment[x][v];
 			}
+			// Copy color forward
+			color[x][v] = col;
 		}
 		// New note
 		else {
 			first_pos = x;
+			col = color[x][v];
 		}
 	}
 }
