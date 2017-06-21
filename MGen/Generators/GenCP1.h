@@ -42,6 +42,7 @@ protected:
 	vector<vector<int>> apcc; // Pitch class (chromatic)
 	vector<vector<int>> aleap;
 	vector<vector<int>> asmooth;
+	vector<vector<int>> aslur;
 
 	// Variables
 	int cp_culm = 0; // Position of counterpoint culmination

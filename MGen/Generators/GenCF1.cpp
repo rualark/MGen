@@ -660,7 +660,7 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int sca
 }
 
 // Check if too many leaps
-int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int> &leap, vector<int> &smooth) {
+int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
 	// Clear variables
 	int leap_sum = 0;
 	int leap_sum2 = 0;
@@ -674,12 +674,17 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 		// Find all leaps
 		leap[i] = 0;
 		smooth[i] = 0;
+		slur[i + 1] = 0;
+		if (cc[i] == cc[i + 1]) slur[i + 1] = 1;
 		if (c[i + 1] - c[i] > 1) leap[i] = 1;
 		else if (c[i + 1] - c[i] < -1) leap[i] = -1;
 		// Find all smooth
 		else if (c[i + 1] - c[i] == 1) smooth[i] = 1;
 		else if (c[i + 1] - c[i] == -1) smooth[i] = -1;
 	}
+	leap[ep2 - 1] = 0;
+	smooth[ep2 - 1] = 0;
+	slur[0] = 0;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		// Add new leap
 		if (leap[i] != 0) {
@@ -1300,6 +1305,7 @@ void CGenCF1::ScanCantusInit() {
 	pcc.resize(c_len);
 	leap.resize(c_len);
 	smooth.resize(c_len);
+	slur.resize(c_len);
 	nstat.resize(MAX_NOTE);
 	nstat2.resize(MAX_NOTE);
 	nstat3.resize(MAX_NOTE);
@@ -2431,7 +2437,7 @@ check:
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, c, cc, pc, pcc)) goto skip;
-		if (FailLeapSmooth(c, cc, ep2, leap, smooth)) goto skip;
+		if (FailLeapSmooth(c, cc, ep2, leap, smooth, slur)) goto skip;
 		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps2, 2, 76)) goto skip;
 		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;

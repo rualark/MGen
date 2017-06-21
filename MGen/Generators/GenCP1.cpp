@@ -45,6 +45,7 @@ void CGenCP1::InitCP() {
 	apcc.resize(av_cnt);
 	asmooth.resize(av_cnt);
 	aleap.resize(av_cnt);
+	aslur.resize(av_cnt);
 	anflags.resize(av_cnt);
 	anflagsc.resize(av_cnt);
 }
@@ -215,6 +216,7 @@ void CGenCP1::ScanCPInit() {
 		apcc[i].resize(c_len);
 		aleap[i].resize(c_len);
 		asmooth[i].resize(c_len);
+		aslur[i].resize(c_len);
 	}
 	hm.resize(c_len);
 	hm2.resize(c_len);
@@ -718,7 +720,7 @@ check:
 		if (FailLastNotes(apc[cpv], ep2)) goto skip;
 		if (FailNoteSeq(apc[cpv], 0, ep2)) goto skip;
 		if (FailIntervals(ep2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
-		if (FailLeapSmooth(ac[cpv], acc[cpv], ep2, aleap[cpv], asmooth[cpv])) goto skip;
+		if (FailLeapSmooth(ac[cpv], acc[cpv], ep2, aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
 		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], ep2, repeat_steps2, 2, 76)) goto skip;
 		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(acc[cpv], aleap[cpv], ep2, repeat_steps5, 5, 72)) goto skip;
