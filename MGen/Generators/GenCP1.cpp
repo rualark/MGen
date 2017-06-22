@@ -493,7 +493,7 @@ int CGenCP1::FailVIntervals() {
 	}
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
-	for (int i = 1; i < ep2; ++i) {
+	for (int i = 1; i < ep2; ++i) if (!aslur[cpv][i]) {
 		// Unison
 		if (!civl[i-1]) {
 			// Inside
