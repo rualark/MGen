@@ -625,7 +625,7 @@ void CGMidi::LoadCP(CString path)
 	vector <int> min_len, max_len;
 	int bad = 0;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
-		float last_tick = 0, last_tick2 = 0;
+		float last_tick = 0, last_tick2 = numeric_limits<float>::infinity();
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
 			float time = midifile.getTimeInSeconds(mev->tick);
@@ -654,6 +654,7 @@ void CGMidi::LoadCP(CString path)
 			if (mev->isNoteOn()) {
 				float nlen2 = mev->getTickDuration();
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
+				// If new column and previous column had notes
 				if (pos != pos_old && inter.size()) { 
 					if (hid > 1) {
 						// Find slurred notes
@@ -711,6 +712,8 @@ void CGMidi::LoadCP(CString path)
 					WriteLog(1, st);
 					bad = 1;
 				}
+				// If new column, then after checking for pause we can now reset last_tick2 to maximum
+				if (pos != pos_old) last_tick2 = numeric_limits<float>::infinity();
 				if (nid == 0) {
 					bad = 0;
 					// Add new cpoint
@@ -745,7 +748,7 @@ void CGMidi::LoadCP(CString path)
 				nid++;
 				// Save last time
 				last_tick = max(last_tick, pos2 + nlen2);
-				last_tick2 = pos2 + nlen2;
+				last_tick2 = min(last_tick2, pos2 + nlen2);
 				pos_old = pos;
 			}
 		}
