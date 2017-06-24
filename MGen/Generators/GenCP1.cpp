@@ -466,12 +466,16 @@ int CGenCP1::FailVIntervals() {
 		// Reset measure_has_tonic each measure
 		if (!(i % npm)) mht = 0;
 		// TODO: do not calculate tonic chord twice - calculate and store in harmony vector
-		if (!mht && apcc[0][i] == 0 && (apcc[1][i] == 0 || apcc[1][i] == 4 || apcc[1][i] == 7) && i < ep2 - 1) {
+		if (!mht && apcc[0][i] == 0 && (apcc[1][i] == 0 || apcc[1][i] == 4 || apcc[1][i] == 7)) {
 			++mht;
 			++tonic_sum;
 			// Flag if this is not first tonic
 			if (first_tonic) {
-				// If this is not last tonic, flag first tonic
+				// If melody is short, decrease penalty to exclude first step
+				if (i == c_len - 1 && c_len <= tonic_window) {
+					--tonic_sum;
+				}
+				// If this is not last tonic, flag one tonic
 				if (tonic_sum == 1 && i < c_len - 1) FLAG2(29, i)
 				// Flag as multiple tonic even if it is last
 				else if (tonic_sum > 1) FLAG2(30, i);
