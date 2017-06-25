@@ -153,6 +153,7 @@ protected:
 	int max_flags = 82; // Maximum number of rules
 
 	// Parameters
+	int cantus_high = 0; // Set to 1 to consider cantus to be higher voice
 	int method = mUndefined; // Which generation / analysis method to use
 	int min_interval = 7; // Minimum chromatic interval in cantus (12 = octave)
 	int max_interval = 12; // Maximum chromatic interval in cantus (12 = octave)

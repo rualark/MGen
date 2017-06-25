@@ -1,5 +1,4 @@
 include "include/CA2.pl"
-include "../GenCF1/include/hmean-low.pl"
 
 # Analysis
 #Midi_file = "load\test-tonicroot.mid" # Path and file name of imported midi file

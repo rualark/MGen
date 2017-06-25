@@ -147,6 +147,7 @@ void CGenCF1::SelectRuleSet(int rs)
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
+	CheckVar(sN, sV, "cantus_high", &cantus_high);
 	LoadRange(sN, sV, "interval", &min_interval, &max_interval);
 	CheckVar(sN, sV, "c_len", &c_len);
 	CheckVar(sN, sV, "s_len", &s_len);

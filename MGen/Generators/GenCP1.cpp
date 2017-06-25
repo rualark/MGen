@@ -16,7 +16,6 @@ CGenCP1::~CGenCP1() {
 }
 
 void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata) {
-	CheckVar(sN, sV, "cantus_high", &cantus_high);
 	CheckVar(sN, sV, "cantus_id", &cantus_id2);
 	CheckVar(sN, sV, "slurs_window", &slurs_window);
 	LoadRange(sN, sV, "between", &min_between, &max_between);
