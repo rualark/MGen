@@ -20,11 +20,6 @@ CGenCF1::CGenCF1()
 	severity.resize(MAX_FLAGS);
 	flag_color.resize(MAX_SEVERITY);
 	accepts.resize(MAX_RULESETS);
-	hvd.resize(7);
-	hvs.resize(7);
-	hvt.resize(7);
-	hconst.resize(7);
-	for (int i = 0; i < 7; ++i) hconst[i] = hUndefined;
 	// Start severity
 	severity[0] = 0;
 }
@@ -34,19 +29,24 @@ CGenCF1::~CGenCF1()
 }
 
 // Load variants of possible harmonic meaning
-void CGenCF1::LoadHarmVar(CString* sN, CString* sV)
+void CGenCF1::LoadHarmVar()
 {
-	if (*sN == "harm_var") {
-		++parameter_found;
-		int pos = 0;
-		CString st;
-		for (int i = 0; i<1000; i++) {
-			if (pos == -1) break;
-			st = sV->Tokenize(",", pos);
-			st.Trim();
-			if (st.Find("D") >= 0) hvd[i] = 1;
-			if (st.Find("S") >= 0) hvs[i] = 1;
-			if (st.Find("T") >= 0) hvt[i] = 1;
+	hv.resize(7);
+	if (cantus_high) {
+		// Create harmonic meaning variants for higher cantus
+		for (int i = 0; i < 7; i++) {
+			hv[i].clear();
+			if (i != 1) hv[i].push_back((i + 5) % 7);
+			hv[i].push_back((i + 3) % 7);
+			hv[i].push_back(i);
+		}
+	}
+	else {
+		// Create harmonic meaning variants for lower cantus
+		for (int i = 0; i < 7; i++) {
+			hv[i].clear();
+			hv[i].push_back((i + 5) % 7);
+			if (i != 6) hv[i].push_back(i);
 		}
 	}
 }
@@ -194,7 +194,6 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "cp_rule_set", &cp_rule_set);
 	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
 
-	LoadHarmVar(sN, sV);
 	// Load rules
 	if (*sN == "rules_file") {
 		++parameter_found;
@@ -289,7 +288,6 @@ int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
 		// Prohibit GC before cadence
 		if (pc[i] == 4 && pc[i + 1] == 0) FLAG2(48, i);
 		// Prohibit D-S
-		//if (hconst[pc[i]] == hDom && hconst[pc[i + 1]] == hSub) FLAG2(77, i);
 	}
 	return 0;
 }
@@ -325,6 +323,7 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &cc, vector<int> &pc, ve
 	}
 }
 
+/*
 void CGenCF1::UpdateNoteHarm(int  i) {
 	// We can't be T
 	if (!hm2[i][hTon]) {
@@ -541,6 +540,7 @@ int CGenCF1::FixNoteHarmRepeat(vector<int> &pc, int i, int harm, int &count, int
 	}
 	return 0;
 }
+*/
 
 void CGenCF1::CalcCcIncrement() {
 	int pos;
@@ -2190,11 +2190,7 @@ void CGenCF1::InitCantus()
 	// Check that method is selected
 	if (method == mUndefined) WriteLog(1, "Error: method not specified in algorithm configuration file");
 	// Check harmonic meaning loaded
-	if (hvd[0] + hvt[0] + hvs[0] == 0) {
-		CString est;
-		est.Format("Warning: no harmonic meaning (variants) in configuration file.");
-		WriteLog(1, est);
-	}
+	LoadHarmVar();
 }
 
 void CGenCF1::TestDiatonic()
@@ -2448,7 +2444,7 @@ check:
 		if (FailMultiCulm(cc, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(c, ep2, leap, smooth, nstat2, nstat3)) goto skip;
-		if (FailMelodyHarm(pc, 0, ep2)) goto skip;
+		//if (FailMelodyHarm(pc, 0, ep2)) goto skip;
 		//if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
 		//if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 

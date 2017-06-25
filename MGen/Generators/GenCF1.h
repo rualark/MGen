@@ -67,7 +67,7 @@ public:
 	void Generate() override;
 
 protected:
-	void LoadHarmVar(CString * sN, CString * sV);
+	void LoadHarmVar();
 	void LoadRules(CString fname);
 	void SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
@@ -199,8 +199,7 @@ protected:
 	int repeat_steps7 = 100; // Prohibit repeating of 7 notes closer than repeat_steps between first notes
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
-	vector <int> hvd, hvs, hvt; //  Variants and constant harmonic meaning
-	vector <int> hconst; // Absolute constant harmonic meaning by note
+	vector <vector <int>> hv; //  Variants of note harmonic meaning
 	// Random SWA
 	//int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases
