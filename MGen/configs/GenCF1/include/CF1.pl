@@ -7,6 +7,7 @@
 # Full scan: method=window-scan, accept_reseed=0, random_seed=0, s_len>c_len-3
 
 rules_file = rules.csv # Specify which file contains all rules
+hsp_file = harm.csv # Harmonic sequence penalties
 rule_set = 1 # Specify which set of rules to use (see rules.xlsx)
 
 method = window-scan # This method is fastest random generator with s_len=1, accept_reseed=1, random_seed=1

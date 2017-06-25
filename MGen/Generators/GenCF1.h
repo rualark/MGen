@@ -68,6 +68,7 @@ public:
 
 protected:
 	void LoadHarmVar();
+	void LoadHSP(CString fname);
 	void LoadRules(CString fname);
 	void SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
@@ -77,10 +78,10 @@ protected:
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
-	inline void UpdateNoteHarm(int i);
-	inline int FailMelodyHarm(vector<int>& pc, int ep1, int ep2);
-	inline int FailMelodyHarmMiss(vector<int>& pc, int i, int harm, int & count, int & wcount);
-	inline int FixNoteHarmRepeat(vector<int>& pc, int i, int harm, int & count, int & wcount);
+	//inline void UpdateNoteHarm(int i);
+	inline int FailMelodyHarm(vector<int>& pc);
+	//inline int FailMelodyHarmMiss(vector<int>& pc, int i, int harm, int & count, int & wcount);
+	//inline int FixNoteHarmRepeat(vector<int>& pc, int i, int harm, int & count, int & wcount);
 	void CalcCcIncrement();
 	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
@@ -200,6 +201,7 @@ protected:
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <vector <int>> hv; //  Variants of note harmonic meaning
+	vector <vector <int>> hsp; // Harmonic sequence penalty
 	// Random SWA
 	//int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases

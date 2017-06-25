@@ -51,6 +51,56 @@ void CGenCF1::LoadHarmVar()
 	}
 }
 
+// Load harmonic sequence penalties
+void CGenCF1::LoadHSP(CString fname)
+{
+	CString st, st2, st3, iname, est, rule;
+	vector<CString> ast;
+	int pos = 0;
+	int i = 0;
+	hsp.resize(7);
+	ifstream fs;
+	// Check file exists
+	if (!fileExists(fname)) {
+		CString est;
+		est.Format("LoadHSP cannot find file: %s", fname);
+		WriteLog(1, est);
+		return;
+	}
+	fs.open(fname);
+	char pch[2550];
+	// Load header
+	fs.getline(pch, 2550);
+	while (fs.good()) {
+		i++;
+		// Get line
+		fs.getline(pch, 2550);
+		st = pch;
+		st.Trim();
+		pos = 0;
+		if (st.Find(";") != -1) {
+			Tokenize(st, ast, ";");
+			if (ast.size() != 9) {
+				est.Format("Wrong column count at line in hsp file %s: '%s'", fname, st);
+				WriteLog(1, est);
+				return;
+			}
+			if (i > 7) {
+				est.Format("Wrong line count at line %d in hsp file %s: '%s'", i, fname, st);
+				WriteLog(1, est);
+				return;
+			}
+			hsp[i - 1].clear();
+			for (int x = 0; x < 7; ++x) {
+				hsp[i - 1].push_back(atoi(ast[x + 1]));
+			}
+		}
+	}
+	fs.close();
+	est.Format("LoadHSP loaded %d lines from %s", i, fname);
+	WriteLog(0, est);
+}
+
 // Load rules
 void CGenCF1::LoadRules(CString fname)
 {
@@ -194,6 +244,11 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "cp_rule_set", &cp_rule_set);
 	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
 
+	// Load HSP
+	if (*sN == "hsp_file") {
+		++parameter_found;
+		LoadHSP(GetLinkedPath(*sV, m_current_config));
+	}
 	// Load rules
 	if (*sN == "rules_file") {
 		++parameter_found;
