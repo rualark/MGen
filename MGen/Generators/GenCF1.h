@@ -8,6 +8,7 @@
 // Report violation
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; } }
 #define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; } }
+#define FLAG3(id, i) { if (heval) FLAG2(id, i) else if (i == max_p && (accept[id] == 0 || accept[id] == 2)) {last_flag=id; return 1; } }
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
@@ -78,6 +79,7 @@ protected:
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
+	inline int EvalMelodyHarm(int p, int heval, int & last_flag, int & max_p);
 	//inline void UpdateNoteHarm(int i);
 	inline int FailMelodyHarm(vector<int>& pc);
 	//inline int FailMelodyHarmMiss(vector<int>& pc, int i, int harm, int & count, int & wcount);
@@ -287,7 +289,8 @@ protected:
 	vector<int> nstat2;
 	vector<int> nstat3;
 	vector<vector<int>> hm; // Available harmonic meanings for each note
-	vector<vector<int>> hm2; // Approved harmonic meanings for each note
+	vector<vector<int>> hm2; // Required harmonic meanings for each note
+	vector <int> chm, chmp; // Current harmonic meaning and its position in hm
 	float hdif;
 	int cantus_id = 0;
 	CString key_eval; // Results of key evaluation

@@ -378,6 +378,101 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &cc, vector<int> &pc, ve
 	}
 }
 
+int CGenCF1::EvalMelodyHarm(int p, int heval, int &last_flag, int &max_p) {
+	int pen1, pen2;
+	for (int i = 1; i <= p; ++i) {
+		// Check harmony repeat
+		pen1 = hsp[chm[i - 1]][chm[i]];
+		if (pen1 == 3) FLAG3(99, i);
+		if (i < p) {
+			pen2 = hsp[chm[i]][chm[i + 1]];
+			if (pen1 + pen2 > 3) FLAG3(92, i);
+		}
+	}
+	return 0;
+}
+
+int CGenCF1::FailMelodyHarm(vector<int> &pc) {
+	CString st;
+	// Build hm vector
+	for (int i = 0; i < ep2; ++i) {
+		hm[i].clear();
+		for (int x = 0; x < hv[pc[i]].size(); ++x) {
+			hm[i].push_back(hv[pc[i]][x]);
+		}
+		// TODO: Shuffle
+	}
+	// Scan vector
+	chm.clear();
+	chmp.clear();
+	chm.resize(ep2, 0);
+	chmp.resize(ep2, 0);
+	for (int i = 0; i < ep2; ++i) chm[i] = hm[i][0];
+	int p = 0;
+	int finished = 0;
+	int found = 0;
+	int hcycle = 0;
+	int last_flag = 0;
+	int max_p = 0;
+	LogCantus(pc);
+	while (true) {
+	check:
+		//st.Format("%d: ", p);
+		//CGLib::AppendLineToFile("log/temp.log", st);
+		//LogCantus(chmp);
+		//LogCantus(chm);
+		if (need_exit) break;
+		if (!p) {
+			++p;
+			max_p = p;
+			goto check;
+		}
+		if (EvalMelodyHarm(p, 0, last_flag, max_p)) goto skip;
+		// Success
+		if (p == ep2-1) {
+			found = 1;
+			break;
+		}
+		else {
+			++p;
+			max_p = p;
+			goto check;
+		}
+	skip:
+		// ScanLeft
+		while (true) {
+			if (chmp[p] < hm[p].size()-1) break;
+			// If current element is max, make it minimum
+			chmp[p] = 0;
+			// Get current value
+			chm[p] = hm[p][chmp[p]];
+			// Move left one element
+			if (!p) {
+				finished = 1;
+				break;
+			}
+			p--;
+		} // while (true)
+		if (finished) {
+			break;
+		}
+		// ScanRight
+		// Increase rightmost element, which was not reset to minimum
+		++chmp[p];
+		// Get current value
+		chm[p] = hm[p][chmp[p]];
+		++hcycle;
+	}
+	// Detect possible variants
+	if (!found) {
+		// Report one of last flags at highest position
+		FLAG2(last_flag, max_p);
+		// Increase penalty if flag was found at the beginning of melody
+		fpenalty[last_flag] = ep2 - max_p;
+	}
+	return 0;
+}
+
 /*
 void CGenCF1::UpdateNoteHarm(int  i) {
 	// We can't be T
@@ -2499,7 +2594,7 @@ check:
 		if (FailMultiCulm(cc, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(c, ep2, leap, smooth, nstat2, nstat3)) goto skip;
-		//if (FailMelodyHarm(pc, 0, ep2)) goto skip;
+		if (ep2>4 && FailMelodyHarm(pc)) goto skip;
 		//if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
 		//if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
