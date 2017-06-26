@@ -87,7 +87,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;19;30;Cantus;Harmony;Missing letters in a row (5);-1;;
 1;20;70;Cantus;Harmony;Missing letters in a row (>5);-1;;
 1;48;30;Cantus;Harmony;Early cadence (G-C);1;;G note goes to C note before final cadence
-1;77;30;Cantus;Harmony;Subdominant after (dominant);-1;;
+1;77;0;Cantus;Harmony;Harmonic penalty (1);0;;
+1;57;30;Cantus;Harmony;Harmonic penalty (2);0;;
+1;92;70;Cantus;Harmony;Harmonic penalty (2x2);0;;
+1;99;100;Cantus;Harmony;Harmonic penalty (3);1;;
 1;52;70;Cantus;Border;Start steps tonic (unprepared);-1;;
 1;40;70;Cantus;Border;Start steps tonic (no C);-1;;
 1;41;70;Cantus;Border;Start steps tonic (no E);-1;;
@@ -116,8 +119,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;90;60;Cantus;Counterpoint;First note (not GC);0;;
 1;91;60;Cantus;Counterpoint;Unison (inside);0;;
 1;97;60;Cantus;Counterpoint;Slur (sequence);0;;
-1;98;60;Cantus;Counterpoint;Slur (simult.);1;;
-1;93;0;Cantus;Counterpoint;Slur (1);1;;
+1;98;60;Cantus;Counterpoint;Slur (simult.);0;;
+1;93;0;Cantus;Counterpoint;Slur (1);0;;
 1;94;0;Cantus;Counterpoint;Slur (2);0;;
 1;95;0;Cantus;Counterpoint;Slur (>2);0;;
 1;24;60;Cantus;Counterpoint;Overlap (voices);0;;
@@ -213,7 +216,10 @@ Set;Severity;Class;Group;Rule;Flag
 2;19;30;Cantus;Harmony;Missing letters in a row (5);0;;
 2;20;70;Cantus;Harmony;Missing letters in a row (>5);0;;
 2;48;30;Cantus;Harmony;Early cadence (G-C);1;;G note goes to C note before final cadence
-2;77;30;Cantus;Harmony;Subdominant after (dominant);0;;
+2;77;0;Cantus;Harmony;Harmonic penalty (1);0;;
+2;57;30;Cantus;Harmony;Harmonic penalty (2);0;;
+2;92;70;Cantus;Harmony;Harmonic penalty (2x2);0;;
+2;99;100;Cantus;Harmony;Harmonic penalty (3);1;;
 2;52;70;Cantus;Border;Start steps tonic (unprepared);-1;;
 2;40;70;Cantus;Border;Start steps tonic (no C);-1;;
 2;41;70;Cantus;Border;Start steps tonic (no E);-1;;
@@ -242,8 +248,8 @@ Set;Severity;Class;Group;Rule;Flag
 2;90;60;Cantus;Counterpoint;First note (not GC);0;;
 2;91;60;Cantus;Counterpoint;Unison (inside);0;;
 2;97;60;Cantus;Counterpoint;Slur (sequence);0;;
-2;98;60;Cantus;Counterpoint;Slur (simult.);1;;
-2;93;0;Cantus;Counterpoint;Slur (1);1;;
+2;98;60;Cantus;Counterpoint;Slur (simult.);0;;
+2;93;0;Cantus;Counterpoint;Slur (1);0;;
 2;94;0;Cantus;Counterpoint;Slur (2);0;;
 2;95;0;Cantus;Counterpoint;Slur (>2);0;;
 2;24;60;Cantus;Counterpoint;Overlap (voices);0;;
