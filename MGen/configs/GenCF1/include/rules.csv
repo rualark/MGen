@@ -88,7 +88,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;20;70;Cantus;Harmony;Missing letters in a row (>5);-1;;
 1;48;30;Cantus;Harmony;Early cadence (G-C);-1;;G note goes to C note before final cadence
 1;77;0;Cantus;Harmony;Harmonic penalty (1);1;;
-1;57;30;Cantus;Harmony;Harmonic penalty (2);0;;
+1;57;30;Cantus;Harmony;Harmonic penalty (2);1;;
 1;92;70;Cantus;Harmony;Harmonic penalty (2x2);0;;
 1;99;100;Cantus;Harmony;Harmonic penalty (3);0;;
 1;52;70;Cantus;Border;Start steps tonic (unprepared);-1;;
@@ -217,7 +217,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;20;70;Cantus;Harmony;Missing letters in a row (>5);0;;
 2;48;30;Cantus;Harmony;Early cadence (G-C);-1;;G note goes to C note before final cadence
 2;77;0;Cantus;Harmony;Harmonic penalty (1);1;;
-2;57;30;Cantus;Harmony;Harmonic penalty (2);0;;
+2;57;30;Cantus;Harmony;Harmonic penalty (2);1;;
 2;92;70;Cantus;Harmony;Harmonic penalty (2x2);0;;
 2;99;100;Cantus;Harmony;Harmonic penalty (3);0;;
 2;52;70;Cantus;Border;Start steps tonic (unprepared);-1;;
