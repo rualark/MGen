@@ -378,15 +378,19 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &cc, vector<int> &pc, ve
 	}
 }
 
-int CGenCF1::EvalMelodyHarm(int p, int heval, int &last_flag, int &max_p) {
+int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 	int pen1, pen2;
 	for (int i = 1; i <= p; ++i) {
 		// Check harmony repeat
 		pen1 = hsp[chm[i - 1]][chm[i]];
-		if (pen1 == 3) FLAG3(99, i);
-		if (i < p) {
-			pen2 = hsp[chm[i]][chm[i + 1]];
-			if (pen1 + pen2 > 3) FLAG3(92, i);
+		if (pen1 == 3) FLAG3(99, i)
+		else if (pen1 == 1) FLAG3(77, i)
+		else if (pen1 == 2) {
+			FLAG3(57, i);
+			if (i < p) {
+				pen2 = hsp[chm[i]][chm[i + 1]];
+				if (pen2 == 2) FLAG3(92, i);
+			}
 		}
 	}
 	return 0;
@@ -421,13 +425,13 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		//CGLib::AppendLineToFile("log/temp.log", st);
 		//LogCantus(chmp);
 		//LogCantus(chm);
-		if (need_exit) break;
+		if (need_exit && task != tEval) return 1;
 		if (!p) {
 			++p;
-			max_p = p;
+			if (p > max_p) max_p = p;
 			goto check;
 		}
-		if (EvalMelodyHarm(p, 0, last_flag, max_p)) goto skip;
+		if (EvalMelodyHarm(p, last_flag, max_p)) goto skip;
 		// Success
 		if (p == ep2-1) {
 			found = 1;
@@ -435,7 +439,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		}
 		else {
 			++p;
-			max_p = p;
+			if (p > max_p) max_p = p;
 			goto check;
 		}
 	skip:
@@ -465,10 +469,10 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	}
 	// Detect possible variants
 	if (!found) {
-		// Report one of last flags at highest position
-		FLAG2(last_flag, max_p);
 		// Increase penalty if flag was found at the beginning of melody
 		fpenalty[last_flag] = ep2 - max_p;
+		// Report one of last flags at highest position
+		FLAG2(last_flag, max_p);
 	}
 	return 0;
 }
@@ -2203,9 +2207,7 @@ int CGenCF1::SendCantus() {
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = 0; x < c_len; ++x) {
-		if (hm2[x][hDom]) mark[pos][v] += "D";
-		if (hm2[x][hTon]) mark[pos][v] += "T";
-		if (hm2[x][hSub]) mark[pos][v] += "S";
+		mark[pos][v] = HarmNames[chm[x]];
 		mark_color[pos][v] = Color(120, 120, 120);
 		for (int i = 0; i < cc_len[x]; ++i) {
 			// Set color
