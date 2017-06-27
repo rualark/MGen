@@ -90,8 +90,8 @@ protected:
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
 	inline int EvalMelodyHarm(int p, int & last_flag, int & max_p);
-	//inline void UpdateNoteHarm(int i);
 	inline int FailMelodyHarm(vector<int>& pc);
+	//inline void UpdateNoteHarm(int i);
 	//inline int FailMelodyHarmMiss(vector<int>& pc, int i, int harm, int & count, int & wcount);
 	//inline int FixNoteHarmRepeat(vector<int>& pc, int i, int harm, int & count, int & wcount);
 	void CalcCcIncrement();

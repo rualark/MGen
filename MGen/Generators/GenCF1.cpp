@@ -425,8 +425,10 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 			hm[i].push_back(h);
 		}
 		// Shuffle
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		::shuffle(hm[i].begin(), hm[i].end(), default_random_engine(seed));
+		if (task == tEval) {
+			unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+			::shuffle(hm[i].begin(), hm[i].end(), default_random_engine(seed));
+		}
 	}
 	// Scan vector
 	chm.clear();
