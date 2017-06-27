@@ -398,13 +398,35 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 
 int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	CString st;
+	int h;
+	int first_tonic = 0;
 	// Build hm vector
 	for (int i = 0; i < ep2; ++i) {
 		hm[i].clear();
 		for (int x = 0; x < hv[pc[i]].size(); ++x) {
-			hm[i].push_back(hv[pc[i]][x]);
+			h = hv[pc[i]][x];
+			// Check tonic
+			if (!h) {
+				// Is this first or last tonic?
+				if (!first_tonic || i == c_len - 1) {
+					first_tonic = 1;
+					// Set only tonic for this step
+					hm[i].clear();
+					hm[i].push_back(h);
+					break;
+				}
+				// Is root tonic?
+				else if (!pc[i] && !cantus_high) {
+					// Is this prohibited?
+					if (!accept[29]) continue;
+				}
+			}
+			// If tonic allowed
+			hm[i].push_back(h);
 		}
-		// TODO: Shuffle
+		// Shuffle
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		::shuffle(hm[i].begin(), hm[i].end(), default_random_engine(seed));
 	}
 	// Scan vector
 	chm.clear();
@@ -469,6 +491,9 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	}
 	// Detect possible variants
 	if (!found) {
+		if (max_p < ep2 - 1) {
+			fill(chm.begin(), chm.end(), -1);
+		}
 		// Increase penalty if flag was found at the beginning of melody
 		fpenalty[last_flag] = ep2 - max_p;
 		// Report one of last flags at highest position
@@ -2207,7 +2232,7 @@ int CGenCF1::SendCantus() {
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = 0; x < c_len; ++x) {
-		mark[pos][v] = HarmNames[chm[x]];
+		if (chm[x] > -1) mark[pos][v] = HarmNames[chm[x]];
 		mark_color[pos][v] = Color(120, 120, 120);
 		for (int i = 0; i < cc_len[x]; ++i) {
 			// Set color
