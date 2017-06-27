@@ -378,20 +378,50 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &cc, vector<int> &pc, ve
 	}
 }
 
+int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &last_flag, int &max_p) {
+	if (hv[chm[i]]) {
+		++count;
+		wcount = 0;
+	}
+	else {
+		++wcount;
+		count = 0;
+	}
+	if (count == 3) FLAG3(15, i)
+	else if (count == 4) FLAG3(16, i)
+	else if (count > 4) FLAG3(17, i);
+	if (wcount == 4) FLAG3(18, i)
+	else if (wcount == 5) FLAG3(19, i)
+	else if (wcount > 5) FLAG3(20, i);
+	return 0;
+}
+
 int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 	int pen1, pen2;
-	for (int i = 1; i <= p; ++i) {
-		// Check harmony repeat
-		pen1 = hsp[chm[i - 1]][chm[i]];
-		if (pen1 == 3) FLAG3(99, i)
-		else if (pen1 == 1) FLAG3(77, i)
-		else if (pen1 == 2) {
-			FLAG3(57, i);
-			if (i < p) {
-				pen2 = hsp[chm[i]][chm[i + 1]];
-				if (pen2 == 2) FLAG3(92, i);
+	int dcount = 0;
+	int scount = 0;
+	int tcount = 0;
+	int wdcount = 0;
+	int wscount = 0;
+	int wtcount = 0;
+	for (int i = 0; i <= p; ++i) {
+		// Check harmonic penalty
+		if (i > 0) {
+			pen1 = hsp[chm[i - 1]][chm[i]];
+			if (pen1 == 3) FLAG3(99, i)
+			else if (pen1 == 1) FLAG3(77, i)
+			else if (pen1 == 2) {
+				FLAG3(57, i);
+				if (i < p) {
+					pen2 = hsp[chm[i]][chm[i + 1]];
+					if (pen2 == 2) FLAG3(92, i);
+				}
 			}
 		}
+		// Check harmony repeat and miss
+		if (FailHarmStep(i, hvt, tcount, wtcount, last_flag, max_p)) return 1;
+		if (FailHarmStep(i, hvd, dcount, wdcount, last_flag, max_p)) return 1;
+		if (FailHarmStep(i, hvs, scount, wscount, last_flag, max_p)) return 1;
 	}
 	return 0;
 }

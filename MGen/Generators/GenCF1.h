@@ -19,6 +19,10 @@
 #define MAX_WIND 500
 #define MAX_NOTE 127
 
+const int hvt[] = { 1, 0, 1, 0, 0, 1, 0 };
+const int hvd[] = { 0, 0, 1, 0, 1, 0, 1 };
+const int hvs[] = { 0, 1, 0, 1, 0, 1, 0 };
+
 const CString MethodNames[] = {
 	"window-scan", // 0
 	"swa" // 1
@@ -89,6 +93,7 @@ protected:
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
+	inline int FailHarmStep(int i, const int * hv, int & count, int & wcount, int & last_flag, int & max_p);
 	inline int EvalMelodyHarm(int p, int & last_flag, int & max_p);
 	inline int FailMelodyHarm(vector<int>& pc);
 	//inline void UpdateNoteHarm(int i);

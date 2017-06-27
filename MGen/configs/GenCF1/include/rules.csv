@@ -81,8 +81,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;7;70;Melody;Range;Out of range (sum wide);0;;
 1;11;70;Melody;Range;Out of range (int wide);0;;
 1;15;0;Cantus;Harmony;Repeating letters in a row (3);-1;;
-1;16;30;Cantus;Harmony;Repeating letters in a row (4);-1;;
-1;17;70;Cantus;Harmony;Repeating letters in a row (>4);-1;;
+1;16;30;Cantus;Harmony;Repeating letters in a row (4);0;;
+1;17;70;Cantus;Harmony;Repeating letters in a row (>4);0;;
 1;18;0;Cantus;Harmony;Missing letters in a row (4);-1;;
 1;19;30;Cantus;Harmony;Missing letters in a row (5);-1;;
 1;20;70;Cantus;Harmony;Missing letters in a row (>5);-1;;
@@ -209,7 +209,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;37;70;Melody;Range;Out of range (voice wide);0;;
 2;7;70;Melody;Range;Out of range (sum wide);0;;
 2;11;70;Melody;Range;Out of range (int wide);0;;
-2;15;0;Cantus;Harmony;Repeating letters in a row (3);1;;
+2;15;0;Cantus;Harmony;Repeating letters in a row (3);-1;;
 2;16;30;Cantus;Harmony;Repeating letters in a row (4);0;;
 2;17;70;Cantus;Harmony;Repeating letters in a row (>4);0;;
 2;18;0;Cantus;Harmony;Missing letters in a row (4);1;;
