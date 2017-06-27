@@ -1,6 +1,8 @@
 # MGen
 Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI/MusicXML
 
+Read about this project: https://www.donationcoder.com/forum/index.php?topic=43816.0
+
 Documentation will be added later. Some schemes how it works: https://drive.google.com/drive/mobile/folders/0Bxe6bKDbjcgecmdaQV85TGxsTDA?usp=drive_webVideos:
 
 Videos:
