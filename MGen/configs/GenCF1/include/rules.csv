@@ -84,8 +84,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;16;30;Cantus;Harmony;Repeating letters in a row (4);0;;
 1;17;70;Cantus;Harmony;Repeating letters in a row (>4);0;;
 1;18;0;Cantus;Harmony;Missing letters in a row (4);-1;;
-1;19;30;Cantus;Harmony;Missing letters in a row (5);-1;;
-1;20;70;Cantus;Harmony;Missing letters in a row (>5);-1;;
+1;19;30;Cantus;Harmony;Missing letters in a row (5);0;;
+1;20;70;Cantus;Harmony;Missing letters in a row (>5);0;;
 1;48;30;Cantus;Harmony;Early cadence (G-C);-1;;G note goes to C note before final cadence
 1;77;0;Cantus;Harmony;Harmonic penalty (1);1;;
 1;57;30;Cantus;Harmony;Harmonic penalty (2);1;;

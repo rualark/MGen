@@ -524,7 +524,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	// Detect possible variants
 	if (!found) {
 		if (max_p < ep2 - 1) {
-			fill(chm.begin(), chm.end(), -1);
+			//fill(chm.begin(), chm.end(), -1);
 		}
 		// Increase penalty if flag was found at the beginning of melody
 		fpenalty[last_flag] = ep2 - max_p;
@@ -2654,8 +2654,6 @@ check:
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(c, ep2, leap, smooth, nstat2, nstat3)) goto skip;
 		if (ep2>4 && FailMelodyHarm(pc)) goto skip;
-		//if (FailMelodyHarmSeq(pc, 0, ep2)) goto skip;
-		//if (FailMelodyHarmSeq2(pc, 0, ep2)) goto skip;
 
 		SaveBestRejected();
 		// If we are window-scanning
