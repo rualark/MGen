@@ -1071,7 +1071,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				preleap = 1;
 			}
 			// Melody direction change (MDC)
-			// Default left mdc is close, because we do not need close mdc at the beginning
+			// Default left mdc is close, because beginning equals to close mdc
 			mdc1 = 0;
 			if (leap_start > 0) {
 				// Check leap mdc1 if it is not last note
@@ -1091,6 +1091,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				}
 				else mdc1 = 0;
 			}
+			// Default mdc is close, because at the ending we do not need close mdc
 			mdc2 = 0;
 			if (i < ep2 - 2) {
 				// Check leap mdc2 if it is not last note
@@ -1099,7 +1100,21 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					// Not end of melody?
 					if (i < ep2 - 3) {
 						// Check if melody direction does not change second note after leap
-						if (leap[i] * (c[i + 3] - c[i + 2]) > 0) mdc2 = 2;
+						if (leap[i] * (c[i + 3] - c[i + 2]) > 0) {
+							// Not end of melody?
+							if (i < ep2 - 4) {
+								// Check if melody direction does not change third note after leap
+								if (leap[i] * (c[i + 4] - c[i + 3]) > 0) {
+									mdc2 = 3;
+								}
+								// Direction changes: mark 2far mdc
+								else mdc2 = 2;
+							}
+							else {
+								// Mark 2far mdc if this is end of cantus
+								mdc2 = 2;
+							}
+						}
 						// Direction changes: mark far mdc
 						else mdc2 = 1;
 					}
