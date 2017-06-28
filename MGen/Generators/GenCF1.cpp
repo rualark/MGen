@@ -1145,12 +1145,18 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					}
 				}
 			}
-			// Close+far
-			if (mdc1 + mdc2 == 1) FLAG2(128 + leap_id, i)
-			// Close+no
-			else if (mdc1 + mdc2 == 2 && mdc1*mdc2 == 0) FLAG2(132 + leap_id, i)
+			// Close + 1far
+			if (mdc1 == 0 && mdc2 == 1) FLAG2(128 + leap_id, i)
+			// Close + 2far
+			else if (mdc1 == 0 && mdc2 == 2) FLAG2(140 + leap_id, i)
+			// No + close
+			else if (mdc1 == 1 && mdc2 == 0) FLAG2(132 + leap_id, i)
+			// Far + close
+			else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, i)
 			// No close
-			else if (mdc1*mdc2) FLAG2(136 + leap_id, i);
+			else if (mdc1*mdc2) FLAG2(136 + leap_id, i)
+			// No MDC after
+			else if (mdc2 == 3) FLAG2(63 + leap_id, i)
 			// If leap back overflow, do not check leap compensation, because compensating next leap will be enough
 			if (overflow) continue;
 			if (i > 0) {
