@@ -1150,7 +1150,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			// Close + 2far
 			else if (mdc1 == 0 && mdc2 == 2) FLAG2(140 + leap_id, i)
 			// No + close
-			else if (mdc1 == 1 && mdc2 == 0) FLAG2(132 + leap_id, i)
+			else if (mdc1 == 2 && mdc2 == 0) FLAG2(132 + leap_id, i)
 			// Far + close
 			else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, i)
 			// No close
