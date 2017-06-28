@@ -994,10 +994,25 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 			else skips += 10;
 		}
 		// Check if fill is finished
-		if (!nstat3[c3] && !nstat3[c[leap_finish]]) {
-			if (nstat3[c5]) fill_to = 1;
-			// If fill is finished further than 3rd, fill is incorrect
-			else skips += 10;
+		if (!nstat3[c3]) {
+			if (c[leap_finish] < c[leap_start]) {
+				// Search for first compensated note
+				for (int i = c5; i <= c[leap_start]; ++i) {
+					if (nstat3[i]) {
+						fill_to = i - c[leap_finish];
+						break;
+					}
+				}
+			}
+			else {
+				// Search for first compensated note
+				for (int i = c5; i >= c[leap_start]; --i) {
+					if (nstat3[i]) {
+						fill_to = c[leap_finish] - i;
+						break;
+					}
+				}
+			}
 		}
 	}
 	else {
