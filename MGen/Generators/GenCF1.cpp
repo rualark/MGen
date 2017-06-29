@@ -905,9 +905,9 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 	}
 	// Check that fill does not deviate
 	deviates = 0;
-	fill_to = 0;
+	fill_to = leap_size;
 	fill_to_pre = 0;
-	fill_from = 0;
+	fill_from = leap_size;
 	if (pre) {
 		int pos3 = leap_finish - 2;
 		if (pos3 < 0) pos3 = 0;
@@ -941,7 +941,7 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 							deviates = 0;
 							break;
 						}
-						// Just deviateion if only one second
+						// Just deviation if only one second
 						else deviates = 1;
 					}
 			}
@@ -965,7 +965,7 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 							deviates = 0;
 							break;
 						}
-						// Just deviateion if only one second
+						// Just deviation if only one second
 						else deviates = 1;
 					}
 			}
@@ -981,101 +981,89 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 							deviates = 0;
 							break;
 						}
-						// Just deviateion if only one second
+						// Just deviation if only one second
 						else deviates = 1;
 					}
 			}
 		}
 	}
 	if (pre) {
-		// Check if fill start is after 3rd
-		if (!nstat3[c4]) {
-			if (c[leap_finish] > c[leap_start]) {
-				// Search for first compensated note
-				for (int i = c6; i <= c[leap_finish]; ++i) {
-					if (nstat3[i]) {
-						fill_from = i - c[leap_start];
-						break;
-					}
-				}
-			}
-			else {
-				// Search for first compensated note
-				for (int i = c6; i >= c[leap_finish]; --i) {
-					if (nstat3[i]) {
-						fill_from = c[leap_start] - i;
-						break;
-					}
+		if (c[leap_finish] > c[leap_start]) {
+			// Search for first compensated note
+			for (int i = c4; i <= c[leap_finish]; ++i) {
+				if (nstat3[i]) {
+					fill_from = i - c[leap_start];
+					break;
 				}
 			}
 		}
-		// Check if fill is finished
-		if (!nstat3[c3]) {
-			if (c[leap_finish] < c[leap_start]) {
-				// Search for first compensated note
-				for (int i = c5; i <= c[leap_start]; ++i) {
-					if (nstat3[i]) {
-						fill_to = i - c[leap_finish];
-						break;
-					}
+		else {
+			// Search for first compensated note
+			for (int i = c4; i >= c[leap_finish]; --i) {
+				if (nstat3[i]) {
+					fill_from = c[leap_start] - i;
+					break;
 				}
 			}
-			else {
-				// Search for first compensated note
-				for (int i = c5; i >= c[leap_start]; --i) {
-					if (nstat3[i]) {
-						fill_to = c[leap_finish] - i;
-						break;
-					}
+		}
+		if (c[leap_finish] < c[leap_start]) {
+			// Search for first compensated note
+			for (int i = c3; i <= c[leap_start]; ++i) {
+				if (nstat3[i]) {
+					fill_to = i - c[leap_finish];
+					break;
+				}
+			}
+		}
+		else {
+			// Search for first compensated note
+			for (int i = c3; i >= c[leap_start]; --i) {
+				if (nstat3[i]) {
+					fill_to = c[leap_finish] - i;
+					break;
 				}
 			}
 		}
 	}
 	else {
-		// Check if fill start is after 3rd
-		if (!nstat3[c3]) {
-			if (c[leap_finish] > c[leap_start]) {
-				// Search for first compensated note
-				for (int i = c5; i >= c[leap_start]; --i) {
-					if (nstat3[i]) {
-						fill_from = c[leap_finish] - i;
-						break;
-					}
-				}
-			}
-			else {
-				// Search for first compensated note
-				for (int i = c5; i <= c[leap_start]; ++i) {
-					if (nstat3[i]) {
-						fill_from = i - c[leap_finish];
-						break;
-					}
+		if (c[leap_finish] > c[leap_start]) {
+			// Search for first compensated note
+			for (int i = c3; i >= c[leap_start]; --i) {
+				if (nstat3[i]) {
+					fill_from = c[leap_finish] - i;
+					break;
 				}
 			}
 		}
-		// Check if fill is finished
-		if (!nstat3[c4]) {
-			if (c[leap_finish] < c[leap_start]) {
-				// Search for first compensated note
-				for (int i = c6; i >= c[leap_finish]; --i) {
-					if (nstat3[i]) {
-						fill_to = c[leap_start] - i;
-						break;
-					}
+		else {
+			// Search for first compensated note
+			for (int i = c3; i <= c[leap_start]; ++i) {
+				if (nstat3[i]) {
+					fill_from = i - c[leap_finish];
+					break;
 				}
 			}
-			else {
-				// Search for first compensated note
-				for (int i = c6; i <= c[leap_finish]; ++i) {
-					if (nstat3[i]) {
-						fill_to = i - c[leap_start];
-						break;
-					}
+		}
+		if (c[leap_finish] < c[leap_start]) {
+			// Search for first compensated note
+			for (int i = c4; i >= c[leap_finish]; --i) {
+				if (nstat3[i]) {
+					fill_to = c[leap_start] - i;
+					break;
+				}
+			}
+		}
+		else {
+			// Search for first compensated note
+			for (int i = c4; i <= c[leap_finish]; ++i) {
+				if (nstat3[i]) {
+					fill_to = i - c[leap_start];
+					break;
 				}
 			}
 		}
 		// Check prepared unfinished fill
-		if (fill_to) {
+		if (fill_to > 1) {
 			int pos = max(0, leap_start - 2);
 			for (int x = pos; x < leap_start; ++x) if (c[x] == c4) fill_to_pre = 1;
 		}
