@@ -847,7 +847,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 	return 0;
 }
 
-void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &fill_to, int pre, int &fill_from, int &deviates, int leap_prev, int leap_id)
+void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size, int leap_start, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &skips2, int &fill_to, int pre, int &fill_to_pre, int &fill_from, int &deviates, int leap_prev, int leap_id)
 {
 	int leap_finish = i + 1;
 	if (pos2 < pos1) pos2 = pos1;
@@ -906,6 +906,7 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 	// Check that fill does not deviate
 	deviates = 0;
 	fill_to = 0;
+	fill_to_pre = 0;
 	fill_from = 0;
 	if (pre) {
 		int pos3 = leap_finish - 2;
@@ -989,9 +990,24 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 	if (pre) {
 		// Check if fill start is after 3rd
 		if (!nstat3[c4]) {
-			if (nstat3[c6]) fill_from = 1;
-			// If fill is finished further than 3rd, fill is incorrect
-			else skips += 10;
+			if (c[leap_finish] > c[leap_start]) {
+				// Search for first compensated note
+				for (int i = c6; i <= c[leap_finish]; ++i) {
+					if (nstat3[i]) {
+						fill_from = i - c[leap_start];
+						break;
+					}
+				}
+			}
+			else {
+				// Search for first compensated note
+				for (int i = c6; i >= c[leap_finish]; --i) {
+					if (nstat3[i]) {
+						fill_from = c[leap_start] - i;
+						break;
+					}
+				}
+			}
 		}
 		// Check if fill is finished
 		if (!nstat3[c3]) {
@@ -1018,20 +1034,50 @@ void CGenCF1::CountFill(vector<int> &c, int i, int pos1, int pos2, int leap_size
 	else {
 		// Check if fill start is after 3rd
 		if (!nstat3[c3]) {
-			if (nstat3[c5]) fill_from = 1;
-			// If fill is finished further than 3rd, fill is incorrect
-			else skips += 10;
+			if (c[leap_finish] > c[leap_start]) {
+				// Search for first compensated note
+				for (int i = c5; i >= c[leap_start]; --i) {
+					if (nstat3[i]) {
+						fill_from = c[leap_finish] - i;
+						break;
+					}
+				}
+			}
+			else {
+				// Search for first compensated note
+				for (int i = c5; i <= c[leap_start]; ++i) {
+					if (nstat3[i]) {
+						fill_from = i - c[leap_finish];
+						break;
+					}
+				}
+			}
 		}
 		// Check if fill is finished
-		if (!nstat3[c4] && !nstat3[c[leap_start]]) {
-			if (nstat3[c6]) fill_to = 1;
-			// If fill is finished further than 3rd, fill is incorrect
-			else skips += 10;
+		if (!nstat3[c4]) {
+			if (c[leap_finish] < c[leap_start]) {
+				// Search for first compensated note
+				for (int i = c6; i >= c[leap_finish]; --i) {
+					if (nstat3[i]) {
+						fill_to = c[leap_start] - i;
+						break;
+					}
+				}
+			}
+			else {
+				// Search for first compensated note
+				for (int i = c6; i <= c[leap_finish]; ++i) {
+					if (nstat3[i]) {
+						fill_to = i - c[leap_start];
+						break;
+					}
+				}
+			}
 		}
 		// Check prepared unfinished fill
 		if (fill_to) {
 			int pos = max(0, leap_start - 2);
-			for (int x = pos; x < leap_start; ++x) if (c[x] == c4) fill_to = 2;
+			for (int x = pos; x < leap_start; ++x) if (c[x] == c4) fill_to_pre = 1;
 		}
 	}
 }
@@ -1043,7 +1089,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int preleap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
-	int skips, skips2, pos, fill_to, fill_from, deviates, leap_id, mdc1, mdc2, overflow;
+	int skips, skips2, pos, fill_to, fill_to_pre, fill_from, deviates, leap_id, mdc1, mdc2, overflow;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
 			// Check if this leap is 3rd
@@ -1178,7 +1224,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Check if  leap is prefilled
 				pos = i - 2 - (leap_size - 1) * fill_steps_mul;
 				if (pos < 0) pos = 0;
-				CountFill(c, i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, fill_to, 1, fill_from, deviates, leap_prev, leap_id);
+				CountFill(c, i, pos, i - 1, leap_size, leap_start, nstat2, nstat3, skips, skips2, fill_to, 1, fill_to_pre, fill_from, deviates, leap_prev, leap_id);
 				// Do we have not too many skips?
 				if (skips <= 0) {
 				  // Is fill non deviated or deviated fill allowed?
@@ -1197,7 +1243,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					if (pos > ep2 - 1) pos = ep2 - 1;
 					// Check leap compensation only if it is not last leap
 					if (i < ep2 - 2) {
-						CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, fill_to, 0, fill_from, deviates, leap_prev, leap_id);
+						CountFill(c, i, i + 2, pos, leap_size, leap_start, nstat2, nstat3, skips, skips2, fill_to, 0, fill_to_pre, fill_from, deviates, leap_prev, leap_id);
 					}
 					else {
 						// If it is last leap, consider compensation to be unsuccessful
