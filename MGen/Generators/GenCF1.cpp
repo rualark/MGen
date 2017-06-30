@@ -898,12 +898,14 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_st
 	// Fill all notes (even those outside pos1-pos2 window)
 	for (int x = 0; x < tc.size(); ++x) {
 		++nstat3[tc[x]];
-		if (fill_finish == -1 && (tc[x] == t1 || tc[x] == t1+1 || tc[x] == t1+2)) {
+	}
+	// Detect fill_finish
+	for (int x = 0; x < tc.size(); ++x) {
+		if (tc[x] == t1 || tc[x] == t1 + 1 || tc[x] == t1 + 2) {
 			fill_finish = x;
 		}
 	}
-	// Local fill
-	skips = 0; 
+	skips = 0;
 	// Add allowed skips if this is not second leap and skips for second leap not allowed
 	if (!leap_prev || accept[108 + leap_id]) {
 		if (leap_size > 2) --skips;
@@ -917,80 +919,22 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_st
 	fill_to = leap_size;
 	fill_to_pre = 0;
 	fill_from = leap_size;
-	if (pre) {
-		int pos3 = leap_end - 2;
-		if (pos3 < 0) pos3 = 0;
-		if (pos3 > fill_finish) {
-			int npoint = c[leap_start];
-			if (c[leap_end] > c[leap_start]) {
-				// Detect deviation below note point
-				for (int x = fill_finish+1; x <= pos3; ++x)
-					if (c[x] < npoint) {
-					  // Unfilled if deviation is far
-					  if (c[x] < npoint - 1) {
-							skips += 10;
-							deviates = 0;
-							break;
-						}
-						// Just deviateion if only one second
-						else deviates = 1;
-					}
+	int pos3 = 2;
+	if (pos3 >= tc.size()) pos3 = tc.size() - 1;
+	if (pos3 < fill_finish) {
+		int npoint = t2;
+		// Detect deviation below note point
+		for (int x = pos3; x < fill_finish; ++x)
+			if (tc[x] > npoint) {
+				// Unfilled if deviation is far
+				if (tc[x] > npoint + 1) {
+					skips += 10;
+					deviates = 0;
+					break;
+				}
+				// Just deviation if only one second
+				else deviates = 1;
 			}
-			else {
-				// Detect deviation below note point
-				for (int x = fill_finish + 1; x <= pos3; ++x)
-					if (c[x] > npoint) {
-					  // Unfilled if deviation is far
-					  if (c[x] > npoint + 1) {
-							skips += 10;
-							deviates = 0;
-							break;
-						}
-						// Just deviation if only one second
-						else deviates = 1;
-					}
-			}
-		}
-	}
-	// Not pre
-	else {
-		int pos3 = leap_end + 2;
-		if (pos3 > ep2) pos3 = ep2;
-		if (pos3 < fill_finish) {
-			int npoint = c[leap_end];
-			if (c[leap_end] < c[leap_start]) {
-				// Get note point
-				//if (c[leap_end + 1] < npoint) npoint = c[leap_end + 1];
-				// Detect deviation below note point
-				for (int x = pos3; x < fill_finish; ++x)
-					if (c[x] < npoint) {
-					  // Unfilled if deviation is far
-						if (c[x] < npoint - 1) {
-							skips += 10;
-							deviates = 0;
-							break;
-						}
-						// Just deviation if only one second
-						else deviates = 1;
-					}
-			}
-			else {
-				// Get note point
-				//if (c[leap_end + 1] > npoint) npoint = c[leap_end + 1];
-				// Detect deviation below note point
-				for (int x = pos3; x < fill_finish; ++x)
-					if (c[x] > npoint) {
-						// Unfilled if deviation is far
-						if (c[x] > npoint + 1) {
-							skips += 10;
-							deviates = 0;
-							break;
-						}
-						// Just deviation if only one second
-						else deviates = 1;
-					}
-			}
-		}
 	}
 	CountFillLimits(c, pre, t1, t2, leap_start, leap_end, fill_to, fill_from);
 	// Check prepared fill to 3rd
@@ -1028,7 +972,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int preleap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
-	int skips, pos, fill_to, fill_to_pre, fill_from, deviates, leap_id, tail_len, mdc1, mdc2, overflow, fill_finish;
+	int skips, fill_to, fill_to_pre, fill_from, deviates, leap_id, tail_len, mdc1, mdc2, overflow, fill_finish;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
 			// Check if this leap is 3rd
@@ -1175,10 +1119,10 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			}
 			if (i < ep2 - 1) {
 				// Check if  leap is filled
-				pos = i + 3 + (leap_size - 1) * fill_steps_mul;
+				tail_len = i + 3 + (leap_size - 1) * fill_steps_mul;
 				// Do not check fill if search window is cut by end of current not-last scan window
-				if ((pos < ep2) || (c_len == ep2)) {
-					if (pos > ep2 - 1) pos = ep2 - 1;
+				if ((tail_len < ep2) || (c_len == ep2)) {
+					if (tail_len > ep2 - 1) tail_len = ep2 - 1;
 					// Check leap compensation only if it is not last leap
 					if (i < ep2 - 2) {
 						CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, leap_prev, leap_id, fill_finish);
