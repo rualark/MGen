@@ -848,7 +848,6 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 }
 
 void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int leap_start, int leap_end, int &fill_to, int &fill_from, int &fill_finish) {
-	fill_finish = -1;
 	// Create leap tail
 	tc.clear();
 	if (pre) {
@@ -889,21 +888,38 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 		t2 = 128 - c[leap_end];
 	}
 	for (int x = t1; x <= t2; ++x) nstat3[x] = 0;
+	fill_finish = tc.size()-1;
 }
 	
-void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from, int &deviates, int leap_prev, int leap_id, int &fill_finish)
+void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int leap_id, int &fill_finish)
 {
 	int t1, t2;
 	CountFillInit(c, tail_len, pre, t1, t2, leap_start, leap_end, fill_to, fill_from, fill_finish);
-	// Fill all notes (even those outside pos1-pos2 window)
-	for (int x = 0; x < tc.size(); ++x) {
-		++nstat3[tc[x]];
-	}
 	// Detect fill_finish
+	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
+	int dev_state = 0;
 	for (int x = 0; x < tc.size(); ++x) {
-		if (tc[x] == t1 || tc[x] == t1 + 1 || tc[x] == t1 + 2) {
-			fill_finish = x;
+		// If deviating, start deviation state
+		if (tc[x] > t2) {
+			if (dev_state == 0) dev_state = 1;
+			else if (dev_state == 2) dev_state = 3;
 		}
+		// If not deviating, stop deviation state
+		else {
+			if (dev_state == 1) dev_state = 2;
+		}
+		if (tc[x] <= t1 + 2) {
+			fill_finish = x;
+			break;
+		}
+	}
+	// Get deviations count
+	if (dev_state == 0) dev_count = 0;
+	else if (dev_state < 3) dev_count = 1;
+	else dev_count = 2;
+	// Fill all notes (even those outside pos1-pos2 window)
+	for (int x = 0; x < fill_finish; ++x) {
+		++nstat3[tc[x]];
 	}
 	skips = 0;
 	// Add allowed skips if this is not second leap and skips for second leap not allowed
@@ -972,7 +988,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int preleap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
-	int skips, fill_to, fill_to_pre, fill_from, deviates, leap_id, tail_len, mdc1, mdc2, overflow, fill_finish;
+	int skips, fill_to, fill_to_pre, fill_from, deviates, leap_id, tail_len, mdc1, mdc2, overflow, fill_finish,
+		dev_count;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
 			// Check if this leap is 3rd
@@ -1106,7 +1123,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			if (i > 0) {
 				// Check if  leap is prefilled
 				tail_len = 2 + (leap_size - 1) * fill_steps_mul;
-				CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 1, fill_to_pre, fill_from, deviates, leap_prev, leap_id, fill_finish);
+				CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 1, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
 				// Do we have not too many skips?
 				if (skips <= 0) {
 				  // Is fill non deviated or deviated fill allowed?
@@ -1125,7 +1142,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					if (tail_len > ep2 - 1) tail_len = ep2 - 1;
 					// Check leap compensation only if it is not last leap
 					if (i < ep2 - 2) {
-						CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, leap_prev, leap_id, fill_finish);
+						CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
 					}
 					else {
 						// If it is last leap, consider compensation to be unsuccessful

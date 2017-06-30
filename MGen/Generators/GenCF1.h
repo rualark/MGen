@@ -111,7 +111,7 @@ protected:
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
 	inline void CountFillInit(vector<int>& c, int tail_len, int pre, int & t1, int & t2, int leap_start, int leap_end, int & fill_to, int & fill_from, int & fill_finish);
-	inline void CountFill(vector<int>& c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from, int & deviates, int leap_prev, int leap_id, int & fill_finish);
+	inline void CountFill(vector<int>& c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int leap_id, int & fill_finish);
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int leap_start, int leap_end, int & fill_to, int & fill_from);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailTritone(int i, int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
