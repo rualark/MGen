@@ -904,8 +904,8 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_st
 		if (tc[x] <= t1 + 2) {
 			// Set fill finish if we approach 3rd or lower first time
 			if (fill_finish == -1) fill_finish = x;
-			// Stop collecting note stat if we are at border or below
-			if (tc[x] <= t1) break;
+			// Stop collecting note stat if we are below the border
+			if (tc[x] < t1) break;
 		}
 	}
 	// Calculate deviation
