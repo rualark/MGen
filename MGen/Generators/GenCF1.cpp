@@ -900,6 +900,16 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_st
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
 	deviates = 0;
 	for (int x = 0; x < tc.size(); ++x) {
+		++nstat3[tc[x]];
+		if (tc[x] <= t1 + 2) {
+			// Set fill finish if we approach 3rd or lower first time
+			if (fill_finish == -1) fill_finish = x;
+			// Stop collecting note stat if we are at border or below
+			if (tc[x] <= t1) break;
+		}
+	}
+	// Calculate deviation
+	for (int x = 0; x < fill_finish; ++x) {
 		// If deviating, start deviation state and calculate maximum deviation
 		if (tc[x] > t2) {
 			deviates = max(deviates, tc[x] - t2);
@@ -910,19 +920,12 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_st
 		else {
 			if (dev_state == 1) dev_state = 2;
 		}
-		if (tc[x] <= t1 + 2) {
-			fill_finish = x;
-			break;
-		}
 	}
 	// Get deviations count
 	if (dev_state == 0) dev_count = 0;
 	else if (dev_state < 3) dev_count = 1;
 	else dev_count = 2;
-	// Fill all notes (even those outside pos1-pos2 window)
-	for (int x = 0; x < fill_finish; ++x) {
-		++nstat3[tc[x]];
-	}
+
 	CountFillSkips(leap_prev, leap_id, leap_size, skips, t1, t2);
 	CountFillLimits(c, pre, t1, t2, leap_start, leap_end, leap_size, fill_to, fill_to_pre, fill_from);
 }
