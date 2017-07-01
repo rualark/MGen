@@ -966,6 +966,27 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 	}
 }
 
+void CGenCF1::FailLeapInit(int i, int &preleap, int &prefilled, int &presecond, int &leap_next, int &leap_prev, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
+	preleap = 0; // If we have a preleap
+	prefilled = 0; // If leap was prefilled
+	presecond = 0; // If leap has a filled second
+	leap_next = 0; // Multiply consecutive leaps
+	leap_prev = 0; // Multiply consecutive leaps
+	overflow = 0; // Leap back overflow
+								// Check if this leap is 3rd
+	leap_size = abs(c[i + 1] - c[i]);
+	leap_start = i; // First step of leap
+	leap_end = i + 1; // Last step of leap
+										// Next is leap?
+	if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
+	// Prev is leap?
+	if (i > 0) leap_prev = leap[i] * leap[i - 1];
+	// Check preleap (current leap does not exceed previous close leap: tight or 1-2 step far; only 1 step far if 2x3rds)
+	if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) preleap = 1;
+	else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) preleap = 1;
+	else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) preleap = 1;
+}
+
 int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
 {
 	// Get leap size, start, end
@@ -977,24 +998,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 		leap_id, tail_len, mdc1, mdc2, overflow, fill_finish,	dev_count;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
-			// Check if this leap is 3rd
-			leap_size = abs(c[i + 1] - c[i]);
-			leap_start = i; // First step of leap
-			leap_end = i+1; // Last step of leap
-			preleap = 0; // If we have a preleap
-			prefilled = 0; // If leap was prefilled
-			presecond = 0; // If leap has a filled second
-			leap_next = 0; // Multiply consecutive leaps
-			leap_prev = 0; // Multiply consecutive leaps
-			overflow = 0; // Leap back overflow
-			// Next is leap?
-			if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
-			// Prev is leap?
-			if (i > 0) leap_prev = leap[i] * leap[i - 1];
-			// Check preleap (current leap does not exceed previous close leap: tight or 1-2 step far; only 1 step far if 2x3rds)
-			if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) preleap = 1;
-			else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) preleap = 1;
-			else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) preleap = 1;
+			FailLeapInit(i, preleap, prefilled, presecond, leap_next, leap_prev, overflow, leap_size, leap_start, leap_end, leap);
 			// Check if leap is third
 			if (leap_size == 2) {
 				// Check if leap is second third
