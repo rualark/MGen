@@ -451,7 +451,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 					if (!accept[29]) continue;
 				}
 			}
-			// If tonic allowed
+			// If tonic allowed or not tonic
 			hm[i].push_back(h);
 		}
 		// Shuffle
@@ -982,9 +982,9 @@ void CGenCF1::FailLeapInit(int i, int &preleap, int &prefilled, int &presecond, 
 	// Prev is leap?
 	if (i > 0) leap_prev = leap[i] * leap[i - 1];
 	// Check preleap (current leap does not exceed previous close leap: tight or 1-2 step far; only 1 step far if 2x3rds)
-	if ((i > 0) && ((c[i - 1] - c[i + 1])*leap[i] > 0)) preleap = 1;
-	else if ((i > 1) && ((c[i - 2] - c[i + 1])*leap[i] > 0)) preleap = 1;
-	else if ((i > 2) && ((c[i - 3] - c[i + 1])*leap[i] > 0)) preleap = 1;
+	if ((i > 0) && ((c[i - 1] - c[leap_end])*leap[leap_start] > 0)) preleap = 1;
+	else if ((i > 1) && ((c[i - 2] - c[leap_end])*leap[leap_start] > 0)) preleap = 1;
+	else if ((i > 2) && ((c[i - 3] - c[leap_end])*leap[leap_start] > 0)) preleap = 1;
 }
 
 int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
@@ -1800,13 +1800,22 @@ int CGenCF1::FailMinor(vector<int> &pcc) {
 		// Prohibit minor second up before VII - absorbed
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
-		if (pcc[i] == 11 || pcc[i] == 9) {
-			if (pcc[i - 1] == 10 || pcc[i - 1] == 8) FLAG2(47, i-1);
-			if (i > 1) if (pcc[i - 2] == 10 || pcc[i - 2] == 8) FLAG2(75, i-2);
+		if (pcc[i] == 11) {
+			if (pcc[i - 1] == 10 || pcc[i - 1] == 8) FLAG2(47, i - 1);
+			if (i > 1) if (pcc[i - 2] == 10 || pcc[i - 2] == 8) FLAG2(75, i - 2);
 			if (i < ep2 - 1) {
-				if (pcc[i + 1] == 10 || pcc[i + 1] == 8) FLAG2(47, i+1);
+				if (pcc[i + 1] == 10 || pcc[i + 1] == 8) FLAG2(47, i + 1);
 				if (i < ep2 - 2)
-					if (pcc[i + 2] == 10 || pcc[i + 2] == 8) FLAG2(75, i+2);
+					if (pcc[i + 2] == 10 || pcc[i + 2] == 8) FLAG2(75, i + 2);
+			}
+		}
+		if (pcc[i] == 9) {
+			if (pcc[i - 1] == 8) FLAG2(47, i-1);
+			if (i > 1) if (pcc[i - 2] == 8) FLAG2(75, i-2);
+			if (i < ep2 - 1) {
+				if (pcc[i + 1] == 8) FLAG2(47, i+1);
+				if (i < ep2 - 2)
+					if (pcc[i + 2] == 8) FLAG2(75, i+2);
 			}
 		}
 		// Prohibit unresolved minor tritone DG# (direct or with inserted note)
