@@ -115,6 +115,7 @@ protected:
 	inline void CountFillSkips(int leap_prev, int leap_id, int leap_size, int & skips, int t1, int t2);
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int leap_start, int leap_end, int leap_size, int & fill_to, int & fill_to_pre, int & fill_from);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
+	inline int FailLeapMDC(int i, int leap_id, int & mdc1, int & mdc2, int leap_start, vector<int>& leap, vector<int>& c);
 	inline int FailTritone(int i, int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailIntervals(int ep2, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline void GlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);

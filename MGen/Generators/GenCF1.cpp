@@ -1016,60 +1016,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				// Set that we are preleaped (even if we are postleaped)
 				preleap = 1;
 			}
-			// Melody direction change (MDC)
-			// Default left mdc is close, because beginning equals to close mdc
-			mdc1 = 0;
-			if (leap_start > 0) {
-				// Check leap mdc1 if it is not last note
-				// If direction does not change
-				if (leap[i] * (c[leap_start] - c[leap_start - 1]) > 0) {
-					// Not start of melody?
-					if (leap_start > 1) {
-						// Check if melody direction does not change second note after leap
-						if (leap[i] * (c[leap_start - 1] - c[leap_start - 2]) > 0) mdc1 = 2;
-						// Direction changes: mark far mdc
-						else mdc1 = 1;
-					}
-					else {
-						// Mark far mdc if this is start of cantus
-						mdc1 = 1;
-					}
-				}
-				else mdc1 = 0;
-			}
-			// Default mdc is close, because at the ending we do not need close mdc
-			mdc2 = 0;
+			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
 			if (i < ep2 - 2) {
-				// Check leap mdc2 if it is not last note
-				// If direction does not change
-				if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
-					// Not end of melody?
-					if (i < ep2 - 3) {
-						// Check if melody direction does not change second note after leap
-						if (leap[i] * (c[i + 3] - c[i + 2]) > 0) {
-							// Not end of melody?
-							if (i < ep2 - 4) {
-								// Check if melody direction does not change third note after leap
-								if (leap[i] * (c[i + 4] - c[i + 3]) > 0) {
-									mdc2 = 3;
-								}
-								// Direction changes: mark 2far mdc
-								else mdc2 = 2;
-							}
-							else {
-								// Mark 2far mdc if this is end of cantus
-								mdc2 = 2;
-							}
-						}
-						// Direction changes: mark far mdc
-						else mdc2 = 1;
-					}
-					else {
-						// Mark far mdc if this is end of cantus
-						mdc2 = 1;
-					}
-				}
-				else mdc2 = 0;
 				// Next leap in same direction
 				if (leap_next > 0) {
 					// Flag if greater than two thirds
@@ -1091,18 +1039,6 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 					}
 				}
 			}
-			// Close + 1far
-			if (mdc1 == 0 && mdc2 == 1) FLAG2(128 + leap_id, i)
-			// Close + 2far
-			else if (mdc1 == 0 && mdc2 == 2) FLAG2(140 + leap_id, i)
-			// No + close
-			else if (mdc1 == 2 && mdc2 == 0) FLAG2(132 + leap_id, i)
-			// Far + close
-			else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, i)
-			// No close
-			else if (mdc1*mdc2) FLAG2(136 + leap_id, i)
-			// No MDC after
-			else if (mdc2 == 3) FLAG2(63 + leap_id, i)
 			// If leap back overflow, do not check leap compensation, because compensating next leap will be enough
 			if (overflow) continue;
 			// Calculate allowed skips if this is not second leap and skips for second leap not allowed
@@ -1116,7 +1052,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 				tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 				CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 1, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
 				// Do we have not too many skips?
-				if (skips > allowed_skips) {
+				if (skips > 0) {
 				  // Is fill non deviated or deviated fill allowed?
 					if ((!deviates || accept[42+leap_id])
 					// Is fill started or unstarted fill allowed?
@@ -1165,6 +1101,77 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			}
 		}
 	}
+	return 0;
+}
+
+int CGenCF1::FailLeapMDC(int i, int leap_id, int &mdc1, int &mdc2, int leap_start, vector<int> &leap, vector<int> &c) {
+	// Melody direction change (MDC)
+	// Default left mdc is close, because beginning equals to close mdc
+	mdc1 = 0;
+	if (leap_start > 0) {
+		// Check leap mdc1 if it is not last note
+		// If direction does not change
+		if (leap[i] * (c[leap_start] - c[leap_start - 1]) > 0) {
+			// Not start of melody?
+			if (leap_start > 1) {
+				// Check if melody direction does not change second note after leap
+				if (leap[i] * (c[leap_start - 1] - c[leap_start - 2]) > 0) mdc1 = 2;
+				// Direction changes: mark far mdc
+				else mdc1 = 1;
+			}
+			else {
+				// Mark far mdc if this is start of cantus
+				mdc1 = 1;
+			}
+		}
+		else mdc1 = 0;
+	}
+	// Default mdc is close, because at the ending we do not need close mdc
+	mdc2 = 0;
+	if (i < ep2 - 2) {
+		// Check leap mdc2 if it is not last note
+		// If direction does not change
+		if (leap[i] * (c[i + 2] - c[i + 1]) > 0) {
+			// Not end of melody?
+			if (i < ep2 - 3) {
+				// Check if melody direction does not change second note after leap
+				if (leap[i] * (c[i + 3] - c[i + 2]) > 0) {
+					// Not end of melody?
+					if (i < ep2 - 4) {
+						// Check if melody direction does not change third note after leap
+						if (leap[i] * (c[i + 4] - c[i + 3]) > 0) {
+							mdc2 = 3;
+						}
+						// Direction changes: mark 2far mdc
+						else mdc2 = 2;
+					}
+					else {
+						// Mark 2far mdc if this is end of cantus
+						mdc2 = 2;
+					}
+				}
+				// Direction changes: mark far mdc
+				else mdc2 = 1;
+			}
+			else {
+				// Mark far mdc if this is end of cantus
+				mdc2 = 1;
+			}
+		}
+		else mdc2 = 0;
+	}
+	// Close + 1far
+	if (mdc1 == 0 && mdc2 == 1) FLAG2(128 + leap_id, i)
+		// Close + 2far
+	else if (mdc1 == 0 && mdc2 == 2) FLAG2(140 + leap_id, i)
+		// No + close
+	else if (mdc1 == 2 && mdc2 == 0) FLAG2(132 + leap_id, i)
+		// Far + close
+	else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, i)
+		// No close
+	else if (mdc1*mdc2) FLAG2(136 + leap_id, i)
+		// No MDC after
+	else if (mdc2 == 3) FLAG2(63 + leap_id, i);
 	return 0;
 }
 
