@@ -932,11 +932,6 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_st
 
 void CGenCF1::CountFillSkips(int leap_prev, int leap_id, int leap_size, int &skips, int t1, int t2) {
 	skips = 0;
-	// Add allowed skips if this is not second leap and skips for second leap not allowed
-	if (!leap_prev || accept[108 + leap_id]) {
-		if (leap_size > 2) --skips;
-		if (leap_size > 6) --skips;
-	}
 	for (int x = t1 + 1; x < t2; ++x) if (!nstat3[x]) {
 		++skips;
 	}
@@ -978,8 +973,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int preleap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
-	int skips, fill_to, fill_to_pre, fill_from, deviates, leap_id, tail_len, mdc1, mdc2, overflow, fill_finish,
-		dev_count;
+	int skips, allowed_skips, fill_to, fill_to_pre, fill_from, deviates, 
+		leap_id, tail_len, mdc1, mdc2, overflow, fill_finish,	dev_count;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
 			// Check if this leap is 3rd
@@ -1110,12 +1105,18 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			else if (mdc2 == 3) FLAG2(63 + leap_id, i)
 			// If leap back overflow, do not check leap compensation, because compensating next leap will be enough
 			if (overflow) continue;
+			// Calculate allowed skips if this is not second leap and skips for second leap not allowed
+			allowed_skips = 0;
+			if (!leap_prev || accept[108 + leap_id]) {
+				if (leap_size > 2) ++allowed_skips;
+				if (leap_size > 6) ++allowed_skips;
+			}
 			if (i > 0) {
 				// Check if  leap is prefilled
 				tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 				CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 1, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
 				// Do we have not too many skips?
-				if (skips <= 0) {
+				if (skips > allowed_skips) {
 				  // Is fill non deviated or deviated fill allowed?
 					if ((!deviates || accept[42+leap_id])
 					// Is fill started or unstarted fill allowed?
@@ -1139,7 +1140,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 						skips = 10;
 					}
 					// Local not filled?
-					if (skips > 0 || (fill_to==2 && !accept[100+leap_id]) || (fill_to==1 && !accept[104 + leap_id]) ||
+					if (skips > allowed_skips || (fill_to==2 && !accept[100+leap_id]) || (fill_to==1 && !accept[104 + leap_id]) ||
 						(fill_from && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
 						// Local not filled. Prefilled?
 						if (prefilled) FLAG2(112+leap_id, i)
