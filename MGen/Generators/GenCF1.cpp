@@ -923,6 +923,11 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_st
 	for (int x = 0; x < fill_finish; ++x) {
 		++nstat3[tc[x]];
 	}
+	CountFillSkips(leap_prev, leap_id, leap_size, skips, t1, t2);
+	CountFillLimits(c, pre, t1, t2, leap_start, leap_end, leap_size, fill_to, fill_to_pre, fill_from);
+}
+
+void CGenCF1::CountFillSkips(int leap_prev, int leap_id, int leap_size, int &skips, int t1, int t2) {
 	skips = 0;
 	// Add allowed skips if this is not second leap and skips for second leap not allowed
 	if (!leap_prev || accept[108 + leap_id]) {
@@ -932,24 +937,12 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_st
 	for (int x = t1 + 1; x < t2; ++x) if (!nstat3[x]) {
 		++skips;
 	}
-	// Check that fill does not deviate
+}
+
+void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_start, int leap_end, int leap_size, int &fill_to, int &fill_to_pre, int &fill_from) {
 	fill_to = leap_size;
 	fill_to_pre = 0;
 	fill_from = leap_size;
-	CountFillLimits(c, pre, t1, t2, leap_start, leap_end, fill_to, fill_from);
-	// Check prepared fill to 3rd
-	if (!pre && fill_to > 1) {
-		int pos = max(0, leap_start - 2);
-		if (c[leap_start] < c[leap_end]) {
-			for (int x = pos; x < leap_start; ++x) if (c[x] == c[leap_end] - 1) fill_to_pre = 1;
-		}
-		else {
-			for (int x = pos; x < leap_start; ++x) if (c[x] == c[leap_end] + 1) fill_to_pre = 1;
-		}
-	}
-}
-
-void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_start, int leap_end, int &fill_to, int &fill_from) {
 	// Search for first compensated note
 	for (int i = t2-1; i >= t1; --i) {
 		if (nstat3[i]) {
@@ -961,6 +954,16 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 		if (nstat3[i]) {
 			fill_to = i - t1;
 			break;
+		}
+	}
+	// Check prepared fill to 3rd
+	if (!pre && fill_to > 1) {
+		int pos = max(0, leap_start - 2);
+		if (c[leap_start] < c[leap_end]) {
+			for (int x = pos; x < leap_start; ++x) if (c[x] == c[leap_end] - 1) fill_to_pre = 1;
+		}
+		else {
+			for (int x = pos; x < leap_start; ++x) if (c[x] == c[leap_end] + 1) fill_to_pre = 1;
 		}
 	}
 }
