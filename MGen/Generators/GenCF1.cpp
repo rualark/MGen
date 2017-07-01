@@ -966,8 +966,8 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 	}
 }
 
-void CGenCF1::FailLeapInit(int i, int &preleap, int &prefilled, int &presecond, int &leap_next, int &leap_prev, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
-	preleap = 0; // If we have a preleap
+void CGenCF1::FailLeapInit(int i, int &child_leap, int &prefilled, int &presecond, int &leap_next, int &leap_prev, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
+	child_leap = 0; // If we have a child_leap
 	prefilled = 0; // If leap was prefilled
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
@@ -981,10 +981,6 @@ void CGenCF1::FailLeapInit(int i, int &preleap, int &prefilled, int &presecond, 
 	if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
 	// Prev is leap?
 	if (i > 0) leap_prev = leap[i] * leap[i - 1];
-	// Check preleap (current leap does not exceed previous close leap: tight or 1-2 step far; only 1 step far if 2x3rds)
-	if ((i > 0) && ((c[i - 1] - c[leap_end])*leap[leap_start] > 0)) preleap = 1;
-	else if ((i > 1) && ((c[i - 2] - c[leap_end])*leap[leap_start] > 0)) preleap = 1;
-	else if ((i > 2) && ((c[i - 3] - c[leap_end])*leap[leap_start] > 0)) preleap = 1;
 }
 
 int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
@@ -993,11 +989,11 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// Check if leap is compensated (without violating compensation rules)
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
-	int preleap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
+	int child_leap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
 	int leap_id, mdc1, mdc2, overflow;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
-			FailLeapInit(i, preleap, prefilled, presecond, leap_next, leap_prev, overflow, leap_size, leap_start, leap_end, leap);
+			FailLeapInit(i, child_leap, prefilled, presecond, leap_next, leap_prev, overflow, leap_size, leap_start, leap_end, leap);
 			// Check if leap is third
 			if (leap_size == 2) {
 				// Check if leap is second third
@@ -1017,7 +1013,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size && leap[i]*leap[i+1]<0) ||
 				(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i + 1]<0)) {
 				// Set that we are preleaped (even if we are postleaped)
-				preleap = 1;
+				child_leap = 1;
 			}
 			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
 			if (i < ep2 - 2) {
@@ -1044,13 +1040,13 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			}
 			// If leap back overflow, do not check leap compensation, because compensating next leap will be enough
 			if (overflow) continue;
-			if (FailLeapFill(i, leap_prev, leap_id, leap_size, leap_start, leap_end, preleap)) return 1;
+			if (FailLeapFill(i, leap_prev, leap_id, leap_size, leap_start, leap_end, child_leap)) return 1;
 		}
 	}
 	return 0;
 }
 
-int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int preleap) {
+int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap) {
 	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
 	int tail_len, skips, allowed_skips, fill_to, fill_to_pre, fill_from, 
 		deviates, prefilled, fill_finish, dev_count;
@@ -1093,7 +1089,7 @@ int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int 
 				// Local not filled. Prefilled?
 				if (prefilled) FLAG2(112 + leap_id, i)
 					// Local not filled. Not prefilled. Preleaped?
-				else if (preleap) FLAG2(116 + leap_id, i)
+				else if (child_leap) FLAG2(116 + leap_id, i)
 					// Local not filled. Not prefilled. Not preleaped.
 				else FLAG2(124 + leap_id, i);
 			}
