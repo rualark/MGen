@@ -948,7 +948,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 			break;
 		}
 	}
-	for (int i = t1+1; i <= t2; ++i) {
+	for (int i = t1; i <= t2; ++i) {
 		if (nstat3[i]) {
 			fill_to = i - t1;
 			break;
