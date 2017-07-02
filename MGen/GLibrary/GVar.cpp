@@ -729,7 +729,9 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 				fs << (int)coff[i][v] << ";";
 				fs << (int)poff[i][v] << ";";
 				fs << (int)noff[i][v] << ";";
-				fs << comment[i][v] << ";";
+				st = comment[i][v];
+				if (st.Left(1) == "\n") st = st.Right(st.GetLength() - 1);
+				fs << "\"" << st << "\";";
 				fs << adapt_comment[i][v] << ";";
 				fs << color[i][v].GetValue() << ";";
 				fs << (int)lining[i][v] << ";";
