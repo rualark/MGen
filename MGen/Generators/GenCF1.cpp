@@ -966,13 +966,14 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 	}
 }
 
-void CGenCF1::FailLeapInit(int i, int &child_leap, int &prefilled, int &presecond, int &leap_next, int &leap_prev, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
+void CGenCF1::FailLeapInit(int i, int &child_leap, int &prefilled, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
 	prefilled = 0; // If leap was prefilled
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
 	leap_prev = 0; // Multiply consecutive leaps
 	overflow = 0; // Leap back overflow
+	arpeg = 0; // Arpeggio 3+3
 								// Check if this leap is 3rd
 	leap_size = abs(c[i + 1] - c[i]);
 	leap_start = i; // First step of leap
@@ -981,6 +982,53 @@ void CGenCF1::FailLeapInit(int i, int &child_leap, int &prefilled, int &presecon
 	if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
 	// Prev is leap?
 	if (i > 0) leap_prev = leap[i] * leap[i - 1];
+	// Check if we have a greater neighbouring leap
+	if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size && leap[i] * leap[i + 1]<0) ||
+		(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i + 1]<0)) {
+		// Set that we are preleaped (even if we are postleaped)
+		child_leap = 1;
+	}
+}
+
+int CGenCF1::FailLeapMulti(int leap_size, int leap_id, int leap_next, int leap_start, int &arpeg, int &overflow, int i, vector<int> &c, vector<int> &leap) {
+	// Check if leap is third
+	if (leap_size == 2) {
+		// Check if leap is second third
+		if (i > 0 && abs(c[i + 1] - c[i - 1]) == 4) {
+			// Set leap start to first note of first third
+			leap_start = i - 1;
+			// Set leap size to be compound
+			leap_size = 4;
+			// If 6/8 goes before 2 thirds (tight)
+			if ((i > 1) && ((leap[i] * (c[i - 1] - c[i - 2]) == -5) || (leap[i] * (c[i - 1] - c[i - 2]) == -7))) FLAG2(28, i)
+				// Else mark simple 2x3rds
+			else FLAG2(6, i);
+		}
+	}
+	leap_id = min(leap_size - 2, 3);
+	if (i < ep2 - 2) {
+		// Next leap in same direction
+		if (leap_next > 0) {
+			// Flag if greater than two thirds
+			if (abs(c[i + 2] - c[i]) > 4) FLAG2(27, i + 2)
+				// Allow if both thirds, without flags (will process next cycle)
+			else arpeg=1;
+		}
+		// Next leap back
+		else if (leap_next < 0) {
+			int leap_size2 = abs(c[i + 2] - c[i + 1]);
+			// Flag if back leap greater than 6th
+			if (leap_size2 > 5) FLAG2(22, i + 1)
+				// Flag if back leap equal or smaller than 6th
+			else FLAG2(8, i + 1);
+			// Flag leap back overflow
+			if (leap_size2 > leap_size) {
+				FLAG2(58, i + 1);
+				overflow = 1;
+			}
+		}
+	}
+	return 0;
 }
 
 int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
@@ -990,56 +1038,14 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int child_leap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
-	int leap_id, mdc1, mdc2, overflow;
+	int leap_id, mdc1, mdc2, overflow, arpeg;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
-			FailLeapInit(i, child_leap, prefilled, presecond, leap_next, leap_prev, overflow, leap_size, leap_start, leap_end, leap);
-			// Check if leap is third
-			if (leap_size == 2) {
-				// Check if leap is second third
-				if (i > 0 && abs(c[i + 1] - c[i - 1]) == 4) {
-					// Set leap start to first note of first third
-					leap_start = i - 1;
-					// Set leap size to be compound
-					leap_size = 4;
-					// If 6/8 goes before 2 thirds (tight)
-					if ((i > 1) && ((leap[i] * (c[i - 1] - c[i - 2]) == -5) || (leap[i] * (c[i - 1] - c[i - 2]) == -7))) FLAG2(28, i)
-					// Else mark simple 2x3rds
-					else FLAG2(6, i);
-				}
-			}
-			leap_id = min(leap_size - 2, 3);
-			// Check if we have a greater neighbouring leap
-			if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size && leap[i]*leap[i+1]<0) ||
-				(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i + 1]<0)) {
-				// Set that we are preleaped (even if we are postleaped)
-				child_leap = 1;
-			}
+			FailLeapInit(i, child_leap, prefilled, presecond, leap_next, leap_prev, arpeg, overflow, leap_size, leap_start, leap_end, leap);
 			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
-			if (i < ep2 - 2) {
-				// Next leap in same direction
-				if (leap_next > 0) {
-					// Flag if greater than two thirds
-					if (abs(c[i + 2] - c[i]) > 4) FLAG2(27, i + 2)
-					// Allow if both thirds, without flags (will process next cycle)
-					else continue;
-				}
-				// Next leap back
-				else if (leap_next < 0) {
-					int leap_size2 = abs(c[i + 2] - c[i + 1]);
-					// Flag if back leap greater than 6th
-					if (leap_size2 > 5) FLAG2(22, i + 1)
-					// Flag if back leap equal or smaller than 6th
-					else FLAG2(8, i + 1);
-					// Flag leap back overflow
-					if (leap_size2 > leap_size) {
-						FLAG2(58, i + 1);
-						overflow = 1;
-					}
-				}
-			}
-			// If leap back overflow, do not check leap compensation, because compensating next leap will be enough
-			if (overflow) continue;
+			if (FailLeapMulti(leap_size, leap_id, leap_next, leap_start, arpeg, overflow, i, c, leap)) return 1;
+			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
+			if (overflow || arpeg) continue;
 			if (FailLeapFill(i, leap_prev, leap_id, leap_size, leap_start, leap_end, child_leap)) return 1;
 		}
 	}
@@ -1058,7 +1064,8 @@ int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int 
 	if (i > 0) {
 		// Check if  leap is prefilled
 		tail_len = 2 + (leap_size - 1) * fill_steps_mul;
-		CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 1, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
+		CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 1, fill_to_pre, fill_from, 
+			deviates, dev_count, leap_prev, leap_id, fill_finish);
 		// Do we have not too many skips?
 		if (skips > 0) {
 			// Is fill non deviated or deviated fill allowed?
