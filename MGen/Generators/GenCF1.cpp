@@ -966,7 +966,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 	}
 }
 
-void CGenCF1::FailLeapInit(int i, int &child_leap, int &prefilled, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
+void CGenCF1::FailLeapInit(int i, int last_max, int &last_leap, int &child_leap, int &prefilled, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
 	prefilled = 0; // If leap was prefilled
 	presecond = 0; // If leap has a filled second
@@ -982,6 +982,8 @@ void CGenCF1::FailLeapInit(int i, int &child_leap, int &prefilled, int &presecon
 	if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
 	// Prev is leap?
 	if (i > 0) leap_prev = leap[i] * leap[i - 1];
+	// Last leap?
+	if (i >= last_max) last_leap = 1;
 	// Check if we have a greater neighbouring leap
 	if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size && leap[i] * leap[i + 1]<0) ||
 		(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i + 1]<0)) {
@@ -1038,21 +1040,24 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int child_leap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
-	int leap_id, mdc1, mdc2, overflow, arpeg;
+	int leap_id, mdc1, mdc2, overflow, arpeg, last_leap;
+	// Last leap border
+	int last_max = c_len - 4;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
-			FailLeapInit(i, child_leap, prefilled, presecond, leap_next, leap_prev, arpeg, overflow, leap_size, leap_start, leap_end, leap);
+			FailLeapInit(i, last_max, last_leap, child_leap, prefilled, presecond, leap_next, leap_prev, 
+				arpeg, overflow, leap_size, leap_start, leap_end, leap);
 			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
 			if (FailLeapMulti(leap_size, leap_id, leap_next, leap_start, arpeg, overflow, i, c, leap)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (overflow || arpeg) continue;
-			if (FailLeapFill(i, leap_prev, leap_id, leap_size, leap_start, leap_end, child_leap)) return 1;
+			if (FailLeapFill(i, last_leap, leap_prev, leap_id, leap_size, leap_start, leap_end, child_leap)) return 1;
 		}
 	}
 	return 0;
 }
 
-int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap) {
+int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap) {
 	// Prefill parameters
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
 	// Fill parameters
