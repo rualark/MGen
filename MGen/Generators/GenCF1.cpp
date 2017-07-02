@@ -1088,7 +1088,7 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 		else if (deviates > 2) filled = 0;
 		else if (dev_count > 1) filled = 0;
 		else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
-		else if (deviates == 2 && !accept[144 + leap_id]) filled = 0;
+		else if (deviates == 2 && !accept[120 + leap_id]) filled = 0;
 		if (!filled) {
 			// Check if  leap is prefilled
 			if (i > 0) {
@@ -1098,6 +1098,7 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 				prefilled = 1;
 				if (pskips > 0) prefilled = 0;
 				else if (pdeviates > 1) prefilled = 0;
+
 			}
 			if (prefilled && !last_leap) FLAG2(112 + leap_id, i)
 			else if (prefilled && last_leap) FLAG2(144 + leap_id, i)
@@ -1116,7 +1117,7 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 			// Flag deviation if it is not blocking
 			if (deviates == 1) FLAG2(42 + leap_id, i);
 			// Flag deviation if it is not blocking
-			if (deviates == 2) FLAG2(144 + leap_id, i);
+			if (deviates == 2) FLAG2(120 + leap_id, i);
 		}
 	}
 	return 0;
