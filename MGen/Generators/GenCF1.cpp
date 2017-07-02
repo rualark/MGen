@@ -1076,42 +1076,40 @@ int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int 
 				&& (!fill_to || accept[104 + leap_id])) prefilled = 1;
 		}
 	}
-	if (i < ep2 - 1) {
-		// Check if  leap is filled
-		tail_len = i + 3 + (leap_size - 1) * fill_steps_mul;
-		// Do not check fill if search window is cut by end of current not-last scan window
-		if ((tail_len < ep2) || (c_len == ep2)) {
-			if (tail_len > ep2 - 1) tail_len = ep2 - 1;
-			// Check leap compensation only if it is not last leap
-			if (i < ep2 - 2) {
-				CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
-			}
-			else {
-				// If it is last leap, consider compensation to be unsuccessful
-				skips = 10;
-			}
-			// Local not filled?
-			if (skips > allowed_skips || (fill_to == 2 && !accept[100 + leap_id]) || (fill_to == 1 && !accept[104 + leap_id]) ||
-				(fill_from && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
-				// Local not filled. Prefilled?
-				if (prefilled) FLAG2(112 + leap_id, i)
-					// Local not filled. Not prefilled. Preleaped?
-				else if (child_leap) FLAG2(116 + leap_id, i)
-					// Local not filled. Not prefilled. Not preleaped.
-				else FLAG2(124 + leap_id, i);
-			}
-			// Show compensation flags only if successfully compensated
-			// This means that compensation errors are not shown if uncompensated (successfully or not)
-			else {
-				// Flag unfinished fill if it is not blocking
-				if (fill_to == 2) FLAG2(100 + leap_id, i)
-					// Flag prepared unfinished fill if it is not blocking
-				else if (fill_to == 1) FLAG2(104 + leap_id, i);
-				// Flag after 3rd if it is not blocking
-				if (fill_from) FLAG2(53 + leap_id, i);
-				// Flag flag deviation if it is not blocking
-				if (deviates) FLAG2(42 + leap_id, i);
-			}
+	// Check if  leap is filled
+	tail_len = i + 3 + (leap_size - 1) * fill_steps_mul;
+	// Do not check fill if search window is cut by end of current not-last scan window
+	if ((tail_len < ep2) || (c_len == ep2)) {
+		if (tail_len > ep2 - 1) tail_len = ep2 - 1;
+		// Check leap compensation only if it is not last leap
+		if (i < ep2 - 2) {
+			CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
+		}
+		else {
+			// If it is last leap, consider compensation to be unsuccessful
+			skips = 10;
+		}
+		// Local not filled?
+		if (skips > allowed_skips || (fill_to == 2 && !accept[100 + leap_id]) || (fill_to == 1 && !accept[104 + leap_id]) ||
+			(fill_from && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
+			// Local not filled. Prefilled?
+			if (prefilled) FLAG2(112 + leap_id, i)
+				// Local not filled. Not prefilled. Preleaped?
+			else if (child_leap) FLAG2(116 + leap_id, i)
+				// Local not filled. Not prefilled. Not preleaped.
+			else FLAG2(124 + leap_id, i);
+		}
+		// Show compensation flags only if successfully compensated
+		// This means that compensation errors are not shown if uncompensated (successfully or not)
+		else {
+			// Flag unfinished fill if it is not blocking
+			if (fill_to == 2) FLAG2(100 + leap_id, i)
+				// Flag prepared unfinished fill if it is not blocking
+			else if (fill_to == 1) FLAG2(104 + leap_id, i);
+			// Flag after 3rd if it is not blocking
+			if (fill_from) FLAG2(53 + leap_id, i);
+			// Flag flag deviation if it is not blocking
+			if (deviates) FLAG2(42 + leap_id, i);
 		}
 	}
 	return 0;
