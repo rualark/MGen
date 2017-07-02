@@ -1053,9 +1053,9 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 }
 
 int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap) {
-	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
 	int tail_len, skips, allowed_skips, fill_to, fill_to_pre, fill_from, 
 		deviates, prefilled, fill_finish, dev_count;
+	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
 	int allowed_skips = 0;
 	if (!leap_prev || accept[108 + leap_id]) {
 		if (leap_size > 2) ++allowed_skips;
