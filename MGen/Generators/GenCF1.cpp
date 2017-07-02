@@ -1062,6 +1062,7 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 	// Fill parameters
 	int tail_len, fill_to, fill_to_pre, fill_from, deviates, prefilled, fill_finish, dev_count;
 	int prefilled = 0;
+	int prefilled_last = 0;
 	int filled = 0;
 	int pskips = 10;
 	int skips = 10;
@@ -1077,42 +1078,45 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 	// Do not check fill if search window is cut by end of current not-last scan window
 	if ((leap_end + tail_len < ep2) || (c_len == ep2)) {
 		CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
-		// Local not filled?
-		if (skips > allowed_skips || (fill_to == 2 && !accept[100 + leap_id]) || (fill_to == 1 && !accept[104 + leap_id]) ||
-			(fill_from && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
+		filled = 1;
+		if (skips > allowed_skips) filled = 0;
+		else if (fill_to > 2) filled = 0;
+		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
+		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
+		else if (fill_from > 2) filled = 0;
+		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
+		else if (deviates > 2) filled = 0;
+		else if (dev_count > 1) filled = 0;
+		else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
+		else if (deviates == 2 && !accept[144 + leap_id]) filled = 0;
+		if (!filled) {
 			// Check if  leap is prefilled
 			if (i > 0) {
 				ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
 				CountFill(c, ptail_len, leap_size, leap_start, leap_end, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from,
 					pdeviates, pdev_count, leap_prev, leap_id, pfill_finish);
-				// Do we have not too many skips?
-				if (pskips > 0) {
-					// Is fill non deviated or deviated fill allowed?
-					if ((!pdeviates || accept[42 + leap_id])
-						// Is fill started or unstarted fill allowed?
-						&& (!pfill_from || accept[53 + leap_id])
-						// Is fill finished or unfinished fill allowed?
-						&& (!pfill_to || accept[104 + leap_id])) prefilled = 1;
-				}
+				prefilled = 1;
+				if (pskips > 0) prefilled = 0;
+				else if (pdeviates > 1) prefilled = 0;
 			}
-			// Local not filled. Prefilled?
-			if (prefilled) FLAG2(112 + leap_id, i)
-				// Local not filled. Not prefilled. Preleaped?
+			if (prefilled && !last_leap) FLAG2(112 + leap_id, i)
+			else if (prefilled && last_leap) FLAG2(144 + leap_id, i)
 			else if (child_leap) FLAG2(116 + leap_id, i)
-				// Local not filled. Not prefilled. Not preleaped.
 			else FLAG2(124 + leap_id, i);
 		}
 		// Show compensation flags only if successfully compensated
 		// This means that compensation errors are not shown if uncompensated (successfully or not)
 		else {
 			// Flag unfinished fill if it is not blocking
-			if (fill_to == 2) FLAG2(100 + leap_id, i)
-				// Flag prepared unfinished fill if it is not blocking
-			else if (fill_to == 1) FLAG2(104 + leap_id, i);
+			if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, i)
+			// Flag prepared unfinished fill if it is not blocking
+			else if (fill_to == 2 && !fill_to_pre) FLAG2(104 + leap_id, i)
 			// Flag after 3rd if it is not blocking
-			if (fill_from) FLAG2(53 + leap_id, i);
-			// Flag flag deviation if it is not blocking
-			if (deviates) FLAG2(42 + leap_id, i);
+			if (fill_from == 2) FLAG2(53 + leap_id, i);
+			// Flag deviation if it is not blocking
+			if (deviates == 1) FLAG2(42 + leap_id, i);
+			// Flag deviation if it is not blocking
+			if (deviates == 2) FLAG2(144 + leap_id, i);
 		}
 	}
 	return 0;
