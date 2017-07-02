@@ -1070,7 +1070,7 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
 	int pallowed_skips = 0;
 	int allowed_skips = 0;
-	if (leap_prev<0 || accept[108 + leap_id]) {
+	if (leap_prev >= 0 || accept[108 + leap_id]) {
 		if (leap_size > 2) ++allowed_skips;
 		if (leap_size > 6) ++allowed_skips;
 	}
