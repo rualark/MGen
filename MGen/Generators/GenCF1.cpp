@@ -1053,9 +1053,14 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 }
 
 int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap) {
-	int tail_len, skips, allowed_skips, fill_to, fill_to_pre, fill_from, 
-		deviates, prefilled, fill_finish, dev_count;
+	// Prefill parameters
+	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
+	// Fill parameters
+	int tail_len, fill_to, fill_to_pre, fill_from, deviates, prefilled, fill_finish, dev_count;
+	int pskips = 10;
+	int skips = 10;
 	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
+	int pallowed_skips = 0;
 	int allowed_skips = 0;
 	if (!leap_prev || accept[108 + leap_id]) {
 		if (leap_size > 2) ++allowed_skips;
@@ -1063,31 +1068,26 @@ int CGenCF1::FailLeapFill(int i, int leap_prev, int leap_id, int leap_size, int 
 	}
 	if (i > 0) {
 		// Check if  leap is prefilled
-		tail_len = 2 + (leap_size - 1) * fill_steps_mul;
-		CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 1, fill_to_pre, fill_from, 
-			deviates, dev_count, leap_prev, leap_id, fill_finish);
+		ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
+		CountFill(c, ptail_len, leap_size, leap_start, leap_end, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from, 
+			pdeviates, pdev_count, leap_prev, leap_id, pfill_finish);
 		// Do we have not too many skips?
-		if (skips > 0) {
+		if (pskips > 0) {
 			// Is fill non deviated or deviated fill allowed?
-			if ((!deviates || accept[42 + leap_id])
+			if ((!pdeviates || accept[42 + leap_id])
 				// Is fill started or unstarted fill allowed?
-				&& (!fill_from || accept[53 + leap_id])
+				&& (!pfill_from || accept[53 + leap_id])
 				// Is fill finished or unfinished fill allowed?
-				&& (!fill_to || accept[104 + leap_id])) prefilled = 1;
+				&& (!pfill_to || accept[104 + leap_id])) prefilled = 1;
 		}
 	}
 	// Check if  leap is filled
-	tail_len = i + 3 + (leap_size - 1) * fill_steps_mul;
+	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
-	if ((tail_len < ep2) || (c_len == ep2)) {
-		if (tail_len > ep2 - 1) tail_len = ep2 - 1;
+	if ((leap_end + tail_len < ep2) || (c_len == ep2)) {
 		// Check leap compensation only if it is not last leap
 		if (i < ep2 - 2) {
 			CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
-		}
-		else {
-			// If it is last leap, consider compensation to be unsuccessful
-			skips = 10;
 		}
 		// Local not filled?
 		if (skips > allowed_skips || (fill_to == 2 && !accept[100 + leap_id]) || (fill_to == 1 && !accept[104 + leap_id]) ||
