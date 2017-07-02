@@ -884,7 +884,7 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 		t2 = c[leap_end];
 	}
 	else {
-		t1 = 128 - c[leap_end];
+		t1 = 128 - c[leap_start];
 		t2 = 128 - c[leap_end];
 	}
 	for (int x = t1; x <= t2; ++x) nstat3[x] = 0;
@@ -1069,7 +1069,7 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
 	int pallowed_skips = 0;
 	int allowed_skips = 0;
-	if (!leap_prev || accept[108 + leap_id]) {
+	if (leap_prev<0 || accept[108 + leap_id]) {
 		if (leap_size > 2) ++allowed_skips;
 		if (leap_size > 6) ++allowed_skips;
 	}
