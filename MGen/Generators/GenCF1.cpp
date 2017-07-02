@@ -966,9 +966,8 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 	}
 }
 
-void CGenCF1::FailLeapInit(int i, int last_max, int &last_leap, int &child_leap, int &prefilled, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
+void CGenCF1::FailLeapInit(int i, int last_max, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
-	prefilled = 0; // If leap was prefilled
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
 	leap_prev = 0; // Multiply consecutive leaps
@@ -1039,13 +1038,13 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// Check if leap is compensated (without violating compensation rules)
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
-	int child_leap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, prefilled, presecond;
+	int child_leap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, presecond;
 	int leap_id, mdc1, mdc2, overflow, arpeg, last_leap;
 	// Last leap border
 	int last_max = c_len - 4;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
-			FailLeapInit(i, last_max, last_leap, child_leap, prefilled, presecond, leap_next, leap_prev, 
+			FailLeapInit(i, last_max, last_leap, child_leap, presecond, leap_next, leap_prev, 
 				arpeg, overflow, leap_size, leap_start, leap_end, leap);
 			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
 			if (FailLeapMulti(leap_size, leap_id, leap_next, leap_start, arpeg, overflow, i, c, leap)) return 1;
@@ -1062,6 +1061,8 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
 	// Fill parameters
 	int tail_len, fill_to, fill_to_pre, fill_from, deviates, prefilled, fill_finish, dev_count;
+	int prefilled = 0;
+	int filled = 0;
 	int pskips = 10;
 	int skips = 10;
 	// Calculate allowed skips if this is not second leap and skips for second leap not allowed

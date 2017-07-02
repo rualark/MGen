@@ -114,7 +114,7 @@ protected:
 	inline void CountFill(vector<int>& c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int leap_id, int & fill_finish);
 	inline void CountFillSkips(int leap_prev, int leap_id, int leap_size, int & skips, int t1, int t2);
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int leap_start, int leap_end, int leap_size, int & fill_to, int & fill_to_pre, int & fill_from);
-	inline void FailLeapInit(int i, int last_max, int & last_leap, int & child_leap, int & prefilled, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, int & leap_size, int & leap_start, int & leap_end, vector<int>& leap);
+	inline void FailLeapInit(int i, int last_max, int & last_leap, int & child_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, int & leap_size, int & leap_start, int & leap_end, vector<int>& leap);
 	inline int FailLeapMulti(int leap_size, int leap_id, int leap_next, int leap_start, int & arpeg, int & overflow, int i, vector<int>& c, vector<int>& leap);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap);
