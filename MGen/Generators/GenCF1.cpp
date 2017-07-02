@@ -986,7 +986,7 @@ void CGenCF1::FailLeapInit(int i, int last_max, int &last_leap, int &child_leap,
 	if (i >= last_max) last_leap = 1;
 	// Check if we have a greater neighbouring leap
 	if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size && leap[i] * leap[i + 1]<0) ||
-		(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i + 1]<0)) {
+		(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i - 1]<0)) {
 		// Set that we are preleaped (even if we are postleaped)
 		child_leap = 1;
 	}
