@@ -1071,32 +1071,29 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 		if (leap_size > 2) ++allowed_skips;
 		if (leap_size > 6) ++allowed_skips;
 	}
-	if (i > 0) {
-		// Check if  leap is prefilled
-		ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
-		CountFill(c, ptail_len, leap_size, leap_start, leap_end, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from, 
-			pdeviates, pdev_count, leap_prev, leap_id, pfill_finish);
-		// Do we have not too many skips?
-		if (pskips > 0) {
-			// Is fill non deviated or deviated fill allowed?
-			if ((!pdeviates || accept[42 + leap_id])
-				// Is fill started or unstarted fill allowed?
-				&& (!pfill_from || accept[53 + leap_id])
-				// Is fill finished or unfinished fill allowed?
-				&& (!pfill_to || accept[104 + leap_id])) prefilled = 1;
-		}
-	}
 	// Check if  leap is filled
 	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
 	if ((leap_end + tail_len < ep2) || (c_len == ep2)) {
-		// Check leap compensation only if it is not last leap
-		if (i < ep2 - 2) {
-			CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
-		}
+		CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish);
 		// Local not filled?
 		if (skips > allowed_skips || (fill_to == 2 && !accept[100 + leap_id]) || (fill_to == 1 && !accept[104 + leap_id]) ||
 			(fill_from && !accept[53 + leap_id]) || (deviates && !accept[42 + leap_id])) {
+			// Check if  leap is prefilled
+			if (i > 0) {
+				ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
+				CountFill(c, ptail_len, leap_size, leap_start, leap_end, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from,
+					pdeviates, pdev_count, leap_prev, leap_id, pfill_finish);
+				// Do we have not too many skips?
+				if (pskips > 0) {
+					// Is fill non deviated or deviated fill allowed?
+					if ((!pdeviates || accept[42 + leap_id])
+						// Is fill started or unstarted fill allowed?
+						&& (!pfill_from || accept[53 + leap_id])
+						// Is fill finished or unfinished fill allowed?
+						&& (!pfill_to || accept[104 + leap_id])) prefilled = 1;
+				}
+			}
 			// Local not filled. Prefilled?
 			if (prefilled) FLAG2(112 + leap_id, i)
 				// Local not filled. Not prefilled. Preleaped?
