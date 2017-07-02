@@ -991,7 +991,7 @@ void CGenCF1::FailLeapInit(int i, int last_max, int &last_leap, int &child_leap,
 	}
 }
 
-int CGenCF1::FailLeapMulti(int leap_size, int leap_id, int leap_next, int leap_start, int &arpeg, int &overflow, int i, vector<int> &c, vector<int> &leap) {
+int CGenCF1::FailLeapMulti(int &leap_size, int &leap_id, int leap_next, int &leap_start, int &arpeg, int &overflow, int i, vector<int> &c, vector<int> &leap) {
 	// Check if leap is third
 	if (leap_size == 2) {
 		// Check if leap is second third
@@ -1046,8 +1046,8 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 		if (leap[i] != 0) {
 			FailLeapInit(i, last_max, last_leap, child_leap, presecond, leap_next, leap_prev, 
 				arpeg, overflow, leap_size, leap_start, leap_end, leap);
-			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
 			if (FailLeapMulti(leap_size, leap_id, leap_next, leap_start, arpeg, overflow, i, c, leap)) return 1;
+			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (overflow || arpeg) continue;
 			if (FailLeapFill(i, last_leap, leap_prev, leap_id, leap_size, leap_start, leap_end, child_leap)) return 1;
@@ -1060,7 +1060,7 @@ int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int 
 	// Prefill parameters
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
 	// Fill parameters
-	int tail_len, fill_to, fill_to_pre, fill_from, deviates, prefilled, fill_finish, dev_count;
+	int tail_len, fill_to, fill_to_pre, fill_from, deviates, fill_finish, dev_count;
 	int prefilled = 0;
 	int prefilled_last = 0;
 	int filled = 0;
