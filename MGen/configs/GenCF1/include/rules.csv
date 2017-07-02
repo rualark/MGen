@@ -32,7 +32,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;145;0;Melody;Uncompensated leap;Uncomp.: precomp. last leap (4th);0;;
 1;146;0;Melody;Uncompensated leap;Uncomp.: precomp. last leap (5th);0;;
 1;147;100;Melody;Uncompensated leap;Uncomp.: precomp. last leap (>5th);0;;
-1;116;0;Melody;Uncompensated leap;Uncompensated: near longer leap (3rd);0;;
+1;116;0;Melody;Uncompensated leap;Uncompensated: near longer leap (3rd);1;;
 1;117;0;Melody;Uncompensated leap;Uncompensated: near longer leap (4th);0;;
 1;118;60;Melody;Uncompensated leap;Uncompensated: near longer leap (5th);0;;
 1;119;100;Melody;Uncompensated leap;Uncompensated: near longer leap (>5th);0;;
@@ -176,7 +176,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;145;0;Melody;Uncompensated leap;Uncomp.: precomp. last leap (4th);0;;
 2;146;0;Melody;Uncompensated leap;Uncomp.: precomp. last leap (5th);0;;
 2;147;100;Melody;Uncompensated leap;Uncomp.: precomp. last leap (>5th);0;;
-2;116;0;Melody;Uncompensated leap;Uncompensated: near longer leap (3rd);0;;
+2;116;0;Melody;Uncompensated leap;Uncompensated: near longer leap (3rd);1;;
 2;117;0;Melody;Uncompensated leap;Uncompensated: near longer leap (4th);0;;
 2;118;60;Melody;Uncompensated leap;Uncompensated: near longer leap (5th);0;;
 2;119;100;Melody;Uncompensated leap;Uncompensated: near longer leap (>5th);0;;

@@ -977,6 +977,7 @@ void CGenCF1::FailLeapInit(int i, int last_max, int &last_leap, int &child_leap,
 	leap_size = abs(c[i + 1] - c[i]);
 	leap_start = i; // First step of leap
 	leap_end = i + 1; // Last step of leap
+	last_leap = 0;
 										// Next is leap?
 	if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
 	// Prev is leap?
