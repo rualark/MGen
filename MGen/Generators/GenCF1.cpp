@@ -606,7 +606,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 		// Search for repeat of note at same beat until last three notes
 		int finish = i + scan_len;
 		if (finish > ep2 - rlen) finish = ep2 - rlen;
-		for (int x = i + 2; x < finish; x += 2) {
+		for (int x = i + 2; x <= finish; x += 2) {
 			// Check if same note
 			if (cc[x] == cc[i]) {
 				// Check that more notes repeat
@@ -632,7 +632,7 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int sca
 		// Search for repeat of note at same beat until last three notes
 		int finish = i + scan_len;
 		if (finish > ep2 - rlen + 1) finish = ep2 - rlen + 1;
-		for (int x = i + rlen; x < finish; ++x) {
+		for (int x = i + rlen; x <= finish; ++x) {
 			// Check if same note
 			if (cc[x] == cc[i]) {
 				// Check that more notes repeat
