@@ -731,7 +731,7 @@ check:
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
-		GlobalFill(ac[cpv], ep2, nstat2);
+		if (FailGlobalFill(ac[cpv], ep2, nstat2)) goto skip;
 		if (FailVIntervals()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, ep2)) goto skip;

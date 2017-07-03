@@ -744,7 +744,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
 		// Add new note to stagnation array
 		++nstat[cc[i]];
 		// Subtract old note
-		if ((i >= stag_note_steps)) nstat[cc[i - stag_note_steps]]--;
+		if ((i >= stag_note_steps)) --nstat[cc[i - stag_note_steps]];
 		// Check if too many repeating notes
 		if (nstat[cc[i]] > stag_notes) FLAG2(10, i);
 	}
@@ -1250,11 +1250,27 @@ int CGenCF1::FailIntervals(int ep2, vector<int> &c, vector<int> &cc, vector<int>
 }
 
 // Calculate global fill
-void CGenCF1::GlobalFill(vector<int> &c, int ep2, vector<int> &nstat2)
+int CGenCF1::FailGlobalFill(vector<int> &c, int ep2, vector<int> &nstat2)
 {
 	// Clear nstat
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
+	// Count nstat
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
+	// Check nstat
+	int skips = 0;
+	int skips2 = 0;
+	for (int x = nmind + 1; x < nmaxd; ++x) if (!nstat2[x]) {
+		if (!nstat2[x + 1]) {
+			++skips2;
+			++x;
+		}
+		else ++skips;
+	}
+	// Set flags
+	if (skips2) FLAG2(69, 0);
+	if (skips == 1) FLAG2(67, 0)
+	else if (skips == 2) FLAG2(68, 0);
+	return 0;
 }
 
 void CGenCF1::ScanCantusInit() {
@@ -2434,7 +2450,7 @@ check:
 		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
-		GlobalFill(c, ep2, nstat2);
+		if (FailGlobalFill(c, ep2, nstat2)) goto skip;
 		if (FailStagnation(cc, nstat, ep2)) goto skip;
 		if (FailMultiCulm(cc, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
