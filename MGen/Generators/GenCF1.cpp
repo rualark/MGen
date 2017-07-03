@@ -857,15 +857,15 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 			for (int i = pos1; i >= pos2; --i) {
 				tc.push_back(128 - c[i]);
 			}
-			t1 = 128 - c[leap_start];
-			t2 = 128 - c[leap_end];
+			t1 = 128 - c[leap_end]; 
+			t2 = 128 - c[leap_start];
 		}
 		else {
 			for (int i = pos1; i >= pos2; --i) {
 				tc.push_back(c[i]);
 			}
-			t1 = c[leap_start];
-			t2 = c[leap_end];
+			t1 = c[leap_end];
+			t2 = c[leap_start];
 		}
 	}
 	else {
