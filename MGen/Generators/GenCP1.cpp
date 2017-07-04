@@ -748,6 +748,7 @@ check:
 			if (FailFlagBlock()) goto skip;
 			if (FailAccept()) goto skip;
 			++accepted4[wid];
+			//LogCantus(acc[cpv]);
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
 				NextWindow();

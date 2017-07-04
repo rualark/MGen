@@ -472,7 +472,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	int hcycle = 0;
 	int last_flag = 0;
 	int max_p = 0;
-	LogCantus(pc);
+	//LogCantus(pc);
 	while (true) {
 	check:
 		//st.Format("%d: ", p);
