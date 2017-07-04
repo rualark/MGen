@@ -1050,13 +1050,13 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (overflow || arpeg) continue;
-			if (FailLeapFill(i, last_leap, leap_prev, leap_id, leap_size, leap_start, leap_end, child_leap)) return 1;
+			if (FailLeapFill(i, c, last_leap, leap_prev, leap_id, leap_size, leap_start, leap_end, child_leap)) return 1;
 		}
 	}
 	return 0;
 }
 
-int CGenCF1::FailLeapFill(int i, int last_leap, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap) {
+int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap) {
 	// Prefill parameters
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
 	// Fill parameters
