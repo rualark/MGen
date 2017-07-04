@@ -61,7 +61,7 @@ void CGenCA2::SendCorrectionsCP(int i, milliseconds time_start) {
 				dpenalty_cur = 0;
 				scpoint = cpoint[i];
 				ScanCP(tEval, 0);
-				step -= real_len + 1;
+				step = step0;
 			}
 			// Get cantus
 			scpoint[cpv] = clib[cids[x]];
@@ -71,7 +71,7 @@ void CGenCA2::SendCorrectionsCP(int i, milliseconds time_start) {
 			// Show result
 			ScanCP(tEval, 2);
 			// Go back
-			step -= real_len + 1;
+			step = step0;
 			if (step < 0) break;
 			// Add lining
 			int pos = step;
@@ -84,9 +84,8 @@ void CGenCA2::SendCorrectionsCP(int i, milliseconds time_start) {
 				pos += cc_len[z];
 			}
 			// Go forward
-			step += real_len + 1;
-			Adapt(step - real_len - 1, step - 1);
-			t_generated = step;
+			step = t_generated;
+			Adapt(step0, step - 1);
 			t_sent = t_generated;
 		}
 	}
@@ -209,6 +208,7 @@ void CGenCA2::Generate() {
 	cantus_id = -1;
 	for (int i = 0; i < cpoint.size(); i++) {
 		++cantus_id;
+		step0 = step;
 		// Check limit
 		if (t_generated >= t_cnt) {
 			WriteLog(3, "Reached t_cnt steps. Generation stopped");
@@ -242,18 +242,18 @@ void CGenCA2::Generate() {
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		dpenalty_cur = 0;
 		// Create pause
-		FillPause(step, real_len, 1);
-		FillPause(step, real_len, 2);
-		FillPause(step, real_len, 3);
+		FillPause(step0, floor(real_len / 8 + 1) * 8, 1);
+		FillPause(step0, floor(real_len / 8 + 1) * 8, 2);
+		FillPause(step0, floor(real_len / 8 + 1) * 8, 3);
 		cpv = cfv;
 		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, 0, &(cpoint[i][cfv]));
 		// Show cantus id
 		st.Format("Counterpoint %d. ", cantus_id + 1);
-		comment[step - real_len - 1][0] = st + comment[step - real_len - 1][0];
+		comment[step0][0] = st + comment[step0][0];
 		// Go forward
 		t_generated = step;
-		Adapt(step - real_len - 1, step - 1);
+		Adapt(step0, step - 1);
 		t_sent = t_generated;
 		t_generated2 = t_generated;
 		// Load first voice
@@ -273,29 +273,30 @@ void CGenCA2::Generate() {
 		SelectRuleSet(cp_rule_set);
 		// Get cantus interval
 		GetMelodyInterval(cpoint[i][cfv], 0, cpoint[i][cfv].size(), cf_nmin, cf_nmax);
+		step0 = step;
 		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
 		t_generated2 = t_generated;
 		// Fill pauses if no results generated
-		FillPause(step - real_len - 1, real_len, 2);
-		FillPause(step - real_len - 1, real_len, 3);
+		FillPause(step0, step-step0, 2);
+		FillPause(step0, step - step0, 3);
 		// Count additional variables
-		CountOff(step - real_len - 1, step - 1);
-		CountTime(step - real_len - 1, step - 1);
-		UpdateNoteMinMax(step - real_len - 1, step - 1);
-		UpdateTempoMinMax(step - real_len - 1, step - 1);
+		CountOff(step0, step - 1);
+		CountTime(step0, step - 1);
+		UpdateNoteMinMax(step0, step - 1);
+		UpdateTempoMinMax(step0, step - 1);
 		CreateScanMatrix(i);
 		// If no corrections needed
 		if (!corrections || !smatrixc) {
 			// Go forward
 			t_generated = step;
-			Adapt(step - real_len - 1, step - 1);
+			Adapt(step0, step - 1);
 			t_sent = t_generated;
 			continue;
 		}
-		step -= real_len + 1;
+		step = step0;
 		//GetSourceRange();
 		if (method == mSWA) {
 			SWACP(i, 1);
@@ -318,9 +319,8 @@ void CGenCA2::Generate() {
 		}
 		else {
 			// Go forward
-			step += real_len + 1;
-			Adapt(step - real_len - 1, step - 1);
-			t_generated = step;
+			step = t_generated;
+			Adapt(step0, step - 1);
 			t_sent = t_generated;
 		}
 	}
