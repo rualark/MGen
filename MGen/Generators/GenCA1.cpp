@@ -235,7 +235,7 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 			if (ccount > 1) {
 				dpenalty_cur = 0;
 				ScanCantus(tEval, 0, &(cantus[i]));
-				step -= real_len + 1;
+				step = step0;
 			}
 			// Get cantus
 			cc = clib[cids[x]];
@@ -245,7 +245,7 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 			// Show result
 			ScanCantus(tEval, 1, &(cc));
 			// Go back
-			step -= real_len + 1;
+			step = step0;
 			if (step < 0) break;
 			// Add lining
 			int pos = step;
@@ -258,8 +258,8 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 				pos += cc_len[z];
 			}
 			// Go forward
-			step += real_len + 1;
-			Adapt(step - real_len - 1, step - 1);
+			step = t_generated;
+			Adapt(step0, step - 1);
 			t_generated = step;
 			t_sent = t_generated;
 		}
@@ -293,6 +293,7 @@ void CGenCA1::Generate()
 		SetStatusText(3, st);
 		if (need_exit) break;
 		if (step < 0) step = 0;
+		step0 = step;
 		milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
@@ -313,22 +314,23 @@ void CGenCA1::Generate()
 		if (t_generated2 == t_generated) continue;
 		t_generated2 = t_generated;
 		// Fill pauses if no results generated
-		FillPause(step - real_len - 1, real_len, 1);
+		FillPause(step0, step-step0, 1);
 		// Count additional variables
-		CountOff(step - real_len - 1, step - 1);
-		CountTime(step - real_len - 1, step - 1);
-		UpdateNoteMinMax(step - real_len - 1, step - 1);
-		UpdateTempoMinMax(step - real_len - 1, step - 1);
+		CountOff(step0, step - 1);
+		CountTime(step0, step - 1);
+		UpdateNoteMinMax(step0, step - 1);
+		UpdateTempoMinMax(step0, step - 1);
 		CreateScanMatrix(i);
 		// If no corrections needed
 		if (!corrections || !smatrixc) {
 			// Go forward
 			t_generated = step;
-			Adapt(step - real_len - 1, step - 1);
+			Adapt(step0, step - 1);
 			t_sent = t_generated;
 			continue;
 		}
-		step -= real_len + 1;
+		step1 = step;
+		step = step0;
 		if (method == mSWA) {
 			SWA(i, 1);
 		}
@@ -349,9 +351,8 @@ void CGenCA1::Generate()
 		}
 		else {
 			// Go forward
-			step += real_len + 1;
-			Adapt(step - real_len - 1, step - 1);
-			t_generated = step;
+			step = t_generated;
+			Adapt(step0, step - 1);
 			t_sent = t_generated;
 		}
 	}
