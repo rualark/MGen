@@ -836,7 +836,7 @@ void CGenCP1::Generate() {
 	// Choose cantus to use
 	cantus_id = randbw(0, cantus.size() - 1);
 	if (cantus_id2) {
-		if (cantus_id2 < cantus.size()) {
+		if (cantus_id2 <= cantus.size()) {
 			cantus_id = cantus_id2 - 1;
 		}
 		else {
