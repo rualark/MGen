@@ -22,5 +22,8 @@ protected:
 	int pre_bad = 6; // How many notes to recalculate before rule violation
 	int post_bad = 8; // How many notes to recalculate after rule violation
 
+	int step0 = 0; // Start of current cantus
+	int step1 = 0; // Stop of current cantus
+
 };
 

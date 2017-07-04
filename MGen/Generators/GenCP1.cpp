@@ -47,6 +47,8 @@ void CGenCP1::InitCP() {
 	aslur.resize(av_cnt);
 	anflags.resize(av_cnt);
 	anflagsc.resize(av_cnt);
+	// Check harmonic meaning loaded
+	LoadHarmVar();
 }
 
 void CGenCP1::MakeNewCP() {
@@ -267,6 +269,8 @@ void CGenCP1::ScanCPInit() {
 }
 
 int CGenCP1::SendCP() {
+	int step0 = step;
+	int pause_len;
 	CString st, info, rpst;
 	int pos;
 	int v;
@@ -345,31 +349,27 @@ int CGenCP1::SendCP() {
 			pos += cc_len[x / npm];
 		}
 		// Create pause
-		note[pos][v] = 0;
-		len[pos][v] = 1;
-		pause[pos][v] = 1;
-		dyn[pos][v] = 0;
-		tempo[pos] = tempo[pos - 1];
-		coff[pos][v] = 0;
+		pause_len = floor((pos + 1) / 8 + 1) * 8 - pos;
+		FillPause(pos, pause_len, v);
+		for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
 		// Merge notes
 		MergeNotes(step, step + real_len2 - 1, v);
 	}
-	step = pos;
-	++step;
-	FixLen(step - real_len2 - 1, step - 1);
+	step = pos + pause_len;
+	FixLen(step0, step - 1);
 	// Count additional variables
-	CountOff(step - real_len2 - 1, step - 1);
-	CountTime(step - real_len2 - 1, step - 1);
-	UpdateNoteMinMax(step - real_len2 - 1, step - 1);
-	UpdateTempoMinMax(step - real_len2 - 1, step - 1);
+	CountOff(step0, step - 1);
+	CountTime(step0, step - 1);
+	UpdateNoteMinMax(step0, step - 1);
+	UpdateTempoMinMax(step0, step - 1);
 	++cantus_sent;
 	if (task == tGen) {
 		if (!shuffle) {
-			Adapt(step - real_len2 - 1, step - 1);
+			Adapt(step0, step - 1);
 		}
 		// If  window-scan
 		st.Format("#%d\nCantus: %s", cantus_sent, cantus_high?"high":"low");
-		AddMelody(step - real_len2 - 1, step - 1, svoice + 1, st);
+		AddMelody(step0, step - 1, svoice + 1, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -395,7 +395,7 @@ int CGenCP1::SendCP() {
 				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, key_eval);
 			}
 		}
-		AddMelody(step - real_len2 - 1, step - 1, svoice+1, st);
+		AddMelody(step0, step - 1, svoice+1, st);
 	}
 	// Send
 	t_generated = step;
@@ -860,7 +860,7 @@ void CGenCP1::Generate() {
 	real_len = accumulate(cantus_len[cantus_id].begin(), cantus_len[cantus_id].end(), 0);
 	dpenalty_cur = 0;
 	// Create pause
-	FillPause(0, real_len, 1);
+	FillPause(0, floor(real_len/8+1)*8, 1);
 	// Select rule set
 	SelectRuleSet(cf_rule_set);
 	ScanCantus(tEval, 0, &(cantus[cantus_id]));
@@ -868,8 +868,8 @@ void CGenCP1::Generate() {
 	st.Format("Cantus %d. ", cantus_id + 1);
 	comment[0][0] = st + comment[0][0];
 	// Go forward
-	Adapt(0, real_len);
-	t_generated = real_len;
+	Adapt(0, step - 1);
+	t_generated = step;
 	t_sent = t_generated;
 	// Choose level
 	if (cantus_high) {

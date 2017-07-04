@@ -1257,6 +1257,7 @@ int CGenCF1::FailGlobalFill(vector<int> &c, int ep2, vector<int> &nstat2)
 	// Count nstat
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 	// Check nstat
+	if (ep2 < c_len) return 0;
 	int skips = 0;
 	int skips2 = 0;
 	for (int x = nmind + 1; x < nmaxd; ++x) if (!nstat2[x]) {
@@ -2056,6 +2057,7 @@ void CGenCF1::SaveCantus() {
 }
 
 int CGenCF1::SendCantus() {
+	int step0 = step;
 	// Save culmination position
 	cf_culm = culm_step;
 	if (svoice < 0) return 0;
@@ -2125,23 +2127,19 @@ int CGenCF1::SendCantus() {
 		pos += cc_len[x];
 	}
 	// Create pause
-	step = pos;
-	note[step][v] = 0;
-	len[step][v] = 1;
-	pause[step][v] = 1;
-	dyn[step][v] = 0;
-	tempo[step] = tempo[step - 1];
-	coff[step][v] = 0;
-	++step;
+	int pause_len = floor((pos + 1) / 8 + 1) * 8 - pos;
+	FillPause(pos, pause_len, v);
+	for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
+	step = pos + pause_len;
 	// Count additional variables
-	CountOff(step - real_len - 1, step - 1);
-	CountTime(step - real_len - 1, step - 1);
-	UpdateNoteMinMax(step - real_len - 1, step - 1);
-	UpdateTempoMinMax(step - real_len - 1, step - 1);
+	CountOff(step0, step - 1);
+	CountTime(step0, step - 1);
+	UpdateNoteMinMax(step0, step - 1);
+	UpdateTempoMinMax(step0, step - 1);
 	++cantus_sent;
 	if (task == tGen) {
 		if (!shuffle) {
-			Adapt(step - real_len - 1, step - 1);
+			Adapt(step0, step - 1);
 		}
 		// If  window-scan
 		//st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
@@ -2171,7 +2169,7 @@ int CGenCF1::SendCantus() {
 				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, rpst, key_eval);
 			}
 		}
-		AddMelody(step - real_len - 1, step - 1, v, st);
+		AddMelody(step0, step - 1, v, st);
 	}
 	// Send
 	t_generated = step;
