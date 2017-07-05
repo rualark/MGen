@@ -78,7 +78,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;28;0;Melody;Leaps;Two consecutive 3rds (after 6/8);-1;;
 1;4;60;Melody;Stepwise;Long stepwise motion (any direction);0;;
 1;5;60;Melody;Stepwise;Long stepwise motion (one direction);0;;
-1;9;60;Melody;Repeats;Adjacent repeat of notes (2);0;;
+1;9;60;Melody;Repeats;Adjacent repeat of notes (2);1;;
 1;78;60;Melody;Repeats;Culmination (early 1-2);0;;
 1;79;0;Melody;Repeats;Culmination (early 3);-1;;
 1;21;60;Melody;Repeats;Culmination (late);-1;;
@@ -142,8 +142,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;94;0;Cantus;Counterpoint;Slur (2);0;;
 1;95;0;Cantus;Counterpoint;Slur (>2);0;;
 1;24;60;Cantus;Counterpoint;Overlap (voices);0;;
-1;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);0;Tonic chords in root positions inside melody (except borders);
-1;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);0;Tonic chords in root positions inside melody (except borders);
+1;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);1;Tonic chords in root positions inside melody (except borders);
+1;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);1;Tonic chords in root positions inside melody (except borders);
 1;35;0;Cantus;Counterpoint;Contrary motion (medium);1;;
 1;46;60;Cantus;Counterpoint;Contrary motion (little);0;;
 2;0;0;;;Strict;1;This rule is set to 1 only when all other prohibited rules are not violated;
@@ -225,7 +225,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;28;0;Melody;Leaps;Two consecutive 3rds (after 6/8);-1;;
 2;4;60;Melody;Stepwise;Long stepwise motion (any direction);0;;
 2;5;60;Melody;Stepwise;Long stepwise motion (one direction);0;;
-2;9;60;Melody;Repeats;Adjacent repeat of notes (2);0;;
+2;9;60;Melody;Repeats;Adjacent repeat of notes (2);1;;
 2;78;60;Melody;Repeats;Culmination (early 1-2);0;;
 2;79;0;Melody;Repeats;Culmination (early 3);-1;;
 2;21;60;Melody;Repeats;Culmination (late);-1;;
@@ -289,7 +289,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;94;0;Cantus;Counterpoint;Slur (2);0;;
 2;95;0;Cantus;Counterpoint;Slur (>2);0;;
 2;24;60;Cantus;Counterpoint;Overlap (voices);0;;
-2;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);0;Tonic chords in root positions inside melody (except borders);
-2;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);0;Tonic chords in root positions inside melody (except borders);
+2;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);1;Tonic chords in root positions inside melody (except borders);
+2;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);1;Tonic chords in root positions inside melody (except borders);
 2;35;0;Cantus;Counterpoint;Contrary motion (medium);1;;
 2;46;60;Cantus;Counterpoint;Contrary motion (little);0;;

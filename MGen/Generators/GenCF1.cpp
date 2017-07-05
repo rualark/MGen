@@ -793,6 +793,8 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 		// Calculate steps to search for tonic
 		int fst = first_steps_tonic;
 		if (c_len > 10) ++fst;
+		// Do not search if cantus is short
+		if (ep2 <= fst) return 0;
 		// Prohibit tonic miss at start
 		int c_pos = -1;
 		int e_pos = -1;
