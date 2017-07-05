@@ -114,7 +114,7 @@ protected:
 	inline void CountFill(vector<int>& c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int leap_id, int & fill_finish);
 	inline void CountFillSkips(int leap_prev, int leap_id, int leap_size, int & skips, int t1, int t2);
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int leap_start, int leap_end, int leap_size, int & fill_to, int & fill_to_pre, int & fill_from);
-	inline void FailLeapInit(int i, int last_max, int & last_leap, int & child_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, int & leap_size, int & leap_start, int & leap_end, vector<int>& leap);
+	inline void FailLeapInit(int i, vector<int>& c, int last_max, int & last_leap, int & child_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, int & leap_size, int & leap_start, int & leap_end, vector<int>& leap);
 	inline int FailLeapMulti(int & leap_size, int & leap_id, int leap_next, int & leap_start, int & arpeg, int & overflow, int i, vector<int>& c, vector<int>& leap);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(int i, vector<int>& c, int last_leap, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap);
@@ -204,6 +204,7 @@ protected:
 	int random_key = 0; // Allow CF1 to select random key and CA1 to select any of possible keys regardless of last note
 	int min_tempo = 110;
 	int max_tempo = 120;
+	int rpenalty_accepted = 0; // Maximum accepted rule penalty for RandomSWA
 	int first_steps_tonic = 3; // Number of first steps, which must contain tonic note
 	int correct_range = 4; // Maximum interval allowed between each source and corrected note
 	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
