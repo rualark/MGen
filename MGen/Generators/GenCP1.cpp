@@ -496,12 +496,14 @@ int CGenCP1::FailVIntervals() {
 	}
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
-	for (int i = 1; i < ep2; ++i) if (!aslur[cpv][i]) {
+	for (int i = 1; i < ep2; ++i) {
 		// Unison
 		if (!civl[i-1]) {
 			// Inside
 			if (i>1) FLAG2(91, i-1);
 		}
+		// No more checks if this is slurred note
+		if (aslur[cpv][i]) continue;
 		// Discord
 		if (tivl[i] == iDis) {
 			// Upbeat
