@@ -28,6 +28,7 @@ burst_steps = 3 # Maximum number of steps for which max_between can be exceeded
 tonic_window = 15 # Number of steps to search for adjacent tonic chords
 contrary_min = 30 # Minimum percent of contrary motion (little)
 contrary_min2 = 60 # Minimum percent of contrary motion (medium)
+rpenalty_accepted = 1 # Maximum accepted rule penalty for RandomSWA
 
 slurs_window = 10 # Number of steps to check for slur limit
 
