@@ -599,9 +599,11 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		if (mouse_step > -1) {
 			mouse_note = (y_start - point.y) / nheight + mf->ng_min;
+			mouse_voices.clear();
 			for (int i = 0; i < pGen->v_cnt; i++)
 				if ((pGen->note[mouse_step][i] + pGen->show_transpose[i] == mouse_note) && (pGen->pause[mouse_step][i] == 0)) {
 					mouse_voice = i;
+					mouse_voices.push_back(i);
 					step1 = mouse_step - pGen->coff[mouse_step][i];
 					step2 = step1 + pGen->len[mouse_step][i];
 				}
@@ -653,7 +655,6 @@ void CMGenView::GetToolTipLabelText(POINT cursor, CString & labelText, CString &
 {
 }
 
-
 BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
 {
 	return CScrollView::PreTranslateMessage(pMsg);
@@ -661,7 +662,15 @@ BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
 
 void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	int result;
 	if ((mouse_step > -1) && (mouse_voice > -1)) {
+		if (mouse_voices.size() > 1) {
+			CMenu *menu = new CMenu;
+			menu->CreatePopupMenu();
+			menu->AppendMenu(MF_STRING, 1, "Voice 1");
+			ClientToScreen(&point);
+			result = menu->TrackPopupMenu(TPM_CENTERALIGN | TPM_RIGHTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, point.x, point.y, this);
+		}
 		CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 		CInfoDlg dlg;
 		dlg.pGen = mf->pGen;

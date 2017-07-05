@@ -59,7 +59,8 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-	int mouse_voice; // Current voice
+	vector <int> mouse_voices; // Current voice
+	int mouse_voice;
 	int mouse_voice_old; // Previously drawn voice
 	int mouse_note = -1; // Current note under mouse
 	int mouse_step = -1; // Current step under mouse
