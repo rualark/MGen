@@ -7,8 +7,6 @@ public:
 	CGenCA2();
 	~CGenCA2();
 
-	void SWACP(int i, int dp);
-
 	void Generate() override;
 
 protected:

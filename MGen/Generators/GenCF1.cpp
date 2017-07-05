@@ -198,6 +198,7 @@ void CGenCF1::SelectRuleSet(int rs)
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "cantus_high", &cantus_high);
+	CheckVar(sN, sV, "rpenalty_accepted", &rpenalty_accepted);
 	LoadRange(sN, sV, "interval", &min_interval, &max_interval);
 	CheckVar(sN, sV, "c_len", &c_len);
 	CheckVar(sN, sV, "s_len", &s_len);
@@ -967,7 +968,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 	}
 }
 
-void CGenCF1::FailLeapInit(int i, int last_max, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
+void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
@@ -1046,7 +1047,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	int last_max = c_len - 4;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
-			FailLeapInit(i, last_max, last_leap, child_leap, presecond, leap_next, leap_prev, 
+			FailLeapInit(i, c, last_max, last_leap, child_leap, presecond, leap_next, leap_prev, 
 				arpeg, overflow, leap_size, leap_start, leap_end, leap);
 			if (FailLeapMulti(leap_size, leap_id, leap_next, leap_start, arpeg, overflow, i, c, leap)) return 1;
 			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap, c)) return 1;
@@ -2256,7 +2257,7 @@ void CGenCF1::RandomSWA()
 		rpenalty_cur = MAX_PENALTY;
 		SWA(0, 0);
 		// Show cantus if it is perfect
-		if (rpenalty_min == 0) {
+		if (rpenalty_min <= rpenalty_accepted) {
 			if (vs.Insert(cc)) {
 				int step = t_generated;
 				// Add line

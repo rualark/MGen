@@ -32,6 +32,8 @@ protected:
 	inline int FailSlurs(vector<int>& cc, int step1, int step2);
 	inline int FailCPInterval(int step1, int step2);
 	inline int FailOverlap();
+	void RandomSWACP();
+	void SWACP(int i, int dp);
 	void ScanCP(int t, int v);
 
 	// Counterpoint

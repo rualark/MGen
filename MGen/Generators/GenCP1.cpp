@@ -669,6 +669,173 @@ int CGenCP1::FailOverlap() {
 	return 0;
 }
 
+// Create random cantus and optimize it using SWA
+void CGenCP1::RandomSWACP()
+{
+	CString st;
+	VSet<int> vs; // Unique checker
+								// Disable debug flags
+	calculate_blocking = 0;
+	calculate_correlation = 0;
+	calculate_stat = 0;
+	// Create single cantus
+	cpoint.resize(1);
+	cpoint[0].resize(2);
+	cpoint[0][cpv] = acc[cfv];
+	cpoint[0][cfv] = acc[cfv];
+	scpoint = cpoint[0];
+	ScanCPInit();
+	// Set random_seed to initiate random cantus
+	random_seed = 1;
+	// Set random_range to limit scanning to one of possible fast-scan ranges
+	random_range = 1;
+	// Prohibit limits recalculation during SWA
+	swa_inrange = 1;
+	for (int i = 0; i < INT_MAX; ++i) {
+		if (need_exit) break;
+		// Create random cantus
+		MakeNewCP();
+		scpoint[cpv] = acc[cpv];
+		// Set scan matrix to scan all
+		smatrixc = c_len - 2;
+		smatrix.resize(c_len);
+		smatrix[0] = 0;
+		smatrix[c_len - 1] = 0;
+		for (int x = 1; x < c_len - 1; ++x) {
+			smatrix[x] = 1;
+		}
+		// Optimize cpoint
+		rpenalty_cur = MAX_PENALTY;
+		SWACP(0, 0);
+		// Show cantus if it is perfect
+		if (rpenalty_min <= rpenalty_accepted) {
+			if (vs.Insert(acc[cpv])) {
+				int step = t_generated;
+				// Add line
+				linecolor[t_generated] = Color(255, 0, 0, 0);
+				scpoint = acc;
+				ScanCP(tEval, 0);
+				Adapt(step, t_generated - 1);
+				t_sent = t_generated;
+			}
+			else {
+				++cantus_ignored;
+			}
+		}
+		st.Format("Random SWACP: %d", i);
+		SetStatusText(3, st);
+		st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
+		SetStatusText(0, st);
+		//SendCantus(0, 0);
+		// Check limit
+		if (t_generated >= t_cnt) {
+			WriteLog(3, "Reached t_cnt steps. Generation stopped");
+			return;
+		}
+	}
+	ShowStuck();
+}
+
+// Do not calculate dpenalty (dp = 0). Calculate dpenalty (dp = 1).
+void CGenCP1::SWACP(int i, int dp) {
+	CString st;
+	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	s_len = 1;
+	// Save source rpenalty
+	float rpenalty_source = rpenalty_cur;
+	long cnum;
+	// Save cantus only if its penalty is less or equal to source rpenalty
+	rpenalty_min = rpenalty_cur;
+	dpenalty_min = MAX_PENALTY;
+	acc = cpoint[i];
+	int a;
+	for (a = 0; a < approximations; a++) {
+		// Save previous minimum penalty
+		int rpenalty_min_old = rpenalty_min;
+		int dpenalty_min_old = dpenalty_min;
+		// Clear before scan
+		clib.clear();
+		clib_vs.clear();
+		rpenalty.clear();
+		dpenalty.clear();
+		dpenalty_min = MAX_PENALTY;
+		clib.push_back(acc[cpv]);
+		clib_vs.Insert(acc[cpv]);
+		rpenalty.push_back(rpenalty_min_old);
+		dpenalty.push_back(dpenalty_min_old);
+		// Sliding Windows Approximation
+		scpoint = acc;
+		ScanCP(tCor, -1);
+		dpenalty_min = MAX_PENALTY;
+		cnum = clib.size();
+		if (cnum) {
+			if (dp) {
+				// Count dpenalty for results, where rpenalty is minimal
+				dpenalty.resize(cnum);
+				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
+					dpenalty[x] = 0;
+					for (int z = 0; z < c_len; z++) {
+						int dif = abs(cpoint[i][1][z] - clib[x][z]);
+						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
+					}
+					if (dpenalty[x] && dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
+					//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
+					//AppendLineToFile("temp.log", st);
+					//LogCantus(clib[x]);
+				}
+			}
+			// Get all best corrections
+			cids.clear();
+			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && (!dp || dpenalty[x] <= dpenalty_min)) {
+				cids.push_back(x);
+			}
+			if (cids.size()) {
+				// Get random cid
+				int cid = randbw(0, cids.size() - 1);
+				// Get random cantus to continue
+				acc[cpv] = clib[cids[cid]];
+			}
+		}
+		// Send log
+		if (debug_level > 0) {
+			CString est;
+			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+			WriteLog(3, est);
+		}
+		if (acc[cfv].size() > 60) {
+			st.Format("SWA%d attempt: %d", s_len, a);
+			SetStatusText(4, st);
+		}
+		if (dp) {
+			// Abort SWA if dpenalty and rpenalty not decreasing
+			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
+				if (s_len >= swa_steps)	break;
+				++s_len;
+			}
+		}
+		else {
+			// Abort SWA if rpenalty zero or not decreasing
+			if (!rpenalty_min) break;
+			if (rpenalty_min >= rpenalty_min_old) {
+				if (s_len >= swa_steps) {
+					// Record SWA stuck flags
+					for (int x = 0; x < max_flags; ++x) {
+						if (best_flags[x]) ++ssf[x];
+					}
+					break;
+				}
+				else ++s_len;
+			}
+		}
+	}
+	// Log
+	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	CString est;
+	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): " + GetStuck(),
+		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start);
+	WriteLog(3, est);
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -910,5 +1077,10 @@ void CGenCP1::Generate() {
 	// Generate second voice
 	rpenalty_cur = MAX_PENALTY;
 	SelectRuleSet(cp_rule_set);
-	ScanCP(tGen, 0);
+	if (method == mSWA) {
+		RandomSWACP();
+	}
+	else {
+		ScanCP(tGen, 0);
+	}
 }
