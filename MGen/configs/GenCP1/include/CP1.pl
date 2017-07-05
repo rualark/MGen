@@ -4,8 +4,8 @@ cf_rule_set = 1 # Specify which set of rules to use for cantus (see rules.xlsm)
 cp_rule_set = 2 # Specify which set of rules to use for counterpoint (see rules.xlsm)
 
 # Method parameters
-method = window-scan # This method can be faster in some cases
-#method = swa # This method is best for analysis and corrections in most cases
+#method = window-scan # This method can be faster in some cases
+method = swa # This method is best for analysis and corrections in most cases
 
 accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
@@ -28,6 +28,7 @@ burst_steps = 3 # Maximum number of steps for which max_between can be exceeded
 tonic_window = 15 # Number of steps to search for adjacent tonic chords
 contrary_min = 30 # Minimum percent of contrary motion (little)
 contrary_min2 = 60 # Minimum percent of contrary motion (medium)
+rpenalty_accepted = 1 # Maximum accepted rule penalty for RandomSWA
 
 slurs_window = 10 # Number of steps to check for slur limit
 

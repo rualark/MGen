@@ -110,9 +110,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;57;30;Cantus;Harmony;Harmonic penalty (2);1;;
 1;92;70;Cantus;Harmony;Harmonic penalty (2x2);0;;
 1;99;100;Cantus;Harmony;Harmonic penalty (3);0;;
-1;52;70;Cantus;Border;Start steps tonic (unprepared);0;;
-1;40;70;Cantus;Border;Start steps tonic (no C);0;;
-1;41;70;Cantus;Border;Start steps tonic (no E);0;;
+1;52;70;Cantus;Border;Start steps tonic (unprepared);1;;
+1;40;70;Cantus;Border;Start steps tonic (no C);1;;
+1;41;70;Cantus;Border;Start steps tonic (no E);1;;
 1;50;30;Cantus;Border;Last note (not C);1;;
 1;14;0;Cantus;Border;3rd to last note (CEG);-1;;
 1;34;0;Cantus;Border;3rd to last note (leading);-1;;
@@ -128,7 +128,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;85;60;Cantus;Counterpoint;Perfect consonance approach (combined);0;;
 1;86;60;Cantus;Counterpoint;Perfect consonance approach (different);1;;
 1;87;60;Cantus;Counterpoint;Perfect consonance approach (direct);0;;
-1;33;60;Cantus;Counterpoint;Perfect consonance approach (direct end);0;;
+1;33;60;Cantus;Counterpoint;Perfect consonance approach (direct end);1;;
 1;83;60;Cantus;Counterpoint;Dissonance (downbeat);0;;
 1;88;60;Cantus;Counterpoint;Dissonance (upbeat);0;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances (3);-1;More than X same imperfect consonances in a row;
@@ -249,7 +249,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;15;0;Cantus;Harmony;Repeating letters in a row (3);-1;;
 2;16;30;Cantus;Harmony;Repeating letters in a row (4);0;;
 2;17;70;Cantus;Harmony;Repeating letters in a row (>4);0;;
-2;18;0;Cantus;Harmony;Missing letters in a row (4);1;;
+2;18;0;Cantus;Harmony;Missing letters in a row (4);-1;;
 2;19;30;Cantus;Harmony;Missing letters in a row (5);0;;
 2;20;70;Cantus;Harmony;Missing letters in a row (>5);0;;
 2;48;30;Cantus;Harmony;Early cadence (G-C);0;;G note goes to C note before final cadence
@@ -257,9 +257,9 @@ Set;Severity;Class;Group;Rule;Flag
 2;57;30;Cantus;Harmony;Harmonic penalty (2);1;;
 2;92;70;Cantus;Harmony;Harmonic penalty (2x2);0;;
 2;99;100;Cantus;Harmony;Harmonic penalty (3);0;;
-2;52;70;Cantus;Border;Start steps tonic (unprepared);0;;
-2;40;70;Cantus;Border;Start steps tonic (no C);0;;
-2;41;70;Cantus;Border;Start steps tonic (no E);0;;
+2;52;70;Cantus;Border;Start steps tonic (unprepared);1;;
+2;40;70;Cantus;Border;Start steps tonic (no C);1;;
+2;41;70;Cantus;Border;Start steps tonic (no E);1;;
 2;50;30;Cantus;Border;Last note (not C);1;;
 2;14;0;Cantus;Border;3rd to last note (CEG);-1;;
 2;34;0;Cantus;Border;3rd to last note (leading);-1;;
@@ -275,7 +275,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;85;60;Cantus;Counterpoint;Perfect consonance approach (combined);0;;
 2;86;60;Cantus;Counterpoint;Perfect consonance approach (different);1;;
 2;87;60;Cantus;Counterpoint;Perfect consonance approach (direct);0;;
-2;33;60;Cantus;Counterpoint;Perfect consonance approach (direct end);0;;
+2;33;60;Cantus;Counterpoint;Perfect consonance approach (direct end);1;;
 2;83;60;Cantus;Counterpoint;Dissonance (downbeat);0;;
 2;88;60;Cantus;Counterpoint;Dissonance (upbeat);0;;
 2;89;0;Cantus;Counterpoint;Parallel imperfect consonances (3);-1;More than X same imperfect consonances in a row;
@@ -288,7 +288,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;93;0;Cantus;Counterpoint;Slur (1);0;;
 2;94;0;Cantus;Counterpoint;Slur (2);0;;
 2;95;0;Cantus;Counterpoint;Slur (>2);0;;
-2;24;60;Cantus;Counterpoint;Overlap (voices);0;;
+2;24;60;Cantus;Counterpoint;Overlap (voices);1;;
 2;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);1;Tonic chords in root positions inside melody (except borders);
 2;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);1;Tonic chords in root positions inside melody (except borders);
 2;35;0;Cantus;Counterpoint;Contrary motion (medium);1;;
