@@ -126,6 +126,11 @@
 #define ID_OINFO9                       32841
 #define ID_BUTTON_SSTATUS2              32842
 #define ID_BUTTON_SHOW_STATUS           32843
+#define ID_CMDSET_RESERVED_1            32844
+#define ID_CMDSET_RESERVED_2            32845
+#define ID_CMDSET_RESERVED_3            32846
+#define ID_CMDSET_RESERVED_4            32847
+#define ID_CMDSET_RESERVED_5            32848
 
 // Next default values for new objects
 // 
