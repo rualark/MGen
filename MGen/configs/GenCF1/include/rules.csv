@@ -288,7 +288,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;93;0;Cantus;Counterpoint;Slur (1);0;;
 2;94;0;Cantus;Counterpoint;Slur (2);0;;
 2;95;0;Cantus;Counterpoint;Slur (>2);0;;
-2;24;60;Cantus;Counterpoint;Overlap (voices);1;;
+2;24;60;Cantus;Counterpoint;Overlap (voices);0;;
 2;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);1;Tonic chords in root positions inside melody (except borders);
 2;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);1;Tonic chords in root positions inside melody (except borders);
 2;35;0;Cantus;Counterpoint;Contrary motion (medium);1;;
