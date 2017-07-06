@@ -2140,13 +2140,24 @@ int CGenCF1::SendCantus() {
 	UpdateNoteMinMax(step0, step - 1);
 	UpdateTempoMinMax(step0, step - 1);
 	++cantus_sent;
+	// Create rule penalty string
+	for (int x = 0; x < max_flags; ++x) {
+		if (!accept[x] && fpenalty[x]) {
+			st.Format("%d=%.0f", x, fpenalty[x]);
+			if (rpst != "") rpst += ", ";
+			rpst += st;
+		}
+	}
+	st.Format("%.0f (", rpenalty_cur);
+	rpst = st + rpst + ")";
+	if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	if (task == tGen) {
 		if (!shuffle) {
 			Adapt(step0, step - 1);
 		}
 		// If  window-scan
-		//st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
-		//AddMelody(step - real_len - 1, step - 1, v, st);
+		st.Format("#%d\nRule penalty: %s", cantus_sent, rpst);
+		AddMelody(step0, step - 1, v, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -2154,15 +2165,6 @@ int CGenCF1::SendCantus() {
 			//st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
 		}
 		else {
-			for (int x = 0; x < max_flags; ++x) {
-				if (!accept[x] && fpenalty[x]) {
-					st.Format("%d=%.0f", x, fpenalty[x]);
-					if (rpst != "") rpst += ", ";
-					rpst += st;
-				}
-			}
-			st.Format("%.0f (", rpenalty_cur);
-			rpst = st + rpst + ")";
 			if (key_eval == "") {
 				// If SWA
 				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nDistance penalty: %.0f", cantus_id+1, midi_file, rpst, dpenalty_cur);
