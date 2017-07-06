@@ -853,19 +853,26 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int leap_start, int leap_end, int &fill_to, int &fill_from, int &fill_finish) {
 	// Create leap tail
 	tc.clear();
+	int prev_note = -1;
 	if (pre) {
 		int pos1 = leap_start - 1;
 		int pos2 = max(leap_start - tail_len, 0);
 		if (c[leap_end] > c[leap_start]) {
 			for (int i = pos1; i >= pos2; --i) {
-				tc.push_back(128 - c[i]);
+				if (prev_note != c[i]) {
+					prev_note = c[i];
+					tc.push_back(128 - c[i]);
+				}
 			}
 			t1 = 128 - c[leap_end]; 
 			t2 = 128 - c[leap_start];
 		}
 		else {
 			for (int i = pos1; i >= pos2; --i) {
-				tc.push_back(c[i]);
+				if (prev_note != c[i]) {
+					prev_note = c[i];
+					tc.push_back(c[i]);
+				}
 			}
 			t1 = c[leap_end];
 			t2 = c[leap_start];
@@ -876,14 +883,20 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 		int pos2 = min(leap_end + tail_len, c_len - 1);
 		if (c[leap_end] > c[leap_start]) {
 			for (int i = pos1; i <= pos2; ++i) {
-				tc.push_back(c[i]);
+				if (prev_note != c[i]) {
+					prev_note = c[i];
+					tc.push_back(c[i]);
+				}
 			}
 			t1 = c[leap_start];
 			t2 = c[leap_end];
 		}
 		else {
 			for (int i = pos1; i <= pos2; ++i) {
-				tc.push_back(128-c[i]);
+				if (prev_note != c[i]) {
+					prev_note = c[i];
+					tc.push_back(128 - c[i]);
+				}
 			}
 			t1 = 128 - c[leap_start];
 			t2 = 128 - c[leap_end];
