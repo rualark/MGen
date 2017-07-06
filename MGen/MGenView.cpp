@@ -662,14 +662,23 @@ BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
 
 void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	CString st;
 	int result;
+	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
+	CGMidi *pGen = mf->pGen;
 	if ((mouse_step > -1) && (mouse_voice > -1)) {
 		if (mouse_voices.size() > 1) {
 			CMenu *menu = new CMenu;
 			menu->CreatePopupMenu();
-			menu->AppendMenu(MF_STRING, 1, "Voice 1");
+			for (int i = 0; i < mouse_voices.size(); ++i) {
+				int mv = mouse_voices[i];
+				st.Format("Voice %d (%s)", mv, pGen->InstGName[pGen->instr[mv]] + "/" + pGen->InstCName[pGen->instr[mv]]);
+				menu->AppendMenu(MF_STRING, mv+1, st);
+			}
 			ClientToScreen(&point);
 			result = menu->TrackPopupMenu(TPM_CENTERALIGN | TPM_RIGHTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, point.x, point.y, this);
+			if (!result) return;
+			mouse_voice = result - 1;
 		}
 		CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 		CInfoDlg dlg;
