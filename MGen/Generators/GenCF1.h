@@ -118,7 +118,7 @@ protected:
 	inline int FailLeapMulti(int & leap_size, int & leap_id, int leap_next, int & leap_start, int & arpeg, int & overflow, int i, vector<int>& c, vector<int>& leap);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(int i, vector<int>& c, int last_leap, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap);
-	inline int FailLeapMDC(int i, int leap_id, int & mdc1, int & mdc2, int leap_start, vector<int>& leap, vector<int>& c);
+	inline int FailLeapMDC(int i, int leap_id, int & mdc1, int & mdc2, int leap_start, int leap_end, vector<int>& leap, vector<int>& c);
 	inline int FailTritone(int i, int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailIntervals(int ep2, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailGlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
