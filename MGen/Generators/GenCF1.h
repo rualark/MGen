@@ -110,8 +110,8 @@ protected:
 	inline int FailMultiCulm(vector<int>& cc, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
-	inline void CountFillInit(vector<int>& c, int tail_len, int pre, int & t1, int & t2, int leap_start, int leap_end, int & fill_to, int & fill_from, int & fill_finish);
-	inline void CountFill(vector<int>& c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int leap_id, int & fill_finish);
+	inline int CountFillInit(vector<int>& c, int tail_len, int pre, int & t1, int & t2, int leap_start, int leap_end, int & fill_to, int & fill_from, int & fill_finish);
+	inline int CountFill(vector<int>& c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int leap_id, int & fill_finish);
 	inline void CountFillSkips(int leap_prev, int leap_id, int leap_size, int & skips, int t1, int t2);
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int leap_start, int leap_end, int leap_size, int & fill_to, int & fill_to_pre, int & fill_from);
 	inline void FailLeapInit(int i, vector<int>& c, int last_max, int & last_leap, int & child_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, int & leap_size, int & leap_start, int & leap_end, vector<int>& leap);
