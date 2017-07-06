@@ -1143,6 +1143,12 @@ int CGenCF1::FailLeapMDC(int i, int leap_id, int &mdc1, int &mdc2, int leap_star
 	// Melody direction change (MDC)
 	// Default left mdc is close, because beginning equals to close mdc
 	mdc1 = 0;
+	int prev_note = -1;
+	for (int pos = i; i >= 0; ++i) {
+		if (c[pos] != prev_note) {
+
+		}
+	}
 	if (leap_start > 0) {
 		// Check leap mdc1 if it is not last note
 		// If direction does not change
