@@ -175,7 +175,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			g.DrawString(A2W(st), -1, &font, PointF(900, 0), &brush_black);
 		}
 		if (pGen->need_exit == 1)
-			g.DrawString(L"INTERRUPTED", -1, &font, PointF(600, 0), &brush_red);
+			g.DrawString(L"INTERRUPTED", -1, &font, PointF(640, 0), &brush_red);
 		nwidth = 4 * mf->zoom_x / 100;
 		if (nwidth == 0) nwidth = 1;
 		if (mf->view_single_track) {
