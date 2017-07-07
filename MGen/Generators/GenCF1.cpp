@@ -1099,7 +1099,7 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 	// Check if  leap is filled
 	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
-	if ((leap_end + tail_len < ep2) || (c_len == ep2)) {
+	if ((fleap_end + tail_len < fli_size) || (c_len == ep2)) {
 		filled = 1;
 		// Check fill only if enough length (checked second time in case of slurs)
 		CountFill(c, tail_len, nstat2, nstat3, skips, fill_to, 0, fill_to_pre,
