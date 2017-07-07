@@ -836,7 +836,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 	// Prohibit last note not tonic
 	if (ep2 > c_len - 1)
 		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1); 
-	// Wrong second to last note
+	// Wrong second to last note (last note never can be slurred)
 	if (ep2 > c_len - 2) {
 		if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG2(13, c_len - 2);
 		if (pc[c_len - 2] == 4) FLAG2(51, c_len - 2);

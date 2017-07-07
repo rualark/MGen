@@ -892,7 +892,8 @@ check:
 		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		CreateLinks(acc[cpv]);
-		if (FailLastNotes(apc[cpv], ep2)) goto skip;
+		// NEED TO REPLACE NEXT FUNCTION WITH NEW ONE
+		//if (FailLastNotes(apc[cpv], ep2)) goto skip;
 		if (FailNoteSeq(apc[cpv], 0, ep2)) goto skip;
 		if (FailIntervals(ep2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], ep2, aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
