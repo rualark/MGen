@@ -795,15 +795,15 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 		int fst = first_steps_tonic;
 		if (c_len > 10) ++fst;
 		// Do not search if cantus is short
-		if (ep2 <= fst) return 0;
+		if (fli_size <= fst) return 0;
 		// Prohibit tonic miss at start
 		int c_pos = -1;
 		int e_pos = -1;
 		for (int i = 0; i < fst; ++i) {
 			// Detect C note
-			if (pc[i] == 0) c_pos = i;
+			if (pc[fli[i]] == 0) c_pos = i;
 			// Detect E note
-			if (pc[i] == 2) e_pos = i;
+			if (pc[fli[i]] == 2) e_pos = i;
 		}
 		int ok = 0;
 		// No C ?
@@ -811,7 +811,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 		else {
 			// If C found, check previous note
 			if (c_pos > 0) {
-				if (pc[c_pos - 1] != 6 || pc[c_pos - 1] != 1 || pc[c_pos - 1] == 4) ok = 1;
+				if (pc[fli[c_pos - 1]] != 6 || pc[fli[c_pos - 1]] != 1 || pc[fli[c_pos - 1]] == 4) ok = 1;
 			}
 			// If C is first note, it does not need to be prepared (actually, this cannot happen because of flag 49)
 			else ok = 1;
@@ -821,7 +821,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 		else {
 			// If E found, check previous note
 			if (e_pos > 0) {
-				if (pc[e_pos - 1] == 1 || pc[e_pos - 1] == 4) ok = 1;
+				if (pc[fli[e_pos - 1]] == 1 || pc[fli[e_pos - 1]] == 4) ok = 1;
 			}
 			// If E is first note, it does not need to be prepared
 			else ok = 1;
@@ -1123,7 +1123,6 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 				prefilled = 1;
 				if (pskips > 0) prefilled = 0;
 				else if (pdeviates > 1) prefilled = 0;
-
 			}
 			if (prefilled && !last_leap) FLAG2(112 + leap_id, i)
 			else if (prefilled && last_leap) FLAG2(144 + leap_id, i)
