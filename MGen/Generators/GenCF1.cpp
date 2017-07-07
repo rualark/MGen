@@ -850,6 +850,20 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 	return 0;
 }
 
+void CGenCF1::CreateLinks(vector<int> &cc) {
+	int prev_note = -1;
+	int lpos = 0;
+	fli_size = 0;
+	for (int i = 0; i < ep2; ++i) {
+		if (prev_note != cc[i]) {
+			fli[lpos] = cc[i];
+			bli[i] = lpos;
+			++lpos;
+			fli_size = lpos;
+		}
+	}
+}
+
 int CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int leap_start, int leap_end, int &fill_to, int &fill_from, int &fill_finish) {
 	// Create leap tail
 	tc.clear();
@@ -994,7 +1008,7 @@ void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, 
 	leap_prev = 0; // Multiply consecutive leaps
 	overflow = 0; // Leap back overflow
 	arpeg = 0; // Arpeggio 3+3
-								// Check if this leap is 3rd
+	// Check if this leap is 3rd
 	leap_size = abs(c[i + 1] - c[i]);
 	leap_start = i; // First step of leap
 	leap_end = i + 1; // Last step of leap
@@ -1013,19 +1027,38 @@ void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, 
 	}
 }
 
-int CGenCF1::FailLeapMulti(int &leap_size, int &leap_id, int leap_next, int &leap_start, int &arpeg, int &overflow, int i, vector<int> &c, vector<int> &leap) {
+int CGenCF1::FailLeapMulti(int &leap_size, int &leap_id, int leap_next, int &leap_start, int leap_end, int &arpeg, int &overflow, int i, vector<int> &c, vector<int> &leap) {
 	// Check if leap is third
+	for (int x = leap_start - 1; x >= 0; --x) {
+		if (c[x] != c[leap_start]) {
+			if (abs(c[leap_end] - c[x]) == 4) {
+				// Set leap start to first note of first third
+				leap_start = x;
+				// Set leap size to be compound
+				leap_size = 4;
+				// If 6/8 goes before 2 thirds (tight)
+				int ncount = 0;
+				for (int j = leap_start - 1; j >= 0; --j) {
+					if (c[j] != c[leap_start]) {
+						++ncount;
+						if (ncount == 2) {
+							// NOT FINISHED
+							if ((leap[leap_start] * (c[i - 1] - c[i - 2]) == -5) || (leap[i] * (c[i - 1] - c[i - 2]) == -7)) FLAG2(28, i)
+								// Else mark simple 2x3rds
+							else FLAG2(6, i);
+							break;
+						}
+					}
+				}
+				// If melody to short, mark simple 2x3rds
+				if (ncount < 2) FLAG2(6, i);
+			}
+			break;
+		}
+	}
 	if (leap_size == 2) {
 		// Check if leap is second third
-		if (i > 0 && abs(c[i + 1] - c[i - 1]) == 4) {
-			// Set leap start to first note of first third
-			leap_start = i - 1;
-			// Set leap size to be compound
-			leap_size = 4;
-			// If 6/8 goes before 2 thirds (tight)
-			if ((i > 1) && ((leap[i] * (c[i - 1] - c[i - 2]) == -5) || (leap[i] * (c[i - 1] - c[i - 2]) == -7))) FLAG2(28, i)
-				// Else mark simple 2x3rds
-			else FLAG2(6, i);
+		if (i > 0 && abs(c[leap_end] - c[i - 1]) == 4) {
 		}
 	}
 	leap_id = min(leap_size - 2, 3);
@@ -1068,7 +1101,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 		if (leap[i] != 0) {
 			FailLeapInit(i, c, last_max, last_leap, child_leap, presecond, leap_next, leap_prev, 
 				arpeg, overflow, leap_size, leap_start, leap_end, leap);
-			if (FailLeapMulti(leap_size, leap_id, leap_next, leap_start, arpeg, overflow, i, c, leap)) return 1;
+			if (FailLeapMulti(leap_size, leap_id, leap_next, leap_start, leap_end, arpeg, overflow, i, c, leap)) return 1;
 			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap_end, leap, c)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (overflow || arpeg) continue;
@@ -2435,6 +2468,7 @@ check:
 		if (minor_cur && FailMinor(pcc)) goto skip;
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
+		CreateLinks(cc);
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc, 0, ep2)) goto skip;
 		if (FailIntervals(ep2, c, cc, pc, pcc)) goto skip;

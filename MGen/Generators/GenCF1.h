@@ -110,12 +110,13 @@ protected:
 	inline int FailMultiCulm(vector<int>& cc, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
+	inline void CreateLinks(vector<int>& c);
 	inline int CountFillInit(vector<int>& c, int tail_len, int pre, int & t1, int & t2, int leap_start, int leap_end, int & fill_to, int & fill_from, int & fill_finish);
 	inline int CountFill(vector<int>& c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int leap_id, int & fill_finish);
 	inline void CountFillSkips(int leap_prev, int leap_id, int leap_size, int & skips, int t1, int t2);
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int leap_start, int leap_end, int leap_size, int & fill_to, int & fill_to_pre, int & fill_from);
 	inline void FailLeapInit(int i, vector<int>& c, int last_max, int & last_leap, int & child_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, int & leap_size, int & leap_start, int & leap_end, vector<int>& leap);
-	inline int FailLeapMulti(int & leap_size, int & leap_id, int leap_next, int & leap_start, int & arpeg, int & overflow, int i, vector<int>& c, vector<int>& leap);
+	inline int FailLeapMulti(int & leap_size, int & leap_id, int leap_next, int & leap_start, int leap_end, int & arpeg, int & overflow, int i, vector<int>& c, vector<int>& leap);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(int i, vector<int>& c, int last_leap, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap);
 	inline int FailLeapMDC(int i, int leap_id, int & mdc1, int & mdc2, int leap_start, int leap_end, vector<int>& leap, vector<int>& c);
@@ -227,7 +228,9 @@ protected:
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <vector <int>> hv; //  Variants of note harmonic meaning
 	vector <vector <int>> hsp; // Harmonic sequence penalty
-	vector <int> tc; // Tail diatonic notes
+	vector <int> fli; // Forward links to each non-slurred note
+	vector <int> bli; // Back links from each step to fli
+	int fli_size; // Size of filled fli vector
 	// Random SWA
 	//int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases
@@ -320,6 +323,15 @@ protected:
 	CString key_eval; // Results of key evaluation
 	int culm_step; // Position of culmination after FailMultiCulm
 	int cf_culm = 0; // Position of cantus firmus culmination
+
+	// FailLeap local variables
+	int leap_start; // Step where leap starts
+	int leap_end; // Step where leap ends
+	int fleap_start; // Fli position where leap starts
+	int fleap_end; // Fli position where leap ends
+	int leap_size; // Diatonic size of leap
+	int leap_id; // Id of leap size
+	vector <int> tc; // Tail diatonic notes
 
 	// Local SWA
 	vector <long> cids;
