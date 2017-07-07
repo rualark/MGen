@@ -856,65 +856,50 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	fli_size = 0;
 	for (int i = 0; i < ep2; ++i) {
 		if (prev_note != cc[i]) {
-			fli[lpos] = cc[i];
-			bli[i] = lpos;
+			prev_note = cc[i];
+			fli[lpos] = i;
 			++lpos;
-			fli_size = lpos;
 		}
+		bli[i] = lpos-1;
 	}
+	fli_size = lpos;
 }
 
-int CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int leap_start, int leap_end, int &fill_to, int &fill_from, int &fill_finish) {
+void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_to, int &fill_from, int &fill_finish) {
 	// Create leap tail
 	tc.clear();
 	int prev_note = -1;
 	if (pre) {
-		int pos1 = leap_start - 1;
+		int pos1 = fleap_start - 1;
+		int pos2 = max(fleap_start - tail_len, 0);
 		if (c[leap_end] > c[leap_start]) {
-			for (int i = pos1; i >= 0; --i) {
-				if (prev_note != c[i]) {
-					prev_note = c[i];
-					tc.push_back(128 - c[i]);
-					if (tc.size() == tail_len) break;
-				}
+			for (int i = pos1; i >= pos2; --i) {
+				tc.push_back(128 - c[fli[i]]);
 			}
-			t1 = 128 - c[leap_end]; 
+			t1 = 128 - c[leap_end];
 			t2 = 128 - c[leap_start];
 		}
 		else {
-			for (int i = pos1; i >= 0; --i) {
-				if (prev_note != c[i]) {
-					prev_note = c[i];
-					tc.push_back(c[i]);
-					if (tc.size() == tail_len) break;
-				}
+			for (int i = pos1; i >= pos2; --i) {
+				tc.push_back(c[fli[i]]);
 			}
 			t1 = c[leap_end];
 			t2 = c[leap_start];
 		}
 	}
 	else {
-		int pos1 = leap_end + 1;
+		int pos1 = fleap_end + 1;
+		int pos2 = min(fleap_end + tail_len, fli_size - 1);
 		if (c[leap_end] > c[leap_start]) {
-			for (int i = pos1; i < c_len; ++i) {
-				if (i > ep2 - 1) return 0;
-				if (prev_note != c[i]) {
-					prev_note = c[i];
-					tc.push_back(c[i]);
-					if (tc.size() == tail_len) break;
-				}
+			for (int i = pos1; i <= pos2; ++i) {
+				tc.push_back(c[fli[i]]);
 			}
 			t1 = c[leap_start];
 			t2 = c[leap_end];
 		}
 		else {
-			for (int i = pos1; i < c_len; ++i) {
-				if (i > ep2 - 1) return 0;
-				if (prev_note != c[i]) {
-					prev_note = c[i];
-					tc.push_back(128 - c[i]);
-					if (tc.size() == tail_len) break;
-				}
+			for (int i = pos1; i <= pos2; ++i) {
+				tc.push_back(128 - c[fli[i]]);
 			}
 			t1 = 128 - c[leap_start];
 			t2 = 128 - c[leap_end];
@@ -922,14 +907,13 @@ int CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &
 	}
 	for (int x = t1; x <= t2; ++x) nstat3[x] = 0;
 	fill_finish = -1;
-	return 1;
 }
 	
-int CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_start, int leap_end, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int leap_id, int &fill_finish)
+void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int &fill_finish)
 {
 	int t1, t2;
 	int dev_state = 0;
-	if (!CountFillInit(c, tail_len, pre, t1, t2, leap_start, leap_end, fill_to, fill_from, fill_finish)) return 0;
+	CountFillInit(c, tail_len, pre, t1, t2, fill_to, fill_from, fill_finish);
 	// Detect fill_finish
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
 	deviates = 0;
@@ -960,19 +944,18 @@ int CGenCF1::CountFill(vector<int> &c, int tail_len, int leap_size, int leap_sta
 	else if (dev_state < 3) dev_count = 1;
 	else dev_count = 2;
 
-	CountFillSkips(leap_prev, leap_id, leap_size, skips, t1, t2);
-	CountFillLimits(c, pre, t1, t2, leap_start, leap_end, leap_size, fill_to, fill_to_pre, fill_from);
-	return 1;
+	CountFillSkips(leap_prev, skips, t1, t2);
+	CountFillLimits(c, pre, t1, t2, fill_to, fill_to_pre, fill_from);
 }
 
-void CGenCF1::CountFillSkips(int leap_prev, int leap_id, int leap_size, int &skips, int t1, int t2) {
+void CGenCF1::CountFillSkips(int leap_prev, int &skips, int t1, int t2) {
 	skips = 0;
 	for (int x = t1 + 1; x < t2; ++x) if (!nstat3[x]) {
 		++skips;
 	}
 }
 
-void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_start, int leap_end, int leap_size, int &fill_to, int &fill_to_pre, int &fill_from) {
+void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill_to, int &fill_to_pre, int &fill_from) {
 	fill_to = leap_size;
 	fill_to_pre = 0;
 	fill_from = leap_size;
@@ -1001,7 +984,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int leap_
 	}
 }
 
-void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, int &leap_size, int &leap_start, int &leap_end, vector<int> &leap) {
+void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
@@ -1012,6 +995,8 @@ void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, 
 	leap_size = abs(c[i + 1] - c[i]);
 	leap_start = i; // First step of leap
 	leap_end = i + 1; // Last step of leap
+	fleap_start = bli[leap_start];
+	fleap_end = bli[leap_end];
 	last_leap = 0;
 										// Next is leap?
 	if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
@@ -1027,40 +1012,23 @@ void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, 
 	}
 }
 
-int CGenCF1::FailLeapMulti(int &leap_size, int &leap_id, int leap_next, int &leap_start, int leap_end, int &arpeg, int &overflow, int i, vector<int> &c, vector<int> &leap) {
+int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int i, vector<int> &c, vector<int> &leap) {
 	// Check if leap is third
-	for (int x = leap_start - 1; x >= 0; --x) {
-		if (c[x] != c[leap_start]) {
-			if (abs(c[leap_end] - c[x]) == 4) {
-				// Set leap start to first note of first third
-				leap_start = x;
-				// Set leap size to be compound
-				leap_size = 4;
-				// If 6/8 goes before 2 thirds (tight)
-				int ncount = 0;
-				for (int j = leap_start - 1; j >= 0; --j) {
-					if (c[j] != c[leap_start]) {
-						++ncount;
-						if (ncount == 2) {
-							// NOT FINISHED
-							if ((leap[leap_start] * (c[i - 1] - c[i - 2]) == -5) || (leap[i] * (c[i - 1] - c[i - 2]) == -7)) FLAG2(28, i)
-								// Else mark simple 2x3rds
-							else FLAG2(6, i);
-							break;
-						}
-					}
-				}
-				// If melody to short, mark simple 2x3rds
-				if (ncount < 2) FLAG2(6, i);
-			}
-			break;
-		}
-	}
 	if (leap_size == 2) {
 		// Check if leap is second third
-		if (i > 0 && abs(c[leap_end] - c[i - 1]) == 4) {
+		if (fleap_start > 0 && abs(c[leap_end] - c[fli[fleap_start-1]]) == 4) {
+			// Set leap start to first note of first third
+			leap_start = fli[fleap_start - 1];
+			--fleap_start;
+			// Set leap size to be compound
+			leap_size = 4;
+			// If 6/8 goes before 2 thirds (tight)
+			if ((fleap_start > 0) && ((leap[leap_start] * (c[leap_start] - c[fli[fleap_start-1]]) == -5) || 
+				(leap[leap_start] * (c[leap_start] - c[fli[fleap_start - 1]]) == -7))) FLAG2(28, i)
+				// Else mark simple 2x3rds
+			else FLAG2(6, i);
 		}
-	}
+	}			
 	leap_id = min(leap_size - 2, 3);
 	if (i < ep2 - 2) {
 		// Next leap in same direction
@@ -1093,25 +1061,25 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// Check if leap is compensated (without violating compensation rules)
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
-	int child_leap, leap_size, leap_start, leap_end, leap_next, leap_prev, unresolved, presecond;
-	int leap_id, mdc1, mdc2, overflow, arpeg, last_leap;
+	int child_leap, leap_next, leap_prev, unresolved, presecond;
+	int mdc1, mdc2, overflow, arpeg, last_leap;
 	// Last leap border
 	int last_max = c_len - 4;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		if (leap[i] != 0) {
 			FailLeapInit(i, c, last_max, last_leap, child_leap, presecond, leap_next, leap_prev, 
-				arpeg, overflow, leap_size, leap_start, leap_end, leap);
-			if (FailLeapMulti(leap_size, leap_id, leap_next, leap_start, leap_end, arpeg, overflow, i, c, leap)) return 1;
-			if (FailLeapMDC(i, leap_id, mdc1, mdc2, leap_start, leap_end, leap, c)) return 1;
+				arpeg, overflow, leap);
+			if (FailLeapMulti(leap_next, arpeg, overflow, i, c, leap)) return 1;
+			if (FailLeapMDC(i, mdc1, mdc2, leap, c)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (overflow || arpeg) continue;
-			if (FailLeapFill(i, c, last_leap, leap_prev, leap_id, leap_size, leap_start, leap_end, child_leap)) return 1;
+			if (FailLeapFill(i, c, last_leap, leap_prev, child_leap)) return 1;
 		}
 	}
 	return 0;
 }
 
-int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, int leap_id, int leap_size, int leap_start, int leap_end, int child_leap) {
+int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, int child_leap) {
 	// Prefill parameters
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
 	// Fill parameters
@@ -1134,25 +1102,24 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 	if ((leap_end + tail_len < ep2) || (c_len == ep2)) {
 		filled = 1;
 		// Check fill only if enough length (checked second time in case of slurs)
-		if (CountFill(c, tail_len, leap_size, leap_start, leap_end, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, 
-			fill_from, deviates, dev_count, leap_prev, leap_id, fill_finish)) {
-			if (skips > allowed_skips) filled = 0;
-			else if (fill_to > 2) filled = 0;
-			else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
-			else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
-			else if (fill_from > 2) filled = 0;
-			else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
-			else if (deviates > 2) filled = 0;
-			else if (dev_count > 1) filled = 0;
-			else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
-			else if (deviates == 2 && !accept[120 + leap_id]) filled = 0;
-		}
+		CountFill(c, tail_len, nstat2, nstat3, skips, fill_to, 0, fill_to_pre,
+			fill_from, deviates, dev_count, leap_prev, fill_finish);
+		if (skips > allowed_skips) filled = 0;
+		else if (fill_to > 2) filled = 0;
+		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
+		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
+		else if (fill_from > 2) filled = 0;
+		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
+		else if (deviates > 2) filled = 0;
+		else if (dev_count > 1) filled = 0;
+		else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
+		else if (deviates == 2 && !accept[120 + leap_id]) filled = 0;
 		if (!filled) {
 			// Check if  leap is prefilled
 			if (i > 0) {
 				ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
-				CountFill(c, ptail_len, leap_size, leap_start, leap_end, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from,
-					pdeviates, pdev_count, leap_prev, leap_id, pfill_finish);
+				CountFill(c, ptail_len, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from,
+					pdeviates, pdev_count, leap_prev, pfill_finish);
 				prefilled = 1;
 				if (pskips > 0) prefilled = 0;
 				else if (pdeviates > 1) prefilled = 0;
@@ -1181,7 +1148,7 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 	return 0;
 }
 
-int CGenCF1::FailLeapMDC(int i, int leap_id, int &mdc1, int &mdc2, int leap_start, int leap_end, vector<int> &leap, vector<int> &c) {
+int CGenCF1::FailLeapMDC(int i, int &mdc1, int &mdc2, vector<int> &leap, vector<int> &c) {
 	// Melody direction change (MDC)
 	// 0 = close, 1 = far, 2 = no
 	// Default mdc is close, because beginning equals to close mdc
@@ -1312,6 +1279,8 @@ void CGenCF1::ScanCantusInit() {
 	}
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
+	fli.resize(c_len);
+	bli.resize(c_len);
 	fpenalty.resize(max_flags);
 	cc_old.resize(c_len); // Cantus diatonic saved for SWA
 	wpos1.resize(c_len / s_len + 1);
