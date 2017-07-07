@@ -34,6 +34,7 @@ protected:
 	inline int FailOverlap();
 	void RandomSWACP();
 	void SWACP(int i, int dp);
+	inline int FailLastIntervals(vector<int>& pc, int ep2);
 	void ScanCP(int t, int v);
 
 	// Counterpoint

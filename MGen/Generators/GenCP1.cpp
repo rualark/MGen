@@ -840,6 +840,13 @@ void CGenCP1::SWACP(int i, int dp) {
 	WriteLog(3, est);
 }
 
+int CGenCP1::FailLastIntervals(vector<int> &pc, int ep2) {
+	// Prohibit last note not tonic
+	if (ep2 > c_len - 1)
+		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1);
+	return 0;
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -892,8 +899,7 @@ check:
 		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		CreateLinks(acc[cpv]);
-		// NEED TO REPLACE NEXT FUNCTION WITH NEW ONE
-		//if (FailLastNotes(apc[cpv], ep2)) goto skip;
+		if (FailLastIntervals(apc[cpv], ep2)) goto skip;
 		if (FailNoteSeq(apc[cpv], 0, ep2)) goto skip;
 		if (FailIntervals(ep2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], ep2, aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
