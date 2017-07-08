@@ -1,6 +1,6 @@
 # MGen
-[![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=ready&title=Ready)](http://waffle.io/rualark/MGen)
-[![Stories in Progress](https://badge.waffle.io/rualark/MGen.png?label=in progress&title=In progress)](http://waffle.io/rualark/MGen)
+[![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=ready&title=Ready)](http://waffle.io/rualark/MGen) 
+[![Stories in Progress](https://badge.waffle.io/rualark/MGen.png?label=in%20progress&title=In%20progress)](http://waffle.io/rualark/MGen)
 
 Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI/MusicXML
 
@@ -19,3 +19,5 @@ High priotiry issues: https://github.com/rualark/MGen/issues?utf8=%E2%9C%93&q=is
 ![MGen project plan](http://i.imgur.com/7ojUmny.png "MGen project plan")
 
 Zoho project: https://projects.zoho.eu/portal/mgen
+
+[![Throughput Graph](https://graphs.waffle.io/rualark/MGen/throughput.svg)](https://waffle.io/rualark/MGen/metrics/throughput)
