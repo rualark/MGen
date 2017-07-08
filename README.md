@@ -1,4 +1,5 @@
 # MGen
+[![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=ready&title=Ready)](http://waffle.io/rualark/MGen)
 Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI/MusicXML
 
 Read about this project: https://www.donationcoder.com/forum/index.php?topic=43816.0
