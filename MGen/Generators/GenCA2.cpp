@@ -116,6 +116,16 @@ void CGenCA2::MergeCantus() {
 			cc_len[cc_len.size()-1] += cantus_len[cantus_id][i];
 		}
 	}
+	// Check cc_len
+	int last_len = cc_len[0];
+	for (int i = 1; i < cc_len.size(); ++i) {
+		if (cc_len[i] != last_len) {
+			// Send log
+			CString est;
+			est.Format("Warning: cantus notes usually are all of same length. Cantus #%d has non-uniform length at note %d", cantus_id+1, i);
+			WriteLog(1, est);
+		}
+	}
 }
 
 void CGenCA2::Generate() {
