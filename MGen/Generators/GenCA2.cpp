@@ -96,6 +96,28 @@ void CGenCA2::SendCorrectionsCP(int i, milliseconds time_start) {
 	WriteLog(3, est);
 }
 
+// Create cc, cc_len and cc_tempo
+void CGenCA2::MergeCantus() {
+	int prev_note = -1;
+	int lpos = 0;
+	fli_size = 0;
+	cc.clear();
+	cc_len.clear();
+	cc_tempo.clear();
+	for (int i = 0; i < cpoint[cantus_id][cfv].size(); ++i) {
+		if (prev_note != cpoint[cantus_id][cfv][i]) {
+			prev_note = cpoint[cantus_id][cfv][i];
+			cc.push_back(prev_note);
+			cc_len.push_back(cantus_len[cantus_id][i]);
+			cc_tempo.push_back(cantus_tempo[cantus_id][i]);
+		}
+		else {
+			// Add to cc_len
+			cc_len[cc_len.size()-1] += cantus_len[cantus_id][i];
+		}
+	}
+}
+
 void CGenCA2::Generate() {
 	CString st;
 	int s_len2 = s_len;
@@ -137,8 +159,7 @@ void CGenCA2::Generate() {
 		if (tonic_cur == -1) continue;
 		CalcCcIncrement();
 		// Show imported melody
-		cc_len = cantus_len[i];
-		cc_tempo = cantus_tempo[i];
+		MergeCantus();
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		dpenalty_cur = 0;
 		// Create pause
@@ -147,7 +168,7 @@ void CGenCA2::Generate() {
 		FillPause(step0, floor(real_len / 8 + 1) * 8, 3);
 		cpv = cfv;
 		SelectRuleSet(cf_rule_set);
-		ScanCantus(tEval, 0, &(cpoint[i][cfv]));
+		ScanCantus(tEval, 0, &(cc));
 		// Show cantus id
 		st.Format("Counterpoint %d. ", cantus_id + 1);
 		comment[step0][0] = st + comment[step0][0];
@@ -157,6 +178,8 @@ void CGenCA2::Generate() {
 		t_sent = t_generated;
 		t_generated2 = t_generated;
 		// Load first voice
+		cc_len = cantus_len[i];
+		cc_tempo = cantus_tempo[i];
 		ac[cfv] = c;
 		acc[cfv] = cc;
 		apc[cfv] = pc;

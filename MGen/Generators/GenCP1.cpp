@@ -238,6 +238,8 @@ void CGenCP1::ScanCPInit() {
 	max_c.resize(c_len);
 	min_cc.resize(c_len);
 	max_cc.resize(c_len);
+	bli.resize(c_len);
+	fli.resize(c_len);
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(max_flags); // Flags for whole cantus
@@ -298,21 +300,21 @@ int CGenCP1::SendCP() {
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
 				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
-					int fl = anflags[av][x][f];
-					if (!i) {
-						st = "+ ";
-						if (!accept[fl]) st = "- ";
-						comment[pos][v] += "\n" + st + FlagName[fl];
-						if (show_severity) {
-							st.Format(" [%d]", severity[fl]);
-							comment[pos][v] += st;
-						}
-						if (FlagGComment[fl] != "") comment[pos][v] += ". " + FlagGComment[fl];
-						if (FlagComment[fl] != "") comment[pos][v] += ". " + FlagComment[fl];
-						comment[pos][v] += ". ";
-					}
-					// Do not show colors for base voice
+					// Do not show colors and comments for base voice
 					if (av == cpv) {
+						int fl = anflags[av][x][f];
+						if (!i) {
+							st = "+ ";
+							if (!accept[fl]) st = "- ";
+							comment[pos][v] += "\n" + st + FlagName[fl];
+							if (show_severity) {
+								st.Format(" [%d]", severity[fl]);
+								comment[pos][v] += st;
+							}
+							if (FlagGComment[fl] != "") comment[pos][v] += ". " + FlagGComment[fl];
+							if (FlagComment[fl] != "") comment[pos][v] += ". " + FlagComment[fl];
+							comment[pos][v] += ". ";
+						}
 						// Set note color if this is maximum flag severity
 						if (severity[fl] > current_severity) {
 							current_severity = severity[fl];
@@ -938,7 +940,7 @@ check:
 		}
 		// Calculate rules penalty if we evaluate or correct cantus without full scan
 		else {
-			CalcRpenalty();
+			CalcRpenalty(acc[cpv]);
 		}
 		// Accept cantus
 		++accepted;

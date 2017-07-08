@@ -1660,7 +1660,7 @@ void CGenCF1::NextWindow() {
 	*/
 }
 
-void CGenCF1::CalcRpenalty() {
+void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	// Calculate out of range penalty
 	int real_range = nmax - nmin;
 	if (!accept[37] && real_range > max_interval) {
@@ -1801,7 +1801,7 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 void CGenCF1::SaveBestRejected() {
 	// Save best rejected results if we can analyze full cantus
 	if (best_rejected && ep2 == c_len) {
-		CalcRpenalty();
+		CalcRpenalty(cc);
 		// Add result only if there is penalty, it is low and there are not note repeats
 		if (rpenalty_cur < rpenalty_min && rpenalty_cur) {
 			br_cc = cc;
@@ -2470,7 +2470,7 @@ check:
 		}
 		// Calculate rules penalty if we evaluate or correct cantus without full scan
 		else {
-			CalcRpenalty();
+			CalcRpenalty(cc);
 		}
 		// Accept cantus
 		++accepted;

@@ -7,6 +7,8 @@ public:
 	CGenCA2();
 	~CGenCA2();
 
+	void MergeCantus();
+
 	void Generate() override;
 
 protected:

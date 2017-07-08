@@ -137,7 +137,7 @@ protected:
 	inline int FailFlagBlock();
 	inline int FailAccept();
 	inline void NextWindow();
-	inline void CalcRpenalty();
+	inline void CalcRpenalty(vector<int>& cc);
 	inline void ScanLeft(vector<int> &cc, int &finished);
 	inline void BackWindow(vector<int>& cc);
 	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);
