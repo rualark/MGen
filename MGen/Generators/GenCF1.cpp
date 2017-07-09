@@ -1062,7 +1062,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int child_leap, leap_next, leap_prev, unresolved, presecond;
-	int mdc1, mdc2, overflow, arpeg, last_leap;
+	int overflow, arpeg, last_leap;
 	// Last leap border
 	int last_max = c_len - 4;
 	for (int i = 0; i < ep2 - 1; ++i) {
@@ -1070,10 +1070,10 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			FailLeapInit(i, c, last_max, last_leap, child_leap, presecond, leap_next, leap_prev, 
 				arpeg, overflow, leap);
 			if (FailLeapMulti(leap_next, arpeg, overflow, i, c, leap)) return 1;
-			if (FailLeapMDC(i, mdc1, mdc2, leap, c)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
-			if (overflow || arpeg) continue;
+			if (!overflow && !arpeg)
 			if (FailLeapFill(i, c, last_leap, leap_prev, child_leap)) return 1;
+			if (FailLeapMDC(i, leap, c)) return 1;
 		}
 	}
 	return 0;
@@ -1084,9 +1084,7 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
 	// Fill parameters
 	int tail_len, fill_to, fill_to_pre, fill_from, deviates, fill_finish, dev_count;
-	int prefilled = 0;
 	int prefilled_last = 0;
-	int filled = 0;
 	int pskips = 10;
 	int skips = 10;
 	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
@@ -1147,7 +1145,7 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 	return 0;
 }
 
-int CGenCF1::FailLeapMDC(int i, int &mdc1, int &mdc2, vector<int> &leap, vector<int> &c) {
+int CGenCF1::FailLeapMDC(int i, vector<int> &leap, vector<int> &c) {
 	// Melody direction change (MDC)
 	// 0 = close, 1 = far, 2 = no
 	// Default mdc is close, because beginning equals to close mdc
@@ -1180,7 +1178,10 @@ int CGenCF1::FailLeapMDC(int i, int &mdc1, int &mdc2, vector<int> &leap, vector<
 		// Far + close
 	else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, i)
 		// No close
-	else if (mdc1*mdc2) FLAG2(136 + leap_id, i)
+	else if (mdc1*mdc2) {
+		if (filled || prefilled) FLAG2(136 + leap_id, i)
+		else FLAG2(148 + leap_id, i);
+	}
 		// No MDC after
 	else if (mdc2 == 3) FLAG2(63 + leap_id, i);
 	return 0;
