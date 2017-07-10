@@ -431,18 +431,37 @@ void CGenCP1::ReseedCP()
 	SetStatusText(4, st);
 }
 
-int CGenCP1::FailInt(int i, int c1, int c2, int flag) {
+int CGenCP1::FailAlteredInt2(int i, int c1, int c2, int flag) {
 	if ((apcc[0][i] == c1 && apcc[1][i] == c2) || (apcc[0][i] == c2 && apcc[1][i] == c1)) FLAG2(flag, i);
 	return 0;
 }
 
+// Fail vertical altered intervals
 int CGenCP1::FailAlteredInt() {
 	for (int i = 0; i < ep2; ++i) {
-		if (FailInt(i, 9, 8, 170)) return 1;
-		if (FailInt(i, 11, 10, 171)) return 1;
-		if (FailInt(i, 11, 8, 172)) return 1;
-		if (FailInt(i, 9, 3, 173)) return 1;
-		if (FailInt(i, 11, 3, 174)) return 1;
+		if (FailAlteredInt2(i, 9, 8, 170)) return 1;
+		if (FailAlteredInt2(i, 11, 10, 171)) return 1;
+		if (FailAlteredInt2(i, 11, 8, 172)) return 1;
+		if (FailAlteredInt2(i, 9, 3, 173)) return 1;
+		if (FailAlteredInt2(i, 11, 3, 174)) return 1;
+	}
+	return 0;
+}
+
+int CGenCP1::FailCrossInt2(int i, int c1, int c2, int flag) {
+	if ((apcc[cfv][i - 1] == c1 && apcc[cpv][i] == c2) || (apcc[cfv][i - 1] == c2 && apcc[cpv][i] == c1)) FLAG2(flag, i)
+	else if ((apcc[cpv][i - 1] == c1 && apcc[cfv][i] == c2) || (apcc[cpv][i - 1] == c2 && apcc[cfv][i] == c1)) FLAG2(flag, i-1);
+	return 0;
+}
+
+// Fail cross relation altered intervals
+int CGenCP1::FailCrossInt() {
+	for (int i = 1; i < ep2; ++i) {
+		if (FailCrossInt2(i, 9, 8, 164)) return 1;
+		if (FailCrossInt2(i, 11, 10, 165)) return 1;
+		if (FailCrossInt2(i, 11, 8, 166)) return 1;
+		if (FailCrossInt2(i, 9, 3, 167)) return 1;
+		if (FailCrossInt2(i, 11, 3, 168)) return 1;
 	}
 	return 0;
 }
@@ -930,6 +949,7 @@ check:
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailGlobalFill(ac[cpv], ep2, nstat2)) goto skip;
 		if (FailAlteredInt()) goto skip;
+		if (FailCrossInt()) goto skip;
 		if (FailVIntervals()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, ep2)) goto skip;
