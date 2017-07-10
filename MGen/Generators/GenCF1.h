@@ -120,8 +120,8 @@ protected:
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(int i, vector<int>& c, int last_leap, int leap_prev, int child_leap);
 	inline int FailLeapMDC(int i, vector<int>& leap, vector<int>& c);
-	inline int FailTritone(int i, int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
-	inline int FailIntervals(int ep2, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline int FailTritone(int x, int i, int i1, int i2, int i_1, int i_2, int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailGlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
 	void ScanCantusInit();
 	int GetMinSmap();

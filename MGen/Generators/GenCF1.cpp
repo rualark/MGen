@@ -1191,35 +1191,35 @@ int CGenCF1::FailLeapMDC(int i, vector<int> &leap, vector<int> &c) {
 }
 
 // Check tritone t1-t2 which has to resolve from ta to tb
-int CGenCF1::FailTritone(int i, int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+int CGenCF1::FailTritone(int x, int i, int i1, int i2, int i_1, int i_2, int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	int leap_start;
 	int found;
 	// Tritone prohibit
 	leap_start = i;
 	found = 0;
 	// Check consecutive tritone
-	if ((pcc[i + 1] == t2 && pcc[i] == t1) || (pcc[i + 1] == t1 && pcc[i] == t2)) found = 1;
+	if ((pcc[i1] == t2 && pcc[i] == t1) || (pcc[i1] == t1 && pcc[i] == t2)) found = 1;
 	// Check tritone with additional note inside
 	if (i > 0) {
 		// Check pitches
-		if ((pcc[i + 1] == t2 && pcc[i - 1] == t1) || (pcc[i + 1] == t1 && pcc[i - 1] == t2))
+		if ((pcc[i1] == t2 && pcc[i_1] == t1) || (pcc[i1] == t1 && pcc[i_1] == t2))
 			// Check intermediate note and mdc
-			if ((c[i] > c[i + 1] && c[i] < c[i - 1] && (i<2 || c[i - 2] < c[i - 1]) && (i>ep2-3 || c[i + 2] > c[i + 1])) ||
-				(c[i] < c[i + 1] && c[i] > c[i - 1] && (i<2 || c[i - 2] > c[i - 1]) && (i>ep2 - 3 || c[i + 2] < c[i + 1]))) {
+			if ((c[i] > c[i1] && c[i] < c[i_1] && (x<2 || c[i_2] < c[i1]) && (x>fli_size - 3 || c[i2] > c[i1])) ||
+				(c[i] < c[i1] && c[i] > c[i_1] && (x<2 || c[i_2] > c[i_1]) && (x>fli_size - 3 || c[i2] < c[i1]))) {
 				found = 1;
-				leap_start = i - 1;
+				leap_start = i_1;
 			}
 	}
 	if (found) {
 		// Check if tritone is highest leap if this is last window
 		if (ep2 == c_len)
-			if ((cc[leap_start] == nmax) || (cc[i + 1] == nmax)) FLAG2(32, i);
+			if ((cc[leap_start] == nmax) || (cc[i1] == nmax)) FLAG2(32, i);
 		// Check if tritone is last step
 		if (i > c_len - 3) FLAG2(31, i)
 			// Check if resolution is correct
-		else if (i < ep2 - 2) {
-			if (pcc[i + 1] == t1) FLAG2(31, i)
-			else if (pcc[i + 2] != tb) FLAG2(31, i)
+		else if (x < fli_size - 2) {
+			if (pcc[i1] == t1) FLAG2(31, i)
+			else if (pcc[i2] != tb) FLAG2(31, i)
 			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(31, i)
 				// Record resolved tritone
 			else FLAG2(2, i);
@@ -1229,18 +1229,24 @@ int CGenCF1::FailTritone(int i, int ta, int t1, int t2, int tb, vector<int> &c, 
 	return 0;
 }
 
-int CGenCF1::FailIntervals(int ep2, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
+int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
-	for (int i = 0; i < ep2 - 1; ++i) {
+	int i, i1, i2, i_1, i_2;
+	for (int x = 0; x < fli_size - 1; ++x) {
+		i = fli[x];
+		i1 = fli[x + 1];
+		if (x > 0) i_1 = fli[x - 1];
+		if (x > 1) i_2 = fli[x - 2];
+		if (x < fli_size - 2) i2 = fli[x + 2];
 		// Warning: tritone F#C in minor is not detected (can add FailTritone to detect) because it is already prohibited by Unaltered near altered.
 		// If you allow Unaltered near altered, you should implement FailTritone for F#C.
-		if (FailTritone(i, 4, 5, 11, 0, c, cc, pc, pcc)) return 1;
+		if (FailTritone(x, i, i1, i2, i_1, i_2, 4, 5, 11, 0, c, cc, pc, pcc)) return 1;
 		if (minor_cur) {
-			if (FailTritone(i, 7, 8, 2, 3, c, cc, pc, pcc)) return 1;
+			if (FailTritone(x, i, i1, i2, i_1, i_2, 7, 8, 2, 3, c, cc, pc, pcc)) return 1;
 		}
 		// Sept prohibit
-		if (abs(cc[i + 1] - cc[i]) == 10) FLAG2(1, i)
-		else if (abs(cc[i + 1] - cc[i]) == 11) FLAG2(39, i);
+		if (abs(cc[i1] - cc[i]) == 10) FLAG2(1, i)
+		else if (abs(cc[i1] - cc[i]) == 11) FLAG2(39, i);
 	}
 	return 0;
 }
@@ -2470,7 +2476,7 @@ check:
 		CreateLinks(cc);
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc)) goto skip;
-		if (FailIntervals(ep2, c, cc, pc, pcc)) goto skip;
+		if (FailIntervals(c, cc, pc, pcc)) goto skip;
 		if (FailLeapSmooth(c, cc, ep2, leap, smooth, slur)) goto skip;
 		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps2, 2, 76)) goto skip;
 		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps3, 3, 36)) goto skip;
