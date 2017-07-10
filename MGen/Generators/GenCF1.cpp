@@ -1821,7 +1821,9 @@ void CGenCF1::SaveBestRejected() {
 }
 
 int CGenCF1::FailMinor(vector<int> &pcc) {
-	for (int i = 1; i < ep2; ++i) {
+	int i, i_2, i1, i2;
+	for (int x = 1; x < fli_size; ++x) {
+		i = fli[x];
 		// Prohibit major second up before I (in last steps and other places)
 		if (pcc[i] == 0 && pcc[i - 1] == 10) FLAG2(74, i-1);
 		// Prohibit minor second up before VII - absorbed
@@ -1831,35 +1833,41 @@ int CGenCF1::FailMinor(vector<int> &pcc) {
 			if (pcc[i - 1] == 10) FLAG2(153, i - 1);
 			if (pcc[i - 1] == 8) FLAG2(154, i - 1);
 			if (pcc[i - 1] == 3) FLAG2(157, i - 1);
-			if (i > 1) {
-				if (pcc[i - 2] == 10) FLAG2(159, i - 2);
-				if (pcc[i - 2] == 8) FLAG2(160, i - 2);
-				if (pcc[i - 2] == 3) FLAG2(163, i - 2);
+			if (x > 1) {
+				i_2 = fli[x - 2];
+				if (pcc[i_2] == 10) FLAG2(159, i_2);
+				if (pcc[i_2] == 8) FLAG2(160, i_2);
+				if (pcc[i_2] == 3) FLAG2(163, i_2);
 			}
-			if (i < ep2 - 1) {
-				if (pcc[i + 1] == 10) FLAG2(153, i + 1);
-				if (pcc[i + 1] == 8) FLAG2(154, i + 1);
-				if (pcc[i + 1] == 3) FLAG2(156, i + 1);
-				if (i < ep2 - 2) {
-					if (pcc[i + 2] == 10) FLAG2(159, i + 2);
-					if (pcc[i + 2] == 8) FLAG2(160, i + 2);
-					if (pcc[i + 2] == 3) FLAG2(162, i + 2);
+			if (x < fli_size - 1) {
+				i1 = fli[x+1];
+				if (pcc[i1] == 10) FLAG2(153, i1);
+				if (pcc[i1] == 8) FLAG2(154, i1);
+				if (pcc[i1] == 3) FLAG2(156, i1);
+				if (x < fli_size - 2) {
+					i2 = fli[x+2];
+					if (pcc[i2] == 10) FLAG2(159, i2);
+					if (pcc[i2] == 8) FLAG2(160, i2);
+					if (pcc[i2] == 3) FLAG2(162, i2);
 				}
 			}
 		}
 		if (pcc[i] == 9) {
 			if (pcc[i - 1] == 8) FLAG2(152, i - 1);
 			if (pcc[i - 1] == 3) FLAG2(155, i - 1);
-			if (i > 1) {
-				if (pcc[i - 2] == 8) FLAG2(158, i - 2);
-				if (pcc[i - 2] == 3) FLAG2(161, i - 2);
+			if (x > 1) {
+				i_2 = fli[x - 2];
+				if (pcc[i_2] == 8) FLAG2(158, i_2);
+				if (pcc[i_2] == 3) FLAG2(161, i_2);
 			}
-			if (i < ep2 - 1) {
-				if (pcc[i + 1] == 8) FLAG2(152, i + 1);
-				if (pcc[i + 1] == 3) FLAG2(155, i + 1);
-				if (i < ep2 - 2) {
-					if (pcc[i + 2] == 8) FLAG2(158, i + 2);
-					if (pcc[i + 2] == 3) FLAG2(161, i + 2);
+			if (x < fli_size - 1) {
+				i1 = fli[x + 1];
+				if (pcc[i1] == 8) FLAG2(152, i1);
+				if (pcc[i1] == 3) FLAG2(155, i1);
+				if (x < fli_size - 2) {
+					i2 = fli[x + 2];
+					if (pcc[i2] == 8) FLAG2(158, i2);
+					if (pcc[i2] == 3) FLAG2(161, i2);
 				}
 			}
 		}
