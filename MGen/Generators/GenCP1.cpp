@@ -673,17 +673,19 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 }
 
 // Count limits
-int CGenCP1::FailCPInterval(int step1, int step2) {
+int CGenCP1::FailCPInterval() {
 	int bsteps = 0;
-	for (int i = step1; i < step2; ++i) {
+	int step = 0;
+	for (int i = 0; i < fli_size; ++i) {
+		step = fli[i];
 		// Check between
-		if (acc[1][i] - acc[0][i] > max_between) {
+		if (acc[1][step] - acc[0][step] > max_between) {
 			++bsteps;
 			// Flag very far burst
-			if (acc[1][i] - acc[0][i] > burst_between) FLAG2(11, i);
+			if (acc[1][step] - acc[0][step] > burst_between) FLAG2(11, step);
 			if (bsteps > burst_steps) {
 				// Flag long burst only on first overrun
-				if (bsteps == burst_steps + 1) FLAG2(11, i)
+				if (bsteps == burst_steps + 1) FLAG2(11, step)
 					// Next overruns are sent to fpenalty
 				else fpenalty[37] += bsteps - burst_steps;
 			}
@@ -925,7 +927,6 @@ check:
 			}
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
-		if (FailCPInterval(0, ep2)) goto skip;
 		if (FailSlurs(acc[cpv], 0, ep2 - 1)) goto skip;
 		++accepted3;
 		if (need_exit && task != tEval) break;
@@ -936,6 +937,7 @@ check:
 		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		CreateLinks(acc[cpv]);
+		if (FailCPInterval()) goto skip;
 		if (FailLastIntervals(apc[cpv], ep2)) goto skip;
 		if (FailNoteSeq(apc[cpv], 0, ep2)) goto skip;
 		if (FailIntervals(ep2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
