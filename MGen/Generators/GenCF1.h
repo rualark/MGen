@@ -89,7 +89,7 @@ protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
-	inline int FailNoteSeq(vector<int>& pc, int step1, int step2);
+	inline int FailNoteSeq(vector<int>& pc);
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);

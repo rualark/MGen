@@ -339,10 +339,13 @@ int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
 }
 
 // Detect prohibited note sequences
-int CGenCF1::FailNoteSeq(vector<int> &pc, int step1, int step2) {
-	for (int i = step1; i < step2-2; ++i) {
+int CGenCF1::FailNoteSeq(vector<int> &pc) {
+	int i, i1;
+	for (int x = 0; x < fli_size-2; ++x) {
+		i = fli[x];
+		i1 = fli[x + 1];
 		// Prohibit GC before cadence
-		if (pc[i] == 4 && pc[i + 1] == 0) FLAG2(48, i);
+		if (pc[i] == 4 && pc[i1] == 0) FLAG2(48, i);
 		// Prohibit D-S
 	}
 	return 0;
@@ -2466,7 +2469,7 @@ check:
 		//WriteLog(1, "Found");
 		CreateLinks(cc);
 		if (FailLastNotes(pc, ep2)) goto skip;
-		if (FailNoteSeq(pc, 0, ep2)) goto skip;
+		if (FailNoteSeq(pc)) goto skip;
 		if (FailIntervals(ep2, c, cc, pc, pcc)) goto skip;
 		if (FailLeapSmooth(c, cc, ep2, leap, smooth, slur)) goto skip;
 		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps2, 2, 76)) goto skip;
