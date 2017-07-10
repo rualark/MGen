@@ -3,7 +3,7 @@
 #include "../GLibrary/VSet.h"
 
 // Checks if we have leap or melody direction change here: needs to be not first and not last note
-#define MELODY_SEPARATION(i) ((leap[i - 1]) || i >= ep2-1 || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0))
+#define MELODY_SEPARATION(i) (!i || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0))
 
 // Report violation
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; } }

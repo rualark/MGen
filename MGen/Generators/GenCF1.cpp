@@ -603,11 +603,11 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 // Search for outstanding repeats
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok;
-	if (ep2 > rlen*2) for (int i = 0; i < ep2 - rlen * 2; ++i) {
+	if (ep2 > rlen*2) for (int i = 0; i < ep2 - rlen * 2; ++i) if (MELODY_SEPARATION(i)) {
 		// Search for repeat of note at same beat until last three notes
 		int finish = i + scan_len;
 		if (finish > ep2 - rlen) finish = ep2 - rlen;
-		for (int x = i + 2; x <= finish; x += 2) {
+		for (int x = i + 2; x <= finish; x += 2) if (MELODY_SEPARATION(x)) {
 			// Check if same note
 			if (cc[x] == cc[i]) {
 				// Check that more notes repeat
