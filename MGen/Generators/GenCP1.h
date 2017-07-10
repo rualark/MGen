@@ -23,6 +23,8 @@ protected:
 	void SingleCPInit();
 	void MultiCPInit();
 	inline void ReseedCP();
+	inline int FailInt(int i, int c1, int c2, int flag);
+	inline int FailAlteredInt();
 	inline int FailVIntervals();
 	inline void CalcDpenaltyCP();
 	inline void SaveCP();

@@ -431,6 +431,22 @@ void CGenCP1::ReseedCP()
 	SetStatusText(4, st);
 }
 
+int CGenCP1::FailInt(int i, int c1, int c2, int flag) {
+	if ((apcc[0][i] == c1 && apcc[1][i] == c2) || (apcc[0][i] == c2 && apcc[1][i] == c1)) FLAG2(flag, i);
+	return 0;
+}
+
+int CGenCP1::FailAlteredInt() {
+	for (int i = 0; i < ep2; ++i) {
+		if (FailInt(i, 9, 8, 170)) return 1;
+		if (FailInt(i, 11, 10, 171)) return 1;
+		if (FailInt(i, 11, 8, 172)) return 1;
+		if (FailInt(i, 9, 3, 173)) return 1;
+		if (FailInt(i, 11, 3, 174)) return 1;
+	}
+	return 0;
+}
+
 int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	int tonic_sum = 0;
@@ -913,6 +929,7 @@ check:
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailGlobalFill(ac[cpv], ep2, nstat2)) goto skip;
+		if (FailAlteredInt()) goto skip;
 		if (FailVIntervals()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, ep2)) goto skip;
