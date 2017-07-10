@@ -25,7 +25,7 @@ protected:
 	inline void ReseedCP();
 	inline int FailAlteredInt2(int i, int c1, int c2, int flag);
 	inline int FailAlteredInt();
-	inline int FailCrossInt2(int i, int c1, int c2, int flag);
+	inline int FailCrossInt2(int i, int i_1, int c1, int c2, int flag);
 	inline int FailCrossInt();
 	inline int FailVIntervals();
 	inline void CalcDpenaltyCP();

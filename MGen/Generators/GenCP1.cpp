@@ -448,20 +448,23 @@ int CGenCP1::FailAlteredInt() {
 	return 0;
 }
 
-int CGenCP1::FailCrossInt2(int i, int c1, int c2, int flag) {
-	if ((apcc[cfv][i - 1] == c1 && apcc[cpv][i] == c2) || (apcc[cfv][i - 1] == c2 && apcc[cpv][i] == c1)) FLAG2(flag, i)
-	else if ((apcc[cpv][i - 1] == c1 && apcc[cfv][i] == c2) || (apcc[cpv][i - 1] == c2 && apcc[cfv][i] == c1)) FLAG2(flag, i-1);
+int CGenCP1::FailCrossInt2(int i, int i_1, int c1, int c2, int flag) {
+	if ((apcc[cfv][i_1] == c1 && apcc[cpv][i] == c2) || (apcc[cfv][i_1] == c2 && apcc[cpv][i] == c1)) FLAG2(flag, i)
+	else if ((apcc[cpv][i_1] == c1 && apcc[cfv][i] == c2) || (apcc[cpv][i_1] == c2 && apcc[cfv][i] == c1)) FLAG2(flag, i_1);
 	return 0;
 }
 
 // Fail cross relation altered intervals
 int CGenCP1::FailCrossInt() {
-	for (int i = 1; i < ep2; ++i) {
-		if (FailCrossInt2(i, 9, 8, 164)) return 1;
-		if (FailCrossInt2(i, 11, 10, 165)) return 1;
-		if (FailCrossInt2(i, 11, 8, 166)) return 1;
-		if (FailCrossInt2(i, 9, 3, 167)) return 1;
-		if (FailCrossInt2(i, 11, 3, 168)) return 1;
+	int i, i_1;
+	for (int x = 1; x < fli_size; ++x) {
+		i = fli[x];
+		i_1 = fli[x - 1];
+		if (FailCrossInt2(i, i_1, 9, 8, 164)) return 1;
+		if (FailCrossInt2(i, i_1, 11, 10, 165)) return 1;
+		if (FailCrossInt2(i, i_1, 11, 8, 166)) return 1;
+		if (FailCrossInt2(i, i_1, 9, 3, 167)) return 1;
+		if (FailCrossInt2(i, i_1, 11, 3, 168)) return 1;
 	}
 	return 0;
 }
