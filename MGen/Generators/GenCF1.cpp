@@ -1821,18 +1821,19 @@ void CGenCF1::SaveBestRejected() {
 }
 
 int CGenCF1::FailMinor(vector<int> &pcc) {
-	int i, i_2, i1, i2;
+	int i, i_1, i_2, i1, i2;
 	for (int x = 1; x < fli_size; ++x) {
 		i = fli[x];
+		i_1 = fli[x - 1];
 		// Prohibit major second up before I (in last steps and other places)
-		if (pcc[i] == 0 && pcc[i - 1] == 10) FLAG2(74, i-1);
+		if (pcc[i] == 0 && pcc[i_1] == 10) FLAG2(74, i_1);
 		// Prohibit minor second up before VII - absorbed
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
 		if (pcc[i] == 11) {
-			if (pcc[i - 1] == 10) FLAG2(153, i - 1);
-			if (pcc[i - 1] == 8) FLAG2(154, i - 1);
-			if (pcc[i - 1] == 3) FLAG2(157, i - 1);
+			if (pcc[i_1] == 10) FLAG2(153, i_1);
+			if (pcc[i_1] == 8) FLAG2(154, i_1);
+			if (pcc[i_1] == 3) FLAG2(157, i_1);
 			if (x > 1) {
 				i_2 = fli[x - 2];
 				if (pcc[i_2] == 10) FLAG2(159, i_2);
@@ -1853,8 +1854,8 @@ int CGenCF1::FailMinor(vector<int> &pcc) {
 			}
 		}
 		if (pcc[i] == 9) {
-			if (pcc[i - 1] == 8) FLAG2(152, i - 1);
-			if (pcc[i - 1] == 3) FLAG2(155, i - 1);
+			if (pcc[i_1] == 8) FLAG2(152, i_1);
+			if (pcc[i_1] == 3) FLAG2(155, i_1);
 			if (x > 1) {
 				i_2 = fli[x - 2];
 				if (pcc[i_2] == 8) FLAG2(158, i_2);
