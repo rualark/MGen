@@ -1033,24 +1033,24 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int i, vect
 		}
 	}			
 	leap_id = min(leap_size - 2, 3);
-	if (i < ep2 - 2) {
+	if (fleap_end < fli_size - 1) {
 		// Next leap in same direction
 		if (leap_next > 0) {
 			// Flag if greater than two thirds
-			if (abs(c[i + 2] - c[i]) > 4) FLAG2(27, i + 2)
+			if (abs(c[fli[fleap_end+1]] - c[i]) > 4) FLAG2(27, leap_end)
 				// Allow if both thirds, without flags (will process next cycle)
 			else arpeg=1;
 		}
 		// Next leap back
 		else if (leap_next < 0) {
-			int leap_size2 = abs(c[i + 2] - c[i + 1]);
+			int leap_size2 = abs(c[fli[fleap_end + 1]] - c[leap_end]);
 			// Flag if back leap greater than 6th
-			if (leap_size2 > 5) FLAG2(22, i + 1)
+			if (leap_size2 > 5) FLAG2(22, leap_end)
 				// Flag if back leap equal or smaller than 6th
-			else FLAG2(8, i + 1);
+			else FLAG2(8, leap_end);
 			// Flag leap back overflow
 			if (leap_size2 > leap_size) {
-				FLAG2(58, i + 1);
+				FLAG2(58, leap_end);
 				overflow = 1;
 			}
 		}
@@ -1075,7 +1075,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			if (FailLeapMulti(leap_next, arpeg, overflow, i, c, leap)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (!overflow && !arpeg)
-			if (FailLeapFill(i, c, last_leap, leap_prev, child_leap)) return 1;
+				if (FailLeapFill(i, c, last_leap, leap_prev, child_leap)) return 1;
 			if (FailLeapMDC(i, leap, c)) return 1;
 		}
 	}
