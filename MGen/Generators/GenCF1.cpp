@@ -2467,10 +2467,10 @@ check:
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(c, cc, pc, pcc, 0, ep2);
+		CreateLinks(cc);
 		if (minor_cur && FailMinor(pcc)) goto skip;
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
-		CreateLinks(cc);
 		if (FailLastNotes(pc, ep2)) goto skip;
 		if (FailNoteSeq(pc)) goto skip;
 		if (FailIntervals(c, cc, pc, pcc)) goto skip;
