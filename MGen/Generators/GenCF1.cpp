@@ -604,8 +604,8 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 
 // Search for outstanding repeats
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
-	int ok;
-	if (ep2 > rlen*2) for (int ls = 0; ls < fli_size - rlen * 2; ++ls) {
+	int ok, f, f1;
+	if (fli_size > rlen*2) for (int ls = 0; ls < fli_size - rlen * 2; ++ls) {
 		s = fli[ls];
 		s1 = fli[ls + 1];
 		if (MELODY_SEPARATION(s, s1)) {
@@ -613,8 +613,8 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 			int finish = ls + scan_len;
 			if (finish > fli_size - rlen) finish = fli_size - rlen;
 			for (int x = ls + 2; x <= finish; ++x) {
-				int f = fli[x];
-				int f1 = fli[x + 1];
+				f = fli[x];
+				f1 = fli[x + 1];
 				// Check rhythm
 				if ((f - s) % 2) continue;
 				if (MELODY_SEPARATION(f, f1)) {
@@ -641,23 +641,28 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 
 int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok;
-	if (ep2 > rlen + 1) for (int i = 0; i < ep2 - rlen - 1; ++i) {
+	int f, f1;
+	if (fli_size > rlen + 1) for (int ls = 0; ls < fli_size - rlen - 1; ++ls) {
+		s = fli[ls];
+		s1 = fli[ls + 1];
 		// Search for repeat of note at same beat until last three notes
-		int finish = i + scan_len;
-		if (finish > ep2 - rlen) finish = ep2 - rlen;
-		for (int x = i + rlen; x <= finish; ++x) {
+		int finish = ls + scan_len;
+		if (finish > fli_size - rlen) finish = fli_size - rlen;
+		for (int x = ls + rlen; x <= finish; ++x) {
+			f = fli[x];
+			f1 = fli[x + 1];
 			// Check if same note
-			if (cc[x] == cc[i]) {
+			if (cc[f] == cc[s]) {
 				// Check that more notes repeat
 				ok = 0;
 				for (int z = 1; z < rlen; ++z) {
-					if (cc[x + z] != cc[i + z]) {
+					if (cc[fli[x + z]] != cc[fli[ls + z]]) {
 						ok = 1;
 						break;
 					}
 				}
 				if (!ok) {
-					FLAG2(fid, i);
+					FLAG2(fid, s);
 				}
 			}
 		}
