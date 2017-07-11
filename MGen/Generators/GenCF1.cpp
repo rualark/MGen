@@ -1245,7 +1245,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 		if (ep2 == c_len)
 			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s);
 		// Check if tritone is last step
-		if (s > c_len - 3) FLAG2(31, s)
+		if (ls > fli_size - 3) FLAG2(31, s)
 			// Check if resolution is correct
 		else if (ls < fli_size - 2) {
 			if (pcc[s1] == t1) FLAG2(31, s)
