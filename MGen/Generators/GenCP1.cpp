@@ -240,6 +240,7 @@ void CGenCP1::ScanCPInit() {
 	max_cc.resize(c_len);
 	bli.resize(c_len);
 	fli.resize(c_len);
+	llen.resize(c_len);
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(max_flags); // Flags for whole cantus
@@ -957,7 +958,7 @@ check:
 		if (FailCrossInt()) goto skip;
 		if (FailVIntervals()) goto skip;
 		if (FailOverlap()) goto skip;
-		if (FailStagnation(acc[cpv], nstat, ep2)) goto skip;
+		if (FailStagnation(acc[cpv], nstat)) goto skip;
 		if (FailMultiCulm(acc[cpv], ep2)) goto skip;
 		if (FailFirstNotes(apc[cpv], ep2)) goto skip;
 		if (FailLeap(ac[cpv], ep2, aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;

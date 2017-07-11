@@ -605,23 +605,33 @@ void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
 // Search for outstanding repeats
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok;
-	if (ep2 > rlen*2) for (int i = 0; i < ep2 - rlen * 2; ++i) if (MELODY_SEPARATION(i)) {
-		// Search for repeat of note at same beat until last three notes
-		int finish = i + scan_len;
-		if (finish > ep2 - rlen) finish = ep2 - rlen;
-		for (int x = i + 2; x <= finish; x += 2) if (MELODY_SEPARATION(x)) {
-			// Check if same note
-			if (cc[x] == cc[i]) {
-				// Check that more notes repeat
-				ok = 0;
-				for (int z = 1; z < rlen; ++z) {
-					if (cc[x + z] != cc[i + z]) {
-						ok = 1;
-						break;
+	if (ep2 > rlen*2) for (int ls = 0; ls < fli_size - rlen * 2; ++ls) {
+		s = fli[ls];
+		s1 = fli[ls + 1];
+		if (MELODY_SEPARATION(s, s1)) {
+			// Search for repeat of note at same beat until last three notes
+			int finish = ls + scan_len;
+			if (finish > fli_size - rlen) finish = fli_size - rlen;
+			for (int x = ls + 2; x <= finish; ++x) {
+				int f = fli[x];
+				int f1 = fli[x + 1];
+				// Check rhythm
+				if ((f - s) % 2) continue;
+				if (MELODY_SEPARATION(f, f1)) {
+					// Check if same note
+					if (cc[f] == cc[s]) {
+						// Check that more notes repeat
+						ok = 0;
+						for (int z = 1; z < rlen; ++z) {
+							if (cc[fli[x + z]] != cc[fli[ls + z]] || llen[x+z] != llen[ls+z]) {
+								ok = 1;
+								break;
+							}
+						}
+						if (!ok) {
+							FLAG2(fid, s);
+						}
 					}
-				}
-				if (!ok) {
-					FLAG2(fid, i);
 				}
 			}
 		}
@@ -856,16 +866,25 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 void CGenCF1::CreateLinks(vector<int> &cc) {
 	int prev_note = -1;
 	int lpos = 0;
+	int l = 0;
 	fli_size = 0;
 	for (int i = 0; i < ep2; ++i) {
 		if (prev_note != cc[i]) {
+			// Save linked note length
+			if (prev_note != -1) {
+				llen[lpos - 1] = l;
+				l = 0;
+			}
 			prev_note = cc[i];
+			// Save links
 			fli[lpos] = i;
 			++lpos;
 		}
 		bli[i] = lpos-1;
+		l++;
 	}
 	fli_size = lpos;
+	llen[lpos - 1] = l;
 }
 
 void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_to, int &fill_from, int &fill_finish) {
@@ -1288,6 +1307,7 @@ void CGenCF1::ScanCantusInit() {
 	c.resize(c_len); // cantus (diatonic)
 	cc.resize(c_len); // cantus (chromatic)
 	fli.resize(c_len);
+	llen.resize(c_len);
 	bli.resize(c_len);
 	fpenalty.resize(max_flags);
 	cc_old.resize(c_len); // Cantus diatonic saved for SWA

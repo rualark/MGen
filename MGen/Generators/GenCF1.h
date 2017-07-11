@@ -3,7 +3,7 @@
 #include "../GLibrary/VSet.h"
 
 // Checks if we have leap or melody direction change here: needs to be not first and not last note
-#define MELODY_SEPARATION(i) (!i || (leap[i - 1]) || ((c[i] - c[i - 1])*(c[i + 1] - c[i]) < 0))
+#define MELODY_SEPARATION(s, s1) (!s || (leap[s - 1]) || ((c[s] - c[s - 1])*(c[s1] - c[s]) < 0))
 
 // Report violation
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; if (accept[id] > -1) { flags[0] = 0; flags[id] = 1; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; } }
@@ -106,7 +106,7 @@ protected:
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);
 	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
-	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int ep2);
+	inline int FailStagnation(vector<int>& cc, vector<int>& nstat);
 	inline int FailMultiCulm(vector<int>& cc, int ep2);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
@@ -229,6 +229,7 @@ protected:
 	vector <vector <int>> hv; //  Variants of note harmonic meaning
 	vector <vector <int>> hsp; // Harmonic sequence penalty
 	vector <int> fli; // Forward links to each non-slurred note
+	vector <int> llen; // Length of each linked note
 	vector <int> bli; // Back links from each step to fli
 	int fli_size; // Size of filled fli vector
 	// Random SWA
