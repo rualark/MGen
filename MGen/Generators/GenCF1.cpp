@@ -340,12 +340,11 @@ int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
 
 // Detect prohibited note sequences
 int CGenCF1::FailNoteSeq(vector<int> &pc) {
-	int i, i1;
 	for (int x = 0; x < fli_size-2; ++x) {
-		i = fli[x];
-		i1 = fli[x + 1];
+		s = fli[x];
+		s1 = fli[x + 1];
 		// Prohibit GC before cadence
-		if (pc[i] == 4 && pc[i1] == 0) FLAG2(48, i);
+		if (pc[s] == 4 && pc[s1] == 0) FLAG2(48, s);
 		// Prohibit D-S
 	}
 	return 0;
@@ -666,7 +665,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 	int smooth_sum = 0;
 	int smooth_sum2 = 0;
 	int leap_sum_i = 0;
-	int leap_sum_i2 = 0;
+	int leap_sum_s2 = 0;
 	for (int i = 0; i < ep2 - 1; ++i) {
 		// Find all leaps
 		leap[i] = 0;
@@ -700,7 +699,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 		}
 		if (leap_sum2 > max_leap_sum2) {
 			max_leap_sum2 = leap_sum2;
-			leap_sum_i2 = i;
+			leap_sum_s2 = i;
 		}
 		// Calculate penalty
 		if (leap_sum > max_leaps) {
@@ -733,8 +732,8 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 		else FLAG2(3, leap_sum_i);
 	}
 	if (max_leap_sum2 > cse_leaps) {
-		if (max_leap_sum2 > cse_leaps2) FLAG2(71, leap_sum_i2)
-		else FLAG2(70, leap_sum_i2);
+		if (max_leap_sum2 > cse_leaps2) FLAG2(71, leap_sum_s2)
+		else FLAG2(70, leap_sum_s2);
 	}
 	return 0;
 }
@@ -1191,38 +1190,38 @@ int CGenCF1::FailLeapMDC(int i, vector<int> &leap, vector<int> &c) {
 }
 
 // Check tritone t1-t2 which has to resolve from ta to tb
-int CGenCF1::FailTritone(int x, int i, int i1, int i2, int i_1, int i_2, int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	int leap_start;
 	int found;
 	// Tritone prohibit
-	leap_start = i;
+	leap_start = s;
 	found = 0;
 	// Check consecutive tritone
-	if ((pcc[i1] == t2 && pcc[i] == t1) || (pcc[i1] == t1 && pcc[i] == t2)) found = 1;
+	if ((pcc[s1] == t2 && pcc[s] == t1) || (pcc[s1] == t1 && pcc[s] == t2)) found = 1;
 	// Check tritone with additional note inside
-	if (i > 0) {
+	if (s > 0) {
 		// Check pitches
-		if ((pcc[i1] == t2 && pcc[i_1] == t1) || (pcc[i1] == t1 && pcc[i_1] == t2))
+		if ((pcc[s1] == t2 && pcc[s_1] == t1) || (pcc[s1] == t1 && pcc[s_1] == t2))
 			// Check intermediate note and mdc
-			if ((c[i] > c[i1] && c[i] < c[i_1] && (x<2 || c[i_2] < c[i1]) && (x>fli_size - 3 || c[i2] > c[i1])) ||
-				(c[i] < c[i1] && c[i] > c[i_1] && (x<2 || c[i_2] > c[i_1]) && (x>fli_size - 3 || c[i2] < c[i1]))) {
+			if ((c[s] > c[s1] && c[s] < c[s_1] && (ls<2 || c[s_2] < c[s1]) && (ls>fli_size - 3 || c[s2] > c[s1])) ||
+				(c[s] < c[s1] && c[s] > c[s_1] && (ls<2 || c[s_2] > c[s_1]) && (ls>fli_size - 3 || c[s2] < c[s1]))) {
 				found = 1;
-				leap_start = i_1;
+				leap_start = s_1;
 			}
 	}
 	if (found) {
 		// Check if tritone is highest leap if this is last window
 		if (ep2 == c_len)
-			if ((cc[leap_start] == nmax) || (cc[i1] == nmax)) FLAG2(32, i);
+			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s);
 		// Check if tritone is last step
-		if (i > c_len - 3) FLAG2(31, i)
+		if (s > c_len - 3) FLAG2(31, s)
 			// Check if resolution is correct
-		else if (x < fli_size - 2) {
-			if (pcc[i1] == t1) FLAG2(31, i)
-			else if (pcc[i2] != tb) FLAG2(31, i)
-			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(31, i)
+		else if (ls < fli_size - 2) {
+			if (pcc[s1] == t1) FLAG2(31, s)
+			else if (pcc[s2] != tb) FLAG2(31, s)
+			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(31, s)
 				// Record resolved tritone
-			else FLAG2(2, i);
+			else FLAG2(2, s);
 		}
 		// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
 	}
@@ -1231,22 +1230,21 @@ int CGenCF1::FailTritone(int x, int i, int i1, int i2, int i_1, int i_2, int ta,
 
 int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
-	int i, i1, i2, i_1, i_2;
-	for (int x = 0; x < fli_size - 1; ++x) {
-		i = fli[x];
-		i1 = fli[x + 1];
-		if (x > 0) i_1 = fli[x - 1];
-		if (x > 1) i_2 = fli[x - 2];
-		if (x < fli_size - 2) i2 = fli[x + 2];
+	for (ls = 0; ls < fli_size - 1; ++ls) {
+		s = fli[ls];
+		s1 = fli[ls + 1];
+		if (ls > 0) s_1 = fli[ls - 1];
+		if (ls > 1) s_2 = fli[ls - 2];
+		if (ls < fli_size - 2) s2 = fli[ls + 2];
 		// Warning: tritone F#C in minor is not detected (can add FailTritone to detect) because it is already prohibited by Unaltered near altered.
 		// If you allow Unaltered near altered, you should implement FailTritone for F#C.
-		if (FailTritone(x, i, i1, i2, i_1, i_2, 4, 5, 11, 0, c, cc, pc, pcc)) return 1;
+		if (FailTritone(4, 5, 11, 0, c, cc, pc, pcc)) return 1;
 		if (minor_cur) {
-			if (FailTritone(x, i, i1, i2, i_1, i_2, 7, 8, 2, 3, c, cc, pc, pcc)) return 1;
+			if (FailTritone(7, 8, 2, 3, c, cc, pc, pcc)) return 1;
 		}
 		// Sept prohibit
-		if (abs(cc[i1] - cc[i]) == 10) FLAG2(1, i)
-		else if (abs(cc[i1] - cc[i]) == 11) FLAG2(39, i);
+		if (abs(cc[s1] - cc[s]) == 10) FLAG2(1, s)
+		else if (abs(cc[s1] - cc[s]) == 11) FLAG2(39, s);
 	}
 	return 0;
 }
@@ -1830,54 +1828,53 @@ void CGenCF1::SaveBestRejected() {
 }
 
 int CGenCF1::FailMinor(vector<int> &pcc) {
-	int i, i_1, i_2, i1, i2;
 	for (int x = 1; x < fli_size; ++x) {
-		i = fli[x];
-		i_1 = fli[x - 1];
+		s = fli[x];
+		s_1 = fli[x - 1];
 		// Prohibit major second up before I (in last steps and other places)
-		if (pcc[i] == 0 && pcc[i_1] == 10) FLAG2(74, i_1);
+		if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1);
 		// Prohibit minor second up before VII - absorbed
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
-		if (pcc[i] == 11) {
-			if (pcc[i_1] == 10) FLAG2(153, i_1);
-			if (pcc[i_1] == 8) FLAG2(154, i_1);
-			if (pcc[i_1] == 3) FLAG2(157, i_1);
+		if (pcc[s] == 11) {
+			if (pcc[s_1] == 10) FLAG2(153, s_1);
+			if (pcc[s_1] == 8) FLAG2(154, s_1);
+			if (pcc[s_1] == 3) FLAG2(157, s_1);
 			if (x > 1) {
-				i_2 = fli[x - 2];
-				if (pcc[i_2] == 10) FLAG2(159, i_2);
-				if (pcc[i_2] == 8) FLAG2(160, i_2);
-				if (pcc[i_2] == 3) FLAG2(163, i_2);
+				s_2 = fli[x - 2];
+				if (pcc[s_2] == 10) FLAG2(159, s_2);
+				if (pcc[s_2] == 8) FLAG2(160, s_2);
+				if (pcc[s_2] == 3) FLAG2(163, s_2);
 			}
 			if (x < fli_size - 1) {
-				i1 = fli[x+1];
-				if (pcc[i1] == 10) FLAG2(153, i1);
-				if (pcc[i1] == 8) FLAG2(154, i1);
-				if (pcc[i1] == 3) FLAG2(156, i1);
+				s1 = fli[x+1];
+				if (pcc[s1] == 10) FLAG2(153, s1);
+				if (pcc[s1] == 8) FLAG2(154, s1);
+				if (pcc[s1] == 3) FLAG2(156, s1);
 				if (x < fli_size - 2) {
-					i2 = fli[x+2];
-					if (pcc[i2] == 10) FLAG2(159, i2);
-					if (pcc[i2] == 8) FLAG2(160, i2);
-					if (pcc[i2] == 3) FLAG2(162, i2);
+					s2 = fli[x+2];
+					if (pcc[s2] == 10) FLAG2(159, s2);
+					if (pcc[s2] == 8) FLAG2(160, s2);
+					if (pcc[s2] == 3) FLAG2(162, s2);
 				}
 			}
 		}
-		if (pcc[i] == 9) {
-			if (pcc[i_1] == 8) FLAG2(152, i_1);
-			if (pcc[i_1] == 3) FLAG2(155, i_1);
+		if (pcc[s] == 9) {
+			if (pcc[s_1] == 8) FLAG2(152, s_1);
+			if (pcc[s_1] == 3) FLAG2(155, s_1);
 			if (x > 1) {
-				i_2 = fli[x - 2];
-				if (pcc[i_2] == 8) FLAG2(158, i_2);
-				if (pcc[i_2] == 3) FLAG2(161, i_2);
+				s_2 = fli[x - 2];
+				if (pcc[s_2] == 8) FLAG2(158, s_2);
+				if (pcc[s_2] == 3) FLAG2(161, s_2);
 			}
 			if (x < fli_size - 1) {
-				i1 = fli[x + 1];
-				if (pcc[i1] == 8) FLAG2(152, i1);
-				if (pcc[i1] == 3) FLAG2(155, i1);
+				s1 = fli[x + 1];
+				if (pcc[s1] == 8) FLAG2(152, s1);
+				if (pcc[s1] == 3) FLAG2(155, s1);
 				if (x < fli_size - 2) {
-					i2 = fli[x + 2];
-					if (pcc[i2] == 8) FLAG2(158, i2);
-					if (pcc[i2] == 3) FLAG2(161, i2);
+					s2 = fli[x + 2];
+					if (pcc[s2] == 8) FLAG2(158, s2);
+					if (pcc[s2] == 3) FLAG2(161, s2);
 				}
 			}
 		}
@@ -2631,23 +2628,23 @@ void CGenCF1::Generate()
 		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 		::shuffle(ci.begin(), ci.end(), default_random_engine(seed));
 		// Swap
-		int i1, i2;
+		int s1, s2;
 		for (int i = 0; i < accepted; ++i) {
 			for (int x = 0; x < c_len; ++x) {
-				i1 = i*(c_len + 1) + x;
-				i2 = ci[i]*(c_len + 1) + x;
-				note2[i1] = note[i2][v];
-				comment2[i1] = comment[i2][v];
-				color2[i1] = color[i2][v];
+				s1 = i*(c_len + 1) + x;
+				s2 = ci[i]*(c_len + 1) + x;
+				note2[s1] = note[s2][v];
+				comment2[s1] = comment[s2][v];
+				color2[s1] = color[s2][v];
 			}
 		}
 		// Replace
 		for (int i = 0; i < accepted; ++i) {
 			for (int x = 0; x < c_len; ++x) {
-				i1 = i*(c_len + 1) + x;
-				note[i1][v] = note2[i1];
-				comment[i1][v] = comment2[i1];
-				color[i1][v] = color2[i1];
+				s1 = i*(c_len + 1) + x;
+				note[s1][v] = note2[s1];
+				comment[s1][v] = comment2[s1];
+				color[s1][v] = color2[s1];
 			}
 		}
 		// Adapt

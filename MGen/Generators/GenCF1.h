@@ -120,7 +120,7 @@ protected:
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(int i, vector<int>& c, int last_leap, int leap_prev, int child_leap);
 	inline int FailLeapMDC(int i, vector<int>& leap, vector<int>& c);
-	inline int FailTritone(int x, int i, int i1, int i2, int i_1, int i_2, int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailGlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
 	void ScanCantusInit();
@@ -334,6 +334,12 @@ protected:
 	int filled, prefilled; // If leap is filled and prefilled
 	int mdc1, mdc2; // Status of melody direction change before and after leap
 	vector <int> tc; // Tail diatonic notes
+
+	// Local link steps
+	int ls; // Link step inside fli
+	int s; // Current step
+	int s1, s2; // +1, +2 steps
+	int s_1, s_2; // -1, -2 steps
 
 	// Local SWA
 	vector <long> cids;
