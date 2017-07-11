@@ -1118,6 +1118,8 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 	// Fill parameters
 	int tail_len, fill_to, fill_to_pre, fill_from, deviates, fill_finish, dev_count;
 	int prefilled_last = 0;
+	filled = 0;
+	prefilled = 0;
 	int pskips = 10;
 	int skips = 10;
 	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
