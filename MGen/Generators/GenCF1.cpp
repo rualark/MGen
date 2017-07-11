@@ -1317,8 +1317,8 @@ void CGenCF1::ScanCantusInit() {
 		anflags[i].resize(c_len, vector<int>(max_flags)); // Flags for each note
 		anflagsc[i].resize(c_len); // number of flags for each note
 	}
-	c.resize(c_len); // cantus (diatonic)
-	cc.resize(c_len); // cantus (chromatic)
+	m_c.resize(c_len); // cantus (diatonic)
+	m_cc.resize(c_len); // cantus (chromatic)
 	fli.resize(c_len);
 	llen.resize(c_len);
 	bli.resize(c_len);
@@ -1343,11 +1343,11 @@ void CGenCF1::ScanCantusInit() {
 	fcor.resize(max_flags, vector<long long>(max_flags)); // Flags correlation matrix
 	seed_cycle = 0; // Number of cycles in case of random_seed
 	reseed_count = 0;
-	pc.resize(c_len);
-	pcc.resize(c_len);
-	leap.resize(c_len);
-	smooth.resize(c_len);
-	slur.resize(c_len);
+	m_pc.resize(c_len);
+	m_pcc.resize(c_len);
+	m_leap.resize(c_len);
+	m_smooth.resize(c_len);
+	m_slur.resize(c_len);
 	nstat.resize(MAX_NOTE);
 	nstat2.resize(MAX_NOTE);
 	nstat3.resize(MAX_NOTE);
@@ -1431,31 +1431,31 @@ void CGenCF1::ApplySourceRange() {
 
 void CGenCF1::SingleCantusInit() {
 	// Copy cantus
-	cc = *scantus;
+	m_cc = *scantus;
 	// Get diatonic steps from chromatic
-	first_note = cc[0];
-	last_note = cc[c_len - 1];
+	first_note = m_cc[0];
+	last_note = m_cc[c_len - 1];
 	for (int i = 0; i < c_len; ++i) {
-		c[i] = CC_C(cc[i], tonic_cur, minor_cur);
+		m_c[i] = CC_C(m_cc[i], tonic_cur, minor_cur);
 		// Save value for future use;
-		cc_old[i] = cc[i];
+		cc_old[i] = m_cc[i];
 	}
 	if (!swa_inrange) {
-		GetRealRange(c, cc);
+		GetRealRange(m_c, m_cc);
 		ApplySourceRange();
 	}
 	// Set pitch limits
 	// If too wide range is not accepted, correct range to increase scan performance
 	if (!accept[37]) {
 		for (int i = 0; i < c_len; ++i) {
-			min_cc[i] = max(minc, cc[i] - correct_range);
-			max_cc[i] = min(maxc, cc[i] + correct_range);
+			min_cc[i] = max(minc, m_cc[i] - correct_range);
+			max_cc[i] = min(maxc, m_cc[i] + correct_range);
 		}
 	}
 	else {
 		for (int i = 0; i < c_len; ++i) {
-			min_cc[i] = cc[i] - correct_range;
-			max_cc[i] = cc[i] + correct_range;
+			min_cc[i] = m_cc[i] - correct_range;
+			max_cc[i] = m_cc[i] + correct_range;
 		}
 	}
 	// Convert limits to diatonic and recalibrate
@@ -1503,7 +1503,7 @@ void CGenCF1::SingleCantusInit() {
 			ep2 = GetMaxSmap() + 1;
 			if (sp2 == smatrixc) ep2 = c_len;
 			// Clear scan steps
-			FillCantusMap(cc, smap, 0, smatrixc, min_cc);
+			FillCantusMap(m_cc, smap, 0, smatrixc, min_cc);
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
@@ -1512,7 +1512,7 @@ void CGenCF1::SingleCantusInit() {
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
 			// Clear scan steps of current window
-			FillCantusMap(cc, smap, sp1, sp2, min_cc);
+			FillCantusMap(m_cc, smap, sp1, sp2, min_cc);
 		}
 		// Minimum element
 		ep1 = max(0, GetMinSmap() - 1);
@@ -1840,7 +1840,7 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	return 0;
 }
 
-void CGenCF1::SaveBestRejected() {
+void CGenCF1::SaveBestRejected(vector<int> &cc) {
 	// Save best rejected results if we can analyze full cantus
 	if (best_rejected && ep2 == c_len) {
 		CalcRpenalty(cc);
@@ -1948,7 +1948,7 @@ void CGenCF1::ShowScanStatus(vector<int> &cc) {
 void CGenCF1::ReseedCantus()
 {
 	CString st;
-	MultiCantusInit(c, cc);
+	MultiCantusInit(m_c, m_cc);
 	// Allow two seed cycles for each accept
 	seed_cycle = 0;
 	++reseed_count;
@@ -2090,7 +2090,7 @@ void CGenCF1::ShowFlagBlock() {
 void CGenCF1::CalcDpenalty() {
 	dpenalty_cur = 0;
 	for (int z = 0; z < c_len; z++) {
-		int dif = abs(cc_old[z] - cc[z]);
+		int dif = abs(cc_old[z] - m_cc[z]);
 		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
 	}
 }
@@ -2113,7 +2113,7 @@ void CGenCF1::SaveCantus() {
 		}
 		dpenalty.push_back(dpenalty_cur);
 	}
-	clib.push_back(cc);
+	clib.push_back(m_cc);
 	rpenalty.push_back(rpenalty_cur);
 	rpenalty_min = rpenalty_cur;
 }
@@ -2137,7 +2137,7 @@ int CGenCF1::SendCantus() {
 			color[pos + i][v] = Color(0, 100, 100, 100);
 			int current_severity = -1;
 			// Set nflag color
-			note[pos + i][v] = cc[x];
+			note[pos + i][v] = m_cc[x];
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
@@ -2301,10 +2301,10 @@ void CGenCF1::RandomSWA()
 	for (int i = 0; i < INT_MAX; ++i) {
 		if (need_exit) break;
 		// Create random cantus
-		MakeNewCantus(c, cc);
+		MakeNewCantus(m_c, m_cc);
 		// Convert cantus to chromatic
 		for (int x = 0; x < c_len; ++x) {
-			cantus[0][x] = C_CC(c[x], tonic_cur, minor_cur);
+			cantus[0][x] = C_CC(m_c[x], tonic_cur, minor_cur);
 		}
 		// Set scan matrix to scan all
 		smatrixc = c_len - 2;
@@ -2319,11 +2319,11 @@ void CGenCF1::RandomSWA()
 		SWA(0, 0);
 		// Show cantus if it is perfect
 		if (rpenalty_min <= rpenalty_accepted) {
-			if (vs.Insert(cc)) {
+			if (vs.Insert(m_cc)) {
 				int step = t_generated;
 				// Add line
 				linecolor[t_generated] = Color(255, 0, 0, 0);
-				ScanCantus(tEval, 0, &(cc));
+				ScanCantus(tEval, 0, &(m_cc));
 				Adapt(step, t_generated - 1);
 				t_sent = t_generated;
 			}
@@ -2356,7 +2356,7 @@ void CGenCF1::SWA(int i, int dp) {
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
 	dpenalty_min = MAX_PENALTY;
-	cc = cantus[i];
+	m_cc = cantus[i];
 	int a;
 	for (a = 0; a < approximations; a++) {
 		// Save previous minimum penalty
@@ -2370,13 +2370,13 @@ void CGenCF1::SWA(int i, int dp) {
 		dpenalty_min = MAX_PENALTY;
 		// Add current cantus if this is not first run
 		if (a > 0) {
-			clib.push_back(cc);
-			clib_vs.Insert(cc);
+			clib.push_back(m_cc);
+			clib_vs.Insert(m_cc);
 			rpenalty.push_back(rpenalty_min_old);
 			dpenalty.push_back(dpenalty_min_old);
 		}
 		// Sliding Windows Approximation
-		ScanCantus(tCor, 0, &cc);
+		ScanCantus(tCor, 0, &m_cc);
 		dpenalty_min = MAX_PENALTY;
 		cnum = clib.size();
 		if (cnum) {
@@ -2404,7 +2404,7 @@ void CGenCF1::SWA(int i, int dp) {
 				// Get random cid
 				int cid = randbw(0, cids.size() - 1);
 				// Get random cantus to continue
-				cc = clib[cids[cid]];
+				m_cc = clib[cids[cid]];
 			}
 		}
 		// Send log
@@ -2413,7 +2413,7 @@ void CGenCF1::SWA(int i, int dp) {
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
 		}
-		if (cc.size() > 60) {
+		if (m_cc.size() > 60) {
 			st.Format("SWA%d attempt: %d", s_len, a);
 			SetStatusText(4, st);
 		}
@@ -2462,7 +2462,7 @@ void CGenCF1::SaveCantusIfRp() {
 		if (!skip_flags && rpenalty_cur == 0)
 			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 		// Insert only if cc is unique
-		if (clib_vs.Insert(cc))
+		if (clib_vs.Insert(m_cc))
 			SaveCantus();
 		// Save flags for SWA stuck flags
 		if (rpenalty_cur) best_flags = flags;
@@ -2479,7 +2479,7 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	else scantus = 0;
 
 	ScanCantusInit();
-	if (task == tGen) MultiCantusInit(c, cc);
+	if (task == tGen) MultiCantusInit(m_c, m_cc);
 	else SingleCantusInit();
 	if (FailWindowsLimit()) return;
 	// Analyze combination
@@ -2487,40 +2487,40 @@ check:
 	while (true) {
 		//LogCantus(cc);
 		ClearFlags(0, ep2);
-		if (FailNoteRepeat(cc, ep1, ep2 - 1)) goto skip;
-		GetMelodyInterval(cc, 0, ep2, nmin, nmax);
+		if (FailNoteRepeat(m_cc, ep1, ep2 - 1)) goto skip;
+		GetMelodyInterval(m_cc, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
 		if (nmax - nmin > max_interval) FLAG(37, 0);
 		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		if (need_exit && task != tEval) break;
 		// Show status
-		if (accepted3 % 100000 == 0) ShowScanStatus(cc);
+		if (accepted3 % 100000 == 0) ShowScanStatus(m_cc);
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
-		if (FailDiatonic(c, cc, 0, ep2, minor_cur)) goto skip;
-		GetPitchClass(c, cc, pc, pcc, 0, ep2);
-		CreateLinks(cc);
-		if (minor_cur && FailMinor(pcc)) goto skip;
+		if (FailDiatonic(m_c, m_cc, 0, ep2, minor_cur)) goto skip;
+		GetPitchClass(m_c, m_cc, m_pc, m_pcc, 0, ep2);
+		CreateLinks(m_cc);
+		if (minor_cur && FailMinor(m_pcc)) goto skip;
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
-		if (FailLastNotes(pc, ep2)) goto skip;
-		if (FailNoteSeq(pc)) goto skip;
-		if (FailIntervals(c, cc, pc, pcc)) goto skip;
-		if (FailLeapSmooth(c, cc, ep2, leap, smooth, slur)) goto skip;
-		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps2, 2, 76)) goto skip;
-		if (FailOutstandingRepeat(c, cc, leap, ep2, repeat_steps3, 3, 36)) goto skip;
-		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
-		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
-		if (FailGlobalFill(c, ep2, nstat2)) goto skip;
-		if (FailStagnation(cc, nstat)) goto skip;
-		if (FailMultiCulm(cc, slur)) goto skip;
-		if (FailFirstNotes(pc, ep2)) goto skip;
-		if (FailLeap(c, ep2, leap, smooth, nstat2, nstat3)) goto skip;
-		if (ep2>4 && FailMelodyHarm(pc)) goto skip;
+		if (FailLastNotes(m_pc, ep2)) goto skip;
+		if (FailNoteSeq(m_pc)) goto skip;
+		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
+		if (FailLeapSmooth(m_c, m_cc, ep2, m_leap, m_smooth, m_slur)) goto skip;
+		if (FailOutstandingRepeat(m_c, m_cc, m_leap, ep2, repeat_steps2, 2, 76)) goto skip;
+		if (FailOutstandingRepeat(m_c, m_cc, m_leap, ep2, repeat_steps3, 3, 36)) goto skip;
+		if (FailLongRepeat(m_cc, m_leap, ep2, repeat_steps5, 5, 72)) goto skip;
+		if (FailLongRepeat(m_cc, m_leap, ep2, repeat_steps7, 7, 73)) goto skip;
+		if (FailGlobalFill(m_c, ep2, nstat2)) goto skip;
+		if (FailStagnation(m_cc, nstat)) goto skip;
+		if (FailMultiCulm(m_cc, m_slur)) goto skip;
+		if (FailFirstNotes(m_pc, ep2)) goto skip;
+		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;
+		if (ep2>4 && FailMelodyHarm(m_pc)) goto skip;
 
-		SaveBestRejected();
+		SaveBestRejected(m_cc);
 		// If we are window-scanning
 		if ((task == tGen || task == tCor) && method == mScan) {
 			++accepted2;
@@ -2538,7 +2538,7 @@ check:
 		}
 		// Calculate rules penalty if we evaluate or correct cantus without full scan
 		else {
-			CalcRpenalty(cc);
+			CalcRpenalty(m_cc);
 		}
 		// Accept cantus
 		++accepted;
@@ -2551,7 +2551,7 @@ check:
 		}
 		else {
 			if (task == tGen && accept_reseed) {
-				if (clib_vs.Insert(cc)) {
+				if (clib_vs.Insert(m_cc)) {
 					if (SendCantus()) break;
 					ReseedCantus();
 					// Start evaluating without scan
@@ -2568,13 +2568,13 @@ check:
 			if (task == tEval) return;
 		}
 	skip:
-		ScanLeft(cc, finished);
+		ScanLeft(m_cc, finished);
 		if (finished) {
 			// Clear flag to prevent coming here again
 			finished = 0;
 			// Sliding Windows Approximation
 			if (method == mSWA) {
-				if (NextSWA(cc, cc_old)) break;
+				if (NextSWA(m_cc, cc_old)) break;
 				goto check;
 			}
 			// Finish if this is last variant in first window and not SWA
@@ -2596,13 +2596,13 @@ check:
 				}
 				else break;
 			}
-			BackWindow(cc);
+			BackWindow(m_cc);
 			// Goto next variant calculation
 			goto skip;
 		} // if (finished)
-		ScanRight(cc);
+		ScanRight(m_cc);
 	}
-	if (accepted3 > 100000) ShowScanStatus(cc);
+	if (accepted3 > 100000) ShowScanStatus(m_cc);
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();

@@ -238,12 +238,12 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 				step = step0;
 			}
 			// Get cantus
-			cc = clib[cids[x]];
+			m_cc = clib[cids[x]];
 			dpenalty_cur = dpenalty[cids[x]];
 			// Clear penalty
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result
-			ScanCantus(tEval, 1, &(cc));
+			ScanCantus(tEval, 1, &(m_cc));
 			// Go back
 			step = step0;
 			if (step < 0) break;

@@ -141,7 +141,7 @@ protected:
 	inline void ScanLeft(vector<int> &cc, int &finished);
 	inline void BackWindow(vector<int>& cc);
 	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);
-	inline void SaveBestRejected();
+	inline void SaveBestRejected(vector<int>& cc);
 	inline int FailMinor(vector<int>& pcc);
 	inline void ShowScanStatus(vector<int>& cc);
 	inline void ReseedCantus();
@@ -259,13 +259,13 @@ protected:
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
 	int flags_need2 = 0; // Number of second level flags set
-	vector<int> c; // Cantus diatonic
-	vector<int> cc; // Cantus chromatic
-	vector<int> pc; // pitch class (diatonic)
-	vector<int> pcc; // pitch class (chromatic)
-	vector<int> leap;
-	vector<int> smooth;
-	vector<int> slur;
+	vector<int> m_c; // Cantus diatonic
+	vector<int> m_cc; // Cantus chromatic
+	vector<int> m_pc; // pitch class (diatonic)
+	vector<int> m_pcc; // pitch class (chromatic)
+	vector<int> m_leap;
+	vector<int> m_smooth;
+	vector<int> m_slur;
 	vector<float> fpenalty; // Additional penalty for flags
 	vector<int>  flags; // Flags for whole cantus
 	vector<vector<vector<int>>> anflags; // Note flags

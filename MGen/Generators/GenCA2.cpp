@@ -101,13 +101,13 @@ void CGenCA2::MergeCantus() {
 	int prev_note = -1;
 	int lpos = 0;
 	fli_size = 0;
-	cc.clear();
+	m_cc.clear();
 	cc_len.clear();
 	cc_tempo.clear();
 	for (int i = 0; i < cpoint[cantus_id][cfv].size(); ++i) {
 		if (prev_note != cpoint[cantus_id][cfv][i]) {
 			prev_note = cpoint[cantus_id][cfv][i];
-			cc.push_back(prev_note);
+			m_cc.push_back(prev_note);
 			cc_len.push_back(cantus_len[cantus_id][i]);
 			cc_tempo.push_back(cantus_tempo[cantus_id][i]);
 		}
@@ -178,7 +178,7 @@ void CGenCA2::Generate() {
 		FillPause(step0, floor(real_len / 8 + 1) * 8, 3);
 		cpv = cfv;
 		SelectRuleSet(cf_rule_set);
-		ScanCantus(tEval, 0, &(cc));
+		ScanCantus(tEval, 0, &(m_cc));
 		// Show cantus id
 		st.Format("Counterpoint %d. ", cantus_id + 1);
 		comment[step0][0] = st + comment[step0][0];
@@ -190,10 +190,10 @@ void CGenCA2::Generate() {
 		// Load first voice
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
-		ac[cfv] = c;
-		acc[cfv] = cc;
-		apc[cfv] = pc;
-		apcc[cfv] = pcc;
+		ac[cfv] = m_c;
+		acc[cfv] = m_cc;
+		apc[cfv] = m_pc;
+		apcc[cfv] = m_pcc;
 		dpenalty_cur = 0;
 		scpoint = cpoint[i];
 		// Choose level
