@@ -400,7 +400,7 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &la
 }
 
 int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
-	int pen1, pen2;
+	int pen1, pen2, pen3;
 	int dcount = 0;
 	int scount = 0;
 	int tcount = 0;
@@ -417,7 +417,13 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 				FLAG3(57, i);
 				if (i < p) {
 					pen2 = hsp[chm[i]][chm[i + 1]];
-					if (pen2 == 2) FLAG3(92, i);
+					if (pen2 == 2) {
+						FLAG3(92, i + 1);
+						if (i < p - 1) {
+							pen3 = hsp[chm[i + 1]][chm[i + 2]];
+							if (pen3 == 2) FLAG3(23, i+2);
+						}
+					}
 				}
 			}
 		}
