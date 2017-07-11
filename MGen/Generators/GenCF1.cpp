@@ -771,12 +771,12 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat) {
 }
 
 // Prohibit multiple culminations
-int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
+int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	int culm_sum = 0;
 	if (ep2 < c_len) {
 		// Find multiple culminations at highest note
 		if (nmax == max_cc[0] || nmax - nmin == max_interval) {
-			for (int i = 0; i < ep2; ++i) {
+			for (int i = 0; i < ep2; ++i) if (!slur[i]) {
 				if (cc[i] == nmax) {
 					++culm_sum;
 					culm_step = i;
@@ -786,20 +786,20 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, int ep2) {
 		}
 	}
 	else {
-		for (int i = 0; i < ep2; ++i) {
-			if (cc[i] == nmax) {
+		for (int ls = 0; ls < fli_size; ++ls) {
+			if (cc[fli[ls]] == nmax) {
 				++culm_sum;
-				culm_step = i;
-				if (culm_sum > 1) FLAG2(12, culm_step);
+				culm_step = ls;
+				if (culm_sum > 1) FLAG2(12, fli[culm_step]);
 			}
 		}
 		// Prohibit culminations at first steps
-		if (culm_step < 2) FLAG2(78, culm_step);
-		if (culm_step == 2) FLAG2(79, culm_step);
+		if (culm_step < 2) FLAG2(78, fli[culm_step]);
+		if (culm_step == 2) FLAG2(79, fli[culm_step]);
 		// Prohibit culminations at last steps
-		if (culm_step > c_len - 4) FLAG2(21, culm_step);
+		if (culm_step > c_len - 4) FLAG2(21, fli[culm_step]);
 		// Prohibit synchronized culminations
-		if (av_cnt > 1 && culm_step == cf_culm) FLAG2(26, culm_step);
+		if (av_cnt > 1 && culm_step == cf_culm) FLAG2(26, fli[culm_step]);
 	}
 	return 0;
 }
@@ -2507,7 +2507,7 @@ check:
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
 		if (FailGlobalFill(c, ep2, nstat2)) goto skip;
 		if (FailStagnation(cc, nstat)) goto skip;
-		if (FailMultiCulm(cc, ep2)) goto skip;
+		if (FailMultiCulm(cc, slur)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(c, ep2, leap, smooth, nstat2, nstat3)) goto skip;
 		if (ep2>4 && FailMelodyHarm(pc)) goto skip;

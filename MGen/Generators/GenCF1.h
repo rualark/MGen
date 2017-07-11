@@ -107,7 +107,7 @@ protected:
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int ep2, int scan_len, int rlen, int fid);
 	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat);
-	inline int FailMultiCulm(vector<int>& cc, int ep2);
+	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
 	inline int FailFirstNotes(vector<int>& pc, int ep2);
 	inline int FailLastNotes(vector<int>& pc, int ep2);
 	inline void CreateLinks(vector<int>& c);

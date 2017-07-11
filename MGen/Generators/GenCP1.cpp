@@ -959,7 +959,7 @@ check:
 		if (FailVIntervals()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat)) goto skip;
-		if (FailMultiCulm(acc[cpv], ep2)) goto skip;
+		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailFirstNotes(apc[cpv], ep2)) goto skip;
 		if (FailLeap(ac[cpv], ep2, aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
 		//if (FailMelodyHarm(apc[cpv], 0, ep2)) goto skip;
