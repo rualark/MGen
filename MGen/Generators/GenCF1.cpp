@@ -681,9 +681,10 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 	leap[ep2 - 1] = 0;
 	smooth[ep2 - 1] = 0;
 	slur[0] = 0;
-	for (int i = 0; i < ep2 - 1; ++i) {
+	for (ls = 0; ls < fli_size - 1; ++ls) {
+		s = fli[ls+1]-1;
 		// Add new leap
-		if (leap[i] != 0) {
+		if (leap[s] != 0) {
 			++leap_sum;
 			++leap_sum2;
 		}
@@ -691,15 +692,15 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 			leap_sum2 = 0;
 		}
 		// Subtract old leap
-		if ((i >= max_leap_steps) && (leap[i - max_leap_steps] != 0)) leap_sum--;
+		if ((ls >= max_leap_steps) && (leap[fli[ls - max_leap_steps+1]-1] != 0)) leap_sum--;
 		// Get maximum leap_sum
 		if (leap_sum > max_leap_sum) {
 			max_leap_sum = leap_sum;
-			leap_sum_i = i;
+			leap_sum_i = s;
 		}
 		if (leap_sum2 > max_leap_sum2) {
 			max_leap_sum2 = leap_sum2;
-			leap_sum_s2 = i;
+			leap_sum_s2 = s;
 		}
 		// Calculate penalty
 		if (leap_sum > max_leaps) {
@@ -711,20 +712,20 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 			if (leap_sum2 > cse_leaps2) ++fpenalty[71];
 		}
 		// Prohibit long smooth movement
-		if (smooth[i] != 0) {
+		if (smooth[s] != 0) {
 			++smooth_sum;
-			if (smooth_sum >= max_smooth) FLAG2(4, i);
+			if (smooth_sum >= max_smooth) FLAG2(4, s);
 		}
-		else if (leap[i]) smooth_sum = 0;
-		if (i < ep2 - 2) {
+		else if (leap[s]) smooth_sum = 0;
+		if (ls < fli_size - 2) {
 			// Prohibit long smooth movement in one direction
-			if (smooth[i] == smooth[i + 1]) {
+			if (smooth[s] == smooth[fli[ls+2]-1]) {
 				++smooth_sum2;
-				if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, i);
+				if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, s);
 			}
-			else if (smooth[i] || leap[i]) smooth_sum2 = 0;
+			else if (smooth[s] || leap[s]) smooth_sum2 = 0;
 			// Check if two notes repeat
-			if ((i > 0) && (cc[i] == cc[i + 2]) && (cc[i - 1] == cc[i + 1])) FLAG2(9, i);
+			if ((ls > 0) && (cc[s] == cc[fli[ls+2]]) && (cc[s - 1] == cc[fli[ls+1]])) FLAG2(9, s);
 		}
 	}
 	if (max_leap_sum > max_leaps) {
@@ -738,7 +739,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 	return 0;
 }
 
-int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int ep2) {
+int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat) {
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
 	// Prohibit stagnation only for non-slurred notes
@@ -2480,7 +2481,7 @@ check:
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps5, 5, 72)) goto skip;
 		if (FailLongRepeat(cc, leap, ep2, repeat_steps7, 7, 73)) goto skip;
 		if (FailGlobalFill(c, ep2, nstat2)) goto skip;
-		if (FailStagnation(cc, nstat, ep2)) goto skip;
+		if (FailStagnation(cc, nstat)) goto skip;
 		if (FailMultiCulm(cc, ep2)) goto skip;
 		if (FailFirstNotes(pc, ep2)) goto skip;
 		if (FailLeap(c, ep2, leap, smooth, nstat2, nstat3)) goto skip;
