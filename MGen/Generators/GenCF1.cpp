@@ -400,7 +400,8 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &la
 }
 
 int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
-	int pen1, pen2, pen3;
+	int pen1;
+	int p2c = 0; // Count of consecutive penalty 2
 	int dcount = 0;
 	int scount = 0;
 	int tcount = 0;
@@ -408,23 +409,19 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 	int wscount = 0;
 	int wtcount = 0;
 	for (int i = 0; i <= p; ++i) {
-		// Check harmonic penalty
+		// Check harmonic penalty	
 		if (i > 0) {
 			pen1 = hsp[chm[i - 1]][chm[i]];
 			if (pen1 == 3) FLAG3(99, i)
-			else if (pen1 == 1) FLAG3(77, i)
-			else if (pen1 == 2) {
+			else if (pen1 == 1) FLAG3(77, i);
+			if (pen1 == 2) {
 				FLAG3(57, i);
-				if (i < p) {
-					pen2 = hsp[chm[i]][chm[i + 1]];
-					if (pen2 == 2) {
-						FLAG3(92, i + 1);
-						if (i < p - 1) {
-							pen3 = hsp[chm[i + 1]][chm[i + 2]];
-							if (pen3 == 2) FLAG3(23, i+2);
-						}
-					}
-				}
+				++p2c;
+				if (p2c == 2) FLAG3(92, i + 1)
+				else if (p2c == 3) FLAG3(23, i + 1);
+			}
+			else {
+				p2c = 0;
 			}
 		}
 		// Check harmony repeat and miss
