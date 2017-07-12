@@ -27,6 +27,9 @@ protected:
 	inline int FailAlteredInt();
 	inline int FailCrossInt2(int i, int i_1, int c1, int c2, int flag);
 	inline int FailCrossInt();
+	inline void GetVIntervals();
+	inline int FailVMotion();
+	inline int FailInTonic();
 	inline int FailVIntervals();
 	inline void CalcDpenaltyCP();
 	inline void SaveCP();

@@ -472,15 +472,7 @@ int CGenCP1::FailCrossInt() {
 	return 0;
 }
 
-int CGenCP1::FailVIntervals() {
-	int pico_count = 0;
-	int tonic_sum = 0;
-	int tonic_sum_i = 0;
-	int first_tonic = 0;
-	int mht = 0; // Measure has tonic
-	int mtemp;
-	int scontra = 0;
-	int sdirect = 0;
+void CGenCP1::GetVIntervals() {
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = ac[1][i] - ac[0][i];
@@ -491,6 +483,14 @@ int CGenCP1::FailVIntervals() {
 		if (civlc[i] == 3 || civlc[i] == 4 || civlc[i] == 8 || civlc[i] == 9) tivl[i] = iIco;
 		else if (civlc[i] == 7 || civlc[i] == 0) tivl[i] = iPco;
 		else tivl[i] = iDis;
+	}
+}
+
+int CGenCP1::FailVMotion() {
+	int mtemp;
+	int scontra = 0;
+	int sdirect = 0;
+	for (int i = 0; i < ep2; ++i) {
 		if (i < ep2 - 1) {
 			motion[i] = mStay;
 			if (acc[cfv][i + 1] != acc[cfv][i] || acc[cpv][i + 1] != acc[cpv][i]) {
@@ -506,6 +506,24 @@ int CGenCP1::FailVIntervals() {
 				else motion[i] = mOblique;
 			}
 		}
+	}
+	// Check how many contrary if full melody analyzed
+	if (ep2 == c_len) {
+		if (scontra + sdirect) {
+			int pcontra = (scontra * 100) / (scontra + sdirect);
+			if (pcontra < contrary_min) FLAG2(46, 0)
+			else if (pcontra < contrary_min2) FLAG2(35, 0);
+		}
+	}
+	return 0;
+}
+
+int CGenCP1::FailInTonic() {
+	int tonic_sum = 0;
+	int tonic_sum_i = 0;
+	int first_tonic = 0;
+	int mht = 0; // Measure has tonic
+	for (int i = 0; i < ep2; ++i) {
 		// Tonic chord
 		// Reset measure_has_tonic each measure
 		if (!(i % npm)) mht = 0;
@@ -521,24 +539,21 @@ int CGenCP1::FailVIntervals() {
 				}
 				// If this is not last tonic, flag one tonic
 				if (tonic_sum == 1 && i < c_len - 1) FLAG2(29, i)
-				// Flag as multiple tonic even if it is last
+					// Flag as multiple tonic even if it is last
 				else if (tonic_sum > 1) FLAG2(30, i);
 			}
 			first_tonic = 1;
 		}
-		if (i >= tonic_window && apcc[0][i - tonic_window] == 0 && 
-			(apcc[1][i-tonic_window] == 0 || apcc[1][i - tonic_window] == 4 || apcc[1][i - tonic_window] == 7)) {
+		if (i >= tonic_window && apcc[0][i - tonic_window] == 0 &&
+			(apcc[1][i - tonic_window] == 0 || apcc[1][i - tonic_window] == 4 || apcc[1][i - tonic_window] == 7)) {
 			--tonic_sum;
 		}
 	}
-	// Check how many contrary if full melody analyzed
-	if (ep2 == c_len) {
-		if (scontra + sdirect) {
-		  int pcontra = (scontra * 100) / (scontra+sdirect);
-			if (pcontra < contrary_min) FLAG2(46, 0)
-			else if (pcontra < contrary_min2) FLAG2(35, 0);
-		}
-	}
+	return 0;
+}
+
+int CGenCP1::FailVIntervals() {
+	int pico_count = 0;
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
 	for (int i = 1; i < ep2; ++i) {
@@ -989,6 +1004,9 @@ check:
 		GetNoteTypes();
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;
+		GetVIntervals();
+		if (FailVMotion()) goto skip;
+		if (FailInTonic()) goto skip;
 		if (FailVIntervals()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat)) goto skip;
