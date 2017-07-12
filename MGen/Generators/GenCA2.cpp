@@ -191,6 +191,12 @@ void CGenCA2::Generate() {
 	cantus_id = -1;
 	for (int i = 0; i < cpoint.size(); i++) {
 		++cantus_id;
+		if (cpoint[cantus_id].size() < av_cnt) {
+			st.Format("Error: need %d voices in counterpoint. Loaded only %d instead in counterpoint %d. Skipping this counterpoint.",
+				av_cnt, cpoint[cantus_id].size(), cantus_id+1);
+			WriteLog(1, st);
+			continue;
+		}
 		step0 = step;
 		// Check limit
 		if (t_generated >= t_cnt) {
