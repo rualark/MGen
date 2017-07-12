@@ -9,6 +9,8 @@ public:
 
 	void MergeCantus();
 
+	void ExplodeCP();
+
 	void Generate() override;
 
 protected:

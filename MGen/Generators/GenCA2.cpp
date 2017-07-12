@@ -128,6 +128,29 @@ void CGenCA2::MergeCantus() {
 	}
 }
 
+// Detect npm and explode notes into uniform length notes
+void CGenCA2::ExplodeCP() {
+	// Detect minimum note length for each voice
+	vector<int> min_vlen;
+	int cur_len = 0;
+	int n;
+	min_vlen.resize(av_cnt, INT_MAX);
+	for (int v = 0; v < av_cnt; ++v) {
+		int prev_note = cpoint[cantus_id][v][0];
+		cur_len = cantus_len[cantus_id][0];
+		for (int s = 1; s < cpoint[cantus_id][v].size(); ++s) {
+			n = cpoint[cantus_id][v][s];
+			if (n != prev_note) {
+				if (cur_len < min_vlen[v]) min_vlen[v] = cur_len;
+				cur_len = 0;
+				prev_note = n;
+			}
+			cur_len += cantus_len[cantus_id][s];
+		}
+		if (cur_len < min_vlen[v]) min_vlen[v] = cur_len;
+	}
+}
+
 void CGenCA2::Generate() {
 	CString st;
 	int s_len2 = s_len;
@@ -140,6 +163,7 @@ void CGenCA2::Generate() {
 	cantus_id = -1;
 	for (int i = 0; i < cpoint.size(); i++) {
 		++cantus_id;
+		ExplodeCP();
 		step0 = step;
 		// Check limit
 		if (t_generated >= t_cnt) {
