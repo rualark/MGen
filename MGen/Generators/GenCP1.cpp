@@ -241,6 +241,8 @@ void CGenCP1::ScanCPInit() {
 	bli.resize(c_len);
 	fli.resize(c_len);
 	llen.resize(c_len);
+	beat.resize(c_len);
+	sus.resize(c_len);
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(max_flags); // Flags for whole cantus
@@ -890,6 +892,36 @@ int CGenCP1::FailLastIntervals(vector<int> &pc, int ep2) {
 	return 0;
 }
 
+void CGenCP1::GetNoteTypes() {
+	int s = 0;
+	int l;
+	for (ls = 0; ls < fli_size; ++ls) {
+		if (ls > 0) s = fli[ls-1]+1;
+		l = llen[ls];
+		// Get beat
+		if (s % npm) {
+			if (npm>2 && s % (npm / 2)) {
+				if (npm>4 && s % (npm / 4)) {
+					beat[ls] = 3;
+				}
+				else beat[ls] = 2;
+			}
+			else beat[ls] = 1;
+		}
+		else beat[ls] = 0;
+		// Get suspension
+		if (l > 1) {
+			for (int i = 0; i < l-1; ++i) {
+				if (!aslur[cfv][s - i]) {
+					sus[ls] = 1;
+					break;
+				}
+			}
+		}
+		else sus[ls] = 0;
+	}
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -954,6 +986,7 @@ check:
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailGlobalFill(ac[cpv], ep2, nstat2)) goto skip;
+		GetNoteTypes();
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;
 		if (FailVIntervals()) goto skip;

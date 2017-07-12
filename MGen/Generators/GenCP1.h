@@ -39,6 +39,7 @@ protected:
 	void RandomSWACP();
 	void SWACP(int i, int dp);
 	inline int FailLastIntervals(vector<int>& pc, int ep2);
+	inline void GetNoteTypes();
 	void ScanCP(int t, int v);
 
 	// Counterpoint
@@ -60,6 +61,8 @@ protected:
 	vector<int> civlc; // Chromatic interval between voices (class)
 	vector<int> tivl; // Type of interval between voices
 	vector<int> motion; // Melody motion type
+	vector<int> beat; // Beat type for each fli
+	vector<int> sus; // Note suspension
 
 	// Cantus
 	int cf_nmin; // Minimum note in cantus (chromatic)
