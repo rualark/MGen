@@ -43,6 +43,7 @@ protected:
 	void SWACP(int i, int dp);
 	inline int FailLastIntervals(vector<int>& pc, int ep2);
 	inline void GetNoteTypes();
+	inline void GetMeasures();
 	void ScanCP(int t, int v);
 
 	// Counterpoint
@@ -66,6 +67,7 @@ protected:
 	vector<int> motion; // Melody motion type
 	vector<int> beat; // Beat type for each fli
 	vector<int> sus; // Note suspension
+	vector<int> mli; // Forward links to first notes of each measure
 
 	// Cantus
 	int cf_nmin; // Minimum note in cantus (chromatic)

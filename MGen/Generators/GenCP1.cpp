@@ -937,6 +937,16 @@ void CGenCP1::GetNoteTypes() {
 	}
 }
 
+void CGenCP1::GetMeasures() {
+	mli.clear();
+	for (int i = 0; i < ep2; ++i) {
+		// Find measures
+		if (i % npm == 0) {
+			mli.push_back(i);
+		}
+	}
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -989,6 +999,7 @@ check:
 		//WriteLog(1, "Found");
 		CreateLinks(acc[cpv]);
 		if (FailCPInterval()) goto skip;
+		GetMeasures();
 		if (FailLastIntervals(apc[cpv], ep2)) goto skip;
 		if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
