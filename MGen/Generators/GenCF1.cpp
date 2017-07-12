@@ -700,7 +700,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 	smooth[ep2 - 1] = 0;
 	slur[0] = 0;
 	for (ls = 0; ls < fli_size - 1; ++ls) {
-		s = fli[ls+1]-1;
+		s = fli[ls];
 		// Add new leap
 		if (leap[s] != 0) {
 			++leap_sum;
@@ -710,7 +710,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 			leap_sum2 = 0;
 		}
 		// Subtract old leap
-		if ((ls >= max_leap_steps) && (leap[fli[ls - max_leap_steps+1]-1] != 0)) leap_sum--;
+		if ((ls >= max_leap_steps) && (leap[fli[ls - max_leap_steps]] != 0)) leap_sum--;
 		// Get maximum leap_sum
 		if (leap_sum > max_leap_sum) {
 			max_leap_sum = leap_sum;
@@ -737,13 +737,13 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 		else if (leap[s]) smooth_sum = 0;
 		if (ls < fli_size - 2) {
 			// Prohibit long smooth movement in one direction
-			if (smooth[s] == smooth[fli[ls+2]-1]) {
+			if (smooth[s] == smooth[fli[ls+1]]) {
 				++smooth_sum2;
 				if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, s);
 			}
 			else if (smooth[s] || leap[s]) smooth_sum2 = 0;
 			// Check if two notes repeat
-			if ((ls > 0) && (cc[s] == cc[fli[ls+2]]) && (cc[s - 1] == cc[fli[ls+1]])) FLAG2(9, s);
+			if ((ls > 0) && (cc[s] == cc[fli[ls+2]]) && (cc[fli[ls - 1]] == cc[fli[ls+1]])) FLAG2(9, s);
 		}
 	}
 	if (max_leap_sum > max_leaps) {
@@ -884,10 +884,9 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 				l = 0;
 			}
 			prev_note = cc[i];
-			// Save links
-			fli[lpos] = i;
 			++lpos;
 		}
+		fli[lpos - 1] = i;
 		bli[i] = lpos-1;
 		l++;
 	}
@@ -1014,7 +1013,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 	}
 }
 
-void CGenCF1::FailLeapInit(vector<int> &c, int last_max, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, vector<int> &leap) {
+void CGenCF1::FailLeapInit(vector<int> &c, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
@@ -1024,19 +1023,21 @@ void CGenCF1::FailLeapInit(vector<int> &c, int last_max, int &last_leap, int &ch
 	// Check if this leap is 3rd
 	leap_start = s; // First step of leap
 	leap_end = fli[ls + 1]; // Last step of leap
-	fleap_start = bli[leap_start];
-	fleap_end = bli[leap_end];
+	fleap_start = ls;
+	fleap_end = ls + 1;
 	leap_size = abs(c[leap_end] - c[s]);
 	last_leap = 0;
 										// Next is leap?
-	if (leap_start < ep2 - 2) leap_next = leap[leap_start] * leap[leap_end];
+	if (fleap_end < fli_size - 1) leap_next = leap[leap_start] * leap[leap_end];
 	// Prev is leap?
-	if (leap_start > 0) leap_prev = leap[leap_start] * leap[leap_start - 1];
+	if (fleap_start > 0) leap_prev = leap[leap_start] * leap[fli[fleap_start] - 1];
+	// Last leap border
+	int last_max = fli_size - 4;
 	// Last leap?
-	if (leap_start >= last_max) last_leap = 1;
+	if (fleap_start >= last_max) last_leap = 1;
 	// Check if we have a greater neighbouring leap
-	if ((leap_start < ep2 - 2 && abs(c[fli[fleap_end + 1]] - c[leap_end]) > leap_size && leap[leap_start] * leap[leap_end]<0) ||
-		(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[leap_start] * leap[leap_start - 1]<0)) {
+	if ((fleap_end < fli_size - 1 && abs(c[fli[fleap_end + 1]] - c[leap_end]) > leap_size && leap[leap_start] * leap[leap_end]<0) ||
+		(fleap_start > 0 && abs(c[leap_start] - c[fli[fleap_start - 1]]) > leap_size && leap[leap_start] * leap[fli[fleap_start - 1]]<0)) {
 		// Set that we are preleaped (even if we are postleaped)
 		child_leap = 1;
 	}
@@ -1093,12 +1094,10 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int child_leap, leap_next, leap_prev, unresolved, presecond;
 	int overflow, arpeg, last_leap;
-	// Last leap border
-	int last_max = c_len - 4;
 	for (int s = 0; s < ep2 - 1; ++s) {
 		if (leap[s] != 0) {
 			ls = bli[s];
-			FailLeapInit(c, last_max, last_leap, child_leap, presecond, leap_next, leap_prev,
+			FailLeapInit(c, last_leap, child_leap, presecond, leap_next, leap_prev,
 				arpeg, overflow, leap);
 			if (FailLeapMulti(leap_next, arpeg, overflow, c, leap)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
@@ -1250,7 +1249,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 		else if (ls < fli_size - 2) {
 			if (pcc[s1] == t1) FLAG2(31, s)
 			else if (pcc[s2] != tb) FLAG2(31, s)
-			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(31, s)
+			else if (!leap_start || pcc[fli[fleap_start - 1]] != ta) FLAG2(31, s)
 				// Record resolved tritone
 			else FLAG2(2, s);
 		}
