@@ -910,15 +910,15 @@ void CGenCP1::GetNoteTypes() {
 		}
 		else beat[ls] = 0;
 		// Get suspension
+		sus[ls] = 0;
 		if (l > 1) {
-			for (int i = 0; i < l-1; ++i) {
-				if (!aslur[cfv][s - i]) {
+			for (int i = 1; i < l; ++i) {
+				if (acc[cfv][s + i] != acc[cfv][s + i - 1]) {
 					sus[ls] = 1;
 					break;
 				}
 			}
 		}
-		else sus[ls] = 0;
 	}
 }
 
