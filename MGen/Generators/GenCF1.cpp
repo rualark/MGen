@@ -1045,7 +1045,7 @@ void CGenCF1::FailLeapInit(vector<int> &c, int last_max, int &last_leap, int &ch
 	}
 }
 
-int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int i, vector<int> &c, vector<int> &leap) {
+int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, vector<int> &c, vector<int> &leap) {
 	// Check if leap is third
 	if (leap_size == 2) {
 		// Check if leap is second third
@@ -1057,9 +1057,9 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int i, vect
 			leap_size = 4;
 			// If 6/8 goes before 2 thirds (tight)
 			if ((fleap_start > 0) && ((leap[leap_start] * (c[leap_start] - c[fli[fleap_start-1]]) == -5) || 
-				(leap[leap_start] * (c[leap_start] - c[fli[fleap_start - 1]]) == -7))) FLAG2(28, i)
+				(leap[leap_start] * (c[leap_start] - c[fli[fleap_start - 1]]) == -7))) FLAG2(28, leap_start)
 				// Else mark simple 2x3rds
-			else FLAG2(6, i);
+			else FLAG2(6, leap_start);
 		}
 	}			
 	leap_id = min(leap_size - 2, 3);
@@ -1067,7 +1067,7 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int i, vect
 		// Next leap in same direction
 		if (leap_next > 0) {
 			// Flag if greater than two thirds
-			if (abs(c[fli[fleap_end+1]] - c[i]) > 4) FLAG2(27, leap_end)
+			if (abs(c[fli[fleap_end+1]] - c[leap_start]) > 4) FLAG2(27, leap_end)
 				// Allow if both thirds, without flags (will process next cycle)
 			else arpeg=1;
 		}
@@ -1103,17 +1103,17 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			ls = bli[s];
 			FailLeapInit(c, last_max, last_leap, child_leap, presecond, leap_next, leap_prev,
 				arpeg, overflow, leap);
-			if (FailLeapMulti(leap_next, arpeg, overflow, s, c, leap)) return 1;
+			if (FailLeapMulti(leap_next, arpeg, overflow, c, leap)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (!overflow && !arpeg)
-				if (FailLeapFill(s, c, last_leap, leap_prev, child_leap)) return 1;
-			if (FailLeapMDC(s, leap, c)) return 1;
+				if (FailLeapFill(c, last_leap, leap_prev, child_leap)) return 1;
+			if (FailLeapMDC(leap, c)) return 1;
 		}
 	}
 	return 0;
 }
 
-int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, int child_leap) {
+int CGenCF1::FailLeapFill(vector<int> &c, int last_leap, int leap_prev, int child_leap) {
 	// Prefill parameters
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
 	// Fill parameters
@@ -1150,7 +1150,7 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 		else if (deviates == 2 && !accept[120 + leap_id]) filled = 0;
 		if (!filled) {
 			// Check if  leap is prefilled
-			if (i > 0) {
+			if (ls > 0) {
 				ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
 				CountFill(c, ptail_len, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from,
 					pdeviates, pdev_count, leap_prev, pfill_finish);
@@ -1158,30 +1158,30 @@ int CGenCF1::FailLeapFill(int i, vector<int> &c, int last_leap, int leap_prev, i
 				if (pskips > 0) prefilled = 0;
 				else if (pdeviates > 1) prefilled = 0;
 			}
-			if (prefilled && !last_leap) FLAG2(112 + leap_id, i)
-			else if (prefilled && last_leap) FLAG2(144 + leap_id, i)
-			else if (child_leap) FLAG2(116 + leap_id, i)
-			else FLAG2(124 + leap_id, i);
+			if (prefilled && !last_leap) FLAG2(112 + leap_id, leap_start)
+			else if (prefilled && last_leap) FLAG2(144 + leap_id, leap_start)
+			else if (child_leap) FLAG2(116 + leap_id, leap_start)
+			else FLAG2(124 + leap_id, leap_start);
 		}
 		// Show compensation flags only if successfully compensated
 		// This means that compensation errors are not shown if uncompensated (successfully or not)
 		else {
 			// Flag unfinished fill if it is not blocking
-			if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, i)
+			if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, leap_start)
 			// Flag prepared unfinished fill if it is not blocking
-			else if (fill_to == 2 && !fill_to_pre) FLAG2(104 + leap_id, i)
+			else if (fill_to == 2 && !fill_to_pre) FLAG2(104 + leap_id, leap_start)
 			// Flag after 3rd if it is not blocking
-			if (fill_from == 2) FLAG2(53 + leap_id, i);
+			if (fill_from == 2) FLAG2(53 + leap_id, leap_start);
 			// Flag deviation if it is not blocking
-			if (deviates == 1) FLAG2(42 + leap_id, i);
+			if (deviates == 1) FLAG2(42 + leap_id, leap_start);
 			// Flag deviation if it is not blocking
-			if (deviates == 2) FLAG2(120 + leap_id, i);
+			if (deviates == 2) FLAG2(120 + leap_id, leap_start);
 		}
 	}
 	return 0;
 }
 
-int CGenCF1::FailLeapMDC(int i, vector<int> &leap, vector<int> &c) {
+int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 	// Melody direction change (MDC)
 	// 0 = close, 1 = far, 2 = no
 	// Default mdc is close, because beginning equals to close mdc
@@ -1190,7 +1190,7 @@ int CGenCF1::FailLeapMDC(int i, vector<int> &leap, vector<int> &c) {
 	for (int pos = leap_start - 1; pos >= 0; --pos) {
 		if (c[pos] != prev_note) {
 			// Check if direction changes or long without changes
-			if (leap[i] * (c[pos] - prev_note) > 0 || mdc1 > 1) break;
+			if (leap[leap_start] * (c[pos] - prev_note) > 0 || mdc1 > 1) break;
 			prev_note = c[pos];
 			++mdc1;
 		}
@@ -1200,26 +1200,26 @@ int CGenCF1::FailLeapMDC(int i, vector<int> &leap, vector<int> &c) {
 	for (int pos = leap_end + 1; pos < ep2; ++pos) {
 		if (c[pos] != prev_note) {
 			// Check if direction changes or long without changes
-			if (leap[i] * (c[pos] - prev_note) < 0 || mdc2 > 1) break;
+			if (leap[leap_start] * (c[pos] - prev_note) < 0 || mdc2 > 1) break;
 			prev_note = c[pos];
 			++mdc2;
 		}
 	}
 	// Close + 1far
-	if (mdc1 == 0 && mdc2 == 1) FLAG2(128 + leap_id, i)
+	if (mdc1 == 0 && mdc2 == 1) FLAG2(128 + leap_id, leap_start)
 		// Close + 2far
-	else if (mdc1 == 0 && mdc2 == 2) FLAG2(140 + leap_id, i)
+	else if (mdc1 == 0 && mdc2 == 2) FLAG2(140 + leap_id, leap_start)
 		// No + close
-	else if (mdc1 == 2 && mdc2 == 0) FLAG2(132 + leap_id, i)
+	else if (mdc1 == 2 && mdc2 == 0) FLAG2(132 + leap_id, leap_start)
 		// Far + close
-	else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, i)
+	else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, leap_start)
 		// No close
 	else if (mdc1*mdc2) {
-		if (filled || prefilled) FLAG2(136 + leap_id, i)
-		else FLAG2(148 + leap_id, i);
+		if (filled || prefilled) FLAG2(136 + leap_id, leap_start)
+		else FLAG2(148 + leap_id, leap_start);
 	}
 		// No MDC after
-	else if (mdc2 == 3) FLAG2(63 + leap_id, i);
+	else if (mdc2 == 3) FLAG2(63 + leap_id, leap_start);
 	return 0;
 }
 
