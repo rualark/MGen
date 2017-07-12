@@ -156,6 +156,24 @@ void CGenCA2::ExplodeCP() {
 			cantus_high?"higher":"lower", cantus_id, min_vlen[cpv], min_vlen[cfv]);
 		WriteLog(1, est);
 	}
+	// Calculate npm
+	npm = max(1, min_vlen[cfv] / min_vlen[cpv]);
+	// Save old cantus
+	vector<vector<int>> cc_old = cpoint[cantus_id];
+	cc_len = cantus_len[cantus_id];
+	cantus_len[cantus_id].clear();
+	for (int v = 0; v < av_cnt; ++v) cpoint[cantus_id][v].clear();
+	int steps;
+	// Explode cpoint
+	for (int s = 0; s < cc_old[0].size(); ++s) {
+		steps = cc_len[s] / min_vlen[cpv];
+		for (int i = 0; i < steps; ++i) {
+			for (int v = 0; v < av_cnt; ++v) {
+				cpoint[cantus_id][v].push_back(cc_old[v][s]);
+				cantus_len[cantus_id].push_back(min_vlen[cpv]);
+			}
+		}
+	}
 }
 
 void CGenCA2::Generate() {
