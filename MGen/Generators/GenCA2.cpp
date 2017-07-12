@@ -160,8 +160,10 @@ void CGenCA2::ExplodeCP() {
 	npm = max(1, min_vlen[cfv] / min_vlen[cpv]);
 	// Save old cantus
 	vector<vector<int>> cc_old = cpoint[cantus_id];
+	vector<float> tempo_old = cantus_tempo[cantus_id];
 	cc_len = cantus_len[cantus_id];
 	cantus_len[cantus_id].clear();
+	cantus_tempo[cantus_id].clear();
 	for (int v = 0; v < av_cnt; ++v) cpoint[cantus_id][v].clear();
 	int steps;
 	// Explode cpoint
@@ -171,6 +173,7 @@ void CGenCA2::ExplodeCP() {
 			for (int v = 0; v < av_cnt; ++v) {
 				cpoint[cantus_id][v].push_back(cc_old[v][s]);
 				cantus_len[cantus_id].push_back(min_vlen[cpv]);
+				cantus_tempo[cantus_id].push_back(tempo_old[s]);
 			}
 		}
 	}
