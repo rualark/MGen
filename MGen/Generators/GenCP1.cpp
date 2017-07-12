@@ -904,6 +904,20 @@ int CGenCP1::FailLastIntervals(vector<int> &pc, int ep2) {
 	// Prohibit last note not tonic
 	if (ep2 > c_len - 1)
 		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1);
+	// Scan 2nd to last measure
+	int start = mli[mli.size() - 2];
+	int b_found = 0;
+	int g_found = 0;
+	int d_found = 0;
+	for (int s = start; s < start + npm; ++s) {
+		for (int v = 0; v < av_cnt; ++v) {
+			if (apc[v][s] == 6) b_found = 1;
+			if (apc[v][s] == 4) g_found = 1;
+			if (apc[v][s] == 1) d_found = 1;
+		}
+	}
+	if (!b_found) FLAG2(47, start);
+	if (!g_found && !d_found) FLAG2(75, start);
 	return 0;
 }
 
