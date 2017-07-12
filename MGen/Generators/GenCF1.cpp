@@ -1017,7 +1017,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 	}
 }
 
-void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, vector<int> &leap) {
+void CGenCF1::FailLeapInit(vector<int> &c, int last_max, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
@@ -1025,21 +1025,21 @@ void CGenCF1::FailLeapInit(int i, vector<int> &c, int last_max, int &last_leap, 
 	overflow = 0; // Leap back overflow
 	arpeg = 0; // Arpeggio 3+3
 	// Check if this leap is 3rd
-	leap_size = abs(c[i + 1] - c[i]);
-	leap_start = i; // First step of leap
-	leap_end = i + 1; // Last step of leap
+	leap_start = s; // First step of leap
+	leap_end = fli[ls + 1]; // Last step of leap
 	fleap_start = bli[leap_start];
 	fleap_end = bli[leap_end];
+	leap_size = abs(c[leap_end] - c[s]);
 	last_leap = 0;
 										// Next is leap?
-	if (i < ep2 - 2) leap_next = leap[i] * leap[i + 1];
+	if (leap_start < ep2 - 2) leap_next = leap[leap_start] * leap[leap_end];
 	// Prev is leap?
-	if (i > 0) leap_prev = leap[i] * leap[i - 1];
+	if (leap_start > 0) leap_prev = leap[leap_start] * leap[leap_start - 1];
 	// Last leap?
-	if (i >= last_max) last_leap = 1;
+	if (leap_start >= last_max) last_leap = 1;
 	// Check if we have a greater neighbouring leap
-	if ((i < ep2 - 2 && abs(c[i + 2] - c[i + 1]) > leap_size && leap[i] * leap[i + 1]<0) ||
-		(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[i] * leap[i - 1]<0)) {
+	if ((leap_start < ep2 - 2 && abs(c[fli[fleap_end + 1]] - c[leap_end]) > leap_size && leap[leap_start] * leap[leap_end]<0) ||
+		(leap_start > 0 && abs(c[leap_start] - c[leap_start - 1]) > leap_size && leap[leap_start] * leap[leap_start - 1]<0)) {
 		// Set that we are preleaped (even if we are postleaped)
 		child_leap = 1;
 	}
@@ -1098,15 +1098,16 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	int overflow, arpeg, last_leap;
 	// Last leap border
 	int last_max = c_len - 4;
-	for (int i = 0; i < ep2 - 1; ++i) {
-		if (leap[i] != 0) {
-			FailLeapInit(i, c, last_max, last_leap, child_leap, presecond, leap_next, leap_prev, 
+	for (int s = 0; s < ep2 - 1; ++s) {
+		if (leap[s] != 0) {
+			ls = bli[s];
+			FailLeapInit(c, last_max, last_leap, child_leap, presecond, leap_next, leap_prev,
 				arpeg, overflow, leap);
-			if (FailLeapMulti(leap_next, arpeg, overflow, i, c, leap)) return 1;
+			if (FailLeapMulti(leap_next, arpeg, overflow, s, c, leap)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (!overflow && !arpeg)
-				if (FailLeapFill(i, c, last_leap, leap_prev, child_leap)) return 1;
-			if (FailLeapMDC(i, leap, c)) return 1;
+				if (FailLeapFill(s, c, last_leap, leap_prev, child_leap)) return 1;
+			if (FailLeapMDC(s, leap, c)) return 1;
 		}
 	}
 	return 0;
