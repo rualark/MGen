@@ -149,6 +149,13 @@ void CGenCA2::ExplodeCP() {
 		}
 		if (cur_len < min_vlen[v]) min_vlen[v] = cur_len;
 	}
+	// Check that cantus has longer notes than other voice
+	if (min_vlen[cfv] < min_vlen[cpv]) {
+		CString est;
+		est.Format("Warning: counterpoint voice should have at least one note shorter than the shortest note of %s cantus #%d (min_cantus=%d, min_cp=%d)", 
+			cantus_high?"higher":"lower", cantus_id, min_vlen[cpv], min_vlen[cfv]);
+		WriteLog(1, est);
+	}
 }
 
 void CGenCA2::Generate() {
@@ -163,7 +170,6 @@ void CGenCA2::Generate() {
 	cantus_id = -1;
 	for (int i = 0; i < cpoint.size(); i++) {
 		++cantus_id;
-		ExplodeCP();
 		step0 = step;
 		// Check limit
 		if (t_generated >= t_cnt) {
@@ -184,10 +190,13 @@ void CGenCA2::Generate() {
 		}
 		if (cantus_high) {
 			cfv = 1;
+			cpv = 0;
 		}
 		else {
 			cfv = 0;
+			cpv = 1;
 		}
+		ExplodeCP();
 		// Get key
 		GetCantusKey(cpoint[i][cfv]);
 		if (tonic_cur == -1) continue;
