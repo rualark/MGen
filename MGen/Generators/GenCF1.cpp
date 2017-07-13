@@ -1047,8 +1047,8 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, vector<int>
 		// Check if leap is second third
 		if (fleap_start > 0 && abs(c[leap_end] - c[fli[fleap_start-1]]) == 4) {
 			// Set leap start to first note of first third
-			leap_start = fli[fleap_start - 1];
 			--fleap_start;
+			leap_start = fli[fleap_start];
 			// Set leap size to be compound
 			leap_size = 4;
 			// If 6/8 goes before 2 thirds (tight)
@@ -1092,7 +1092,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int child_leap, leap_next, leap_prev, unresolved, presecond;
 	int overflow, arpeg, last_leap;
-	for (int s = 0; s < ep2 - 1; ++s) {
+	for (s = 0; s < ep2 - 1; ++s) {
 		if (leap[s] != 0) {
 			ls = bli[s];
 			FailLeapInit(c, last_leap, child_leap, presecond, leap_next, leap_prev,

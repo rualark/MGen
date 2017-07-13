@@ -154,8 +154,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;86;60;Cantus;Counterpoint;Perfect consonance approach (different);1;;
 1;87;60;Cantus;Counterpoint;Perfect consonance approach (direct);0;;
 1;33;60;Cantus;Counterpoint;Perfect consonance approach (direct end);1;;
-1;83;60;Cantus;Counterpoint;Dissonance (downbeat);0;;
-1;88;60;Cantus;Counterpoint;Dissonance (upbeat);0;;
+1;83;60;Cantus;Counterpoint;Dissonance (upbeat);0;;
+1;88;60;Cantus;Counterpoint;Dissonance (downbeat);0;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances (3);-1;More than X same imperfect consonances in a row;
 1;96;60;Cantus;Counterpoint;Parallel imperfect consonances (>3);-1;More than X same imperfect consonances in a row;
 1;49;60;Cantus;Counterpoint;First note (not C);1;;
@@ -328,8 +328,8 @@ Set;Severity;Class;Group;Rule;Flag
 2;86;60;Cantus;Counterpoint;Perfect consonance approach (different);1;;
 2;87;60;Cantus;Counterpoint;Perfect consonance approach (direct);0;;
 2;33;60;Cantus;Counterpoint;Perfect consonance approach (direct end);1;;
-2;83;60;Cantus;Counterpoint;Dissonance (downbeat);0;;
-2;88;60;Cantus;Counterpoint;Dissonance (upbeat);0;;
+2;83;60;Cantus;Counterpoint;Dissonance (upbeat);0;;
+2;88;60;Cantus;Counterpoint;Dissonance (downbeat);0;;
 2;89;0;Cantus;Counterpoint;Parallel imperfect consonances (3);-1;More than X same imperfect consonances in a row;
 2;96;60;Cantus;Counterpoint;Parallel imperfect consonances (>3);-1;More than X same imperfect consonances in a row;
 2;49;60;Cantus;Counterpoint;First note (not C);1;;
