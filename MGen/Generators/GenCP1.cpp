@@ -556,63 +556,63 @@ int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
-	for (int i = 1; i < ep2; ++i) {
+	for (int ls = 1; ls < fli_size; ++ls) {
+		s = fli[ls - 1] + 1;
+		s2 = fli[ls];
 		// Unison
-		if (!civl[i-1]) {
+		if (!civl[fli[ls-1]]) {
 			// Inside
-			if (i>1) FLAG2(91, i-1);
+			if (ls>1) FLAG2(91, fli[ls-1]);
 		}
-		// No more checks if this is slurred note
-		if (aslur[cpv][i]) continue;
 		// Discord
-		if (tivl[i] == iDis) {
+		if (tivl[s] == iDis) {
 			// Upbeat
-			if (i % 2) FLAG2(88, i)
+			if (beat[ls]) FLAG2(88, s)
 			// Downbeat
-			else FLAG2(83, i);
+			else FLAG2(83, s);
 		}
 		// Perfect consonance
-		else if (tivl[i] == iPco) {
+		else if (tivl[s] == iPco) {
 			// Prohibit parallel 
-			if (civl[i] == civl[i - 1]) FLAG2(84, i)
+			if (civl[s] == civl[fli[ls - 1]]) FLAG2(84, s)
 			// Prohibit combinatory
-			else if (civlc[i] == civlc[i - 1]) FLAG2(85, i)
+			else if (civlc[s] == civlc[fli[ls - 1]]) FLAG2(85, s)
 			// Prohibit different
-			else if (tivl[i-1] == iPco) FLAG2(86, i)
+			else if (tivl[fli[s-1]] == iPco) FLAG2(86, s)
 			// All other cases if previous interval is not pco
 			else {
 				// Direct movement to pco
-				if (motion[i - 1] == mDirect) {
+				if (motion[fli[s - 1]] == mDirect) {
 					// Last movement with stepwize
-					if (i == c_len-1 && (abs(acc[cpv][i]-acc[cpv][i-1]) < 3 || abs(acc[cfv][i]-acc[cfv][i-1]) < 3))
-						FLAG2(33, i)
+					if (s2 == c_len-1 && (abs(acc[cpv][s]-acc[cpv][s-1]) < 3 || abs(acc[cfv][s]-acc[cfv][s-1]) < 3))
+						FLAG2(33, s)
 					// Other cases
-					else FLAG2(87, i);
+					else FLAG2(87, s);
 				}
 				// Prohibit downbeats and culminations only if not last step
-				if (i < ep2 - 1) {
-					if (i % 2) {
+				if (ls < fli_size - 1) {
+					if (beat[ls]) {
 						// Prohibit culmination
-						if (acc[cpv][i] == nmax || acc[cfv][i] == nmax) FLAG2(81, i);
+						if (acc[cpv][s] == nmax || acc[cfv][s] == nmax) FLAG2(81, s);
 					}
 					else {
 						// Prohibit downbeat culmination
-						if (acc[cpv][i] == nmax || acc[cfv][i] == nmax) FLAG2(82, i)
+						if (acc[cpv][s] == nmax || acc[cfv][s] == nmax) FLAG2(82, s)
 						// Prohibit downbeat
-						else FLAG2(80, i);
+						else FLAG2(80, s);
 					}
 				}
 			}
 		}
 		// Long parallel ico
-		if (tivl[i] == iIco && ivl[i] == ivl[i - 1]) {
+		if (tivl[s] == iIco && ivl[s] == ivl[fli[s - 1]]) {
 			++pico_count;
 			// Two same ico transitions means three intervals already
 			if (pico_count == 2) {
-				FLAG2(89, i)
+				FLAG2(89, s)
 			}
 			else if (pico_count > 2) {
-				FLAG2(96, i)
+				FLAG2(96, s)
 			}
 		}
 		else pico_count = 0;
