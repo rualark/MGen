@@ -646,7 +646,6 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int sca
 	if (fli_size > rlen + 1) for (int ls = 0; ls < fli_size - rlen - 1; ++ls) {
 		s = fli[ls];
 		s1 = fli[ls + 1];
-		// Search for repeat of note at same beat until last three notes
 		int finish = ls + scan_len;
 		if (finish > fli_size - rlen) finish = fli_size - rlen;
 		for (int x = ls + rlen; x <= finish; ++x) {
