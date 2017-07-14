@@ -112,7 +112,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;48;30;Cantus;Harmony;Early cadence (G-C);0;;Tonic chord is prohibited in root position after Dominant chord in root position
 1;77;0;Cantus;Harmony;Harmonic penalty (1);1;;
 1;57;10;Cantus;Harmony;Harmonic penalty (2);1;;
-1;92;30;Cantus;Harmony;Harmonic penalty (2x2);1;;
+1;92;30;Cantus;Harmony;Harmonic penalty (2x2);0;;
 1;23;70;Cantus;Harmony;Harmonic penalty (3x2);0;;
 1;99;100;Cantus;Harmony;Harmonic penalty (3);0;;
 1;52;70;Cantus;Border;Start steps tonic (unprepared);1;;
@@ -286,7 +286,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;48;30;Cantus;Harmony;Early cadence (G-C);0;;Tonic chord is prohibited in root position after Dominant chord in root position
 2;77;0;Cantus;Harmony;Harmonic penalty (1);1;;
 2;57;10;Cantus;Harmony;Harmonic penalty (2);1;;
-2;92;30;Cantus;Harmony;Harmonic penalty (2x2);1;;
+2;92;30;Cantus;Harmony;Harmonic penalty (2x2);0;;
 2;23;70;Cantus;Harmony;Harmonic penalty (3x2);0;;
 2;99;100;Cantus;Harmony;Harmonic penalty (3);0;;
 2;52;70;Cantus;Border;Start steps tonic (unprepared);1;;

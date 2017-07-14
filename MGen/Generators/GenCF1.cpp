@@ -411,8 +411,7 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 		if (i > 0) {
 			// Check GC
 			if (chm[i] == 0 && chm[i - 1] == 4) {
-				if (m_pc[i] == 0 && m_pc[i - 1] == 4) 
-					FLAG3(48, i);
+				if (m_pc[fli[i]] == 0 && m_pc[fli[i - 1]] == 4) FLAG3(48, i);
 			}
 			// Check harmonic penalty	
 			pen1 = hsp[chm[i - 1]][chm[i]];
@@ -441,41 +440,42 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	int h;
 	int first_tonic = 0;
 	// Build hm vector
-	for (int i = 0; i < ep2; ++i) {
-		hm[i].clear();
-		for (int x = 0; x < hv[pc[i]].size(); ++x) {
-			h = hv[pc[i]][x];
+	for (int ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		hm[ls].clear();
+		for (int x = 0; x < hv[pc[s]].size(); ++x) {
+			h = hv[pc[s]][x];
 			// Check tonic
 			if (!h) {
 				// Is this first or last tonic?
-				if (!first_tonic || i == c_len - 1) {
+				if (!first_tonic || s == c_len - 1) {
 					first_tonic = 1;
 					// Set only tonic for this step
-					hm[i].clear();
-					hm[i].push_back(h);
+					hm[ls].clear();
+					hm[ls].push_back(h);
 					break;
 				}
 				// Is root tonic?
-				else if (!pc[i] && !cantus_high) {
+				else if (!pc[s] && !cantus_high) {
 					// Is this prohibited?
 					if (!accept[29]) continue;
 				}
 			}
 			// If tonic allowed or not tonic
-			hm[i].push_back(h);
+			hm[ls].push_back(h);
 		}
 		// Shuffle
 		if (task == tEval) {
 			unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-			::shuffle(hm[i].begin(), hm[i].end(), default_random_engine(seed));
+			::shuffle(hm[ls].begin(), hm[ls].end(), default_random_engine(seed));
 		}
 	}
 	// Scan vector
 	chm.clear();
 	chmp.clear();
-	chm.resize(ep2, 0);
-	chmp.resize(ep2, 0);
-	for (int i = 0; i < ep2; ++i) chm[i] = hm[i][0];
+	chm.resize(fli_size, 0);
+	chmp.resize(fli_size, 0);
+	for (int i = 0; i < fli_size; ++i) chm[i] = hm[i][0];
 	int p = 0;
 	int finished = 0;
 	int found = 0;
@@ -497,7 +497,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		}
 		if (EvalMelodyHarm(p, last_flag, max_p)) goto skip;
 		// Success
-		if (p == ep2-1) {
+		if (p == fli_size-1) {
 			found = 1;
 			break;
 		}
@@ -533,11 +533,11 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	}
 	// Detect possible variants
 	if (!found) {
-		if (max_p < ep2 - 1) {
+		if (max_p < fli_size - 1) {
 			//fill(chm.begin(), chm.end(), -1);
 		}
 		// Increase penalty if flag was found at the beginning of melody
-		fpenalty[last_flag] = ep2 - max_p;
+		fpenalty[last_flag] = fli_size - max_p;
 		// Report one of last flags at highest position
 		FLAG2(last_flag, max_p);
 	}
