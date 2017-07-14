@@ -279,28 +279,37 @@ int CGenCP1::SendCP() {
 	int step0 = step;
 	int pause_len;
 	CString st, info, rpst;
-	int pos;
-	int v;
+	int pos, plen;
+	int v, x1;
 	int real_len2 = real_len*npm;
 	Sleep(sleep_ms);
 	for (int av = 0; av < av_cnt; ++av) {
+		pos = step;
 		if (cpv) {
 			v = svoice + av;
 		}
 		else {
 			v = svoice + 1 - av;
 		}
+		if (av == cpv) {
+			plen = cc_len[0] * fn;
+			FillPause(pos, plen, v);
+			pos += plen;
+			x1 = fn;
+		}
+		else {
+			x1 = 0;
+		}
 		// Copy cantus to output
-		pos = step;
 		if (step + real_len2 >= t_allocated) ResizeVectors(t_allocated * 2);
-		for (int x = 0; x < c_len; ++x) {
+		for (int x = x1; x < c_len; ++x) {
 			for (int i = 0; i < cc_len[x/npm]; ++i) {
 				int current_severity = -1;
 				if (av == cpv) {
 					// Set color
 					color[pos + i][v] = Color(0, 100, 100, 100);
 				}
-				// Set nflag color
+				// Do not display first paused note
 				note[pos + i][v] = acc[av][x];
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
