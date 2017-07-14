@@ -877,7 +877,7 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	int lpos = 0;
 	int l = 0;
 	fli_size = 0;
-	for (int i = 0; i < ep2; ++i) {
+	for (int i = fn; i < ep2; ++i) {
 		if (prev_note != cc[i]) {
 			// Save linked note length
 			if (prev_note != -1) {
