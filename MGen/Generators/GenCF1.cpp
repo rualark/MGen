@@ -344,8 +344,7 @@ int CGenCF1::FailNoteSeq(vector<int> &pc) {
 		s = fli[x];
 		s1 = fli[x + 1];
 		// Prohibit GC before cadence
-		if (pc[s] == 4 && pc[s1] == 0) FLAG2(48, s);
-		// Prohibit D-S
+		//if (pc[s] == 4 && pc[s1] == 0) FLAG2(48, s);
 	}
 	return 0;
 }
@@ -409,8 +408,13 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 	int wscount = 0;
 	int wtcount = 0;
 	for (int i = 0; i <= p; ++i) {
-		// Check harmonic penalty	
 		if (i > 0) {
+			// Check GC
+			if (chm[i] == 0 && chm[i - 1] == 4) {
+				if (m_pc[i] == 0 && m_pc[i - 1] == 4) 
+					FLAG3(48, i);
+			}
+			// Check harmonic penalty	
 			pen1 = hsp[chm[i - 1]][chm[i]];
 			if (pen1 == 3) FLAG3(99, i)
 			else if (pen1 == 1) FLAG3(77, i);
