@@ -234,6 +234,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "best_rejected", &best_rejected);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
+	CheckVar(sN, sV, "start_pause", &fn);
 	// Random SWA
 	//CheckVar(sN, sV, "fullscan_max", &fullscan_max);
 	CheckVar(sN, sV, "approximations", &approximations);
