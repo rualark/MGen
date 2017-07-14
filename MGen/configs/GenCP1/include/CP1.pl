@@ -4,11 +4,11 @@ cf_rule_set = 1 # Specify which set of rules to use for cantus (see rules.xlsm)
 cp_rule_set = 2 # Specify which set of rules to use for counterpoint (see rules.xlsm)
 
 # Method parameters
-#method = window-scan # This method can be faster in some cases
-method = swa # This method is best for analysis and corrections in most cases
+method = window-scan # This method can be faster in some cases
+#method = swa # This method is best for analysis and corrections in most cases
 
 accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
-random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 cantus_id = 34 # Select particular cantus id. Set to 0 to select random
@@ -19,7 +19,7 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Main parameters
-notes_per_measure = 1 # Number of notes per measure (1 = species1, 2 = species2, 4 = species3, 8 = species5)
+notes_per_measure = 2 # Number of notes per measure (1 = species1, 2 = species2, 4 = species3, 8 = species5)
 interval = 7-14 # Minimum-maximum chromatic interval of voice (12 = octave)
 sum_interval = 22 # Maximum total chromatic interval of counterpoint with cantus (12 = octave)
 between = 0-12 # Minimum-maximum chromatic interval between voices (12 = octave)

@@ -189,7 +189,9 @@ void CGenCP1::SingleCPInit() {
 
 void CGenCP1::MultiCPInit() {
 	MakeNewCP();
-	sp1 = 1; // Start of search window
+	// First pause
+	for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
+	sp1 = fn; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len - 1) sp2 = c_len - 1;
 	// Record window
@@ -902,22 +904,23 @@ void CGenCP1::SWACP(int i, int dp) {
 
 int CGenCP1::FailLastIntervals(vector<int> &pc, int ep2) {
 	// Prohibit last note not tonic
-	if (ep2 > c_len - 1)
+	if (ep2 > c_len - 1) {
 		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1);
-	// Scan 2nd to last measure
-	int start = mli[mli.size() - 2];
-	int b_found = 0;
-	int g_found = 0;
-	int d_found = 0;
-	for (int s = start; s < start + npm; ++s) {
-		for (int v = 0; v < av_cnt; ++v) {
-			if (apc[v][s] == 6) b_found = 1;
-			if (apc[v][s] == 4) g_found = 1;
-			if (apc[v][s] == 1) d_found = 1;
+		// Scan 2nd to last measure
+		int start = mli[mli.size() - 2];
+		int b_found = 0;
+		int g_found = 0;
+		int d_found = 0;
+		for (int s = start; s < start + npm; ++s) {
+			for (int v = 0; v < av_cnt; ++v) {
+				if (apc[v][s] == 6) b_found = 1;
+				if (apc[v][s] == 4) g_found = 1;
+				if (apc[v][s] == 1) d_found = 1;
+			}
 		}
+		if (!b_found) FLAG2(47, start);
+		if (!g_found && !d_found) FLAG2(75, start);
 	}
-	if (!b_found) FLAG2(47, start);
-	if (!g_found && !d_found) FLAG2(75, start);
 	return 0;
 }
 

@@ -324,7 +324,7 @@ protected:
 	CString key_eval; // Results of key evaluation
 	int culm_step; // Position of culmination after FailMultiCulm
 	int cf_culm = 0; // Position of cantus firmus culmination
-	int fn = 0; // First note of analyzed melody
+	int fn = 1; // First note of analyzed melody
 
 	// FailLeap local variables
 	int leap_start; // Step where leap starts

@@ -1745,7 +1745,7 @@ void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 			}
 			p--;
 			// First pause
-			if (p == sp1) {
+			if (p == fn) {
 				for (int i = 0; i < fn; ++i) cc[i] = cc[fn]+1;
 			}
 		}
