@@ -189,7 +189,7 @@ void CGenCP1::SingleCPInit() {
 
 void CGenCP1::MultiCPInit() {
 	MakeNewCP();
-	sp1 = 0; // Start of search window
+	sp1 = 1; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len - 1) sp2 = c_len - 1;
 	// Record window

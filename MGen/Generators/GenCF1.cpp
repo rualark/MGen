@@ -1744,6 +1744,10 @@ void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 				break;
 			}
 			p--;
+			// First pause
+			if (p == sp1) {
+				for (int i = 0; i < fn; ++i) cc[i] = cc[fn]+1;
+			}
 		}
 	} // while (true)
 }
