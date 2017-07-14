@@ -164,8 +164,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;47;30;Cantus;Counterpoint;2nd to last measure (no B);0;;
 1;75;30;Cantus;Counterpoint;2nd to last measure (no G or D);0;;
 1;97;60;Cantus;Counterpoint;Slur (sequence);0;;
-1;98;60;Cantus;Counterpoint;Slur (simult.);0;;
-1;93;0;Cantus;Counterpoint;Slur (1);0;;
+1;98;60;Cantus;Counterpoint;Slur (simult.);1;;
+1;93;0;Cantus;Counterpoint;Slur (1);1;;
 1;94;0;Cantus;Counterpoint;Slur (2);0;;
 1;95;0;Cantus;Counterpoint;Slur (>2);0;;
 1;24;60;Cantus;Counterpoint;Overlap (voices);1;;
@@ -338,8 +338,8 @@ Set;Severity;Class;Group;Rule;Flag
 2;47;30;Cantus;Counterpoint;2nd to last measure (no B);0;;
 2;75;30;Cantus;Counterpoint;2nd to last measure (no G or D);0;;
 2;97;60;Cantus;Counterpoint;Slur (sequence);0;;
-2;98;60;Cantus;Counterpoint;Slur (simult.);0;;
-2;93;0;Cantus;Counterpoint;Slur (1);0;;
+2;98;60;Cantus;Counterpoint;Slur (simult.);1;;
+2;93;0;Cantus;Counterpoint;Slur (1);1;;
 2;94;0;Cantus;Counterpoint;Slur (2);0;;
 2;95;0;Cantus;Counterpoint;Slur (>2);0;;
 2;24;60;Cantus;Counterpoint;Overlap (voices);1;;
