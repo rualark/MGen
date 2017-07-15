@@ -607,7 +607,7 @@ int CGenCP1::FailVIntervals() {
 			// Prohibit combinatory
 			else if (civlc[s] == civlc[fli[ls - 1]]) FLAG2(85, s)
 			// Prohibit different
-			else if (tivl[fli[s-1]] == iPco) FLAG2(86, s)
+			else if (tivl[fli[ls-1]] == iPco) FLAG2(86, s)
 			// All other cases if previous interval is not pco
 			else {
 				// Direct movement to pco
