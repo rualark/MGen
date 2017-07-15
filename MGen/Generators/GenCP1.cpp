@@ -611,7 +611,7 @@ int CGenCP1::FailVIntervals() {
 			// All other cases if previous interval is not pco
 			else {
 				// Direct movement to pco
-				if (motion[fli[s - 1]] == mDirect) {
+				if (motion[fli[ls - 1]] == mDirect) {
 					// Last movement with stepwize
 					if (s2 == c_len-1 && (abs(acc[cpv][s]-acc[cpv][s-1]) < 3 || abs(acc[cfv][s]-acc[cfv][s-1]) < 3))
 						FLAG2(33, s)
@@ -634,7 +634,7 @@ int CGenCP1::FailVIntervals() {
 			}
 		}
 		// Long parallel ico
-		if (tivl[s] == iIco && ivl[s] == ivl[fli[s - 1]]) {
+		if (tivl[s] == iIco && ivl[s] == ivl[fli[ls - 1]]) {
 			++pico_count;
 			// Two same ico transitions means three intervals already
 			if (pico_count == 2) {
