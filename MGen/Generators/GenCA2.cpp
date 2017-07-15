@@ -167,14 +167,21 @@ void CGenCA2::ExplodeCP() {
 	for (int v = 0; v < av_cnt; ++v) cpoint[cantus_id][v].clear();
 	int steps;
 	// Explode cpoint
+	int ln;
 	for (int s = 0; s < cc_old[0].size(); ++s) {
 		steps = cc_len[s] / min_vlen[cpv];
+		// Do not explode last measure
+		ln = min_vlen[cpv];
+		if (s == cc_old[0].size() - 1) {
+			steps = 1;
+			ln = cc_len[s];
+		}
 		for (int i = 0; i < steps; ++i) {
 			for (int v = 0; v < av_cnt; ++v) {
 				cpoint[cantus_id][v].push_back(cc_old[v][s]);
-				cantus_len[cantus_id].push_back(min_vlen[cpv]);
-				cantus_tempo[cantus_id].push_back(tempo_old[s]);
 			}
+			cantus_tempo[cantus_id].push_back(tempo_old[s]);
+			cantus_len[cantus_id].push_back(ln);
 		}
 	}
 }
