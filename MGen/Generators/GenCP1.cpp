@@ -1198,7 +1198,7 @@ void CGenCP1::Generate() {
 	// Load first voice
 	vector<int> anflagsc_old = anflagsc[cfv];
 	vector<vector<int>> anflags_old = anflags[cfv];
-	c_len = m_c.size() * npm;
+	c_len = m_c.size() * npm - (npm - 1); 
 	ac[cfv].clear();
 	acc[cfv].clear();
 	apc[cfv].clear();
