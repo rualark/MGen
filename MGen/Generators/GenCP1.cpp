@@ -364,6 +364,24 @@ int CGenCP1::SendCP() {
 			}
 			pos += cc_len[x / npm];
 		}
+		// If npm>1, prolong notes
+		if (c_len % npm == 1) {
+			int plen = npm - c_len % npm;
+			for (int x = c_len; x < c_len + plen; ++x) {
+				for (int i = 0; i < cc_len[x / npm]; ++i) {
+					note[pos + i][v] = note[pos + i - 1][v];
+					len[pos + i][v] = len[pos + i - 1][v];
+					pause[pos + i][v] = 0;
+					coff[pos + i][v] = i;
+					dyn[pos + i][v] = dyn[pos + i - 1][v];
+					tonic[pos + i][v] = tonic[pos + i - 1][v];
+					minor[pos + i][v] = minor[pos + i - 1][v];
+					color[pos + i][v] = color[pos + i - 1][v];
+					tempo[pos + i] = tempo[pos + i - 1];
+				}
+				pos += cc_len[x / npm];
+			}
+		}
 		// Create pause
 		pause_len = floor((pos + 1) / 8 + 1) * 8 - pos;
 		FillPause(pos, pause_len, v);
