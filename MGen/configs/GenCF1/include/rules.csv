@@ -172,7 +172,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);1;Tonic chords in root positions inside melody (except borders);
 1;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);1;Tonic chords in root positions inside melody (except borders);
 1;35;0;Cantus;Counterpoint;Contrary motion (medium);1;;
-1;46;60;Cantus;Counterpoint;Contrary motion (little);0;;
+1;46;60;Cantus;Counterpoint;Contrary motion (little);1;;
 2;0;0;;;Strict;1;This rule is set to 1 only when all other prohibited rules are not violated;
 2;42;0;Melody;Compensated leap;Compensation deviation to 2nd (3rd);1;Compensation can be deviated one note above last note;
 2;43;0;Melody;Compensated leap;Compensation deviation to 2nd (4th);1;Compensation can be deviated one note above last note;
@@ -346,4 +346,4 @@ Set;Severity;Class;Group;Rule;Flag
 2;29;60;Cantus;Counterpoint;Tonic chord in root position (1 each 15);1;Tonic chords in root positions inside melody (except borders);
 2;30;60;Cantus;Counterpoint;Tonic chord in root position (>1 each 15);1;Tonic chords in root positions inside melody (except borders);
 2;35;0;Cantus;Counterpoint;Contrary motion (medium);1;;
-2;46;60;Cantus;Counterpoint;Contrary motion (little);0;;
+2;46;60;Cantus;Counterpoint;Contrary motion (little);1;;

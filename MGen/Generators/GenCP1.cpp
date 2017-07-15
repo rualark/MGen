@@ -387,7 +387,7 @@ int CGenCP1::SendCP() {
 		FillPause(pos, pause_len, v);
 		for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
 		// Merge notes
-		MergeNotes(step, step + real_len2 - 1, v);
+		MergeNotes(step, pos - 1, v);
 	}
 	step = pos + pause_len;
 	FixLen(step0, step - 1);

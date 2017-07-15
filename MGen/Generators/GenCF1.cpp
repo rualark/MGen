@@ -2517,7 +2517,7 @@ check:
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
 		if (FailFirstNotes(m_pc, ep2)) goto skip;
 		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;
-		if (ep2>3 && FailMelodyHarm(m_pc)) goto skip;
+		if ((ep2>3 || ep2 == c_len) && FailMelodyHarm(m_pc)) goto skip;
 
 		SaveBestRejected(m_cc);
 		// If we are window-scanning
