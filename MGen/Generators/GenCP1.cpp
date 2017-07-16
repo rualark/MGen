@@ -790,7 +790,7 @@ void CGenCP1::RandomSWACP()
 		MakeNewCP();
 		scpoint[cpv] = acc[cpv];
 		// Set scan matrix to scan all
-		smatrixc = c_len - 2;
+		smatrixc = c_len - fn;
 		smatrix.clear();
 		smatrix.resize(c_len, 0);
 		// Do not scan first pause
