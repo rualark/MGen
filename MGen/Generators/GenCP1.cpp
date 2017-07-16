@@ -126,7 +126,7 @@ void CGenCP1::SingleCPInit() {
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
-	sp1 = 0;
+	sp1 = fn;
 	sp2 = c_len;
 	ep1 = max(0, sp1 - 1);
 	ep2 = c_len;
@@ -793,7 +793,7 @@ void CGenCP1::RandomSWACP()
 		smatrixc = c_len - 2;
 		smatrix.clear();
 		smatrix.resize(c_len, 0);
-		// Do not scan first note with pause
+		// Do not scan first pause
 		for (int x = fn; x < c_len; ++x) {
 			smatrix[x] = 1;
 		}
