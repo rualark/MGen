@@ -29,7 +29,6 @@ protected:
 	inline int FailCrossInt();
 	inline void GetVIntervals();
 	inline int FailVMotion();
-	inline int FailInTonic();
 	inline int FailVIntervals();
 	inline void CalcDpenaltyCP();
 	inline void SaveCP();

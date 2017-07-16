@@ -547,40 +547,6 @@ int CGenCP1::FailVMotion() {
 	return 0;
 }
 
-int CGenCP1::FailInTonic() {
-	int tonic_sum = 0;
-	int tonic_sum_i = 0;
-	int first_tonic = 0;
-	int mht = 0; // Measure has tonic
-	for (int i = 0; i < ep2; ++i) {
-		// Tonic chord
-		// Reset measure_has_tonic each measure
-		if (!(i % npm)) mht = 0;
-		// TODO: do not calculate tonic chord twice - calculate and store in harmony vector
-		if (!mht && apcc[0][i] == 0 && (apcc[1][i] == 0 || apcc[1][i] == 4 || apcc[1][i] == 7)) {
-			++mht;
-			++tonic_sum;
-			// Flag if this is not first tonic
-			if (first_tonic) {
-				// If melody is short, decrease penalty to exclude first step
-				if (i == c_len - 1 && c_len <= tonic_window) {
-					--tonic_sum;
-				}
-				// If this is not last tonic, flag one tonic
-				if (tonic_sum == 1 && i < c_len - 1) FLAG2(29, i)
-					// Flag as multiple tonic even if it is last
-				else if (tonic_sum > 1) FLAG2(30, i);
-			}
-			first_tonic = 1;
-		}
-		if (i >= tonic_window && apcc[0][i - tonic_window] == 0 &&
-			(apcc[1][i - tonic_window] == 0 || apcc[1][i - tonic_window] == 4 || apcc[1][i - tonic_window] == 7)) {
-			--tonic_sum;
-		}
-	}
-	return 0;
-}
-
 int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	// Check first step
@@ -1063,7 +1029,6 @@ check:
 		if (FailCrossInt()) goto skip;
 		GetVIntervals();
 		if (FailVMotion()) goto skip;
-		if (FailInTonic()) goto skip;
 		if (FailVIntervals()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat)) goto skip;
