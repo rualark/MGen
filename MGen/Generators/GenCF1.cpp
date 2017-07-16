@@ -318,7 +318,7 @@ void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 			// Convert to chromatic
 			cc[i] = C_CC(c[i], tonic_cur, minor_cur);
 			// Prevent note repeats in the starting cantus
-			if ((i == 0 || c[i] != c[i - 1]) && (i > c_len - 2 || c[i] != c[i + 1])) break;
+			if ((i == 0 || cc[i] != cc[i - 1]) && (i > c_len - 2 || cc[i] != cc[i + 1])) break;
 		}
 	}
 }

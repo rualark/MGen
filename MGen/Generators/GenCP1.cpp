@@ -791,10 +791,10 @@ void CGenCP1::RandomSWACP()
 		scpoint[cpv] = acc[cpv];
 		// Set scan matrix to scan all
 		smatrixc = c_len - 2;
-		smatrix.resize(c_len);
-		smatrix[0] = 0;
-		smatrix[c_len - 1] = 0;
-		for (int x = 1; x < c_len - 1; ++x) {
+		smatrix.clear();
+		smatrix.resize(c_len, 0);
+		// Do not scan first note with pause
+		for (int x = fn; x < c_len; ++x) {
 			smatrix[x] = 1;
 		}
 		// Optimize cpoint
