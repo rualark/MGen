@@ -264,13 +264,16 @@ void CGenCA2::Generate() {
 		Adapt(step0, step - 1);
 		t_sent = t_generated;
 		t_generated2 = t_generated;
-		// Load first voice
+		// Load cantus voice
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
-		ac[cfv] = m_c;
-		acc[cfv] = m_cc;
-		apc[cfv] = m_pc;
-		apcc[cfv] = m_pcc;
+		acc[cfv] = cpoint[cantus_id][cfv];
+		c_len = acc[cfv].size();
+		ac[cfv].resize(c_len);
+		apc[cfv].resize(c_len);
+		apcc[cfv].resize(c_len);
+		FailDiatonic(ac[cfv], acc[cfv], 0, c_len, minor_cur);
+		GetPitchClass(ac[cfv], acc[cfv], apc[cfv], apcc[cfv], 0, c_len);
 		dpenalty_cur = 0;
 		scpoint = cpoint[i];
 		// Choose level
