@@ -185,6 +185,7 @@ void CGenCA2::ExplodeCP() {
 		}
 	}
 	// Detect start pause
+	fn = 0;
 	for (int i = 0; i < cpoint[cantus_id][cpv].size(); ++i) {
 		if (!cpoint[cantus_id][cpv][i]) {
 			fn = i + 1;
