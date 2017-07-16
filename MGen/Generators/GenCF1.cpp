@@ -456,11 +456,6 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 					hm[ls].push_back(h);
 					break;
 				}
-				// Is root tonic?
-				else if (!pc[s] && !cantus_high) {
-					// Is this prohibited?
-					if (!accept[29]) continue;
-				}
 			}
 			// If tonic allowed or not tonic
 			hm[ls].push_back(h);
