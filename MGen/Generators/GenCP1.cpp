@@ -497,6 +497,8 @@ int CGenCP1::FailCrossInt() {
 		if (FailCrossInt2(i, i_1, 11, 8, 166)) return 1;
 		if (FailCrossInt2(i, i_1, 9, 3, 167)) return 1;
 		if (FailCrossInt2(i, i_1, 11, 3, 168)) return 1;
+		if (FailCrossInt2(i, i_1, 11, 5, 29)) return 1;
+		if (FailCrossInt2(i, i_1, 2, 8, 29)) return 1;
 	}
 	return 0;
 }
