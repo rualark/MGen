@@ -187,8 +187,12 @@ void CGenCA2::ExplodeCP() {
 	// Detect start pause
 	for (int i = 0; i < cpoint[cantus_id][cpv].size(); ++i) {
 		if (!cpoint[cantus_id][cpv][i]) {
-			fn = i+1;
+			fn = i + 1;
 		}
+	}
+	// Copy notes over start pause
+	for (int i = 0; i < fn; ++i) {
+		cpoint[cantus_id][cpv][i] = cpoint[cantus_id][cpv][fn];
 	}
 }
 
