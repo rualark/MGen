@@ -164,7 +164,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 	smatrix.resize(c_len);
 	fill(smatrix.begin(), smatrix.end(), 0);
 	// Search each note
-	for (int x = 0; x < c_len; x++) {
+	for (int x = fn; x < c_len; x++) {
 		// Search each flag
 		if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; f++) {
 			// Find prohibited flag
@@ -176,7 +176,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 				//if (x > 0 && abs(cantus[i][x - 1] - cantus[i][x]) > 7) pos2 = x + 12;
 				//if (x < c_len - 1 && abs(cantus[i][x + 1] - cantus[i][x]) > 7) pos2 = x + 12;
 				// Do not rescan first and last step
-				if (pos1 < 0) pos1 = 0;
+				if (pos1 < fn) pos1 = fn;
 				if (pos2 > c_len - 1) pos2 = c_len - 1;
 				// Set smatrix values
 				for (int z = pos1; z <= pos2; z++) {
