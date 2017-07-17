@@ -1119,11 +1119,9 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 	// Calculate allowed skips 
 	int pallowed_skips = 0;
 	int allowed_skips = 0;
-	if (leap_prev >= 0 || accept[108 + leap_id]) {
-		if (leap_size > 2) ++allowed_skips;
-		if (leap_size > 6) ++allowed_skips;
-		if (late_leap) ++allowed_skips;
-	}
+	if (leap_size > 2) ++allowed_skips;
+	if (leap_size > 6) ++allowed_skips;
+	if (late_leap) ++allowed_skips;
 	// Check if leap is filled
 	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
