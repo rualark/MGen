@@ -891,7 +891,7 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	llen[lpos - 1] = l;
 }
 
-void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_to, int &fill_from, int &fill_finish) {
+void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_to, int &fill_from, int &fill_end) {
 	// Create leap tail
 	tc.clear();
 	int prev_note = -1;
@@ -932,28 +932,28 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 		}
 	}
 	for (int x = t1; x <= t2; ++x) nstat3[x] = 0;
-	fill_finish = -1;
+	fill_end = -1;
 }
 	
-void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int &fill_finish)
+void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int &fill_end)
 {
 	int t1, t2;
 	int dev_state = 0;
-	CountFillInit(c, tail_len, pre, t1, t2, fill_to, fill_from, fill_finish);
-	// Detect fill_finish
+	CountFillInit(c, tail_len, pre, t1, t2, fill_to, fill_from, fill_end);
+	// Detect fill_end
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
 	deviates = 0;
 	for (int x = 0; x < tc.size(); ++x) {
 		++nstat3[tc[x]];
 		if (tc[x] <= t1 + 2) {
 			// Set fill finish if we approach 3rd or lower first time
-			if (fill_finish == -1) fill_finish = x;
+			if (fill_end == -1) fill_end = x;
 			// Stop collecting note stat if we are below the border
 			if (tc[x] < t1) break;
 		}
 	}
 	// Calculate deviation
-	for (int x = 0; x < fill_finish; ++x) {
+	for (int x = 0; x < fill_end; ++x) {
 		// If deviating, start deviation state and calculate maximum deviation
 		if (tc[x] > t2) {
 			deviates = max(deviates, tc[x] - t2);
@@ -1108,9 +1108,9 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 
 int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int child_leap) {
 	// Prefill parameters
-	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
+	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_end, pdev_count;
 	// Fill parameters
-	int tail_len, fill_to, fill_to_pre, fill_from, deviates, fill_finish, dev_count;
+	int tail_len, fill_to, fill_to_pre, fill_from, deviates, fill_end, dev_count;
 	int prefilled_last = 0;
 	filled = 0;
 	prefilled = 0;
@@ -1129,7 +1129,7 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		filled = 1;
 		// Check fill only if enough length (checked second time in case of slurs)
 		CountFill(c, tail_len, nstat2, nstat3, skips, fill_to, 0, fill_to_pre,
-			fill_from, deviates, dev_count, leap_prev, fill_finish);
+			fill_from, deviates, dev_count, leap_prev, fill_end);
 		if (skips > allowed_skips) filled = 0;
 		else if (fill_to > 3) filled = 0;
 		else if (fill_to == 3 && (!late_leap || (!accept[100 + leap_id] && !accept[104 + leap_id]))) filled = 0;
@@ -1147,7 +1147,7 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 			if (ls > 0) {
 				ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
 				CountFill(c, ptail_len, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from,
-					pdeviates, pdev_count, leap_prev, pfill_finish);
+					pdeviates, pdev_count, leap_prev, pfill_end);
 				prefilled = 1;
 				if (pskips > 0) prefilled = 0;
 				else if (pdeviates > 1) prefilled = 0;
