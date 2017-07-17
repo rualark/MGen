@@ -1133,8 +1133,8 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		if (skips > allowed_skips) filled = 0;
 		else if (fill_to > 3) filled = 0;
 		else if (fill_to == 3 && (!late_leap || (!accept[100 + leap_id] && !accept[104 + leap_id]))) filled = 0;
-		else if (fill_to == 2 && !late_leap && fill_to_pre && !accept[100 + leap_id]) filled = 0;
-		else if (fill_to == 2 && !late_leap && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
+		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
+		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
 		else if (fill_from > 2) filled = 0;
 		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
 		else if (deviates > 2) filled = 0;
@@ -1159,10 +1159,11 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		// Show compensation flags only if successfully compensated
 		// This means that compensation errors are not shown if uncompensated (successfully or not)
 		else {
+			if (fill_to == 3 && late_leap) FLAG2(144, leap_start)
 			// Flag unfinished fill if it is not blocking
-			if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, leap_start)
+			else if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, leap_start)
 			// Flag prepared unfinished fill if it is not blocking
-			else if (fill_to == 2 && !fill_to_pre) FLAG2(104 + leap_id, leap_start)
+			else if (fill_to == 2 && !fill_to_pre) FLAG2(104 + leap_id, leap_start);
 			// Flag after 3rd if it is not blocking
 			if (fill_from == 2) FLAG2(53 + leap_id, leap_start);
 			// Flag deviation if it is not blocking
