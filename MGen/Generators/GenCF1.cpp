@@ -332,9 +332,9 @@ void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int st
 }
 
 // Detect repeating notes. Step2 excluding
-int CGenCF1::FailNoteRepeat(vector<int> &c, int step1, int step2) {
+int CGenCF1::FailNoteRepeat(vector<int> &cc, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
-		if (c[i] == c[i + 1]) FLAG2(93, i);
+		if (cc[i] == cc[i + 1]) FLAG2(30, i);
 	}
 	return 0;
 }
