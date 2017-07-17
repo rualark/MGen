@@ -20,10 +20,6 @@ Set;Severity;Class;Group;Rule;Flag
 1;105;10;Melody;Compensated leap;Compensated to 3rd (4th);1;;
 1;106;40;Melody;Compensated leap;Compensated to 3rd (5th);1;;
 1;107;60;Melody;Compensated leap;Compensated to 3rd (>5th);1;;
-1;108;0;Melody;Compensated leap;Second leap compensation skips (-);0;;
-1;109;30;Melody;Compensated leap;Second leap compensation skips (4th);0;;
-1;110;60;Melody;Compensated leap;Second leap compensation skips (5th);0;;
-1;111;100;Melody;Compensated leap;Second leap compensation skips (>5th);0;;
 1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated (3rd);1;;
 1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated (4th);1;;
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated (5th);0;;
@@ -82,7 +78,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;28;0;Melody;Leaps;Two consecutive 3rds (after 6/8);-1;;
 1;4;60;Melody;Stepwise;Long stepwise motion (any direction);0;;
 1;5;60;Melody;Stepwise;Long stepwise motion (one direction);0;;
-1;9;60;Melody;Repeats;Adjacent repeat of notes (2);1;;
+1;9;60;Melody;Repeats;Adjacent repeat of 2 notes (2);1;;
 1;78;60;Melody;Repeats;Culmination (early 1-2);0;;
 1;79;0;Melody;Repeats;Culmination (early 3);-1;;
 1;21;60;Melody;Repeats;Culmination (late);-1;;
@@ -166,9 +162,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;75;30;Cantus;Counterpoint;2nd to last measure (no G or D);0;;
 1;97;60;Cantus;Counterpoint;Slur (sequence);0;;
 1;98;60;Cantus;Counterpoint;Slur (simult.);1;;
-1;93;0;Cantus;Counterpoint;Slur (1);1;;
+1;93;0;Cantus;Counterpoint;Slur (1);0;;
 1;94;0;Cantus;Counterpoint;Slur (2);0;;
 1;95;0;Cantus;Counterpoint;Slur (>2);0;;
+1;30;100;Cantus;Counterpoint;Slur (cantus);0;;
 1;24;60;Cantus;Counterpoint;Overlap (voices);1;;
 1;35;0;Cantus;Counterpoint;Contrary motion (medium);1;;
 1;46;60;Cantus;Counterpoint;Contrary motion (little);1;;
@@ -193,10 +190,6 @@ Set;Severity;Class;Group;Rule;Flag
 2;105;10;Melody;Compensated leap;Compensated to 3rd (4th);1;;
 2;106;40;Melody;Compensated leap;Compensated to 3rd (5th);1;;
 2;107;60;Melody;Compensated leap;Compensated to 3rd (>5th);1;;
-2;108;0;Melody;Compensated leap;Second leap compensation skips (-);0;;
-2;109;30;Melody;Compensated leap;Second leap compensation skips (4th);0;;
-2;110;60;Melody;Compensated leap;Second leap compensation skips (5th);0;;
-2;111;100;Melody;Compensated leap;Second leap compensation skips (>5th);0;;
 2;112;0;Melody;Uncompensated leap;Uncompensated: precompensated (3rd);1;;
 2;113;0;Melody;Uncompensated leap;Uncompensated: precompensated (4th);1;;
 2;114;60;Melody;Uncompensated leap;Uncompensated: precompensated (5th);0;;
@@ -255,7 +248,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;28;0;Melody;Leaps;Two consecutive 3rds (after 6/8);-1;;
 2;4;60;Melody;Stepwise;Long stepwise motion (any direction);0;;
 2;5;60;Melody;Stepwise;Long stepwise motion (one direction);0;;
-2;9;60;Melody;Repeats;Adjacent repeat of notes (2);1;;
+2;9;60;Melody;Repeats;Adjacent repeat of 2 notes (2);1;;
 2;78;60;Melody;Repeats;Culmination (early 1-2);0;;
 2;79;0;Melody;Repeats;Culmination (early 3);-1;;
 2;21;60;Melody;Repeats;Culmination (late);-1;;
@@ -339,9 +332,10 @@ Set;Severity;Class;Group;Rule;Flag
 2;75;30;Cantus;Counterpoint;2nd to last measure (no G or D);0;;
 2;97;60;Cantus;Counterpoint;Slur (sequence);0;;
 2;98;60;Cantus;Counterpoint;Slur (simult.);1;;
-2;93;0;Cantus;Counterpoint;Slur (1);1;;
+2;93;0;Cantus;Counterpoint;Slur (1);0;;
 2;94;0;Cantus;Counterpoint;Slur (2);0;;
 2;95;0;Cantus;Counterpoint;Slur (>2);0;;
+2;30;100;Cantus;Counterpoint;Slur (cantus);0;;
 2;24;60;Cantus;Counterpoint;Overlap (voices);1;;
 2;35;0;Cantus;Counterpoint;Contrary motion (medium);1;;
 2;46;60;Cantus;Counterpoint;Contrary motion (little);1;;
