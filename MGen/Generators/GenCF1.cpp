@@ -1010,7 +1010,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 	}
 }
 
-void CGenCF1::FailLeapInit(vector<int> &c, int &last_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, vector<int> &leap) {
+void CGenCF1::FailLeapInit(vector<int> &c, int &late_leap, int &child_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
@@ -1023,15 +1023,15 @@ void CGenCF1::FailLeapInit(vector<int> &c, int &last_leap, int &child_leap, int 
 	fleap_start = ls;
 	fleap_end = ls + 1;
 	leap_size = abs(c[leap_end] - c[s]);
-	last_leap = 0;
+	late_leap = 0;
 										// Next is leap?
 	if (fleap_end < fli_size - 1) leap_next = leap[leap_start] * leap[leap_end];
 	// Prev is leap?
 	if (fleap_start > 0) leap_prev = leap[leap_start] * leap[fli[fleap_start] - 1];
 	// Last leap border
-	int last_max = fli_size - 4;
+	int last_max = fli_size - 5;
 	// Last leap?
-	if (fleap_start >= last_max) last_leap = 1;
+	if (fleap_start >= last_max) late_leap = 1;
 	// Check if we have a greater neighbouring leap
 	if ((fleap_end < fli_size - 1 && abs(c[fli[fleap_end + 1]] - c[leap_end]) > leap_size && leap[leap_start] * leap[leap_end]<0) ||
 		(fleap_start > 0 && abs(c[leap_start] - c[fli[fleap_start - 1]]) > leap_size && leap[leap_start] * leap[fli[fleap_start - 1]]<0)) {
@@ -1090,23 +1090,23 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int child_leap, leap_next, leap_prev, unresolved, presecond;
-	int overflow, arpeg, last_leap;
+	int overflow, arpeg, late_leap;
 	for (s = 0; s < ep2 - 1; ++s) {
 		if (leap[s] != 0) {
 			ls = bli[s];
-			FailLeapInit(c, last_leap, child_leap, presecond, leap_next, leap_prev,
+			FailLeapInit(c, late_leap, child_leap, presecond, leap_next, leap_prev,
 				arpeg, overflow, leap);
 			if (FailLeapMulti(leap_next, arpeg, overflow, c, leap)) return 1;
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (!overflow && !arpeg)
-				if (FailLeapFill(c, last_leap, leap_prev, child_leap)) return 1;
+				if (FailLeapFill(c, late_leap, leap_prev, child_leap)) return 1;
 			if (FailLeapMDC(leap, c)) return 1;
 		}
 	}
 	return 0;
 }
 
-int CGenCF1::FailLeapFill(vector<int> &c, int last_leap, int leap_prev, int child_leap) {
+int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int child_leap) {
 	// Prefill parameters
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from, pdeviates, pfill_finish, pdev_count;
 	// Fill parameters
@@ -1116,14 +1116,15 @@ int CGenCF1::FailLeapFill(vector<int> &c, int last_leap, int leap_prev, int chil
 	prefilled = 0;
 	int pskips = 10;
 	int skips = 10;
-	// Calculate allowed skips if this is not second leap and skips for second leap not allowed
+	// Calculate allowed skips 
 	int pallowed_skips = 0;
 	int allowed_skips = 0;
 	if (leap_prev >= 0 || accept[108 + leap_id]) {
 		if (leap_size > 2) ++allowed_skips;
 		if (leap_size > 6) ++allowed_skips;
+		if (late_leap) ++allowed_skips;
 	}
-	// Check if  leap is filled
+	// Check if leap is filled
 	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
 	if ((fleap_end + tail_len < fli_size) || (c_len == ep2)) {
@@ -1132,9 +1133,10 @@ int CGenCF1::FailLeapFill(vector<int> &c, int last_leap, int leap_prev, int chil
 		CountFill(c, tail_len, nstat2, nstat3, skips, fill_to, 0, fill_to_pre,
 			fill_from, deviates, dev_count, leap_prev, fill_finish);
 		if (skips > allowed_skips) filled = 0;
-		else if (fill_to > 2) filled = 0;
-		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
-		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
+		else if (fill_to > 3) filled = 0;
+		else if (fill_to == 3 && (!late_leap || (!accept[100 + leap_id] && !accept[104 + leap_id]))) filled = 0;
+		else if (fill_to == 2 && !late_leap && fill_to_pre && !accept[100 + leap_id]) filled = 0;
+		else if (fill_to == 2 && !late_leap && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
 		else if (fill_from > 2) filled = 0;
 		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
 		else if (deviates > 2) filled = 0;
@@ -1151,8 +1153,8 @@ int CGenCF1::FailLeapFill(vector<int> &c, int last_leap, int leap_prev, int chil
 				if (pskips > 0) prefilled = 0;
 				else if (pdeviates > 1) prefilled = 0;
 			}
-			if (prefilled && !last_leap) FLAG2(112 + leap_id, leap_start)
-			else if (prefilled && last_leap) FLAG2(144 + leap_id, leap_start)
+			if (prefilled && !late_leap) FLAG2(112 + leap_id, leap_start)
+			else if (prefilled && late_leap) FLAG2(144 + leap_id, leap_start)
 			else if (child_leap) FLAG2(116 + leap_id, leap_start)
 			else FLAG2(124 + leap_id, leap_start);
 		}

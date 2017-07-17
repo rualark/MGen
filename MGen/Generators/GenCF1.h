@@ -115,10 +115,10 @@ protected:
 	inline void CountFill(vector<int>& c, int tail_len, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int & fill_finish);
 	inline void CountFillSkips(int leap_prev, int & skips, int t1, int t2);
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int & fill_to, int & fill_to_pre, int & fill_from);
-	inline void FailLeapInit(vector<int>& c, int & last_leap, int & child_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, vector<int>& leap);
+	inline void FailLeapInit(vector<int>& c, int & late_leap, int & child_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, vector<int>& leap);
 	inline int FailLeapMulti(int leap_next, int & arpeg, int & overflow, vector<int>& c, vector<int>& leap);
 	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
-	inline int FailLeapFill(vector<int>& c, int last_leap, int leap_prev, int child_leap);
+	inline int FailLeapFill(vector<int>& c, int late_leap, int leap_prev, int child_leap);
 	inline int FailLeapMDC(vector<int>& leap, vector<int>& c);
 	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
