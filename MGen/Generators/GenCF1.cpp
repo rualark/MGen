@@ -1003,7 +1003,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 	}
 	// Check prepared fill to 3rd
 	if (!pre && fill_to > 1) {
-		int pos = max(0, leap_start - 2);
+		int pos = max(0, leap_start - fill_to);
 		if (c[leap_start] < c[leap_end]) {
 			for (int x = pos; x < leap_start; ++x) if (c[x] == c[leap_end] - 1) fill_to_pre = 1;
 		}
