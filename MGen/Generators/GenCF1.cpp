@@ -1165,8 +1165,8 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		// This means that compensation errors are not shown if uncompensated (successfully or not)
 		else {
 			// Flag late uncompensated precompensated leap
-			if (fill_to == 3 && late_leap) FLAG2(144, leap_start)
-			else if (fill_from == 3 && late_leap) FLAG2(144, leap_start)
+			if (fill_to == 3 && late_leap) FLAG2(144 + leap_id, leap_start)
+			else if (fill_from == 3 && late_leap) FLAG2(144 + leap_id, leap_start)
 			// Flag unfinished fill if it is not blocking
 			else if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, leap_start)
 			// Flag prepared unfinished fill if it is not blocking
