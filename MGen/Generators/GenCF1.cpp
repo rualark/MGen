@@ -776,13 +776,16 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	if (ep2 < c_len) {
 		// Find multiple culminations at highest note
 		if (nmax == max_cc[0] || nmax - nmin == max_interval) {
-			for (int i = 0; i < ep2; ++i) if (!slur[i]) {
-				if (cc[i] == nmax) {
+			for (int ls = 0; ls < fli_size; ++ls) {
+				if (cc[fli[ls]] == nmax) {
 					++culm_sum;
-					culm_step = i;
-					if (culm_sum > 1) FLAG2(12, culm_step);
+					culm_step = ls;
+					if (culm_sum > 1) FLAG2(12, fli[culm_step]);
 				}
 			}
+			// Prohibit culminations at first steps on highest notes
+			if (culm_step < 2 && cc[fli[culm_step]] == nmax) FLAG2(78, fli[culm_step]);
+			if (culm_step == 2 && cc[fli[culm_step]] == nmax) FLAG2(79, fli[culm_step]);
 		}
 	}
 	else {
