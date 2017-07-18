@@ -1008,14 +1008,14 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 		nstat4.resize(2, 0);
 		if (c[leap_start] < c[leap_end]) {
 			for (int x = pos; x < fleap_start; ++x) {
-				if (c[fli[x]] == c[leap_end] - 1) nstat4[0] = 1;
-				else if (c[fli[x]] == c[leap_end] - 2) nstat4[1] = 1;
+				if (c[fli[x]] == c[leap_start] + 1) nstat4[0] = 1;
+				else if (c[fli[x]] == c[leap_start] + 2) nstat4[1] = 1;
 			}
 		}
 		else {
 			for (int x = pos; x < fleap_start; ++x) {
-				if (c[fli[x]] == c[leap_end] + 1) nstat4[0] = 1;
-				else if (c[fli[x]] == c[leap_end] + 2) nstat4[1] = 1;
+				if (c[fli[x]] == c[leap_start] - 1) nstat4[0] = 1;
+				else if (c[fli[x]] == c[leap_start] - 2) nstat4[1] = 1;
 			}
 		}
 		if (fill_to == 2) {
