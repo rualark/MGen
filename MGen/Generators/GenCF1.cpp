@@ -1156,7 +1156,8 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 				else if (pdeviates > 1) prefilled = 0;
 			}
 			if (prefilled && !late_leap) FLAG2(112 + leap_id, leap_start)
-			else if (prefilled && late_leap) FLAG2(144 + leap_id, leap_start)
+			else if (prefilled && late_leap) 
+				FLAG2(144 + leap_id, leap_start)
 			else if (child_leap) FLAG2(116 + leap_id, leap_start)
 			else FLAG2(124 + leap_id, leap_start);
 		}
@@ -1253,7 +1254,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 		else if (ls < fli_size - 2) {
 			if (pcc[s1] == t1) FLAG2(31, s)
 			else if (pcc[s2] != tb) FLAG2(31, s)
-			else if (!leap_start || pcc[fli[fleap_start - 1]] != ta) FLAG2(31, s)
+			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(31, s)
 				// Record resolved tritone
 			else FLAG2(2, s);
 		}
