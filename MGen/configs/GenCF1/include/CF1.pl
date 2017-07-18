@@ -23,7 +23,7 @@ t_cnt = 1000 # Maximum number of steps generated
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 
 # Main parameters
-c_len = 12 # Number of measures in each cantus. Usually 9 to 11 for cantus
+c_len = 13 # Number of measures in each cantus. Usually 9 to 11 for cantus
 interval = 7-14 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = C # Music key to use for generation
 first_note = C5 # Starting note of each cantus
@@ -61,4 +61,4 @@ calculate_correlation = 0 # Enables correlation calculation algorithm. Slows dow
 calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 0 # Enables SWA stuck flags statistics calculation algorithm.
-best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
+best_rejected = 1000 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
