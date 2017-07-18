@@ -1149,7 +1149,7 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 			fill_from, deviates, dev_count, leap_prev, fill_end);
 		if (skips > allowed_skips) filled = 0;
 		else if (fill_to > 3) filled = 0;
-		else if (fill_to == 3 && (!late_leap || (!accept[100 + leap_id] && !accept[104 + leap_id]))) filled = 0;
+		else if (fill_to == 3 && (!fill_to_pre || !late_leap || (!accept[100 + leap_id] && !accept[104 + leap_id]))) filled = 0;
 		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
 		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
 		else if (fill_from > 3) filled = 0;
