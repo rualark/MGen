@@ -987,6 +987,7 @@ void CGenCF1::CountFillSkips(int leap_prev, int &skips, int t1, int t2) {
 void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill_to, int &fill_to_pre, int &fill_from_pre, int &fill_from) {
 	fill_to = leap_size;
 	fill_to_pre = 0;
+	fill_from_pre = 0;
 	fill_from = leap_size;
 	// Search for first compensated note
 	for (int i = t2-1; i >= t1; --i) {
