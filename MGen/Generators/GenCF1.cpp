@@ -2085,8 +2085,10 @@ CString CGenCF1::GetStuck() {
 			}
 		}
 		if (max_value < 1) break;
-		st.Format("\n%ld %s, ", max_value, FlagName[max_flag]);
-		st2 += st;
+		if (!accept[max_flag]) {
+			st.Format("\n%ld %s, ", max_value, FlagName[max_flag]);
+			st2 += st;
+		}
 		// Clear biggest value to search for next
 		best_flags[max_flag] = -1;
 	}
