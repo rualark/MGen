@@ -2364,11 +2364,9 @@ void CGenCF1::RandomSWA()
 			cantus[0][x] = C_CC(m_c[x], tonic_cur, minor_cur);
 		}
 		// Set scan matrix to scan all
-		smatrixc = c_len - 2;
+		smatrixc = c_len;
 		smatrix.resize(c_len);
-		smatrix[0] = 0;
-		smatrix[c_len - 1] = 0;
-		for (int x = 1; x < c_len - 1; ++x) {
+		for (int x = 0; x < c_len; ++x) {
 			smatrix[x] = 1;
 		}
 		// Optimize cantus
