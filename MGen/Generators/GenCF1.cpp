@@ -2332,7 +2332,10 @@ void CGenCF1::TestDiatonic()
 void CGenCF1::RandomSWA()
 {
 	CString st;
-	VSet<int> vs; // Unique checker
+	// Unique checker
+	VSet<int> vs; 
+	// Save first note because it will be overwritten by random generator
+	int first_note0 = first_note;
 	// Disable debug flags
 	calculate_blocking = 0;
 	calculate_correlation = 0;
@@ -2350,6 +2353,8 @@ void CGenCF1::RandomSWA()
 	swa_inrange = 1;
 	for (int i = 0; i < INT_MAX; ++i) {
 		if (need_exit) break;
+		// Load first note, because it was overwritten by random generator
+		first_note = first_note0;
 		// Create random cantus
 		MakeNewCantus(m_c, m_cc);
 		// Convert cantus to chromatic
