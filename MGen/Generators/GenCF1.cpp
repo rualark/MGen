@@ -1314,9 +1314,19 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 		if (minor_cur) {
 			if (FailTritone(7, 8, 2, 3, c, cc, pc, pcc)) return 1;
 		}
-		// Sept prohibit
-		if (abs(cc[s1] - cc[s]) == 10) FLAG2(1, s)
-		else if (abs(cc[s1] - cc[s]) == 11) FLAG2(39, s);
+		// Leap size prohibit
+		if (cc[s1] - cc[s] == 8) FLAG2(175, s)
+		else if (cc[s1] - cc[s] == -8) FLAG2(181, s)
+		else if (cc[s1] - cc[s] == 9) FLAG2(176, s)
+		else if (cc[s1] - cc[s] == -9) FLAG2(182, s)
+		else if (cc[s1] - cc[s] == 10) FLAG2(177, s)
+		else if (cc[s1] - cc[s] == -10) FLAG2(183, s)
+		else if (cc[s1] - cc[s] == 11) FLAG2(178, s)
+		else if (cc[s1] - cc[s] == -11) FLAG2(184, s)
+		else if (cc[s1] - cc[s] == 12) FLAG2(179, s)
+		else if (cc[s1] - cc[s] == -12) FLAG2(185, s)
+		else if (cc[s1] - cc[s] > 12) FLAG2(180, s)
+		else if (cc[s1] - cc[s] < -12) FLAG2(186, s)
 	}
 	return 0;
 }
@@ -2330,6 +2340,7 @@ void CGenCF1::RandomSWA()
 	// Create single cantus
 	cantus.resize(1);
 	cantus[0].resize(c_len);
+	scantus = &(cantus[0]);
 	ScanCantusInit();
 	// Set random_seed to initiate random cantus
 	random_seed = 1;
