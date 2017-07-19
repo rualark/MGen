@@ -2179,7 +2179,7 @@ int CGenCF1::SendCantus() {
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = 0; x < c_len; ++x) {
-		if (chm[x] > -1) mark[pos][v] = HarmNames[chm[x]];
+		if (chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = Color(120, 120, 120);
 		for (int i = 0; i < cc_len[x]; ++i) {
 			// Set color
