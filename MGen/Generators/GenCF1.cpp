@@ -2258,8 +2258,9 @@ int CGenCF1::SendCantus() {
 			rpst += st;
 		}
 	}
-	st.Format("%.0f (", rpenalty_cur);
-	rpst = st + rpst + ")";
+	st.Format("%.0f", rpenalty_cur);
+	if (rpst != "") rpst = st + " (" + rpst + ")";
+	else rpst = st;
 	if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	if (task == tGen) {
 		if (!shuffle) {
@@ -2272,7 +2273,7 @@ int CGenCF1::SendCantus() {
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
 			// If RSWA
-			//st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
+			st.Format("#%d\nRule penalty: %s", cantus_sent, rpst);
 		}
 		else {
 			if (key_eval == "") {

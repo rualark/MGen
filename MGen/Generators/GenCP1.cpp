@@ -405,8 +405,9 @@ int CGenCP1::SendCP() {
 			rpst += st;
 		}
 	}
-	st.Format("%.0f (", rpenalty_cur);
-	rpst = st + rpst + ")";
+	st.Format("%.0f", rpenalty_cur);
+	if (rpst != "") rpst = st + " (" + rpst + ")";
+	else rpst = st;
 	if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	if (task == tGen) {
 		if (!shuffle) {
