@@ -1587,7 +1587,7 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 		min_cc[i] = minc;
 		max_cc[i] = maxc;
 	}
-	// Convert limits to diatonic and recalibrate
+	// Convert limits to diatonic and recalibrate to diatonic grid
 	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
@@ -2394,7 +2394,6 @@ void CGenCF1::RandomSWA()
 		//SendCantus(0, 0);
 		// Check limit
 		if (t_generated >= t_cnt) {
-			WriteLog(3, "Reached t_cnt steps. Generation stopped");
 			return;
 		}
 	}
