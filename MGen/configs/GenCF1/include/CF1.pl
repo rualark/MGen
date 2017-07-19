@@ -36,7 +36,7 @@ cantus_high = 0 # Set to 1 to consider cantus to be higher voice
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 7 # Maximum interval allowed between each source and corrected note
-rpenalty_accepted = 0 # Maximum accepted rule penalty for RandomSWA
+rpenalty_accepted = 1000 # Maximum accepted rule penalty for RandomSWA
 
 # Rule parameters
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling (+2)

@@ -1812,11 +1812,15 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 		if (rc > rcycle) {
 			rcycle = rc;
 			if (br_cc.size() > 0) {
+				// Save old cantus
 				vector<int> cc_saved = cc;
+				// Load best rejected cantus
 				cc = br_cc;
 				flags = br_f;
 				anflags[cpv] = br_nf;
 				anflagsc[cpv] = br_nfc;
+				chm.clear();
+				chm.resize(c_len, -1);
 				SendCantus();
 				cc = cc_saved;
 				// Log
