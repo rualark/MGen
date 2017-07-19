@@ -2543,7 +2543,7 @@ check:
 	while (true) {
 		//LogCantus(cc);
 		ClearFlags(0, ep2);
-		if (FailNoteRepeat(m_cc, ep1, ep2 - 1)) goto skip;
+		if (FailNoteRepeat(m_cc, 0, ep2 - 1)) goto skip;
 		GetMelodyInterval(m_cc, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
