@@ -2340,6 +2340,7 @@ void CGenCF1::RandomSWA()
 	// Create single cantus
 	cantus.resize(1);
 	cantus[0].resize(c_len);
+	scantus = &(cantus[0]);
 	ScanCantusInit();
 	// Set random_seed to initiate random cantus
 	random_seed = 1;
