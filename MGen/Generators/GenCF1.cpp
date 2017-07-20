@@ -972,7 +972,7 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 		fill_end = x;
 	}
 	// Calculate fill vector
-	for (int x = 0; x < fill_end; ++x) {
+	for (int x = 0; x <= fill_end; ++x) {
 		++nstat3[tc[x]];
 	}
 	// Get deviations count
