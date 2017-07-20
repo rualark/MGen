@@ -1194,7 +1194,7 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 				if (pskips > 0) prefilled = 0;
 				else if (pdeviates > 1) prefilled = 0;
 			}
-			if (prefilled && !late_leap) FLAG2(112 + leap_id, leap_start)
+			if (prefilled) FLAG2(112 + leap_id, leap_start)
 			else if (child_leap) FLAG2(116 + leap_id, leap_start)
 			else FLAG2(124 + leap_id, leap_start);
 		}
@@ -1587,7 +1587,7 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 		min_cc[i] = minc;
 		max_cc[i] = maxc;
 	}
-	// Convert limits to diatonic and recalibrate
+	// Convert limits to diatonic and recalibrate to diatonic grid
 	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
@@ -1812,11 +1812,15 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 		if (rc > rcycle) {
 			rcycle = rc;
 			if (br_cc.size() > 0) {
+				// Save old cantus
 				vector<int> cc_saved = cc;
+				// Load best rejected cantus
 				cc = br_cc;
 				flags = br_f;
 				anflags[cpv] = br_nf;
 				anflagsc[cpv] = br_nfc;
+				chm.clear();
+				chm.resize(c_len, -1);
 				SendCantus();
 				cc = cc_saved;
 				// Log
@@ -2085,8 +2089,10 @@ CString CGenCF1::GetStuck() {
 			}
 		}
 		if (max_value < 1) break;
-		st.Format("\n%ld %s, ", max_value, FlagName[max_flag]);
-		st2 += st;
+		if (!accept[max_flag]) {
+			st.Format("\n%ld %s, ", max_value, FlagName[max_flag]);
+			st2 += st;
+		}
 		// Clear biggest value to search for next
 		best_flags[max_flag] = -1;
 	}
@@ -2179,7 +2185,7 @@ int CGenCF1::SendCantus() {
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = 0; x < c_len; ++x) {
-		if (chm[x] > -1) mark[pos][v] = HarmNames[chm[x]];
+		if (chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = Color(120, 120, 120);
 		for (int i = 0; i < cc_len[x]; ++i) {
 			// Set color
@@ -2256,8 +2262,9 @@ int CGenCF1::SendCantus() {
 			rpst += st;
 		}
 	}
-	st.Format("%.0f (", rpenalty_cur);
-	rpst = st + rpst + ")";
+	st.Format("%.0f", rpenalty_cur);
+	if (rpst != "") rpst = st + " (" + rpst + ")";
+	else rpst = st;
 	if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	if (task == tGen) {
 		if (!shuffle) {
@@ -2270,7 +2277,7 @@ int CGenCF1::SendCantus() {
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
 			// If RSWA
-			//st.Format("#%d\nHarmonic difficulty: %.0f", cantus_sent, hdif);
+			st.Format("#%d\nRule penalty: %s", cantus_sent, rpst);
 		}
 		else {
 			if (key_eval == "") {
@@ -2332,7 +2339,10 @@ void CGenCF1::TestDiatonic()
 void CGenCF1::RandomSWA()
 {
 	CString st;
-	VSet<int> vs; // Unique checker
+	// Unique checker
+	VSet<int> vs; 
+	// Save first note because it will be overwritten by random generator
+	int first_note0 = first_note;
 	// Disable debug flags
 	calculate_blocking = 0;
 	calculate_correlation = 0;
@@ -2350,6 +2360,8 @@ void CGenCF1::RandomSWA()
 	swa_inrange = 1;
 	for (int i = 0; i < INT_MAX; ++i) {
 		if (need_exit) break;
+		// Load first note, because it was overwritten by random generator
+		first_note = first_note0;
 		// Create random cantus
 		MakeNewCantus(m_c, m_cc);
 		// Convert cantus to chromatic
@@ -2357,11 +2369,9 @@ void CGenCF1::RandomSWA()
 			cantus[0][x] = C_CC(m_c[x], tonic_cur, minor_cur);
 		}
 		// Set scan matrix to scan all
-		smatrixc = c_len - 2;
+		smatrixc = c_len;
 		smatrix.resize(c_len);
-		smatrix[0] = 0;
-		smatrix[c_len - 1] = 0;
-		for (int x = 1; x < c_len - 1; ++x) {
+		for (int x = 0; x < c_len; ++x) {
 			smatrix[x] = 1;
 		}
 		// Optimize cantus
@@ -2388,7 +2398,6 @@ void CGenCF1::RandomSWA()
 		//SendCantus(0, 0);
 		// Check limit
 		if (t_generated >= t_cnt) {
-			WriteLog(3, "Reached t_cnt steps. Generation stopped");
 			return;
 		}
 	}
@@ -2537,7 +2546,7 @@ check:
 	while (true) {
 		//LogCantus(cc);
 		ClearFlags(0, ep2);
-		if (FailNoteRepeat(m_cc, ep1, ep2 - 1)) goto skip;
+		if (FailNoteRepeat(m_cc, 0, ep2 - 1)) goto skip;
 		GetMelodyInterval(m_cc, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
