@@ -1015,7 +1015,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 	}
 	// Check prepared fill to
 	if (!pre && fill_to > 1) {
-		int pos = max(0, fleap_start - fill_to);
+		int pos = max(0, fleap_start - fill_to*2 + 1);
 		vector<int> nstat4;
 		nstat4.resize(2, 0);
 		if (c[leap_start] < c[leap_end]) {
@@ -1039,7 +1039,7 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 	}
 	// Check prepared fill from
 	if (!pre && fill_from > 1) {
-		int pos = max(0, fleap_start - fill_from);
+		int pos = max(0, fleap_start - fill_from*2 + 1);
 		vector<int> nstat4;
 		nstat4.resize(2, 0);
 		if (c[leap_start] < c[leap_end]) {
