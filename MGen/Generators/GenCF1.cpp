@@ -944,8 +944,12 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 	int cur_deviation = 0;
 	int dev_state = 0;
 	int max_deviation = 0;
-	if (accept[42 + leap_id]) max_deviation = 1;
-	if (accept[120 + leap_id]) max_deviation = 2;
+	// For prefill, do not allow deviations
+	// For fill, allow deviations
+	if (!pre) {
+		if (accept[42 + leap_id]) max_deviation = 1;
+		if (accept[120 + leap_id]) max_deviation = 2;
+	}
 	CountFillInit(c, tail_len, pre, t1, t2, fill_to, fill_from, fill_end);
 	// Detect fill_end
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
