@@ -941,42 +941,39 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int &fill_end)
 {
 	int t1, t2;
+	int cur_deviation = 0;
 	int dev_state = 0;
-	int deviates2 = 0;
-	int dev_state2 = 0;
-	int fill_end2 = 1000;
+	int max_deviation = 0;
+	if (accept[42 + leap_id]) max_deviation = 1;
+	if (accept[120 + leap_id]) max_deviation = 2;
 	CountFillInit(c, tail_len, pre, t1, t2, fill_to, fill_from, fill_end);
 	// Detect fill_end
-	for (int x = 0; x < tc.size(); ++x) {
-		++nstat3[tc[x]];
-		if (tc[x] <= t1 + 2) {
-			// Set fill finish if we approach 3rd or lower first time
-			if (fill_end == -1) fill_end = x;
-			// Stop collecting note stat if we are below the border
-			if (tc[x] < t1) break;
-		}
-	}
-	// Calculate deviation
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
-	deviates2 = 0;
-	for (int x = 0; x < fill_end; ++x) {
+	for (int x = 0; x < tc.size(); ++x) {
 		// If deviating, start deviation state and calculate maximum deviation
 		if (tc[x] > t2) {
-			deviates2 = max(deviates2, tc[x] - t2);
-			if (dev_state2 == 0) dev_state2 = 1;
-			else if (dev_state2 == 2) dev_state2 = 3;
+			cur_deviation = tc[x] - t2;
+			if (cur_deviation > deviates) {
+				// If deviation is unacceptable, break leap compensation
+				if (cur_deviation > max_deviation) break;
+				// Save deviation for later use if it is acceptable
+				deviates = cur_deviation;
+			}
+			if (dev_state == 0) dev_state = 1;
+			else if (dev_state == 2) break;
 		}
-		// If not deviating, stop deviation state
+		// If not deviating, switch deviation state
 		else {
-			if (dev_state2 == 1) dev_state2 = 2;
+			if (dev_state == 1) dev_state = 2;
 		}
-		// Calculate fill_end2 for nstat3
-		if (dev_state2 == 3 || (deviates == 2 && accept[120 + leap_id])) 
-		// Save for deviation statistics if we are not below 3rd
-		if (x < fill_end) {
-			deviates = deviates2;
-			dev_state = dev_state2;
-		}
+		// Break leap compensation if we are below the border
+		if (tc[x] < t1) break;
+		// Increment leap compensation window
+		fill_end = x;
+	}
+	// Calculate fill vector
+	for (int x = 0; x <= fill_end; ++x) {
+		++nstat3[tc[x]];
 	}
 	// Get deviations count
 	if (dev_state == 0) dev_count = 0;
