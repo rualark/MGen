@@ -411,7 +411,7 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 	for (int i = 0; i <= p; ++i) {
 		if (i > 0) {
 			// Check GC
-			if (chm[i] == 0 && chm[i - 1] == 4) {
+			if (!cantus_high && chm[i] == 0 && chm[i - 1] == 4) {
 				if (m_pc[fli[i]] == 0 && m_pc[fli[i - 1]] == 4) FLAG3(48, i);
 			}
 			// Check harmonic penalty	
