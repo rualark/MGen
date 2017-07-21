@@ -740,7 +740,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 			}
 			else if (smooth[s] || leap[s]) smooth_sum2 = 0;
 			// Check if two notes repeat
-			if ((ls > 0) && (cc[s] == cc[fli[ls+2]]) && (cc[fli[ls - 1]] == cc[fli[ls+1]])) FLAG2(9, s);
+			if ((ls > 0) && (cc[s] == cc[fli[ls+2]]) && (cc[fli[ls - 1]] == cc[fli[ls+1]])) FLAG2(9, fli[ls-1]);
 		}
 	}
 	if (max_leap_sum > max_leaps) {
