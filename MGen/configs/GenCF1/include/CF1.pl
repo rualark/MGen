@@ -25,9 +25,9 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # Main parameters
 c_len = 13 # Number of measures in each cantus. Usually 9 to 11 for cantus
 interval = 7-14 # Minimum-maximum chromatic interval in cantus (12 = octave)
-key = C # Music key to use for generation
-first_note = C5 # Starting note of each cantus
-last_note = C5 # Ending note of each cantus
+key = Am # Music key to use for generation
+first_note = A5 # Starting note of each cantus
+last_note = A5 # Ending note of each cantus
 random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
 cantus_high = 0 # Set to 1 to consider cantus to be higher voice
@@ -64,5 +64,5 @@ calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down g
 calculate_ssf = 0 # Enables SWA stuck flags statistics calculation algorithm.
 best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
 
-midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
+midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
