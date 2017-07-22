@@ -564,13 +564,25 @@ int CGenCP1::FailVIntervals() {
 		}
 		// Discord
 		if (tivl[s] == iDis) {
-			// Upbeat
-			if (beat[ls]) FLAG2(88, s)
 			// Downbeat
-			else FLAG2(83, s);
+			if (!beat[ls]) FLAG2(83, s)
+			// Upbeat
+			else {
+				// Check if movement to discord is smooth
+				if (asmooth[cpv][fli[ls-1]]) FLAG2(169, s)
+				// If movement to discord is leaping
+				else FLAG2(187, s);
+			}
+		}
+		else {
+			// Check if previous interval is discord
+			if (tivl[fli[ls - 1]] == iDis) {
+				// Check if movement from discord is not smooth
+				if (!asmooth[cpv][fli[ls - 1]]) FLAG2(88, fli[ls-1]);
+			}
 		}
 		// Perfect consonance
-		else if (tivl[s] == iPco) {
+		if (tivl[s] == iPco) {
 			// Prohibit parallel 
 			if (civl[s] == civl[fli[ls - 1]]) FLAG2(84, s)
 			// Prohibit combinatory
