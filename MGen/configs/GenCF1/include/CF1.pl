@@ -25,9 +25,9 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 # Main parameters
 c_len = 13 # Number of measures in each cantus. Usually 9 to 11 for cantus
 interval = 7-14 # Minimum-maximum chromatic interval in cantus (12 = octave)
-key = C # Music key to use for generation
-first_note = C5 # Starting note of each cantus
-last_note = C5 # Ending note of each cantus
+key = Am # Music key to use for generation
+first_note = A5 # Starting note of each cantus
+last_note = A5 # Ending note of each cantus
 random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
 cantus_high = 0 # Set to 1 to consider cantus to be higher voice
@@ -56,7 +56,7 @@ repeat_steps7 = 100 # Prohibit repeating of 7 notes closer than repeat_steps7 be
 first_steps_tonic = 3 # Number of first steps, which must contain tonic note (will increase by one if cantus is longer than 10 notes)
 
 # Technical parameters
-midifile_out_mul = 2 # All notes are made whole for midi export
+midifile_out_mul = 8 # All notes are made whole for midi export
 show_severity = 1 # =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
