@@ -36,8 +36,8 @@ void CGenCF1::LoadHarmVar()
 		// Create harmonic meaning variants for higher cantus
 		for (int i = 0; i < 7; i++) {
 			hv[i].clear();
-			if (i != 1) hv[i].push_back((i + 5) % 7);
-			hv[i].push_back((i + 3) % 7);
+			hv[i].push_back((i + 5) % 7);
+			if (i != 3) hv[i].push_back((i + 3) % 7);
 			hv[i].push_back(i);
 		}
 	}
@@ -46,7 +46,7 @@ void CGenCF1::LoadHarmVar()
 		for (int i = 0; i < 7; i++) {
 			hv[i].clear();
 			hv[i].push_back((i + 5) % 7);
-			if (i != 6) hv[i].push_back(i);
+			hv[i].push_back(i);
 		}
 	}
 }
