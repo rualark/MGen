@@ -1249,7 +1249,7 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 	for (int pos = leap_end + 1; pos < ep2; ++pos) {
 		if (c[pos] != prev_note) {
 			// Check if direction changes or long without changes
-			if (leap[leap_start] * (c[pos] - prev_note) < 0 || mdc2 > 1) break;
+			if (leap[leap_start] * (c[pos] - prev_note) < 0 || mdc2 > 2) break;
 			prev_note = c[pos];
 			++mdc2;
 		}
@@ -1267,8 +1267,10 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 		if (filled || prefilled) FLAG2(136 + leap_id, leap_start)
 		else FLAG2(148 + leap_id, leap_start);
 	}
-		// No MDC after
-	else if (mdc2 == 3) FLAG2(63 + leap_id, leap_start);
+	// Close + no
+	else if (!mdc1 && mdc2 == 3) FLAG2(108 + leap_id, leap_start)
+	// Far / no + no
+	else if (mdc1 && mdc2 == 3) FLAG2(63 + leap_id, leap_start);
 	return 0;
 }
 
