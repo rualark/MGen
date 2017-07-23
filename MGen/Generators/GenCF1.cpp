@@ -169,17 +169,30 @@ void CGenCF1::LoadRules(CString fname)
 	WriteLog(0, est);
 }
 
-
 // Load rules
-int CGenCF1::ParseRule(CString st, int id) {
+int CGenCF1::ParseRule(int rset, int rid, int type, int id) {
+	CString st;
+	if (type == rsName) st = FlagName[rid];
+	if (type == rsSubName) st = FlagName[rid];
+	if (type == rsComment) st = FlagGComment[rid];
+	if (type == rsSubComment) st = FlagComment[rid];
+	vector<int> v;
+	GetVint(st, v);
+	if (id >= v.size()) {
+		CString est, rs;
+		if (type == rsName) rs = "rule name";
+		if (type == rsSubName) rs = "subrule name";
+		if (type == rsComment) rs = "rule comment";
+		if (type == rsSubComment) rs = "subrule comment";
+		est.Format("Error parsing integer #%d from %s %d: '%s' (rule set %d)", id, rs, rid, st, rset);
+		WriteLog(1, est);
+	}
 	return 0;
 }
 
-// Load rules
+// Parse rules
 void CGenCF1::ParseRules() {
-	CString st = "Hello i am a robot 24 and 278 good bye!";
-	vector<int> v;
-	GetVint(st, v);
+	ParseRule(1, 4, rsName, 0);
 }
 
 // Select rules

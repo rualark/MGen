@@ -63,6 +63,12 @@ const CString TaskNames[] = {
 #define iPco 1 // Perfect consonance
 #define iIco 2 // Imperfect consonance
 
+// Rule string types
+#define rsName 0 // Rule name
+#define rsSubName 1 // Subrule name
+#define rsComment 2 // Rule comment
+#define rsSubComment 3 // Subrule comment
+
 // Convert chromatic to diatonic
 #define CC_C(note, tonic, minor) (minor?m_CC_C(note, tonic):maj_CC_C(note, tonic))
 #define maj_CC_C(note, tonic) (chrom_to_dia[(note + 12 - tonic) % 12] + ((note + 12 - tonic) / 12) * 7)
@@ -85,7 +91,7 @@ protected:
 	void LoadHarmVar();
 	void LoadHSP(CString fname);
 	void LoadRules(CString fname);
-	int ParseRule(CString st, int id);
+	int ParseRule(int rset, int rid, int type, int id);
 	void ParseRules();
 	void SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
