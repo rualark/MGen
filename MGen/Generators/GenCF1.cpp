@@ -133,7 +133,7 @@ void CGenCF1::LoadRules(CString fname)
 		pos = 0;
 		if (st.Find(";") != -1) {
 			Tokenize(st, ast, ";");
-			if (ast.size() != 9) {
+			if (ast.size() != 10) {
 				est.Format("Wrong column count at line in rules file %s: '%s'", fname, st);
 				WriteLog(1, est);
 				return;
@@ -142,7 +142,8 @@ void CGenCF1::LoadRules(CString fname)
 			rid = atoi(ast[1]);
 			sev = atoi(ast[2]);
 			rule = ast[5];
-			flag = atoi(ast[6]);
+			subrule = ast[6];
+			flag = atoi(ast[7]);
 			// Find rule id
 			//rid = distance(FlagName.begin(), find(FlagName.begin(), FlagName.end(), rule));
 			if (rid >= max_flags) {
@@ -155,9 +156,9 @@ void CGenCF1::LoadRules(CString fname)
 			}
 			//est.Format("Found rule %s - %d", rule, rid);
 			//WriteLog(1, est);
-			FlagName[rid] = rule;
-			FlagGComment[rid] = ast[7];
-			FlagComment[rid] = ast[8];
+			FlagName[rid] = rule + subrule;
+			FlagGComment[rid] = ast[8];
+			FlagComment[rid] = ast[9];
 			if (accepts[set].size() < MAX_FLAGS) accepts[set].resize(MAX_FLAGS);
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
@@ -170,7 +171,8 @@ void CGenCF1::LoadRules(CString fname)
 
 
 // Load rules
-void CGenCF1::ParseRule() {
+int CGenCF1::ParseRule(CString st, int id) {
+	return 0;
 }
 
 // Load rules
