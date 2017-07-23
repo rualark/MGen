@@ -168,6 +168,11 @@ void CGenCF1::LoadRules(CString fname)
 	WriteLog(0, est);
 }
 
+
+// Load rules
+void CGenCF1::ParseRule() {
+}
+
 // Load rules
 void CGenCF1::ParseRules() {
 	CString st = "Hello i am a robot 24 and 278 good bye!";
