@@ -62,6 +62,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <regex>
 using namespace std;
 #include <chrono>
 using namespace std::chrono;
