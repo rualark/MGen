@@ -104,7 +104,7 @@ void CGenCF1::LoadHSP(CString fname)
 // Load rules
 void CGenCF1::LoadRules(CString fname)
 {
-	CString st, st2, st3, iname, est, rule;
+	CString st, st2, st3, iname, est, rule, subrule;
 	vector<CString> ast;
 	int pos = 0;
 	int i = 0;
