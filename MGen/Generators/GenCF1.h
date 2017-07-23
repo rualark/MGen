@@ -85,6 +85,7 @@ protected:
 	void LoadHarmVar();
 	void LoadHSP(CString fname);
 	void LoadRules(CString fname);
+	void ParseRules();
 	void SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);

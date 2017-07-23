@@ -173,6 +173,22 @@ void CGLib::Tokenize(const CString& s, vector<CString>& tokens, const CString de
 	}
 }
 
+void CGLib::GetVint(const CString & st, vector<int>& res) {
+	CString st2;
+	for (int i = 0; i < st.GetLength(); ++i) {
+		if (isdigit(st[i])) {
+			st2 += st[i];
+		}
+		else if (st2 != "") {
+			res.push_back(atoi(st2));
+			st2 = "";
+		}
+	}
+	if (st2 != "") {
+		res.push_back(atoi(st2));
+	}
+}
+
 int CGLib::CheckInclude(CString st, CString fname, CString &iname) {
 	iname = "";
 	if (st.Left(8) == "include ") {

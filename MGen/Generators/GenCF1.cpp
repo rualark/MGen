@@ -168,6 +168,13 @@ void CGenCF1::LoadRules(CString fname)
 	WriteLog(0, est);
 }
 
+// Load rules
+void CGenCF1::ParseRules() {
+	CString st = "Hello i am a robot 24 and 278 good bye!";
+	vector<int> v;
+	GetVint(st, v);
+}
+
 // Select rules
 void CGenCF1::SelectRuleSet(int rs)
 {
@@ -255,6 +262,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	if (*sN == "rules_file") {
 		++parameter_found;
 		LoadRules(GetLinkedPath(*sV, m_current_config));
+		ParseRules();
 	}
 	// Load method
 	if (*sN == "method") {
