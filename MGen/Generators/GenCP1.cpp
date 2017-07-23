@@ -684,9 +684,9 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
 		if (cc[i] == cc[i + 1]) {
 		  // Check simultaneous slurs
-			if (acc[cfv][i] == acc[cfv][i + 1]) {
-				FLAG2(98, i);
-			}
+			//if (acc[cfv][i] == acc[cfv][i + 1]) {
+				//FLAG2(98, i);
+			//}
 			// Check slurs sequence
 			++scount;
 			if (scount > 1) FLAG2(97, i);

@@ -765,7 +765,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat) {
 		// Subtract old note
 		if ((i >= stag_note_steps)) --nstat[cc[i - stag_note_steps]];
 		// Check if too many repeating notes
-		if (nstat[cc[i]] > stag_notes) FLAG2(10, i);
+		if (nstat[cc[i]] > 2) FLAG2(10, i);
 	}
 	return 0;
 }
@@ -1153,7 +1153,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (!overflow && !arpeg)
 				if (FailLeapFill(c, late_leap, leap_prev, child_leap)) return 1;
-			if (FailLeapMDC(leap, c)) return 1;
+			if (!arpeg) if (FailLeapMDC(leap, c)) return 1;
 		}
 	}
 	return 0;
