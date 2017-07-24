@@ -12,6 +12,7 @@ random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatic
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 correct_inrange = 2 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.
 optimize_dpenalty = 0 # Saves only melodies closest to source melody. Decreases memory usage. Setting this flag may make corrections farther from source melody. Resetting allows for more close results when corrections>1
+transpose_back = 0 # Should be set to 1 for CF1 generation algorithm only
 
 # Analysis
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.

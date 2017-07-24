@@ -290,6 +290,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	LoadNote(sN, sV, "first_note", &first_note);
 	LoadNote(sN, sV, "last_note", &last_note);
 	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
+	CheckVar(sN, sV, "transpose_back", &transpose_back);
 	CheckVar(sN, sV, "max_repeat_mul", &max_repeat_mul);
 	CheckVar(sN, sV, "max_smooth_direct", &max_smooth_direct);
 	CheckVar(sN, sV, "max_smooth", &max_smooth);
@@ -2296,6 +2297,12 @@ void CGenCF1::SaveCantus() {
 	rpenalty_min = rpenalty_cur;
 }
 
+void CGenCF1::TransposeVector(vector<int> &v, int t) {
+	for (int i = 0; i < v.size(); ++i) {
+		v[i] += t;
+	}
+}
+
 int CGenCF1::SendCantus() {
 	int step0 = step;
 	// Save culmination position
@@ -2304,6 +2311,15 @@ int CGenCF1::SendCantus() {
 	CString st, info, rpst;
 	int v = svoice;
 	Sleep(sleep_ms);
+	// Transpose cantus
+	if (transpose_back) {
+		if (nmin > first_note0) {
+			TransposeVector(m_cc, -floor((nmin - first_note0) / 12 + 1) * 12);
+		}
+		if (nmax < first_note0) {
+			TransposeVector(m_cc, floor((first_note0 - nmax) / 12 + 1) * 12);
+		}
+	}
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
@@ -2464,8 +2480,6 @@ void CGenCF1::RandomSWA()
 	CString st;
 	// Unique checker
 	VSet<int> vs; 
-	// Save first note because it will be overwritten by random generator
-	int first_note0 = first_note;
 	// Disable debug flags
 	calculate_blocking = 0;
 	calculate_correlation = 0;
@@ -2807,6 +2821,8 @@ void CGenCF1::ScanRight(vector<int> &cc) {
 
 void CGenCF1::Generate()
 {
+	// Save first note because it will be overwritten by random generator
+	first_note0 = first_note;
 	test_cc.resize(10);
 	test_cc[0] = 72;
 	test_cc[1] = 74;

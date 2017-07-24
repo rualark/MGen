@@ -12,6 +12,7 @@ random_seed = 1 # Seed melody with random numbers. This ensures giving different
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 cantus_id = 34 # Select particular cantus id. Set to 0 to select random
+transpose_back = 0 # Should be set to 1 for CF1 generation algorithm only
 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 

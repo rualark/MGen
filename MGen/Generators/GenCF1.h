@@ -167,6 +167,7 @@ protected:
 	void ShowFlagBlock();
 	void CalcDpenalty();
 	void SaveCantus();
+	void TransposeVector(vector<int>& v, int t);
 	int SendCantus();
 	void InitCantus();
 	void TestDiatonic();
@@ -201,6 +202,7 @@ protected:
 	int c_len = 9; // Number of measures in each cantus. Usually 9 to 11
 	int s_len = 4; // Maximum number of measures to full scan
 	int first_note = 72; // Starting note of each cantus
+	int first_note0; // Saved first note during generation
 	int last_note = 72; // Ending note of each cantus
 	int fill_steps_mul = 2; // Multiply number of notes between leap notes to get steps for filling
 	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
@@ -254,6 +256,7 @@ protected:
 	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int optimize_dpenalty = 1; // Saves only melodies closest to source melody. Decreases memory usage. Resetting allows for more close results when corrections>1
+	int transpose_back = 0; // Set to 1 to transpose generated melody closer to initial first note. Can be set to 1 only for CF1 generation algorithms
 
 	// Master parameters
 	vector <int> *scantus; // Source cantus for processing
