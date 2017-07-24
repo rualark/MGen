@@ -4,10 +4,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;43;0;Melody;Compensated leap;Compensation deviation to 2nd;4th;-1;Compensation can be deviated one note above last note;
 1;44;40;Melody;Compensated leap;Compensation deviation to 2nd;5th;-1;Compensation can be deviated one note above last note;
 1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;-1;Compensation can be deviated one note above last note;
+1;191;60;Melody;Compensated leap;Compensation deviation to 2nd;late;0;Compensation can be deviated one note above last note;Deviation after compensation note 3
 1;120;0;Melody;Compensated leap;Compensation deviation to 3rd;3rd;-1;;
 1;121;0;Melody;Compensated leap;Compensation deviation to 3rd;4th;-1;;
 1;122;60;Melody;Compensated leap;Compensation deviation to 3rd;5th;0;;
 1;123;100;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;
+1;192;60;Melody;Compensated leap;Compensation deviation to 3rd;late;0;;Deviation after compensation note 3
 1;53;0;Melody;Compensated leap;Compensation after 3rd;-;0;;
 1;54;10;Melody;Compensated leap;Compensation after 3rd;4th;-1;;
 1;55;40;Melody;Compensated leap;Compensation after 3rd;5th;-1;;
@@ -195,10 +197,12 @@ Set;Severity;Class;Group;Rule;Flag
 2;43;0;Melody;Compensated leap;Compensation deviation to 2nd;4th;-1;Compensation can be deviated one note above last note;
 2;44;40;Melody;Compensated leap;Compensation deviation to 2nd;5th;-1;Compensation can be deviated one note above last note;
 2;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;-1;Compensation can be deviated one note above last note;
+2;191;60;Melody;Compensated leap;Compensation deviation to 2nd;late;0;Compensation can be deviated one note above last note;Deviation after compensation note 3
 2;120;0;Melody;Compensated leap;Compensation deviation to 3rd;3rd;-1;;
 2;121;0;Melody;Compensated leap;Compensation deviation to 3rd;4th;-1;;
 2;122;60;Melody;Compensated leap;Compensation deviation to 3rd;5th;0;;
 2;123;100;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;
+2;192;60;Melody;Compensated leap;Compensation deviation to 3rd;late;0;;Deviation after compensation note 3
 2;53;0;Melody;Compensated leap;Compensation after 3rd;-;0;;
 2;54;10;Melody;Compensated leap;Compensation after 3rd;4th;-1;;
 2;55;40;Melody;Compensated leap;Compensation after 3rd;5th;-1;;
