@@ -202,7 +202,7 @@ protected:
 	int c_len = 9; // Number of measures in each cantus. Usually 9 to 11
 	int s_len = 4; // Maximum number of measures to full scan
 	int first_note = 72; // Starting note of each cantus
-	int first_note0; // Saved first note during generation
+	int first_note0 = 0; // Saved first note during generation
 	int last_note = 72; // Ending note of each cantus
 	int fill_steps_mul = 2; // Multiply number of notes between leap notes to get steps for filling
 	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different

@@ -2312,7 +2312,7 @@ int CGenCF1::SendCantus() {
 	int v = svoice;
 	Sleep(sleep_ms);
 	// Transpose cantus
-	if (transpose_back) {
+	if (transpose_back && first_note) {
 		if (nmin > first_note0) {
 			TransposeVector(m_cc, -floor((nmin - first_note0) / 12 + 1) * 12);
 		}
