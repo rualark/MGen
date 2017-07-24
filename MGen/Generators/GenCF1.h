@@ -91,8 +91,10 @@ protected:
 	void LoadHarmVar();
 	void LoadHSP(CString fname);
 	void LoadRules(CString fname);
-	int ParseRule(int rset, int rid, int type, int id);
+	void ParseRule(int rset, int rid, int type);
+	int GetRuleParam(int rset, int rid, int type, int id);
 	void ParseRules();
+	void SetRuleParams();
 	void SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
@@ -181,9 +183,11 @@ protected:
 	int rule_set = 0; // id of current rule set
 	int cf_rule_set = 0; // id of current rule set for cantus
 	int cp_rule_set = 0; // id of current rule set for cpoint
-	vector <CString> FlagName; // Names of all rules
+	vector<vector <CString>> RuleName; // Names of all rules
+	vector<vector <CString>> FlagName; // Names of all rules
+	vector<vector<vector<vector<int>>>> RuleParam; // Parsed rule parameters
 	vector <CString> FlagGComment; // Comments for flag groups
-	vector <CString> FlagComment; // Comments for flags
+	vector<vector <CString>> FlagComment; // Comments for flags
 	int max_flags = 82; // Maximum number of rules
 
 	// Parameters
@@ -359,4 +363,15 @@ protected:
 	int smatrixc = 0; // Number of steps marked in smatrix
 	vector<vector<int>> clib; // Library of cantus
 	VSet<int> clib_vs; // Unique clib set
+
+	// CP1 parameters
+	int slurs_window = 10; // Number of steps to check for slur limit
+	int min_between = 0; // Minimum diatonic interval between voices
+	int max_between = 11; // Maximum diatonic interval between voices
+	int sum_interval = 22; // Maximum chromatic range of cantus and counterpoint
+	int burst_steps = 3; // Maximum number of steps for which max_between can be exceeded
+	int burst_between = 11; // Maximum interval between voices for burst_steps steps
+	int tonic_window = 15; // Number of steps to search for adjacent tonic chords
+	int contrary_min = 30; // Minimum percent of contrary motion (little)
+	int contrary_min2 = 60; // Minimum percent of contrary motion (medium)
 };

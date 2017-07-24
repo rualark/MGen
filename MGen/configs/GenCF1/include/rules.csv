@@ -93,6 +93,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;
 1;28;0;Melody;Leaps;Two consecutive 3rds;after 6/8;-1;;
 1;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
+1;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
 1;78;60;Melody;Repeats;Culmination;early 1-2;0;;
 1;79;0;Melody;Repeats;Culmination;early 3;0;;
@@ -282,6 +283,7 @@ Set;Severity;Class;Group;Rule;Flag
 2;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;
 2;28;0;Melody;Leaps;Two consecutive 3rds;after 6/8;-1;;
 2;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
+2;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
 2;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
 2;78;60;Melody;Repeats;Culmination;early 1-2;0;;
 2;79;0;Melody;Repeats;Culmination;early 3;0;;

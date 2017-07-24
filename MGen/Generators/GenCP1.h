@@ -80,13 +80,4 @@ protected:
 
 	// Parameters
 	int cantus_id2 = 0; // Select particular cantus id. Set to -1 to select random
-	int slurs_window = 10; // Number of steps to check for slur limit
-	int min_between = 0; // Minimum diatonic interval between voices
-	int max_between = 11; // Maximum diatonic interval between voices
-	int sum_interval = 22; // Maximum chromatic range of cantus and counterpoint
-	int burst_steps = 3; // Maximum number of steps for which max_between can be exceeded
-	int burst_between = 11; // Maximum interval between voices for burst_steps steps
-	int tonic_window = 15; // Number of steps to search for adjacent tonic chords
-	int contrary_min = 30; // Minimum percent of contrary motion (little)
-	int contrary_min2 = 60; // Minimum percent of contrary motion (medium)
 };
