@@ -24,7 +24,6 @@ shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up 
 
 # Main parameters
 c_len = 13 # Number of measures in each cantus. Usually 9 to 11 for cantus
-interval = 8-14 # Minimum-maximum chromatic interval in cantus (12 = octave)
 key = Am # Music key to use for generation
 first_note = A5 # Starting note of each cantus
 last_note = A5 # Ending note of each cantus
@@ -40,19 +39,6 @@ rpenalty_accepted = 0 # Maximum accepted rule penalty for RandomSWA
 
 # Rule parameters
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling (+2)
-max_smooth_direct = 5 # Maximum linear movement in one direction allowed (in steps)
-max_smooth = 7 # Maximum linear movement allowed (in steps)
-max_leaps = 2 # Maximum allowed max_leaps during max_leap_steps
-max_leaps2 = 3 # Maximum allowed max_leaps2 during max_leap_steps for Many leaps+
-cse_leaps = 2 # Maximum allowed consecutive leaps for Consecutive leaps
-cse_leaps2 = 3 # Maximum allowed consecutive leaps for Consecutive leaps+
-max_leap_steps = 7
-#stag_notes = 2 # Maximum allowed stag_notes (same notes) during stag_note_steps
-stag_note_steps = 7
-repeat_steps2 = 5 # Prohibit repeating of 2 notes closer than repeat_steps2 between first notes (if beats are same)
-repeat_steps3 = 8 # Prohibit repeating of 3 notes closer than repeat_steps3 between first notes (if beats are same)
-repeat_steps5 = 15 # Prohibit repeating of 5 notes closer than repeat_steps5 between first notes
-repeat_steps7 = 100 # Prohibit repeating of 7 notes closer than repeat_steps7 between first notes
 first_steps_tonic = 3 # Number of first steps, which must contain tonic note (will increase by one if cantus is longer than 10 notes)
 
 # Technical parameters
