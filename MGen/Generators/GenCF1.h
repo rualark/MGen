@@ -100,6 +100,7 @@ protected:
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
 	inline int FailNoteSeq(vector<int>& pc);
+	int FailLocalRange(vector<int> &cc);
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
@@ -221,6 +222,8 @@ protected:
 	int first_steps_tonic = 3; // Number of first steps, which must contain tonic note
 	int correct_range = 4; // Maximum interval allowed between each source and corrected note
 	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
+	int notes_lrange = 5; // Maximum number of consecutive notes having low range
+	int min_lrange = 5; // Minimum allowed local range of notes_lrange consecutive notes
 	float random_choose = 100; // Percent of accepted canti to show and play
 	int random_seed = 0; // Seed melody with random numbers. This ensures giving different results if generation is very slow.
 	int random_range = 0; // Limit scanning to one of possible fast-scan ranges
