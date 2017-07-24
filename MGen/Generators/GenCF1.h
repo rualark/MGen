@@ -241,6 +241,8 @@ protected:
 	int repeat_steps3 = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 	int repeat_steps5 = 15; // Prohibit repeating of 5 notes closer than repeat_steps between first notes
 	int repeat_steps7 = 100; // Prohibit repeating of 7 notes closer than repeat_steps between first notes
+	int dev_late2 = 3; // Maximum note count to consider non-late leap compensation deviation to 2nd
+	int dev_late3 = 3; // Maximum note count to consider non-late leap compensation deviation to 3rd
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <vector <int>> hv; //  Variants of note harmonic meaning

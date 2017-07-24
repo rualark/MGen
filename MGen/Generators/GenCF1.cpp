@@ -251,6 +251,8 @@ void CGenCF1::SetRuleParams() {
 	contrary_min2 = GetRuleParam(rule_set, 46, rsSubName, 0);
 	notes_lrange = GetRuleParam(rule_set, 98, rsSubName, 0);
 	min_lrange = GetRuleParam(rule_set, 98, rsSubName, 1);
+	dev_late2 = GetRuleParam(rule_set, 191, rsSubComment, 0);
+	dev_late3 = GetRuleParam(rule_set, 192, rsSubComment, 0);
 }
 
 // Select rules
