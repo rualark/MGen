@@ -212,6 +212,10 @@ protected:
 	int max_leaps2 = 3; // Maximum allowed max_leaps2 during max_leap_steps for Many leaps+
 	int cse_leaps = 2; // Maximum allowed consecutive leaps for Consecutive leaps
 	int cse_leaps2 = 3; // Maximum allowed consecutive leaps for Consecutive leaps+
+	int early_culm = 3; // Early culmination step
+	int late_culm = 3; // Late culmination step
+	int early_culm2 = 4; // Early culmination step (second rule)
+	int early_culm3 = 50; // Early culmination step percent
 	int max_leap_steps = 7;
 	int stag_notes = 2; // Maximum allowed stag_notes (same notes) during stag_note_steps
 	int stag_note_steps = 7;

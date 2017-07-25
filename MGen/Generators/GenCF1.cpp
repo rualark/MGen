@@ -253,6 +253,10 @@ void CGenCF1::SetRuleParams() {
 	min_lrange = GetRuleParam(rule_set, 98, rsSubName, 1);
 	dev_late2 = GetRuleParam(rule_set, 191, rsSubComment, 0);
 	dev_late3 = GetRuleParam(rule_set, 192, rsSubComment, 0);
+	early_culm = GetRuleParam(rule_set, 78, rsSubName, 0);
+	early_culm2 = GetRuleParam(rule_set, 79, rsSubName, 0);
+	early_culm3 = GetRuleParam(rule_set, 193, rsSubName, 0);
+	late_culm = GetRuleParam(rule_set, 21, rsSubName, 0);
 }
 
 // Select rules
@@ -887,7 +891,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat) {
 int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	int culm_sum = 0;
 	if (ep2 < c_len) {
-		// Find multiple culminations at highest note
+		// Find multiple culminations at highest allowed note
 		if (nmax == max_cc[0] || nmax - nmin == max_interval) {
 			for (int ls = 0; ls < fli_size; ++ls) {
 				if (cc[fli[ls]] == nmax) {
@@ -897,8 +901,11 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 				}
 			}
 			// Prohibit culminations at first steps on highest notes
-			if (culm_step < 2 && cc[fli[culm_step]] == nmax) FLAG2(78, fli[culm_step]);
-			if (culm_step == 2 && cc[fli[culm_step]] == nmax) FLAG2(79, fli[culm_step]);
+			if (cc[fli[culm_step]] == nmax) {
+				if (culm_step < (early_culm3*c_len) / 100) FLAG2(193, fli[culm_step]);
+				if (culm_step < early_culm - 1) FLAG2(78, fli[culm_step])
+				else if (culm_step < early_culm2 - 1) FLAG2(79, fli[culm_step]);
+			}
 		}
 	}
 	else {
@@ -910,11 +917,12 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			}
 		}
 		// Prohibit culminations at first steps
-		if (culm_step < 2) FLAG2(78, fli[culm_step]);
-		if (culm_step == 2) FLAG2(79, fli[culm_step]);
+		if (culm_step < (early_culm3*c_len)/100) FLAG2(193, fli[culm_step]);
+		if (culm_step < early_culm - 1) FLAG2(78, fli[culm_step])
+		else if (culm_step < early_culm2 - 1) FLAG2(79, fli[culm_step]);
 		// Prohibit culminations at last steps
-		if (culm_step > c_len - 4) FLAG2(21, fli[culm_step]);
-		// Prohibit synchronized culminations
+		if (culm_step >= c_len - late_culm) FLAG2(21, fli[culm_step]);
+		// Prohibit synchronized culminationsnati
 		if (av_cnt > 1 && culm_step == cf_culm) FLAG2(26, fli[culm_step]);
 	}
 	return 0;
@@ -2643,8 +2651,9 @@ void CGenCF1::SWA(int i, int dp) {
 	// Log
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString est;
-	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): " + GetStuck(), 
-		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start);
+	CString stuck_st = GetStuck();
+	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s", 
+		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, stuck_st);
 	WriteLog(3, est);
 }
 
