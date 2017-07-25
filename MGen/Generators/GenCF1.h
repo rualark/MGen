@@ -353,6 +353,7 @@ protected:
 	// FailLeap local variables
 	int leap_start; // Step where leap starts
 	int leap_end; // Step where leap ends
+	int leap_mid; // Middle step of leap in case when leap is created by two consecutive 3rds
 	int fleap_start; // Fli position where leap starts
 	int fleap_end; // Fli position where leap ends
 	int leap_size; // Diatonic size of leap

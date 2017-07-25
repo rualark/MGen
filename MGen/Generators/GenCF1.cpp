@@ -1099,6 +1099,12 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 		// Increment leap compensation window
 		fill_end = x;
 	}
+	// Add middle note as compensation note if leap is compound
+	if (leap_mid && !pre) {
+		// Convert note to tc
+		if (c[leap_end] > c[leap_start]) ++nstat3[c[leap_mid]];
+		else ++nstat3[128 - c[leap_mid]];
+	}
 	// Calculate fill vector
 	for (int x = 0; x <= fill_end; ++x) {
 		++nstat3[tc[x]];
@@ -1196,6 +1202,7 @@ void CGenCF1::FailLeapInit(vector<int> &c, int &late_leap, int &presecond, int &
 	// Check if this leap is 3rd
 	leap_start = s; // First step of leap
 	leap_end = fli[ls + 1]; // Last step of leap
+	leap_mid = 0;
 	fleap_start = ls;
 	fleap_end = ls + 1;
 	leap_size = abs(c[leap_end] - c[s]);
@@ -1216,6 +1223,8 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 	if (leap_size == 2) {
 		// Check if leap is second third
 		if (fleap_start > 0 && abs(c[leap_end] - c[fli[fleap_start-1]]) == 4) {
+			// Set middle leap note
+			leap_mid = leap_start;
 			// Set leap start to first note of first third
 			--fleap_start;
 			leap_start = fli[fleap_start];

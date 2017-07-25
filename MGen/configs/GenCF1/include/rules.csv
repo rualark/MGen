@@ -291,12 +291,12 @@ Set;Severity;Class;Group;Rule;Flag
 2;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
 2;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
 2;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
-2;193;0;Melody;Repeats;Culmination;early 50%;0;;
-2;79;30;Melody;Repeats;Culmination;early <5;0;;
-2;78;60;Melody;Repeats;Culmination;early <3;0;;
-2;21;60;Melody;Repeats;Culmination;late 3;0;;
-2;12;100;Melody;Repeats;Culmination;multiple;0;;
-2;26;60;Melody;Repeats;Culmination;sync;-1;;
+2;193;0;Melody;Repeats;Culmination;early 50%;0;Early culmination rules can be violated for short melodies.;
+2;79;30;Melody;Repeats;Culmination;early <5;0;Early culmination rules can be violated for short melodies.;
+2;78;60;Melody;Repeats;Culmination;early <3;0;Early culmination rules can be violated for short melodies.;
+2;21;60;Melody;Repeats;Culmination;late 3;0;Early culmination rules can be violated for short melodies.;
+2;12;100;Melody;Repeats;Culmination;multiple;0;Early culmination rules can be violated for short melodies.;
+2;26;60;Melody;Repeats;Culmination;sync;-1;Early culmination rules can be violated for short melodies.;
 2;76;20;Melody;Repeats;Notes repeat;2 symmetr.;0;;Within 5 notes
 2;36;60;Melody;Repeats;Notes repeat;3 symmetr.;0;;Within 8 notes
 2;72;60;Melody;Repeats;Notes repeat;5;0;;Within 15 notes
