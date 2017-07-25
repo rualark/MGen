@@ -921,7 +921,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		if (culm_step < early_culm - 1) FLAG2(78, fli[culm_step])
 		else if (culm_step < early_culm2 - 1) FLAG2(79, fli[culm_step]);
 		// Prohibit culminations at last steps
-		if (culm_step >= c_len - late_culm) FLAG2(21, fli[culm_step]);
+		if (culm_step >= fli_size - late_culm) FLAG2(21, fli[culm_step]);
 		// Prohibit synchronized culminationsnati
 		if (av_cnt > 1 && culm_step == cf_culm) FLAG2(26, fli[culm_step]);
 	}
