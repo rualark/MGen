@@ -12,7 +12,7 @@
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
-#define MAX_FLAGS 200
+#define MAX_RULES 200
 
 #define MAX_RULESETS 80
 #define MAX_SEVERITY 101
@@ -186,10 +186,10 @@ protected:
 	int cf_rule_set = 0; // id of current rule set for cantus
 	int cp_rule_set = 0; // id of current rule set for cpoint
 	vector<vector <CString>> RuleName; // Names of all rules
-	vector<vector <CString>> FlagName; // Names of all rules
+	vector<vector <CString>> SubRuleName; // Names of all rules
 	vector<vector<vector<vector<int>>>> RuleParam; // Parsed rule parameters
-	vector <CString> FlagGComment; // Comments for flag groups
-	vector<vector <CString>> FlagComment; // Comments for flags
+	vector <CString> RuleComment; // Comments for flag groups
+	vector<vector <CString>> SubRuleComment; // Comments for flags
 	int max_flags = 82; // Maximum number of rules
 
 	// Parameters

@@ -12,14 +12,14 @@ CGenCF1::CGenCF1()
 {
 	cpv = 0;
 	//midifile_tpq_mul = 8;
-	accept.resize(MAX_FLAGS);
+	accept.resize(MAX_RULES);
 	RuleParam.resize(MAX_RULESETS);
-	FlagName.resize(MAX_RULESETS);
+	SubRuleName.resize(MAX_RULESETS);
 	RuleName.resize(MAX_RULESETS);
-	FlagComment.resize(MAX_RULESETS);
-	FlagGComment.resize(MAX_FLAGS);
-	ssf.resize(MAX_FLAGS);
-	severity.resize(MAX_FLAGS);
+	SubRuleComment.resize(MAX_RULESETS);
+	RuleComment.resize(MAX_RULES);
+	ssf.resize(MAX_RULES);
+	severity.resize(MAX_RULES);
 	flag_color.resize(MAX_SEVERITY);
 	accepts.resize(MAX_RULESETS);
 	// Start severity
@@ -149,24 +149,24 @@ void CGenCF1::LoadRules(CString fname)
 			// Find rule id
 			if (rid >= max_flags) {
 				max_flags = rid + 1;
-				if (max_flags >= MAX_FLAGS) {
-					est.Format("Rule id (%d) is equal or greater than MAX_FLAGS (%d). Consider increasing MAX_FLAGS", rid, MAX_FLAGS);
+				if (max_flags >= MAX_RULES) {
+					est.Format("Rule id (%d) is equal or greater than MAX_RULES (%d). Consider increasing MAX_RULES", rid, MAX_RULES);
 					WriteLog(1, est);
 					return;
 				}
 			}
 			//est.Format("Found rule %s - %d", rule, rid);
 			//WriteLog(1, est);
-			if (accepts[set].size() < MAX_FLAGS) {
-				accepts[set].resize(MAX_FLAGS);
-				RuleName[set].resize(MAX_FLAGS);
-				FlagName[set].resize(MAX_FLAGS);
-				FlagComment[set].resize(MAX_FLAGS);
+			if (accepts[set].size() < MAX_RULES) {
+				accepts[set].resize(MAX_RULES);
+				RuleName[set].resize(MAX_RULES);
+				SubRuleName[set].resize(MAX_RULES);
+				SubRuleComment[set].resize(MAX_RULES);
 			}
 			RuleName[set][rid] = rule;
-			FlagName[set][rid] = subrule;
-			FlagGComment[rid] = ast[8];
-			FlagComment[set][rid] = ast[9];
+			SubRuleName[set][rid] = subrule;
+			RuleComment[rid] = ast[8];
+			SubRuleComment[set][rid] = ast[9];
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
 		}
@@ -180,9 +180,9 @@ void CGenCF1::LoadRules(CString fname)
 void CGenCF1::ParseRule(int rset, int rid, int type) {
 	CString st;
 	if (type == rsName) st = RuleName[rset][rid];
-	if (type == rsSubName) st = FlagName[rset][rid];
-	if (type == rsComment) st = FlagGComment[rid];
-	if (type == rsSubComment) st = FlagComment[rset][rid];
+	if (type == rsSubName) st = SubRuleName[rset][rid];
+	if (type == rsComment) st = RuleComment[rid];
+	if (type == rsSubComment) st = SubRuleComment[rset][rid];
 	vector<int> v;
 	GetVint(st, v);
 	if (v.size()) {
@@ -198,9 +198,9 @@ int CGenCF1::GetRuleParam(int rset, int rid, int type, int id) {
 		CString est, rs;
 		CString st;
 		if (type == rsName) st = RuleName[rset][rid];
-		if (type == rsSubName) st = FlagName[rset][rid];
-		if (type == rsComment) st = FlagGComment[rid];
-		if (type == rsSubComment) st = FlagComment[rset][rid];
+		if (type == rsSubName) st = SubRuleName[rset][rid];
+		if (type == rsComment) st = RuleComment[rid];
+		if (type == rsSubComment) st = SubRuleComment[rset][rid];
 		if (type == rsName) rs = "rule name";
 		if (type == rsSubName) rs = "subrule name";
 		if (type == rsComment) rs = "rule comment";
@@ -216,8 +216,8 @@ int CGenCF1::GetRuleParam(int rset, int rid, int type, int id) {
 void CGenCF1::ParseRules() {
 	vector<int> v;
 	for (int rset = 0; rset < accepts.size(); ++rset) if (accepts[rset].size()) {
-		RuleParam[rset].resize(MAX_FLAGS);
-		for (int rid = 0; rid < MAX_FLAGS; ++rid) {
+		RuleParam[rset].resize(MAX_RULES);
+		for (int rid = 0; rid < MAX_RULES; ++rid) {
 			for (int rs = 0; rs < 4; ++rs) {
 				ParseRule(rset, rid, rs);
 			}
@@ -2154,8 +2154,8 @@ void CGenCF1::WriteFlagCor() {
 		st3 = "Flag; Total; ";
 		for (int i = 0; i < max_flags; ++i) {
 			int f1 = i;
-			st2.Format("%s; %d; ", RuleName[rule_set][f1] + " (" + FlagName[rule_set][f1] + ")", fcor[f1][f1]);
-			st3 += RuleName[rule_set][f1] + " (" + FlagName[rule_set][f1] + "); ";
+			st2.Format("%s; %d; ", RuleName[rule_set][f1] + " (" + SubRuleName[rule_set][f1] + ")", fcor[f1][f1]);
+			st3 += RuleName[rule_set][f1] + " (" + SubRuleName[rule_set][f1] + "); ";
 			for (int z = 0; z < max_flags; ++z) {
 				int f2 = i;
 				st.Format("%lld; ", fcor[f1][f2]);
@@ -2174,7 +2174,7 @@ void CGenCF1::ShowFlagStat() {
 		CString est;
 		for (int i = 0; i < max_flags; ++i) {
 			int f1 = i;
-			st.Format("\n%lld %s ", fstat[f1], RuleName[rule_set][f1] + " (" + FlagName[rule_set][f1] + ")");
+			st.Format("\n%lld %s ", fstat[f1], RuleName[rule_set][f1] + " (" + SubRuleName[rule_set][f1] + ")");
 			st2 += st;
 		}
 		est.Format("%d/%d: Accepted %lld/%lld/%lld/%lld variants of %lld: %s",
@@ -2202,7 +2202,7 @@ void CGenCF1::ShowStuck() {
 				}
 			}
 			if (max_value < 1) break;
-			st.Format("\n%ld %s, ", max_value, RuleName[rule_set][max_flag] + " (" + FlagName[rule_set][max_flag] + ")");
+			st.Format("\n%ld %s, ", max_value, RuleName[rule_set][max_flag] + " (" + SubRuleName[rule_set][max_flag] + ")");
 			st2 += st;
 			// Clear biggest value to search for next
 			ssf[max_flag] = -1;
@@ -2227,7 +2227,7 @@ CString CGenCF1::GetStuck() {
 		}
 		if (max_value < 1) break;
 		if (!accept[max_flag]) {
-			st.Format("\n%ld %s, ", max_value, RuleName[rule_set][max_flag] + " (" + FlagName[rule_set][max_flag] + ")");
+			st.Format("\n%ld %s, ", max_value, RuleName[rule_set][max_flag] + " (" + SubRuleName[rule_set][max_flag] + ")");
 			st2 += st;
 		}
 		// Clear biggest value to search for next
@@ -2265,7 +2265,7 @@ void CGenCF1::ShowFlagBlock() {
 						}
 					}
 					if (max_value < 1) break;
-					st.Format("\n%ld %s, ", max_value, RuleName[rule_set][max_flag] + " (" + FlagName[rule_set][max_flag] + ")");
+					st.Format("\n%ld %s, ", max_value, RuleName[rule_set][max_flag] + " (" + SubRuleName[rule_set][max_flag] + ")");
 					st2 += st;
 					++lines;
 					// Clear biggest value to search for next
@@ -2352,13 +2352,13 @@ int CGenCF1::SendCantus() {
 				if (!i) {
 					st = "+ ";
 					if (!accept[fl]) st = "- ";
-					comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + FlagName[rule_set][fl] + ")";
+					comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 					if (show_severity) {
 						st.Format(" [%d]", severity[fl]);
 						comment[pos][v] += st;
 					}
-					if (FlagGComment[fl] != "") comment[pos][v] += ". " + FlagGComment[fl];
-					if (FlagComment[rule_set][fl] != "") comment[pos][v] += ". " + FlagComment[rule_set][fl];
+					if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
+					if (SubRuleComment[rule_set][fl] != "") comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
 					comment[pos][v] += ". ";
 				}
 				// Set note color if this is maximum flag severity
