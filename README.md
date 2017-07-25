@@ -1,6 +1,7 @@
 # MGen
 Issues: [![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=ready&title=Ready)](http://waffle.io/rualark/MGen) 
 [![Stories in Progress](https://badge.waffle.io/rualark/MGen.png?label=in%20progress&title=In%20progress)](http://waffle.io/rualark/MGen)
+[![Stories testing](https://badge.waffle.io/rualark/MGen.png?label=testing&title=Testing)](http://waffle.io/rualark/MGen)
 
 Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI/MusicXML
 
