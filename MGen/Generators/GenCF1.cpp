@@ -1071,8 +1071,8 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 		if (tc[x] > t2) {
 			cur_deviation = tc[x] - t2;
 			// Detect late deviation
-			if (cur_deviation == 1 && x > dev_late2 && !accept[191]) break;
-			if (cur_deviation == 2 && x > dev_late3 && !accept[192]) break;
+			if (cur_deviation == 1 && x >= dev_late2 && !accept[191]) break;
+			if (cur_deviation == 2 && x >= dev_late3 && !accept[192]) break;
 			if (cur_deviation > deviates) {
 				// If deviation is unacceptable, break leap compensation
 				if (cur_deviation > max_deviation) break;

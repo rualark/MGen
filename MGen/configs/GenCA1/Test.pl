@@ -10,6 +10,7 @@ include "include/CA1.pl"
 #Midi_file = midi\GenCA1\test-minor-alter.mid
 #Midi_file = midi\GenCA1\test-tritone.mid
 #Midi_file = midi\GenCA1\test-hsp.mid
+Midi_file = midi\GenCA1\test-fill.mid
 #Midi_file = midi\GenCA1\test-leap-size.mid
-Midi_file = midi\GenCA1\test-lrange.mid
+#Midi_file = midi\GenCA1\test-lrange.mid
 #Midi_file = "midi\result\2017-07-22-auto 18-42-47.mid"
