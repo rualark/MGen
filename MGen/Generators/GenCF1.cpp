@@ -257,6 +257,7 @@ void CGenCF1::SetRuleParams() {
 	early_culm2 = GetRuleParam(rule_set, 79, rsSubName, 0);
 	early_culm3 = GetRuleParam(rule_set, 193, rsSubName, 0);
 	late_culm = GetRuleParam(rule_set, 21, rsSubName, 0);
+	hsp_leap = GetRuleParam(rule_set, 194, rsSubName, 0);
 }
 
 // Select rules
@@ -537,6 +538,8 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 			else if (pen1 == 1) FLAG3(77, i);
 			if (pen1 == 2) {
 				FLAG3(57, i);
+				if (culm_step == i) FLAG3(195, i);
+				if (abs(m_cc[fli[i]]-m_cc[fli[i-1]]) > hsp_leap) FLAG3(194, i);
 				++p2c;
 				if (p2c == 2) FLAG3(92, i + 1)
 				else if (p2c == 3) FLAG3(23, i + 1);
@@ -890,6 +893,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat) {
 // Prohibit multiple culminations
 int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	int culm_sum = 0;
+	culm_step = -1;
 	if (ep2 < c_len) {
 		// Find multiple culminations at highest allowed note
 		if (nmax == max_cc[0] || nmax - nmin == max_interval) {

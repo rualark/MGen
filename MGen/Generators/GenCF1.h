@@ -12,9 +12,9 @@
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
-#define MAX_RULES 200
+#define MAX_RULES 500
 
-#define MAX_RULESETS 80
+#define MAX_RULESETS 100
 #define MAX_SEVERITY 101
 #define MAX_WIND 500
 #define MAX_NOTE 127
@@ -212,6 +212,7 @@ protected:
 	int max_leaps2 = 3; // Maximum allowed max_leaps2 during max_leap_steps for Many leaps+
 	int cse_leaps = 2; // Maximum allowed consecutive leaps for Consecutive leaps
 	int cse_leaps2 = 3; // Maximum allowed consecutive leaps for Consecutive leaps+
+	int hsp_leap = 5; // Maximum allowed leap before bad harmonic sequence
 	int early_culm = 3; // Early culmination step
 	int late_culm = 3; // Late culmination step
 	int early_culm2 = 4; // Early culmination step (second rule)
