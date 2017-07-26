@@ -388,6 +388,8 @@ protected:
 	// CP1 parameters
 	int slurs_window = 10; // Number of steps to check for slur limit
 	int miss_slurs_window = 10; // Number of steps to check for missing slur limit
+	int ico_chain = 3; // Number of allowed consecutive imperfect consonances
+	int ico_chain2 = 3; // Number of allowed consecutive imperfect consonances
 	int min_between = 0; // Minimum diatonic interval between voices
 	int max_between = 11; // Maximum diatonic interval between voices
 	int sum_interval = 22; // Maximum chromatic range of cantus and counterpoint

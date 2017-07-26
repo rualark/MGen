@@ -610,10 +610,10 @@ int CGenCP1::FailVIntervals() {
 		if (tivl[s] == iIco && ivl[s] == ivl[fli[ls - 1]]) {
 			++pico_count;
 			// Two same ico transitions means three intervals already
-			if (pico_count == 2) {
+			if (pico_count == ico_chain-1) {
 				FLAG2(89, s)
 			}
-			else if (pico_count > 2) {
+			else if (pico_count >= ico_chain2) {
 				FLAG2(96, s)
 			}
 		}

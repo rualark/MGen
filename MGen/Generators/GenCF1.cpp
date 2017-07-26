@@ -265,6 +265,8 @@ void CGenCF1::SetRuleParams() {
 	hsp_leap = GetRuleParam(rule_set, 194, rsSubName, 0);
 	repeat_letters = GetRuleParam(rule_set, 17, rsSubName, 0);
 	miss_letters = GetRuleParam(rule_set, 20, rsSubName, 0);
+	ico_chain = GetRuleParam(rule_set, 89, rsSubName, 0);
+	ico_chain2 = GetRuleParam(rule_set, 96, rsSubName, 0);
 }
 
 // Select rules
