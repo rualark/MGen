@@ -12,9 +12,9 @@
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
-#define MAX_FLAGS 200
+#define MAX_RULES 500
 
-#define MAX_RULESETS 80
+#define MAX_RULESETS 100
 #define MAX_SEVERITY 101
 #define MAX_WIND 500
 #define MAX_NOTE 127
@@ -186,10 +186,10 @@ protected:
 	int cf_rule_set = 0; // id of current rule set for cantus
 	int cp_rule_set = 0; // id of current rule set for cpoint
 	vector<vector <CString>> RuleName; // Names of all rules
-	vector<vector <CString>> FlagName; // Names of all rules
+	vector<vector <CString>> SubRuleName; // Names of all rules
 	vector<vector<vector<vector<int>>>> RuleParam; // Parsed rule parameters
-	vector <CString> FlagGComment; // Comments for flag groups
-	vector<vector <CString>> FlagComment; // Comments for flags
+	vector <CString> RuleComment; // Comments for flag groups
+	vector<vector <CString>> SubRuleComment; // Comments for flags
 	int max_flags = 82; // Maximum number of rules
 
 	// Parameters
@@ -212,6 +212,7 @@ protected:
 	int max_leaps2 = 3; // Maximum allowed max_leaps2 during max_leap_steps for Many leaps+
 	int cse_leaps = 2; // Maximum allowed consecutive leaps for Consecutive leaps
 	int cse_leaps2 = 3; // Maximum allowed consecutive leaps for Consecutive leaps+
+	int hsp_leap = 5; // Maximum allowed leap before bad harmonic sequence
 	int early_culm = 3; // Early culmination step
 	int late_culm = 3; // Late culmination step
 	int early_culm2 = 4; // Early culmination step (second rule)
@@ -353,6 +354,7 @@ protected:
 	// FailLeap local variables
 	int leap_start; // Step where leap starts
 	int leap_end; // Step where leap ends
+	int leap_mid; // Middle step of leap in case when leap is created by two consecutive 3rds
 	int fleap_start; // Fli position where leap starts
 	int fleap_end; // Fli position where leap ends
 	int leap_size; // Diatonic size of leap

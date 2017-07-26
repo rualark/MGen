@@ -320,13 +320,13 @@ int CGenCP1::SendCP() {
 						if (!i) {
 							st = "+ ";
 							if (!accept[fl]) st = "- ";
-							comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + FlagName[rule_set][fl] + ")";
+							comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 							if (show_severity) {
 								st.Format(" [%d]", severity[fl]);
 								comment[pos][v] += st;
 							}
-							if (FlagGComment[fl] != "") comment[pos][v] += ". " + FlagGComment[fl];
-							if (FlagComment[rule_set][fl] != "") comment[pos][v] += ". " + FlagComment[rule_set][fl];
+							if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
+							if (SubRuleComment[rule_set][fl] != "") comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
 							comment[pos][v] += ". ";
 						}
 						// Set note color if this is maximum flag severity
