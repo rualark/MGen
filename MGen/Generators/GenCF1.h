@@ -243,6 +243,10 @@ protected:
 	int calculate_ssf = 1; // Enables SWA stuck flags statistics calculation algorithm.
 	int best_rejected = 0; // Show best rejected results if rejecting more than X ms. Set to 0 to disable. Slows down generation
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
+	int repeat_notes2 = 2; // Number of repeated notes
+	int repeat_notes3 = 3; // Number of repeated notes
+	int repeat_notes5 = 5; // Number of repeated notes
+	int repeat_notes7 = 7; // Number of repeated notes
 	int repeat_steps2 = 8; // Prohibit repeating of 2 notes closer than repeat_steps between first notes (if beats are same)
 	int repeat_steps3 = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 	int repeat_steps5 = 15; // Prohibit repeating of 5 notes closer than repeat_steps between first notes
