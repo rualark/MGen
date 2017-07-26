@@ -22,7 +22,6 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "sum_interval", &sum_interval);
 	CheckVar(sN, sV, "burst_between", &burst_between);
 	CheckVar(sN, sV, "burst_steps", &burst_steps);
-	CheckVar(sN, sV, "tonic_window", &tonic_window);
 	CheckVar(sN, sV, "contrary_min", &contrary_min);
 	CheckVar(sN, sV, "contrary_min2", &contrary_min2);
 	CheckVar(sN, sV, "notes_per_measure", &npm);

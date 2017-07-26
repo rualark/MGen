@@ -215,6 +215,7 @@ protected:
 	int hsp_leap = 5; // Maximum allowed leap before bad harmonic sequence
 	int early_culm = 3; // Early culmination step
 	int late_culm = 3; // Late culmination step
+
 	int early_culm2 = 4; // Early culmination step (second rule)
 	int early_culm3 = 50; // Early culmination step percent
 	int max_leap_steps = 7;
@@ -385,7 +386,10 @@ protected:
 	int sum_interval = 22; // Maximum chromatic range of cantus and counterpoint
 	int burst_steps = 3; // Maximum number of steps for which max_between can be exceeded
 	int burst_between = 11; // Maximum interval between voices for burst_steps steps
-	int tonic_window = 15; // Number of steps to search for adjacent tonic chords
+	int c_repeats = 1; // Maximum number of C note repeats within window
+	int ca_repeats = 1; // Maximum number of accented C note repeats within window
+	int c_window = 10; // Maximum number of C note repeats within window
+	int ca_window = 10; // Maximum number of C note repeats within window
 	int contrary_min = 30; // Minimum percent of contrary motion (little)
 	int contrary_min2 = 60; // Minimum percent of contrary motion (medium)
 };
