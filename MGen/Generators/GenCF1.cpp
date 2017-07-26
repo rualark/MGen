@@ -262,6 +262,8 @@ void CGenCF1::SetRuleParams() {
 	early_culm3 = GetRuleParam(rule_set, 193, rsSubName, 0);
 	late_culm = GetRuleParam(rule_set, 21, rsSubName, 0);
 	hsp_leap = GetRuleParam(rule_set, 194, rsSubName, 0);
+	repeat_letters = GetRuleParam(rule_set, 17, rsSubName, 0);
+	miss_letters = GetRuleParam(rule_set, 20, rsSubName, 0);
 }
 
 // Select rules
@@ -508,12 +510,8 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &la
 		++wcount;
 		count = 0;
 	}
-	if (count == 3) FLAG3(15, i)
-	else if (count == 4) FLAG3(16, i)
-	else if (count > 4) FLAG3(17, i);
-	if (wcount == 4) FLAG3(18, i)
-	else if (wcount == 5) FLAG3(19, i)
-	else if (wcount > 5) FLAG3(20, i);
+	if (count > repeat_letters) FLAG3(17, i);
+	if (wcount > miss_letters) FLAG3(20, i);
 	return 0;
 }
 
