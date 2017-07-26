@@ -97,12 +97,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
 1;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
-1;193;0;Melody;Repeats;Culmination;early 50%;0;Early culmination rules can be violated for short melodies.;
-1;79;30;Melody;Repeats;Culmination;early <5;0;Early culmination rules can be violated for short melodies.;
-1;78;60;Melody;Repeats;Culmination;early <3;0;Early culmination rules can be violated for short melodies.;
-1;21;60;Melody;Repeats;Culmination;late 3;0;Early culmination rules can be violated for short melodies.;
-1;12;100;Melody;Repeats;Culmination;multiple;0;Early culmination rules can be violated for short melodies.;
-1;26;60;Melody;Repeats;Culmination;sync;-1;Early culmination rules can be violated for short melodies.;
+1;193;0;Melody;Repeats;Culmination;early 50%;0;;
+1;79;30;Melody;Repeats;Culmination;early <5;0;;
+1;78;60;Melody;Repeats;Culmination;early <3;0;;
+1;21;60;Melody;Repeats;Culmination;late 3;0;;
+1;12;100;Melody;Repeats;Culmination;multiple;0;;
+1;26;60;Melody;Repeats;Culmination;sync;-1;;Synchronized culminations in both voices
 1;76;20;Melody;Repeats;Notes repeat;2 sym. in 5;0;;Symmetric repeat of X notes within Y notes
 1;36;60;Melody;Repeats;Notes repeat;3 sym. in 8;0;;Symmetric repeat of X notes within Y notes
 1;72;60;Melody;Repeats;Notes repeat;5 in 15;0;;Repeat of X notes within Y notes
@@ -124,12 +124,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;37;70;Melody;Range;Out of range;voice >14;0;;
 1;7;70;Melody;Range;Out of range;sum >22;0;;
 1;11;70;Melody;Range;Out of range;int >12;0;;Maximum burst interval is 18 during 3 notes
-1;15;0;Cantus;Harmony;Repeating letters in a row;3;-1;;
-1;16;30;Cantus;Harmony;Repeating letters in a row;4;0;;
-1;17;70;Cantus;Harmony;Repeating letters in a row;>4;0;;
-1;18;0;Cantus;Harmony;Missing letters in a row;4;-1;;
-1;19;30;Cantus;Harmony;Missing letters in a row;5;0;;
-1;20;70;Cantus;Harmony;Missing letters in a row;>5;0;;
+1;17;70;Cantus;Harmony;Repeating letters in a row;>3;0;;
+1;20;70;Cantus;Harmony;Missing letters in a row;>3;0;;
 1;194;70;Cantus;Harmony;Accented bad harmony;>5;0;;
 1;195;100;Cantus;Harmony;Accented bad harmony;culmination;0;;
 1;48;30;Cantus;Harmony;Early cadence;G-C;0;;Tonic chord is prohibited in root position after Dominant chord in root position
