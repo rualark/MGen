@@ -17,13 +17,6 @@ CGenCP1::~CGenCP1() {
 
 void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata) {
 	CheckVar(sN, sV, "cantus_id", &cantus_id2);
-	CheckVar(sN, sV, "slurs_window", &slurs_window);
-	LoadRange(sN, sV, "between", &min_between, &max_between);
-	CheckVar(sN, sV, "sum_interval", &sum_interval);
-	CheckVar(sN, sV, "burst_between", &burst_between);
-	CheckVar(sN, sV, "burst_steps", &burst_steps);
-	CheckVar(sN, sV, "contrary_min", &contrary_min);
-	CheckVar(sN, sV, "contrary_min2", &contrary_min2);
 	CheckVar(sN, sV, "notes_per_measure", &npm);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);

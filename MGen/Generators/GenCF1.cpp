@@ -251,6 +251,7 @@ void CGenCF1::SetRuleParams() {
 	burst_between = GetRuleParam(rule_set, 11, rsSubComment, 0);
 	burst_steps = GetRuleParam(rule_set, 11, rsSubComment, 1);
 	slurs_window = GetRuleParam(rule_set, 93, rsName, 0);
+	miss_slurs_window = GetRuleParam(rule_set, 188, rsName, 0);
 	contrary_min = GetRuleParam(rule_set, 35, rsSubName, 0);
 	contrary_min2 = GetRuleParam(rule_set, 46, rsSubName, 0);
 	notes_lrange = GetRuleParam(rule_set, 98, rsSubName, 0);
@@ -297,23 +298,12 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "cantus_high", &cantus_high);
 	CheckVar(sN, sV, "rpenalty_accepted", &rpenalty_accepted);
-	LoadRange(sN, sV, "interval", &min_interval, &max_interval);
 	CheckVar(sN, sV, "c_len", &c_len);
 	CheckVar(sN, sV, "s_len", &s_len);
 	LoadNote(sN, sV, "first_note", &first_note);
 	LoadNote(sN, sV, "last_note", &last_note);
 	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
 	CheckVar(sN, sV, "transpose_back", &transpose_back);
-	CheckVar(sN, sV, "max_repeat_mul", &max_repeat_mul);
-	CheckVar(sN, sV, "max_smooth_direct", &max_smooth_direct);
-	CheckVar(sN, sV, "max_smooth", &max_smooth);
-	CheckVar(sN, sV, "max_leaps", &max_leaps);
-	CheckVar(sN, sV, "max_leaps2", &max_leaps2);
-	CheckVar(sN, sV, "cse_leaps", &cse_leaps);
-	CheckVar(sN, sV, "cse_leaps2", &cse_leaps2);
-	CheckVar(sN, sV, "max_leap_steps", &max_leap_steps);
-	CheckVar(sN, sV, "stag_notes", &stag_notes);
-	CheckVar(sN, sV, "stag_note_steps", &stag_note_steps);
 	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "random_key", &random_key);
