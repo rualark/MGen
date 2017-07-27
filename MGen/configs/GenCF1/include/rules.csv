@@ -107,10 +107,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;36;60;Melody;Repeats;Notes repeat;3 sym. in 8;0;;Symmetric repeat of X notes within Y notes
 1;72;60;Melody;Repeats;Notes repeat;5 in 15;0;;Repeat of X notes within Y notes
 1;73;60;Melody;Repeats;Notes repeat;7 in 100;0;;Repeat of X notes within Y notes
-1;196;0;Melody;Repeats;Tonic note;turn;0;;
-1;197;20;Melody;Repeats;Tonic note;>1 within 10;0;;More than X times within Y notes (except first and last tonic)
-1;198;20;Melody;Repeats;Tonic note;leap >3rd;0;;Leap to tonic note
-1;199;20;Melody;Repeats;Tonic note;culmination;0;;
+1;196;20;Melody;Repeats;Tonic note;>1 within 9;0;;More than X times within Y notes (except first and last tonic)
+1;197;20;Melody;Repeats;Tonic note;leap >3rd;0;;Leap to tonic note
 1;10;60;Melody;Repeats;Note stagnation within 7 notes;>2;0;Same note repeats more than X times during stag_note_steps steps;
 1;29;0;Melody;Tritone;Tritone;cross rel.;1;;
 1;2;40;Melody;Tritone;Tritone;resolved;1;;
@@ -142,7 +140,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;34;0;Cantus;Border;3rd to last note;leading;-1;;
 1;51;30;Cantus;Border;2nd to last note;not BD;-1;;
 1;13;30;Cantus;Border;2nd to last note;not GBD;0;;
-1;74;60;Cantus;Minor;Unaltered VII;before Im;0;;
+1;74;60;Cantus;Minor;Unaltered VII;before Im;0;;Next or second to next
 1;200;60;Cantus;Minor;Unaltered VII;10 after VII#;0;;X notes after VII#
 1;201;60;Cantus;Minor;Leap to altered note;>4th;0;;
 1;152;30;Cantus;Minor;Altered neighbour;VI<->VI#;0;;Chromatic
