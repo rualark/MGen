@@ -105,6 +105,7 @@ protected:
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
 	inline int FailHarmStep(int i, const int * hv, int & count, int & wcount, int & last_flag, int & max_p);
+	inline int FailGisTrail(vector<int>& pcc);
 	inline int EvalMelodyHarm(int p, int & last_flag, int & max_p);
 	inline int FailMelodyHarm(vector<int>& pc);
 	//inline void UpdateNoteHarm(int i);
@@ -245,6 +246,7 @@ protected:
 	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
 	int repeat_letters = 3; // Maximum repeated letters in a row of harmonies
 	int miss_letters = 3; // Maximum steps with missed letters in a row of harmonies
+	int gis_trail_max = 7; // Minimum notes between G# and next G note in Am
 	int repeat_notes2 = 2; // Number of repeated notes
 	int repeat_notes3 = 3; // Number of repeated notes
 	int repeat_notes5 = 5; // Number of repeated notes

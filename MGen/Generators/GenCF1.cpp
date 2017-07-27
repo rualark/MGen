@@ -507,6 +507,26 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &la
 	return 0;
 }
 
+int CGenCF1::FailGisTrail(vector<int> &pcc) {
+	int gis_trail = 0;
+	for (int ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		if (pcc[s] == 11) {
+			// Set to maximum on new G# note
+			gis_trail = gis_trail_max;
+		}
+		else {
+			if (pcc[s] == 10) {
+				// Prohibit G note close to G#
+				if (gis_trail) FLAG2(200, s);
+			}
+		}
+		// Decrease if not zero
+		if (gis_trail) --gis_trail;
+	}
+	return 0;
+}
+
 int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 	int pen1;
 	int p2c = 0; // Count of consecutive penalty 2
@@ -2715,7 +2735,10 @@ check:
 		if (FailDiatonic(m_c, m_cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(m_c, m_cc, m_pc, m_pcc, 0, ep2);
 		CreateLinks(m_cc);
-		if (minor_cur && FailMinor(m_pcc)) goto skip;
+		if (minor_cur) {
+			if (FailMinor(m_pcc)) goto skip;
+			if (FailGisTrail(m_pcc)) goto skip;
+		}
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		if (FailLastNotes(m_pc, ep2)) goto skip;
