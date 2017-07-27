@@ -7,9 +7,9 @@ include "include/CA1.pl"
 #Midi_file = midi\GenCA1\test-repeat.mid # Path and file name of imported midi file
 #Midi_file = midi\GenCA1\known-cf-maj.mid # Path and file name of imported midi file
 #Midi_file = midi\GenCA1\known-cf-min.mid # Path and file name of imported midi file
-#Midi_file = midi\GenCA1\test-minor-alter.mid
+Midi_file = midi\GenCA1\test-minor-alter.mid
 #Midi_file = midi\GenCA1\test-tritone.mid
-Midi_file = "midi\GenCA1\test-last.mid"
+#Midi_file = "midi\GenCA1\test-last.mid"
 #Midi_file = midi\GenCA1\test-hsp.mid
 #Midi_file = midi\GenCA1\test-tonic.mid
 #Midi_file = midi\GenCA1\test-fill.mid

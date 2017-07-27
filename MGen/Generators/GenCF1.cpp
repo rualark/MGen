@@ -2084,10 +2084,12 @@ void CGenCF1::SaveBestRejected(vector<int> &cc) {
 	}
 }
 
-int CGenCF1::FailMinor(vector<int> &pcc) {
+int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 	for (int x = 1; x < fli_size; ++x) {
 		s = fli[x];
 		s_1 = fli[x - 1];
+		// Prohibit leap to VI#
+		if (pcc[s] == 9 && abs(cc[s] - cc[s_1]) > fis_leap) FLAG2(201, s);
 		// Prohibit major second up before I (in last steps and other places)
 		if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1);
 		// Prohibit minor second up before VII - absorbed
@@ -2746,7 +2748,7 @@ check:
 		GetPitchClass(m_c, m_cc, m_pc, m_pcc, 0, ep2);
 		CreateLinks(m_cc);
 		if (minor_cur) {
-			if (FailMinor(m_pcc)) goto skip;
+			if (FailMinor(m_pcc, m_cc)) goto skip;
 			if (FailGisTrail(m_pcc)) goto skip;
 		}
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
