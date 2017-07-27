@@ -140,9 +140,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;34;0;Cantus;Border;3rd to last note;leading;-1;;
 1;51;30;Cantus;Border;2nd to last note;not BD;-1;;
 1;13;30;Cantus;Border;2nd to last note;not GBD;0;;
-1;74;60;Cantus;Minor;Unaltered VII;before Im;0;;Next or second to next
+1;74;60;Cantus;Minor;Unaltered VII;before Im;0;;Next (or second to next in cadence)
 1;200;60;Cantus;Minor;Unaltered VII;10 after VII#;0;;X notes after VII#
-1;201;60;Cantus;Minor;Leap to altered note;>4th;0;;
+1;201;60;Cantus;Minor;Leap to altered note;>9th;0;;
 1;152;30;Cantus;Minor;Altered neighbour;VI<->VI#;0;;Chromatic
 1;153;30;Cantus;Minor;Altered neighbour;VII<->VII#;0;;Chromatic
 1;154;30;Cantus;Minor;Altered neighbour;VI<->VII#;0;;Augmented / diminished

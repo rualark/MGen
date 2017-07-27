@@ -176,6 +176,12 @@ void CGenCF1::LoadRules(CString fname)
 	WriteLog(0, est);
 }
 
+// Return chromatic length of an interval (e.g. return 4 from 3rd)
+int CGenCF1::Interval2Chromatic(int iv) {
+	--iv;
+	return dia_to_chrom[iv % 7] + (iv / 7) * 12;
+}
+
 // Load rules
 void CGenCF1::ParseRule(int rset, int rid, int type) {
 	CString st;
@@ -268,6 +274,7 @@ void CGenCF1::SetRuleParams() {
 	ico_chain = GetRuleParam(rule_set, 89, rsSubName, 0);
 	ico_chain2 = GetRuleParam(rule_set, 96, rsSubName, 0);
 	gis_trail_max = GetRuleParam(rule_set, 200, rsSubName, 0);
+	fis_leap = Interval2Chromatic(GetRuleParam(rule_set, 201, rsSubName, 0));
 }
 
 // Select rules

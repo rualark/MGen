@@ -91,6 +91,7 @@ protected:
 	void LoadHarmVar();
 	void LoadHSP(CString fname);
 	void LoadRules(CString fname);
+	int Interval2Chromatic(int iv);
 	void ParseRule(int rset, int rid, int type);
 	int GetRuleParam(int rset, int rid, int type, int id);
 	void ParseRules();
@@ -247,6 +248,7 @@ protected:
 	int repeat_letters = 3; // Maximum repeated letters in a row of harmonies
 	int miss_letters = 3; // Maximum steps with missed letters in a row of harmonies
 	int gis_trail_max = 7; // Minimum notes between G# and next G note in Am
+	int fis_leap = 5; // Maximum allowed chromatic leap size before F#
 	int repeat_notes2 = 2; // Number of repeated notes
 	int repeat_notes3 = 3; // Number of repeated notes
 	int repeat_notes5 = 5; // Number of repeated notes
