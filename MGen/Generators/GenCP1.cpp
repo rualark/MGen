@@ -1013,7 +1013,10 @@ check:
 		// Show status
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
-		if (minor_cur && FailMinor(apcc[cpv], acc[cpv])) goto skip;
+		if (minor_cur) {
+			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;
+			if (FailGisTrail(apcc[cpv])) goto skip;
+		}
 		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		CreateLinks(acc[cpv]);
