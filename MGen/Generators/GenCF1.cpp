@@ -725,22 +725,6 @@ int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2,
 	return 0;
 }
 
-// Add minor alterations
-void CGenCF1::AlterMinor(int ep2, vector<int> &cc) {
-	int pcc;
-	int pos1 = (tonic_cur + 10) % 12;
-	int pos2 = (tonic_cur + 8) % 12;
-	for (int i = ep2 - 2; i > 0; --i) {
-		pcc = cc[i] % 12;
-		if (pcc == pos1) {
-			if (cc[i + 1] % 12 == tonic_cur) ++cc[i];
-		}
-		if (pcc == pos2) {
-			if (cc[i + 1] % 12 == pos1+1) ++cc[i];
-		}
-	}
-}
-
 // Search for outstanding repeats
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok, f, f1;
