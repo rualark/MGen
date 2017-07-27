@@ -267,6 +267,7 @@ void CGenCF1::SetRuleParams() {
 	miss_letters = GetRuleParam(rule_set, 20, rsSubName, 0);
 	ico_chain = GetRuleParam(rule_set, 89, rsSubName, 0);
 	ico_chain2 = GetRuleParam(rule_set, 96, rsSubName, 0);
+	gis_trail_max = GetRuleParam(rule_set, 200, rsSubName, 0);
 }
 
 // Select rules
@@ -988,7 +989,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 	return 0;
 }
 
-int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
+int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc, int ep2) {
 	// Prohibit last note not tonic
 	if (ep2 > c_len - 1)
 		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1); 
@@ -1002,6 +1003,8 @@ int CGenCF1::FailLastNotes(vector<int> &pc, int ep2) {
 		if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG2(14, c_len - 3);
 		// Leading third to last note
 		if (pc[c_len - 3] == 6) FLAG2(34, c_len - 3);
+		// Prohibit major second up before I (in last steps and other places)
+		if (pcc[c_len - 1] == 0 && pcc[c_len - 3] == 10) FLAG2(74, c_len - 3);
 	}
 	return 0;
 }
@@ -2741,7 +2744,7 @@ check:
 		}
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
-		if (FailLastNotes(m_pc, ep2)) goto skip;
+		if (FailLastNotes(m_pc, m_pcc, ep2)) goto skip;
 		if (FailNoteSeq(m_pc)) goto skip;
 		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
 		if (FailLeapSmooth(m_c, m_cc, ep2, m_leap, m_smooth, m_slur)) goto skip;
