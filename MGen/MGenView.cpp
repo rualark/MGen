@@ -423,20 +423,29 @@ void CMGenView::OnDraw(CDC* pDC)
 			int step2t = step2;
 			if (step1t > 0) step1t--;
 			if (step2t < pGen->t_generated-1) step2t++;
+			// Show note graph
+			if (mf->show_tempo) {
+				for (int v = 0; v < pGen->v_cnt; v++) {
+					for (int i = step1t; i < step2t; i++) if (i > 0 && pGen->ngraph[i][v] && pGen->ngraph[i - 1][v]) {
+						g.DrawLine(&pen_ablue, X_FIELD + i * nwidth + nwidth / 2,
+							(int)(y_start - (pGen->ngraph[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight),
+							X_FIELD + (i - 1) * nwidth + nwidth / 2,
+							(int)(y_start - (pGen->ngraph[i-1][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight));
+					}
+				}
+			}
 			// Show tempo
 			if (mf->show_tempo) {
-				for (int i = step1t; i < step2t; i++) {
-					if (i > 0) {
-						g.DrawLine(&pen_ablue, X_FIELD + i * nwidth + nwidth / 2,
-							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
+				for (int i = step1t; i < step2t; i++) if (i > 0) {
+					g.DrawLine(&pen_ablue, X_FIELD + i * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i] - tg_min) / (tg_max - tg_min),
+						X_FIELD + (i - 1) * nwidth + nwidth / 2,
+						y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
+					if (pGen->tempo_src[i])
+						g.DrawLine(&pen_aared, X_FIELD + i * nwidth + nwidth / 2,
+							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i] - tg_min) / (tg_max - tg_min),
 							X_FIELD + (i - 1) * nwidth + nwidth / 2,
-							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo[i - 1] - tg_min) / (tg_max - tg_min));
-						if (pGen->tempo_src[i])
-							g.DrawLine(&pen_aared, X_FIELD + i * nwidth + nwidth / 2,
-								y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i] - tg_min) / (tg_max - tg_min),
-								X_FIELD + (i - 1) * nwidth + nwidth / 2,
-								y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i - 1] - tg_min) / (tg_max - tg_min));
-					}
+							y_start - 2 - (y_start - Y_HEADER - 4)*(pGen->tempo_src[i - 1] - tg_min) / (tg_max - tg_min));
 				}
 				if (step2t < pGen->t_generated - 1) {
 					g.DrawLine(&pen_ablue, X_FIELD + step2t * nwidth + nwidth / 2,
