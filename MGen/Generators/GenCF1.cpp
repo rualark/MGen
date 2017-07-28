@@ -275,6 +275,9 @@ void CGenCF1::SetRuleParams() {
 	ico_chain2 = GetRuleParam(rule_set, 96, rsSubName, 0);
 	gis_trail_max = GetRuleParam(rule_set, 200, rsSubName, 0);
 	fis_leap = Interval2Chromatic(GetRuleParam(rule_set, 201, rsSubName, 0));
+	tonic_max = GetRuleParam(rule_set, 196, rsSubName, 0);
+	tonic_window = GetRuleParam(rule_set, 196, rsSubName, 1);
+	tonic_leap = Interval2Chromatic(GetRuleParam(rule_set, 197, rsSubName, 0));
 }
 
 // Select rules
