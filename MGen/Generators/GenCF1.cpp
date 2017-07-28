@@ -2392,6 +2392,7 @@ int CGenCF1::SendCantus() {
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = m_cc[x];
+			ngraph[pos + i][v] = m_cc[x];
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
