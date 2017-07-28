@@ -25,6 +25,8 @@
 #define MIN_TEMPO_DISPLAY 80
 #define MAX_TEMPO_DISPLAY 140
 #define WARN_DRAW 0.8
+// How many steps back to show marks OnDraw
+#define MARK_BACK 8
 
 class CMGenDoc;
 
