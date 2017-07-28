@@ -11,7 +11,7 @@ show_comments = 1 # Set to 1 to surround notes which have comments with rectangl
 show_lining = 1 # Set to 1 to show note lining
 show_lines = 1 # Set to 1 to show line separators
 show_vel = 1 # Set to 1 to show note velocity using alpha
-show_tempo = 0 # Set to 1 to show tempo
+show_tempo = 1 # Set to 1 to show tempo
 show_notecolors = 1 # Set to 1 to show note colors instead of instrument colors
 
 # The following settings cannot be changed in GUI. You can change them only in this file

@@ -136,6 +136,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	if (vsize == -1) vsize = v_cnt;
 	pause.resize(size);
 	note.resize(size);
+	ngraph.resize(size);
 	len.resize(size);
 	coff.resize(size);
 	poff.resize(size);
@@ -173,6 +174,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	for (int i = start; i < size; i++) {
 		pause[i].resize(vsize);
 		note[i].resize(vsize);
+		ngraph[i].resize(vsize);
 		len[i].resize(vsize);
 		coff[i].resize(vsize);
 		poff[i].resize(vsize);
