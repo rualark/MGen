@@ -1454,6 +1454,31 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 	return 0;
 }
 
+int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
+	int tcount = 0;
+	// Do not check if melody is short
+	if (fli_size < 3) return 0;
+	// Loop from second to second to last note
+	for (int ls = 1; ls < fli_size-1; ++ls) {
+		s = fli[ls];
+		// Decrement for previous tonic note
+		if (ls > tonic_window) {
+			if (!pc[fli[ls - tonic_window]]) --tcount;
+		}
+		if (!pc[s]) {
+			// Check leap to tonic note (first and last notes are not checked)
+			if (abs(cc[s] - cc[fli[ls - 1]]) > tonic_leap) {
+				FLAG2(197, s);
+			}
+			// Increment for current tonic note
+			++tcount;
+			// Check count of tonic notes
+			if (tcount > tonic_max) FLAG2(196, s);
+		}
+	}
+	return 0;
+}
+
 int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
 	for (ls = 0; ls < fli_size - 1; ++ls) {
@@ -2737,6 +2762,7 @@ check:
 		}
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
+		if (FailTonic(m_cc, m_pc)) goto skip;
 		if (FailLastNotes(m_pc, m_pcc, ep2)) goto skip;
 		if (FailNoteSeq(m_pc)) goto skip;
 		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
