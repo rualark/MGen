@@ -382,6 +382,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				} // for i
 			} // for v
 			// Show marks
+			CString mark;
 			if (mf->show_marks) for (int v = 0; v < pGen->v_cnt; v++) {
 				int step1m = max(0, step1 - MARK_BACK);
 				for (int i = step1m; i < step2; i++) if (pGen->mark[i][v] != "") {
@@ -394,7 +395,15 @@ void CMGenView::OnDraw(CDC* pDC)
 						mcolor = Color(210, ncolor.GetR(), ncolor.GetG(), ncolor.GetB());
 					}
 					SolidBrush brush_v(mcolor);
-					g.DrawString(A2W(pGen->mark[i][v]), -1, &font_small2, PointF(X_FIELD + i * nwidth,
+					mark = pGen->mark[i][v];
+					if (dc.GetTextExtent(mark).cx > MARK_BACK * nwidth) {
+						mark = "...";
+						if (!warning_mark_long) {
+							++warning_mark_long;
+							mf->WriteLog(1, "Warning: Mark is too long for current zoom and was replaced with '...'. Solution: increase Zoom level, increase MARK_BACK or decrease mark string length in algorithm.");
+						}
+					}
+					g.DrawString(A2W(mark), -1, &font_small2, PointF(X_FIELD + i * nwidth,
 						y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight), &brush_v);
 				}
 			}
