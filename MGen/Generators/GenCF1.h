@@ -170,6 +170,7 @@ protected:
 	void CalcDpenalty();
 	void SaveCantus();
 	void TransposeVector(vector<int>& v, int t);
+	inline void MakeCcma(vector<int>& cc);
 	int SendCantus();
 	void InitCantus();
 	void TestDiatonic();
@@ -305,6 +306,7 @@ protected:
 	vector<int> m_leap;
 	vector<int> m_smooth;
 	vector<int> m_slur;
+	vector<float> macc; // CC moving average
 	vector<float> fpenalty; // Additional penalty for flags
 	vector<int>  flags; // Flags for whole cantus
 	vector<vector<vector<int>>> anflags; // Note flags

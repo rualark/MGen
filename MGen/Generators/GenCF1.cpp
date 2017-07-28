@@ -2363,6 +2363,24 @@ void CGenCF1::TransposeVector(vector<int> &v, int t) {
 	}
 }
 
+void CGenCF1::MakeCcma(vector<int> &cc) {
+	int ma = 0;
+	int ma_size = 0;
+	int ma_range = 2;
+	for (int ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		ma += cc[s];
+		if (ls > ma_range) {
+			if (ls > ma_range * 2 + 1) {
+				ma -= cc[ls - ma_range - 1];
+			}
+			else ++ma_size;
+			macc[ls - ma_range] = ma / ma_size;
+		}
+		else ++ma_size;
+	}
+}
+
 int CGenCF1::SendCantus() {
 	int step0 = step;
 	// Save culmination position
@@ -2392,7 +2410,7 @@ int CGenCF1::SendCantus() {
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = m_cc[x];
-			ngraph[pos + i][v] = m_cc[x];
+			ngraph[pos + i][v] = macc[x];
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
