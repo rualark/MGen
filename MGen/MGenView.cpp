@@ -375,26 +375,29 @@ void CMGenView::OnDraw(CDC* pDC)
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
-					// Show mark
-					if (mf->show_marks && pGen->mark[i][v] != "") {
-						if (pGen->mark_color[i][v].GetValue() != 0) {
-							if (pGen->mark_color[i][v].GetAlpha() == 0)
-								mcolor = Color(210, pGen->mark_color[i][v].GetR(), pGen->mark_color[i][v].GetG(), pGen->mark_color[i][v].GetB());
-							else mcolor = pGen->mark_color[i][v];
-						}
-						else {
-							mcolor = Color(210, ncolor.GetR(), ncolor.GetG(), ncolor.GetB());
-						}
-						SolidBrush brush_v(mcolor);
-						g.DrawString(A2W(pGen->mark[i][v]), -1, &font_small2, PointF(X_FIELD + i * nwidth, 
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight), &brush_v);
-					}
 					if (pGen->noff[i][v] == 0) break;
 					i = i + pGen->noff[i][v] - 1;
 					// Protect from infinite loop
 					if (i < step1) break;
 				} // for i
 			} // for v
+			// Show marks
+			if (mf->show_marks) for (int v = 0; v < pGen->v_cnt; v++) {
+				int step1m = max(0, step1 - MARK_BACK);
+				for (int i = step1m; i < step2; i++) if (pGen->mark[i][v] != "") {
+					if (pGen->mark_color[i][v].GetValue() != 0) {
+						if (pGen->mark_color[i][v].GetAlpha() == 0)
+							mcolor = Color(210, pGen->mark_color[i][v].GetR(), pGen->mark_color[i][v].GetG(), pGen->mark_color[i][v].GetB());
+						else mcolor = pGen->mark_color[i][v];
+					}
+					else {
+						mcolor = Color(210, ncolor.GetR(), ncolor.GetG(), ncolor.GetB());
+					}
+					SolidBrush brush_v(mcolor);
+					g.DrawString(A2W(pGen->mark[i][v]), -1, &font_small2, PointF(X_FIELD + i * nwidth,
+						y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight), &brush_v);
+				}
+			}
 			// Show generated vertical lines
 			if (mf->show_lines) for (int v = 0; v < pGen->v_cnt; v++) {
 				for (int i = step1; i < step2; i++) {

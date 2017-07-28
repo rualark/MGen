@@ -27,7 +27,7 @@ correct_range = 11 # Maximum interval allowed between each source and corrected 
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Technical parameters
-midifile_in_mul = 1 # Multiply note length with this value when loading
+midifile_in_mul = 0.5 # Multiply note length with this value when loading
 t_cnt = 100000 # Maximum number of steps generated
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
