@@ -72,6 +72,7 @@ public:
 	int nwidth; // Step width
 	int nheight; // Note height
 	int y_start; // Position of lowest note
+	int warning_mark_long = 0; // Mark is too long
 
 protected:
 	vector< vector <unsigned char> > v_color; // Voice colors
