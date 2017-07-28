@@ -1022,6 +1022,7 @@ check:
 		CreateLinks(acc[cpv]);
 		if (FailCPInterval()) goto skip;
 		GetMeasures();
+		if (FailTonic(apc[cpv])) goto skip;
 		if (FailLastIntervals(apc[cpv], ep2)) goto skip;
 		if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;

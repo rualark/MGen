@@ -133,6 +133,7 @@ protected:
 	inline int FailLeapFill(vector<int>& c, int late_leap, int leap_prev, int child_leap);
 	inline int FailLeapMDC(vector<int>& leap, vector<int>& c);
 	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline int FailTonic(vector<int>& pc);
 	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailGlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
 	void ScanCantusInit();
@@ -256,6 +257,8 @@ protected:
 	int repeat_steps3 = 8; // Prohibit repeating of 3 notes closer than repeat_steps between first notes (if beats are same)
 	int repeat_steps5 = 15; // Prohibit repeating of 5 notes closer than repeat_steps between first notes
 	int repeat_steps7 = 100; // Prohibit repeating of 7 notes closer than repeat_steps between first notes
+	int tonic_window = 9; // Number of notes that are searched for number of tonic notes
+	int tonic_max = 1; // Maximum number of tonic notes that can be contained in tonic window
 	int dev_late2 = 3; // Maximum note count to consider non-late leap compensation deviation to 2nd
 	int dev_late3 = 3; // Maximum note count to consider non-late leap compensation deviation to 3rd
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
