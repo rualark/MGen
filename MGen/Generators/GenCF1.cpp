@@ -1552,6 +1552,7 @@ void CGenCF1::ScanCantusInit() {
 	m_cc.resize(c_len); // cantus (chromatic)
 	fli.resize(c_len);
 	macc.resize(c_len);
+	macc2.resize(c_len);
 	llen.resize(c_len);
 	bli.resize(c_len);
 	fpenalty.resize(max_flags);
@@ -2377,6 +2378,12 @@ void CGenCF1::MakeCcma(vector<int> &cc) {
 		}
 		macc[ls] = ma / (pos2 - pos1 + 1);
 	}
+	// Smooth
+	macc2[0] = (macc[0] + macc[1]) / 2;
+	macc2[fli_size-1] = (macc[fli_size - 2] + macc[fli_size - 1]) / 2;
+	for (int ls = 1; ls < fli_size-1; ++ls) {
+		macc2[ls] = (macc[ls - 1] + macc[ls] + macc[ls + 1]) / 3;
+	}
 }
 
 int CGenCF1::SendCantus() {
@@ -2408,7 +2415,7 @@ int CGenCF1::SendCantus() {
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = m_cc[x];
-			ngraph[pos + i][v] = macc[x];
+			ngraph[pos + i][v] = macc2[x];
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
