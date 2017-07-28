@@ -1551,6 +1551,7 @@ void CGenCF1::ScanCantusInit() {
 	m_c.resize(c_len); // cantus (diatonic)
 	m_cc.resize(c_len); // cantus (chromatic)
 	fli.resize(c_len);
+	macc.resize(c_len);
 	llen.resize(c_len);
 	bli.resize(c_len);
 	fpenalty.resize(max_flags);
@@ -2364,20 +2365,17 @@ void CGenCF1::TransposeVector(vector<int> &v, int t) {
 }
 
 void CGenCF1::MakeCcma(vector<int> &cc) {
-	int ma = 0;
-	int ma_size = 0;
+	int pos1, pos2;
 	int ma_range = 2;
+	float ma;
 	for (int ls = 0; ls < fli_size; ++ls) {
-		s = fli[ls];
-		ma += cc[s];
-		if (ls > ma_range) {
-			if (ls > ma_range * 2 + 1) {
-				ma -= cc[ls - ma_range - 1];
-			}
-			else ++ma_size;
-			macc[ls - ma_range] = ma / ma_size;
+		pos1 = max(0, ls - ma_range);
+		pos2 = min(fli_size-1, ls + ma_range);
+		ma = 0;
+		for (int x = pos1; x <= pos2; ++x) {
+			ma += cc[fli[x]];
 		}
-		else ++ma_size;
+		macc[ls] = ma / (pos2 - pos1 + 1);
 	}
 }
 
@@ -2800,6 +2798,7 @@ check:
 		if (FailFirstNotes(m_pc, ep2)) goto skip;
 		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;
 		if ((ep2>3 || ep2 == c_len) && FailMelodyHarm(m_pc)) goto skip;
+		MakeCcma(m_cc);
 
 		SaveBestRejected(m_cc);
 		// If we are window-scanning
