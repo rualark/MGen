@@ -126,6 +126,7 @@ const CString NoteName2[] = {
 };
 
 #define SQR(x) pow(x, 2)
+#define SQRT(x) pow(x, 0.5)
 
 class CGLib
 {

@@ -136,7 +136,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	if (vsize == -1) vsize = v_cnt;
 	pause.resize(size);
 	note.resize(size);
-	ngraph.resize(size);
+	ngraph.resize(size, vector<vector<float> >(vsize, vector<float>(ngraph_size)));
 	len.resize(size);
 	coff.resize(size);
 	poff.resize(size);

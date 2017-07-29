@@ -308,6 +308,8 @@ protected:
 	vector<int> m_slur;
 	vector<float> macc; // CC moving average
 	vector<float> macc2; // CC moving average smoothed
+	vector<float> decc; // CC deviation
+	vector<float> decc2; // CC deviation smoothed
 	vector<float> fpenalty; // Additional penalty for flags
 	vector<int>  flags; // Flags for whole cantus
 	vector<vector<vector<int>>> anflags; // Note flags

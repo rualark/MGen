@@ -10,6 +10,7 @@
 
 CGenCF1::CGenCF1()
 {
+	ngraph_size = 3;
 	cpv = 0;
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_RULES);
@@ -1553,6 +1554,8 @@ void CGenCF1::ScanCantusInit() {
 	fli.resize(c_len);
 	macc.resize(c_len);
 	macc2.resize(c_len);
+	decc.resize(c_len);
+	decc2.resize(c_len);
 	llen.resize(c_len);
 	bli.resize(c_len);
 	fpenalty.resize(max_flags);
@@ -2368,10 +2371,11 @@ void CGenCF1::TransposeVector(vector<int> &v, int t) {
 void CGenCF1::MakeCcma(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2;
-	float ma;
+	float ma, de;
+	// Moving average
 	for (int ls = 0; ls < fli_size; ++ls) {
 		pos1 = max(0, ls - ma_range);
-		pos2 = min(fli_size-1, ls + ma_range);
+		pos2 = min(fli_size - 1, ls + ma_range);
 		ma = 0;
 		for (int x = pos1; x <= pos2; ++x) {
 			ma += cc[fli[x]];
@@ -2380,9 +2384,25 @@ void CGenCF1::MakeCcma(vector<int> &cc) {
 	}
 	// Smooth
 	macc2[0] = (macc[0] + macc[1]) / 2;
-	macc2[fli_size-1] = (macc[fli_size - 2] + macc[fli_size - 1]) / 2;
-	for (int ls = 1; ls < fli_size-1; ++ls) {
+	macc2[fli_size - 1] = (macc[fli_size - 2] + macc[fli_size - 1]) / 2;
+	for (int ls = 1; ls < fli_size - 1; ++ls) {
 		macc2[ls] = (macc[ls - 1] + macc[ls] + macc[ls + 1]) / 3;
+	}
+	// Deviation
+	for (int ls = 0; ls < fli_size; ++ls) {
+		pos1 = max(0, ls - ma_range);
+		pos2 = min(fli_size - 1, ls + ma_range);
+		de = 0;
+		for (int x = pos1; x <= pos2; ++x) {
+			de += SQR(cc[fli[x]]-macc[x]);
+		}
+		decc[ls] = SQRT(de / (pos2 - pos1 + 1));
+	}
+	// Smooth
+	decc2[0] = (decc[0] + decc[1]) / 2;
+	decc2[fli_size - 1] = (decc[fli_size - 2] + decc[fli_size - 1]) / 2;
+	for (int ls = 1; ls < fli_size - 1; ++ls) {
+		decc2[ls] = (decc[ls - 1] + decc[ls] + decc[ls + 1]) / 3;
 	}
 }
 
@@ -2415,7 +2435,9 @@ int CGenCF1::SendCantus() {
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = m_cc[x];
-			ngraph[pos + i][v] = macc2[x];
+			ngraph[pos + i][v][0] = macc2[x] - decc2[x];
+			ngraph[pos + i][v][1] = macc2[x];
+			ngraph[pos + i][v][2] = macc2[x] + decc2[x];
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
