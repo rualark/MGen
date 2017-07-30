@@ -104,6 +104,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_NCOLORS, &CMainFrame::OnUpdateCheckNcolors)
 	ON_COMMAND(ID_BUTTON_ERULES, &CMainFrame::OnButtonErules)
 	ON_COMMAND(ID_BUTTON_SSTATUS2, &CMainFrame::OnButtonSstatus2)
+	ON_COMMAND(ID_CHECK_CURVE, &CMainFrame::OnCheckCurve)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_CURVE, &CMainFrame::OnUpdateCheckCurve)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -868,6 +870,7 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "show_lines", &show_lines);
 			CGLib::CheckVar(&st2, &st3, "show_tempo", &show_tempo);
 			CGLib::CheckVar(&st2, &st3, "show_vel", &show_vel);
+			CGLib::CheckVar(&st2, &st3, "show_curve", &show_curve);
 			CGLib::CheckVar(&st2, &st3, "show_notecolors", &show_notecolors);
 			CGLib::CheckVar(&st2, &st3, "debug_level", &m_debug_level);
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
@@ -924,6 +927,8 @@ void CMainFrame::SaveSettings()
 	st.Format("show_lines = %d # Set to 1 to show line separators\n", show_lines);
 	fs << st;
 	st.Format("show_vel = %d # Set to 1 to show note velocity using alpha\n", show_vel);
+	fs << st;
+	st.Format("show_curve = %d # Set to 1 to show melody curves (MeloCurve)\n", show_curve);
 	fs << st;
 	st.Format("show_tempo = %d # Set to 1 to show tempo\n", show_tempo);
 	fs << st;
@@ -1406,6 +1411,16 @@ void CMainFrame::OnCheckVel() {
 	show_vel = !show_vel;
 	SaveSettings();
 	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnCheckCurve() {
+	show_curve = !show_curve;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckCurve(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_curve);
 }
 
 void CMainFrame::OnUpdateCheckVel(CCmdUI *pCmdUI) {

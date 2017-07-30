@@ -65,6 +65,7 @@ public:
 	int show_lines = 1;
 	int show_tempo = 1;
 	int show_vel = 1;
+	int show_curve = 1;
 	int show_notecolors = 1;
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
@@ -210,4 +211,6 @@ public:
 	afx_msg void OnUpdateCheckNcolors(CCmdUI *pCmdUI);
 	afx_msg void OnButtonErules();
 	afx_msg void OnButtonSstatus2();
+	afx_msg void OnCheckCurve();
+	afx_msg void OnUpdateCheckCurve(CCmdUI *pCmdUI);
 };
