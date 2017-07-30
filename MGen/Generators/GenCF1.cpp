@@ -896,12 +896,12 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 		}
 		// Calculate penalty
 		if (leap_sum == max_leaps) {
-			++fpenalty[3];
-			if (leap_sum > max_leaps2) ++fpenalty[25];
+			if (accept[3] > 0) ++fpenalty[3];
+			if (leap_sum > max_leaps2 && accept[25] > 0) ++fpenalty[25];
 		}
 		if (leap_sum2 == cse_leaps) {
-			++fpenalty[70];
-			if (leap_sum2 > cse_leaps2) ++fpenalty[71];
+			if (accept[70] > 0) ++fpenalty[70];
+			if (leap_sum2 > cse_leaps2 && accept[71] > 0) ++fpenalty[71];
 		}
 		// Prohibit long smooth movement
 		if (smooth[s] != 0) {
