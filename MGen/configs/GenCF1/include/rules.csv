@@ -55,7 +55,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;134;40;Melody;Melodic direction change near leap;No + close MDC;5th;0;;
 1;135;100;Melody;Melodic direction change near leap;No + close MDC;>5th;0;;
 1;59;0;Melody;Melodic direction change near leap;Far + close MDC;3rd;-1;;
-1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;0;;
+1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;1;;
 1;61;40;Melody;Melodic direction change near leap;Far + close MDC;5th;0;;
 1;62;100;Melody;Melodic direction change near leap;Far + close MDC;>5th;0;;
 1;63;0;Melody;Melodic direction change near leap;Far/no + no MDC;3rd;0;;
@@ -97,7 +97,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
 1;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
-1;193;0;Melody;Repeats;Culmination;early 50%;0;;
+1;193;0;Melody;Repeats;Culmination;early 50%;1;;
 1;79;30;Melody;Repeats;Culmination;early <5;0;;
 1;78;60;Melody;Repeats;Culmination;early <3;0;;
 1;21;60;Melody;Repeats;Culmination;late 3;0;;
@@ -189,8 +189,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;75;30;Cantus;Counterpoint;2nd to last measure;no G or D;0;;
 1;97;60;Cantus;Counterpoint;Slurs;consecutive;0;;
 1;30;100;Cantus;Counterpoint;Slurs;cantus;0;;
-1;93;0;Cantus;Counterpoint;Many slurs within 10 notes;1;0;For counterpoint species 1-3;
-1;94;60;Cantus;Counterpoint;Many slurs within 10 notes;2;0;For counterpoint species 1-3;
+1;93;0;Cantus;Counterpoint;Many slurs within 10 notes;1;1;For counterpoint species 1-3;
+1;94;60;Cantus;Counterpoint;Many slurs within 10 notes;2;1;For counterpoint species 1-3;
 1;95;60;Cantus;Counterpoint;Many slurs within 10 notes;>2;0;For counterpoint species 1-3;
 1;188;0;Cantus;Counterpoint;Missing slurs within 10 notes;1;0;For counterpoint species 4;
 1;189;60;Cantus;Counterpoint;Missing slurs within 10 notes;2;0;For counterpoint species 4;
