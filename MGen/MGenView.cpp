@@ -428,7 +428,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				for (int n = 0; n < pGen->ngraph_size; ++n) {
 					for (int v = 0; v < pGen->v_cnt; v++) {
 						for (int i = step1t; i < step2t; i++) if (i > 0 && pGen->ngraph[i][v][n] && pGen->ngraph[i - 1][v][n]) {
-							g.DrawLine(&pen_ablue, X_FIELD + i * nwidth + nwidth / 2,
+							g.DrawLine(&pen_agray, X_FIELD + i * nwidth + nwidth / 2 - 1,
 								(int)(y_start - (pGen->ngraph[i][v][n] + pGen->show_transpose[v] - ng_min2 + 0.5) * nheight),
 								X_FIELD + (i - 1) * nwidth + nwidth / 2,
 								(int)(y_start - (pGen->ngraph[i - 1][v][n] + pGen->show_transpose[v] - ng_min2 + 0.5) * nheight));
