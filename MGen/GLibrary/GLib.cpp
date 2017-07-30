@@ -179,7 +179,7 @@ void CGLib::GetVint(const CString & st, vector<int>& res) {
 	for (int i = 0; i < st.GetLength(); ++i) {
 		if (isdigit(st[i])) {
 			// Check minor
-			if (st2 == "" && i > 0 && st[i - 1] == "m") sign = -1;
+			if (st2 == "" && i > 0 && (st[i - 1] == 'm' || st[i-1] == 'b')) sign = -1;
 			st2 += st[i];
 		}
 		else if (st2 != "") {

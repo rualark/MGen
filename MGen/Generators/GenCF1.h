@@ -235,6 +235,12 @@ protected:
 	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
 	int notes_lrange = 5; // Maximum number of consecutive notes having low range
 	int min_lrange = 5; // Minimum allowed local range of notes_lrange consecutive notes
+	int notes_lrange2 = 5; // Maximum number of consecutive notes having low range
+	int min_lrange2 = 5; // Minimum allowed local range of notes_lrange consecutive notes
+	int notes_arange = 5; // Maximum number of consecutive notes having low average range
+	float min_arange = 5; // Minimum allowed local range of notes_arange consecutive notes
+	int notes_arange2 = 5; // Maximum number of consecutive notes having low average range
+	float min_arange2 = 5; // Minimum allowed local range of notes_arange consecutive notes
 	float random_choose = 100; // Percent of accepted canti to show and play
 	int random_seed = 0; // Seed melody with random numbers. This ensures giving different results if generation is very slow.
 	int random_range = 0; // Limit scanning to one of possible fast-scan ranges

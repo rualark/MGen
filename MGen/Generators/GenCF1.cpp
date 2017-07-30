@@ -179,8 +179,25 @@ void CGenCF1::LoadRules(CString fname)
 
 // Return chromatic length of an interval (e.g. return 4 from 3rd)
 int CGenCF1::Interval2Chromatic(int iv) {
-	--iv;
-	return dia_to_chrom[iv % 7] + (iv / 7) * 12;
+	if (iv > 0) --iv;
+	else ++iv;
+	int aiv = iv % 7;
+	int res = 0;
+	if (aiv == 1) res = 2;
+	else if (aiv == 2) res = 4;
+	else if (aiv == 3) res = 5;
+	else if (aiv == 4) res = 7;
+	else if (aiv == 5) res = 9;
+	else if (aiv == 6) res = 11;
+	else if (aiv == -1) res = 1;
+	else if (aiv == -2) res = 3;
+	else if (aiv == -3) res = 5;
+	else if (aiv == -4) res = 6; // Tritone
+	else if (aiv == -5) res = 8;
+	else if (aiv == -6) res = 10;
+	// Add octaves
+	res += 12*abs(iv / 7);
+	return res;
 }
 
 // Load rules
@@ -261,8 +278,16 @@ void CGenCF1::SetRuleParams() {
 	miss_slurs_window = GetRuleParam(rule_set, 188, rsName, 0);
 	contrary_min = GetRuleParam(rule_set, 35, rsSubName, 0);
 	contrary_min2 = GetRuleParam(rule_set, 46, rsSubName, 0);
+
 	notes_lrange = GetRuleParam(rule_set, 98, rsSubName, 0);
 	min_lrange = Interval2Chromatic(GetRuleParam(rule_set, 98, rsSubName, 1));
+	notes_lrange2 = GetRuleParam(rule_set, 198, rsSubName, 0);
+	min_lrange2 = Interval2Chromatic(GetRuleParam(rule_set, 198, rsSubName, 1));
+	notes_arange = GetRuleParam(rule_set, 15, rsSubName, 0);
+	min_arange = GetRuleParam(rule_set, 15, rsSubName, 1) / 10.0;
+	notes_arange2 = GetRuleParam(rule_set, 16, rsSubName, 0);
+	min_arange2 = GetRuleParam(rule_set, 16, rsSubName, 1) / 10.0;
+
 	dev_late2 = GetRuleParam(rule_set, 191, rsSubName, 0);
 	dev_late3 = GetRuleParam(rule_set, 192, rsSubName, 0);
 	early_culm = GetRuleParam(rule_set, 78, rsSubName, 0);
