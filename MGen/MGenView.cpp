@@ -424,7 +424,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			if (step1t > 0) step1t--;
 			if (step2t < pGen->t_generated-1) step2t++;
 			// Show note graph
-			if (mf->show_tempo) {
+			if (mf->show_curve) {
 				for (int n = 0; n < pGen->ngraph_size; ++n) {
 					for (int v = 0; v < pGen->v_cnt; v++) {
 						for (int i = step1t; i < step2t; i++) if (i > 0 && pGen->ngraph[i][v][n] && pGen->ngraph[i - 1][v][n]) {
