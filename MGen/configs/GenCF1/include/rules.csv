@@ -117,18 +117,18 @@ Set;Severity;Class;Group;Rule;Flag
 1;67;0;Melody;Range;Skipped notes;1;-1;;
 1;68;70;Melody;Range;Skipped notes;>1;1;;
 1;69;100;Melody;Range;Skipped notes;>1 joined;0;;
-1;38;0;Melody;Range;Out of range;voice <b5;0;;
+1;38;0;Melody;Range;Out of range;voice <m6;0;;
 1;37;70;Melody;Range;Out of range;voice >M9;0;;
 1;7;70;Melody;Range;Out of range;sum >M14;0;;
 1;11;70;Melody;Range;Out of range;int >8va;0;;Maximum burst interval is 12th during 3 notes
-1;98;0;Melody;Range;Constrained local range;6 notes <4th;0;;X consecutive notes have total range less than Y
-1;198;0;Melody;Range;Constrained local range;14 notes <m6;0;;X consecutive notes have total range less than Y
-1;15;0;Melody;Range;No melody direction;10 notes <25;0;;Melody direction within X notes is less than Y decihalfnotes
-1;16;0;Melody;Range;No melody direction;10 notes <25;0;;Melody direction within X notes is less than Y decihalfnotes
+1;98;0;Melody;Range;Constrained local range;6 notes <4th;-1;;X consecutive notes have total range less than Y
+1;198;0;Melody;Range;Constrained local range;13 notes <m6;0;;X consecutive notes have total range less than Y
+1;15;0;Melody;Range;No melody direction;10 notes <16;0;;Melody direction within X notes is less than Y decihalfnotes
+1;16;0;Melody;Range;No melody direction;13 notes <20;0;;Melody direction within X notes is less than Y decihalfnotes
 1;17;70;Cantus;Harmony;Repeating letters in a row;>3;0;;
 1;20;70;Cantus;Harmony;Missing letters in a row;>3;0;;
 1;194;70;Cantus;Harmony;Accented bad harmony;leap >4th;0;;
-1;195;100;Cantus;Harmony;Accented bad harmony;culmination;0;;
+1;195;70;Cantus;Harmony;Accented bad harmony;culmination;0;;
 1;48;30;Cantus;Harmony;Early cadence;G-C;0;;Tonic chord is prohibited in root position after Dominant chord in root position
 1;77;0;Cantus;Harmony;Harmonic penalty;1;1;;
 1;57;10;Cantus;Harmony;Harmonic penalty;2;1;;
