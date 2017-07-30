@@ -483,7 +483,7 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	int ls_max = fli_size - notes;
 	int ls_max2;
 	// Loop through windows
-	for (int ls = 0; ls < ls_max; ++ls) {
+	for (int ls = 0; ls <= ls_max; ++ls) {
 		lmin = MAX_NOTE;
 		lmax = 0;
 		ls_max2 = ls + notes;
@@ -499,7 +499,7 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	return 0;
 }
 
-int CGenCF1::FailLocalCcma(int notes, int mrange, int flag) {
+int CGenCF1::FailLocalCcma(int notes, float mrange, int flag) {
 	// Do not test if not enough notes. If melody is short, than global range check is enough
 	if (fli_size < notes) return 0;
 	float lmin, lmax;
@@ -507,7 +507,7 @@ int CGenCF1::FailLocalCcma(int notes, int mrange, int flag) {
 	int ls_max = fli_size - notes;
 	int ls_max2;
 	// Loop through windows
-	for (int ls = 0; ls < ls_max; ++ls) {
+	for (int ls = 0; ls <= ls_max; ++ls) {
 		lmin = MAX_NOTE;
 		lmax = 0;
 		ls_max2 = ls + notes;
