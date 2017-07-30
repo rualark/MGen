@@ -22,13 +22,16 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
 
-void CGenCP1::InitCP() {
+int CGenCP1::InitCP() {
 	// Set rule colors
 	for (int i = 0; i < MAX_SEVERITY; ++i) {
 		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
 	}
 	// Check that method is selected
-	if (method == mUndefined) WriteLog(1, "Error: method not specified in algorithm configuration file");
+	if (method == mUndefined) {
+		WriteLog(1, "Error: method not specified in algorithm configuration file");
+		error = 2;
+	}
 	ac.resize(av_cnt);
 	acc.resize(av_cnt);
 	acc_old.resize(av_cnt);
@@ -41,6 +44,7 @@ void CGenCP1::InitCP() {
 	anflagsc.resize(av_cnt);
 	// Check harmonic meaning loaded
 	LoadHarmVar();
+	return error;
 }
 
 void CGenCP1::MakeNewCP() {
@@ -234,6 +238,10 @@ void CGenCP1::ScanCPInit() {
 	max_cc.resize(c_len);
 	bli.resize(c_len);
 	fli.resize(c_len);
+	macc.resize(c_len);
+	macc2.resize(c_len);
+	decc.resize(c_len);
+	decc2.resize(c_len);
 	llen.resize(c_len);
 	beat.resize(c_len);
 	sus.resize(c_len);
@@ -1144,7 +1152,7 @@ check:
 
 void CGenCP1::Generate() {
 	CString st;
-	InitCP();
+	if (InitCP()) return;
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
 	// Choose cantus to use
@@ -1222,7 +1230,7 @@ void CGenCP1::Generate() {
 	}
 	// Generate second voice
 	rpenalty_cur = MAX_PENALTY;
-	SelectRuleSet(cp_rule_set);
+	if (SelectRuleSet(cp_rule_set)) return;
 	if (method == mSWA) {
 		RandomSWACP();
 	}

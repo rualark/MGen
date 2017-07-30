@@ -18,7 +18,7 @@ public:
 
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
-	void InitCP();
+	int InitCP();
 	void MakeNewCP();
 	void SingleCPInit();
 	void MultiCPInit();

@@ -307,13 +307,14 @@ void CGenCF1::SetRuleParams() {
 }
 
 // Select rules
-void CGenCF1::SelectRuleSet(int rs)
+int CGenCF1::SelectRuleSet(int rs)
 {
 	rule_set = rs;
 	if (!accepts[rule_set].size()) {
 		CString est;
 		est.Format("Cannot select rule set %d. It was not loaded from rules configuration file.", rule_set);
 		WriteLog(1, est);
+		error = 1;
 	}
 	else {
 		// Load rule set
@@ -331,6 +332,7 @@ void CGenCF1::SelectRuleSet(int rs)
 			if (accept[i] == 2) ++flags_need2;
 		}
 	}
+	return error;
 }
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
@@ -2617,16 +2619,20 @@ int CGenCF1::SendCantus() {
 	return 0;
 }
 
-void CGenCF1::InitCantus()
+int CGenCF1::InitCantus()
 {
 	// Set rule colors
 	for (int i = 0; i < MAX_SEVERITY; ++i) {
 		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
 	}
 	// Check that method is selected
-	if (method == mUndefined) WriteLog(1, "Error: method not specified in algorithm configuration file");
+	if (method == mUndefined) {
+		WriteLog(1, "Error: method not specified in algorithm configuration file");
+		error = 2;
+	}
 	// Check harmonic meaning loaded
 	LoadHarmVar();
+	return error;
 }
 
 void CGenCF1::TestDiatonic()
@@ -3014,7 +3020,8 @@ void CGenCF1::Generate()
 	// Voice
 	int v = 0;
 	//TestDiatonic();
-	InitCantus();
+	// If error, return;
+	if (InitCantus()) return;
 	CalcCcIncrement();
 	// Set uniform length of each cantus note
 	cc_len.resize(c_len);

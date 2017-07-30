@@ -96,7 +96,7 @@ protected:
 	int GetRuleParam(int rset, int rid, int type, int id);
 	void ParseRules();
 	void SetRuleParams();
-	void SelectRuleSet(int rs);
+	int SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
@@ -174,7 +174,7 @@ protected:
 	inline void TransposeVector(vector<float>& v, int t);
 	inline void MakeCcma(vector<int>& cc);
 	int SendCantus();
-	void InitCantus();
+	int InitCantus();
 	void TestDiatonic();
 	void RandomSWA();
 	void SWA(int i, int dp);
@@ -377,6 +377,7 @@ protected:
 	int culm_step; // Position of culmination after FailMultiCulm
 	int cf_culm = 0; // Position of cantus firmus culmination
 	int fn = 0; // First note of analyzed melody
+	int error = 0;
 
 	// FailLeap local variables
 	int leap_start; // Step where leap starts
