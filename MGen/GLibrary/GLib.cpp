@@ -175,8 +175,11 @@ void CGLib::Tokenize(const CString& s, vector<CString>& tokens, const CString de
 
 void CGLib::GetVint(const CString & st, vector<int>& res) {
 	CString st2;
+	int sign = 1;
 	for (int i = 0; i < st.GetLength(); ++i) {
 		if (isdigit(st[i])) {
+			// Check minor
+			if (st2 == "" && i > 0 && st[i - 1] == "m") sign = -1;
 			st2 += st[i];
 		}
 		else if (st2 != "") {
@@ -185,7 +188,7 @@ void CGLib::GetVint(const CString & st, vector<int>& res) {
 		}
 	}
 	if (st2 != "") {
-		res.push_back(atoi(st2));
+		res.push_back(sign*atoi(st2));
 	}
 }
 
