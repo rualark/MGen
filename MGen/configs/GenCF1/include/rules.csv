@@ -122,7 +122,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;7;70;Melody;Range;Out of range;sum >M14;0;;
 1;11;70;Melody;Range;Out of range;int >8va;0;;Maximum burst interval is 12th during 3 notes
 1;98;0;Melody;Range;Constrained local range;6 notes <4th;0;;X consecutive notes have total range less than Y
-1;198;0;Melody;Range;Constrained local range;15 notes <m6;0;;X consecutive notes have total range less than Y
+1;198;0;Melody;Range;Constrained local range;14 notes <m6;0;;X consecutive notes have total range less than Y
 1;15;0;Melody;Range;No melody direction;10 notes <25;0;;Melody direction within X notes is less than Y decihalfnotes
 1;16;0;Melody;Range;No melody direction;10 notes <25;0;;Melody direction within X notes is less than Y decihalfnotes
 1;17;70;Cantus;Harmony;Repeating letters in a row;>3;0;;
