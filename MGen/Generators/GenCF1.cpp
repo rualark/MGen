@@ -2371,7 +2371,9 @@ void CGenCF1::TransposeVector(vector<int> &v, int t) {
 void CGenCF1::MakeCcma(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2;
-	float ma, de;
+	// Deviation weight
+	static const float dew[] = { 1, 0.7, 0.5 };
+	float ma, de, dew_sum;
 	// Moving average
 	for (int ls = 0; ls < fli_size; ++ls) {
 		pos1 = max(0, ls - ma_range);
@@ -2393,10 +2395,12 @@ void CGenCF1::MakeCcma(vector<int> &cc) {
 		pos1 = max(0, ls - ma_range);
 		pos2 = min(fli_size - 1, ls + ma_range);
 		de = 0;
+		dew_sum = 0;
 		for (int x = pos1; x <= pos2; ++x) {
-			de += SQR(cc[fli[x]]-macc[x]);
+			de += dew[abs(x-ls)]*SQR(cc[fli[x]]-macc[x]);
+			dew_sum += dew[abs(x - ls)];
 		}
-		decc[ls] = SQRT(de / (pos2 - pos1 + 1));
+		decc[ls] = SQRT(de / dew_sum);
 	}
 	// Smooth
 	decc2[0] = (decc[0] + decc[1]) / 2;
