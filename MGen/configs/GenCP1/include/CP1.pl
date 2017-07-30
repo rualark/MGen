@@ -1,7 +1,7 @@
 include "../../GenCF1/include/CF1.pl"
 
 cf_rule_set = 1 # Specify which set of rules to use for cantus (see rules.xlsm)
-cp_rule_set = 2 # Specify which set of rules to use for counterpoint (see rules.xlsm)
+cp_rule_set = 1 # Specify which set of rules to use for counterpoint (see rules.xlsm)
 
 # Method parameters
 #method = window-scan # This method can be faster in some cases
@@ -22,7 +22,6 @@ random_key = 0 # Select any of possible keys regardless of last note
 # Main parameters
 notes_per_measure = 2 # Number of notes per measure (1 = species1, 2 = species2, 4 = species3, 8 = species5)
 start_pause = 1 # Length of starting pause at counterpoint voice start (length of pause is controlled by notes_per_measure)
-tonic_window = 15 # Number of steps to search for adjacent tonic chords
 rpenalty_accepted = 0 # Maximum accepted rule penalty for RandomSWA
 
 # Technical parameters

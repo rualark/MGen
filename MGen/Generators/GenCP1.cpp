@@ -905,8 +905,9 @@ void CGenCP1::SWACP(int i, int dp) {
 	// Log
 	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	CString est;
-	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): " + GetStuck(),
-		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start);
+	CString sst = GetStuck();
+	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s",
+		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, (time_stop - time_start).count(), sst);
 	WriteLog(3, est);
 }
 
