@@ -1049,6 +1049,9 @@ check:
 		if (FailFirstNotes(apc[cpv], ep2)) goto skip;
 		if (FailLeap(ac[cpv], ep2, aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
 		//if (FailMelodyHarm(apc[cpv], 0, ep2)) goto skip;
+		MakeCcma(acc[cpv]);
+		if (FailLocalCcma(notes_arange, min_arange, 15)) goto skip;
+		if (FailLocalCcma(notes_arange2, min_arange2, 16)) goto skip;
 
 		SaveBestRejected(acc[cpv]);
 		// If we are window-scanning

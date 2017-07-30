@@ -499,6 +499,30 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	return 0;
 }
 
+int CGenCF1::FailLocalCcma(int notes, int mrange, int flag) {
+	// Do not test if not enough notes. If melody is short, than global range check is enough
+	if (fli_size < notes) return 0;
+	float lmin, lmax;
+	int s;
+	int ls_max = fli_size - notes;
+	int ls_max2;
+	// Loop through windows
+	for (int ls = 0; ls < ls_max; ++ls) {
+		lmin = MAX_NOTE;
+		lmax = 0;
+		ls_max2 = ls + notes;
+		// Loop inside each window
+		for (int ls2 = ls; ls2 < ls_max2; ++ls2) {
+			s = fli[ls2];
+			if (macc2[s] < lmin) lmin = macc2[s];
+			if (macc2[s] > lmax) lmax = macc2[s];
+		}
+		// Check range
+		if (lmax - lmin < mrange) FLAG2(flag, fli[ls]);
+	}
+	return 0;
+}
+
 // Count limits
 void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2, int &nmin, int &nmax) {
 	// Calculate range
@@ -2858,6 +2882,8 @@ check:
 		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;
 		if ((ep2>3 || ep2 == c_len) && FailMelodyHarm(m_pc)) goto skip;
 		MakeCcma(m_cc);
+		if (FailLocalCcma(notes_arange, min_arange, 15)) goto skip;
+		if (FailLocalCcma(notes_arange2, min_arange2, 16)) goto skip;
 
 		SaveBestRejected(m_cc);
 		// If we are window-scanning
