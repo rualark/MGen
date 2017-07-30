@@ -1035,6 +1035,8 @@ check:
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailGlobalFill(ac[cpv], ep2, nstat2)) goto skip;
+		if (FailLocalRange(acc[cpv], notes_lrange, min_lrange, 98)) goto skip;
+		if (FailLocalRange(acc[cpv], notes_lrange2, min_lrange2, 198)) goto skip;
 		GetNoteTypes();
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;

@@ -476,17 +476,17 @@ int CGenCF1::FailNoteSeq(vector<int> &pc) {
 	return 0;
 }
 
-int CGenCF1::FailLocalRange(vector<int> &cc) {
+int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	// Do not test if not enough notes. If melody is short, than global range check is enough
-	if (fli_size < notes_lrange) return 0;
+	if (fli_size < notes) return 0;
 	int lmin, lmax, s;
-	int ls_max = fli_size - notes_lrange;
+	int ls_max = fli_size - notes;
 	int ls_max2;
 	// Loop through windows
 	for (int ls = 0; ls < ls_max; ++ls) {
 		lmin = MAX_NOTE;
 		lmax = 0;
-		ls_max2 = ls + notes_lrange;
+		ls_max2 = ls + notes;
 		// Loop inside each window
 		for (int ls2 = ls; ls2 < ls_max2; ++ls2) {
 			s = fli[ls2];
@@ -494,7 +494,7 @@ int CGenCF1::FailLocalRange(vector<int> &cc) {
 			if (cc[s] > lmax) lmax = cc[s];
 		}
 		// Check range
-		if (lmax - lmin < min_lrange) FLAG2(98, fli[ls]);
+		if (lmax - lmin < mrange) FLAG2(flag, fli[ls]);
 	}
 	return 0;
 }
@@ -2850,7 +2850,8 @@ check:
 		if (FailLongRepeat(m_cc, m_leap, ep2, repeat_steps5, repeat_notes5, 72)) goto skip;
 		if (FailLongRepeat(m_cc, m_leap, ep2, repeat_steps7, repeat_notes7, 73)) goto skip;
 		if (FailGlobalFill(m_c, ep2, nstat2)) goto skip;
-		if (FailLocalRange(m_cc)) goto skip;
+		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
+		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
 		if (FailStagnation(m_cc, nstat)) goto skip;
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
 		if (FailFirstNotes(m_pc, ep2)) goto skip;
