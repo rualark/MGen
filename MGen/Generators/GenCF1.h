@@ -170,7 +170,8 @@ protected:
 	void ShowFlagBlock();
 	void CalcDpenalty();
 	void SaveCantus();
-	void TransposeVector(vector<int>& v, int t);
+	inline void TransposeVector(vector<int>& v, int t);
+	inline void TransposeVector(vector<float>& v, int t);
 	inline void MakeCcma(vector<int>& cc);
 	int SendCantus();
 	void InitCantus();

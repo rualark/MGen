@@ -81,7 +81,7 @@
 #define ID_BUTTON_ALGO                  32792
 #define ID_COMBO_MIDIOUT                32793
 #define ID_COMBO_PARAMS                 32795
-#define ID_CHECK2                       32797
+#define ID_CHECK_CURVE                  32797
 #define ID_BUTTON_EPARAMS               32798
 #define ID_CHECK_OUTPUTWND              32799
 #define ID_BUTTON_ERULES                32800

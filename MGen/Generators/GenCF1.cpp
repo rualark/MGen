@@ -2417,6 +2417,12 @@ void CGenCF1::TransposeVector(vector<int> &v, int t) {
 	}
 }
 
+void CGenCF1::TransposeVector(vector<float> &v, int t) {
+	for (int i = 0; i < v.size(); ++i) {
+		v[i] += t;
+	}
+}
+
 void CGenCF1::MakeCcma(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2;
@@ -2469,12 +2475,15 @@ int CGenCF1::SendCantus() {
 	Sleep(sleep_ms);
 	// Transpose cantus
 	if (transpose_back && first_note) {
+		int trans = 0;
 		if (nmin > first_note0) {
-			TransposeVector(m_cc, -floor((nmin - first_note0) / 12 + 1) * 12);
+			trans = -floor((nmin - first_note0) / 12 + 1) * 12;
 		}
 		if (nmax < first_note0) {
-			TransposeVector(m_cc, floor((first_note0 - nmax) / 12 + 1) * 12);
+			trans = floor((first_note0 - nmax) / 12 + 1) * 12;
 		}
+		TransposeVector(m_cc, trans);
+		TransposeVector(macc2, trans);
 	}
 	// Copy cantus to output
 	int pos = step;
