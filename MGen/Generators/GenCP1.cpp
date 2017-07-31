@@ -285,6 +285,7 @@ int CGenCP1::SendCP() {
 	int real_len2 = real_len*npm;
 	Sleep(sleep_ms);
 	for (int av = 0; av < av_cnt; ++av) {
+		MakeMacc(acc[av]);
 		pos = step;
 		if (cpv) {
 			v = svoice + av;
@@ -309,13 +310,13 @@ int CGenCP1::SendCP() {
 				if (av == cpv) {
 					// Set color
 					color[pos + i][v] = Color(0, 100, 100, 100);
-					// Show ngraph
-					ngraph[pos + i][v][0] = macc2[x] - decc2[x];
-					ngraph[pos + i][v][1] = macc2[x];
-					ngraph[pos + i][v][2] = macc2[x] + decc2[x];
 				}
 				// Do not display first paused note
 				note[pos + i][v] = acc[av][x];
+				// Show ngraph
+				ngraph[pos + i][v][0] = macc2[x] - decc2[x];
+				ngraph[pos + i][v][1] = macc2[x];
+				ngraph[pos + i][v][2] = macc2[x] + decc2[x];
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
 				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
