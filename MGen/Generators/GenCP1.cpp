@@ -309,6 +309,10 @@ int CGenCP1::SendCP() {
 				if (av == cpv) {
 					// Set color
 					color[pos + i][v] = Color(0, 100, 100, 100);
+					// Show ngraph
+					ngraph[pos + i][v][0] = macc2[x] - decc2[x];
+					ngraph[pos + i][v][1] = macc2[x];
+					ngraph[pos + i][v][2] = macc2[x] + decc2[x];
 				}
 				// Do not display first paused note
 				note[pos + i][v] = acc[av][x];
