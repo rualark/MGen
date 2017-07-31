@@ -470,8 +470,8 @@ int CGenCF1::FailNoteRepeat(vector<int> &cc, int step1, int step2) {
 // Detect prohibited note sequences
 int CGenCF1::FailNoteSeq(vector<int> &pc) {
 	for (int x = 0; x < fli_size-2; ++x) {
-		s = fli[x];
-		s1 = fli[x + 1];
+		s = fli2[x];
+		s1 = fli2[x + 1];
 		// Prohibit GC before cadence
 		//if (pc[s] == 4 && pc[s1] == 0) FLAG2(48, s);
 	}
@@ -491,12 +491,12 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 		ls_max2 = ls + notes;
 		// Loop inside each window
 		for (int ls2 = ls; ls2 < ls_max2; ++ls2) {
-			s = fli[ls2];
+			s = fli2[ls2];
 			if (cc[s] < lmin) lmin = cc[s];
 			if (cc[s] > lmax) lmax = cc[s];
 		}
 		// Check range
-		if (lmax - lmin < mrange) FLAG2(flag, fli[ls]);
+		if (lmax - lmin < mrange) FLAG2(flag, fli2[ls]);
 	}
 	return 0;
 }
@@ -515,12 +515,12 @@ int CGenCF1::FailLocalCcma(int notes, float mrange, int flag) {
 		ls_max2 = ls + notes;
 		// Loop inside each window
 		for (int ls2 = ls; ls2 < ls_max2; ++ls2) {
-			s = fli[ls2];
+			s = fli2[ls2];
 			if (macc2[s] < lmin) lmin = macc2[s];
 			if (macc2[s] > lmax) lmax = macc2[s];
 		}
 		// Check range
-		if (lmax - lmin < mrange) FLAG2(flag, fli[ls]);
+		if (lmax - lmin < mrange) FLAG2(flag, fli2[ls]);
 	}
 	return 0;
 }
@@ -573,7 +573,7 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &la
 int CGenCF1::FailGisTrail(vector<int> &pcc) {
 	int gis_trail = 0;
 	for (int ls = 0; ls < fli_size; ++ls) {
-		s = fli[ls];
+		s = fli2[ls];
 		if (pcc[s] == 11) {
 			// Set to maximum on new G# note
 			gis_trail = gis_trail_max;
@@ -603,7 +603,7 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 		if (i > 0) {
 			// Check GC
 			if (!cantus_high && chm[i] == 0 && chm[i - 1] == 4) {
-				if (m_pc[fli[i]] == 0 && m_pc[fli[i - 1]] == 4) FLAG3(48, i);
+				if (m_pc[fli2[i]] == 0 && m_pc[fli2[i - 1]] == 4) FLAG3(48, i);
 			}
 			// Check harmonic penalty	
 			pen1 = hsp[chm[i - 1]][chm[i]];
@@ -612,7 +612,7 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 			if (pen1 == 2) {
 				FLAG3(57, i);
 				if (culm_step == i) FLAG3(195, i);
-				if (abs(m_cc[fli[i]]-m_cc[fli[i-1]]) > hsp_leap) FLAG3(194, i);
+				if (abs(m_cc[fli2[i]]-m_cc[fli2[i-1]]) > hsp_leap) FLAG3(194, i);
 				++p2c;
 				if (p2c == 2) FLAG3(92, i + 1)
 				else if (p2c == 3) FLAG3(23, i + 1);
@@ -635,7 +635,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	int first_tonic = 0;
 	// Build hm vector
 	for (int ls = 0; ls < fli_size; ++ls) {
-		s = fli[ls];
+		s = fli2[ls];
 		hm[ls].clear();
 		for (int x = 0; x < hv[pc[s]].size(); ++x) {
 			h = hv[pc[s]][x];
@@ -784,15 +784,15 @@ int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2,
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
 	int ok, f, f1;
 	if (fli_size > rlen*2) for (int ls = 0; ls < fli_size - rlen * 2; ++ls) {
-		s = fli[ls];
-		s1 = fli[ls + 1];
+		s = fli2[ls];
+		s1 = fli2[ls + 1];
 		if (MELODY_SEPARATION(s, s1)) {
 			// Search for repeat of note at same beat until last three notes
 			int finish = ls + scan_len;
 			if (finish > fli_size - rlen) finish = fli_size - rlen;
 			for (int x = ls + 2; x <= finish; ++x) {
-				f = fli[x];
-				f1 = fli[x + 1];
+				f = fli2[x];
+				f1 = fli2[x + 1];
 				// Check rhythm
 				if ((f - s) % 2) continue;
 				if (MELODY_SEPARATION(f, f1)) {
@@ -801,7 +801,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 						// Check that more notes repeat
 						ok = 0;
 						for (int z = 1; z < rlen; ++z) {
-							if (cc[fli[x + z]] != cc[fli[ls + z]] || llen[x+z] != llen[ls+z]) {
+							if (cc[fli2[x + z]] != cc[fli2[ls + z]] || llen[x+z] != llen[ls+z]) {
 								ok = 1;
 								break;
 							}
@@ -821,19 +821,19 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int sca
 	int ok;
 	int f, f1;
 	if (fli_size > rlen + 1) for (int ls = 0; ls < fli_size - rlen - 1; ++ls) {
-		s = fli[ls];
-		s1 = fli[ls + 1];
+		s = fli2[ls];
+		s1 = fli2[ls + 1];
 		int finish = ls + scan_len;
 		if (finish > fli_size - rlen) finish = fli_size - rlen;
 		for (int x = ls + rlen; x <= finish; ++x) {
-			f = fli[x];
-			f1 = fli[x + 1];
+			f = fli2[x];
+			f1 = fli2[x + 1];
 			// Check if same note
 			if (cc[f] == cc[s]) {
 				// Check that more notes repeat
 				ok = 0;
 				for (int z = 1; z < rlen; ++z) {
-					if (cc[fli[x + z]] != cc[fli[ls + z]]) {
+					if (cc[fli2[x + z]] != cc[fli2[ls + z]]) {
 						ok = 1;
 						break;
 					}
@@ -874,7 +874,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 	smooth[ep2 - 1] = 0;
 	slur[0] = 0;
 	for (ls = 0; ls < fli_size - 1; ++ls) {
-		s = fli[ls];
+		s = fli2[ls];
 		// Add new leap
 		if (leap[s] != 0) {
 			++leap_sum;
@@ -884,7 +884,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 			leap_sum2 = 0;
 		}
 		// Subtract old leap
-		if ((ls >= max_leap_steps) && (leap[fli[ls - max_leap_steps]] != 0)) leap_sum--;
+		if ((ls >= max_leap_steps) && (leap[fli2[ls - max_leap_steps]] != 0)) leap_sum--;
 		// Get maximum leap_sum
 		if (leap_sum > max_leap_sum) {
 			max_leap_sum = leap_sum;
@@ -911,13 +911,13 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 		else if (leap[s]) smooth_sum = 0;
 		if (ls < fli_size - 2) {
 			// Prohibit long smooth movement in one direction
-			if (smooth[s] == smooth[fli[ls+1]]) {
+			if (smooth[s] == smooth[fli2[ls+1]]) {
 				++smooth_sum2;
 				if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, s);
 			}
 			else if (smooth[s] || leap[s]) smooth_sum2 = 0;
 			// Check if two notes repeat
-			if ((ls > 0) && (cc[s] == cc[fli[ls+2]]) && (cc[fli[ls - 1]] == cc[fli[ls+1]])) FLAG2(9, fli[ls-1]);
+			if ((ls > 0) && (cc[s] == cc[fli2[ls+2]]) && (cc[fli2[ls - 1]] == cc[fli2[ls+1]])) FLAG2(9, fli2[ls-1]);
 		}
 	}
 	if (max_leap_sum == max_leaps) {
@@ -955,36 +955,36 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		// Find multiple culminations at highest allowed note
 		if (nmax == max_cc[0] || nmax - nmin == max_interval) {
 			for (int ls = 0; ls < fli_size; ++ls) {
-				if (cc[fli[ls]] == nmax) {
+				if (cc[fli2[ls]] == nmax) {
 					++culm_sum;
 					culm_step = ls;
-					if (culm_sum > 1) FLAG2(12, fli[culm_step]);
+					if (culm_sum > 1) FLAG2(12, fli2[culm_step]);
 				}
 			}
 			// Prohibit culminations at first steps on highest notes
-			if (cc[fli[culm_step]] == nmax) {
-				if (culm_step < (early_culm3*c_len) / 100) FLAG2(193, fli[culm_step]);
-				if (culm_step < early_culm - 1) FLAG2(78, fli[culm_step])
-				else if (culm_step < early_culm2 - 1) FLAG2(79, fli[culm_step]);
+			if (cc[fli2[culm_step]] == nmax) {
+				if (culm_step < (early_culm3*c_len) / 100) FLAG2(193, fli2[culm_step]);
+				if (culm_step < early_culm - 1) FLAG2(78, fli2[culm_step])
+				else if (culm_step < early_culm2 - 1) FLAG2(79, fli2[culm_step]);
 			}
 		}
 	}
 	else {
 		for (int ls = 0; ls < fli_size; ++ls) {
-			if (cc[fli[ls]] == nmax) {
+			if (cc[fli2[ls]] == nmax) {
 				++culm_sum;
 				culm_step = ls;
-				if (culm_sum > 1) FLAG2(12, fli[culm_step]);
+				if (culm_sum > 1) FLAG2(12, fli2[culm_step]);
 			}
 		}
 		// Prohibit culminations at first steps
-		if (culm_step < (early_culm3*c_len)/100) FLAG2(193, fli[culm_step]);
-		if (culm_step < early_culm - 1) FLAG2(78, fli[culm_step])
-		else if (culm_step < early_culm2 - 1) FLAG2(79, fli[culm_step]);
+		if (culm_step < (early_culm3*c_len)/100) FLAG2(193, fli2[culm_step]);
+		if (culm_step < early_culm - 1) FLAG2(78, fli2[culm_step])
+		else if (culm_step < early_culm2 - 1) FLAG2(79, fli2[culm_step]);
 		// Prohibit culminations at last steps
-		if (culm_step >= fli_size - late_culm) FLAG2(21, fli[culm_step]);
+		if (culm_step >= fli_size - late_culm) FLAG2(21, fli2[culm_step]);
 		// Prohibit synchronized culminationsnati
-		if (av_cnt > 1 && culm_step == cf_culm) FLAG2(26, fli[culm_step]);
+		if (av_cnt > 1 && culm_step == cf_culm) FLAG2(26, fli2[culm_step]);
 	}
 	return 0;
 }
@@ -1004,9 +1004,9 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 		int e_pos = -1;
 		for (int i = 0; i < fst; ++i) {
 			// Detect C note
-			if (pc[fli[i]] == 0) c_pos = i;
+			if (pc[fli2[i]] == 0) c_pos = i;
 			// Detect E note
-			if (pc[fli[i]] == 2) e_pos = i;
+			if (pc[fli2[i]] == 2) e_pos = i;
 		}
 		int ok = 0;
 		// No C ?
@@ -1014,7 +1014,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 		else {
 			// If C found, check previous note
 			if (c_pos > 0) {
-				if (pc[fli[c_pos - 1]] != 6 || pc[fli[c_pos - 1]] != 1 || pc[fli[c_pos - 1]] == 4) ok = 1;
+				if (pc[fli2[c_pos - 1]] != 6 || pc[fli2[c_pos - 1]] != 1 || pc[fli2[c_pos - 1]] == 4) ok = 1;
 			}
 			// If C is first note, it does not need to be prepared (actually, this cannot happen because of flag 49)
 			else ok = 1;
@@ -1024,7 +1024,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
 		else {
 			// If E found, check previous note
 			if (e_pos > 0) {
-				if (pc[fli[e_pos - 1]] == 1 || pc[fli[e_pos - 1]] == 4) ok = 1;
+				if (pc[fli2[e_pos - 1]] == 1 || pc[fli2[e_pos - 1]] == 4) ok = 1;
 			}
 			// If E is first note, it does not need to be prepared
 			else ok = 1;
@@ -1068,9 +1068,10 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 				l = 0;
 			}
 			prev_note = cc[i];
+			fli[lpos] = i;
 			++lpos;
 		}
-		fli[lpos - 1] = i;
+		fli2[lpos - 1] = i;
 		bli[i] = lpos-1;
 		l++;
 	}
@@ -1087,14 +1088,14 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 		int pos2 = max(fleap_start - tail_len, 0);
 		if (c[leap_end] > c[leap_start]) {
 			for (int i = pos1; i >= pos2; --i) {
-				tc.push_back(128 - c[fli[i]]);
+				tc.push_back(128 - c[fli2[i]]);
 			}
 			t1 = 128 - c[leap_end];
 			t2 = 128 - c[leap_start];
 		}
 		else {
 			for (int i = pos1; i >= pos2; --i) {
-				tc.push_back(c[fli[i]]);
+				tc.push_back(c[fli2[i]]);
 			}
 			t1 = c[leap_end];
 			t2 = c[leap_start];
@@ -1105,14 +1106,14 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 		int pos2 = min(fleap_end + tail_len, fli_size - 1);
 		if (c[leap_end] > c[leap_start]) {
 			for (int i = pos1; i <= pos2; ++i) {
-				tc.push_back(c[fli[i]]);
+				tc.push_back(c[fli2[i]]);
 			}
 			t1 = c[leap_start];
 			t2 = c[leap_end];
 		}
 		else {
 			for (int i = pos1; i <= pos2; ++i) {
-				tc.push_back(128 - c[fli[i]]);
+				tc.push_back(128 - c[fli2[i]]);
 			}
 			t1 = 128 - c[leap_start];
 			t2 = 128 - c[leap_end];
@@ -1213,14 +1214,14 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 		nstat4.resize(2, 0);
 		if (c[leap_start] < c[leap_end]) {
 			for (int x = pos; x < fleap_start; ++x) {
-				if (c[fli[x]] == c[leap_start] + 1) nstat4[0] = 1;
-				else if (c[fli[x]] == c[leap_start] + 2) nstat4[1] = 1;
+				if (c[fli2[x]] == c[leap_start] + 1) nstat4[0] = 1;
+				else if (c[fli2[x]] == c[leap_start] + 2) nstat4[1] = 1;
 			}
 		}
 		else {
 			for (int x = pos; x < fleap_start; ++x) {
-				if (c[fli[x]] == c[leap_start] - 1) nstat4[0] = 1;
-				else if (c[fli[x]] == c[leap_start] - 2) nstat4[1] = 1;
+				if (c[fli2[x]] == c[leap_start] - 1) nstat4[0] = 1;
+				else if (c[fli2[x]] == c[leap_start] - 2) nstat4[1] = 1;
 			}
 		}
 		if (fill_to == 2) {
@@ -1237,14 +1238,14 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 		nstat4.resize(2, 0);
 		if (c[leap_start] < c[leap_end]) {
 			for (int x = pos; x < fleap_start; ++x) {
-				if (c[fli[x]] == c[leap_end] - 1) nstat4[0] = 1;
-				else if (c[fli[x]] == c[leap_end] - 2) nstat4[1] = 1;
+				if (c[fli2[x]] == c[leap_end] - 1) nstat4[0] = 1;
+				else if (c[fli2[x]] == c[leap_end] - 2) nstat4[1] = 1;
 			}
 		}
 		else {
 			for (int x = pos; x < fleap_start; ++x) {
-				if (c[fli[x]] == c[leap_end] + 1) nstat4[0] = 1;
-				else if (c[fli[x]] == c[leap_end] + 2) nstat4[1] = 1;
+				if (c[fli2[x]] == c[leap_end] + 1) nstat4[0] = 1;
+				else if (c[fli2[x]] == c[leap_end] + 2) nstat4[1] = 1;
 			}
 		}
 		if (fill_from == 2) {
@@ -1264,7 +1265,7 @@ void CGenCF1::FailLeapInit(vector<int> &c, int &late_leap, int &presecond, int &
 	arpeg = 0; // Arpeggio 3+3
 	// Check if this leap is 3rd
 	leap_start = s; // First step of leap
-	leap_end = fli[ls + 1]; // Last step of leap
+	leap_end = fli2[ls + 1]; // Last step of leap
 	leap_mid = 0;
 	fleap_start = ls;
 	fleap_end = ls + 1;
@@ -1273,7 +1274,7 @@ void CGenCF1::FailLeapInit(vector<int> &c, int &late_leap, int &presecond, int &
 										// Next is leap?
 	if (fleap_end < fli_size - 1) leap_next = leap[leap_start] * leap[leap_end];
 	// Prev is leap?
-	if (fleap_start > 0) leap_prev = leap[leap_start] * leap[fli[fleap_start] - 1];
+	if (fleap_start > 0) leap_prev = leap[leap_start] * leap[fli2[fleap_start] - 1];
 	// Last leap border
 	int last_max = fli_size - 5;
 	// Last leap?
@@ -1285,17 +1286,17 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 	// Check if leap is third
 	if (leap_size == 2) {
 		// Check if leap is second third
-		if (fleap_start > 0 && abs(c[leap_end] - c[fli[fleap_start-1]]) == 4) {
+		if (fleap_start > 0 && abs(c[leap_end] - c[fli2[fleap_start-1]]) == 4) {
 			// Set middle leap note
 			leap_mid = leap_start;
 			// Set leap start to first note of first third
 			--fleap_start;
-			leap_start = fli[fleap_start];
+			leap_start = fli2[fleap_start];
 			// Set leap size to be compound
 			leap_size = 4;
 			// If 6/8 goes before 2 thirds (tight)
-			if ((fleap_start > 0) && ((leap[leap_start] * (c[leap_start] - c[fli[fleap_start-1]]) == -5) || 
-				(leap[leap_start] * (c[leap_start] - c[fli[fleap_start - 1]]) == -7))) FLAG2(28, leap_start)
+			if ((fleap_start > 0) && ((leap[leap_start] * (c[leap_start] - c[fli2[fleap_start-1]]) == -5) || 
+				(leap[leap_start] * (c[leap_start] - c[fli2[fleap_start - 1]]) == -7))) FLAG2(28, leap_start)
 				// Else mark simple 2x3rds
 			else FLAG2(6, leap_start);
 		}
@@ -1305,13 +1306,13 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 		// Next leap in same direction
 		if (leap_next > 0) {
 			// Flag if greater than two thirds
-			if (abs(c[fli[fleap_end+1]] - c[leap_start]) > 4) FLAG2(27, leap_end)
+			if (abs(c[fli2[fleap_end+1]] - c[leap_start]) > 4) FLAG2(27, leap_end)
 				// Allow if both thirds, without flags (will process next cycle)
 			else arpeg=1;
 		}
 		// Next leap back
 		else if (leap_next < 0) {
-			int leap_size2 = abs(c[fli[fleap_end + 1]] - c[leap_end]);
+			int leap_size2 = abs(c[fli2[fleap_end + 1]] - c[leap_end]);
 			// Flag if back leap greater than 6th
 			if (leap_size2 > 5) FLAG2(22, leap_end)
 				// Flag if back leap equal or smaller than 6th
@@ -1324,8 +1325,8 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 		}
 	}
 	// Check if we have a greater neighbouring leap
-	if ((fleap_end < fli_size - 1 && abs(c[fli[fleap_end + 1]] - c[leap_end]) > leap_size && leap[leap_start] * leap[leap_end]<0) ||
-		(fleap_start > 0 && abs(c[leap_start] - c[fli[fleap_start - 1]]) > leap_size && leap[leap_start] * leap[fli[fleap_start - 1]]<0)) {
+	if ((fleap_end < fli_size - 1 && abs(c[fli2[fleap_end + 1]] - c[leap_end]) > leap_size && leap[leap_start] * leap[leap_end]<0) ||
+		(fleap_start > 0 && abs(c[leap_start] - c[fli2[fleap_start - 1]]) > leap_size && leap[leap_start] * leap[fli2[fleap_start - 1]]<0)) {
 		// Set that we are preleaped (even if we are postleaped)
 		child_leap = 1;
 	}
@@ -1515,14 +1516,14 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 	if (fli_size < 3) return 0;
 	// Loop from second to second to last note
 	for (int ls = 1; ls < fli_size-1; ++ls) {
-		s = fli[ls];
+		s = fli2[ls];
 		// Decrement for previous tonic note
 		if (ls > tonic_window) {
-			if (!pc[fli[ls - tonic_window]]) --tcount;
+			if (!pc[fli2[ls - tonic_window]]) --tcount;
 		}
 		if (!pc[s]) {
 			// Check leap to tonic note (first and last notes are not checked)
-			if (abs(cc[s] - cc[fli[ls - 1]]) > tonic_leap) {
+			if (abs(cc[s] - cc[fli2[ls - 1]]) > tonic_leap) {
 				FLAG2(197, s);
 			}
 			// Increment for current tonic note
@@ -1537,11 +1538,11 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
 	for (ls = 0; ls < fli_size - 1; ++ls) {
-		s = fli[ls];
-		s1 = fli[ls + 1];
-		if (ls > 0) s_1 = fli[ls - 1];
-		if (ls > 1) s_2 = fli[ls - 2];
-		if (ls < fli_size - 2) s2 = fli[ls + 2];
+		s = fli2[ls];
+		s1 = fli2[ls + 1];
+		if (ls > 0) s_1 = fli2[ls - 1];
+		if (ls > 1) s_2 = fli2[ls - 2];
+		if (ls < fli_size - 2) s2 = fli2[ls + 2];
 		// Warning: tritone F#C in minor is not detected (can add FailTritone to detect) because it is already prohibited by Unaltered near altered.
 		// If you allow Unaltered near altered, you should implement FailTritone for F#C.
 		if (FailTritone(4, 5, 11, 0, c, cc, pc, pcc)) return 1;
@@ -1603,6 +1604,7 @@ void CGenCF1::ScanCantusInit() {
 	m_c.resize(c_len); // cantus (diatonic)
 	m_cc.resize(c_len); // cantus (chromatic)
 	fli.resize(c_len);
+	fli2.resize(c_len);
 	macc.resize(c_len);
 	macc2.resize(c_len);
 	decc.resize(c_len);
@@ -2154,8 +2156,8 @@ void CGenCF1::SaveBestRejected(vector<int> &cc) {
 
 int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 	for (int x = 1; x < fli_size; ++x) {
-		s = fli[x];
-		s_1 = fli[x - 1];
+		s = fli2[x];
+		s_1 = fli2[x - 1];
 		// Prohibit leap to VI#
 		if (pcc[s] == 9 && abs(cc[s] - cc[s_1]) > fis_leap) FLAG2(201, s);
 		// Prohibit major second up before I (in last steps and other places)
@@ -2168,18 +2170,18 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 			if (pcc[s_1] == 8) FLAG2(154, s_1);
 			if (pcc[s_1] == 3) FLAG2(157, s_1);
 			if (x > 1) {
-				s_2 = fli[x - 2];
+				s_2 = fli2[x - 2];
 				if (pcc[s_2] == 10) FLAG2(159, s_2);
 				if (pcc[s_2] == 8) FLAG2(160, s_2);
 				if (pcc[s_2] == 3) FLAG2(163, s_2);
 			}
 			if (x < fli_size - 1) {
-				s1 = fli[x+1];
+				s1 = fli2[x+1];
 				if (pcc[s1] == 10) FLAG2(153, s1);
 				if (pcc[s1] == 8) FLAG2(154, s1);
 				if (pcc[s1] == 3) FLAG2(156, s1);
 				if (x < fli_size - 2) {
-					s2 = fli[x+2];
+					s2 = fli2[x+2];
 					if (pcc[s2] == 10) FLAG2(159, s2);
 					if (pcc[s2] == 8) FLAG2(160, s2);
 					if (pcc[s2] == 3) FLAG2(162, s2);
@@ -2190,16 +2192,16 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 			if (pcc[s_1] == 8) FLAG2(152, s_1);
 			if (pcc[s_1] == 3) FLAG2(155, s_1);
 			if (x > 1) {
-				s_2 = fli[x - 2];
+				s_2 = fli2[x - 2];
 				if (pcc[s_2] == 8) FLAG2(158, s_2);
 				if (pcc[s_2] == 3) FLAG2(161, s_2);
 			}
 			if (x < fli_size - 1) {
-				s1 = fli[x + 1];
+				s1 = fli2[x + 1];
 				if (pcc[s1] == 8) FLAG2(152, s1);
 				if (pcc[s1] == 3) FLAG2(155, s1);
 				if (x < fli_size - 2) {
-					s2 = fli[x + 2];
+					s2 = fli2[x + 2];
 					if (pcc[s2] == 8) FLAG2(158, s2);
 					if (pcc[s2] == 3) FLAG2(161, s2);
 				}
@@ -2437,7 +2439,7 @@ void CGenCF1::MakeCcma(vector<int> &cc) {
 		pos2 = min(fli_size - 1, ls + ma_range);
 		ma = 0;
 		for (int x = pos1; x <= pos2; ++x) {
-			ma += cc[fli[x]];
+			ma += cc[fli2[x]];
 		}
 		macc[ls] = ma / (pos2 - pos1 + 1);
 	}
@@ -2454,7 +2456,7 @@ void CGenCF1::MakeCcma(vector<int> &cc) {
 		de = 0;
 		dew_sum = 0;
 		for (int x = pos1; x <= pos2; ++x) {
-			de += dew[abs(x-ls)]*SQR(cc[fli[x]]-macc[x]);
+			de += dew[abs(x-ls)]*SQR(cc[fli2[x]]-macc[x]);
 			dew_sum += dew[abs(x - ls)];
 		}
 		decc[ls] = SQRT(de / dew_sum);

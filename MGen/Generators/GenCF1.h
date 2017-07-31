@@ -275,10 +275,11 @@ protected:
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <vector <int>> hv; //  Variants of note harmonic meaning
 	vector <vector <int>> hsp; // Harmonic sequence penalty
-	vector <int> fli; // Forward links to each non-slurred note
+	vector <int> fli; // Forward links to start of each non-slurred note
+	vector <int> fli2; // Forward links to end of each non-slurred note
 	vector <int> llen; // Length of each linked note
-	vector <int> bli; // Back links from each step to fli
-	int fli_size; // Size of filled fli vector
+	vector <int> bli; // Back links from each step to fli2
+	int fli_size; // Size of filled fli2 vector
 	// Random SWA
 	//int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases
@@ -383,8 +384,8 @@ protected:
 	int leap_start; // Step where leap starts
 	int leap_end; // Step where leap ends
 	int leap_mid; // Middle step of leap in case when leap is created by two consecutive 3rds
-	int fleap_start; // Fli position where leap starts
-	int fleap_end; // Fli position where leap ends
+	int fleap_start; // fli2 position where leap starts
+	int fleap_end; // fli2 position where leap ends
 	int leap_size; // Diatonic size of leap
 	int leap_id; // Id of leap size
 	int filled, prefilled; // If leap is filled and prefilled
@@ -392,7 +393,7 @@ protected:
 	vector <int> tc; // Tail diatonic notes
 
 	// Local link steps
-	int ls; // Link step inside fli
+	int ls; // Link step inside fli2
 	int s; // Current step
 	int s1, s2; // +1, +2 steps
 	int s_1, s_2; // -1, -2 steps

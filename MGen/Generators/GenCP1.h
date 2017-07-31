@@ -64,7 +64,7 @@ protected:
 	vector<int> civlc; // Chromatic interval between voices (class)
 	vector<int> tivl; // Type of interval between voices
 	vector<int> motion; // Melody motion type
-	vector<int> beat; // Beat type for each fli
+	vector<int> beat; // Beat type for each fli2
 	vector<int> sus; // Note suspension
 	vector<int> mli; // Forward links to first notes of each measure
 

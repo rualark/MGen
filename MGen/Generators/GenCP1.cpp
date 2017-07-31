@@ -237,6 +237,7 @@ void CGenCP1::ScanCPInit() {
 	min_cc.resize(c_len);
 	max_cc.resize(c_len);
 	bli.resize(c_len);
+	fli2.resize(c_len);
 	fli.resize(c_len);
 	macc.resize(c_len);
 	macc2.resize(c_len);
@@ -491,8 +492,8 @@ int CGenCP1::FailCrossInt2(int i, int i_1, int c1, int c2, int flag) {
 int CGenCP1::FailCrossInt() {
 	int i, i_1;
 	for (int x = 1; x < fli_size; ++x) {
-		i = fli[x];
-		i_1 = fli[x - 1];
+		i = fli2[x];
+		i_1 = fli2[x - 1];
 		if (FailCrossInt2(i, i_1, 9, 8, 164)) return 1;
 		if (FailCrossInt2(i, i_1, 11, 10, 165)) return 1;
 		if (FailCrossInt2(i, i_1, 11, 8, 166)) return 1;
@@ -555,12 +556,12 @@ int CGenCP1::FailVIntervals() {
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
 	for (int ls = 1; ls < fli_size; ++ls) {
-		s = fli[ls - 1] + 1;
-		s2 = fli[ls];
+		s = fli2[ls - 1] + 1;
+		s2 = fli2[ls];
 		// Unison
-		if (!civl[fli[ls-1]]) {
+		if (!civl[fli2[ls-1]]) {
 			// Inside
-			if (ls>1) FLAG2(91, fli[ls-1]);
+			if (ls>1) FLAG2(91, fli2[ls-1]);
 		}
 		// Discord
 		if (tivl[s] == iDis) {
@@ -569,30 +570,30 @@ int CGenCP1::FailVIntervals() {
 			// Upbeat
 			else {
 				// Check if movement to discord is smooth
-				if (asmooth[cpv][fli[ls-1]]) FLAG2(169, s)
+				if (asmooth[cpv][fli2[ls-1]]) FLAG2(169, s)
 				// If movement to discord is leaping
 				else FLAG2(187, s);
 			}
 		}
 		else {
 			// Check if previous interval is discord
-			if (tivl[fli[ls - 1]] == iDis) {
+			if (tivl[fli2[ls - 1]] == iDis) {
 				// Check if movement from discord is not smooth
-				if (!asmooth[cpv][fli[ls - 1]]) FLAG2(88, fli[ls-1]);
+				if (!asmooth[cpv][fli2[ls - 1]]) FLAG2(88, fli2[ls-1]);
 			}
 		}
 		// Perfect consonance
 		if (tivl[s] == iPco) {
 			// Prohibit parallel 
-			if (civl[s] == civl[fli[ls - 1]]) FLAG2(84, s)
+			if (civl[s] == civl[fli2[ls - 1]]) FLAG2(84, s)
 			// Prohibit combinatory
-			else if (civlc[s] == civlc[fli[ls - 1]]) FLAG2(85, s)
+			else if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
 			// Prohibit different
-			else if (tivl[fli[ls-1]] == iPco) FLAG2(86, s)
+			else if (tivl[fli2[ls-1]] == iPco) FLAG2(86, s)
 			// All other cases if previous interval is not pco
 			else {
 				// Direct movement to pco
-				if (motion[fli[ls - 1]] == mDirect) {
+				if (motion[fli2[ls - 1]] == mDirect) {
 					// Last movement with stepwize
 					if (s2 == c_len-1 && (abs(acc[cpv][s]-acc[cpv][s-1]) < 3 || abs(acc[cfv][s]-acc[cfv][s-1]) < 3))
 						FLAG2(33, s)
@@ -615,7 +616,7 @@ int CGenCP1::FailVIntervals() {
 			}
 		}
 		// Long parallel ico
-		if (tivl[s] == iIco && ivl[s] == ivl[fli[ls - 1]]) {
+		if (tivl[s] == iIco && ivl[s] == ivl[fli2[ls - 1]]) {
 			++pico_count;
 			// Two same ico transitions means three intervals already
 			if (pico_count == ico_chain-1) {
@@ -708,7 +709,7 @@ int CGenCP1::FailCPInterval() {
 	int bsteps = 0;
 	int step = 0;
 	for (int i = 0; i < fli_size; ++i) {
-		step = fli[i];
+		step = fli2[i];
 		// Check between
 		if (acc[1][step] - acc[0][step] > max_between) {
 			++bsteps;
@@ -937,7 +938,7 @@ void CGenCP1::GetNoteTypes() {
 	int s = 0;
 	int l;
 	for (ls = 0; ls < fli_size; ++ls) {
-		if (ls > 0) s = fli[ls-1]+1;
+		if (ls > 0) s = fli2[ls-1]+1;
 		l = llen[ls];
 		// Get beat
 		if (s % npm) {
@@ -1093,6 +1094,8 @@ check:
 			SaveCPIfRp();
 		}
 		else {
+			// Put rule debug lines here:
+			//if (FailVIntervals()) goto skip;
 			if (task == tGen && accept_reseed) {
 				if (clib_vs.Insert(acc[cpv])) {
 					if (SendCP()) break;
