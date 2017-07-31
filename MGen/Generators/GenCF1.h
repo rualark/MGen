@@ -102,7 +102,7 @@ protected:
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
 	inline int FailNoteSeq(vector<int>& pc);
 	inline int FailLocalRange(vector<int>& cc, int notes, int mrange, int flag);
-	inline int FailLocalCcma(int notes, float mrange, int flag);
+	inline int FailLocalMacc(int notes, float mrange, int flag);
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
@@ -172,7 +172,7 @@ protected:
 	void SaveCantus();
 	inline void TransposeVector(vector<int>& v, int t);
 	inline void TransposeVector(vector<float>& v, int t);
-	inline void MakeCcma(vector<int>& cc);
+	inline void MakeMacc(vector<int>& cc);
 	int SendCantus();
 	int InitCantus();
 	void TestDiatonic();

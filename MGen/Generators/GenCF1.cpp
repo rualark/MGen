@@ -501,7 +501,7 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	return 0;
 }
 
-int CGenCF1::FailLocalCcma(int notes, float mrange, int flag) {
+int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 	// Do not test if not enough notes. If melody is short, than global range check is enough
 	if (fli_size < notes) return 0;
 	float lmin, lmax;
@@ -2432,7 +2432,7 @@ void CGenCF1::TransposeVector(vector<float> &v, int t) {
 	}
 }
 
-void CGenCF1::MakeCcma(vector<int> &cc) {
+void CGenCF1::MakeMacc(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2;
 	// Deviation weight
@@ -2903,9 +2903,9 @@ check:
 		if (FailFirstNotes(m_pc, ep2)) goto skip;
 		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;
 		if ((ep2>3 || ep2 == c_len) && FailMelodyHarm(m_pc)) goto skip;
-		MakeCcma(m_cc);
-		if (FailLocalCcma(notes_arange, min_arange, 15)) goto skip;
-		if (FailLocalCcma(notes_arange2, min_arange2, 16)) goto skip;
+		MakeMacc(m_cc);
+		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;
+		if (FailLocalMacc(notes_arange2, min_arange2, 16)) goto skip;
 
 		SaveBestRejected(m_cc);
 		// If we are window-scanning
