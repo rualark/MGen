@@ -1224,8 +1224,10 @@ void CGenCP1::Generate() {
 	// Create empty arrays
 	anflags[cfv].resize(m_c.size()*npm);
 	anflagsc[cfv].resize(m_c.size()*npm);
+	int npm2 = npm;
 	for (int i = 0; i < m_c.size(); ++i) {
-		for (int x = 0; x < npm; ++x) {
+		if (i == m_c.size() - 1) npm2 = 1;
+		for (int x = 0; x < npm2; ++x) {
 			ac[cfv].push_back(m_c[i]);
 			acc[cfv].push_back(m_cc[i]);
 			apc[cfv].push_back(m_pc[i]);
