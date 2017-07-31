@@ -1474,6 +1474,7 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	int leap_start;
 	int found;
+	int flag_unres = 31;
 	// Tritone prohibit
 	leap_start = s;
 	found = 0;
@@ -1486,8 +1487,9 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 			// Check intermediate note and mdc
 			if ((c[s] > c[s1] && c[s] < c[s_1] && (ls<2 || c[s_2] < c[s_1]) && (ls>fli_size - 3 || c[s2] > c[s1])) ||
 				(c[s] < c[s1] && c[s] > c[s_1] && (ls<2 || c[s_2] > c[s_1]) && (ls>fli_size - 3 || c[s2] < c[s1]))) {
-				found = 1;
+				found = 2;
 				leap_start = s_1;
+				flag_unres = 19;
 			}
 	}
 	if (found) {
@@ -1495,14 +1497,17 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 		if (ep2 == c_len)
 			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s);
 		// Check if tritone is last step
-		if (ls > fli_size - 3) FLAG2(31, s)
-			// Check if resolution is correct
+		if (ls > fli_size - 3) FLAG2(flag_unres, s)
+		// Check if resolution is correct
 		else if (ls < fli_size - 2) {
-			if (pcc[s1] == t1) FLAG2(31, s)
-			else if (pcc[s2] != tb) FLAG2(31, s)
-			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(31, s)
+			if (pcc[s1] == t1) FLAG2(flag_unres, s)
+			else if (pcc[s2] != tb) FLAG2(flag_unres, s)
+			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(flag_unres, s)
 				// Record resolved tritone
-			else FLAG2(2, s);
+			else {
+				if (found == 1) FLAG2(2, s)
+				else FLAG2(18, s);
+			}
 		}
 		// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
 	}
