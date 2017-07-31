@@ -556,12 +556,12 @@ int CGenCP1::FailVIntervals() {
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
 	for (int ls = 1; ls < fli_size; ++ls) {
-		s = fli2[ls - 1] + 1;
+		s = fli[ls];
 		s2 = fli2[ls];
 		// Unison
-		if (!civl[fli2[ls-1]]) {
+		if (!civl[s]) {
 			// Inside
-			if (ls>1) FLAG2(91, fli2[ls-1]);
+			if (ls>1 && ls<fli_size-1) FLAG2(91, fli2[ls-1]);
 		}
 		// Discord
 		if (tivl[s] == iDis) {
