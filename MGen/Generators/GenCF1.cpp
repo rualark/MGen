@@ -2439,38 +2439,38 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 	static const float dew[] = { 1, 0.7, 0.5 };
 	float ma, de, dew_sum;
 	// Moving average
-	for (int ls = 0; ls < fli_size; ++ls) {
-		pos1 = max(0, ls - ma_range);
-		pos2 = min(fli_size - 1, ls + ma_range);
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - ma_range);
+		pos2 = min(ep2 - 1, s + ma_range);
 		ma = 0;
 		for (int x = pos1; x <= pos2; ++x) {
-			ma += cc[fli2[x]];
+			ma += cc[x];
 		}
-		macc[ls] = ma / (pos2 - pos1 + 1);
+		macc[s] = ma / (pos2 - pos1 + 1);
 	}
 	// Smooth
 	macc2[0] = (macc[0] + macc[1]) / 2;
-	macc2[fli_size - 1] = (macc[fli_size - 2] + macc[fli_size - 1]) / 2;
-	for (int ls = 1; ls < fli_size - 1; ++ls) {
-		macc2[ls] = (macc[ls - 1] + macc[ls] + macc[ls + 1]) / 3;
+	macc2[ep2 - 1] = (macc[ep2 - 2] + macc[ep2 - 1]) / 2;
+	for (int s = 1; s < ep2 - 1; ++s) {
+		macc2[s] = (macc[s - 1] + macc[s] + macc[s + 1]) / 3;
 	}
 	// Deviation
-	for (int ls = 0; ls < fli_size; ++ls) {
-		pos1 = max(0, ls - ma_range);
-		pos2 = min(fli_size - 1, ls + ma_range);
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - ma_range);
+		pos2 = min(ep2 - 1, s + ma_range);
 		de = 0;
 		dew_sum = 0;
 		for (int x = pos1; x <= pos2; ++x) {
-			de += dew[abs(x-ls)]*SQR(cc[fli2[x]]-macc[x]);
-			dew_sum += dew[abs(x - ls)];
+			de += dew[abs(x-s)]*SQR(cc[x]-macc[s]);
+			dew_sum += dew[abs(x - s)];
 		}
-		decc[ls] = SQRT(de / dew_sum);
+		decc[s] = SQRT(de / dew_sum);
 	}
 	// Smooth
 	decc2[0] = (decc[0] + decc[1]) / 2;
-	decc2[fli_size - 1] = (decc[fli_size - 2] + decc[fli_size - 1]) / 2;
-	for (int ls = 1; ls < fli_size - 1; ++ls) {
-		decc2[ls] = (decc[ls - 1] + decc[ls] + decc[ls + 1]) / 3;
+	decc2[ep2 - 1] = (decc[ep2 - 2] + decc[ep2 - 1]) / 2;
+	for (int s = 1; s < ep2 - 1; ++s) {
+		decc2[s] = (decc[s - 1] + decc[s] + decc[s + 1]) / 3;
 	}
 }
 
