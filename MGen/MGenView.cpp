@@ -426,7 +426,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Show note graph
 			if (mf->show_curve) {
 				for (int v = 0; v < pGen->v_cnt; v++) {
-					ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 					Pen pen(ncolor, 1);
 					for (int n = 0; n < pGen->ngraph_size; ++n) {
 						for (int i = step1t; i < step2t; i++) if (i > 0 && pGen->ngraph[i][v][n] && pGen->ngraph[i - 1][v][n]) {
