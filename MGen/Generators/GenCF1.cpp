@@ -2476,6 +2476,7 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 
 int CGenCF1::SendCantus() {
 	int step0 = step;
+	float ma = 0, de = 0;
 	// Save culmination position
 	cf_culm = culm_step;
 	if (svoice < 0) return 0;
@@ -2506,9 +2507,15 @@ int CGenCF1::SendCantus() {
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = m_cc[x];
-			ngraph[pos + i][v][0] = macc2[x] - decc2[x];
-			ngraph[pos + i][v][1] = macc2[x];
-			ngraph[pos + i][v][2] = macc2[x] + decc2[x];
+			ma = macc2[x];
+			de = decc2[x];
+			if (x > 0 && i < cc_len[x] / 2) {
+				ma = (macc2[x - 1] * (cc_len[x] - i - 1)/2.0 + macc2[x] * (i + 1)) / cc_len[x];
+				de = (decc2[x - 1] * (cc_len[x] - i - 1) + decc2[x] * (i + 1)) / cc_len[x];
+			}
+			ngraph[pos + i][v][0] = ma - de;
+			ngraph[pos + i][v][1] = ma;
+			ngraph[pos + i][v][2] = ma + de;
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
