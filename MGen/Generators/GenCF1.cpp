@@ -1060,11 +1060,15 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	int lpos = 0;
 	int l = 0;
 	fli_size = 0;
+	minl = 10000;
+	maxl = 0;
 	for (int i = 0; i < ep2; ++i) {
 		if (prev_note != cc[i]) {
 			// Save linked note length
 			if (prev_note != -1) {
 				llen[lpos - 1] = l;
+				if (minl > l) minl = l;
+				if (maxl < l) maxl = l;
 				l = 0;
 			}
 			prev_note = cc[i];
@@ -1077,6 +1081,8 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	}
 	fli_size = lpos;
 	llen[lpos - 1] = l;
+	if (minl > l) minl = l;
+	if (maxl < l) maxl = l;
 }
 
 void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_to, int &fill_from, int &fill_end) {
