@@ -137,6 +137,7 @@ protected:
 	inline int FailTonic(vector<int> &cc, vector<int>& pc);
 	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailGlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
+	void ScanInit();
 	void ScanCantusInit();
 	int GetMinSmap();
 	int GetMaxSmap();

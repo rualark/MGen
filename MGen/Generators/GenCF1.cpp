@@ -1596,18 +1596,14 @@ int CGenCF1::FailGlobalFill(vector<int> &c, int ep2, vector<int> &nstat2)
 	return 0;
 }
 
-void CGenCF1::ScanCantusInit() {
-	// Get cantus size
-	if (task != tGen) c_len = scantus->size();
-	// Resize global vectors
+
+void CGenCF1::ScanInit() {
 	anflags.resize(av_cnt);
 	anflagsc.resize(av_cnt);
 	for (int i = 0; i < av_cnt; ++i) {
 		anflags[i].resize(c_len, vector<int>(max_flags)); // Flags for each note
 		anflagsc[i].resize(c_len); // number of flags for each note
 	}
-	m_c.resize(c_len); // cantus (diatonic)
-	m_cc.resize(c_len); // cantus (chromatic)
 	fli.resize(c_len);
 	fli2.resize(c_len);
 	macc.resize(c_len);
@@ -1617,7 +1613,6 @@ void CGenCF1::ScanCantusInit() {
 	llen.resize(c_len);
 	bli.resize(c_len);
 	fpenalty.resize(max_flags);
-	cc_old.resize(c_len); // Cantus diatonic saved for SWA
 	wpos1.resize(c_len / s_len + 1);
 	wpos2.resize(c_len / s_len + 1);
 	min_c.resize(c_len);
@@ -1626,10 +1621,6 @@ void CGenCF1::ScanCantusInit() {
 	max_cc.resize(c_len);
 	hm.resize(c_len);
 	hm2.resize(c_len);
-	for (int i = 0; i < c_len; ++i) {
-		hm[i].resize(3);
-		hm2[i].resize(3);
-	}
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 	flags.resize(max_flags); // Flags for whole cantus
@@ -1637,11 +1628,6 @@ void CGenCF1::ScanCantusInit() {
 	fcor.resize(max_flags, vector<long long>(max_flags)); // Flags correlation matrix
 	seed_cycle = 0; // Number of cycles in case of random_seed
 	reseed_count = 0;
-	m_pc.resize(c_len);
-	m_pcc.resize(c_len);
-	m_leap.resize(c_len);
-	m_smooth.resize(c_len);
-	m_slur.resize(c_len);
 	nstat.resize(MAX_NOTE);
 	nstat2.resize(MAX_NOTE);
 	nstat3.resize(MAX_NOTE);
@@ -1663,6 +1649,25 @@ void CGenCF1::ScanCantusInit() {
 		accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 		rpenalty_min = MAX_PENALTY;
 	}
+	for (int x = 0; x < c_len; ++x) {
+		hm[x].resize(3);
+		hm2[x].resize(3);
+	}
+}
+
+void CGenCF1::ScanCantusInit() {
+	// Get cantus size
+	if (task != tGen) c_len = scantus->size();
+	ScanInit();
+	// Resize global vectors
+	m_c.resize(c_len); // cantus (diatonic)
+	m_cc.resize(c_len); // cantus (chromatic)
+	cc_old.resize(c_len); // Cantus diatonic saved for SWA
+	m_pc.resize(c_len);
+	m_pcc.resize(c_len);
+	m_leap.resize(c_len);
+	m_smooth.resize(c_len);
+	m_slur.resize(c_len);
 }
 
 // Get minimum element in SWA window
