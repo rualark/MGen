@@ -2512,15 +2512,13 @@ int CGenCF1::SendCantus() {
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = m_cc[x];
-			ma = macc2[x];
-			de = decc2[x];
-			if (x > 0 && i < cc_len[x] / 2) {
-				ma = (macc2[x - 1] * (cc_len[x] - i - 1)/2.0 + macc2[x] * (i + 1)) / cc_len[x];
-				de = (decc2[x - 1] * (cc_len[x] - i - 1) + decc2[x] * (i + 1)) / cc_len[x];
+			if (i == (cc_len[x] - 1) / 2) {
+				ma = macc2[x];
+				de = decc2[x];
+				ngraph[pos + i][v][0] = ma - de;
+				ngraph[pos + i][v][1] = ma;
+				ngraph[pos + i][v][2] = ma + de;
 			}
-			ngraph[pos + i][v][0] = ma - de;
-			ngraph[pos + i][v][1] = ma;
-			ngraph[pos + i][v][2] = ma + de;
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
@@ -2576,6 +2574,27 @@ int CGenCF1::SendCantus() {
 	FillPause(pos, pause_len, v);
 	for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
 	step = pos + pause_len;
+	// Interpolate ngraph
+	int pos1 = 0, pos2 = 0;
+	for (int n = 0; n < ngraph_size; ++n) {
+		for (int i = step0; i < step; ++i) {
+			if (!ngraph[i][v][n]) {
+				// Detect start
+				if (!pos1) pos1 = i;
+			}
+			else {
+				// Detect finish
+				pos2 = i;
+				if (pos1) {
+					// Detected start and finish
+					for (int x = pos1; x < pos2; ++x) {
+						ngraph[x][v][n] = (ngraph[pos1-1][v][n]*(pos2-x) + ngraph[pos2][v][n]*(x-pos1+1))/(pos2-pos1 + 1);
+					}
+				}
+				pos1 = 0;
+			}
+		}
+	}
 	// Count additional variables
 	CountOff(step0, step - 1);
 	CountTime(step0, step - 1);
