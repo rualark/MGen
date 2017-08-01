@@ -1081,8 +1081,7 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	}
 	fli_size = lpos;
 	llen[lpos - 1] = l;
-	if (minl > l) minl = l;
-	if (maxl < l) maxl = l;
+	// Last note does not affect minl/maxl
 }
 
 void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_to, int &fill_from, int &fill_end) {
@@ -2445,9 +2444,12 @@ void CGenCF1::TransposeVector(vector<float> &v, int t) {
 
 void CGenCF1::MakeMacc(vector<int> &cc) {
 	int pos1, pos2;
-	int ma_range = 2;
+	int ma_range = 2*minl;
+	vector<float> dew;
 	// Deviation weight
-	static const float dew[] = { 1, 0.7, 0.5 };
+	for (int i = 0; i <= ma_range; ++i) {
+		dew.push_back(1 - i*0.5 / ma_range);
+	}
 	float ma, de, dew_sum;
 	// Moving average
 	for (int s = 0; s < ep2; ++s) {

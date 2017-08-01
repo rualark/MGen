@@ -236,6 +236,7 @@ int CGenCP1::SendCP() {
 	int real_len2 = real_len*npm;
 	Sleep(sleep_ms);
 	for (int av = 0; av < av_cnt; ++av) {
+		CreateLinks(ac[av]);
 		MakeMacc(acc[av]);
 		pos = step;
 		if (cpv) {
@@ -256,7 +257,7 @@ int CGenCP1::SendCP() {
 		// Copy cantus to output
 		if (step + real_len2 >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = x1; x < c_len; ++x) {
-			for (int i = 0; i < cc_len[x/npm]; ++i) {
+			for (int i = 0; i < cc_len[x]; ++i) {
 				int current_severity = -1;
 				if (av == cpv) {
 					// Set color
