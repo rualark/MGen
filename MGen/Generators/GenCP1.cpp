@@ -204,12 +204,11 @@ void CGenCP1::MultiCPInit() {
 void CGenCP1::ScanCPInit() {
 	// Get cantus size
 	if (task != tGen) c_len = scpoint[0].size();
+	ScanInit();
 	// Resize global vectors
 	for (int i = 0; i < av_cnt; ++i) {
 		ac[i].resize(c_len); // cantus (diatonic)
 		acc[i].resize(c_len); // cantus (chromatic)
-		anflags[i].resize(c_len, vector<int>(max_flags)); // Flags for each note
-		anflagsc[i].resize(c_len); // number of flags for each note
 		acc_old[i].resize(c_len); // Cantus diatonic saved for SWA
 		apc[i].resize(c_len);
 		apcc[i].resize(c_len);
@@ -217,63 +216,14 @@ void CGenCP1::ScanCPInit() {
 		asmooth[i].resize(c_len);
 		aslur[i].resize(c_len);
 	}
-	hm.resize(c_len);
-	hm2.resize(c_len);
-	for (int x = 0; x < c_len; ++x) {
-		hm[x].resize(3);
-		hm2[x].resize(3);
-	}
-	fpenalty.resize(max_flags);
-	wpos1.resize(c_len / s_len + 1);
-	wpos2.resize(c_len / s_len + 1);
 	ivl.resize(c_len);
 	ivlc.resize(c_len);
 	civl.resize(c_len);
 	civlc.resize(c_len);
 	tivl.resize(c_len);
 	motion.resize(c_len);
-	min_c.resize(c_len);
-	max_c.resize(c_len);
-	min_cc.resize(c_len);
-	max_cc.resize(c_len);
-	bli.resize(c_len);
-	fli2.resize(c_len);
-	fli.resize(c_len);
-	macc.resize(c_len);
-	macc2.resize(c_len);
-	decc.resize(c_len);
-	decc2.resize(c_len);
-	llen.resize(c_len);
 	beat.resize(c_len);
 	sus.resize(c_len);
-	accepted4.resize(MAX_WIND); // number of accepted canti per window
-	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
-	flags.resize(max_flags); // Flags for whole cantus
-	fstat.resize(max_flags); // number of canti with each flag
-	fcor.resize(max_flags, vector<long long>(max_flags)); // Flags correlation matrix
-	seed_cycle = 0; // Number of cycles in case of random_seed
-	reseed_count = 0;
-	nstat.resize(MAX_NOTE);
-	nstat2.resize(MAX_NOTE);
-	nstat3.resize(MAX_NOTE);
-	cycle = 0;
-	wscans.resize(MAX_WIND); // number of full scans per window
-	wcount = 1; // Number of windows created
-	accepted = 0;
-	accepted2 = 0;
-	accepted3 = 0;
-	// Can we skip flags?
-	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
-	// Initialize fblock if calculation is needed
-	if (calculate_blocking) {
-		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(max_flags, vector<long>(max_flags)));
-	}
-	// Init best rejected results
-	if (best_rejected) {
-		rcycle = 0;
-		accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-		rpenalty_min = MAX_PENALTY;
-	}
 }
 
 int CGenCP1::SendCP() {
