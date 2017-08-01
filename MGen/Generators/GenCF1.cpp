@@ -2442,6 +2442,35 @@ void CGenCF1::TransposeVector(vector<float> &v, int t) {
 	}
 }
 
+// Moving average
+void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
+	int pos1, pos2;
+	float ma;
+	for (int s = 0; s < v.size(); ++s) {
+		pos1 = max(0, s - range);
+		pos2 = min(v.size() - 1, s + range);
+		ma = 0;
+		for (int x = pos1; x <= pos2; ++x) {
+			ma += v[x];
+		}
+		v2[s] = ma / (pos2 - pos1 + 1);
+	}
+}
+
+void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
+	int pos1, pos2;
+	float ma;
+	for (int s = 0; s < v.size(); ++s) {
+		pos1 = max(0, s - range);
+		pos2 = min(v.size() - 1, s + range);
+		ma = 0;
+		for (int x = pos1; x <= pos2; ++x) {
+			ma += v[x];
+		}
+		v2[s] = ma / (pos2 - pos1 + 1);
+	}
+}
+
 void CGenCF1::MakeMacc(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2*minl;
@@ -2452,21 +2481,9 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 	}
 	float ma, de, dew_sum;
 	// Moving average
-	for (int s = 0; s < ep2; ++s) {
-		pos1 = max(0, s - ma_range);
-		pos2 = min(ep2 - 1, s + ma_range);
-		ma = 0;
-		for (int x = pos1; x <= pos2; ++x) {
-			ma += cc[x];
-		}
-		macc[s] = ma / (pos2 - pos1 + 1);
-	}
+	maVector(cc, macc, ma_range);
 	// Smooth
-	macc2[0] = (macc[0] + macc[1]) / 2;
-	macc2[ep2 - 1] = (macc[ep2 - 2] + macc[ep2 - 1]) / 2;
-	for (int s = 1; s < ep2 - 1; ++s) {
-		macc2[s] = (macc[s - 1] + macc[s] + macc[s + 1]) / 3;
-	}
+	maVector(macc, macc2, ma_range/2);
 	// Deviation
 	for (int s = 0; s < ep2; ++s) {
 		pos1 = max(0, s - ma_range);
@@ -2480,11 +2497,7 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 		decc[s] = SQRT(de / dew_sum);
 	}
 	// Smooth
-	decc2[0] = (decc[0] + decc[1]) / 2;
-	decc2[ep2 - 1] = (decc[ep2 - 2] + decc[ep2 - 1]) / 2;
-	for (int s = 1; s < ep2 - 1; ++s) {
-		decc2[s] = (decc[s - 1] + decc[s] + decc[s + 1]) / 3;
-	}
+	maVector(decc, decc2, ma_range/2);
 }
 
 void CGenCF1::InterpolateNgraph(int v, int step0, int step) {

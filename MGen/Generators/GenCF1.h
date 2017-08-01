@@ -173,6 +173,8 @@ protected:
 	void SaveCantus();
 	inline void TransposeVector(vector<int>& v, int t);
 	inline void TransposeVector(vector<float>& v, int t);
+	inline void maVector(vector<float>& v, vector<float>& v2, int range);
+	inline void maVector(vector<int>& v, vector<float>& v2, int range);
 	inline void MakeMacc(vector<int>& cc);
 	inline void InterpolateNgraph(int v, int step0, int step);
 	int SendCantus();
