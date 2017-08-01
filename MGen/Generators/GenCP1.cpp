@@ -228,6 +228,7 @@ void CGenCP1::ScanCPInit() {
 
 int CGenCP1::SendCP() {
 	int step0 = step;
+	float ma, de;
 	int pause_len;
 	CString st, info, rpst;
 	int pos, plen;
@@ -264,9 +265,13 @@ int CGenCP1::SendCP() {
 				// Do not display first paused note
 				note[pos + i][v] = acc[av][x];
 				// Show ngraph
-				ngraph[pos + i][v][0] = macc2[x] - decc2[x];
-				ngraph[pos + i][v][1] = macc2[x];
-				ngraph[pos + i][v][2] = macc2[x] + decc2[x];
+				if (i == (cc_len[x] - 1) / 2) {
+					ma = macc2[x];
+					de = decc2[x];
+					ngraph[pos + i][v][0] = ma - de;
+					ngraph[pos + i][v][1] = ma;
+					ngraph[pos + i][v][2] = ma + de;
+				}
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
 				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
@@ -342,6 +347,7 @@ int CGenCP1::SendCP() {
 		pause_len = floor((pos + 1) / 8 + 1) * 8 - pos;
 		FillPause(pos, pause_len, v);
 		for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
+		InterpolateNgraph(v, step, pos);
 		// Merge notes
 		MergeNotes(step, pos - 1, v);
 	}
