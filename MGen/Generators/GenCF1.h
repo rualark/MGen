@@ -174,6 +174,7 @@ protected:
 	inline void TransposeVector(vector<int>& v, int t);
 	inline void TransposeVector(vector<float>& v, int t);
 	inline void MakeMacc(vector<int>& cc);
+	inline void InterpolateNgraph(int v, int step0, int step);
 	int SendCantus();
 	int InitCantus();
 	void TestDiatonic();

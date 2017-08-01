@@ -2479,6 +2479,30 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 	}
 }
 
+void CGenCF1::InterpolateNgraph(int v, int step0, int step) {
+	// Interpolate ngraph
+	int pos1 = 0, pos2 = 0;
+	for (int n = 0; n < ngraph_size; ++n) {
+		for (int i = step0; i < step; ++i) {
+			if (!ngraph[i][v][n]) {
+				// Detect start
+				if (!pos1 && pos2) pos1 = i;
+			}
+			else {
+				// Detect finish
+				pos2 = i;
+				if (pos1) {
+					// Detected start and finish
+					for (int x = pos1; x < pos2; ++x) {
+						ngraph[x][v][n] = (ngraph[pos1 - 1][v][n] * (pos2 - x) + ngraph[pos2][v][n] * (x - pos1 + 1)) / (pos2 - pos1 + 1);
+					}
+				}
+				pos1 = 0;
+			}
+		}
+	}
+}
+
 int CGenCF1::SendCantus() {
 	int step0 = step;
 	float ma = 0, de = 0;
@@ -2574,27 +2598,7 @@ int CGenCF1::SendCantus() {
 	FillPause(pos, pause_len, v);
 	for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
 	step = pos + pause_len;
-	// Interpolate ngraph
-	int pos1 = 0, pos2 = 0;
-	for (int n = 0; n < ngraph_size; ++n) {
-		for (int i = step0; i < step; ++i) {
-			if (!ngraph[i][v][n]) {
-				// Detect start
-				if (!pos1) pos1 = i;
-			}
-			else {
-				// Detect finish
-				pos2 = i;
-				if (pos1) {
-					// Detected start and finish
-					for (int x = pos1; x < pos2; ++x) {
-						ngraph[x][v][n] = (ngraph[pos1-1][v][n]*(pos2-x) + ngraph[pos2][v][n]*(x-pos1+1))/(pos2-pos1 + 1);
-					}
-				}
-				pos1 = 0;
-			}
-		}
-	}
+	InterpolateNgraph(v, step0, step);
 	// Count additional variables
 	CountOff(step0, step - 1);
 	CountTime(step0, step - 1);
