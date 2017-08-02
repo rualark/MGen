@@ -55,7 +55,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;134;40;Melody;Melodic direction change near leap;No + close MDC;5th;0;;
 1;135;100;Melody;Melodic direction change near leap;No + close MDC;>5th;0;;
 1;59;0;Melody;Melodic direction change near leap;Far + close MDC;3rd;-1;;
-1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;1;;
+1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;0;;
 1;61;40;Melody;Melodic direction change near leap;Far + close MDC;5th;0;;
 1;62;100;Melody;Melodic direction change near leap;Far + close MDC;>5th;0;;
 1;63;0;Melody;Melodic direction change near leap;Far/no + no MDC;3rd;0;;
@@ -97,7 +97,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
 1;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
-1;193;0;Melody;Repeats;Culmination;early 50%;1;;
+1;193;0;Melody;Repeats;Culmination;early 50%;0;;
 1;79;30;Melody;Repeats;Culmination;early <5;0;;
 1;78;60;Melody;Repeats;Culmination;early <3;0;;
 1;21;60;Melody;Repeats;Culmination;late 3;0;;
