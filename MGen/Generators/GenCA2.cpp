@@ -251,9 +251,9 @@ void CGenCA2::Generate() {
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		dpenalty_cur = 0;
 		// Create pause
-		FillPause(step0, floor(real_len / 8 + 1) * 8, 1);
-		FillPause(step0, floor(real_len / 8 + 1) * 8, 2);
-		FillPause(step0, floor(real_len / 8 + 1) * 8, 3);
+		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
+		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 2);
+		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 3);
 		cpv = cfv;
 		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, 0, &(m_cc));
