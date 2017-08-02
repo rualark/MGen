@@ -2604,6 +2604,8 @@ int CGenCF1::SendCantus() {
 					st = "+ ";
 					if (!accept[fl]) st = "- ";
 					comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+					if (comment2[pos][v] != "") comment2[pos][v] += ", ";
+					comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 					if (show_severity) {
 						st.Format(" [%d]", severity[fl]);
 						comment[pos][v] += st;

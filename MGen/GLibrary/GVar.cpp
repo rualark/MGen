@@ -161,6 +161,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	linecolor.resize(size, Color(0));
 	lengroup.resize(size);
 	comment.resize(size);
+	comment2.resize(size);
 	nsr1.resize(size);
 	nsr2.resize(size);
 	adapt_comment.resize(size);
@@ -189,6 +190,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		lining[i].resize(vsize);
 		lengroup[i].resize(vsize);
 		comment[i].resize(vsize);
+		comment2[i].resize(vsize);
 		nsr1[i].resize(vsize);
 		nsr2[i].resize(vsize);
 		adapt_comment[i].resize(vsize);
@@ -1336,6 +1338,7 @@ void CGVar::MergeNotes(int step1, int step2, int v) {
 				}
 				coff[x][v] = coff[x - 1][v] + 1;
 				comment[first_pos][v] += comment[x][v];
+				comment2[first_pos][v] += comment2[x][v];
 			}
 			// Copy color forward
 			color[x][v] = col;

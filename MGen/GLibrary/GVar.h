@@ -95,6 +95,7 @@ public:
 	vector< Color > linecolor; // Shows color of bar line if not zero
 	vector< vector <char> > lengroup; // How many notes left until last in lengroup
 	vector< vector <CString> > comment; // Comment for note
+	vector< vector <CString> > comment2; // Comment for note (shorter)
 	vector< vector <char> > nsr1; // Note scan range
 	vector< vector <char> > nsr2; // Note scan range
 	vector< vector <CString> > adapt_comment; // Adaptation comment for note
