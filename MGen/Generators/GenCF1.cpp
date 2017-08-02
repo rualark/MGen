@@ -1500,12 +1500,13 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 	}
 	if (found) {
 		// Check if tritone is highest leap if this is last window
-		if (ep2 == c_len)
+		if (ep2 == c_len) {
 			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s);
-		// Check if tritone is last step
-		if (ls > fli_size - 3) FLAG2(flag_unres, s)
+			// Check if tritone is last step
+			if (ls > fli_size - 3) FLAG2(flag_unres, s)
+		}
 		// Check if resolution is correct
-		else if (ls < fli_size - 2) {
+		if (ls < fli_size - 2) {
 			if (pcc[s1] == t1) FLAG2(flag_unres, s)
 			else if (pcc[s2] != tb) FLAG2(flag_unres, s)
 			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(flag_unres, s)
