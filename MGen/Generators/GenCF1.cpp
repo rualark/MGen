@@ -2471,33 +2471,64 @@ void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
 	}
 }
 
+void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
+	int pos1, pos2;
+	float ma, maw_sum;
+	for (int s = 0; s < v.size(); ++s) {
+		pos1 = max(0, s - range);
+		pos2 = min(v.size() - 1, s + range);
+		ma = 0;
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) {
+			ma += maw[abs(x - s)] * v[x];
+			maw_sum += maw[abs(x - s)];
+		}
+		v2[s] = ma / maw_sum;
+	}
+}
+
+void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
+	int pos1, pos2;
+	float ma, maw_sum;
+	for (int s = 0; s < v.size(); ++s) {
+		pos1 = max(0, s - range);
+		pos2 = min(v.size() - 1, s + range);
+		ma = 0;
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) {
+			ma += maw[abs(x - s)] * v[x];
+			maw_sum += maw[abs(x - s)];
+		}
+		v2[s] = ma / maw_sum;
+	}
+}
+
 void CGenCF1::MakeMacc(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2*minl;
-	vector<float> dew;
 	// Deviation weight
 	for (int i = 0; i <= ma_range; ++i) {
-		dew.push_back(1 - i*0.5 / ma_range);
+		maw.push_back(1 - i*0.5 / ma_range);
 	}
-	float ma, de, dew_sum;
+	float ma, de, maw_sum;
 	// Moving average
-	maVector(cc, macc, ma_range);
+	mawVector(cc, macc, ma_range);
 	// Smooth
-	maVector(macc, macc2, ma_range/2);
+	mawVector(macc, macc2, ma_range);
 	// Deviation
 	for (int s = 0; s < ep2; ++s) {
 		pos1 = max(0, s - ma_range);
 		pos2 = min(ep2 - 1, s + ma_range);
 		de = 0;
-		dew_sum = 0;
+		maw_sum = 0;
 		for (int x = pos1; x <= pos2; ++x) {
-			de += dew[abs(x-s)]*SQR(cc[x]-macc[s]);
-			dew_sum += dew[abs(x - s)];
+			de += maw[abs(x-s)]*SQR(cc[x]-macc[s]);
+			maw_sum += maw[abs(x - s)];
 		}
-		decc[s] = SQRT(de / dew_sum);
+		decc[s] = SQRT(de / maw_sum);
 	}
 	// Smooth
-	maVector(decc, decc2, ma_range/2);
+	mawVector(decc, decc2, ma_range);
 }
 
 void CGenCF1::InterpolateNgraph(int v, int step0, int step) {

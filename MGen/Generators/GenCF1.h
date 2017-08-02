@@ -175,6 +175,8 @@ protected:
 	inline void TransposeVector(vector<float>& v, int t);
 	inline void maVector(vector<float>& v, vector<float>& v2, int range);
 	inline void maVector(vector<int>& v, vector<float>& v2, int range);
+	inline void mawVector(vector<int>& v, vector<float>& v2, int range);
+	inline void mawVector(vector<float>& v, vector<float>& v2, int range);
 	inline void MakeMacc(vector<int>& cc);
 	inline void InterpolateNgraph(int v, int step0, int step);
 	int SendCantus();
@@ -384,6 +386,7 @@ protected:
 	int cf_culm = 0; // Position of cantus firmus culmination
 	int fn = 0; // First note of analyzed melody
 	int error = 0;
+	vector<float> maw; // Moving average weight
 
 	// FailLeap local variables
 	int leap_start; // Step where leap starts
