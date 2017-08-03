@@ -304,6 +304,7 @@ void CGenCF1::SetRuleParams() {
 	tonic_max = GetRuleParam(rule_set, 196, rsSubName, 0);
 	tonic_window = GetRuleParam(rule_set, 196, rsSubName, 1);
 	tonic_leap = Interval2Chromatic(GetRuleParam(rule_set, 197, rsSubName, 0));
+	fis_gis_max = GetRuleParam(rule_set, 199, rsSubName, 0);
 }
 
 // Select rules
@@ -586,6 +587,26 @@ int CGenCF1::FailGisTrail(vector<int> &pcc) {
 		}
 		// Decrease if not zero
 		if (gis_trail) --gis_trail;
+	}
+	return 0;
+}
+
+int CGenCF1::FailFisTrail(vector<int> &pcc) {
+	int pos1, pos2, found;
+	for (int ls = 0; ls < fli_size; ++ls) {
+		s = fli2[ls];
+		if (pcc[s] == 9) {
+			pos1 = max(0, ls - fis_gis_max);
+			pos2 = min(fli_size - 1, ls + fis_gis_max);
+			found = 0;
+			for (int x = pos1; x <= pos2; ++x) {
+				if (pcc[fli[x]] == 11) {
+					found = 1;
+					break;
+				}
+			}
+			if (!found) FLAG2(199, s);
+		}
 	}
 	return 0;
 }
@@ -2973,6 +2994,7 @@ check:
 		if (minor_cur) {
 			if (FailMinor(m_pcc, m_cc)) goto skip;
 			if (FailGisTrail(m_pcc)) goto skip;
+			if (FailFisTrail(m_pcc)) goto skip;
 		}
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");

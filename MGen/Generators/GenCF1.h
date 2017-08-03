@@ -108,6 +108,7 @@ protected:
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
 	inline int FailHarmStep(int i, const int * hv, int & count, int & wcount, int & last_flag, int & max_p);
 	inline int FailGisTrail(vector<int>& pcc);
+	inline int FailFisTrail(vector<int>& pcc);
 	inline int EvalMelodyHarm(int p, int & last_flag, int & max_p);
 	inline int FailMelodyHarm(vector<int>& pc);
 	//inline void UpdateNoteHarm(int i);
@@ -275,6 +276,7 @@ protected:
 	int tonic_window = 9; // Number of notes that are searched for number of tonic notes
 	int tonic_max = 1; // Maximum number of tonic notes that can be contained in tonic window
 	int tonic_leap = 4; // Maximum allowed leap to tonic
+	int fis_gis_max = 3; // Maximum allowed distance between F# and G#
 	int dev_late2 = 3; // Maximum note count to consider non-late leap compensation deviation to 2nd
 	int dev_late3 = 3; // Maximum note count to consider non-late leap compensation deviation to 3rd
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
