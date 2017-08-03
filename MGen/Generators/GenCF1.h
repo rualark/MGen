@@ -181,7 +181,8 @@ protected:
 	inline void MakeMacc(vector<int>& cc);
 	inline void InterpolateNgraph(int v, int step0, int step);
 	void SendNgraph(int pos, int i, int v, int x);
-	void SendComment(int pos, int v, int av, int x, int f, int i);
+	void SendComment(int pos, int v, int av, int x, int i);
+	void TransposeCantusBack();
 	int SendCantus();
 	int InitCantus();
 	void TestDiatonic();

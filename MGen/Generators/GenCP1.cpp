@@ -267,19 +267,7 @@ int CGenCP1::SendCP() {
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
 				SendNgraph(pos, i, v, x);
-				int current_severity = -1;
-				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
-					// Do not show colors and comments for base voice
-					if (av == cpv) {
-						SendComment(pos, v, av, x, f, i);
-						int fl = anflags[av][x][f];
-						// Set note color if this is maximum flag severity
-						if (severity[fl] > current_severity) {
-							current_severity = severity[fl];
-							color[pos + i][v] = flag_color[severity[fl]];
-						}
-					}
-				}
+				SendComment(pos, v, av, x, i);
 				// Add scan range
 				if (!i) {
 					nsr1[pos][v] = min_cc[x];
