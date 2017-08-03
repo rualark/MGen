@@ -22,7 +22,7 @@ High priotiry issues: https://github.com/rualark/MGen/issues?utf8=%E2%9C%93&q=is
 
 # Project plan:
 
-![MGen project plan](http://i.imgur.com/7ojUmny.png "MGen project plan")
+![MGen project plan](http://i.imgur.com/mo0K2rR.png "MGen project plan")
 
 Zoho project: https://projects.zoho.eu/portal/mgen
 
