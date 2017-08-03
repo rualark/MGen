@@ -2577,6 +2577,16 @@ void CGenCF1::InterpolateNgraph(int v, int step0, int step) {
 	}
 }
 
+void CGenCF1::SendNgraph(int pos, int i, int v, int x) {
+	if (i == (cc_len[x] - 1) / 2) {
+		float ma = macc2[x];
+		float de = decc2[x];
+		ngraph[pos + i][v][0] = ma - de;
+		ngraph[pos + i][v][1] = ma;
+		ngraph[pos + i][v][2] = ma + de;
+	}
+}
+
 int CGenCF1::SendCantus() {
 	int step0 = step;
 	float ma = 0, de = 0;
@@ -2610,13 +2620,7 @@ int CGenCF1::SendCantus() {
 			int current_severity = -1;
 			// Set nflag color
 			note[pos + i][v] = m_cc[x];
-			if (i == (cc_len[x] - 1) / 2) {
-				ma = macc2[x];
-				de = decc2[x];
-				ngraph[pos + i][v][0] = ma - de;
-				ngraph[pos + i][v][1] = ma;
-				ngraph[pos + i][v][2] = ma + de;
-			}
+			SendNgraph(pos, i, v, x);
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {

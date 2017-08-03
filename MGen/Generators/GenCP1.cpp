@@ -265,14 +265,7 @@ int CGenCP1::SendCP() {
 				}
 				// Do not display first paused note
 				note[pos + i][v] = acc[av][x];
-				// Show ngraph
-				if (i == (cc_len[x] - 1) / 2) {
-					ma = macc2[x];
-					de = decc2[x];
-					ngraph[pos + i][v][0] = ma - de;
-					ngraph[pos + i][v][1] = ma;
-					ngraph[pos + i][v][2] = ma + de;
-				}
+				SendNgraph(pos, i, v, x);
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
 				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {

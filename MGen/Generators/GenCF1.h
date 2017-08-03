@@ -180,6 +180,7 @@ protected:
 	inline void mawVector(vector<float>& v, vector<float>& v2, int range);
 	inline void MakeMacc(vector<int>& cc);
 	inline void InterpolateNgraph(int v, int step0, int step);
+	void SendNgraph(int pos, int i, int v, int x);
 	int SendCantus();
 	int InitCantus();
 	void TestDiatonic();
