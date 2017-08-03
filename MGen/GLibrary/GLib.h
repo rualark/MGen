@@ -1,6 +1,6 @@
 #pragma once
 
-#define APP_VERSION "2.2"
+#define APP_VERSION "2.3"
 #define MGR_VERSION "1.9" // Version of MGR file format (should change only when format changes)
 #define MAX_VOICE 200
 #define MAX_INSTR 100
