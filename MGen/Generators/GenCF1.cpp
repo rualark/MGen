@@ -2587,6 +2587,25 @@ void CGenCF1::SendNgraph(int pos, int i, int v, int x) {
 	}
 }
 
+void CGenCF1::SendComment(int pos, int v, int av, int x, int f, int i)
+{
+	CString st;
+	int fl = anflags[av][x][f];
+	if (i) return;
+	if (!accept[fl]) st = "- ";
+	else st = "+ ";
+	comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+	if (comment2[pos][v] != "") comment2[pos][v] += ", ";
+	comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+	if (show_severity) {
+		st.Format(" [%d]", severity[fl]);
+		comment[pos][v] += st;
+	}
+	if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
+	if (SubRuleComment[rule_set][fl] != "") comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
+	comment[pos][v] += ". ";
+}
+
 int CGenCF1::SendCantus() {
 	int step0 = step;
 	float ma = 0, de = 0;
@@ -2615,30 +2634,15 @@ int CGenCF1::SendCantus() {
 		if (chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = Color(120, 120, 120);
 		for (int i = 0; i < cc_len[x]; ++i) {
-			// Set color
 			color[pos + i][v] = Color(0, 100, 100, 100);
-			int current_severity = -1;
-			// Set nflag color
 			note[pos + i][v] = m_cc[x];
-			SendNgraph(pos, i, v, x);
 			tonic[pos + i][v] = tonic_cur;
 			minor[pos + i][v] = minor_cur;
+			SendNgraph(pos, i, v, x);
+			int current_severity = -1;
 			if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; ++f) {
+				SendComment(pos, v, cpv, x, f, i);
 				int fl = anflags[cpv][x][f];
-				if (!i) {
-					st = "+ ";
-					if (!accept[fl]) st = "- ";
-					comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-					if (comment2[pos][v] != "") comment2[pos][v] += ", ";
-					comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-					if (show_severity) {
-						st.Format(" [%d]", severity[fl]);
-						comment[pos][v] += st;
-					}
-					if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
-					if (SubRuleComment[rule_set][fl] != "") comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
-					comment[pos][v] += ". ";
-				}
 				// Set note color if this is maximum flag severity
 				if (severity[fl] > current_severity) {
 					current_severity = severity[fl];

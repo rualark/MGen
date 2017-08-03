@@ -258,32 +258,21 @@ int CGenCP1::SendCP() {
 		if (step + real_len2 >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = x1; x < c_len; ++x) {
 			for (int i = 0; i < cc_len[x]; ++i) {
-				int current_severity = -1;
 				if (av == cpv) {
 					// Set color
 					color[pos + i][v] = Color(0, 100, 100, 100);
 				}
 				// Do not display first paused note
 				note[pos + i][v] = acc[av][x];
-				SendNgraph(pos, i, v, x);
 				tonic[pos + i][v] = tonic_cur;
 				minor[pos + i][v] = minor_cur;
+				SendNgraph(pos, i, v, x);
+				int current_severity = -1;
 				if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 					// Do not show colors and comments for base voice
 					if (av == cpv) {
+						SendComment(pos, v, av, x, f, i);
 						int fl = anflags[av][x][f];
-						if (!i) {
-							st = "+ ";
-							if (!accept[fl]) st = "- ";
-							comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-							if (show_severity) {
-								st.Format(" [%d]", severity[fl]);
-								comment[pos][v] += st;
-							}
-							if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
-							if (SubRuleComment[rule_set][fl] != "") comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
-							comment[pos][v] += ". ";
-						}
 						// Set note color if this is maximum flag severity
 						if (severity[fl] > current_severity) {
 							current_severity = severity[fl];
