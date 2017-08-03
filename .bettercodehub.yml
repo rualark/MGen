@@ -1,0 +1,13 @@
+exclude:
+- /MGen/configs/.*
+- /MGen/configs_old/GenCF1/.*
+- /MGen/example_config_for_range.pl
+- /MGen/instruments/.*
+- /MGen/midifile/.*
+- /MGen/portmidi/.*
+- /MGen/readerwriterqueue/.*
+- /MGen/rtmidi/.*
+component_depth: 1
+languages:
+- cpp
+- perl
