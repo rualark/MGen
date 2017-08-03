@@ -2664,6 +2664,14 @@ void CGenCF1::SendNotes(int pos, int i, int v, int x, vector<int> &cc) {
 	}
 }
 
+// Send inter-cantus pause
+int CGenCF1::SendPause(int pos, int v) {
+	int pause_len = floor((pos + 1) / 8 + 1) * 8 - pos;
+	FillPause(pos, pause_len, v);
+	for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
+	return pause_len;
+}
+
 int CGenCF1::SendCantus() {
 	int step0 = step;
 	float ma = 0, de = 0;
@@ -2688,11 +2696,7 @@ int CGenCF1::SendCantus() {
 		}
 		pos += cc_len[x];
 	}
-	// Create pause
-	int pause_len = floor((pos + 1) / 8 + 1) * 8 - pos;
-	FillPause(pos, pause_len, v);
-	for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
-	step = pos + pause_len;
+	step = pos + SendPause(pos, v);
 	InterpolateNgraph(v, step0, step);
 	// Count additional variables
 	CountOff(step0, step - 1);

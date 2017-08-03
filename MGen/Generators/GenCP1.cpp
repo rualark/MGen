@@ -286,10 +286,7 @@ int CGenCP1::SendCP() {
 				pos += cc_len[x / npm];
 			}
 		}
-		// Create pause
-		pause_len = floor((pos + 1) / 8 + 1) * 8 - pos;
-		FillPause(pos, pause_len, v);
-		for (int i = pos; i <= pos + pause_len; ++i) tempo[i] = tempo[i - 1];
+		pause_len = SendPause(pos, v);
 		InterpolateNgraph(v, step, pos);
 		// Merge notes
 		MergeNotes(step, pos - 1, v);
@@ -325,7 +322,7 @@ int CGenCP1::SendCP() {
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
 			// If RSWA
-			st.Format("#%d\nCantus: %s", cantus_sent, cantus_high ? "high" : "low");
+			st.Format("#%d\nCantus: %s\nRule penalty: %s", cantus_sent, cantus_high ? "high" : "low", rpst);
 		}
 		else {
 			if (key_eval == "") {

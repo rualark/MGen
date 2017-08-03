@@ -184,6 +184,7 @@ protected:
 	void SendComment(int pos, int v, int av, int x, int i);
 	void TransposeCantusBack();
 	void SendNotes(int pos, int i, int v, int x, vector<int>& cc);
+	int SendPause(int pos, int v);
 	int SendCantus();
 	int InitCantus();
 	void TestDiatonic();
