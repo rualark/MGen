@@ -3,6 +3,8 @@ Issues: [![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=read
 [![Stories in Progress](https://badge.waffle.io/rualark/MGen.png?label=in%20progress&title=In%20progress)](http://waffle.io/rualark/MGen)
 [![Stories testing](https://badge.waffle.io/rualark/MGen.png?label=testing&title=Testing)](http://waffle.io/rualark/MGen)
 
+Code analysis: [![BCH compliance](https://bettercodehub.com/edge/badge/rualark/MGen?branch=master)](https://bettercodehub.com/)
+
 Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI/MusicXML
 
 Read about this project: https://www.donationcoder.com/forum/index.php?topic=43816.0
