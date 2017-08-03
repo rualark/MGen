@@ -920,11 +920,11 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 			if ((ls > 0) && (cc[s] == cc[fli2[ls+2]]) && (cc[fli2[ls - 1]] == cc[fli2[ls+1]])) FLAG2(9, fli2[ls-1]);
 		}
 	}
-	if (max_leap_sum == max_leaps) {
+	if (max_leap_sum >= max_leaps) {
 		if (max_leap_sum > max_leaps2) FLAG2(25, leap_sum_i)
 		else FLAG2(3, leap_sum_i);
 	}
-	if (max_leap_sum2 == cse_leaps) {
+	if (max_leap_sum2 >= cse_leaps) {
 		if (max_leap_sum2 > cse_leaps2) FLAG2(71, leap_sum_s2)
 		else FLAG2(70, leap_sum_s2);
 	}
