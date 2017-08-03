@@ -98,8 +98,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
 1;193;0;Melody;Repeats;Culmination;early 50%;0;;
-1;79;30;Melody;Repeats;Culmination;early <5;0;;
-1;78;60;Melody;Repeats;Culmination;early <3;0;;
+1;79;30;Melody;Repeats;Culmination;early <5;-1;;
+1;78;60;Melody;Repeats;Culmination;early <3;-1;;
 1;21;60;Melody;Repeats;Culmination;late 3;0;;
 1;12;100;Melody;Repeats;Culmination;multiple;0;;
 1;26;60;Melody;Repeats;Culmination;sync;-1;;Synchronized culminations in both voices
