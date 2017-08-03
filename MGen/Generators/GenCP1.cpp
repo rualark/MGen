@@ -262,37 +262,9 @@ int CGenCP1::SendCP() {
 					// Set color
 					color[pos + i][v] = Color(0, 100, 100, 100);
 				}
-				// Do not display first paused note
-				note[pos + i][v] = acc[av][x];
-				tonic[pos + i][v] = tonic_cur;
-				minor[pos + i][v] = minor_cur;
+				SendNotes(pos, i, v, x, acc[av]);
 				SendNgraph(pos, i, v, x);
 				SendComment(pos, v, av, x, i);
-				// Add scan range
-				if (!i) {
-					nsr1[pos][v] = min_cc[x];
-					nsr2[pos][v] = max_cc[x];
-				}
-				len[pos + i][v] = cc_len[x / npm];
-				pause[pos + i][v] = 0;
-				coff[pos + i][v] = i;
-				if (x < c_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len2 + 20 * rand2() / RAND_MAX;
-				else dyn[pos + i][v] = 60 + 40 * (real_len2 - pos - i + step) / real_len2 + 20 * rand2() / RAND_MAX;
-				// Assign source tempo if exists
-				if (cc_tempo[x / npm]) {
-					tempo[pos + i] = cc_tempo[x / npm];
-				}
-				// Generate tempo if no source
-				else {
-					if (pos + i == 0) {
-						tempo[pos + i] = min_tempo + (float)(max_tempo - min_tempo) * (float)rand2() / (float)RAND_MAX;
-					}
-					else {
-						tempo[pos + i] = tempo[pos + i - 1] + randbw(-1, 1);
-						if (tempo[pos + i] > max_tempo) tempo[pos + i] = 2 * max_tempo - tempo[pos + i];
-						if (tempo[pos + i] < min_tempo) tempo[pos + i] = 2 * min_tempo - tempo[pos + i];
-					}
-				}
 			}
 			pos += cc_len[x / npm];
 		}

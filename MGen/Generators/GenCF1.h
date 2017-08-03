@@ -183,6 +183,7 @@ protected:
 	void SendNgraph(int pos, int i, int v, int x);
 	void SendComment(int pos, int v, int av, int x, int i);
 	void TransposeCantusBack();
+	void SendNotes(int pos, int i, int v, int x, vector<int>& cc);
 	int SendCantus();
 	int InitCantus();
 	void TestDiatonic();
@@ -421,6 +422,7 @@ protected:
 	VSet<int> clib_vs; // Unique clib set
 
 	// CP1 parameters
+	int npm = 1; // Number of notes per measure
 	int slurs_window = 10; // Number of steps to check for slur limit
 	int miss_slurs_window = 10; // Number of steps to check for missing slur limit
 	int ico_chain = 3; // Number of allowed consecutive imperfect consonances
