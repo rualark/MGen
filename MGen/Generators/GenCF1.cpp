@@ -2555,8 +2555,10 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 
 void CGenCF1::InterpolateNgraph(int v, int step0, int step) {
 	// Interpolate ngraph
-	int pos1 = 0, pos2 = 0;
+	int pos1, pos2;
 	for (int n = 0; n < ngraph_size; ++n) {
+		pos1 = 0;
+		pos2 = 0;
 		for (int i = step0; i < step; ++i) {
 			if (!ngraph[i][v][n]) {
 				// Detect start
