@@ -1,4 +1,6 @@
 # MGen
+Windows build status: [![Build status](https://ci.appveyor.com/api/projects/status/55ruiwxsc0maepvk?svg=true)](https://ci.appveyor.com/project/rualark/mgen)
+
 Issues: [![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=ready&title=Ready)](http://waffle.io/rualark/MGen) 
 [![Stories in Progress](https://badge.waffle.io/rualark/MGen.png?label=in%20progress&title=In%20progress)](http://waffle.io/rualark/MGen)
 [![Stories testing](https://badge.waffle.io/rualark/MGen.png?label=testing&title=Testing)](http://waffle.io/rualark/MGen)
