@@ -102,9 +102,11 @@ void CGenRS1::Generate()
 		// Count additional variables
 		CountOff(i, i);
 		CountTime(i, i);
-		t_generated = i + 1;
 		UpdateNoteMinMax(i, i);
 		UpdateTempoMinMax(i, i);
+		// Do not send if did not finish generating current note
+		if (coff[i][0] < len[i][0] - 1) continue;
+		t_generated = i + 1;
 		// Check if we can send new chunk
 		if (((i > t_send) && ((i-3) % t_send == 0)) || (i == t_cnt - 1)) {
 			// Moving average 7 <<<|>>>
