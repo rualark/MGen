@@ -622,8 +622,8 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 	int wtcount = 0;
 	for (int i = 0; i <= p; ++i) {
 		if (i > 0) {
-			// Check GC
-			if (!cantus_high && chm[i] == 0 && chm[i - 1] == 4) {
+			// Check GC for low cantus and not last note (last note in any window is ignored)
+			if (!cantus_high && i < fli_size-1 && chm[i] == 0 && chm[i - 1] == 4) {
 				if (m_pc[fli2[i]] == 0 && m_pc[fli2[i - 1]] == 4) FLAG3(48, i);
 			}
 			// Check harmonic penalty	
