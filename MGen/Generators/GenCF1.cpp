@@ -681,6 +681,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		}
 	}
 	// Scan vector
+	vector<int> chm_saved;
 	chm.clear();
 	chmp.clear();
 	chm.resize(fli_size, 0);
@@ -691,7 +692,9 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	int found = 0;
 	int hcycle = 0;
 	int last_flag = 0;
+	int last_flag2 = 0;
 	int max_p = 0;
+	int max_p2 = 0;
 	//LogCantus(pc);
 	while (true) {
 	check:
@@ -713,10 +716,20 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		}
 		else {
 			++p;
-			if (p > max_p) max_p = p;
+			if (p > max_p) {
+				max_p = p;
+			}
 			goto check;
 		}
 	skip:
+		// Save maximum flag
+		if (p > max_p2) {
+			max_p2 = p;
+			if (last_flag) {
+				last_flag2 = last_flag;
+				chm_saved = chm;
+			}
+		}
 		// ScanLeft
 		while (true) {
 			if (chmp[p] < hm[p].size()-1) break;
@@ -743,13 +756,15 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	}
 	// Detect possible variants
 	if (!found) {
+		// Load problematic chm if it exists
+		if (chm_saved.size()) chm = chm_saved;
 		if (max_p < fli_size - 1) {
 			//fill(chm.begin(), chm.end(), -1);
 		}
 		// Increase penalty if flag was found at the beginning of melody
-		fpenalty[last_flag] = fli_size - max_p;
+		fpenalty[last_flag2] = fli_size - max_p;
 		// Report one of last flags at highest position
-		FLAG2(last_flag, max_p);
+		FLAG2(last_flag2, max_p);
 	}
 	return 0;
 }
