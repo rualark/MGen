@@ -266,13 +266,13 @@ int CGenCP1::SendCP() {
 				SendNgraph(pos, i, v, x);
 				SendComment(pos, v, av, x, i);
 			}
-			pos += cc_len[x / npm];
+			pos += cc_len[x];
 		}
 		// If npm>1, prolong notes
 		if (c_len % npm == 1) {
 			int plen = npm - c_len % npm;
 			for (int x = c_len; x < c_len + plen; ++x) {
-				for (int i = 0; i < cc_len[x / npm]; ++i) {
+				for (int i = 0; i < cc_len[x]; ++i) {
 					note[pos + i][v] = note[pos + i - 1][v];
 					len[pos + i][v] = len[pos + i - 1][v];
 					pause[pos + i][v] = 0;
@@ -283,7 +283,7 @@ int CGenCP1::SendCP() {
 					color[pos + i][v] = color[pos + i - 1][v];
 					tempo[pos + i] = tempo[pos + i - 1];
 				}
-				pos += cc_len[x / npm];
+				pos += cc_len[x];
 			}
 		}
 		pause_len = SendPause(pos, v);
@@ -1122,6 +1122,7 @@ void CGenCP1::Generate() {
 	anflagsc[cfv].resize(m_c.size()*npm);
 	int npm2 = npm;
 	for (int i = 0; i < m_c.size(); ++i) {
+		// Last measure should have one note
 		if (i == m_c.size() - 1) npm2 = 1;
 		for (int x = 0; x < npm2; ++x) {
 			ac[cfv].push_back(m_c[i]);
