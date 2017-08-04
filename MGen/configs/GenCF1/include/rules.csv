@@ -97,7 +97,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
 1;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
-1;193;0;Melody;Repeats;Culmination;early 50%;0;;
+1;193;0;Melody;Repeats;Culmination;early 50%;1;;
 1;79;30;Melody;Repeats;Culmination;early <5;-1;;
 1;78;60;Melody;Repeats;Culmination;early <3;-1;;
 1;21;60;Melody;Repeats;Culmination;late 3;0;;
@@ -107,7 +107,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;36;60;Melody;Repeats;Notes repeat;3 sym. in 8;0;;Symmetric repeat of X notes within Y notes
 1;72;60;Melody;Repeats;Notes repeat;5 in 15;0;;Repeat of X notes within Y notes
 1;73;60;Melody;Repeats;Notes repeat;7 in 100;0;;Repeat of X notes within Y notes
-1;196;20;Melody;Repeats;Tonic note;>1 within 9;0;;More than X tonic notes within Y notes (except first and last tonic)
+1;196;20;Melody;Repeats;Tonic note;>1 within 9;1;;More than X tonic notes within Y notes (except first and last tonic)
 1;197;20;Melody;Repeats;Tonic note;leap >M3;1;;Leap to tonic note
 1;10;60;Melody;Repeats;Note stagnation within 7 notes;>2;0;Same note repeats more than X times during stag_note_steps steps;
 1;29;0;Melody;Tritone;Tritone;cross rel.;1;;
