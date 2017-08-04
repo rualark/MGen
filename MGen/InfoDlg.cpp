@@ -112,6 +112,16 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(180, 0, 0), 0);
 		m_info.AddText("\n", RGB(0, 0, 0), 0);
 
+		st2 = "";
+		for (int n = 0; n < pGen->ngraph[i][mv].size(); ++n) {
+			if (pGen->ngraph[i][mv][n] > -1) {
+				st.Format("%.1f ", pGen->ngraph[i][mv][n]);
+				if (st2 != "") st2 += ", ";
+				st2 += st;
+			}
+		}
+		if (st2 != "") m_info.AddText("MeloCurve: " + st2 + "\n", RGB(0, 0, 0), 0);
+
 		if (pGen->mel_id[i][mv] > -1) {
 			st.Format("Melody: %s\n", pGen->mel_info[pGen->mel_id[i][mv]]);
 			m_info.AddText(st, RGB(0, 0, 180), 0);
