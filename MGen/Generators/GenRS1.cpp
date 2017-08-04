@@ -71,7 +71,7 @@ void CGenRS1::Generate()
 			// Shift note to diatonic
 			int found = 0;
 			int ni = (note[i][0] - min_note) % 12;
-			for (int x = 0; x < 12; x++) {
+			for (int x = 0; x < 7; x++) {
 				// If found note in diatonic
 				if (dia_to_chrom[x] == ni) {
 					found = 1;
