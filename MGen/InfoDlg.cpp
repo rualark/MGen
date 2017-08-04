@@ -101,16 +101,6 @@ BOOL CInfoDlg::OnInitDialog()
 		}
 		st.Format("Lengroup: %d\n", pGen->lengroup[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);
-		m_info.AddText(st, RGB(0, 170, 0), 0);
-		st.Format("Adapt comment(start) : %s\nAdapt comment(end) : %s\n",
-			pGen->adapt_comment[i][mv], pGen->adapt_comment[ei][mv]);
-		m_info.AddText(st, RGB(0, 170, 0), 0);
-		st.Format("Note comment: %s\n", pGen->comment[i][mv]);
-		m_info.AddText(st, RGB(180, 0, 0), 0);
-		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
-		m_info.AddText(st, RGB(180, 0, 0), 0);
-		m_info.AddText("\n", RGB(0, 0, 0), 0);
 
 		st2 = "";
 		for (int n = 0; n < pGen->ngraph[i][mv].size(); ++n) {
@@ -122,6 +112,17 @@ BOOL CInfoDlg::OnInitDialog()
 		}
 		if (st2 != "") m_info.AddText("MeloCurve: " + st2 + "\n", RGB(0, 0, 0), 0);
 
+		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);
+		m_info.AddText(st, RGB(0, 170, 0), 0);
+		st.Format("Adapt comment(start) : %s\nAdapt comment(end) : %s\n",
+			pGen->adapt_comment[i][mv], pGen->adapt_comment[ei][mv]);
+		m_info.AddText(st, RGB(0, 170, 0), 0);
+		st.Format("Note comment: %s\n", pGen->comment[i][mv]);
+		m_info.AddText(st, RGB(180, 0, 0), 0);
+		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
+		m_info.AddText(st, RGB(180, 0, 0), 0);
+
+		m_info.AddText("\n", RGB(0, 0, 0), 0);
 		if (pGen->mel_id[i][mv] > -1) {
 			st.Format("Melody: %s\n", pGen->mel_info[pGen->mel_id[i][mv]]);
 			m_info.AddText(st, RGB(0, 0, 180), 0);
