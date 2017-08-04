@@ -113,7 +113,8 @@ void CGenRS1::Generate()
 			int t_sent_old = t_sent;
 			float ma;
 			float ma_size;
-			float* tempo2 = new float[t_generated - t_sent];
+			vector<float> tempo2;
+			tempo2.resize(t_generated - t_sent);
 			int delta = 3;
 			if (i == t_cnt - 1) delta = 0;
 			for (int x = t_sent; x < t_generated-delta; x++) {
@@ -130,7 +131,6 @@ void CGenRS1::Generate()
 				if (tg_min > tempo[x]) tg_min = tempo[x];
 				if (tg_max < tempo[x]) tg_max = tempo[x];
 			}
-			delete tempo2;
 			// Copy voice to other voices
 			if (v_cnt > 1) {
 				for (int x = 1; x < v_cnt; x++) CopyVoice(0, x, t_sent_old, t_generated - 1, -12);
