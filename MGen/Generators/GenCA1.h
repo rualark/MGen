@@ -26,4 +26,3 @@ protected:
 	int step1 = 0; // Stop of current cantus
 
 };
-
