@@ -8,7 +8,7 @@ midifile_in_mul = 32 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-17 22-02-43
-Midi_file = N:\Public\Critic\records\2016\Shegolev\ny.mid
+Midi_file = midi\ny.mid
 
 #Instruments = Trumpet,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
 #Instruments = Trumpet,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
