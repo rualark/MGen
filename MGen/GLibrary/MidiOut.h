@@ -33,7 +33,7 @@ public:
 
 	int need_exit = 0;
 	CString m_error;
-	int m_error_type;
+	int m_error_type = 0;
 
 protected:
 	static UINT MidiThread(LPVOID pParam);

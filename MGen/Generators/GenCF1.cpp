@@ -108,7 +108,7 @@ void CGenCF1::LoadRules(CString fname)
 {
 	CString st, st2, st3, iname, est, rule, subrule;
 	vector<CString> ast;
-	int pos = 0;
+	int pos;
 	int i = 0;
 	int sev = 0;
 	int set = 0;
