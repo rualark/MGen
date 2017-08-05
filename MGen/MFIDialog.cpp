@@ -137,4 +137,3 @@ void CMFIDialog::UpdateControls()
 		GetDlgItem(IDOK)->EnableWindow(true);
 	}
 }
-
