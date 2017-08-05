@@ -289,6 +289,13 @@ CString CGLib::ext_from_path(CString path)
 	return path2;
 }
 
+CString CGLib::noext_from_path(CString path)
+{
+	string::size_type pos2 = string(path).find_last_of("./");
+	CString path2 = string(path).substr(0, pos2).c_str();
+	return path2;
+}
+
 CString CGLib::fname_from_path(CString path)
 {
 	string::size_type pos = string(path).find_last_of("\\/");

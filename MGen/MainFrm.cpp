@@ -29,6 +29,7 @@
 #define TIMER1 1
 #define TIMER2 2
 #define TIMER3 3
+#define TIMER4 4
 
 // CMainFrame
 
@@ -237,9 +238,10 @@ void CMainFrame::ParseCommandLine() {
 		pos = st.Find(' ');
 		st2 = st.Left(pos);
 		st = st.Right(st.GetLength() - pos - 1);
-		if (st == "-test") m_testing = 1;
+		if (st2 == "-test") m_testing = 1;
 	}
 	m_cline2 = st;
+	if (m_cline2 != "") LoadFile(m_cline2);
 	//AfxMessageBox(st);
 }
 
@@ -260,9 +262,36 @@ void CMainFrame::LoadFile(CString abs_path) {
 		}
 		LoadMidi(path);
 	}
+	else if (ext == "pl") {
+		int alg = GetAlgoByName(abs_path);
+		if (alg == -1) {
+			AfxMessageBox("Cannot detect algorithm of configuration file " + abs_path);
+			return;
+		}
+		
+		m_config = CGLib::bname_from_path(abs_path);
+		m_algo = alg;
+		m_algo_id = AlgID[m_algo];
+		// Save this algorithm and config if we are not testing
+		if (!m_testing) SaveSettings();
+		OnButtonGen();
+		// Stop generation after a while
+		if (m_testing) {
+			SetTimer(TIMER4, 5000, NULL);
+		}
+	}
 	else {
 		LoadResults(abs_path);
 	}
+}
+
+int CMainFrame::GetAlgoByName(CString st) {
+	for (int x = 0; x < AlgCount; x++) {
+		if (st.Find("configs\\" + AlgFolder[x]) != -1) {
+			return x;
+		}
+	}
+	return -1;
 }
 
 void CMainFrame::ShowStatusText(int line, CString st)
@@ -641,6 +670,9 @@ void CMainFrame::OnButtonGen()
 		WriteLog(0, "Starting generation: Removing previous generator");
 		delete pGen;
 		m_state_gen = 0;
+		// Clear scroll
+		CSize DocSize(0, 0);
+		((CMGenView*)(GetActiveView()))->SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 	}
 	NewGen();
 	if (pGen != 0) {
@@ -648,9 +680,6 @@ void CMainFrame::OnButtonGen()
 		ng_min = 0;
 		ng_max = 0;
 		ClearLogs();
-		// Clear scroll
-		CSize DocSize(0, 0);
-		((CMGenView*)(GetActiveView()))->SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
 		// Clear current saved path
 		m_fname = "";
@@ -1071,6 +1100,9 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 			}
 			CGLib::mutex_log.unlock();
 		}
+	}
+	if (nIDEvent == TIMER4) {
+		PostMessage(WM_CLOSE);
 	}
 }
 

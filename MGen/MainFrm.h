@@ -115,6 +115,7 @@ public:
 	int GetAlgoById(int id);
 	void SaveSettings();
 	void LoadFile(CString abs_path);
+	int GetAlgoByName(CString st);
 	void LoadResults(CString path);
 	void LoadMidi(CString path);
 	bool NewDocument();
