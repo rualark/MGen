@@ -32,12 +32,14 @@ void Log(CString st, int level = 0) {
 }
 
 void LoadConfig() {
+	milliseconds time_start, time_stop;
 	ifstream fs;
 	fs.open("autotest\\test.txt");
 	LPDWORD ecode = new DWORD;
 	CString st, st2;
 	char pch[2550];
 	int pos = 0;
+	int passed;
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
@@ -58,15 +60,18 @@ void LoadConfig() {
 			sei.lpDirectory = NULL;
 			sei.nShow = SW_SHOW;
 			sei.hInstApp = NULL;
+			time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			ShellExecuteEx(&sei);
 			if (WaitForSingleObject(sei.hProcess, 10000) == WAIT_TIMEOUT) {
 				Log(st + ": Timeout waiting for process\n", 3);
 				exit(1);
 			}
 
+			time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+			passed = (time_stop - time_start).count();
 			GetExitCodeProcess(sei.hProcess, ecode);
-			st2.Format("%d", *ecode);
-			Log(st + ": Exit code " + st2 + "\n", (*ecode)?3:1);
+			st2.Format("%s: code %d in %d ms\n", st, *ecode, passed);
+			Log(st2, (*ecode)?3:1);
 		}
 	}
 	delete ecode;
