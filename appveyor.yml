@@ -8,6 +8,6 @@ build:
 test: off
 on_success:
 - cmd: >-
-    cd "%APPVEYOR_BUILD_FOLDER%\MGen\Autotest"
+    cd "%APPVEYOR_BUILD_FOLDER%\Mgen\autotest"
 
-    test.bat
+    test
