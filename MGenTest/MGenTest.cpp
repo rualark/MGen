@@ -18,11 +18,12 @@ using namespace std;
 CString current_dir;
 ofstream logfile;
 int ci = 0;
+int nRetCode = 0;
 
 void Log(CString st, int level = 0) {
 	cout << st;
 	logfile << st;
-	if (level > 0) {
+	if (ci && level > 0) {
 		CString cat;
 		if (level == 1) cat = "Information";
 		if (level == 2) cat = "Warning";
@@ -30,13 +31,13 @@ void Log(CString st, int level = 0) {
 		CString par = "AddMessage \"" + st + "\" -Category " + cat;
 		SHELLEXECUTEINFO sei = { 0 };
 		sei.cbSize = sizeof(SHELLEXECUTEINFO);
-		sei.fMask = SEE_MASK_NOCLOSEPROCESS;
+		sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
 		sei.hwnd = NULL;
 		sei.lpVerb = NULL;
 		sei.lpFile = "appveyor";
 		sei.lpParameters = par;
 		sei.lpDirectory = NULL;
-		sei.nShow = SW_SHOW;
+		sei.nShow = SW_SHOWNORMAL;
 		sei.hInstApp = NULL;
 		ShellExecuteEx(&sei);
 		WaitForSingleObject(sei.hProcess, 1000);
@@ -83,7 +84,13 @@ void LoadConfig() {
 			passed = (time_stop - time_start).count();
 			GetExitCodeProcess(sei.hProcess, ecode);
 			st2.Format("%s: code %d in %d ms\n", st, *ecode, passed);
-			Log(st2, (*ecode)?3:1);
+			if (*ecode) {
+				nRetCode = 2;
+				Log(st2, 3);
+			}
+			else {
+				Log(st2, 1);
+			}
 		}
 	}
 	delete ecode;
@@ -111,8 +118,6 @@ int test() {
 
 int main()
 {
-    int nRetCode = 0;
-
     HMODULE hModule = ::GetModuleHandle(nullptr);
 
     if (hModule != nullptr)
