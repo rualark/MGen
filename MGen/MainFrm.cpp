@@ -238,10 +238,12 @@ void CMainFrame::ParseCommandLine() {
 		pos = st.Find(' ');
 		st2 = st.Left(pos);
 		st = st.Right(st.GetLength() - pos - 1);
-		if (st2 == "-test") m_testing = 1;
+		if (st2 == "-test") {
+			CGLib::m_testing = 1;
+		}
 	}
-	m_cline2 = st;
-	if (m_cline2 != "") LoadFile(m_cline2);
+	CGLib::m_cline2 = st;
+	if (CGLib::m_cline2 != "") LoadFile(CGLib::m_cline2);
 	//AfxMessageBox(st);
 }
 
@@ -273,10 +275,10 @@ void CMainFrame::LoadFile(CString abs_path) {
 		m_algo = alg;
 		m_algo_id = AlgID[m_algo];
 		// Save this algorithm and config if we are not testing
-		if (!m_testing) SaveSettings();
+		if (!CGLib::m_testing) SaveSettings();
 		OnButtonGen();
 		// Stop generation after a while
-		if (m_testing) {
+		if (CGLib::m_testing) {
 			SetTimer(TIMER4, 5000, NULL);
 		}
 	}
