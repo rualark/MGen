@@ -52,7 +52,7 @@ CMGenDoc::~CMGenDoc()
 
 void CMGenDoc::Serialize(CArchive& ar)
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
@@ -138,7 +138,7 @@ void CMGenDoc::Dump(CDumpContext& dc) const
 
 BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	TCHAR buffer[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, buffer);
 	//string::size_type pos = string(buffer).find_last_of("\\/");

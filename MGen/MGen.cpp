@@ -239,7 +239,7 @@ void CMGenApp::SaveCustomState()
 
 void CMGenApp::OnFileOpen()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	if (mf->m_state_gen == 1) {
 		AfxMessageBox("Please stop generation before opening files");
 		return;

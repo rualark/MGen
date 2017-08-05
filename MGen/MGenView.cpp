@@ -593,7 +593,7 @@ void CMGenView::OnInitialUpdate()
 
 void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	CGMidi *pGen = mf->pGen;
 	if ((pGen != 0) && (nwidth > 0) && (nheight > 0)) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
@@ -705,13 +705,13 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 			if (!result) return;
 			mouse_voice = result - 1;
 		}
-		CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+		CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 		CInfoDlg dlg;
 		dlg.pGen = mf->pGen;
 		dlg.DoModal();
 	}
 	else if ((mouse_step > -1) && (mouse_in_timeline)) {
-		CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+		CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 		if ((mf->m_state_gen == 2) && (mf->m_state_play == 0))
 			mf->StartPlay(mouse_step);
 	}
@@ -730,7 +730,7 @@ BOOL CMGenView::OnEraseBkgnd(CDC* pDC)
 
 void CMGenView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	if (nChar == VK_F1) {
 		((CMGenApp*)::AfxGetApp())->OnAppAbout();
 	}
