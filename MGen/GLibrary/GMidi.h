@@ -56,10 +56,10 @@ public:
 	int midi_sent_t = 0; // Timestamp of last event sent to midi in previous SendMIDI
 	int midi_sent_t2 = 0; // Timestamp of last event sent to midi in current SendMIDI
 	int midi_sent_t3 = 0; // Timestamp of last event postponed in current SendMIDI
-	PmMessage midi_sent_msg; // Last event sent to midi in previous SendMIDI
-	PmMessage midi_sent_msg2; // Last event sent to midi in current SendMIDI
-	PmMessage midi_sent_msg3; // Last event postponed in current SendMIDI
-	int midi_current_step; // Current step processed by SendMIDI (for logs)
+	PmMessage midi_sent_msg = 0; // Last event sent to midi in previous SendMIDI
+	PmMessage midi_sent_msg2 = 0; // Last event sent to midi in current SendMIDI
+	PmMessage midi_sent_msg3 = 0; // Last event postponed in current SendMIDI
+	int midi_current_step = 0; // Current step processed by SendMIDI (for logs)
 	int midi_start_time = 0; // Time when midi started to play
 	int midi_last_run = 0; // If current SendMIDI is last
 	int midi_first_run = 0; // If current SendMIDI is first
