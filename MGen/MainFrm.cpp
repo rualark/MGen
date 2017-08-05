@@ -228,7 +228,18 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 }
 
 void CMainFrame::ParseCommandLine() {
-	CString st = ((CMGenApp*)::AfxGetApp())->m_lpCmdLine;
+	m_cline = ((CMGenApp*)::AfxGetApp())->m_lpCmdLine;
+	CString st = m_cline;
+	CString st2;
+	int pos;
+	// Detect switches
+	while (st.GetLength() && st[0] == '-') {
+		pos = st.Find(' ');
+		st2 = st.Left(pos);
+		st = st.Right(st.GetLength() - pos - 1);
+		if (st == "-test") m_testing = 1;
+	}
+	m_cline2 = st;
 	//AfxMessageBox(st);
 }
 

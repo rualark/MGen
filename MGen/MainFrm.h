@@ -58,6 +58,9 @@ public:
 	int m_step_dyn = 1; // Show dynamics with note opacity for each step of note.Disable for slower computers.
 	int m_debug_level = 1; // Increase to show more debug logs
 
+	CString m_cline; // Command line
+	CString m_cline2; // Command line file name without switches
+	int m_testing = 0; // If program is running in testing mode
 	int m_pspeed = 100; // Playback speed in percent
 	int show_marks = 1;
 	int show_comments = 1;
