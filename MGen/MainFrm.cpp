@@ -243,6 +243,28 @@ void CMainFrame::ParseCommandLine() {
 	//AfxMessageBox(st);
 }
 
+void CMainFrame::LoadFile(CString abs_path) {
+	TCHAR buffer[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buffer);
+	CString path_old = string(buffer).c_str();
+	CString ext = CGLib::ext_from_path(abs_path);
+	if ((ext == "mid") || (ext == "midi")) {
+		// Convert absolute to relative
+		CString path, rel_path;
+		path = abs_path;
+		if (path.Find(path_old) > -1) {
+			rel_path = path.Mid(path_old.GetLength() + 1);
+			//mf->WriteLog(1, rel_path);
+			// Check relative exists
+			if (CGLib::fileExists(rel_path)) path = rel_path;
+		}
+		LoadMidi(path);
+	}
+	else {
+		LoadResults(abs_path);
+	}
+}
+
 void CMainFrame::ShowStatusText(int line, CString st)
 {
 	CMFCRibbonEdit *pEdit = 0;
