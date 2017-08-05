@@ -106,7 +106,6 @@ void CGenCF1::LoadRules(CString fname)
 {
 	CString st, st2, st3, iname, est, rule, subrule;
 	vector<CString> ast;
-	int pos;
 	int i = 0;
 	int sev = 0;
 	int set = 0;
@@ -129,7 +128,6 @@ void CGenCF1::LoadRules(CString fname)
 		fs.getline(pch, 2550);
 		st = pch;
 		st.Trim();
-		pos = 0;
 		if (st.Find(";") != -1) {
 			Tokenize(st, ast, ";");
 			if (ast.size() != 10) {
