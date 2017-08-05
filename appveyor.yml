@@ -5,3 +5,24 @@ configuration:
 - Debug
 build:
   verbosity: minimal
+after_build:
+- cmd: >-
+    appveyor AddMessage start
+
+    "%APPVEYOR_BUILD_FOLDER%\x64\Release\MGen"
+
+    appveyor AddMessage stop
+test_script:
+- cmd: >-
+    appveyor AddMessage start
+
+    "%APPVEYOR_BUILD_FOLDER%\x64\Release\MGen"
+
+    appveyor AddMessage stop
+on_success:
+- cmd: >-
+    appveyor AddMessage start
+
+    "%APPVEYOR_BUILD_FOLDER%\x64\Release\MGen"
+
+    appveyor AddMessage stop
