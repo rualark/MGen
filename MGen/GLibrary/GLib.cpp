@@ -380,6 +380,7 @@ int CGLib::GetPC(CString &st)
 		CString est;
 		est.Format("Error parsing pitch class name %s: note symbol not recognized. Correct format examples: C# or C", st);
 		WriteLog(1, est);
+		return 0;
 	}
 }
 
