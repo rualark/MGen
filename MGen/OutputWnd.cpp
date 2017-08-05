@@ -226,7 +226,7 @@ void COutputList::OnLbnDblclk()
 void COutputWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	CFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CFrameWndEx, GetTopLevelFrame());
-	((CMGenView*)(pMainFrame->GetActiveView()))->OnKeyDown(nChar, nRepCnt, nFlags);
+	(static_cast<CMGenView*>(pMainFrame->GetActiveView()))->OnKeyDown(nChar, nRepCnt, nFlags);
 
 	CDockablePane::OnKeyDown(nChar, nRepCnt, nFlags);
 }

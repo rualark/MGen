@@ -44,12 +44,12 @@ void CInfoEditCtrl::AddText(CString str, COLORREF color, DWORD dwEffects)
 {
 	// CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE 
 	// CFE_DISABLED CFE_AUTOCOLOR
-	int nOldLines = 0;
-	long nInsertionPoint = 0;
+	//int nOldLines = 0;
+	long nInsertionPoint;
 	CHARFORMAT cf;
 
 	// Save number of lines before insertion of new text
-	nOldLines = GetLineCount();
+	//nOldLines = GetLineCount();
 
 	// Initialize character format structure
 	cf.cbSize = sizeof(CHARFORMAT);
