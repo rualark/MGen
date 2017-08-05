@@ -765,6 +765,9 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 			GetActiveView()->Invalidate();
 			if ((m_state_play == 0) && (pGen->t_sent > 0)) OnButtonPlay();
 		}
+		if (CGLib::m_testing) {
+			SetTimer(TIMER4, 300, NULL);
+		}
 	}
 	if (wParam == 1) {
 		// This message is sent from generation thread when t_sent is increased
