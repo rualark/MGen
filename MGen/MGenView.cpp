@@ -255,7 +255,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 			}
 			// Show horizontal lines
-			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), y_start, ClipBox.right, y_start);
+			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), y_start, ClipBox.right, y_start);df
 			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER, ClipBox.right, ClientRect.top + Y_HEADER);
 			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER - Y_TIMELINE, 
 				ClipBox.right, ClientRect.top + Y_HEADER - Y_TIMELINE);
