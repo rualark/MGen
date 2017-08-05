@@ -27,7 +27,19 @@ void Log(CString st, int level = 0) {
 		if (level == 1) cat = "Information";
 		if (level == 2) cat = "Warning";
 		if (level == 3) cat = "Error";
-		::ShellExecute(GetDesktopWindow(), "open", "appveyor", "AddMessage \"" + st + "\" -Category " + cat, NULL, SW_SHOWNORMAL);
+		CString par = "AddMessage \"" + st + "\" -Category " + cat;
+		SHELLEXECUTEINFO sei = { 0 };
+		sei.cbSize = sizeof(SHELLEXECUTEINFO);
+		sei.fMask = SEE_MASK_NOCLOSEPROCESS;
+		sei.hwnd = NULL;
+		sei.lpVerb = NULL;
+		sei.lpFile = "appveyor";
+		sei.lpParameters = par;
+		sei.lpDirectory = NULL;
+		sei.nShow = SW_SHOW;
+		sei.hInstApp = NULL;
+		ShellExecuteEx(&sei);
+		WaitForSingleObject(sei.hProcess, 1000);
 	}
 }
 
