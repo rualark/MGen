@@ -9,4 +9,5 @@ test: off
 on_success:
 - cmd: >-
     cd "%APPVEYOR_BUILD_FOLDER%\MGen\Autotest"
+
     test.bat
