@@ -65,7 +65,6 @@ void CGenCF1::LoadHSP(CString fname)
 	ifstream fs;
 	// Check file exists
 	if (!fileExists(fname)) {
-		CString est;
 		est.Format("LoadHSP cannot find file: %s", fname);
 		WriteLog(5, est);
 		return;
@@ -118,7 +117,6 @@ void CGenCF1::LoadRules(CString fname)
 	ifstream fs;
 	// Check file exists
 	if (!fileExists(fname)) {
-		CString est;
 		est.Format("LoadRules cannot find file: %s", fname);
 		WriteLog(5, est);
 		return;
@@ -486,7 +484,7 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	int ls_max = fli_size - notes;
 	int ls_max2;
 	// Loop through windows
-	for (int ls = 0; ls <= ls_max; ++ls) {
+	for (ls = 0; ls <= ls_max; ++ls) {
 		lmin = MAX_NOTE;
 		lmax = 0;
 		ls_max2 = ls + notes;
@@ -510,7 +508,7 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 	int ls_max = fli_size - notes;
 	int ls_max2;
 	// Loop through windows
-	for (int ls = 0; ls <= ls_max; ++ls) {
+	for (ls = 0; ls <= ls_max; ++ls) {
 		lmin = MAX_NOTE;
 		lmax = 0;
 		ls_max2 = ls + notes;
@@ -573,7 +571,7 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &la
 
 int CGenCF1::FailGisTrail(vector<int> &pcc) {
 	int gis_trail = 0;
-	for (int ls = 0; ls < fli_size; ++ls) {
+	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli2[ls];
 		if (pcc[s] == 11) {
 			// Set to maximum on new G# note
@@ -593,7 +591,7 @@ int CGenCF1::FailGisTrail(vector<int> &pcc) {
 
 int CGenCF1::FailFisTrail(vector<int> &pcc) {
 	int pos1, pos2, found;
-	for (int ls = 0; ls < fli_size; ++ls) {
+	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli2[ls];
 		if (pcc[s] == 9) {
 			pos1 = max(0, ls - fis_gis_max);
@@ -655,7 +653,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	int h;
 	int first_tonic = 0;
 	// Build hm vector
-	for (int ls = 0; ls < fli_size; ++ls) {
+	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli2[ls];
 		hm[ls].clear();
 		for (int x = 0; x < hv[pc[s]].size(); ++x) {
@@ -817,9 +815,9 @@ int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2,
 }
 
 // Search for outstanding repeats
-int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
+int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int fid) {
 	int ok, f, f1;
-	if (fli_size > rlen*2) for (int ls = 0; ls < fli_size - rlen * 2; ++ls) {
+	if (fli_size > rlen*2) for (ls = 0; ls < fli_size - rlen * 2; ++ls) {
 		s = fli2[ls];
 		s1 = fli2[ls + 1];
 		if (MELODY_SEPARATION(s, s1)) {
@@ -853,10 +851,10 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 	return 0;
 }
 
-int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int ep2, int scan_len, int rlen, int fid) {
+int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int fid) {
 	int ok;
 	int f, f1;
-	if (fli_size > rlen + 1) for (int ls = 0; ls < fli_size - rlen - 1; ++ls) {
+	if (fli_size > rlen + 1) for (ls = 0; ls < fli_size - rlen - 1; ++ls) {
 		s = fli2[ls];
 		s1 = fli2[ls + 1];
 		int finish = ls + scan_len;
@@ -990,7 +988,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	if (ep2 < c_len) {
 		// Find multiple culminations at highest allowed note
 		if (nmax == max_cc[0] || nmax - nmin == max_interval) {
-			for (int ls = 0; ls < fli_size; ++ls) {
+			for (ls = 0; ls < fli_size; ++ls) {
 				if (cc[fli2[ls]] == nmax) {
 					++culm_sum;
 					culm_step = ls;
@@ -1006,7 +1004,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		}
 	}
 	else {
-		for (int ls = 0; ls < fli_size; ++ls) {
+		for (ls = 0; ls < fli_size; ++ls) {
 			if (cc[fli2[ls]] == nmax) {
 				++culm_sum;
 				culm_step = ls;
@@ -1025,7 +1023,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	return 0;
 }
 
-int CGenCF1::FailFirstNotes(vector<int> &pc, int ep2) {
+int CGenCF1::FailFirstNotes(vector<int> &pc) {
 	// Prohibit first note not tonic
 	if (pc[0] != 0) {
 		FLAG2(49, 0);
@@ -1120,10 +1118,9 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	// Last note does not affect minl/maxl
 }
 
-void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_to, int &fill_from, int &fill_end) {
+void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_end) {
 	// Create leap tail
 	tc.clear();
-	int prev_note = -1;
 	if (pre) {
 		int pos1 = fleap_start - 1;
 		int pos2 = max(fleap_start - tail_len, 0);
@@ -1176,7 +1173,7 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 		if (accept[42 + leap_id]) max_deviation = 1;
 		if (accept[120 + leap_id]) max_deviation = 2;
 	}
-	CountFillInit(c, tail_len, pre, t1, t2, fill_to, fill_from, fill_end);
+	CountFillInit(c, tail_len, pre, t1, t2, fill_end);
 	// Detect fill_end
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
 	for (int x = 0; x < tc.size(); ++x) {
@@ -1402,13 +1399,11 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from_pre, pfill_from, pdeviates, pfill_end, pdev_count;
 	// Fill parameters
 	int tail_len, fill_to, fill_to_pre, fill_from_pre, fill_from, deviates, fill_end, dev_count;
-	int prefilled_last = 0;
 	filled = 0;
 	prefilled = 0;
 	int pskips = 10;
 	int skips = 10;
 	// Calculate allowed skips 
-	int pallowed_skips = 0;
 	int allowed_skips = 0;
 	if (leap_size > 2) ++allowed_skips;
 	if (leap_size > 6) ++allowed_skips;
@@ -1562,7 +1557,7 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 	// Do not check if melody is short
 	if (fli_size < 3) return 0;
 	// Loop from second to second to last note
-	for (int ls = 1; ls < fli_size-1; ++ls) {
+	for (ls = 1; ls < fli_size-1; ++ls) {
 		s = fli2[ls];
 		// Decrement for previous tonic note
 		if (ls > tonic_window) {
@@ -2691,7 +2686,6 @@ int CGenCF1::SendPause(int pos, int v) {
 
 int CGenCF1::SendCantus() {
 	int step0 = step;
-	float ma = 0, de = 0;
 	// Save culmination position
 	cf_culm = culm_step;
 	if (svoice < 0) return 0;
@@ -2880,7 +2874,7 @@ void CGenCF1::SWA(int i, int dp) {
 	s_len = 1;
 	// Save source rpenalty
 	float rpenalty_source = rpenalty_cur;
-	long cnum;
+	long cnum = 0;
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
 	dpenalty_min = MAX_PENALTY;
@@ -3043,16 +3037,16 @@ check:
 		if (FailNoteSeq(m_pc)) goto skip;
 		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
 		if (FailLeapSmooth(m_c, m_cc, ep2, m_leap, m_smooth, m_slur)) goto skip;
-		if (FailOutstandingRepeat(m_c, m_cc, m_leap, ep2, repeat_steps2, repeat_notes2, 76)) goto skip;
-		if (FailOutstandingRepeat(m_c, m_cc, m_leap, ep2, repeat_steps3, repeat_notes3, 36)) goto skip;
-		if (FailLongRepeat(m_cc, m_leap, ep2, repeat_steps5, repeat_notes5, 72)) goto skip;
-		if (FailLongRepeat(m_cc, m_leap, ep2, repeat_steps7, repeat_notes7, 73)) goto skip;
+		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps2, repeat_notes2, 76)) goto skip;
+		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps3, repeat_notes3, 36)) goto skip;
+		if (FailLongRepeat(m_cc, m_leap, repeat_steps5, repeat_notes5, 72)) goto skip;
+		if (FailLongRepeat(m_cc, m_leap, repeat_steps7, repeat_notes7, 73)) goto skip;
 		if (FailGlobalFill(m_c, ep2, nstat2)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
 		if (FailStagnation(m_cc, nstat)) goto skip;
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
-		if (FailFirstNotes(m_pc, ep2)) goto skip;
+		if (FailFirstNotes(m_pc)) goto skip;
 		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;
 		if ((ep2>3 || ep2 == c_len) && FailMelodyHarm(m_pc)) goto skip;
 		MakeMacc(m_cc);
@@ -3198,7 +3192,8 @@ void CGenCF1::Generate()
 	if (shuffle) {
 		vector<unsigned short> ci(accepted); // cantus indexes
 		vector<unsigned char> note2(t_generated);
-		vector<CString> comment2(t_generated);
+		vector<CString> comment3(t_generated);
+		vector<CString> comment4(t_generated);
 		vector<Color> color2(t_generated);
 		for (int i = 0; i < accepted; ++i) ci[i] = i;
 		// Shuffled indexes
@@ -3211,7 +3206,8 @@ void CGenCF1::Generate()
 				s1 = i*(c_len + 1) + x;
 				s2 = ci[i]*(c_len + 1) + x;
 				note2[s1] = note[s2][v];
-				comment2[s1] = comment[s2][v];
+				comment3[s1] = comment[s2][v];
+				comment4[s1] = comment2[s2][v];
 				color2[s1] = color[s2][v];
 			}
 		}
@@ -3220,7 +3216,8 @@ void CGenCF1::Generate()
 			for (int x = 0; x < c_len; ++x) {
 				s1 = i*(c_len + 1) + x;
 				note[s1][v] = note2[s1];
-				comment[s1][v] = comment2[s1];
+				comment[s1][v] = comment3[s1];
+				comment2[s1][v] = comment4[s1];
 				color[s1][v] = color2[s1];
 			}
 		}

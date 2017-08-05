@@ -228,9 +228,9 @@ void CGenCP1::ScanCPInit() {
 
 int CGenCP1::SendCP() {
 	int step0 = step;
-	int pause_len;
+	int pause_len = 0;
 	CString st, info, rpst;
-	int pos, plen;
+	int pos = 0, plen;
 	int v, x1;
 	int real_len2 = real_len*npm;
 	Sleep(sleep_ms);
@@ -438,7 +438,7 @@ int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
-	for (int ls = 1; ls < fli_size; ++ls) {
+	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Unison
@@ -701,7 +701,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	s_len = 1;
 	// Save source rpenalty
 	float rpenalty_source = rpenalty_cur;
-	long cnum;
+	long cnum = 0;
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
 	dpenalty_min = MAX_PENALTY;
@@ -920,10 +920,10 @@ check:
 		if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], ep2, aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
-		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], ep2, repeat_steps2, 2, 76)) goto skip;
-		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], ep2, repeat_steps3, 3, 36)) goto skip;
-		if (FailLongRepeat(acc[cpv], aleap[cpv], ep2, repeat_steps5, 5, 72)) goto skip;
-		if (FailLongRepeat(acc[cpv], aleap[cpv], ep2, repeat_steps7, 7, 73)) goto skip;
+		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps2, 2, 76)) goto skip;
+		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps3, 3, 36)) goto skip;
+		if (FailLongRepeat(acc[cpv], aleap[cpv], repeat_steps5, 5, 72)) goto skip;
+		if (FailLongRepeat(acc[cpv], aleap[cpv], repeat_steps7, 7, 73)) goto skip;
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
@@ -939,7 +939,7 @@ check:
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat)) goto skip;
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
-		if (FailFirstNotes(apc[cpv], ep2)) goto skip;
+		if (FailFirstNotes(apc[cpv])) goto skip;
 		if (FailLeap(ac[cpv], ep2, aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
 		//if (FailMelodyHarm(apc[cpv], 0, ep2)) goto skip;
 		MakeMacc(acc[cpv]);

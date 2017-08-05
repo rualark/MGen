@@ -99,7 +99,6 @@ void CGenCA2::SendCorrectionsCP(int i, milliseconds time_start) {
 // Create cc, cc_len and cc_tempo
 void CGenCA2::MergeCantus() {
 	int prev_note = -1;
-	int lpos = 0;
 	fli_size = 0;
 	m_cc.clear();
 	cc_len.clear();

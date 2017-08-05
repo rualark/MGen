@@ -44,7 +44,7 @@ void CInfoEditCtrl::AddText(CString str, COLORREF color, DWORD dwEffects)
 {
 	// CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE 
 	// CFE_DISABLED CFE_AUTOCOLOR
-	int nOldLines = 0, nNewLines = 0, nScroll = 0;
+	int nOldLines = 0;
 	long nInsertionPoint = 0;
 	CHARFORMAT cf;
 

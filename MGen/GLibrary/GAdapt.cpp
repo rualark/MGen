@@ -381,7 +381,6 @@ void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int 
 	if ((ndur > rbell_mindur[ii]) && (len[i][v] > 2) &&	(randbw(0, 100) < rbell_freq[ii])) {
 		int pos1 = i;
 		int pos2 = ei;
-		int ok = 1;
 		// Find even dynamics window
 		for (int z = i + 1; z <= (i + ei) / 2; z++) {
 			if (dyn[z][v] != dyn[z - 1][v]) {

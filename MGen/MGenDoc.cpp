@@ -52,7 +52,7 @@ CMGenDoc::~CMGenDoc()
 
 void CMGenDoc::Serialize(CArchive& ar)
 {
-	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
+	//CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
@@ -228,5 +228,5 @@ BOOL CMGenDoc::OnSaveDocument(LPCTSTR lpszPathName)
 	// TODO: Add your specialized code here and/or call the base class
 	return false;
 
-	return CDocument::OnSaveDocument(lpszPathName);
+	//return CDocument::OnSaveDocument(lpszPathName);
 }

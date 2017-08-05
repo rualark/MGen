@@ -370,7 +370,6 @@ void CGVar::LoadInstrumentLayout()
 	InstGName.clear();
 	// Clear instrument config names
 	InstCName.clear();
-	int ii = 0;
 	while (fs.good()) {
 		++x;
 		pos = 0;
@@ -480,7 +479,6 @@ void CGVar::LoadInstrument(int i, CString fname)
 			st2.Trim();
 			st3.Trim();
 			st2.MakeLower();
-			int idata = atoi(st3);
 			// Initialize loading
 			parameter_found = 0;
 			LoadVar(&st2, &st3, "library", &instr_lib[i]);
@@ -1178,7 +1176,6 @@ void CGVar::LoadResults(CString dir, CString fname)
 			st2.Trim();
 			st3.Trim();
 			st2.MakeLower();
-			int idata = atoi(st3);
 			parameter_found = 0;
 			CheckVar(&st2, &st3, "ng_min", &itemp);
 			CheckVar(&st2, &st3, "ng_max", &itemp);

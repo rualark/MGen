@@ -62,7 +62,7 @@ BOOL CAlgoDlg::OnInitDialog()
 
 void CAlgoDlg::OnTvnSelchangedTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	//LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
 	UpdateControls();
 
@@ -205,7 +205,7 @@ void CAlgoDlg::OnBnClickedButtonSaveas()
 	//GetModuleFileName(NULL, buffer, MAX_PATH);
 	TCHAR buffer[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, buffer); 
-	string::size_type pos = string(buffer).find_last_of("\\/");
+	//string::size_type pos = string(buffer).find_last_of("\\/");
 	//CString path_old = string(buffer).substr(0, pos).c_str();
 	CString path_old = string(buffer).c_str();
 	path_old += "\\configs\\" + mf->AlgFolder[alg_id] + "\\";

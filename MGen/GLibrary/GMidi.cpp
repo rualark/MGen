@@ -107,7 +107,6 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> instr2 = instr;
 
 	midifile_loaded = 1;
-	float lastNoteFinished = 0.0;
 	int last_step = 0;
 	// Load tempo
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
@@ -132,7 +131,6 @@ void CGMidi::LoadMidi(CString path)
 	int v1 = 0;
 	int v2 = 0;
 	int v = 0;
-	int iname_id = 1;
 
 	for (int track = 1; track < midifile.getTrackCount(); track++) {
 		if (need_exit) break;
@@ -312,7 +310,6 @@ void CGMidi::LoadMidi(CString path)
 					// Set additional variables
 					CountOff(last_pause, pos - 1);
 				}
-				float ov = 0;
 				// Set note steps
 				for (int z = 0; z < nlen; z++) {
 					note[pos + z][v] = pitch;
@@ -485,7 +482,7 @@ void CGMidi::LoadCantus(CString path)
 		float last_tick = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
-			float time = midifile.getTimeInSeconds(mev->tick);
+			//float time = midifile.getTimeInSeconds(mev->tick);
 			if (mev->isNoteOn()) {
 				float pos2 = mev->tick;
 				int pos = round(mev->tick / (float)tpc);
@@ -614,7 +611,6 @@ void CGMidi::LoadCP(CString path)
 	vector<vector<pair<int, int>>> inter; // Intermediate structure for loading counterpoint
 	vector<CString> incom; // Incoming comments
 	vector<int> harm; // Harmony
-	int vcount = 0; // Number of voices
 	int cid = 0; // counterpoint
 	int nid = 0; // note
 	int hid = 0; // harmony
@@ -628,7 +624,7 @@ void CGMidi::LoadCP(CString path)
 		float last_tick = 0, last_tick2 = numeric_limits<float>::infinity();
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
-			float time = midifile.getTimeInSeconds(mev->tick);
+			//float time = midifile.getTimeInSeconds(mev->tick);
 			float pos2 = mev->tick;
 			int pos = round(mev->tick / (float)tpc);
 			if (mev->isMetaMessage()) {
@@ -979,9 +975,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
 		WriteLog(0, "SendMIDI mutex timed out: will try later");
 	}
-	int step21; // Voice-dependent first step
-	int step22; // Voice-independent last step
-	float time;
+	int step21 = 0; // Voice-dependent first step
+	int step22 = 0; // Voice-independent last step
+	float time = 0;
 	// Find last step not too far
 	for (i = step1; i <= step2; i++) {
 		step22 = i;
@@ -1178,8 +1174,6 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 		//if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1 && i != step1 - 2 && i != step2 - 2) continue;
 		steps = max(1, fsteps);
 		if (steps % 2 == 0) steps++;
-		// Half steps
-		int hstep = steps / 2;
 		// Calculate first and last ma positions to send
 		if (i == step1 - 1) first_cc = cc_lin.size();
 		if (i == step2 - 1) last_cc = cc_lin.size() - 1;
@@ -1283,7 +1277,7 @@ int CGMidi::GetPlayStep() {
 		// Don't need lock, because this function is called from OnDraw, which already has lock
 		int step1 = midi_play_step;
 		int step2 = midi_sent;
-		int cur_step, currentElement;
+		int cur_step = 0, currentElement;
 		int searchElement = TIME_PROC(TIME_INFO) - midi_start_time;
 		while (step1 <= step2) {
 			cur_step = (step1 + step2) / 2;

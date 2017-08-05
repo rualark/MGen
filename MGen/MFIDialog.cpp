@@ -45,7 +45,7 @@ END_MESSAGE_MAP()
 
 void CMFIDialog::OnTvnSelchangedTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	//LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 
 	UpdateControls();
 
