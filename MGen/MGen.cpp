@@ -241,7 +241,7 @@ void CMGenApp::OnFileOpen()
 {
 	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
 	if (mf->m_state_gen == 1) {
-		AfxMessageBox("Please stop generation before opening saved results");
+		AfxMessageBox("Please stop generation before opening files");
 		return;
 	}
 	TCHAR buffer[MAX_PATH];
@@ -258,27 +258,9 @@ void CMGenApp::OnFileOpen()
 
 	// Display the file dialog. When user clicks OK, fileDlg.DoModal() 
 	// returns IDOK.
-	if (fileDlg.DoModal() == IDOK)
-	{
-		// Get name
-		CString abs_path = fileDlg.GetPathName();
-		CString ext = CGLib::ext_from_path(abs_path);
-		if ((ext == "mid") || (ext == "midi")) {
-			// Convert absolute to relative
-			CString path, rel_path;
-			path = abs_path;
-			if (path.Find(path_old) > -1) {
-				rel_path = path.Mid(path_old.GetLength()+1);
-				//mf->WriteLog(1, rel_path);
-				// Check relative exists
-				if (CGLib::fileExists(rel_path)) path = rel_path;
-			}
-			mf->LoadMidi(path);
-		}
-		else {
-			mf->LoadResults(abs_path);
-		}
-		AddToRecentFileList(abs_path);
+	if (fileDlg.DoModal() == IDOK) {
+		mf->LoadFile(fileDlg.GetPathName());
+		AddToRecentFileList(fileDlg.GetPathName());
 	}
 }
 
