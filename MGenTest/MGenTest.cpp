@@ -44,6 +44,35 @@ void Log(CString st, int level = 0) {
 	}
 }
 
+void PublishTest(CString tname, int result, int tpassed) {
+	CString st;
+	CString st2;
+	st2.Format("%s: code %d in %d ms\n", tname, result, tpassed);
+	if (result) {
+		nRetCode = 2;
+		Log(st2, 3);
+	}
+	else {
+		Log(st2, 1);
+	}
+
+	CString cat = "Passed";
+	if (result) cat = "Failed";
+	st.Format("AddTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage %d", tname, tpassed, cat, result);
+	SHELLEXECUTEINFO sei = { 0 };
+	sei.cbSize = sizeof(SHELLEXECUTEINFO);
+	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
+	sei.hwnd = NULL;
+	sei.lpVerb = NULL;
+	sei.lpFile = "appveyor";
+	sei.lpParameters = st;
+	sei.lpDirectory = NULL;
+	sei.nShow = SW_SHOWNORMAL;
+	sei.hInstApp = NULL;
+	ShellExecuteEx(&sei);
+	WaitForSingleObject(sei.hProcess, 1000);
+}
+
 void LoadConfig() {
 	milliseconds time_start, time_stop;
 	ifstream fs;
@@ -83,14 +112,7 @@ void LoadConfig() {
 			time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			passed = static_cast<int>((time_stop - time_start).count());
 			GetExitCodeProcess(sei.hProcess, ecode);
-			st2.Format("%s: code %d in %d ms\n", st, *ecode, passed);
-			if (*ecode) {
-				nRetCode = 2;
-				Log(st2, 3);
-			}
-			else {
-				Log(st2, 1);
-			}
+			PublishTest(st, *ecode, passed);
 		}
 	}
 	delete ecode;
