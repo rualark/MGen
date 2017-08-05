@@ -10,6 +10,10 @@
 int CGLib::can_send_log = 1;
 HWND CGLib::m_hWnd = 0;
 int CGLib::debug_level = 1;
+int CGLib::m_ci = 1;
+int CGLib::m_testing = 0;
+CString CGLib::m_cline2 = "";
+int CGLib::exitcode = 0;
 int CGLib::parameter_found = 0;
 int CGLib::play_enabled = 1;
 UINT CGLib::WM_DEBUG_MSG = 0;
@@ -557,9 +561,33 @@ void CGLib::TestSmoothRandom()
 	WriteLog(1, est);
 }
 
+void CGLib::EscalateLog(CString st) {
+	if (m_testing && m_ci) {
+		CString par = "AddMessage \"" + m_cline2 + ": " + st + "\" -Category Error";
+		SHELLEXECUTEINFO sei = { 0 };
+		sei.cbSize = sizeof(SHELLEXECUTEINFO);
+		sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
+		sei.hwnd = NULL;
+		sei.lpVerb = NULL;
+		sei.lpFile = "appveyor";
+		sei.lpParameters = par;
+		sei.lpDirectory = NULL;
+		sei.nShow = SW_SHOWNORMAL;
+		sei.hInstApp = NULL;
+		ShellExecuteEx(&sei);
+		WaitForSingleObject(sei.hProcess, 1000);
+		exitcode = 10;
+	}
+}
+
 void CGLib::WriteLog(int i, CString st)
 {
 	if (can_send_log) {
+		// Check error log
+		if (i == LOG_TABS) {
+			EscalateLog(st);
+			i = 1;
+		}
 		if (!mutex_log.try_lock_for(chrono::milliseconds(2000))) {
 			return;
 		}

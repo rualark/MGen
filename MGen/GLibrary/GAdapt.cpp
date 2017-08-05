@@ -45,7 +45,7 @@ void CGAdapt::CheckRange(int v, int ii)
 				GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
 				InstGName[ii], InstCName[ii], v,
 				GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
-			WriteLog(1, st);
+			WriteLog(5, st);
 		}
 	}
 }

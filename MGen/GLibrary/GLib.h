@@ -176,6 +176,7 @@ public:
 	void InitRandom();
 	void TestRandom(); // Tests random generator
 	void TestSmoothRandom(); // Tests smooth random generator
+	static void EscalateLog(CString st);
 	static void WriteLog(int i, CString st);
 	static void SetStatusText(int line, CString st);
 
@@ -189,6 +190,10 @@ public:
 	static HWND m_hWnd;
 	static UINT WM_DEBUG_MSG, WM_STATUS_MSG;
 	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
+	static int m_ci; // If continuous integration is in progress
+	static int m_testing; // If currently testing
+	static CString m_cline2; // Command line filename
+	static int exitcode; // Exit code of application
 	UINT WM_GEN_FINISH;
 	timed_mutex mutex_output;
 	static timed_mutex mutex_log;

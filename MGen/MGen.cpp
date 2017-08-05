@@ -165,7 +165,8 @@ int CMGenApp::ExitInstance()
 	Gdiplus::GdiplusShutdown(m_gdiplusToken);
 	AfxOleTerm(FALSE);
 
-	return CWinAppEx::ExitInstance();
+	CWinAppEx::ExitInstance();
+	return CGLib::exitcode;
 }
 
 // CMGenApp message handlers
