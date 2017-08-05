@@ -17,6 +17,7 @@ using namespace std;
 
 CString current_dir;
 ofstream logfile;
+int ci = 0;
 
 void Log(CString st) {
 	cout << st;
@@ -67,6 +68,7 @@ void LoadConfig() {
 }
 
 int test() {
+	if (getenv("APPVEYOR_PROJECT_NAME") != NULL) ci = 1;
 	logfile.open("autotest\\test.log", ios_base::app);
 
 	TCHAR buffer[MAX_PATH];
@@ -76,8 +78,11 @@ int test() {
 
 	LoadConfig();
 	logfile.close();
-	cout << "Press any key to continue... ";
-	getch();
+	// Do not pause if continuous integration
+	if (!ci) {
+		cout << "Press any key to continue... ";
+		getch();
+	}
 	return 0;
 }
 
