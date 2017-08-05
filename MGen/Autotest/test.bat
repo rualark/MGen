@@ -1,7 +1,7 @@
 appveyor AddMessage "Test started"
 
 cd ..
-copy "..\x64\Debug\MGen.exe" .
+copy "..\x64\Release\MGen.exe" .
 MGen.exe -test configs\GenRS1\Test.pl
 MGen.exe -test configs\GenCF1\Test.pl
 MGen.exe -test configs\GenCA1\Test.pl
