@@ -228,7 +228,6 @@ void CGenCP1::ScanCPInit() {
 
 int CGenCP1::SendCP() {
 	int step0 = step;
-	float ma, de;
 	int pause_len;
 	CString st, info, rpst;
 	int pos, plen;

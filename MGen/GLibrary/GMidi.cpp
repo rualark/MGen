@@ -614,7 +614,6 @@ void CGMidi::LoadCP(CString path)
 	vector<CString> incom; // Incoming comments
 	vector<int> harm; // Harmony
 	int vcount = 0; // Number of voices
-	int v; // Current voice
 	int cid = 0; // counterpoint
 	int nid = 0; // note
 	int hid = 0; // harmony
@@ -939,7 +938,6 @@ void CGMidi::SendMIDI(int step1, int step2)
 	if (step2 == step1) return;
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	PmTimestamp timestamp_current = TIME_PROC(TIME_INFO);
-	PmTimestamp timestamp;
 	// Note start timestamp
 	PmTimestamp stimestamp; 
 	// Note end timestamp
@@ -1018,9 +1016,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 	}
 	for (int v = 0; v < v_cnt; v++) {
 		// Initialize voice
-		PmEvent event;
 		int ei;
-		int ndur;
 		int ncount = 0;
 		int ii = instr[v];
 		midi_channel = instr_channel[ii];
@@ -1146,8 +1142,7 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 	//WriteLog(4, st);
 	if (!CC) return;
 	CSmoothRandom sr;
-	int cc_value;
-	int steps, skip;
+	int steps;
 	float fsteps;
 	// Linear interpolation
 	vector <float> cc_lin;
@@ -1157,9 +1152,6 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 	vector <float> cc_time;
 	// Time of last cc sent here
 	float last_time = stime[step2 - 1];
-	float cc_step; // Length of cc interpolation step
-	float cc_pos1; // Middle of current note step
-	float cc_pos2; // Middle of next note step
 	int first_cc = 0;
 	int last_cc = 0;
 	// Find step that will give enough information for ma junction

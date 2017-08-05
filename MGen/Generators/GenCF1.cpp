@@ -1380,7 +1380,7 @@ int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &s
 	// Check if leap is compensated (without violating compensation rules)
 	// If leap is not compensated, check uncompensated rules
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
-	int child_leap, leap_next, leap_prev, unresolved, presecond;
+	int child_leap, leap_next, leap_prev, presecond;
 	int overflow, arpeg, late_leap;
 	for (s = 0; s < ep2 - 1; ++s) {
 		if (leap[s] != 0) {
@@ -2547,7 +2547,7 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 	for (int i = 0; i <= ma_range; ++i) {
 		maw.push_back(1 - i*0.5 / ma_range);
 	}
-	float ma, de, maw_sum;
+	float de, maw_sum;
 	// Moving average
 	mawVector(cc, macc, ma_range);
 	// Smooth

@@ -1151,7 +1151,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	ifstream fs;
 	CString st, st2, st3, path;
-	int pos, i;
+	int pos;
 	char pch[2550];
 	// Load strings
 	path = dir + "\\" + fname + ".txt";
