@@ -194,7 +194,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		}
 	}
 	catch (RtMidiError &error) {
-		WriteLog(1, error.getMessage().c_str());
+		WriteLog(5, error.getMessage().c_str());
 	}
 
 	st.Format("Started MGen version %s", APP_VERSION);
@@ -884,7 +884,7 @@ void CMainFrame::LoadAlgo()
 	}
 	fs.close();
 	if (AlgCount == 0) {
-		WriteLog(1, "Error loading algorithms.txt");
+		WriteLog(5, "Error loading algorithms.txt");
 	}
 }
 

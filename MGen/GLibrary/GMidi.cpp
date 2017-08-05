@@ -73,14 +73,14 @@ void CGMidi::LoadMidi(CString path)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString est;
 		est.Format("Error reading midi file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	//midifile.joinTracks();
@@ -145,7 +145,7 @@ void CGMidi::LoadMidi(CString path)
 			if (v >= MAX_VOICE) {
 				CString st;
 				st.Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
-				WriteLog(1, st);
+				WriteLog(5, st);
 				break;
 			}
 			// Resize vectors for new voice number
@@ -258,7 +258,7 @@ void CGMidi::LoadMidi(CString path)
 						if (v >= MAX_VOICE) {
 							CString st;
 							st.Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
-							WriteLog(1, st);
+							WriteLog(5, st);
 							break;
 						}
 						track_id[v] = track;
@@ -431,14 +431,14 @@ void CGMidi::LoadCantus(CString path)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString est;
 		est.Format("Error reading midi file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	midifile.linkNotePairs();
@@ -567,14 +567,14 @@ void CGMidi::LoadCP(CString path)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString est;
 		est.Format("Error reading midi file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	midifile.linkNotePairs();
@@ -812,7 +812,7 @@ void CGMidi::StartMIDI(int midi_device_i, int from)
 	if (mo->StartMidi(midi_device_i)) {
 		CString est;
 		est.Format("Cannot open midi device %d: %s", midi_device_i, mo->m_error);
-		WriteLog(1, est);
+		WriteLog(5, est);
 	}
 	CString est;
 	est.Format("Open MIDI: device %d", midi_device_i);
@@ -885,7 +885,7 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 		est.Format("Blocked AddMidiEvent to past %d step %d, type %02X, data %d/%d (before %d step %d, type %02X, data %d/%d) [start = %d]",
 			timestamp, midi_current_step, mm_type, data1, data2, midi_sent_t - midi_start_time, midi_sent,
 			Pm_MessageStatus(midi_sent_msg), Pm_MessageData1(midi_sent_msg), Pm_MessageData2(midi_sent_msg), midi_start_time); // , midi_buf_lim - midi_start_time
-		WriteLog(1, est);
+		WriteLog(5, est);
 	}
 	// Debug log
 	//CString st;
@@ -928,7 +928,7 @@ void CGMidi::CheckDstime(int i, int v)
 		CString st;
 		st.Format("Warning: step %d, voice %d has dstime %.0f, while MAX_AHEAD=%d, MAX_TRANS_DELAY=%d. Risk of event blocking (can be not seen in logs)! Probably too long legato_ahead or random_start. Or you have to increase MAX_AHEAD.",
 			i, v, dstime[i][v], MAX_AHEAD, MAX_TRANS_DELAY);
-		WriteLog(1, st);
+		WriteLog(5, st);
 		++warning_ahead;
 	}
 }
@@ -954,7 +954,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 	if (midi_sent_t < timestamp_current) {
 		CString st;
 		st.Format("SendMIDI got buf underrun in %d ms (steps %d - %d)", timestamp_current - midi_sent_t, step1, step2);
-		WriteLog(1, st);
+		WriteLog(5, st);
 		buf_underrun = 1;
 		return;
 	}
@@ -1311,7 +1311,7 @@ void CGMidi::AddNoteOn(PmTimestamp timestamp, int data1, int data2)
 			CString st;
 			st.Format("Blocked note %d/%d time %d in voice %d instrument %d out of range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_note_wrong[midi_voice] ++;
 		}
 		return;
@@ -1327,7 +1327,7 @@ void CGMidi::AddKsOn(PmTimestamp timestamp, int data1, int data2)
 			CString st;
 			st.Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_note_wrong[midi_voice] ++;
 		}
 		return;
@@ -1343,7 +1343,7 @@ void CGMidi::AddNoteOff(PmTimestamp timestamp, int data1, int data2)
 			CString st;
 			st.Format("Blocked note %d/%d time %d in voice %d instrument %d out of range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_note_wrong[midi_voice] ++;
 		}
 		return;
@@ -1359,7 +1359,7 @@ void CGMidi::AddKsOff(PmTimestamp timestamp, int data1, int data2)
 			CString st;
 			st.Format("Blocked keyswitch %d/%d time %d in voice %d instrument %d in note range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_note_wrong[midi_voice] ++;
 		}
 		return;

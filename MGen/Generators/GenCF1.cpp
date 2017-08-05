@@ -67,7 +67,7 @@ void CGenCF1::LoadHSP(CString fname)
 	if (!fileExists(fname)) {
 		CString est;
 		est.Format("LoadHSP cannot find file: %s", fname);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	fs.open(fname);
@@ -85,12 +85,12 @@ void CGenCF1::LoadHSP(CString fname)
 			Tokenize(st, ast, ";");
 			if (ast.size() != 9) {
 				est.Format("Wrong column count at line in hsp file %s: '%s'", fname, st);
-				WriteLog(1, est);
+				WriteLog(5, est);
 				return;
 			}
 			if (i > 7) {
 				est.Format("Wrong line count at line %d in hsp file %s: '%s'", i, fname, st);
-				WriteLog(1, est);
+				WriteLog(5, est);
 				return;
 			}
 			hsp[i - 1].clear();
@@ -120,7 +120,7 @@ void CGenCF1::LoadRules(CString fname)
 	if (!fileExists(fname)) {
 		CString est;
 		est.Format("LoadRules cannot find file: %s", fname);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	fs.open(fname);
@@ -138,7 +138,7 @@ void CGenCF1::LoadRules(CString fname)
 			Tokenize(st, ast, ";");
 			if (ast.size() != 10) {
 				est.Format("Wrong column count at line in rules file %s: '%s'", fname, st);
-				WriteLog(1, est);
+				WriteLog(5, est);
 				return;
 			}
 			set = atoi(ast[0]);
@@ -152,12 +152,12 @@ void CGenCF1::LoadRules(CString fname)
 				max_flags = rid + 1;
 				if (max_flags >= MAX_RULES) {
 					est.Format("Rule id (%d) is equal or greater than MAX_RULES (%d). Consider increasing MAX_RULES", rid, MAX_RULES);
-					WriteLog(1, est);
+					WriteLog(5, est);
 					return;
 				}
 			}
 			//est.Format("Found rule %s - %d", rule, rid);
-			//WriteLog(1, est);
+			//WriteLog(0, est);
 			if (accepts[set].size() < MAX_RULES) {
 				accepts[set].resize(MAX_RULES);
 				RuleName[set].resize(MAX_RULES);
@@ -230,7 +230,7 @@ int CGenCF1::GetRuleParam(int rset, int rid, int type, int id) {
 		if (type == rsComment) rs = "rule comment";
 		if (type == rsSubComment) rs = "subrule comment";
 		est.Format("Error parsing integer #%d from %s %d: '%s' (rule set %d)", id, rs, rid, st, rset);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return 0;
 	}
 	return RuleParam[rset][rid][type][id];
@@ -314,7 +314,7 @@ int CGenCF1::SelectRuleSet(int rs)
 	if (!accepts[rule_set].size()) {
 		CString est;
 		est.Format("Cannot select rule set %d. It was not loaded from rules configuration file.", rule_set);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		error = 1;
 	}
 	else {
@@ -325,7 +325,7 @@ int CGenCF1::SelectRuleSet(int rs)
 		// Check that at least one rule is accepted
 		for (int i = 0; i < max_flags; ++i) {
 			if (accept[i]) break;
-			if (i == max_flags - 1) WriteLog(1, "Warning: all rules are rejected (0) in configuration file");
+			if (i == max_flags - 1) WriteLog(5, "Warning: all rules are rejected (0) in configuration file");
 		}
 		// Calculate second level flags count
 		flags_need2 = 0;
@@ -392,7 +392,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 		else {
 			CString est;
 			est.Format("Warning: method name unrecognized: %s", *sV);
-			WriteLog(1, est);
+			WriteLog(5, est);
 		}
 	}
 	// Load tonic
@@ -1974,7 +1974,7 @@ int CGenCF1::FailWindowsLimit() {
 		CString est;
 		est.Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
 			c_len, s_len, MAX_WIND);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return 1;
 	}
 	return 0;
@@ -2785,7 +2785,7 @@ int CGenCF1::InitCantus()
 	}
 	// Check that method is selected
 	if (method == mUndefined) {
-		WriteLog(1, "Error: method not specified in algorithm configuration file");
+		WriteLog(5, "Error: method not specified in algorithm configuration file");
 		error = 2;
 	}
 	// Check harmonic meaning loaded
@@ -2802,7 +2802,7 @@ void CGenCF1::TestDiatonic()
 		int d = CC_C(i, tonic_cur, minor_cur);
 		int cc = C_CC(d, tonic_cur, minor_cur);
 		st.Format("Test diatonic: %d [to d]-> %d [to c]-> %d", i, d, cc);
-		WriteLog(1, st);
+		WriteLog(0, st);
 	}
 }
 

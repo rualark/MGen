@@ -60,7 +60,7 @@ void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Des
 				*Dest = vmin;
 				CString st;
 				st.Format("Variable %s is %d (below minimum allowed value %d) - corrected to %d", *sName, *sValue, vmin, vmin);
-				WriteLog(1, st);
+				WriteLog(5, st);
 			}
 		}
 		if (vmax != -1) {
@@ -68,7 +68,7 @@ void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Des
 				*Dest = vmax;
 				CString st;
 				st.Format("Variable %s is %d (above maximum allowed value %d) - corrected to %d", *sName, *sValue, vmax, vmax);
-				WriteLog(1, st);
+				WriteLog(5, st);
 			}
 		}
 	}
@@ -82,7 +82,7 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, int * vm
 		if (pos == -1) {
 			CString est;
 			est.Format("Error parsing range variable '%s'. Range format must be 'X-Y'. Not found '-' symbol in string '%s'.", *sName, *sValue);
-			WriteLog(1, est);
+			WriteLog(5, est);
 		}
 		else {
 			CString st, st2;
@@ -107,7 +107,7 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, float * 
 		if (pos == -1) {
 			CString est;
 			est.Format("Error parsing range variable '%s'. Range format must be 'X-Y'. Not found '-' symbol in string '%s'.", *sName, *sValue);
-			WriteLog(1, est);
+			WriteLog(5, est);
 		}
 		else {
 			CString st, st2;
@@ -153,7 +153,7 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 			if (i >= Dest.size()) {
 				CString est;
 				est.Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
-				WriteLog(1, est);
+				WriteLog(5, est);
 				return;
 			}
 			Dest[i] = atoi(st);
@@ -360,7 +360,7 @@ int CGLib::GetNoteI(CString &st)
 			CString est;
 			if (nid > -1)	est.Format("Error parsing note name %s: not found octave indicator after note. Correct format examples: C#2 or C3", st);
 			else est.Format("Error parsing note name %s: note symbol not recognized. Correct format examples: C#2 or C3", st);
-			WriteLog(1, est);
+			WriteLog(5, est);
 			return -1;
 		}
 	}
@@ -390,7 +390,7 @@ int CGLib::GetPC(CString &st)
 	else {
 		CString est;
 		est.Format("Error parsing pitch class name %s: note symbol not recognized. Correct format examples: C# or C", st);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return 0;
 	}
 }
@@ -534,7 +534,7 @@ void CGLib::TestRandom()
 	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 	CString est;
 	est.Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
-	WriteLog(1, est);
+	WriteLog(0, est);
 }
 
 void CGLib::TestSmoothRandom()
@@ -558,7 +558,7 @@ void CGLib::TestSmoothRandom()
 	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 	CString est;
 	est.Format("TestSmoothRandom with %d samples took %d ms", n_samples, time_stop - time_start);
-	WriteLog(1, est);
+	WriteLog(0, est);
 }
 
 void CGLib::EscalateLog(CString st) {
@@ -671,9 +671,9 @@ void CGLib::TestVSet()
 		}
 		// Duplicate
 		else {
-			//WriteLog(1, "Found duplicate");
+			//WriteLog(0, "Found duplicate");
 		}
 	}
 	st.Format("Total elements: %d", vs.s.size());
-	WriteLog(1, st);
+	WriteLog(0, st);
 }

@@ -45,7 +45,7 @@ void CGAdapt::CheckRange(int v, int ii)
 				GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
 				InstGName[ii], InstCName[ii], v,
 				GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
-			WriteLog(5, st);
+			WriteLog(1, st);
 		}
 	}
 }
@@ -656,7 +656,7 @@ void CGAdapt::Adapt(int step1, int step2)
 		if ((isent[ii] > instr_poly[ii]) && (!warning_poly[ii])) {
 			CString est;
 			est.Format("Warning: sending %d voices to instrument %s [%d] with polyphony = %d", isent[ii], InstGName[ii], ii, instr_poly[ii]);
-			WriteLog(1, est);
+			WriteLog(5, est);
 			warning_poly[ii]++;
 		}
 	}

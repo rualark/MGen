@@ -1,10 +1,10 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 101 # Id of the currently selected algorithm
-Config = Test # Name of configuration file for selected algorithm
+Algorithm = 2001 # Id of the currently selected algorithm
+Config = autoconf-beyond # Name of configuration file for selected algorithm
 MIDI_OUT = [DISABLE PLAYBACK] # Name of MIDI device used for playing notes
-Horizontal_zoom = 500 # Zoom of the piano roll. Can be from 1 to 500
+Horizontal_zoom = 100 # Zoom of the piano roll. Can be from 1 to 500
 playback_speed = 100 # Playback speed in percent
 show_marks = 1 # Set to 1 to show note mark strings
 show_comments = 1 # Set to 1 to surround notes which have comments with rectangles

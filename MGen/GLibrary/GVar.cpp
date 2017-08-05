@@ -131,7 +131,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 {
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
-		WriteLog(1, "Critical error: ResizeVectors mutex timed out");
+		WriteLog(5, "Critical error: ResizeVectors mutex timed out");
 	}
 	if (vsize == -1) vsize = v_cnt;
 	pause.resize(size);
@@ -225,7 +225,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 	if (!fileExists(fname)) {
 		CString est;
 		est.Format("LoadConfig cannot find file: %s", fname);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	fs.open(fname);
@@ -279,7 +279,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 			if (!m_loading) {
 				LoadConfigLine(&st2, &st3, idata, fdata);
 				if (!parameter_found) {
-					WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+					WriteLog(5, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
 				}
 			}
 		}
@@ -335,13 +335,13 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 						CString est;
 						est.Format("Cannot find any instrument named %s (%d) in layout %s. Mapped to default instrument %s/%s (%d)", 
 							st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size()-1);
-						WriteLog(1, est);
+						WriteLog(5, est);
 					}
 					else {
 						CString est;
 						est.Format("Cannot map instrument named %s (%d) in layout %s. Probably too many voices for this instrument type.  Mapped to default instrument %s/%s (%d)", 
 							st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size() - 1);
-						WriteLog(1, est);
+						WriteLog(5, est);
 					}
 				}
 			}
@@ -357,7 +357,7 @@ void CGVar::LoadInstrumentLayout()
 	if (!fileExists(fname)) {
 		CString est;
 		est.Format("LoadInstrumentLayout cannot find file: %s", fname);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	ifstream fs;
@@ -389,7 +389,7 @@ void CGVar::LoadInstrumentLayout()
 			if (InstCName.size() >= MAX_INSTR) {
 				CString est;
 				est.Format("LoadInstrumentLayout found more instruments than MAX_INSTR (%d) in file: %s. Increase MAX_INSTR if needed", MAX_INSTR, fname);
-				WriteLog(1, est);
+				WriteLog(5, est);
 				break;
 			}
 			st2 = st.Tokenize("|", pos);
@@ -416,14 +416,14 @@ void CGVar::LoadInstrumentLayout()
 			CheckVar(&st2, &st3, "rnd_tempo", &rnd_tempo);
 			CheckVar(&st2, &st3, "rnd_tempo_step", &rnd_tempo_step);
 			if (!parameter_found) {
-				WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+				WriteLog(5, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
 			}
 		}
 	}
 	for (int i = InstGName.size(); i < MAX_VOICE; i++) instr[i] = InstGName.size() - 1;
 	fs.close();
 	if (InstCName.size() == 0) {
-		WriteLog(1, "Error loading instrument layout from " + fname);
+		WriteLog(5, "Error loading instrument layout from " + fname);
 	}
 	// Log
 	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
@@ -436,7 +436,7 @@ void CGVar::LoadInstruments()
 {
 	CString st, st2, st3;
 	if (InstCName.size() == 0) {
-		WriteLog(1, "No instruments loaded: layout empty");
+		WriteLog(5, "No instruments loaded: layout empty");
 		return;
 	}
 	for (int i = 0; i < InstCName.size(); ++i) {
@@ -451,7 +451,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 	ifstream fs;
 	if (!fileExists(fname)) {
-		WriteLog(1, "Cannot find instrument config file " + fname);
+		WriteLog(5, "Cannot find instrument config file " + fname);
 		return;
 	}
 	fs.open(fname);
@@ -561,7 +561,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 			CheckVar(&st2, &st3, "end_vib_dur", &end_vib_dur[i]);
 			CheckVar(&st2, &st3, "end_vib_freq", &end_vib_freq[i]);
 			if (!parameter_found) {
-				WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+				WriteLog(5, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
 			}
 			//CGVar::LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 		}
@@ -768,7 +768,7 @@ void CGVar::LoadVector2C(ifstream& fs, vector< vector<unsigned char> > &v2D, int
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 		CString est;
 		est.Format("LoadVector2C: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		warning_loadvectors++;
 	}
 }
@@ -782,7 +782,7 @@ void CGVar::LoadVector2S(ifstream& fs, vector< vector<unsigned short> > &v2D, in
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 		CString est;
 		est.Format("LoadVector2S: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		warning_loadvectors++;
 	}
 }
@@ -796,7 +796,7 @@ void CGVar::LoadVector2Color(ifstream & fs, vector< vector<Color> > &v2D, int i)
 		if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 			CString est;
 			est.Format("LoadVector2Color: Error reading %d bytes from binary file (got %d bytes instead) at step %d", bytes, read_count, i);
-			WriteLog(1, est);
+			WriteLog(5, est);
 			warning_loadvectors++;
 		}
 		v2D[i][v].SetValue(color);
@@ -813,7 +813,7 @@ void CGVar::LoadVector2ST(ifstream & fs, vector< vector<CString> > &v2D, int i) 
 		if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 			CString est;
 			est.Format("LoadVector2ST len: Error reading %d bytes from binary file (got %d bytes instead) at step %d: %d", bytes, read_count, i, len);
-			WriteLog(1, est);
+			WriteLog(5, est);
 			warning_loadvectors++;
 		}
 		if (len != 0) {
@@ -825,13 +825,13 @@ void CGVar::LoadVector2ST(ifstream & fs, vector< vector<CString> > &v2D, int i) 
 			if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 				CString est;
 				est.Format("LoadVector2ST: Error reading %d bytes from binary file (got %d bytes instead) at step %d: %s", bytes, read_count, i, v2D[i][v]);
-				WriteLog(1, est);
+				WriteLog(5, est);
 				warning_loadvectors++;
 			}
 			if (st.find_first_not_of(" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890`-=[]\\';/.,~!@#$%^&*()_+|{}:<>?1234567890") != string::npos && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 				CString est;
 				est.Format("LoadVector2ST: String contains unprintable characters at step %d: %s", i, v2D[i][v]);
-				WriteLog(1, est);
+				WriteLog(5, est);
 				warning_loadvectors++;
 			}
 		}
@@ -848,7 +848,7 @@ void CGVar::LoadVector(ifstream &fs, vector<float> &v) {
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 		CString est;
 		est.Format("LoadVector float: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		warning_loadvectors++;
 	}
 }
@@ -863,7 +863,7 @@ void CGVar::LoadVector(ifstream &fs, vector<unsigned char> &v) {
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 		CString est;
 		est.Format("LoadVector uchar: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		warning_loadvectors++;
 	}
 }
@@ -878,7 +878,7 @@ void CGVar::LoadVector(ifstream &fs, vector<Color> &v) {
 	if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 		CString est;
 		est.Format("LoadVector Color: Error reading %d bytes from binary file (got %d bytes instead)", bytes, read_count);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		warning_loadvectors++;
 	}
 }
@@ -893,7 +893,7 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	fs.open(path, ifstream::binary);
@@ -950,13 +950,13 @@ void CGVar::ValidateVectors2(int step1, int step2) {
 			// Check vel is zero
 			if (!vel[i][v] && !pause[i][v] && warning_valid < MAX_WARN_VALID) {
 				st.Format("Validation failed at step %d voice %d: velocity cannot be zero", i, v);
-				WriteLog(1, st);
+				WriteLog(5, st);
 				warning_valid++;
 			}
 			// Check vel is above 127
 			if (vel[i][v] > 127 && !pause[i][v] && warning_valid < MAX_WARN_VALID) {
 				st.Format("Validation failed at step %d voice %d: velocity cannot be above 127", i, v);
-				WriteLog(1, st);
+				WriteLog(5, st);
 				warning_valid++;
 			}
 		}
@@ -977,7 +977,7 @@ void CGVar::ValidateVectors(int step1, int step2) {
 	if (!step1) for (int v = 0; v < v_cnt; v++) {
 		if (coff[0][v] && warning_valid < MAX_WARN_VALID) {
 			st.Format("Validation failed at step 0 voice %d: coff must be zero", v);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_valid++;
 		}
 	}
@@ -988,32 +988,32 @@ void CGVar::ValidateVectors(int step1, int step2) {
 				if (coff[i][v]) {
 					if (pause[i][v] != pause[i - 1][v] && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: pause change requires coff=0", i, v);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_valid++;
 					}
 					if (note[i][v] != note[i - 1][v] && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: note change requires coff=0", i, v);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_valid++;
 					}
 					if (len[i][v] != len[i - 1][v] && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: len change requires coff=0", i, v);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_valid++;
 					}
 					if (coff[i][v] != coff[i - 1][v] + 1 && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: coff must increase by 1 each step inside note/pause", i, v);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_valid++;
 					}
 					if (poff[i][v] != poff[i - 1][v] + 1 && i != coff[i][v] && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: poff must increase by 1 each step inside note/pause", i, v);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_valid++;
 					}
 					if (noff[i][v] != noff[i - 1][v] - 1 && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: noff must decrease by 1 each step inside note/pause", i, v);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_valid++;
 					}
 				}
@@ -1021,12 +1021,12 @@ void CGVar::ValidateVectors(int step1, int step2) {
 				else {
 					if (noff[i - 1][v] != 1 && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: noff must equal 1 one step before next note/pause", i, v);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_valid++;
 					}
 					if (poff[i][v] != len[i-1][v] && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: poff must equal len of previous note at first step of note/pause", i, v);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_valid++;
 					}
 				}
@@ -1034,44 +1034,44 @@ void CGVar::ValidateVectors(int step1, int step2) {
 			// Check len is not zero
 			if (!len[i][v] && warning_valid < MAX_WARN_VALID) {
 				st.Format("Validation failed at step %d voice %d: len cannot be zero", i, v);
-				WriteLog(1, st);
+				WriteLog(5, st);
 				warning_valid++;
 			}
 			// Check key is correct
 			if ((tonic[i][v]<0 || tonic[i][v]>11) && warning_valid < MAX_WARN_VALID) {
 				st.Format("Validation failed at step %d voice %d: tonic must be in range 0-11", i, v);
-				WriteLog(1, st);
+				WriteLog(5, st);
 				warning_valid++;
 			}
 			// Check mode is correct
 			if ((minor[i][v]<0 || minor[i][v]>1) && warning_valid < MAX_WARN_VALID) {
 				st.Format("Validation failed at step %d voice %d: minor must be in range 0-1", i, v);
-				WriteLog(1, st);
+				WriteLog(5, st);
 				warning_valid++;
 			}
 		}
 		// Check tempo is not zero
 		if (!tempo[i] && warning_valid < MAX_WARN_VALID) {
 			st.Format("Validation failed at step %d: tempo cannot be zero", i);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_valid++;
 		}
 		// Check stime is not zero
 		if (!stime[i] && i > 0 && warning_valid < MAX_WARN_VALID) {
 			st.Format("Validation failed at step %d: stime can be zero only at first step", i);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_valid++;
 		}
 		// Check etime is not zero
 		if (!stime[i] && i > 0 && warning_valid < MAX_WARN_VALID) {
 			st.Format("Validation failed at step %d: etime cannot be zero", i);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_valid++;
 		}
 		// Check etime is greater than stime
 		if (etime[i] <= stime[i] && warning_valid < MAX_WARN_VALID) {
 			st.Format("Validation failed at step %d: etime must be greater than stime", i);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			warning_valid++;
 		}
 	}
@@ -1095,7 +1095,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	fs.open(path);
@@ -1113,7 +1113,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	fs.open(path);
@@ -1131,7 +1131,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	fs.open(path);
@@ -1158,7 +1158,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
-		WriteLog(1, est);
+		WriteLog(5, est);
 		return;
 	}
 	fs.open(path);
@@ -1196,7 +1196,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 			LoadVar(&st2, &st3, "m_config", &m_config);
 			LoadVar(&st2, &st3, "save_format_version", &save_format_version);
 			if (!parameter_found) {
-				WriteLog(1, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + path);
+				WriteLog(5, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + path);
 			}
 		}
 	}

@@ -29,7 +29,7 @@ int CGenCP1::InitCP() {
 	}
 	// Check that method is selected
 	if (method == mUndefined) {
-		WriteLog(1, "Error: method not specified in algorithm configuration file");
+		WriteLog(5, "Error: method not specified in algorithm configuration file");
 		error = 2;
 	}
 	ac.resize(av_cnt);

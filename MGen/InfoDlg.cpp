@@ -49,7 +49,7 @@ BOOL CInfoDlg::OnInitDialog()
 	CGMidi *pGen = mf->pGen;
 	if (pGen != 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
-			mf->WriteLog(1, "InfoDlg mutex timed out: showing nothing");
+			mf->WriteLog(5, "InfoDlg mutex timed out: showing nothing");
 			return TRUE;
 		}
 		int ms = ((CMGenView*)(mf->GetActiveView()))->mouse_step;
