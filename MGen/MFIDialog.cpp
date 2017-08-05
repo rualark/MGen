@@ -63,7 +63,7 @@ void CMFIDialog::OnNMDblclkTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CMFIDialog::OnBnClickedOk()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	HTREEITEM hti = m_tree.GetSelectedItem();
 	mf->m_algo = m_tree.GetItemData(hti);
 	mf->m_algo_id = mf->AlgID[mf->m_algo];
@@ -85,7 +85,7 @@ BOOL CMFIDialog::OnInitDialog()
 
 void CMFIDialog::LoadTree()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	CString gname;
 	m_tree.DeleteAllItems();
 	for (int i = 0; i < mf->AlgMFIGCount; i++) {
@@ -113,7 +113,7 @@ void CMFIDialog::LoadTree()
 
 void CMFIDialog::UpdateControls()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	HTREEITEM hti = m_tree.GetSelectedItem();
 	if (hti == NULL) {
 		// Clear all

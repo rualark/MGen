@@ -46,7 +46,7 @@ BOOL CEditParamsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	m_algo.SetWindowTextA(mf->AlgName[mf->m_algo]);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

@@ -71,7 +71,7 @@ void CAlgoDlg::OnTvnSelchangedTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CAlgoDlg::LoadTree()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	CString gname;
 	m_tree.DeleteAllItems();
 	for (int i = 0; i < mf->AlgGCount; i++) {
@@ -108,7 +108,7 @@ void CAlgoDlg::LoadTree()
 
 void CAlgoDlg::UpdateControls()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	HTREEITEM hti = m_tree.GetSelectedItem();
 	if (hti == NULL) {
 		// Clear all
@@ -197,7 +197,7 @@ void CAlgoDlg::LoadFile(CString path) {
 
 void CAlgoDlg::OnBnClickedButtonSaveas()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	HTREEITEM hti = m_tree.GetSelectedItem();
 	int alg_id = m_tree.GetItemData(m_tree.GetParentItem(hti));
 	// Get current folder
@@ -268,7 +268,7 @@ void CAlgoDlg::OnBnClickedButtonSaveas()
 
 void CAlgoDlg::OnBnClickedButtonEdit()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	HTREEITEM hti = m_tree.GetSelectedItem();
 	int alg_id = m_tree.GetItemData(m_tree.GetParentItem(hti));
 	CString path = "configs\\" + mf->AlgFolder[alg_id] + "\\" + m_tree.GetItemText(hti) + ".pl";
@@ -278,7 +278,7 @@ void CAlgoDlg::OnBnClickedButtonEdit()
 
 void CAlgoDlg::OnBnClickedOk()
 {
-	CMainFrame* mf = (CMainFrame*)theApp.m_pMainWnd;
+	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	HTREEITEM hti = m_tree.GetSelectedItem();
 	mf->m_algo = m_tree.GetItemData(m_tree.GetParentItem(hti));
 	mf->m_algo_id = mf->AlgID[mf->m_algo];
