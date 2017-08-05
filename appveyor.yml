@@ -10,6 +10,6 @@ on_success:
 - cmd: >-
     appveyor AddMessage start
 
-rem    "%APPVEYOR_BUILD_FOLDER%\x64\Release\MGen"
+    rem "%APPVEYOR_BUILD_FOLDER%\x64\Release\MGen"
 
     appveyor AddMessage stop

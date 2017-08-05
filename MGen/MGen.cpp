@@ -137,7 +137,7 @@ BOOL CMGenApp::InitInstance()
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);
+	//ParseCommandLine(cmdInfo);
 
 	// Enable DDE Execute open
 	EnableShellOpen();
