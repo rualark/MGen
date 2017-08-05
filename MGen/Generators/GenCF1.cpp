@@ -3163,6 +3163,7 @@ void CGenCF1::ScanRight(vector<int> &cc) {
 
 void CGenCF1::Generate()
 {
+	test_cc[1000] = 1;
 	// Save first note because it will be overwritten by random generator
 	first_note0 = first_note;
 	test_cc.resize(10);
