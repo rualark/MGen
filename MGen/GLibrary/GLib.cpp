@@ -563,7 +563,7 @@ void CGLib::TestSmoothRandom()
 
 void CGLib::EscalateLog(CString st) {
 	if (m_testing && m_ci) {
-		CString par = "AddMessage \"" + m_cline2 + ": " + st + "\" -Category Error";
+		CString par = "AddMessage \"" + m_cline2 + ": " + st + "\" -Category Warning";
 		SHELLEXECUTEINFO sei = { 0 };
 		sei.cbSize = sizeof(SHELLEXECUTEINFO);
 		sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
