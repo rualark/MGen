@@ -913,8 +913,6 @@ void CMainFrame::LoadSettings()
 			st2.MakeLower();
 			int idata = atoi(st3);
 			if (st2 == "algorithm") {
-				CMFCRibbonComboBox *pCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox,
-					m_wndRibbonBar.FindByID(ID_COMBO_ALGO));
 				m_algo_id = idata;
 				if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
 			}

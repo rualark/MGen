@@ -283,7 +283,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			// Show notes
 			time_stop4 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-			int cutend;
+			int cutend = 0;
 			Color ncolor, mcolor;
 			int alpha;
 			int step_dyn = mf->m_step_dyn;
@@ -473,7 +473,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			// Highlight selection
 			if ((mouse_step > -1)) {
-				int step3 = max((ClipBox.left - X_FIELD) / nwidth - 1, pGen->t_sent);
+				//int step3 = max((ClipBox.left - X_FIELD) / nwidth - 1, pGen->t_sent);
 				g.FillRectangle(&brush_agray, X_FIELD + mouse_step * nwidth,
 					ClientRect.top + Y_HEADER + 1,
 					nwidth, y_start - ClientRect.top - Y_HEADER - 1);
@@ -641,7 +641,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 			else {
 				int min_step = min(step1, min(step2, min(step21, step22)));
 				int max_step = max(step1, max(step2, max(step21, step22)));
-				int step2 = max(mouse_step_old, mouse_step);
+				//int step2 = max(mouse_step_old, mouse_step);
 				InvalidateRect(CRect(X_FIELD + min_step*nwidth - scroll.x, 0,
 					X_FIELD + (max_step + off + 1)*nwidth - scroll.x, 1080));
 				//CString st;
@@ -705,13 +705,11 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 			if (!result) return;
 			mouse_voice = result - 1;
 		}
-		CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 		CInfoDlg dlg;
 		dlg.pGen = mf->pGen;
 		dlg.DoModal();
 	}
 	else if ((mouse_step > -1) && (mouse_in_timeline)) {
-		CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 		if ((mf->m_state_gen == 2) && (mf->m_state_play == 0))
 			mf->StartPlay(mouse_step);
 	}
