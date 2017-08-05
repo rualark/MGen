@@ -135,6 +135,7 @@ void CGMidi::LoadMidi(CString path)
 	int iname_id = 1;
 
 	for (int track = 1; track < midifile.getTrackCount(); track++) {
+		if (need_exit) break;
 		if (track > 1) {
 			// Get next free voice
 			v1 = v2 + 1;

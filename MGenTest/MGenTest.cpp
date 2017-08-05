@@ -75,13 +75,13 @@ void LoadConfig() {
 			sei.hInstApp = NULL;
 			time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			ShellExecuteEx(&sei);
-			if (WaitForSingleObject(sei.hProcess, 10000) == WAIT_TIMEOUT) {
+			if (WaitForSingleObject(sei.hProcess, 60000) == WAIT_TIMEOUT) {
 				Log(st + ": Timeout waiting for process\n", 3);
 				exit(1);
 			}
 
 			time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-			passed = (time_stop - time_start).count();
+			passed = static_cast<int>((time_stop - time_start).count());
 			GetExitCodeProcess(sei.hProcess, ecode);
 			st2.Format("%s: code %d in %d ms\n", st, *ecode, passed);
 			if (*ecode) {
@@ -111,7 +111,7 @@ int test() {
 	// Do not pause if continuous integration
 	if (!ci) {
 		cout << "Press any key to continue... ";
-		getch();
+		_getch();
 	}
 	return 0;
 }
