@@ -1,6 +1,15 @@
 configs\GenRS1\Test.pl
-configs\GenCF1\Test.pl
-configs\GenCA1\Test.pl
+configs\GenCF1\window-scan.pl
+configs\GenCF1\swa.pl
+configs\GenCF1\swa-high.pl
+configs\GenCA1\known-cf-maj.pl
+configs\GenCA1\known-cf-min.pl
+configs\GenCA1\test-leaps.pl
+configs\GenCA1\test-leap-fill.pl
+configs\GenCA1\test-fill.pl
+configs\GenCA1\test-tritone.pl
+configs\GenCA1\test-minor-alter.pl
+configs\GenCA1\test-tonic.pl
 configs\GenCP1\Test.pl
 configs\GenCA2\Test.pl
 configs\GenMP1\Test.pl
