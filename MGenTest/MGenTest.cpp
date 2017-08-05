@@ -20,6 +20,21 @@ ofstream logfile;
 int ci = 0;
 int nRetCode = 0;
 
+void Run(CString fname, CString par, int delay) {
+	SHELLEXECUTEINFO sei = { 0 };
+	sei.cbSize = sizeof(SHELLEXECUTEINFO);
+	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
+	sei.hwnd = NULL;
+	sei.lpVerb = NULL;
+	sei.lpFile = fname;
+	sei.lpParameters = par;
+	sei.lpDirectory = NULL;
+	sei.nShow = SW_SHOWNORMAL;
+	sei.hInstApp = NULL;
+	ShellExecuteEx(&sei);
+	WaitForSingleObject(sei.hProcess, delay);
+}
+
 void Log(CString st, int level = 0) {
 	cout << st;
 	logfile << st;
@@ -29,19 +44,14 @@ void Log(CString st, int level = 0) {
 		if (level == 2) cat = "Warning";
 		if (level == 3) cat = "Error";
 		CString par = "AddMessage \"" + st + "\" -Category " + cat;
-		SHELLEXECUTEINFO sei = { 0 };
-		sei.cbSize = sizeof(SHELLEXECUTEINFO);
-		sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
-		sei.hwnd = NULL;
-		sei.lpVerb = NULL;
-		sei.lpFile = "appveyor";
-		sei.lpParameters = par;
-		sei.lpDirectory = NULL;
-		sei.nShow = SW_SHOWNORMAL;
-		sei.hInstApp = NULL;
-		ShellExecuteEx(&sei);
-		WaitForSingleObject(sei.hProcess, 1000);
+		Run("appveyor", par, 1000);
 	}
+}
+
+void ClearBuffer() {
+	fstream fs;
+	fs.open("autotest\\buffer.log", ios::out);
+	fs.close();
 }
 
 void PublishTest(CString tname, int result, int tpassed) {
@@ -58,19 +68,8 @@ void PublishTest(CString tname, int result, int tpassed) {
 
 	CString cat = "Passed";
 	if (result) cat = "Failed";
-	st.Format("AddTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage %d", tname, tpassed, cat, result);
-	SHELLEXECUTEINFO sei = { 0 };
-	sei.cbSize = sizeof(SHELLEXECUTEINFO);
-	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
-	sei.hwnd = NULL;
-	sei.lpVerb = NULL;
-	sei.lpFile = "appveyor";
-	sei.lpParameters = st;
-	sei.lpDirectory = NULL;
-	sei.nShow = SW_SHOWNORMAL;
-	sei.hInstApp = NULL;
-	ShellExecuteEx(&sei);
-	WaitForSingleObject(sei.hProcess, 1000);
+	st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage %d", tname, tpassed, cat, result);
+	Run("appveyor", st, 1000);
 }
 
 void LoadConfig() {
@@ -89,6 +88,8 @@ void LoadConfig() {
 		if (pos != -1) st = st.Left(pos);
 		st.Trim();
 		if (st.GetLength()) {
+			ClearBuffer();
+			Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running", 1000);
 			Log("Starting test config: " + st + "\n");
 			//::ShellExecute(GetDesktopWindow(), "open", "MGen", "-test " + st, NULL, SW_SHOWNORMAL);
 			st2 = "-test " + st;
