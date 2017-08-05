@@ -1,0 +1,6 @@
+configs\GenRS1\Test.pl
+configs\GenCF1\Test.pl
+configs\GenCA1\Test.pl
+#configs\GenCP1\Test.pl
+#configs\GenCA2\Test.pl
+#configs\GenMP1\Test.pl
