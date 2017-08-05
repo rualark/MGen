@@ -4,4 +4,4 @@
 # Template configs are not accessible from MGen GUI, you will need to change it outside of the program
 # Template config was created by removing Midi_file parameter from source config
 
-include "include/CA1.pl"
+include "include/CA2.pl"

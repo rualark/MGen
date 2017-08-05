@@ -8,8 +8,5 @@ build:
 test: off
 on_success:
 - cmd: >-
-    appveyor AddMessage start
-
-    rem "%APPVEYOR_BUILD_FOLDER%\x64\Release\MGen"
-
-    appveyor AddMessage stop
+    cd "%APPVEYOR_BUILD_FOLDER%\Autotest"
+    test.bat
