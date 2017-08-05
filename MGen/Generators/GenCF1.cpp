@@ -59,7 +59,6 @@ void CGenCF1::LoadHSP(CString fname)
 {
 	CString st, st2, st3, iname, est, rule;
 	vector<CString> ast;
-	int pos = 0;
 	int i = 0;
 	hsp.resize(7);
 	ifstream fs;
@@ -79,7 +78,6 @@ void CGenCF1::LoadHSP(CString fname)
 		fs.getline(pch, 2550);
 		st = pch;
 		st.Trim();
-		pos = 0;
 		if (st.Find(";") != -1) {
 			Tokenize(st, ast, ";");
 			if (ast.size() != 9) {

@@ -496,13 +496,13 @@ void CGLib::InitRandom()
 	srand(seed);
 	//CString est;
 	//est.Format("Random test: %d", rand());
-//WriteLog(1, est);
-// Init ISAAC
-ub4 i;
-aa = bb = cc = (ub4)0;
-for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
-randinit(1);
-//TestRandom();
+	//WriteLog(1, est);
+	// Init ISAAC
+	ub4 i;
+	aa = bb = cc = (ub4)0;
+	for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
+	randinit(1);
+	//TestRandom();
 }
 
 void CGLib::TestRandom()

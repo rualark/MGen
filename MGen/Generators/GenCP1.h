@@ -69,8 +69,8 @@ protected:
 	vector<int> mli; // Forward links to first notes of each measure
 
 	// Cantus
-	int cf_nmin; // Minimum note in cantus (chromatic)
-	int cf_nmax; // Maximum note in cantus (chromatic)
+	int cf_nmin = 0; // Minimum note in cantus (chromatic)
+	int cf_nmax = 0; // Maximum note in cantus (chromatic)
 
 	// Analysis
 	vector <vector<int>> scpoint; // Source cpoint for processing

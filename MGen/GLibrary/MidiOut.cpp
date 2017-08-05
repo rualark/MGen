@@ -74,7 +74,7 @@ int CMidiOut::QueueEvent(PmEvent event)
 UINT CMidiOut::MidiThread(LPVOID pParam)
 {
 	// Need to get pointer to this object, because thread function is static
-	CMidiOut* pMO = (CMidiOut*)pParam;
+	CMidiOut* pMO = static_cast<CMidiOut*>(pParam);
 	// if Object is not valid  
 	if (pMO == NULL) return 1;
 	PmEvent event;

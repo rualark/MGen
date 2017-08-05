@@ -38,7 +38,7 @@ protected:
 	void AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount);
 											 
   // Adapt local variables
-	int slur_count; // Number of successive slurs
+	int slur_count = 0; // Number of successive slurs
 
 	// MIDI play warnings for each voice show if warning was already fired to prevent repeated warnings
 	vector<int> warning_note_range;
