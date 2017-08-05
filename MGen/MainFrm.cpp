@@ -220,9 +220,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Start log/status timer
 	SetTimer(TIMER3, LOG_TIMER, NULL);
 
+	ParseCommandLine();
+
 	//CGLib::TestVSet();
 
 	return 0;
+}
+
+void CMainFrame::ParseCommandLine() {
+	CString st = ((CMGenApp*)::AfxGetApp())->m_lpCmdLine;
+	//AfxMessageBox(st);
 }
 
 void CMainFrame::ShowStatusText(int line, CString st)
