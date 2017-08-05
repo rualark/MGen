@@ -19,10 +19,16 @@ CString current_dir;
 ofstream logfile;
 int ci = 0;
 
-void Log(CString st) {
+void Log(CString st, int level = 0) {
 	cout << st;
 	logfile << st;
-	::ShellExecute(GetDesktopWindow(), "open", "appveyor", "AddMessage \"" + st + "\"", NULL, SW_SHOWNORMAL);
+	if (level > 0) {
+		CString cat;
+		if (level == 1) cat = "Information";
+		if (level == 2) cat = "Warning";
+		if (level == 3) cat = "Error";
+		::ShellExecute(GetDesktopWindow(), "open", "appveyor", "AddMessage \"" + st + "\" -Category " + cat, NULL, SW_SHOWNORMAL);
+	}
 }
 
 void LoadConfig() {
@@ -54,13 +60,13 @@ void LoadConfig() {
 			sei.hInstApp = NULL;
 			ShellExecuteEx(&sei);
 			if (WaitForSingleObject(sei.hProcess, 10000) == WAIT_TIMEOUT) {
-				Log("Timeout waiting for process\n");
-				return;
+				Log(st + ": Timeout waiting for process\n", 3);
+				exit(1);
 			}
 
 			GetExitCodeProcess(sei.hProcess, ecode);
 			st2.Format("%d", *ecode);
-			Log("Exit code: " + st2 + "\n");
+			Log(st + ": Exit code " + st2 + "\n", (*ecode)?3:1);
 		}
 	}
 	delete ecode;
