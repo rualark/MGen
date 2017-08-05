@@ -58,7 +58,7 @@ void CInfoEditCtrl::AddText(CString str, COLORREF color, DWORD dwEffects)
 	cf.crTextColor = color;
 
 	// Set insertion point to end of text
-	nInsertionPoint = GetWindowTextLength();
+	//nInsertionPoint = GetWindowTextLength();
 	/*if (nInsertionPoint > 800)
 	{
 	// Delete first half of text to avoid running into the 64k limit
