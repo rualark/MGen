@@ -217,7 +217,6 @@ void LoadConfig() {
 			passed = static_cast<int>((time_stop - time_start).count());
 			GetExitCodeProcess(sei.hProcess, ecode);
 			PublishTest(st, *ecode, passed);
-			return;
 		}
 	}
 	delete ecode;

@@ -36,8 +36,8 @@ void CGenRS1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 
 void CGenRS1::Generate()
 {
-	WriteLog(5, "Test error 1");
-	WriteLog(5, "Test error 2");
+	//WriteLog(5, "Test error 1");
+	//WriteLog(5, "Test error 2");
 	for (int i = 0; i < t_cnt; i++) {
 		if (i >= t_allocated) ResizeVectors(t_allocated * 2);
 		if ((i > 0) && (len[i - 1][0] > 1) && (coff[i - 1][0] < len[i - 1][0] - 1)) {
