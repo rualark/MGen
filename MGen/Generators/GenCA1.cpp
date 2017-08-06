@@ -271,6 +271,22 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 	WriteLog(3, est);
 }
 
+void CGenCA1::ParseExpect() {
+	vector<CString> ast;
+	enflags.clear();
+	int max_i = cantus_incom[cantus_id].size();
+	if (!max_i) return;
+	enflags.resize(max_i);
+	for (int i = 0; i < max_i; ++i) {
+		if (cantus_incom[cantus_id][i] != "") {
+			Tokenize(cantus_incom[cantus_id][i], ast, ",");
+			for (int n = 0; n < ast.size(); ++n) {
+				enflags[i].push_back(atoi(ast[n]));
+			}
+		}
+	}
+}
+
 void CGenCA1::Generate()
 {
 	CString st;
@@ -308,6 +324,7 @@ void CGenCA1::Generate()
 		dpenalty_cur = 0;
 		c_len = cantus[i].size();
 		GetSourceRange(cantus[i]);
+		ParseExpect();
 		ScanCantus(tEval, 0, &(cantus[i]));
 		key_eval = "";
 		// Check if cantus was shown

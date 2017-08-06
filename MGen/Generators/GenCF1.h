@@ -416,6 +416,9 @@ protected:
 	// Local SWA
 	vector <long> cids;
 
+	// CA1
+	vector<vector<int>> enflags; // Expected note flags
+
 	// Cantus correcting
 	vector <int> smatrix; // Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix
