@@ -73,8 +73,6 @@ Set;Severity;Class;Group;Rule;Flag
 1;8;0;Melody;Melodic direction change near leap;Leap back;<=6th;-1;;
 1;22;60;Melody;Melodic direction change near leap;Leap back;>6th;0;;
 1;58;0;Melody;Melodic direction change near leap;Leap back;overflow;-1;;
-1;1;30;Melody;Leaps;Seventh;m7;0;;
-1;39;100;Melody;Leaps;Seventh;maj7;0;;
 1;175;0;Melody;Leaps;Leap up size;m6;-1;;
 1;176;0;Melody;Leaps;Leap up size;maj6;-1;;
 1;177;30;Melody;Leaps;Leap up size;m7;0;;
