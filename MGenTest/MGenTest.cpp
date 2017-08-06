@@ -26,15 +26,21 @@ void HTTPPost(CString server, WORD port, CString url, CString query, CString dat
 	cout << "HTTPPost to server " << server << " port " << port << " url " << url << " query " << query << " : " << data << "\n";
 	CString strHeaders = "Content-Type: application/x-www-form-urlencoded";
 	try {
+		char szBuf [2550];
+		DWORD dwRet;
 		CInternetSession session;
 		CHttpConnection* pConnection = session.GetHttpConnection(server, port);
 		CHttpFile* pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST, url);
 		BOOL result = pFile->SendRequest(strHeaders, (LPVOID)(LPCTSTR)data, data.GetLength());
+		pFile->QueryInfoStatusCode(dwRet);
+		cout << "HTTP return code: " << dwRet << "\n";
+		pFile->Read(szBuf, 2550);
+		cout << "HTTP result: " << szBuf << "\n";
 	}
 	catch (CInternetException *e) {
 		//e->ReportError();
-		TCHAR   szCause[255];
-		e->GetErrorMessage(szCause, 255);
+		TCHAR   szCause[2550];
+		e->GetErrorMessage(szCause, 2550);
 		cout << "Error when sending HTTP request: " << szCause << "\n";
 		e->Delete();
 	}
