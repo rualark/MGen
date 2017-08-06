@@ -20,6 +20,8 @@ protected:
 
 	void ParseExpect();
 
+	void ConfirmExpect();
+
 	int corrections = 3; // Number of corrections to show
 	int pre_bad = 6; // How many notes to recalculate before rule violation
 	int post_bad = 8; // How many notes to recalculate after rule violation

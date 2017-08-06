@@ -272,16 +272,46 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 }
 
 void CGenCA1::ParseExpect() {
-	vector<CString> ast;
 	enflags.clear();
 	int max_i = cantus_incom[cantus_id].size();
 	if (!max_i) return;
+	// Continue if there are lyrics
+	vector<CString> ast;
 	enflags.resize(max_i);
 	for (int i = 0; i < max_i; ++i) {
 		if (cantus_incom[cantus_id][i] != "") {
 			Tokenize(cantus_incom[cantus_id][i], ast, ",");
 			for (int n = 0; n < ast.size(); ++n) {
 				enflags[i].push_back(atoi(ast[n]));
+			}
+		}
+	}
+}
+
+void CGenCA1::ConfirmExpect() {
+	int found, fl;
+	int max_x = enflags.size();
+	for (int x = 0; x < max_x; ++x) if (enflags[x].size()) {
+		for (int e = 0; e < enflags[x].size(); ++e) {
+			fl = enflags[x][e];
+			found = 0;
+			for (int f = 0; f < anflagsc[cpv][x]; ++f) {
+				if (anflags[cpv][x][f] == fl) {
+					found = 1;
+					break;
+				}
+			}
+			if (!found) {
+				CString est;
+				est.Format("Expected flag not confirmed: %s (%s) at %d:%d %s", 
+					RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id, x, midi_file);
+				WriteLog(5, est);
+			}
+			else if (debug_level > 0) {
+				CString est;
+				est.Format("Expected flag confirmed: %s (%s) at %d:%d %s",
+					RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id, x, midi_file);
+				WriteLog(0, est);
 			}
 		}
 	}
@@ -324,8 +354,11 @@ void CGenCA1::Generate()
 		dpenalty_cur = 0;
 		c_len = cantus[i].size();
 		GetSourceRange(cantus[i]);
-		ParseExpect();
+		// Set enflags before evaluation
 		ScanCantus(tEval, 0, &(cantus[i]));
+		// Clear enflags after evaluation
+		ParseExpect();
+		ConfirmExpect();
 		key_eval = "";
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
