@@ -56,6 +56,7 @@ void HTTPPost(CString server, WORD port, CString url, CString data) {
 		CHttpFile* pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST, url);
 		pFile->AddRequestHeaders(strHeaders);
 		data = url_encode(data.GetBuffer()).c_str();
+		cout << "HTTPPost to server " << server << " port " << port << " url " << url << " : " << data << "\n";
 		pFile->SendRequestEx(data.GetLength());
 		pFile->Write(data, data.GetLength());
 		//BOOL result = pFile->SendRequest(strHeaders, (LPVOID)(LPCTSTR)data, data.GetLength());
