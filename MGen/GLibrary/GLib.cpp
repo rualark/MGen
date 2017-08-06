@@ -563,7 +563,7 @@ void CGLib::TestSmoothRandom()
 
 void CGLib::EscalateLog(CString st) {
 	if (m_testing && m_ci) {
-		AppendLineToFile("autotest\\buffer.log", st);
+		AppendLineToFile("autotest\\buffer.log", st + "\n");
 		// Send log to appveyor
 		CString par = "AddMessage \"" + m_cline2 + ": " + st + "\" -Category Warning";
 		SHELLEXECUTEINFO sei = { 0 };
