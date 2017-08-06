@@ -22,20 +22,51 @@ ofstream logfile;
 int ci = 0;
 int nRetCode = 0;
 
-void HTTPPost(CString server, WORD port, CString url, CString query, CString data) {
-	cout << "HTTPPost to server " << server << " port " << port << " url " << url << " query " << query << " : " << data << "\n";
+string url_encode(const string &value) {
+	ostringstream escaped;
+	escaped.fill('0');
+	escaped << hex;
+
+	for (string::const_iterator i = value.begin(), n = value.end(); i != n; ++i) {
+		string::value_type c = (*i);
+
+		// Keep alphanumeric and other accepted characters intact
+		if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+			escaped << c;
+			continue;
+		}
+
+		// Any other characters are percent-encoded
+		escaped << uppercase;
+		escaped << '%' << setw(2) << int((unsigned char)c);
+		escaped << nouppercase;
+	}
+
+	return escaped.str();
+}
+
+void HTTPPost(CString server, WORD port, CString url, CString data) {
+	cout << "HTTPPost to server " << server << " port " << port << " url " << url << " : " << data << "\n";
 	CString strHeaders = "Content-Type: application/x-www-form-urlencoded";
 	try {
 		char szBuf [2550];
 		DWORD dwRet;
 		CInternetSession session;
 		CHttpConnection* pConnection = session.GetHttpConnection(server, port);
-		CHttpFile* pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_PUT, url);
-		BOOL result = pFile->SendRequest(strHeaders, (LPVOID)(LPCTSTR)data, data.GetLength());
+		CHttpFile* pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST, url);
+		pFile->AddRequestHeaders(strHeaders);
+		data = url_encode(data.GetBuffer()).c_str();
+		pFile->SendRequestEx(data.GetLength());
+		pFile->Write(data, data.GetLength());
+		//BOOL result = pFile->SendRequest(strHeaders, (LPVOID)(LPCTSTR)data, data.GetLength());
 		pFile->QueryInfoStatusCode(dwRet);
 		cout << "HTTP return code: " << dwRet << "\n";
-		pFile->Read(szBuf, 2550);
-		cout << "HTTP result: " << szBuf << "\n";
+		if (dwRet == HTTP_STATUS_OK) {
+			UINT nRead = pFile->Read(szBuf, 2550);
+			if (nRead > 0) {
+				cout << "HTTP result: " << szBuf << "\n";
+			}
+		}	
 	}
 	catch (CInternetException *e) {
 		//e->ReportError();
@@ -133,7 +164,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 		" \"StdErr\" : \"\""
 		" }", tname, cat, tpassed, errors);
 	if (ci) {
-		HTTPPost(server, port, url + "api/tests", "", st);
+		HTTPPost(server, port, url + "api/tests", st);
 	}
 }
 

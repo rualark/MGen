@@ -27,6 +27,11 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 #include <afxinet.h>
 
+#include <cctype>
+#include <iomanip>
+#include <sstream>
+#include <string>
+
 #include <iostream>
 #include <conio.h>
 #include <map>
