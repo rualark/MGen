@@ -151,12 +151,14 @@ void PublishTest(CString tname, int result, int tpassed) {
 	CString errors = file("autotest/buffer.log");
 	cout << errors;
 
-	/*
-	CString cat = "Passed";
-	if (result) cat = "Failed";
-	st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage %d", tname, tpassed, cat, result);
-	Run("appveyor", st, 1000);
+	if (ci) {
+		CString cat = "Passed";
+		if (result) cat = "Failed";
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage %d", tname, tpassed, cat, result);
+		Run("appveyor", st, 1000);
+	}
 
+	/*
 	// Send HTTP
 	st.Format("{"
 		" \"testName\": \"%s\","
@@ -192,7 +194,7 @@ void LoadConfig() {
 		st.Trim();
 		if (st.GetLength()) {
 			ClearBuffer();
-			//Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running", 1000);
+			if (ci) Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running", 1000);
 			Log("Starting test config: " + st + "\n");
 			//::ShellExecute(GetDesktopWindow(), "open", "MGen", "-test " + st, NULL, SW_SHOWNORMAL);
 			st2 = "-test " + st;
