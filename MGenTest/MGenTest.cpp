@@ -15,10 +15,30 @@ CWinApp theApp;
 
 using namespace std;
 
-CString current_dir;
+CString current_dir, full_url, server, url;
+DWORD service;
+WORD port;
 ofstream logfile;
 int ci = 0;
 int nRetCode = 0;
+
+void HTTPPost(CString server, WORD port, CString url, CString query, CString data) {
+	cout << "HTTPPost to server " << server << " port " << port << " url " << url << " query " << query << " : " << data << "\n";
+	CString strHeaders = "Content-Type: application/x-www-form-urlencoded";
+	try {
+		CInternetSession session;
+		CHttpConnection* pConnection = session.GetHttpConnection(server, port);
+		CHttpFile* pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST, url);
+		BOOL result = pFile->SendRequest(strHeaders, (LPVOID)(LPCTSTR)data, data.GetLength());
+	}
+	catch (CInternetException *e) {
+		//e->ReportError();
+		TCHAR   szCause[255];
+		e->GetErrorMessage(szCause, 255);
+		cout << "Error when sending HTTP request: " << szCause << "\n";
+		e->Delete();
+	}
+}
 
 void Run(CString fname, CString par, int delay) {
 	SHELLEXECUTEINFO sei = { 0 };
@@ -48,6 +68,27 @@ void Log(CString st, int level = 0) {
 	}
 }
 
+CString file(CString fname) {
+	CString st, st2;
+	ifstream fs;
+	// Check file exists
+	if (!CGLib::fileExists(fname)) {
+		return "";
+	}
+	fs.open(fname);
+	char pch[2550];
+	while (fs.good()) {
+		// Get line
+		fs.getline(pch, 2550);
+		st2 = pch;
+		if (st2 != "") {
+			st += "- " + st2 + "\n";
+		}
+	}
+	fs.close();
+	return st;
+}
+
 void ClearBuffer() {
 	fstream fs;
 	fs.open("autotest\\buffer.log", ios::out);
@@ -70,6 +111,24 @@ void PublishTest(CString tname, int result, int tpassed) {
 	if (result) cat = "Failed";
 	st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage %d", tname, tpassed, cat, result);
 	Run("appveyor", st, 1000);
+
+	// Send HTTP
+	CString errors = file("autotest/buffer.log");
+	cout << errors;
+	st.Format("{"
+		"\"testName\": \"Test A\","
+		"\"testFramework\" : \"MSTest\","
+		"\"fileName\" : \"MGen.exe\","
+		"\"outcome\" : \"%s\","
+		"\"durationMilliseconds\" : \"%d\","
+		"\"ErrorMessage\" : \"%s\","
+		"\"ErrorStackTrace\" : \"\","
+		"\"StdOut\" : \"\","
+		"\"StdErr\" : \"\""
+		"}", cat, tpassed, errors);
+	if (ci) {
+		HTTPPost(server, port, url, "", st);
+	}
 }
 
 void LoadConfig() {
@@ -114,6 +173,7 @@ void LoadConfig() {
 			passed = static_cast<int>((time_stop - time_start).count());
 			GetExitCodeProcess(sei.hProcess, ecode);
 			PublishTest(st, *ecode, passed);
+			return;
 		}
 	}
 	delete ecode;
@@ -121,7 +181,14 @@ void LoadConfig() {
 }
 
 int test() {
-	if (getenv("APPVEYOR_PROJECT_NAME") != NULL) ci = 1;
+	//full_url = "http://my.test.server:882/some/path/script.php?parameters=123";
+	//AfxParseURL(full_url, service, server, url, port);
+	//ci = 1;
+	if (getenv("APPVEYOR_PROJECT_NAME") != NULL) {
+		ci = 1;
+		if (getenv("APPVEYOR_API_URL") != NULL) full_url = getenv("APPVEYOR_API_URL");
+		AfxParseURL(full_url, service, server, url, port);
+	}
 	logfile.open("autotest\\test.log", ios_base::app);
 
 	TCHAR buffer[MAX_PATH];
