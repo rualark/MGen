@@ -474,18 +474,46 @@ void CGMidi::LoadCantus(CString path)
 
 	int cid = 0;
 	int nid = 0;
+	vector<CString> incom; // Incoming comments
 	vector <int> c;
 	vector <int> cl;
 	vector <float> ct;
 	int bad = 0;
+	int last_pos = 0;
+	CString lyrics_pending;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		float last_tick = 0;
 		for (int i = 0; i<midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
+			float pos2 = mev->tick;
+			int pos = round(mev->tick / (float)tpc);
 			//float time = midifile.getTimeInSeconds(mev->tick);
+			if (mev->isMetaMessage()) {
+				// Lyrics
+				if (mev->getMetaType() == 5) {
+					CString st;
+					st = "";
+					for (int x = 0; x < mev->size(); x++) {
+						st += mev->data()[x];
+					}
+					// Remove first data items
+					st = st.Mid(3);
+					st = st.Trim();
+					st.MakeLower();
+					// Assign lyrics if this position was already sent
+					if (pos == last_pos) {
+						incom.resize(c.size());
+						incom[c.size()-1] = st;
+						lyrics_pending = "";
+					}
+					// Else record lyrics
+					else {
+						lyrics_pending = st;
+					}
+					// TODO: Assign lyrics if this position is new and notes will be sent later
+				}
+			}
 			if (mev->isNoteOn()) {
-				float pos2 = mev->tick;
-				int pos = round(mev->tick / (float)tpc);
 				float nlen2 = mev->getTickDuration();
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check for pause
@@ -495,9 +523,11 @@ void CGMidi::LoadCantus(CString path)
 						cantus.push_back(c);
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
+						cantus_incom.push_back(incom);
 					}
 					// Go to next cantus
 					nid = 0;
+					lyrics_pending = "";
 				}
 				if (nid == 0) {
 					bad = 0;
@@ -506,6 +536,7 @@ void CGMidi::LoadCantus(CString path)
 					c.clear();
 					cl.clear();
 					ct.clear();
+					incom.clear();
 				}
 				// Add new note
 				if ((nid == 0) || (c[nid - 1] != mev->getKeyNumber())) {
@@ -536,11 +567,18 @@ void CGMidi::LoadCantus(CString path)
 						c.push_back(mev->getKeyNumber());
 						cl.push_back(nlen);
 						ct.push_back(tempo2[pos]);
+						// Add pending lyrics
+						if (lyrics_pending != "") {
+							incom.resize(c.size());
+							incom[c.size() - 1] = lyrics_pending;
+							lyrics_pending = "";
+						}
 						nid++;
 					}
 				}
 				// Save last time
 				last_tick = pos2 + nlen2;
+				last_pos = pos;
 			}
 		}
 		// Add cantus if it is long
@@ -548,6 +586,7 @@ void CGMidi::LoadCantus(CString path)
 			cantus.push_back(c);
 			cantus_len.push_back(cl);
 			cantus_tempo.push_back(ct);
+			cantus_incom.push_back(incom);
 			nid = 0;
 		}
 	}
