@@ -2610,7 +2610,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 				if (comment2[pos][v] != "") comment2[pos][v] += ", ";
 				comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 				if (show_severity) {
-					st.Format(" [%d]", severity[fl]);
+					st.Format(" [%d/%d]", severity[fl], fl);
 					comment[pos][v] += st;
 				}
 				if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
