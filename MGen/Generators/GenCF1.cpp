@@ -1491,15 +1491,15 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 	else if (mdc1 == 2 && mdc2 == 0) FLAG2(132 + leap_id, leap_start)
 		// Far + close
 	else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, leap_start)
-		// No close
+		// Far + far1
+	else if (mdc1 == 1 && mdc2 == 1) FLAG2(63 + leap_id, leap_start)
+	// No close
 	else if (mdc1*mdc2) {
 		if (filled || prefilled) FLAG2(136 + leap_id, leap_start)
 		else FLAG2(148 + leap_id, leap_start);
 	}
 	// Close + no
-	else if (!mdc1 && mdc2 == 3) FLAG2(108 + leap_id, leap_start)
-	// Far / no + no
-	else if (mdc1 && mdc2 == 3) FLAG2(63 + leap_id, leap_start);
+	else if (!mdc1 && mdc2 == 3) FLAG2(108 + leap_id, leap_start);
 	return 0;
 }
 

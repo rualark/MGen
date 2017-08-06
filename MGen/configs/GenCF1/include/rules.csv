@@ -58,10 +58,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;0;;
 1;61;40;Melody;Melodic direction change near leap;Far + close MDC;5th;0;;
 1;62;100;Melody;Melodic direction change near leap;Far + close MDC;>5th;0;;
-1;63;0;Melody;Melodic direction change near leap;Far/no + no MDC;3rd;0;;
-1;64;0;Melody;Melodic direction change near leap;Far/no + no MDC;4th;0;;
-1;65;60;Melody;Melodic direction change near leap;Far/no + no MDC;5th;0;;
-1;66;100;Melody;Melodic direction change near leap;Far/no + no MDC;>5th;0;;
+1;63;0;Melody;Melodic direction change near leap;Far + far1 MDC;3rd;0;;
+1;64;0;Melody;Melodic direction change near leap;Far + far1 MDC;4th;0;;
+1;65;60;Melody;Melodic direction change near leap;Far + far1 MDC;5th;0;;
+1;66;100;Melody;Melodic direction change near leap;Far + far1 MDC;>5th;0;;
 1;136;0;Melody;Melodic direction change near leap;No close MDC (precomp. | comp.);3rd;0;;
 1;137;0;Melody;Melodic direction change near leap;No close MDC (precomp. | comp.);4th;0;;
 1;138;60;Melody;Melodic direction change near leap;No close MDC (precomp. | comp.);5th;0;;
