@@ -30,7 +30,7 @@ void HTTPPost(CString server, WORD port, CString url, CString query, CString dat
 		DWORD dwRet;
 		CInternetSession session;
 		CHttpConnection* pConnection = session.GetHttpConnection(server, port);
-		CHttpFile* pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST, url);
+		CHttpFile* pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_PUT, url);
 		BOOL result = pFile->SendRequest(strHeaders, (LPVOID)(LPCTSTR)data, data.GetLength());
 		pFile->QueryInfoStatusCode(dwRet);
 		cout << "HTTP return code: " << dwRet << "\n";
@@ -122,16 +122,16 @@ void PublishTest(CString tname, int result, int tpassed) {
 	CString errors = file("autotest/buffer.log");
 	cout << errors;
 	st.Format("{"
-		"\"testName\": \"%s\","
-		"\"testFramework\" : \"MSTest\","
-		"\"fileName\" : \"MGen.exe\","
-		"\"outcome\" : \"%s\","
-		"\"durationMilliseconds\" : \"%d\","
-		"\"ErrorMessage\" : \"%s\","
-		"\"ErrorStackTrace\" : \"\","
-		"\"StdOut\" : \"\","
-		"\"StdErr\" : \"\""
-		"}", tname, cat, tpassed, errors);
+		" \"testName\": \"%s\","
+		" \"testFramework\" : \"MSTest\","
+		" \"fileName\" : \"MGen.exe\","
+		" \"outcome\" : \"%s\","
+		" \"durationMilliseconds\" : \"%d\","
+		" \"ErrorMessage\" : \"%s\","
+		" \"ErrorStackTrace\" : \"\","
+		" \"StdOut\" : \"\","
+		" \"StdErr\" : \"\""
+		" }", tname, cat, tpassed, errors);
 	if (ci) {
 		HTTPPost(server, port, url + "api/tests", "", st);
 	}
