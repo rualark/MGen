@@ -133,7 +133,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 		"\"StdErr\" : \"\""
 		"}", cat, tpassed, errors);
 	if (ci) {
-		HTTPPost(server, port, url, "", st);
+		HTTPPost(server, port, url + "api/tests", "", st);
 	}
 }
 
