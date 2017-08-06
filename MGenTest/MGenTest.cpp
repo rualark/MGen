@@ -122,7 +122,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 	CString errors = file("autotest/buffer.log");
 	cout << errors;
 	st.Format("{"
-		"\"testName\": \"Test A\","
+		"\"testName\": \"%s\","
 		"\"testFramework\" : \"MSTest\","
 		"\"fileName\" : \"MGen.exe\","
 		"\"outcome\" : \"%s\","
@@ -131,7 +131,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 		"\"ErrorStackTrace\" : \"\","
 		"\"StdOut\" : \"\","
 		"\"StdErr\" : \"\""
-		"}", cat, tpassed, errors);
+		"}", tname, cat, tpassed, errors);
 	if (ci) {
 		HTTPPost(server, port, url + "api/tests", "", st);
 	}
