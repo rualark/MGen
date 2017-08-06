@@ -22,6 +22,7 @@ ofstream logfile;
 int ci = 0;
 int nRetCode = 0;
 
+/*
 string url_encode(const string &value) {
 	ostringstream escaped;
 	escaped.fill('0');
@@ -77,6 +78,7 @@ void HTTPPost(CString server, WORD port, CString url, CString data) {
 		e->Delete();
 	}
 }
+*/
 
 void Run(CString fname, CString par, int delay) {
 	SHELLEXECUTEINFO sei = { 0 };
@@ -145,14 +147,17 @@ void PublishTest(CString tname, int result, int tpassed) {
 		Log(st2, 1);
 	}
 
+	// Show errors
+	CString errors = file("autotest/buffer.log");
+	cout << errors;
+
+	/*
 	CString cat = "Passed";
 	if (result) cat = "Failed";
 	st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage %d", tname, tpassed, cat, result);
 	Run("appveyor", st, 1000);
 
 	// Send HTTP
-	CString errors = file("autotest/buffer.log");
-	cout << errors;
 	st.Format("{"
 		" \"testName\": \"%s\","
 		" \"testFramework\" : \"MSTest\","
@@ -167,6 +172,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 	if (ci) {
 		HTTPPost(server, port, url + "api/tests", st);
 	}
+	*/
 }
 
 void LoadConfig() {
@@ -186,7 +192,7 @@ void LoadConfig() {
 		st.Trim();
 		if (st.GetLength()) {
 			ClearBuffer();
-			Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running", 1000);
+			//Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running", 1000);
 			Log("Starting test config: " + st + "\n");
 			//::ShellExecute(GetDesktopWindow(), "open", "MGen", "-test " + st, NULL, SW_SHOWNORMAL);
 			st2 = "-test " + st;
@@ -224,8 +230,8 @@ int test() {
 	//ci = 1;
 	if (getenv("APPVEYOR_PROJECT_NAME") != NULL) {
 		ci = 1;
-		if (getenv("APPVEYOR_API_URL") != NULL) full_url = getenv("APPVEYOR_API_URL");
-		AfxParseURL(full_url, service, server, url, port);
+		//if (getenv("APPVEYOR_API_URL") != NULL) full_url = getenv("APPVEYOR_API_URL");
+		//AfxParseURL(full_url, service, server, url, port);
 	}
 	logfile.open("autotest\\test.log", ios_base::app);
 
