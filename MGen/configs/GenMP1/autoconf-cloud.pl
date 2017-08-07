@@ -7,5 +7,5 @@ adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
-# Created at 2017-08-07 23-08-40
+# Created at 2017-08-07 23-11-10
 Midi_file = midi\cloud.mid

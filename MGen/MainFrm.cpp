@@ -244,6 +244,7 @@ void CMainFrame::ParseCommandLine() {
 			CGLib::m_testing = 1;
 		}
 	}
+	st.Replace("\"", "");
 	CGLib::m_cline2 = st;
 	if (CGLib::m_cline2 != "") LoadFile(CGLib::m_cline2);
 	//AfxMessageBox(st);
