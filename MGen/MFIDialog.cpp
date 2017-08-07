@@ -113,7 +113,7 @@ void CMFIDialog::LoadTree()
 
 void CMFIDialog::UpdateControls()
 {
-	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
+	CMainFrame* mf = (CMainFrame *)(AfxGetApp()->GetMainWnd());
 	HTREEITEM hti = m_tree.GetSelectedItem();
 	if (hti == NULL) {
 		// Clear all
