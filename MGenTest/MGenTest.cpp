@@ -152,7 +152,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 	cout << errors;
 
 	if (ci) {
-		errors.Replace("\n- ", "; ");
+		//errors.Replace("\n- ", "\\n ");
 		CString cat = "Passed";
 		if (result) cat = "Failed";
 		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d. %s\"", tname, tpassed, cat, result, errors);
