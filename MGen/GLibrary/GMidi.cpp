@@ -524,7 +524,7 @@ void CGMidi::LoadCantus(CString path)
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
 						cantus_incom.push_back(incom);
-						lyrics_pending = "";
+						//lyrics_pending = "";
 					}
 					// Go to next cantus
 					nid = 0;
