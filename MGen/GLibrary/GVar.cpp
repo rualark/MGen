@@ -160,6 +160,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	mark_color.resize(size);
 	linecolor.resize(size, Color(0));
 	lengroup.resize(size);
+	lyrics.resize(size);
 	comment.resize(size);
 	comment2.resize(size);
 	nsr1.resize(size);
@@ -189,6 +190,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		artic[i].resize(vsize);
 		lining[i].resize(vsize);
 		lengroup[i].resize(vsize);
+		lyrics[i].resize(vsize);
 		comment[i].resize(vsize);
 		comment2[i].resize(vsize);
 		nsr1[i].resize(vsize);
