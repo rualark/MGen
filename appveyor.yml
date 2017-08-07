@@ -2,7 +2,6 @@ version: 1.0.{build}
 image: Visual Studio 2017
 configuration: 
 - Release
-- Debug
 build:
   verbosity: minimal
 test: off
