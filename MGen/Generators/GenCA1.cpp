@@ -58,16 +58,10 @@ void CGenCA1::GetCantusKey(vector <int> &cc)
 	}
 }
 
-int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, int minor_cur)
+void CGenCA1::GetCantusKey3(vector <int> &cc, vector <int> &key_miss, int &min_miss, int &min_key, int minor_cur, int diatonic_repeat_check)
 {
-	int c_len = cc.size();
-	int key_miss[12];
-	CString cst, kst, st2;
-	// Create melody string for log
-	for (int x = 0; x < min(c_len, 30); x++) {
-		st2.Format("%d", cc[x] / 12);
-		cst += NoteName[cc[x] % 12] + st2 + " ";
-	}
+	key_miss.clear();
+	key_miss.resize(12);
 	// Cycle all keys and count miss
 	for (int i = 0; i < 12; i++) {
 		key_miss[i] = 0;
@@ -82,17 +76,38 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, in
 				if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
 			}
 			// Check if diatonic repeats
-			if (x && CC_C(cc[x], i, minor_cur) == CC_C(cc[x - 1], i, minor_cur) && abs(cc[x] - cc[x-1]) == 1) key_miss[i]++;
+			if (diatonic_repeat_check) {
+				if (x && CC_C(cc[x], i, minor_cur) == CC_C(cc[x - 1], i, minor_cur) && abs(cc[x] - cc[x - 1]) == 1) key_miss[i]++;
+			}
 		}
 	}
 	// Find minimum miss
-	int min_key = 0;
-	int min_miss = c_len;
+	min_key = 0;
+	min_miss = c_len;
 	for (int i = 0; i < 12; i++) {
 		if (key_miss[i] < min_miss) {
 			min_miss = key_miss[i];
 			min_key = i;
 		}
+	}
+}
+
+int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, int minor_cur)
+{
+	int c_len = cc.size();
+	vector<int> key_miss;
+	int min_key = 0;
+	int min_miss = c_len;
+	CString cst, kst, st2;
+	// Create melody string for log
+	for (int x = 0; x < min(c_len, 30); x++) {
+		st2.Format("%d", cc[x] / 12);
+		cst += NoteName[cc[x] % 12] + st2 + " ";
+	}
+	GetCantusKey3(cc, key_miss, min_miss, min_key, minor_cur, 1);
+	// If no key selected run again without checking for repeating diatonic steps
+	if (min_miss > 0) {
+		GetCantusKey3(cc, key_miss, min_miss, min_key, minor_cur, 0);
 	}
 	// If no key selected
 	if (min_miss > 0) {
