@@ -15,70 +15,10 @@ CWinApp theApp;
 
 using namespace std;
 
-CString current_dir, full_url, server, url;
-DWORD service;
-WORD port;
+CString current_dir;
 ofstream logfile;
 int ci = 0;
 int nRetCode = 0;
-
-/*
-string url_encode(const string &value) {
-	ostringstream escaped;
-	escaped.fill('0');
-	escaped << hex;
-
-	for (string::const_iterator i = value.begin(), n = value.end(); i != n; ++i) {
-		string::value_type c = (*i);
-
-		// Keep alphanumeric and other accepted characters intact
-		if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
-			escaped << c;
-			continue;
-		}
-
-		// Any other characters are percent-encoded
-		escaped << uppercase;
-		escaped << '%' << setw(2) << int((unsigned char)c);
-		escaped << nouppercase;
-	}
-
-	return escaped.str();
-}
-
-void HTTPPost(CString server, WORD port, CString url, CString data) {
-	cout << "HTTPPost to server " << server << " port " << port << " url " << url << " : " << data << "\n";
-	CString strHeaders = "Content-Type: application/x-www-form-urlencoded";
-	try {
-		char szBuf [2550];
-		DWORD dwRet;
-		CInternetSession session;
-		CHttpConnection* pConnection = session.GetHttpConnection(server, port);
-		CHttpFile* pFile = pConnection->OpenRequest(CHttpConnection::HTTP_VERB_POST, url);
-		pFile->AddRequestHeaders(strHeaders);
-		data = url_encode(data.GetBuffer()).c_str();
-		cout << "HTTPPost to server " << server << " port " << port << " url " << url << " : " << data << "\n";
-		pFile->SendRequestEx(data.GetLength());
-		pFile->Write(data, data.GetLength());
-		//BOOL result = pFile->SendRequest(strHeaders, (LPVOID)(LPCTSTR)data, data.GetLength());
-		pFile->QueryInfoStatusCode(dwRet);
-		cout << "HTTP return code: " << dwRet << "\n";
-		if (dwRet == HTTP_STATUS_OK) {
-			UINT nRead = pFile->Read(szBuf, 2550);
-			if (nRead > 0) {
-				cout << "HTTP result: " << szBuf << "\n";
-			}
-		}	
-	}
-	catch (CInternetException *e) {
-		//e->ReportError();
-		TCHAR   szCause[2550];
-		e->GetErrorMessage(szCause, 2550);
-		cout << "Error when sending HTTP request: " << szCause << "\n";
-		e->Delete();
-	}
-}
-*/
 
 void Run(CString fname, CString par, int delay) {
 	SHELLEXECUTEINFO sei = { 0 };
@@ -161,23 +101,6 @@ void PublishTest(CString tname, int result, int tpassed) {
 		Run("appveyor", st, 1000);
 	}
 
-	/*
-	// Send HTTP
-	st.Format("{"
-		" \"testName\": \"%s\","
-		" \"testFramework\" : \"MSTest\","
-		" \"fileName\" : \"MGen.exe\","
-		" \"outcome\" : \"%s\","
-		" \"durationMilliseconds\" : \"%d\","
-		" \"ErrorMessage\" : \"%s\","
-		" \"ErrorStackTrace\" : \"\","
-		" \"StdOut\" : \"\","
-		" \"StdErr\" : \"\""
-		" }", tname, cat, tpassed, errors);
-	if (ci) {
-		HTTPPost(server, port, url + "api/tests", st);
-	}
-	*/
 }
 
 void LoadConfig() {
@@ -204,7 +127,6 @@ void LoadConfig() {
 			ClearBuffer();
 			if (ci) Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running", 1000);
 			Log("Starting test config: " + st + "\n");
-			//::ShellExecute(GetDesktopWindow(), "open", "MGen", "-test " + st, NULL, SW_SHOWNORMAL);
 			st2 = "-test " + st;
 			SHELLEXECUTEINFO sei = { 0 };
 			sei.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -226,6 +148,7 @@ void LoadConfig() {
 			time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
 			passed = static_cast<int>((time_stop - time_start).count());
 			GetExitCodeProcess(sei.hProcess, ecode);
+
 			PublishTest(st, *ecode, passed);
 		}
 	}
@@ -234,13 +157,8 @@ void LoadConfig() {
 }
 
 int test() {
-	//full_url = "http://my.test.server:882/some/path/script.php?parameters=123";
-	//AfxParseURL(full_url, service, server, url, port);
-	//ci = 1;
 	if (getenv("APPVEYOR_PROJECT_NAME") != NULL) {
 		ci = 1;
-		//if (getenv("APPVEYOR_API_URL") != NULL) full_url = getenv("APPVEYOR_API_URL");
-		//AfxParseURL(full_url, service, server, url, port);
 	}
 	logfile.open("autotest\\test.log", ios_base::app);
 
