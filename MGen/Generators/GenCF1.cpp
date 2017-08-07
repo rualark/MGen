@@ -2595,6 +2595,12 @@ void CGenCF1::SendNgraph(int pos, int i, int v, int x) {
 	}
 }
 
+void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
+	if (cantus_incom.size() > cantus_id && cantus_incom[cantus_id].size() > x) {
+		lyrics[pos][v] = cantus_incom[cantus_id][x];
+	}
+}
+
 void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 {
 	CString st;
@@ -2695,6 +2701,7 @@ int CGenCF1::SendCantus() {
 	for (int x = 0; x < c_len; ++x) {
 		if (chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = Color(120, 120, 120);
+		SendLyrics(pos, v, cpv, x);
 		for (int i = 0; i < cc_len[x]; ++i) {
 			color[pos + i][v] = Color(0, 100, 100, 100);
 			SendNotes(pos, i, v, x, m_cc);

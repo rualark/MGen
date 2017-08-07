@@ -256,6 +256,7 @@ int CGenCP1::SendCP() {
 		// Copy cantus to output
 		if (step + real_len2 >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = x1; x < c_len; ++x) {
+			SendLyrics(pos, v, av, x);
 			for (int i = 0; i < cc_len[x]; ++i) {
 				if (av == cpv) {
 					// Set color
