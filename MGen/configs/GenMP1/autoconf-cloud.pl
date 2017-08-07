@@ -4,11 +4,8 @@
 # Default configs are not accessible from MGen GUI, you will need to change it outside of the program
 
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
-midifile_in_mul = 2 # How much you want to decrease minimum step length
+midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
-# Created at 2017-04-20 22-46-45
+# Created at 2017-08-07 23-08-40
 Midi_file = midi\cloud.mid
-Instruments = Trumpet,Piano,Piano,Piano,Piano
-#Instruments = Trumpet,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
-

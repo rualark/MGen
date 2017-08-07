@@ -30,6 +30,7 @@
 #define TIMER2 2
 #define TIMER3 3
 #define TIMER4 4
+#define TIMER5 5
 
 // CMainFrame
 
@@ -221,7 +222,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Start log/status timer
 	SetTimer(TIMER3, LOG_TIMER, NULL);
 
-	ParseCommandLine();
+	// Parse command line after message
+	SetTimer(TIMER5, 0, NULL);
 
 	//CGLib::TestVSet();
 
@@ -1106,6 +1108,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	}
 	if (nIDEvent == TIMER4) {
 		PostMessage(WM_CLOSE);
+	}
+	if (nIDEvent == TIMER5) {
+		::KillTimer(m_hWnd, TIMER5);
+		ParseCommandLine();
 	}
 }
 
