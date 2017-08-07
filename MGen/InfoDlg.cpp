@@ -90,6 +90,8 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note velocity: %d\n", pGen->vel[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("Lyrics from MIDI file: %s\n", pGen->lyrics[i][mv]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
 
 		st.Format("Playback note start delta: %.3f s (with delta %.3f s)\nPlayback note ending delta: %.3f s (with delta %.3f s)\n",
 			pGen->dstime[i][mv] / 1000.0, pGen->stime[i] / pGen->m_pspeed / 10 + pGen->dstime[i][mv] / 1000.0,
