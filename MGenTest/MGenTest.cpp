@@ -155,7 +155,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 		errors.Replace("\n- ", "; ");
 		CString cat = "Passed";
 		if (result) cat = "Failed";
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage %d", tname, tpassed, cat, result);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d. %s\"", tname, tpassed, cat, result, errors);
 		Run("appveyor", st, 1000);
 		st.Format("UpdateTest \"%s\" -StdErr \"%s\"", tname, errors);
 		Run("appveyor", st, 1000);
