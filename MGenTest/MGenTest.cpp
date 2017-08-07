@@ -113,7 +113,7 @@ CString file(CString fname) {
 	ifstream fs;
 	// Check file exists
 	if (!CGLib::fileExists(fname)) {
-		return "";
+		cout << "Not found file " << fname << "\n";
 	}
 	fs.open(fname);
 	char pch[2550];
@@ -179,8 +179,13 @@ void PublishTest(CString tname, int result, int tpassed) {
 
 void LoadConfig() {
 	milliseconds time_start, time_stop;
+	CString fname = "autotest\\test.txt";
+	// Check file exists
+	if (!CGLib::fileExists(fname)) {
+		cout << "Not found file " << fname << "\n";
+	}
 	ifstream fs;
-	fs.open("autotest\\test.txt");
+	fs.open(fname);
 	LPDWORD ecode = new DWORD;
 	CString st, st2;
 	char pch[2550];
