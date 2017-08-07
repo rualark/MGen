@@ -156,7 +156,8 @@ void PublishTest(CString tname, int result, int tpassed) {
 		if (result) cat = "Failed";
 		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d\"", tname, tpassed, cat, result);
 		Run("appveyor", st, 1000);
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorStackTrace \"%s\"", tname, tpassed, cat, errors);
+		// Send errors separately in case of command line overflow
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d\" -ErrorStackTrace \"%s\"", tname, tpassed, cat, result, errors);
 		Run("appveyor", st, 1000);
 	}
 
