@@ -272,6 +272,7 @@ void CGenCA1::SendCorrections(int i, milliseconds time_start) {
 }
 
 void CGenCA1::ParseExpect() {
+	int fl;
 	enflags.clear();
 	int max_i = cantus_incom[cantus_id].size();
 	if (!max_i) return;
@@ -282,7 +283,8 @@ void CGenCA1::ParseExpect() {
 		if (cantus_incom[cantus_id][i] != "") {
 			Tokenize(cantus_incom[cantus_id][i], ast, ",");
 			for (int n = 0; n < ast.size(); ++n) {
-				enflags[i].push_back(atoi(ast[n]));
+				fl = atoi(ast[n]);
+				if (fl) enflags[i].push_back(fl);
 			}
 		}
 	}
