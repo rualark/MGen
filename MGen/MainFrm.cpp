@@ -579,7 +579,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->StopMIDI();
 		ClearLogs();
 		pGen->StartMIDI(GetMidiI(), 0);
-		pGen->time_started = TIME_PROC(TIME_INFO);
+		pGen->time_started = CGLib::time();
 		// Load results
 		pGen->LoadResults(dir, fname);
 		pGen->LoadResultLogs(dir, fname);
@@ -703,7 +703,7 @@ void CMainFrame::OnButtonGen()
 		// Initialize MIDI
 		pGen->StopMIDI();
 		pGen->StartMIDI(GetMidiI(), 0);
-		pGen->time_started = TIME_PROC(TIME_INFO);
+		pGen->time_started = CGLib::time();
 		// Start generation
 		m_state_gen = 1;
 		m_state_play = 0;
@@ -1030,8 +1030,8 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == TIMER1)
 	{
 		GetActiveView()->Invalidate();
-		//int play_time = TIME_PROC(TIME_INFO) - pGen->midi_start_time;
-		if ((m_state_gen != 1) && (m_state_play == 2) && (TIME_PROC(TIME_INFO) > pGen->midi_sent_t)) {
+		//int play_time = CGLib::time() - pGen->midi_start_time;
+		if ((m_state_gen != 1) && (m_state_play == 2) && (CGLib::time() > pGen->midi_sent_t)) {
 			OnButtonPlay();
 		}
 	}
@@ -1051,7 +1051,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 				}
 				// Check generation speed
 				double gtime = pGen->stime[pGen->t_sent - 1]*100/pGen->m_pspeed;
-				double ptime = TIME_PROC(TIME_INFO) - pGen->time_started;
+				double ptime = CGLib::time() - pGen->time_started;
 				if ((gtime / ptime > 2) || (gtime > 30000) || ((gtime / ptime > 1.2) && (gtime > 5000))) {
 					m_state_play = 1;
 					SetTimer(TIMER1, m_view_timer, NULL);
@@ -1126,7 +1126,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	fill(CGLib::logs_sent.begin(), CGLib::logs_sent.end(), (long long)0);
 
 	pGen->Generate();
-	pGen->time_stopped = TIME_PROC(TIME_INFO);
+	pGen->time_stopped = CGLib::time();
 
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 
