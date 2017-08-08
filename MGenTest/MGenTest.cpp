@@ -25,7 +25,7 @@ void InitErrorMessages() {
 	errorMessages.resize(1000);
 	errorMessages[0] = "OK";
 	errorMessages[10] = "MGen detected critical errors during run";
-	errorMessages[100] = "GetExitCodeProcess error";
+	errorMessages[100] = "GetExitCodeProcess error in MGenTest";
 	errorMessages[101] = "MGen process did not exit correctly (possible crash)";
 }
 
