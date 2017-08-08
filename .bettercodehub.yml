@@ -7,6 +7,10 @@ exclude:
 - /MGen/portmidi/.*
 - /MGen/readerwriterqueue/.*
 - /MGen/rtmidi/.*
+- /MGenTest/MGenTest.rc
+- /MGenTest/MGenTest.vcxproj
+- /MGenTest/MGenTest.vcxproj.filters
+- /MGenTest/ReadMe.txt
 component_depth: 1
 languages:
 - name: cpp
