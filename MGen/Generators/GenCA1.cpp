@@ -94,7 +94,7 @@ void CGenCA1::GetCantusKey3(vector <int> &cc, vector <int> &key_miss, int &min_m
 
 int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, int minor_cur)
 {
-	int c_len = cc.size();
+	c_len = cc.size();
 	vector<int> key_miss;
 	int min_key = 0;
 	int min_miss = c_len;
