@@ -163,14 +163,14 @@ void CMGenView::OnDraw(CDC* pDC)
 		if (pGen->t_sent > 0) time_st = CGLib::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
 		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d meas. / %s in %.1f sec.)", 
 			pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, time_st, 
-			((float)(TIME_PROC(TIME_INFO) - pGen->time_started)) / 1000);
+			((float)(CGLib::time() - pGen->time_started)) / 1000);
 		if (mf->m_state_gen == 2) st.Format("(%d meas. / %s in %.1f sec.)", 
 			pGen->t_sent/8, time_st, ((float)(pGen->time_stopped - pGen->time_started)) / 1000);
 		g.DrawString(A2W(st), -1, &font, PointF(250, 0), &brush_black);
 		int play_step = 0;
 		if (mf->m_state_play > 0) play_step = pGen->GetPlayStep();
 		if (play_step > 0) {
-			int play_time = TIME_PROC(TIME_INFO) - pGen->midi_start_time;
+			int play_time = CGLib::time() - pGen->midi_start_time;
 			st.Format("(%02d:%02d - meas. %d)", play_time/60000, (play_time/1000) % 60, play_step/8 + 1);
 			g.DrawString(A2W(st), -1, &font, PointF(900, 0), &brush_black);
 		}

@@ -1,5 +1,6 @@
 #include "../stdafx.h"
 #include "MidiOut.h"
+#include "GLib.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -89,7 +90,7 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 			// Check if we need to exit
 			if (pMO->need_exit) break;
 			// Get current timestamp
-			timestamp_current = TIME_PROC(TIME_INFO);
+			timestamp_current = CGLib::time();
 			wait_time = event.timestamp - timestamp_current;
 			// Wait for event timestamp
 			wait_time_left = wait_time;

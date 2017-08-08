@@ -832,7 +832,7 @@ void CGMidi::StartMIDI(int midi_device_i, int from)
 	midi_start_time = 0;
 	if (from > 0) {
 		midi_sent = from;
-		midi_sent_t = 0; // TIME_PROC(TIME_INFO) + MIDI_BUF_PROTECT
+		midi_sent_t = 0; // CGLib::time() + MIDI_BUF_PROTECT
 	}
 	else {
 		midi_sent_t = 0;
@@ -925,7 +925,7 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 	}
 	// Debug log
 	//CString st;
-	//st.Format("%d: At %d type %d, data %d/%d blocked %d\n", TIME_PROC(TIME_INFO), timestamp, mm_type, data1, data2, midi_sent_t-midi_start_time);
+	//st.Format("%d: At %d type %d, data %d/%d blocked %d\n", CGLib::time(), timestamp, mm_type, data1, data2, midi_sent_t-midi_start_time);
 	//AppendLineToFile("midi.log", st);
 }
 
@@ -973,7 +973,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 {
 	if (step2 == step1) return;
 	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	PmTimestamp timestamp_current = TIME_PROC(TIME_INFO);
+	PmTimestamp timestamp_current = CGLib::time();
 	// Note start timestamp
 	PmTimestamp stimestamp; 
 	// Note end timestamp
@@ -1317,7 +1317,7 @@ int CGMidi::GetPlayStep() {
 		int step1 = midi_play_step;
 		int step2 = midi_sent;
 		int cur_step = 0, currentElement;
-		int searchElement = TIME_PROC(TIME_INFO) - midi_start_time;
+		int searchElement = CGLib::time() - midi_start_time;
 		while (step1 <= step2) {
 			cur_step = (step1 + step2) / 2;
 			currentElement = stime[cur_step] * 100 / m_pspeed;
