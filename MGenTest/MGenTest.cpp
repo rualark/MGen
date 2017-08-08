@@ -147,7 +147,7 @@ void LoadConfig() {
 
 			time_stop = CGLib::time();
 			passed = time_stop - time_start;
-			GetExitCodeProcess(sei.hProcess, &ecode);
+			if (!(GetExitCodeProcess(sei.hProcess, &ecode))) ecode = 100;
 
 			PublishTest(st, ecode, passed);
 		}
