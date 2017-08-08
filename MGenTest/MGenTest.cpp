@@ -112,7 +112,7 @@ void LoadConfig() {
 	}
 	ifstream fs;
 	fs.open(fname);
-	LPDWORD ecode = new DWORD;
+	DWORD ecode;
 	CString st, st2;
 	char pch[2550];
 	int pos = 0;
@@ -147,12 +147,11 @@ void LoadConfig() {
 
 			time_stop = CGLib::time();
 			passed = time_stop - time_start;
-			GetExitCodeProcess(sei.hProcess, ecode);
+			GetExitCodeProcess(sei.hProcess, &ecode);
 
-			PublishTest(st, *ecode, passed);
+			PublishTest(st, ecode, passed);
 		}
 	}
-	delete ecode;
 	fs.close();
 }
 
