@@ -10,7 +10,6 @@ exclude:
 component_depth: 1
 languages:
 - cpp
-- name: java
   production:
   test:
     include:
