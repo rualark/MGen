@@ -312,7 +312,7 @@ void CGenCA1::ConfirmExpect() {
 		for (int e = 0; e < enflags[x].size(); ++e) {
 			fl = enflags[x][e];
 			// Do not confirm rule violation if rule checking is disabled
-			if (accept[fl] == -1) continue;
+			//if (accept[fl] == -1) continue;
 			found = 0;
 			for (int f = 0; f < anflagsc[cpv][x]; ++f) {
 				if (anflags[cpv][x][f] == fl) {

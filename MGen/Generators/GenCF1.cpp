@@ -163,7 +163,7 @@ void CGenCF1::LoadRules(CString fname)
 			RuleComment[rid] = ast[8];
 			SubRuleComment[set][rid] = ast[9];
 			// If testing, enable all disabled rules so that expected violations can be confirmed
-			if (m_testing && flag == -1) flag = 1;
+			//if (m_testing && flag == -1) flag = 1;
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
 		}
