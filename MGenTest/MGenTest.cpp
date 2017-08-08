@@ -104,7 +104,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 }
 
 void LoadConfig() {
-	milliseconds time_start, time_stop;
+	int time_start, time_stop;
 	CString fname = "autotest\\test.txt";
 	// Check file exists
 	if (!CGLib::fileExists(fname)) {
@@ -138,15 +138,15 @@ void LoadConfig() {
 			sei.lpDirectory = NULL;
 			sei.nShow = SW_SHOW;
 			sei.hInstApp = NULL;
-			time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+			time_start = CGLib::time();
 			ShellExecuteEx(&sei);
 			if (WaitForSingleObject(sei.hProcess, 60000) == WAIT_TIMEOUT) {
 				Log(st + ": Timeout waiting for process\n", 3);
 				exit(1);
 			}
 
-			time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-			passed = static_cast<int>((time_stop - time_start).count());
+			time_stop = CGLib::time();
+			passed = time_stop - time_start;
 			GetExitCodeProcess(sei.hProcess, ecode);
 
 			PublishTest(st, *ecode, passed);
