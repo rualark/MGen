@@ -943,7 +943,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 		else if (leap[s]) smooth_sum = 0;
 		if (ls < fli_size - 2) {
 			// Prohibit long smooth movement in one direction
-			if (smooth[s] == smooth[fli2[ls+1]]) {
+			if (smooth[s] != 0 && smooth[s] == smooth[fli2[ls+1]]) {
 				++smooth_sum2;
 				if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, s);
 			}
