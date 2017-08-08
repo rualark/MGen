@@ -91,9 +91,10 @@ void ClearBuffer() {
 }
 
 void PublishTest(CString tname, int result, int tpassed) {
+	CString emes = GetErrorMessage(result);
 	CString st;
 	CString st2;
-	st2.Format("%s: code %d in %d ms\n", tname, result, tpassed);
+	st2.Format("%s: code %d (%s) in %d ms\n", tname, result, emes, tpassed);
 	if (result) {
 		nRetCode = 2;
 		Log(st2, 3);
@@ -108,7 +109,6 @@ void PublishTest(CString tname, int result, int tpassed) {
 
 	if (ci) {
 		CString cat = "Passed";
-		CString emes = GetErrorMessage(result);
 		if (result) cat = "Failed";
 		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\"", tname, tpassed, cat, result, emes);
 		Run("appveyor", st, 1000);
@@ -194,7 +194,8 @@ int test() {
 
 int main()
 {
-    HMODULE hModule = ::GetModuleHandle(nullptr);
+	InitErrorMessages();
+	HMODULE hModule = ::GetModuleHandle(nullptr);
 
     if (hModule != nullptr)
     {

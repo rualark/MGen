@@ -1,0 +1,2 @@
+configs\GenCA1\known-cf-maj.pl
+configs\GenRS1\Test.pl
