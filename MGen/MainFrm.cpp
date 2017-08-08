@@ -1183,7 +1183,9 @@ void CMainFrame::OnClose()
 	CGLib::can_send_log = 0;
 	if (m_state_gen == 1) {
 		OnButtonGen();
-		WaitForSingleObject(m_GenThread->m_hThread, 10000);
+		// If cannot stop generator, report error
+		if (WaitForSingleObject(m_GenThread->m_hThread, 10000) == WAIT_TIMEOUT)
+			CGLib::exitcode = 11;
 		delete pGen;
 		pGen = 0;
 	}
