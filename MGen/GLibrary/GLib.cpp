@@ -50,6 +50,10 @@ CGLib::~CGLib()
 {
 }
 
+int CGLib::time() {
+	return (duration_cast<milliseconds>(system_clock::now().time_since_epoch())).count();
+}
+
 void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int vmin, int vmax)
 {
 	if (*sName == sSearch) {

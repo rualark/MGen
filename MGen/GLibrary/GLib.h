@@ -173,6 +173,8 @@ public:
 	CGLib();
 	virtual ~CGLib();
 
+	static int time();
+
 	void InitRandom();
 	void TestRandom(); // Tests random generator
 	void TestSmoothRandom(); // Tests smooth random generator
