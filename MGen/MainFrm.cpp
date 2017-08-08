@@ -705,9 +705,9 @@ void CMainFrame::OnButtonGen()
 		pGen->StartMIDI(GetMidiI(), 0);
 		pGen->time_started = TIME_PROC(TIME_INFO);
 		// Start generation
-		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		m_state_gen = 1;
 		m_state_play = 0;
+		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		// Start timer
 		SetTimer(TIMER1, m_view_timer, NULL);
 		if (pGen->shuffle == 0 && GetMidiI() != -1) SetTimer(TIMER2, 1000, NULL);
@@ -738,9 +738,9 @@ void CMainFrame::OnCheckOutputwnd()
 LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 {
 	if (wParam == 0) {
+		if (m_state_play == 0) ::KillTimer(m_hWnd, TIMER1);
 		GetActiveView()->Invalidate();
 		WriteLog(0, "Generation finished");
-		if (m_state_play == 0) ::KillTimer(m_hWnd, TIMER1);
 		m_state_gen = 2;
 		// Save results
 		CString fname = CTime::GetCurrentTime().Format("%Y-%m-%d-auto %H-%M-%S");
@@ -765,7 +765,6 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		//WriteLog(1, dir + "\\config.pl");
 		// Start playback after shuffle
 		if (pGen->shuffle) {
-			GetActiveView()->Invalidate();
 			if ((m_state_play == 0) && (pGen->t_sent > 0)) OnButtonPlay();
 		}
 		if (CGLib::m_testing) {
@@ -1127,8 +1126,9 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	fill(CGLib::logs_sent.begin(), CGLib::logs_sent.end(), (long long)0);
 
 	pGen->Generate();
-	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 	pGen->time_stopped = TIME_PROC(TIME_INFO);
+
+	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 
 	// Show updates frequency
 	CString st, st2;
