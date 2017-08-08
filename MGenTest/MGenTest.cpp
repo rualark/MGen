@@ -133,8 +133,8 @@ void LoadConfig() {
 			sei.fMask = SEE_MASK_NOCLOSEPROCESS;
 			sei.hwnd = NULL;
 			sei.lpVerb = NULL;
-			sei.lpFile = "MGen.exe";
-			sei.lpParameters = st2;
+			sei.lpFile = "cmd.exe";
+			sei.lpParameters = "/c exit 22";
 			sei.lpDirectory = NULL;
 			sei.nShow = SW_SHOW;
 			sei.hInstApp = NULL;
