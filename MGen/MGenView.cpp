@@ -88,12 +88,12 @@ BOOL CMGenView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CMGenView::OnDraw(CDC* pDC)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	milliseconds time_stop = time_start;
-	milliseconds time_stop2 = time_start;
-	milliseconds time_stop3 = time_start;
-	milliseconds time_stop4 = time_start;
-	milliseconds time_stop5 = time_start;
+	int time_start = CGLib::time();
+	int time_stop = time_start;
+	int time_stop2 = time_start;
+	int time_stop3 = time_start;
+	int time_stop4 = time_start;
+	int time_stop5 = time_start;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGMidi *pGen = mf->pGen;
 	//mf->WriteLog(2, "OnDraw start");
@@ -144,7 +144,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Gdiplus::Font font(&FontFamily(L"Arial"), 10);
 	Gdiplus::Font font_small(&FontFamily(L"Arial"), 8);
 	Gdiplus::Font font_small2(&FontFamily(L"Arial"), 6);
-	milliseconds current_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	int current_time = CGLib::time();
   USES_CONVERSION;
 	CString st;
 
@@ -157,7 +157,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	if (mf->m_state_play == 2) st = "Playback ";
 	g.DrawString(A2W(st), -1, &font, PointF(800, 0), &brush_black);
 
-	time_stop2 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	time_stop2 = CGLib::time();
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
 		CString time_st = "";
 		if (pGen->t_sent > 0) time_st = CGLib::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
@@ -259,7 +259,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER, ClipBox.right, ClientRect.top + Y_HEADER);
 			g.DrawLine(&pen_ddgray, max(X_FIELD, ClipBox.left), ClientRect.top + Y_HEADER - Y_TIMELINE, 
 				ClipBox.right, ClientRect.top + Y_HEADER - Y_TIMELINE);
-			time_stop3 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+			time_stop3 = CGLib::time();
 			// Draw vertical lines
 			for (int i = max(0, step1-16); i < step2_3; i++) {
 				if (i % 8 == 0) {
@@ -282,7 +282,7 @@ void CMGenView::OnDraw(CDC* pDC)
 					X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
 			}
 			// Show notes
-			time_stop4 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+			time_stop4 = CGLib::time();
 			int cutend = 0;
 			Color ncolor, mcolor;
 			int alpha;
@@ -464,7 +464,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 			}
 			// Highlight draft notes
-			time_stop5 = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+			time_stop5 = CGLib::time();
 			if ((step2t > pGen->t_sent) || (pGen->need_exit == 1)) {
 				int step3 = max((ClipBox.left - X_FIELD) / nwidth - 1, pGen->t_sent);
 				g.FillRectangle(&brush_ared, X_FIELD + step3 * nwidth,
@@ -491,13 +491,13 @@ void CMGenView::OnDraw(CDC* pDC)
 		}
 		pGen->mutex_output.unlock();
 	}
-	time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
-	if ((time_stop - time_start).count() > 80 && mf->m_debug_level > 1) {
+	time_stop = CGLib::time();
+	if (time_stop - time_start > 80 && mf->m_debug_level > 1) {
 		st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
 		mf->WriteLog(2, st);
 	}
-	if ((time_stop - time_start).count() > max_draw_time) {
-		max_draw_time = (time_stop - time_start).count();
+	if (time_stop - time_start > max_draw_time) {
+		max_draw_time = time_stop - time_start;
 		if (max_draw_time > WARN_DRAW * (double)(mf->m_view_timer)) {
 			st.Format("Warning: drawing takes %d ms. Your delay between drawings (View_timer) is %d ms. It is recommended to increase zoom or increase View_timer or set step_dyn to 0 in settings.pl if you face performance issues.", time_stop - time_start, mf->m_view_timer);
 			mf->WriteLog(2, st);

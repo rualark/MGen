@@ -17,7 +17,7 @@ protected:
 	void GetCantusKey3(vector<int>& cc, vector<int>& key_miss, int & min_miss, int & min_key, int minor_cur, int diatonic_repeat_check);
 	int GetCantusKey2(vector<int>& cc, int & tonic_cur, CString & st, int minor_cur);
 	void CreateScanMatrix(int i);
-	void SendCorrections(int i, milliseconds time_start);
+	void SendCorrections(int i, int time_start);
 
 	void ParseExpect();
 

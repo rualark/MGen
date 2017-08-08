@@ -129,7 +129,7 @@ void CGVar::AddMelody(int step1, int step2, int v, CString info) {
 
 void CGVar::ResizeVectors(int size, int vsize)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	if (!mutex_output.try_lock_for(chrono::milliseconds(5000))) {
 		WriteLog(5, "Critical error: ResizeVectors mutex timed out");
 	}
@@ -207,7 +207,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	}
 	// Count time
 	if (debug_level > 1) {
-		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		int time_stop = CGLib::time();
 		CString st;
 		st.Format("ResizeVectors from %d to %d steps, from %d to %d voices (in %d ms)", t_allocated, size, v_cnt, vsize, time_stop - time_start);
 		WriteLog(0, st);
@@ -354,7 +354,7 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 void CGVar::LoadInstrumentLayout()
 {
 	CString fname = "instruments\\" + instr_layout + ".txt";
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	// Check file exists
 	if (!fileExists(fname)) {
 		CString est;
@@ -427,7 +427,7 @@ void CGVar::LoadInstrumentLayout()
 		WriteLog(5, "Error loading instrument layout from " + fname);
 	}
 	// Log
-	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("LoadInstrumentLayout loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
 	WriteLog(0, est);
@@ -449,7 +449,7 @@ void CGVar::LoadInstruments()
 void CGVar::LoadInstrument(int i, CString fname)
 {
 	CString st, st2, st3, iname;
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	ifstream fs;
 	if (!fileExists(fname)) {
 		WriteLog(5, "Cannot find instrument config file " + fname);
@@ -568,7 +568,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 	} // while (fs.good())
 	fs.close();
 	// Log
-	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("LoadInstruments loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
 	WriteLog(0, est);
@@ -616,7 +616,7 @@ void CGVar::SaveVector(ofstream &fs, vector<Color> &v) {
 
 void CGVar::SaveResults(CString dir, CString fname)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	CreateDirectory(dir, NULL);
 	ofstream fs;
 	fs.open(dir + "\\" + fname + ".mgr", std::ofstream::binary);
@@ -697,7 +697,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 		fs.close();
 	}
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("Saved results to files in %d ms", time_stop - time_start);
 	WriteLog(0, est);
@@ -705,7 +705,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 
 void CGVar::ExportVectorsCSV(CString dir, CString fname)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	CString st;
 	CreateDirectory(dir, NULL);
 	ofstream fs;
@@ -753,7 +753,7 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 	}
 	fs.close();
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("Saved CSV vectors to file %s\\%s.csv in %d ms", dir, fname, time_stop - time_start);
 	WriteLog(0, est);
@@ -885,7 +885,7 @@ void CGVar::LoadVector(ifstream &fs, vector<Color> &v) {
 
 void CGVar::LoadResultMusic(CString dir, CString fname)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	ifstream fs;
 	CString path;
 	// Load binary
@@ -935,7 +935,7 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 	UpdateTempoMinMax(0, t_generated - 1);
 	fs.close();
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("Loaded result music from folder %s in %d ms", dir, time_stop - time_start);
 	WriteLog(0, est);
@@ -943,7 +943,7 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 }
 
 void CGVar::ValidateVectors2(int step1, int step2) {
-	milliseconds time_start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	CString st;
 	for (int i = step1; i <= step2; i++) {
 		for (int v = 0; v < v_cnt; v++) {
@@ -963,7 +963,7 @@ void CGVar::ValidateVectors2(int step1, int step2) {
 	}
 	// Count time
 	if (debug_level > 1) {
-		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		int time_stop = CGLib::time();
 		CString est;
 		est.Format("Post-validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
 		WriteLog(0, est);
@@ -971,7 +971,7 @@ void CGVar::ValidateVectors2(int step1, int step2) {
 }
 
 void CGVar::ValidateVectors(int step1, int step2) {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	CString st;
 	// Check first step
 	if (!step1) for (int v = 0; v < v_cnt; v++) {
@@ -1077,7 +1077,7 @@ void CGVar::ValidateVectors(int step1, int step2) {
 	}
 	// Count time
 	if (debug_level > 1) {
-		milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		int time_stop = CGLib::time();
 		CString est;
 		est.Format("Validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
 		WriteLog(0, est);
@@ -1148,7 +1148,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 
 void CGVar::LoadResults(CString dir, CString fname)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	ifstream fs;
 	CString st, st2, st3, path;
 	int pos;
@@ -1204,7 +1204,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 	t_allocated = t_generated;
 	InitVectors();
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("Loaded result info from folder %s in %d ms", dir, time_stop - time_start);
 	WriteLog(0, est);

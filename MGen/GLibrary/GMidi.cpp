@@ -69,7 +69,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 
 void CGMidi::LoadMidi(CString path)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -417,7 +417,7 @@ void CGMidi::LoadMidi(CString path)
 		WriteLog(0, est);
 	}
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("LoadMidi successfully loaded %d steps (in %d ms)", t_generated, time_stop - time_start);
 	WriteLog(0, est);
@@ -425,7 +425,7 @@ void CGMidi::LoadMidi(CString path)
 
 void CGMidi::LoadCantus(CString path)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -591,7 +591,7 @@ void CGMidi::LoadCantus(CString path)
 		}
 	}
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString st;
 	st.Format("LoadCantus successfully loaded %d canti (in %d ms)", cid + 1, time_stop - time_start);
 	WriteLog(0, st);
@@ -600,7 +600,7 @@ void CGMidi::LoadCantus(CString path)
 // Load counterpoint
 void CGMidi::LoadCP(CString path)
 {
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -809,7 +809,7 @@ void CGMidi::LoadCP(CString path)
 		}
 	}
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString st;
 	st.Format("LoadCP successfully loaded %d cp (in %d ms)", cid + 1, time_stop - time_start);
 	WriteLog(0, st);
@@ -972,7 +972,7 @@ void CGMidi::CheckDstime(int i, int v)
 void CGMidi::SendMIDI(int step1, int step2)
 {
 	if (step2 == step1) return;
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	PmTimestamp timestamp_current = CGLib::time();
 	// Note start timestamp
 	PmTimestamp stimestamp; 
@@ -1153,7 +1153,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		mo->QueueEvent(midi_buf[i]);
 	}
 	// Count time
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString st;
 	st.Format("MIDI write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms. Limit %d. Last postponed %d. Step22 stopped increasing at %.0f ms. Start time: %d, current time: %d",
 		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, 

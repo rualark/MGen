@@ -672,7 +672,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		}
 		// Shuffle
 		if (task == tEval) {
-			unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+			unsigned seed = CGLib::time();
 			::shuffle(hm[ls].begin(), hm[ls].end(), default_random_engine(seed));
 		}
 	}
@@ -1681,7 +1681,7 @@ void CGenCF1::ScanInit() {
 	// Init best rejected results
 	if (best_rejected) {
 		rcycle = 0;
-		accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		accept_time = CGLib::time();
 		rpenalty_min = MAX_PENALTY;
 	}
 	for (int x = 0; x < c_len; ++x) {
@@ -2087,8 +2087,8 @@ void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 void CGenCF1::BackWindow(vector<int> &cc) {
 	// Show best rejected variant
 	if (best_rejected) {
-		milliseconds time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
-		int rc = (time - accept_time).count() / best_rejected;
+		int time = CGLib::time();
+		int rc = (time - accept_time) / best_rejected;
 		if (debug_level > 2) {
 			CString st;
 			st.Format("Back window with rc %d", rc);
@@ -2875,7 +2875,7 @@ void CGenCF1::RandomSWA()
 // Do not calculate dpenalty (dp = 0). Calculate dpenalty (dp = 1).
 void CGenCF1::SWA(int i, int dp) {
 	CString st;
-	milliseconds time_start = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	s_len = 1;
 	// Save source rpenalty
 	float rpenalty_source = rpenalty_cur;
@@ -2967,7 +2967,7 @@ void CGenCF1::SWA(int i, int dp) {
 		}
 	}
 	// Log
-	milliseconds time_stop = duration_cast< milliseconds >(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	CString stuck_st = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s", 
@@ -2978,7 +2978,7 @@ void CGenCF1::SWA(int i, int dp) {
 // Save accepted time if we are showing best rejected
 void CGenCF1::TimeBestRejected() {
 	if (best_rejected) {
-		accept_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+		accept_time = CGLib::time();
 		rcycle = 0;
 	}
 }
@@ -3202,7 +3202,7 @@ void CGenCF1::Generate()
 		vector<Color> color2(t_generated);
 		for (int i = 0; i < accepted; ++i) ci[i] = i;
 		// Shuffled indexes
-		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		unsigned seed = CGLib::time();
 		::shuffle(ci.begin(), ci.end(), default_random_engine(seed));
 		// Swap
 		int s1, s2;

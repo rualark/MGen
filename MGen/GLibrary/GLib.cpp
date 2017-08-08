@@ -496,7 +496,7 @@ unsigned int CGLib::rand2() {
 void CGLib::InitRandom()
 {
 	// Init rand
-	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	unsigned seed = CGLib::time();
 	srand(seed);
 	//CString est;
 	//est.Format("Random test: %d", rand());
@@ -511,7 +511,7 @@ void CGLib::InitRandom()
 
 void CGLib::TestRandom()
 {
-	milliseconds time_start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	int n_buckets = 30;
 	int n_samples = 100000;
 	int n_variants = 3;
@@ -535,7 +535,7 @@ void CGLib::TestRandom()
 	}
 	fs.close();
 	// Count time
-	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
 	WriteLog(0, est);
@@ -543,7 +543,7 @@ void CGLib::TestRandom()
 
 void CGLib::TestSmoothRandom()
 {
-	milliseconds time_start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	int time_start = CGLib::time();
 	int n_samples = 1000;
 	CSmoothRandom sr;
 	// Show results
@@ -559,7 +559,7 @@ void CGLib::TestSmoothRandom()
 	}
 	fs.close();
 	// Count time
-	milliseconds time_stop = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	int time_stop = CGLib::time();
 	CString est;
 	est.Format("TestSmoothRandom with %d samples took %d ms", n_samples, time_stop - time_start);
 	WriteLog(0, est);
@@ -660,7 +660,7 @@ void CGLib::TestVSet()
 {
 	// Init rand
 	CString st;
-	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	unsigned seed = CGLib::time();
 	srand(seed);
 	VSet<int> vs;
 	vector<int> v;
