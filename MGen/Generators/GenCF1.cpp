@@ -918,7 +918,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 		// Subtract old leap
 		if ((ls >= max_leap_steps) && (leap[fli2[ls - max_leap_steps]] != 0)) leap_sum--;
 		// Get maximum leap_sum
-		if (leap_sum > max_leap_sum) {
+		if (leap_sum >= max_leap_sum) {
 			max_leap_sum = leap_sum;
 			leap_sum_i = s;
 		}
