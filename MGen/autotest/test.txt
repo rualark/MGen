@@ -5,6 +5,7 @@ configs\GenCF1\swa-high.pl
 configs\GenCA1\known-cf-maj.pl
 configs\GenCA1\known-cf-min.pl
 configs\GenCA1\test-leaps.pl
+configs\GenCA1\test-culm.pl
 configs\GenCA1\test-repeat.pl
 configs\GenCA1\test-leap-size.pl
 configs\GenCA1\test-leap-fill.pl
