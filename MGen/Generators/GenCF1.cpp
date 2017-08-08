@@ -2611,7 +2611,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 		// Do not show colors and comments for base voice
 		if (av == cpv) {
 			int fl = anflags[av][x][f];
-			if (!i) {
+			if (!i && accept[fl] != -1) {
 				if (!accept[fl]) st = "- ";
 				else st = "+ ";
 				comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
