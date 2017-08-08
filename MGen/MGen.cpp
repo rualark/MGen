@@ -166,6 +166,9 @@ int CMGenApp::ExitInstance()
 	AfxOleTerm(FALSE);
 
 	CWinAppEx::ExitInstance();
+	// Log successful exit
+	if (CGLib::m_testing) CGLib::AppendLineToFile("autotest\\exit.log", m_lpCmdLine);
+	// Return error code for testing purposes
 	return CGLib::exitcode;
 }
 

@@ -19,6 +19,20 @@ CString current_dir;
 ofstream logfile;
 int ci = 0;
 int nRetCode = 0;
+vector<CString> errorMessages;
+
+void InitErrorMessages() {
+	errorMessages.resize(1000);
+	errorMessages[0] = "OK";
+	errorMessages[10] = "MGen detected critical errors during run";
+	errorMessages[100] = "GetExitCodeProcess error";
+	errorMessages[101] = "MGen process did not exit correctly (possible crash)";
+}
+
+CString GetErrorMessage(int e) {
+	if (e < errorMessages.size()) return errorMessages[e];
+	else return "";
+}
 
 void Run(CString fname, CString par, int delay) {
 	SHELLEXECUTEINFO sei = { 0 };
@@ -73,6 +87,7 @@ void ClearBuffer() {
 	fstream fs;
 	fs.open("autotest\\buffer.log", ios::out);
 	fs.close();
+	remove("autotest\\exit.log");
 }
 
 void PublishTest(CString tname, int result, int tpassed) {
@@ -93,14 +108,14 @@ void PublishTest(CString tname, int result, int tpassed) {
 
 	if (ci) {
 		CString cat = "Passed";
+		CString emes = GetErrorMessage(result);
 		if (result) cat = "Failed";
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d\"", tname, tpassed, cat, result);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\"", tname, tpassed, cat, result, emes);
 		Run("appveyor", st, 1000);
 		// Send errors separately in case of command line overflow
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d\" -ErrorStackTrace \"%s\"", tname, tpassed, cat, result, errors);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -ErrorStackTrace \"%s\"", tname, tpassed, cat, result, emes, errors);
 		Run("appveyor", st, 1000);
 	}
-
 }
 
 void LoadConfig() {
@@ -147,7 +162,8 @@ void LoadConfig() {
 
 			time_stop = CGLib::time();
 			passed = time_stop - time_start;
-			if (!(GetExitCodeProcess(sei.hProcess, &ecode))) ecode = 100;
+			if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 100;
+			if (!CGLib::fileExists("autotest\\exit.log")) ecode = 101;
 
 			PublishTest(st, ecode, passed);
 		}
