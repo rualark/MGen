@@ -10,7 +10,6 @@ exclude:
 component_depth: 1
 languages:
 - cpp
-  production:
   test:
     include:
       - /MGenTest/*
