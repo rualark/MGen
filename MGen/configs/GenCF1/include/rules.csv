@@ -85,7 +85,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;184;100;Melody;Leaps;Leap down size;maj7;0;;
 1;185;0;Melody;Leaps;Leap down size;8th;1;;
 1;186;100;Melody;Leaps;Leap down size;>8th;0;;
-1;3;0;Melody;Leaps;Many leaps within 7 notes;3;0;;
+1;3;0;Melody;Leaps;Many leaps within 7 notes;3;1;;
 1;25;60;Melody;Leaps;Many leaps within 7 notes;>3;0;;
 1;70;60;Melody;Leaps;Consecutive leaps;3;0;;
 1;71;100;Melody;Leaps;Consecutive leaps;>3;0;;
@@ -123,7 +123,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;11;70;Melody;Range;Out of range;int >8va;0;;Maximum burst interval is 12th during 3 notes
 1;98;0;Melody;Range;Constrained local range;6 notes <4th;-1;;X consecutive notes have total range less than Y
 1;198;0;Melody;Range;Constrained local range;13 notes <m6;0;;X consecutive notes have total range less than Y
-1;15;0;Melody;Range;No melody direction;10 notes <16;0;;Melody direction within X notes is less than Y decihalfnotes
+1;15;0;Melody;Range;No melody direction;10 notes <16;1;;Melody direction within X notes is less than Y decihalfnotes
 1;16;0;Melody;Range;No melody direction;13 notes <20;0;;Melody direction within X notes is less than Y decihalfnotes
 1;17;70;Cantus;Harmony;Repeating letters in a row;>3;0;;
 1;20;70;Cantus;Harmony;Missing letters in a row;>3;0;;
@@ -190,9 +190,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;75;30;Cantus;Counterpoint;2nd to last measure;no G or D;0;;
 1;97;60;Cantus;Counterpoint;Slurs;consecutive;0;;
 1;30;100;Cantus;Counterpoint;Slurs;cantus;0;;
-1;93;0;Cantus;Counterpoint;Many slurs within 10 notes;1;1;For counterpoint species 1-3;
-1;94;60;Cantus;Counterpoint;Many slurs within 10 notes;2;1;For counterpoint species 1-3;
-1;95;60;Cantus;Counterpoint;Many slurs within 10 notes;>2;0;For counterpoint species 1-3;
+1;93;0;Cantus;Counterpoint;Slurs within 10 notes;1;1;For counterpoint species 1-3;
+1;94;60;Cantus;Counterpoint;Slurs within 10 notes;2;1;For counterpoint species 1-3;
+1;95;60;Cantus;Counterpoint;Slurs within 10 notes;>2;0;For counterpoint species 1-3;
 1;188;0;Cantus;Counterpoint;Missing slurs within 10 notes;1;0;For counterpoint species 4;
 1;189;60;Cantus;Counterpoint;Missing slurs within 10 notes;2;0;For counterpoint species 4;
 1;190;60;Cantus;Counterpoint;Missing slurs within 10 notes;>2;0;For counterpoint species 4;
