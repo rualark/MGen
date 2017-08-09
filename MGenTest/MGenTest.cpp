@@ -153,7 +153,7 @@ void LoadConfig() {
 		st.Trim();
 		if (st.GetLength()) {
 			ClearBuffer();
-			if (ci) Run("appveyor123", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
+			if (ci) Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
 			Log("Starting test config: " + st + "\n");
 			st2 = "-test " + st + " >> autotest\\run.log 2>&1";
 			SHELLEXECUTEINFO sei = { 0 };
