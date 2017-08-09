@@ -58,7 +58,7 @@ void Log(CString st, int level = 0) {
 		if (level == 1) cat = "Information";
 		if (level == 2) cat = "Warning";
 		if (level == 3) cat = "Error";
-		CString par = "AddMessage \"" + st + "\" -Category " + cat;
+		CString par = "AddMessage \"" + st + "\" -Category " + cat + " >> autotest\\run.log";
 		Run("appveyor", par, 1000);
 	}
 }
@@ -89,7 +89,6 @@ void ClearBuffer() {
 	fs.open("autotest\\buffer.log", ios::out);
 	fs.close();
 	remove("autotest\\exit.log");
-	remove("autotest\\expect.log");
 }
 
 void PublishTest(CString tname, int result, int tpassed) {
@@ -112,10 +111,10 @@ void PublishTest(CString tname, int result, int tpassed) {
 	if (ci) {
 		CString cat = "Passed";
 		if (result) cat = "Failed";
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\"", tname, tpassed, cat, result, emes);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log", tname, tpassed, cat, result, emes);
 		Run("appveyor", st, 1000);
 		// Send errors separately in case of command line overflow
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -ErrorStackTrace \"%s\"", tname, tpassed, cat, result, emes, errors);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -ErrorStackTrace \"%s\" >> autotest\\run.log", tname, tpassed, cat, result, emes, errors);
 		Run("appveyor", st, 1000);
 	}
 }
@@ -127,6 +126,8 @@ void LoadConfig() {
 	if (!CGLib::fileExists(fname)) {
 		cout << "Not found file " << fname << "\n";
 	}
+	remove("autotest\\expect.log");
+	remove("autotest\\run.log");
 	ifstream fs;
 	fs.open(fname);
 	DWORD ecode;
@@ -142,7 +143,7 @@ void LoadConfig() {
 		st.Trim();
 		if (st.GetLength()) {
 			ClearBuffer();
-			if (ci) Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running", 1000);
+			if (ci) Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log", 1000);
 			Log("Starting test config: " + st + "\n");
 			st2 = "-test " + st;
 			SHELLEXECUTEINFO sei = { 0 };
@@ -170,7 +171,12 @@ void LoadConfig() {
 			PublishTest(st, ecode, passed);
 		}
 	}
-	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log", 1000);
+	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log >> run.log", 1000);
+	// Show run output
+	CString outs = file("autotest\\run.log");
+	cout << "Run logs:\n";
+	cout << outs;
+
 	fs.close();
 }
 
