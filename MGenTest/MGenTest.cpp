@@ -89,6 +89,7 @@ void ClearBuffer() {
 	fs.open("autotest\\buffer.log", ios::out);
 	fs.close();
 	remove("autotest\\exit.log");
+	remove("autotest\\expect.log");
 }
 
 void PublishTest(CString tname, int result, int tpassed) {
@@ -169,6 +170,7 @@ void LoadConfig() {
 			PublishTest(st, ecode, passed);
 		}
 	}
+	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log", 1000);
 	fs.close();
 }
 
