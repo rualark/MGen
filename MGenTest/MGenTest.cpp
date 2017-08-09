@@ -174,7 +174,11 @@ void LoadConfig() {
 	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log >> run.log", 1000);
 	// Show run output
 	CString outs = file("autotest\\run.log");
-	cout << "Run logs:\n";
+	cout << "Run log:\n";
+	cout << outs;
+	// Show expect output
+	outs = file("autotest\\expect.log");
+	cout << "Expect log:\n";
 	cout << outs;
 
 	fs.close();
