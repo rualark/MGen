@@ -126,8 +126,13 @@ void LoadConfig() {
 	if (!CGLib::fileExists(fname)) {
 		cout << "Not found file " << fname << "\n";
 	}
+	// Clear expect.log
 	remove("autotest\\expect.log");
-	remove("autotest\\run.log");
+	// Clear run.log
+	fstream fs;
+	fs.open("autotest\\run.log", ios::out);
+	fs.close();
+	// Open file
 	ifstream fs;
 	fs.open(fname);
 	DWORD ecode;
