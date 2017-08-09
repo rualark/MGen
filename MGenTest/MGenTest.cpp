@@ -50,9 +50,9 @@ void Run(CString fname, CString par, int delay) {
 	ShellExecuteEx(&sei);
 	WaitForSingleObject(sei.hProcess, delay);
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
-	if (ecode) {
+	if (ecode != 0 && ecode != 259) {
 		nRetCode = 3;
-		cout << "Error code " << ecode << ": " << fname << " " << par << "\n";
+		cout << "Exit code " << ecode << ": " << fname << " " << par << "\n";
 	}
 }
 
