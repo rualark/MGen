@@ -36,6 +36,7 @@ CString GetErrorMessage(int e) {
 }
 
 void Run(CString fname, CString par, int delay) {
+	DWORD ecode;
 	SHELLEXECUTEINFO sei = { 0 };
 	sei.cbSize = sizeof(SHELLEXECUTEINFO);
 	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
@@ -48,6 +49,11 @@ void Run(CString fname, CString par, int delay) {
 	sei.hInstApp = NULL;
 	ShellExecuteEx(&sei);
 	WaitForSingleObject(sei.hProcess, delay);
+	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
+	if (ecode) {
+		nRetCode = 3;
+		cout << "Error code: " << ecode << "\n";
+	}
 }
 
 void Log(CString st, int level = 0) {
@@ -58,7 +64,7 @@ void Log(CString st, int level = 0) {
 		if (level == 1) cat = "Information";
 		if (level == 2) cat = "Warning";
 		if (level == 3) cat = "Error";
-		CString par = "AddMessage \"" + st + "\" -Category " + cat + " >> autotest\\run.log";
+		CString par = "AddMessage \"" + st + "\" -Category " + cat + " >> autotest\\run.log 2>&1";
 		Run("appveyor", par, 1000);
 	}
 }
@@ -111,10 +117,10 @@ void PublishTest(CString tname, int result, int tpassed) {
 	if (ci) {
 		CString cat = "Passed";
 		if (result) cat = "Failed";
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log", tname, tpassed, cat, result, emes);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log 2>&1", tname, tpassed, cat, result, emes);
 		Run("appveyor", st, 1000);
 		// Send errors separately in case of command line overflow
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -ErrorStackTrace \"%s\" >> autotest\\run.log", tname, tpassed, cat, result, emes, errors);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1", tname, tpassed, cat, result, emes, errors);
 		Run("appveyor", st, 1000);
 	}
 }
@@ -147,9 +153,9 @@ void LoadConfig() {
 		st.Trim();
 		if (st.GetLength()) {
 			ClearBuffer();
-			if (ci) Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log", 1000);
+			if (ci) Run("appveyor123", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
 			Log("Starting test config: " + st + "\n");
-			st2 = "-test " + st;
+			st2 = "-test " + st + " >> autotest\\run.log 2>&1";
 			SHELLEXECUTEINFO sei = { 0 };
 			sei.cbSize = sizeof(SHELLEXECUTEINFO);
 			sei.fMask = SEE_MASK_NOCLOSEPROCESS;
@@ -175,7 +181,7 @@ void LoadConfig() {
 			PublishTest(st, ecode, passed);
 		}
 	}
-	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log >> run.log", 1000);
+	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log >> run.log 2>&1", 1000);
 	// Show run output
 	Run("cmd.exe", "echo Test >> autotest\\run.log", 1000);
 	CString outs = file("autotest\\run.log");
