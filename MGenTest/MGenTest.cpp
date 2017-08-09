@@ -155,7 +155,7 @@ void LoadConfig() {
 			ClearBuffer();
 			if (ci) Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
 			Log("Starting test config: " + st + "\n");
-			st2 = "-test " + st + " >> autotest\\run.log 2>&1";
+			st2 = "-test " + st;
 			SHELLEXECUTEINFO sei = { 0 };
 			sei.cbSize = sizeof(SHELLEXECUTEINFO);
 			sei.fMask = SEE_MASK_NOCLOSEPROCESS;
