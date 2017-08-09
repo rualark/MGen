@@ -52,7 +52,7 @@ void Run(CString fname, CString par, int delay) {
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode) {
 		nRetCode = 3;
-		cout << "Error code: " << ecode << "\n";
+		cout << "Error code " << ecode << ": " << fname << " " << par << "\n";
 	}
 }
 
