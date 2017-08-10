@@ -430,7 +430,7 @@ int CGenCP1::FailVMotion() {
 			int pcontra = (scontra * 100) / (scontra + sdirect);
 			if (pcontra < contrary_min2) FLAG2(46, 0)
 			else if (pcontra < contrary_min) FLAG2(35, 0);
-		}793
+		}
 	}
 	return 0;
 }
