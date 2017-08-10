@@ -2611,24 +2611,27 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 		// Do not show colors and comments for base voice
 		if (av == cpv) {
 			int fl = anflags[av][x][f];
-			if (!i && accept[fl] != -1) {
-				if (!accept[fl]) st = "- ";
-				else st = "+ ";
-				comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-				if (comment2[pos][v] != "") comment2[pos][v] += ", ";
-				comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-				if (show_severity) {
-					st.Format(" [%d/%d]", severity[fl], fl);
-					comment[pos][v] += st;
+			// Send comments and color only if rule is not ignored
+			if (accept[fl] != -1) {
+				if (!i) {
+					if (!accept[fl]) st = "- ";
+					else st = "+ ";
+					comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+					if (comment2[pos][v] != "") comment2[pos][v] += ", ";
+					comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+					if (show_severity) {
+						st.Format(" [%d/%d]", severity[fl], fl);
+						comment[pos][v] += st;
+					}
+					if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
+					if (SubRuleComment[rule_set][fl] != "") comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
+					comment[pos][v] += ". ";
 				}
-				if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
-				if (SubRuleComment[rule_set][fl] != "") comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
-				comment[pos][v] += ". ";
-			}
-			// Set note color if this is maximum flag severity
-			if (severity[fl] > current_severity) {
-				current_severity = severity[fl];
-				color[pos + i][v] = flag_color[severity[fl]];
+				// Set note color if this is maximum flag severity
+				if (severity[fl] > current_severity) {
+					current_severity = severity[fl];
+					color[pos + i][v] = flag_color[severity[fl]];
+				}
 			}
 		}
 	}

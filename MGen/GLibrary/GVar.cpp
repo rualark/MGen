@@ -4,6 +4,7 @@
 
 CGVar::CGVar()
 {
+	color_noflag = Color(0, 100, 100, 100);
 	// Init constant length arrays
 	instr.resize(MAX_VOICE);
 	ks1.resize(MAX_VOICE);
@@ -1325,10 +1326,11 @@ void CGVar::MergeNotes(int step1, int step2, int v) {
 	for (int x = step1+1; x <= step2; ++x) {
 		// Detect steps that have same pitch 
 		if (note[x][v] == note[x - 1][v]) {
-			// If notes have decreasing coff
+			// If notes have decreasing coff (this means that this is a new cc note)
 			if (coff[x][v] <= coff[x - 1][v]) {
 				// if first note step select best color
-				if (!coff[x][v] && color[x][v].GetRed() > col.GetRed()) {
+				if (!coff[x][v] && color[x][v].GetValue() != color_noflag.GetValue() && 
+					  color[x][v].GetRed() > col.GetRed()) {
 					col = color[x][v];
 					// update color of previous steps
 					for (int z = first_pos; z < x; ++z) {

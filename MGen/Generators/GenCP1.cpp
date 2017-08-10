@@ -260,7 +260,7 @@ int CGenCP1::SendCP() {
 			for (int i = 0; i < cc_len[x]; ++i) {
 				if (av == cpv) {
 					// Set color
-					color[pos + i][v] = Color(0, 100, 100, 100);
+					color[pos + i][v] = color_noflag;
 				}
 				SendNotes(pos, i, v, x, acc[av]);
 				SendNgraph(pos, i, v, x);
