@@ -12,6 +12,7 @@ show_lining = 1 # Set to 1 to show note lining
 show_lines = 1 # Set to 1 to show line separators
 show_vel = 1 # Set to 1 to show note velocity using alpha
 show_curve = 1 # Set to 1 to show melody curves (MeloCurve)
+show_nsr = 1 # Set to 1 to show note scan range
 show_tempo = 0 # Set to 1 to show tempo
 show_notecolors = 1 # Set to 1 to show note colors instead of instrument colors
 

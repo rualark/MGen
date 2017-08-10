@@ -288,7 +288,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			if (step1t > 0) step1t--;
 			if (step2t < pGen->t_generated - 1) step2t++;
 			// Show scan range
-			if (mf->show_curve) {
+			if (mf->show_nsr) {
 				for (int v = 0; v < pGen->v_cnt; v++) {
 					ncolor = Color(10, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 					SolidBrush brush(ncolor);
