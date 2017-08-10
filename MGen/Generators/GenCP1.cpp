@@ -1091,6 +1091,8 @@ void CGenCP1::Generate() {
 		cfv = 0;
 	}
 	// Load first voice
+	vector<int> cc_len_old = cc_len;
+	vector<float> cc_tempo_old = cc_tempo;
 	vector<int> anflagsc_old = anflagsc[cfv];
 	vector<vector<int>> anflags_old = anflags[cfv];
 	c_len = m_c.size() * npm - (npm - 1); 
@@ -1112,6 +1114,8 @@ void CGenCP1::Generate() {
 			acc[cfv].push_back(m_cc[i]);
 			apc[cfv].push_back(m_pc[i]);
 			apcc[cfv].push_back(m_pcc[i]);
+			cc_len.push_back(cc_len_old[i]*npm/npm2);
+			cc_tempo.push_back(cc_tempo_old[i]);
 			if (!x) {
 				int y = i*npm + x;
 				anflagsc[cfv][y] = anflagsc_old[i];
