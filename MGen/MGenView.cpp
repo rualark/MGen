@@ -290,7 +290,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Show scan range
 			if (mf->show_nsr) {
 				for (int v = 0; v < pGen->v_cnt; v++) {
-					ncolor = Color(10, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+					ncolor = Color(15, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 					SolidBrush brush(ncolor);
 					for (int i = step1t; i < step2t; i++) if (pGen->nsr1[i][v] && pGen->nsr2[i][v]) {
 						g.FillRectangle(&brush, X_FIELD + i * nwidth,

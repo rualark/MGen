@@ -2650,7 +2650,7 @@ void CGenCF1::TransposeCantusBack() {
 	}
 }
 
-void CGenCF1::SendNotes(int pos, int i, int v, int x, vector<int> &cc) {
+void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	note[pos + i][v] = cc[x];
 	tonic[pos + i][v] = tonic_cur;
 	minor[pos + i][v] = minor_cur;
@@ -2658,7 +2658,7 @@ void CGenCF1::SendNotes(int pos, int i, int v, int x, vector<int> &cc) {
 	pause[pos + i][v] = 0;
 	coff[pos + i][v] = i;
 	// Add scan range
-	if (!i) {
+	if (!i && av == cpv) {
 		nsr1[pos][v] = min_cc[x];
 		nsr2[pos][v] = max_cc[x];
 	}
@@ -2707,7 +2707,7 @@ int CGenCF1::SendCantus() {
 		SendLyrics(pos, v, cpv, x);
 		for (int i = 0; i < cc_len[x]; ++i) {
 			color[pos + i][v] = Color(0, 100, 100, 100);
-			SendNotes(pos, i, v, x, m_cc);
+			SendNotes(pos, i, v, cpv, x, m_cc);
 			SendNgraph(pos, i, v, x);
 			SendComment(pos, v, cpv, x, i);
 		}
