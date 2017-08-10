@@ -281,10 +281,27 @@ void CMGenView::OnDraw(CDC* pDC)
 				else if ((mf->zoom_x >= 200) && (i % 2 == 0)) g.DrawLine(&pen_dgray, X_FIELD + i * nwidth, y_start,
 					X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
 			}
+			Color ncolor, mcolor;
+			// Add step to the left and to the right
+			int step1t = step1;
+			int step2t = step2;
+			if (step1t > 0) step1t--;
+			if (step2t < pGen->t_generated - 1) step2t++;
+			// Show scan range
+			if (mf->show_curve) {
+				for (int v = 0; v < pGen->v_cnt; v++) {
+					ncolor = Color(10, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+					SolidBrush brush(ncolor);
+					for (int i = step1t; i < step2t; i++) if (pGen->nsr1[i][v] && pGen->nsr2[i][v]) {
+						g.FillRectangle(&brush, X_FIELD + i * nwidth,
+							y_start - (pGen->nsr2[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+							nwidth, (pGen->nsr2[i][v] - pGen->nsr1[i][v] + 1) * nheight);
+					}
+				}
+			}
 			// Show notes
 			time_stop4 = CGLib::time();
 			int cutend = 0;
-			Color ncolor, mcolor;
 			int alpha;
 			int step_dyn = mf->m_step_dyn;
 			int ci_old = -1;
@@ -418,11 +435,6 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 			}
 			mouse_voice_old = mouse_voice;
-			// Add step to the left and to the right
-			int step1t = step1;
-			int step2t = step2;
-			if (step1t > 0) step1t--;
-			if (step2t < pGen->t_generated-1) step2t++;
 			// Show note graph
 			if (mf->show_curve) {
 				for (int v = 0; v < pGen->v_cnt; v++) {
