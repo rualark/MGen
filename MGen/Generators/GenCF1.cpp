@@ -2205,8 +2205,6 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 		s_1 = fli2[x - 1];
 		// Prohibit leap to VI#
 		if (pcc[s] == 9 && abs(cc[s] - cc[s_1]) > fis_leap) FLAG2(201, s);
-		// Prohibit major second up before I (in last steps and other places)
-		if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1);
 		// Prohibit minor second up before VII - absorbed
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
