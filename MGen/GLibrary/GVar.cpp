@@ -1281,8 +1281,11 @@ void CGVar::UpdateNoteMinMax(int step1, int step2)
 			// Global minimax includes show_transpose, because it is used only for visualization
 			if (ng_min > note[i][v] + show_transpose[v]) ng_min = note[i][v] + show_transpose[v];
 			if (ng_max < note[i][v] + show_transpose[v]) ng_max = note[i][v] + show_transpose[v];
-			if (nsr1[i][v] && ng_min > nsr1[i][v] + show_transpose[v]) ng_min = nsr1[i][v] + show_transpose[v];
-			if (nsr2[i][v] && ng_max < nsr2[i][v] + show_transpose[v]) ng_max = nsr2[i][v] + show_transpose[v];
+			// Calculate range including note scan range
+			if (ng_min2 > note[i][v] + show_transpose[v]) ng_min2 = note[i][v] + show_transpose[v];
+			if (ng_max2 < note[i][v] + show_transpose[v]) ng_max2 = note[i][v] + show_transpose[v];
+			if (nsr1[i][v] && ng_min2 > nsr1[i][v] + show_transpose[v]) ng_min2 = nsr1[i][v] + show_transpose[v];
+			if (nsr2[i][v] && ng_max2 < nsr2[i][v] + show_transpose[v]) ng_max2 = nsr2[i][v] + show_transpose[v];
 			// Voice minimax does not include show_transpose, because it is used for Adaptation
 			if (ngv_min[v] > note[i][v]) ngv_min[v] = note[i][v];
 			if (ngv_max[v] < note[i][v]) ngv_max[v] = note[i][v];
