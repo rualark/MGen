@@ -22,7 +22,7 @@ random_key = 0 # Select any of possible keys regardless of last note
 # Main parameters
 notes_per_measure = 1 # Number of notes per measure (1 = species1, 2 = species2, 4 = species3, 8 = species5)
 start_pause = 0 # Length of starting pause at counterpoint voice start (length of pause is controlled by notes_per_measure)
-rpenalty_accepted = 0 # Maximum accepted rule penalty for RandomSWA
+rpenalty_accepted = 200 # Maximum accepted rule penalty for RandomSWA
 
 # Technical parameters
 midifile_in_mul = 0.5 # Multiply note length with this value when loading
