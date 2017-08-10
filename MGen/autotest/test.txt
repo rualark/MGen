@@ -17,6 +17,7 @@ configs\GenCP1\known-cf-maj.pl
 configs\GenCP1\known-cf-maj-high.pl
 configs\GenCP1\known-cf-maj-scan.pl
 configs\GenCA2\test-alterint.pl
+configs\GenCA2\known-cp2v1.pl
 configs\GenCA2\test-cp.pl
 configs\GenCA2\test-vint.pl
 configs\GenMP1\autoconf-cloud.pl
