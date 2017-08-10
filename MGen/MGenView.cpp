@@ -186,8 +186,16 @@ void CMGenView::OnDraw(CDC* pDC)
 			if (pGen->tg_min < tg_min) tg_min = pGen->tg_min - 1;
 			if (pGen->tg_max > tg_max) tg_max = pGen->tg_max + 1;
 			// Get generator window
-			int ng_min = pGen->ng_min;
-			int ng_max = pGen->ng_max;
+			int ng_min;
+			int ng_max;
+			if (mf->show_nsr) {
+				ng_max = pGen->ng_max2;
+				ng_min = pGen->ng_min2;
+			}
+			else {
+				ng_max = pGen->ng_max;
+				ng_min = pGen->ng_min;
+			}
 			int ncount = ng_max - ng_min + 1;
 			// Copy generator window
 			int ng_min2 = ng_min;
