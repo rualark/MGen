@@ -174,12 +174,12 @@ Lower culmination at tonic = 2
 1;172;30;Cantus;Minor;Altered interval;VI<->VII#;0;If allowed, will be considered dissonance;
 1;173;30;Cantus;Minor;Altered interval;VI#<->III;0;If allowed, will be considered dissonance;
 1;174;30;Cantus;Minor;Altered interval;VII#<->III;0;If allowed, will be considered dissonance;
-1;80;0;Cantus;Counterpoint;Perfect consonance;downbeat;-1;;
+1;80;0;Cantus;Counterpoint;Perfect consonance;downbeat;1;;
 1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;-1;;
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;
 1;84;60;Cantus;Counterpoint;Perfect consonance approach;parallel;0;;
 1;85;60;Cantus;Counterpoint;Perfect consonance approach;combined;0;;
-1;86;60;Cantus;Counterpoint;Perfect consonance approach;different;-1;;
+1;86;60;Cantus;Counterpoint;Perfect consonance approach;different;1;;
 1;87;60;Cantus;Counterpoint;Perfect consonance approach;direct;0;;
 1;33;60;Cantus;Counterpoint;Perfect consonance approach;direct end;-1;;
 1;83;100;Cantus;Counterpoint;Dissonance;downbeat;0;;
