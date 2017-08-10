@@ -29,7 +29,7 @@ first_note = A5 # Starting note of each cantus
 last_note = A5 # Ending note of each cantus
 random_key = 0 # Allow generator to select random key
 tempo = 100-130 # Tempo range
-cantus_high = 0 # Set to 1 to consider cantus to be higher voice
+cantus_high = 1 # Set to 1 to consider cantus to be higher voice
 transpose_back = 1 # Set to 1 to transpose generated melody closer to initial first note
 
 # Random SWA
