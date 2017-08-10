@@ -260,7 +260,7 @@ int CGenCP1::SendCP() {
 			for (int i = 0; i < cc_len[x]; ++i) {
 				if (av == cpv) {
 					// Set color
-					color[pos + i][v] = Color(0, 100, 100, 100);
+					color[pos + i][v] = color_noflag;
 				}
 				SendNotes(pos, i, v, x, acc[av]);
 				SendNgraph(pos, i, v, x);
@@ -428,8 +428,8 @@ int CGenCP1::FailVMotion() {
 	if (ep2 == c_len) {
 		if (scontra + sdirect) {
 			int pcontra = (scontra * 100) / (scontra + sdirect);
-			if (pcontra < contrary_min) FLAG2(46, 0)
-			else if (pcontra < contrary_min2) FLAG2(35, 0);
+			if (pcontra < contrary_min2) FLAG2(46, 0)
+			else if (pcontra < contrary_min) FLAG2(35, 0);
 		}
 	}
 	return 0;

@@ -251,5 +251,6 @@ protected:
 	void MergeNotes(int step1, int step2, int v);
 	inline void ResizeVectors(int size, int vsize = -1);
 
+	Color color_noflag; // Color for notes with no flags
 };
 
