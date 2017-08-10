@@ -1068,21 +1068,26 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 }
 
 int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc, int ep2) {
+	int s = fli[fli_size - 1];
+	int s_1 = fli[fli_size - 2];
+	int s_2 = fli[fli_size - 3];
 	// Prohibit last note not tonic
-	if (ep2 > c_len - 1)
-		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1); 
+	if (ep2 > c_len - 1) {
+		if (pc[s] != 0) FLAG2(50, s);
+		// Prohibit major second up before I
+		if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1);
+		if (pcc[s] == 0 && pcc[s_2] == 10) FLAG2(74, s_2);
+	}
 	// Wrong second to last note (last note never can be slurred)
 	if (ep2 > c_len - 2) {
-		if ((pc[c_len - 2] == 0) || (pc[c_len - 2] == 2) || (pc[c_len - 2] == 3) || (pc[c_len - 2] == 5)) FLAG2(13, c_len - 2);
-		if (pc[c_len - 2] == 4) FLAG2(51, c_len - 2);
+		if ((pc[s_1] == 0) || (pc[s_1] == 2) || (pc[s_1] == 3) || (pc[s_1] == 5)) FLAG2(13, s_1);
+		if (pc[s_1] == 4) FLAG2(51, s_1);
 	}
 	// Wrong third to last note
 	if (ep2 > c_len - 3) {
-		if ((pc[c_len - 3] == 0) || (pc[c_len - 3] == 2) || (pc[c_len - 3] == 4)) FLAG2(14, c_len - 3);
+		if ((pc[s_2] == 0) || (pc[s_2] == 2) || (pc[s_2] == 4)) FLAG2(14, s_2);
 		// Leading third to last note
-		if (pc[c_len - 3] == 6) FLAG2(34, c_len - 3);
-		// Prohibit major second up before I (in last steps and other places)
-		if (pcc[c_len - 1] == 0 && pcc[c_len - 3] == 10) FLAG2(74, c_len - 3);
+		if (pc[s_2] == 6) FLAG2(34, s_2);
 	}
 	return 0;
 }
