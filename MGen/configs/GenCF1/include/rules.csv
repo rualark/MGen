@@ -202,5 +202,5 @@ Lower culmination at tonic = 2
 1;189;60;Cantus;Counterpoint;Missing slurs within 10 notes;2;0;For counterpoint species 4;
 1;190;60;Cantus;Counterpoint;Missing slurs within 10 notes;>2;0;For counterpoint species 4;
 1;24;60;Cantus;Counterpoint;Overlap;voices;0;;
-1;35;0;Cantus;Counterpoint;Contrary motion;<60%;-1;;
-1;46;60;Cantus;Counterpoint;Contrary motion;<30%;-1;;
+1;35;0;Cantus;Counterpoint;Contrary motion;<60%;1;;
+1;46;60;Cantus;Counterpoint;Contrary motion;<30%;1;;
