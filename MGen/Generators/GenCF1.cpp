@@ -698,7 +698,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		//CGLib::AppendLineToFile("log/temp.log", st);
 		//LogCantus(chmp);
 		//LogCantus(chm);
-		if (need_exit && task != tEval) return 1;
+		if (need_exit) return 1;
 		if (!p) {
 			++p;
 			if (p > max_p) max_p = p;
@@ -3042,7 +3042,6 @@ check:
 		// Limit melody interval
 		if (nmax - nmin > max_interval) FLAG(37, 0);
 		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
-		if (need_exit && task != tEval) break;
 		// Show status
 		if (accepted3 % 100000 == 0) ShowScanStatus(m_cc);
 		// Calculate diatonic limits
@@ -3127,6 +3126,7 @@ check:
 			if (task == tEval) return;
 		}
 	skip:
+		if (need_exit) break;
 		ScanLeft(m_cc, finished);
 		if (finished) {
 			// Clear flag to prevent coming here again
