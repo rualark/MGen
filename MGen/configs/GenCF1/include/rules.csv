@@ -145,7 +145,7 @@ Perfect: int >8va (burst 12th during 3 notes)
 1;52;70;Cantus;Border;Start steps tonic;unprepared;0;;
 1;40;70;Cantus;Border;Start steps tonic;no C;0;;
 1;41;70;Cantus;Border;Start steps tonic;no E;0;;
-1;50;30;Cantus;Border;Last note;not C;0;;
+1;50;30;Cantus;Border;Last note;not C;1;;
 1;14;0;Cantus;Border;3rd to last note;CEG;-1;;
 1;34;0;Cantus;Border;3rd to last note;leading;-1;;
 1;51;30;Cantus;Border;2nd to last note;not BD;-1;;

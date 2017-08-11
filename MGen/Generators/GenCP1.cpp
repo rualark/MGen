@@ -654,6 +654,8 @@ void CGenCP1::RandomSWACP()
 		if (need_exit) break;
 		// Create random cantus
 		MakeNewCP();
+		min_cc0 = min_cc;
+		max_cc0 = max_cc;
 		scpoint[cpv] = acc[cpv];
 		// Set scan matrix to scan all
 		smatrixc = c_len - fn;

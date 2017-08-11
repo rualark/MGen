@@ -367,8 +367,10 @@ protected:
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	vector<int> min_c;
 	vector<int> max_c;
-	vector<int> min_cc;
+	vector<int> min_cc; // Current range
 	vector<int> max_cc;
+	vector<int> min_cc0; // Source range for RSWA
+	vector<int> max_cc0;
 	int minc, maxc; // Real possible limits
 	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
 	vector<long long> fstat; // number of canti with each flag

@@ -2666,9 +2666,19 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	pause[pos + i][v] = 0;
 	coff[pos + i][v] = i;
 	// Add scan range
-	if (!i && av == cpv) {
-		nsr1[pos][v] = min_cc[x];
-		nsr2[pos][v] = max_cc[x];
+	if (!i) {
+		if (av == cpv) {
+			// Send source scan range in all cases
+			if (min_cc0.size()) nsr1[pos][v] = min_cc0[x];
+			else nsr1[pos][v] = min_cc[x];
+			if (max_cc0.size()) nsr2[pos][v] = max_cc0[x];
+			else nsr2[pos][v] = max_cc[x];
+		}
+		else {
+			// Send rswa scan range if rswa
+			if (min_cc0.size()) nsr1[pos][v] = min_cc[x];
+			if (max_cc0.size()) nsr2[pos][v] = max_cc[x];
+		}
 	}
 	if (x < real_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
 	else dyn[pos + i][v] = 60 + 40 * (real_len - pos - i + step) / real_len + 20 * rand2() / RAND_MAX;
@@ -2841,6 +2851,8 @@ void CGenCF1::RandomSWA()
 		first_note = first_note0;
 		// Create random cantus
 		MakeNewCantus(m_c, m_cc);
+		min_cc0 = min_cc;
+		max_cc0 = max_cc;
 		// Convert cantus to chromatic
 		for (int x = 0; x < c_len; ++x) {
 			cantus[0][x] = C_CC(m_c[x], tonic_cur, minor_cur);
