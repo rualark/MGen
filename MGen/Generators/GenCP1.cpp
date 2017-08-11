@@ -656,13 +656,15 @@ void CGenCP1::RandomSWACP()
 		MakeNewCP();
 		min_cc0 = min_cc;
 		max_cc0 = max_cc;
-		if (1) {
+		// Debug source random cp
+		if (0) {
 			scpoint = acc;
 			ScanCP(tEval, 0);
 			Adapt(step, t_generated - 1);
 			t_sent = t_generated;
 		}
 		scpoint[cpv] = acc[cpv];
+		cpoint[0][cpv] = acc[cpv];
 		// Set scan matrix to scan all
 		smatrixc = c_len - fn;
 		smatrix.clear();
@@ -764,10 +766,17 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 		}
 		// Send log
-		if (debug_level > 1) {
+		if (debug_level > 0) {
 			CString est;
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
+			// Send intermediate results for debugging
+			if (0) {
+				scpoint = acc;
+				ScanCP(tEval, 0);
+				Adapt(step, t_generated - 1);
+				t_sent = t_generated;
+			}
 		}
 		if (acc[cfv].size() > 60) {
 			st.Format("SWA%d attempt: %d", s_len, a);
