@@ -635,6 +635,16 @@ int CGenCP1::FailOverlap() {
 // Create random cantus and optimize it using SWA
 void CGenCP1::RandomSWACP()
 {
+	test_cc.resize(9);
+	test_cc[0] = 55;
+	test_cc[1] = 58;
+	test_cc[2] = 51;
+	test_cc[3] = 53;
+	test_cc[4] = 54;
+	test_cc[5] = 55;
+	test_cc[6] = 55;
+	test_cc[7] = 50;
+	test_cc[8] = 55;
 	CString st;
 	VSet<int> vs; // Unique checker
 								// Disable debug flags
@@ -683,6 +693,9 @@ void CGenCP1::RandomSWACP()
 		// Show cantus if it is perfect
 		if (rpenalty_min <= rpenalty_accepted) {
 			if (vs.Insert(acc[cpv])) {
+				if (acc[cpv] == test_cc) {
+					WriteLog(1, "Wow");
+				}
 				int step = t_generated;
 				// Add line
 				linecolor[t_generated] = Color(255, 0, 0, 0);
