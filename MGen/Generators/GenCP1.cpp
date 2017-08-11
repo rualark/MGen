@@ -656,6 +656,12 @@ void CGenCP1::RandomSWACP()
 		MakeNewCP();
 		min_cc0 = min_cc;
 		max_cc0 = max_cc;
+		if (1) {
+			scpoint = acc;
+			ScanCP(tEval, 0);
+			Adapt(step, t_generated - 1);
+			t_sent = t_generated;
+		}
 		scpoint[cpv] = acc[cpv];
 		// Set scan matrix to scan all
 		smatrixc = c_len - fn;
