@@ -693,9 +693,9 @@ void CGenCP1::RandomSWACP()
 		// Show cantus if it is perfect
 		if (rpenalty_min <= rpenalty_accepted) {
 			if (vs.Insert(acc[cpv])) {
-				if (acc[cpv] == test_cc) {
-					WriteLog(1, "Wow");
-				}
+				//if (acc[cpv] == test_cc) {
+					//WriteLog(1, "Wow");
+				//}
 				int step = t_generated;
 				// Add line
 				linecolor[t_generated] = Color(255, 0, 0, 0);
@@ -945,13 +945,13 @@ check:
 		// Show status
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
+		CreateLinks(acc[cpv]);
 		if (minor_cur) {
 			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;
 			if (FailGisTrail(apcc[cpv])) goto skip;
 		}
 		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
-		CreateLinks(acc[cpv]);
 		if (FailCPInterval()) goto skip;
 		GetMeasures();
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
