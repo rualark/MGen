@@ -52,13 +52,13 @@ void CGenCP1::MakeNewCP() {
 	if (cantus_high) {
 		for (int i = 0; i < c_len; ++i) {
 			max_cc[i] = acc[cfv][i] - min_between;
-			min_cc[i] = acc[cfv][i] - max_between;
+			min_cc[i] = acc[cfv][i] - burst_between;
 		}
 	}
 	else {
 		for (int i = 0; i < c_len; ++i) {
 			min_cc[i] = acc[cfv][i] + min_between;
-			max_cc[i] = acc[cfv][i] + max_between;
+			max_cc[i] = acc[cfv][i] + burst_between;
 		}
 	}
 	// Convert limits to diatonic and recalibrate
