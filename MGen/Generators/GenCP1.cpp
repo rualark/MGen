@@ -52,13 +52,15 @@ void CGenCP1::MakeNewCP() {
 	if (cantus_high) {
 		for (int i = 0; i < c_len; ++i) {
 			max_cc[i] = acc[cfv][i] - min_between;
-			min_cc[i] = acc[cfv][i] - burst_between;
+			//min_cc[i] = acc[cfv][i] - burst_between;
+			min_cc[i] = max(acc[cfv][i] - burst_between, cf_nmax - sum_interval);
 		}
 	}
 	else {
 		for (int i = 0; i < c_len; ++i) {
 			min_cc[i] = acc[cfv][i] + min_between;
-			max_cc[i] = acc[cfv][i] + burst_between;
+			//max_cc[i] = acc[cfv][i] + burst_between;
+			max_cc[i] = min(acc[cfv][i] + burst_between, cf_nmin + sum_interval);
 		}
 	}
 	// Convert limits to diatonic and recalibrate
@@ -768,7 +770,7 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 		}
 		// Send log
-		if (debug_level > 0) {
+		if (debug_level > 1) {
 			CString est;
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
