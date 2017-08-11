@@ -941,7 +941,7 @@ check:
 		}
 		if (FailSlurs(acc[cpv], 0, ep2 - 1)) goto skip;
 		++accepted3;
-		if (need_exit && task != tEval) break;
+		if (need_exit) break;
 		// Show status
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
