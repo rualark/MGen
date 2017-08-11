@@ -618,13 +618,13 @@ int CGenCP1::FailCPInterval() {
 // Find situations when one voice goes over previous note of another voice
 int CGenCP1::FailOverlap() {
 	if (cantus_high) {
-		for (int i = ep1; i < ep2; ++i) {
+		for (int i = 0; i < ep2; ++i) {
 			if (i > 0 && acc[cpv][i] >= acc[cfv][i - 1]) FLAG2(24, i)
 			else if (i < c_len - 1 && acc[cpv][i] >= acc[cfv][i + 1]) FLAG2(24, i);
 		}
 	}
 	else {
-		for (int i = ep1; i < ep2; ++i) {
+		for (int i = 0; i < ep2; ++i) {
 			if (i > 0 && acc[cpv][i] <= acc[cfv][i - 1]) FLAG2(24, i)
 			else if (i < c_len - 1 && acc[cpv][i] <= acc[cfv][i + 1]) FLAG2(24, i);
 		}
@@ -688,6 +688,10 @@ void CGenCP1::RandomSWACP()
 				linecolor[t_generated] = Color(255, 0, 0, 0);
 				scpoint = acc;
 				ScanCP(tEval, 0);
+				if (rpenalty_cur > rpenalty_accepted) {
+					st.Format("Error calculating rpenalty %f min %f at step %d", rpenalty_cur, rpenalty_min, t_generated);
+					WriteLog(5, st);
+				}
 				Adapt(step, t_generated - 1);
 				t_sent = t_generated;
 			}
