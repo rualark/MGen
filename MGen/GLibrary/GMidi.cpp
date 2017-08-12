@@ -648,7 +648,6 @@ void CGMidi::LoadCP(CString path)
 	}
 
 	vector<vector<pair<int, int>>> inter; // Intermediate structure for loading counterpoint
-	vector<CString> incom; // Incoming comments
 	vector<int> harm; // Harmony
 	int cid = 0; // counterpoint
 	int nid = 0; // note
@@ -668,26 +667,6 @@ void CGMidi::LoadCP(CString path)
 			//float time = midifile.getTimeInSeconds(mev->tick);
 			float pos2 = mev->tick;
 			int pos = round(mev->tick / (float)tpc);
-			if (mev->isMetaMessage()) {
-				// Lyrics
-				if (mev->getMetaType() == 5) {
-					CString st;
-					st = "";
-					for (int x = 0; x < mev->size(); x++) {
-						st += mev->data()[x];
-					}
-					// Remove first data items
-					st = st.Mid(3);
-					st = st.Trim();
-					st.MakeLower();
-					// Assign lyrics if this position was already sent
-					if (pos_old == pos) {
-						incom.resize(hid);
-						incom[hid - 1] = st;
-					}
-					// TODO: Assign lyrics if this position is new and notes will be sent later
-				}
-			}
 			if (mev->isNoteOn()) {
 				float nlen2 = mev->getTickDuration();
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
@@ -736,9 +715,6 @@ void CGMidi::LoadCP(CString path)
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
 						cpos.push_back(cp);
-						// Send incom
-						cp_incom.resize(cid);
-						cp_incom[cid - 1] = incom;
 					}
 					// Go to next cantus
 					nid = 0;
@@ -761,7 +737,6 @@ void CGMidi::LoadCP(CString path)
 					inter.clear();
 					min_len.clear();
 					max_len.clear();
-					incom.clear();
 				}
 				// Add new note
 				if (!nlen) {
@@ -811,7 +786,45 @@ void CGMidi::LoadCP(CString path)
 			cpos.push_back(cp);
 			// Send incom
 			cp_incom.resize(cid);
-			cp_incom[cid - 1] = incom;
+		}
+	}
+	// Load lyrics
+	int dist, min_dist, my_c, my_x;
+	cp_incom.resize(cpoint.size());
+	for (int track = 0; track < midifile.getTrackCount(); track++) {
+		for (int i = 0; i < midifile[track].size(); i++) {
+			MidiEvent* mev = &midifile[track][i];
+			float pos2 = mev->tick;
+			if (mev->isMetaMessage()) {
+				// Lyrics
+				if (mev->getMetaType() == 5) {
+					CString st;
+					st = "";
+					for (int x = 0; x < mev->size(); x++) {
+						st += mev->data()[x];
+					}
+					// Remove first data items
+					st = st.Mid(3);
+					st = st.Trim();
+					st.MakeLower();
+					// Search for closest note
+					min_dist = INT_MAX;
+					for (int c = 0; c < cpos.size(); ++c) {
+						for (int x = 0; x < cpos[c].size(); ++x) {
+							dist = abs(cpos[c][x] - pos2);
+							if (dist <= min_dist) {
+								min_dist = dist;
+								my_c = c;
+								my_x = x;
+							}
+						}
+					}
+					if (min_dist < INT_MAX) {
+						cp_incom[my_c].resize(my_x + 1);
+						cp_incom[my_c][my_x] = st;
+					}
+				}
+			}
 		}
 	}
 	// Count time
