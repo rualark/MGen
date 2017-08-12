@@ -196,12 +196,31 @@ void CGenCA2::ExplodeCP() {
 	}
 }
 
+void CGenCA2::LinkCpPauses() {
+	int v2;
+	for (int c = 0; c < cpoint.size(); ++c) {
+		for (int v = 0; v < cpoint[c].size(); ++v) {
+			if (v) v2 = 0;
+			else v2 = 1;
+			for (int i = 1; i < cpoint[c][v].size(); ++i) {
+				// Detect wrong voice slur
+				if (!cpoint[c][v][i - 1] && cpoint[c][v][i] == cpoint[c][v2][i - 1]) {
+					// Move slur to correct voice
+					cpoint[c][v][i - 1] = cpoint[c][v][i];
+					cpoint[c][v2][i - 1] = 0;
+				}
+			}
+		}
+	}
+}
+
 void CGenCA2::Generate() {
 	CString st;
 	int s_len2 = s_len;
 	InitCP();
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCP(midi_file);
+	LinkCpPauses();
 	if (cpoint.size() < 1) return;
 	// Saved t_generated
 	int t_generated2 = 0;

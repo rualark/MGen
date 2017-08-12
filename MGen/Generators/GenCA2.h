@@ -11,6 +11,8 @@ public:
 
 	void ExplodeCP();
 
+	void LinkCpPauses();
+
 	void Generate() override;
 
 protected:
