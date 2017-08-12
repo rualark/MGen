@@ -1068,6 +1068,8 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 }
 
 int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc, int ep2) {
+	// Do not check if melody is short yet
+	if (fli_size < 3) return 0;
 	int s, s_1, s_2;
 	// Prohibit last note not tonic
 	if (ep2 > c_len - 1) {
