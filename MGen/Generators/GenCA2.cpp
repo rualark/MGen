@@ -268,6 +268,13 @@ void CGenCA2::Generate() {
 				cantus_id + 1, cantus_high ? "high" : "low");
 			WriteLog(5, st);
 		}
+		// Check level
+		if ((cantus_high && cpoint[i][1][0] == 0) || (!cantus_high && cpoint[i][0][0] == 0)) {
+			st.Format("Warning: Cantus starts with a pause (%s cantus #%d). Changed to %s",
+				cantus_high ? "high" : "low", cantus_id + 1, (!cantus_high) ? "high" : "low");
+			WriteLog(5, st);
+			cantus_high = !cantus_high;
+		}
 		if (cantus_high) {
 			cfv = 1;
 			cpv = 0;
