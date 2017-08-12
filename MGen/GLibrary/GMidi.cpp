@@ -655,8 +655,10 @@ void CGMidi::LoadCP(CString path)
 	int hid = 0; // harmony
 	int pos_old = -1;
 	vector <vector<int>> c;
-	vector <int> cl;
-	vector <float> ct;
+	vector <vector<int>> cpos;
+	vector <int> cl; // length
+	vector <int> cp; // position
+	vector <float> ct; // tempo
 	vector <int> min_len, max_len;
 	int bad = 0;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
@@ -733,6 +735,7 @@ void CGMidi::LoadCP(CString path)
 						}
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
+						cpos.push_back(cp);
 						// Send incom
 						cp_incom.resize(cid);
 						cp_incom[cid - 1] = incom;
@@ -754,6 +757,7 @@ void CGMidi::LoadCP(CString path)
 					// Add new cpoint
 					cl.clear();
 					ct.clear();
+					cp.clear();
 					inter.clear();
 					min_len.clear();
 					max_len.clear();
@@ -776,6 +780,7 @@ void CGMidi::LoadCP(CString path)
 					inter.resize(hid);
 					cl.push_back(nlen);
 					ct.push_back(tempo2[pos]);
+					cp.push_back(pos2);
 					min_len.push_back(100000000);
 					max_len.push_back(0);
 				}
@@ -803,6 +808,7 @@ void CGMidi::LoadCP(CString path)
 			}
 			cantus_len.push_back(cl);
 			cantus_tempo.push_back(ct);
+			cpos.push_back(cp);
 			// Send incom
 			cp_incom.resize(cid);
 			cp_incom[cid - 1] = incom;
