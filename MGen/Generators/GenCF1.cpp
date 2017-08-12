@@ -2733,7 +2733,7 @@ int CGenCF1::SendCantus() {
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = 0; x < c_len; ++x) {
-		if (chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
+		if (chm.size() > bli[x] && chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = Color(120, 120, 120);
 		SendLyrics(pos, v, cpv, x);
 		for (int i = 0; i < cc_len[x]; ++i) {
@@ -3086,7 +3086,7 @@ check:
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
 		if (FailFirstNotes(m_pc)) goto skip;
 		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;
-		if ((ep2>3 || ep2 == c_len) && FailMelodyHarm(m_pc)) goto skip;
+		if ((fli_size>1) && FailMelodyHarm(m_pc)) goto skip;
 		MakeMacc(m_cc);
 		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;
 		if (FailLocalMacc(notes_arange2, min_arange2, 16)) goto skip;
