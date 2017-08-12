@@ -993,6 +993,12 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 					if (culm_sum > 1) FLAG2(12, fli2[culm_step]);
 				}
 			}
+			if (culm_step == -1) {
+				culm_step = 0;
+				CString est;
+				est.Format("Warning: culm_step cannot be detected");
+				WriteLog(5, est);
+			}
 			// Prohibit culminations at first steps on highest notes
 			if (cc[fli2[culm_step]] == nmax) {
 				if (culm_step < (early_culm3*c_len) / 100) FLAG2(193, fli2[culm_step]);
@@ -1008,6 +1014,12 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 				culm_step = ls;
 				if (culm_sum > 1) FLAG2(12, fli2[culm_step]);
 			}
+		}
+		if (culm_step == -1) {
+			culm_step = 0;
+			CString est;
+			est.Format("Warning: culm_step cannot be detected");
+			WriteLog(5, est);
 		}
 		// Prohibit culminations at first steps
 		if (culm_step < (early_culm3*c_len)/100) FLAG2(193, fli2[culm_step]);
