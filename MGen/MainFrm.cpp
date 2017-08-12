@@ -803,8 +803,15 @@ int CMainFrame::GetMidiI()
 
 void CMainFrame::LoadAlgo()
 {
+	CString fname = "configs\\algorithms.txt";
+	if (!CGLib::fileExists(fname)) {
+		CString est;
+		est.Format("Cannot find file: %s", fname);
+		WriteLog(5, est);
+		return;
+	}
 	ifstream fs;
-	fs.open("configs\\algorithms.txt");
+	fs.open(fname);
 	CString st, st2, st3, st4, st5;
 	char pch[2550];
 	int pos = 0;
@@ -897,8 +904,15 @@ void CMainFrame::LoadAlgo()
 
 void CMainFrame::LoadSettings()
 {
+	CString fname = "configs\\settings.pl";
+	if (!CGLib::fileExists(fname)) {
+		CString est;
+		est.Format("Cannot find file: %s", fname);
+		WriteLog(5, est);
+		return;
+	}
 	ifstream fs;
-	fs.open("configs\\settings.pl");
+	fs.open(fname);
 	CString st, st2, st3;
 	char pch[2550];
 	int pos = 0;

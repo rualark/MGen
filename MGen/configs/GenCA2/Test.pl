@@ -14,3 +14,4 @@ Midi_file = "midi\GenCA2\test-fis-multivoice.mid" # Path and file name of import
 #Midi_file = "midi\GenCA2\known-cp2v1.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\cpointer-2c1.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-alterint.mid" # Path and file name of imported midi file
+Midi_file = "midi\temp\2017-08-11-auto 23-36-05.mid"
