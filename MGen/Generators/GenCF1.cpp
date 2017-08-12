@@ -1102,7 +1102,9 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	fli_size = 0;
 	minl = 10000;
 	maxl = 0;
-	for (int i = 0; i < ep2; ++i) {
+	// Set first step in case it is pause
+	bli[0] = 0;
+	for (int i = fn; i < ep2; ++i) {
 		if (prev_note != cc[i]) {
 			// Save linked note length
 			if (prev_note != -1) {
@@ -1524,7 +1526,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 	// Check consecutive tritone
 	if ((pcc[s1] == t2 && pcc[s] == t1) || (pcc[s1] == t1 && pcc[s] == t2)) found = 1;
 	// Check tritone with additional note inside
-	if (s > 0) {
+	if (ls > 0) {
 		// Check pitches
 		if ((pcc[s1] == t2 && pcc[s_1] == t1) || (pcc[s1] == t1 && pcc[s_1] == t2))
 			// Check intermediate note and mdc
