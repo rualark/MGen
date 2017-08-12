@@ -256,7 +256,17 @@ void CGenCA2::Generate() {
 		// Choose level
 		if (cp_incom[i].size()) {
 			if (cp_incom[i][0] == "cf=low") cantus_high = 0;
-			if (cp_incom[i][0] == "cf=high") cantus_high = 1;
+			else if (cp_incom[i][0] == "cf=high") cantus_high = 1;
+			else {
+				st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
+					cantus_id + 1, cantus_high?"high":"low");
+				WriteLog(5, st);
+			}
+		}
+		else {
+			st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
+				cantus_id + 1, cantus_high ? "high" : "low");
+			WriteLog(5, st);
 		}
 		if (cantus_high) {
 			cfv = 1;
