@@ -152,7 +152,7 @@ void CGenCA2::ExplodeCP() {
 	if (min_vlen[cfv] < min_vlen[cpv]) {
 		CString est;
 		est.Format("Warning: counterpoint voice should have at least one note shorter than the shortest note of %s cantus #%d (min_cantus=%d, min_cp=%d)", 
-			cantus_high?"higher":"lower", cantus_id, min_vlen[cpv], min_vlen[cfv]);
+			cantus_high?"higher":"lower", cantus_id+1, min_vlen[cpv], min_vlen[cfv]);
 		WriteLog(1, est);
 	}
 	// Calculate npm
@@ -193,6 +193,13 @@ void CGenCA2::ExplodeCP() {
 	// Copy notes over start pause
 	for (int i = 0; i < fn; ++i) {
 		cpoint[cantus_id][cpv][i] = cpoint[cantus_id][cpv][fn];
+	}
+	// Check that counterpoint did not become shorter
+	if (cpoint[cantus_id][0].size() < cc_old[0].size()) {
+		CString est;
+		est.Format("Warning: ExplodeCP returned shorter voice than initial for %s cantus #%d (initial=%d, new=%d)",
+			cantus_high ? "higher" : "lower", cantus_id+1, cc_old[0].size(), cpoint[cantus_id][0].size());
+		WriteLog(5, est);
 	}
 }
 
