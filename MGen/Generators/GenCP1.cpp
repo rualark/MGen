@@ -1142,6 +1142,8 @@ void CGenCP1::Generate() {
 	acc[cfv].clear();
 	apc[cfv].clear();
 	apcc[cfv].clear();
+	cc_len.clear();
+	cc_tempo.clear();
 	anflags[cfv].clear();
 	anflagsc[cfv].clear();
 	// Create empty arrays
