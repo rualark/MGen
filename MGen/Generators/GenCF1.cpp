@@ -2886,6 +2886,10 @@ void CGenCF1::RandomSWA()
 				// Add line
 				linecolor[t_generated] = Color(255, 0, 0, 0);
 				ScanCantus(tEval, 0, &(m_cc));
+				if (rpenalty_cur > rpenalty_accepted) {
+					st.Format("Error calculating rpenalty %f min %f at step %d", rpenalty_cur, rpenalty_min, t_generated);
+					WriteLog(5, st);
+				}
 				Adapt(step, t_generated - 1);
 				t_sent = t_generated;
 			}
