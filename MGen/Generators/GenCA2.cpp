@@ -151,9 +151,13 @@ void CGenCA2::ExplodeCP() {
 	// Check that cantus has longer notes than other voice
 	if (min_vlen[cfv] < min_vlen[cpv]) {
 		CString est;
-		est.Format("Warning: counterpoint voice should have at least one note shorter than the shortest note of %s cantus #%d (min_cantus=%d, min_cp=%d)", 
-			cantus_high?"higher":"lower", cantus_id+1, min_vlen[cpv], min_vlen[cfv]);
-		WriteLog(1, est);
+		est.Format("Warning: minimum counterpoint note length %d is longer than minimum cantus note %d of %s cantus #%d. Changed cantus to %s", 
+			min_vlen[cpv], min_vlen[cfv], cantus_high?"higher":"lower", cantus_id+1, (!cantus_high) ? "higher" : "lower");
+		WriteLog(5, est);
+		// Change cantus type
+		cantus_high = !cantus_high;
+		cpv = !cpv;
+		cfv = !cfv;
 	}
 	// Calculate npm
 	npm = max(1, min_vlen[cfv] / min_vlen[cpv]);
@@ -234,7 +238,7 @@ void CGenCA2::Generate() {
 	cantus_id = -1;
 	for (int i = 0; i < cpoint.size(); i++) {
 		++cantus_id;
-		if (cpoint[cantus_id].size() < av_cnt) {
+		if (cpoint[cantus_id].size() != av_cnt) {
 			st.Format("Error: need %d voices in counterpoint. Loaded only %d instead in counterpoint %d. Skipping this counterpoint.",
 				av_cnt, cpoint[cantus_id].size(), cantus_id+1);
 			WriteLog(1, st);
@@ -258,6 +262,7 @@ void CGenCA2::Generate() {
 			if (cp_incom[i][0] == "cf=low") cantus_high = 0;
 			else if (cp_incom[i][0] == "cf=high") cantus_high = 1;
 			else {
+				// Use previous cantus_high (of previous cantus or from configuration if first cantus)
 				st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
 					cantus_id + 1, cantus_high?"high":"low");
 				WriteLog(5, st);
