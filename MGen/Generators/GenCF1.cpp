@@ -2481,29 +2481,35 @@ void CGenCF1::TransposeVector(vector<float> &v, int t) {
 // Moving average
 void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
-	float ma;
+	float ma, maw_sum;
 	for (int s = 0; s < v.size(); ++s) {
 		pos1 = max(0, s - range);
 		pos2 = min(v.size() - 1, s + range);
 		ma = 0;
-		for (int x = pos1; x <= pos2; ++x) {
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
 			ma += v[x];
+			++maw_sum;
 		}
-		v2[s] = ma / (pos2 - pos1 + 1);
+		if (maw_sum) v2[s] = ma / maw_sum;
+		else v2[s] = 0;
 	}
 }
 
 void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
-	float ma;
+	float ma, maw_sum;
 	for (int s = 0; s < v.size(); ++s) {
 		pos1 = max(0, s - range);
 		pos2 = min(v.size() - 1, s + range);
 		ma = 0;
-		for (int x = pos1; x <= pos2; ++x) {
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
 			ma += v[x];
+			++maw_sum;
 		}
-		v2[s] = ma / (pos2 - pos1 + 1);
+		if (maw_sum) v2[s] = ma / maw_sum;
+		else v2[s] = 0;
 	}
 }
 
@@ -2515,11 +2521,12 @@ void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
 		pos2 = min(v.size() - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
-		for (int x = pos1; x <= pos2; ++x) {
+		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
 			ma += maw[abs(x - s)] * v[x];
 			maw_sum += maw[abs(x - s)];
 		}
-		v2[s] = ma / maw_sum;
+		if (maw_sum) v2[s] = ma / maw_sum;
+		else v2[s] = 0;
 	}
 }
 
@@ -2531,11 +2538,12 @@ void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
 		pos2 = min(v.size() - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
-		for (int x = pos1; x <= pos2; ++x) {
+		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
 			ma += maw[abs(x - s)] * v[x];
 			maw_sum += maw[abs(x - s)];
 		}
-		v2[s] = ma / maw_sum;
+		if (maw_sum) v2[s] = ma / maw_sum;
+		else v2[s] = 0;
 	}
 }
 
@@ -2557,11 +2565,12 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 		pos2 = min(ep2 - 1, s + ma_range);
 		de = 0;
 		maw_sum = 0;
-		for (int x = pos1; x <= pos2; ++x) {
+		for (int x = pos1; x <= pos2; ++x) if (cc[x]) {
 			de += maw[abs(x-s)]*SQR(cc[x]-macc[s]);
 			maw_sum += maw[abs(x - s)];
 		}
-		decc[s] = SQRT(de / maw_sum);
+		if (maw_sum) decc[s] = SQRT(de / maw_sum);
+		else decc[s] = 0;
 	}
 	// Smooth
 	mawVector(decc, decc2, ma_range);
