@@ -113,7 +113,7 @@ BOOL CInfoDlg::OnInitDialog()
 		if (st2 != "") m_info.AddText("MeloCurve: " + st2 + "\n", RGB(0, 0, 0), 0);
 
 		st.Format("Lengroup: %d\n", pGen->lengroup[i][mv]);
-		m_info.AddText(st, RGB(0, 17in 0, 0), 0);
+		m_info.AddText(st, RGB(0, 170, 0), 0);
 		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);
 		m_info.AddText(st, RGB(0, 170, 0), 0);
 		st.Format("Adapt comment(start) : %s\nAdapt comment(end) : %s\n",
