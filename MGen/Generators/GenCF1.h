@@ -266,7 +266,7 @@ protected:
 	int calculate_stat = 0; // Enables flag statistics calculation algorithm. Slows down generation.
 	int calculate_ssf = 1; // Enables SWA stuck flags statistics calculation algorithm.
 	int best_rejected = 0; // Show best rejected results if rejecting more than X ms. Set to 0 to disable. Slows down generation
-	int show_severity = 0; // =1 to show severity in square brackets in comments to notes (also when exporting to MIDI file)
+	int show_severity = 0; // =1 to show severity and flag id in square brackets in comments to notes (also when exporting to MIDI file)
 	int repeat_letters = 3; // Maximum repeated letters in a row of harmonies
 	int miss_letters = 3; // Maximum steps with missed letters in a row of harmonies
 	int gis_trail_max = 7; // Minimum notes between G# and next G note in Am

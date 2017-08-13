@@ -342,31 +342,30 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	LoadNote(sN, sV, "last_note", &last_note);
 	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
 	CheckVar(sN, sV, "transpose_back", &transpose_back, 0, 1);
-	CheckRange(sN, sV, "tempo", &min_tempo, &max_tempo);
-	CheckVar(sN, sV, "random_choose", &random_choose);
-	CheckVar(sN, sV, "random_key", &random_key);
-	CheckVar(sN, sV, "random_seed", &random_seed);
-	CheckVar(sN, sV, "random_range", &random_range);
-	CheckVar(sN, sV, "accept_reseed", &accept_reseed);
-	CheckVar(sN, sV, "shuffle", &shuffle);
-	CheckVar(sN, sV, "first_steps_tonic", &first_steps_tonic);
-	CheckVar(sN, sV, "show_severity", &show_severity);
-	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation);
-	CheckVar(sN, sV, "calculate_stat", &calculate_stat);
-	CheckVar(sN, sV, "calculate_ssf", &calculate_ssf);
-	CheckVar(sN, sV, "best_rejected", &best_rejected);
-	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
-	CheckVar(sN, sV, "late_require", &late_require);
+	CheckRange(sN, sV, "tempo", &min_tempo, &max_tempo, 1);
+	CheckVar(sN, sV, "random_choose", &random_choose, 0, 1);
+	CheckVar(sN, sV, "random_key", &random_key, 0, 1);
+	CheckVar(sN, sV, "random_seed", &random_seed, 0, 1);
+	CheckVar(sN, sV, "random_range", &random_range, 0, 1);
+	CheckVar(sN, sV, "accept_reseed", &accept_reseed, 0, 1);
+	CheckVar(sN, sV, "shuffle", &shuffle, 0, 1);
+	CheckVar(sN, sV, "first_steps_tonic", &first_steps_tonic, 1);
+	CheckVar(sN, sV, "show_severity", &show_severity, 0, 1);
+	CheckVar(sN, sV, "calculate_correlation", &calculate_correlation, 0, 1);
+	CheckVar(sN, sV, "calculate_stat", &calculate_stat, 0, 1);
+	CheckVar(sN, sV, "calculate_ssf", &calculate_ssf, 0, 1);
+	CheckVar(sN, sV, "best_rejected", &best_rejected, 0, 1);
+	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking, 0, 1);
+	CheckVar(sN, sV, "late_require", &late_require, 0, 1);
 	// Random SWA
 	//CheckVar(sN, sV, "fullscan_max", &fullscan_max);
-	CheckVar(sN, sV, "approximations", &approximations);
-	CheckVar(sN, sV, "swa_steps", &swa_steps);
-	CheckVar(sN, sV, "correct_range", &correct_range);
-	CheckVar(sN, sV, "correct_inrange", &correct_inrange);
-	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
-	CheckVar(sN, sV, "cf_rule_set", &cf_rule_set);
-	CheckVar(sN, sV, "cp_rule_set", &cp_rule_set);
-	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty);
+	CheckVar(sN, sV, "approximations", &approximations, 1);
+	CheckVar(sN, sV, "swa_steps", &swa_steps, 1);
+	CheckVar(sN, sV, "correct_range", &correct_range, 1);
+	CheckVar(sN, sV, "correct_inrange", &correct_inrange, 0);
+	CheckVar(sN, sV, "optimize_dpenalty", &optimize_dpenalty, 0, 1);
+	CheckVar(sN, sV, "cf_rule_set", &cf_rule_set, 0);
+	CheckVar(sN, sV, "cp_rule_set", &cp_rule_set, 0);
 
 	// Load HSP
 	if (*sN == "hsp_file") {
