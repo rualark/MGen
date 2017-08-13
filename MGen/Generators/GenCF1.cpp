@@ -303,6 +303,32 @@ void CGenCF1::SetRuleParams() {
 	fis_gis_max = GetRuleParam(rule_set, 199, rsSubName, 0);
 }
 
+void CGenCF1::CheckConfig() {
+	// Check configuration parameters
+	if (accept_reseed == 1 && random_seed == 0) {
+		WriteLog(5, "Warning: accept_reseed=1 while random_seed=0. You will get same results after every reseed");
+	}
+	if (method == mScan) {
+		WriteLog(5, "Warning: Window-scan method is currently not working correctly (needs debugging)");
+	}
+	if (midifile_export_marks && midifile_export_comments) {
+		WriteLog(5, "Warning: You are trying to export both marks and comments to MIDI file: midifile_export_marks and midifile_export_comments both set. They can overlap.");
+	}
+	if (accept_cantus_rechoose && cantus_id2) {
+		WriteLog(5, "Warning: accept_cantus_rechoose cannot work correctly with cantus_id above zero");
+	} 
+	if (calculate_correlation || calculate_blocking || calculate_stat || calculate_ssf || best_rejected) {
+		WriteLog(1, "Algorithm is running in low performance mode. To increase performance, reset calculate_correlation, calculate_blocking, calculate_stat, calculate_ssf, best_rejected");
+	}
+	if (shuffle && random_seed) {
+		WriteLog(1, "Shuffling after random_seed will not add randomness");
+	}
+	// Check rule parameters
+	if (burst_between <= max_between) {
+		WriteLog(5, "Warning: maximum burst interval should be greater than maximum interval between voices");
+	}
+}
+
 // Select rules
 int CGenCF1::SelectRuleSet(int rs)
 {
@@ -336,8 +362,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "cantus_high", &cantus_high, 0, 1);
 	CheckVar(sN, sV, "rpenalty_accepted", &rpenalty_accepted, 0);
-	CheckVar(sN, sV, "c_len", &c_len, 0);
-	CheckVar(sN, sV, "s_len", &s_len, 0);
+	CheckVar(sN, sV, "c_len", &c_len, 1);
+	CheckVar(sN, sV, "s_len", &s_len, 1);
 	LoadNote(sN, sV, "first_note", &first_note);
 	LoadNote(sN, sV, "last_note", &last_note);
 	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
@@ -2835,6 +2861,8 @@ int CGenCF1::InitGen() {
 	}
 	// Check harmonic meaning loaded
 	LoadHarmVar();
+	// Check config
+	CheckConfig();
 	return error;
 }
 

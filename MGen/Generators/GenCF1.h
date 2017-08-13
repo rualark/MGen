@@ -96,6 +96,7 @@ protected:
 	int GetRuleParam(int rset, int rid, int type, int id);
 	void ParseRules();
 	void SetRuleParams();
+	void CheckConfig();
 	int SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(vector<int>& c);
@@ -449,4 +450,6 @@ protected:
 	int ca_window = 10; // Maximum number of C note repeats within window
 	int contrary_min = 30; // Minimum percent of contrary motion (little)
 	int contrary_min2 = 60; // Minimum percent of contrary motion (medium)
+	int cantus_id2 = 0; // Select particular cantus id. Set to -1 to select random
+	int accept_cantus_rechoose = 1; // Choose new random cantus after accepting counterpoint
 };
