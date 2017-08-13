@@ -334,15 +334,15 @@ int CGenCF1::SelectRuleSet(int rs)
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
-	CheckVar(sN, sV, "cantus_high", &cantus_high);
-	CheckVar(sN, sV, "rpenalty_accepted", &rpenalty_accepted);
-	CheckVar(sN, sV, "c_len", &c_len);
-	CheckVar(sN, sV, "s_len", &s_len);
+	CheckVar(sN, sV, "cantus_high", &cantus_high, 0, 1);
+	CheckVar(sN, sV, "rpenalty_accepted", &rpenalty_accepted, 0, 1);
+	CheckVar(sN, sV, "c_len", &c_len, 0);
+	CheckVar(sN, sV, "s_len", &s_len, 0);
 	LoadNote(sN, sV, "first_note", &first_note);
 	LoadNote(sN, sV, "last_note", &last_note);
 	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);
-	CheckVar(sN, sV, "transpose_back", &transpose_back);
-	LoadRange(sN, sV, "tempo", &min_tempo, &max_tempo);
+	CheckVar(sN, sV, "transpose_back", &transpose_back, 0, 1);
+	CheckRange(sN, sV, "tempo", &min_tempo, &max_tempo);
 	CheckVar(sN, sV, "random_choose", &random_choose);
 	CheckVar(sN, sV, "random_key", &random_key);
 	CheckVar(sN, sV, "random_seed", &random_seed);

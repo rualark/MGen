@@ -20,7 +20,7 @@ public:
 	float adapt_pspeed = 100; // Playback speed used during adaptation
 
 protected:
-	void CheckRange(int v, int ii);
+	void CheckInstrumentRange(int v, int ii);
 	void CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void CheckNoteBreath(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int pei);

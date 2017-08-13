@@ -17,7 +17,7 @@ CGAdapt::~CGAdapt()
 {
 }
 
-void CGAdapt::CheckRange(int v, int ii)
+void CGAdapt::CheckInstrumentRange(int v, int ii)
 {
 	// Check if notes are in instrument range
 	if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
@@ -553,7 +553,7 @@ void CGAdapt::Adapt(int step1, int step2)
 		for (int i = step1; i <= step2; i++) {
 			vel[i][v] = dyn[i][v];
 		}
-		CheckRange(v, ii);
+		CheckInstrumentRange(v, ii);
 		if (!adapt_enable) continue;
 		slur_count = 0;
 		int i = step1;

@@ -55,31 +55,95 @@ int CGLib::time() {
 	return (duration_cast<milliseconds>(system_clock::now().time_since_epoch())).count();
 }
 
-void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int vmin, int vmax)
+void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int lmin, int lmax)
 {
 	if (*sName == sSearch) {
 		++parameter_found;
 		*Dest = atoi(*sValue);
-		if (vmin != -1) {
-			if (*Dest < vmin) {
-				*Dest = vmin;
-				CString st;
-				st.Format("Variable %s is %d (below minimum allowed value %d) - corrected to %d", *sName, *sValue, vmin, vmin);
-				WriteLog(5, st);
+		CheckLimits(sName, Dest, lmin, lmax);
+	}
+}
+
+void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, float * Dest, float lmin, float lmax)
+{
+	if (*sName == sSearch) {
+		++parameter_found;
+		*Dest = atof(*sValue);
+		CheckLimits(sName, Dest, lmin, lmax);
+	}
+}
+
+void CGLib::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * Dest)
+{
+	if (*sName == sSearch) {
+		++parameter_found;
+		*Dest = *sValue;
+	}
+}
+
+void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest, int lmin, int lmax)
+{
+	if (*sName == sSearch) {
+		++parameter_found;
+		int pos = 0;
+		CString st;
+		for (int i = 0; i<1000; i++) {
+			st = sValue->Tokenize(",", pos);
+			st.Trim();
+			if (st == "") break;
+			if (i >= Dest.size()) {
+				CString est;
+				est.Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
+				WriteLog(5, est);
+				return;
 			}
-		}
-		if (vmax != -1) {
-			if (*Dest > vmax) {
-				*Dest = vmax;
-				CString st;
-				st.Format("Variable %s is %d (above maximum allowed value %d) - corrected to %d", *sName, *sValue, vmax, vmax);
-				WriteLog(5, st);
-			}
+			Dest[i] = atoi(st);
+			CheckLimits(sName, &(Dest[i]), lmin, lmax);
 		}
 	}
 }
 
-void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, int * vmin, int* vmax)
+void CGLib::CheckLimits(CString * sName, int * Dest, int lmin, int lmax)
+{
+	if (lmin != -1) {
+		if (*Dest < lmin) {
+			*Dest = lmin;
+			CString st;
+			st.Format("Variable %s is %d (below minimum allowed value %d) - corrected to %d", *sName, *Dest, lmin, lmin);
+			WriteLog(5, st);
+		}
+	}
+	if (lmax != -1) {
+		if (*Dest > lmax) {
+			*Dest = lmax;
+			CString st;
+			st.Format("Variable %s is %d (above maximum allowed value %d) - corrected to %d", *sName, *Dest, lmax, lmax);
+			WriteLog(5, st);
+		}
+	}
+}
+
+void CGLib::CheckLimits(CString * sName, float * Dest, float lmin, float lmax)
+{
+	if (lmin != -1) {
+		if (*Dest < lmin) {
+			*Dest = lmin;
+			CString st;
+			st.Format("Variable %s is %f (below minimum allowed value %f) - corrected to %f", *sName, *Dest, lmin, lmin);
+			WriteLog(5, st);
+		}
+	}
+	if (lmax != -1) {
+		if (*Dest > lmax) {
+			*Dest = lmax;
+			CString st;
+			st.Format("Variable %s is %f (above maximum allowed value %f) - corrected to %f", *sName, *Dest, lmax, lmax);
+			WriteLog(5, st);
+		}
+	}
+}
+
+void CGLib::CheckRange(CString * sName, CString * sValue, char* sSearch, int * vmin, int* vmax, int lmin, int lmax)
 {
 	if (*sName == sSearch) {
 		++parameter_found;
@@ -100,11 +164,13 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, int * vm
 			// Load values
 			*vmin = atoi(st);
 			*vmax = atoi(st2);
+			CheckLimits(sName, vmin, lmin, lmax);
+			CheckLimits(sName, vmax, lmin, lmax);
 		}
 	}
 }
 
-void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, float * vmin, float * vmax)
+void CGLib::CheckRange(CString * sName, CString * sValue, char* sSearch, float * vmin, float * vmax, float lmin, float lmax)
 {
 	if (*sName == sSearch) {
 		++parameter_found;
@@ -125,43 +191,8 @@ void CGLib::LoadRange(CString * sName, CString * sValue, char* sSearch, float * 
 			// Load values
 			*vmin = atof(st);
 			*vmax = atof(st2);
-		}
-	}
-}
-
-void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, float * Dest)
-{
-	if (*sName == sSearch) {
-		++parameter_found;
-		*Dest = atof(*sValue);
-	}
-}
-
-void CGLib::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * Dest)
-{
-	if (*sName == sSearch) {
-		++parameter_found;
-		*Dest = *sValue;
-	}
-}
-
-void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
-{
-	if (*sName == sSearch) {
-		++parameter_found;
-		int pos = 0;
-		CString st;
-		for (int i = 0; i<1000; i++) {
-			st = sValue->Tokenize(",", pos);
-			st.Trim();
-			if (st == "") break;
-			if (i >= Dest.size()) {
-				CString est;
-				est.Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
-				WriteLog(5, est);
-				return;
-			}
-			Dest[i] = atoi(st);
+			CheckLimits(sName, vmin, lmin, lmax);
+			CheckLimits(sName, vmax, lmin, lmax);
 		}
 	}
 }
