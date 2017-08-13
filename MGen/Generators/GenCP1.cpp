@@ -25,15 +25,7 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 }
 
 int CGenCP1::InitCP() {
-	// Set rule colors
-	for (int i = 0; i < MAX_SEVERITY; ++i) {
-		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
-	}
-	// Check that method is selected
-	if (method == mUndefined) {
-		WriteLog(5, "Error: method not specified in algorithm configuration file");
-		error = 2;
-	}
+	InitGen();
 	ac.resize(av_cnt);
 	acc.resize(av_cnt);
 	acc_old.resize(av_cnt);
@@ -44,8 +36,6 @@ int CGenCP1::InitCP() {
 	aslur.resize(av_cnt);
 	anflags.resize(av_cnt);
 	anflagsc.resize(av_cnt);
-	// Check harmonic meaning loaded
-	LoadHarmVar();
 	return error;
 }
 

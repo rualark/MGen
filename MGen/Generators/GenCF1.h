@@ -187,6 +187,7 @@ protected:
 	void SendNotes(int pos, int i, int v, int av, int x, vector<int>& cc);
 	int SendPause(int pos, int v);
 	int SendCantus();
+	int InitGen();
 	int InitCantus();
 	void TestDiatonic();
 	void RandomSWA();

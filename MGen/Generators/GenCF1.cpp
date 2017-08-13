@@ -2822,8 +2822,8 @@ int CGenCF1::SendCantus() {
 	return 0;
 }
 
-int CGenCF1::InitCantus()
-{
+// General init sequence for CF1/CP1/CA1/CA2...
+int CGenCF1::InitGen() {
 	// Set rule colors
 	for (int i = 0; i < MAX_SEVERITY; ++i) {
 		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
@@ -2835,6 +2835,12 @@ int CGenCF1::InitCantus()
 	}
 	// Check harmonic meaning loaded
 	LoadHarmVar();
+	return error;
+}
+
+int CGenCF1::InitCantus()
+{
+	InitGen();
 	return error;
 }
 
