@@ -19,11 +19,11 @@ CGenCA1::~CGenCA1()
 void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	LoadVar(sN, sV, "midi_file", &midi_file);
-	CheckVar(sN, sV, "corrections", &corrections);
-	CheckVar(sN, sV, "pre_bad", &pre_bad);
-	CheckVar(sN, sV, "post_bad", &post_bad);
-	CheckVar(sN, sV, "step_penalty", &step_penalty);
-	CheckVar(sN, sV, "pitch_penalty", &pitch_penalty);
+	CheckVar(sN, sV, "corrections", &corrections, 0);
+	CheckVar(sN, sV, "pre_bad", &pre_bad, 0);
+	CheckVar(sN, sV, "post_bad", &post_bad, 0);
+	CheckVar(sN, sV, "step_penalty", &step_penalty, 0);
+	CheckVar(sN, sV, "pitch_penalty", &pitch_penalty, 0);
 
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }

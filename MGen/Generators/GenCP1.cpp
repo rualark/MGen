@@ -16,10 +16,10 @@ CGenCP1::~CGenCP1() {
 }
 
 void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata) {
-	CheckVar(sN, sV, "cantus_id", &cantus_id2);
-	CheckVar(sN, sV, "accept_cantus_rechoose", &accept_cantus_rechoose);
-	CheckVar(sN, sV, "notes_per_measure", &npm);
-	CheckVar(sN, sV, "start_pause", &fn);
+	CheckVar(sN, sV, "cantus_id", &cantus_id2, 0);
+	CheckVar(sN, sV, "accept_cantus_rechoose", &accept_cantus_rechoose, 0, 1);
+	CheckVar(sN, sV, "notes_per_measure", &npm, 1, 8);
+	CheckVar(sN, sV, "start_pause", &fn, 0);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
