@@ -112,7 +112,8 @@ Leap >M3 to tonic = 2
 Upper culmination at tonic = 2
 Lower culmination at tonic = 2
 1;197;20;Melody;Repeats;Tonic note;leap >M3;-1;;Leap to tonic note
-1;10;60;Melody;Repeats;Note stagnation within 7 notes;>2;0;Same note repeats more than X times during stag_note_steps steps;
+1;10;60;Melody;Repeats;Note stagnation;>2 in 7 notes;0;Same note repeats more than X times during stag_note_steps steps;
+1;39;60;Melody;Repeats;Note stagnation;>3 in 10 notes;0;Same note repeats more than X times during stag_note_steps steps;
 1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;
 1;2;40;Melody;Tritone;Tritone;resolved;-1;;
 1;31;100;Melody;Tritone;Tritone;unresolved;0;;
