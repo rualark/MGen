@@ -357,7 +357,6 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "best_rejected", &best_rejected);
 	CheckVar(sN, sV, "calculate_blocking", &calculate_blocking);
 	CheckVar(sN, sV, "late_require", &late_require);
-	CheckVar(sN, sV, "start_pause", &fn);
 	// Random SWA
 	//CheckVar(sN, sV, "fullscan_max", &fullscan_max);
 	CheckVar(sN, sV, "approximations", &approximations);
@@ -996,7 +995,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			if (culm_step == -1) {
 				culm_step = 0;
 				CString est;
-				est.Format("Warning: culm_step cannot be detected");
+				est.Format("Warning: culm_step cannot be detected at step %d", step);
 				WriteLog(5, est);
 			}
 			// Prohibit culminations at first steps on highest notes
@@ -1018,7 +1017,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		if (culm_step == -1) {
 			culm_step = 0;
 			CString est;
-			est.Format("Warning: culm_step cannot be detected");
+			est.Format("Warning: culm_step cannot be detected at step %d", step);
 			WriteLog(5, est);
 		}
 		// Prohibit culminations at first steps
