@@ -101,8 +101,6 @@ BOOL CInfoDlg::OnInitDialog()
 			st.Format("Note scan range: %d - %d\n", pGen->nsr1[i][mv], pGen->nsr2[i][mv]);
 			m_info.AddText(st, RGB(0, 0, 0), 0);
 		}
-		st.Format("Lengroup: %d\n", pGen->lengroup[i][mv]);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
 
 		st2 = "";
 		for (int n = 0; n < pGen->ngraph[i][mv].size(); ++n) {
@@ -114,6 +112,8 @@ BOOL CInfoDlg::OnInitDialog()
 		}
 		if (st2 != "") m_info.AddText("MeloCurve: " + st2 + "\n", RGB(0, 0, 0), 0);
 
+		st.Format("Lengroup: %d\n", pGen->lengroup[i][mv]);
+		m_info.AddText(st, RGB(0, 17in 0, 0), 0);
 		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);
 		m_info.AddText(st, RGB(0, 170, 0), 0);
 		st.Format("Adapt comment(start) : %s\nAdapt comment(end) : %s\n",
