@@ -309,13 +309,13 @@ void CGenCF1::CheckConfig() {
 		WriteLog(5, "Warning: accept_reseed=1 while random_seed=0. You will get same results after every reseed");
 	}
 	if (method == mScan) {
-		WriteLog(5, "Warning: Window-scan method is currently not working correctly (needs debugging)");
+		WriteLog(1, "Warning: Window-scan method is currently not working correctly (needs debugging)");
 	}
 	if (midifile_export_marks && midifile_export_comments) {
 		WriteLog(5, "Warning: You are trying to export both marks and comments to MIDI file: midifile_export_marks and midifile_export_comments both set. They can overlap.");
 	}
 	if (accept_cantus_rechoose && cantus_id2) {
-		WriteLog(5, "Warning: accept_cantus_rechoose cannot work correctly with cantus_id above zero");
+		WriteLog(1, "Warning: accept_cantus_rechoose will not work with cantus_id above zero");
 	} 
 	if (calculate_correlation || calculate_blocking || calculate_stat || calculate_ssf || best_rejected) {
 		WriteLog(1, "Algorithm is running in low performance mode. To increase performance, reset calculate_correlation, calculate_blocking, calculate_stat, calculate_ssf, best_rejected");
