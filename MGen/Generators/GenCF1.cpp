@@ -254,8 +254,8 @@ void CGenCF1::SetRuleParams() {
 	cse_leaps = GetRuleParam(rule_set, 70, rsSubName, 0);
 	cse_leaps2 = GetRuleParam(rule_set, 71, rsSubName, 0);
 	max_leap_steps = GetRuleParam(rule_set, 3, rsName, 0);
-	stag_note_steps = GetRuleParam(rule_set, 10, rsName, 0);
 	stag_notes = GetRuleParam(rule_set, 10, rsSubName, 0);
+	stag_note_steps = GetRuleParam(rule_set, 10, rsSubName, 1);
 	repeat_steps2 = GetRuleParam(rule_set, 76, rsSubName, 1);
 	repeat_steps3 = GetRuleParam(rule_set, 36, rsSubName, 1);
 	repeat_steps5 = GetRuleParam(rule_set, 72, rsSubName, 1);
