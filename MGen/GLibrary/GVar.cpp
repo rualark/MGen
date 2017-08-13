@@ -263,21 +263,21 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 			int idata = atoi(st2);
 			float fdata = atof(st3);
 			parameter_found = 0;
-			CheckVar(&st2, &st3, "v_cnt", &v_cnt);
-			CheckVar(&st2, &st3, "t_cnt", &t_cnt);
-			CheckVar(&st2, &st3, "t_allocated", &t_allocated);
-			CheckVar(&st2, &st3, "t_send", &t_send);
-			CheckVar(&st2, &st3, "midifile_in_mul", &midifile_in_mul);
-			CheckVar(&st2, &st3, "midifile_out_mul", &midifile_out_mul);
-			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms);
-			CheckVar(&st2, &st3, "midifile_export_marks", &midifile_export_marks);
-			CheckVar(&st2, &st3, "midifile_export_comments", &midifile_export_comments);
-			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable);
-			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt);
+			CheckVar(&st2, &st3, "v_cnt", &v_cnt, 1, 10);
+			CheckVar(&st2, &st3, "t_cnt", &t_cnt, 1);
+			CheckVar(&st2, &st3, "t_allocated", &t_allocated, 0);
+			CheckVar(&st2, &st3, "t_send", &t_send, 1);
+			CheckVar(&st2, &st3, "midifile_in_mul", &midifile_in_mul, 0.00000001);
+			CheckVar(&st2, &st3, "midifile_out_mul", &midifile_out_mul, 0.00000001);
+			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms, 0);
+			CheckVar(&st2, &st3, "midifile_export_marks", &midifile_export_marks, 0, 1);
+			CheckVar(&st2, &st3, "midifile_export_comments", &midifile_export_comments, 0, 1);
+			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable, 0, 1);
+			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt, 0, 1);
 			LoadVar(&st2, &st3, "instr_layout", &instr_layout);
 			LoadVar(&st2, &st3, "instruments", &m_config_insts);
 			//LoadVarInstr(&st2, &st3, "instruments", instr);
-			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose);
+			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose, 0);
 			// Load algorithm-specific variables if we are not loading saved results
 			if (!m_loading) {
 				LoadConfigLine(&st2, &st3, idata, fdata);
