@@ -160,8 +160,8 @@ void LoadConfig() {
 			pname = ast[0];
 			wait_sec = 5;
 			wait_sec2 = 60;
-			if (atoi(ast[1]) > 0) wait_sec = atoi(ast[1]);
-			if (atoi(ast[2]) > 0) wait_sec2 = atoi(ast[2]);
+			if (ast.size() > 1 && atoi(ast[1]) > 0) wait_sec = atoi(ast[1]);
+			if (ast.size() > 2 && atoi(ast[2]) > 0) wait_sec2 = atoi(ast[2]);
 			ClearBuffer();
 			if (ci) Run("appveyor", "AddTest \"" + pname + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
 			Log("Starting test config: " + pname + "\n");
