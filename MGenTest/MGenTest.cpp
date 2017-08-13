@@ -20,6 +20,8 @@ ofstream logfile;
 int ci = 0;
 int nRetCode = 0;
 vector<CString> errorMessages;
+CString pname;
+int wait_sec, wait_sec2;
 
 void InitErrorMessages() {
 	errorMessages.resize(1000);
@@ -128,7 +130,8 @@ void PublishTest(CString tname, int result, int tpassed) {
 
 void LoadConfig() {
 	int time_start, time_stop;
-	CString fname = "autotest\\test.txt";
+	vector<CString> ast;
+	CString fname = "autotest\\test.csv";
 	// Check file exists
 	if (!CGLib::fileExists(fname)) {
 		cout << "Not found file " << fname << "\n";
@@ -153,10 +156,16 @@ void LoadConfig() {
 		if (pos != -1) st = st.Left(pos);
 		st.Trim();
 		if (st.GetLength()) {
+			CGLib::Tokenize(st, ast, ";");
+			pname = ast[0];
+			wait_sec = 5;
+			wait_sec2 = 60;
+			if (atoi(ast[1]) > 0) wait_sec = atoi(ast[1]);
+			if (atoi(ast[2]) > 0) wait_sec2 = atoi(ast[2]);
 			ClearBuffer();
-			if (ci) Run("appveyor", "AddTest \"" + st + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
-			Log("Starting test config: " + st + "\n");
-			st2 = "-test " + st;
+			if (ci) Run("appveyor", "AddTest \"" + pname + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
+			Log("Starting test config: " + pname + "\n");
+			st2.Format("-test=%d %s", wait_sec, pname);
 			SHELLEXECUTEINFO sei = { 0 };
 			sei.cbSize = sizeof(SHELLEXECUTEINFO);
 			sei.fMask = SEE_MASK_NOCLOSEPROCESS;
@@ -169,8 +178,8 @@ void LoadConfig() {
 			sei.hInstApp = NULL;
 			time_start = CGLib::time();
 			ShellExecuteEx(&sei);
-			if (WaitForSingleObject(sei.hProcess, 60000) == WAIT_TIMEOUT) {
-				Log(st + ": Timeout waiting for process\n", 3);
+			if (WaitForSingleObject(sei.hProcess, wait_sec2 * 1000) == WAIT_TIMEOUT) {
+				Log(pname + ": Timeout waiting for process\n", 3);
 				exit(1);
 			}
 
@@ -179,7 +188,7 @@ void LoadConfig() {
 			if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 100;
 			if (!CGLib::fileExists("autotest\\exit.log")) ecode = 101;
 
-			PublishTest(st, ecode, passed);
+			PublishTest(pname, ecode, passed);
 		}
 	}
 	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log >> run.log 2>&1", 1000);
