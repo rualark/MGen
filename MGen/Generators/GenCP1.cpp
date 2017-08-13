@@ -660,16 +660,23 @@ void CGenCP1::RandomSWACP()
 	cpoint[0][cfv] = acc[cfv];
 	scpoint = cpoint[0];
 	ScanCPInit();
-	// Set random_seed to initiate random cantus
-	random_seed = 1;
-	// Set random_range to limit scanning to one of possible fast-scan ranges
-	random_range = 1;
-	// Prohibit limits recalculation during SWA
-	swa_inrange = 1;
 	for (int i = 0; i < INT_MAX; ++i) {
 		if (need_exit) break;
+		// Set random_seed to initiate random cantus
+		int random_seed0 = random_seed;
+		random_seed = 1;
+		// Set random_range to limit scanning to one of possible fast-scan ranges
+		int random_range0 = random_range;
+		random_range = 1;
+		// Prohibit limits recalculation during SWA
+		int swa_inrange0 = swa_inrange;
+		swa_inrange = 1;
 		// Create random cantus
 		MakeNewCP();
+		// Load initial parameters
+		random_range = random_range0;
+		random_seed = random_seed0;
+		swa_inrange = swa_inrange0;
 		min_cc0 = min_cc;
 		max_cc0 = max_cc;
 		// Debug source random cp
@@ -1092,6 +1099,9 @@ void CGenCP1::Generate() {
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
 	for (int a = 0; a < INT_MAX; ++a) {
+		// Reset note scan range to ignore it for showing cantus
+		min_cc0.clear();
+		max_cc0.clear();
 		// Choose cantus to use
 		cantus_id = randbw(0, cantus.size() - 1);
 		if (cantus_id2) {
@@ -1119,7 +1129,7 @@ void CGenCP1::Generate() {
 		real_len = accumulate(cantus_len[cantus_id].begin(), cantus_len[cantus_id].end(), 0);
 		dpenalty_cur = 0;
 		// Create pause
-		FillPause(0, floor(real_len / 8 + 1) * 8, 1);
+		FillPause(step, step+floor(real_len / 8 + 1) * 8, 1);
 		// Select rule set
 		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, 0, &(cantus[cantus_id]));
