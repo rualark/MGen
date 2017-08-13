@@ -194,6 +194,7 @@ public:
 	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)
 	static int m_ci; // If continuous integration is in progress
 	static int m_testing; // If currently testing
+	static int m_test_sec; // How long to test in seconds
 	static CString m_cline2; // Command line filename
 	static int exitcode; // Exit code of application
 	UINT WM_GEN_FINISH;
