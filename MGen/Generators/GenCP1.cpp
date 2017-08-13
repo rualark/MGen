@@ -234,12 +234,14 @@ int CGenCP1::SendCP() {
 		CreateLinks(ac[av]);
 		MakeMacc(acc[av]);
 		pos = step;
-		if (cpv) {
-			v = svoice + av;
-		}
-		else {
-			v = svoice + 1 - av;
-		}
+		// Sent voice is the same as acc voice
+		v = svoice + av;
+		//if (cpv) {
+			//v = svoice + av;
+		//}
+		//else {
+			//v = svoice + 1 - av;
+		//}
 		if (av == cpv) {
 			plen = cc_len[0] * fn;
 			FillPause(pos, plen, v);
