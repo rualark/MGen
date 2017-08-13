@@ -242,8 +242,9 @@ void CMainFrame::ParseCommandLine() {
 		pos = st.Find(' ');
 		st2 = st.Left(pos);
 		st = st.Right(st.GetLength() - pos - 1);
-		if (st2 == "-test") {
+		if (st2.Find("-test") == 0) {
 			CGLib::m_testing = 1;
+			if (st2.GetLength() > 6) CGLib::m_test_sec = atoi(st2.Right(st2.GetLength() - 6));
 		}
 	}
 	st.Replace("\"", "");
@@ -284,7 +285,7 @@ void CMainFrame::LoadFile(CString abs_path) {
 		OnButtonGen();
 		// Stop generation after a while
 		if (CGLib::m_testing) {
-			SetTimer(TIMER4, 5000, NULL);
+			SetTimer(TIMER4, CGLib::m_test_sec * 1000, NULL);
 		}
 	}
 	else {
