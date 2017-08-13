@@ -77,4 +77,5 @@ protected:
 
 	// Parameters
 	int cantus_id2 = 0; // Select particular cantus id. Set to -1 to select random
+	int accept_cantus_rechoose = 1; // Choose new random cantus after accepting counterpoint
 };

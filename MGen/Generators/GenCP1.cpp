@@ -17,6 +17,7 @@ CGenCP1::~CGenCP1() {
 
 void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata) {
 	CheckVar(sN, sV, "cantus_id", &cantus_id2);
+	CheckVar(sN, sV, "accept_cantus_rechoose", &accept_cantus_rechoose);
 	CheckVar(sN, sV, "notes_per_measure", &npm);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
@@ -646,6 +647,7 @@ void CGenCP1::RandomSWACP()
 	test_cc[7] = 50;
 	test_cc[8] = 55;
 	CString st;
+	int is_sent;
 	VSet<int> vs; // Unique checker
 								// Disable debug flags
 	calculate_blocking = 0;
@@ -690,6 +692,7 @@ void CGenCP1::RandomSWACP()
 		// Optimize cpoint
 		rpenalty_cur = MAX_PENALTY;
 		SWACP(0, 0);
+		is_sent = 0;
 		// Show cantus if it is perfect
 		if (rpenalty_min <= rpenalty_accepted) {
 			if (vs.Insert(acc[cpv])) {
@@ -707,6 +710,7 @@ void CGenCP1::RandomSWACP()
 				}
 				Adapt(step, t_generated - 1);
 				t_sent = t_generated;
+				is_sent = 1;
 			}
 			else {
 				++cantus_ignored;
@@ -722,6 +726,8 @@ void CGenCP1::RandomSWACP()
 			WriteLog(3, "Reached t_cnt steps. Generation stopped");
 			return;
 		}
+		// Check rechoose
+		if (is_sent && accept_cantus_rechoose && !cantus_id2) return;
 	}
 	ShowStuck();
 }
@@ -1085,95 +1091,99 @@ void CGenCP1::Generate() {
 	if (InitCP()) return;
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
-	// Choose cantus to use
-	cantus_id = randbw(0, cantus.size() - 1);
-	if (cantus_id2) {
-		if (cantus_id2 <= cantus.size()) {
-			cantus_id = cantus_id2 - 1;
-		}
-		else {
-			CString est;
-			est.Format("Warning: cantus_id in configuration file (%d) is greater than number of canti loaded (%d). Selecting highest cantus.", 
-				cantus_id2, cantus.size());
-			WriteLog(1, est);
-			cantus_id = cantus.size() - 1;
-		}
-	}
-	c_len = cantus[cantus_id].size();
-	// Get key
-	GetCantusKey(cantus[cantus_id]);
-	// Get cantus interval
-	GetMelodyInterval(cantus[cantus_id], 0, cantus[cantus_id].size(), cf_nmin, cf_nmax);
-	if (tonic_cur == -1) return;
-	CalcCcIncrement();
-	// Show imported melody
-	cc_len = cantus_len[cantus_id];
-	cc_tempo = cantus_tempo[cantus_id];
-	real_len = accumulate(cantus_len[cantus_id].begin(), cantus_len[cantus_id].end(), 0);
-	dpenalty_cur = 0;
-	// Create pause
-	FillPause(0, floor(real_len/8+1)*8, 1);
-	// Select rule set
-	SelectRuleSet(cf_rule_set);
-	ScanCantus(tEval, 0, &(cantus[cantus_id]));
-	// Show cantus id
-	st.Format("Cantus %d. ", cantus_id + 1);
-	comment[0][0] = st + comment[0][0];
-	// Go forward
-	Adapt(0, step - 1);
-	t_generated = step;
-	t_sent = t_generated;
-	// Choose level
-	if (cantus_high) {
-		cpv = 0;
-		cfv = 1;
-	}
-	else {
-		cpv = 1;
-		cfv = 0;
-	}
-	// Load first voice
-	vector<int> cc_len_old = cc_len;
-	vector<float> cc_tempo_old = cc_tempo;
-	vector<int> anflagsc_old = anflagsc[cfv];
-	vector<vector<int>> anflags_old = anflags[cfv];
-	c_len = m_c.size() * npm - (npm - 1); 
-	ac[cfv].clear();
-	acc[cfv].clear();
-	apc[cfv].clear();
-	apcc[cfv].clear();
-	cc_len.clear();
-	cc_tempo.clear();
-	anflags[cfv].clear();
-	anflagsc[cfv].clear();
-	// Create empty arrays
-	anflags[cfv].resize(m_c.size()*npm);
-	anflagsc[cfv].resize(m_c.size()*npm);
-	int npm2 = npm;
-	for (int i = 0; i < m_c.size(); ++i) {
-		// Last measure should have one note
-		if (i == m_c.size() - 1) npm2 = 1;
-		for (int x = 0; x < npm2; ++x) {
-			ac[cfv].push_back(m_c[i]);
-			acc[cfv].push_back(m_cc[i]);
-			apc[cfv].push_back(m_pc[i]);
-			apcc[cfv].push_back(m_pcc[i]);
-			cc_len.push_back(cc_len_old[i]*npm/npm2);
-			cc_tempo.push_back(cc_tempo_old[i]);
-			if (!x) {
-				int y = i*npm + x;
-				anflagsc[cfv][y] = anflagsc_old[i];
-				anflags[cfv][y] = anflags_old[i];
+	for (int a = 0; a < INT_MAX; ++a) {
+		// Choose cantus to use
+		cantus_id = randbw(0, cantus.size() - 1);
+		if (cantus_id2) {
+			if (cantus_id2 <= cantus.size()) {
+				cantus_id = cantus_id2 - 1;
+			}
+			else {
+				CString est;
+				est.Format("Warning: cantus_id in configuration file (%d) is greater than number of canti loaded (%d). Selecting highest cantus.",
+					cantus_id2, cantus.size());
+				WriteLog(1, est);
+				cantus_id = cantus.size() - 1;
 			}
 		}
-	}
-	// Generate second voice
-	rpenalty_cur = MAX_PENALTY;
-	if (SelectRuleSet(cp_rule_set)) return;
-	if (method == mSWA) {
-		RandomSWACP();
-	}
-	else {
-		ScanCP(tGen, 0);
+		c_len = cantus[cantus_id].size();
+		// Get key
+		GetCantusKey(cantus[cantus_id]);
+		// Get cantus interval
+		GetMelodyInterval(cantus[cantus_id], 0, cantus[cantus_id].size(), cf_nmin, cf_nmax);
+		if (tonic_cur == -1) return;
+		CalcCcIncrement();
+		// Show imported melody
+		cc_len = cantus_len[cantus_id];
+		cc_tempo = cantus_tempo[cantus_id];
+		real_len = accumulate(cantus_len[cantus_id].begin(), cantus_len[cantus_id].end(), 0);
+		dpenalty_cur = 0;
+		// Create pause
+		FillPause(0, floor(real_len / 8 + 1) * 8, 1);
+		// Select rule set
+		SelectRuleSet(cf_rule_set);
+		ScanCantus(tEval, 0, &(cantus[cantus_id]));
+		// Show cantus id
+		st.Format("Cantus %d. ", cantus_id + 1);
+		comment[0][0] = st + comment[0][0];
+		// Go forward
+		Adapt(0, step - 1);
+		t_generated = step;
+		t_sent = t_generated;
+		// Choose level
+		if (cantus_high) {
+			cpv = 0;
+			cfv = 1;
+		}
+		else {
+			cpv = 1;
+			cfv = 0;
+		}
+		// Load first voice
+		vector<int> cc_len_old = cc_len;
+		vector<float> cc_tempo_old = cc_tempo;
+		vector<int> anflagsc_old = anflagsc[cfv];
+		vector<vector<int>> anflags_old = anflags[cfv];
+		c_len = m_c.size() * npm - (npm - 1);
+		ac[cfv].clear();
+		acc[cfv].clear();
+		apc[cfv].clear();
+		apcc[cfv].clear();
+		cc_len.clear();
+		cc_tempo.clear();
+		anflags[cfv].clear();
+		anflagsc[cfv].clear();
+		// Create empty arrays
+		anflags[cfv].resize(m_c.size()*npm);
+		anflagsc[cfv].resize(m_c.size()*npm);
+		int npm2 = npm;
+		for (int i = 0; i < m_c.size(); ++i) {
+			// Last measure should have one note
+			if (i == m_c.size() - 1) npm2 = 1;
+			for (int x = 0; x < npm2; ++x) {
+				ac[cfv].push_back(m_c[i]);
+				acc[cfv].push_back(m_cc[i]);
+				apc[cfv].push_back(m_pc[i]);
+				apcc[cfv].push_back(m_pcc[i]);
+				cc_len.push_back(cc_len_old[i] * npm / npm2);
+				cc_tempo.push_back(cc_tempo_old[i]);
+				if (!x) {
+					int y = i*npm + x;
+					anflagsc[cfv][y] = anflagsc_old[i];
+					anflags[cfv][y] = anflags_old[i];
+				}
+			}
+		}
+		// Generate second voice
+		rpenalty_cur = MAX_PENALTY;
+		if (SelectRuleSet(cp_rule_set)) return;
+		if (method == mSWA) {
+			RandomSWACP();
+		}
+		else {
+			ScanCP(tGen, 0);
+		}
+		// Stop generation if finished or not random or not rechoosing
+		if (need_exit || t_generated >= t_cnt || !accept_cantus_rechoose || cantus_id2) break;
 	}
 }
