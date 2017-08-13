@@ -105,27 +105,27 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 
 void CGLib::CheckLimits(CString * sName, int * Dest, int lmin, int lmax)
 {
-	if (lmin != -1) {
+	if (lmin != -1000000) {
 		if (*Dest < lmin) {
-			*Dest = lmin;
 			CString st;
 			st.Format("Variable %s is %d (below minimum allowed value %d) - corrected to %d", *sName, *Dest, lmin, lmin);
 			WriteLog(5, st);
+			*Dest = lmin;
 		}
 	}
-	if (lmax != -1) {
+	if (lmax != -1000000) {
 		if (*Dest > lmax) {
-			*Dest = lmax;
 			CString st;
 			st.Format("Variable %s is %d (above maximum allowed value %d) - corrected to %d", *sName, *Dest, lmax, lmax);
 			WriteLog(5, st);
+			*Dest = lmax;
 		}
 	}
 }
 
 void CGLib::CheckLimits(CString * sName, float * Dest, float lmin, float lmax)
 {
-	if (lmin != -1) {
+	if (lmin != -1000000) {
 		if (*Dest < lmin) {
 			*Dest = lmin;
 			CString st;
@@ -133,7 +133,7 @@ void CGLib::CheckLimits(CString * sName, float * Dest, float lmin, float lmax)
 			WriteLog(5, st);
 		}
 	}
-	if (lmax != -1) {
+	if (lmax != -1000000) {
 		if (*Dest > lmax) {
 			*Dest = lmax;
 			CString st;

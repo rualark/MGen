@@ -511,7 +511,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 			CheckVar(&st2, &st3, "cc_vibf", &CC_vibf[i]);
 			CheckVar(&st2, &st3, "cc_steps", &CC_steps[i]);
 			CheckVar(&st2, &st3, "cc_dynamics", &CC_dyn[i]);
-			CheckVar(&st2, &st3, "cc_ma", &CC_ma[i], 3, -1);
+			CheckVar(&st2, &st3, "cc_ma", &CC_ma[i], 3);
 			CheckVar(&st2, &st3, "cc_retrigger", &CC_retrigger[i]);
 			CheckVar(&st2, &st3, "retrigger_freq", &retrigger_freq[i]);
 			CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
