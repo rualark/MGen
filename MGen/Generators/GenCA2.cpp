@@ -227,6 +227,7 @@ void CGenCA2::LinkCpPauses() {
 
 void CGenCA2::Generate() {
 	CString st;
+	int fn0 = fn;
 	int s_len2 = s_len;
 	InitCP();
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
@@ -302,6 +303,7 @@ void CGenCA2::Generate() {
 		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 2);
 		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 3);
 		cpv = cfv;
+		fn = 0;
 		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, 0, &(m_cc));
 		// Show cantus id
@@ -335,6 +337,7 @@ void CGenCA2::Generate() {
 		// Get cantus interval
 		GetMelodyInterval(cpoint[i][cfv], 0, cpoint[i][cfv].size(), cf_nmin, cf_nmax);
 		step0 = step;
+		fn = fn0;
 		ScanCP(tEval, 0);
 		key_eval = "";
 		// Check if cantus was shown

@@ -1096,6 +1096,7 @@ check:
 
 void CGenCP1::Generate() {
 	CString st;
+	int fn0 = fn;
 	if (InitCP()) return;
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
@@ -1129,6 +1130,7 @@ void CGenCP1::Generate() {
 		cc_tempo = cantus_tempo[cantus_id];
 		real_len = accumulate(cantus_len[cantus_id].begin(), cantus_len[cantus_id].end(), 0);
 		dpenalty_cur = 0;
+		fn = 0;
 		// Create pause
 		FillPause(step, step+floor(real_len / 8 + 1) * 8, 1);
 		// Select rule set
@@ -1185,6 +1187,7 @@ void CGenCP1::Generate() {
 				}
 			}
 		}
+		fn = fn0;
 		// Generate second voice
 		rpenalty_cur = MAX_PENALTY;
 		if (SelectRuleSet(cp_rule_set)) return;
