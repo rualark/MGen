@@ -5,6 +5,8 @@ configs\GenCF1\swa-high.pl
 configs\GenCA1\known-cf-maj.pl
 configs\GenCA1\known-cf-min.pl
 configs\GenCA1\test-leaps.pl
+configs\GenCA1\test-culm.pl
+configs\GenCA1\test-repeat.pl
 configs\GenCA1\test-leap-size.pl
 configs\GenCA1\test-leap-fill.pl
 configs\GenCA1\test-fill.pl
@@ -12,9 +14,10 @@ configs\GenCA1\test-tritone.pl
 configs\GenCA1\test-minor-alter.pl
 configs\GenCA1\test-tonic.pl
 configs\GenCP1\known-cf-maj.pl
-configs\GenCP1\known-cf-maj-high.pl
+configs\GenCP1\known-cf-maj-high.pl;60;120
 configs\GenCP1\known-cf-maj-scan.pl
 configs\GenCA2\test-alterint.pl
+configs\GenCA2\known-cp2v1.pl
 configs\GenCA2\test-cp.pl
 configs\GenCA2\test-vint.pl
 configs\GenMP1\autoconf-cloud.pl
