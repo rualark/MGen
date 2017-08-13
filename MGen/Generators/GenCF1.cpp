@@ -225,7 +225,7 @@ int CGenCF1::GetRuleParam(int rset, int rid, int type, int id) {
 		if (type == rsSubName) rs = "subrule name";
 		if (type == rsComment) rs = "rule comment";
 		if (type == rsSubComment) rs = "subrule comment";
-		est.Format("Error parsing integer #%d from %s %d: '%s' (rule set %d)", id, rs, rid, st, rset);
+		est.Format("Error parsing integer #%d from %s %d: '%s' (rule set %d)", id+1, rs, rid, st, rset);
 		WriteLog(5, est);
 		return 0;
 	}
@@ -256,6 +256,8 @@ void CGenCF1::SetRuleParams() {
 	max_leap_steps = GetRuleParam(rule_set, 3, rsName, 0);
 	stag_notes = GetRuleParam(rule_set, 10, rsSubName, 0);
 	stag_note_steps = GetRuleParam(rule_set, 10, rsSubName, 1);
+	stag_notes2 = GetRuleParam(rule_set, 39, rsSubName, 0);
+	stag_note_steps2 = GetRuleParam(rule_set, 39, rsSubName, 1);
 	repeat_steps2 = GetRuleParam(rule_set, 76, rsSubName, 1);
 	repeat_steps3 = GetRuleParam(rule_set, 36, rsSubName, 1);
 	repeat_steps5 = GetRuleParam(rule_set, 72, rsSubName, 1);

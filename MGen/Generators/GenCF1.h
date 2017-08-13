@@ -241,6 +241,8 @@ protected:
 	int max_leap_steps = 7;
 	int stag_notes = 2; // Maximum allowed stag_notes (same notes) during stag_note_steps
 	int stag_note_steps = 7;
+	int stag_notes2 = 3; // Maximum allowed stag_notes2 (same notes) during stag_note_steps2
+	int stag_note_steps2 = 10;
 	int tonic_cur = 0; // Tonic key
 	int minor_cur = 0; // Key minor indicator (0 = major, 1 = minor)
 	int random_key = 0; // Allow CF1 to select random key and CA1 to select any of possible keys regardless of last note
