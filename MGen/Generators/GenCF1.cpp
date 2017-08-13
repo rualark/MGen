@@ -2679,6 +2679,10 @@ void CGenCF1::TransposeCantusBack() {
 		}
 		TransposeVector(m_cc, trans);
 		TransposeVector(macc2, trans);
+		TransposeVector(min_cc, trans);
+		TransposeVector(max_cc, trans);
+		TransposeVector(min_cc0, trans);
+		TransposeVector(max_cc0, trans);
 	}
 }
 
