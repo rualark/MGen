@@ -989,7 +989,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 	return 0;
 }
 
-int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat) {
+int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int notes, int flag) {
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
 	// Prohibit stagnation only for non-slurred notes
@@ -998,9 +998,9 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat) {
 		// Add new note to stagnation array
 		++nstat[cc[i]];
 		// Subtract old note
-		if ((i >= stag_note_steps)) --nstat[cc[i - stag_note_steps]];
+		if ((i >= steps)) --nstat[cc[i - steps]];
 		// Check if too many repeating notes
-		if (nstat[cc[i]] > stag_notes) FLAG2(10, i);
+		if (nstat[cc[i]] > notes) FLAG2(flag, i);
 	}
 	return 0;
 }
@@ -3136,7 +3136,8 @@ check:
 		if (FailGlobalFill(m_c, ep2, nstat2)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
-		if (FailStagnation(m_cc, nstat)) goto skip;
+		if (FailStagnation(m_cc, nstat, stag_note_steps, stag_notes, 10)) goto skip;
+		if (FailStagnation(m_cc, nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
 		if (FailFirstNotes(m_pc)) goto skip;
 		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;

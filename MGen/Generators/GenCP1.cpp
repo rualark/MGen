@@ -988,7 +988,8 @@ check:
 		if (FailVMotion()) goto skip;
 		if (FailVIntervals()) goto skip;
 		if (FailOverlap()) goto skip;
-		if (FailStagnation(acc[cpv], nstat)) goto skip;
+		if (FailStagnation(acc[cpv], nstat, stag_note_steps, stag_notes, 10)) goto skip;
+		if (FailStagnation(acc[cpv], nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailFirstNotes(apc[cpv])) goto skip;
 		if (FailLeap(ac[cpv], ep2, aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;

@@ -121,7 +121,7 @@ protected:
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
 	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
-	inline int FailStagnation(vector<int>& cc, vector<int>& nstat);
+	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int steps, int notes, int flag);
 	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
 	inline int FailFirstNotes(vector<int>& pc);
 	inline int FailLastNotes(vector<int>& pc, vector<int>& pcc, int ep2);
