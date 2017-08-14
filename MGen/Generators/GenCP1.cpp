@@ -225,7 +225,7 @@ void CGenCP1::ScanCPInit() {
 int CGenCP1::SendCP() {
 	int step0 = step;
 	int pause_len = 0;
-	CString st, info, rpst;
+	CString st, rpst;
 	int pos = 0, plen;
 	int v, x1;
 	int real_len2 = real_len*npm;
@@ -424,7 +424,7 @@ int CGenCP1::FailVMotion() {
 	}
 	// Check how many contrary if full melody analyzed
 	if (ep2 == c_len) {
-		if (scontra + sdirect) {
+		if (scontra + sdirect) { //-V793
 			int pcontra = (scontra * 100) / (scontra + sdirect);
 			if (pcontra < contrary_min2) FLAG2(46, 0)
 			else if (pcontra < contrary_min) FLAG2(35, 0);
@@ -924,7 +924,6 @@ int CGenCP1::FailHarm() {
 }
 
 void CGenCP1::ScanCP(int t, int v) {
-	CString st, st2;
 	int finished = 0;
 	// Load master parameters
 	task = t;

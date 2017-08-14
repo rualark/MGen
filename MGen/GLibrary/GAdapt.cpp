@@ -35,7 +35,7 @@ void CGAdapt::CheckInstrumentRange(int v, int ii)
 				st.Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Cannot transpose automatically: range too wide.",
 					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
 					InstGName[ii], InstCName[ii], v,
-					GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
+					GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]));
 				warning_note_range[v] = 1;
 				WriteLog(1, st);
 			}
