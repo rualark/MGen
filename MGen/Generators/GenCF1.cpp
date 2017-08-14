@@ -503,7 +503,7 @@ int CGenCF1::FailNoteSeq(vector<int> &pc) {
 
 int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return;
+	if (!m_testing && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
 	if (fli_size < notes) return 0;
 	int lmin, lmax, s;
@@ -528,7 +528,7 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 
 int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return;
+	if (!m_testing && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
 	if (fli_size < notes) return 0;
 	float lmin, lmax;
@@ -845,7 +845,7 @@ int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2,
 // Search for outstanding repeats
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return;
+	if (!m_testing && accept[flag] == -1) return 0;
 	int ok, f, f1;
 	if (fli_size > rlen*2) for (ls = 0; ls < fli_size - rlen * 2; ++ls) {
 		s = fli2[ls];
@@ -883,7 +883,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 
 int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return;
+	if (!m_testing && accept[flag] == -1) return 0;
 	int ok;
 	int f, f1;
 	if (fli_size > rlen + 1) for (ls = 0; ls < fli_size - rlen - 1; ++ls) {
@@ -999,7 +999,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int
 
 int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int notes, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return;
+	if (!m_testing && accept[flag] == -1) return 0;
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
 	// Prohibit stagnation only for non-slurred notes
