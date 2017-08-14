@@ -28,14 +28,14 @@ void CGenCA1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CGenCF1::LoadConfigLine(sN, sV, idata, fdata);
 }
 
-void CGenCA1::GetCantusKey(vector <int> &cc)
+void CGenCA1::GetCPKey()
 {
 	CString kst1, kst2;
 	int t1, t2;
 	// Major
-	int c1 = GetCantusKey2(cc, t1, kst1, 0);
+	int c1 = GetCPKey2(t1, kst1, 0);
 	// Minor
-	int c2 = GetCantusKey2(cc, t2, kst2, 1);
+	int c2 = GetCPKey2(t2, kst2, 1);
 	key_eval.Format("major confidence %d [%s], minor confidence %d [%s]", c1, kst1, c2, kst2);
 	if (c1 == 0 && c2 == 0) {
 		tonic_cur = -1;
@@ -58,7 +58,7 @@ void CGenCA1::GetCantusKey(vector <int> &cc)
 	}
 }
 
-void CGenCA1::GetCantusKey3(vector <int> &cc, vector <int> &key_miss, int &min_miss, int &min_key, int minor_cur, int diatonic_repeat_check)
+void CGenCA1::GetCPKey3(vector <int> &key_miss, int &min_miss, int &min_key, int minor_cur, int diatonic_repeat_check)
 {
 	key_miss.clear();
 	key_miss.resize(12);
@@ -66,18 +66,20 @@ void CGenCA1::GetCantusKey3(vector <int> &cc, vector <int> &key_miss, int &min_m
 	for (int i = 0; i < 12; i++) {
 		key_miss[i] = 0;
 		// Cycle all notes
-		for (int x = 0; x < c_len; x++) {
-			if (minor_cur) {
-				// Check all possible pitches for minor
-				if (!m_diatonic_full[(cc[x] - i) % 12]) key_miss[i]++;
-			}
-			else {
-				// Check normal pitches for major
-				if (!diatonic[(cc[x] - i) % 12]) key_miss[i]++;
-			}
-			// Check if diatonic repeats
-			if (diatonic_repeat_check) {
-				if (x && CC_C(cc[x], i, minor_cur) == CC_C(cc[x - 1], i, minor_cur) && abs(cc[x] - cc[x - 1]) == 1) key_miss[i]++;
+		for (int v = 0; v < av_cnt; v++) {
+			for (int x = 0; x < c_len; x++) {
+				if (minor_cur) {
+					// Check all possible pitches for minor
+					if (!m_diatonic_full[(acc[v][x] - i) % 12]) key_miss[i]++;
+				}
+				else {
+					// Check normal pitches for major
+					if (!diatonic[(acc[v][x] - i) % 12]) key_miss[i]++;
+				}
+				// Check if diatonic repeats
+				if (diatonic_repeat_check) {
+					if (x && CC_C(acc[v][x], i, minor_cur) == CC_C(acc[v][x - 1], i, minor_cur) && abs(acc[v][x] - acc[v][x - 1]) == 1) key_miss[i]++;
+				}
 			}
 		}
 	}
@@ -92,22 +94,22 @@ void CGenCA1::GetCantusKey3(vector <int> &cc, vector <int> &key_miss, int &min_m
 	}
 }
 
-int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, int minor_cur)
+int CGenCA1::GetCPKey2(int &tonic_cur, CString &ext_st, int minor_cur)
 {
-	c_len = cc.size();
+	c_len = acc[0].size();
 	vector<int> key_miss;
 	int min_key = 0;
 	int min_miss = c_len;
 	CString cst, kst, st2;
 	// Create melody string for log
 	for (int x = 0; x < min(c_len, 30); x++) {
-		st2.Format("%d", cc[x] / 12);
-		cst += NoteName[cc[x] % 12] + st2 + " ";
+		st2.Format("%d", acc[0][x] / 12);
+		cst += NoteName[acc[0][x] % 12] + st2 + " ";
 	}
-	GetCantusKey3(cc, key_miss, min_miss, min_key, minor_cur, 1);
+	GetCPKey3(key_miss, min_miss, min_key, minor_cur, 1);
 	// If no key selected run again without checking for repeating diatonic steps
 	if (min_miss > 0) {
-		GetCantusKey3(cc, key_miss, min_miss, min_key, minor_cur, 0);
+		GetCPKey3(key_miss, min_miss, min_key, minor_cur, 0);
 	}
 	// If no key selected
 	if (min_miss > 0) {
@@ -133,10 +135,10 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, in
 	// Check if only one key
 	if (key_count == 1) {
 		ext_st.Format("Single key %s selected", NoteName[tonic_cur]);
-		if (cc[c_len - 1] % 12 == tonic_cur) {
+		if (acc[0][c_len - 1] % 12 == tonic_cur) {
 			return 500 - key_count;
 		}
-		else if (cc[0] % 12 == tonic_cur) {
+		else if (acc[0][0] % 12 == tonic_cur) {
 			return 400 - key_count;
 		}
 		else return 300 - key_count;
@@ -151,7 +153,7 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, in
 	else {
 		// Find accepted tonic same as last note
 		for (int i = 0; i < keys.size(); i++) {
-			if (cc[c_len - 1] % 12 == keys[i]) {
+			if (acc[0][c_len - 1] % 12 == keys[i]) {
 				tonic_cur = keys[i];
 				ext_st.Format("Ambiguous %d keys (%s) resolved to %s as last note", keys.size(), kst, NoteName[tonic_cur]);
 				return 400 - keys.size();
@@ -159,7 +161,7 @@ int CGenCA1::GetCantusKey2(vector <int> &cc, int &tonic_cur, CString &ext_st, in
 		}
 		// Find accepted tonic same as first note
 		for (int i = 0; i < keys.size(); i++) {
-			if (cc[0] % 12 == keys[i]) {
+			if (acc[0][0] % 12 == keys[i]) {
 				tonic_cur = keys[i];
 				ext_st.Format("Ambiguous %d keys (%s) resolved to %s as first note", keys.size(), kst, NoteName[tonic_cur]);
 				return 300 - keys.size();
@@ -365,7 +367,9 @@ void CGenCA1::Generate()
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Get key
-		GetCantusKey(cantus[i]);
+		acc.resize(1);
+		acc[0] = cantus[i];
+		GetCPKey();
 		if (tonic_cur == -1) continue;
 		CalcCcIncrement();
 		// Show imported melody

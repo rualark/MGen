@@ -291,7 +291,8 @@ void CGenCA2::Generate() {
 		}
 		ExplodeCP();
 		// Get key
-		GetCantusKey(cpoint[i][cfv]);
+		acc = cpoint[i];
+		GetCPKey();
 		if (tonic_cur == -1) continue;
 		CalcCcIncrement();
 		// Show imported melody

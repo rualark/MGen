@@ -454,4 +454,14 @@ protected:
 	int contrary_min2 = 60; // Minimum percent of contrary motion (medium)
 	int cantus_id2 = 0; // Select particular cantus id. Set to -1 to select random
 	int accept_cantus_rechoose = 1; // Choose new random cantus after accepting counterpoint
+
+	// Counterpoint
+	vector<vector<int>> ac; // Diatonic
+	vector<vector<int>> acc; // Chromatic
+	vector<vector<int>> acc_old; // Chromatic
+	vector<vector<int>> apc; // Pitch class (diatonic)
+	vector<vector<int>> apcc; // Pitch class (chromatic)
+	vector<vector<int>> aleap;
+	vector<vector<int>> asmooth;
+	vector<vector<int>> aslur;
 };
