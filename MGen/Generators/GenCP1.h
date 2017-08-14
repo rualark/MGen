@@ -43,6 +43,7 @@ protected:
 	inline int FailLastIntervals(vector<int>& pc, int ep2);
 	inline void GetNoteTypes();
 	inline void GetMeasures();
+	inline int FailGisTrail2();
 	inline int FailHarm();
 	void ScanCP(int t, int v);
 

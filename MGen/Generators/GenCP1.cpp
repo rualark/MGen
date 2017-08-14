@@ -908,6 +908,26 @@ void CGenCP1::GetMeasures() {
 	}
 }
 
+int CGenCP1::FailGisTrail2() {
+	int gis_trail = 0;
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		if (apcc[0][s] == 11 || apcc[1][s] == 11) {
+			// Set to maximum on new G# note
+			gis_trail = gis_trail_max;
+		}
+		else {
+			if (apcc[0][s] == 10 || apcc[1][s] == 10) {
+				// Prohibit G note close to G#
+				if (gis_trail) FLAG2(200, s);
+			}
+		}
+		// Decrease if not zero
+		if (gis_trail) --gis_trail;
+	}
+	return 0;
+}
+
 int CGenCP1::FailHarm() {
 	int s2;
 	hli_size = 0;
@@ -975,7 +995,7 @@ check:
 		CreateLinks(acc[cpv]);
 		if (minor_cur) {
 			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;
-			if (FailGisTrail(apcc[cpv])) goto skip;
+			if (FailGisTrail2()) goto skip;
 		}
 		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
