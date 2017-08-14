@@ -43,6 +43,7 @@ protected:
 	inline int FailLastIntervals(vector<int>& pc, int ep2);
 	inline void GetNoteTypes();
 	inline void GetMeasures();
+	inline int FailHarm();
 	void ScanCP(int t, int v);
 
 	// Counterpoint
@@ -67,6 +68,8 @@ protected:
 	vector<int> beat; // Beat type for each fli2
 	vector<int> sus; // Note suspension
 	vector<int> mli; // Forward links to first notes of each measure
+	vector<int> hli; // Forward links to first notes of each harmonic change
+	int hli_size = 0; // Size of hli vector
 
 	// Cantus
 	int cf_nmin = 0; // Minimum note in cantus (chromatic)

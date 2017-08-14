@@ -908,6 +908,21 @@ void CGenCP1::GetMeasures() {
 	}
 }
 
+int CGenCP1::FailHarm() {
+	int s2;
+	hli_size = 0;
+	hli.clear();
+	// Detect harmony changes
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		s2 = fli2[ls];
+	}
+	// Build chm vector
+	for (ls = 0; ls < hli_size; ++ls) {
+	}
+	return 0;
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	CString st, st2;
 	int finished = 0;
@@ -997,6 +1012,7 @@ check:
 		MakeMacc(acc[cpv]);
 		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;
 		if (FailLocalMacc(notes_arange2, min_arange2, 16)) goto skip;
+		if (FailHarm()) goto skip;
 
 		SaveBestRejected(acc[cpv]);
 		// If we are window-scanning
