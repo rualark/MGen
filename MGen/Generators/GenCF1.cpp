@@ -10,6 +10,8 @@
 
 CGenCF1::CGenCF1()
 {
+	av_cnt = 1;
+	v_cnt = 1;
 	ngraph_size = 3;
 	cpv = 0;
 	//midifile_tpq_mul = 8;

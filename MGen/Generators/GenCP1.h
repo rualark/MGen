@@ -47,16 +47,6 @@ protected:
 	inline int FailHarm();
 	void ScanCP(int t, int v);
 
-	// Counterpoint
-	vector<vector<int>> ac; // Diatonic
-	vector<vector<int>> acc; // Chromatic
-	vector<vector<int>> acc_old; // Chromatic
-	vector<vector<int>> apc; // Pitch class (diatonic)
-	vector<vector<int>> apcc; // Pitch class (chromatic)
-	vector<vector<int>> aleap;
-	vector<vector<int>> asmooth;
-	vector<vector<int>> aslur;
-
 	// Variables
 	int cp_culm = 0; // Position of counterpoint culmination
 
