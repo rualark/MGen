@@ -1150,9 +1150,10 @@ void CGenCP1::Generate() {
 		}
 		c_len = cantus[cantus_id].size();
 		// Get key
-		acc.resize(1);
+		av_cnt = 1;
 		acc[0] = cantus[cantus_id];
 		GetCPKey();
+		av_cnt = 2;
 		// Get cantus interval
 		GetMelodyInterval(cantus[cantus_id], 0, cantus[cantus_id].size(), cf_nmin, cf_nmax);
 		if (tonic_cur == -1) return;
