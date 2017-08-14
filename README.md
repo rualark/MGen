@@ -7,6 +7,7 @@ Issues: [![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=read
 
 Code analysis: [![Codacy Badge](https://api.codacy.com/project/badge/Grade/73206f26408f420bb4f89c751963aef5)](https://www.codacy.com/app/rualark/MGen?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rualark/MGen&amp;utm_campaign=Badge_Grade)
 [![BCH compliance](https://bettercodehub.com/edge/badge/rualark/MGen?branch=master)](https://bettercodehub.com/)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/13485/badge.svg)](https://scan.coverity.com/projects/rualark-mgen)
 
 Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI/MusicXML
 
