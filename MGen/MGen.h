@@ -36,9 +36,9 @@ public:
 	virtual int ExitInstance();
 
 // Implementation
-	UINT  m_nAppLook;
+	UINT  m_nAppLook = 0;
 	BOOL  m_bHiColorIcons;
-	ULONG_PTR m_gdiplusToken;
+	ULONG_PTR m_gdiplusToken = 0;
 
 	virtual void PreLoadState();
 	virtual void LoadCustomState();
