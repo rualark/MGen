@@ -119,6 +119,9 @@ END_MESSAGE_MAP()
 CMainFrame::CMainFrame()
 {
 	AlgGroups.resize(MAX_ALGO);
+	fill(begin(AlgID), end(AlgID), 0);
+	fill(begin(AlgMFI), end(AlgMFI), 0);
+	fill(begin(ParamCount), end(ParamCount), 0);
 	//HANDLE hThread = GetCurrentThread();
 	//SetThreadPriority(hThread, THREAD_PRIORITY_TIME_CRITICAL);
 
@@ -827,7 +830,6 @@ void CMainFrame::LoadAlgo()
 	AlgGroups.resize(MAX_ALGO);
 	AlgGCount = 0;
 	while (fs.good()) {
-		pos = 0;
 		fs.getline(pch, 2550);
 		st = pch;
 		// Remove unneeded

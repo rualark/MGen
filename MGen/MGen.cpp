@@ -132,8 +132,8 @@ BOOL CMGenApp::InitInstance()
 		RUNTIME_CLASS(CMGenDoc),
 		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
 		RUNTIME_CLASS(CMGenView));
-	if (!pDocTemplate)
-		return FALSE;
+	//if (!pDocTemplate)
+		//return FALSE;
 	AddDocTemplate(pDocTemplate);
 
 

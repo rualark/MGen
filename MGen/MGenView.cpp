@@ -252,8 +252,9 @@ void CMGenView::OnDraw(CDC* pDC)
 						if ((nheight > 5) && (i < ng_max2)) {
 							g.DrawLine(&pen_dddgray, 0, pos, X_FIELD/2-2, pos);
 							st.Format("%d", i / 12);
-							g.MeasureString(A2W(st), -1, &font_small, sizeRect, &sizeRect);
-							g.DrawString(A2W(st), -1, &font_small, PointF(X_FIELD-18, pos - sizeRect.Height / 2), &brush_dddgray);
+							CStringW wst(st);
+							g.MeasureString(wst, -1, &font_small, sizeRect, &sizeRect);
+							g.DrawString(wst, -1, &font_small, PointF(X_FIELD-18, pos - sizeRect.Height / 2), &brush_dddgray);
 						}
 						else {
 							g.DrawLine(&pen_dddgray, 0, pos, X_FIELD, pos);
@@ -735,7 +736,6 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 			mouse_voice = result - 1;
 		}
 		CInfoDlg dlg;
-		dlg.pGen = mf->pGen;
 		dlg.DoModal();
 	}
 	else if ((mouse_step > -1) && (mouse_in_timeline)) {

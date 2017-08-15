@@ -82,7 +82,7 @@ public:
 	// 0 = No playback
 	// 1 = Playback
 	// 2 = Playback into buffer finished. Buffer is still playing
-	CWinThread* m_GenThread;
+	CWinThread* m_GenThread = 0;
 
 	// Algorithm / configs constants
 	CString AlgName[MAX_ALGO];
