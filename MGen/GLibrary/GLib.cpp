@@ -90,7 +90,7 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 		for (int i = 0; i<1000; i++) {
 			st = sValue->Tokenize(",", pos);
 			st.Trim();
-			if (st == "") break;
+			if (st.IsEmpty()) break;
 			if (i >= Dest.size()) {
 				CString est;
 				est.Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
@@ -219,7 +219,7 @@ void CGLib::GetVint(const CString & st, vector<int>& res) {
 	for (int i = 0; i < st.GetLength(); ++i) {
 		if (isdigit(st[i])) {
 			// Check minor
-			if (st2 == "" && i > 0 && (st[i - 1] == 'm' || st[i-1] == 'b')) sign = -1;
+			if (st2.IsEmpty() && i > 0 && (st[i - 1] == 'm' || st[i-1] == 'b')) sign = -1;
 			st2 += st[i];
 		}
 		else if (st2 != "") {

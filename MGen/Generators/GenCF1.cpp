@@ -2451,7 +2451,7 @@ void CGenCF1::ShowFlagBlock() {
 		for (int w = 0; w < wcount; ++w) {
 			int lines = 0;
 			CString est;
-			st2 = "";
+			st2.Empty();
 			for (int d = 1; d < max_flags; ++d) {
 				if (lines > 100) break;
 				int flagc = 0;
@@ -2684,14 +2684,14 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 					if (!accept[fl]) st = "- ";
 					else st = "+ ";
 					comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-					if (comment2[pos][v] != "") comment2[pos][v] += ", ";
+					if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
 					comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 					if (show_severity) {
 						st.Format(" [%d/%d]", severity[fl], fl);
 						comment[pos][v] += st;
 					}
-					if (RuleComment[fl] != "") comment[pos][v] += ". " + RuleComment[fl];
-					if (SubRuleComment[rule_set][fl] != "") comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
+					if (!RuleComment[fl].IsEmpty()) comment[pos][v] += ". " + RuleComment[fl];
+					if (!SubRuleComment[rule_set][fl].IsEmpty()) comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
 					comment[pos][v] += ". ";
 				}
 				// Set note color if this is maximum flag severity
@@ -2830,7 +2830,7 @@ int CGenCF1::SendCantus() {
 			st.Format("#%d\nRule penalty: %s", cantus_sent, rpst);
 		}
 		else {
-			if (key_eval == "") {
+			if (key_eval.IsEmpty()) {
 				// If SWA
 				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nDistance penalty: %.0f", cantus_id+1, midi_file, rpst, dpenalty_cur);
 			}

@@ -306,7 +306,7 @@ int CGenCP1::SendCP() {
 			st.Format("#%d\nCantus: %s\nRule penalty: %s", cantus_sent, cantus_high ? "high" : "low", rpst);
 		}
 		else {
-			if (key_eval == "") {
+			if (key_eval.IsEmpty()) {
 				// If SWA
 				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nDistance penalty: %.0f", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, dpenalty_cur);
 			}
@@ -929,13 +929,11 @@ int CGenCP1::FailGisTrail2() {
 }
 
 int CGenCP1::FailHarm() {
-	int s2;
 	hli_size = 0;
 	hli.clear();
 	// Detect harmony changes
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
-		s2 = fli2[ls];
 	}
 	// Build chm vector
 	for (ls = 0; ls < hli_size; ++ls) {

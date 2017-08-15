@@ -298,7 +298,7 @@ void CGVar::LoadConfig(CString fname, int load_includes)
 	CString st2;
 	LoadConfigFile(fname, load_includes);
 	// Load instruments layout
-	if (instr_layout == "") instr_layout = "Default";
+	if (instr_layout.IsEmpty()) instr_layout = "Default";
 	LoadInstrumentLayout();
 	// Load instruments
 	LoadInstruments();
@@ -316,7 +316,7 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 		for (int ii = 0; ii<MAX_VOICE; ii++) {
 			st = sValue->Tokenize(",", pos);
 			st.Trim();
-			if (st == "") break;
+			if (st.IsEmpty()) break;
 			int found = 0;
 			// Set all instruments to default instrument
 			if (!ii) {
