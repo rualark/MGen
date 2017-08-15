@@ -131,7 +131,7 @@ int CGenCA1::GetCPKey2(int &tonic_cur, CString &ext_st, int minor_cur)
 	}
 	// Create keys string for log
 	for (int x = 0; x < keys.size(); x++) {
-		if (kst != "") kst += " ";
+		if (!kst.IsEmpty()) kst += " ";
 		kst += NoteName[keys[x]];
 	}
 	// Check if only one key
@@ -252,13 +252,13 @@ void CGenCA1::SendCorrections(int i, int time_start) {
 			st2 += st;
 			// Show initial melody again if this is not first iteration
 			if (ccount > 1) {
-				dpenalty_cur = 0;
+				dpenalty_cur = 0; 
 				ScanCantus(tEval, 0, &(cantus[i]));
 				step = step0;
 			}
 			// Get cantus
 			m_cc = clib[cids[x]];
-			dpenalty_cur = dpenalty[cids[x]];
+			dpenalty_cur = dpenalty[cids[x]]; //-V519
 			// Clear penalty
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result

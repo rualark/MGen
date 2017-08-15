@@ -194,7 +194,7 @@ protected:
 	void RandomSWA();
 	void SWA(int i, int dp);
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
-	void FillCantus(vector<int>& c, int step1, int step2, vector<int> value);
+	void FillCantus(vector<int>& c, int step1, int step2, vector<int> &value);
 	void RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 	

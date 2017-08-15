@@ -456,7 +456,7 @@ void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, int value)
 }
 
 // Step2 must be exclusive
-void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> value)
+void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> &value)
 {
 	for (int i = step1; i < step2; ++i) {
 		c[i] = value[i];

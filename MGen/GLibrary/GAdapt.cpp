@@ -210,8 +210,10 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 		dstime[i][v] = -min(legato_ahead[ii][0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		detime[i - 1][v] = 0.9 * dstime[i][v];
-		if (comment_adapt) adapt_comment[i][v] += "Ahead start. ";
-		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead end. ";
+		if (comment_adapt) {
+			adapt_comment[i][v] += "Ahead start. ";
+			adapt_comment[i - 1][v] += "Ahead end. ";
+		}
 		// Add glissando if note is long
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if ((ndur > gliss_minlen[ii]) && (randbw(0, 100) < gliss_freq[ii])) {
@@ -288,8 +290,10 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		dstime[i][v] = -adur;
 		detime[i - 1][v] = 0.9 * dstime[i][v];
 		// Add comments
-		if (comment_adapt) adapt_comment[i][v] += "Ahead flex start. ";
-		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead flex end. ";
+		if (comment_adapt) {
+			adapt_comment[i][v] += "Ahead flex start. ";
+			adapt_comment[i - 1][v] += "Ahead flex end. ";
+		}
 	}
 }
 
@@ -356,7 +360,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 	}
 	int ni = i + noff[i][v];
 	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
-	if ((ndur > bell_mindur[ii]/2) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
+	if ((ndur > (float)bell_mindur[ii]/2) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
 		int pos = round(i + (float)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
@@ -550,7 +554,7 @@ void CGAdapt::Adapt(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 			// Clear adaptation comment
-			adapt_comment[i][v] = "";
+			adapt_comment[i][v].Empty();
 		}
 		// Set vel to dyn
 		for (int i = step1; i <= step2; i++) {
