@@ -70,8 +70,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	UpdateFonts();
 
-	CString strTabName;
-
 	m_wndTabs.AddTab(&m_wndOutputWarn,  " Warnings     ", (UINT)0);
 	m_wndTabs.AddTab(&m_wndOutputDebug, " Debug     ", (UINT)1);
 	m_wndTabs.AddTab(&m_wndOutputPerf, " UI performance     ", (UINT)2);

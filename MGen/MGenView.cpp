@@ -114,7 +114,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	CRect ClientRect;
 	GetClientRect(&ClientRect);
 	// Total scrollable size
-	CSize Size = GetTotalSize();
+	//CSize Size = GetTotalSize();
 
 	CMemDC2 dc(pDC);
 	dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
