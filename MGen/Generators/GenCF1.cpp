@@ -466,8 +466,8 @@ void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> &valu
 // Step2 must be exclusive
 void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 {
-	for (int i = step1; i < step2; ++i) {
-		for (int x = 0; x < 1000; ++x) { //-V756
+	for (int i = step1; i < step2; ++i) { //-V756
+		for (int x = 0; x < 1000; ++x) {
 			c[i] = randbw(min_c[i], max_c[i]);
 			// Convert to chromatic
 			cc[i] = C_CC(c[i], tonic_cur, minor_cur);

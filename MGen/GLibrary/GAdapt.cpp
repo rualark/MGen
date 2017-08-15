@@ -250,7 +250,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 			if (nspeed < 8) {
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
-				min_adur = max(splitpo_mindur[ii], abs(note[i][v] - note[pi][v]) / 8 * 1000);
+				min_adur = (float)max(splitpo_mindur[ii], abs(note[i][v] - note[pi][v]) / 8 * 1000);
 				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][1];
 				if (iv < ahead_chrom[ii].size() && ahead_chrom[ii][iv]) adur0 = ahead_chrom[ii][iv];
 				//CString st;

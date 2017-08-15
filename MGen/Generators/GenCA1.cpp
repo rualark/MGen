@@ -299,7 +299,7 @@ void CGenCA1::ParseExpect() {
 	vector<CString> ast;
 	enflags.resize(max_i);
 	for (int i = 0; i < max_i; ++i) {
-		if (cantus_incom[cantus_id][i] != "") {
+		if (!cantus_incom[cantus_id][i].IsEmpty()) {
 			Tokenize(cantus_incom[cantus_id][i], ast, ",");
 			for (int n = 0; n < ast.size(); ++n) {
 				fl = atoi(ast[n]);
@@ -386,7 +386,7 @@ void CGenCA1::Generate()
 		// Clear enflags after evaluation
 		ParseExpect();
 		ConfirmExpect();
-		key_eval = "";
+		key_eval.Empty();
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
 		t_generated2 = t_generated;

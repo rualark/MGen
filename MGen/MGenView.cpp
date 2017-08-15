@@ -279,7 +279,8 @@ void CMGenView::OnDraw(CDC* pDC)
 							g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, ClientRect.top + Y_HEADER,
 								X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE);
 							st.Format("%d", i / 8 + 1);
-							g.DrawString(A2W(st), -1, &font_small, PointF(X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE + 1), &brush_dddgray);
+							CStringW wst(st);
+							g.DrawString(wst, -1, &font_small, PointF(X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE + 1), &brush_dddgray);
 						}
 						g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start - 1,
 							X_FIELD + i * nwidth, ClientRect.top + Y_HEADER + 1);
@@ -325,7 +326,8 @@ void CMGenView::OnDraw(CDC* pDC)
 					ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 					SolidBrush brush_v(ncolor);
 					st = pGen->InstGName[pGen->instr[v]];
-					g.DrawString(A2W(st), -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
+					CStringW wst(st);
+					g.DrawString(wst, -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
 				}
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
@@ -399,7 +401,7 @@ void CMGenView::OnDraw(CDC* pDC)
 							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - cutend, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
 					}
 					// Show comment
-					if (mf->show_comments && pGen->comment[i][v] != "")
+					if (mf->show_comments && !pGen->comment[i][v].IsEmpty())
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
@@ -413,7 +415,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			CString mark;
 			if (mf->show_marks) for (int v = 0; v < pGen->v_cnt; v++) {
 				int step1m = max(0, step1 - MARK_BACK);
-				for (int i = step1m; i < step2; i++) if (pGen->mark[i][v] != "") {
+				for (int i = step1m; i < step2; i++) if (!pGen->mark[i][v].IsEmpty()) {
 					if (pGen->mark_color[i][v].GetValue() != 0) {
 						if (pGen->mark_color[i][v].GetAlpha() == 0)
 							mcolor = Color(210, pGen->mark_color[i][v].GetR(), pGen->mark_color[i][v].GetG(), pGen->mark_color[i][v].GetB());
@@ -431,12 +433,13 @@ void CMGenView::OnDraw(CDC* pDC)
 							mf->WriteLog(1, "Warning: Mark is too long for current zoom and was replaced with '...'. Solution: increase Zoom level, increase MARK_BACK or decrease mark string length in algorithm.");
 						}
 					}
-					g.DrawString(A2W(mark), -1, &font_small2, PointF(X_FIELD + i * nwidth,
+					CStringW wst(mark);
+					g.DrawString(wst, -1, &font_small2, PointF(X_FIELD + i * nwidth,
 						y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight), &brush_v);
 				}
 			}
 			// Show generated vertical lines
-			if (mf->show_lines) for (int v = 0; v < pGen->v_cnt; v++) {
+			if (mf->show_lines) 
 				for (int i = step1; i < step2; i++) {
 					if (pGen->linecolor[i].GetAlpha() != 0) {
 						Pen pen_line(pGen->linecolor[i]);
@@ -444,7 +447,6 @@ void CMGenView::OnDraw(CDC* pDC)
 							X_FIELD + i * nwidth, y_start - (pGen->ng_max - ng_min2 + 1) * nheight);
 					}
 				}
-			}
 			mouse_voice_old = mouse_voice;
 			// Show note graph
 			if (mf->show_curve) {

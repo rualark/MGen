@@ -19,7 +19,7 @@ CMyVisualManagerOffice2007::~CMyVisualManagerOffice2007()
 {
 }
 
-BOOL CMyVisualManagerOffice2007::DrawTextOnGlass(CDC * pDC, CString strText, CRect rect, DWORD dwFlags, int nGlowSize, COLORREF clrText)
+BOOL CMyVisualManagerOffice2007::DrawTextOnGlass(CDC * pDC, CString strText, CRect rect, DWORD dwFlags, int nGlowSize, COLORREF clrText) //-V813
 {
 	return CMFCVisualManagerOffice2007::DrawTextOnGlass(pDC, strText, rect, dwFlags, nGlowSize, RGB(0, 0, 0));
 }

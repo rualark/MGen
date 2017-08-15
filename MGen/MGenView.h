@@ -62,16 +62,16 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 	vector <int> mouse_voices; // Current voice
-	int mouse_voice;
-	int mouse_voice_old; // Previously drawn voice
+	int mouse_voice = 0;
+	int mouse_voice_old = 0; // Previously drawn voice
 	int mouse_note = -1; // Current note under mouse
 	int mouse_step = -1; // Current step under mouse
-	int mouse_step_old; // Previously drawn mouse_step
+	int mouse_step_old = 0; // Previously drawn mouse_step
 	int mouse_in_timeline = 0; // =1 if mouse is inside timeline
 	int max_draw_time = 0; // Maximum drawing time detected
-	int nwidth; // Step width
-	int nheight; // Note height
-	int y_start; // Position of lowest note
+	int nwidth = 0; // Step width
+	int nheight = 0; // Note height
+	int y_start = 0; // Position of lowest note
 	int warning_mark_long = 0; // Mark is too long
 
 protected:
