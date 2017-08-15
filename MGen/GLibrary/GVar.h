@@ -65,8 +65,8 @@ public:
 	int ng_max = 0; // Maximum generated note
 	int ng_min2 = 1000; // Minimum generated note (with note scan range)
 	int ng_max2 = 0; // Maximum generated note (with note scan range)
-	int ngv_min[MAX_VOICE]; // Minimum generated note per voice
-	int ngv_max[MAX_VOICE]; // Maximum generated note per voice
+	vector<int> ngv_min; // Minimum generated note per voice
+	vector<int> ngv_max; // Maximum generated note per voice
 	float tg_min = 1000; // Minimum generated tempo
 	float tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo

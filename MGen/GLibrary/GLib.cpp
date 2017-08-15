@@ -46,6 +46,8 @@ vector<long long> CGLib::logs_sent;
 CGLib::CGLib()
 {
 	logs.clear();
+	fill(begin(randrsl), end(randrsl), (ub4)0);
+	fill(begin(rmm), end(rmm), (ub4)0);
 }
 
 
@@ -199,7 +201,7 @@ void CGLib::CheckRange(CString * sName, CString * sValue, char* sSearch, float *
 	}
 }
 
-void CGLib::Tokenize(const CString& s, vector<CString>& tokens, const CString delim)
+void CGLib::Tokenize(const CString& s, vector<CString>& tokens, const CString &delim)
 {
 	int pos = 0;
 	int end = pos;
@@ -224,9 +226,9 @@ void CGLib::GetVint(const CString & st, vector<int>& res) {
 			if (st2.IsEmpty() && i > 0 && (st[i - 1] == 'm' || st[i-1] == 'b')) sign = -1;
 			st2 += st[i];
 		}
-		else if (st2 != "") {
+		else if (!st2.IsEmpty()) {
 			res.push_back(atoi(st2));
-			st2 = "";
+			st2.Empty();
 		}
 	}
 	if (st2 != "") {

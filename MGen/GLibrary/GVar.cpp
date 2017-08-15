@@ -8,6 +8,8 @@ CGVar::CGVar()
 {
 	color_noflag = Color(0, 100, 100, 100);
 	// Init constant length arrays
+	ngv_min.resize(MAX_VOICE);
+	ngv_max.resize(MAX_VOICE);
 	instr.resize(MAX_VOICE);
 	ks1.resize(MAX_VOICE);
 	instr_lib.resize(MAX_VOICE);
@@ -377,7 +379,6 @@ void CGVar::LoadInstrumentLayout()
 	InstCName.clear();
 	while (fs.good()) {
 		++x;
-		pos = 0;
 		fs.getline(pch, 2550);
 		st = pch;
 		// Remove unneeded
@@ -1106,7 +1107,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
-		if (st != "") WriteLog(3, st);
+		if (!st.IsEmpty()) WriteLog(3, st);
 		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();
@@ -1124,7 +1125,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
-		if (st != "") WriteLog(0, st);
+		if (!st.IsEmpty()) WriteLog(0, st);
 		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();
@@ -1142,7 +1143,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
-		if (st != "") WriteLog(1, st);
+		if (!st.IsEmpty()) WriteLog(1, st);
 		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();

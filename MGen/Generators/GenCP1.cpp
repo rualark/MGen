@@ -286,12 +286,12 @@ int CGenCP1::SendCP() {
 	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x] && fpenalty[x]) {
 			st.Format("%d=%.0f", x, fpenalty[x]);
-			if (rpst != "") rpst += ", ";
+			if (!rpst.IsEmpty()) rpst += ", ";
 			rpst += st;
 		}
 	}
 	st.Format("%.0f", rpenalty_cur);
-	if (rpst != "") rpst = st + " (" + rpst + ")";
+	if (!rpst.IsEmpty()) rpst = st + " (" + rpst + ")";
 	else rpst = st;
 	if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	if (task == tGen) {

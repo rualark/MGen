@@ -51,12 +51,12 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
 			midifile.addNoteOn(track, (tpq * 4) + tpc*i, channel, note[i][v], dyn[i][v]);
 			midifile.addNoteOff(track, (tpq * 4) + tpc*(i + len[i][v]) - 1, channel, note[i][v], 0);
-			if (midifile_export_comments && comment[i][v] != "") {
+			if (midifile_export_comments && !comment[i][v].IsEmpty()) {
 				string st;
 				st = comment2[i][v];
 				midifile.addLyric(track, (tpq * 4) + tpc*i, st);
 			}
-			if (midifile_export_marks && mark[i][v] != "") {
+			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 				string st;
 				st = mark[i][v];
 				midifile.addLyric(track, (tpq * 4) + tpc*i, st);
@@ -164,7 +164,7 @@ void CGMidi::LoadMidi(CString path)
 			// Get track names
 			if (mev->isMetaMessage()) {
 				if (mev->getMetaType() == 0x03) {
-					track_name[v] = "";
+					track_name[v].Empty();
 					for (int x = 0; x < mev->size(); x++) {
 						track_name[v] += mev->data()[x];
 					}
@@ -494,7 +494,7 @@ void CGMidi::LoadCantus(CString path)
 				// Lyrics
 				if (mev->getMetaType() == 5) {
 					CString st;
-					st = "";
+					st.Empty();
 					for (int x = 0; x < mev->size(); x++) {
 						st += mev->data()[x];
 					}
@@ -506,7 +506,7 @@ void CGMidi::LoadCantus(CString path)
 					if (pos == last_pos) {
 						incom.resize(c.size());
 						incom[c.size()-1] = st;
-						lyrics_pending = "";
+						lyrics_pending.Empty();
 					}
 					// Else record lyrics
 					else {
@@ -519,7 +519,7 @@ void CGMidi::LoadCantus(CString path)
 				float nlen2 = mev->getTickDuration();
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// Check for pause
-				if (pos2 - last_tick > tpc / 2) {
+				if (pos2 - last_tick > (float)tpc / 2) {
 					// Add cantus if it is long
 					if (nid > 5 && !bad) {
 						cantus.push_back(c);
@@ -570,10 +570,10 @@ void CGMidi::LoadCantus(CString path)
 						cl.push_back(nlen);
 						ct.push_back(tempo2[pos]);
 						// Add pending lyrics
-						if (lyrics_pending != "") {
+						if (!lyrics_pending.IsEmpty()) {
 							incom.resize(c.size());
 							incom[c.size() - 1] = lyrics_pending;
-							lyrics_pending = "";
+							lyrics_pending.Empty();
 						}
 						nid++;
 					}
@@ -697,7 +697,7 @@ void CGMidi::LoadCP(CString path)
 					sort(inter[hid-1].begin(), inter[hid - 1].end());
 				}
 				// Check for pause
-				if (pos2 - last_tick > tpc / 2) {
+				if (pos2 - last_tick > (float)tpc / 2) {
 					// Add cpoint if it is long
 					if (inter.size() > 5 && !bad) {
 						cid++;
@@ -720,7 +720,7 @@ void CGMidi::LoadCP(CString path)
 					nid = 0;
 					hid = 0;
 				}
-				else if (pos2 - last_tick2 > tpc / 2) {
+				else if (pos2 - last_tick2 > (float)tpc / 2) {
 					CString st;
 					st.Format("Pauses are prohibited inside counterpoint: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Cannot load.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
 					WriteLog(1, st);
@@ -799,7 +799,7 @@ void CGMidi::LoadCP(CString path)
 				// Lyrics
 				if (mev->getMetaType() == 5) {
 					CString st;
-					st = "";
+					st.Empty();
 					for (int x = 0; x < mev->size(); x++) {
 						st += mev->data()[x];
 					}

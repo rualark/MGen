@@ -81,7 +81,7 @@ BOOL CInfoDlg::OnInitDialog()
 			for (int x = m1; x <= m2; ++x) {
 				if (pGen->note[x][mv] == prev_note) continue;
 				prev_note = pGen->note[x][mv];
-				if (pGen->comment[x][mv] != "") {
+				if (!pGen->comment[x][mv].IsEmpty()) {
 					st2.Format("\nNOTE %d:%s", x - m1 + 1, pGen->comment[x][mv]);
 					st += st2;
 				}
@@ -107,7 +107,7 @@ BOOL CInfoDlg::OnInitDialog()
 		for (int n = 0; n < pGen->ngraph[i][mv].size(); ++n) {
 			if (pGen->ngraph[i][mv][n] > -1) {
 				st.Format("%.1f ", pGen->ngraph[i][mv][n]);
-				if (st2 != "") st2 += ", ";
+				if (!st2.IsEmpty()) st2 += ", ";
 				st2 += st;
 			}
 		}

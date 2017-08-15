@@ -142,7 +142,7 @@ public:
 	static void CheckRange(CString * sName, CString * sValue, char * sSearch, float * vmin, float * vmax, float lmin = -1000000, float lmax = -1000000);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	static void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
-	static void Tokenize(const CString & s, vector<CString>& tokens, const CString delim);
+	static void Tokenize(const CString & s, vector<CString>& tokens, const CString & delim);
 	static void GetVint(const CString &st, vector<int> &res);
 	static int CheckInclude(CString st, CString fname, CString & iname);
 	static CString GetLinkedPath(CString st, CString fname);
@@ -200,7 +200,7 @@ public:
 	static int m_test_sec; // How long to test in seconds
 	static CString m_cline2; // Command line filename
 	static int exitcode; // Exit code of application
-	UINT WM_GEN_FINISH;
+	UINT WM_GEN_FINISH = 0;
 	timed_mutex mutex_output;
 	static timed_mutex mutex_log;
 	int need_exit = 0; // If thread needs to exit due to generation abort
