@@ -56,48 +56,45 @@ BOOL CInfoDlg::OnInitDialog()
 		int my = mf->my;
 		int ms = ((CMGenView*)(mf->GetActiveView()))->mouse_step;
 		int mv = ((CMGenView*)(mf->GetActiveView()))->mouse_voice;
+		CString st, st2;
 		// Note start and end
 		int i = ms - pGen->coff[ms][mv];
 		int ei = ms + pGen->noff[ms][mv] - 1;
-		CString st, st2;
-
-		st.Format("Step: %d (measure %d)", ms, ms / 8);
-		SetWindowText(st);
-		//m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		st.Format("Tempo: %.1f bpm (randomized from %.1f bpm)\nStep start time: %.3f s (%.2f ms long), end time %.3f s\n",
-			pGen->tempo[ms], pGen->tempo_src[ms], pGen->stime[ms] / pGen->m_pspeed / 10,
-			(pGen->etime[ms] - pGen->stime[ms]) * 100 / pGen->m_pspeed, pGen->etime[ms] / pGen->m_pspeed / 10);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-		m_info.AddText("\n", RGB(170, 0, 0), 0);
-
-		st.Format("Voice: %d (%s, channel %d, type %d)\n", mv,
-			pGen->InstGName[pGen->instr[mv]] + "/" + pGen->InstCName[pGen->instr[mv]], 
-			pGen->instr_channel[pGen->instr[mv]], pGen->instr_type[pGen->instr[mv]]);
+		
+		st.Format("Melody:");
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		st.Format("Instrument library: %s\n", pGen->instr_lib[pGen->instr[mv]]);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-		if (pGen->midifile_loaded) {
-			st.Format("From MIDI file: track %d \"%s\" local-voice %d, channel %d, delta %d ms (%.0f%% croche)\n", pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], pGen->midi_delta[ms][mv], (float)(pGen->midi_delta[ms][mv]) / 300.0*(float)(pGen->tempo[ms]));
-			m_info.AddText(st, RGB(0, 0, 200), 0);
+		if (pGen->mel_id[i][mv] > -1) {
+			st = "";
+			int m1 = i;
+			int m2 = i;
+			// Find melody start
+			for (int x = i; x > 0; --x) {
+				if (pGen->mel_id[x][mv] == pGen->mel_id[i][mv]) m1 = x;
+			}
+			// Find melody finish
+			for (int x = i; x < pGen->t_generated; ++x) {
+				if (pGen->mel_id[x][mv] == pGen->mel_id[i][mv]) m2 = x;
+			}
+			int prev_note = -1;
+			for (int x = m1; x <= m2; ++x) {
+				if (pGen->note[x][mv] == prev_note) continue;
+				prev_note = pGen->note[x][mv];
+				if (pGen->comment[x][mv] != "") {
+					st2.Format("\nNOTE %d:%s", x - m1 + 1, pGen->comment[x][mv]);
+					st += st2;
+				}
+			}
+			m_info.AddText(st, RGB(180, 0, 0), 0);
+			m_info.AddText("\n", RGB(0, 0, 0), 0);
+			m_info.AddText("\n", RGB(0, 0, 0), 0);
+			st.Format("%s\n", pGen->mel_info[pGen->mel_id[i][mv]]);
+			m_info.AddText(st, RGB(0, 0, 180), 0);
+			m_info.AddText("\n", RGB(0, 0, 0), 0);
 		}
-		m_info.AddText("\n", RGB(0, 0, 0), 0);
 
 		st.Format("Note: %s (midi %d)\n", CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Key: %s%s\n", NoteName[pGen->tonic[i][mv]], pGen->minor[i][mv]?"m":"");
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Note length: %d steps\n", pGen->len[ms][mv]);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Note velocity: %d\n", pGen->vel[i][mv]);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Lyrics from MIDI file: %s\n", pGen->lyrics[i][mv]);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-
-		st.Format("Playback note start delta: %.3f s (with delta %.3f s)\nPlayback note ending delta: %.3f s (with delta %.3f s)\n",
-			pGen->dstime[i][mv] / 1000.0, pGen->stime[i] / pGen->m_pspeed / 10 + pGen->dstime[i][mv] / 1000.0,
-			pGen->detime[ei][mv] / 1000.0, pGen->etime[ei] / pGen->m_pspeed / 10 + pGen->detime[ei][mv] / 1000.0);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		if (pGen->nsr1[i][mv] > 0) {
 			st.Format("Note scan range: %d - %d\n", pGen->nsr1[i][mv], pGen->nsr2[i][mv]);
@@ -125,13 +122,40 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(180, 0, 0), 0);
 		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
 		m_info.AddText(st, RGB(180, 0, 0), 0);
+		st.Format("Note length: %d steps\n", pGen->len[ms][mv]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("Note velocity: %d\n", pGen->vel[i][mv]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("Lyrics from MIDI file: %s\n", pGen->lyrics[i][mv]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
 
-		m_info.AddText("\n", RGB(0, 0, 0), 0);
-		if (pGen->mel_id[i][mv] > -1) {
-			st.Format("Melody: %s\n", pGen->mel_info[pGen->mel_id[i][mv]]);
-			m_info.AddText(st, RGB(0, 0, 180), 0);
-			m_info.AddText("\n", RGB(0, 0, 0), 0);
+		st.Format("Playback note start delta: %.3f s (with delta %.3f s)\nPlayback note ending delta: %.3f s (with delta %.3f s)\n",
+			pGen->dstime[i][mv] / 1000.0, pGen->stime[i] / pGen->m_pspeed / 10 + pGen->dstime[i][mv] / 1000.0,
+			pGen->detime[ei][mv] / 1000.0, pGen->etime[ei] / pGen->m_pspeed / 10 + pGen->detime[ei][mv] / 1000.0);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
+
+		st.Format("Step: %d (measure %d)", ms, ms / 8);
+		SetWindowText(st);
+		//m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
+		st.Format("Tempo: %.1f bpm (randomized from %.1f bpm)\nStep start time: %.3f s (%.2f ms long), end time %.3f s\n",
+			pGen->tempo[ms], pGen->tempo_src[ms], pGen->stime[ms] / pGen->m_pspeed / 10,
+			(pGen->etime[ms] - pGen->stime[ms]) * 100 / pGen->m_pspeed, pGen->etime[ms] / pGen->m_pspeed / 10);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
+		m_info.AddText("\n", RGB(170, 0, 0), 0);
+
+		st.Format("Voice: %d (%s, channel %d, type %d)\n", mv,
+			pGen->InstGName[pGen->instr[mv]] + "/" + pGen->InstCName[pGen->instr[mv]],
+			pGen->instr_channel[pGen->instr[mv]], pGen->instr_type[pGen->instr[mv]]);
+		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
+		st.Format("Instrument library: %s\n", pGen->instr_lib[pGen->instr[mv]]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
+		if (pGen->midifile_loaded) {
+			st.Format("From MIDI file: track %d \"%s\" local-voice %d, channel %d, delta %d ms (%.0f%% croche)\n", pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], pGen->midi_delta[ms][mv], (float)(pGen->midi_delta[ms][mv]) / 300.0*(float)(pGen->tempo[ms]));
+			m_info.AddText(st, RGB(0, 0, 200), 0);
 		}
+		m_info.AddText("\n", RGB(0, 0, 0), 0);
 
 		st.Format("Current offset: %d steps\n", pGen->coff[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);

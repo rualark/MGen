@@ -552,17 +552,22 @@ void CMGenView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// TODO: add cleanup after printing
 }
 
-void CMGenView::OnRButtonUp(UINT /* nFlags */, CPoint point)
+void CMGenView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+	OnLButtonUp(nFlags, point);
+
+	//CScrollView::OnRButtonUp(nFlags, point);
+	//ClientToScreen(&point);
+	//OnContextMenu(this, point);
 }
 
 void CMGenView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
+	/*
 #ifndef SHARED_HANDLERS
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
+*/
 }
 
 
