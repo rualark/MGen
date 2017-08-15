@@ -1,6 +1,7 @@
 // This is an independent project of an individual developer. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../stdafx.h"
+//#include "../GLibrary/GLib.h"
 #include "GenRL1.h"
 
 #ifdef _DEBUG
@@ -30,7 +31,8 @@ void CGenRL1::Generate()
 		if (need_exit) return;
 		if (i >= t_allocated) ResizeVectors(t_allocated * 2);
 		Sleep(sleep_ms);
-		note[i][v] = 60 + (i % 12);
+		//note[i][v] = 60 + (i % 12);
+		note[i][v] = 60 + (GetVaue() % 12);
 		pause[i][v] = 0;
 		len[i][v] = 1;
 		dyn[i][v] = 100;
@@ -44,4 +46,15 @@ void CGenRL1::Generate()
 	}
 	Adapt(0, t_generated - 1);
 	t_sent = t_generated;
+}
+
+unsigned int CGenRL1::GetVaue()
+{
+	/*
+	CGLib *gl = new CGLib();
+	unsigned int iRes = gl->rand2() / RAND_MAX;
+	delete gl;
+	return iRes;
+	*/
+	return rand2();
 }
