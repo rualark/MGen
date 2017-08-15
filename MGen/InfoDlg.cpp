@@ -52,6 +52,8 @@ BOOL CInfoDlg::OnInitDialog()
 			mf->WriteLog(5, "InfoDlg mutex timed out: showing nothing");
 			return TRUE;
 		}
+		int mx = mf->mx;
+		int my = mf->my;
 		int ms = ((CMGenView*)(mf->GetActiveView()))->mouse_step;
 		int mv = ((CMGenView*)(mf->GetActiveView()))->mouse_voice;
 		// Note start and end
@@ -145,7 +147,30 @@ BOOL CInfoDlg::OnInitDialog()
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);
 		pGen->mutex_output.unlock();
+
+		//SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 	}
+
+	CRect rect;
+	CRect dialogRect;
+	CRect deskRect;
+	CWnd::GetDesktopWindow()->GetWindowRect(deskRect);
+	GetWindowRect(dialogRect);
+	int y = min(50, (deskRect.Height() - dialogRect.Height()) / 2);
+	if (mf->mx > deskRect.Width() / 2) {
+		rect.left = 0;
+		rect.top = y;
+		rect.right = dialogRect.Width();
+		rect.bottom = y + dialogRect.Height();
+	}
+	else {
+		rect.left = deskRect.Width() - dialogRect.Width();
+		rect.top = y;
+		rect.right = deskRect.Width();
+		rect.bottom = y + dialogRect.Height();
+	}
+	MoveWindow(rect);
+	ShowWindow(SW_SHOW);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 								// EXCEPTION: OCX Property Pages should return FALSE

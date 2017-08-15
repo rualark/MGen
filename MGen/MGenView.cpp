@@ -615,6 +615,8 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	CGMidi *pGen = mf->pGen;
+	mf->mx = point.x;
+	mf->my = point.y;
 	if ((pGen != 0) && (nwidth > 0) && (nheight > 0)) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
 			mf->WriteLog(2, "OnMouseMove mutex timed out: mouse not processed");
