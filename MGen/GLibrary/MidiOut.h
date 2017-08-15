@@ -39,7 +39,7 @@ protected:
 	static UINT MidiThread(LPVOID pParam);
 	BlockingReaderWriterQueue<PmEvent> q;
 	RtMidiOut *rmo;
-	CWinThread* m_MidiThread;
+	CWinThread* m_MidiThread = 0;
 
 	// Which notes need to get OFF
 	vector< vector <int> > note_on; // 1 = note is ON

@@ -41,7 +41,7 @@ int CMidiOut::StopMidi()
 	need_exit = 1;
 	// Wait for thread to exit
 	WaitForSingleObject(m_MidiThread->m_hThread, 10000);
-	try {
+	if (rmo) try {
 		// Send all notes off after thread is stopped so that no other event goes after this
 		mMessage message = { MIDI_ALLOFF, 0, 0 };
 		rmo->sendMessage(&message);

@@ -648,12 +648,10 @@ void CGMidi::LoadCP(CString path)
 	}
 
 	vector<vector<pair<int, int>>> inter; // Intermediate structure for loading counterpoint
-	vector<int> harm; // Harmony
 	int cid = 0; // counterpoint
 	int nid = 0; // note
 	int hid = 0; // harmony
 	int pos_old = -1;
-	vector <vector<int>> c;
 	vector <vector<int>> cpos;
 	vector <int> cl; // length
 	vector <int> cp; // position

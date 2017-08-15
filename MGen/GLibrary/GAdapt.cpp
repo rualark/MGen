@@ -106,7 +106,8 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 nonlegato. ";
 			}
 			else {
-				if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
+				// Next line commented out, because it has no effect
+				//if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
 				detime[ei][v] = lengroup_edt1[ii];
 				artic[i][v] = ARTIC_LEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 legato. ";

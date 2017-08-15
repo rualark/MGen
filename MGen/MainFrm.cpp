@@ -813,7 +813,7 @@ void CMainFrame::LoadAlgo()
 	}
 	ifstream fs;
 	fs.open(fname);
-	CString st, st2, st3, st4, st5;
+	CString st, st2;
 	char pch[2550];
 	int pos = 0;
 	// Load header
@@ -1051,7 +1051,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	{
 		GetActiveView()->Invalidate();
 		//int play_time = CGLib::time() - pGen->midi_start_time;
-		if ((m_state_gen != 1) && (m_state_play == 2) && (CGLib::time() > pGen->midi_sent_t)) {
+		if ((m_state_gen != 1) && (m_state_play == 2) && pGen && (CGLib::time() > pGen->midi_sent_t)) {
 			OnButtonPlay();
 		}
 	}

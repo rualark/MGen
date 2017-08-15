@@ -365,7 +365,7 @@ void CGVar::LoadInstrumentLayout()
 	}
 	ifstream fs;
 	fs.open(fname);
-	CString st, st2, st3, st4, st5;
+	CString st, st2, st3;
 	char pch[2550];
 	int pos = 0;
 	int x = 0;
@@ -436,7 +436,6 @@ void CGVar::LoadInstrumentLayout()
 
 void CGVar::LoadInstruments()
 {
-	CString st, st2, st3;
 	if (InstCName.size() == 0) {
 		WriteLog(5, "No instruments loaded: layout empty");
 		return;
@@ -1088,7 +1087,7 @@ void CGVar::ValidateVectors(int step1, int step2) {
 void CGVar::LoadResultLogs(CString dir, CString fname)
 {
 	ifstream fs;
-	CString st, st2, st3, path;
+	CString st, path;
 	int pos, i;
 	char pch[2550];
 	// Load logs

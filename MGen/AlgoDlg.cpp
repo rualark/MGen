@@ -178,7 +178,7 @@ void CAlgoDlg::LoadFile(CString path) {
 	ifstream fs;
 	m_text.SetWindowTextA("");
 	fs.open(path);
-	CString st, st2, st3, st4, st5;
+	CString st, st2, st3, st4;
 	char pch[2550];
 	int pos = 0;
 	while (fs.good()) {

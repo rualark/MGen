@@ -59,7 +59,7 @@ void CGenCF1::LoadHarmVar()
 // Load harmonic sequence penalties
 void CGenCF1::LoadHSP(CString fname)
 {
-	CString st, st2, st3, iname, est, rule;
+	CString st, est;
 	vector<CString> ast;
 	int i = 0;
 	hsp.resize(7);
@@ -106,7 +106,7 @@ void CGenCF1::LoadHSP(CString fname)
 // Load rules
 void CGenCF1::LoadRules(CString fname)
 {
-	CString st, st2, st3, iname, est, rule, subrule;
+	CString st, est, rule, subrule;
 	vector<CString> ast;
 	int i = 0;
 	int sev = 0;
@@ -236,7 +236,6 @@ int CGenCF1::GetRuleParam(int rset, int rid, int type, int id) {
 
 // Parse rules
 void CGenCF1::ParseRules() {
-	vector<int> v;
 	for (int rset = 0; rset < accepts.size(); ++rset) if (accepts[rset].size()) {
 		RuleParam[rset].resize(MAX_RULES);
 		for (int rid = 0; rid < MAX_RULES; ++rid) {
@@ -679,7 +678,6 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 }
 
 int CGenCF1::FailMelodyHarm(vector<int> &pc) {
-	CString st;
 	int h;
 	int first_tonic = 0;
 	// Build hm vector
@@ -1096,7 +1094,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 		else {
 			// If C found, check previous note
 			if (c_pos > 0) {
-				if (pc[fli2[c_pos - 1]] != 6 || pc[fli2[c_pos - 1]] != 1 || pc[fli2[c_pos - 1]] == 4) ok = 1;
+				if (pc[fli2[c_pos - 1]] == 6 || pc[fli2[c_pos - 1]] == 1 || pc[fli2[c_pos - 1]] == 4) ok = 1;
 			}
 			// If C is first note, it does not need to be prepared (actually, this cannot happen because of flag 49)
 			else ok = 1;
@@ -2779,7 +2777,7 @@ int CGenCF1::SendCantus() {
 	// Save culmination position
 	cf_culm = culm_step;
 	if (svoice < 0) return 0;
-	CString st, info, rpst;
+	CString st, rpst;
 	int v = svoice;
 	Sleep(sleep_ms);
 	TransposeCantusBack();
@@ -3098,7 +3096,6 @@ void CGenCF1::SaveCantusIfRp() {
 }
 
 void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
-	CString st, st2;
 	int finished = 0;
 	// Load master parameters
 	task = t;
