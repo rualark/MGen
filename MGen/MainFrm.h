@@ -57,6 +57,7 @@ public:
 	int m_view_timer = 100; // Delay between ondraw events in ms
 	int m_step_dyn = 1; // Show dynamics with note opacity for each step of note.Disable for slower computers.
 	int m_debug_level = 1; // Increase to show more debug logs
+	int mx = 0, my = 0; // Mouse position
 
 	CString m_cline; // Command line
 	int m_pspeed = 100; // Playback speed in percent
