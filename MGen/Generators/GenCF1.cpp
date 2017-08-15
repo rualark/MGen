@@ -467,7 +467,7 @@ void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> &valu
 void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 {
 	for (int i = step1; i < step2; ++i) {
-		for (int x = 0; x < 1000; ++x) {
+		for (int x = 0; x < 1000; ++x) { //-V756
 			c[i] = randbw(min_c[i], max_c[i]);
 			// Convert to chromatic
 			cc[i] = C_CC(c[i], tonic_cur, minor_cur);
@@ -640,7 +640,7 @@ int CGenCF1::FailFisTrail(vector<int> &pcc) {
 	return 0;
 }
 
-int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
+int CGenCF1::EvalMelodyHarm(int hp, int &last_flag, int &max_p) {
 	int pen1;
 	int p2c = 0; // Count of consecutive penalty 2
 	int dcount = 0;
@@ -649,7 +649,7 @@ int CGenCF1::EvalMelodyHarm(int p, int &last_flag, int &max_p) {
 	int wdcount = 0;
 	int wscount = 0;
 	int wtcount = 0;
-	for (int i = 0; i <= p; ++i) {
+	for (int i = 0; i <= hp; ++i) {
 		if (i > 0) {
 			// Check GC for low cantus and not last note (last note in any window is ignored)
 			if (!cantus_high && i < fli_size-1 && chm[i] == 0 && chm[i - 1] == 4) {
@@ -715,7 +715,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	chm.resize(fli_size, 0);
 	chmp.resize(fli_size, 0);
 	for (int i = 0; i < fli_size; ++i) chm[i] = hm[i][0];
-	int p = 0;
+	int hp = 0;
 	int finished = 0;
 	int found = 0;
 	int hcycle = 0;
@@ -726,33 +726,33 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	//LogCantus(pc);
 	while (true) {
 	check:
-		//st.Format("%d: ", p);
+		//st.Format("%d: ", hp);
 		//CGLib::AppendLineToFile("log/temp.log", st);
 		//LogCantus(chmp);
 		//LogCantus(chm);
 		if (need_exit) return 1;
-		if (!p) {
-			++p;
-			if (p > max_p) max_p = p;
+		if (!hp) {
+			++hp;
+			if (hp > max_p) max_p = hp;
 			goto check;
 		}
-		if (EvalMelodyHarm(p, last_flag, max_p)) goto skip;
+		if (EvalMelodyHarm(hp, last_flag, max_p)) goto skip;
 		// Success
-		if (p == fli_size-1) {
+		if (hp == fli_size-1) {
 			found = 1;
 			break;
 		}
 		else {
-			++p;
-			if (p > max_p) {
-				max_p = p;
+			++hp;
+			if (hp > max_p) {
+				max_p = hp;
 			}
 			goto check;
 		}
 	skip:
 		// Save maximum flag
-		if (p > max_p2) {
-			max_p2 = p;
+		if (hp > max_p2) {
+			max_p2 = hp;
 			if (last_flag) {
 				last_flag2 = last_flag;
 				chm_saved = chm;
@@ -760,26 +760,26 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		}
 		// ScanLeft
 		while (true) {
-			if (chmp[p] < hm[p].size()-1) break;
+			if (chmp[hp] < hm[hp].size()-1) break;
 			// If current element is max, make it minimum
-			chmp[p] = 0;
+			chmp[hp] = 0;
 			// Get current value
-			chm[p] = hm[p][chmp[p]];
+			chm[hp] = hm[hp][chmp[hp]];
 			// Move left one element
-			if (!p) {
+			if (!hp) {
 				finished = 1;
 				break;
 			}
-			p--;
+			hp--;
 		} // while (true)
 		if (finished) {
 			break;
 		}
 		// ScanRight
 		// Increase rightmost element, which was not reset to minimum
-		++chmp[p];
+		++chmp[hp];
 		// Get current value
-		chm[p] = hm[p][chmp[p]];
+		chm[hp] = hm[hp][chmp[hp]];
 		++hcycle;
 	}
 	// Detect possible variants
@@ -916,7 +916,7 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, in
 }
 
 // Check if too many leaps
-int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
+int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
 	// Clear variables
 	int leap_sum = 0;
 	int leap_sum2 = 0;
@@ -1117,10 +1117,9 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 	return 0;
 }
 
-int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc, int ep2) {
+int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
 	// Do not check if melody is short yet
 	if (fli_size < 3) return 0;
-	int s, s_1, s_2;
 	// Prohibit last note not tonic
 	if (ep2 > c_len - 1) {
 		s = fli[fli_size - 1];
@@ -1151,7 +1150,6 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	int prev_note = -1;
 	int lpos = 0;
 	int l = 0;
-	fli_size = 0;
 	minl = 10000;
 	maxl = 0;
 	// Set first step in case it is pause
@@ -1431,7 +1429,7 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 	return 0;
 }
 
-int CGenCF1::FailLeap(vector<int> &c, int ep2, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
+int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
 {
 	// Get leap size, start, end
 	// Check if leap is compensated (without violating compensation rules)
@@ -1558,7 +1556,7 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 		// Far + far1
 	else if (mdc1 == 1 && mdc2 == 1) FLAG2(63 + leap_id, leap_start)
 	// No close
-	else if (mdc1*mdc2) {
+	else if (mdc1*mdc2 != 0) {
 		if (filled || prefilled) FLAG2(136 + leap_id, leap_start)
 		else FLAG2(148 + leap_id, leap_start);
 	}
@@ -1569,7 +1567,6 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 
 // Check tritone t1-t2 which has to resolve from ta to tb
 int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
-	int leap_start;
 	int found;
 	int flag_unres = 31;
 	// Tritone prohibit
@@ -1669,7 +1666,7 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 }
 
 // Calculate global fill
-int CGenCF1::FailGlobalFill(vector<int> &c, int ep2, vector<int> &nstat2)
+int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 {
 	// Clear nstat
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
@@ -2775,7 +2772,7 @@ int CGenCF1::SendPause(int pos, int v) {
 }
 
 int CGenCF1::SendCantus() {
-	int step0 = step;
+	int step00 = step;
 	// Save culmination position
 	cf_culm = culm_step;
 	if (svoice < 0) return 0;
@@ -2799,32 +2796,32 @@ int CGenCF1::SendCantus() {
 		pos += cc_len[x];
 	}
 	step = pos + SendPause(pos, v);
-	InterpolateNgraph(v, step0, step);
+	InterpolateNgraph(v, step00, step);
 	// Count additional variables
-	CountOff(step0, step - 1);
-	CountTime(step0, step - 1);
-	UpdateNoteMinMax(step0, step - 1);
-	UpdateTempoMinMax(step0, step - 1);
+	CountOff(step00, step - 1);
+	CountTime(step00, step - 1);
+	UpdateNoteMinMax(step00, step - 1);
+	UpdateTempoMinMax(step00, step - 1);
 	++cantus_sent;
 	// Create rule penalty string
 	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x] && fpenalty[x]) {
 			st.Format("%d=%.0f", x, fpenalty[x]);
-			if (rpst != "") rpst += ", ";
+			if (!rpst.IsEmpty()) rpst += ", ";
 			rpst += st;
 		}
 	}
 	st.Format("%.0f", rpenalty_cur);
-	if (rpst != "") rpst = st + " (" + rpst + ")";
+	if (!rpst.IsEmpty()) rpst = st + " (" + rpst + ")";
 	else rpst = st;
 	if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	if (task == tGen) {
 		if (!shuffle) {
-			Adapt(step0, step - 1);
+			Adapt(step00, step - 1);
 		}
 		// If  window-scan
 		st.Format("#%d\nRule penalty: %s", cantus_sent, rpst);
-		AddMelody(step0, step - 1, v, st);
+		AddMelody(step00, step - 1, v, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -2841,7 +2838,7 @@ int CGenCF1::SendCantus() {
 				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, rpst, key_eval);
 			}
 		}
-		AddMelody(step0, step - 1, v, st);
+		AddMelody(step00, step - 1, v, st);
 	}
 	// Send
 	t_generated = step;
@@ -3136,22 +3133,22 @@ check:
 		//if (MatchVectors(cc, test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		if (FailTonic(m_cc, m_pc)) goto skip;
-		if (FailLastNotes(m_pc, m_pcc, ep2)) goto skip;
+		if (FailLastNotes(m_pc, m_pcc)) goto skip;
 		if (FailNoteSeq(m_pc)) goto skip;
 		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
-		if (FailLeapSmooth(m_c, m_cc, ep2, m_leap, m_smooth, m_slur)) goto skip;
+		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps2, repeat_notes2, 76)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps3, repeat_notes3, 36)) goto skip;
 		if (FailLongRepeat(m_cc, m_leap, repeat_steps5, repeat_notes5, 72)) goto skip;
 		if (FailLongRepeat(m_cc, m_leap, repeat_steps7, repeat_notes7, 73)) goto skip;
-		if (FailGlobalFill(m_c, ep2, nstat2)) goto skip;
+		if (FailGlobalFill(m_c, nstat2)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
 		if (FailStagnation(m_cc, nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(m_cc, nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
 		if (FailFirstNotes(m_pc)) goto skip;
-		if (FailLeap(m_c, ep2, m_leap, m_smooth, nstat2, nstat3)) goto skip;
+		if (FailLeap(m_c, m_leap, m_smooth, nstat2, nstat3)) goto skip;
 		if ((fli_size>1) && FailMelodyHarm(m_pc)) goto skip;
 		MakeMacc(m_cc);
 		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;
