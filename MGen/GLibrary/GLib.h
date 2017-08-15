@@ -220,8 +220,8 @@ public:
 protected:
   // Random generator
 	ub4 randrsl[256], randcnt = 0; // external results
-	ub4 mm[256];  // internal state
-	ub4 aa = 0, bb = 0, cc = 0;
+	ub4 rmm[256];  // internal state
+	ub4 raa = 0, rbb = 0, rcc = 0;
 	int cur_rand = 0, cur_rand2 = 0;
 
 };
