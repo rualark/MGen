@@ -9,6 +9,7 @@ public:
 	~CGenRL1();
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void Generate() override;
+	unsigned int GetVaue();
 private:
 	int min_dyn = 90;
 	int max_dyn = 120;
