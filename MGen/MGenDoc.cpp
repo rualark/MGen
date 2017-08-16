@@ -42,7 +42,7 @@ END_MESSAGE_MAP()
 
 CMGenDoc::CMGenDoc()
 {
-	// TODO: add one-time construction code here
+	// Add one-time construction code here
 
 }
 
@@ -57,7 +57,7 @@ void CMGenDoc::Serialize(CArchive& ar)
 	//CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	if (ar.IsStoring())
 	{
-		// TODO: add storing code here
+		// Add storing code here
 	}
 	else
 	{
@@ -75,7 +75,7 @@ void CMGenDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	// Modify this code to draw the document's data
 	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
 
-	CString strText = _T("TODO: implement thumbnail drawing here");
+	CString strText = _T("Implement thumbnail drawing here");
 	LOGFONT lf;
 
 	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
@@ -216,7 +216,7 @@ BOOL CMGenDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
 
-	// TODO:  Add your specialized creation code here
+	// Add your specialized creation code here
 	//CString fname = lpszPathName;
 	//mf->WriteLog(1, fname);
 	//mf->LoadResults(fname);
@@ -227,7 +227,7 @@ BOOL CMGenDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 BOOL CMGenDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
-	// TODO: Add your specialized code here and/or call the base class
+	// Add your specialized code here and/or call the base class
 	return false;
 
 	//return CDocument::OnSaveDocument(lpszPathName);

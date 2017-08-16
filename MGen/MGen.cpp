@@ -56,11 +56,10 @@ CMGenApp::CMGenApp()
 	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
 #endif
 
-	// TODO: replace application ID string below with unique ID string; recommended
-	// format for string is CompanyName.ProductName.SubProduct.VersionInformation
-	SetAppID(_T("MGen.AppID.NoVersion"));
+	// Recommended format for string is CompanyName.ProductName.SubProduct.VersionInformation
+	SetAppID(_T("MGen.MGen.2"));
 
-	// TODO: add construction code here,
+	// Add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
@@ -109,8 +108,7 @@ BOOL CMGenApp::InitInstance()
 	// of your final executable, you should remove from the following
 	// the specific initialization routines you do not need
 	// Change the registry key under which our settings are stored
-	// TODO: You should modify this string to be something appropriate
-	// such as the name of your company or organization
+	// Name of your company or organization
 	SetRegistryKey(_T("MGen"));
 	LoadStdProfileSettings(10);  // Load standard INI file options (including MRU)
 
@@ -163,7 +161,7 @@ BOOL CMGenApp::InitInstance()
 
 int CMGenApp::ExitInstance()
 {
-	//TODO: handle additional resources you may have added
+	//Handle additional resources you may have added
 	Gdiplus::GdiplusShutdown(m_gdiplusToken);
 	AfxOleTerm(FALSE);
 
