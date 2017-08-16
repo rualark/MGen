@@ -19,7 +19,7 @@ using namespace std;
 
 CString current_dir;
 ofstream logfile;
-int ci = 0;
+int continuous_integration = 0;
 int nRetCode = 0;
 vector<CString> errorMessages;
 CString pname;
@@ -64,7 +64,7 @@ void Run(CString fname, CString par, int delay) {
 void Log(CString st, int level = 0) {
 	cout << st;
 	logfile << st;
-	if (ci && level > 0) {
+	if (continuous_integration && level > 0) {
 		CString cat;
 		if (level == 1) cat = "Information";
 		if (level == 2) cat = "Warning";
@@ -87,7 +87,7 @@ CString file(CString fname) {
 		// Get line
 		fs.getline(pch, 2550);
 		st2 = pch;
-		if (st2 != "") {
+		if (!st2.IsEmpty()) {
 			st += "- " + st2 + "\n";
 		}
 	}
@@ -119,7 +119,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 	CString errors = file("autotest/buffer.log");
 	cout << errors;
 
-	if (ci) {
+	if (continuous_integration) {
 		CString cat = "Passed";
 		if (result) cat = "Failed";
 		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log 2>&1", tname, tpassed, cat, result, emes);
@@ -165,7 +165,7 @@ void LoadConfig() {
 			if (ast.size() > 1 && atoi(ast[1]) > 0) wait_sec = atoi(ast[1]);
 			if (ast.size() > 2 && atoi(ast[2]) > 0) wait_sec2 = atoi(ast[2]);
 			ClearBuffer();
-			if (ci) Run("appveyor", "AddTest \"" + pname + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
+			if (continuous_integration) Run("appveyor", "AddTest \"" + pname + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
 			Log("Starting test config: " + pname + "\n");
 			st2.Format("-test=%d %s", wait_sec, pname);
 			SHELLEXECUTEINFO sei = { 0 };
@@ -209,7 +209,7 @@ void LoadConfig() {
 
 int test() {
 	if (getenv("APPVEYOR_PROJECT_NAME") != NULL) {
-		ci = 1;
+		continuous_integration = 1;
 	}
 	logfile.open("autotest\\test.log", ios_base::app);
 
@@ -221,7 +221,7 @@ int test() {
 	LoadConfig();
 	logfile.close();
 	// Do not pause if continuous integration
-	if (!ci) {
+	if (!continuous_integration) {
 		cout << "Press any key to continue... ";
 		_getch();
 	}
