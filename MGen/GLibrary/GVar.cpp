@@ -231,7 +231,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 	// Check file exists
 	if (!fileExists(fname)) {
 		CString est;
-		est.Format("LoadConfig cannot find file: %s", fname);
+		est.Format("LoadConfigFile cannot find file: %s", fname);
 		WriteLog(5, est);
 		return;
 	}
@@ -301,6 +301,11 @@ void CGVar::LoadConfig(CString fname, int load_includes)
 {
 	CString st2;
 	LoadConfigFile(fname, load_includes);
+	// Load autotest config
+	if (m_testing) {
+		CString fname2 = "autotest\\configs\\" + m_algo_folder + ".pl"; 
+		if (fileExists(fname2)) LoadConfigFile(fname2, load_includes);
+	}
 	// Load instruments layout
 	if (instr_layout.IsEmpty()) instr_layout = "Default";
 	LoadInstrumentLayout();
