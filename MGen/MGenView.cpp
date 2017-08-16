@@ -161,7 +161,7 @@ void CMGenView::OnDraw(CDC* pDC)
 
 	time_stop2 = CGLib::time();
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
-		CString time_st = "";
+		CString time_st.Empty();
 		if (pGen->t_sent > 0) time_st = CGLib::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
 		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d meas. / %s in %.1f sec.)", 
 			pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, time_st, 
