@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../stdafx.h"
 #include "GVar.h"
 
@@ -6,6 +8,8 @@ CGVar::CGVar()
 {
 	color_noflag = Color(0, 100, 100, 100);
 	// Init constant length arrays
+	ngv_min.resize(MAX_VOICE);
+	ngv_max.resize(MAX_VOICE);
 	instr.resize(MAX_VOICE);
 	ks1.resize(MAX_VOICE);
 	instr_lib.resize(MAX_VOICE);
@@ -298,7 +302,7 @@ void CGVar::LoadConfig(CString fname, int load_includes)
 	CString st2;
 	LoadConfigFile(fname, load_includes);
 	// Load instruments layout
-	if (instr_layout == "") instr_layout = "Default";
+	if (instr_layout.IsEmpty()) instr_layout = "Default";
 	LoadInstrumentLayout();
 	// Load instruments
 	LoadInstruments();
@@ -316,7 +320,7 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 		for (int ii = 0; ii<MAX_VOICE; ii++) {
 			st = sValue->Tokenize(",", pos);
 			st.Trim();
-			if (st == "") break;
+			if (st.IsEmpty()) break;
 			int found = 0;
 			// Set all instruments to default instrument
 			if (!ii) {
@@ -365,7 +369,7 @@ void CGVar::LoadInstrumentLayout()
 	}
 	ifstream fs;
 	fs.open(fname);
-	CString st, st2, st3, st4, st5;
+	CString st, st2, st3;
 	char pch[2550];
 	int pos = 0;
 	int x = 0;
@@ -375,7 +379,6 @@ void CGVar::LoadInstrumentLayout()
 	InstCName.clear();
 	while (fs.good()) {
 		++x;
-		pos = 0;
 		fs.getline(pch, 2550);
 		st = pch;
 		// Remove unneeded
@@ -436,7 +439,6 @@ void CGVar::LoadInstrumentLayout()
 
 void CGVar::LoadInstruments()
 {
-	CString st, st2, st3;
 	if (InstCName.size() == 0) {
 		WriteLog(5, "No instruments loaded: layout empty");
 		return;
@@ -1088,7 +1090,7 @@ void CGVar::ValidateVectors(int step1, int step2) {
 void CGVar::LoadResultLogs(CString dir, CString fname)
 {
 	ifstream fs;
-	CString st, st2, st3, path;
+	CString st, path;
 	int pos, i;
 	char pch[2550];
 	// Load logs
@@ -1105,7 +1107,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
-		if (st != "") WriteLog(3, st);
+		if (!st.IsEmpty()) WriteLog(3, st);
 		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();
@@ -1123,7 +1125,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
-		if (st != "") WriteLog(0, st);
+		if (!st.IsEmpty()) WriteLog(0, st);
 		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();
@@ -1141,7 +1143,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
-		if (st != "") WriteLog(1, st);
+		if (!st.IsEmpty()) WriteLog(1, st);
 		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();

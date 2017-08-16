@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../stdafx.h"
 #include "GenCP1.h"
 
@@ -223,9 +225,9 @@ void CGenCP1::ScanCPInit() {
 }
 
 int CGenCP1::SendCP() {
-	int step0 = step;
+	int step00 = step;
 	int pause_len = 0;
-	CString st, info, rpst;
+	CString st, rpst;
 	int pos = 0, plen;
 	int v, x1;
 	int real_len2 = real_len*npm;
@@ -273,32 +275,32 @@ int CGenCP1::SendCP() {
 		MergeNotes(step, pos - 1, v);
 	}
 	step = pos + pause_len;
-	FixLen(step0, step - 1);
+	FixLen(step00, step - 1);
 	// Count additional variables
-	CountOff(step0, step - 1);
-	CountTime(step0, step - 1);
-	UpdateNoteMinMax(step0, step - 1);
-	UpdateTempoMinMax(step0, step - 1);
+	CountOff(step00, step - 1);
+	CountTime(step00, step - 1);
+	UpdateNoteMinMax(step00, step - 1);
+	UpdateTempoMinMax(step00, step - 1);
 	++cantus_sent;
 	// Create rule penalty string
 	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x] && fpenalty[x]) {
 			st.Format("%d=%.0f", x, fpenalty[x]);
-			if (rpst != "") rpst += ", ";
+			if (!rpst.IsEmpty()) rpst += ", ";
 			rpst += st;
 		}
 	}
 	st.Format("%.0f", rpenalty_cur);
-	if (rpst != "") rpst = st + " (" + rpst + ")";
+	if (!rpst.IsEmpty()) rpst = st + " (" + rpst + ")";
 	else rpst = st;
 	if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	if (task == tGen) {
 		if (!shuffle) {
-			Adapt(step0, step - 1);
+			Adapt(step00, step - 1);
 		}
 		// If  window-scan
 		st.Format("#%d\nCantus: %s\nRule penalty: %s", cantus_sent, cantus_high?"high":"low", rpst);
-		AddMelody(step0, step - 1, svoice + 1, st);
+		AddMelody(step00, step - 1, svoice + 1, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -306,7 +308,7 @@ int CGenCP1::SendCP() {
 			st.Format("#%d\nCantus: %s\nRule penalty: %s", cantus_sent, cantus_high ? "high" : "low", rpst);
 		}
 		else {
-			if (key_eval == "") {
+			if (key_eval.IsEmpty()) {
 				// If SWA
 				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nDistance penalty: %.0f", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, dpenalty_cur);
 			}
@@ -315,7 +317,7 @@ int CGenCP1::SendCP() {
 				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, key_eval);
 			}
 		}
-		AddMelody(step0, step - 1, svoice+1, st);
+		AddMelody(step00, step - 1, svoice+1, st);
 	}
 	// Send
 	t_generated = step;
@@ -424,7 +426,7 @@ int CGenCP1::FailVMotion() {
 	}
 	// Check how many contrary if full melody analyzed
 	if (ep2 == c_len) {
-		if (scontra + sdirect) {
+		if (scontra + sdirect) { //-V793
 			int pcontra = (scontra * 100) / (scontra + sdirect);
 			if (pcontra < contrary_min2) FLAG2(46, 0)
 			else if (pcontra < contrary_min) FLAG2(35, 0);
@@ -842,7 +844,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	WriteLog(3, est);
 }
 
-int CGenCP1::FailLastIntervals(vector<int> &pc, int ep2) {
+int CGenCP1::FailLastIntervals(vector<int> &pc) {
 	// Do not check if melody is short yet
 	if (fli_size < 2) return 0;
 	// Prohibit last note not tonic
@@ -929,13 +931,11 @@ int CGenCP1::FailGisTrail2() {
 }
 
 int CGenCP1::FailHarm() {
-	int s2;
 	hli_size = 0;
 	hli.clear();
 	// Detect harmony changes
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
-		s2 = fli2[ls];
 	}
 	// Build chm vector
 	for (ls = 0; ls < hli_size; ++ls) {
@@ -944,7 +944,6 @@ int CGenCP1::FailHarm() {
 }
 
 void CGenCP1::ScanCP(int t, int v) {
-	CString st, st2;
 	int finished = 0;
 	// Load master parameters
 	task = t;
@@ -1002,10 +1001,10 @@ check:
 		if (FailCPInterval()) goto skip;
 		GetMeasures();
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
-		if (FailLastIntervals(apc[cpv], ep2)) goto skip;
+		if (FailLastIntervals(apc[cpv])) goto skip;
 		if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
-		if (FailLeapSmooth(ac[cpv], acc[cpv], ep2, aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
+		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
 		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps2, 2, 76)) goto skip;
 		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(acc[cpv], aleap[cpv], repeat_steps5, 5, 72)) goto skip;
@@ -1013,7 +1012,7 @@ check:
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
-		if (FailGlobalFill(ac[cpv], ep2, nstat2)) goto skip;
+		if (FailGlobalFill(ac[cpv], nstat2)) goto skip;
 		if (FailLocalRange(acc[cpv], notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(acc[cpv], notes_lrange2, min_lrange2, 198)) goto skip;
 		GetNoteTypes();
@@ -1027,7 +1026,7 @@ check:
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailFirstNotes(apc[cpv])) goto skip;
-		if (FailLeap(ac[cpv], ep2, aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
+		if (FailLeap(ac[cpv], aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
 		//if (FailMelodyHarm(apc[cpv], 0, ep2)) goto skip;
 		MakeMacc(acc[cpv]);
 		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;
@@ -1151,9 +1150,10 @@ void CGenCP1::Generate() {
 		}
 		c_len = cantus[cantus_id].size();
 		// Get key
-		acc.resize(1);
+		av_cnt = 1;
 		acc[0] = cantus[cantus_id];
 		GetCPKey();
+		av_cnt = 2;
 		// Get cantus interval
 		GetMelodyInterval(cantus[cantus_id], 0, cantus[cantus_id].size(), cf_nmin, cf_nmax);
 		if (tonic_cur == -1) return;

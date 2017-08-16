@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 // This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
 // (the "Fluent UI") and is provided only as referential material to supplement the 
 // Microsoft Foundation Classes Reference and related electronic documentation 
@@ -128,8 +130,8 @@ BOOL CMGenApp::InitInstance()
 		RUNTIME_CLASS(CMGenDoc),
 		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
 		RUNTIME_CLASS(CMGenView));
-	if (!pDocTemplate)
-		return FALSE;
+	//if (!pDocTemplate)
+		//return FALSE;
 	AddDocTemplate(pDocTemplate);
 
 

@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../stdafx.h"
 #include "GLib.h"
 #include "SmRnd.h"
@@ -13,7 +15,7 @@ int CGLib::debug_level = 1;
 int CGLib::m_ci = 1;
 int CGLib::m_testing = 0;
 int CGLib::m_test_sec = 5;
-CString CGLib::m_cline2 = "";
+CString CGLib::m_cline2.Empty();
 int CGLib::exitcode = 0;
 int CGLib::parameter_found = 0;
 int CGLib::play_enabled = 1;
@@ -28,7 +30,7 @@ vector<int> CGLib::log_buffer_size;
 vector<long long> CGLib::status_updates;
 vector<long long> CGLib::logs_sent;
 
-/* if (flag!=0), then use the contents of randrsl[] to initialize mm[]. */
+/* if (flag!=0), then use the contents of randrsl[] to initialize rmm[]. */
 #define mix(a,b,c,d,e,f,g,h) \
 { \
 	a ^= b << 11; d += a; b += c; \
@@ -44,6 +46,8 @@ vector<long long> CGLib::logs_sent;
 CGLib::CGLib()
 {
 	logs.clear();
+	fill(begin(randrsl), end(randrsl), (ub4)0);
+	fill(begin(rmm), end(rmm), (ub4)0);
 }
 
 
@@ -90,7 +94,7 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 		for (int i = 0; i<1000; i++) {
 			st = sValue->Tokenize(",", pos);
 			st.Trim();
-			if (st == "") break;
+			if (st.IsEmpty()) break;
 			if (i >= Dest.size()) {
 				CString est;
 				est.Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
@@ -197,7 +201,7 @@ void CGLib::CheckRange(CString * sName, CString * sValue, char* sSearch, float *
 	}
 }
 
-void CGLib::Tokenize(const CString& s, vector<CString>& tokens, const CString delim)
+void CGLib::Tokenize(const CString& s, vector<CString>& tokens, const CString &delim)
 {
 	int pos = 0;
 	int end = pos;
@@ -219,12 +223,12 @@ void CGLib::GetVint(const CString & st, vector<int>& res) {
 	for (int i = 0; i < st.GetLength(); ++i) {
 		if (isdigit(st[i])) {
 			// Check minor
-			if (st2 == "" && i > 0 && (st[i - 1] == 'm' || st[i-1] == 'b')) sign = -1;
+			if (st2.IsEmpty() && i > 0 && (st[i - 1] == 'm' || st[i-1] == 'b')) sign = -1;
 			st2 += st[i];
 		}
-		else if (st2 != "") {
+		else if (!st2.IsEmpty()) {
 			res.push_back(atoi(st2));
-			st2 = "";
+			st2.Empty();
 		}
 	}
 	if (st2 != "") {
@@ -233,7 +237,7 @@ void CGLib::GetVint(const CString & st, vector<int>& res) {
 }
 
 int CGLib::CheckInclude(CString st, CString fname, CString &iname) {
-	iname = "";
+	iname.Empty();
 	if (st.Left(8) == "include ") {
 		st = st.Mid(8);
 		iname = GetLinkedPath(st, fname);
@@ -445,22 +449,22 @@ void CGLib::isaac()
 {
 	register ub4 i, x, y;
 
-	cc = cc + 1;    /* cc just gets incremented once per 256 results */
-	bb = bb + cc;   /* then combined with bb */
+	rcc = rcc + 1;    /* rcc just gets incremented once per 256 results */
+	rbb = rbb + rcc;   /* then combined with rbb */
 
 	for (i = 0; i<256; ++i)
 	{
-		x = mm[i];
+		x = rmm[i];
 		switch (i % 4)
 		{
-		case 0: aa = aa ^ (aa << 13); break;
-		case 1: aa = aa ^ (aa >> 6); break;
-		case 2: aa = aa ^ (aa << 2); break;
-		case 3: aa = aa ^ (aa >> 16); break;
+		case 0: raa = raa ^ (raa << 13); break;
+		case 1: raa = raa ^ (raa >> 6); break;
+		case 2: raa = raa ^ (raa << 2); break;
+		case 3: raa = raa ^ (raa >> 16); break;
 		}
-		aa = mm[(i + 128) % 256] + aa;
-		mm[i] = y = mm[(x >> 2) % 256] + aa + bb;
-		randrsl[i] = bb = mm[(y >> 10) % 256] + x;
+		raa = rmm[(i + 128) % 256] + raa;
+		rmm[i] = y = rmm[(x >> 2) % 256] + raa + rbb;
+		randrsl[i] = rbb = rmm[(y >> 10) % 256] + x;
 
 		/* Note that bits 2..9 are chosen from x but 10..17 are chosen
 		from y.  The only important thing here is that 2..9 and 10..17
@@ -475,7 +479,7 @@ void CGLib::randinit(int flag)
 {
 	int i;
 	ub4 a, b, c, d, e, f, g, h;
-	aa = bb = cc = 0;
+	raa = rbb = rcc = 0;
 	a = b = c = d = e = f = g = h = 0x9e3779b9;  /* the golden ratio */
 
 	for (i = 0; i<4; ++i)          /* scramble it */
@@ -483,7 +487,7 @@ void CGLib::randinit(int flag)
 		mix(a, b, c, d, e, f, g, h);
 	}
 
-	for (i = 0; i<256; i += 8)   /* fill in mm[] with messy stuff */
+	for (i = 0; i<256; i += 8)   /* fill in rmm[] with messy stuff */
 	{
 		if (flag)                  /* use all the information in the seed */
 		{
@@ -491,19 +495,19 @@ void CGLib::randinit(int flag)
 			e += randrsl[i + 4]; f += randrsl[i + 5]; g += randrsl[i + 6]; h += randrsl[i + 7];
 		}
 		mix(a, b, c, d, e, f, g, h);
-		mm[i] = a; mm[i + 1] = b; mm[i + 2] = c; mm[i + 3] = d;
-		mm[i + 4] = e; mm[i + 5] = f; mm[i + 6] = g; mm[i + 7] = h;
+		rmm[i] = a; rmm[i + 1] = b; rmm[i + 2] = c; rmm[i + 3] = d;
+		rmm[i + 4] = e; rmm[i + 5] = f; rmm[i + 6] = g; rmm[i + 7] = h;
 	}
 
 	if (flag)
-	{        /* do a second pass to make all of the seed affect all of mm */
+	{        /* do a second pass to make all of the seed affect all of rmm */
 		for (i = 0; i<256; i += 8)
 		{
-			a += mm[i]; b += mm[i + 1]; c += mm[i + 2]; d += mm[i + 3];
-e += mm[i + 4]; f += mm[i + 5]; g += mm[i + 6]; h += mm[i + 7];
+			a += rmm[i]; b += rmm[i + 1]; c += rmm[i + 2]; d += rmm[i + 3];
+e += rmm[i + 4]; f += rmm[i + 5]; g += rmm[i + 6]; h += rmm[i + 7];
 mix(a, b, c, d, e, f, g, h);
-mm[i] = a; mm[i + 1] = b; mm[i + 2] = c; mm[i + 3] = d;
-mm[i + 4] = e; mm[i + 5] = f; mm[i + 6] = g; mm[i + 7] = h;
+rmm[i] = a; rmm[i + 1] = b; rmm[i + 2] = c; rmm[i + 3] = d;
+rmm[i + 4] = e; rmm[i + 5] = f; rmm[i + 6] = g; rmm[i + 7] = h;
 		}
 	}
 
@@ -535,8 +539,8 @@ void CGLib::InitRandom()
 	//WriteLog(1, est);
 	// Init ISAAC
 	ub4 i;
-	aa = bb = cc = (ub4)0;
-	for (i = 0; i < 256; ++i) mm[i] = randrsl[i] = rand()*rand();
+	raa = rbb = rcc = (ub4)0;
+	for (i = 0; i < 256; ++i) rmm[i] = randrsl[i] = rand()*rand();
 	randinit(1);
 	//TestRandom();
 }

@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 // This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
 // (the "Fluent UI") and is provided only as referential material to supplement the 
 // Microsoft Foundation Classes Reference and related electronic documentation 
@@ -114,7 +116,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	CRect ClientRect;
 	GetClientRect(&ClientRect);
 	// Total scrollable size
-	CSize Size = GetTotalSize();
+	//CSize Size = GetTotalSize();
 
 	CMemDC2 dc(pDC);
 	dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
@@ -159,7 +161,7 @@ void CMGenView::OnDraw(CDC* pDC)
 
 	time_stop2 = CGLib::time();
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
-		CString time_st = "";
+		CString time_st.Empty();
 		if (pGen->t_sent > 0) time_st = CGLib::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
 		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d meas. / %s in %.1f sec.)", 
 			pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, time_st, 
@@ -250,8 +252,9 @@ void CMGenView::OnDraw(CDC* pDC)
 						if ((nheight > 5) && (i < ng_max2)) {
 							g.DrawLine(&pen_dddgray, 0, pos, X_FIELD/2-2, pos);
 							st.Format("%d", i / 12);
-							g.MeasureString(A2W(st), -1, &font_small, sizeRect, &sizeRect);
-							g.DrawString(A2W(st), -1, &font_small, PointF(X_FIELD-18, pos - sizeRect.Height / 2), &brush_dddgray);
+							CStringW wst(st);
+							g.MeasureString(wst, -1, &font_small, sizeRect, &sizeRect);
+							g.DrawString(wst, -1, &font_small, PointF(X_FIELD-18, pos - sizeRect.Height / 2), &brush_dddgray);
 						}
 						else {
 							g.DrawLine(&pen_dddgray, 0, pos, X_FIELD, pos);
@@ -276,7 +279,8 @@ void CMGenView::OnDraw(CDC* pDC)
 							g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, ClientRect.top + Y_HEADER,
 								X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE);
 							st.Format("%d", i / 8 + 1);
-							g.DrawString(A2W(st), -1, &font_small, PointF(X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE + 1), &brush_dddgray);
+							CStringW wst(st);
+							g.DrawString(wst, -1, &font_small, PointF(X_FIELD + i * nwidth, ClientRect.top + Y_HEADER - Y_TIMELINE + 1), &brush_dddgray);
 						}
 						g.DrawLine(&pen_ddgray, X_FIELD + i * nwidth, y_start - 1,
 							X_FIELD + i * nwidth, ClientRect.top + Y_HEADER + 1);
@@ -322,7 +326,8 @@ void CMGenView::OnDraw(CDC* pDC)
 					ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 					SolidBrush brush_v(ncolor);
 					st = pGen->InstGName[pGen->instr[v]];
-					g.DrawString(A2W(st), -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
+					CStringW wst(st);
+					g.DrawString(wst, -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
 				}
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
@@ -396,7 +401,7 @@ void CMGenView::OnDraw(CDC* pDC)
 							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - cutend, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
 					}
 					// Show comment
-					if (mf->show_comments && pGen->comment[i][v] != "")
+					if (mf->show_comments && !pGen->comment[i][v].IsEmpty())
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
@@ -410,7 +415,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			CString mark;
 			if (mf->show_marks) for (int v = 0; v < pGen->v_cnt; v++) {
 				int step1m = max(0, step1 - MARK_BACK);
-				for (int i = step1m; i < step2; i++) if (pGen->mark[i][v] != "") {
+				for (int i = step1m; i < step2; i++) if (!pGen->mark[i][v].IsEmpty()) {
 					if (pGen->mark_color[i][v].GetValue() != 0) {
 						if (pGen->mark_color[i][v].GetAlpha() == 0)
 							mcolor = Color(210, pGen->mark_color[i][v].GetR(), pGen->mark_color[i][v].GetG(), pGen->mark_color[i][v].GetB());
@@ -428,12 +433,13 @@ void CMGenView::OnDraw(CDC* pDC)
 							mf->WriteLog(1, "Warning: Mark is too long for current zoom and was replaced with '...'. Solution: increase Zoom level, increase MARK_BACK or decrease mark string length in algorithm.");
 						}
 					}
-					g.DrawString(A2W(mark), -1, &font_small2, PointF(X_FIELD + i * nwidth,
+					CStringW wst(mark);
+					g.DrawString(wst, -1, &font_small2, PointF(X_FIELD + i * nwidth,
 						y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight), &brush_v);
 				}
 			}
 			// Show generated vertical lines
-			if (mf->show_lines) for (int v = 0; v < pGen->v_cnt; v++) {
+			if (mf->show_lines) 
 				for (int i = step1; i < step2; i++) {
 					if (pGen->linecolor[i].GetAlpha() != 0) {
 						Pen pen_line(pGen->linecolor[i]);
@@ -441,7 +447,6 @@ void CMGenView::OnDraw(CDC* pDC)
 							X_FIELD + i * nwidth, y_start - (pGen->ng_max - ng_min2 + 1) * nheight);
 					}
 				}
-			}
 			mouse_voice_old = mouse_voice;
 			// Show note graph
 			if (mf->show_curve) {
@@ -552,17 +557,22 @@ void CMGenView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// add cleanup after printing
 }
 
-void CMGenView::OnRButtonUp(UINT /* nFlags */, CPoint point)
+void CMGenView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+	OnLButtonUp(nFlags, point);
+
+	//CScrollView::OnRButtonUp(nFlags, point);
+	//ClientToScreen(&point);
+	//OnContextMenu(this, point);
 }
 
 void CMGenView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 {
+	/*
 #ifndef SHARED_HANDLERS
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 #endif
+*/
 }
 
 
@@ -612,6 +622,8 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	CGMidi *pGen = mf->pGen;
+	mf->mx = point.x;
+	mf->my = point.y;
 	if ((pGen != 0) && (nwidth > 0) && (nheight > 0)) if (pGen->t_generated > 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
 			mf->WriteLog(2, "OnMouseMove mutex timed out: mouse not processed");
@@ -723,7 +735,6 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 			mouse_voice = result - 1;
 		}
 		CInfoDlg dlg;
-		dlg.pGen = mf->pGen;
 		dlg.DoModal();
 	}
 	else if ((mouse_step > -1) && (mouse_in_timeline)) {

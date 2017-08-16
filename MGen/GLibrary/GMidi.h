@@ -94,7 +94,7 @@ protected:
 	// Information for current note in SendMIDI
 	vector <PmEvent> midi_buf;
 	vector <PmEvent> midi_buf_next; // Buffer for next SendMIDI run
-	int midi_buf_lim; // After this timestamp information goes to midi_buf_next
+	int midi_buf_lim = 0; // After this timestamp information goes to midi_buf_next
 	int midi_channel = 0;
 	int midi_voice = 0;
 

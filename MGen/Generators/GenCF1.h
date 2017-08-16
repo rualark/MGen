@@ -120,11 +120,11 @@ protected:
 	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
-	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
+	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int steps, int notes, int flag);
 	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
 	inline int FailFirstNotes(vector<int>& pc);
-	inline int FailLastNotes(vector<int>& pc, vector<int>& pcc, int ep2);
+	inline int FailLastNotes(vector<int>& pc, vector<int>& pcc);
 	inline void CreateLinks(vector<int>& c);
 	inline void CountFillInit(vector<int>& c, int tail_len, int pre, int & t1, int & t2, int & fill_finish);
 	inline void CountFill(vector<int>& c, int tail_len, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int & fill_finish);
@@ -132,13 +132,13 @@ protected:
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int & fill_to, int & fill_to_pre, int & fill_from_pre, int & fill_from);
 	inline void FailLeapInit(vector<int>& c, int & late_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, vector<int>& leap);
 	inline int FailLeapMulti(int leap_next, int & arpeg, int & overflow, int & child_leap, vector<int>& c, vector<int>& leap);
-	inline int FailLeap(vector<int>& c, int ep2, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
+	inline int FailLeap(vector<int>& c, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(vector<int>& c, int late_leap, int leap_prev, int child_leap);
 	inline int FailLeapMDC(vector<int>& leap, vector<int>& c);
 	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailTonic(vector<int> &cc, vector<int>& pc);
 	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
-	inline int FailGlobalFill(vector<int>& c, int ep2, vector<int>& nstat2);
+	inline int FailGlobalFill(vector<int>& c, vector<int>& nstat2);
 	void ScanInit();
 	void ScanCantusInit();
 	int GetMinSmap();
@@ -194,7 +194,7 @@ protected:
 	void RandomSWA();
 	void SWA(int i, int dp);
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
-	void FillCantus(vector<int>& c, int step1, int step2, vector<int> value);
+	void FillCantus(vector<int>& c, int step1, int step2, vector<int> &value);
 	void RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 	

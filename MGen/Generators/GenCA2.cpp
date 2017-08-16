@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../stdafx.h"
 #include "GenCA2.h"
 
@@ -36,7 +38,7 @@ void CGenCA2::SendCorrectionsCP(int i, int time_start) {
 	// Find minimum penalty
 	int ccount = 0;
 	// Cycle through all best matches
-	st2 = "";
+	st2.Empty();
 	for (int p = 0; p < corrections; p++) {
 		// Find minimum penalty
 		cids.clear();
@@ -65,7 +67,7 @@ void CGenCA2::SendCorrectionsCP(int i, int time_start) {
 			}
 			// Get cantus
 			scpoint[cpv] = clib[cids[x]];
-			dpenalty_cur = dpenalty[cids[x]];
+			dpenalty_cur = dpenalty[cids[x]]; //-V519
 			// Clear penalty
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result
@@ -137,7 +139,7 @@ void CGenCA2::ExplodeCP() {
 	for (int v = 0; v < av_cnt; ++v) {
 		int prev_note = cpoint[cantus_id][v][0];
 		cur_len = cantus_len[cantus_id][0];
-		for (int s = 1; s < cpoint[cantus_id][v].size(); ++s) {
+		for (s = 1; s < cpoint[cantus_id][v].size(); ++s) {
 			n = cpoint[cantus_id][v][s];
 			if (n != prev_note) {
 				if (cur_len < min_vlen[v]) min_vlen[v] = cur_len;
@@ -162,7 +164,7 @@ void CGenCA2::ExplodeCP() {
 	// Calculate npm
 	npm = max(1, min_vlen[cfv] / min_vlen[cpv]);
 	// Save old cantus
-	vector<vector<int>> cc_old = cpoint[cantus_id];
+	vector<vector<int>> cc_old2 = cpoint[cantus_id];
 	vector<float> tempo_old = cantus_tempo[cantus_id];
 	cc_len = cantus_len[cantus_id];
 	cantus_len[cantus_id].clear();
@@ -171,17 +173,17 @@ void CGenCA2::ExplodeCP() {
 	int steps;
 	// Explode cpoint
 	int ln;
-	for (int s = 0; s < cc_old[0].size(); ++s) {
+	for (s = 0; s < cc_old2[0].size(); ++s) {
 		steps = cc_len[s] / min_vlen[cpv];
 		// Do not explode last measure
 		ln = min_vlen[cpv];
-		if (s == cc_old[0].size() - 1) {
+		if (s == cc_old2[0].size() - 1) {
 			steps = 1;
 			ln = cc_len[s];
 		}
 		for (int i = 0; i < steps; ++i) {
 			for (int v = 0; v < av_cnt; ++v) {
-				cpoint[cantus_id][v].push_back(cc_old[v][s]);
+				cpoint[cantus_id][v].push_back(cc_old2[v][s]);
 			}
 			cantus_tempo[cantus_id].push_back(tempo_old[s]);
 			cantus_len[cantus_id].push_back(ln);
@@ -199,10 +201,10 @@ void CGenCA2::ExplodeCP() {
 		cpoint[cantus_id][cpv][i] = cpoint[cantus_id][cpv][fn];
 	}
 	// Check that counterpoint did not become shorter
-	if (cpoint[cantus_id][0].size() < cc_old[0].size()) {
+	if (cpoint[cantus_id][0].size() < cc_old2[0].size()) {
 		CString est;
 		est.Format("Warning: ExplodeCP returned shorter voice than initial for %s cantus #%d (initial=%d, new=%d)",
-			cantus_high ? "higher" : "lower", cantus_id+1, cc_old[0].size(), cpoint[cantus_id][0].size());
+			cantus_high ? "higher" : "lower", cantus_id+1, cc_old2[0].size(), cpoint[cantus_id][0].size());
 		WriteLog(5, est);
 	}
 }
@@ -340,7 +342,7 @@ void CGenCA2::Generate() {
 		step0 = step;
 		fn = fn0;
 		ScanCP(tEval, 0);
-		key_eval = "";
+		key_eval.Empty();
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
 		t_generated2 = t_generated;

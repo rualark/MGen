@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../stdafx.h"
 #include "GAdapt.h"
 #include "SmRnd.h"
@@ -35,7 +37,7 @@ void CGAdapt::CheckInstrumentRange(int v, int ii)
 				st.Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Cannot transpose automatically: range too wide.",
 					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
 					InstGName[ii], InstCName[ii], v,
-					GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
+					GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]));
 				warning_note_range[v] = 1;
 				WriteLog(1, st);
 			}
@@ -106,7 +108,8 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 nonlegato. ";
 			}
 			else {
-				if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
+				// Next line commented out, because it has no effect
+				//if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
 				detime[ei][v] = lengroup_edt1[ii];
 				artic[i][v] = ARTIC_LEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 legato. ";
@@ -207,8 +210,10 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 		dstime[i][v] = -min(legato_ahead[ii][0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		detime[i - 1][v] = 0.9 * dstime[i][v];
-		if (comment_adapt) adapt_comment[i][v] += "Ahead start. ";
-		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead end. ";
+		if (comment_adapt) {
+			adapt_comment[i][v] += "Ahead start. ";
+			adapt_comment[i - 1][v] += "Ahead end. ";
+		}
 		// Add glissando if note is long
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if ((ndur > gliss_minlen[ii]) && (randbw(0, 100) < gliss_freq[ii])) {
@@ -245,7 +250,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 			if (nspeed < 8) {
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
-				min_adur = max(splitpo_mindur[ii], abs(note[i][v] - note[pi][v]) / 8 * 1000);
+				min_adur = (float)max(splitpo_mindur[ii], abs(note[i][v] - note[pi][v]) / 8 * 1000);
 				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][1];
 				if (iv < ahead_chrom[ii].size() && ahead_chrom[ii][iv]) adur0 = ahead_chrom[ii][iv];
 				//CString st;
@@ -285,8 +290,10 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		dstime[i][v] = -adur;
 		detime[i - 1][v] = 0.9 * dstime[i][v];
 		// Add comments
-		if (comment_adapt) adapt_comment[i][v] += "Ahead flex start. ";
-		if (comment_adapt) adapt_comment[i - 1][v] += "Ahead flex end. ";
+		if (comment_adapt) {
+			adapt_comment[i][v] += "Ahead flex start. ";
+			adapt_comment[i - 1][v] += "Ahead flex end. ";
+		}
 	}
 }
 
@@ -348,12 +355,12 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Long bell start. ";
 			// Decrease starting velocity
-			if (bell_end_vel[ii]) vel[i][v] = randbw(dyn[i][v] * bell_end_vel[ii] / 100.0, dyn[i][v] * bell_start_vel[ii] / 100.0);
+			if (bell_end_vel[ii]) vel[i][v] = randbw(dyn[i][v] * bell_end_vel[ii] / 100.0, dyn[i][v] * bell_start_vel[ii] / 100.0); //-V550
 		}
 	}
 	int ni = i + noff[i][v];
 	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
-	if ((ndur > bell_mindur[ii]/2) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
+	if ((ndur > (float)bell_mindur[ii]/2) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
 		int pos = round(i + (float)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
@@ -547,7 +554,7 @@ void CGAdapt::Adapt(int step1, int step2)
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
 			// Clear adaptation comment
-			adapt_comment[i][v] = "";
+			adapt_comment[i][v].Empty();
 		}
 		// Set vel to dyn
 		for (int i = step1; i <= step2; i++) {
@@ -626,7 +633,7 @@ void CGAdapt::Adapt(int step1, int step2)
 	float tr;
 	for (int i = step1; i <= step2; i++) {
 		// Load tempo if it was randomized before
-		if (tempo_src[i]) {
+		if (tempo_src[i]) { //-V550
 			tempo[i] = tempo_src[i];
 		}
 		// Save source tempo
