@@ -51,6 +51,8 @@
 #endif
 #endif
 
+#include <cmath>
+#include <limits>
 #include <map>
 #include <vector>
 #include <set>

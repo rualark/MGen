@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 // This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
 // (the "Fluent UI") and is provided only as referential material to supplement the 
 // Microsoft Foundation Classes Reference and related electronic documentation 
@@ -117,6 +119,9 @@ END_MESSAGE_MAP()
 CMainFrame::CMainFrame()
 {
 	AlgGroups.resize(MAX_ALGO);
+	fill(begin(AlgID), end(AlgID), 0);
+	fill(begin(AlgMFI), end(AlgMFI), 0);
+	fill(begin(ParamCount), end(ParamCount), 0);
 	//HANDLE hThread = GetCurrentThread();
 	//SetThreadPriority(hThread, THREAD_PRIORITY_TIME_CRITICAL);
 
@@ -688,8 +693,8 @@ void CMainFrame::OnButtonGen()
 		ClearLogs();
 		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
 		// Clear current saved path
-		m_fname = "";
-		m_dir = "";
+		m_fname.Empty();
+		m_dir.Empty();
 		// Set pGen variables
 		pGen->InitRandom();
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
@@ -811,7 +816,7 @@ void CMainFrame::LoadAlgo()
 	}
 	ifstream fs;
 	fs.open(fname);
-	CString st, st2, st3, st4, st5;
+	CString st, st2;
 	char pch[2550];
 	int pos = 0;
 	// Load header
@@ -823,7 +828,6 @@ void CMainFrame::LoadAlgo()
 	AlgGroups.resize(MAX_ALGO);
 	AlgGCount = 0;
 	while (fs.good()) {
-		pos = 0;
 		fs.getline(pch, 2550);
 		st = pch;
 		// Remove unneeded
@@ -1049,7 +1053,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	{
 		GetActiveView()->Invalidate();
 		//int play_time = CGLib::time() - pGen->midi_start_time;
-		if ((m_state_gen != 1) && (m_state_play == 2) && (CGLib::time() > pGen->midi_sent_t)) {
+		if ((m_state_gen != 1) && (m_state_play == 2) && pGen && (CGLib::time() > pGen->midi_sent_t)) {
 			OnButtonPlay();
 		}
 	}
@@ -1170,7 +1174,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	}
 
 	// Show logs frequency
-	st2 = "";
+	st2.Empty();
 	total = 0;
 	for (int i = 0; i < LOG_TABS; ++i) {
 		total += CGLib::logs_sent[i];

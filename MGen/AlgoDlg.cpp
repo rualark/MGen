@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 // AlgoDlg.cpp : implementation file
 //
 
@@ -178,7 +180,7 @@ void CAlgoDlg::LoadFile(CString path) {
 	ifstream fs;
 	m_text.SetWindowTextA("");
 	fs.open(path);
-	CString st, st2, st3, st4, st5;
+	CString st;
 	char pch[2550];
 	int pos = 0;
 	while (fs.good()) {

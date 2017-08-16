@@ -1,3 +1,5 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 // This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
 // (the "Fluent UI") and is provided only as referential material to supplement the 
 // Microsoft Foundation Classes Reference and related electronic documentation 
@@ -69,8 +71,6 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	UpdateFonts();
-
-	CString strTabName;
 
 	m_wndTabs.AddTab(&m_wndOutputWarn,  " Warnings     ", (UINT)0);
 	m_wndTabs.AddTab(&m_wndOutputDebug, " Debug     ", (UINT)1);

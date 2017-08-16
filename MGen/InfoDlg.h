@@ -25,6 +25,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CInfoEditCtrl m_info;
-	CGLib* pGen = 0;
 	virtual BOOL OnInitDialog();
+
+	int melody = 0;
 };
