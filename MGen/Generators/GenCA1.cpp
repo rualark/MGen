@@ -231,16 +231,16 @@ void CGenCA1::SendCorrections(int i, int time_start) {
 	int ccount = 0;
 	// Cycle through all best matches
 	st2.Empty();
-	for (int p = 0; p < corrections; p++) {
+	for (int m = 0; m < corrections; ++m) {
 		// Find minimum penalty
 		cids.clear();
-		float dpenalty_min = MAX_PENALTY;
-		for (int x = 0; x < cnum; x++) if (dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
+		float dpenalty_min2 = MAX_PENALTY;
+		for (int x = 0; x < cnum; x++) if (dpenalty[x] < dpenalty_min2) dpenalty_min2 = dpenalty[x];
 		// Get all best corrections
-		for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min) {
+		for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min2) {
 			cids.push_back(x);
 		}
-		if (!cids.size() || dpenalty_min == MAX_PENALTY) break;
+		if (!cids.size() || dpenalty_min2 == MAX_PENALTY) break;
 		// Shuffle cids
 		unsigned seed = CGLib::time();
 		::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
@@ -248,7 +248,7 @@ void CGenCA1::SendCorrections(int i, int time_start) {
 			ccount++;
 			if (ccount > corrections) break;
 			// Write log
-			st.Format("%.0f/%.0f/%d/%d ", rpenalty_min, dpenalty_min, cids.size(), clib.size());
+			st.Format("%.0f/%.0f/%d/%d ", rpenalty_min, dpenalty_min2, cids.size(), clib.size());
 			st2 += st;
 			// Show initial melody again if this is not first iteration
 			if (ccount > 1) {
