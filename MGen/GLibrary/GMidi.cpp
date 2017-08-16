@@ -104,7 +104,7 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> vlast_pitch(MAX_VOICE);
 	vector<int> voverlap(MAX_VOICE);
 	vector<int> vdist(MAX_VOICE);
-	CString st, tnames = "", inames.Empty();
+	CString st, tnames = "", inames = "";
 	// Convert track instrument ids to voice instrument ids
 	vector<int> instr2 = instr;
 
