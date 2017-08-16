@@ -593,6 +593,7 @@ void CMainFrame::LoadResults(CString path) {
 		m_algo_id = pGen->m_algo_id;
 		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
 		pGen->m_algo_insts = AlgInsts[m_algo];
+		pGen->m_algo_folder = AlgFolder[m_algo];
 		m_config = pGen->m_config;
 		// Load configs
 		//pGen->LoadInstruments();
@@ -700,6 +701,7 @@ void CMainFrame::OnButtonGen()
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->m_algo_id = m_algo_id;
 		pGen->m_algo_insts = AlgInsts[m_algo];
+		pGen->m_algo_folder = AlgFolder[m_algo];
 		pGen->m_config = m_config;
 		pGen->m_pspeed = m_pspeed;
 		// Initialize variables
