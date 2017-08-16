@@ -155,9 +155,6 @@ MGen.manifest
 
 Other notes:
 
-The application wizard uses "TODO:" to indicate parts of the source code you
-should add to or customize.
-
 If your application uses MFC in a shared DLL, you will need
 to redistribute the MFC DLLs. If your application is in a language
 other than the operating system's locale, you will also have to

@@ -510,7 +510,6 @@ void CGMidi::LoadCantus(CString path)
 					else {
 						lyrics_pending = st;
 					}
-					// TODO: Assign lyrics if this position is new and notes will be sent later
 				}
 			}
 			if (mev->isNoteOn()) {

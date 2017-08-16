@@ -78,7 +78,7 @@ CMGenView::~CMGenView()
 
 BOOL CMGenView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: Modify the Window class or styles here by modifying
+	// Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 
 	return CScrollView::PreCreateWindow(cs);
@@ -544,12 +544,12 @@ BOOL CMGenView::OnPreparePrinting(CPrintInfo* pInfo)
 
 void CMGenView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: add extra initialization before printing
+	// add extra initialization before printing
 }
 
 void CMGenView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: add cleanup after printing
+	// add cleanup after printing
 }
 
 void CMGenView::OnRButtonUp(UINT /* nFlags */, CPoint point)
@@ -594,10 +594,7 @@ void CMGenView::OnInitialUpdate()
 {
 	CScrollView::OnInitialUpdate();
 
-	// TODO: Add your specialized code here and/or call the base class
-	//Определить размер документа
 	CSize DocSize(0, 0);
-	//Установить режим отображения и размер документа
 	SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 	
 	// Tooltip

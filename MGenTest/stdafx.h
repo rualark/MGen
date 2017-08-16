@@ -51,6 +51,3 @@ using namespace std::chrono;
 #include <gdiplus.h>
 using namespace Gdiplus;
 #include "../MGen/dirent.h"
-
-
-// TODO: reference additional headers your program requires here
