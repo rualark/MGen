@@ -104,7 +104,7 @@ void CGMidi::LoadMidi(CString path)
 	vector<int> vlast_pitch(MAX_VOICE);
 	vector<int> voverlap(MAX_VOICE);
 	vector<int> vdist(MAX_VOICE);
-	CString st, tnames = "", inames = "";
+	CString st, tnames = "", inames.Empty();
 	// Convert track instrument ids to voice instrument ids
 	vector<int> instr2 = instr;
 
@@ -526,7 +526,7 @@ void CGMidi::LoadCantus(CString path)
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
 						cantus_incom.push_back(incom);
-						//lyrics_pending = "";
+						//lyrics_pending.Empty();
 					}
 					// Go to next cantus
 					nid = 0;

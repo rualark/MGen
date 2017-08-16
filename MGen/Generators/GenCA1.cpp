@@ -60,7 +60,7 @@ void CGenCA1::GetCPKey()
 	}
 }
 
-void CGenCA1::GetCPKey3(vector <int> &key_miss, int &min_miss, int &min_key, int minor_cur, int diatonic_repeat_check)
+void CGenCA1::GetCPKey3(vector <int> &key_miss, int &min_miss, int &min_key, int minor_cur2, int diatonic_repeat_check)
 {
 	key_miss.clear();
 	key_miss.resize(12);
@@ -70,7 +70,7 @@ void CGenCA1::GetCPKey3(vector <int> &key_miss, int &min_miss, int &min_key, int
 		// Cycle all notes
 		for (int v = 0; v < av_cnt; v++) {
 			for (int x = 0; x < c_len; x++) {
-				if (minor_cur) {
+				if (minor_cur2) {
 					// Check all possible pitches for minor
 					if (!m_diatonic_full[(acc[v][x] - i) % 12]) key_miss[i]++;
 				}
@@ -80,7 +80,7 @@ void CGenCA1::GetCPKey3(vector <int> &key_miss, int &min_miss, int &min_key, int
 				}
 				// Check if diatonic repeats
 				if (diatonic_repeat_check) {
-					if (x && CC_C(acc[v][x], i, minor_cur) == CC_C(acc[v][x - 1], i, minor_cur) && abs(acc[v][x] - acc[v][x - 1]) == 1) key_miss[i]++;
+					if (x && CC_C(acc[v][x], i, minor_cur2) == CC_C(acc[v][x - 1], i, minor_cur2) && abs(acc[v][x] - acc[v][x - 1]) == 1) key_miss[i]++;
 				}
 			}
 		}
@@ -96,7 +96,7 @@ void CGenCA1::GetCPKey3(vector <int> &key_miss, int &min_miss, int &min_key, int
 	}
 }
 
-int CGenCA1::GetCPKey2(int &tonic_cur, CString &ext_st, int minor_cur)
+int CGenCA1::GetCPKey2(int &tonic_cur2, CString &ext_st, int minor_cur2)
 {
 	c_len = acc[0].size();
 	vector<int> key_miss;
@@ -108,15 +108,15 @@ int CGenCA1::GetCPKey2(int &tonic_cur, CString &ext_st, int minor_cur)
 		st2.Format("%d", acc[0][x] / 12);
 		cst += NoteName[acc[0][x] % 12] + st2 + " ";
 	}
-	GetCPKey3(key_miss, min_miss, min_key, minor_cur, 1);
+	GetCPKey3(key_miss, min_miss, min_key, minor_cur2, 1);
 	// If no key selected run again without checking for repeating diatonic steps
 	if (min_miss > 0) {
-		GetCPKey3(key_miss, min_miss, min_key, minor_cur, 0);
+		GetCPKey3(key_miss, min_miss, min_key, minor_cur2, 0);
 	}
 	// If no key selected
 	if (min_miss > 0) {
 		ext_st.Format("Cannot detect key due to chromatic alterations");
-		tonic_cur = -1;
+		tonic_cur2 = -1;
 		return 0;
 	}
 	// Count best keys
@@ -126,7 +126,7 @@ int CGenCA1::GetCPKey2(int &tonic_cur, CString &ext_st, int minor_cur)
 		if (key_miss[i] == min_miss) {
 			key_count++;
 			keys.push_back(i);
-			tonic_cur = i;
+			tonic_cur2 = i;
 		}
 	}
 	// Create keys string for log
@@ -136,19 +136,19 @@ int CGenCA1::GetCPKey2(int &tonic_cur, CString &ext_st, int minor_cur)
 	}
 	// Check if only one key
 	if (key_count == 1) {
-		ext_st.Format("Single key %s selected", NoteName[tonic_cur]);
-		if (acc[0][c_len - 1] % 12 == tonic_cur) {
+		ext_st.Format("Single key %s selected", NoteName[tonic_cur2]);
+		if (acc[0][c_len - 1] % 12 == tonic_cur2) {
 			return 500 - key_count;
 		}
-		else if (acc[0][0] % 12 == tonic_cur) {
+		else if (acc[0][0] % 12 == tonic_cur2) {
 			return 400 - key_count;
 		}
 		else return 300 - key_count;
 	}
 	// If multiple keys and random_key set
 	else if (random_key) {
-		tonic_cur = keys[randbw(0, keys.size() - 1)];
-		ext_st.Format("Ambiguous %d keys (%s) resolved to %s (random)", keys.size(), kst, NoteName[tonic_cur]);
+		tonic_cur2 = keys[randbw(0, keys.size() - 1)];
+		ext_st.Format("Ambiguous %zu keys (%s) resolved to %s (random)", keys.size(), kst, NoteName[tonic_cur2]);
 		return 100 - keys.size();
 	}
 	// If multiple keys and random_key not set
@@ -156,22 +156,22 @@ int CGenCA1::GetCPKey2(int &tonic_cur, CString &ext_st, int minor_cur)
 		// Find accepted tonic same as last note
 		for (int i = 0; i < keys.size(); i++) {
 			if (acc[0][c_len - 1] % 12 == keys[i]) {
-				tonic_cur = keys[i];
-				ext_st.Format("Ambiguous %d keys (%s) resolved to %s as last note", keys.size(), kst, NoteName[tonic_cur]);
+				tonic_cur2 = keys[i];
+				ext_st.Format("Ambiguous %zu keys (%s) resolved to %s as last note", keys.size(), kst, NoteName[tonic_cur2]);
 				return 400 - keys.size();
 			}
 		}
 		// Find accepted tonic same as first note
 		for (int i = 0; i < keys.size(); i++) {
 			if (acc[0][0] % 12 == keys[i]) {
-				tonic_cur = keys[i];
-				ext_st.Format("Ambiguous %d keys (%s) resolved to %s as first note", keys.size(), kst, NoteName[tonic_cur]);
+				tonic_cur2 = keys[i];
+				ext_st.Format("Ambiguous %zu keys (%s) resolved to %s as first note", keys.size(), kst, NoteName[tonic_cur2]);
 				return 300 - keys.size();
 			}
 		}
 		// If nothing found, return random of accepted
-		tonic_cur = keys[randbw(0, keys.size() - 1)];
-		ext_st.Format("Ambiguous %d keys (%s) resolved to %s (random)", keys.size(), kst, NoteName[tonic_cur]);
+		tonic_cur2 = keys[randbw(0, keys.size() - 1)];
+		ext_st.Format("Ambiguous %zu keys (%s) resolved to %s (random)", keys.size(), kst, NoteName[tonic_cur2]);
 		return 100 - keys.size();
 	}
 }
@@ -205,7 +205,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 			}
 		}
 	}
-	st2 = "";
+	st2.Empty();
 	for (int x = 0; x < c_len; x++) {
 		st.Format("%d ", smatrix[x]);
 		st2 += st;
@@ -230,7 +230,7 @@ void CGenCA1::SendCorrections(int i, int time_start) {
 	// Find minimum penalty
 	int ccount = 0;
 	// Cycle through all best matches
-	st2 = "";
+	st2.Empty();
 	for (int p = 0; p < corrections; p++) {
 		// Find minimum penalty
 		cids.clear();

@@ -38,7 +38,7 @@ void CGenCA2::SendCorrectionsCP(int i, int time_start) {
 	// Find minimum penalty
 	int ccount = 0;
 	// Cycle through all best matches
-	st2 = "";
+	st2.Empty();
 	for (int p = 0; p < corrections; p++) {
 		// Find minimum penalty
 		cids.clear();

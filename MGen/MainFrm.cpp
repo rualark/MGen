@@ -695,8 +695,8 @@ void CMainFrame::OnButtonGen()
 		ClearLogs();
 		WriteLog(0, _T("Started generator: ") + AlgName[m_algo]);
 		// Clear current saved path
-		m_fname = "";
-		m_dir = "";
+		m_fname.Empty();
+		m_dir.Empty();
 		// Set pGen variables
 		pGen->InitRandom();
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
@@ -1176,7 +1176,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	}
 
 	// Show logs frequency
-	st2 = "";
+	st2.Empty();
 	total = 0;
 	for (int i = 0; i < LOG_TABS; ++i) {
 		total += CGLib::logs_sent[i];

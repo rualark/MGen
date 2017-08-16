@@ -66,7 +66,7 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Melody:");
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		if (pGen->mel_id[i][mv] > -1) {
-			st = "";
+			st.Empty();
 			int m1 = i;
 			int m2 = i;
 			// Find melody start
@@ -103,7 +103,7 @@ BOOL CInfoDlg::OnInitDialog()
 			m_info.AddText(st, RGB(0, 0, 0), 0);
 		}
 
-		st2 = "";
+		st2.Empty();
 		for (int n = 0; n < pGen->ngraph[i][mv].size(); ++n) {
 			if (pGen->ngraph[i][mv][n] > -1) {
 				st.Format("%.1f ", pGen->ngraph[i][mv][n]);

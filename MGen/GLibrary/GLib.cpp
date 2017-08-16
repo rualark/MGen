@@ -15,7 +15,7 @@ int CGLib::debug_level = 1;
 int CGLib::m_ci = 1;
 int CGLib::m_testing = 0;
 int CGLib::m_test_sec = 5;
-CString CGLib::m_cline2 = "";
+CString CGLib::m_cline2.Empty();
 int CGLib::exitcode = 0;
 int CGLib::parameter_found = 0;
 int CGLib::play_enabled = 1;
@@ -237,7 +237,7 @@ void CGLib::GetVint(const CString & st, vector<int>& res) {
 }
 
 int CGLib::CheckInclude(CString st, CString fname, CString &iname) {
-	iname = "";
+	iname.Empty();
 	if (st.Left(8) == "include ") {
 		st = st.Mid(8);
 		iname = GetLinkedPath(st, fname);
