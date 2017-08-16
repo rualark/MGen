@@ -236,9 +236,8 @@ int main()
         // initialize MFC and print and error on failure
         if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0))
         {
-            // TODO: change error code to suit your needs
             wprintf(L"Fatal Error: MFC initialization failed\n");
-            nRetCode = 1;
+            nRetCode = 4;
         }
         else
         {
@@ -247,7 +246,6 @@ int main()
     }
     else
     {
-        // TODO: change error code to suit your needs
         wprintf(L"Fatal Error: GetModuleHandle failed\n");
         nRetCode = 1;
     }
