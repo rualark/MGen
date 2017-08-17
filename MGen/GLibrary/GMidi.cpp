@@ -51,7 +51,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
 			midifile.addNoteOn(track, (tpq * 4) + tpc*i, channel, note[i][v], dyn[i][v]);
 			midifile.addNoteOff(track, (tpq * 4) + tpc*(i + len[i][v]) - 1, channel, note[i][v], 0);
-			if (midifile_export_comments && !comment[i][v].IsEmpty()) {
+			if (midifile_export_comments && !comment2[i][v].IsEmpty()) {
 				string st;
 				st = comment2[i][v];
 				midifile.addLyric(track, (tpq * 4) + tpc*i, st);

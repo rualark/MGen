@@ -167,6 +167,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	lengroup.resize(size);
 	lyrics.resize(size);
 	comment.resize(size);
+	ccolor.resize(size);
 	comment2.resize(size);
 	nsr1.resize(size);
 	nsr2.resize(size);
@@ -197,6 +198,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		lengroup[i].resize(vsize);
 		lyrics[i].resize(vsize);
 		comment[i].resize(vsize);
+		ccolor[i].resize(vsize);
 		comment2[i].resize(vsize);
 		nsr1[i].resize(vsize);
 		nsr2[i].resize(vsize);
@@ -635,7 +637,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 			SaveVector2S(fs, len, i);
 			SaveVector2S(fs, coff, i);
 			SaveVector2C(fs, dyn, i);
-			SaveVector2ST(fs, comment, i);
+			//SaveVector2ST(fs, comment, i);
 			SaveVector2Color(fs, color, i);
 		}
 		SaveVector(fs, tempo);
@@ -741,7 +743,8 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 				fs << (int)coff[i][v] << ";";
 				fs << (int)poff[i][v] << ";";
 				fs << (int)noff[i][v] << ";";
-				st = comment[i][v];
+				st = "";
+				for (int x = 0; x < comment[i][v].size(); ++x) st += comment[i][v][x];
 				if (st.Left(1) == "\n") st = st.Right(st.GetLength() - 1);
 				fs << "\"" << st << "\";";
 				fs << adapt_comment[i][v] << ";";
@@ -913,7 +916,7 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 			LoadVector2S(fs, len, i);
 			LoadVector2S(fs, coff, i);
 			LoadVector2C(fs, dyn, i);
-			LoadVector2ST(fs, comment, i);
+			//LoadVector2ST(fs, comment, i);
 			LoadVector2Color(fs, color, i);
 		}
 		LoadVector(fs, tempo);
@@ -1350,7 +1353,10 @@ void CGVar::MergeNotes(int step1, int step2, int v) {
 					}
 				}
 				coff[x][v] = coff[x - 1][v] + 1;
-				comment[first_pos][v] += comment[x][v];
+				if (comment[x][v].size()) {
+					comment[first_pos][v].insert(end(comment[x][v]), begin(comment[x][v]), end(comment[x][v]));
+					ccolor[first_pos][v].insert(end(ccolor[x][v]), begin(ccolor[x][v]), end(ccolor[x][v]));
+				}
 				comment2[first_pos][v] += comment2[x][v];
 			}
 			// Copy color forward

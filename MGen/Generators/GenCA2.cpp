@@ -309,9 +309,6 @@ void CGenCA2::Generate() {
 		fn = 0;
 		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, 0, &(m_cc));
-		// Show cantus id
-		st.Format("Counterpoint %d. ", cantus_id + 1);
-		comment[step0][0] = st + comment[step0][0];
 		// Go forward
 		t_generated = step;
 		Adapt(step0, step - 1);

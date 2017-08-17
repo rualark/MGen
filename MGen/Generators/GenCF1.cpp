@@ -2709,7 +2709,7 @@ void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
 
 void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 {
-	CString st;
+	CString st, com;
 	int current_severity = -1;
 	if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 		// Do not show colors and comments for base voice
@@ -2720,16 +2720,18 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 				if (!i) {
 					if (!accept[fl]) st = "- ";
 					else st = "+ ";
-					comment[pos][v] += "\n" + st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+					com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 					if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
 					comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 					if (show_severity) {
 						st.Format(" [%d/%d]", severity[fl], fl);
-						comment[pos][v] += st;
+						com += st;
 					}
-					if (!RuleComment[fl].IsEmpty()) comment[pos][v] += ". " + RuleComment[fl];
-					if (!SubRuleComment[rule_set][fl].IsEmpty()) comment[pos][v] += ". " + SubRuleComment[rule_set][fl];
-					comment[pos][v] += ". ";
+					if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];
+					if (!SubRuleComment[rule_set][fl].IsEmpty()) com += ". " + SubRuleComment[rule_set][fl];
+					//com += ". ";
+					comment[pos][v].push_back(com);
+					ccolor[pos][v].push_back(flag_color[severity[fl]]);
 				}
 				// Set note color if this is maximum flag severity
 				if (severity[fl] > current_severity) {
@@ -3335,7 +3337,7 @@ void CGenCF1::Generate()
 	if (shuffle) {
 		vector<unsigned short> ci(accepted); // cantus indexes
 		vector<unsigned char> note2(t_generated);
-		vector<CString> comment3(t_generated);
+		vector<vector<CString>> comment3(t_generated);
 		vector<CString> comment4(t_generated);
 		vector<Color> color2(t_generated);
 		for (int i = 0; i < accepted; ++i) ci[i] = i;

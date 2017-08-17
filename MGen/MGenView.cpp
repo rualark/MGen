@@ -401,7 +401,7 @@ void CMGenView::OnDraw(CDC* pDC)
 							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - cutend, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
 					}
 					// Show comment
-					if (mf->show_comments && !pGen->comment[i][v].IsEmpty())
+					if (mf->show_comments && pGen->comment[i][v].size())
 						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);

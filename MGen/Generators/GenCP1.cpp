@@ -1172,9 +1172,6 @@ void CGenCP1::Generate() {
 		// Select rule set
 		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, 0, &(cantus[cantus_id]));
-		// Show cantus id
-		st.Format("Cantus %d. ", cantus_id + 1);
-		comment[0][0] = st + comment[0][0];
 		// Go forward
 		Adapt(0, step - 1);
 		t_generated = step;
