@@ -1644,17 +1644,18 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 	// Loop from second to second to last note
 	for (ls = 1; ls < fli_size-1; ++ls) {
 		s = fli2[ls];
+		s_1 = fli2[ls-1];
 		// Decrement for previous tonic note
 		if (ls > tonic_window) {
-			if (!pc[fli2[ls - tonic_window]]) --tcount;
+			if (!pc[fli2[ls - tonic_window]]) {
+				if (abs(cc[fli2[ls - tonic_window]] - cc[fli2[ls - tonic_window]]) > tonic_leap) tcount -= tonic_leap_weight;
+				else --tcount;
+			}
 		}
 		if (!pc[s]) {
-			// Check leap to tonic note (first and last notes are not checked)
-			if (abs(cc[s] - cc[fli2[ls - 1]]) > tonic_leap) {
-				FLAG2(197, s);
-			}
 			// Increment for current tonic note
-			++tcount;
+			if (abs(cc[s] - cc[s_1]) > tonic_leap) tcount += tonic_leap_weight;
+			else ++tcount;
 			// Check count of tonic notes
 			if (tcount > tonic_max) FLAG2(196, s);
 		}
