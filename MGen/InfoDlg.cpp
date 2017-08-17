@@ -63,10 +63,8 @@ BOOL CInfoDlg::OnInitDialog()
 		int i = ms - pGen->coff[ms][mv];
 		int ei = ms + pGen->noff[ms][mv] - 1;
 		
-		st.Format("Melody:");
-		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
+		m_info.AddText("Melody:\n", RGB(0, 0, 0), CFE_BOLD);
 		if (pGen->mel_id[i][mv] > -1) {
-			st.Empty();
 			int m1 = i;
 			int m2 = i;
 			// Find melody start
@@ -83,13 +81,15 @@ BOOL CInfoDlg::OnInitDialog()
 				if (pGen->note[x][mv] == prev_note) continue;
 				++nnum;
 				prev_note = pGen->note[x][mv];
-				if (!pGen->comment[x][mv].IsEmpty()) {
-					st2.Format("\nNOTE %d:%s", nnum, pGen->comment[x][mv]);
-					st += st2;
+				if (pGen->comment[x][mv].size()) {
+					st.Format("NOTE %d:\n", nnum);
+					m_info.AddText(st, RGB(0, 0, 0), 0);
+					for (int c = 0; c < pGen->comment[x][mv].size(); ++c) {
+						m_info.AddText(pGen->comment[x][mv][c]+"\n", 
+							RGB(pGen->ccolor[x][mv][c].GetR(), pGen->ccolor[x][mv][c].GetG(), pGen->ccolor[x][mv][c].GetB()), 0);
+					}
 				}
 			}
-			m_info.AddText(st, RGB(180, 0, 0), 0);
-			m_info.AddText("\n", RGB(0, 0, 0), 0);
 			m_info.AddText("\n", RGB(0, 0, 0), 0);
 			st.Format("%s\n", pGen->mel_info[pGen->mel_id[i][mv]]);
 			m_info.AddText(st, RGB(0, 0, 180), 0);
@@ -116,16 +116,19 @@ BOOL CInfoDlg::OnInitDialog()
 		if (st2 != "") m_info.AddText("MeloCurve: " + st2 + "\n", RGB(0, 0, 0), 0);
 
 		st.Format("Lengroup: %d\n", pGen->lengroup[i][mv]);
-		m_info.AddText(st, RGB(0, 170, 0), 0);
+		m_info.AddText(st, RGB(0, 0, 170), 0);
 		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);
-		m_info.AddText(st, RGB(0, 170, 0), 0);
+		m_info.AddText(st, RGB(0, 0, 170), 0);
 		st.Format("Adapt comment(start) : %s\nAdapt comment(end) : %s\n",
 			pGen->adapt_comment[i][mv], pGen->adapt_comment[ei][mv]);
-		m_info.AddText(st, RGB(0, 170, 0), 0);
-		st.Format("Note comment: %s\n", pGen->comment[i][mv]);
-		m_info.AddText(st, RGB(180, 0, 0), 0);
+		m_info.AddText(st, RGB(0, 0, 170), 0);
+		m_info.AddText("Note comment:\n", RGB(0, 0, 0), 0);
+		for (int c = 0; c < pGen->comment[i][mv].size(); ++c) {
+			m_info.AddText(pGen->comment[i][mv][c] + "\n",
+				RGB(pGen->ccolor[i][mv][c].GetR(), pGen->ccolor[i][mv][c].GetG(), pGen->ccolor[i][mv][c].GetB()), 0);
+		}
 		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
-		m_info.AddText(st, RGB(180, 0, 0), 0);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note length: %d steps\n", pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note velocity: %d\n", pGen->vel[i][mv]);
