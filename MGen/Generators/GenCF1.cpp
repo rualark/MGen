@@ -1449,7 +1449,7 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 		}
 	}
 	// Check if we have a greater neighbouring leap
-	if ((fleap_end < fli_size - 1 && abs(c[fli2[fleap_end + 1]] - c[leap_end]) > leap_size && leap[leap_start] * leap[leap_end]<0) ||
+	if ((fleap_end < fli_size - 1 && abs(c[fli2[fleap_end + 1]] - c[leap_end]) >= leap_size-1 && leap[leap_start] * leap[leap_end]<0) ||
 		(fleap_start > 0 && abs(c[leap_start] - c[fli2[fleap_start - 1]]) > leap_size && leap[leap_start] * leap[fli2[fleap_start - 1]]<0)) {
 		// Set that we are preleaped (even if we are postleaped)
 		child_leap = 1;
