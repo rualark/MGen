@@ -70,7 +70,7 @@ BOOL CInfoDlg::OnInitDialog()
 			int m1 = i;
 			int m2 = i;
 			// Find melody start
-			for (int x = i; x > 0; --x) {
+			for (int x = i; x >= 0; --x) {
 				if (pGen->mel_id[x][mv] == pGen->mel_id[i][mv]) m1 = x;
 			}
 			// Find melody finish
