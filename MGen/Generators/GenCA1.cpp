@@ -325,11 +325,13 @@ void CGenCA1::ConfirmExpect() {
 				}
 			}
 			if (!found) {
-				CString est;
-				est.Format("Expected flag not confirmed: [%d] %s (%s) at %d:%d %s", 
-					fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
-				WriteLog(5, est);
-				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+				if (m_testing || accept[fl] != -1) {
+					CString est;
+					est.Format("Expected flag not confirmed: [%d] %s (%s) at %d:%d %s",
+						fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
+					WriteLog(5, est);
+					if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+				}
 			}
 			else if (debug_level > 0) {
 				CString est;

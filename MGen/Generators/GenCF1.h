@@ -120,6 +120,8 @@ protected:
 	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
 	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
+	inline int FailManyLeaps(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2);
+	inline void GetLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
 	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int steps, int notes, int flag);
 	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
@@ -230,6 +232,10 @@ protected:
 	int max_smooth = 7; // Maximum linear movement allowed (in steps)
 	int max_leaps = 2; // Maximum allowed leaps during max_leap_steps
 	int max_leaped = 3; // Maximum allowed leaped-over-notes during max_leap_steps
+	int max_leap_steps = 7;
+	int max_leaps2 = 2; // Maximum allowed leaps during max_leap_steps2
+	int max_leaped2 = 3; // Maximum allowed leaped-over-notes during max_leap_steps
+	int max_leap_steps2 = 7;
 	int cse_leaps = 2; // Maximum allowed consecutive leaps for Consecutive leaps
 	int cse_leaps2 = 3; // Maximum allowed consecutive leaps for Consecutive leaps+
 	int hsp_leap = 5; // Maximum allowed leap before bad harmonic sequence
@@ -238,7 +244,6 @@ protected:
 
 	int early_culm2 = 4; // Early culmination step (second rule)
 	int early_culm3 = 50; // Early culmination step percent
-	int max_leap_steps = 7;
 	int stag_notes = 2; // Maximum allowed stag_notes (same notes) during stag_note_steps
 	int stag_note_steps = 7;
 	int stag_notes2 = 3; // Maximum allowed stag_notes2 (same notes) during stag_note_steps2

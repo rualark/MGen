@@ -252,9 +252,12 @@ void CGenCF1::ParseRules() {
 void CGenCF1::SetRuleParams() {
 	max_smooth = GetRuleParam(rule_set, 4, rsSubName, 0);
 	max_smooth_direct = GetRuleParam(rule_set, 5, rsSubName, 0);
-	max_leaps = GetRuleParam(rule_set, 25, rsSubName, 0);
-	max_leaped = GetRuleParam(rule_set, 25, rsSubName, 1);
-	max_leap_steps = GetRuleParam(rule_set, 25, rsSubName, 2);
+	max_leap_steps = GetRuleParam(rule_set, 3, rsName, 0);
+	max_leaps = GetRuleParam(rule_set, 3, rsSubName, 0);
+	max_leaped = GetRuleParam(rule_set, 25, rsSubName, 0);
+	max_leap_steps2 = GetRuleParam(rule_set, 202, rsName, 0);
+	max_leaps2 = GetRuleParam(rule_set, 202, rsSubName, 0);
+	max_leaped2 = GetRuleParam(rule_set, 203, rsSubName, 0);
 	cse_leaps = GetRuleParam(rule_set, 70, rsSubName, 0);
 	cse_leaps2 = GetRuleParam(rule_set, 71, rsSubName, 0);
 	stag_notes = GetRuleParam(rule_set, 10, rsSubName, 0);
@@ -915,19 +918,45 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, in
 	return 0;
 }
 
-// Check if too many leaps
-int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
-	// Clear variables
+int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2) {
 	int leap_sum = 0;
 	int leaped_sum = 0;
-	int leap_sum2 = 0;
 	int max_leap_sum = 0;
 	int max_leaped_sum = 0;
-	int max_leap_sum2 = 0;
-	int smooth_sum = 0;
-	int smooth_sum2 = 0;
 	int leap_sum_i = 0;
-	int leap_sum_s2 = 0;
+	for (ls = 0; ls < fli_size - 1; ++ls) {
+		s = fli2[ls];
+		s1 = fli2[ls + 1];
+		// Add new leap
+		if (leap[s] != 0) {
+			++leap_sum;
+			leaped_sum += abs(c[s] - c[s1]) + 1;
+		}
+		// Subtract old leap
+		if ((ls >= mleapsteps) && (leap[fli2[ls - mleapsteps]] != 0)) {
+			leap_sum--;
+			leaped_sum -= abs(c[fli2[ls - mleapsteps]] - c[fli2[ls - mleapsteps + 1]]) + 1;
+		}
+		// Get maximum leap_sum
+		if (leap_sum >= mleaps && leap_sum > max_leap_sum) {
+			max_leap_sum = leap_sum;
+			leap_sum_i = s;
+		}
+		if (leaped_sum > mleaped && leaped_sum > max_leaped_sum) {
+			max_leaped_sum = leaped_sum;
+			leap_sum_i = s;
+		}
+		// Calculate penalty
+		if (!accept[flag1] && leap_sum > mleaps) ++fpenalty[flag1];
+		if (!accept[flag2] && leaped_sum > mleaped) ++fpenalty[flag2];
+	}
+	if (max_leap_sum > mleaps) FLAG2(flag1, leap_sum_i);
+	if (max_leaped_sum > mleaped) FLAG2(flag2, leap_sum_i);
+	return 0;
+}
+
+// Calculate global leap smooth slur variables
+void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
 	for (int i = 0; i < ep2 - 1; ++i) {
 		// Find all leaps
 		leap[i] = 0;
@@ -943,39 +972,32 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 	leap[ep2 - 1] = 0;
 	smooth[ep2 - 1] = 0;
 	slur[0] = 0;
+}
+
+// Check if too many leaps
+int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
+	// Clear variables
+	int leap_sum2 = 0;
+	int max_leap_sum2 = 0;
+	int smooth_sum = 0;
+	int smooth_sum2 = 0;
+	int leap_sum_s2 = 0;
 	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s = fli2[ls];
 		s1 = fli2[ls+1];
 		// Add new leap
 		if (leap[s] != 0) {
-			++leap_sum;
-			leaped_sum += abs(c[s] - c[s1]);
 			++leap_sum2;
 		}
 		else {
 			leap_sum2 = 0;
 		}
-		// Subtract old leap
-		if ((ls >= max_leap_steps) && (leap[fli2[ls - max_leap_steps]] != 0)) {
-			leap_sum--;
-			leaped_sum -= abs(c[fli2[ls - max_leap_steps]] - c[fli2[ls - max_leap_steps + 1]]);
-		}
 		// Get maximum leap_sum
-		if ((leap_sum >= max_leaps && leap_sum > max_leap_sum ) || 
-			(leaped_sum > max_leaped && leaped_sum > max_leaped_sum))  {
-			max_leap_sum = leap_sum;
-			max_leaped_sum = leap_sum;
-			leap_sum_i = s;
-		}
 		if (leap_sum2 > max_leap_sum2) {
 			max_leap_sum2 = leap_sum2;
 			leap_sum_s2 = s;
 		}
 		// Calculate penalty
-	  if (!accept[25]) {
-			if (leap_sum > max_leaps) ++fpenalty[25];
-			if (leaped_sum > max_leaped) ++fpenalty[25];
-		}
 		if (leap_sum2 == cse_leaps) {
 			if (accept[70] > 0) ++fpenalty[70];
 			if (leap_sum2 > cse_leaps2 && accept[71] > 0) ++fpenalty[71];
@@ -996,9 +1018,6 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 			// Check if two notes repeat
 			if ((ls > 0) && (cc[s] == cc[fli2[ls+2]]) && (cc[fli2[ls - 1]] == cc[fli2[ls+1]])) FLAG2(9, fli2[ls-1]);
 		}
-	}
-	if (max_leap_sum > max_leaps || max_leaped_sum > max_leaped) {
-		FLAG2(25, leap_sum_i)
 	}
 	if (max_leap_sum2 >= cse_leaps) {
 		if (max_leap_sum2 > cse_leaps2) FLAG2(71, leap_sum_s2)
@@ -3144,6 +3163,9 @@ check:
 		if (FailLastNotes(m_pc, m_pcc)) goto skip;
 		if (FailNoteSeq(m_pc)) goto skip;
 		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
+		GetLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur);
+		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
+		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;
 		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps2, repeat_notes2, 76)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps3, repeat_notes3, 36)) goto skip;
