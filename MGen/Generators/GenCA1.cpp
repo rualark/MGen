@@ -325,6 +325,7 @@ void CGenCA1::ConfirmExpect() {
 				}
 			}
 			if (!found) {
+				// Do not show errors if flag ignored and not testing
 				if (m_testing || accept[fl] != -1) {
 					CString est;
 					est.Format("Expected flag not confirmed: [%d] %s (%s) at %d:%d %s",
