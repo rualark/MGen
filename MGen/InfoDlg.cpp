@@ -78,11 +78,13 @@ BOOL CInfoDlg::OnInitDialog()
 				if (pGen->mel_id[x][mv] == pGen->mel_id[i][mv]) m2 = x;
 			}
 			int prev_note = -1;
+			int nnum = 0;
 			for (int x = m1; x <= m2; ++x) {
 				if (pGen->note[x][mv] == prev_note) continue;
+				++nnum;
 				prev_note = pGen->note[x][mv];
 				if (!pGen->comment[x][mv].IsEmpty()) {
-					st2.Format("\nNOTE %d:%s", x - m1 + 1, pGen->comment[x][mv]);
+					st2.Format("\nNOTE %d:%s", nnum, pGen->comment[x][mv]);
 					st += st2;
 				}
 			}
