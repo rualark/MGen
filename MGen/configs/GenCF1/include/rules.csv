@@ -85,7 +85,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;184;100;Melody;Leaps;Leap down size;maj7;0;;
 1;185;0;Melody;Leaps;Leap down size;8th;-1;;
 1;186;100;Melody;Leaps;Leap down size;>8th;0;;
-1;25;60;Melody;Leaps;Many leaps;>3 >10N in 8;1;;More than X leaps, which leap over more than Y notes, within window of Z notes.
+1;3;60;Melody;Leaps;Many leaps within 9 notes;>5 leaps;0;;
+1;25;60;Melody;Leaps;Many leaps within 9 notes;>10 notes;0;;Total leaps more than 10 notes 
+1;202;60;Melody;Leaps;Many leaps within 15 notes;>8 leaps;0;;
+1;203;60;Melody;Leaps;Many leaps within 15 notes;>16 notes;0;;Total leaps more than 10 notes 
 1;70;60;Melody;Leaps;Consecutive leaps;3;0;;
 1;71;100;Melody;Leaps;Consecutive leaps;>3;0;;
 1;27;100;Melody;Leaps;Consecutive unidirectional leaps;Sum >6th;0;;
