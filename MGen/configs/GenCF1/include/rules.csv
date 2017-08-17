@@ -107,7 +107,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;36;60;Melody;Repeats;Notes repeat;3 sym. in 8;0;;Symmetric repeat of X notes within Y notes
 1;72;60;Melody;Repeats;Notes repeat;5 in 15;0;;Repeat of X notes within Y notes
 1;73;60;Melody;Repeats;Notes repeat;7 in 100;0;;Repeat of X notes within Y notes
-1;196;20;Melody;Repeats;Tonic note;>1 within 9;1;;More than X tonic note equivalents within Y notes (except first and last tonic). Weights:  Stepwize to tonic = 1 Leap >M3 to tonic = 2
+1;196;20;Melody;Repeats;Tonic note;>2 within 9;0;;More than X tonic note equivalents within Y notes (except first and last tonic). Weights:  Stepwize to tonic = 1 Leap >M3 to tonic = 2
 1;10;60;Melody;Repeats;Note stagnation;>2 in 7 notes;0;Same note repeats more than X times during stag_note_steps steps;
 1;39;60;Melody;Repeats;Note stagnation;>3 in 10 notes;0;Same note repeats more than X times during stag_note_steps steps;
 1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;
