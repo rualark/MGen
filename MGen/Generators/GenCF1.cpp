@@ -1492,6 +1492,9 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 	if (leap_size > 2) ++allowed_skips;
 	if (leap_size > 6) ++allowed_skips;
 	if (late_leap <= 5) ++allowed_skips;
+	int allowed_pskips = 0;
+	if (leap_size > 2) ++allowed_pskips;
+	if (leap_size > 6) ++allowed_pskips;
 	// Check if leap is filled
 	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
@@ -1519,10 +1522,15 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 				CountFill(c, ptail_len, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from_pre, pfill_from,
 					pdeviates, pdev_count, leap_prev, pfill_end);
 				prefilled = 1;
-				if (pskips > 0) prefilled = 0;
+				if (pskips > allowed_pskips) prefilled = 0;
+				else if (pfill_to > 2) prefilled = 0;
+				else if (pfill_from > 2) prefilled = 0;
 				else if (pdeviates > 1) prefilled = 0;
 			}
-			if (prefilled) FLAG2(112 + leap_id, leap_start)
+			if (prefilled) {
+				if (late_leap < 3) FLAG2(204 + leap_id, leap_start)
+				else FLAG2(112 + leap_id, leap_start)
+			}
 			else if (child_leap) FLAG2(116 + leap_id, leap_start)
 			else FLAG2(124 + leap_id, leap_start);
 		}
