@@ -596,9 +596,7 @@ CMGenDoc* CMGenView::GetDocument() const // non-debug version is inline
 }
 #endif //_DEBUG
 
-
 // CMGenView message handlers
-
 
 void CMGenView::OnInitialUpdate()
 {
