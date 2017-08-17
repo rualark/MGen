@@ -86,9 +86,13 @@ Set;Severity;Class;Group;Rule;Flag
 1;185;0;Melody;Leaps;Leap down size;8th;-1;;
 1;186;100;Melody;Leaps;Leap down size;>8th;0;;
 1;3;60;Melody;Leaps;Many leaps within 9 notes;>5 leaps;0;;
-1;25;60;Melody;Leaps;Many leaps within 9 notes;>22 notes;0;;Total leaps more than 10 notes 
+1;25;60;Melody;Leaps;Many leaps within 9 notes;>22 notes;0;;Total leaps length more than X notes:
+
+3 is third, 4 is fourth and so on
 1;202;60;Melody;Leaps;Many leaps within 15 notes;>8 leaps;0;;
-1;203;60;Melody;Leaps;Many leaps within 15 notes;>34 notes;0;;Total leaps more than 10 notes 
+1;203;60;Melody;Leaps;Many leaps within 15 notes;>34 notes;0;;Total leaps length more than X notes:
+
+3 is third, 4 is fourth and so on
 1;70;60;Melody;Leaps;Consecutive leaps;3;0;;
 1;71;100;Melody;Leaps;Consecutive leaps;>3;0;;
 1;27;100;Melody;Leaps;Consecutive unidirectional leaps;Sum >6th;0;;
@@ -111,9 +115,6 @@ Set;Severity;Class;Group;Rule;Flag
 
 Stepwize to tonic = 1
 Leap >M3 to tonic = 2
-Upper culmination at tonic = 2
-Lower culmination at tonic = 2
-1;197;20;Melody;Repeats;Tonic note;leap >M3;-1;;Leap to tonic note
 1;10;60;Melody;Repeats;Note stagnation;>2 in 7 notes;0;Same note repeats more than X times during stag_note_steps steps;
 1;39;60;Melody;Repeats;Note stagnation;>3 in 10 notes;0;Same note repeats more than X times during stag_note_steps steps;
 1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;

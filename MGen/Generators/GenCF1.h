@@ -290,10 +290,8 @@ protected:
 	int repeat_steps7 = 100; // Prohibit repeating of 7 notes closer than repeat_steps between first notes
 	int tonic_window = 9; // Number of notes that are searched for number of tonic notes
 	int tonic_max = 1; // Maximum number of tonic notes that can be contained in tonic window
-	int tonic_leap = 4; // Maximum allowed leap to tonic
+	int tonic_leap = 4; // Maximum allowed leap to tonic (chromatic)
 	int tonic_leap_weight = 2; // Weight of leap to tonic
-	int tonic_uculm_weight = 2; // Weight of upper culmination at tonic
-	int tonic_lculm_weight = 2; // Weight of lower culmination at tonic
 	int fis_gis_max = 3; // Maximum allowed distance between F# and G#
 	int dev_late2 = 3; // Maximum note count to consider non-late leap compensation deviation to 2nd
 	int dev_late3 = 3; // Maximum note count to consider non-late leap compensation deviation to 3rd
