@@ -300,7 +300,7 @@ int CGenCP1::SendCP() {
 		}
 		// If  window-scan
 		st.Format("#%d\nCantus: %s\nRule penalty: %s", cantus_sent, cantus_high?"high":"low", rpst);
-		AddMelody(step00, step - 1, svoice + 1, st);
+		AddMelody(step00, step - 1, svoice + cpv, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -317,7 +317,7 @@ int CGenCP1::SendCP() {
 				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, key_eval);
 			}
 		}
-		AddMelody(step00, step - 1, svoice+1, st);
+		AddMelody(step00, step - 1, svoice + cpv, st);
 	}
 	// Send
 	t_generated = step;
