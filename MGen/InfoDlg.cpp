@@ -86,7 +86,7 @@ BOOL CInfoDlg::OnInitDialog()
 					m_info.AddText(st, RGB(0, 0, 0), 0);
 					for (int c = 0; c < pGen->comment[x][mv].size(); ++c) {
 						m_info.AddText(pGen->comment[x][mv][c]+"\n", 
-							RGB(pGen->ccolor[x][mv][c].GetR(), pGen->ccolor[x][mv][c].GetG(), pGen->ccolor[x][mv][c].GetB()), 0);
+							RGB(pGen->ccolor[x][mv][c].GetR(), pGen->ccolor[x][mv][c].GetG()/1.5, pGen->ccolor[x][mv][c].GetB()), 0);
 					}
 				}
 			}
@@ -125,7 +125,7 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText("Note comment:\n", RGB(0, 0, 0), 0);
 		for (int c = 0; c < pGen->comment[i][mv].size(); ++c) {
 			m_info.AddText(pGen->comment[i][mv][c] + "\n",
-				RGB(pGen->ccolor[i][mv][c].GetR(), pGen->ccolor[i][mv][c].GetG(), pGen->ccolor[i][mv][c].GetB()), 0);
+				RGB(pGen->ccolor[i][mv][c].GetR(), pGen->ccolor[i][mv][c].GetG()/1.5, pGen->ccolor[i][mv][c].GetB()), 0);
 		}
 		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
