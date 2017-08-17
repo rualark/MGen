@@ -1399,10 +1399,8 @@ void CGenCF1::FailLeapInit(vector<int> &c, int &late_leap, int &presecond, int &
 	if (fleap_end < fli_size - 1) leap_next = leap[leap_start] * leap[leap_end];
 	// Prev is leap?
 	if (fleap_start > 0) leap_prev = leap[leap_start] * leap[fli2[fleap_start] - 1];
-	// Last leap border
-	int last_max = fli_size - 5;
-	// Last leap?
-	if (fleap_start >= last_max) late_leap = 1;
+	// Late leap?
+	late_leap = fli_size - fleap_start;
 }
 
 int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_leap, vector<int> &c, vector<int> &leap) {
@@ -1493,7 +1491,7 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 	int allowed_skips = 0;
 	if (leap_size > 2) ++allowed_skips;
 	if (leap_size > 6) ++allowed_skips;
-	if (late_leap) ++allowed_skips;
+	if (late_leap <= 5) ++allowed_skips;
 	// Check if leap is filled
 	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
@@ -1504,11 +1502,11 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 			fill_from, deviates, dev_count, leap_prev, fill_end);
 		if (skips > allowed_skips) filled = 0;
 		else if (fill_to > 3) filled = 0;
-		else if (fill_to == 3 && (!fill_to_pre || !late_leap || (!accept[100 + leap_id] && !accept[104 + leap_id]))) filled = 0;
+		else if (fill_to == 3 && (!fill_to_pre || late_leap > 5 || (!accept[100 + leap_id] && !accept[104 + leap_id]))) filled = 0;
 		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
 		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
 		else if (fill_from > 3) filled = 0;
-		else if (fill_from == 3 && (!fill_from_pre || !late_leap || !accept[53 + leap_id])) filled = 0;
+		else if (fill_from == 3 && (!fill_from_pre || late_leap > 5 || !accept[53 + leap_id])) filled = 0;
 		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
 		else if (deviates > 2) filled = 0;
 		else if (dev_count > 1) filled = 0;
@@ -1532,8 +1530,8 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		// This means that compensation errors are not shown if uncompensated (successfully or not)
 		else {
 			// Flag late uncompensated precompensated leap
-			if (fill_to == 3 && late_leap) FLAG2(144 + leap_id, leap_start)
-			else if (fill_from == 3 && late_leap) FLAG2(144 + leap_id, leap_start)
+			if (fill_to == 3 && late_leap <= 5) FLAG2(144 + leap_id, leap_start)
+			else if (fill_from == 3 && late_leap <= 5) FLAG2(144 + leap_id, leap_start)
 			// Flag unfinished fill if it is not blocking
 			else if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, leap_start)
 			// Flag prepared unfinished fill if it is not blocking
