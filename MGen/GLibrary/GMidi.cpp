@@ -652,7 +652,7 @@ void CGMidi::LoadCP(CString path)
 	int cid = 0; // counterpoint
 	int nid = 0; // note
 	int hid = 0; // harmony
-	int pos_old = -1;
+	int pos_old = -1, pos_new = 0;
 	vector <vector<int>> cpos;
 	vector <int> cl; // length
 	vector <int> cp; // position
@@ -670,31 +670,7 @@ void CGMidi::LoadCP(CString path)
 				float nlen2 = mev->getTickDuration();
 				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
 				// If new column and previous column had notes
-				if (pos != pos_old && inter.size()) { 
-					if (hid > 1) {
-						// Find slurred notes
-						for (int i = 0; i < inter[hid-2].size(); ++i) {
-							if (inter[hid - 2][i].second > 0) {
-								inter[hid - 1].push_back(make_pair(inter[hid - 2][i].first, inter[hid - 2][i].second));
-							}
-						}
-					}
-					// Get min len
-					min_len[hid - 1] = pos - pos_old;
-					for (int i = 0; i < inter[hid-1].size(); ++i) {
-						if (inter[hid - 1][i].second && min_len[hid - 1] > inter[hid - 1][i].second) min_len[hid - 1] = inter[hid - 1][i].second;
-					}
-					// Decrease length
-					for (int i = 0; i < inter[hid-1].size(); ++i) {
-						if (inter[hid - 1][i].second) inter[hid - 1][i].second -= min_len[hid - 1];
-					}
-					// Get max len
-					for (int i = 0; i < inter[hid - 1].size(); ++i) {
-						if (max_len[hid - 1] < inter[hid - 1][i].second) max_len[hid - 1] = inter[hid - 1][i].second;
-					}
-					// Sort
-					sort(inter[hid-1].begin(), inter[hid - 1].end());
-				}
+				ProcessInter(pos, pos_old, inter, hid, min_len, max_len);
 				// Check for pause
 				if (pos2 - last_tick > (float)tpc / 2) {
 					// Add cpoint if it is long
@@ -764,11 +740,12 @@ void CGMidi::LoadCP(CString path)
 				last_tick = max(last_tick, pos2 + nlen2);
 				last_tick2 = min(last_tick2, pos2 + nlen2);
 				pos_old = pos;
+				pos_new = pos + nlen;
 			}
 		}
 		// Add cpoint if it is long
 		if (inter.size() > 5 && !bad) {
-			sort(inter[hid - 1].begin(), inter[hid - 1].end());
+			ProcessInter(pos_new, pos_old, inter, hid, min_len, max_len);
 			cid++;
 			// Get maximum voice count
 			int max_voice = 0;
@@ -831,6 +808,35 @@ void CGMidi::LoadCP(CString path)
 	CString st;
 	st.Format("LoadCP successfully loaded %d cp (in %d ms)", cid + 1, time_stop - time_start);
 	WriteLog(0, st);
+}
+
+void CGMidi::ProcessInter(int pos, int pos_old, std::vector<std::vector<std::pair<int, int>>> &inter, int hid, std::vector<int> &min_len, std::vector<int> &max_len)
+{
+	if (pos != pos_old && inter.size()) {
+		if (hid > 1) {
+			// Find slurred notes
+			for (int i = 0; i < inter[hid - 2].size(); ++i) {
+				if (inter[hid - 2][i].second > 0) {
+					inter[hid - 1].push_back(make_pair(inter[hid - 2][i].first, inter[hid - 2][i].second));
+				}
+			}
+		}
+		// Get min len
+		min_len[hid - 1] = pos - pos_old;
+		for (int i = 0; i < inter[hid - 1].size(); ++i) {
+			if (inter[hid - 1][i].second && min_len[hid - 1] > inter[hid - 1][i].second) min_len[hid - 1] = inter[hid - 1][i].second;
+		}
+		// Decrease length
+		for (int i = 0; i < inter[hid - 1].size(); ++i) {
+			if (inter[hid - 1][i].second) inter[hid - 1][i].second -= min_len[hid - 1];
+		}
+		// Get max len
+		for (int i = 0; i < inter[hid - 1].size(); ++i) {
+			if (max_len[hid - 1] < inter[hid - 1][i].second) max_len[hid - 1] = inter[hid - 1][i].second;
+		}
+		// Sort
+		sort(inter[hid - 1].begin(), inter[hid - 1].end());
+	}
 }
 
 void CGMidi::StartMIDI(int midi_device_i, int from)

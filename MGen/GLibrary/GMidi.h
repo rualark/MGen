@@ -41,6 +41,8 @@ public:
 	void LoadCantus(CString path);
 	void LoadCP(CString path);
 
+	void ProcessInter(int pos, int pos_old, std::vector<std::vector<std::pair<int, int>>> &inter, int hid, std::vector<int> &min_len, std::vector<int> &max_len);
+
 	// RtMidi
 	CMidiOut *mo;
 	void StartMIDI(int midi_device_i, int from);

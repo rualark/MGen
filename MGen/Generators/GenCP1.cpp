@@ -445,7 +445,13 @@ int CGenCP1::FailSus() {
 		if (s2 == ep2 - 1) unresolved = 1;
 		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) unresolved = 1;
 		if (unresolved) {
-			if (FailVInterval()) return 1;
+			last_note = -1;
+			for (s = sus[ls]; s <= s2; ++s) {
+				if (last_note != acc[cpv][s]) {
+					last_note = acc[cpv][s];
+					if (FailVInterval()) return 1;
+				}
+			}
 		}
 	}
 	return 0;
@@ -1045,6 +1051,7 @@ check:
 		GetVIntervals();
 		if (FailVMotion()) goto skip;
 		if (FailVIntervals()) goto skip;
+		if (FailSus()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps2, stag_notes2, 39)) goto skip;

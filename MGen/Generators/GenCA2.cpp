@@ -195,6 +195,7 @@ void CGenCA2::ExplodeCP() {
 		if (!cpoint[cantus_id][cpv][i]) {
 			fn = i + 1;
 		}
+		else break;
 	}
 	// Copy notes over start pause
 	for (int i = 0; i < fn; ++i) {
