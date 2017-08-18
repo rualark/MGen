@@ -1260,6 +1260,7 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 	if (accept[120 + leap_id]) max_deviation = 2;
 	CountFillInit(c, tail_len, pre, t1, t2, fill_end);
 	// Detect fill_end
+	deviates = 0;
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
 	for (int x = 0; x < tc.size(); ++x) {
 		// If deviating, start deviation state and calculate maximum deviation
@@ -1399,7 +1400,6 @@ void CGenCF1::FailLeapInit(vector<int> &c, int &late_leap, int &presecond, int &
 	fleap_start = ls;
 	fleap_end = ls + 1;
 	leap_size = abs(c[leap_end] - c[s]);
-	late_leap = 0;
 										// Next is leap?
 	if (fleap_end < fli_size - 1) leap_next = leap[leap_start] * leap[leap_end];
 	// Prev is leap?
