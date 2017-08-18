@@ -22,6 +22,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;105;10;Melody;Compensated leap;Compensated to 3rd;4th;-1;;
 1;106;40;Melody;Compensated leap;Compensated to 3rd;5th;-1;;
 1;107;60;Melody;Compensated leap;Compensated to 3rd;>5th;-1;;
+1;144;0;Melody;Compensated leap;C4PL leap;3rd;-1;Compensated to 4th, precompensated late leap;
+1;145;0;Melody;Compensated leap;C4PL leap;4th;-1;Compensated to 4th, precompensated late leap;
+1;146;40;Melody;Compensated leap;C4PL leap;5th;-1;Compensated to 4th, precompensated late leap;
+1;147;100;Melody;Compensated leap;C4PL leap;>5th;0;Compensated to 4th, precompensated late leap;
 1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;
 1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;-1;;
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated;5th;0;;
@@ -30,14 +34,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;205;0;Melody;Uncompensated leap;Precompensated last leap;4th;-1;;
 1;206;40;Melody;Uncompensated leap;Precompensated last leap;5th;-1;;
 1;207;100;Melody;Uncompensated leap;Precompensated last leap;>5th;0;;
-1;144;0;Melody;Uncompensated leap;C4PL leap;3rd;-1;Compensated to 4th, precompensated late leap;
-1;145;0;Melody;Uncompensated leap;C4PL leap;4th;-1;Compensated to 4th, precompensated late leap;
-1;146;40;Melody;Uncompensated leap;C4PL leap;5th;-1;Compensated to 4th, precompensated late leap;
-1;147;100;Melody;Uncompensated leap;C4PL leap;>5th;0;Compensated to 4th, precompensated late leap;
 1;116;0;Melody;Uncompensated leap;Uncompensated child leap;3rd;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;117;30;Melody;Uncompensated leap;Uncompensated child leap;4th;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;118;60;Melody;Uncompensated leap;Uncompensated child leap;5th;-1;After longer leap or before longer/same/one-note-smaller leap.;
-1;119;100;Melody;Uncompensated leap;Uncompensated child leap;>5th;0;After longer leap or before longer/same/one-note-smaller leap.;
+1;119;100;Melody;Uncompensated leap;Uncompensated child leap;>5th;1;After longer leap or before longer/same/one-note-smaller leap.;
 1;124;40;Melody;Uncompensated leap;Uncompensated;3rd;0;If no other uncompensated rules worked.;
 1;125;60;Melody;Uncompensated leap;Uncompensated;4th;0;If no other uncompensated rules worked.;
 1;126;60;Melody;Uncompensated leap;Uncompensated;5th;0;If no other uncompensated rules worked.;
