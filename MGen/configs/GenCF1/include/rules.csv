@@ -116,10 +116,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;39;60;Melody;Repeats;Note stagnation;>3 in 10 notes;0;Same note repeats more than X times during stag_note_steps steps;
 1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;
 1;2;40;Melody;Tritone;Tritone;resolved;-1;;
-1;31;100;Melody;Tritone;Tritone;unresolved;0;;
-1;32;100;Melody;Tritone;Tritone;on climax;0;;
+1;31;100;Melody;Tritone;Tritone;unresolved;-1;;
+1;32;100;Melody;Tritone;Tritone;on climax;-1;;
 1;18;0;Melody;Tritone;Compound tritone;resolved;-1;;
-1;19;60;Melody;Tritone;Compound tritone;unresolved;0;;
+1;19;60;Melody;Tritone;Compound tritone;unresolved;-1;;
 1;67;0;Melody;Range;Skipped notes;1;-1;;
 1;68;70;Melody;Range;Skipped notes;>1;-1;;
 1;69;100;Melody;Range;Skipped notes;>1 joined;0;;
