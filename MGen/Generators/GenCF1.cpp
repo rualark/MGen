@@ -2775,7 +2775,7 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	note[pos + i][v] = cc[x];
 	tonic[pos + i][v] = tonic_cur;
 	minor[pos + i][v] = minor_cur;
-	len[pos + i][v] = cc_len[x / npm];
+	len[pos + i][v] = cc_len[x];
 	pause[pos + i][v] = 0;
 	coff[pos + i][v] = i;
 	// Add scan range
