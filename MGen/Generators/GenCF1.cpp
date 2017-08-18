@@ -1256,12 +1256,8 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 	int cur_deviation = 0;
 	int dev_state = 0;
 	int max_deviation = 0;
-	// For prefill, do not allow deviations
-	// For fill, allow deviations
-	if (!pre) {
-		if (accept[42 + leap_id]) max_deviation = 1;
-		if (accept[120 + leap_id]) max_deviation = 2;
-	}
+	if (accept[42 + leap_id]) max_deviation = 1;
+	if (accept[120 + leap_id]) max_deviation = 2;
 	CountFillInit(c, tail_len, pre, t1, t2, fill_end);
 	// Detect fill_end
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
@@ -1291,10 +1287,16 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 		fill_end = x;
 	}
 	// Add middle note as compensation note if leap is compound
-	if (leap_mid && !pre) {
+	if (leap_mid) {
 		// Convert note to tc
-		if (c[leap_end] > c[leap_start]) ++nstat3[c[leap_mid]];
-		else ++nstat3[128 - c[leap_mid]];
+		if (pre) {
+			if (c[leap_end] > c[leap_start]) ++nstat3[128 - c[leap_mid]];
+			else ++nstat3[c[leap_mid]];
+		}
+		else {
+			if (c[leap_end] > c[leap_start]) ++nstat3[c[leap_mid]];
+			else ++nstat3[128 - c[leap_mid]];
+		}
 	}
 	// Calculate fill vector
 	for (int x = 0; x <= fill_end; ++x) {
@@ -1529,8 +1531,11 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 					prefilled = 1;
 					if (pskips > allowed_pskips) prefilled = 0;
 					else if (pfill_to > 2) prefilled = 0;
+					else if (pfill_to == 2 && !accept[104 + leap_id]) prefilled = 0;
 					else if (pfill_from > 2) prefilled = 0;
+					else if (pfill_from == 2 && !accept[53 + leap_id]) prefilled = 0;
 					else if (pdeviates > 1) prefilled = 0;
+					else if (pdev_count > 1) filled = 0;
 				}
 				if (prefilled) {
 					if (late_leap < 3) FLAG2(204 + leap_id, leap_start)
