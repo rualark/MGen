@@ -1508,34 +1508,36 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 			fill_from, deviates, dev_count, leap_prev, fill_end);
 		if (skips > allowed_skips) filled = 0;
 		else if (fill_to > 3) filled = 0;
-		else if (fill_to == 3 && (!fill_to_pre || late_leap > 5 || (!accept[100 + leap_id] && !accept[104 + leap_id]))) filled = 0;
+		else if (fill_to == 3 && (!fill_to_pre || late_leap > 5 || !accept[144 + leap_id])) filled = 0;
 		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
 		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
 		else if (fill_from > 3) filled = 0;
-		else if (fill_from == 3 && (!fill_from_pre || late_leap > 5 || !accept[53 + leap_id])) filled = 0;
+		else if (fill_from == 3 && (!fill_from_pre || late_leap > 5 || !accept[144 + leap_id])) filled = 0;
 		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
 		else if (deviates > 2) filled = 0;
 		else if (dev_count > 1) filled = 0;
 		else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
 		else if (deviates == 2 && !accept[120 + leap_id]) filled = 0;
 		if (!filled) {
+			if (child_leap && accept[116 + leap_id]) FLAG2(116 + leap_id, leap_start)
 			// Check if  leap is prefilled
-			if (ls > 0) {
-				ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
-				CountFill(c, ptail_len, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from_pre, pfill_from,
-					pdeviates, pdev_count, leap_prev, pfill_end);
-				prefilled = 1;
-				if (pskips > allowed_pskips) prefilled = 0;
-				else if (pfill_to > 2) prefilled = 0;
-				else if (pfill_from > 2) prefilled = 0;
-				else if (pdeviates > 1) prefilled = 0;
+			else {
+				if (ls > 0) {
+					ptail_len = 2 + (leap_size - 1) * fill_steps_mul;
+					CountFill(c, ptail_len, nstat2, nstat3, pskips, pfill_to, 1, pfill_to_pre, pfill_from_pre, pfill_from,
+						pdeviates, pdev_count, leap_prev, pfill_end);
+					prefilled = 1;
+					if (pskips > allowed_pskips) prefilled = 0;
+					else if (pfill_to > 2) prefilled = 0;
+					else if (pfill_from > 2) prefilled = 0;
+					else if (pdeviates > 1) prefilled = 0;
+				}
+				if (prefilled) {
+					if (late_leap < 3) FLAG2(204 + leap_id, leap_start)
+					else FLAG2(112 + leap_id, leap_start)
+				}
+				else FLAG2(124 + leap_id, leap_start);
 			}
-			if (prefilled) {
-				if (late_leap < 3) FLAG2(204 + leap_id, leap_start)
-				else FLAG2(112 + leap_id, leap_start)
-			}
-			else if (child_leap) FLAG2(116 + leap_id, leap_start)
-			else FLAG2(124 + leap_id, leap_start);
 		}
 		// Show compensation flags only if successfully compensated
 		// This means that compensation errors are not shown if uncompensated (successfully or not)
