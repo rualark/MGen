@@ -1354,8 +1354,8 @@ void CGVar::MergeNotes(int step1, int step2, int v) {
 				}
 				coff[x][v] = coff[x - 1][v] + 1;
 				if (comment[x][v].size()) {
-					comment[first_pos][v].insert(end(comment[x][v]), begin(comment[x][v]), end(comment[x][v]));
-					ccolor[first_pos][v].insert(end(ccolor[x][v]), begin(ccolor[x][v]), end(ccolor[x][v]));
+					comment[first_pos][v].insert(end(comment[first_pos][v]), begin(comment[x][v]), end(comment[x][v]));
+					ccolor[first_pos][v].insert(end(ccolor[first_pos][v]), begin(ccolor[x][v]), end(ccolor[x][v]));
 				}
 				comment2[first_pos][v] += comment2[x][v];
 			}
