@@ -29,6 +29,7 @@ protected:
 	inline int FailCrossInt();
 	inline void GetVIntervals();
 	inline int FailVMotion();
+	inline int FailSus();
 	inline int FailVIntervals();
 	inline void CalcDpenaltyCP();
 	inline void SaveCP();
@@ -57,7 +58,7 @@ protected:
 	vector<int> tivl; // Type of interval between voices
 	vector<int> motion; // Melody motion type
 	vector<int> beat; // Beat type for each fli2
-	vector<int> sus; // Note suspension
+	vector<int> sus; // Note suspension flag (when above zero, links to first cantus-changing step)
 	vector<int> mli; // Forward links to first notes of each measure
 	vector<int> hli; // Forward links to first notes of each harmonic change
 	int hli_size = 0; // Size of hli vector

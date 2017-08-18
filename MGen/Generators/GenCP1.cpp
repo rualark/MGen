@@ -435,6 +435,14 @@ int CGenCP1::FailVMotion() {
 	return 0;
 }
 
+int CGenCP1::FailSus() {
+	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
+		s = fli[ls];
+		s2 = fli2[ls];
+		// Check if sus ends before cantus
+	}
+}
+
 int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	// Check first step
@@ -892,7 +900,7 @@ void CGenCP1::GetNoteTypes() {
 		if (l > 1) {
 			for (int i = 1; i < l; ++i) {
 				if (acc[cfv][s + i] != acc[cfv][s + i - 1]) {
-					sus[ls] = 1;
+					sus[ls] = s + i;
 					break;
 				}
 			}
