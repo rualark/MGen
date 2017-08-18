@@ -37,11 +37,11 @@ Set;Severity;Class;Group;Rule;Flag
 1;116;0;Melody;Uncompensated leap;Uncompensated child leap;3rd;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;117;30;Melody;Uncompensated leap;Uncompensated child leap;4th;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;118;60;Melody;Uncompensated leap;Uncompensated child leap;5th;-1;After longer leap or before longer/same/one-note-smaller leap.;
-1;119;100;Melody;Uncompensated leap;Uncompensated child leap;>5th;1;After longer leap or before longer/same/one-note-smaller leap.;
-1;124;40;Melody;Uncompensated leap;Uncompensated;3rd;0;If no other uncompensated rules worked.;
-1;125;60;Melody;Uncompensated leap;Uncompensated;4th;0;If no other uncompensated rules worked.;
-1;126;60;Melody;Uncompensated leap;Uncompensated;5th;0;If no other uncompensated rules worked.;
-1;127;100;Melody;Uncompensated leap;Uncompensated;>5th;0;If no other uncompensated rules worked.;
+1;119;100;Melody;Uncompensated leap;Uncompensated child leap;>5th;-1;After longer leap or before longer/same/one-note-smaller leap.;
+1;124;40;Melody;Uncompensated leap;Uncompensated leap;3rd;0;If no other uncompensated rules worked.;
+1;125;60;Melody;Uncompensated leap;Uncompensated leap;4th;0;If no other uncompensated rules worked.;
+1;126;60;Melody;Uncompensated leap;Uncompensated leap;5th;0;If no other uncompensated rules worked.;
+1;127;100;Melody;Uncompensated leap;Uncompensated leap;>5th;0;If no other uncompensated rules worked.;
 1;128;0;Melody;Melodic direction change near leap;Close + 1far MDC;3rd;-1;;
 1;129;0;Melody;Melodic direction change near leap;Close + 1far MDC;4th;-1;;
 1;130;40;Melody;Melodic direction change near leap;Close + 1far MDC;5th;-1;;
