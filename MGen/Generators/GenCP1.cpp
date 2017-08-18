@@ -436,11 +436,80 @@ int CGenCP1::FailVMotion() {
 }
 
 int CGenCP1::FailSus() {
+	int unresolved;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Check if sus ends before cantus
+		unresolved = 0;
+		if (s2 == ep2 - 1) unresolved = 1;
+		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) unresolved = 1;
+		if (unresolved) {
+			if (FailVInterval()) return 1;
+		}
 	}
+	return 0;
+}
+
+int CGenCP1::FailVInterval() {
+	// Unison
+	if (!civl[s]) {
+		// Inside
+		if (ls>1 && ls<fli_size - 1) FLAG2(91, fli2[ls - 1]);
+	}
+	// Discord
+	if (tivl[s] == iDis) {
+		// Downbeat
+		if (!beat[ls]) FLAG2(83, s)
+			// Upbeat
+		else {
+			// Check if movement to discord is smooth
+			if (asmooth[cpv][fli2[ls - 1]]) FLAG2(169, s)
+				// If movement to discord is leaping
+			else FLAG2(187, s);
+		}
+	}
+	else {
+		// Check if previous interval is discord
+		if (tivl[fli2[ls - 1]] == iDis) {
+			// Check if movement from discord is not smooth
+			if (!asmooth[cpv][fli2[ls - 1]]) FLAG2(88, fli2[ls - 1]);
+		}
+	}
+	// Perfect consonance
+	if (tivl[s] == iPco) {
+		// Prohibit parallel 
+		if (civl[s] == civl[fli2[ls - 1]]) FLAG2(84, s)
+			// Prohibit combinatory
+		else if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
+			// Prohibit different
+		else if (tivl[fli2[ls - 1]] == iPco) FLAG2(86, s)
+			// All other cases if previous interval is not pco
+		else {
+			// Direct movement to pco
+			if (motion[fli2[ls - 1]] == mDirect) {
+				// Last movement with stepwize
+				if (s2 == c_len - 1 && (abs(acc[cpv][s] - acc[cpv][s - 1]) < 3 || abs(acc[cfv][s] - acc[cfv][s - 1]) < 3))
+					FLAG2(33, s)
+					// Other cases
+				else FLAG2(87, s);
+			}
+			// Prohibit downbeats and culminations only if not last step
+			if (ls < fli_size - 1) {
+				if (beat[ls]) {
+					// Prohibit culmination
+					if (acc[cpv][s] == nmax || acc[cfv][s] == nmax) FLAG2(81, s);
+				}
+				else {
+					// Prohibit downbeat culmination
+					if (acc[cpv][s] == nmax || acc[cfv][s] == nmax) FLAG2(82, s)
+						// Prohibit downbeat
+					else FLAG2(80, s);
+				}
+			}
+		}
+	}
+	return 0;
 }
 
 int CGenCP1::FailVIntervals() {
@@ -450,63 +519,7 @@ int CGenCP1::FailVIntervals() {
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
-		// Unison
-		if (!civl[s]) {
-			// Inside
-			if (ls>1 && ls<fli_size-1) FLAG2(91, fli2[ls-1]);
-		}
-		// Discord
-		if (tivl[s] == iDis) {
-			// Downbeat
-			if (!beat[ls]) FLAG2(83, s)
-			// Upbeat
-			else {
-				// Check if movement to discord is smooth
-				if (asmooth[cpv][fli2[ls-1]]) FLAG2(169, s)
-				// If movement to discord is leaping
-				else FLAG2(187, s);
-			}
-		}
-		else {
-			// Check if previous interval is discord
-			if (tivl[fli2[ls - 1]] == iDis) {
-				// Check if movement from discord is not smooth
-				if (!asmooth[cpv][fli2[ls - 1]]) FLAG2(88, fli2[ls-1]);
-			}
-		}
-		// Perfect consonance
-		if (tivl[s] == iPco) {
-			// Prohibit parallel 
-			if (civl[s] == civl[fli2[ls - 1]]) FLAG2(84, s)
-			// Prohibit combinatory
-			else if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
-			// Prohibit different
-			else if (tivl[fli2[ls-1]] == iPco) FLAG2(86, s)
-			// All other cases if previous interval is not pco
-			else {
-				// Direct movement to pco
-				if (motion[fli2[ls - 1]] == mDirect) {
-					// Last movement with stepwize
-					if (s2 == c_len-1 && (abs(acc[cpv][s]-acc[cpv][s-1]) < 3 || abs(acc[cfv][s]-acc[cfv][s-1]) < 3))
-						FLAG2(33, s)
-					// Other cases
-					else FLAG2(87, s);
-				}
-				// Prohibit downbeats and culminations only if not last step
-				if (ls < fli_size - 1) {
-					if (beat[ls]) {
-						// Prohibit culmination
-						if (acc[cpv][s] == nmax || acc[cfv][s] == nmax) FLAG2(81, s);
-					}
-					else {
-						// Prohibit downbeat culmination
-						if (acc[cpv][s] == nmax || acc[cfv][s] == nmax) FLAG2(82, s)
-						// Prohibit downbeat
-						else FLAG2(80, s);
-					}
-				}
-			}
-		}
+		if (FailVInterval()) return 1;
 		// Long parallel ico
 		if (tivl[s] == iIco && ivl[s] == ivl[fli2[ls - 1]]) {
 			++pico_count;
