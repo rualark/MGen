@@ -2733,7 +2733,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 					if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
 					comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 					if (show_severity) {
-						st.Format(" [%d/%d]", severity[fl], fl);
+						st.Format(" [%d/%d]", fl, severity[fl]);
 						com += st;
 					}
 					if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];

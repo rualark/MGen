@@ -449,7 +449,9 @@ int CGenCP1::FailSus() {
 			for (s = sus[ls]; s <= s2; ++s) {
 				if (last_note != acc[cpv][s]) {
 					last_note = acc[cpv][s];
-					if (FailVInterval()) return 1;
+					if (FailUnison()) return 1;
+					if (FailDisSus()) return 1;
+					if (FailPcoSus()) return 1;
 				}
 			}
 		}
@@ -457,12 +459,24 @@ int CGenCP1::FailSus() {
 	return 0;
 }
 
-int CGenCP1::FailVInterval() {
+int CGenCP1::FailDisSus() {
+	// Discord
+	if (tivl[s] == iDis) {
+		FLAG2(83, s);
+	}
+	return 0;
+}
+
+int CGenCP1::FailUnison() {
 	// Unison
 	if (!civl[s]) {
 		// Inside
-		if (ls>1 && ls<fli_size - 1) FLAG2(91, fli2[ls - 1]);
+		if (ls > 1 && ls < fli_size - 1) FLAG2(91, fli2[ls - 1]);
 	}
+	return 0;
+}
+
+int CGenCP1::FailDis() {
 	// Discord
 	if (tivl[s] == iDis) {
 		// Downbeat
@@ -482,6 +496,22 @@ int CGenCP1::FailVInterval() {
 			if (!asmooth[cpv][fli2[ls - 1]]) FLAG2(88, fli2[ls - 1]);
 		}
 	}
+	return 0;
+}
+
+int CGenCP1::FailPcoSus() {
+	// Perfect consonance
+	if (tivl[s] == iPco) {
+		// Prohibit combinatory
+		if (civlc[s] == civlc[s-1]) FLAG2(85, s)
+			// Prohibit different
+		else if (tivl[s-1] == iPco) FLAG2(86, s)
+			// All other cases if previous interval is not pco
+	}
+	return 0;
+}
+
+int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
 		// Prohibit parallel 
@@ -525,7 +555,9 @@ int CGenCP1::FailVIntervals() {
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
-		if (FailVInterval()) return 1;
+		if (FailUnison()) return 1;
+		if (FailDis()) return 1;
+		if (FailPco()) return 1;
 		// Long parallel ico
 		if (tivl[s] == iIco && ivl[s] == ivl[fli2[ls - 1]]) {
 			++pico_count;

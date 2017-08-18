@@ -30,7 +30,11 @@ protected:
 	inline void GetVIntervals();
 	inline int FailVMotion();
 	inline int FailSus();
-	inline int FailVInterval();
+	inline int FailDisSus();
+	inline int FailUnison();
+	inline int FailDis();
+	inline int FailPcoSus();
+	inline int FailPco();
 	inline int FailVIntervals();
 	inline void CalcDpenaltyCP();
 	inline void SaveCP();
