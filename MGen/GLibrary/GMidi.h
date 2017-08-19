@@ -2,6 +2,7 @@
 #include "GAdapt.h"
 #include "MidiOut.h"
 
+
 #define MAX_WARN_MIDI_OVERLAP 5
 #define MAX_WARN_MIDI_ALIGN 5
 #define MAX_WARN_MIDI_SHORT 5

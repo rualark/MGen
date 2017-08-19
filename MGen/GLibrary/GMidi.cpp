@@ -862,7 +862,6 @@ void CGMidi::StartMIDI(int midi_device_i, int from)
 		midi_sent_t = 0;
 		midi_sent = 0;
 	}
-	TIME_START;
 	if (debug_level > 1) {
 		CString est;
 		est.Format("Trying to open midi device %d...", midi_device_i);

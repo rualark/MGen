@@ -1,10 +1,31 @@
 #pragma once
 
-#include "../portmidi/portmidi.h"
-#include "../portmidi/porttime.h"
 #include "../rtmidi/RtMidi.h"
 #include "../readerwriterqueue/readerwriterqueue.h"
 #include "../readerwriterqueue/atomicops.h"
+
+typedef int32_t PmMessage;
+typedef int32_t PmTimestamp;
+
+typedef struct {
+	PmMessage      message;
+	PmTimestamp    timestamp;
+} PmEvent;
+
+/**
+Pm_Message() encodes a short Midi message into a 32-bit word. If data1
+and/or data2 are not present, use zero.
+
+Pm_MessageStatus(), Pm_MessageData1(), and
+Pm_MessageData2() extract fields from a 32-bit midi message.
+*/
+#define Pm_Message(status, data1, data2) \
+         ((((data2) << 16) & 0xFF0000) | \
+          (((data1) << 8) & 0xFF00) | \
+          ((status) & 0xFF))
+#define Pm_MessageStatus(msg) ((msg) & 0xFF)
+#define Pm_MessageData1(msg) (((msg) >> 8) & 0xFF)
+#define Pm_MessageData2(msg) (((msg) >> 16) & 0xFF)
 
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL

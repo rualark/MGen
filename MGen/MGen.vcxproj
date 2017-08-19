@@ -217,11 +217,6 @@
     <ClInclude Include="MsgDlg.h" />
     <ClInclude Include="MyVisualManagerOffice2007.h" />
     <ClInclude Include="OutputWnd.h" />
-    <ClInclude Include="portmidi\pminternal.h" />
-    <ClInclude Include="portmidi\pmutil.h" />
-    <ClInclude Include="portmidi\pmwinmm.h" />
-    <ClInclude Include="portmidi\portmidi.h" />
-    <ClInclude Include="portmidi\porttime.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="rtmidi\RtMidi.h" />
     <ClInclude Include="stdafx.h" />
@@ -261,11 +256,6 @@
     <ClCompile Include="MsgDlg.cpp" />
     <ClCompile Include="MyVisualManagerOffice2007.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
-    <ClCompile Include="portmidi\pmutil.c" />
-    <ClCompile Include="portmidi\pmwin.c" />
-    <ClCompile Include="portmidi\pmwinmm.c" />
-    <ClCompile Include="portmidi\portmidi.c" />
-    <ClCompile Include="portmidi\ptwinmm.c" />
     <ClCompile Include="rtmidi\RtMidi.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
