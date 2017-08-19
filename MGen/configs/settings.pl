@@ -1,9 +1,9 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 112 # Id of the currently selected algorithm
-Config = known-cp2v1 # Name of configuration file for selected algorithm
-MIDI_OUT = Microsoft GS Wavetable Synth 0 # Name of MIDI device used for playing notes
+Algorithm = 121 # Id of the currently selected algorithm
+Config = Test # Name of configuration file for selected algorithm
+MIDI_OUT = [DISABLE PLAYBACK] # Name of MIDI device used for playing notes
 Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 500
 playback_speed = 100 # Playback speed in percent
 show_marks = 1 # Set to 1 to show note mark strings
