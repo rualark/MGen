@@ -15,7 +15,7 @@ typedef struct {
 /**
 Pm_Message() encodes a short Midi message into a 32-bit word. If data1
 and/or data2 are not present, use zero.
-
+ 
 Pm_MessageStatus(), Pm_MessageData1(), and
 Pm_MessageData2() extract fields from a 32-bit midi message.
 */
