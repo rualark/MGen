@@ -27,9 +27,6 @@ Pm_MessageData2() extract fields from a 32-bit midi message.
 #define Pm_MessageData1(msg) (((msg) >> 8) & 0xFF)
 #define Pm_MessageData2(msg) (((msg) >> 16) & 0xFF)
 
-#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
-#define TIME_INFO NULL
-
 #define WAIT_MS 50
 
 // MIDI PORT STATUS
