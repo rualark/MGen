@@ -1343,9 +1343,9 @@ void CGVar::MergeNotes(int step1, int step2, int v) {
 		if (note[x][v] == note[x - 1][v]) {
 			// If notes have decreasing coff (this means that this is a new cc note)
 			if (coff[x][v] <= coff[x - 1][v]) {
-				// if first note step select best color
+				// if first note step select best color: gray is ignored, then most red is selected
 				if (!coff[x][v] && color[x][v].GetValue() != color_noflag.GetValue() && 
-					  color[x][v].GetRed() > col.GetRed()) {
+					(col.GetValue() == color_noflag.GetValue() || color[x][v].GetRed() > col.GetRed())) {
 					col = color[x][v];
 					// update color of previous steps
 					for (int z = first_pos; z < x; ++z) {
