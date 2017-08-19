@@ -180,7 +180,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;
 1;84;60;Cantus;Counterpoint;Perfect consonance approach;parallel;0;;
 1;85;60;Cantus;Counterpoint;Perfect consonance approach;combined;0;;
-1;86;60;Cantus;Counterpoint;Perfect consonance approach;different;-1;;
+1;86;60;Cantus;Counterpoint;Perfect consonance approach;different;1;;
 1;87;60;Cantus;Counterpoint;Perfect consonance approach;direct;0;;
 1;33;60;Cantus;Counterpoint;Perfect consonance approach;direct end;-1;;
 1;83;100;Cantus;Counterpoint;Dissonance;downbeat;0;;
