@@ -14,7 +14,7 @@ correct_inrange = 2 # Limit allowed range of corrected melody to range of source
 optimize_dpenalty = 0 # Saves only melodies closest to source melody. Decreases memory usage. Setting this flag may make corrections farther from source melody. Resetting allows for more close results when corrections>1
 
 # Analysis
-corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 12 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
@@ -26,7 +26,7 @@ correct_range = 14 # Maximum interval allowed between each source and corrected 
 random_key = 0 # Select any of possible keys regardless of last note
 
 # Technical parameters
-midifile_in_mul = 0.5 # Multiply note length with this value when loading
+midifile_in_mul = 0.125 # Multiply note length with this value when loading
 t_cnt = 100000 # Maximum number of steps generated
-midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
-midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
+midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
+midifile_export_comments = 1 # Set to export comments (violations) to midifile lyrics

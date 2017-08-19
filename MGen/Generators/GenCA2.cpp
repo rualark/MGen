@@ -80,7 +80,7 @@ void CGenCA2::SendCorrectionsCP(int i, int time_start) {
 			for (int z = 0; z < c_len; z++) {
 				if (cpoint[i][cpv][z] != clib[cids[x]][z]) {
 					for (int g = 0; g < cc_len[z]; g++) {
-						lining[pos + g][1] = 1;
+						lining[pos + g][cpv] = 1;
 					}
 				}
 				pos += cc_len[z];
