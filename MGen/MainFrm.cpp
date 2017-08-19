@@ -1217,7 +1217,6 @@ void CMainFrame::OnClose()
 		delete pGen;
 		pGen = 0;
 	}
-	Pm_Terminate();
 
 	CFrameWndEx::OnClose();
 }
