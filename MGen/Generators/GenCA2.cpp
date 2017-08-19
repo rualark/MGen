@@ -10,6 +10,10 @@
 CGenCA2::CGenCA2()
 {
 	v_cnt = 4;
+	track_id[0] = 2;
+	track_id[1] = 1;
+	track_id[2] = 4;
+	track_id[3] = 3;
 }
 
 CGenCA2::~CGenCA2()
