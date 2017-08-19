@@ -99,7 +99,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;
 1;28;0;Melody;Leaps;Two consecutive 3rds;after 6/8;-1;;
 1;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
-1;5;60;Melody;Stepwise;Stepwise motion;>5 one direction;0;;
+1;5;60;Melody;Stepwise;Stepwise motion;>4 one direction;0;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
 1;193;0;Melody;Repeats;Culmination;early 50%;-1;;
 1;79;30;Melody;Repeats;Culmination;early <5;-1;;

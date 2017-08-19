@@ -1016,7 +1016,8 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 			// Prohibit long smooth movement in one direction
 			if (smooth[s] != 0 && smooth[s] == smooth[fli2[ls+1]]) {
 				++smooth_sum2;
-				if (smooth_sum2 >= max_smooth_direct - 1) FLAG2(5, s);
+				if (smooth_sum2 >= max_smooth_direct) 
+					FLAG2(5, s);
 			}
 			else if (smooth[s] || leap[s]) smooth_sum2 = 0;
 			// Check if two notes repeat
