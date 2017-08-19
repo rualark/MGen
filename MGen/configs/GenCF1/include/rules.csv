@@ -32,7 +32,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;115;100;Melody;Uncompensated leap;Uncompensated: precompensated;>5th;0;;
 1;204;0;Melody;Uncompensated leap;Precompensated last leap;3rd;-1;;
 1;205;0;Melody;Uncompensated leap;Precompensated last leap;4th;-1;;
-1;206;40;Melody;Uncompensated leap;Precompensated last leap;5th;-1;;
+1;206;40;Melody;Uncompensated leap;Precompensated last leap;5th;1;;
 1;207;100;Melody;Uncompensated leap;Precompensated last leap;>5th;0;;
 1;116;0;Melody;Uncompensated leap;Uncompensated child leap;3rd;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;117;30;Melody;Uncompensated leap;Uncompensated child leap;4th;-1;After longer leap or before longer/same/one-note-smaller leap.;
@@ -133,8 +133,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;16;0;Melody;Range;No melody direction;13 notes <20;0;;Melody direction within X notes is less than Y decihalfnotes
 1;17;70;Cantus;Harmony;Repeating letters in a row;>3;0;;
 1;20;70;Cantus;Harmony;Missing letters in a row;>3;0;;
-1;194;70;Cantus;Harmony;Accented bad harmony;leap >4th;0;;
-1;195;70;Cantus;Harmony;Accented bad harmony;culmination;0;;
+1;194;70;Cantus;Harmony;Accented bad harmony;leap >4th;-1;;
+1;195;70;Cantus;Harmony;Accented bad harmony;culmination;-1;;
 1;48;30;Cantus;Harmony;Early cadence;G-C;0;;Tonic chord is prohibited in root position after Dominant chord in root position
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;
 1;57;10;Cantus;Harmony;Harmonic penalty;2;-1;;
