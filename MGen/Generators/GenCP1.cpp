@@ -1229,14 +1229,10 @@ void CGenCP1::Generate() {
 		dpenalty_cur = 0;
 		fn = 0;
 		// Create pause
-		FillPause(step, step+floor(real_len / 8 + 1) * 8, 1);
+		FillPause(step, step + floor(real_len / 8 + 1) * 8, 0);
+		FillPause(step, step + floor(real_len / 8 + 1) * 8, 1);
 		// Select rule set
 		SelectRuleSet(cf_rule_set);
-		ScanCantus(tEval, 0, &(cantus[cantus_id]));
-		// Go forward
-		Adapt(0, step - 1);
-		t_generated = step;
-		t_sent = t_generated;
 		// Choose level
 		if (cantus_high) {
 			cpv = 0;
@@ -1246,6 +1242,11 @@ void CGenCP1::Generate() {
 			cpv = 1;
 			cfv = 0;
 		}
+		ScanCantus(tEval, cfv, &(cantus[cantus_id]));
+		// Go forward
+		Adapt(0, step - 1);
+		t_generated = step;
+		t_sent = t_generated;
 		// Load first voice
 		vector<int> cc_len_old = cc_len;
 		vector<float> cc_tempo_old = cc_tempo;
