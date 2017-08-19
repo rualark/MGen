@@ -13,6 +13,7 @@ typedef struct {
 } PmEvent;
 
 /**
+This is a test
 Pm_Message() encodes a short Midi message into a 32-bit word. If data1
 and/or data2 are not present, use zero.
  
