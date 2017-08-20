@@ -842,6 +842,7 @@ void CGMidi::ProcessInter(int pos, int pos_old, std::vector<std::vector<std::pai
 void CGMidi::StartMIDI(int midi_device_i, int from)
 {
 	if (midi_device_i == -1) return;
+	start_time();
 	// Clear old sent messages
 	midi_buf_next.clear();
 	midi_sent_msg = 0;
@@ -1006,9 +1007,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 	else midi_first_run = 0;
 	if (midi_first_run) LogInstruments();
 	// Set real time when playback started
-	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - stime[step1] / m_pspeed * 100;
+	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - (PmTimestamp)(stime[step1] / m_pspeed * 100);
 	// Set real time when playback started
-	if (!midi_sent_t) midi_sent_t = stime[step1] / m_pspeed * 100 + midi_start_time - 100;
+	if (!midi_sent_t) midi_sent_t = (PmTimestamp)(stime[step1] / m_pspeed * 100) + midi_start_time - 100;
 	// Check if we have buf underrun
 	if (midi_sent_t < timestamp_current) {
 		CString st;
@@ -1045,14 +1046,14 @@ void CGMidi::SendMIDI(int step1, int step2)
 		step22 = i;
 		if (i == 0) time = stime[i] * 100 / m_pspeed;
 		else time = etime[i - 1] * 100 / m_pspeed;
-		if (time + midi_start_time - timestamp_current > MAX_MIDI_BUF_MSEC) break;
+		if ((PmTimestamp)time + midi_start_time - timestamp_current > MAX_MIDI_BUF_MSEC) break;
 	}
 	// If we cut notes, this is not last run
 	if (step22 < step2) midi_last_run = 0;
 	// Send previous buffer if exists
 	midi_buf.clear();
 	// Calculate midi right limit
-	midi_buf_lim = midi_start_time + stime[step22] * 100.0 / m_pspeed;
+	midi_buf_lim = midi_start_time + (PmTimestamp)(stime[step22] * 100.0 / m_pspeed);
 	// Decrease right limit to allow for legato ahead, random start and ks/cc transitions
 	if (!midi_last_run) midi_buf_lim -= MAX_AHEAD;
 	// Sort by timestamp before sending

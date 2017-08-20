@@ -62,6 +62,11 @@ long long CGLib::time() {
 	return t - first_time;
 }
 
+void CGLib::start_time() {
+	long long t = abstime();
+	first_time = t;
+}
+
 long long CGLib::abstime() {
 	milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 	return ms.count();

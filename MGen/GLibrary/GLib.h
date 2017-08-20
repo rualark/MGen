@@ -179,6 +179,8 @@ public:
 
 	static long long time();
 
+	static void start_time();
+
 	static long long abstime();
 
 	void InitRandom();
