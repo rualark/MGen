@@ -131,7 +131,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 }
 
 void LoadConfig() {
-	int time_start, time_stop;
+	long long time_start, time_stop;
 	vector<CString> ast;
 	CString fname = "autotest\\test.csv";
 	// Check file exists
