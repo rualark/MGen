@@ -904,12 +904,12 @@ void CGenCP1::SWACP(int i, int dp) {
 	WriteLog(3, est);
 }
 
-int CGenCP1::FailLastIntervals(vector<int> &pc) {
+int CGenCP1::FailLastIntervals() {
 	// Do not check if melody is short yet
 	if (fli_size < 2) return 0;
 	// Prohibit last note not tonic
-	if (ep2 > c_len - 1) {
-		if (pc[c_len - 1] != 0) FLAG2(50, c_len - 1);
+	if (ep2 >= c_len) {
+		if (apc[cpv][c_len - 1] != 0) FLAG2(50, c_len - 1);
 		// Scan 2nd to last measure
 		if (mli.size() > 1) {
 			int start = mli[mli.size() - 2];
@@ -923,7 +923,10 @@ int CGenCP1::FailLastIntervals(vector<int> &pc) {
 					if (apc[v][s] == 1) d_found = 1;
 				}
 			}
-			if (!b_found) FLAG2(47, start);
+			if (!b_found) {
+				// Set B needed flag if last bass notes are not G-C
+				if (apc[0][c_len-1] != 0 || apc[0][fli2[fli_size-2]] != 4) FLAG2(47, start);
+			}
 			if (!g_found && !d_found) FLAG2(75, start);
 		}
 	}

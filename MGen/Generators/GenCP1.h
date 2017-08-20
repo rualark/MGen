@@ -46,7 +46,7 @@ protected:
 	inline int FailOverlap();
 	void RandomSWACP();
 	void SWACP(int i, int dp);
-	inline int FailLastIntervals(vector<int>& pc);
+	inline int FailLastIntervals();
 	inline void GetNoteTypes();
 	inline void GetMeasures();
 	inline int FailGisTrail2();
