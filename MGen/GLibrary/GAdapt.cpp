@@ -533,7 +533,7 @@ void CGAdapt::Adapt(int step1, int step2)
 {
 	if (step2 < 0) return;
 	ValidateVectors(step1, step2);
-	int time_start = CGLib::time();
+	long long time_start = CGLib::time();
 	int ei; // ending step
 	int pi; // previous note step
 	int pei; // previous note ending step
@@ -668,7 +668,7 @@ void CGAdapt::Adapt(int step1, int step2)
 	}
 	// Count time
 	if (debug_level > 1) {
-		int time_stop = CGLib::time();
+		long long time_stop = CGLib::time();
 		CString st;
 		st.Format("Adapt steps %d-%d in %d ms", step1, step2, time_stop - time_start);
 		WriteLog(0, st);

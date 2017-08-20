@@ -215,7 +215,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 	WriteLog(3, est);
 }
 
-void CGenCA1::SendCorrections(int i, int time_start) {
+void CGenCA1::SendCorrections(int i, PmTimestamp time_start) {
 	CString st, st2;
 	// Count penalty
 	long cnum = clib.size();
@@ -242,7 +242,7 @@ void CGenCA1::SendCorrections(int i, int time_start) {
 		}
 		if (!cids.size() || dpenalty_min2 == MAX_PENALTY) break;
 		// Shuffle cids
-		unsigned seed = CGLib::time();
+		long long seed = CGLib::time();
 		::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
 		for (int x = 0; x < cids.size(); x++) {
 			ccount++;
@@ -283,7 +283,7 @@ void CGenCA1::SendCorrections(int i, int time_start) {
 			t_sent = t_generated;
 		}
 	}
-	int time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	// Send log
 	CString est;
 	est.Format("Sent corrections in %d ms to step %d with rp/dp/variants/lib: %s", time_stop - time_start, step, st2);
@@ -368,7 +368,7 @@ void CGenCA1::Generate()
 		if (need_exit) break;
 		if (step < 0) step = 0;
 		step0 = step;
-		int time_start = CGLib::time();
+		long long time_start = CGLib::time();
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Get key

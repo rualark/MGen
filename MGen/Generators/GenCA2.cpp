@@ -27,7 +27,7 @@ void CGenCA2::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CGenCP1::LoadConfigLine(sN, sV, idata, fdata);
 }
 
-void CGenCA2::SendCorrectionsCP(int i, int time_start) {
+void CGenCA2::SendCorrectionsCP(int i, PmTimestamp time_start) {
 	CString st, st2;
 	// Count penalty
 	long cnum = clib.size();
@@ -54,7 +54,7 @@ void CGenCA2::SendCorrectionsCP(int i, int time_start) {
 		}
 		if (!cids.size() || dpenalty_min == MAX_PENALTY) break;
 		// Shuffle cids
-		unsigned seed = CGLib::time();
+		long long seed = CGLib::time();
 		::shuffle(cids.begin(), cids.end(), default_random_engine(seed));
 		for (int x = 0; x < cids.size(); x++) {
 			ccount++;
@@ -95,7 +95,7 @@ void CGenCA2::SendCorrectionsCP(int i, int time_start) {
 			t_sent = t_generated;
 		}
 	}
-	int time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	// Send log
 	CString est;
 	est.Format("Sent corrections in %d ms to step %d with rp/dp/variants/lib: %s", time_stop - time_start, step, st2);
@@ -262,7 +262,7 @@ void CGenCA2::Generate() {
 		SetStatusText(3, st);
 		if (need_exit) break;
 		if (step < 0) step = 0;
-		int time_start = CGLib::time();
+		long long time_start = CGLib::time();
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
 		// Choose level

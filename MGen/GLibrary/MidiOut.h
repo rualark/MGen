@@ -5,11 +5,11 @@
 #include "../readerwriterqueue/atomicops.h"
 
 typedef int32_t PmMessage;
-typedef int32_t PmTimestamp;
+typedef long long PmTimestamp;
 
 typedef struct {
 	PmMessage      message;
-	PmTimestamp    timestamp;
+	int    timestamp;
 } PmEvent;
 
 /**

@@ -9,6 +9,7 @@
 #define new DEBUG_NEW 
 #endif
 
+long long CGLib::first_time = 0;
 int CGLib::can_send_log = 1;
 HWND CGLib::m_hWnd = 0;
 int CGLib::debug_level = 1;
@@ -55,8 +56,15 @@ CGLib::~CGLib()
 {
 }
 
-int CGLib::time() {
-	return (duration_cast<milliseconds>(system_clock::now().time_since_epoch())).count();
+long long CGLib::time() {
+	long long t = abstime();
+	if (!first_time) first_time = t;
+	return t - first_time;
+}
+
+long long CGLib::abstime() {
+	milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	return ms.count();
 }
 
 void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Dest, int lmin, int lmax)
@@ -65,6 +73,14 @@ void CGLib::CheckVar(CString * sName, CString * sValue, char* sSearch, int * Des
 		++parameter_found;
 		*Dest = atoi(*sValue);
 		CheckLimits(sName, Dest, lmin, lmax);
+	}
+}
+
+void CGLib::LoadVar(CString * sName, CString * sValue, char* sSearch, long long * Dest)
+{
+	if (*sName == sSearch) {
+		++parameter_found;
+		*Dest = atoll(*sValue);
 	}
 }
 
@@ -532,7 +548,7 @@ unsigned int CGLib::rand2() {
 void CGLib::InitRandom()
 {
 	// Init rand
-	unsigned seed = CGLib::time();
+	long long seed = CGLib::time();
 	srand(seed);
 	//CString est;
 	//est.Format("Random test: %d", rand());
@@ -547,7 +563,7 @@ void CGLib::InitRandom()
 
 void CGLib::TestRandom()
 {
-	int time_start = CGLib::time();
+	long long time_start = CGLib::time();
 	int n_buckets = 30;
 	int n_samples = 100000;
 	int n_variants = 3;
@@ -571,7 +587,7 @@ void CGLib::TestRandom()
 	}
 	fs.close();
 	// Count time
-	int time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	CString est;
 	est.Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
 	WriteLog(0, est);
@@ -579,7 +595,7 @@ void CGLib::TestRandom()
 
 void CGLib::TestSmoothRandom()
 {
-	int time_start = CGLib::time();
+	long long time_start = CGLib::time();
 	int n_samples = 1000;
 	CSmoothRandom sr;
 	// Show results
@@ -595,7 +611,7 @@ void CGLib::TestSmoothRandom()
 	}
 	fs.close();
 	// Count time
-	int time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	CString est;
 	est.Format("TestSmoothRandom with %d samples took %d ms", n_samples, time_stop - time_start);
 	WriteLog(0, est);
@@ -696,7 +712,7 @@ void CGLib::TestVSet()
 {
 	// Init rand
 	CString st;
-	unsigned seed = CGLib::time();
+	long long seed = CGLib::time();
 	srand(seed);
 	VSet<int> vs;
 	vector<int> v;

@@ -387,7 +387,7 @@ protected:
 	vector<long long> wscans; // number of full scans per window
 	int wcount = 1; // Number of windows created
 	long long cycle = 0; // Cycle number of full scan
-	int accept_time; // Last accepted timestamp
+	PmTimestamp accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
 	int nmin, nmax, nmind, nmaxd;
 	int src_nmin = 0, src_nmax = 0; // Source range (chromatic)

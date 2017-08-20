@@ -17,7 +17,7 @@ protected:
 	void GetCPKey3(vector<int>& key_miss, int & min_miss, int & min_key, int minor_cur, int diatonic_repeat_check);
 	int GetCPKey2(int & tonic_cur, CString & ext_st, int minor_cur);
 	void CreateScanMatrix(int i);
-	void SendCorrections(int i, int time_start);
+	void SendCorrections(int i, PmTimestamp time_start);
 
 	void ParseExpect();
 

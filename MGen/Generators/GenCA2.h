@@ -17,5 +17,5 @@ public:
 
 protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
-	void SendCorrectionsCP(int i, int time_start);
+	void SendCorrectionsCP(int i, PmTimestamp time_start);
 };

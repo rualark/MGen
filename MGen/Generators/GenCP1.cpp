@@ -799,7 +799,7 @@ void CGenCP1::RandomSWACP()
 // Do not calculate dpenalty (dp = 0). Calculate dpenalty (dp = 1).
 void CGenCP1::SWACP(int i, int dp) {
 	CString st;
-	int time_start = CGLib::time();
+	long long time_start = CGLib::time();
 	s_len = 1;
 	// Save source rpenalty
 	float rpenalty_source = rpenalty_cur;
@@ -896,7 +896,7 @@ void CGenCP1::SWACP(int i, int dp) {
 		}
 	}
 	// Log
-	int time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	CString est;
 	CString sst = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s",

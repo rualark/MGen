@@ -90,12 +90,12 @@ BOOL CMGenView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CMGenView::OnDraw(CDC* pDC)
 {
-	int time_start = CGLib::time();
-	int time_stop = time_start;
-	int time_stop2 = time_start;
-	int time_stop3 = time_start;
-	int time_stop4 = time_start;
-	int time_stop5 = time_start;
+	PmTimestamp time_start = CGLib::time();
+	PmTimestamp time_stop = time_start;
+	PmTimestamp time_stop2 = time_start;
+	PmTimestamp time_stop3 = time_start;
+	PmTimestamp time_stop4 = time_start;
+	PmTimestamp time_stop5 = time_start;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGMidi *pGen = mf->pGen;
 	//mf->WriteLog(2, "OnDraw start");
@@ -146,7 +146,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Gdiplus::Font font(&FontFamily(L"Arial"), 10);
 	Gdiplus::Font font_small(&FontFamily(L"Arial"), 8);
 	Gdiplus::Font font_small2(&FontFamily(L"Arial"), 6);
-	int current_time = CGLib::time();
+	PmTimestamp current_time = CGLib::time();
   USES_CONVERSION;
 	CString st;
 
@@ -167,12 +167,13 @@ void CMGenView::OnDraw(CDC* pDC)
 			pGen->t_generated/8, pGen->t_sent/8, pGen->t_cnt/8, time_st, 
 			((float)(CGLib::time() - pGen->time_started)) / 1000);
 		if (mf->m_state_gen == 2) st.Format("(%d meas. / %s in %.1f sec.)", 
-			pGen->t_sent/8, time_st, ((float)(pGen->time_stopped - pGen->time_started)) / 1000);
+			pGen->t_sent/8, 
+			st, ((float)(pGen->time_stopped - pGen->time_started)) / 1000);
 		g.DrawString(A2W(st), -1, &font, PointF(250, 0), &brush_black);
 		int play_step = 0;
 		if (mf->m_state_play > 0) play_step = pGen->GetPlayStep();
 		if (play_step > 0) {
-			int play_time = CGLib::time() - pGen->midi_start_time;
+			PmTimestamp play_time = CGLib::time() - pGen->midi_start_time;
 			st.Format("(%02d:%02d - meas. %d)", play_time/60000, (play_time/1000) % 60, play_step/8 + 1);
 			g.DrawString(A2W(st), -1, &font, PointF(900, 0), &brush_black);
 		}

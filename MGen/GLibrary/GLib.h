@@ -135,6 +135,7 @@ public:
 	static void copy_file(CString sName, CString dName);
 	static void AppendLineToFile(CString fname, CString st);
 	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int lmin = -1000000, int lmax = -1000000);
+	static void LoadVar(CString * sName, CString * sValue, char * sSearch, long long * Dest);
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, float * Dest, float lmin = -1000000, float lmax = -1000000);
 	static void CheckLimits(CString * sName, int * Dest, int lmin, int lmax);
 	static void CheckLimits(CString * sName, float * Dest, float lmin, float lmax);
@@ -176,7 +177,9 @@ public:
 	CGLib();
 	virtual ~CGLib();
 
-	static int time();
+	static long long time();
+
+	static long long abstime();
 
 	void InitRandom();
 	void TestRandom(); // Tests random generator
@@ -224,4 +227,6 @@ protected:
 	ub4 raa = 0, rbb = 0, rcc = 0;
 	int cur_rand = 0, cur_rand2 = 0;
 
+	// Time
+	static long long first_time;
 };

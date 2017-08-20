@@ -58,8 +58,8 @@ public:
 
   // Main variables
 	float m_pspeed = 100; // Playback speed in percent
-	int32_t time_started = 0; // Time in milliseconds when generation started
-	int32_t time_stopped = 0; // Time in milliseconds when generation stopped
+	long long time_started = 0; // Time in milliseconds when generation started
+	long long time_stopped = 0; // Time in milliseconds when generation stopped
 	int t_generated = 0; // Timeslots generated
 	int t_sent = 0; // Timeslot count sent to mainframe
 	int ng_min = 1000; // Minimum generated note

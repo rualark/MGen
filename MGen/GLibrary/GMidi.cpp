@@ -71,7 +71,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 
 void CGMidi::LoadMidi(CString path)
 {
-	int time_start = CGLib::time();
+	PmTimestamp time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -419,7 +419,7 @@ void CGMidi::LoadMidi(CString path)
 		WriteLog(0, est);
 	}
 	// Count time
-	int time_stop = CGLib::time();
+	PmTimestamp time_stop = CGLib::time();
 	CString est;
 	est.Format("LoadMidi successfully loaded %d steps (in %d ms)", t_generated, time_stop - time_start);
 	WriteLog(0, est);
@@ -427,7 +427,7 @@ void CGMidi::LoadMidi(CString path)
 
 void CGMidi::LoadCantus(CString path)
 {
-	int time_start = CGLib::time();
+	PmTimestamp time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -592,7 +592,7 @@ void CGMidi::LoadCantus(CString path)
 		}
 	}
 	// Count time
-	int time_stop = CGLib::time();
+	PmTimestamp time_stop = CGLib::time();
 	CString st;
 	st.Format("LoadCantus successfully loaded %d canti (in %d ms)", cid + 1, time_stop - time_start);
 	WriteLog(0, st);
@@ -601,7 +601,7 @@ void CGMidi::LoadCantus(CString path)
 // Load counterpoint
 void CGMidi::LoadCP(CString path)
 {
-	int time_start = CGLib::time();
+	PmTimestamp time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -804,7 +804,7 @@ void CGMidi::LoadCP(CString path)
 		}
 	}
 	// Count time
-	int time_stop = CGLib::time();
+	PmTimestamp time_stop = CGLib::time();
 	CString st;
 	st.Format("LoadCP successfully loaded %d cp (in %d ms)", cid + 1, time_stop - time_start);
 	WriteLog(0, st);
@@ -952,7 +952,7 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 	//AppendLineToFile("midi.log", st);
 }
 
-void CGMidi::AddTransitionKs(int i, int stimestamp, int ks)
+void CGMidi::AddTransitionKs(int i, PmTimestamp stimestamp, int ks)
 {
 	int v = midi_voice;
 	int pi = i - poff[i][v];
@@ -963,13 +963,13 @@ void CGMidi::AddTransitionKs(int i, int stimestamp, int ks)
 		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), ks, 0);
 }
 
-void CGMidi::AddKs(int stimestamp, int ks)
+void CGMidi::AddKs(PmTimestamp stimestamp, int ks)
 {
 	AddKsOn(stimestamp, ks, 100);
 	AddKsOff(stimestamp + 1, ks, 0);
 }
 
-void CGMidi::AddTransitionCC(int i, int stimestamp, int CC, int value1, int value2)
+void CGMidi::AddTransitionCC(int i, PmTimestamp stimestamp, int CC, int value1, int value2)
 {
 	int v = midi_voice;
 	int pi = i - poff[i][v];
@@ -995,7 +995,7 @@ void CGMidi::CheckDstime(int i, int v)
 void CGMidi::SendMIDI(int step1, int step2)
 {
 	if (step2 == step1) return;
-	int time_start = CGLib::time();
+	PmTimestamp time_start = CGLib::time();
 	PmTimestamp timestamp_current = CGLib::time();
 	// Note start timestamp
 	PmTimestamp stimestamp; 
@@ -1176,7 +1176,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		mo->QueueEvent(midi_buf[i]);
 	}
 	// Count time
-	int time_stop = CGLib::time();
+	PmTimestamp time_stop = CGLib::time();
 	CString st;
 	st.Format("MIDI write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms. Limit %d. Last postponed %d. Step22 stopped increasing at %.0f ms. Start time: %d, current time: %d",
 		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, 
@@ -1340,7 +1340,7 @@ int CGMidi::GetPlayStep() {
 		int step1 = midi_play_step;
 		int step2 = midi_sent;
 		int cur_step = 0, currentElement;
-		int searchElement = CGLib::time() - midi_start_time;
+		PmTimestamp searchElement = CGLib::time() - midi_start_time;
 		while (step1 <= step2) {
 			cur_step = (step1 + step2) / 2;
 			currentElement = stime[cur_step] * 100 / m_pspeed;
