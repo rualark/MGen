@@ -1698,9 +1698,12 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 		if (ls < fli_size - 2) s2 = fli2[ls + 2];
 		// Warning: tritone F#C in minor is not detected (can add FailTritone to detect) because it is already prohibited by Unaltered near altered.
 		// If you allow Unaltered near altered, you should implement FailTritone for F#C.
-		if (FailTritone(4, 5, 11, 0, c, cc, pc, pcc)) return 1;
 		if (minor_cur) {
+			if (FailTritone(3, 5, 11, 0, c, cc, pc, pcc)) return 1;
 			if (FailTritone(7, 8, 2, 3, c, cc, pc, pcc)) return 1;
+		}
+		else {
+			if (FailTritone(4, 5, 11, 0, c, cc, pc, pcc)) return 1;
 		}
 		// Leap size prohibit
 		if (cc[s1] - cc[s] == 8) FLAG2(175, s)
