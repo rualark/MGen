@@ -1623,6 +1623,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 	int found;
 	int res1 = 0; // First note resolution flag
 	int res2 = 0; // Second note resolution flag
+	int ta2, tb2; // Real resolution notes
 	// Tritone prohibit
 	leap_start = s;
 	found = 0;
@@ -1649,10 +1650,19 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s);
 		}
 		// Check if resolution is correct
-		if (fleap_start > 0 && pcc[fli[fleap_start - 1]] == t1) res1 = 1;
-		else if (pcc[fli[fleap_start + 1]] == t1) res1 = 1;
-		if (fleap_end < fli_size-1 && pcc[fli[fleap_end + 1]] == t2) res2 = 1;
-		else if (pcc[fli[fleap_end - 1]] == t2) res2 = 1;
+		// Get real resolution notes
+		if (pcc[s1] == t2) {
+			ta2 = ta;
+			tb2 = tb;
+		}
+		else {
+			ta2 = tb;
+			tb2 = ta;
+		}
+		if (fleap_start > 0 && pcc[fli[fleap_start - 1]] == ta2) res1 = 1;
+		else if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
+		if (fleap_end < fli_size - 1 && pcc[fli[fleap_end + 1]] == tb2) res2 = 1;
+		else if (pcc[fli[fleap_end - 1]] == tb2) res2 = 1;
 		// Flag resolution for consecutive tritone
 		if (found == 1) {
 			if (res1*res2 == 0) FLAG2(31, s)
