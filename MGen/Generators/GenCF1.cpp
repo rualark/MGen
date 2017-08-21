@@ -989,7 +989,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 	int smooth_sum = 0;
 	int smooth_sum2 = 0;
 	int leap_sum_s2 = 0;
-	for (ls = 0; ls < fli_size - 1; ++ls) {
+	for (ls = 0; ls < fli_size - 2; ++ls) {
 		s = fli2[ls];
 		s1 = fli2[ls+1];
 		// Add new leap
