@@ -1621,7 +1621,8 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 // Check tritone t1-t2 which has to resolve from ta to tb
 int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	int found;
-	int flag_unres = 31;
+	int res1 = 0; // First note resolution flag
+	int res2 = 0; // Second note resolution flag
 	// Tritone prohibit
 	leap_start = s;
 	found = 0;
@@ -1636,28 +1637,32 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 				(c[s] < c[s1] && c[s] > c[s_1] && (ls<2 || c[s_2] > c[s_1]) && (ls>fli_size - 3 || c[s2] < c[s1]))) {
 				found = 2;
 				leap_start = s_1;
-				flag_unres = 19;
 			}
 	}
+	fleap_start = bli[leap_start];
+	fleap_end = bli[s1];
+	// Do not check tritone if it is at the end of not-last window
+	if (ls == fli_size - 2 && ep2 != c_len) return 0;
 	if (found) {
 		// Check if tritone is highest leap if this is last window
 		if (ep2 == c_len) {
 			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s);
-			// Check if tritone is last step
-			if (ls > fli_size - 3) FLAG2(flag_unres, s)
 		}
 		// Check if resolution is correct
-		if (ls < fli_size - 2) {
-			if (pcc[s1] == t1) FLAG2(flag_unres, s)
-			else if (pcc[s2] != tb) FLAG2(flag_unres, s)
-			else if (!leap_start || pcc[leap_start - 1] != ta) FLAG2(flag_unres, s)
-				// Record resolved tritone
-			else {
-				if (found == 1) FLAG2(2, s)
-				else FLAG2(18, s);
-			}
+		if (fleap_start > 0 && pcc[fli[fleap_start - 1]] == t1) res1 = 1;
+		else if (pcc[fli[fleap_start + 1]] == t1) res1 = 1;
+		if (fleap_end < fli_size-1 && pcc[fli[fleap_end + 1]] == t2) res2 = 1;
+		else if (pcc[fli[fleap_end - 1]] == t2) res2 = 1;
+		// Flag resolution for consecutive tritone
+		if (found == 1) {
+			if (res1*res2 == 0) FLAG2(31, s)
+			else FLAG2(2, s);
 		}
-		// Do not check tritone if it is at the end of not-last window (after ep2 - 2)
+		// Flag resolution for tritone with intermediate note
+		else {
+			if (res1*res2 == 0) FLAG2(19, s)
+			else FLAG2(18, s);
+		}
 	}
 	return 0;
 }
