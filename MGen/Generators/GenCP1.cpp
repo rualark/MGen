@@ -1064,7 +1064,7 @@ check:
 		if (FailCPInterval()) goto skip;
 		GetMeasures();
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
-		if (FailLastIntervals(apc[cpv])) goto skip;
+		if (FailLastIntervals()) goto skip;
 		if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);

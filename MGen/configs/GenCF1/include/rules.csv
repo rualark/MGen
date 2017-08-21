@@ -33,7 +33,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;204;0;Melody;Uncompensated leap;Precompensated last leap;3rd;-1;;
 1;205;0;Melody;Uncompensated leap;Precompensated last leap;4th;-1;;
 1;206;40;Melody;Uncompensated leap;Precompensated last leap;5th;-1;;
-1;207;100;Melody;Uncompensated leap;Precompensated last leap;>5th;0;;
+1;207;100;Melody;Uncompensated leap;Precompensated last leap;>5th;-1;;
 1;116;0;Melody;Uncompensated leap;Uncompensated child leap;3rd;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;117;30;Melody;Uncompensated leap;Uncompensated child leap;4th;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;118;60;Melody;Uncompensated leap;Uncompensated child leap;5th;-1;After longer leap or before longer/same/one-note-smaller leap.;
@@ -112,7 +112,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;72;60;Melody;Repeats;Notes repeat;5 in 15;0;;Repeat of X notes within Y notes
 1;73;60;Melody;Repeats;Notes repeat;7 in 100;0;;Repeat of X notes within Y notes
 1;196;20;Melody;Repeats;Tonic note;>2 within 9;0;;More than X tonic note equivalents within Y notes (except first and last tonic). Weights:  Stepwize to tonic = 1 Leap >M3 to tonic = 2
-1;10;60;Melody;Repeats;Note stagnation;>2 in 7 notes;2;Same note repeats more than X times during stag_note_steps steps;
+1;10;60;Melody;Repeats;Note stagnation;>2 in 7 notes;-1;Same note repeats more than X times during stag_note_steps steps;
 1;39;60;Melody;Repeats;Note stagnation;>3 in 9 notes;0;Same note repeats more than X times during stag_note_steps steps;
 1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;
 1;2;40;Melody;Tritone;Tritone;resolved;1;;
@@ -192,7 +192,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;49;60;Cantus;Counterpoint;First note;not C;0;;
 1;90;60;Cantus;Counterpoint;First note;not GC;0;;
 1;91;60;Cantus;Counterpoint;Unison;inside;0;;
-1;47;30;Cantus;Counterpoint;2nd to last measure;no B;0;;
+1;47;30;Cantus;Counterpoint;2nd to last measure;no B;0;;no B is allowed if last bass notes are G-C
 1;75;30;Cantus;Counterpoint;2nd to last measure;no G or D;0;;
 1;97;60;Cantus;Counterpoint;Slurs;consecutive;0;;
 1;30;100;Cantus;Counterpoint;Slurs;cantus;0;;
