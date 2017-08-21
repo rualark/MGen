@@ -168,7 +168,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			((float)(CGLib::time() - pGen->time_started)) / 1000);
 		if (mf->m_state_gen == 2) st.Format("(%d meas. / %s in %.1f sec.)", 
 			pGen->t_sent/8, 
-			st, ((float)(pGen->time_stopped - pGen->time_started)) / 1000);
+			time_st, ((float)(pGen->time_stopped - pGen->time_started)) / 1000);
 		g.DrawString(A2W(st), -1, &font, PointF(250, 0), &brush_black);
 		int play_step = 0;
 		if (mf->m_state_play > 0) play_step = pGen->GetPlayStep();
