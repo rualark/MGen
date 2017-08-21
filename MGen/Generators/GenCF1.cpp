@@ -250,7 +250,8 @@ void CGenCF1::ParseRules() {
 
 // Set parsed parameters of current ruleset
 void CGenCF1::SetRuleParams() {
-	max_smooth = GetRuleParam(rule_set, 4, rsSubName, 0);
+	thirds_ignored = GetRuleParam(rule_set, 70, rsName, 0);
+	max_smooth = GetRuleParam(rule_set, 4, rsSubName, 0); 
 	max_smooth_direct = GetRuleParam(rule_set, 5, rsSubName, 0);
 	max_leap_steps = GetRuleParam(rule_set, 3, rsName, 0);
 	max_leaps = GetRuleParam(rule_set, 3, rsSubName, 0);
@@ -982,6 +983,8 @@ void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
 	// Clear variables
 	int leap_sum2 = 0;
+	int thirds_sum = 0;
+	int leap_sum_corrected = 0;
 	int max_leap_sum2 = 0;
 	int smooth_sum = 0;
 	int smooth_sum2 = 0;
@@ -992,19 +995,22 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 		// Add new leap
 		if (leap[s] != 0) {
 			++leap_sum2;
+			if (c[s1] - c[s] == 2) ++thirds_sum;
 		}
 		else {
 			leap_sum2 = 0;
+			thirds_sum = 0;
 		}
 		// Get maximum leap_sum
-		if (leap_sum2 > max_leap_sum2) {
-			max_leap_sum2 = leap_sum2;
+		leap_sum_corrected = leap_sum2 - min(thirds_sum, thirds_ignored);
+		if (leap_sum_corrected > max_leap_sum2) {
+			max_leap_sum2 = leap_sum_corrected;
 			leap_sum_s2 = s;
 		}
 		// Calculate penalty
-		if (leap_sum2 == cse_leaps) {
+		if (leap_sum_corrected == cse_leaps) {
 			if (accept[70] > 0) ++fpenalty[70];
-			if (leap_sum2 > cse_leaps2 && accept[71] > 0) ++fpenalty[71];
+			if (leap_sum_corrected > cse_leaps2 && accept[71] > 0) ++fpenalty[71];
 		}
 		// Prohibit long smooth movement
 		if (smooth[s] != 0) {

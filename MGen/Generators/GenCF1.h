@@ -292,6 +292,7 @@ protected:
 	int tonic_max = 1; // Maximum number of tonic notes that can be contained in tonic window
 	int tonic_leap = 4; // Maximum allowed leap to tonic (chromatic)
 	int tonic_leap_weight = 2; // Weight of leap to tonic
+	int thirds_ignored = 1; // Number of thirds ignored for consecutive leaps rule
 	int fis_gis_max = 3; // Maximum allowed distance between F# and G#
 	int dev_late2 = 3; // Maximum note count to consider non-late leap compensation deviation to 2nd
 	int dev_late3 = 3; // Maximum note count to consider non-late leap compensation deviation to 3rd
