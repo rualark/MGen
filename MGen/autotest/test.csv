@@ -3,6 +3,7 @@ configs\GenCF1\window-scan.pl
 configs\GenCF1\swa.pl
 configs\GenCF1\swa-high.pl
 configs\GenCA1\known-cf-maj.pl
+configs\GenCA1\good-cf-maj.pl
 configs\GenCA1\known-cf-min.pl
 configs\GenCA1\test-leaps.pl
 configs\GenCA1\test-manyleaps.pl
