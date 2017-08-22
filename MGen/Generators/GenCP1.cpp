@@ -515,7 +515,7 @@ int CGenCP1::FailPco() {
 		// Prohibit parallel first
 		if (civl[s] == civl[fli[ls - 1]]) FLAG2(84, s)
 			// Prohibit parallel last
-		if (civl[s] == civl[fli2[ls - 1]]) FLAG2(84, s)
+		else if (civl[s] == civl[fli2[ls - 1]]) FLAG2(84, s)
 			// Prohibit combinatory
 		else if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
 			// Prohibit different
