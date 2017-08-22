@@ -181,8 +181,14 @@ Set;Severity;Class;Group;Rule;Flag
 1;84;60;Cantus;Counterpoint;Perfect consonance approach;parallel;0;;
 1;85;60;Cantus;Counterpoint;Perfect consonance approach;combined;0;;
 1;86;60;Cantus;Counterpoint;Perfect consonance approach;different;-1;;
-1;87;60;Cantus;Counterpoint;Perfect consonance approach;direct;0;;
-1;33;60;Cantus;Counterpoint;Perfect consonance approach;direct end;-1;;
+1;208;0;Cantus;Counterpoint;Direct stepwize movement;5 cadence;0;Direct movement to interval with stepwize motion in higher voice;
+1;209;40;Cantus;Counterpoint;Direct stepwize movement;8 cadence;0;Direct movement to interval with stepwize motion in higher voice;
+1;210;40;Cantus;Counterpoint;Direct stepwize movement;5;0;Direct movement to interval with stepwize motion in higher voice;
+1;211;60;Cantus;Counterpoint;Direct stepwize movement;8;0;Direct movement to interval with stepwize motion in higher voice;
+1;212;0;Cantus;Counterpoint;Direct leaping movement;5 cadence;0;Direct movement to interval with leaping motion in higher voice;
+1;213;40;Cantus;Counterpoint;Direct leaping movement;8 cadence;0;Direct movement to interval with leaping motion in higher voice;
+1;214;40;Cantus;Counterpoint;Direct leaping movement;5;0;Direct movement to interval with leaping motion in higher voice;
+1;215;60;Cantus;Counterpoint;Direct leaping movement;8;0;Direct movement to interval with leaping motion in higher voice;
 1;83;100;Cantus;Counterpoint;Dissonance;downbeat;0;;
 1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;
 1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap to;0;;

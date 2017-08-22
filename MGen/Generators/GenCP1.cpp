@@ -524,11 +524,28 @@ int CGenCP1::FailPco() {
 			// All other cases if previous interval is not pco
 		// Direct movement to pco
 		if (motion[fli2[ls - 1]] == mDirect) {
-			// Last movement with stepwize
-			if (s2 == c_len - 1 && (abs(acc[cpv][s] - acc[cpv][s - 1]) < 3 || abs(acc[cfv][s] - acc[cfv][s - 1]) < 3))
-				FLAG2(33, s)
-				// Other cases
-			else FLAG2(87, s);
+			// Stepwize
+			if (abs(acc[1][s] - acc[1][s - 1]) < 3) {
+				if (s2 == c_len - 1) {
+					if (civlc[s] == 0) FLAG2(209, s)
+					else FLAG2(208, s);
+				}
+				else {
+					if (civlc[s] == 0) FLAG2(211, s)
+					else FLAG2(210, s);
+				}
+			}
+			// Non-stepwize
+			else {
+				if (s2 == c_len - 1) {
+					if (civlc[s] == 0) FLAG2(213, s)
+					else FLAG2(212, s);
+				}
+				else {
+					if (civlc[s] == 0) FLAG2(215, s)
+					else FLAG2(214, s);
+				}
+			}
 		}
 		// Prohibit downbeats and culminations only if not last step
 		if (ls < fli_size - 1) {
