@@ -512,38 +512,39 @@ int CGenCP1::FailPcoSus() {
 int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
-		// Prohibit parallel first
+		// Prohibit parallel first - first (this is for sus notes, which starts are parallel)
 		if (civl[s] == civl[fli[ls - 1]]) FLAG2(84, s)
-			// Prohibit parallel last
+			// Prohibit parallel last - first
 		else if (civl[s] == civl[fli2[ls - 1]]) FLAG2(84, s)
+		else {
 			// Prohibit combinatory
-		else if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
+			if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
 			// Prohibit different
-		else if (tivl[fli2[ls - 1]] == iPco) 
-			FLAG2(86, s)
+			else if (tivl[fli2[ls - 1]] == iPco) FLAG2(86, s)
 			// All other cases if previous interval is not pco
-		// Direct movement to pco
-		if (motion[fli2[ls - 1]] == mDirect) {
-			// Stepwize
-			if (abs(acc[1][s] - acc[1][s - 1]) < 3) {
-				if (s2 == c_len - 1) {
-					if (civlc[s] == 0) FLAG2(209, s)
-					else FLAG2(208, s);
+			// Direct movement to pco
+			if (motion[fli2[ls - 1]] == mDirect) {
+				// Stepwize
+				if (abs(acc[1][s] - acc[1][s - 1]) < 3) {
+					if (s2 == c_len - 1) {
+						if (civlc[s] == 0) FLAG2(209, s)
+						else FLAG2(208, s);
+					}
+					else {
+						if (civlc[s] == 0) FLAG2(211, s)
+						else FLAG2(210, s);
+					}
 				}
+				// Non-stepwize
 				else {
-					if (civlc[s] == 0) FLAG2(211, s)
-					else FLAG2(210, s);
-				}
-			}
-			// Non-stepwize
-			else {
-				if (s2 == c_len - 1) {
-					if (civlc[s] == 0) FLAG2(213, s)
-					else FLAG2(212, s);
-				}
-				else {
-					if (civlc[s] == 0) FLAG2(215, s)
-					else FLAG2(214, s);
+					if (s2 == c_len - 1) {
+						if (civlc[s] == 0) FLAG2(213, s)
+						else FLAG2(212, s);
+					}
+					else {
+						if (civlc[s] == 0) FLAG2(215, s)
+						else FLAG2(214, s);
+					}
 				}
 			}
 		}
