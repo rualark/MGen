@@ -481,7 +481,7 @@ void CGMidi::LoadCantus(CString path)
 	vector <int> cl;
 	vector <float> ct;
 	int bad = 0;
-	int last_pos = 0;
+	int last_pos = -1;
 	CString lyrics_pending;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		float last_tick = 0;
@@ -505,7 +505,14 @@ void CGMidi::LoadCantus(CString path)
 					// Assign lyrics if this position was already sent
 					if (pos == last_pos) {
 						incom.resize(c.size());
-						incom[c.size()-1] = st;
+						if (c.size()) {
+							incom[c.size() - 1] = st;
+						}
+						else {
+							CString est;
+							est.Format("Error assigning lyrics '%s' for already sent position %d", st, pos);
+							WriteLog(5, est);
+						}
 						lyrics_pending.Empty();
 					}
 					// Else record lyrics

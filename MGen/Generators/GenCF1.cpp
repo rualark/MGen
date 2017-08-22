@@ -1767,7 +1767,7 @@ void CGenCF1::ScanInit() {
 	anflags.resize(av_cnt);
 	anflagsc.resize(av_cnt);
 	for (int i = 0; i < av_cnt; ++i) {
-		anflags[i].resize(c_len, vector<int>(max_flags)); // Flags for each note
+		anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
 		anflagsc[i].resize(c_len); // number of flags for each note
 	}
 	fli.resize(c_len);
@@ -1789,9 +1789,9 @@ void CGenCF1::ScanInit() {
 	hm2.resize(c_len);
 	accepted4.resize(MAX_WIND); // number of accepted canti per window
 	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
-	flags.resize(max_flags); // Flags for whole cantus
-	fstat.resize(max_flags); // number of canti with each flag
-	fcor.resize(max_flags, vector<long long>(max_flags)); // Flags correlation matrix
+	flags.resize(MAX_RULES); // Flags for whole cantus
+	fstat.resize(MAX_RULES); // number of canti with each flag
+	fcor.resize(MAX_RULES, vector<long long>(MAX_RULES)); // Flags correlation matrix
 	seed_cycle = 0; // Number of cycles in case of random_seed
 	reseed_count = 0;
 	nstat.resize(MAX_NOTE);
