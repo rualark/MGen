@@ -374,17 +374,15 @@ int CGenCP1::FailCrossInt2(int i, int i_1, int c1, int c2, int flag) {
 
 // Fail cross relation altered intervals
 int CGenCP1::FailCrossInt() {
-	int i, i_1;
-	for (int x = 1; x < fli_size; ++x) {
-		i = fli2[x];
-		i_1 = fli2[x - 1];
-		if (FailCrossInt2(i, i_1, 9, 8, 164)) return 1;
-		if (FailCrossInt2(i, i_1, 11, 10, 165)) return 1;
-		if (FailCrossInt2(i, i_1, 11, 8, 166)) return 1;
-		if (FailCrossInt2(i, i_1, 9, 3, 167)) return 1;
-		if (FailCrossInt2(i, i_1, 11, 3, 168)) return 1;
-		if (FailCrossInt2(i, i_1, 11, 5, 29)) return 1;
-		if (FailCrossInt2(i, i_1, 2, 8, 29)) return 1;
+	for (int s = 1; s < ep2; ++s) {
+		s_1 = s - 1;
+		if (FailCrossInt2(s, s_1, 9, 8, 164)) return 1;
+		if (FailCrossInt2(s, s_1, 11, 10, 165)) return 1;
+		if (FailCrossInt2(s, s_1, 11, 8, 166)) return 1;
+		if (FailCrossInt2(s, s_1, 9, 3, 167)) return 1;
+		if (FailCrossInt2(s, s_1, 11, 3, 168)) return 1;
+		if (FailCrossInt2(s, s_1, 11, 5, 29)) return 1;
+		if (FailCrossInt2(s, s_1, 2, 8, 29)) return 1;
 	}
 	return 0;
 }
