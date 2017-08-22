@@ -187,7 +187,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;
 1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap to;0;;
 1;88;60;Cantus;Counterpoint;Dissonance upbeat;leap from;0;;
-1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;-1;More than X same imperfect consonances in a row;
+1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;0;More than X same imperfect consonances in a row;
 1;96;60;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;
 1;49;60;Cantus;Counterpoint;First note;not C;0;;
 1;90;60;Cantus;Counterpoint;First note;not GC;0;;
