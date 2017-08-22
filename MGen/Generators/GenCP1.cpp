@@ -904,10 +904,16 @@ void CGenCP1::SWACP(int i, int dp) {
 
 int CGenCP1::FailLastIntervals() {
 	// Do not check if melody is short yet
-	if (fli_size < 2) return 0;
+	if (fli_size < 3) return 0;
+	s = fli[fli_size - 1];
+	s_1 = fli[fli_size - 2];
+	s_2 = fli[fli_size - 3];
 	// Prohibit last note not tonic
 	if (ep2 >= c_len) {
 		if (apc[cpv][c_len - 1] != 0) FLAG2(50, c_len - 1);
+		// Prohibit major second up before I (applicable to major and minor)
+		if (apcc[cpv][s] == 0 && apcc[cpv][s_1] == 10) FLAG2(74, s_1);
+		if (apcc[cpv][s] == 0 && apcc[cpv][s_2] == 10) FLAG2(74, s_2);
 		// Scan 2nd to last measure
 		if (mli.size() > 1) {
 			int start = mli[mli.size() - 2];

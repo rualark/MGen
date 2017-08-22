@@ -1164,7 +1164,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
 		s_1 = fli[fli_size - 2];
 		s_2 = fli[fli_size - 3];
 		if (pc[s] != 0) FLAG2(50, s);
-		// Prohibit major second up before I
+		// Prohibit major second up before I (applicable to major and minor)
 		if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1);
 		if (pcc[s] == 0 && pcc[s_2] == 10) FLAG2(74, s_2);
 	}
