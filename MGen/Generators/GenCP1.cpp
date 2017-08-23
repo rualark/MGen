@@ -443,6 +443,25 @@ int CGenCP1::FailSus() {
 		if (s2 == ep2 - 1) pre_end = 0;
 		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) pre_end = 0;
 		if (pre_end) {
+			// Resolution to discord
+			if (tivl[s2+1] == iDis) FLAG2(220, s2)
+			// Resolution by leap
+			else if (aleap[cpv][s2]) FLAG2(221, s2)
+			else {
+				// Resolution up
+				if (acc[cpv][s2 + 1] > acc[cpv][s2]) {
+					// Allowed only for resolution of leading tone
+					if (acc[cpv][s2] != 11) FLAG2(219, s2);
+				}
+				// 9th to 8va
+				if (civl[s2] == 1 && civl[s2 + 1] == 0) {
+					if (ivl[s2] > 7) FLAG2(216, s2)
+					// 2nd to unison
+					else FLAG2(218, s2);
+				}
+				// 7th to 8va
+				else if (civl[s2] == 6 && civl[s2 + 1] == 0) FLAG2(217, s2)
+			}
 		}
 		else {
 			last_note = -1;
