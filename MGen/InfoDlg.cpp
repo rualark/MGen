@@ -69,7 +69,7 @@ BOOL CInfoDlg::OnInitDialog()
 			int m2 = i;
 			// Find melody start
 			for (int x = i; x >= 0; --x) {
-				if (pGen->mel_id[x][mv] == pGen->mel_id[i][mv]) m1 = x;
+				if (pGen->mel_id[x][mv] == pGen->mel_id[i][mv] && !pGen->pause[i][mv]) m1 = x;
 			}
 			// Find melody finish
 			for (int x = i; x < pGen->t_generated; ++x) {
@@ -78,7 +78,9 @@ BOOL CInfoDlg::OnInitDialog()
 			int prev_note = -1;
 			int nnum = 0;
 			for (int x = m1; x <= m2; ++x) {
-				if (pGen->note[x][mv] == prev_note) continue;
+				// When pause, reset previous note because notes can be the same left and right from the pause
+				if (pGen->pause[x][mv]) prev_note = -1;
+				if (pGen->note[x][mv] == prev_note || pGen->pause[x][mv]) continue;
 				++nnum;
 				prev_note = pGen->note[x][mv];
 				if (pGen->comment[x][mv].size()) {
