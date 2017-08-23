@@ -454,13 +454,13 @@ int CGenCP1::FailSus() {
 					if (apcc[cpv][s2] != 11) FLAG2(219, s2);
 				}
 				// 9th to 8va
-				if (civl[s2] == 1 && civl[s2 + 1] == 0) {
+				if (ivlc[s2] == 1 && ivlc[s2 + 1] == 0) {
 					if (ivl[s2] > 7) FLAG2(216, s2)
 					// 2nd to unison
 					else FLAG2(218, s2);
 				}
 				// 7th to 8va
-				else if (civl[s2] == 6 && civl[s2 + 1] == 0) FLAG2(217, s2)
+				else if (ivlc[s2] == 6 && ivlc[s2 + 1] == 0) FLAG2(217, s2)
 			}
 		}
 		else {
@@ -512,7 +512,8 @@ int CGenCP1::FailDis() {
 		// Check if previous interval is discord
 		if (tivl[fli2[ls - 1]] == iDis) {
 			// Check if movement from discord is not smooth
-			if (!asmooth[cpv][fli2[ls - 1]]) FLAG2(88, fli2[ls - 1]);
+			if (!asmooth[cpv][fli2[ls - 1]]) 
+				FLAG2(88, fli2[ls - 1]);
 		}
 	}
 	return 0;
