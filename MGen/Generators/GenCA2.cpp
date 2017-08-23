@@ -297,6 +297,7 @@ void CGenCA2::Generate() {
 			cpv = 1;
 		}
 		ExplodeCP();
+		fn0 = fn;
 		// Get key
 		acc = cpoint[i];
 		GetCPKey();
