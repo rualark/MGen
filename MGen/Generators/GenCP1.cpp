@@ -451,7 +451,8 @@ int CGenCP1::FailSus() {
 				// Resolution up
 				if (acc[cpv][s2 + 1] > acc[cpv][s2]) {
 					// Allowed only for resolution of leading tone
-					if (apcc[cpv][s2] != 11) FLAG2(219, s2);
+					if (apcc[cpv][s2] == 11) FLAG2(222, s2)
+					else FLAG2(219, s2);
 				}
 				// 9th to 8va
 				if (ivlc[s2] == 1 && ivlc[s2 + 1] == 0) {
