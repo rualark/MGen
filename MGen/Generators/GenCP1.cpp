@@ -434,15 +434,17 @@ int CGenCP1::FailVMotion() {
 }
 
 int CGenCP1::FailSus() {
-	int unresolved;
+	int pre_end;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Check if sus ends before cantus
-		unresolved = 0;
-		if (s2 == ep2 - 1) unresolved = 1;
-		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) unresolved = 1;
-		if (unresolved) {
+		pre_end = 1;
+		if (s2 == ep2 - 1) pre_end = 0;
+		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) pre_end = 0;
+		if (pre_end) {
+		}
+		else {
 			last_note = -1;
 			for (s = sus[ls]; s <= s2; ++s) {
 				if (last_note != acc[cpv][s]) {
