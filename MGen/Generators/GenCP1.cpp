@@ -507,6 +507,9 @@ int CGenCP1::FailDis() {
 			if (asmooth[cpv][fli2[ls - 1]]) FLAG2(169, s)
 				// If movement to discord is leaping
 			else FLAG2(187, s);
+			// Check if discord is longer than neighbouring consonance
+			if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s)
+			else if (ls < fli_size-1 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis) FLAG2(223, s);
 		}
 	}
 	else {
