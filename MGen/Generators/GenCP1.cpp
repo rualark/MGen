@@ -434,15 +434,17 @@ int CGenCP1::FailVMotion() {
 }
 
 int CGenCP1::FailSus() {
-	int unresolved;
+	int pre_end;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Check if sus ends before cantus
-		unresolved = 0;
-		if (s2 == ep2 - 1) unresolved = 1;
-		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) unresolved = 1;
-		if (unresolved) {
+		pre_end = 1;
+		if (s2 == ep2 - 1) pre_end = 0;
+		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) pre_end = 0;
+		if (pre_end) {
+		}
+		else {
 			last_note = -1;
 			for (s = sus[ls]; s <= s2; ++s) {
 				if (last_note != acc[cpv][s]) {
@@ -928,7 +930,12 @@ int CGenCP1::FailLastIntervals() {
 	s_2 = fli[fli_size - 3];
 	// Prohibit last note not tonic
 	if (ep2 >= c_len) {
-		if (apc[cpv][c_len - 1] != 0) FLAG2(50, c_len - 1);
+		if (apc[cpv][c_len - 1] != 0) {
+			// Detect upper last G if lower note is C
+			if (apcc[cpv][c_len - 1] == 7 && cpv == 1 && apc[cfv][c_len - 1] == 0) 
+				FLAG2(33, c_len-1)
+			else FLAG2(50, c_len - 1);
+		}
 		// Prohibit major second up before I (applicable to major and minor)
 		if (apcc[cpv][s] == 0 && apcc[cpv][s_1] == 10) FLAG2(74, s_1);
 		if (apcc[cpv][s] == 0 && apcc[cpv][s_2] == 10) FLAG2(74, s_2);
