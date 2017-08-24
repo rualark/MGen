@@ -214,6 +214,7 @@ void CGenCP1::ScanCPInit() {
 		asmooth[i].resize(c_len);
 		aslur[i].resize(c_len);
 	}
+	rpos.resize(c_len);
 	ivl.resize(c_len);
 	ivlc.resize(c_len);
 	civl.resize(c_len);
@@ -593,6 +594,28 @@ int CGenCP1::FailPco() {
 		}
 	}
 	return 0;
+}
+
+void CGenCP1::GetRpos() {
+	int sm1, sm2;
+	// Main calculation
+	rpos[0] = pDownbeat;
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		s2 = fli2[ls];
+		if (s % npm == 0) rpos[ls] = pDownbeat;
+		else if (s > 0 && aleap[cpv][s - 1]) rpos[ls] = pLeap;
+		else if (s2 < ep2-1 && aleap[cpv][s2]) rpos[ls] = pLeap;
+		else {
+			if (s > 0 && s2 < ep2 - 1 && ac[cpv][s - 1] == ac[cpv][s2 + 1]) rpos[ls] = pAux;
+			else rpos[ls] = pPass;
+		}
+	}
+	// Calculate cambiata
+	if (npm >= 4) {
+		for (int ms = 0; ms < mli.size(); ++ms) {
+		}
+	}
 }
 
 int CGenCP1::FailVIntervals() {
@@ -1148,6 +1171,7 @@ check:
 		if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
+		GetRpos();
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;

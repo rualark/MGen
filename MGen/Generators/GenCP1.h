@@ -7,6 +7,12 @@
 #define mDirect 2
 #define mContrary 3
 
+// Rhythm position types
+#define pDownbeat 1
+#define pLeap 2
+#define pAux -1
+#define pPass -2
+
 class CGenCP1 :
 	public CGenCA1
 {
@@ -35,6 +41,7 @@ protected:
 	inline int FailDis();
 	inline int FailPcoSus();
 	inline int FailPco();
+	inline void GetRpos();
 	inline int FailVIntervals();
 	inline void CalcDpenaltyCP();
 	inline void SaveCP();
@@ -66,6 +73,7 @@ protected:
 	vector<int> sus; // Note suspension flag (when above zero, links to first cantus-changing step)
 	vector<int> mli; // Forward links to first notes of each measure
 	vector<int> hli; // Forward links to first notes of each harmonic change
+	vector<int> rpos; // Rhythm position types for fli
 	int hli_size = 0; // Size of hli vector
 
 	// Cantus
