@@ -438,6 +438,8 @@ int CGenCP1::FailSus() {
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		s = fli[ls];
 		s2 = fli2[ls];
+		// Flag suspension
+		FLAG2(225, s); 
 		// Check if sus starts from discord
 		if (tivl[s] == iDis) FLAG2(224, s);
 		// Check if sus ends before cantus
@@ -989,7 +991,7 @@ int CGenCP1::FailLastIntervals() {
 }
 
 void CGenCP1::GetNoteTypes() {
-	int s = 0;
+	int s = fn;
 	int l;
 	for (ls = 0; ls < fli_size; ++ls) {
 		if (ls > 0) s = fli2[ls-1]+1;
