@@ -438,6 +438,7 @@ int CGenCP1::FailSus() {
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		s = fli[ls];
 		s2 = fli2[ls];
+		// Check if sus starts from discord
 		// Check if sus ends before cantus
 		pre_end = 1;
 		if (s2 == ep2 - 1) pre_end = 0;
@@ -999,7 +1000,7 @@ void CGenCP1::GetNoteTypes() {
 			else beat[ls] = 1;
 		}
 		else beat[ls] = 0;
-		// Get suspension
+		// Get suspension if cantus note changes during counterpoint note
 		sus[ls] = 0;
 		if (l > 1) {
 			for (int i = 1; i < l; ++i) {
