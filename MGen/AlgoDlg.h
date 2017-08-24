@@ -22,6 +22,8 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
+	FILETIME m_ft;
+
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
@@ -38,4 +40,6 @@ public:
 	void LoadFile(CString path);
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnNMDblclkTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnClose();
 };

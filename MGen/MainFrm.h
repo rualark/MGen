@@ -33,6 +33,13 @@
 #define MAX_MIDI_DEVICES 100
 #define DISABLE_PLAYBACK "[DISABLE PLAYBACK]"
 
+#define TIMER1 1
+#define TIMER2 2
+#define TIMER3 3
+#define TIMER4 4
+#define TIMER5 5
+#define TIMER6 6
+
 class CMainFrame : public CFrameWndEx
 {
 	
