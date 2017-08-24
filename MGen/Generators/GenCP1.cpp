@@ -452,7 +452,8 @@ int CGenCP1::FailSus() {
 				// Resolution up
 				if (acc[cpv][s2 + 1] > acc[cpv][s2]) {
 					// Allowed only for resolution of leading tone
-					if (apcc[cpv][s2] != 11) FLAG2(219, s2);
+					if (apcc[cpv][s2] == 11) FLAG2(222, s2)
+					else FLAG2(219, s2);
 				}
 				// 9th to 8va
 				if (ivlc[s2] == 1 && ivlc[s2 + 1] == 0) {
@@ -507,6 +508,9 @@ int CGenCP1::FailDis() {
 			if (asmooth[cpv][fli2[ls - 1]]) FLAG2(169, s)
 				// If movement to discord is leaping
 			else FLAG2(187, s);
+			// Check if discord is longer than neighbouring consonance
+			if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s)
+			else if (ls < fli_size-1 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis) FLAG2(223, s);
 		}
 	}
 	else {
