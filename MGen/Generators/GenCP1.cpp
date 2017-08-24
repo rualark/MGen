@@ -1134,7 +1134,7 @@ check:
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
 		CreateLinks(acc[cpv]);
-		CreateULinks();
+		//CreateULinks();
 		if (minor_cur) {
 			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;
 			if (FailGisTrail2()) goto skip;
