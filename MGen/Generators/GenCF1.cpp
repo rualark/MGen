@@ -1770,6 +1770,7 @@ void CGenCF1::ScanInit() {
 		anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
 		anflagsc[i].resize(c_len); // number of flags for each note
 	}
+	uli.resize(c_len);
 	fli.resize(c_len);
 	fli2.resize(c_len);
 	macc.resize(c_len);

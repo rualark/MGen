@@ -304,6 +304,7 @@ protected:
 	vector <int> fli2; // Forward links to end of each non-slurred note
 	vector <int> llen; // Length of each linked note
 	vector <int> bli; // Back links from each step to fli2
+	vector <int> uli; // Forward links to start of each unique note column
 	int minl = 0, maxl = 0;
 	int fli_size; // Size of filled fli2 vector
 	// Random SWA
@@ -468,4 +469,5 @@ protected:
 	vector<vector<int>> aleap;
 	vector<vector<int>> asmooth;
 	vector<vector<int>> aslur;
+	void CreateULinks();
 };

@@ -1020,6 +1020,28 @@ void CGenCP1::GetNoteTypes() {
 	}
 }
 
+// Create links to unique note columns
+void CGenCF1::CreateULinks() {
+	vector<int> prev_note;
+	prev_note.resize(av_cnt, -1);
+	int changed;
+	uli.clear();
+	// Set first step in case it is pause
+	bli[0] = 0;
+	for (int i = fn; i < ep2; ++i) {
+		changed = 0;
+		// Did any of voices change?
+		for (int v = 0; v < av_cnt; ++v) {
+			if (prev_note[v] != acc[v][i]) {
+				changed = 1;
+			}
+			prev_note[v] = acc[v][i];
+		}
+		if (!changed) continue;
+		uli.push_back(i);
+	}
+}
+
 void CGenCP1::GetMeasures() {
 	mli.clear();
 	for (int i = 0; i < ep2; ++i) {
@@ -1112,6 +1134,7 @@ check:
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
 		CreateLinks(acc[cpv]);
+		CreateULinks();
 		if (minor_cur) {
 			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;
 			if (FailGisTrail2()) goto skip;
