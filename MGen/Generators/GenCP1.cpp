@@ -439,6 +439,7 @@ int CGenCP1::FailSus() {
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Check if sus starts from discord
+		if (tivl[s] == iDis) FLAG2(224, s);
 		// Check if sus ends before cantus
 		pre_end = 1;
 		if (s2 == ep2 - 1) pre_end = 0;
