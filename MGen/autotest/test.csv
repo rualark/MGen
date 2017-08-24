@@ -20,6 +20,7 @@ configs\GenCP1\good-cf-maj.pl
 configs\GenCP1\good-cf-maj-high.pl;60;120
 configs\GenCP1\good-cf-maj-scan.pl
 configs\GenCA2\test-alterint.pl
+configs\GenCA2\good-cp2v1.pl
 configs\GenCA2\known-cp2v1.pl
 configs\GenCA2\test-cp.pl
 configs\GenCA2\test-vint.pl
