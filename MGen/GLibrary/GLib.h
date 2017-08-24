@@ -179,6 +179,8 @@ public:
 
 	static long long time();
 
+	static FILETIME fileTime(CString fname);
+
 	static void start_time();
 
 	static long long abstime();

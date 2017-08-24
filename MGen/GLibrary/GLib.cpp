@@ -62,6 +62,16 @@ long long CGLib::time() {
 	return t - first_time;
 }
 
+// Get file last write time
+FILETIME CGLib::fileTime(CString fname) {
+	HANDLE hFile = CreateFile(fname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+	FILETIME creationTime, lpLastAccessTime, lastWriteTime;
+	bool err = GetFileTime(hFile, &creationTime, &lpLastAccessTime, &lastWriteTime);
+	CloseHandle(hFile);
+	// If file does not exist, garbage is returned
+	return lastWriteTime;
+}
+
 void CGLib::start_time() {
 	long long t = abstime();
 	first_time = t;

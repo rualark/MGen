@@ -44,6 +44,8 @@ BEGIN_MESSAGE_MAP(CAlgoDlg, CDialog)
 	ON_BN_CLICKED(IDC_BUTTON_EDIT, &CAlgoDlg::OnBnClickedButtonEdit)
 	ON_BN_CLICKED(IDOK, &CAlgoDlg::OnBnClickedOk)
 	ON_NOTIFY(NM_DBLCLK, IDC_TREE_ALGO, &CAlgoDlg::OnNMDblclkTreeAlgo)
+	ON_WM_TIMER()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -56,6 +58,7 @@ BOOL CAlgoDlg::OnInitDialog()
 
 	LoadTree();
 	UpdateControls();
+	SetTimer(TIMER6, 1000, NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 								// EXCEPTION: OCX Property Pages should return FALSE
@@ -282,10 +285,12 @@ void CAlgoDlg::OnBnClickedOk()
 {
 	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	HTREEITEM hti = m_tree.GetSelectedItem();
-	mf->m_algo = m_tree.GetItemData(m_tree.GetParentItem(hti));
-	mf->m_algo_id = mf->AlgID[mf->m_algo];
-	mf->m_config = m_tree.GetItemText(hti);
-	mf->SaveSettings();
+	if (hti) {
+		mf->m_algo = m_tree.GetItemData(m_tree.GetParentItem(hti));
+		mf->m_algo_id = mf->AlgID[mf->m_algo];
+		mf->m_config = m_tree.GetItemText(hti);
+		mf->SaveSettings();
+	}
 
 	CDialog::OnOK();
 }
@@ -296,4 +301,34 @@ void CAlgoDlg::OnNMDblclkTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult)
 	if (GetDlgItem(IDOK)->IsWindowEnabled()) OnBnClickedOk();
 
 	*pResult = 0;
+}
+
+
+void CAlgoDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent == TIMER6) {
+		CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
+		HTREEITEM hti = m_tree.GetSelectedItem();
+		if (hti) {
+			//CString config = m_tree.GetItemText(hti);
+			CString fname = "configs\\" + mf->AlgFolder[mf->m_algo] + "\\" + m_tree.GetItemText(hti) + ".pl";
+			if (CGLib::fileExists(fname)) {
+				FILETIME ft = CGLib::fileTime(fname);
+				if (CompareFileTime(&ft, &m_ft)) {
+					m_ft = ft;
+					UpdateControls();
+				}
+			}
+		}
+	}
+
+	CDialog::OnTimer(nIDEvent);
+}
+
+
+void CAlgoDlg::OnClose()
+{
+	KillTimer(TIMER6);
+
+	CDialog::OnClose();
 }

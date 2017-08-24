@@ -28,12 +28,6 @@
 #define new DEBUG_NEW
 #endif
 
-#define TIMER1 1
-#define TIMER2 2
-#define TIMER3 3
-#define TIMER4 4
-#define TIMER5 5
-
 // CMainFrame
 
 static UINT WM_GEN_FINISH = RegisterWindowMessage("MGEN_GEN_FINISH_MSG");
