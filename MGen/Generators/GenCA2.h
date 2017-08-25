@@ -13,6 +13,8 @@ public:
 
 	void LinkCpPauses();
 
+	void DetectSpecies();
+
 	void Generate() override;
 
 protected:

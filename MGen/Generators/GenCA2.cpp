@@ -232,6 +232,9 @@ void CGenCA2::LinkCpPauses() {
 	}
 }
 
+void CGenCA2::DetectSpecies() {
+}
+
 void CGenCA2::Generate() {
 	CString st;
 	int fn0 = fn;
