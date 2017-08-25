@@ -744,9 +744,11 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 			++scount2;
 			// Subtract old slur
 			if ((i >= slurs_window) && (cc[i - slurs_window] == cc[i - slurs_window + 1])) --scount2;
-			if (scount2 == 1) FLAG2(93, i)
-			else if (scount2 == 2) FLAG2(94, i)
-			else if (scount2 > 2) FLAG2(95, i);
+			if (species != 4) {
+				if (scount2 == 1) FLAG2(93, i)
+				else if (scount2 == 2) FLAG2(94, i)
+				else if (scount2 > 2) FLAG2(95, i);
+			}
 		}
 		else scount = 0;
 	}

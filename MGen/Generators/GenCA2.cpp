@@ -263,6 +263,7 @@ void CGenCA2::DetectSpecies() {
 			WriteLog(5, est);
 		}
 	}
+	else species = species_detected;
 }
 
 void CGenCA2::Generate() {
