@@ -1307,6 +1307,36 @@ check:
 	ShowFlagBlock();
 }
 
+void CGenCP1::LoadCantusHigh(int i) {
+	CString st;
+	if (cp_incom[i].size()) {
+		if (cp_incom[i][0].Find("cf=low") != -1) cantus_high = 0;
+		else if (cp_incom[i][0].Find("cf=high") != -1) cantus_high = 1;
+		else {
+			// Use previous cantus_high (of previous cantus or from configuration if first cantus)
+			st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
+				cantus_id + 1, cantus_high ? "high" : "low");
+			WriteLog(5, st);
+		}
+	}
+	else {
+		st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
+			cantus_id + 1, cantus_high ? "high" : "low");
+		WriteLog(5, st);
+	}
+}
+
+void CGenCP1::LoadSpecies(int i) {
+	CString st;
+	if (cp_incom[i].size()) {
+		if (cp_incom[i][0].Find("sp1") != -1) species = 1;
+		else if (cp_incom[i][0].Find("sp2") != -1) species = 2;
+		else if (cp_incom[i][0].Find("sp3") != -1) species = 3;
+		else if (cp_incom[i][0].Find("sp4") != -1) species = 4;
+		else if (cp_incom[i][0].Find("sp5") != -1) species = 5;
+	}
+}
+
 void CGenCP1::Generate() {
 	CString st;
 	int fn0 = fn;

@@ -265,22 +265,8 @@ void CGenCA2::Generate() {
 		long long time_start = CGLib::time();
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
-		// Choose level
-		if (cp_incom[i].size()) {
-			if (cp_incom[i][0].Find("cf=low") != -1) cantus_high = 0;
-			else if (cp_incom[i][0].Find("cf=high") != -1) cantus_high = 1;
-			else {
-				// Use previous cantus_high (of previous cantus or from configuration if first cantus)
-				st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
-					cantus_id + 1, cantus_high?"high":"low");
-				WriteLog(5, st);
-			}
-		}
-		else {
-			st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
-				cantus_id + 1, cantus_high ? "high" : "low");
-			WriteLog(5, st);
-		}
+		LoadCantusHigh(i);
+		LoadSpecies(i);
 		// Check level
 		if ((cantus_high && cpoint[i][1][0] == 0) || (!cantus_high && cpoint[i][0][0] == 0)) {
 			st.Format("Warning: Cantus starts with a pause (%s cantus #%d). Changed to %s",

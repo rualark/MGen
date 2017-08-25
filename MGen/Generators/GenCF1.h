@@ -469,5 +469,6 @@ protected:
 	vector<vector<int>> aleap;
 	vector<vector<int>> asmooth;
 	vector<vector<int>> aslur;
+	int species = 1; // Counterpoint species
 	void CreateULinks();
 };
