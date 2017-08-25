@@ -1352,6 +1352,7 @@ void CGenCP1::LoadCantusHigh() {
 
 void CGenCP1::LoadSpecies() {
 	CString st;
+	species = 0;
 	if (cp_incom[cantus_id].size()) {
 		if (cp_incom[cantus_id][0].Find("sp1") != -1) species = 1;
 		else if (cp_incom[cantus_id][0].Find("sp2") != -1) species = 2;
