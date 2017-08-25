@@ -469,6 +469,8 @@ protected:
 	vector<vector<int>> aleap;
 	vector<vector<int>> asmooth;
 	vector<vector<int>> aslur;
-	int species = 1; // Counterpoint species
+	int species = 0; // Counterpoint species
+	int species_detected = 0; // Counterpoint species detected in CA2
+	int sus_count = 0; // Number of suspensions detected in ExplodeCP
 	void CreateULinks();
 };

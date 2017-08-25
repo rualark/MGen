@@ -138,6 +138,7 @@ void CGenCA2::ExplodeCP() {
 	// Detect minimum note length for each voice
 	min_vlen.clear();
 	max_vlen.clear();
+	sus_count = 0;
 	int cur_len = 0;
 	int n;
 	min_vlen.resize(av_cnt, INT_MAX);
@@ -196,6 +197,10 @@ void CGenCA2::ExplodeCP() {
 			cantus_len[cantus_id].push_back(ln);
 		}
 	}
+	// Calculate sus count
+	for (int i = 1; i < cpoint[cantus_id][cpv].size(); ++i) {
+		if (cpoint[cantus_id][cfv][i] == cpoint[cantus_id][cfv][i - 1]) ++sus_count;
+	}
 	// Detect start pause
 	fn = 0;
 	for (int i = 0; i < cpoint[cantus_id][cpv].size(); ++i) {
@@ -236,6 +241,28 @@ void CGenCA2::LinkCpPauses() {
 }
 
 void CGenCA2::DetectSpecies() {
+	species_detected = 0;
+	// Do not detect if cantus has uneven note length
+	if (max_vlen[cfv] != min_vlen[cfv]) return;
+	if (sus_count > cpoint[cantus_id][cpv].size() / 4 && (min_vlen[cpv] == min_vlen[cfv] || min_vlen[cpv]*2 == min_vlen[cfv])) species_detected = 4;
+	else if (min_vlen[cpv] == min_vlen[cfv]) species_detected = 1;
+	else if (min_vlen[cpv] * 2 == min_vlen[cfv]) species_detected = 2;
+	else if (min_vlen[cpv] * 4 == min_vlen[cfv]) species_detected = 3;
+	else if (min_vlen[cpv] * 8 == min_vlen[cfv]) species_detected = 5;
+	// Write log
+	CString est;
+	est.Format("Detected species %d for counterpoint #%d (%s)",
+		species_detected, cantus_id, cantus_high ? "high" : "low");
+	WriteLog(0, est);
+	// Check wrong text
+	if (species) {
+		if (species != species_detected) {
+			CString est;
+			est.Format("Counterpoint #%d (%s) looks like species %d, but species %d was specified in MIDI file",
+				cantus_id, cantus_high ? "high" : "low", species_detected, species);
+			WriteLog(5, est);
+		}
+	}
 }
 
 void CGenCA2::Generate() {
