@@ -21,8 +21,31 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "cantus_id", &cantus_id2, 0);
 	CheckVar(sN, sV, "accept_cantus_rechoose", &accept_cantus_rechoose, 0, 1);
 	CheckVar(sN, sV, "notes_per_measure", &npm, 1, 8);
-	CheckVar(sN, sV, "start_pause", &fn, 0);
-	CheckVar(sN, sV, "species", &species, 0);
+	CheckVar(sN, sV, "start_pause", &fn, 0, 7);
+	CheckVar(sN, sV, "species", &species, 1, 5);
+
+	if (*sN == "species") {
+		if (species == 1) {
+			npm = 1;
+			fn = 0;
+		}
+		if (species == 2) {
+			npm = 2;
+			fn = 1;
+		}
+		if (species == 3) {
+			npm = 4;
+			fn = 1;
+		}
+		if (species == 4) {
+			npm = 2;
+			fn = 1;
+		}
+		if (species == 5) {
+			npm = 8;
+			fn = 2;
+		}
+	}
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }
