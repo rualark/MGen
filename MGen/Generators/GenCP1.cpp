@@ -505,24 +505,15 @@ int CGenCP1::FailDis() {
 	// Discord
 	if (tivl[s] == iDis) {
 		// Downbeat
-		if (!beat[ls]) FLAG2(83, s)
-			// Upbeat
+		if (rpos[ls] == pDownbeat) FLAG2(83, s)
+		// Upbeat
+		else if (rpos[ls] == pOffbeat) FLAG2(83, s)
+		else if (rpos[ls] == pLeap) FLAG2(187, s)
 		else {
-			// Check if movement to discord is smooth
-			if (asmooth[cpv][fli2[ls - 1]]) FLAG2(169, s)
-				// If movement to discord is leaping
-			else FLAG2(187, s);
+			FLAG2(169, s)
 			// Check if discord is longer than neighbouring consonance
 			if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s)
 			else if (ls < fli_size-1 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis) FLAG2(223, s);
-		}
-	}
-	else {
-		// Check if previous interval is discord
-		if (tivl[fli2[ls - 1]] == iDis) {
-			// Check if movement from discord is not smooth
-			if (!asmooth[cpv][fli2[ls - 1]]) 
-				FLAG2(88, fli2[ls - 1]);
 		}
 	}
 	return 0;
@@ -628,7 +619,7 @@ void CGenCP1::GetRpos() {
 				asmooth[cpv][fli[ls]] * asmooth[cpv][fli[ls + 2]] == 1) {
 				rpos[ls + 1] = pAux;
 				rpos[ls + 2] = pAux;
-				rpos[ls + 3] = pDownbeat;
+				rpos[ls + 3] = pOffbeat;
 			}
 			// Cambiata
 			if (ac[cpv][fli[ls]] - 2 == ac[cpv][fli[ls + 3]] &&
@@ -1192,7 +1183,6 @@ check:
 		if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
-		GetRpos();
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
