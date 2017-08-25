@@ -267,6 +267,8 @@ void CGenCA2::DetectSpecies() {
 
 void CGenCA2::Generate() {
 	CString st;
+	// Ignore species in config file, because it will be loaded from text and detected
+	species = 0;
 	int fn0 = fn;
 	int s_len2 = s_len;
 	InitCP();
