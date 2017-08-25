@@ -600,7 +600,7 @@ void CGenCP1::GetRpos() {
 	int sm1, sm2;
 	// Main calculation
 	rpos[0] = pDownbeat;
-	for (ls = 0; ls < fli_size; ++ls) {
+	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
 		if (s % npm == 0) rpos[ls] = pDownbeat;
@@ -612,8 +612,29 @@ void CGenCP1::GetRpos() {
 		}
 	}
 	// Calculate cambiata
+	int tlen;
 	if (npm >= 4) {
 		for (int ms = 0; ms < mli.size(); ++ms) {
+			ls = bli[mli[ms]];
+			// If last ls
+			if (ls >= fli_size - 4) break;
+			// If longer than measure (removed because it duplicates next test)
+			//if (fli2[ls + 3] - fli[ls] >= npm) continue;
+			tlen = llen[ls] + llen[ls + 1] + llen[ls + 2] + llen[ls + 3];
+			// If total length does not equal measure
+			if (tlen != npm) continue;
+			// Voicing
+			if (acc[cpv][fli[ls]] == acc[cpv][fli[ls + 3]] &&
+				asmooth[cpv][fli[ls]] * asmooth[cpv][fli[ls + 2]] == 1) {
+				rpos[ls + 1] = pAux;
+				rpos[ls + 2] = pAux;
+				rpos[ls + 3] = pDownbeat;
+			}
+			// Cambiata
+			if (ac[cpv][fli[ls]] - 2 == ac[cpv][fli[ls + 3]] &&
+				asmooth[cpv][fli[ls]] == - 1 && asmooth[cpv][fli[ls + 2]] == 1) {
+				rpos[ls + 1] = pAux;
+			}
 		}
 	}
 }
@@ -1188,6 +1209,7 @@ check:
 		GetNoteTypes();
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;
+		GetRpos();
 		GetVIntervals();
 		if (FailVMotion()) goto skip;
 		if (FailVIntervals()) goto skip;
