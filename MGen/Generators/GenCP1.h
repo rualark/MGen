@@ -61,8 +61,8 @@ protected:
 	inline int FailHarm();
 	void ScanCP(int t, int v);
 
-	void LoadCantusHigh(int i);
-	void LoadSpecies(int i);
+	void LoadCantusHigh();
+	void LoadSpecies();
 
 	// Variables
 	int cp_culm = 0; // Position of counterpoint culmination

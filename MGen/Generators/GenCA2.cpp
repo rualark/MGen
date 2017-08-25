@@ -265,8 +265,8 @@ void CGenCA2::Generate() {
 		long long time_start = CGLib::time();
 		// Add line
 		linecolor[step] = Color(255, 0, 0, 0);
-		LoadCantusHigh(i);
-		LoadSpecies(i);
+		LoadCantusHigh();
+		LoadSpecies();
 		// Check level
 		if ((cantus_high && cpoint[i][1][0] == 0) || (!cantus_high && cpoint[i][0][0] == 0)) {
 			st.Format("Warning: Cantus starts with a pause (%s cantus #%d). Changed to %s",
@@ -283,6 +283,7 @@ void CGenCA2::Generate() {
 			cpv = 1;
 		}
 		ExplodeCP();
+		DetectSpecies();
 		fn0 = fn;
 		// Get key
 		acc = cpoint[i];
