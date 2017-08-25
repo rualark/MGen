@@ -317,28 +317,49 @@ void CGenCF1::CheckConfig() {
 	// GenCP1
 	if (m_algo_id == 121) {
 		if (accept_cantus_rechoose && cantus_id2) {
-			WriteLog(1, "Warning: accept_cantus_rechoose will not work with cantus_id above zero");
+			WriteLog(1, "Warning: accept_cantus_rechoose will not work with cantus_id above zero (check config)");
 		}
+	}
+	if (species == 1 && fn > 0) {
+		WriteLog(5, "Warning: Counterpoint species 1 cannot have starting_pause (check config)");
+	}
+	if (fn >= npm) {
+		WriteLog(5, "Warning: Starting_pause is greater or equals to notes_per_measure (check config)");
+	}
+	if (fn > 1) {
+		WriteLog(1, "Warning: Starting_pause > 1 is not recommended (check config)");
+	}
+	if (species == 2 && npm != 2) {
+		WriteLog(5, "Warning: Counterpoint species 2 should have notes_per_measure = 2 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
+	}
+	if (species == 3 && npm != 4) {
+		WriteLog(5, "Warning: Counterpoint species 3 should have notes_per_measure = 4 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
+	}
+	if (species == 4 && npm != 2) {
+		WriteLog(5, "Warning: Counterpoint species 4 should have notes_per_measure = 2 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
+	}
+	if (species == 5 && npm != 8) {
+		WriteLog(5, "Warning: Counterpoint species 5 should have notes_per_measure = 8 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
 	}
 	// Check configuration parameters
 	if (accept_reseed == 1 && random_seed == 0) {
-		WriteLog(5, "Warning: accept_reseed=1 while random_seed=0. You will get same results after every reseed");
+		WriteLog(5, "Warning: accept_reseed=1 while random_seed=0. You will get same results after every reseed (check config)");
 	}
 	if (method == mScan) {
-		WriteLog(1, "Warning: Window-scan method is currently not working correctly (needs debugging)");
+		WriteLog(1, "Warning: Window-scan method is currently not working correctly (needs debugging). Please choose another method in config file.");
 	}
 	if (midifile_export_marks && midifile_export_comments) {
-		WriteLog(5, "Warning: You are trying to export both marks and comments to MIDI file: midifile_export_marks and midifile_export_comments both set. They can overlap.");
+		WriteLog(5, "Warning: You are trying to export both marks and comments to MIDI file: midifile_export_marks and midifile_export_comments both set. They can overlap (check config)");
 	}
 	if (calculate_correlation || calculate_blocking || calculate_stat || calculate_ssf || best_rejected) {
-		WriteLog(1, "Algorithm is running in low performance mode. To increase performance, reset calculate_correlation, calculate_blocking, calculate_stat, calculate_ssf, best_rejected");
+		WriteLog(1, "Algorithm is running in low performance mode. To increase performance, reset calculate_correlation, calculate_blocking, calculate_stat, calculate_ssf, best_rejected (check config)");
 	}
 	if (shuffle && random_seed) {
-		WriteLog(1, "Shuffling after random_seed will not add randomness");
+		WriteLog(1, "Shuffling after random_seed will not add randomness (check config)");
 	}
 	// Check rule parameters
 	if (burst_between <= max_between) {
-		WriteLog(5, "Warning: maximum burst interval should be greater than maximum interval between voices");
+		WriteLog(5, "Warning: maximum burst interval should be greater than maximum interval between voices (check config)");
 	}
 }
 
