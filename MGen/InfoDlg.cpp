@@ -58,6 +58,7 @@ BOOL CInfoDlg::OnInitDialog()
 		int my = mf->my;
 		int ms = ((CMGenView*)(mf->GetActiveView()))->mouse_step;
 		int mv = ((CMGenView*)(mf->GetActiveView()))->mouse_voice;
+		int eff;
 		CString st, st2;
 		// Note start and end
 		int i = ms - pGen->coff[ms][mv];
@@ -86,7 +87,9 @@ BOOL CInfoDlg::OnInitDialog()
 				if (pGen->comment[x][mv].size()) {
 					// CGLib::GetNoteName(pGen->note[x][mv])
 					st.Format("NOTE %d - %s:\n", nnum, NoteName[pGen->note[x][mv] % 12]);
-					m_info.AddText(st, RGB(0, 0, 0), 0);
+					eff = 0;
+					if (x == i) eff = CFE_BOLD;
+					m_info.AddText(st, RGB(0, 0, 0), eff);
 					for (int c = 0; c < pGen->comment[x][mv].size(); ++c) {
 						m_info.AddText(pGen->comment[x][mv][c]+"\n", 
 							RGB(pGen->ccolor[x][mv][c].GetR(), pGen->ccolor[x][mv][c].GetG()/1.5, pGen->ccolor[x][mv][c].GetB()), 0);
@@ -125,11 +128,13 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Adapt comment(start) : %s\nAdapt comment(end) : %s\n",
 			pGen->adapt_comment[i][mv], pGen->adapt_comment[ei][mv]);
 		m_info.AddText(st, RGB(0, 0, 170), 0);
+		/*
 		m_info.AddText("Note comment:\n", RGB(0, 0, 0), 0);
 		for (int c = 0; c < pGen->comment[i][mv].size(); ++c) {
 			m_info.AddText(pGen->comment[i][mv][c] + "\n",
 				RGB(pGen->ccolor[i][mv][c].GetR(), pGen->ccolor[i][mv][c].GetG()/1.5, pGen->ccolor[i][mv][c].GetB()), 0);
 		}
+		*/
 		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note length: %d steps\n", pGen->len[ms][mv]);
