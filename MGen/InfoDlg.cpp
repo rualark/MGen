@@ -84,7 +84,8 @@ BOOL CInfoDlg::OnInitDialog()
 				++nnum;
 				prev_note = pGen->note[x][mv];
 				if (pGen->comment[x][mv].size()) {
-					st.Format("NOTE %d:\n", nnum);
+					// CGLib::GetNoteName(pGen->note[x][mv])
+					st.Format("NOTE %d - %s:\n", nnum, NoteName[pGen->note[x][mv] % 12]);
 					m_info.AddText(st, RGB(0, 0, 0), 0);
 					for (int c = 0; c < pGen->comment[x][mv].size(); ++c) {
 						m_info.AddText(pGen->comment[x][mv][c]+"\n", 
