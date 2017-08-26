@@ -1304,7 +1304,10 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 				deviates = cur_deviation;
 			}
 			if (dev_state == 0) dev_state = 1;
-			else if (dev_state == 2) break;
+			else if (dev_state == 2) {
+				dev_state = 3;
+				break;
+			}
 		}
 		// If not deviating, switch deviation state
 		else {
