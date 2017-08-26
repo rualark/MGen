@@ -647,7 +647,12 @@ void CGenCP1::GetRpos() {
 			}
 			// Cambiata
 			if (ac[cpv][fli[ls]] - 2 == ac[cpv][fli[ls + 3]] &&
-				asmooth[cpv][fli[ls]] == - 1 && asmooth[cpv][fli[ls + 2]] == 1) {
+				asmooth[cpv][fli[ls]] == -1 && asmooth[cpv][fli[ls + 2]] == 1) {
+				rpos[ls + 1] = pAux;
+			}
+			// Inverted cambiata
+			if (ac[cpv][fli[ls]] + 2 == ac[cpv][fli[ls + 3]] &&
+				asmooth[cpv][fli[ls]] == 1 && asmooth[cpv][fli[ls + 2]] == -1) {
 				rpos[ls + 1] = pAux;
 			}
 		}
