@@ -1307,7 +1307,6 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 			}
 			if (dev_state == 0) dev_state = 1;
 			else if (dev_state == 2) {
-				dev_state = 3;
 				break;
 			}
 		}
@@ -1338,8 +1337,7 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 	}
 	// Get deviations count
 	if (dev_state == 0) dev_count = 0;
-	else if (dev_state < 3) dev_count = 1;
-	else dev_count = 2;
+	else dev_count = 1;
 
 	CountFillSkips(leap_prev, skips, t1, t2);
 	CountFillLimits(c, pre, t1, t2, fill_to, fill_to_pre, fill_from_pre, fill_from);
@@ -1550,7 +1548,6 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		else if (fill_from == 3 && (!fill_from_pre || late_leap > c4p_last_leaps + 2 || !accept[144 + leap_id])) filled = 0;
 		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
 		else if (deviates > 2) filled = 0;
-		else if (dev_count > 1) filled = 0;
 		else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
 		else if (deviates == 2 && !accept[120 + leap_id]) filled = 0;
 		if (!filled) {
@@ -1568,7 +1565,6 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 					else if (pfill_from > 2) prefilled = 0;
 					else if (pfill_from == 2 && !accept[53 + leap_id]) prefilled = 0;
 					else if (pdeviates > 2) prefilled = 0;
-					else if (pdev_count > 1) prefilled = 0;
 					else if (pdeviates == 1 && !accept[42 + leap_id]) prefilled = 0;
 					else if (pdeviates == 2 && !accept[120 + leap_id]) prefilled = 0;
 				}
