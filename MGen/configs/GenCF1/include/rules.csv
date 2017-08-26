@@ -22,10 +22,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;105;10;Melody;Compensated leap;Compensated to 3rd;4th;-1;;
 1;106;40;Melody;Compensated leap;Compensated to 3rd;5th;-1;;
 1;107;60;Melody;Compensated leap;Compensated to 3rd;>5th;-1;;
-1;144;0;Melody;Compensated leap;C4P last 3 leaps;3rd;-1;Compensated to 4th, precompensated;
-1;145;0;Melody;Compensated leap;C4P last 3 leaps;4th;-1;Compensated to 4th, precompensated;
-1;146;40;Melody;Compensated leap;C4P last 3 leaps;5th;-1;Compensated to 4th, precompensated;
-1;147;100;Melody;Compensated leap;C4P last 3 leaps;>5th;0;Compensated to 4th, precompensated;
+1;144;0;Melody;Compensated leap;C4P last 4 leaps;3rd;-1;Compensated to 4th, precompensated;
+1;145;0;Melody;Compensated leap;C4P last 4 leaps;4th;-1;Compensated to 4th, precompensated;
+1;146;40;Melody;Compensated leap;C4P last 4 leaps;5th;-1;Compensated to 4th, precompensated;
+1;147;100;Melody;Compensated leap;C4P last 4 leaps;>5th;0;Compensated to 4th, precompensated;
 1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;
 1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;-1;;
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated;5th;0;;

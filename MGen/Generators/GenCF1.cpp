@@ -1527,7 +1527,7 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 	int allowed_skips = 0;
 	if (leap_size > 2) ++allowed_skips;
 	if (leap_size > 6) ++allowed_skips;
-	if (late_leap <= c4p_last_leaps + 2) ++allowed_skips;
+	if (late_leap <= c4p_last_leaps + 1) ++allowed_skips;
 	int allowed_pskips = 0;
 	if (leap_size > 2) ++allowed_pskips;
 	if (leap_size > 6) ++allowed_pskips;
@@ -1541,11 +1541,11 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 			fill_from, deviates, dev_count, leap_prev, fill_end);
 		if (skips > allowed_skips) filled = 0;
 		else if (fill_to > 3) filled = 0;
-		else if (fill_to == 3 && (!fill_to_pre || late_leap > c4p_last_leaps+2 || !accept[144 + leap_id])) filled = 0;
+		else if (fill_to == 3 && (!fill_to_pre || late_leap > c4p_last_leaps + 1 || !accept[144 + leap_id])) filled = 0;
 		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
 		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
 		else if (fill_from > 3) filled = 0;
-		else if (fill_from == 3 && (!fill_from_pre || late_leap > c4p_last_leaps + 2 || !accept[144 + leap_id])) filled = 0;
+		else if (fill_from == 3 && (!fill_from_pre || late_leap > c4p_last_leaps + 1 || !accept[144 + leap_id])) filled = 0;
 		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
 		else if (deviates > 2) filled = 0;
 		else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
@@ -1569,7 +1569,7 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 					else if (pdeviates == 2 && !accept[120 + leap_id]) prefilled = 0;
 				}
 				if (prefilled) {
-					if (late_leap < pre_last_leaps + 2) FLAG2(204 + leap_id, leap_start)
+					if (late_leap <= pre_last_leaps + 1) FLAG2(204 + leap_id, leap_start)
 					else FLAG2(112 + leap_id, leap_start)
 				}
 				else FLAG2(124 + leap_id, leap_start);
@@ -1579,8 +1579,8 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		// This means that compensation errors are not shown if uncompensated (successfully or not)
 		else {
 			// Flag late uncompensated precompensated leap
-			if (fill_to == 3 && late_leap <= c4p_last_leaps + 2) FLAG2(144 + leap_id, leap_start)
-			else if (fill_from == 3 && late_leap <= c4p_last_leaps + 2) FLAG2(144 + leap_id, leap_start)
+			if (fill_to == 3 && late_leap <= c4p_last_leaps + 1) FLAG2(144 + leap_id, leap_start)
+			else if (fill_from == 3 && late_leap <= c4p_last_leaps + 1) FLAG2(144 + leap_id, leap_start)
 			// Flag unfinished fill if it is not blocking
 			else if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, leap_start)
 			// Flag prepared unfinished fill if it is not blocking
