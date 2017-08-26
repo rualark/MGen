@@ -22,18 +22,18 @@ Set;Severity;Class;Group;Rule;Flag
 1;105;10;Melody;Compensated leap;Compensated to 3rd;4th;-1;;
 1;106;40;Melody;Compensated leap;Compensated to 3rd;5th;-1;;
 1;107;60;Melody;Compensated leap;Compensated to 3rd;>5th;-1;;
-1;144;0;Melody;Compensated leap;C4PL leap;3rd;-1;Compensated to 4th, precompensated late leap;
-1;145;0;Melody;Compensated leap;C4PL leap;4th;-1;Compensated to 4th, precompensated late leap;
-1;146;40;Melody;Compensated leap;C4PL leap;5th;-1;Compensated to 4th, precompensated late leap;
-1;147;100;Melody;Compensated leap;C4PL leap;>5th;0;Compensated to 4th, precompensated late leap;
+1;144;0;Melody;Compensated leap;C4P last 3 leaps;3rd;-1;Compensated to 4th, precompensated;
+1;145;0;Melody;Compensated leap;C4P last 3 leaps;4th;-1;Compensated to 4th, precompensated;
+1;146;40;Melody;Compensated leap;C4P last 3 leaps;5th;-1;Compensated to 4th, precompensated;
+1;147;100;Melody;Compensated leap;C4P last 3 leaps;>5th;0;Compensated to 4th, precompensated;
 1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;
 1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;-1;;
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated;5th;0;;
 1;115;100;Melody;Uncompensated leap;Uncompensated: precompensated;>5th;0;;
-1;204;0;Melody;Uncompensated leap;Precompensated last leap;3rd;-1;;
-1;205;0;Melody;Uncompensated leap;Precompensated last leap;4th;-1;;
-1;206;40;Melody;Uncompensated leap;Precompensated last leap;5th;-1;;
-1;207;100;Melody;Uncompensated leap;Precompensated last leap;>5th;-1;;
+1;204;0;Melody;Uncompensated leap;Precompensated last 2 leaps;3rd;-1;;
+1;205;0;Melody;Uncompensated leap;Precompensated last 2 leaps;4th;-1;;
+1;206;40;Melody;Uncompensated leap;Precompensated last 2 leaps;5th;-1;;
+1;207;100;Melody;Uncompensated leap;Precompensated last 2 leaps;>5th;-1;;
 1;116;0;Melody;Uncompensated leap;Uncompensated child leap;3rd;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;117;30;Melody;Uncompensated leap;Uncompensated child leap;4th;-1;After longer leap or before longer/same/one-note-smaller leap.;
 1;118;60;Melody;Uncompensated leap;Uncompensated child leap;5th;-1;After longer leap or before longer/same/one-note-smaller leap.;
@@ -90,7 +90,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;185;0;Melody;Leaps;Leap down size;8th;-1;;
 1;186;100;Melody;Leaps;Leap down size;>8th;0;;
 1;3;60;Melody;Leaps;Many leaps within 9 notes;>5 leaps;0;;
-1;25;60;Melody;Leaps;Many leaps within 9 notes;>22 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on
+1;25;60;Melody;Leaps;Many leaps within 9 notes;>24 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on
 1;202;60;Melody;Leaps;Many leaps within 15 notes;>8 leaps;0;;
 1;203;60;Melody;Leaps;Many leaps within 15 notes;>34 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on
 1;70;60;Melody;Leaps;Consecutive leaps (1x3rd ignored);3;0;;
@@ -125,8 +125,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;69;100;Melody;Range;Skipped notes;>1 joined;0;;
 1;38;0;Melody;Range;Out of range;voice <m6;0;;
 1;37;70;Melody;Range;Out of range;voice >M9;0;;
-1;7;70;Melody;Range;Out of range;sum >15th;0;;
-1;11;70;Melody;Range;Out of range;int >12va;0;;Maximum burst interval is 15th during 3 notes  Perfect: int >8va (burst 12th during 3 notes)
+1;7;70;Melody;Range;Out of range;sum >22th;0;;
+1;11;70;Melody;Range;Out of range;int >15va;0;;Maximum burst interval is 16th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes)
 1;98;0;Melody;Range;Constrained local range;6 notes <4th;-1;;X consecutive notes have total range less than Y
 1;198;0;Melody;Range;Constrained local range;13 notes <m6;0;;X consecutive notes have total range less than Y
 1;15;0;Melody;Range;No melody direction;10 notes <16;0;;Melody direction within X notes is less than Y decihalfnotes
