@@ -638,7 +638,7 @@ void CGenCP1::GetRpos() {
 			tlen = llen[ls] + llen[ls + 1] + llen[ls + 2] + llen[ls + 3];
 			// If total length does not equal measure
 			if (tlen != npm) continue;
-			// Voicing
+			// Double neighbor tone
 			if (acc[cpv][fli[ls]] == acc[cpv][fli[ls + 3]] &&
 				asmooth[cpv][fli[ls]] * asmooth[cpv][fli[ls + 2]] == 1) {
 				rpos[ls + 1] = pAux;
