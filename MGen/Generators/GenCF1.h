@@ -280,6 +280,8 @@ protected:
 	int miss_letters = 3; // Maximum steps with missed letters in a row of harmonies
 	int gis_trail_max = 7; // Minimum notes between G# and next G note in Am
 	int fis_leap = 5; // Maximum allowed chromatic leap size before F#
+	int c4p_last_leaps = 3; // Last leaps that can be c4p compensated
+	int pre_last_leaps = 2; // Last leaps that can be precompensated
 	int repeat_notes2 = 2; // Number of repeated notes
 	int repeat_notes3 = 3; // Number of repeated notes
 	int repeat_notes5 = 5; // Number of repeated notes
