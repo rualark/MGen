@@ -1515,6 +1515,11 @@ int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, ve
 }
 
 int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int child_leap) {
+	// Do not check fill if this is first third and rule is allowed
+	if (fleap_start == 0 && leap_size == 2 && accept[1]) {
+		FLAG2(1, leap_start);
+		return 0;
+	}
 	// Prefill parameters
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from_pre, pfill_from, pdeviates, pfill_end, pdev_count;
 	// Fill parameters
