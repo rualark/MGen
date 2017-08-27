@@ -22,7 +22,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	FILETIME m_ft;
+	FILETIME m_ft; // file time
 
 	DECLARE_MESSAGE_MAP()
 public:

@@ -20,7 +20,7 @@ IMPLEMENT_DYNAMIC(CAlgoDlg, CDialog)
 CAlgoDlg::CAlgoDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(IDD_DIALOG_ALGO, pParent)
 {
-
+	m_ft = { 0 };
 }
 
 CAlgoDlg::~CAlgoDlg()
