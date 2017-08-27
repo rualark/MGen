@@ -1039,11 +1039,11 @@ int CGenCP1::FailLastIntervals() {
 			int b_found = 0;
 			int g_found = 0;
 			int d_found = 0;
-			for (int s = start; s < start + npm; ++s) {
+			for (int x = start; x < start + npm; ++x) {
 				for (int v = 0; v < av_cnt; ++v) {
-					if (apc[v][s] == 6) b_found = 1;
-					if (apc[v][s] == 4) g_found = 1;
-					if (apc[v][s] == 1) d_found = 1;
+					if (apc[v][x] == 6) b_found = 1;
+					if (apc[v][x] == 4) g_found = 1;
+					if (apc[v][x] == 1) d_found = 1;
 				}
 			}
 			if (!b_found) {

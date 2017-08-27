@@ -1715,7 +1715,7 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 		// Decrement for previous tonic note
 		if (ls > tonic_window) {
 			if (!pc[fli2[ls - tonic_window]]) {
-				if (abs(cc[fli2[ls - tonic_window]] - cc[fli2[ls - tonic_window]]) > tonic_leap) tcount -= tonic_leap_weight;
+				if (ls > tonic_window+1 && abs(cc[fli2[ls - tonic_window]] - cc[fli2[ls - tonic_window - 1]]) > tonic_leap) tcount -= tonic_leap_weight;
 				else --tcount;
 			}
 		}
