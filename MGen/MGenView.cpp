@@ -91,11 +91,11 @@ BOOL CMGenView::PreCreateWindow(CREATESTRUCT& cs)
 void CMGenView::OnDraw(CDC* pDC)
 {
 	PmTimestamp time_start = CGLib::time();
-	PmTimestamp time_stop = time_start;
-	PmTimestamp time_stop2 = time_start;
-	PmTimestamp time_stop3 = time_start;
-	PmTimestamp time_stop4 = time_start;
-	PmTimestamp time_stop5 = time_start;
+	PmTimestamp time_stop;
+	PmTimestamp time_stop2;
+	PmTimestamp time_stop3;
+	PmTimestamp time_stop4;
+	PmTimestamp time_stop5;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGMidi *pGen = mf->pGen;
 	//mf->WriteLog(2, "OnDraw start");
