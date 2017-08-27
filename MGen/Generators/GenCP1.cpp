@@ -1358,7 +1358,6 @@ void CGenCP1::LoadCantusHigh() {
 }
 
 void CGenCP1::LoadSpecies() {
-	CString st;
 	species = 0;
 	if (cp_incom[cantus_id].size()) {
 		if (cp_incom[cantus_id][0].Find("sp1") != -1) species = 1;
@@ -1370,7 +1369,6 @@ void CGenCP1::LoadSpecies() {
 }
 
 void CGenCP1::Generate() {
-	CString st;
 	int fn0 = fn;
 	if (InitCP()) return;
 	LoadCantus(midi_file);
