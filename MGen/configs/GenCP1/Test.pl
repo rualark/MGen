@@ -7,4 +7,4 @@ Midi_file = midi\good-cf-min.mid # Path and file name of imported midi file
 method = swa
 cantus_id = 0
 cantus_high = 0
-notes_per_measure = 2
+species = 4
