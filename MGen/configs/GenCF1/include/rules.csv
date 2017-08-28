@@ -97,8 +97,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;70;60;Melody;Leaps;Consecutive leaps (1x3rd ignored);3;0;;
 1;71;100;Melody;Leaps;Consecutive leaps (1x3rd ignored);>3;0;;
 1;27;100;Melody;Leaps;Consecutive unidirectional leaps;Sum >6th;0;;
-1;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;
 1;28;0;Melody;Leaps;Two consecutive 3rds;after 6/8;-1;;
+1;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;
 1;4;60;Melody;Stepwise;Stepwise motion;>7 any direction;0;;
 1;5;60;Melody;Stepwise;Stepwise motion;>4 one direction;0;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;
@@ -222,3 +222,24 @@ Set;Severity;Class;Group;Rule;Flag
 1;24;60;Cantus;Counterpoint;Overlap;voices;0;;
 1;35;0;Cantus;Counterpoint;Contrary motion;<60%;1;;
 1;46;60;Cantus;Counterpoint;Contrary motion;<30%;1;;
+1;233;0;Cantus;Species 5 rhythm;Rhythm;1/2. first;1;;
+1;234;60;Cantus;Species 5 rhythm;Rhythm;1/2. last;0;;
+1;235;60;Cantus;Species 5 rhythm;Rhythm;1/4 syncope;0;;
+1;236;60;Cantus;Species 5 rhythm;Rhythm;whole inside;0;;
+1;237;60;Cantus;Species 5 rhythm;Rhythm;long pause;0;;Starting pause in first measure is longer than next note
+1;226;60;Cantus;Species 5 rhythm;1/8 note;beat 1;0;;
+1;227;0;Cantus;Species 5 rhythm;1/8 note;beat 2;1;;
+1;228;60;Cantus;Species 5 rhythm;1/8 note;beat 3;0;;
+1;229;0;Cantus;Species 5 rhythm;1/8 note;beat 4;1;;
+1;230;60;Cantus;Species 5 rhythm;1/8 note;first measure;0;;
+1;231;60;Cantus;Species 5 rhythm;1/8 note;isolated;0;;Single 1/8 without immediate second 1/8
+1;232;60;Cantus;Species 5 rhythm;1/8 note;1/8 syncope;0;;
+1;238;0;Cantus;Species 5 rhythm;1/2 after 1/4;penultimate;1;;
+1;239;0;Cantus;Species 5 rhythm;1/2 after 1/4;1/2 slurred;1;;
+1;240;60;Cantus;Species 5 rhythm;1/2 after 1/4;inside;0;;
+1;241;0;Cantus;Species 5 rhythm;Suspension;1/2 + 1/4;1;;
+1;242;0;Cantus;Species 5 rhythm;Suspension;1/2 + 1/2;1;;
+1;243;60;Cantus;Species 5 rhythm;Suspension;? + 1/2.;0;;
+1;244;60;Cantus;Species 5 rhythm;Suspension;1/2. + ?;0;;
+1;245;0;Cantus;Species 5 rhythm;Many notes in measure;5;1;;
+1;246;60;Cantus;Species 5 rhythm;Many notes in measure;>5;0;;
