@@ -306,12 +306,12 @@ void CAlgoDlg::OnNMDblclkTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CAlgoDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	if (nIDEvent == TIMER6) {
+	if (nIDEvent == TIMER6 && GetDlgItem(IDOK)->IsWindowEnabled()) {
 		CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 		HTREEITEM hti = m_tree.GetSelectedItem();
 		if (hti) {
 			//CString config = m_tree.GetItemText(hti);
-			CString fname = "configs\\" + mf->AlgFolder[mf->m_algo] + "\\" + m_tree.GetItemText(hti) + ".pl";
+			CString fname = "configs\\" + mf->AlgFolder[m_tree.GetItemData(m_tree.GetParentItem(hti))] + "\\" + m_tree.GetItemText(hti) + ".pl";
 			if (CGLib::fileExists(fname)) {
 				FILETIME ft = CGLib::fileTime(fname);
 				if (CompareFileTime(&ft, &m_ft)) {

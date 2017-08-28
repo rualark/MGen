@@ -66,7 +66,7 @@ long long CGLib::time() {
 FILETIME CGLib::fileTime(CString fname) {
 	HANDLE hFile = CreateFile(fname, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 	FILETIME creationTime, lpLastAccessTime, lastWriteTime;
-	//bool err = 
+	bool err = 
 	GetFileTime(hFile, &creationTime, &lpLastAccessTime, &lastWriteTime);
 	CloseHandle(hFile);
 	// If file does not exist, garbage is returned
