@@ -768,7 +768,8 @@ int CGenCP1::FailMissSlurs() {
 	int wcount = 0;
 	// Number of slurs in window
 	int scount = 0;
-	int miss;
+	int miss, max_miss=0;
+	int max_i=0;
 	for (int i = fn; i < ep2-1; ++i) if (i % 2) { 
 		if (i - fn < miss_slurs_window * 2) ++wcount;
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
@@ -779,11 +780,15 @@ int CGenCP1::FailMissSlurs() {
 		}
 		else {
 			miss = wcount - scount;
-			if (miss == 1) FLAG2(188, i)
-			else if (miss == 2) FLAG2(189, i)
-			else if (miss > 2) FLAG2(190, i);
+			if (miss > max_miss) {
+				max_miss = miss;
+				max_i = i;
+			}
 		}
 	}
+	if (max_miss == 1) FLAG2(188, max_i)
+	else if (max_miss == 2) FLAG2(189, max_i)
+	else if (max_miss > 2) FLAG2(190, max_i);
 	return 0;
 }
 
