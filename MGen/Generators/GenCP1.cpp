@@ -730,17 +730,17 @@ void CGenCP1::SaveCPIfRp() {
 	}
 }
 
-// Detect repeating notes. Step2 excluding
+// Detect many slurs
 int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
-  // Number of sequential slurs 
+	// Number of sequential slurs 
 	int scount = 0;
 	// Number of slurs in window
 	int scount2 = 0;
 	for (int i = step1; i < step2; ++i) {
 		if (cc[i] == cc[i + 1]) {
-		  // Check simultaneous slurs
+			// Check simultaneous slurs
 			//if (acc[cfv][i] == acc[cfv][i + 1]) {
-				//FLAG2(98, i);
+			//FLAG2(98, i);
 			//}
 			// Check slurs sequence
 			++scount;
@@ -756,6 +756,29 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 			}
 		}
 		else scount = 0;
+	}
+	return 0;
+}
+
+// Detect missing slurs
+int CGenCP1::FailMissSlurs() {
+	// Check only for species 4
+	if (species != 4) return 0;
+	// Current window size
+	int wcount = 0;
+	// Number of slurs in window
+	int scount = 0;
+	for (int i = 0; i < ep2-1; ++i) { 
+		if (i < miss_slurs_window) ++wcount;
+		if (acc[cpv][i] == acc[cpv][i + 1]) {
+			// Check slurs in window
+			++scount;
+			// Subtract old slur
+			if ((i >= miss_slurs_window) && (acc[cpv][i - miss_slurs_window] == acc[cpv][i - miss_slurs_window + 1])) --scount;
+			if (wcount - scount == 1) FLAG2(188, i)
+			else if (wcount - scount == 2) FLAG2(189, i)
+			else if (wcount - scount > 2) FLAG2(190, i);
+		}
 	}
 	return 0;
 }
@@ -1193,6 +1216,7 @@ check:
 			}
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
+		if (FailMissSlurs()) goto skip;
 		if (FailSlurs(acc[cpv], 0, ep2 - 1)) goto skip;
 		++accepted3;
 		if (need_exit) break;
