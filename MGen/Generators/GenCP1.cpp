@@ -736,6 +736,8 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 	int scount = 0;
 	// Number of slurs in window
 	int scount2 = 0;
+	int max_count = 0;
+	int max_i = 0;
 	for (int i = step1; i < step2; ++i) {
 		if (cc[i] == cc[i + 1]) {
 			// Check simultaneous slurs
@@ -749,13 +751,17 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 			++scount2;
 			// Subtract old slur
 			if ((i >= slurs_window) && (cc[i - slurs_window] == cc[i - slurs_window + 1])) --scount2;
-			if (species != 4) {
-				if (scount2 == 1) FLAG2(93, i)
-				else if (scount2 == 2) FLAG2(94, i)
-				else if (scount2 > 2) FLAG2(95, i);
+			if (scount2 > max_count) {
+				max_count = scount2;
+				max_i = i;
 			}
 		}
 		else scount = 0;
+	}
+	if (species != 4) {
+		if (max_count == 1) FLAG2(93, max_i)
+		else if (max_count == 2) FLAG2(94, max_i)
+		else if (max_count > 2) FLAG2(95, max_i);
 	}
 	return 0;
 }
