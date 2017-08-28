@@ -47,9 +47,9 @@ protected:
 	inline void CalcDpenaltyCP();
 	inline void SaveCP();
 	inline void SaveCPIfRp();
+	inline int FailSlurs();
 	void ScanCPInit();
 	inline int SendCP();
-	inline int FailSlurs(vector<int>& cc, int step1, int step2);
 	inline int FailMissSlurs();
 	inline int FailCPInterval();
 	inline int FailOverlap();

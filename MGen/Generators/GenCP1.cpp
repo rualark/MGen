@@ -731,15 +731,15 @@ void CGenCP1::SaveCPIfRp() {
 }
 
 // Detect many slurs
-int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
+int CGenCP1::FailSlurs() {
 	// Number of sequential slurs 
 	int scount = 0;
 	// Number of slurs in window
 	int scount2 = 0;
 	int max_count = 0;
 	int max_i = 0;
-	for (int i = step1; i < step2; ++i) {
-		if (cc[i] == cc[i + 1]) {
+	for (int i = fn; i < ep2-1; ++i) {
+		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check simultaneous slurs
 			//if (acc[cfv][i] == acc[cfv][i + 1]) {
 			//FLAG2(98, i);
@@ -750,7 +750,7 @@ int CGenCP1::FailSlurs(vector<int> &cc, int step1, int step2) {
 			// Check slurs in window
 			++scount2;
 			// Subtract old slur
-			if ((i >= slurs_window) && (cc[i - slurs_window] == cc[i - slurs_window + 1])) --scount2;
+			if ((i >= slurs_window) && (acc[cpv][i - slurs_window] == acc[cpv][i - slurs_window + 1])) --scount2;
 			if (scount2 > max_count) {
 				max_count = scount2;
 				max_i = i;
@@ -794,7 +794,10 @@ int CGenCP1::FailMissSlurs() {
 	}
 	if (max_miss == 1) FLAG2(188, max_i)
 	else if (max_miss == 2) FLAG2(189, max_i)
-	else if (max_miss > 2) FLAG2(190, max_i);
+	else if (max_miss > 2) {
+		FLAG2(190, max_i);
+		if (!accept[190]) fpenalty[190] += max_miss;
+	}
 	return 0;
 }
 
@@ -1232,7 +1235,7 @@ check:
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
 		if (FailMissSlurs()) goto skip;
-		if (FailSlurs(acc[cpv], 0, ep2 - 1)) goto skip;
+		if (FailSlurs()) goto skip;
 		++accepted3;
 		if (need_exit) break;
 		// Show status
