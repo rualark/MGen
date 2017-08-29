@@ -860,10 +860,7 @@ void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2
 // Calculate diatonic positions
 int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
 	if (minor_cur) {
-		// First note calculated separately because it does not need to be checked
-		c[0] = m_CC_C(cc[0], tonic_cur);
-		int step12 = step1 < 1 ? 1 : step1;
-		for (int i = step12; i < step2; ++i) {
+		for (int i = step1; i < step2; ++i) {
 			c[i] = m_CC_C(cc[i], tonic_cur);
 		}
 	}
@@ -985,7 +982,7 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 
 // Calculate global leap smooth slur variables
 void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
-	for (int i = 0; i < ep2 - 1; ++i) {
+	for (int i = fn; i < ep2 - 1; ++i) {
 		// Find all leaps
 		leap[i] = 0;
 		smooth[i] = 0;
@@ -1067,7 +1064,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int 
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
 	// Prohibit stagnation only for non-slurred notes
 	++nstat[cc[0]];
-	for (int i = 1; i < ep2; ++i) if (cc[i-1] != cc[i]) {
+	for (int i = fn+1; i < ep2; ++i) if (cc[i-1] != cc[i]) {
 		// Add new note to stagnation array
 		++nstat[cc[i]];
 		// Subtract old note
@@ -1499,7 +1496,7 @@ int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, ve
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int child_leap, leap_next, leap_prev, presecond;
 	int overflow, arpeg, late_leap;
-	for (s = 0; s < ep2 - 1; ++s) {
+	for (s = fn; s < ep2 - 1; ++s) {
 		if (leap[s] != 0) {
 			ls = bli[s];
 			FailLeapInit(c, late_leap, presecond, leap_next, leap_prev,
@@ -1770,7 +1767,7 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 	// Clear nstat
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
 	// Count nstat
-	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
+	for (int x = fn; x < ep2; ++x) ++nstat2[c[x]];
 	// Check nstat
 	if (ep2 < c_len) return 0;
 	int skips = 0;
@@ -1843,7 +1840,7 @@ void CGenCF1::ScanInit() {
 		accept_time = CGLib::time();
 		rpenalty_min = MAX_PENALTY;
 	}
-	for (int x = 0; x < c_len; ++x) {
+	for (int x = fn; x < c_len; ++x) {
 		hm[x].resize(3);
 		hm2[x].resize(3);
 	}
@@ -1928,7 +1925,7 @@ void CGenCF1::SingleCantusInit() {
 	// Get diatonic steps from chromatic
 	first_note = m_cc[0];
 	last_note = m_cc[c_len - 1];
-	for (int i = 0; i < c_len; ++i) {
+	for (int i = fn; i < c_len; ++i) {
 		m_c[i] = CC_C(m_cc[i], tonic_cur, minor_cur);
 		// Save value for future use;
 		cc_old[i] = m_cc[i];
@@ -1940,19 +1937,19 @@ void CGenCF1::SingleCantusInit() {
 	// Set pitch limits
 	// If too wide range is not accepted, correct range to increase scan performance
 	if (!accept[37]) {
-		for (int i = 0; i < c_len; ++i) {
+		for (int i = fn; i < c_len; ++i) {
 			min_cc[i] = max(minc, m_cc[i] - correct_range);
 			max_cc[i] = min(maxc, m_cc[i] + correct_range);
 		}
 	}
 	else {
-		for (int i = 0; i < c_len; ++i) {
+		for (int i = fn; i < c_len; ++i) {
 			min_cc[i] = m_cc[i] - correct_range;
 			max_cc[i] = m_cc[i] + correct_range;
 		}
 	}
 	// Convert limits to diatonic and recalibrate
-	for (int i = 0; i < c_len; ++i) {
+	for (int i = fn; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
@@ -1976,7 +1973,7 @@ void CGenCF1::SingleCantusInit() {
 		// Create map
 		smap.resize(smatrixc);
 		int map_id = 0;
-		for (int i = 0; i < c_len; ++i) if (smatrix[i]) {
+		for (int i = fn; i < c_len; ++i) if (smatrix[i]) {
 			smap[map_id] = i;
 			++map_id;
 		}
@@ -2027,12 +2024,12 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	cc[c_len - 1] = last_note;
 	GetRealRange(c, cc);
 	// Set pitch limits
-	for (int i = 0; i < c_len; ++i) {
+	for (int i = fn; i < c_len; ++i) {
 		min_cc[i] = minc;
 		max_cc[i] = maxc;
 	}
 	// Convert limits to diatonic and recalibrate to diatonic grid
-	for (int i = 0; i < c_len; ++i) {
+	for (int i = fn; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
@@ -2201,14 +2198,14 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	if (!accept[37] && real_range > max_interval) {
 		int nminr = nmin + (real_range - max_interval) / 2;
 		int nmaxr = nminr + max_interval;
-		for (int i = 0; i < ep2; ++i) {
+		for (int i = fn; i < ep2; ++i) {
 			if (cc[i] < nminr) fpenalty[37] += nminr - cc[i];
 			if (cc[i] > nmaxr) fpenalty[37] += cc[i] - nmaxr;
 		}
 	}
 	// Calculate flags penalty
 	rpenalty_cur = 0;
-	for (int x = 0; x < ep2; ++x) {
+	for (int x = fn; x < ep2; ++x) {
 		if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (!accept[anflags[cpv][x][i]]) {
 			rpenalty_cur += severity[anflags[cpv][x][i]] + 1;
 		}
@@ -2588,7 +2585,7 @@ void CGenCF1::ShowFlagBlock() {
 
 void CGenCF1::CalcDpenalty() {
 	dpenalty_cur = 0;
-	for (int z = 0; z < c_len; z++) {
+	for (int z = fn; z < c_len; z++) {
 		int dif = abs(cc_old[z] - m_cc[z]);
 		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
 	}
@@ -2712,7 +2709,7 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 	// Smooth
 	mawVector(macc, macc2, ma_range);
 	// Deviation
-	for (int s = 0; s < ep2; ++s) {
+	for (int s = fn; s < ep2; ++s) {
 		pos1 = max(0, s - ma_range);
 		pos2 = min(ep2 - 1, s + ma_range);
 		de = 0;
@@ -2886,7 +2883,7 @@ int CGenCF1::SendCantus() {
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
-	for (int x = 0; x < c_len; ++x) {
+	for (int x = fn; x < c_len; ++x) {
 		if (chm.size() > bli[x] && chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = Color(120, 120, 120);
 		SendLyrics(pos, v, cpv, x);
@@ -3029,13 +3026,13 @@ void CGenCF1::RandomSWA()
 		min_cc0 = min_cc;
 		max_cc0 = max_cc;
 		// Convert cantus to chromatic
-		for (int x = 0; x < c_len; ++x) {
+		for (int x = fn; x < c_len; ++x) {
 			cantus[0][x] = C_CC(m_c[x], tonic_cur, minor_cur);
 		}
 		// Set scan matrix to scan all
 		smatrixc = c_len;
 		smatrix.resize(c_len);
-		for (int x = 0; x < c_len; ++x) {
+		for (int x = fn; x < c_len; ++x) {
 			smatrix[x] = 1;
 		}
 		// Optimize cantus
@@ -3112,7 +3109,7 @@ void CGenCF1::SWA(int i, int dp) {
 				dpenalty.resize(cnum);
 				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
 					dpenalty[x] = 0;
-					for (int z = 0; z < c_len; z++) {
+					for (int z = fn; z < c_len; z++) {
 						int dif = abs(cantus[i][z] - clib[x][z]);
 						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
 					}
@@ -3225,8 +3222,8 @@ check:
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
-		if (FailDiatonic(m_c, m_cc, 0, ep2, minor_cur)) goto skip;
-		GetPitchClass(m_c, m_cc, m_pc, m_pcc, 0, ep2);
+		if (FailDiatonic(m_c, m_cc, fn, ep2, minor_cur)) goto skip;
+		GetPitchClass(m_c, m_cc, m_pc, m_pcc, fn, ep2);
 		CreateLinks(m_cc);
 		if (minor_cur) {
 			if (FailMinor(m_pcc, m_cc)) goto skip;

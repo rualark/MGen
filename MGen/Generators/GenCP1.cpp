@@ -68,21 +68,21 @@ int CGenCP1::InitCP() {
 void CGenCP1::MakeNewCP() {
 	// Set pitch limits
 	if (cantus_high) {
-		for (int i = 0; i < c_len; ++i) {
+		for (int i = fn; i < c_len; ++i) {
 			max_cc[i] = acc[cfv][i] - min_between;
 			//min_cc[i] = acc[cfv][i] - burst_between;
 			min_cc[i] = max(acc[cfv][i] - burst_between, cf_nmax - sum_interval);
 		}
 	}
 	else {
-		for (int i = 0; i < c_len; ++i) {
+		for (int i = fn; i < c_len; ++i) {
 			min_cc[i] = acc[cfv][i] + min_between;
 			//max_cc[i] = acc[cfv][i] + burst_between;
 			max_cc[i] = min(acc[cfv][i] + burst_between, cf_nmin + sum_interval);
 		}
 	}
 	// Convert limits to diatonic and recalibrate
-	for (int i = 0; i < c_len; ++i) {
+	for (int i = fn; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
@@ -101,7 +101,7 @@ void CGenCP1::SingleCPInit() {
 	acc = scpoint;
 	// Get diatonic steps from chromatic
 	for (int v = 0; v < acc.size(); ++v) {
-		for (int i = 0; i < c_len; ++i) {
+		for (int i = fn; i < c_len; ++i) {
 			ac[v][i] = CC_C(acc[v][i], tonic_cur, minor_cur);
 		}
 	}
@@ -124,21 +124,21 @@ void CGenCP1::SingleCPInit() {
 	*/
 	// Calculate limits
 	if (cantus_high) {
-		for (int i = 0; i < c_len; ++i) {
+		for (int i = fn; i < c_len; ++i) {
 			max_cc[i] = min(acc[cfv][i] - min_between, acc[cpv][i] + correct_range);
 			min_cc[i] = max(acc[cfv][i]- burst_between, 
 				max(cf_nmax - sum_interval, acc[cpv][i] - correct_range));
 		}
 	}
 	else {
-		for (int i = 0; i < c_len; ++i) {
+		for (int i = fn; i < c_len; ++i) {
 			min_cc[i] = max(acc[cfv][i] + min_between, acc[cpv][i] - correct_range);
 			max_cc[i] = min(acc[cfv][i] + burst_between, 
 				min(cf_nmin + sum_interval, acc[cpv][i] + correct_range));
 		}
 	}
 	// Convert limits to diatonic and recalibrate
-	for (int i = 0; i < c_len; ++i) {
+	for (int i = fn; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
@@ -162,7 +162,7 @@ void CGenCP1::SingleCPInit() {
 		// Create map
 		smap.resize(smatrixc);
 		int map_id = 0;
-		for (int i = 0; i < c_len; ++i) if (smatrix[i]) {
+		for (int i = fn; i < c_len; ++i) if (smatrix[i]) {
 			smap[map_id] = i;
 			++map_id;
 		}
@@ -381,7 +381,7 @@ int CGenCP1::FailAlteredInt2(int i, int c1, int c2, int flag) {
 
 // Fail vertical altered intervals
 int CGenCP1::FailAlteredInt() {
-	for (int i = 0; i < ep2; ++i) {
+	for (int i = fn; i < ep2; ++i) {
 		if (FailAlteredInt2(i, 9, 8, 170)) return 1;
 		if (FailAlteredInt2(i, 11, 10, 171)) return 1;
 		if (FailAlteredInt2(i, 11, 8, 172)) return 1;
@@ -399,7 +399,7 @@ int CGenCP1::FailCrossInt2(int i, int i_1, int c1, int c2, int flag) {
 
 // Fail cross relation altered intervals
 int CGenCP1::FailCrossInt() {
-	for (int s = 1; s < ep2; ++s) {
+	for (int s = fn+1; s < ep2; ++s) {
 		s_1 = s - 1;
 		if (FailCrossInt2(s, s_1, 9, 8, 164)) return 1;
 		if (FailCrossInt2(s, s_1, 11, 10, 165)) return 1;
@@ -414,7 +414,7 @@ int CGenCP1::FailCrossInt() {
 
 void CGenCP1::GetVIntervals() {
 	// Calculate intervals
-	for (int i = 0; i < ep2; ++i) {
+	for (int i = fn; i < ep2; ++i) {
 		ivl[i] = ac[1][i] - ac[0][i];
 		ivlc[i] = ivl[i] % 7;
 		civl[i] = acc[1][i] - acc[0][i];
@@ -430,7 +430,7 @@ int CGenCP1::FailVMotion() {
 	int mtemp;
 	int scontra = 0;
 	int sdirect = 0;
-	for (int i = 0; i < ep2; ++i) {
+	for (int i = fn; i < ep2; ++i) {
 		if (i < ep2 - 1) {
 			motion[i] = mStay;
 			if (acc[cfv][i + 1] != acc[cfv][i] || acc[cpv][i + 1] != acc[cpv][i]) {
@@ -987,7 +987,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				dpenalty.resize(cnum);
 				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
 					dpenalty[x] = 0;
-					for (int z = 0; z < c_len; z++) {
+					for (int z = fn; z < c_len; z++) {
 						int dif = abs(cpoint[i][1][z] - clib[x][z]);
 						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
 					}
