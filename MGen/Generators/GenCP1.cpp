@@ -324,22 +324,22 @@ int CGenCP1::SendCP() {
 			Adapt(step00, step - 1);
 		}
 		// If  window-scan
-		st.Format("#%d\nCantus: %s\nRule penalty: %s", cantus_sent, cantus_high?"high":"low", rpst);
+		st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %s", cantus_sent, cantus_high?"high":"low", species, rpst);
 		AddMelody(step00, step - 1, svoice + cpv, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
 			// If RSWA
-			st.Format("#%d\nCantus: %s\nRule penalty: %s", cantus_sent, cantus_high ? "high" : "low", rpst);
+			st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %s", cantus_sent, cantus_high ? "high" : "low", species, rpst);
 		}
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nDistance penalty: %.0f", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, dpenalty_cur);
+				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %s\nDistance penalty: %.0f", cantus_id+1, midi_file, cantus_high ? "high" : "low", species, rpst, dpenalty_cur);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d (from MIDI file %s)\nCantus: %s\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, cantus_high ? "high" : "low", rpst, key_eval);
+				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, cantus_high ? "high" : "low", species, rpst, key_eval);
 			}
 		}
 		AddMelody(step00, step - 1, svoice + cpv, st);
