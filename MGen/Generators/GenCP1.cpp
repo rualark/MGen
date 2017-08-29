@@ -473,7 +473,7 @@ int CGenCP1::FailSus() {
 		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) pre_end = 0;
 		if (pre_end) {
 			// Check if suspension second part is discord
-			if (tivl[s2] == iDis) {}
+			if (tivl[s2] != iDis) {}
 			// Resolution to discord
 			else if (tivl[s2+1] == iDis) FLAG2(220, s2)
 			// Resolution by leap
@@ -1211,7 +1211,7 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-		LogCantus(acc[cpv]);
+		//LogCantus(acc[cpv]);
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {
