@@ -472,8 +472,10 @@ int CGenCP1::FailSus() {
 		if (s2 == ep2 - 1) pre_end = 0;
 		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) pre_end = 0;
 		if (pre_end) {
+			// Check if suspension second part is discord
+			if (tivl[s2] == iDis) {}
 			// Resolution to discord
-			if (tivl[s2+1] == iDis) FLAG2(220, s2)
+			else if (tivl[s2+1] == iDis) FLAG2(220, s2)
 			// Resolution by leap
 			else if (aleap[cpv][s2]) FLAG2(221, s2)
 			else {
