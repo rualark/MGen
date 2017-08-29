@@ -2868,8 +2868,8 @@ void CGenCF1::MakeBellDyn(int v, int step1, int step2, int dyn1, int dyn2, int d
 	int mids = (step1 + step2) / 2;
 	int counts = step2 - step1;
 	for (int s = step1; s <= step2; ++s) {
-		if (s < mids)	dyn[s][v] = dyn1 + (dyn2-dyn1) * (s - step1) / counts*2 + dyn_rand * rand2() / RAND_MAX;
-		else dyn[s][v] = dyn1 + (dyn2-dyn1) * (step2 - s) / counts*2 + dyn_rand * rand2() / RAND_MAX;
+		if (s < mids)	dyn[s][v] = dyn1 + min(dyn2 - dyn1, (dyn2-dyn1) * (s - step1) / counts*2) + dyn_rand * rand2() / RAND_MAX;
+		else dyn[s][v] = dyn1 + min(dyn2-dyn1, (dyn2-dyn1) * (step2 - s) / counts*2) + dyn_rand * rand2() / RAND_MAX;
 	}
 }
 
