@@ -662,7 +662,7 @@ void CGenCP1::GetRpos() {
 int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	// Check first step
-	if (tivl[0] == iDis) FLAG2(83, 0);
+	if (tivl[fn] == iDis) FLAG2(83, 0);
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
