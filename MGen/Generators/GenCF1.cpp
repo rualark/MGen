@@ -2702,6 +2702,7 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2*minl;
 	// Deviation weight
+	maw.clear();
 	for (int i = 0; i <= ma_range; ++i) {
 		maw.push_back(1 - i*0.5 / ma_range);
 	}
