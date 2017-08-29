@@ -460,7 +460,7 @@ int CGenCP1::FailVMotion() {
 
 int CGenCP1::FailSus() {
 	int pre_end;
-	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
+	for (ls = 0; ls < fli_size; ++ls) if (sus[ls] && (ls < fli_size-1 || ep2 < c_len)) {
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Flag suspension
@@ -1209,7 +1209,7 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-		//LogCantus(acc[cpv]);
+		LogCantus(acc[cpv]);
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {

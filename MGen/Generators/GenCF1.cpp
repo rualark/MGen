@@ -471,7 +471,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 void CGenCF1::LogCantus(vector<int> &c)
 {
 	CString st, st2;
-	for (int i = 0; i < c.size(); ++i) {
+	for (int i = 0; i < ep2; ++i) {
 		st.Format("%d ", c[i]);
 		st2 += st;
 	}
