@@ -255,7 +255,6 @@ int CGenCP1::SendCP() {
 	CString st, rpst;
 	int pos = 0, plen;
 	int v, x1;
-	int real_len2 = real_len*npm;
 	Sleep(sleep_ms);
 	for (int av = 0; av < av_cnt; ++av) {
 		CreateLinks(ac[av]);
@@ -279,7 +278,7 @@ int CGenCP1::SendCP() {
 			x1 = 0;
 		}
 		// Copy cantus to output
-		if (step + real_len2 >= t_allocated) ResizeVectors(t_allocated * 2);
+		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = x1; x < c_len; ++x) {
 			SendLyrics(pos, v, av, x);
 			for (int i = 0; i < cc_len[x]; ++i) {
@@ -298,6 +297,7 @@ int CGenCP1::SendCP() {
 		InterpolateNgraph(v, step, pos);
 		// Merge notes
 		MergeNotes(step, pos - 1, v);
+		MakeBellDyn(v, step, pos - 1, 40, 100, 20);
 	}
 	step = pos + pause_len;
 	FixLen(step00, step - 1);
@@ -1505,6 +1505,7 @@ void CGenCP1::Generate() {
 		}
 		fn = fn0;
 		// Generate second voice
+		real_len = accumulate(cc_len.begin(), cc_len.end(), 0);
 		rpenalty_cur = MAX_PENALTY;
 		if (SelectRuleSet(cp_rule_set)) return;
 		if (method == mSWA) {

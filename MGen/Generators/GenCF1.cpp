@@ -2844,8 +2844,6 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 			if (max_cc0.size()) nsr2[pos][v] = max_cc[x];
 		}
 	}
-	if (x < real_len / 2)	dyn[pos + i][v] = 60 + 40 * (pos + i - step) / real_len + 20 * rand2() / RAND_MAX;
-	else dyn[pos + i][v] = 60 + 40 * (real_len - pos - i + step) / real_len + 20 * rand2() / RAND_MAX;
 	// Assign source tempo if exists
 	if (cc_tempo[x]) {
 		tempo[pos + i] = cc_tempo[x];
@@ -2860,6 +2858,18 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 			if (tempo[pos + i] > max_tempo) tempo[pos + i] = 2 * max_tempo - tempo[pos + i];
 			if (tempo[pos + i] < min_tempo) tempo[pos + i] = 2 * min_tempo - tempo[pos + i];
 		}
+	}
+}
+
+// Create bell dynamics curve
+void CGenCF1::MakeBellDyn(int v, int step1, int step2, int dyn1, int dyn2, int dyn_rand) {
+	// Do not process if steps are equal or wrong
+	if (step2 <= step1) return;
+	int mids = (step1 + step2) / 2;
+	int counts = step2 - step1;
+	for (int s = step1; s <= step2; ++s) {
+		if (s < mids)	dyn[s][v] = dyn1 + (dyn2-dyn1) * (s - step1) / counts*2 + dyn_rand * rand2() / RAND_MAX;
+		else dyn[s][v] = dyn1 + (dyn2-dyn1) * (step2 - s) / counts*2 + dyn_rand * rand2() / RAND_MAX;
 	}
 }
 
@@ -2895,6 +2905,7 @@ int CGenCF1::SendCantus() {
 		}
 		pos += cc_len[x];
 	}
+	MakeBellDyn(v, step, pos - 1, 40, 100, 20);
 	step = pos + SendPause(pos, v);
 	InterpolateNgraph(v, step00, step);
 	// Count additional variables

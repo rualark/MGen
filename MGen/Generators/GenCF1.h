@@ -188,6 +188,7 @@ protected:
 	void SendComment(int pos, int v, int av, int x, int i);
 	void TransposeCantusBack();
 	void SendNotes(int pos, int i, int v, int av, int x, vector<int>& cc);
+	void MakeBellDyn(int v, int step1, int step2, int dyn1, int dyn2, int dyn_rand);
 	int SendPause(int pos, int v);
 	int SendCantus();
 	int InitGen();
