@@ -16,7 +16,7 @@ include "include/CA2.pl"
 #Midi_file = "midi\GenCA2\cpointer-2c1.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-alterint.mid" # Path and file name of imported midi file
 #Midi_file = "midi\temp\2017-08-11-auto 23-36-05.mid"
-Midi_file = "midi\GenCA2\test-sus.mid" # Path and file name of imported midi file
+#Midi_file = "midi\GenCA2\test-sus.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-end.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-cp3.mid" # Path and file name of imported midi file
-#Midi_file = "midi\GenCA2\test-rpos.mid" # Path and file name of imported midi file
+Midi_file = "midi\GenCA2\test-rpos.mid" # Path and file name of imported midi file
