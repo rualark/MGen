@@ -780,11 +780,11 @@ int CGenCP1::FailMissSlurs() {
 	int max_i=0;
 	for (int i = fn; i < ep2-1; ++i) if (i % 2) { 
 		if (i - fn < miss_slurs_window * 2) ++wcount;
+		// Subtract old slur
+		if ((i - fn >= miss_slurs_window * 2) && (acc[cpv][i - miss_slurs_window * 2] == acc[cpv][i - miss_slurs_window * 2 + 1])) --scount;
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check slurs in window
 			++scount;
-			// Subtract old slur
-			if ((i - fn >= miss_slurs_window * 2) && (acc[cpv][i - miss_slurs_window * 2] == acc[cpv][i - miss_slurs_window * 2 + 1])) --scount;
 		}
 		else {
 			miss = wcount - scount;
@@ -1249,6 +1249,8 @@ check:
 			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;
 			if (FailGisTrail2()) goto skip;
 		}
+		//if (acc[cpv][1] == 105 && acc[cpv][2] == 98)
+			//WriteLog(1, "Found");
 		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		if (FailCPInterval()) goto skip;
