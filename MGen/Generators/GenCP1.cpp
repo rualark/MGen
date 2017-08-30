@@ -798,7 +798,7 @@ int CGenCP1::FailMissSlurs() {
 	else if (max_miss == 2) FLAG2(189, max_i)
 	else if (max_miss > 2) {
 		FLAG2(190, max_i);
-		if (!accept[190]) fpenalty[190] += max_miss;
+		if (!accept[190]) fpenalty[190] += (max_miss - 2) * 50;
 	}
 	return 0;
 }
