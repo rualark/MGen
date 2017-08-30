@@ -3198,10 +3198,11 @@ void CGenCF1::SaveCantusIfRp() {
 		if (!skip_flags && rpenalty_cur == 0)
 			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 		// Insert only if cc is unique
-		if (clib_vs.Insert(m_cc))
+		if (clib_vs.Insert(m_cc)) {
 			SaveCantus();
-		// Save flags for SWA stuck flags
-		if (rpenalty_cur) best_flags = flags;
+			// Save flags for SWA stuck flags
+			if (rpenalty_cur) best_flags = flags;
+		}
 	}
 }
 
