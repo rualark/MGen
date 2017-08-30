@@ -78,6 +78,12 @@ void CGMidi::LoadMidi(CString path)
 		WriteLog(5, est);
 		return;
 	}
+	if (!FileHasHeader(path, "MThd")) {
+		CString est;
+		est.Format("This file has non-MIDI header: %s", path);
+		WriteLog(5, est);
+		return;
+	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString est;
