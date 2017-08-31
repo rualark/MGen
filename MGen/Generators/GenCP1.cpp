@@ -1056,6 +1056,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	// Log
 	long long time_stop = CGLib::time();
 	CString est;
+	// For successful rpenalty_cur == 0, show last flag that was fixed. For unsuccessful, show best variant
 	CString sst = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s",
 		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
