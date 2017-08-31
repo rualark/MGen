@@ -674,14 +674,25 @@ int CGenCP1::FailVIntervals() {
 		s2 = fli2[ls];
 		// 5th apart
 		if (civlc[s] == 7) {
-			if (s - pco5_last < (pco_apart * npm) / 4) {
+			if (s - pco5_last > 1 && s - pco5_last < (pco_apart * npm) / 4) {
 				if (!beat[s]) FLAG2(250, s)
 				else if ((acc[0][s] - acc[0][pco5_last])*
 					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
-				else if (rpos[s] < 0 || rpos[pco5_last] < 0) FLAG2(249, s)
+				else if (rpos[ls] < 0 || rpos[bli[pco5_last]] < 0) FLAG2(249, s)
 				else FLAG2(250, s);
 			}
 			pco5_last = s;
+		}
+		// 8va apart
+		if (civlc[s] == 0) {
+			if (s - pco8_last > 1 && s - pco8_last < (pco_apart * npm) / 4) {
+				if (!beat[s]) FLAG2(250, s)
+				else if ((acc[0][s] - acc[0][pco8_last])*
+					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
+				//else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
+				else FLAG2(250, s);
+			}
+			pco8_last = s;
 		}
 		if (FailUnison()) return 1;
 		if (FailDis()) return 1;
