@@ -2194,6 +2194,22 @@ void CGenCF1::NextWindow() {
 
 // Check if rpenalty is not below than flags sum
 void CGenCF1::TestRpenalty() {
+	if (!flags.size()) return;
+	int rp = 0;
+	CString st, st2;
+	for (int x = 0; x < max_flags; ++x) {
+		if (!accept[x] && flags[x]) rp += severity[x];
+	}
+	if (rpenalty_cur < rp) {
+		CString est;
+		est.Format("Error: rpenalty_cur %.0f is below rpenalty evaluation based on flags (%d)",
+			rpenalty_cur, rp);
+		WriteLog(5, est);
+	}
+}
+
+// Check if rpenalty is not below than flags sum
+void CGenCF1::TestBestRpenalty() {
 	if (!best_flags.size()) return;
 	int rp = 0;
 	CString st, st2;
@@ -2230,6 +2246,7 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x]) rpenalty_cur += fpenalty[x];
 	}
+	TestRpenalty();
 }
 
 void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
