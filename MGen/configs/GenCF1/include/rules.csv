@@ -145,7 +145,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;52;70;Cantus;Border;Start steps tonic;unprepared;0;;
 1;40;70;Cantus;Border;Start steps tonic;no C;0;;
 1;41;70;Cantus;Border;Start steps tonic;no E;0;;
-1;33;0;Cantus;Border;Last note;upper G;0;;Last G note in upper voice is allowed only when last note in lower voice is C
+1;33;0;Cantus;Border;Last note;upper G;1;;Last G note in upper voice is allowed only when last note in lower voice is C
 1;50;100;Cantus;Border;Last note;not C;0;;
 1;14;0;Cantus;Border;3rd to last note;CEG;-1;;
 1;34;0;Cantus;Border;3rd to last note;leading;-1;;
