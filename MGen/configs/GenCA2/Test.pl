@@ -21,4 +21,5 @@ include "include/CA2.pl"
 #Midi_file = "midi\GenCA2\test-cp3.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-rpos.mid" # Path and file name of imported midi file
 #Midi_file = "midi\good-cp4.mid" # Path and file name of imported midi file
-Midi_file = "midi\temp\temp.mid"
+#Midi_file = "midi\temp\temp.mid"
+Midi_file = "midi\GenCA2\test-pco-apart.mid" # Path and file name of imported midi file
