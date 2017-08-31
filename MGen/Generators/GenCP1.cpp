@@ -1074,8 +1074,11 @@ int CGenCP1::FailLastIntervals() {
 	if (ep2 >= c_len) {
 		if (apc[cpv][c_len - 1] != 0) {
 			// Detect upper last G if lower note is C
-			if (apcc[cpv][c_len - 1] == 7 && cpv == 1 && apc[cfv][c_len - 1] == 0) 
+			if (apcc[1][c_len - 1] == 7 && apc[0][c_len - 1] == 0) 
 				FLAG2(33, c_len-1)
+			// Detect upper last E if lower note is C
+			else if ((apcc[1][c_len - 1] == 3 || apcc[1][c_len - 1] == 4) && apc[0][c_len - 1] == 0)
+				FLAG2(87, c_len - 1)
 			else FLAG2(50, c_len - 1);
 		}
 		// Prohibit major second up before I (applicable to major and minor)
