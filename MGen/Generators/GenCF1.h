@@ -175,6 +175,7 @@ protected:
 	void ShowFlagBlock();
 	void CalcDpenalty();
 	void SaveCantus();
+	inline void TestRpenalty2();
 	inline void TransposeVector(vector<int>& v, int t);
 	inline void TransposeVector(vector<float>& v, int t);
 	inline void maVector(vector<float>& v, vector<float>& v2, int range);

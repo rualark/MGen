@@ -532,7 +532,7 @@ int CGenCP1::FailDis() {
 	if (tivl[s] == iDis) {
 		// Downbeat
 		if (rpos[ls] == pDownbeat) FLAG2(83, s)
-		// Upbeat
+		// Upbeat 
 		else if (rpos[ls] == pOffbeat) FLAG2(83, s)
 		else if (rpos[ls] == pLeap) FLAG2(187, s)
 		else {
@@ -729,19 +729,7 @@ void CGenCP1::SaveCPIfRp() {
 			SaveCP();
 			// Save flags for SWA stuck flags
 			if (rpenalty_cur) best_flags = flags;
-			if (rpenalty_cur < 100) {
-				WriteLog(1, "Test");
-				rpenalty_cur = 0;
-				for (int x = fn; x < ep2; ++x) {
-					if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (!accept[anflags[cpv][x][i]]) {
-						rpenalty_cur += severity[anflags[cpv][x][i]] + 1;
-					}
-				}
-				// Add flags penalty
-				for (int x = 0; x < max_flags; ++x) {
-					if (!accept[x]) rpenalty_cur += fpenalty[x];
-				}
-			}
+			TestRpenalty2();
 		}
 	}
 }
@@ -1071,6 +1059,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	CString sst = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s",
 		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
+	TestRpenalty2();
 	WriteLog(3, est);
 }
 

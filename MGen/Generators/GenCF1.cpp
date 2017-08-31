@@ -1221,7 +1221,7 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 				if (maxl < l) maxl = l;
 				l = 0;
 			}
-			prev_note = cc[i];
+			prev_note = cc[i]; 
 			fli[lpos] = i;
 			++lpos;
 		}
@@ -2190,6 +2190,22 @@ void CGenCF1::NextWindow() {
 		SendCantus(0, 0);
 	}
 	*/
+}
+
+// Check if rpenalty is not below than flags sum
+void CGenCF1::TestRpenalty2() {
+	if (!best_flags.size()) return;
+	int rp = 0;
+	CString st, st2;
+	for (int x = 0; x < max_flags; ++x) {
+		if (!accept[x] && best_flags[x]) rp += severity[x];
+	}
+	if (rpenalty_min < rp) {
+		CString est;
+		est.Format("Error: rpenalty_min %.0f is below rpenalty evaluation based on best_flags (%d)",
+			rpenalty_min, rp);
+		WriteLog(5, est);
+	}
 }
 
 void CGenCF1::CalcRpenalty(vector<int> &cc) {
