@@ -199,7 +199,8 @@ void CGenCA2::ExplodeCP() {
 	}
 	// Calculate sus count
 	for (int i = 1; i < cpoint[cantus_id][cpv].size(); ++i) {
-		if (cpoint[cantus_id][cfv][i] == cpoint[cantus_id][cfv][i - 1]) ++sus_count;
+		if (cpoint[cantus_id][cpv][i] == cpoint[cantus_id][cpv][i - 1] && 
+			cpoint[cantus_id][cfv][i] != cpoint[cantus_id][cfv][i - 1]) ++sus_count;
 	}
 	// Detect start pause
 	fn = 0;

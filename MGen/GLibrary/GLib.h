@@ -177,6 +177,8 @@ public:
 	CGLib();
 	virtual ~CGLib();
 
+	static int FileHasHeader(CString fname, CString header);
+
 	static long long time();
 
 	static FILETIME fileTime(CString fname);

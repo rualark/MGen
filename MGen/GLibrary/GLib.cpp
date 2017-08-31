@@ -56,6 +56,28 @@ CGLib::~CGLib()
 {
 }
 
+int CGLib::FileHasHeader(CString fname, CString header) {
+	int retCode = 1;
+	CString st;
+	ifstream fs;
+	// Check file exists
+	if (!fileExists(fname)) {
+		st.Format("Cannot open file to check header: %s", fname);
+		WriteLog(5, st);
+		return 0;
+	}
+	fs.open(fname);
+	char pch[2550];
+	// Load header
+	fs.getline(pch, 2550);
+	if (fs.gcount() < header.GetLength()) retCode = 0;
+	fs.close();
+	if (!retCode) return 0;
+	st = pch;
+	if (st != header) return 0;
+	return 1;
+}
+
 long long CGLib::time() {
 	long long t = abstime();
 	if (!first_time) first_time = t;
