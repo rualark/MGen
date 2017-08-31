@@ -2196,9 +2196,24 @@ void CGenCF1::NextWindow() {
 void CGenCF1::TestRpenalty() {
 	if (!flags.size()) return;
 	int rp = 0;
+	int found;
 	CString st, st2;
-	for (int x = 0; x < max_flags; ++x) {
-		if (!accept[x] && flags[x]) rp += severity[x];
+	for (int z = 0; z < max_flags; ++z) {
+		if (!accept[z] && flags[z]) {
+			rp += severity[z] * flags[z];
+			found = 0;
+			for (int x = fn; x < ep2; ++x) {
+				if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (!accept[anflags[cpv][x][i]]) {
+					found = 1;
+				}
+			}
+			if (!found) {
+				CString est;
+				est.Format("Error: not found flag %d (which is set to %d) in anflags vector",
+					z, flags[z]);
+				WriteLog(5, est);
+			}
+		}
 	}
 	if (rpenalty_cur < rp) {
 		CString est;

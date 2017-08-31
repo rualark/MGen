@@ -6,8 +6,8 @@
 #define MELODY_SEPARATION(s, s1) (!s || (leap[s - 1]) || ((c[s] - c[s - 1])*(c[s1] - c[s]) < 0))
 
 // Report violation
-#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; flags[0] = 0; flags[id] = 1; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; }
-#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; flags[0] = 0; flags[id] = 1; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; }
+#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; }
+#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i][anflagsc[cpv][i]] = id; ++anflagsc[cpv][i]; }
 #define FLAG3(id, i) { if (!accept[id]) { if (i == max_p) { last_flag=id; } return 1; } }
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
