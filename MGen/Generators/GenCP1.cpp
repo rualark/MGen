@@ -557,12 +557,6 @@ int CGenCP1::FailPcoSus() {
 	return 0;
 }
 
-int CGenCP1::FailPcoApart() {
-	// Perfect consonance
-	if (tivl[s] == iPco) {
-	}
-}
-
 int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
