@@ -451,8 +451,8 @@ int CGenCP1::FailVMotion() {
 	if (ep2 == c_len) {
 		if (scontra + sdirect) { //-V793
 			int pcontra = (scontra * 100) / (scontra + sdirect);
-			if (pcontra < contrary_min2) FLAG2(46, 0)
-			else if (pcontra < contrary_min) FLAG2(35, 0);
+			if (pcontra < contrary_min2) FLAG2(46, fn)
+			else if (pcontra < contrary_min) FLAG2(35, fn);
 		}
 	}
 	return 0;
@@ -664,7 +664,7 @@ void CGenCP1::GetRpos() {
 int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	// Check first step
-	if (tivl[fn] == iDis) FLAG2(83, 0);
+	if (tivl[fn] == iDis) FLAG2(83, fn);
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
@@ -729,7 +729,7 @@ void CGenCP1::SaveCPIfRp() {
 			SaveCP();
 			// Save flags for SWA stuck flags
 			if (rpenalty_cur) best_flags = flags;
-			//TestRpenalty();
+			TestRpenalty();
 		}
 	}
 }
@@ -1059,8 +1059,8 @@ void CGenCP1::SWACP(int i, int dp) {
 	CString sst = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s",
 		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
-	//TestRpenalty();
 	WriteLog(3, est);
+	TestBestRpenalty();
 }
 
 int CGenCP1::FailLastIntervals() {
@@ -1231,14 +1231,14 @@ check:
 		}
 		else {
 			ClearFlags(0, ep2);
-			if (nmax - nmin > max_interval) FLAG(37, 0);
+			if (nmax - nmin > max_interval) FLAG(37, fn);
 			if (cantus_high) {
-				if (cf_nmax - nmin > sum_interval) FLAG(7, 0);
+				if (cf_nmax - nmin > sum_interval) FLAG(7, fn);
 			}
 			else {
-				if (nmax - cf_nmin > sum_interval) FLAG(7, 0);
+				if (nmax - cf_nmin > sum_interval) FLAG(7, fn);
 			}
-			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
+			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, fn);
 		}
 		if (FailMissSlurs()) goto skip;
 		if (FailSlurs()) goto skip;

@@ -601,12 +601,13 @@ void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2, int &nmin
 void CGenCF1::ClearFlags(int step1, int step2) {
 	if (!skip_flags || flags_need2) {
 		fill(flags.begin(), flags.end(), 0);
-		fill(fpenalty.begin(), fpenalty.end(), 0);
+		fill(fpenalty.begin(), fpenalty.end(), 0.0);
 	}
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
 		anflagsc[cpv][i] = 0;
 	}
+	rpenalty_cur = 0;
 }
 
 // Calculate pitch class
@@ -1132,8 +1133,8 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 int CGenCF1::FailFirstNotes(vector<int> &pc) {
 	// Prohibit first note not tonic
 	if (pc[0] != 0) {
-		FLAG2(49, 0);
-		if (pc[0] != 4) FLAG2(90, 0);
+		FLAG2(49, fn);
+		if (pc[0] != 4) FLAG2(90, fn);
 		// Calculate steps to search for tonic
 		int fst = first_steps_tonic;
 		if (c_len > 10) ++fst;
@@ -1150,7 +1151,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 		}
 		int ok = 0;
 		// No C ?
-		if (c_pos == -1) FLAG2(40, 0)
+		if (c_pos == -1) FLAG2(40, fn)
 		else {
 			// If C found, check previous note
 			if (c_pos > 0) {
@@ -1160,7 +1161,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 			else ok = 1;
 		}
 		// No E ?
-		if (e_pos == -1) FLAG2(41, 0)
+		if (e_pos == -1) FLAG2(41, fn)
 		else {
 			// If E found, check previous note
 			if (e_pos > 0) {
@@ -1170,7 +1171,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 			else ok = 1;
 		}
 		// Is E or C prepared?
-		if (!ok) FLAG2(52, 0);
+		if (!ok) FLAG2(52, fn);
 	}
 	return 0;
 }
@@ -1780,9 +1781,9 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 		else ++skips;
 	}
 	// Set flags
-	if (skips2) FLAG2(69, 0);
-	if (skips == 1) FLAG2(67, 0)
-	else if (skips == 2) FLAG2(68, 0);
+	if (skips2) FLAG2(69, fn);
+	if (skips == 1) FLAG2(67, fn)
+	else if (skips == 2) FLAG2(68, fn);
 	return 0;
 }
 
@@ -2200,10 +2201,10 @@ void CGenCF1::TestRpenalty() {
 	CString st, st2;
 	for (int z = 0; z < max_flags; ++z) {
 		if (!accept[z] && flags[z]) {
-			rp += severity[z] * flags[z];
+			rp += severity[z] * flags[z] + fpenalty[z];
 			found = 0;
 			for (int x = fn; x < ep2; ++x) {
-				if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (!accept[anflags[cpv][x][i]]) {
+				if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (anflags[cpv][x][i] == z) {
 					found = 1;
 				}
 			}
@@ -2225,6 +2226,8 @@ void CGenCF1::TestRpenalty() {
 
 // Check if rpenalty is not below than flags sum
 void CGenCF1::TestBestRpenalty() {
+	// Do not test if rpenalty == 0, because in this case best_flags are not saved
+	if (!rpenalty_min) return;
 	if (!best_flags.size()) return;
 	int rp = 0;
 	CString st, st2;
@@ -2261,7 +2264,6 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x]) rpenalty_cur += fpenalty[x];
 	}
-	TestRpenalty();
 }
 
 void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
@@ -3229,6 +3231,7 @@ void CGenCF1::SWA(int i, int dp) {
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s", 
 		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, stuck_st);
 	WriteLog(3, est);
+	TestBestRpenalty();
 }
 
 // Save accepted time if we are showing best rejected
@@ -3250,6 +3253,7 @@ void CGenCF1::SaveCantusIfRp() {
 			SaveCantus();
 			// Save flags for SWA stuck flags
 			if (rpenalty_cur) best_flags = flags;
+			TestRpenalty();
 		}
 	}
 }
@@ -3275,8 +3279,8 @@ check:
 		GetMelodyInterval(m_cc, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
-		if (nmax - nmin > max_interval) FLAG(37, 0);
-		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
+		if (nmax - nmin > max_interval) FLAG(37, fn);
+		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, fn);
 		// Show status
 		if (accepted3 % 100000 == 0) ShowScanStatus(m_cc);
 		// Calculate diatonic limits
