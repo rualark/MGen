@@ -729,6 +729,19 @@ void CGenCP1::SaveCPIfRp() {
 			SaveCP();
 			// Save flags for SWA stuck flags
 			if (rpenalty_cur) best_flags = flags;
+			if (rpenalty_cur < 100) {
+				WriteLog(1, "Test");
+				rpenalty_cur = 0;
+				for (int x = fn; x < ep2; ++x) {
+					if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (!accept[anflags[cpv][x][i]]) {
+						rpenalty_cur += severity[anflags[cpv][x][i]] + 1;
+					}
+				}
+				// Add flags penalty
+				for (int x = 0; x < max_flags; ++x) {
+					if (!accept[x]) rpenalty_cur += fpenalty[x];
+				}
+			}
 		}
 	}
 }
