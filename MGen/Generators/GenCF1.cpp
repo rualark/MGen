@@ -2839,7 +2839,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 						com += st;
 					}
 					if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];
-					if (!SubRuleComment[rule_set][fl].IsEmpty()) com += ". " + SubRuleComment[rule_set][fl];
+					if (!SubRuleComment[rule_set][fl].IsEmpty()) com += " (" + SubRuleComment[rule_set][fl] + ")";
 					//com += ". ";
 					comment[pos][v].push_back(com);
 					ccolor[pos][v].push_back(flag_color[severity[fl]]);
