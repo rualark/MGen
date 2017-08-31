@@ -80,7 +80,7 @@ void CGMidi::LoadMidi(CString path)
 	}
 	if (!FileHasHeader(path, "MThd")) {
 		CString est;
-		est.Format("This file has non-MIDI header: %s", path);
+		est.Format("This file does not have MIDI header: %s", path);
 		WriteLog(5, est);
 		return;
 	}
@@ -440,6 +440,12 @@ void CGMidi::LoadCantus(CString path)
 		WriteLog(5, est);
 		return;
 	}
+	if (!FileHasHeader(path, "MThd")) {
+		CString est;
+		est.Format("This file does not have MIDI header: %s", path);
+		WriteLog(5, est);
+		return;
+	}
 	MidiFile midifile;
 	if (!midifile.read(path)) {
 		CString est;
@@ -618,6 +624,12 @@ void CGMidi::LoadCP(CString path)
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
+		WriteLog(5, est);
+		return;
+	}
+	if (!FileHasHeader(path, "MThd")) {
+		CString est;
+		est.Format("This file does not have MIDI header: %s", path);
 		WriteLog(5, est);
 		return;
 	}
