@@ -729,7 +729,7 @@ void CGenCP1::SaveCPIfRp() {
 			SaveCP();
 			// Save flags for SWA stuck flags
 			if (rpenalty_cur) best_flags = flags;
-			TestRpenalty2();
+			TestRpenalty();
 		}
 	}
 }
@@ -1059,7 +1059,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	CString sst = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s",
 		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
-	TestRpenalty2();
+	TestRpenalty();
 	WriteLog(3, est);
 }
 

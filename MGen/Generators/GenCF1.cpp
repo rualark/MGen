@@ -2193,7 +2193,7 @@ void CGenCF1::NextWindow() {
 }
 
 // Check if rpenalty is not below than flags sum
-void CGenCF1::TestRpenalty2() {
+void CGenCF1::TestRpenalty() {
 	if (!best_flags.size()) return;
 	int rp = 0;
 	CString st, st2;
