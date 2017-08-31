@@ -975,6 +975,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	long cnum = 0;
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
+	best_flags = flags;
 	dpenalty_min = MAX_PENALTY;
 	acc = cpoint[i];
 	int a;

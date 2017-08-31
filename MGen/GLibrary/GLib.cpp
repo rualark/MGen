@@ -69,10 +69,11 @@ int CGLib::FileHasHeader(CString fname, CString header) {
 	fs.open(fname);
 	char pch[2550];
 	// Load header
-	fs.getline(pch, header.GetLength());
+	fs.read(pch, header.GetLength());
 	if (fs.gcount() < header.GetLength()) retCode = 0;
 	fs.close();
 	if (!retCode) return 0;
+	pch[header.GetLength()] = '\0';
 	st = pch;
 	if (st != header) return 0;
 	return 1;
