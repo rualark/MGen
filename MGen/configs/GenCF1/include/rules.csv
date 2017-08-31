@@ -181,9 +181,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;80;0;Cantus;Counterpoint;Perfect consonance;downbeat;-1;;
 1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;-1;;
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;
-1;84;60;Cantus;Counterpoint;Perfect consonance approach;parallel;0;;
-1;85;60;Cantus;Counterpoint;Perfect consonance approach;combined;0;;
-1;86;60;Cantus;Counterpoint;Perfect consonance approach;different;-1;;
+1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;
+1;85;60;Cantus;Counterpoint;Close perfect consonances;combined;0;;
+1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;
 1;208;0;Cantus;Counterpoint;Direct stepwize movement;5 cadence;1;Direct movement to interval with stepwize motion in higher voice;
 1;209;40;Cantus;Counterpoint;Direct stepwize movement;8 cadence;1;Direct movement to interval with stepwize motion in higher voice;
 1;210;40;Cantus;Counterpoint;Direct stepwize movement;5;0;Direct movement to interval with stepwize motion in higher voice;
@@ -206,6 +206,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;0;More than X same imperfect consonances in a row;
 1;96;60;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;
+1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances;
+1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;non-harmonic;1;Two same non-close perfect consonances;
+1;250;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances;If other rules in this row did not apply
 1;49;60;Cantus;Counterpoint;First note;not C;0;;
 1;90;60;Cantus;Counterpoint;First note;not GC;0;;
 1;91;60;Cantus;Counterpoint;Unison;inside;0;;

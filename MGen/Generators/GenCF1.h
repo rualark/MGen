@@ -464,6 +464,7 @@ protected:
 	int contrary_min2 = 60; // Minimum percent of contrary motion (medium)
 	int cantus_id2 = 0; // Select particular cantus id. Set to -1 to select random
 	int accept_cantus_rechoose = 1; // Choose new random cantus after accepting counterpoint
+	int pco_apart = 4; // Minimum allowed distance between pco in quarters
 
 	// Counterpoint
 	vector<vector<int>> ac; // Diatonic

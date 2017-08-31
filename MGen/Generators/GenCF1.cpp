@@ -250,6 +250,7 @@ void CGenCF1::ParseRules() {
 
 // Set parsed parameters of current ruleset
 void CGenCF1::SetRuleParams() {
+	pco_apart = GetRuleParam(rule_set, 248, rsName, 0);
 	thirds_ignored = GetRuleParam(rule_set, 70, rsName, 0);
 	c4p_last_leaps = GetRuleParam(rule_set, 144, rsName, 1);
 	pre_last_leaps = GetRuleParam(rule_set, 204, rsName, 0);
