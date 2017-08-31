@@ -557,6 +557,12 @@ int CGenCP1::FailPcoSus() {
 	return 0;
 }
 
+int CGenCP1::FailPcoApart() {
+	// Perfect consonance
+	if (tivl[s] == iPco) {
+	}
+}
+
 int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
@@ -662,12 +668,27 @@ void CGenCP1::GetRpos() {
 }
 
 int CGenCP1::FailVIntervals() {
+	// Number of sequential parallel imperfect consonances
 	int pico_count = 0;
+	// Step index of last perfect consonance
+	int pco5_last = -1000;
+	int pco8_last = -1000;
 	// Check first step
 	if (tivl[fn] == iDis) FLAG2(83, fn);
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
+		// 5th apart
+		if (civlc[s] == 7) {
+			if (s - pco5_last < (pco_apart * npm) / 4) {
+				if (!beat[s]) FLAG2(250, s)
+				else if ((acc[0][s] - acc[0][pco5_last])*
+					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
+				else if (rpos[s] < 0 || rpos[pco5_last] < 0) FLAG2(249, s)
+				else FLAG2(250, s);
+			}
+			pco5_last = s;
+		}
 		if (FailUnison()) return 1;
 		if (FailDis()) return 1;
 		if (FailPco()) return 1;
