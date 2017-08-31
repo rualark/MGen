@@ -754,7 +754,7 @@ int CGenCP1::FailSlurs() {
 			// Check slurs in window
 			++scount2;
 			// Subtract old slur
-			if ((i >= slurs_window) && (acc[cpv][i - slurs_window] == acc[cpv][i - slurs_window + 1])) --scount2;
+			if ((i - fn >= slurs_window) && (acc[cpv][i - slurs_window] == acc[cpv][i - slurs_window + 1])) --scount2;
 			if (scount2 > max_count) {
 				max_count = scount2;
 				max_i = i;
@@ -781,9 +781,9 @@ int CGenCP1::FailMissSlurs() {
 	int miss, max_miss=0;
 	int max_i=0;
 	for (int i = fn; i < ep2-1; ++i) if (i % 2) { 
-		if (i - fn < miss_slurs_window * 2) ++wcount;
+		if (i - fn < miss_slurs_window * npm) ++wcount;
 		// Subtract old slur
-		if ((i - fn >= miss_slurs_window * 2) && (acc[cpv][i - miss_slurs_window * 2] == acc[cpv][i - miss_slurs_window * 2 + 1])) --scount;
+		if ((i - fn >= miss_slurs_window * npm) && (acc[cpv][i - miss_slurs_window * npm] == acc[cpv][i - miss_slurs_window * npm + 1])) --scount;
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check slurs in window
 			++scount;
