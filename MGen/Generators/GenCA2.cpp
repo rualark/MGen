@@ -169,6 +169,16 @@ void CGenCA2::ExplodeCP() {
 		cpv = !cpv;
 		cfv = !cfv;
 	}
+	if (min_vlen[cpv] * 4 == min_vlen[cfv] && species == 5) {
+		// Do not increase cpv length - it will decrease two times this way
+		// Increase minimum cantus length
+		min_vlen[cfv] *= 2;
+		max_vlen[cfv] *= 2;
+		// Grow counterpoint two times
+		for (int i = 0; i < cantus_len[cantus_id].size(); ++i) {
+			cantus_len[cantus_id][i] *= 2;
+		}
+	}
 	// Calculate npm
 	npm = max(1, min_vlen[cfv] / min_vlen[cpv]);
 	// Save old cantus

@@ -666,26 +666,32 @@ int CGenCP1::FailRhythm() {
 	// Note lengths inside measure
 	vector<int> l_len;
 	l_len.resize(8);
+	int s3;
 	// Measure size in notes
 	int m_size = 0;
 	// Slurs at the beginning and ending of measure (show length of slurred notes)
 	int slur1 = 0;
 	int slur2 = 0;
+	// Position inside measure
+	int pos = 0;
 	// Check first measure
 	// Check next measures
 	for (int ms = 1; ms < mli.size(); ++ms) {
 		s = mli[ms];
 		ls = bli[s];
 		l_len.clear();
+		slur1 = 0;
+		slur2 = 0;
 		// First note in measure
 		if (sus[ls]) {
 			s = sus[ls];
-			l_len.push_back(fli2[ls] - sus[ls]);
-			slur1 = sus[ls] - s;
+			l_len.push_back(fli2[ls] - sus[ls] + 1);
+			slur1 = sus[ls] - fli[ls];
 		}
 		else {
 			l_len.push_back(llen[ls]);
 		}
+		pos = l_len[0];
 		// Build note lengths
 		for (int ls2 = ls + 1; ls2 < fli_size; ++ls2) {
 			s2 = fli[ls2];
@@ -693,14 +699,58 @@ int CGenCP1::FailRhythm() {
 			if (s2 >= s + npm) break;
 			if (sus[ls2]) {
 				l_len.push_back(llen[ls2] - (sus[ls2] - s2));
-				slur2 = fli2[ls2] - sus[ls2];
+				slur2 = fli2[ls2] - sus[ls2] + 1;
 			}
 			else {
 				l_len.push_back(llen[ls2]);
 			}
+			if (l_len[l_len.size() - 1] == 1) {
+				// If second 1/8
+				if (pos % 2) {
+					// Isolated 1/8
+					if (l_len[l_len.size() - 2] != 1) FLAG2(231, s2)
+				}
+				// If first 8th
+				else {
+					// 1/8 beats
+					if (pos == 0) FLAG2(226, s2)
+					else if (pos == 2) FLAG2(227, s2)
+					else if (pos == 4) FLAG2(228, s2)
+					else if (pos == 6) FLAG2(229, s2)
+				}
+			}
+			else {
+				// 1/8 syncope
+				if (pos % 2) FLAG2(232, s2)
+				// 1/4 syncope
+				else if (l_len[l_len.size() - 1] > 2 && pos == 2) FLAG2(235, s2)
+				else if (l_len[l_len.size() - 1] == 2 && pos == 6 && slur2) FLAG2(235, s2);
+			}
+			pos += l_len[l_len.size() - 1];
 		}
 		// Check rhythm rules
-		if (l_len[0] == 6) FLAG2(233, s);
+		// Whole inside
+		if (l_len[0] == 8 && ms < mli.size() - 1) FLAG2(236, s)
+		// 1/2.
+		else if (l_len[0] == 6) FLAG2(233, s)
+		else if (l_len.size() > 1 && l_len[1] == 6) FLAG2(234, fli[ls + 1])
+		else if (l_len.size() > 2 && l_len[2] == 6) FLAG2(234, fli[ls + 2])
+		// 1/2 after 1/4 or 1/8 in measure
+		else if (l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
+			s3 = fli[ls + l_len.size() - 1];
+			if (ms == mli.size() - 2) FLAG2(238, s3)
+			else if (slur2 != 0) FLAG2(239, s3)
+			else FLAG2(240, s3);
+		}
+		// Many notes in measure
+		if (l_len.size() == 5) FLAG2(245, s)
+		else if (l_len.size() > 5) FLAG2(246, s);
+		// Suspensions
+		if (slur1 == 4 && l_len[0] == 2) FLAG2(241, s)
+		else if (slur1 == 4 && l_len[0] == 4) FLAG2(242, s)
+		else if (slur1 == 2) FLAG2(251, s)
+		if (slur1 && l_len[0] == 6) FLAG2(243, s)
+		if (slur1 == 6) FLAG2(244, s);
 	}
 	// Check last measure
 	return 0;
@@ -1351,6 +1401,7 @@ check:
 		//WriteLog(1, "Found");
 		if (FailCPInterval()) goto skip;
 		GetMeasures();
+		GetNoteTypes();
 		if (FailRhythm()) goto skip;
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
 		if (FailLastIntervals()) goto skip;
@@ -1370,7 +1421,6 @@ check:
 		if (FailGlobalFill(ac[cpv], nstat2)) goto skip;
 		if (FailLocalRange(acc[cpv], notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(acc[cpv], notes_lrange2, min_lrange2, 198)) goto skip;
-		GetNoteTypes();
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;
 		GetRpos();
