@@ -661,6 +661,51 @@ void CGenCP1::GetRpos() {
 	}
 }
 
+int CGenCP1::FailRhythm() {
+	if (species != 5) return 0;
+	// Note lengths inside measure
+	vector<int> l_len;
+	l_len.resize(8);
+	// Measure size in notes
+	int m_size = 0;
+	// Slurs at the beginning and ending of measure (show length of slurred notes)
+	int slur1 = 0;
+	int slur2 = 0;
+	// Check first measure
+	// Check next measures
+	for (int ms = 1; ms < mli.size(); ++ms) {
+		s = mli[ms];
+		ls = bli[s];
+		l_len.clear();
+		// First note in measure
+		if (sus[ls]) {
+			s = sus[ls];
+			l_len.push_back(fli2[ls] - sus[ls]);
+			slur1 = sus[ls] - s;
+		}
+		else {
+			l_len.push_back(llen[ls]);
+		}
+		// Build note lengths
+		for (int ls2 = ls + 1; ls2 < fli_size; ++ls2) {
+			s2 = fli[ls2];
+			// Stop if out of measure
+			if (s2 >= s + npm) break;
+			if (sus[ls2]) {
+				l_len.push_back(llen[ls2] - (sus[ls2] - s2));
+				slur2 = fli2[ls2] - sus[ls2];
+			}
+			else {
+				l_len.push_back(llen[ls2]);
+			}
+		}
+		// Check rhythm rules
+		if (l_len[0] == 6) FLAG2(233, s);
+	}
+	// Check last measure
+	return 0;
+}
+
 int CGenCP1::FailPcoApart() {
 	// Step index of last perfect consonance
 	int pco5_last = -1000;
@@ -777,6 +822,8 @@ void CGenCP1::SaveCPIfRp() {
 
 // Detect many slurs
 int CGenCP1::FailSlurs() {
+	// For species 5 there are separate rules
+	if (species == 5) return 0;
 	// Number of sequential slurs 
 	int scount = 0;
 	// Number of slurs in window
@@ -1304,6 +1351,7 @@ check:
 		//WriteLog(1, "Found");
 		if (FailCPInterval()) goto skip;
 		GetMeasures();
+		if (FailRhythm()) goto skip;
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
 		if (FailLastIntervals()) goto skip;
 		if (FailNoteSeq(apc[cpv])) goto skip;

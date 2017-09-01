@@ -43,6 +43,7 @@ protected:
 	inline int FailPcoSus();
 	inline int FailPco();
 	inline void GetRpos();
+	inline int FailRhythm();
 	inline int FailPcoApart();
 	inline int FailVIntervals();
 	inline void CalcDpenaltyCP();
