@@ -661,39 +661,54 @@ void CGenCP1::GetRpos() {
 	}
 }
 
-int CGenCP1::FailVIntervals() {
-	// Number of sequential parallel imperfect consonances
-	int pico_count = 0;
+int CGenCP1::FailPcoApart() {
 	// Step index of last perfect consonance
 	int pco5_last = -1000;
 	int pco8_last = -1000;
-	// Check first step
-	if (tivl[fn] == iDis) FLAG2(83, fn);
-	for (ls = 1; ls < fli_size; ++ls) {
+	int skip_len;
+	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
 		// 5th apart
 		if (civlc[s] == 7) {
-			if (s - pco5_last > 1 && s - pco5_last < (pco_apart * npm) / 4) {
-				if (!beat[s]) FLAG2(250, s)
-				else if ((acc[0][s] - acc[0][pco5_last])*
-					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
-				else if (rpos[ls] < 0 || rpos[bli[pco5_last]] < 0) FLAG2(249, s)
-				else FLAG2(250, s);
+			if (pco5_last > -1) {
+				skip_len = s - pco5_last - llen[bli[pco5_last]];
+				if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
+					if (!beat[ls]) FLAG2(250, s)
+					else if ((acc[0][s] - acc[0][pco5_last])*
+						(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
+					else if (rpos[ls] < 0 || rpos[bli[pco5_last]] < 0) FLAG2(249, s)
+					else FLAG2(250, s);
+				}
 			}
 			pco5_last = s;
 		}
 		// 8va apart
 		if (civlc[s] == 0) {
-			if (s - pco8_last > 1 && s - pco8_last < (pco_apart * npm) / 4) {
-				if (!beat[s]) FLAG2(250, s)
-				else if ((acc[0][s] - acc[0][pco8_last])*
-					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
-				//else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
-				else FLAG2(250, s);
+			if (pco8_last > -1) {
+				skip_len = s - pco8_last - llen[bli[pco8_last]];
+				if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
+					if (!beat[ls]) FLAG2(250, s)
+					else if ((acc[0][s] - acc[0][pco8_last])*
+						(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
+						//else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
+					else FLAG2(250, s);
+				}
 			}
 			pco8_last = s;
 		}
+	}
+	return 0;
+}
+
+int CGenCP1::FailVIntervals() {
+	// Number of sequential parallel imperfect consonances
+	int pico_count = 0;
+	// Check first step
+	if (tivl[fn] == iDis) FLAG2(83, fn);
+	for (ls = 1; ls < fli_size; ++ls) {
+		s = fli[ls];
+		s2 = fli2[ls];
 		if (FailUnison()) return 1;
 		if (FailDis()) return 1;
 		if (FailPco()) return 1;
@@ -1314,6 +1329,7 @@ check:
 		GetVIntervals();
 		if (FailVMotion()) goto skip;
 		if (FailVIntervals()) goto skip;
+		if (FailPcoApart()) goto skip;
 		if (FailSus()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps, stag_notes, 10)) goto skip;
