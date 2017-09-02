@@ -86,7 +86,7 @@ BOOL CInfoDlg::OnInitDialog()
 				prev_note = pGen->note[x][mv];
 				if (pGen->comment[x][mv].size()) {
 					// CGLib::GetNoteName(pGen->note[x][mv])
-					st.Format("NOTE %d - %s:\n", nnum, NoteName[pGen->note[x][mv] % 12]);
+					st.Format("NOTE %d at %d:%d - %s\n", nnum, x / 8 + 1, x % 8 + 1, NoteName[pGen->note[x][mv] % 12]);
 					eff = 0;
 					if (x == i) eff = CFE_BOLD;
 					m_info.AddText(st, RGB(0, 0, 0), eff);
@@ -149,7 +149,7 @@ BOOL CInfoDlg::OnInitDialog()
 			pGen->detime[ei][mv] / 1000.0, pGen->etime[ei] / pGen->m_pspeed / 10 + pGen->detime[ei][mv] / 1000.0);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 
-		st.Format("Step: %d (measure %d)", ms, ms / 8);
+		st.Format("Step: %d (beat %d:%d)", ms, ms / 8 + 1, ms % 8 + 1);
 		SetWindowText(st);
 		//m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Tempo: %.1f bpm (randomized from %.1f bpm)\nStep start time: %.3f s (%.2f ms long), end time %.3f s\n",
