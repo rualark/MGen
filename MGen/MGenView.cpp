@@ -679,7 +679,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		CString st, st2;
 		if (mouse_step > -1) {
-			st2.Format("Step %d, time %s, tempo %d. ", mouse_step, CGLib::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10), (int)pGen->tempo[mouse_step]);
+			st2.Format("Step %d, beat %d:%d, time %s, tempo %d. ", mouse_step, mouse_step/8 + 1, mouse_step%8 + 1, CGLib::FormatTime(pGen->stime[mouse_step] / pGen->m_pspeed / 10), (int)pGen->tempo[mouse_step]);
 			st += st2;
 		}
 		if (mouse_voice > -1) {
