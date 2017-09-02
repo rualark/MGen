@@ -70,17 +70,17 @@ protected:
 	// Variables
 	int cp_culm = 0; // Position of counterpoint culmination
 
-	vector<int> ivl; // Diatonic interval between voices
-	vector<int> civl; // Chromatic interval between voices
-	vector<int> ivlc; // Diatonic interval between voices (class)
-	vector<int> civlc; // Chromatic interval between voices (class)
-	vector<int> tivl; // Type of interval between voices
-	vector<int> motion; // Melody motion type
-	vector<int> beat; // Beat type for each fli2
-	vector<int> sus; // Note suspension flag (when above zero, links to first cantus-changing step)
-	vector<int> mli; // Forward links to first notes of each measure
+	vector<int> ivl; // [s] Diatonic interval between voices
+	vector<int> civl; // [s] Chromatic interval between voices
+	vector<int> ivlc; // [s] Diatonic interval between voices (class)
+	vector<int> civlc; // [s] Chromatic interval between voices (class)
+	vector<int> tivl; // [s] Type of interval between voices
+	vector<int> motion; // [s] Melody motion type
+	vector<int> beat; // [ls] Beat type for each fli2
+	vector<int> sus; // [ls] Note suspension flag (when above zero, links to first cantus-changing step)
+	vector<int> mli; // [ms] Forward links to first notes of each measure
 	vector<int> hli; // Forward links to first notes of each harmonic change
-	vector<int> rpos; // Rhythm position types for fli
+	vector<int> rpos; // [ls] Rhythm position types for fli
 	int hli_size = 0; // Size of hli vector
 
 	// Cantus

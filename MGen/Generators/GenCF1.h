@@ -305,11 +305,11 @@ protected:
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <vector <int>> hv; //  Variants of note harmonic meaning
 	vector <vector <int>> hsp; // Harmonic sequence penalty
-	vector <int> fli; // Forward links to start of each non-slurred note
-	vector <int> fli2; // Forward links to end of each non-slurred note
-	vector <int> llen; // Length of each linked note
-	vector <int> bli; // Back links from each step to fli2
-	vector <int> uli; // Forward links to start of each unique note column
+	vector <int> fli; // [ls] Forward links to start of each non-slurred note
+	vector <int> fli2; // [ls] Forward links to end of each non-slurred note
+	vector <int> llen; // [ls] Length of each linked note
+	vector <int> bli; // [s] Back links from each step to fli2
+	vector <int> uli; // [us] Forward links to start of each unique note column
 	int minl = 0, maxl = 0;
 	int fli_size; // Size of filled fli2 vector
 	// Random SWA
