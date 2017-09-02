@@ -15,35 +15,24 @@
 
 IMPLEMENT_DYNAMIC(CInfoEditCtrl, CRichEditCtrl)
 
-CInfoEditCtrl::CInfoEditCtrl()
-{
-
+CInfoEditCtrl::CInfoEditCtrl() {
 }
 
-CInfoEditCtrl::~CInfoEditCtrl()
-{
+CInfoEditCtrl::~CInfoEditCtrl() {
 }
-
 
 BEGIN_MESSAGE_MAP(CInfoEditCtrl, CRichEditCtrl)
 	ON_WM_GETDLGCODE()
 END_MESSAGE_MAP()
 
-
-
 // CInfoEditCtrl message handlers
 
-
-
-
-UINT CInfoEditCtrl::OnGetDlgCode()
-{
+UINT CInfoEditCtrl::OnGetDlgCode() {
 	return CRichEditCtrl::OnGetDlgCode() & (~DLGC_HASSETSEL); // clear the bit 
 	//return CRichEditCtrl::OnGetDlgCode();
 }
 
-void CInfoEditCtrl::AddText(CString str, COLORREF color, DWORD dwEffects)
-{
+void CInfoEditCtrl::AddText(CString str, COLORREF color, DWORD dwEffects) {
 	// CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE 
 	// CFE_DISABLED CFE_AUTOCOLOR
 	//int nOldLines = 0;

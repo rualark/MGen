@@ -28,4 +28,5 @@ public:
 	virtual BOOL OnInitDialog();
 
 	int melody = 0;
+	int m_scrollLine = 0;
 };

@@ -88,7 +88,10 @@ BOOL CInfoDlg::OnInitDialog()
 					// CGLib::GetNoteName(pGen->note[x][mv])
 					st.Format("NOTE %d at %d:%d - %s\n", nnum, x / 8 + 1, x % 8 + 1, NoteName[pGen->note[x][mv] % 12]);
 					eff = 0;
-					if (x == i) eff = CFE_BOLD;
+					if (x == i) {
+						m_scrollLine = m_info.GetLineCount();
+						eff = CFE_BOLD;
+					}
 					m_info.AddText(st, RGB(0, 0, 0), eff);
 					for (int c = 0; c < pGen->comment[x][mv].size(); ++c) {
 						m_info.AddText(pGen->comment[x][mv][c]+"\n", 
@@ -210,6 +213,8 @@ BOOL CInfoDlg::OnInitDialog()
 	}
 	MoveWindow(rect);
 	ShowWindow(SW_SHOW);
+
+	m_info.LineScroll(max(0, m_scrollLine - 12));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 								// EXCEPTION: OCX Property Pages should return FALSE
