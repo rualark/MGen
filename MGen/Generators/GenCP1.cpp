@@ -68,21 +68,21 @@ int CGenCP1::InitCP() {
 void CGenCP1::MakeNewCP() {
 	// Set pitch limits
 	if (cantus_high) {
-		for (int i = fn; i < c_len; ++i) {
+		for (int i = 0; i < c_len; ++i) {
 			max_cc[i] = acc[cfv][i] - min_between;
 			//min_cc[i] = acc[cfv][i] - burst_between;
 			min_cc[i] = max(acc[cfv][i] - burst_between, cf_nmax - sum_interval);
 		}
 	}
 	else {
-		for (int i = fn; i < c_len; ++i) {
+		for (int i = 0; i < c_len; ++i) {
 			min_cc[i] = acc[cfv][i] + min_between;
 			//max_cc[i] = acc[cfv][i] + burst_between;
 			max_cc[i] = min(acc[cfv][i] + burst_between, cf_nmin + sum_interval);
 		}
 	}
 	// Convert limits to diatonic and recalibrate
-	for (int i = fn; i < c_len; ++i) {
+	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
@@ -1210,7 +1210,7 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 		}
 		if (acc[cfv].size() > 60) {
-			st.Format("SWA%d attempt: %d", s_len, a);
+			st.Format("SWA%d attempt: %d, rp %.0f", s_len, a, rpenalty_min);
 			SetStatusText(4, st);
 		}
 		if (dp) {
