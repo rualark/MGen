@@ -713,23 +713,23 @@ int CGenCP1::FailRhythm() {
 				// If second 1/8
 				if (pos % 2) {
 					// Isolated 1/8
-					if (l_len[l_len.size() - 2] != 1) FLAG2(231, s2)
+					if (l_len[l_len.size() - 2] != 1) FLAG4(231, s2)
 				}
 				// If first 8th
 				else {
 					// 1/8 beats
-					if (pos == 0) FLAG2(226, s2)
-					else if (pos == 2) FLAG2(227, s2)
-					else if (pos == 4) FLAG2(228, s2)
-					else if (pos == 6) FLAG2(229, s2)
+					if (pos == 0) FLAG4(226, s2)
+					else if (pos == 2) FLAG4(227, s2)
+					else if (pos == 4) FLAG4(228, s2)
+					else if (pos == 6) FLAG4(229, s2)
 				}
 			}
 			else {
 				// 1/8 syncope
-				if (pos % 2) FLAG2(232, s2)
+				if (pos % 2) FLAG4(232, s2)
 				// 1/4 syncope
-				else if (l_len[l_len.size() - 1] > 2 && pos == 2) FLAG2(235, s2)
-				else if (l_len[l_len.size() - 1] == 2 && pos == 6 && slur2) FLAG2(235, s2);
+				else if (l_len[l_len.size() - 1] > 2 && pos == 2) FLAG4(235, s2)
+				else if (l_len[l_len.size() - 1] == 2 && pos == 6 && slur2) FLAG4(235, s2);
 			}
 			pos += l_len[l_len.size() - 1];
 		}
@@ -748,27 +748,27 @@ int CGenCP1::FailRhythm() {
 		}
 		// Check rhythm rules
 		// Whole inside
-		if (l_len[0] >= 8 && ms < mli.size() - 1) FLAG2(236, s)
+		if (l_len[0] >= 8 && ms < mli.size() - 1) FLAG4(236, s)
 		// 1/2.
-		else if (l_len[0] == 6) FLAG2(233, s)
-		else if (l_len.size() > 1 && l_len[1] == 6) FLAG2(234, fli[ls + 1])
-		else if (l_len.size() > 2 && l_len[2] == 6) FLAG2(234, fli[ls + 2])
+		else if (l_len[0] == 6) FLAG4(233, s)
+		else if (l_len.size() > 1 && l_len[1] == 6) FLAG4(234, fli[ls + 1])
+		else if (l_len.size() > 2 && l_len[2] == 6) FLAG4(234, fli[ls + 2])
 		// 1/2 after 1/4 or 1/8 in measure
 		else if (l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
 			s3 = fli[ls + l_len.size() - 1];
-			if (ms >= mli.size() - 2) FLAG2(238, s3)
-			else if (slur2 != 0) FLAG2(239, s3)
-			else FLAG2(240, s3);
+			if (ms >= mli.size() - 2) FLAG4(238, s3)
+			else if (slur2 != 0) FLAG4(239, s3)
+			else FLAG4(240, s3);
 		}
 		// Many notes in measure
-		if (l_len.size() == 5) FLAG2(245, s)
-		else if (l_len.size() > 5) FLAG2(246, s);
+		if (l_len.size() == 5) FLAG4(245, s)
+		else if (l_len.size() > 5) FLAG4(246, s);
 		// Suspensions
-		if (slur1 == 4 && l_len[0] == 2) FLAG2(241, s)
-		else if (slur1 == 4 && l_len[0] == 4) FLAG2(242, s)
-		else if (slur1 == 2) FLAG2(251, s)
-		if (slur1 && l_len[0] == 6) FLAG2(243, s)
-		if (slur1 == 6) FLAG2(244, s);
+		if (slur1 == 4 && l_len[0] == 2) FLAG4(241, s)
+		else if (slur1 == 4 && l_len[0] == 4) FLAG4(242, s)
+		else if (slur1 == 2) FLAG4(251, s)
+		if (slur1 && l_len[0] == 6) FLAG4(243, s)
+		if (slur1 == 6) FLAG4(244, s);
 	}
 	// Check last measure
 	return 0;
