@@ -947,7 +947,10 @@ int CGenCP1::FailSlurs() {
 	if (species != 4) {
 		if (max_count == 1) FLAG2(93, max_i)
 		else if (max_count == 2) FLAG2(94, max_i)
-		else if (max_count > 2) FLAG2(95, max_i);
+		else if (max_count > 2) {
+			FLAG2(95, max_i);
+			if (!accept[95]) fpenalty[95] += (max_count - 2) * 50;
+		}
 	}
 	return 0;
 }
