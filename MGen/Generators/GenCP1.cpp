@@ -696,8 +696,8 @@ int CGenCP1::FailRhythm() {
 		// First note in measure
 		if (fli[ls] < s) {
 			// First note slurs to previous measure
-			l_len.push_back(fli2[ls] - sus[ls] + 1);
-			slur1 = sus[ls] - fli[ls];
+			l_len.push_back(fli2[ls] - s + 1);
+			slur1 = s - fli[ls];
 		}
 		else {
 			l_len.push_back(llen[ls]);
