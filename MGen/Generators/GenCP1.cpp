@@ -671,7 +671,7 @@ int CGenCP1::FailRhythm() {
 	int s3;
 	// Measure size in notes
 	int m_size = 0;
-	// Slurs at the beginning and ending of measure (show length of slurred notes)
+	// Slurs at start and finish of measure (show length of slurred notes)
 	int slur1 = 0;
 	int slur2 = 0;
 	// Position inside measure
@@ -680,7 +680,7 @@ int CGenCP1::FailRhythm() {
 	int suml = 0;
 	// Check first measure
 	// Check next measures
-	for (int ms = 1; ms < mli.size(); ++ms) {
+	for (int ms = 0; ms < mli.size(); ++ms) {
 		s = mli[ms];
 		if (s >= ep2) break;
 		ls = bli[s];

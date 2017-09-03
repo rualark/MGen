@@ -1212,8 +1212,8 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	int l = 0;
 	minl = 10000;
 	maxl = 0;
-	// Set first step in case it is pause
-	bli[0] = 0;
+	// Set first steps in case there is pause
+	for (int i = 0; i < fn; ++i) bli[i] = 0;
 	for (int i = fn; i < ep2; ++i) {
 		if (prev_note != cc[i]) {
 			// Save linked note length
