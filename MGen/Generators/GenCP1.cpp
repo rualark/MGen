@@ -678,6 +678,7 @@ int CGenCP1::FailRhythm() {
 	int pos = 0;
 	// Length sum
 	int suml = 0;
+	int ls2 = 0;
 	// Check first measure
 	// Check next measures
 	for (int ms = 0; ms < mli.size(); ++ms) {
@@ -687,18 +688,21 @@ int CGenCP1::FailRhythm() {
 		l_len.clear();
 		slur1 = 0;
 		slur2 = 0;
+		// First pause
+		if (s < fn) {
+			l_len.push_back(fn);
+		}
 		// First note in measure
-		if (sus[ls]) {
-			s = sus[ls];
+		if (fli[ls] < s) {
+			// First note slurs to previous measure
 			l_len.push_back(fli2[ls] - sus[ls] + 1);
 			slur1 = sus[ls] - fli[ls];
 		}
 		else {
 			l_len.push_back(llen[ls]);
 		}
-		pos = l_len[0];
 		// Build note lengths
-		for (int ls2 = ls + 1; ls2 < fli_size; ++ls2) {
+		for (ls2 = ls + 1; ls2 < fli_size; ++ls2) {
 			s2 = fli[ls2];
 			// Stop if out of measure
 			if (s2 >= s + npm) break;
@@ -709,11 +713,30 @@ int CGenCP1::FailRhythm() {
 			else {
 				l_len.push_back(llen[ls2]);
 			}
-			if (l_len[l_len.size() - 1] == 1) {
+		}
+		// Full evaluation?
+		if (ep2 == c_len) {
+			// Last measure
+			if (ms == mli.size() - 1) {
+				// Check last whole note
+				if (l_len.size() == 1)
+					break;
+			}
+		}
+		else {
+			// Check measure not full
+			if (pos < 8) break;
+		}
+		// Iterative rhythm checks
+		pos = 0;
+		for (int lp = 0; lp < l_len.size(); ++lp) {
+			ls2 = ls + lp;
+			s2 = fli[ls2];
+			if (l_len[lp] == 1) {
 				// If second 1/8
 				if (pos % 2) {
 					// Isolated 1/8
-					if (l_len[l_len.size() - 2] != 1) FLAG4(231, s2)
+					if (l_len[lp - 1] != 1) FLAG4(231, s2)
 				}
 				// If first 8th
 				else {
@@ -727,26 +750,17 @@ int CGenCP1::FailRhythm() {
 			else {
 				// 1/8 syncope
 				if (pos % 2) FLAG4(232, s2)
-				// 1/4 syncope
-				else if (l_len[l_len.size() - 1] > 2 && pos == 2) FLAG4(235, s2)
-				else if (l_len[l_len.size() - 1] == 2 && pos == 6 && slur2) FLAG4(235, s2);
+					// 1/4 syncope
+				else if (l_len[lp] > 2 && pos == 2) FLAG4(235, s2)
+				else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG4(235, s2);
 			}
-			pos += l_len[l_len.size() - 1];
-		}
-		// Full evaluation?
-		if (ep2 == c_len) {
-			// Last measure
-			if (ms == mli.size() - 1) {
-				// Check last whole note
-				if (l_len.size() == 1) 
-					break;
-			}
-		}
-		else {
-			// Check measure not full
-			if (pos < 8) break;
+			pos += l_len[lp];
 		}
 		// Check rhythm rules
+		// First measure
+		if (!ms) {
+			if (l_len.size() > 1 && l_len[0] == fn && l_len[0] != l_len[1]) FLAG4(237, s);
+		}
 		// Whole inside
 		if (l_len[0] >= 8 && ms < mli.size() - 1) FLAG4(236, s)
 		// 1/2.

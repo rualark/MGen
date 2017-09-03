@@ -230,7 +230,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;234;60;Cantus;Species 5 rhythm;Rhythm;1/2. upbeat;0;;
 1;235;60;Cantus;Species 5 rhythm;Rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note
 1;236;60;Cantus;Species 5 rhythm;Rhythm;whole inside;0;;
-1;237;60;Cantus;Species 5 rhythm;Rhythm;long pause;0;;Starting pause in first measure is longer than next note
+1;237;60;Cantus;Species 5 rhythm;Rhythm;uneven pause;0;;Starting pause in first measure does not equal length of next note
 1;247;60;Cantus;Species 5 rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures
 1;226;60;Cantus;Species 5 rhythm;1/8 note;beat 1;0;;
 1;227;0;Cantus;Species 5 rhythm;1/8 note;beat 2;1;;
@@ -239,7 +239,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;230;60;Cantus;Species 5 rhythm;1/8 note;first measure;0;;
 1;231;60;Cantus;Species 5 rhythm;1/8 note;isolated;0;;Single 1/8 without close paired second 1/8
 1;232;60;Cantus;Species 5 rhythm;1/8 note;1/8 syncope;0;;
-1;238;0;Cantus;Species 5 rhythm;1/2 after 1/4 or 1/8 in measure;penultimate;1;;
+1;238;0;Cantus;Species 5 rhythm;1/2 after 1/4 or 1/8 in measure;penultimate;1;;Last or next to last measure
 1;239;0;Cantus;Species 5 rhythm;1/2 after 1/4 or 1/8 in measure;1/2 slurred;1;;
 1;240;60;Cantus;Species 5 rhythm;1/2 after 1/4 or 1/8 in measure;inside;0;;
 1;241;0;Cantus;Species 5 rhythm;Suspension;1/2 + 1/4;1;;
