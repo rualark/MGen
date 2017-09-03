@@ -632,7 +632,9 @@ void CGenCP1::GetRpos() {
 	int tlen;
 	if (npm >= 4) {
 		for (int ms = 0; ms < mli.size(); ++ms) {
-			ls = bli[mli[ms]];
+			s = mli[ms];
+			if (s >= ep2) break;
+			ls = bli[s];
 			// If last ls
 			if (ls >= fli_size - 4) break;
 			// If longer than measure (removed because it duplicates next test)
@@ -674,10 +676,13 @@ int CGenCP1::FailRhythm() {
 	int slur2 = 0;
 	// Position inside measure
 	int pos = 0;
+	// Length sum
+	int suml = 0;
 	// Check first measure
 	// Check next measures
 	for (int ms = 1; ms < mli.size(); ++ms) {
 		s = mli[ms];
+		if (s >= ep2) break;
 		ls = bli[s];
 		l_len.clear();
 		slur1 = 0;
@@ -728,9 +733,22 @@ int CGenCP1::FailRhythm() {
 			}
 			pos += l_len[l_len.size() - 1];
 		}
+		// Full evaluation?
+		if (ep2 == c_len) {
+			// Last measure
+			if (ms == mli.size() - 1) {
+				// Check last whole note
+				if (l_len.size() == 1) 
+					break;
+			}
+		}
+		else {
+			// Check measure not full
+			if (pos < 8) break;
+		}
 		// Check rhythm rules
 		// Whole inside
-		if (l_len[0] == 8 && ms < mli.size() - 1) FLAG2(236, s)
+		if (l_len[0] >= 8 && ms < mli.size() - 1) FLAG2(236, s)
 		// 1/2.
 		else if (l_len[0] == 6) FLAG2(233, s)
 		else if (l_len.size() > 1 && l_len[1] == 6) FLAG2(234, fli[ls + 1])
@@ -738,7 +756,7 @@ int CGenCP1::FailRhythm() {
 		// 1/2 after 1/4 or 1/8 in measure
 		else if (l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
 			s3 = fli[ls + l_len.size() - 1];
-			if (ms == mli.size() - 2) FLAG2(238, s3)
+			if (ms >= mli.size() - 2) FLAG2(238, s3)
 			else if (slur2 != 0) FLAG2(239, s3)
 			else FLAG2(240, s3);
 		}
@@ -1225,21 +1243,23 @@ int CGenCP1::FailLastIntervals() {
 		// Scan 2nd to last measure
 		if (mli.size() > 1) {
 			int start = mli[mli.size() - 2];
-			int b_found = 0;
-			int g_found = 0;
-			int d_found = 0;
-			for (int x = start; x < start + npm; ++x) {
-				for (int v = 0; v < av_cnt; ++v) {
-					if (apc[v][x] == 6) b_found = 1;
-					if (apc[v][x] == 4) g_found = 1;
-					if (apc[v][x] == 1) d_found = 1;
+			if (start + npm < ep2) {
+				int b_found = 0;
+				int g_found = 0;
+				int d_found = 0;
+				for (int x = start; x < start + npm; ++x) {
+					for (int v = 0; v < av_cnt; ++v) {
+						if (apc[v][x] == 6) b_found = 1;
+						if (apc[v][x] == 4) g_found = 1;
+						if (apc[v][x] == 1) d_found = 1;
+					}
 				}
+				if (!b_found) {
+					// Set B needed flag if last bass notes are not G-C
+					if (apc[0][c_len - 1] != 0 || apc[0][fli2[fli_size - 2]] != 4) FLAG2(47, start);
+				}
+				if (!g_found && !d_found) FLAG2(75, start);
 			}
-			if (!b_found) {
-				// Set B needed flag if last bass notes are not G-C
-				if (apc[0][c_len-1] != 0 || apc[0][fli2[fli_size-2]] != 4) FLAG2(47, start);
-			}
-			if (!g_found && !d_found) FLAG2(75, start);
 		}
 	}
 	return 0;
@@ -1299,7 +1319,7 @@ void CGenCF1::CreateULinks() {
 
 void CGenCP1::GetMeasures() {
 	mli.clear();
-	for (int i = 0; i < ep2; ++i) {
+	for (int i = 0; i < c_len; ++i) {
 		// Find measures
 		if (i % npm == 0) {
 			mli.push_back(i);
@@ -1352,6 +1372,8 @@ void CGenCP1::ScanCP(int t, int v) {
 	if (FailWindowsLimit()) return;
 	// Need to clear flags, because if skip_flags, they can contain previous prohibited flags
 	fill(flags.begin(), flags.end(), 0);
+	// We can call get measures once, because it calculates measures within c_len
+	GetMeasures();
 	// Analyze combination
 check:
 	while (true) {
@@ -1400,7 +1422,6 @@ check:
 		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
 		//WriteLog(1, "Found");
 		if (FailCPInterval()) goto skip;
-		GetMeasures();
 		GetNoteTypes();
 		if (FailRhythm()) goto skip;
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
