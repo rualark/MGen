@@ -730,9 +730,12 @@ int CGenCP1::FailRhythm() {
 		// Iterative rhythm checks
 		pos = 0;
 		for (int lp = 0; lp < l_len.size(); ++lp) {
-			ls2 = ls + lp;
-			s2 = fli[ls2];
+			s2 = s + pos;
+			ls2 = bli[s2];
 			if (l_len[lp] == 1) {
+				// 1/8 in first measure
+				if (ms == 0) 
+					FLAG4(230, s2)
 				// If second 1/8
 				if (pos % 2) {
 					// Isolated 1/8
