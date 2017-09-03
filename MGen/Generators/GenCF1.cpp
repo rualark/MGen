@@ -896,7 +896,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 				if ((f - s) % 2) continue;
 				if (MELODY_SEPARATION(f, f1)) {
 					// Check if same note
-					if (cc[f] == cc[s]) {
+					if (cc[f] == cc[s] && llen[x] == llen[ls]) {
 						// Check that more notes repeat
 						ok = 0;
 						for (int z = 1; z < rlen; ++z) {
@@ -930,11 +930,11 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, in
 			f = fli2[x];
 			f1 = fli2[x + 1];
 			// Check if same note
-			if (cc[f] == cc[s]) {
+			if (cc[f] == cc[s] && llen[x] == llen[ls]) {
 				// Check that more notes repeat
 				ok = 0;
 				for (int z = 1; z < rlen; ++z) {
-					if (cc[fli2[x + z]] != cc[fli2[ls + z]]) {
+					if (cc[fli2[x + z]] != cc[fli2[ls + z]] || llen[x + z] != llen[ls + z]) {
 						ok = 1;
 						break;
 					}
