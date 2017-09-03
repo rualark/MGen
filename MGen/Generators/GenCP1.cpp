@@ -1612,6 +1612,7 @@ void CGenCP1::LoadSpecies() {
 void CGenCP1::Generate() {
 	int fn0 = fn;
 	if (InitCP()) return;
+	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCantus(midi_file);
 	if (cantus.size() < 1) return;
 	for (int a = 0; a < INT_MAX; ++a) {
