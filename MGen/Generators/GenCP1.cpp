@@ -665,6 +665,9 @@ void CGenCP1::GetRpos() {
 
 int CGenCP1::FailRhythm() {
 	if (species != 5) return 0;
+	// Rhythm id
+	vector<int> rid;
+	int rid_cur = 0;
 	// Note lengths inside measure
 	vector<int> l_len;
 	l_len.resize(8);
@@ -679,8 +682,6 @@ int CGenCP1::FailRhythm() {
 	// Length sum
 	int suml = 0;
 	int ls2 = 0;
-	// Check first measure
-	// Check next measures
 	for (int ms = 0; ms < mli.size(); ++ms) {
 		s = mli[ms];
 		if (s >= ep2) break;
@@ -727,11 +728,15 @@ int CGenCP1::FailRhythm() {
 			// Check measure not full
 			if (pos < 8) break;
 		}
+		// Set first rhythm id bit
+		rid_cur = slur1?0:1;
 		// Iterative rhythm checks
 		pos = 0;
 		for (int lp = 0; lp < l_len.size(); ++lp) {
 			s2 = s + pos;
 			ls2 = bli[s2];
+			// Calculate rhythm id
+			rid_cur += 1 << (pos + l_len[lp]);
 			if (l_len[lp] == 1) {
 				// 1/8 in first measure
 				if (ms == 0) 
@@ -759,6 +764,11 @@ int CGenCP1::FailRhythm() {
 			}
 			pos += l_len[lp];
 		}
+		// Check rhythm repeat
+		if (rid.size()) {
+			if (rid.back() == rid_cur) FLAG4(247, s);
+		}
+		rid.push_back(rid_cur);
 		// Check rhythm rules
 		// First measure
 		if (!ms) {
