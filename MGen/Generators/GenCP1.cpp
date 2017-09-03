@@ -693,27 +693,23 @@ int CGenCP1::FailRhythm() {
 		if (s < fn) {
 			l_len.push_back(fn);
 		}
-		// First note in measure
+		// Build note lengths
+		for (ls2 = ls; ls2 < fli_size; ++ls2) {
+			s2 = fli[ls2];
+			l_len.push_back(llen[ls2]);
+			// Stop if out of measure
+			if (fli2[ls2] >= s + npm - 1) break;
+		}
+		// First note in measure with slur
 		if (fli[ls] < s) {
 			// First note slurs to previous measure
-			l_len.push_back(fli2[ls] - s + 1);
+			l_len[0] = min(8, (fli2[ls] - s + 1));
 			slur1 = s - fli[ls];
 		}
-		else {
-			l_len.push_back(llen[ls]);
-		}
-		// Build note lengths
-		for (ls2 = ls + 1; ls2 < fli_size; ++ls2) {
-			s2 = fli[ls2];
-			// Stop if out of measure
-			if (s2 >= s + npm) break;
-			if (sus[ls2]) {
-				l_len.push_back(llen[ls2] - (sus[ls2] - s2));
-				slur2 = fli2[ls2] - sus[ls2] + 1;
-			}
-			else {
-				l_len.push_back(llen[ls2]);
-			}
+		// Last note in measure with slur
+		if (sus[ls2]) {
+			l_len[l_len.size()-1] = min(8, llen[ls2] - (sus[ls2] - s2));
+			slur2 = fli2[ls2] - sus[ls2] + 1;
 		}
 		// Full evaluation?
 		if (ep2 == c_len) {
