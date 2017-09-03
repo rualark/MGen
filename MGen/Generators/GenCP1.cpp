@@ -758,7 +758,7 @@ int CGenCP1::FailRhythm() {
 			else {
 				// 1/8 syncope
 				if (pos % 2) FLAG4(232, s2)
-					// 1/4 syncope
+				// 1/4 syncope
 				else if (l_len[lp] > 2 && pos == 2) FLAG4(235, s2)
 				else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG4(235, s2);
 			}

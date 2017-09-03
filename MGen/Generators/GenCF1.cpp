@@ -329,8 +329,11 @@ void CGenCF1::CheckConfig() {
 	if (fn >= npm) {
 		WriteLog(5, "Warning: Starting_pause is greater or equals to notes_per_measure (check config)");
 	}
-	if (fn > 1) {
-		WriteLog(1, "Warning: Starting_pause > 1 is not recommended (check config)");
+	if (fn > 1 && npm < 8) {
+		WriteLog(1, "Warning: Starting_pause > 1 is not recommended for 1-4 notes per measure (check config)");
+	}
+	if (fn == 1 && npm == 8) {
+		WriteLog(1, "Warning: Starting_pause 1 is not recommended for 8 notes per measure (check config)");
 	}
 	if (species == 2 && npm != 2) {
 		WriteLog(5, "Warning: Counterpoint species 2 should have notes_per_measure = 2 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
