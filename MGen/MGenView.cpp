@@ -525,7 +525,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	if (time_stop - time_start > max_draw_time) {
 		max_draw_time = time_stop - time_start;
 		if (max_draw_time > WARN_DRAW * (double)(mf->m_view_timer)) {
-			st.Format("Warning: drawing takes %d ms. Your delay between drawings (View_timer) is %d ms. It is recommended to increase zoom or increase View_timer or set step_dyn to 0 in settings.pl if you face performance issues.", time_stop - time_start, mf->m_view_timer);
+			st.Format("Warning: drawing takes %d ms. Your delay between drawings (View_timer) is %d ms. It is recommended to increase zoom or increase View_timer in settings.pl or disable Dynamics, MeloCurve or Scan range output if you face performance issues.", time_stop - time_start, mf->m_view_timer);
 			mf->WriteLog(2, st);
 		}
 	}
