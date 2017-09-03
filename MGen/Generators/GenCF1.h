@@ -248,6 +248,7 @@ protected:
 	int early_culm = 3; // Early culmination step
 	int late_culm = 3; // Late culmination step
 
+	int show_note_scan_range = 1; // Internal variable - allows to disable showing note scan range
 	int early_culm2 = 4; // Early culmination step (second rule)
 	int early_culm3 = 50; // Early culmination step percent
 	int stag_notes = 2; // Maximum allowed stag_notes (same notes) during stag_note_steps

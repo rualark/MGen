@@ -346,9 +346,11 @@ void CGenCA2::Generate() {
 		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 3);
 		cpv = cfv;
 		fn = 0;
+		show_note_scan_range = 0;
 		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, cfv, &(m_cc));
 		// Go forward
+		show_note_scan_range = 1;
 		t_generated = step;
 		Adapt(step0, step - 1);
 		t_sent = t_generated;

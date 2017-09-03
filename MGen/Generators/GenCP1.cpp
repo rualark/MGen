@@ -1662,8 +1662,10 @@ void CGenCP1::Generate() {
 			cpv = 1;
 			cfv = 0;
 		}
+		show_note_scan_range = 0; 
 		ScanCantus(tEval, cfv, &(cantus[cantus_id]));
 		// Go forward
+		show_note_scan_range = 1;
 		Adapt(0, step - 1);
 		t_generated = step;
 		t_sent = t_generated;

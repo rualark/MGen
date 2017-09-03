@@ -2884,7 +2884,7 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	pause[pos + i][v] = 0;
 	coff[pos + i][v] = i;
 	// Add scan range
-	if (!i) {
+	if (!i && show_note_scan_range) {
 		if (av == cpv) {
 			// Send source scan range in all cases
 			if (min_cc0.size()) nsr1[pos][v] = min_cc0[x];
