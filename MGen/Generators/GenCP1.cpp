@@ -677,6 +677,8 @@ int CGenCP1::FailRhythm() {
 	// Slurs at start and finish of measure (show length of slurred notes)
 	int slur1 = 0;
 	int slur2 = 0;
+	// Full measure collected
+	int full_measure = 0;
 	// Position inside measure
 	int pos = 0;
 	// Length sum
@@ -694,15 +696,18 @@ int CGenCP1::FailRhythm() {
 			l_len.push_back(fn);
 		}
 		// Build note lengths
+		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
 			s2 = fli[ls2];
 			l_len.push_back(llen[ls2]);
 			// Stop if out of measure
-			if (fli2[ls2] >= s + npm - 1) break;
+			if (fli2[ls2] >= s + npm - 1) {
+				full_measure = 1;
+				break;
+			}
 		}
 		// First note in measure with slur
 		if (fli[ls] < s) {
-			// First note slurs to previous measure
 			l_len[0] = min(8, (fli2[ls] - s + 1));
 			slur1 = s - fli[ls];
 		}
@@ -716,13 +721,12 @@ int CGenCP1::FailRhythm() {
 			// Last measure
 			if (ms == mli.size() - 1) {
 				// Check last whole note
-				if (l_len.size() == 1)
-					break;
+				if (l_len.size() == 1) break;
 			}
 		}
 		else {
 			// Check measure not full
-			if (pos < 8) break;
+			if (!full_measure) break;
 		}
 		// Set first rhythm id bit
 		rid_cur = slur1?0:1;
@@ -735,8 +739,7 @@ int CGenCP1::FailRhythm() {
 			rid_cur += 1 << (pos + l_len[lp]);
 			if (l_len[lp] == 1) {
 				// 1/8 in first measure
-				if (ms == 0) 
-					FLAG4(230, s2)
+				if (ms == 0) FLAG4(230, s2)
 				// If second 1/8
 				if (pos % 2) {
 					// Isolated 1/8
