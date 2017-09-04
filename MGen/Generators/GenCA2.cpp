@@ -377,6 +377,7 @@ void CGenCA2::Generate() {
 		SelectRuleSet(cp_rule_set);
 		// Get cantus interval
 		GetMelodyInterval(cpoint[i][cfv], 0, cpoint[i][cfv].size(), cf_nmin, cf_nmax);
+		GetSourceRange(cpoint[i][cpv]);
 		step0 = step;
 		fn = fn0;
 		ScanCP(tEval, 0);

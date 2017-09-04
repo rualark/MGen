@@ -401,7 +401,7 @@ protected:
 	PmTimestamp accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
 	int nmin, nmax, nmind, nmaxd;
-	int src_nmin = 0, src_nmax = 0; // Source range (chromatic)
+	int src_nmin = 0, src_nmax = 1000; // Source range (chromatic)
 	int cc_incr[MAX_NOTE]; // cc increments for each step
 	vector<int> test_cc;
 	vector<int> nstat;

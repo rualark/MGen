@@ -10,7 +10,7 @@ accept_reseed = 0 # After accepting first result reseed (if random_seed) and cho
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
-correct_inrange = 0 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.
+correct_inrange = 2 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.
 optimize_dpenalty = 0 # Saves only melodies closest to source melody. Decreases memory usage. Setting this flag may make corrections farther from source melody. Resetting allows for more close results when corrections>1
 
 # Analysis
@@ -21,7 +21,7 @@ step_penalty = 3 # Penalty for adding one more changing step while correcting ca
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 show_transpose = 0,0,36,36 # Semitones to transpose each voice (separated with comma)
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
-swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
+swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 14 # Maximum interval allowed between each source and corrected note (chromatic)
 random_key = 0 # Select any of possible keys regardless of last note
 

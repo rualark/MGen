@@ -1918,7 +1918,7 @@ void CGenCF1::GetSourceRange(vector<int> &cc) {
 
 // Apply source melody range
 void CGenCF1::ApplySourceRange() {
-	if (!src_nmax) return;
+	if (src_nmax > MAX_NOTE) return;
 	// Decrease current range if it is bigger
 	if (minc < src_nmin) minc = src_nmin;
 	if (maxc > src_nmax) maxc = src_nmax;

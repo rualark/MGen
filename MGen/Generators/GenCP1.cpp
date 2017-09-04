@@ -70,14 +70,12 @@ void CGenCP1::MakeNewCP() {
 	if (cantus_high) {
 		for (int i = 0; i < c_len; ++i) {
 			max_cc[i] = acc[cfv][i] - min_between;
-			//min_cc[i] = acc[cfv][i] - burst_between;
 			min_cc[i] = max(acc[cfv][i] - burst_between, cf_nmax - sum_interval);
 		}
 	}
 	else {
 		for (int i = 0; i < c_len; ++i) {
 			min_cc[i] = acc[cfv][i] + min_between;
-			//max_cc[i] = acc[cfv][i] + burst_between;
 			max_cc[i] = min(acc[cfv][i] + burst_between, cf_nmin + sum_interval);
 		}
 	}
@@ -126,15 +124,19 @@ void CGenCP1::SingleCPInit() {
 	if (cantus_high) {
 		for (int i = fn; i < c_len; ++i) {
 			min_cc[i] = max(acc[cfv][i] - burst_between,
-				max(cf_nmax - sum_interval, acc[cpv][i] - correct_range));
-			max_cc[i] = min(acc[cfv][i] - min_between, max(acc[cpv][i] + correct_range, min_cc[i] + 2*correct_range));
+				max(src_nmin, max(cf_nmax - sum_interval, acc[cpv][i] - correct_range)));
+			max_cc[i] = min(acc[cfv][i] - min_between, 
+				min(max(src_nmax, min_cc[i] + (src_nmax - src_nmin)),
+					max(acc[cpv][i] + correct_range, min_cc[i] + 2*correct_range)));
 		}
 	}
 	else {
 		for (int i = fn; i < c_len; ++i) {
 			max_cc[i] = min(acc[cfv][i] + burst_between,
-				min(cf_nmin + sum_interval, acc[cpv][i] + correct_range));
-			min_cc[i] = max(acc[cfv][i] + min_between, min(acc[cpv][i] - correct_range, max_cc[i] - 2*correct_range));
+				min(src_nmax, min(cf_nmin + sum_interval, acc[cpv][i] + correct_range)));
+			min_cc[i] = max(acc[cfv][i] + min_between, 
+				max(min(src_nmin, max_cc[i] - (src_nmax - src_nmin)), 
+					min(acc[cpv][i] - correct_range, max_cc[i] - 2*correct_range)));
 		}
 	}
 	// Convert limits to diatonic and recalibrate
