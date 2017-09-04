@@ -1212,7 +1212,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				t_sent = t_generated;
 			}
 		}
-		if (acc[cfv].size() > 60) {
+		if (acc[cfv].size() > 60 || s_len > 1) {
 			st.Format("SWA%d attempt: %d, rp %.0f", s_len, a, rpenalty_min);
 			SetStatusText(4, st);
 		}
