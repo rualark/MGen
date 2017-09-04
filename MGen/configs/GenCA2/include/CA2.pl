@@ -10,11 +10,11 @@ accept_reseed = 0 # After accepting first result reseed (if random_seed) and cho
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
-correct_inrange = 10 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.
+correct_inrange = 0 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.
 optimize_dpenalty = 0 # Saves only melodies closest to source melody. Decreases memory usage. Setting this flag may make corrections farther from source melody. Resetting allows for more close results when corrections>1
 
 # Analysis
-corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 12 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
