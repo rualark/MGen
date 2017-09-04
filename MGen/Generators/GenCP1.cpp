@@ -1201,11 +1201,11 @@ void CGenCP1::SWACP(int i, int dp) {
 		}
 		// Send log
 		if (debug_level > 1) {
-			CString est;
-			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
-			WriteLog(3, est);
+			//CString est;
+			//est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+			//WriteLog(3, est);
 			// Send intermediate results for debugging
-			if (0) {
+			if (s_len > 2) {
 				scpoint = acc;
 				ScanCP(tEval, 0);
 				Adapt(step, t_generated - 1);

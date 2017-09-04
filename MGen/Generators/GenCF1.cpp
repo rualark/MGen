@@ -2884,18 +2884,18 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	pause[pos + i][v] = 0;
 	coff[pos + i][v] = i;
 	// Add scan range
-	if (!i && show_note_scan_range) {
+	if (show_note_scan_range) {
 		if (av == cpv) {
 			// Send source scan range in all cases
-			if (min_cc0.size()) nsr1[pos][v] = min_cc0[x];
-			else nsr1[pos][v] = min_cc[x];
-			if (max_cc0.size()) nsr2[pos][v] = max_cc0[x];
-			else nsr2[pos][v] = max_cc[x];
+			if (min_cc0.size()) nsr1[pos + i][v] = min_cc0[x];
+			else nsr1[pos + i][v] = min_cc[x];
+			if (max_cc0.size()) nsr2[pos + i][v] = max_cc0[x];
+			else nsr2[pos + i][v] = max_cc[x];
 		}
 		else {
 			// Send rswa scan range if rswa
-			if (min_cc0.size()) nsr1[pos][v] = min_cc[x];
-			if (max_cc0.size()) nsr2[pos][v] = max_cc[x];
+			if (min_cc0.size()) nsr1[pos + i][v] = min_cc[x];
+			if (max_cc0.size()) nsr2[pos + i][v] = max_cc[x];
 		}
 	}
 	// Assign source tempo if exists
