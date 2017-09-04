@@ -35,8 +35,8 @@ transpose_back = 1 # Set to 1 to transpose generated melody closer to initial fi
 
 # Random SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
-swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
-correct_range = 5 # Maximum interval allowed between each source and corrected note
+swa_steps = 4 # Size of Sliding Window Approximation algorithm window in steps
+correct_range = 12 # Maximum interval allowed between each source and corrected note
 rpenalty_accepted = 0 # Maximum accepted rule penalty for RandomSWA
 
 # Rule parameters
@@ -47,7 +47,7 @@ first_steps_tonic = 3 # Number of first steps, which must contain tonic note (wi
 midifile_out_mul = 2 # All notes length is multiplied by this number before exporting
 show_severity = 1 # =1 to show severity and flag id in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
-calculate_blocking = 1 # Enables blocking flags calculation algorithm. Slows down generation.
+calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 0 # Enables SWA stuck flags statistics calculation algorithm.
 best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
