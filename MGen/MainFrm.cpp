@@ -1143,6 +1143,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	fill(CGLib::status_updates.begin(), CGLib::status_updates.end(), (long long)0);
 	fill(CGLib::logs_sent.begin(), CGLib::logs_sent.end(), (long long)0);
 
+	pGen->InitRandom();
 	pGen->Generate();
 	pGen->time_stopped = CGLib::time();
 
