@@ -498,11 +498,35 @@ void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> &valu
 	}
 }
 
+// Step2 must be exclusive
+void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<vector<int>> &value)
+{
+	for (int i = step1; i < step2; ++i) {
+		c[i] = value[i][0];
+	}
+}
+
 void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value)
 {
 	// Step2 must be exclusive
 	for (int i = step1; i < step2; ++i) {
 		c[smap[i]] = value[smap[i]];
+	}
+}
+
+void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<vector<int>>& value)
+{
+	// Step2 must be exclusive
+	for (int i = step1; i < step2; ++i) {
+		c[smap[i]] = value[smap[i]][0];
+	}
+}
+
+void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, int value)
+{
+	// Step2 must be exclusive
+	for (int i = step1; i < step2; ++i) {
+		c[smap[i]] = value;
 	}
 }
 
@@ -1980,13 +2004,15 @@ void CGenCF1::SingleCantusInit() {
 		wid = 0;
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
+		CalculateCcRand(0, c_len);
 		// Add last note if this is last window
 		// End of evaluation window
 		if (method == mScan) {
 			ep2 = GetMaxSmap() + 1;
 			if (sp2 == smatrixc) ep2 = c_len;
 			// Clear scan steps
-			FillCantusMap(m_cc, smap, 0, smatrixc, min_cc);
+			FillCantusMap(cc_id, smap, 0, smatrixc, 0);
+			FillCantusMap(m_cc, smap, 0, smatrixc, cc_rand);
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
@@ -1995,7 +2021,8 @@ void CGenCF1::SingleCantusInit() {
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
 			// Clear scan steps of current window
-			FillCantusMap(m_cc, smap, sp1, sp2, min_cc);
+			FillCantusMap(cc_id, smap, sp1, sp2, 0);
+			FillCantusMap(m_cc, smap, sp1, sp2, cc_rand);
 		}
 		// Minimum element
 		ep1 = max(0, GetMinSmap() - 1);
@@ -2023,7 +2050,7 @@ void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 	}
 }
 
-void CGenCF1::CalculateCcRand(vector<int>& c, vector<int>& cc, int step1, int step2) {
+void CGenCF1::CalculateCcRand(int step1, int step2) {
 	int x;
 	// Fill consecutive notes
 	for (int i = step1; i < step2; ++i) { //-V756
@@ -2058,12 +2085,9 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
-	CalculateCcRand(c, cc, 0, c_len);
+	CalculateCcRand(0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
-	// Init cc with first random value
-	for (int i = 0; i < c_len; ++i) {
-		cc[i] = cc_rand[i][0];
-	}
+	FillCantus(cc, 0, c_len, cc_rand);
 }
 
 void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
@@ -2354,7 +2378,8 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 	if (method != mScan) return;
 	if (task == tCor) {
 		// Clear current window
-		FillCantusMap(cc, smap, sp1, sp2, min_cc);
+		FillCantusMap(cc_id, smap, sp1, sp2, 0);
+		FillCantusMap(cc, smap, sp1, sp2, cc_rand);
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
@@ -2373,7 +2398,8 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 		// When random seeding, even back window movement should be randomized to avoid autorestart window cycle
 		//if (random_seed) RandCantus(c, sp1, sp2);
 		//else
-		FillCantus(cc, sp1, sp2, min_cc);
+		FillCantus(cc_id, sp1, sp2, 0);
+		FillCantus(cc, sp1, sp2, cc_rand);
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
@@ -2401,7 +2427,8 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	// Restore previous step after sliding window
 	cc[smap[sp1 - 1]] = cc_old[smap[sp1 - 1]];
 	// Clear scan steps of current window
-	FillCantusMap(cc, smap, sp1, sp2, min_cc);
+	FillCantusMap(cc_id, smap, sp1, sp2, 0);
+	FillCantusMap(cc, smap, sp1, sp2, cc_rand);
 	return 0;
 }
 
@@ -3107,10 +3134,7 @@ void CGenCF1::RandomSWA()
 		MakeNewCantus(m_c, m_cc);
 		min_cc0 = min_cc;
 		max_cc0 = max_cc;
-		// Convert cantus to chromatic
-		for (int x = fn; x < c_len; ++x) {
-			cantus[0][x] = C_CC(m_c[x], tonic_cur, minor_cur);
-		}
+		cantus[0] = m_cc;
 		// Set scan matrix to scan all
 		smatrixc = c_len;
 		smatrix.resize(c_len);
