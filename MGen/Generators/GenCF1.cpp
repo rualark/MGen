@@ -3017,17 +3017,19 @@ int CGenCF1::SendCantus() {
 	UpdateTempoMinMax(step00, step - 1);
 	++cantus_sent;
 	// Create rule penalty string
-	for (int x = 0; x < max_flags; ++x) {
-		if (!accept[x] && fpenalty[x]) {
-			st.Format("%d=%.0f", x, fpenalty[x]);
-			if (!rpst.IsEmpty()) rpst += ", ";
-			rpst += st;
+	if (!skip_flags) {
+		for (int x = 0; x < max_flags; ++x) {
+			if (!accept[x] && fpenalty[x]) {
+				st.Format("%d=%.0f", x, fpenalty[x]);
+				if (!rpst.IsEmpty()) rpst += ", ";
+				rpst += st;
+			}
 		}
+		st.Format("%.0f", rpenalty_cur);
+		if (!rpst.IsEmpty()) rpst = st + " (" + rpst + ")";
+		else rpst = st;
+		if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	}
-	st.Format("%.0f", rpenalty_cur);
-	if (!rpst.IsEmpty()) rpst = st + " (" + rpst + ")";
-	else rpst = st;
-	if (rpenalty_cur == MAX_PENALTY) rpst = "0";
 	if (task == tGen) {
 		if (!shuffle) {
 			Adapt(step00, step - 1);
