@@ -204,6 +204,7 @@ protected:
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
 	void FillCantus(vector<int>& c, int step1, int step2, vector<int> &value);
 	void RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2);
+	void CalculateCcRand(vector<int>& c, vector<int>& cc, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 	
 	// Rules
@@ -418,6 +419,10 @@ protected:
 	int fn = 0; // First note of analyzed melody
 	int error = 0;
 	vector<float> maw; // Moving average weight
+
+	// Random s_len=1 scan
+	vector<int> cc_id; // Current successive identifier of chromatic step
+	vector<vector<int>> cc_rand; // Randomized chromatic steps
 
 	// FailLeap local variables
 	int leap_start; // Step where leap starts

@@ -498,20 +498,6 @@ void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> &valu
 	}
 }
 
-// Step2 must be exclusive
-void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
-{
-	for (int i = step1; i < step2; ++i) { //-V756
-		for (int x = 0; x < 1000; ++x) {
-			c[i] = randbw(min_c[i], max_c[i]);
-			// Convert to chromatic
-			cc[i] = C_CC(c[i], tonic_cur, minor_cur);
-			// Prevent note repeats in the starting cantus
-			if ((i == 0 || cc[i] != cc[i - 1]) && (i > c_len - 2 || cc[i] != cc[i + 1])) break;
-		}
-	}
-}
-
 void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value)
 {
 	// Step2 must be exclusive
@@ -1807,6 +1793,8 @@ void CGenCF1::ScanInit() {
 	decc.resize(c_len);
 	decc2.resize(c_len);
 	llen.resize(c_len);
+	cc_rand.resize(c_len);
+	cc_id.resize(c_len);
 	bli.resize(c_len);
 	fpenalty.resize(max_flags);
 	wpos1.resize(c_len / s_len + 1);
@@ -2021,6 +2009,36 @@ void CGenCF1::SingleCantusInit() {
 	}
 }
 
+// Step2 must be exclusive
+void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
+{
+	for (int i = step1; i < step2; ++i) { //-V756
+		for (int x = 0; x < 1000; ++x) {
+			c[i] = randbw(min_c[i], max_c[i]);
+			// Convert to chromatic
+			cc[i] = C_CC(c[i], tonic_cur, minor_cur);
+			// Prevent note repeats in the starting cantus
+			if ((i == 0 || cc[i] != cc[i - 1]) && (i > c_len - 2 || cc[i] != cc[i + 1])) break;
+		}
+	}
+}
+
+void CGenCF1::CalculateCcRand(vector<int>& c, vector<int>& cc, int step1, int step2) {
+	int x;
+	// Fill consecutive notes
+	for (int i = step1; i < step2; ++i) { //-V756
+		cc_rand[i].clear();
+		x = min_cc[i]; 
+		while (x <= max_cc[i]) {
+			cc_rand[i].push_back(x);
+			x += cc_incr[x];
+		}
+		// Shuffle
+		if (random_seed)
+			random_shuffle(cc_rand[i].begin(), cc_rand[i].end());
+	}
+}
+
 void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	// Set first and last notes
 	c[0] = CC_C(first_note, tonic_cur, minor_cur);
@@ -2040,12 +2058,11 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
-	if (random_seed) {
-		RandCantus(c, cc, 0, c_len);
-	}
-	else {
-		// Set middle notes to minimum
-		FillCantus(cc, 0, c_len, min_cc);
+	CalculateCcRand(c, cc, 0, c_len);
+	FillCantus(cc_id, 0, c_len, 0);
+	// Init cc with first random value
+	for (int i = 0; i < c_len; ++i) {
+		cc[i] = cc_rand[i][0];
 	}
 }
 
@@ -2272,9 +2289,9 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 
 void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 	while (true) {
-		if (cc[p] < max_cc[p]) break;
+		if (cc_id[p] < cc_rand[p].size() - 1) break;
 		// If current element is max, make it minimum
-		cc[p] = min_cc[p];
+		cc_id[p] = 0;
 		// Move left one element
 		if (task == tCor) {
 			if (pp == sp1) {
@@ -3417,7 +3434,8 @@ check:
 
 void CGenCF1::ScanRight(vector<int> &cc) {
 	// Increase rightmost element, which was not reset to minimum
-	cc[p] += cc_incr[cc[p]];
+	++cc_id[p];
+	cc[p] = cc_rand[p][cc_id[p]];
 	// Go to rightmost element
 	if (task == tGen) {
 		p = sp2 - 1;
