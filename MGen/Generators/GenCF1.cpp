@@ -2053,9 +2053,8 @@ void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 
 void CGenCF1::CalculateCcRand(int step1, int step2) {
 	int x;
-	AppendLineToFile("log\\temp.log", "CalculateCcRand called\n");
 	// Fill consecutive notes
-	for (int i = step1; i < step2; ++i) { 
+	for (int i = step1; i < step2; ++i) { //-V756
 		cc_rand[i].clear();
 		x = min_cc[i]; 
 		while (x <= max_cc[i]) {
@@ -2063,10 +2062,8 @@ void CGenCF1::CalculateCcRand(int step1, int step2) {
 			x += cc_incr[x];
 		}
 		// Shuffle
-		if (random_seed) {
+		if (random_seed)
 			random_shuffle(cc_rand[i].begin(), cc_rand[i].end());
-			AppendLineToFile("log\\temp.log", "CalculateCcRand Shuffle called\n");
-		}
 	}
 }
 
@@ -2544,20 +2541,15 @@ void CGenCF1::ShowScanStatus(vector<int> &cc) {
 void CGenCF1::ReseedCantus()
 {
 	CString st;
-	LogCantus("Before reseed cc_rand", c_len, cc_rand[0]);
-	LogCantus("Before reseed", cantus_sent, m_cc);
-	cc_rand[0].clear();
 	MultiCantusInit(m_c, m_cc);
-	LogCantus("After  reseed cc_rand", c_len, cc_rand[0]);
-	LogCantus("After  reseed", cantus_sent, m_cc);
 	// Allow two seed cycles for each accept
 	seed_cycle = 0;
 	++reseed_count;
 	st.Format("Reseed: %d", reseed_count);
 	SetStatusText(4, st);
-	CString est;
-	est.Format("Reseed: ignored cantus %d while sent=%d", cantus_ignored, cantus_sent);
-	WriteLog(1, est);
+	//CString est;
+	//est.Format("Reseed: ignored cantus %d while sent=%d", cantus_ignored, cantus_sent);
+	//WriteLog(1, est);
 }
 
 void CGenCF1::WriteFlagCor() {
@@ -3418,13 +3410,13 @@ check:
 				}
 				else {
 					++cantus_ignored;
-					CString est;
-					est.Format("Ignored cantus %d while sent=%d", cantus_ignored, cantus_sent);
-					WriteLog(1, est);
-					if (SendCantus()) break;
-					//ReseedCantus();
+					//CString est;
+					//est.Format("Ignored cantus %d while sent=%d", cantus_ignored, cantus_sent);
+					//WriteLog(1, est);
+					//if (SendCantus()) break;
+					ReseedCantus();
 					// Start evaluating without scan
-					//goto check;
+					goto check;
 				}
 			}
 			else {
