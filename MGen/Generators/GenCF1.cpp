@@ -352,7 +352,7 @@ void CGenCF1::CheckConfig() {
 		WriteLog(5, "Warning: accept_reseed=1 while random_seed=0. You will get same results after every reseed (check config)");
 	}
 	if (method == mScan) {
-		WriteLog(1, "Warning: Window-scan method is currently not working correctly (needs debugging). Please choose another method in config file.");
+		//WriteLog(1, "Warning: Window-scan method is currently not working correctly (needs debugging). Please choose another method in config file.");
 	}
 	if (midifile_export_marks && midifile_export_comments) {
 		WriteLog(5, "Warning: You are trying to export both marks and comments to MIDI file: midifile_export_marks and midifile_export_comments both set. They can overlap (check config)");
@@ -3438,22 +3438,13 @@ check:
 			}
 			// Finish if this is last variant in first window and not SWA
 			else if ((p == 0) || (wid == 0)) {
-				// If we started from random seed, allow one more full cycle
-				if (random_seed) {
-					if (seed_cycle) {
-						// Infinitely cycle through ranges
-						if (random_range && accept_reseed) {
-							ReseedCantus();
-							// Start evaluating without scan
-							goto check;
-						}
-						break;
-					}
-					// Dont show log if we are reseeding after each accept
-					if (!accept_reseed) WriteLog(3, "Random seed allows one more full cycle: restarting");
-					++seed_cycle;
+				if (random_seed && random_range && accept_reseed) {
+					// Infinitely cycle through ranges
+					ReseedCantus();
+					// Start evaluating without scan
+					goto check;
 				}
-				else break;
+				break;
 			}
 			BackWindow(m_cc);
 			// Goto next variant calculation

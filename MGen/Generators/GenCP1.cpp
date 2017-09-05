@@ -1555,22 +1555,13 @@ check:
 			}
 			// Finish if this is last variant in first window and not SWA
 			else if ((p == 0) || (wid == 0)) {
-				// If we started from random seed, allow one more full cycle
-				if (random_seed) {
-					if (seed_cycle) {
-						// Infinitely cycle through ranges
-						if (random_range && accept_reseed) {
-							ReseedCP();
-							// Start evaluating without scan
-							goto check;
-						}
-						break;
-					}
-					// Dont show log if we are reseeding after each accept
-					if (!accept_reseed) WriteLog(3, "Random seed allows one more full cycle: restarting");
-					++seed_cycle;
+				if (random_seed && random_range && accept_reseed) {
+					// Infinitely cycle through ranges
+					ReseedCP();
+					// Start evaluating without scan
+					goto check;
 				}
-				else break;
+				break;
 			}
 			BackWindow(acc[cpv]);
 			// Goto next variant calculation
