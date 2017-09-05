@@ -1563,6 +1563,7 @@ check:
 					// Start evaluating without scan
 					goto check;
 				}
+				WriteLog(3, "Last variant in first window reached");
 				break;
 			}
 			BackWindow(acc[cpv]);
