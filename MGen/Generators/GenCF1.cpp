@@ -2317,6 +2317,7 @@ void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 		if (cc_id[p] < cc_rand[p].size() - 1) break;
 		// If current element is max, make it minimum
 		cc_id[p] = 0;
+		cc[p] = cc_rand[p][0];
 		// Move left one element
 		if (task == tCor) {
 			if (pp == sp1) {
