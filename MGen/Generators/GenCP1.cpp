@@ -1402,7 +1402,7 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-		//LogCantus("ep2", ep2, acc[cpv]);
+		//LogCantus("ep2", ep2, cc_id);
 		//if (MatchVectors(acc[cpv], test_cc, 0, 23))
 		//	WriteLog(1, "Found");
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
@@ -1528,6 +1528,9 @@ check:
 				}
 				else {
 					++cantus_ignored;
+					ReseedCantus();
+					// Start evaluating without scan
+					goto check;
 				}
 			}
 			else {
