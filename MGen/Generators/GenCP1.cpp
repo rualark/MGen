@@ -1091,6 +1091,7 @@ void CGenCP1::RandomSWACP()
 		}
 		// Optimize cpoint
 		rpenalty_cur = MAX_PENALTY;
+		step0 = step;
 		SWACP(0, 0);
 		is_sent = 0;
 		// Show cantus if it is perfect
@@ -1231,7 +1232,7 @@ void CGenCP1::SWACP(int i, int dp) {
 		int acy = 0;
 		if (animate) acy = (time - animate_time) / animate;
 		if (!animate || acy > acycle) {
-			if (debug_level > 0) {
+			if (debug_level > 2) {
 				CString est;
 				est.Format("Animation at SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld",
 					s_len, a + 1, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
@@ -1239,9 +1240,14 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 			acycle = acy;
 			scpoint = acc;
-			// Start showing from initial step
-			ScanCP(tEval, 2);
-			ShowLiningCP(acc[cpv]);
+			// Start showing from initial step to 0 or 2 voice (for GenCA2)
+			if (m_algo_id == 112) {
+				ScanCP(tEval, 2);
+				ShowLiningCP(acc[cpv]);
+			}
+			else {
+				ScanCP(tEval, 0);
+			}
 			Adapt(step, t_generated - 1);
 			//t_sent = t_generated;
 			step = step0;
