@@ -50,7 +50,7 @@ calculate_correlation = 0 # Enables correlation calculation algorithm. Slows dow
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 0 # Enables SWA stuck flags statistics calculation algorithm.
-best_rejected = 100 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
+best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
 
 midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 1 # Set to export comments (violations) to midifile lyrics
