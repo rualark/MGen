@@ -358,7 +358,7 @@ int CGenCP1::SendCP() {
 	if (task == tGen) {
 		if (!shuffle) {
 			// Add line
-			linecolor[t_sent] = Color(255, 0, 0, 0);
+			linecolor[t_sent] = MakeColor(255, 0, 0, 0);
 			t_sent = t_generated;
 		}
 	}
@@ -1109,7 +1109,7 @@ void CGenCP1::RandomSWACP()
 				//}
 				int step = t_generated;
 				// Add line
-				linecolor[t_generated] = Color(255, 0, 0, 0);
+				linecolor[t_generated] = MakeColor(255, 0, 0, 0);
 				scpoint = acc;
 				ScanCP(tEval, 0);
 				if (rpenalty_cur > rpenalty_accepted) {

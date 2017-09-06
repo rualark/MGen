@@ -370,7 +370,7 @@ void CGenCA1::Generate()
 		step0 = step;
 		long long time_start = CGLib::time();
 		// Add line
-		linecolor[step] = Color(255, 0, 0, 0);
+		linecolor[step] = MakeColor(255, 0, 0, 0);
 		// Get key
 		acc.resize(1);
 		acc[0] = cantus[i];

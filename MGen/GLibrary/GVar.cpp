@@ -6,7 +6,7 @@
 
 CGVar::CGVar()
 {
-	color_noflag = Color(0, 100, 100, 100);
+	color_noflag = MakeColor(0, 100, 100, 100);
 	// Init constant length arrays
 	ngv_min.resize(MAX_VOICE);
 	ngv_max.resize(MAX_VOICE);
@@ -163,7 +163,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	mel_id.resize(size);
 	mark.resize(size);
 	mark_color.resize(size);
-	linecolor.resize(size, Color(0));
+	linecolor.resize(size);
 	lengroup.resize(size);
 	lyrics.resize(size);
 	comment.resize(size);
@@ -207,10 +207,10 @@ void CGVar::ResizeVectors(int size, int vsize)
 		midi_delta[i].resize(vsize);
 		dstime[i].resize(vsize);
 		detime[i].resize(vsize);
-		color[i].resize(vsize, Color(0));
+		color[i].resize(vsize);
 		mel_id[i].resize(vsize, -1);
 		mark[i].resize(vsize);
-		mark_color[i].resize(vsize, Color(0));
+		mark_color[i].resize(vsize);
 	}
 	// Count time
 	if (debug_level > 1) {
@@ -596,11 +596,10 @@ void CGVar::SaveVector2S(ofstream & fs, vector< vector<unsigned short> > &v2D, i
 	fs.write(pointer, bytes);
 }
 
-void CGVar::SaveVector2Color(ofstream & fs, vector< vector<Color> > &v2D, int i) {
+void CGVar::SaveVector2Color(ofstream & fs, vector< vector<DWORD> > &v2D, int i) {
 	size_t bytes = 4;
 	for (int v = 0; v < v_cnt; v++) {
-		DWORD color = v2D[i][v].GetValue();
-		fs.write((char*)&color, bytes);
+		fs.write((char*)&(v2D[i][v]), bytes);
 	}
 }
 
@@ -618,7 +617,7 @@ void CGVar::SaveVector(ofstream &fs, vector<float> &v) {
 	fs.write(pointer, bytes);
 }
 
-void CGVar::SaveVector(ofstream &fs, vector<Color> &v) {
+void CGVar::SaveVector(ofstream &fs, vector<DWORD> &v) {
 	const char* pointer = reinterpret_cast<const char*>(&v[0]);
 	size_t bytes = t_generated * sizeof(v[0]);
 	fs.write(pointer, bytes);
@@ -748,7 +747,7 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 				if (st.Left(1) == "\n") st = st.Right(st.GetLength() - 1);
 				fs << "\"" << st << "\";";
 				fs << adapt_comment[i][v] << ";";
-				fs << color[i][v].GetValue() << ";";
+				fs << color[i][v] << ";";
 				fs << (int)lining[i][v] << ";";
 				fs << (int)tonic[i][v] << ";";
 				fs << (int)minor[i][v] << ";";
@@ -798,11 +797,10 @@ void CGVar::LoadVector2S(ifstream& fs, vector< vector<unsigned short> > &v2D, in
 	}
 }
 
-void CGVar::LoadVector2Color(ifstream & fs, vector< vector<Color> > &v2D, int i) {
+void CGVar::LoadVector2Color(ifstream & fs, vector< vector<DWORD> > &v2D, int i) {
 	size_t bytes = 4;
 	for (int v = 0; v < v_cnt; v++) {
-		DWORD color;
-		fs.read((char*)&color, bytes);
+		fs.read((char*)&(v2D[i][v]), bytes);
 		int read_count = fs.gcount();
 		if (read_count != bytes && warning_loadvectors < MAX_WARN_LOADVECTORS) {
 			CString est;
@@ -810,7 +808,6 @@ void CGVar::LoadVector2Color(ifstream & fs, vector< vector<Color> > &v2D, int i)
 			WriteLog(5, est);
 			warning_loadvectors++;
 		}
-		v2D[i][v].SetValue(color);
 	}
 }
 
@@ -879,7 +876,7 @@ void CGVar::LoadVector(ifstream &fs, vector<unsigned char> &v) {
 	}
 }
 
-void CGVar::LoadVector(ifstream &fs, vector<Color> &v) {
+void CGVar::LoadVector(ifstream &fs, vector<DWORD> &v) {
 	v.clear();
 	v.resize(t_generated);
 	char* pointer = reinterpret_cast<char*>(&v[0]);
@@ -1344,15 +1341,15 @@ void CGVar::FillPause(int start, int length, int v) {
 void CGVar::MergeNotes(int step1, int step2, int v) {
 	// Start of current note
 	int first_pos = step1;
-	Color col = color[step1][v]; 
+	DWORD col = color[step1][v]; 
 	for (int x = step1+1; x <= step2; ++x) {
 		// Detect steps that have same pitch 
 		if (note[x][v] == note[x - 1][v]) {
 			// If notes have decreasing coff (this means that this is a new cc note)
 			if (coff[x][v] <= coff[x - 1][v]) {
 				// if first note step select best color: gray is ignored, then most red is selected
-				if (!coff[x][v] && color[x][v].GetValue() != color_noflag.GetValue() && 
-					(col.GetValue() == color_noflag.GetValue() || color[x][v].GetRed() > col.GetRed())) {
+				if (!coff[x][v] && color[x][v] != color_noflag && 
+					(col == color_noflag || GetRed(color[x][v]) > GetRed(col))) {
 					col = color[x][v];
 					// update color of previous steps
 					for (int z = first_pos; z < x; ++z) {

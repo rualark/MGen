@@ -300,7 +300,7 @@ void CGenCA2::Generate() {
 		if (step < 0) step = 0;
 		long long time_start = CGLib::time();
 		// Add line
-		linecolor[step] = Color(255, 0, 0, 0);
+		linecolor[step] = MakeColor(255, 0, 0, 0);
 		LoadCantusHigh();
 		LoadSpecies();
 		// Check level

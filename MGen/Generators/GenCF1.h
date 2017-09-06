@@ -352,7 +352,7 @@ protected:
 	int seed_cycle, reseed_count;
 	long cantus_ignored = 0; // How many canti ignored and not sent
 	long cantus_sent = 0; // How many cantus have been sent
-	vector<Color>  flag_color; // Flag colors
+	vector<DWORD>  flag_color; // Flag colors
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
 	int flags_need2 = 0; // Number of second level flags set

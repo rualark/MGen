@@ -180,6 +180,16 @@ public:
 
 	static int FileHasHeader(CString fname, CString header);
 
+	static DWORD GetRed(DWORD col);
+
+	static DWORD GetGreen(DWORD col);
+
+	static DWORD GetBlue(DWORD col);
+
+	static DWORD GetAlpha(DWORD col);
+
+	static DWORD MakeColor(DWORD alpha, DWORD red, DWORD green, DWORD blue);
+
 	static long long time();
 
 	static FILETIME fileTime(CString fname);

@@ -3006,10 +3006,10 @@ int CGenCF1::SendCantus() {
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = fn; x < c_len; ++x) {
 		if (chm.size() > bli[x] && chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
-		mark_color[pos][v] = Color(120, 120, 120);
+		mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 		SendLyrics(pos, v, cpv, x);
 		for (int i = 0; i < cc_len[x]; ++i) {
-			color[pos + i][v] = Color(0, 100, 100, 100);
+			color[pos + i][v] = MakeColor(0, 100, 100, 100);
 			SendNotes(pos, i, v, cpv, x, m_cc);
 			SendNgraph(pos, i, v, x);
 			SendComment(pos, v, cpv, x, i);
@@ -3069,7 +3069,7 @@ int CGenCF1::SendCantus() {
 	if (task == tGen) {
 		if (!shuffle) {
 			// Add line
-			linecolor[t_sent] = Color(255, 0, 0, 0);
+			linecolor[t_sent] = MakeColor(255, 0, 0, 0);
 			t_sent = t_generated;
 		}
 	}
@@ -3087,7 +3087,7 @@ int CGenCF1::SendCantus() {
 int CGenCF1::InitGen() {
 	// Set rule colors
 	for (int i = 0; i < MAX_SEVERITY; ++i) {
-		flag_color[i] = Color(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
+		flag_color[i] = MakeColor(0, 255.0 / MAX_SEVERITY*i, 255 - 255.0 / MAX_SEVERITY*i, 0);
 	}
 	// Check that method is selected
 	if (method == mUndefined) {
@@ -3164,7 +3164,7 @@ void CGenCF1::RandomSWA()
 			if (vs.Insert(m_cc)) {
 				int step = t_generated;
 				// Add line
-				linecolor[t_generated] = Color(255, 0, 0, 0);
+				linecolor[t_generated] = MakeColor(255, 0, 0, 0);
 				ScanCantus(tEval, 0, &(m_cc));
 				if (rpenalty_cur > rpenalty_accepted) {
 					st.Format("Error calculating rpenalty %f min %f at step %d", rpenalty_cur, rpenalty_min, t_generated);
@@ -3524,7 +3524,7 @@ void CGenCF1::Generate()
 		vector<unsigned char> note2(t_generated);
 		vector<vector<CString>> comment3(t_generated);
 		vector<CString> comment4(t_generated);
-		vector<Color> color2(t_generated);
+		vector<DWORD> color2(t_generated);
 		for (int i = 0; i < accepted; ++i) ci[i] = i;
 		// Shuffled indexes
 		long long seed = CGLib::time();

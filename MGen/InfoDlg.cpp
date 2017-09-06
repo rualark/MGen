@@ -95,7 +95,9 @@ BOOL CInfoDlg::OnInitDialog()
 					m_info.AddText(st, RGB(0, 0, 0), eff);
 					for (int c = 0; c < pGen->comment[x][mv].size(); ++c) {
 						m_info.AddText(pGen->comment[x][mv][c]+"\n", 
-							RGB(pGen->ccolor[x][mv][c].GetR(), pGen->ccolor[x][mv][c].GetG()/1.5, pGen->ccolor[x][mv][c].GetB()), 0);
+							RGB(CGLib::GetRed(pGen->ccolor[x][mv][c]), 
+								CGLib::GetGreen(pGen->ccolor[x][mv][c])/1.5, 
+								CGLib::GetBlue(pGen->ccolor[x][mv][c])), 0);
 					}
 				}
 			}
