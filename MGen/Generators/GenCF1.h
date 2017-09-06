@@ -330,8 +330,12 @@ protected:
 	// CA1
 	int correct_range = 4; // Maximum interval allowed between each source and corrected note
 	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
-	int animate = 100; // Draw animation of preliminary result every X ms (high value to disable animation)
+	int animate = 100; // Draw animation of preliminary result every X ms (0 to disable animation)
 
+	// CA1 local variables
+	PmTimestamp animate_time; // Last animate timestamp
+	int acycle = 0; // Animation time divided by animate (ms)
+									
 	// Master parameters
 	vector <int> *scantus; // Source cantus for processing
 	int task; // What task to accomplish using the method

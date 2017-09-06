@@ -1132,6 +1132,20 @@ void CGenCP1::RandomSWACP()
 	ShowStuck();
 }
 
+void CGenCP1::ShowLiningCP(vector<int> &cc) {
+	// Add lining
+	int pos = step0;
+	int lni;
+	for (int z = 0; z < c_len; z++) {
+		if (cpoint[cantus_id][cpv][z] != cc[z]) lni = 1;
+		else lni = 0;
+		for (int g = 0; g < cc_len[z]; g++) {
+			lining[pos + g][cpv] = lni;
+		}
+		pos += cc_len[z];
+	}
+}
+
 // Do not calculate dpenalty (dp = 0). Calculate dpenalty (dp = 1).
 void CGenCP1::SWACP(int i, int dp) {
 	CString st;
@@ -1191,6 +1205,26 @@ void CGenCP1::SWACP(int i, int dp) {
 				int cid = randbw(0, cids.size() - 1);
 				// Get random cantus to continue
 				acc[cpv] = clib[cids[cid]];
+			}
+		}
+		// Animation
+		if (animate) {
+			long long time = CGLib::time();
+			int ac = (time - animate_time) / animate;
+			if (debug_level > 2) {
+				CString st;
+				st.Format("SWA with ac %d", ac);
+				WriteLog(3, st);
+			}
+			if (ac > acycle) {
+				acycle = ac;
+				scpoint = acc;
+				// Start showing from initial step
+				step = step0;
+				ScanCP(tEval, 2);
+				ShowLiningCP(acc[cpv]);
+				Adapt(step, t_generated - 1);
+				//t_sent = t_generated;
 			}
 		}
 		// Send log

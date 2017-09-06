@@ -56,6 +56,7 @@ protected:
 	inline int FailCPInterval();
 	inline int FailOverlap();
 	void RandomSWACP();
+	void ShowLiningCP(vector<int>& cc);
 	void SWACP(int i, int dp);
 	inline int FailLastIntervals();
 	inline void GetNoteTypes();

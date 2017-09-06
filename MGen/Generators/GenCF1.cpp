@@ -1859,6 +1859,11 @@ void CGenCF1::ScanInit() {
 		accept_time = CGLib::time();
 		rpenalty_min = MAX_PENALTY;
 	}
+	// Init animation
+	if (animate) {
+		acycle = 0;
+		animate_time = CGLib::time();
+	}
 	for (int x = fn; x < c_len; ++x) {
 		hm[x].resize(3);
 		hm2[x].resize(3);
@@ -2870,6 +2875,9 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 {
 	CString st, com;
 	int current_severity = -1;
+	// Clear
+	comment2[pos][v].Empty();
+	comment[pos][v].clear();
 	if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 		// Do not show colors and comments for base voice
 		if (av == cpv) {

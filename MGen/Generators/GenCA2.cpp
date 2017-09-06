@@ -35,7 +35,7 @@ void CGenCA2::SendCorrectionsCP(int i, PmTimestamp time_start) {
 	for (int x = 0; x < cnum; x++) {
 		dpenalty[x] = 0;
 		for (int z = 0; z < c_len; z++) {
-			int dif = abs(cpoint[i][1][z] - clib[x][z]);
+			int dif = abs(cpoint[i][cpv][z] - clib[x][z]);
 			if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
 		}
 	}
@@ -79,16 +79,7 @@ void CGenCA2::SendCorrectionsCP(int i, PmTimestamp time_start) {
 			// Go back
 			step = step0;
 			if (step < 0) break;
-			// Add lining
-			int pos = step;
-			for (int z = 0; z < c_len; z++) {
-				if (cpoint[i][cpv][z] != clib[cids[x]][z]) {
-					for (int g = 0; g < cc_len[z]; g++) {
-						lining[pos + g][cpv] = 1;
-					}
-				}
-				pos += cc_len[z];
-			}
+			ShowLiningCP(clib[cids[x]]);
 			// Go forward
 			step = t_generated;
 			Adapt(step0, step - 1);
