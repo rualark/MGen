@@ -1151,44 +1151,49 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 
 	// Show updates frequency
 	CString st, st2;
-	long long total = 0;
-	for (int i = 0; i < STATUS_LINES; ++i) {
-		total += CGLib::status_updates[i];
-		st.Format("\n%d per second (%lld in %d seconds) ",
-			CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->time_started),
-			CGLib::status_updates[i], (pGen->time_stopped - pGen->time_started) / 1000);
-		st2 += st;
-	}
-	st.Format("Status updates: %d per second (%lld in %d seconds). Detailed: ",
-		total * 1000 / (pGen->time_stopped - pGen->time_started),
-		total, (pGen->time_stopped - pGen->time_started) / 1000);
-	st2 = st + st2;
-	CGLib::WriteLog(2, st2);
-	if (pGen->time_stopped - pGen->time_started > 1000 && total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_STATUS_FREQ) {
-		st.Format("Algorithm status update is %d per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
-			total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_STATUS_FREQ);
-		CGLib::WriteLog(1, st);
+	long long total;
+	if (CGLib::status_updates.size() == STATUS_LINES) {
+		total = 0;
+		for (int i = 0; i < STATUS_LINES; ++i) {
+			total += CGLib::status_updates[i];
+			st.Format("\n%d per second (%lld in %d seconds) ",
+				CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->time_started),
+				CGLib::status_updates[i], (pGen->time_stopped - pGen->time_started) / 1000);
+			st2 += st;
+		}
+		st.Format("Status updates: %d per second (%lld in %d seconds). Detailed: ",
+			total * 1000 / (pGen->time_stopped - pGen->time_started),
+			total, (pGen->time_stopped - pGen->time_started) / 1000);
+		st2 = st + st2;
+		CGLib::WriteLog(2, st2);
+		if (pGen->time_stopped - pGen->time_started > 1000 && total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_STATUS_FREQ) {
+			st.Format("Algorithm status update is %d per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
+				total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_STATUS_FREQ);
+			CGLib::WriteLog(1, st);
+		}
 	}
 
 	// Show logs frequency
-	st2.Empty();
-	total = 0;
-	for (int i = 0; i < LOG_TABS; ++i) {
-		total += CGLib::logs_sent[i];
-		st.Format("\n%d per second (%lld in %d seconds) ",
-			CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->time_started),
-			CGLib::logs_sent[i], (pGen->time_stopped - pGen->time_started) / 1000);
-		st2 += st;
-	}
-	st.Format("Logs sent: %d per second (%lld in %d seconds). Detailed: ",
-		total * 1000 / (pGen->time_stopped - pGen->time_started),
-		total, (pGen->time_stopped - pGen->time_started) / 1000);
-	st2 = st + st2;
-	CGLib::WriteLog(2, st2);
-	if (pGen->time_stopped - pGen->time_started > 1000 && total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_LOG_FREQ) {
-		st.Format("Algorithm sends %d logs per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
-			total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_LOG_FREQ);
-		CGLib::WriteLog(1, st);
+	if (CGLib::logs_sent.size() == LOG_TABS) {
+		st2.Empty();
+		total = 0;
+		for (int i = 0; i < LOG_TABS; ++i) {
+			total += CGLib::logs_sent[i];
+			st.Format("\n%d per second (%lld in %d seconds) ",
+				CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->time_started),
+				CGLib::logs_sent[i], (pGen->time_stopped - pGen->time_started) / 1000);
+			st2 += st;
+		}
+		st.Format("Logs sent: %d per second (%lld in %d seconds). Detailed: ",
+			total * 1000 / (pGen->time_stopped - pGen->time_started),
+			total, (pGen->time_stopped - pGen->time_started) / 1000);
+		st2 = st + st2;
+		CGLib::WriteLog(2, st2);
+		if (pGen->time_stopped - pGen->time_started > 1000 && total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_LOG_FREQ) {
+			st.Format("Algorithm sends %d logs per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
+				total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_LOG_FREQ);
+			CGLib::WriteLog(1, st);
+		}
 	}
 
 	return 0;   // thread completed successfully 

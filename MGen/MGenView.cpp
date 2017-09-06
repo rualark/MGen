@@ -331,6 +331,9 @@ void CMGenView::OnDraw(CDC* pDC)
 					g.DrawString(wst, -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
 				}
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
+					if (i > 15 && pGen->len[i][0] == 1) {
+						//mf->WriteLog(5, "Data synchronization problem!");
+					}
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
 					// Check if note steps have different dynamics
 					int step_dyn2 = 0;

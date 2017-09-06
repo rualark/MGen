@@ -256,6 +256,8 @@ int CGenCP1::SendCP() {
 	int pos = 0, plen;
 	int v, x1;
 	Sleep(sleep_ms);
+	PmTimestamp time_start = CGLib::time();
+	PmTimestamp time_stop;
 	for (int av = 0; av < av_cnt; ++av) {
 		CreateLinks(ac[av]);
 		MakeMacc(acc[av]);
@@ -345,6 +347,11 @@ int CGenCP1::SendCP() {
 			}
 		}
 		AddMelody(step00, step - 1, svoice + cpv, st);
+	}
+	if (debug_level > 2) {
+		time_stop = CGLib::time();
+		st.Format("SendCP run time %d ms", time_stop - time_start);
+		//WriteLog(1, st);
 	}
 	// Send
 	t_generated = step;
@@ -1248,9 +1255,9 @@ void CGenCP1::SWACP(int i, int dp) {
 			else {
 				ScanCP(tEval, 0);
 			}
-			Adapt(step, t_generated - 1);
-			//t_sent = t_generated;
 			step = step0;
+			ValidateVectors(step0, t_generated - 1);
+			//t_sent = t_generated;
 			// Delay only if cc changed
 			if (animate_cc != acc[cpv]) Sleep(animate_delay);
 			animate_cc = acc[cpv];

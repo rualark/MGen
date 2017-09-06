@@ -1017,6 +1017,11 @@ void CGVar::ValidateVectors(int step1, int step2) {
 						WriteLog(5, st);
 						warning_valid++;
 					}
+					if (coff[i][v] >= len[i][v] && warning_valid < MAX_WARN_VALID) {
+						st.Format("Validation failed at step %d voice %d: coff must be less than len", i, v);
+						WriteLog(5, st);
+						warning_valid++;
+					}
 					if (poff[i][v] != poff[i - 1][v] + 1 && i != coff[i][v] && warning_valid < MAX_WARN_VALID) {
 						st.Format("Validation failed at step %d voice %d: poff must increase by 1 each step inside note/pause", i, v);
 						WriteLog(5, st);
@@ -1339,7 +1344,7 @@ void CGVar::FillPause(int start, int length, int v) {
 void CGVar::MergeNotes(int step1, int step2, int v) {
 	// Start of current note
 	int first_pos = step1;
-	Color col = color[step1][v];
+	Color col = color[step1][v]; 
 	for (int x = step1+1; x <= step2; ++x) {
 		// Detect steps that have same pitch 
 		if (note[x][v] == note[x - 1][v]) {
