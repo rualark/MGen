@@ -2881,7 +2881,8 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 	int current_severity = -1;
 	// Clear
 	comment2[pos+i][v].Empty();
-	comment[pos+i][v].clear();
+	comment[pos + i][v].clear();
+	ccolor[pos + i][v].clear();
 	if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
 		// Do not show colors and comments for base voice
 		if (av == cpv) {
