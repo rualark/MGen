@@ -1162,6 +1162,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	acc = cpoint[i];
 	int a;
 	for (a = 0; a < approximations; a++) {
+		if (need_exit) break;
 		// Save previous minimum penalty
 		int rpenalty_min_old = rpenalty_min;
 		int dpenalty_min_old = dpenalty_min;
@@ -1230,6 +1231,12 @@ void CGenCP1::SWACP(int i, int dp) {
 		int acy = 0;
 		if (animate) acy = (time - animate_time) / animate;
 		if (!animate || acy > acycle) {
+			if (debug_level > 0) {
+				CString est;
+				est.Format("Animation at SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld",
+					s_len, a + 1, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+				WriteLog(3, est);
+			}
 			acycle = acy;
 			scpoint = acc;
 			// Start showing from initial step
