@@ -218,10 +218,8 @@ void CGenCP1::MultiCPInit() {
 	wid = 0;
 	wpos1[wid] = sp1;
 	wpos2[wid] = sp2;
-	// Add last note if this is last window
 	ep1 = max(0, sp1 - 1);
 	ep2 = sp2; // End of evaluation window
-	if (ep2 == c_len - 1) ep2 = c_len;
 	p = sp2 - 1; // Minimal position in array to cycle
 }
 
@@ -1039,17 +1037,9 @@ int CGenCP1::FailOverlap() {
 // Create random cantus and optimize it using SWA
 void CGenCP1::RandomSWACP()
 {
-	test_cc.resize(9);
-	test_cc[0] = 55;
-	test_cc[1] = 58;
-	test_cc[2] = 51;
-	test_cc[3] = 53;
-	test_cc[4] = 54;
-	test_cc[5] = 55;
-	test_cc[6] = 55;
-	test_cc[7] = 50;
-	test_cc[8] = 55;
 	CString st;
+	//test_cc.resize(24);
+	//test_cc[0] = 55;
 	int is_sent;
 	VSet<int> vs; // Unique checker
 								// Disable debug flags
@@ -1412,7 +1402,9 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-		//LogCantus(acc[cpv]);
+		//LogCantus("ep2", ep2, acc[cpv]);
+		//if (MatchVectors(acc[cpv], test_cc, 0, 23))
+		//	WriteLog(1, "Found");
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {
@@ -1452,8 +1444,6 @@ check:
 		}
 		//if (acc[cpv][1] == 105 && acc[cpv][2] == 98)
 			//WriteLog(1, "Found");
-		//if (MatchVectors(acc[cpv], test_cc, 0, 2)) 
-		//WriteLog(1, "Found");
 		if (FailCPInterval()) goto skip;
 		GetNoteTypes();
 		if (FailRhythm()) goto skip;
@@ -1495,6 +1485,7 @@ check:
 		if (FailLocalMacc(notes_arange2, min_arange2, 16)) goto skip;
 		if (FailHarm()) goto skip;
 
+		//LogCantus("Rpenalty", rpenalty_cur, flags);
 		SaveBestRejected(acc[cpv]);
 		// If we are window-scanning
 		if ((task == tGen || task == tCor) && method == mScan) {
@@ -1609,6 +1600,11 @@ void CGenCP1::LoadSpecies() {
 }
 
 void CGenCP1::Generate() {
+	CString st = "81 81 86 83 83 81 81 80 80 78 78 83 83 81 81 86 86 84 89 88 88 92 92 83";
+	//test_cc.resize(24);
+	//test_cc[0] = 55;
+	//StringToVector(&st, " ", test_cc);
+
 	int fn0 = fn;
 	if (InitCP()) return;
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));

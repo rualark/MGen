@@ -140,6 +140,24 @@ void CGLib::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * 
 	}
 }
 
+void CGLib::StringToVector(CString *sValue, CString stDelim, vector<int> & Dest, int lmin, int lmax) {
+	int pos = 0;
+	CString st;
+	for (int i = 0; i<1000; i++) {
+		st = sValue->Tokenize(stDelim, pos);
+		st.Trim();
+		if (st.IsEmpty()) break;
+		if (i >= Dest.size()) {
+			CString est;
+			est.Format("Cannot load more than %d values into vector. String: '%s'.", Dest.size(), *sValue);
+			WriteLog(5, est);
+			return;
+		}
+		Dest[i] = atoi(st);
+		CheckLimits(sValue, &(Dest[i]), lmin, lmax);
+	}
+}
+
 void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest, int lmin, int lmax)
 {
 	if (*sName == sSearch) {

@@ -2006,7 +2006,6 @@ void CGenCF1::SingleCantusInit() {
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
 		CalculateCcRand(0, c_len);
-		// Add last note if this is last window
 		// End of evaluation window
 		if (method == mScan) {
 			ep2 = GetMaxSmap() + 1;
@@ -2100,7 +2099,6 @@ void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 	wid = 0;
 	wpos1[wid] = sp1;
 	wpos2[wid] = sp2;
-	// Add last note if this is last window
 	ep1 = max(0, sp1 - 1);
 	ep2 = sp2; // End of evaluation window
 	p = sp2 - 1; // Minimal position in array to cycle
@@ -2188,7 +2186,6 @@ void CGenCF1::NextWindow() {
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
 		++wscans[wid];
-		// Add last note if this is last window
 		// End of evaluation window
 		ep2 = GetMaxSmap() + 1;
 		ep1 = max(0, GetMinSmap() - 1);
@@ -2409,8 +2406,6 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 		// End of evaluation window
 		ep1 = max(0, sp1 - 1);
 		ep2 = sp2;
-		// Add last note if this is last window
-		if (ep2 == c_len - 1) ep2 = c_len;
 		// Go to rightmost element
 		p = sp2 - 1;
 	}
