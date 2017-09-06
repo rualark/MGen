@@ -1857,7 +1857,7 @@ void CGenCF1::ScanInit() {
 	if (best_rejected) {
 		rcycle = 0;
 		accept_time = CGLib::time();
-		rpenalty_min = MAX_PENALTY;
+		if (method == mScan) rpenalty_min = MAX_PENALTY;
 	}
 	// Init animation
 	if (animate) {
