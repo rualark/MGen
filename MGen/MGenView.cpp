@@ -355,7 +355,8 @@ void CMGenView::OnDraw(CDC* pDC)
 						SolidBrush brush(ncolor);
 						cutend = 0;
 						// Cut long notes end to prevent glueing with other voices
-						if (pGen->len[i][v] * nwidth > 2) cutend = 1;
+						if ((i + pGen->noff[i][v] < pGen->t_generated) &&
+							(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) cutend = 1;
 						g.FillRectangle(&brush, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
