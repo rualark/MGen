@@ -27,7 +27,7 @@ pitch_penalty = 1 # Penalty for changing note one more diatonic step while corre
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 2 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 11 # Maximum interval allowed between each source and corrected note (chromatic)
-animate = 100 # Change animation of preliminary result every X ms
+animate = 100 # Draw animation of preliminary result every X ms (0 to disable animation)
 
 # Technical parameters
 midifile_in_mul = 0.5 # Multiply note length with this value when loading

@@ -17,6 +17,6 @@ show_tempo = 0 # Set to 1 to show tempo
 show_notecolors = 1 # Set to 1 to show note colors instead of instrument colors
 
 # The following settings cannot be changed in GUI. You can change them only in this file
-View_timer = 300 # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers
+View_timer = 100 # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers
 Step_dyn = 1 # Show dynamics with note opacity for each step of note. Disable for slower computers.
 Debug_level = 1 # Increase to show more debug logs
