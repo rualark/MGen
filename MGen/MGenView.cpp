@@ -348,8 +348,9 @@ void CMGenView::OnDraw(CDC* pDC)
 					if (!step_dyn2 || !mf->show_vel) {
 						if (mf->show_vel) alpha = 40 + (80 * pGen->dyn[i][v] / 127);
 						else alpha = 100;
-						if (mf->show_notecolors && pGen->color[i][v].GetValue() != 0) {
-							if (pGen->color[i][v].GetAlpha() == 0) ncolor = Color(alpha, pGen->color[i][v].GetR(), pGen->color[i][v].GetG(), pGen->color[i][v].GetB());
+						if (mf->show_notecolors && pGen->color[i][v] != 0) {
+							if (CGLib::GetAlpha(pGen->color[i][v]) == 0) ncolor = CGLib::MakeColor(alpha, 
+								CGLib::GetRed(pGen->color[i][v]), CGLib::GetGreen(pGen->color[i][v]), CGLib::GetBlue(pGen->color[i][v]));
 							else ncolor = pGen->color[i][v];
 						}
 						else {
@@ -374,9 +375,10 @@ void CMGenView::OnDraw(CDC* pDC)
 					else {
 						for (int x = i; x < i + pGen->len[i][v]; x++) {
 							alpha = 40 + (80 * pGen->dyn[x][v] / 127);
-							if (mf->show_notecolors && pGen->color[x][v].GetValue() != 0) {
-								if (pGen->color[x][v].GetAlpha() == 0)
-									ncolor = Color(alpha, pGen->color[x][v].GetR(), pGen->color[x][v].GetG(), pGen->color[x][v].GetB());
+							if (mf->show_notecolors && pGen->color[x][v] != 0) {
+								if (CGLib::GetAlpha(pGen->color[x][v]) == 0)
+									ncolor = Color(alpha, CGLib::GetRed(pGen->color[x][v]), 
+										CGLib::GetGreen(pGen->color[x][v]), CGLib::GetBlue(pGen->color[x][v]));
 								else ncolor = pGen->color[x][v];
 							}
 							else {
@@ -420,9 +422,10 @@ void CMGenView::OnDraw(CDC* pDC)
 			if (mf->show_marks) for (int v = 0; v < pGen->v_cnt; v++) {
 				int step1m = max(0, step1 - MARK_BACK);
 				for (int i = step1m; i < step2; i++) if (!pGen->mark[i][v].IsEmpty()) {
-					if (pGen->mark_color[i][v].GetValue() != 0) {
-						if (pGen->mark_color[i][v].GetAlpha() == 0)
-							mcolor = Color(210, pGen->mark_color[i][v].GetR(), pGen->mark_color[i][v].GetG(), pGen->mark_color[i][v].GetB());
+					if (pGen->mark_color[i][v] != 0) {
+						if (CGLib::GetAlpha(pGen->mark_color[i][v]) == 0)
+							mcolor = CGLib::MakeColor(210, CGLib::GetRed(pGen->mark_color[i][v]), 
+								CGLib::GetGreen(pGen->mark_color[i][v]), CGLib::GetBlue(pGen->mark_color[i][v]));
 						else mcolor = pGen->mark_color[i][v];
 					}
 					else {
@@ -445,7 +448,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			// Show generated vertical lines
 			if (mf->show_lines) 
 				for (int i = step1; i < step2; i++) {
-					if (pGen->linecolor[i].GetAlpha() != 0) {
+					if (CGLib::GetAlpha(pGen->linecolor[i]) != 0) {
 						Pen pen_line(pGen->linecolor[i]);
 						g.DrawLine(&pen_line, X_FIELD + i * nwidth, y_start - (pGen->ng_min - ng_min2) * nheight,
 							X_FIELD + i * nwidth, y_start - (pGen->ng_max - ng_min2 + 1) * nheight);
