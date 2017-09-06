@@ -334,12 +334,11 @@ void CMGenView::OnDraw(CDC* pDC)
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
 					// Check if note steps have different dynamics
 					int step_dyn2 = 0;
+					int late_lining = 0;
 					if ((step_dyn) && (pGen->len[i][v] > 1)) {
 						for (int x = i + 1; x < i + pGen->len[i][v]; x++) {
-							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) {
-								step_dyn2 = 1;
-								break;
-							}
+							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
+							if (pGen->lining[x][v]) late_lining = 1;
 						}
 					}
 					// Show without step dynamics
@@ -395,7 +394,7 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 					}
 					// Show lining
-					if (mf->show_lining && pGen->lining[i][v] == 1) {
+					if (mf->show_lining && (pGen->lining[i][v] == 1 || late_lining)) {
 						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - cutend, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight);
 						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight,
