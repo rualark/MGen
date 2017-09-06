@@ -1154,6 +1154,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	// Save source rpenalty
 	float rpenalty_source = rpenalty_cur;
 	long cnum = 0;
+	vector<int> animate_cc; // This is cc that was sent in previous animation step
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
 	best_flags = flags;
@@ -1207,26 +1208,6 @@ void CGenCP1::SWACP(int i, int dp) {
 				acc[cpv] = clib[cids[cid]];
 			}
 		}
-		// Animation
-		if (animate) {
-			long long time = CGLib::time();
-			int ac = (time - animate_time) / animate;
-			if (debug_level > 2) {
-				CString st;
-				st.Format("SWA with ac %d", ac);
-				WriteLog(3, st);
-			}
-			if (ac > acycle) {
-				acycle = ac;
-				scpoint = acc;
-				// Start showing from initial step
-				ScanCP(tEval, 2);
-				ShowLiningCP(acc[cpv]);
-				Adapt(step, t_generated - 1);
-				//t_sent = t_generated;
-				step = step0;
-			}
-		}
 		// Send log
 		if (debug_level > 1) {
 			//CString est;
@@ -1241,8 +1222,25 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 		}
 		if (acc[cfv].size() > 60 || s_len > 0) {
-			st.Format("SWA%d attempt: %d, rp %.0f", s_len, a, rpenalty_min);
+			st.Format("SWA%d attempt: %d, rp %.0f", s_len, a+1, rpenalty_min);
 			SetStatusText(4, st);
+		}
+		// Animation
+		long long time = CGLib::time();
+		int acy = 0;
+		if (animate) acy = (time - animate_time) / animate;
+		if (!animate || acy > acycle) {
+			acycle = acy;
+			scpoint = acc;
+			// Start showing from initial step
+			ScanCP(tEval, 2);
+			ShowLiningCP(acc[cpv]);
+			Adapt(step, t_generated - 1);
+			//t_sent = t_generated;
+			step = step0;
+			// Delay only if cc changed
+			if (animate_cc != acc[cpv]) Sleep(animate_delay);
+			animate_cc = acc[cpv];
 		}
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
@@ -1272,7 +1270,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	// For successful rpenalty_cur == 0, show last flag that was fixed. For unsuccessful, show best variant
 	CString sst = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s",
-		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
+		s_len, a+1, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
 	WriteLog(3, est);
 	TestBestRpenalty();
 }

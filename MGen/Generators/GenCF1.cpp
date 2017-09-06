@@ -401,6 +401,7 @@ int CGenCF1::SelectRuleSet(int rs)
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "animate", &animate, 0);
+	CheckVar(sN, sV, "animate_delay", &animate_delay, 0);
 	CheckVar(sN, sV, "cantus_high", &cantus_high, 0, 1);
 	CheckVar(sN, sV, "rpenalty_accepted", &rpenalty_accepted, 0);
 	CheckVar(sN, sV, "c_len", &c_len, 1);
@@ -1860,10 +1861,8 @@ void CGenCF1::ScanInit() {
 		if (method == mScan) rpenalty_min = MAX_PENALTY;
 	}
 	// Init animation
-	if (animate) {
-		acycle = 0;
-		animate_time = CGLib::time();
-	}
+	acycle = 0;
+	animate_time = CGLib::time();
 	for (int x = fn; x < c_len; ++x) {
 		hm[x].resize(3);
 		hm2[x].resize(3);
