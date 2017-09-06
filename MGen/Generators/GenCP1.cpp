@@ -1220,11 +1220,11 @@ void CGenCP1::SWACP(int i, int dp) {
 				acycle = ac;
 				scpoint = acc;
 				// Start showing from initial step
-				step = step0;
 				ScanCP(tEval, 2);
 				ShowLiningCP(acc[cpv]);
 				Adapt(step, t_generated - 1);
 				//t_sent = t_generated;
+				step = step0;
 			}
 		}
 		// Send log
@@ -1240,7 +1240,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				t_sent = t_generated;
 			}
 		}
-		if (acc[cfv].size() > 60 || s_len > 1) {
+		if (acc[cfv].size() > 60 || s_len > 0) {
 			st.Format("SWA%d attempt: %d, rp %.0f", s_len, a, rpenalty_min);
 			SetStatusText(4, st);
 		}

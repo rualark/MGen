@@ -2863,6 +2863,11 @@ void CGenCF1::SendNgraph(int pos, int i, int v, int x) {
 		ngraph[pos + i][v][1] = ma;
 		ngraph[pos + i][v][2] = ma + de;
 	}
+	else {
+		ngraph[pos + i][v][0] = 0;
+		ngraph[pos + i][v][1] = 0;
+		ngraph[pos + i][v][2] = 0;
+	}
 }
 
 void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
