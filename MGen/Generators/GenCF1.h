@@ -266,8 +266,6 @@ protected:
 	int max_tempo = 120;
 	int rpenalty_accepted = 0; // Maximum accepted rule penalty for RandomSWA
 	int first_steps_tonic = 3; // Number of first steps, which must contain tonic note
-	int correct_range = 4; // Maximum interval allowed between each source and corrected note
-	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
 	int notes_lrange = 5; // Maximum number of consecutive notes having low range
 	int min_lrange = 5; // Minimum allowed local range of notes_lrange consecutive notes
 	int notes_lrange2 = 5; // Maximum number of consecutive notes having low range
@@ -328,6 +326,11 @@ protected:
 	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int optimize_dpenalty = 1; // Saves only melodies closest to source melody. Decreases memory usage. Resetting allows for more close results when corrections>1
 	int transpose_back = 0; // Set to 1 to transpose generated melody closer to initial first note. Can be set to 1 only for CF1 generation algorithms
+
+	// CA1
+	int correct_range = 4; // Maximum interval allowed between each source and corrected note
+	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
+	int animate = 100; // Draw animation of preliminary result every X ms (high value to disable animation)
 
 	// Master parameters
 	vector <int> *scantus; // Source cantus for processing

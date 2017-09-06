@@ -15,16 +15,19 @@ optimize_dpenalty = 0 # Saves only melodies closest to source melody. Decreases 
 transpose_back = 0 # Should be set to 1 for CF1 generation algorithm only
 
 # Analysis
+random_key = 0 # Select any of possible keys regardless of last note
+show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
+
+# Correction
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 12 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
-show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 2 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 11 # Maximum interval allowed between each source and corrected note (chromatic)
-random_key = 0 # Select any of possible keys regardless of last note
+animate = 100 # Change animation of preliminary result every X ms
 
 # Technical parameters
 midifile_in_mul = 0.5 # Multiply note length with this value when loading
