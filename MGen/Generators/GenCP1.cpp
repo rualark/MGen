@@ -752,6 +752,8 @@ int CGenCP1::FailRhythm() {
 				else if (l_len[lp] == 2) FLAG4(252, s2)
 			}
 			if (l_len[lp] == 1) {
+				// 1/8 on leap
+				if (aleap[cpv][ls2] || (ls2 > 0 && aleap[cpv][ls2 - 1])) FLAG4(88, s2);
 				// 1/8 in first measure
 				if (ms == 0) FLAG4(230, s2)
 				// If second 1/8
