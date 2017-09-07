@@ -746,6 +746,11 @@ int CGenCP1::FailRhythm() {
 			ls2 = bli[s2];
 			// Calculate rhythm id
 			rid_cur += 1 << (pos + l_len[lp]);
+			// Last upbeat note
+			if (ep2 == c_len && ls2 == fli_size - 1 && beat[ls2]) {
+				if (l_len[lp] == 1) FLAG4(253, s2)
+				else if (l_len[lp] == 2) FLAG4(252, s2)
+			}
 			if (l_len[lp] == 1) {
 				// 1/8 in first measure
 				if (ms == 0) FLAG4(230, s2)
