@@ -35,7 +35,7 @@ transpose_back = 1 # Set to 1 to transpose generated melody closer to initial fi
 
 # Random SWA
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
-swa_steps = 1 # Size of Sliding Window Approximation algorithm window in steps
+swa_steps = 3 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 12 # Maximum interval allowed between each source and corrected note
 rpenalty_accepted = 0 # Maximum accepted rule penalty for RandomSWA
 
