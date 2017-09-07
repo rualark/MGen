@@ -487,14 +487,14 @@ protected:
 	int pco_apart = 4; // Minimum allowed distance between pco in quarters
 
 	// Counterpoint
-	vector<vector<int>> ac; // Diatonic
-	vector<vector<int>> acc; // Chromatic
-	vector<vector<int>> acc_old; // Chromatic
-	vector<vector<int>> apc; // Pitch class (diatonic)
-	vector<vector<int>> apcc; // Pitch class (chromatic)
-	vector<vector<int>> aleap;
-	vector<vector<int>> asmooth;
-	vector<vector<int>> aslur;
+	vector<vector<int>> ac; // [s] Diatonic
+	vector<vector<int>> acc; // [s] Chromatic
+	vector<vector<int>> acc_old; // [s] Chromatic
+	vector<vector<int>> apc; // [s] Pitch class (diatonic)
+	vector<vector<int>> apcc; // [s] Pitch class (chromatic)
+	vector<vector<int>> aleap; // [s] Leaps
+	vector<vector<int>> asmooth; // [s] Smooth movements
+	vector<vector<int>> aslur; // [s] Slurs
 	int species = 0; // Counterpoint species
 	int species_detected = 0; // Counterpoint species detected in CA2
 	int sus_count = 0; // Number of suspensions detected in ExplodeCP

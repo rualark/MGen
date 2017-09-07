@@ -744,16 +744,20 @@ int CGenCP1::FailRhythm() {
 		for (int lp = 0; lp < l_len.size(); ++lp) {
 			s2 = s + pos;
 			ls2 = bli[s2];
-			// Calculate rhythm id
-			rid_cur += 1 << (pos + l_len[lp]);
-			// Last upbeat note
-			if (ep2 == c_len && ls2 == fli_size - 1 && beat[ls2]) {
+			// Last note
+			if (ep2 == c_len && ls2 == fli_size - 1) {
+				// Correct note length
+				l_len[lp] = npm - pos;
+				// Check 
 				if (l_len[lp] == 1) FLAG4(253, s2)
 				else if (l_len[lp] == 2) FLAG4(252, s2)
 			}
+			// Calculate rhythm id
+			rid_cur += 1 << (pos + l_len[lp]);
+			// Check 1/8 only if it is not last upbeat
 			if (l_len[lp] == 1) {
 				// 1/8 on leap
-				if (aleap[cpv][ls2] || (ls2 > 0 && aleap[cpv][ls2 - 1])) FLAG4(88, s2);
+				if (aleap[cpv][s2] || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG4(88, s2);
 				// 1/8 in first measure
 				if (ms == 0) FLAG4(230, s2)
 				// If second 1/8
@@ -1505,12 +1509,12 @@ check:
 			//WriteLog(1, "Found");
 		if (FailCPInterval()) goto skip;
 		GetNoteTypes();
+		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
 		if (FailRhythm()) goto skip;
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
 		if (FailLastIntervals()) goto skip;
 		if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
-		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
