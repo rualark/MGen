@@ -675,6 +675,19 @@ void CGenCP1::GetRpos() {
 // Fail rhythm for species 3
 int CGenCP1::FailRhythm3() {
 	if (species != 3) return 0;
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		// 1/4 syncope
+		if (beat[ls] == 2 && llen[ls] > 1) FLAG4(235, s);
+		// 1/2 after 1/4
+		if (ls > 0 && beat[ls] && llen[ls] > 1 & llen[ls - 1] == 1) {
+			if (s / npm >= c_len / npm - 1) FLAG4(238, s)
+			else if (sus[ls]) FLAG4(239, s)
+			else FLAG4(240, s);
+		}
+		// Non-uniform starting rhythm
+		if (s / npm == 0 && llen[ls] > 1) FLAG4(254, s);
+	}
 	return 0;
 }
 
@@ -790,6 +803,8 @@ int CGenCP1::FailRhythm5() {
 				else if (l_len[lp] > 2 && pos == 2) FLAG4(235, s2)
 				else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG4(235, s2);
 			}
+			// Uneven starting rhythm
+			if (!ms && lp>0 && l_len[lp] != l_len[lp-1]) FLAG4(254, s2);
 			pos += l_len[lp];
 		}
 		// Check rhythm repeat
@@ -800,6 +815,7 @@ int CGenCP1::FailRhythm5() {
 		// Check rhythm rules
 		// First measure
 		if (!ms) {
+			// Uneven pause
 			if (l_len.size() > 1 && l_len[0] == fn && l_len[0] != l_len[1]) FLAG4(237, s);
 		}
 		// Whole inside
