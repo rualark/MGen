@@ -693,6 +693,8 @@ int CGenCP1::FailRhythm() {
 	// Length sum
 	int suml = 0;
 	int ls2 = 0;
+	// Check pause length
+	if (fn * 2 > npm) FLAG4(197, fn);
 	for (int ms = 0; ms < mli.size(); ++ms) {
 		s = mli[ms];
 		if (s >= ep2) break;
@@ -944,6 +946,8 @@ int CGenCP1::FailSlurs() {
 	int scount2 = 0;
 	int max_count = 0;
 	int max_i = 0;
+	// Check pause length
+	if (fn*2 > npm) FLAG4(197, fn);
 	for (int i = fn; i < ep2-1; ++i) {
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check simultaneous slurs
