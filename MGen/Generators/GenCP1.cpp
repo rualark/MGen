@@ -672,7 +672,14 @@ void CGenCP1::GetRpos() {
 	}
 }
 
-int CGenCP1::FailRhythm() {
+// Fail rhythm for species 3
+int CGenCP1::FailRhythm3() {
+	if (species != 3) return 0;
+	return 0;
+}
+
+// Fail rhythm for species 5
+int CGenCP1::FailRhythm5() {
 	if (species != 5) return 0;
 	// Rhythm id
 	vector<int> rid;
@@ -1514,7 +1521,8 @@ check:
 		if (FailCPInterval()) goto skip;
 		GetNoteTypes();
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
-		if (FailRhythm()) goto skip;
+		if (FailRhythm3()) goto skip;
+		if (FailRhythm5()) goto skip;
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
 		if (FailLastIntervals()) goto skip;
 		if (FailNoteSeq(apc[cpv])) goto skip;
