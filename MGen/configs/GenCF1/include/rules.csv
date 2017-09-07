@@ -232,6 +232,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;236;60;Cantus;Species 5 rhythm;Rhythm;whole inside;0;;
 1;237;60;Cantus;Species 5 rhythm;Rhythm;uneven pause;0;;Starting pause in first measure does not equal length of next note
 1;247;60;Cantus;Species 5 rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures
+1;197;60;Cantus;Species 5 rhythm;Rhythm;pause >1/2;0;;Starting pause is longer than 1/2 note
 1;226;60;Cantus;Species 5 rhythm;1/8 note;beat 1;0;;
 1;227;0;Cantus;Species 5 rhythm;1/8 note;beat 2;1;;
 1;228;60;Cantus;Species 5 rhythm;1/8 note;beat 3;0;;
