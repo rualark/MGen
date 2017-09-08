@@ -336,7 +336,7 @@ protected:
 	int max_correct_ms = 5000; // Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
 
 	// CA1 local variables
-	PmTimestamp animate_time; // Last animate timestamp
+	long long animate_time; // Last animate timestamp
 	int acycle = 0; // Animation time divided by animate (ms)
 	int is_animating = 0; // Set to 1 to show than Send is animating
 									
@@ -413,7 +413,7 @@ protected:
 	vector<long long> wscans; // number of full scans per window
 	int wcount = 1; // Number of windows created
 	long long cycle = 0; // Cycle number of full scan
-	PmTimestamp accept_time; // Last accepted timestamp
+	long long accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
 	int nmin, nmax, nmind, nmaxd;
 	int src_nmin = 0, src_nmax = 1000; // Source range (chromatic)

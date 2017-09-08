@@ -215,7 +215,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 	WriteLog(3, est);
 }
 
-void CGenCA1::SendCorrections(int i, PmTimestamp time_start) {
+void CGenCA1::SendCorrections(int i, long long time_start) {
 	CString st, st2;
 	// Count penalty
 	long cnum = clib.size();

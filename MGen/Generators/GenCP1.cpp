@@ -256,8 +256,8 @@ int CGenCP1::SendCP() {
 	int pos = 0, plen;
 	int v, x1;
 	Sleep(sleep_ms);
-	PmTimestamp time_start = CGLib::time();
-	PmTimestamp time_stop;
+	long long time_start = CGLib::time();
+	long long time_stop;
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
 	if (!mutex_animate.try_lock_for(chrono::milliseconds(5000))) {

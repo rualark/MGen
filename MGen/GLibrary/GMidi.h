@@ -56,14 +56,14 @@ public:
 	
 	// PortMIDI
 	int midi_sent = 0; // Steps already sent to midi
-	PmTimestamp midi_sent_t = 0; // Timestamp of last event sent to midi in previous SendMIDI
-	PmTimestamp midi_sent_t2 = 0; // Timestamp of last event sent to midi in current SendMIDI
-	PmTimestamp midi_sent_t3 = 0; // Timestamp of last event postponed in current SendMIDI
+	long long midi_sent_t = 0; // Timestamp of last event sent to midi in previous SendMIDI
+	long long midi_sent_t2 = 0; // Timestamp of last event sent to midi in current SendMIDI
+	long long midi_sent_t3 = 0; // Timestamp of last event postponed in current SendMIDI
 	PmMessage midi_sent_msg = 0; // Last event sent to midi in previous SendMIDI
 	PmMessage midi_sent_msg2 = 0; // Last event sent to midi in current SendMIDI
 	PmMessage midi_sent_msg3 = 0; // Last event postponed in current SendMIDI
 	int midi_current_step = 0; // Current step processed by SendMIDI (for logs)
-	PmTimestamp midi_start_time = 0; // Time when midi started to play
+	long long midi_start_time = 0; // Time when midi started to play
 	int midi_last_run = 0; // If current SendMIDI is last
 	int midi_first_run = 0; // If current SendMIDI is first
 	int buf_underrun = 0; // Shows if current playback had an issue with buffer underrun
@@ -82,22 +82,22 @@ protected:
 	int warning_loadmidi_overlap = 0;
 
 	// PortMIDI internal
-	void AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2);
-	void AddNoteOn(PmTimestamp timestamp, int data1, int data2);
-	void AddKsOn(PmTimestamp timestamp, int data1, int data2);
-	void AddNoteOff(PmTimestamp timestamp, int data1, int data2);
-	void AddKsOff(PmTimestamp timestamp, int data1, int data2);
-	void AddCC(PmTimestamp timestamp, int data1, int data2);
-	void AddKs(PmTimestamp stimestamp, int ks);
-	void AddTransitionCC(int i, PmTimestamp stimestamp, int CC, int value1, int value2);
-	void AddTransitionKs(int i, PmTimestamp timestamp, int ks);
+	void AddMidiEvent(long long timestamp, int mm_type, int data1, int data2);
+	void AddNoteOn(long long timestamp, int data1, int data2);
+	void AddKsOn(long long timestamp, int data1, int data2);
+	void AddNoteOff(long long timestamp, int data1, int data2);
+	void AddKsOff(long long timestamp, int data1, int data2);
+	void AddCC(long long timestamp, int data1, int data2);
+	void AddKs(long long stimestamp, int ks);
+	void AddTransitionCC(int i, long long stimestamp, int CC, int value1, int value2);
+	void AddTransitionKs(int i, long long timestamp, int ks);
 	static int PmEvent_comparator(const void *v1, const void *v2);
 	void LoadWav(CString fname);
 
 	// Information for current note in SendMIDI
 	vector <PmEvent> midi_buf;
 	vector <PmEvent> midi_buf_next; // Buffer for next SendMIDI run
-	PmTimestamp midi_buf_lim = 0; // After this timestamp information goes to midi_buf_next
+	long long midi_buf_lim = 0; // After this timestamp information goes to midi_buf_next
 	int midi_channel = 0;
 	int midi_voice = 0;
 

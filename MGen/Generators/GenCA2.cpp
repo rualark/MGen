@@ -27,7 +27,7 @@ void CGenCA2::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CGenCP1::LoadConfigLine(sN, sV, idata, fdata);
 }
 
-void CGenCA2::SendCorrectionsCP(int i, PmTimestamp time_start) {
+void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 	CString st, st2;
 	// Count penalty
 	long cnum = clib.size();

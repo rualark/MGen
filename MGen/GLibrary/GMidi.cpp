@@ -71,7 +71,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 
 void CGMidi::LoadMidi(CString path)
 {
-	PmTimestamp time_start = CGLib::time();
+	long long time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -425,7 +425,7 @@ void CGMidi::LoadMidi(CString path)
 		WriteLog(0, est);
 	}
 	// Count time
-	PmTimestamp time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	CString est;
 	est.Format("LoadMidi successfully loaded %d steps (in %d ms)", t_generated, time_stop - time_start);
 	WriteLog(0, est);
@@ -433,7 +433,7 @@ void CGMidi::LoadMidi(CString path)
 
 void CGMidi::LoadCantus(CString path)
 {
-	PmTimestamp time_start = CGLib::time();
+	long long time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -611,7 +611,7 @@ void CGMidi::LoadCantus(CString path)
 		}
 	}
 	// Count time
-	PmTimestamp time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	CString st;
 	st.Format("LoadCantus successfully loaded %d canti (in %d ms)", cid + 1, time_stop - time_start);
 	WriteLog(0, st);
@@ -620,7 +620,7 @@ void CGMidi::LoadCantus(CString path)
 // Load counterpoint
 void CGMidi::LoadCP(CString path)
 {
-	PmTimestamp time_start = CGLib::time();
+	long long time_start = CGLib::time();
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -829,7 +829,7 @@ void CGMidi::LoadCP(CString path)
 		}
 	}
 	// Count time
-	PmTimestamp time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	CString st;
 	st.Format("LoadCP successfully loaded %d cp (in %d ms)", cid + 1, time_stop - time_start);
 	WriteLog(0, st);
@@ -932,9 +932,9 @@ void CGMidi::LogInstruments() {
 	WriteLog(4, est);
 }
 
-void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int data2)
+void CGMidi::AddMidiEvent(long long timestamp, int mm_type, int data1, int data2)
 {
-	PmTimestamp real_timestamp = timestamp + midi_start_time;
+	long long real_timestamp = timestamp + midi_start_time;
 	// Check if event is in future
 	if (real_timestamp >= midi_sent_t) {
 		PmEvent event;
@@ -978,7 +978,7 @@ void CGMidi::AddMidiEvent(PmTimestamp timestamp, int mm_type, int data1, int dat
 	//AppendLineToFile("midi.log", st);
 }
 
-void CGMidi::AddTransitionKs(int i, PmTimestamp stimestamp, int ks)
+void CGMidi::AddTransitionKs(int i, long long stimestamp, int ks)
 {
 	int v = midi_voice;
 	int pi = i - poff[i][v];
@@ -989,13 +989,13 @@ void CGMidi::AddTransitionKs(int i, PmTimestamp stimestamp, int ks)
 		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), ks, 0);
 }
 
-void CGMidi::AddKs(PmTimestamp stimestamp, int ks)
+void CGMidi::AddKs(long long stimestamp, int ks)
 {
 	AddKsOn(stimestamp, ks, 100);
 	AddKsOff(stimestamp + 1, ks, 0);
 }
 
-void CGMidi::AddTransitionCC(int i, PmTimestamp stimestamp, int CC, int value1, int value2)
+void CGMidi::AddTransitionCC(int i, long long stimestamp, int CC, int value1, int value2)
 {
 	int v = midi_voice;
 	int pi = i - poff[i][v];
@@ -1021,20 +1021,20 @@ void CGMidi::CheckDstime(int i, int v)
 void CGMidi::SendMIDI(int step1, int step2)
 {
 	if (step2 == step1) return;
-	PmTimestamp time_start = CGLib::time();
-	PmTimestamp timestamp_current = CGLib::time();
+	long long time_start = CGLib::time();
+	long long timestamp_current = CGLib::time();
 	// Note start timestamp
-	PmTimestamp stimestamp; 
+	long long stimestamp; 
 	// Note end timestamp
-	PmTimestamp etimestamp; 
+	long long etimestamp; 
 	// Check if this is first run
 	if ((step1 == 0) || (!midi_sent_t) || (!midi_start_time)) midi_first_run = 1;
 	else midi_first_run = 0;
 	if (midi_first_run) LogInstruments();
 	// Set real time when playback started
-	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - (PmTimestamp)(stime[step1] / m_pspeed * 100);
+	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - (long long)(stime[step1] / m_pspeed * 100);
 	// Set real time when playback started
-	if (!midi_sent_t) midi_sent_t = (PmTimestamp)(stime[step1] / m_pspeed * 100) + midi_start_time - 100;
+	if (!midi_sent_t) midi_sent_t = (long long)(stime[step1] / m_pspeed * 100) + midi_start_time - 100;
 	// Check if we have buf underrun
 	if (midi_sent_t < timestamp_current) {
 		CString st;
@@ -1071,14 +1071,14 @@ void CGMidi::SendMIDI(int step1, int step2)
 		step22 = i;
 		if (i == 0) time = stime[i] * 100 / m_pspeed;
 		else time = etime[i - 1] * 100 / m_pspeed;
-		if ((PmTimestamp)time + midi_start_time - timestamp_current > MAX_MIDI_BUF_MSEC) break;
+		if ((long long)time + midi_start_time - timestamp_current > MAX_MIDI_BUF_MSEC) break;
 	}
 	// If we cut notes, this is not last run
 	if (step22 < step2) midi_last_run = 0;
 	// Send previous buffer if exists
 	midi_buf.clear();
 	// Calculate midi right limit
-	midi_buf_lim = midi_start_time + (PmTimestamp)(stime[step22] * 100.0 / m_pspeed);
+	midi_buf_lim = midi_start_time + (long long)(stime[step22] * 100.0 / m_pspeed);
 	// Decrease right limit to allow for legato ahead, random start and ks/cc transitions
 	if (!midi_last_run) midi_buf_lim -= MAX_AHEAD;
 	// Sort by timestamp before sending
@@ -1202,7 +1202,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		mo->QueueEvent(midi_buf[i]);
 	}
 	// Count time
-	PmTimestamp time_stop = CGLib::time();
+	long long time_stop = CGLib::time();
 	CString st;
 	st.Format("MIDI write %d (%d postponed) events: steps %d/%d - %d/%d (%d to %d ms) [to future %d to %d ms] (in %d ms) playback is at %d ms. Limit %d. Last postponed %d. Step22 stopped increasing at %.0f ms. Start time: %d, current time: %d",
 		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, 
@@ -1366,7 +1366,7 @@ int CGMidi::GetPlayStep() {
 		int step1 = midi_play_step;
 		int step2 = midi_sent;
 		int cur_step = 0, currentElement;
-		PmTimestamp searchElement = CGLib::time() - midi_start_time;
+		long long searchElement = CGLib::time() - midi_start_time;
 		while (step1 <= step2) {
 			cur_step = (step1 + step2) / 2;
 			currentElement = stime[cur_step] * 100 / m_pspeed;
@@ -1386,7 +1386,7 @@ int CGMidi::GetPlayStep() {
 	return midi_play_step;
 }
 
-void CGMidi::AddNoteOn(PmTimestamp timestamp, int data1, int data2)
+void CGMidi::AddNoteOn(long long timestamp, int data1, int data2)
 {
 	// Check if range valid
 	if ((data1 < instr_nmin[instr[midi_voice]]) || (data1 > instr_nmax[instr[midi_voice]])) {
@@ -1402,7 +1402,7 @@ void CGMidi::AddNoteOn(PmTimestamp timestamp, int data1, int data2)
 	AddMidiEvent(timestamp, MIDI_NOTEON + midi_channel, data1, data2);
 }
 
-void CGMidi::AddKsOn(PmTimestamp timestamp, int data1, int data2)
+void CGMidi::AddKsOn(long long timestamp, int data1, int data2)
 {
 	// Check if range valid
 	if ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]])) {
@@ -1418,7 +1418,7 @@ void CGMidi::AddKsOn(PmTimestamp timestamp, int data1, int data2)
 	AddMidiEvent(timestamp, MIDI_NOTEON + midi_channel, data1, data2);
 }
 
-void CGMidi::AddNoteOff(PmTimestamp timestamp, int data1, int data2)
+void CGMidi::AddNoteOff(long long timestamp, int data1, int data2)
 {
 	// Check if range valid
 	if ((data1 < instr_nmin[instr[midi_voice]]) || (data1 > instr_nmax[instr[midi_voice]])) {
@@ -1434,7 +1434,7 @@ void CGMidi::AddNoteOff(PmTimestamp timestamp, int data1, int data2)
 	AddMidiEvent(timestamp, MIDI_NOTEOFF + midi_channel, data1, data2);
 }
 
-void CGMidi::AddKsOff(PmTimestamp timestamp, int data1, int data2)
+void CGMidi::AddKsOff(long long timestamp, int data1, int data2)
 {
 	// Check if range valid
 	if ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]])) {
@@ -1450,7 +1450,7 @@ void CGMidi::AddKsOff(PmTimestamp timestamp, int data1, int data2)
 	AddMidiEvent(timestamp, MIDI_NOTEOFF + midi_channel, data1, data2);
 }
 
-void CGMidi::AddCC(PmTimestamp timestamp, int data1, int data2)
+void CGMidi::AddCC(long long timestamp, int data1, int data2)
 {
 	AddMidiEvent(timestamp, MIDI_CC + midi_channel, data1, data2);
 }

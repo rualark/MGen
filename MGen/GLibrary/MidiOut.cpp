@@ -82,7 +82,7 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 	if (pMO == NULL) return 1;
 	PmEvent event;
 	mMessage message(3);
-	PmTimestamp timestamp_current;
+	long long timestamp_current;
 	int wait_time, wait_time_left;
 	while (true) {
 		// Check if we need to exit

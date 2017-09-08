@@ -5,7 +5,6 @@
 #include "../readerwriterqueue/atomicops.h"
 
 typedef int32_t PmMessage;
-typedef long long PmTimestamp;
 
 typedef struct {
 	PmMessage      message;
