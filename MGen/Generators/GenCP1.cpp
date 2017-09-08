@@ -1545,7 +1545,9 @@ check:
 		++accepted3;
 		if (need_exit) break;
 		// Show status
+		long long time = CGLib::time();
 		if (accepted3 % 100000 == 0) ShowScanStatus(m_cc);
+		if (max_correct_ms && time - animate_time > max_correct_ms) break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
 		CreateLinks(acc[cpv]);

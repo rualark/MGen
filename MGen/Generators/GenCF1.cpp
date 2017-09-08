@@ -400,6 +400,7 @@ int CGenCF1::SelectRuleSet(int rs)
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
+	CheckVar(sN, sV, "max_correct_ms", &max_correct_ms, 0);
 	CheckVar(sN, sV, "animate", &animate, 0);
 	CheckVar(sN, sV, "animate_delay", &animate_delay, 0);
 	CheckVar(sN, sV, "cantus_high", &cantus_high, 0, 1);
