@@ -859,6 +859,18 @@ void CGenCF1::CalcCcIncrement() {
 			else cc_incr[i] = 2;
 		}
 	}
+	// Build decrement
+	for (int i = 0; i < 127; ++i) {
+		pos = (i + 23 - tonic_cur) % 12;
+		if (minor_cur) {
+			if (m_diatonic_full[pos]) cc_decr[i] = 1;
+			else cc_decr[i] = 2;
+		}
+		else {
+			if (diatonic[pos]) cc_decr[i] = 1;
+			else cc_decr[i] = 2;
+		}
+	}
 }
 
 // Calculate chromatic positions
@@ -1873,7 +1885,7 @@ void CGenCF1::ScanCantusInit() {
 	// Resize global vectors
 	m_c.resize(c_len); // cantus (diatonic)
 	m_cc.resize(c_len); // cantus (chromatic)
-	cc_old.resize(c_len); // Cantus diatonic saved for SWA
+	m_cc_old.resize(c_len); // Cantus diatonic saved for SWA
 	m_pc.resize(c_len);
 	m_pcc.resize(c_len);
 	m_leap.resize(c_len);
@@ -1948,7 +1960,7 @@ void CGenCF1::SingleCantusInit() {
 	for (int i = fn; i < c_len; ++i) {
 		m_c[i] = CC_C(m_cc[i], tonic_cur, minor_cur);
 		// Save value for future use;
-		cc_old[i] = m_cc[i];
+		m_cc_old[i] = m_cc[i];
 	}
 	if (!swa_inrange) {
 		GetRealRange(m_c, m_cc);
@@ -2007,7 +2019,7 @@ void CGenCF1::SingleCantusInit() {
 		wid = 0;
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
-		CalculateCcOrder(0, c_len);
+		CalculateCcOrder(m_cc_old, 0, c_len);
 		// End of evaluation window
 		if (method == mScan) {
 			ep2 = GetMaxSmap() + 1;
@@ -2052,19 +2064,59 @@ void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 	}
 }
 
-void CGenCF1::CalculateCcOrder(int step1, int step2) {
-	int x;
-	// Fill consecutive notes
-	for (int i = step1; i < step2; ++i) { //-V756
-		cc_order[i].clear();
-		x = min_cc[i]; 
-		while (x <= max_cc[i]) {
+void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
+	int x, x2;
+	if (task == tCor) {
+		int finished;
+		// Fill notes starting with source melody, gradually moving apart
+		for (int i = step1; i < step2; ++i) {
+			// Send first note
+			x = cc_old[i];
+			if (x < min_cc[i]) x = min_cc[i];
+			if (x > max_cc[i]) x = max_cc[i];
 			cc_order[i].push_back(x);
-			x += cc_incr[x];
+			x2 = x;
+			for (int z = 1; z < 1000; ++z) {
+				finished = 1;
+				x += cc_incr[x];
+				x2 -= cc_decr[x2];
+				if (rand2() > RAND_MAX / 2) {
+					if (x <= max_cc[i]) {
+						cc_order[i].push_back(x);
+						finished = 0;
+					}
+					if (x2 >= min_cc[i]) {
+						cc_order[i].push_back(x2);
+						finished = 0;
+					}
+				}
+				else {
+					if (x2 >= min_cc[i]) {
+						cc_order[i].push_back(x2);
+						finished = 0;
+					}
+					if (x <= max_cc[i]) {
+						cc_order[i].push_back(x);
+						finished = 0;
+					}
+				}
+				if (finished) break;
+			}
 		}
-		// Shuffle
-		if (random_seed)
-			random_shuffle(cc_order[i].begin(), cc_order[i].end());
+	}
+	else {
+		// Fill consecutive notes
+		for (int i = step1; i < step2; ++i) {
+			cc_order[i].clear();
+			x = min_cc[i];
+			while (x <= max_cc[i]) {
+				cc_order[i].push_back(x);
+				x += cc_incr[x];
+			}
+			// Shuffle
+			if (random_seed)
+				random_shuffle(cc_order[i].begin(), cc_order[i].end());
+		}
 	}
 }
 
@@ -2087,7 +2139,7 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
-	CalculateCcOrder(0, c_len);
+	CalculateCcOrder(m_cc_old, 0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
 	FillCantus(cc, 0, c_len, cc_order);
 }
@@ -2686,30 +2738,20 @@ void CGenCF1::ShowFlagBlock() {
 void CGenCF1::CalcDpenalty() {
 	dpenalty_cur = 0;
 	for (int z = fn; z < c_len; z++) {
-		int dif = abs(cc_old[z] - m_cc[z]);
+		int dif = abs(m_cc_old[z] - m_cc[z]);
 		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
 	}
 }
 
 void CGenCF1::SaveCantus() {
 	// If rpenalty is same as min, calculate dpenalty
-	if (!rpenalty_cur) optimize_dpenalty = 1;
-	if (optimize_dpenalty) {
-		if (rpenalty_cur == rpenalty_min) {
-			CalcDpenalty();
-			// Do not save cantus if it has higher dpenalty
-			if (dpenalty_cur > dpenalty_min) return;
-			// Do not save cantus if it is same as source
-			if (!dpenalty_cur) return;
-			dpenalty_min = dpenalty_cur;
-		}
-		// If rpenalty lowered, clear dpenalty
-		else {
-			dpenalty_min = MAX_PENALTY;
-			dpenalty_cur = MAX_PENALTY;
-		}
-		dpenalty.push_back(dpenalty_cur);
-	}
+	CalcDpenalty();
+	// Do not save cantus if it has higher dpenalty
+	if (dpenalty_cur > dpenalty_min) return;
+	// Do not save cantus if it is same as source
+	if (!dpenalty_cur) return;
+	dpenalty_min = dpenalty_cur;
+	dpenalty.push_back(dpenalty_cur);
 	clib.push_back(m_cc);
 	rpenalty.push_back(rpenalty_cur);
 	rpenalty_min = rpenalty_cur;
@@ -3469,7 +3511,7 @@ check:
 			finished = 0;
 			// Sliding Windows Approximation
 			if (method == mSWA) {
-				if (NextSWA(m_cc, cc_old)) break;
+				if (NextSWA(m_cc, m_cc_old)) break;
 				goto check;
 			}
 			// Finish if this is last variant in first window and not SWA

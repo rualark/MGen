@@ -86,7 +86,7 @@ void CGenCP1::MakeNewCP() {
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
-	CalculateCcOrder(0, c_len);
+	CalculateCcOrder(acc_old[cpv], 0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
 	FillCantus(acc[cpv], 0, c_len, cc_order);
 }
@@ -175,7 +175,7 @@ void CGenCP1::SingleCPInit() {
 		wid = 0;
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
-		CalculateCcOrder(0, c_len);
+		CalculateCcOrder(acc_old[cpv], 0, c_len);
 		// Add last note if this is last window
 		// End of evaluation window
 		if (method == mScan) {

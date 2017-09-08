@@ -206,8 +206,7 @@ protected:
 	void FillCantus(vector<int>& c, int step1, int step2, vector<int> &value);
 	void FillCantus(vector<int>& c, int step1, int step2, vector<vector<int>> &value);
 	void RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2);
-	void CalculateCcOrder(int step1, int step2);
-	void CalculateCcOrder(int step1, int step2);
+	void CalculateCcOrder(vector<int>& cc_old, int step1, int step2);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<vector<int>>& value);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, int value);
@@ -394,7 +393,7 @@ protected:
 	long long accepted2 = 0, accepted3 = 0;
 	int first_note_dia, first_note_oct;
 	int wid; // Window id
-	vector<int> cc_old; // Cantus chromatic saved for SWA
+	vector<int> m_cc_old; // Cantus chromatic saved for SWA
 	vector<int> wpos1;
 	vector<int> wpos2;
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
@@ -418,6 +417,7 @@ protected:
 	int nmin, nmax, nmind, nmaxd;
 	int src_nmin = 0, src_nmax = 1000; // Source range (chromatic)
 	int cc_incr[MAX_NOTE]; // cc increments for each step
+	int cc_decr[MAX_NOTE]; // cc decrements for each step
 	vector<int> test_cc;
 	vector<int> nstat;
 	vector<int> nstat2;

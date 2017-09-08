@@ -609,6 +609,7 @@ rmm[i + 4] = e; rmm[i + 5] = f; rmm[i + 6] = g; rmm[i + 7] = h;
 	randcnt = 256;        /* prepare to use the first set of results */
 }
 
+// Return random value from 0 to RAND_MAX using randrsl
 unsigned int CGLib::rand2() {
 	cur_rand2++;
 	if (cur_rand2 > 1) {
