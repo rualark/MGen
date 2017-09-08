@@ -397,7 +397,7 @@ void CGenCA2::Generate() {
 		//GetSourceRange();
 		// Init animation
 		acycle = 0;
-		animate_time = CGLib::time();
+		correct_start_time = CGLib::time();
 		if (method == mSWA) {
 			SWACP(i, 1);
 		}

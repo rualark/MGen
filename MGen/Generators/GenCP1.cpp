@@ -936,7 +936,7 @@ void CGenCP1::SaveCP() {
 	// Animation
 	long long time = CGLib::time();
 	int acy = 0;
-	if (animate) acy = (time - animate_time) / animate;
+	if (animate) acy = (time - correct_start_time) / animate;
 	if (!animate || acy > acycle) {
 		//if (debug_level > 2) {
 			//CString est;
@@ -944,7 +944,7 @@ void CGenCP1::SaveCP() {
 				//s_len, a + 1, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			//WriteLog(3, est);
 		//}
-		ShowScanStatus(acc[cpv]);
+		ShowScanStatus();
 		acycle = acy;
 		scpoint = acc;
 		is_animating = 1;
@@ -1099,8 +1099,8 @@ int CGenCP1::FailOverlap() {
 void CGenCP1::RandomSWACP()
 {
 	// Init animation
+	correct_start_time = time();
 	acycle = 0;
-	animate_time = CGLib::time();
 	CString st;
 	//test_cc.resize(24);
 	//test_cc[0] = 55;
@@ -1294,7 +1294,7 @@ void CGenCP1::SWACP(int i, int dp) {
 		// Animation
 		long long time = CGLib::time();
 		int acy = 0;
-		if (animate) acy = (time - animate_time) / animate;
+		if (animate) acy = (time - correct_start_time) / animate;
 		if (!animate || acy > acycle) {
 			if (debug_level > 2) {
 				CString est;
@@ -1496,6 +1496,7 @@ int CGenCP1::FailHarm() {
 
 void CGenCP1::ScanCP(int t, int v) {
 	int finished = 0;
+	int scycle = 0;
 	// Load master parameters
 	task = t;
 	svoice = v;
@@ -1546,8 +1547,13 @@ check:
 		if (need_exit) break;
 		// Show status
 		long long time = CGLib::time();
-		if (accepted3 % 100000 == 0) ShowScanStatus(m_cc);
-		if (max_correct_ms && time - animate_time > max_correct_ms) break;
+		scycle = (time - scan_start_time) / STATUS_PERIOD;
+		if (scycle > status_cycle) {
+			ShowScanStatus();
+			status_cycle = scycle;
+		}
+		// Limit SAS correction time
+		if (task == tCor && method == mScan && max_correct_ms && time - scan_start_time > max_correct_ms) break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
 		CreateLinks(acc[cpv]);
@@ -1681,7 +1687,7 @@ check:
 		} // if (finished)
 		ScanRight(acc[cpv]);
 	}
-	if (accepted3 > 100000) ShowScanStatus(acc[cpv]);
+	if (accepted3 > 100000) ShowScanStatus();
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();

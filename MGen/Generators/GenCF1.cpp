@@ -2562,7 +2562,7 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 	return 0;
 }
 
-void CGenCF1::ShowScanStatus(vector<int> &cc) {
+void CGenCF1::ShowScanStatus() {
 	CString st;
 	if (method == mScan) {
 		if (task == tGen) {
@@ -2570,11 +2570,12 @@ void CGenCF1::ShowScanStatus(vector<int> &cc) {
 				cc_order[wpos1[0]].size());
 			SetStatusText(2, st);
 		}
-		else {
+		else if (task == tCor) {
 			st.Format("Scan progress: %d of %d", cc_id[smap[wpos1[0]]],
 				cc_order[smap[wpos1[0]]].size());
 			SetStatusText(2, st);
 		}
+		// Do not show scan progress for evaluation task
 	}
 	else {
 		st.Format("Scan progress: %d of %d", cc_id[sp1],
@@ -3390,6 +3391,7 @@ void CGenCF1::SaveCantusIfRp() {
 
 void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	int finished = 0;
+	int scycle = 0;
 	// Load master parameters
 	task = t;
 	svoice = v;
@@ -3412,7 +3414,14 @@ check:
 		if (nmax - nmin > max_interval) FLAG(37, fn);
 		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, fn);
 		// Show status
-		if (accepted3 % 100000 == 0) ShowScanStatus(m_cc);
+		long long time = CGLib::time();
+		scycle = (time - scan_start_time) / STATUS_PERIOD;
+		if (scycle > status_cycle) {
+			ShowScanStatus();
+			status_cycle = scycle;
+		}
+		// Limit SAS correction time
+		if (task == tCor && method == mScan && max_correct_ms && time - scan_start_time > max_correct_ms) break;
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
@@ -3533,7 +3542,7 @@ check:
 		} // if (finished)
 		ScanRight(m_cc);
 	}
-	if (accepted3 > 100000) ShowScanStatus(m_cc);
+	if (accepted3 > 100000) ShowScanStatus();
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();

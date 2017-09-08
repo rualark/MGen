@@ -21,6 +21,8 @@
 #define MAX_SEVERITY 101
 #define MAX_WIND 500
 #define MAX_NOTE 127
+// How often to show statistics (ms)
+#define STATUS_PERIOD 100
 
 const int hvt[] = { 1, 0, 1, 0, 0, 1, 0 };
 const int hvd[] = { 0, 0, 1, 0, 1, 0, 1 };
@@ -165,7 +167,7 @@ protected:
 	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);
 	inline void SaveBestRejected(vector<int>& cc);
 	inline int FailMinor(vector<int>& pcc, vector<int>& cc);
-	inline void ShowScanStatus(vector<int>& cc);
+	inline void ShowScanStatus();
 	inline void ReseedCantus();
 	inline void TimeBestRejected();
 	inline void SaveCantusIfRp();
@@ -336,7 +338,8 @@ protected:
 	int max_correct_ms = 5000; // Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
 
 	// CA1 local variables
-	long long animate_time; // Last animate timestamp
+	long long correct_start_time; // Time when current correction started
+	long long scan_start_time; // Time when current scan started
 	int acycle = 0; // Animation time divided by animate (ms)
 	int is_animating = 0; // Set to 1 to show than Send is animating
 									
@@ -349,6 +352,7 @@ protected:
 	CString midi_file;
 
   // Local
+	int status_cycle = 0; // Scan time divided by status period (ms)
 	int cpv; // Current counterpoint voice
 	int cfv; // Current cantus voice
 	int av_cnt = 1; // Number of voices in counterpoint
