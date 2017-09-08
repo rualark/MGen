@@ -923,39 +923,45 @@ void CGenCP1::CalcDpenaltyCP() {
 }
 
 void CGenCP1::SaveCP() {
-	CalcDpenaltyCP();
-	// Do not save cantus if it has higher dpenalty
-	if (dpenalty_cur > dpenalty_min) return;
-	// Do not save cantus if it is same as source
-	if (!dpenalty_cur) return;
-	dpenalty_min = dpenalty_cur;
-	dpenalty.push_back(dpenalty_cur);
+	// If rpenalty is same as min, calculate dpenalty
+	if (method == mScan || optimize_dpenalty) {
+		if (rpenalty_cur == rpenalty_min) {
+			CalcDpenaltyCP();
+			// Do not save cantus if it has higher dpenalty
+			if (dpenalty_cur > dpenalty_min) return;
+			// Do not save cantus if it is same as source
+			if (!dpenalty_cur) return;
+			dpenalty_min = dpenalty_cur;
+		}
+		// If rpenalty lowered, clear dpenalty
+		else {
+			dpenalty_min = MAX_PENALTY;
+			dpenalty_cur = MAX_PENALTY;
+		}
+		dpenalty.push_back(dpenalty_cur);
+	}
 	clib.push_back(acc[cpv]);
 	rpenalty.push_back(rpenalty_cur);
 	rpenalty_min = rpenalty_cur;
-	// Animation
-	long long time = CGLib::time();
-	int acy = 0;
-	if (animate) acy = (time - correct_start_time) / animate;
-	if (!animate || acy > acycle) {
-		//if (debug_level > 2) {
-			//CString est;
-			//est.Format("Animation at SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld",
-				//s_len, a + 1, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
-			//WriteLog(3, est);
-		//}
-		ShowScanStatus();
-		acycle = acy;
-		scpoint = acc;
-		is_animating = 1;
-		// Start showing from initial step to 2 voice (for GenCA2)
-		svoice = 2;
-		SendCP();
-		ShowLiningCP(acc[cpv]);
-		is_animating = 0;
-		step = step0;
-		ValidateVectors(step0, t_generated - 1);
-		Sleep(animate_delay);
+	if (method == mScan) {
+		// Animation
+		long long time = CGLib::time();
+		int acy = 0;
+		if (animate) acy = (time - correct_start_time) / animate;
+		if (!animate || acy > acycle) {
+			ShowScanStatus();
+			acycle = acy;
+			scpoint = acc;
+			is_animating = 1;
+			// Start showing from initial step to 2 voice (for GenCA2)
+			if (m_algo_id == 112) svoice = 2;
+			SendCP();
+			ShowLiningCP(acc[cpv]);
+			is_animating = 0;
+			step = step0;
+			ValidateVectors(step0, t_generated - 1);
+			Sleep(animate_delay);
+		}
 	}
 }
 
@@ -1547,7 +1553,7 @@ check:
 		if (need_exit) break;
 		// Show status
 		long long time = CGLib::time();
-		scycle = (time - scan_start_time) / STATUS_PERIOD;
+		scycle = (time - gen_start_time) / STATUS_PERIOD;
 		if (scycle > status_cycle) {
 			ShowScanStatus();
 			status_cycle = scycle;

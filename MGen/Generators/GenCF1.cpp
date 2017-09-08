@@ -2748,13 +2748,22 @@ void CGenCF1::CalcDpenalty() {
 
 void CGenCF1::SaveCantus() {
 	// If rpenalty is same as min, calculate dpenalty
-	CalcDpenalty();
-	// Do not save cantus if it has higher dpenalty
-	if (dpenalty_cur > dpenalty_min) return;
-	// Do not save cantus if it is same as source
-	if (!dpenalty_cur) return;
-	dpenalty_min = dpenalty_cur;
-	dpenalty.push_back(dpenalty_cur);
+	if (method == mScan || optimize_dpenalty) {
+		if (rpenalty_cur == rpenalty_min) {
+			CalcDpenalty();
+			// Do not save cantus if it has higher dpenalty
+			if (dpenalty_cur > dpenalty_min) return;
+			// Do not save cantus if it is same as source
+			if (!dpenalty_cur) return;
+			dpenalty_min = dpenalty_cur;
+		}
+		// If rpenalty lowered, clear dpenalty
+		else {
+			dpenalty_min = MAX_PENALTY;
+			dpenalty_cur = MAX_PENALTY;
+		}
+		dpenalty.push_back(dpenalty_cur);
+	}
 	clib.push_back(m_cc);
 	rpenalty.push_back(rpenalty_cur);
 	rpenalty_min = rpenalty_cur;
@@ -3415,7 +3424,7 @@ check:
 		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, fn);
 		// Show status
 		long long time = CGLib::time();
-		scycle = (time - scan_start_time) / STATUS_PERIOD;
+		scycle = (time - gen_start_time) / STATUS_PERIOD;
 		if (scycle > status_cycle) {
 			ShowScanStatus();
 			status_cycle = scycle;
