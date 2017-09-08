@@ -1084,6 +1084,9 @@ int CGenCP1::FailOverlap() {
 // Create random cantus and optimize it using SWA
 void CGenCP1::RandomSWACP()
 {
+	// Init animation
+	acycle = 0;
+	animate_time = CGLib::time();
 	CString st;
 	//test_cc.resize(24);
 	//test_cc[0] = 55;

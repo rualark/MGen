@@ -1860,9 +1860,6 @@ void CGenCF1::ScanInit() {
 		accept_time = CGLib::time();
 		if (method == mScan) rpenalty_min = MAX_PENALTY;
 	}
-	// Init animation
-	acycle = 0;
-	animate_time = CGLib::time();
 	for (int x = fn; x < c_len; ++x) {
 		hm[x].resize(3);
 		hm2[x].resize(3);
