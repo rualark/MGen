@@ -2007,7 +2007,7 @@ void CGenCF1::SingleCantusInit() {
 		wid = 0;
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
-		CalculateCcRand(0, c_len);
+		CalculateCcOrder(0, c_len);
 		// End of evaluation window
 		if (method == mScan) {
 			ep2 = GetMaxSmap() + 1;
@@ -2052,7 +2052,7 @@ void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 	}
 }
 
-void CGenCF1::CalculateCcRand(int step1, int step2) {
+void CGenCF1::CalculateCcOrder(int step1, int step2) {
 	int x;
 	// Fill consecutive notes
 	for (int i = step1; i < step2; ++i) { //-V756
@@ -2087,7 +2087,7 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
 		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
-	CalculateCcRand(0, c_len);
+	CalculateCcOrder(0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
 	FillCantus(cc, 0, c_len, cc_order);
 }
