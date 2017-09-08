@@ -126,6 +126,21 @@ void CGVar::InitVectors()
 }
 
 void CGVar::AddMelody(int step1, int step2, int v, CString info) {
+	// Find existing mel_info
+	int found = 1;
+	if (mel_id[step1][v] > -1) {
+		for (int i = step1+1; i <= step2; ++i) {
+			if (mel_id[i][v] != mel_id[i - 1][v]) {
+				found = 0;
+				break;
+			}
+		}
+		if (found) {
+			// Update existing mel_info
+			mel_info[mel_id[step1][v]] = info;
+			return;
+		}
+	}
 	for (int i = step1; i <= step2; ++i) {
 		mel_id[i][v] = mel_info.size();
 	}
