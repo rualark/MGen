@@ -1531,6 +1531,7 @@ check:
 		++accepted3;
 		if (need_exit) break;
 		// Show status
+		if (accepted3 % 100000 == 0) ShowScanStatus(m_cc);
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
 		CreateLinks(acc[cpv]);

@@ -2512,19 +2512,19 @@ void CGenCF1::ShowScanStatus(vector<int> &cc) {
 	CString st;
 	if (method == mScan) {
 		if (task == tGen) {
-			st.Format("Scan progress: %d of %d", cc[wpos1[0]] - min_cc[wpos1[0]],
-				max_cc[wpos1[0]] - min_cc[wpos1[0]]);
+			st.Format("Scan progress: %d of %d", cc_id[wpos1[0]],
+				cc_order[wpos1[0]].size());
 			SetStatusText(2, st);
 		}
 		else {
-			st.Format("Scan progress: %d of %d", cc[smap[0]] - min_cc[smap[0]],
-				max_cc[smap[wpos1[0]]] - min_cc[smap[0]]);
+			st.Format("Scan progress: %d of %d", cc_id[smap[wpos1[0]]],
+				cc_order[smap[wpos1[0]]].size());
 			SetStatusText(2, st);
 		}
 	}
 	else {
-		st.Format("Scan progress: %d of %d", cc[sp1] - min_cc[sp1],
-			max_cc[sp1] - min_cc[sp1]);
+		st.Format("Scan progress: %d of %d", cc_id[sp1],
+			cc_order[sp1].size());
 		SetStatusText(2, st);
 	}
 	if (clib.size() > 0) st.Format("Cycles: %lld (clib %d)", cycle, clib.size());
