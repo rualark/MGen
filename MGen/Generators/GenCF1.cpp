@@ -1819,6 +1819,7 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 
 
 void CGenCF1::ScanInit() {
+	scan_start_time = time();
 	anflags.resize(av_cnt);
 	anflagsc.resize(av_cnt);
 	for (int i = 0; i < av_cnt; ++i) {

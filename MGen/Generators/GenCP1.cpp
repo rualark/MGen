@@ -1559,7 +1559,8 @@ check:
 			status_cycle = scycle;
 		}
 		// Limit SAS correction time
-		if (task == tCor && method == mScan && max_correct_ms && time - scan_start_time > max_correct_ms) break;
+		if (task == tCor && method == mScan && max_correct_ms && time - scan_start_time > max_correct_ms) 
+			break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
 		CreateLinks(acc[cpv]);
