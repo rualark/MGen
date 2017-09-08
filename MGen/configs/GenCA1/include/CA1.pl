@@ -29,7 +29,7 @@ approximations = 500 # Maximum number of approximations to run if rpenalty decre
 swa_steps = 2 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 11 # Maximum interval allowed between each source and corrected note (chromatic)
 animate = 0 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
-animate_delay = 300 # Delay in ms after each animation step
+animate_delay = 0 # Delay in ms after each animation step
 
 # Technical parameters
 midifile_in_mul = 0.5 # Multiply note length with this value when loading
