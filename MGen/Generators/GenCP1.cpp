@@ -309,7 +309,8 @@ int CGenCP1::SendCP() {
 	UpdateNoteMinMax(step00, step - 1);
 	UpdateTempoMinMax(step00, step - 1);
 	mutex_animate.unlock();
-	++cantus_sent;
+	// Increment cantus_sent only if is not animating
+	if (!is_animating) ++cantus_sent;
 	// Create rule penalty string
 	if (!skip_flags) {
 		for (int x = 0; x < max_flags; ++x) {
@@ -1286,6 +1287,7 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 			acycle = acy;
 			scpoint = acc;
+			is_animating = 1;
 			// Start showing from initial step to 0 or 2 voice (for GenCA2)
 			if (m_algo_id == 112) {
 				ScanCP(tEval, 2);
@@ -1294,6 +1296,7 @@ void CGenCP1::SWACP(int i, int dp) {
 			else {
 				ScanCP(tEval, 0);
 			}
+			is_animating = 0;
 			step = step0;
 			ValidateVectors(step0, t_generated - 1);
 			//t_sent = t_generated;

@@ -3050,7 +3050,8 @@ int CGenCF1::SendCantus() {
 	CountTime(step00, step - 1);
 	UpdateNoteMinMax(step00, step - 1);
 	UpdateTempoMinMax(step00, step - 1);
-	++cantus_sent;
+	// Increment cantus_sent only if is not animating
+	if (!is_animating) ++cantus_sent;
 	// Create rule penalty string
 	if (!skip_flags) {
 		for (int x = 0; x < max_flags; ++x) {

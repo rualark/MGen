@@ -337,6 +337,7 @@ protected:
 	// CA1 local variables
 	PmTimestamp animate_time; // Last animate timestamp
 	int acycle = 0; // Animation time divided by animate (ms)
+	int is_animating = 0; // Set to 1 to show than Send is animating
 									
 	// Master parameters
 	vector <int> *scantus; // Source cantus for processing
