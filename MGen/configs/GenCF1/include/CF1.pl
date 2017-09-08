@@ -1,6 +1,7 @@
 # Choose one of algorithms:
 # rswa - Random Sliding Windows Approximation (random_seed and random_range are activated automatically). Shuffle not needed
 # scan - full (or window) scan all possible combinations (can randomize starting vector with random_seed and random_range)
+# SAS - Step-Appending Scan is subclass of window scan, where s_len=1
 
 # Method parameters
 # Recommended: method=window-scan, accept_reseed=1, random_seed=1, late_require=1, s_len=1, random_range=0
