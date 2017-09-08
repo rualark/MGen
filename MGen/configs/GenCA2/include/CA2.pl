@@ -3,8 +3,8 @@ include "../../GenCP1/include/CP1.pl"
 rule_set = 1 # Specify which set of rules to use (see rules.xlsx)
 
 # Method parameters
-#method = window-scan # This method can be faster in some cases
-method = swa # This method is best for analysis and corrections in most cases
+method = window-scan # This method can be faster in some cases
+#method = swa # This method is best for analysis and corrections in most cases
 
 accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
@@ -27,7 +27,7 @@ corrections = 0 # Number of corrections to show. Set to 0 to disable corrections
 pre_bad = 6 # How many notes to recalculate before rule violation
 post_bad = 12 # How many notes to recalculate after rule violation
 animate = 0 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
-animate_delay = 300 # Delay in ms after each animation step
+animate_delay = 0 # Delay in ms after each animation step
 
 # Technical parameters
 midifile_in_mul = 1 # Multiply note length with this value when loading
