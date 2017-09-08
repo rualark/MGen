@@ -252,12 +252,24 @@ void CGenCP1::ScanCPInit() {
 int CGenCP1::SendCP() {
 	int step00 = step;
 	int pause_len = 0;
+	vector<int> len_export;
 	CString st, rpst;
 	int pos = 0, plen;
-	int v, x1;
+	int v, x1, len_temp;
 	Sleep(sleep_ms);
 	PmTimestamp time_start = CGLib::time();
 	PmTimestamp time_stop;
+	len_export.resize(c_len);
+	for (int ls = 0; ls < fli_size; ++ls) {
+		len_temp = 0;
+		s = fli[ls];
+		for (int s2 = s; s2 <= fli2[ls]; ++s2) {
+			len_temp += cc_len[s2];
+		}
+		for (int s2 = s; s2 <= fli2[ls]; ++s2) {
+			len_export[s2] = len_temp;
+		}
+	}
 	for (int av = 0; av < av_cnt; ++av) {
 		CreateLinks(ac[av]);
 		MakeMacc(acc[av]);
