@@ -437,7 +437,7 @@ protected:
 
 	// Random s_len=1 scan
 	vector<int> cc_id; // Current successive identifier of chromatic step
-	vector<vector<int>> cc_rand; // Randomized chromatic steps
+	vector<vector<int>> cc_order; // Randomized chromatic steps
 
 	// FailLeap local variables
 	int leap_start; // Step where leap starts

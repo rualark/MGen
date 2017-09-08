@@ -1820,7 +1820,7 @@ void CGenCF1::ScanInit() {
 	decc.resize(c_len);
 	decc2.resize(c_len);
 	llen.resize(c_len);
-	cc_rand.resize(c_len);
+	cc_order.resize(c_len);
 	cc_id.resize(c_len);
 	bli.resize(c_len);
 	fpenalty.resize(max_flags);
@@ -2014,7 +2014,7 @@ void CGenCF1::SingleCantusInit() {
 			if (sp2 == smatrixc) ep2 = c_len;
 			// Clear scan steps
 			FillCantusMap(cc_id, smap, 0, smatrixc, 0);
-			FillCantusMap(m_cc, smap, 0, smatrixc, cc_rand);
+			FillCantusMap(m_cc, smap, 0, smatrixc, cc_order);
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
@@ -2024,7 +2024,7 @@ void CGenCF1::SingleCantusInit() {
 			skip_flags = 0;
 			// Clear scan steps of current window
 			FillCantusMap(cc_id, smap, sp1, sp2, 0);
-			FillCantusMap(m_cc, smap, sp1, sp2, cc_rand);
+			FillCantusMap(m_cc, smap, sp1, sp2, cc_order);
 		}
 		// Minimum element
 		ep1 = max(0, GetMinSmap() - 1);
@@ -2056,15 +2056,15 @@ void CGenCF1::CalculateCcRand(int step1, int step2) {
 	int x;
 	// Fill consecutive notes
 	for (int i = step1; i < step2; ++i) { //-V756
-		cc_rand[i].clear();
+		cc_order[i].clear();
 		x = min_cc[i]; 
 		while (x <= max_cc[i]) {
-			cc_rand[i].push_back(x);
+			cc_order[i].push_back(x);
 			x += cc_incr[x];
 		}
 		// Shuffle
 		if (random_seed)
-			random_shuffle(cc_rand[i].begin(), cc_rand[i].end());
+			random_shuffle(cc_order[i].begin(), cc_order[i].end());
 	}
 }
 
@@ -2089,7 +2089,7 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	}
 	CalculateCcRand(0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
-	FillCantus(cc, 0, c_len, cc_rand);
+	FillCantus(cc, 0, c_len, cc_order);
 }
 
 void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
@@ -2313,10 +2313,10 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 
 void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 	while (true) {
-		if (cc_id[p] < cc_rand[p].size() - 1) break;
+		if (cc_id[p] < cc_order[p].size() - 1) break;
 		// If current element is max, make it minimum
 		cc_id[p] = 0;
-		cc[p] = cc_rand[p][0];
+		cc[p] = cc_order[p][0];
 		// Move left one element
 		if (task == tCor) {
 			if (pp == sp1) {
@@ -2380,7 +2380,7 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 	if (task == tCor) {
 		// Clear current window
 		FillCantusMap(cc_id, smap, sp1, sp2, 0);
-		FillCantusMap(cc, smap, sp1, sp2, cc_rand);
+		FillCantusMap(cc, smap, sp1, sp2, cc_order);
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
@@ -2400,7 +2400,7 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 		//if (random_seed) RandCantus(c, sp1, sp2);
 		//else
 		FillCantus(cc_id, sp1, sp2, 0);
-		FillCantus(cc, sp1, sp2, cc_rand);
+		FillCantus(cc, sp1, sp2, cc_order);
 		// If this is not first window, go to previous window
 		if (wid > 0) wid--;
 		sp1 = wpos1[wid];
@@ -2427,7 +2427,7 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	cc[smap[sp1 - 1]] = cc_old[smap[sp1 - 1]];
 	// Clear scan steps of current window
 	FillCantusMap(cc_id, smap, sp1, sp2, 0);
-	FillCantusMap(cc, smap, sp1, sp2, cc_rand);
+	FillCantusMap(cc, smap, sp1, sp2, cc_order);
 	return 0;
 }
 
@@ -3497,7 +3497,7 @@ check:
 void CGenCF1::ScanRight(vector<int> &cc) {
 	// Increase rightmost element, which was not reset to minimum
 	++cc_id[p];
-	cc[p] = cc_rand[p][cc_id[p]];
+	cc[p] = cc_order[p][cc_id[p]];
 	// Go to rightmost element
 	if (task == tGen) {
 		p = sp2 - 1;

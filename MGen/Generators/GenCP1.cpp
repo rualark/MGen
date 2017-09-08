@@ -88,7 +88,7 @@ void CGenCP1::MakeNewCP() {
 	}
 	CalculateCcRand(0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
-	FillCantus(acc[cpv], 0, c_len, cc_rand);
+	FillCantus(acc[cpv], 0, c_len, cc_order);
 }
 
 void CGenCP1::SingleCPInit() {
@@ -183,7 +183,7 @@ void CGenCP1::SingleCPInit() {
 			if (sp2 == smatrixc) ep2 = c_len;
 			// Clear scan steps
 			FillCantusMap(cc_id, smap, 0, smatrixc, 0);
-			FillCantusMap(acc[cpv], smap, 0, smatrixc, cc_rand);
+			FillCantusMap(acc[cpv], smap, 0, smatrixc, cc_order);
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
@@ -193,7 +193,7 @@ void CGenCP1::SingleCPInit() {
 			skip_flags = 0;
 			// Clear scan steps of current window
 			FillCantusMap(cc_id, smap, sp1, sp2, 0);
-			FillCantusMap(acc[cpv], smap, sp1, sp2, cc_rand);
+			FillCantusMap(acc[cpv], smap, sp1, sp2, cc_order);
 		}
 		// Minimum element
 		ep1 = max(0, GetMinSmap() - 1);
