@@ -923,23 +923,13 @@ void CGenCP1::CalcDpenaltyCP() {
 }
 
 void CGenCP1::SaveCP() {
-	// If rpenalty is same as min, calculate dpenalty
-	if (optimize_dpenalty) {
-		if (rpenalty_cur == rpenalty_min) {
-			CalcDpenaltyCP();
-			// Do not save cantus if it has higher dpenalty
-			if (dpenalty_cur > dpenalty_min) return;
-			// Do not save cantus if it is same as source
-			if (!dpenalty_cur) return;
-			dpenalty_min = dpenalty_cur;
-		}
-		// If rpenalty lowered, clear dpenalty
-		else {
-			dpenalty_min = MAX_PENALTY;
-			dpenalty_cur = MAX_PENALTY;
-		}
-		dpenalty.push_back(dpenalty_cur);
-	}
+	CalcDpenaltyCP();
+	// Do not save cantus if it has higher dpenalty
+	if (dpenalty_cur > dpenalty_min) return;
+	// Do not save cantus if it is same as source
+	if (!dpenalty_cur) return;
+	dpenalty_min = dpenalty_cur;
+	dpenalty.push_back(dpenalty_cur);
 	clib.push_back(acc[cpv]);
 	rpenalty.push_back(rpenalty_cur);
 	rpenalty_min = rpenalty_cur;

@@ -2530,7 +2530,7 @@ void CGenCF1::ShowScanStatus(vector<int> &cc) {
 	if (clib.size() > 0) st.Format("Cycles: %lld (clib %d)", cycle, clib.size());
 	else st.Format("Cycles: %lld", cycle);
 	SetStatusText(5, st);
-	st.Format("Window %d of %d (rp %.0f)", wid + 1, wcount, rpenalty_min);
+	st.Format("Window %d of %d (rp %.0f, dp %.0f)", wid + 1, wcount, rpenalty_min, dpenalty_min);
 	SetStatusText(1, st);
 	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
@@ -2693,6 +2693,7 @@ void CGenCF1::CalcDpenalty() {
 
 void CGenCF1::SaveCantus() {
 	// If rpenalty is same as min, calculate dpenalty
+	if (!rpenalty_cur) optimize_dpenalty = 1;
 	if (optimize_dpenalty) {
 		if (rpenalty_cur == rpenalty_min) {
 			CalcDpenalty();
