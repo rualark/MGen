@@ -695,7 +695,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 	fs << st;
 	st.Format("tg_max = %f # Maximum generated tempo\n", tg_max);
 	fs << st;
-	st.Format("time_started = %lld # Unix timestamp of generation start\n", time_started);
+	st.Format("gen_start_time = %lld # Unix timestamp of generation start\n", gen_start_time);
 	fs << st;
 	st.Format("time_stopped = %lld # Unix timestamp of generation finish\n", time_stopped);
 	fs << st;
@@ -1218,7 +1218,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 			CheckVar(&st2, &st3, "t_sent", &t_sent);
 			CheckVar(&st2, &st3, "t_send", &t_send);
 			CheckVar(&st2, &st3, "need_exit", &need_exit);
-			LoadVar(&st2, &st3, "time_started", &time_started);
+			LoadVar(&st2, &st3, "gen_start_time", &gen_start_time);
 			LoadVar(&st2, &st3, "time_stopped", &time_stopped);
 			LoadVar(&st2, &st3, "m_config", &m_config);
 			LoadVar(&st2, &st3, "save_format_version", &save_format_version);

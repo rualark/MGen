@@ -579,7 +579,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->StopMIDI();
 		ClearLogs();
 		pGen->StartMIDI(GetMidiI(), 0);
-		pGen->time_started = CGLib::time();
+		pGen->gen_start_time = CGLib::time();
 		// Load results
 		pGen->LoadResults(dir, fname);
 		pGen->LoadResultLogs(dir, fname);
@@ -705,7 +705,7 @@ void CMainFrame::OnButtonGen()
 		// Initialize MIDI
 		pGen->StopMIDI();
 		pGen->StartMIDI(GetMidiI(), 0);
-		pGen->time_started = CGLib::time();
+		pGen->gen_start_time = CGLib::time();
 		// Start generation
 		m_state_gen = 1;
 		m_state_play = 0;
@@ -1069,7 +1069,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 				}
 				// Check generation speed
 				double gtime = pGen->stime[pGen->t_sent - 1]*100/pGen->m_pspeed;
-				double ptime = CGLib::time() - pGen->time_started;
+				double ptime = CGLib::time() - pGen->gen_start_time;
 				if ((gtime / ptime > 2) || (gtime > 30000) || ((gtime / ptime > 1.2) && (gtime > 5000))) {
 					m_state_play = 1;
 					SetTimer(TIMER1, m_view_timer, NULL);
@@ -1157,18 +1157,18 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 		for (int i = 0; i < STATUS_LINES; ++i) {
 			total += CGLib::status_updates[i];
 			st.Format("\n%d per second (%lld in %d seconds) ",
-				CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->time_started),
-				CGLib::status_updates[i], (pGen->time_stopped - pGen->time_started) / 1000);
+				CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time),
+				CGLib::status_updates[i], (pGen->time_stopped - pGen->gen_start_time) / 1000);
 			st2 += st;
 		}
 		st.Format("Status updates: %d per second (%lld in %d seconds). Detailed: ",
-			total * 1000 / (pGen->time_stopped - pGen->time_started),
-			total, (pGen->time_stopped - pGen->time_started) / 1000);
+			total * 1000 / (pGen->time_stopped - pGen->gen_start_time),
+			total, (pGen->time_stopped - pGen->gen_start_time) / 1000);
 		st2 = st + st2;
 		CGLib::WriteLog(2, st2);
-		if (pGen->time_stopped - pGen->time_started > 1000 && total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_STATUS_FREQ) {
+		if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time) > WARN_STATUS_FREQ) {
 			st.Format("Algorithm status update is %d per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
-				total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_STATUS_FREQ);
+				total * 1000 / (pGen->time_stopped - pGen->gen_start_time), WARN_STATUS_FREQ);
 			CGLib::WriteLog(1, st);
 		}
 	}
@@ -1180,18 +1180,18 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 		for (int i = 0; i < LOG_TABS; ++i) {
 			total += CGLib::logs_sent[i];
 			st.Format("\n%d per second (%lld in %d seconds) ",
-				CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->time_started),
-				CGLib::logs_sent[i], (pGen->time_stopped - pGen->time_started) / 1000);
+				CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time),
+				CGLib::logs_sent[i], (pGen->time_stopped - pGen->gen_start_time) / 1000);
 			st2 += st;
 		}
 		st.Format("Logs sent: %d per second (%lld in %d seconds). Detailed: ",
-			total * 1000 / (pGen->time_stopped - pGen->time_started),
-			total, (pGen->time_stopped - pGen->time_started) / 1000);
+			total * 1000 / (pGen->time_stopped - pGen->gen_start_time),
+			total, (pGen->time_stopped - pGen->gen_start_time) / 1000);
 		st2 = st + st2;
 		CGLib::WriteLog(2, st2);
-		if (pGen->time_stopped - pGen->time_started > 1000 && total * 1000 / (pGen->time_stopped - pGen->time_started) > WARN_LOG_FREQ) {
+		if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time) > WARN_LOG_FREQ) {
 			st.Format("Algorithm sends %d logs per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
-				total * 1000 / (pGen->time_stopped - pGen->time_started), WARN_LOG_FREQ);
+				total * 1000 / (pGen->time_stopped - pGen->gen_start_time), WARN_LOG_FREQ);
 			CGLib::WriteLog(1, st);
 		}
 	}
