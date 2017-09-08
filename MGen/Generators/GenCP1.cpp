@@ -260,6 +260,9 @@ int CGenCP1::SendCP() {
 	PmTimestamp time_stop;
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
+	if (!mutex_animate.try_lock_for(chrono::milliseconds(5000))) {
+		WriteLog(5, "Critical error: ResizeVectors mutex timed out");
+	}
 	for (int av = 0; av < av_cnt; ++av) {
 		CreateLinks(ac[av]);
 		MakeMacc(acc[av]);
@@ -305,6 +308,7 @@ int CGenCP1::SendCP() {
 	CountTime(step00, step - 1);
 	UpdateNoteMinMax(step00, step - 1);
 	UpdateTempoMinMax(step00, step - 1);
+	mutex_animate.unlock();
 	++cantus_sent;
 	// Create rule penalty string
 	if (!skip_flags) {

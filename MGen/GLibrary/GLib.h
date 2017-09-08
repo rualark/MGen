@@ -221,6 +221,7 @@ public:
 	static CString m_cline2; // Command line filename
 	static int exitcode; // Exit code of application
 	UINT WM_GEN_FINISH = 0;
+	timed_mutex mutex_animate; // Mutex to lock data changes in CF1/CP1/CA1/CA2 algorithms for InfoDlg
 	timed_mutex mutex_output;
 	static timed_mutex mutex_log;
 	int need_exit = 0; // If thread needs to exit due to generation abort
