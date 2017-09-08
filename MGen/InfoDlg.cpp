@@ -51,7 +51,11 @@ BOOL CInfoDlg::OnInitDialog()
 	CGMidi *pGen = mf->pGen;
 	if (pGen != 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
-			mf->WriteLog(5, "InfoDlg mutex timed out: showing nothing");
+			mf->WriteLog(5, "InfoDlg output mutex timed out: showing nothing");
+			return TRUE;
+		}
+		if (!pGen->mutex_animate.try_lock_for(chrono::milliseconds(1000))) {
+			mf->WriteLog(5, "InfoDlg animate mutex timed out: showing nothing");
 			return TRUE;
 		}
 		int mx = mf->mx;
@@ -191,6 +195,7 @@ BOOL CInfoDlg::OnInitDialog()
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);
 		pGen->mutex_output.unlock();
+		pGen->mutex_animate.unlock();
 
 		//SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 	}
