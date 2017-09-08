@@ -2938,9 +2938,9 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	note[pos + i][v] = cc[x];
 	tonic[pos + i][v] = tonic_cur;
 	minor[pos + i][v] = minor_cur;
-	len[pos + i][v] = cc_len[x];
+	len[pos + i][v] = len_export[x];
 	pause[pos + i][v] = 0;
-	coff[pos + i][v] = i;
+	coff[pos + i][v] = coff_export[x] + i;
 	// Add scan range
 	if (show_note_scan_range) {
 		if (av == cpv) {
@@ -2993,6 +2993,28 @@ int CGenCF1::SendPause(int pos, int v) {
 	return pause_len;
 }
 
+void CGenCF1::MakeLenExport(int step1, int av)
+{
+	int len_temp, last_pos;
+	// Create note length
+	last_pos = 0;
+	len_temp = 0;
+	for (s = step1; s < c_len; ++s) {
+		if (acc[av][s] != acc[av][last_pos]) {
+			for (int s2 = last_pos; s2 < s; ++s2) {
+				len_export[s2] = len_temp;
+			}
+			last_pos = s;
+			len_temp = 0;
+		}
+		coff_export[s] = len_temp;
+		len_temp += cc_len[s];
+	}
+	for (int s2 = last_pos; s2 < c_len; ++s2) {
+		len_export[s2] = len_temp;
+	}
+}
+
 int CGenCF1::SendCantus() {
 	int step00 = step;
 	// Save culmination position
@@ -3002,6 +3024,9 @@ int CGenCF1::SendCantus() {
 	int v = svoice;
 	Sleep(sleep_ms);
 	TransposeCantusBack();
+	len_export.resize(c_len);
+	coff_export.resize(c_len);
+	MakeLenExport(0, 0);
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);

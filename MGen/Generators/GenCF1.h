@@ -195,6 +195,7 @@ protected:
 	void SendNotes(int pos, int i, int v, int av, int x, vector<int>& cc);
 	void MakeBellDyn(int v, int step1, int step2, int dyn1, int dyn2, int dyn_rand);
 	int SendPause(int pos, int v);
+	inline void MakeLenExport(int step1, int av);
 	int SendCantus();
 	int InitGen();
 	int InitCantus();
@@ -430,6 +431,8 @@ protected:
 	int fn = 0; // First note of analyzed melody
 	int error = 0;
 	vector<float> maw; // Moving average weight
+	vector<int> len_export; // For Send
+	vector<int> coff_export; // For Send
 
 	// Random s_len=1 scan
 	vector<int> cc_id; // Current successive identifier of chromatic step
