@@ -2990,14 +2990,14 @@ int CGenCF1::SendPause(int pos, int v) {
 	return pause_len;
 }
 
-void CGenCF1::MakeLenExport(int step1, int av)
+void CGenCF1::MakeLenExport(vector<int> &cc, int step1, int av)
 {
 	int len_temp, last_pos;
 	// Create note length
 	last_pos = 0;
 	len_temp = 0;
 	for (s = step1; s < c_len; ++s) {
-		if (acc[av][s] != acc[av][last_pos]) {
+		if (cc[s] != cc[last_pos]) {
 			for (int s2 = last_pos; s2 < s; ++s2) {
 				len_export[s2] = len_temp;
 			}
@@ -3023,7 +3023,7 @@ int CGenCF1::SendCantus() {
 	TransposeCantusBack();
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
-	MakeLenExport(0, 0);
+	MakeLenExport(m_cc, 0, 0);
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);

@@ -195,7 +195,7 @@ protected:
 	void SendNotes(int pos, int i, int v, int av, int x, vector<int>& cc);
 	void MakeBellDyn(int v, int step1, int step2, int dyn1, int dyn2, int dyn_rand);
 	int SendPause(int pos, int v);
-	inline void MakeLenExport(int step1, int av);
+	inline void MakeLenExport(vector<int>& cc, int step1, int av);
 	int SendCantus();
 	int InitGen();
 	int InitCantus();

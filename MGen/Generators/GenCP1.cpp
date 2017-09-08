@@ -278,7 +278,7 @@ int CGenCP1::SendCP() {
 		else {
 			x1 = 0;
 		}
-		MakeLenExport(x1, av);
+		MakeLenExport(acc[av], x1, av);
 		// Copy cantus to output
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = x1; x < c_len; ++x) {
