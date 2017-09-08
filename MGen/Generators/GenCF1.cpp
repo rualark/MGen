@@ -2070,6 +2070,7 @@ void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
 		int finished;
 		// Fill notes starting with source melody, gradually moving apart
 		for (int i = step1; i < step2; ++i) {
+			cc_order[i].clear();
 			// Send first note
 			x = cc_old[i];
 			if (x < min_cc[i]) x = min_cc[i];
