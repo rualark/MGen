@@ -41,7 +41,7 @@ void CGenCA1::GetCPKey()
 	key_eval.Format("major confidence %d [%s], minor confidence %d [%s]", c1, kst1, c2, kst2);
 	if (c1 == 0 && c2 == 0) {
 		tonic_cur = -1;
-		WriteLog(3, "Key evaluation: " + key_eval);
+		WriteLog(5, "Key evaluation: " + key_eval);
 		return;
 	}
 	// Cope with same confidence
