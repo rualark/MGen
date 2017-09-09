@@ -30,7 +30,7 @@ species = 1 # Choose counterpoint species
 rpenalty_accepted = 0 # Maximum accepted rule penalty for RandomSWA
 
 # Technical parameters
-midifile_in_mul = 0.5 # Multiply note length with this value when loading
+midifile_in_mul = 2 # Multiply note length with this value when loading
 t_cnt = 1000000 # Maximum number of steps generated
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics

@@ -924,9 +924,9 @@ void CGenCP1::CalcDpenaltyCP() {
 
 void CGenCP1::SaveCP() {
 	// If rpenalty is same as min, calculate dpenalty
+	CalcDpenaltyCP();
 	if (method == mScan || optimize_dpenalty) {
 		if (rpenalty_cur == rpenalty_min) {
-			CalcDpenaltyCP();
 			// Do not save cantus if it has higher dpenalty
 			if (dpenalty_cur > dpenalty_min) return;
 			// Do not save cantus if it is same as source
@@ -1559,8 +1559,7 @@ check:
 			status_cycle = scycle;
 		}
 		// Limit SAS correction time
-		if (task == tCor && method == mScan && max_correct_ms && time - scan_start_time > max_correct_ms) 
-			break;
+		if (task == tCor && method == mScan && max_correct_ms && time - scan_start_time > max_correct_ms) break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
 		CreateLinks(acc[cpv]);
