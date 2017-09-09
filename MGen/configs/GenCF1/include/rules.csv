@@ -27,7 +27,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;146;40;Melody;Compensated leap;C4P last 4 leaps;5th;-1;Compensated to 4th, precompensated;
 1;147;100;Melody;Compensated leap;C4P last 4 leaps;>5th;0;Compensated to 4th, precompensated;
 1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;
-1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;-1;;
+1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;0;;
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated;5th;0;;
 1;115;100;Melody;Uncompensated leap;Uncompensated: precompensated;>5th;0;;
 1;204;0;Melody;Uncompensated leap;Precompensated last 2 leaps;3rd;-1;;
