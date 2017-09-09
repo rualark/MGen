@@ -234,7 +234,7 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 	for (int m = 0; m < corrections; ++m) {
 		// Find minimum penalty
 		cids.clear();
-		float dpenalty_min2 = MAX_PENALTY;
+		int dpenalty_min2 = MAX_PENALTY;
 		for (int x = 0; x < cnum; x++) if (dpenalty[x] < dpenalty_min2) dpenalty_min2 = dpenalty[x];
 		// Get all best corrections
 		for (int x = 0; x < cnum; x++) if (dpenalty[x] == dpenalty_min2) {
@@ -248,7 +248,7 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 			ccount++;
 			if (ccount > corrections) break;
 			// Write log
-			st.Format("%.0f/%.0f/%zu/%zu ", rpenalty_min, dpenalty_min2, cids.size(), clib.size());
+			st.Format("%.0f/%d/%zu/%zu ", rpenalty_min, dpenalty_min2, cids.size(), clib.size());
 			st2 += st;
 			// Show initial melody again if this is not first iteration
 			if (ccount > 1) {
@@ -411,6 +411,7 @@ void CGenCA1::Generate()
 		}
 		step1 = step;
 		step = step0;
+		correct_start_time = CGLib::time();
 		if (method == mSWA) {
 			SWA(i, 1);
 		}

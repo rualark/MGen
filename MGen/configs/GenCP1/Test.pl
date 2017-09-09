@@ -7,4 +7,4 @@ Midi_file = midi\good-cf-min.mid # Path and file name of imported midi file
 method = window-scan
 cantus_id = 14
 cantus_high = 0
-species = 5
+species = 2

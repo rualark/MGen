@@ -1835,6 +1835,7 @@ void CGenCF1::ScanInit() {
 	decc2.resize(c_len);
 	llen.resize(c_len);
 	cc_order.resize(c_len);
+	dpenalty_step.resize(c_len);
 	cc_id.resize(c_len);
 	bli.resize(c_len);
 	fpenalty.resize(max_flags);
@@ -2584,11 +2585,14 @@ void CGenCF1::ShowScanStatus() {
 			progress_st += st;
 		}
 	}
+	int scan_time;
+	if (task == tCor) scan_time = (time() - correct_start_time) / 1000;
+	else (time() - scan_start_time) / 1000;
 	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + "(Scan progress)");
-	if (clib.size() > 0) st.Format("Cycles: %lld (clib %d)", cycle, clib.size());
-	else st.Format("Cycles: %lld", cycle);
+	if (clib.size() > 0) st.Format("CY %lld, CL %d, ST %d", cycle, clib.size(), scan_time);
+	else st.Format("CY %lld, ST %d", cycle, scan_time);
 	SetStatusText(5, st);
-	st.Format("Window %d of %d (rp %.0f, dp %.0f)", wid + 1, wcount, rpenalty_min, dpenalty_min);
+	st.Format("WI %d/%d, RP %.0f, DP %d", wid + 1, wcount, rpenalty_min, dpenalty_min);
 	SetStatusText(1, st);
 	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
@@ -3137,7 +3141,7 @@ int CGenCF1::SendCantus() {
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nDistance penalty: %.0f", cantus_id+1, midi_file, rpst, dpenalty_cur);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nDistance penalty: %d", cantus_id+1, midi_file, rpst, dpenalty_cur);
 			}
 			else {
 				// If evaluating
@@ -3205,6 +3209,9 @@ void CGenCF1::TestDiatonic()
 // Create random cantus and optimize it using SWA
 void CGenCF1::RandomSWA()
 {
+	// Init animation
+	correct_start_time = time();
+	acycle = 0;
 	CString st;
 	// Unique checker
 	VSet<int> vs; 

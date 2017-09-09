@@ -102,21 +102,6 @@ void CGenCP1::SingleCPInit() {
 	}
 	// Save value for future use;
 	acc_old = acc;
-	/*
-	if (!swa_inrange) {
-		GetRealRange(ac[cfv], acc[cfv]);
-		ApplySourceRange();
-	}
-	// Set pitch limits
-	// If too wide range is not accepted, correct range to increase scan performance
-	if (!accept[37]) {
-	for (int i = 0; i < c_len; ++i) {
-	min_c[i] = max(minc, c[i] - correct_range);
-	max_c[i] = min(maxc, c[i] + correct_range);
-	}
-	}
-	else {
-	*/
 	// Calculate limits
 	if (cantus_high) {
 		for (int i = fn; i < c_len; ++i) {
@@ -185,6 +170,8 @@ void CGenCP1::SingleCPInit() {
 			FillCantusMap(cc_id, smap, 0, smatrixc, 0);
 			FillCantusMap(acc[cpv], smap, 0, smatrixc, cc_order);
 			// Can skip flags - full scan must remove all flags
+			dpenalty_step.clear();
+			dpenalty_step.resize(c_len, 0);
 		}
 		// For sliding windows algorithm evaluate whole melody
 		if (method == mSWA) {
@@ -341,7 +328,7 @@ int CGenCP1::SendCP() {
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %s\nDistance penalty: %.0f", cantus_id+1, midi_file, cantus_high ? "high" : "low", species, rpst, dpenalty_cur);
+				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %s\nDistance penalty: %d", cantus_id+1, midi_file, cantus_high ? "high" : "low", species, rpst, dpenalty_cur);
 			}
 			else {
 				// If evaluating
@@ -916,15 +903,30 @@ int CGenCP1::FailVIntervals() {
 
 void CGenCP1::CalcDpenaltyCP() {
 	dpenalty_cur = 0;
-	for (int z = 0; z < c_len; z++) {
+	for (int z = fn; z < ep2; ++z) {
 		int dif = abs(acc_old[cpv][z] - acc[cpv][z]);
 		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
 	}
 }
 
+void CGenCP1::CalcStepDpenaltyCP(int i) {
+	int dif = abs(acc_old[cpv][i] - acc[cpv][i]);
+	int dpe = 0;
+	if (dif) dpe = step_penalty + pitch_penalty * dif;
+	if (i > fn) dpenalty_step[i] = dpenalty_step[i-1] + dpe;
+	else dpenalty_step[i] = dpe;
+}
+
 void CGenCP1::SaveCP() {
-	// If rpenalty is same as min, calculate dpenalty
+	dpenalty_cur = dpenalty_step[c_len - 1];
+	/*
 	CalcDpenaltyCP();
+	if (dpenalty_cur != dpenalty_step[c_len - 1]) {
+		CString est;
+		est.Format("Dpenalty wrong: step calculation has %d while total calculation returned %d", dpenalty_step[c_len - 1], dpenalty_cur);
+		WriteLog(5, est);
+	}
+	*/
 	if (method == mScan || optimize_dpenalty) {
 		if (rpenalty_cur == rpenalty_min) {
 			// Do not save cantus if it has higher dpenalty
@@ -1294,7 +1296,7 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 		}
 		if (acc[cfv].size() > 60 || s_len > 0) {
-			st.Format("SWA%d attempt: %d, rp %.0f", s_len, a+1, rpenalty_min);
+			st.Format("SWA%d #%d RP %.0f DP %d", s_len, a+1, rpenalty_min, dpenalty_min);
 			SetStatusText(4, st);
 		}
 		// Animation
@@ -1304,7 +1306,7 @@ void CGenCP1::SWACP(int i, int dp) {
 		if (!animate || acy > acycle) {
 			if (debug_level > 2) {
 				CString est;
-				est.Format("Animation at SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld",
+				est.Format("Animation at SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld",
 					s_len, a + 1, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 				WriteLog(3, est);
 			}
@@ -1354,7 +1356,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	CString est;
 	// For successful rpenalty_cur == 0, show last flag that was fixed. For unsuccessful, show best variant
 	CString sst = GetStuck();
-	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s",
+	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %d ms): %s",
 		s_len, a+1, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
 	WriteLog(3, est);
 	TestBestRpenalty();
@@ -1520,6 +1522,11 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
+		// Check if dpenalty is already too high
+		if (task == tCor && !rpenalty_min) {
+			CalcStepDpenaltyCP(ep2 - 1);
+			if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
+		}
 		//LogCantus("ep2", ep2, cc_id);
 		//if (MatchVectors(acc[cpv], test_cc, 0, 23))
 		//	WriteLog(1, "Found");

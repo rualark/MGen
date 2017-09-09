@@ -325,8 +325,8 @@ protected:
 	//int fullscan_max = 7; // Maximum steps length to full scan. If melody is longer, use SWA
 	int approximations = 30; // Maximum number of approximations to run if penalty decreases
 	int swa_steps = 6; // Size of Sliding Window Approximation algorithm window in steps
-	float step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
-	float pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
+	int step_penalty = 3; // Penalty for adding one more changing step while correcting cantus
+	int pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int optimize_dpenalty = 1; // Saves only melodies closest to source melody. Decreases memory usage. Resetting allows for more close results when corrections>1
 	int transpose_back = 0; // Set to 1 to transpose generated melody closer to initial first note. Can be set to 1 only for CF1 generation algorithms
 
@@ -387,9 +387,9 @@ protected:
 	float rpenalty_cur = 0; // Rules penalty
 	float rpenalty_min; // Minimum rules penalty for this scan
 	vector <float> rpenalty; // Penalty in terms of sum of flag severity
-	float dpenalty_cur = 0; // Distance from source penalty
-	float dpenalty_min; // Minimum distance penalty for this scan
-	vector <float> dpenalty; // Penalty in terms of distance from source
+	int dpenalty_cur = 0; // Distance from source penalty
+	int dpenalty_min; // Minimum distance penalty for this scan
+	vector <int> dpenalty; // Penalty in terms of distance from source
 	vector <int> cc_len; // Length of each cantus note
 	vector <float> cc_tempo; // Tempo of each cantus note
 	int real_len; // Total length of cantus in steps
@@ -401,6 +401,7 @@ protected:
 	vector<int> m_cc_old; // Cantus chromatic saved for SWA
 	vector<int> wpos1;
 	vector<int> wpos2;
+	vector<int> dpenalty_step; // Dpenalty of all steps up to current
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	vector<int> min_c;
 	vector<int> max_c;
