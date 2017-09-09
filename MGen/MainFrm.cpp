@@ -1556,7 +1556,7 @@ void CMainFrame::OnUpdateCheckNcolors(CCmdUI *pCmdUI) {
 
 void CMainFrame::OnButtonErules()
 {
-	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "configs\\GenCF1\\include\\rules.xlsm", NULL, NULL, SW_SHOWNORMAL);
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "configs\\rules\\rules.xlsm", NULL, NULL, SW_SHOWNORMAL);
 }
 
 void CMainFrame::OnButtonSstatus2()
