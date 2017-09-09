@@ -439,12 +439,12 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	// Load HSP
 	if (*sN == "hsp_file") {
 		++parameter_found;
-		LoadHSP(GetLinkedPath(*sV, m_current_config));
+		LoadHSP("configs\\rules\\" + *sV);
 	}
 	// Load rules
 	if (*sN == "rules_file") {
 		++parameter_found;
-		LoadRules(GetLinkedPath(*sV, m_current_config));
+		LoadRules("configs\\rules\\" + *sV);
 		ParseRules();
 	}
 	// Load method
