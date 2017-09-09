@@ -2564,23 +2564,21 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 }
 
 void CGenCF1::ShowScanStatus() {
+	if (task == tEval) return;
 	CString st, progress_st;
-	if (method == mScan) {
-		if (task == tGen) {
-			for (int i = 0; i < wcount; ++i) {
-				st.Format("%d ", cc_id[wpos1[i]]);
-				progress_st += st;
-			}
+	if (task == tGen && method == mScan) {
+		for (int i = 0; i < wcount; ++i) {
+			st.Format("%d ", cc_id[wpos1[i]]);
+			progress_st += st;
 		}
-		else if (task == tCor) {
-			for (int i = 0; i < smatrixc; ++i) {
-				st.Format("%d ", cc_id[smap[i]]);
-				progress_st += st;
-			}
-		}
-		// Do not show scan progress for evaluation task
 	}
-	else {
+	else if (task == tCor && method == mScan) {
+		for (int i = 0; i < smatrixc; ++i) {
+			st.Format("%d ", cc_id[smap[i]]);
+			progress_st += st;
+		}
+	}
+	else if (method == mSWA) {
 		for (int i = 0; i < smatrixc; ++i) {
 			st.Format("%d ", cc_id[smap[i]]);
 			progress_st += st;
