@@ -2564,25 +2564,29 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 }
 
 void CGenCF1::ShowScanStatus() {
-	CString st;
+	CString st, progress_st;
 	if (method == mScan) {
 		if (task == tGen) {
-			st.Format("Scan progress: %d of %d", cc_id[wpos1[0]],
-				cc_order[wpos1[0]].size());
-			SetStatusText(2, st);
+			for (int i = 0; i < wcount; ++i) {
+				st.Format("%d ", cc_id[wpos1[i]]);
+				progress_st += st;
+			}
 		}
 		else if (task == tCor) {
-			st.Format("Scan progress: %d of %d", cc_id[smap[wpos1[0]]],
-				cc_order[smap[wpos1[0]]].size());
-			SetStatusText(2, st);
+			for (int i = 0; i < smatrixc; ++i) {
+				st.Format("%d ", cc_id[smap[i]]);
+				progress_st += st;
+			}
 		}
 		// Do not show scan progress for evaluation task
 	}
 	else {
-		st.Format("Scan progress: %d of %d", cc_id[sp1],
-			cc_order[sp1].size());
-		SetStatusText(2, st);
+		for (int i = 0; i < smatrixc; ++i) {
+			st.Format("%d ", cc_id[smap[i]]);
+			progress_st += st;
+		}
 	}
+	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + "(Scan progress)");
 	if (clib.size() > 0) st.Format("Cycles: %lld (clib %d)", cycle, clib.size());
 	else st.Format("Cycles: %lld", cycle);
 	SetStatusText(5, st);
