@@ -100,38 +100,40 @@ void CGenCP1::SingleCPInit() {
 			ac[v][i] = CC_C(acc[v][i], tonic_cur, minor_cur);
 		}
 	}
-	// Save value for future use;
-	acc_old = acc;
-	// Calculate limits
-	if (cantus_high) {
-		for (int i = fn; i < c_len; ++i) {
-			min_cc[i] = max(acc[cfv][i] - burst_between,
-				max(src_nmin, max(cf_nmax - sum_interval, acc[cpv][i] - correct_range)));
-			max_cc[i] = min(acc[cfv][i] - min_between, 
-				min(max(src_nmax, min_cc[i] + (src_nmax - src_nmin)),
-					max(acc[cpv][i] + correct_range, min_cc[i] + 2*correct_range)));
+	if (!is_animating) {
+		// Save value for future use;
+		acc_old = acc;
+		// Calculate limits
+		if (cantus_high) {
+			for (int i = fn; i < c_len; ++i) {
+				min_cc[i] = max(acc[cfv][i] - burst_between,
+					max(src_nmin, max(cf_nmax - sum_interval, acc[cpv][i] - correct_range)));
+				max_cc[i] = min(acc[cfv][i] - min_between,
+					min(max(src_nmax, min_cc[i] + (src_nmax - src_nmin)),
+						max(acc[cpv][i] + correct_range, min_cc[i] + 2 * correct_range)));
+			}
 		}
-	}
-	else {
-		for (int i = fn; i < c_len; ++i) {
-			max_cc[i] = min(acc[cfv][i] + burst_between,
-				min(src_nmax, min(cf_nmin + sum_interval, acc[cpv][i] + correct_range)));
-			min_cc[i] = max(acc[cfv][i] + min_between, 
-				max(min(src_nmin, max_cc[i] - (src_nmax - src_nmin)), 
-					min(acc[cpv][i] - correct_range, max_cc[i] - 2*correct_range)));
+		else {
+			for (int i = fn; i < c_len; ++i) {
+				max_cc[i] = min(acc[cfv][i] + burst_between,
+					min(src_nmax, min(cf_nmin + sum_interval, acc[cpv][i] + correct_range)));
+				min_cc[i] = max(acc[cfv][i] + min_between,
+					max(min(src_nmin, max_cc[i] - (src_nmax - src_nmin)),
+						min(acc[cpv][i] - correct_range, max_cc[i] - 2 * correct_range)));
+			}
 		}
+		// Convert limits to diatonic and recalibrate
+		for (int i = fn; i < c_len; ++i) {
+			min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
+			max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
+			min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
+			max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
+		}
+		sp1 = fn;
+		sp2 = c_len;
+		ep1 = max(0, sp1 - 1);
+		ep2 = c_len;
 	}
-	// Convert limits to diatonic and recalibrate
-	for (int i = fn; i < c_len; ++i) {
-		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
-		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
-		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
-		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
-	}
-	sp1 = fn;
-	sp2 = c_len;
-	ep1 = max(0, sp1 - 1);
-	ep2 = c_len;
 	// Clear flags
 	++accepted3;
 	fill(flags.begin(), flags.end(), 0);
@@ -942,8 +944,11 @@ void CGenCP1::SaveCP() {
 			is_animating = 1;
 			// Start showing from initial step to 2 voice (for GenCA2)
 			if (m_algo_id == 112) svoice = 2;
-			SendCP();
+			ScanCP(tEval, 2);
+			// Reinitialize
+			task = tCor;
 			ShowLiningCP(acc[cpv]);
+			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 			is_animating = 0;
 			step = step0;
 			ValidateVectors(step0, t_generated - 1);

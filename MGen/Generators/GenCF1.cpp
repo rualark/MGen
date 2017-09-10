@@ -1816,66 +1816,68 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 
 
 void CGenCF1::ScanInit() {
-	scan_start_time = time();
-	anflags.resize(av_cnt);
-	anflagsc.resize(av_cnt);
-	for (int i = 0; i < av_cnt; ++i) {
-		anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
-		anflagsc[i].resize(c_len); // number of flags for each note
+	if (!is_animating) {
+		scan_start_time = time();
+		anflags.resize(av_cnt);
+		anflagsc.resize(av_cnt);
+		for (int i = 0; i < av_cnt; ++i) {
+			anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
+			anflagsc[i].resize(c_len); // number of flags for each note
+		}
+		uli.resize(c_len);
+		fli.resize(c_len);
+		fli2.resize(c_len);
+		macc.resize(c_len);
+		macc2.resize(c_len);
+		decc.resize(c_len);
+		decc2.resize(c_len);
+		llen.resize(c_len);
+		cc_order.resize(c_len);
+		dpenalty_step.resize(c_len);
+		cc_id.resize(c_len);
+		bli.resize(c_len);
+		fpenalty.resize(max_flags);
+		wpos1.resize(c_len / s_len + 1);
+		wpos2.resize(c_len / s_len + 1);
+		min_c.resize(c_len);
+		max_c.resize(c_len);
+		min_cc.resize(c_len);
+		max_cc.resize(c_len);
+		hm.resize(c_len);
+		hm2.resize(c_len);
+		accepted4.resize(MAX_WIND); // number of accepted canti per window
+		accepted5.resize(MAX_WIND); // number of canti with neede flags per window
+		flags.resize(MAX_RULES); // Flags for whole cantus
+		fstat.resize(MAX_RULES); // number of canti with each flag
+		fcor.resize(MAX_RULES, vector<long long>(MAX_RULES)); // Flags correlation matrix
+		seed_cycle = 0; // Number of cycles in case of random_seed
+		reseed_count = 0;
+		nstat.resize(MAX_NOTE);
+		nstat2.resize(MAX_NOTE);
+		nstat3.resize(MAX_NOTE);
+		cycle = 0;
+		wscans.resize(MAX_WIND); // number of full scans per window
+		wcount = 1; // Number of windows created
+		accepted = 0;
+		accepted2 = 0;
+		accepted3 = 0;
+		// Initialize fblock if calculation is needed
+		if (calculate_blocking) {
+			fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(max_flags, vector<long>(max_flags)));
+		}
+		// Init best rejected results
+		if (best_rejected) {
+			rcycle = 0;
+			accept_time = CGLib::time();
+			if (method == mScan) rpenalty_min = MAX_PENALTY;
+		}
+		for (int x = fn; x < c_len; ++x) {
+			hm[x].resize(3);
+			hm2[x].resize(3);
+		}
 	}
-	uli.resize(c_len);
-	fli.resize(c_len);
-	fli2.resize(c_len);
-	macc.resize(c_len);
-	macc2.resize(c_len);
-	decc.resize(c_len);
-	decc2.resize(c_len);
-	llen.resize(c_len);
-	cc_order.resize(c_len);
-	dpenalty_step.resize(c_len);
-	cc_id.resize(c_len);
-	bli.resize(c_len);
-	fpenalty.resize(max_flags);
-	wpos1.resize(c_len / s_len + 1);
-	wpos2.resize(c_len / s_len + 1);
-	min_c.resize(c_len);
-	max_c.resize(c_len);
-	min_cc.resize(c_len);
-	max_cc.resize(c_len);
-	hm.resize(c_len);
-	hm2.resize(c_len);
-	accepted4.resize(MAX_WIND); // number of accepted canti per window
-	accepted5.resize(MAX_WIND); // number of canti with neede flags per window
-	flags.resize(MAX_RULES); // Flags for whole cantus
-	fstat.resize(MAX_RULES); // number of canti with each flag
-	fcor.resize(MAX_RULES, vector<long long>(MAX_RULES)); // Flags correlation matrix
-	seed_cycle = 0; // Number of cycles in case of random_seed
-	reseed_count = 0;
-	nstat.resize(MAX_NOTE);
-	nstat2.resize(MAX_NOTE);
-	nstat3.resize(MAX_NOTE);
-	cycle = 0;
-	wscans.resize(MAX_WIND); // number of full scans per window
-	wcount = 1; // Number of windows created
-	accepted = 0;
-	accepted2 = 0;
-	accepted3 = 0;
 	// Can we skip flags?
 	skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
-	// Initialize fblock if calculation is needed
-	if (calculate_blocking) {
-		fblock = vector<vector<vector<long>>>(MAX_WIND, vector<vector<long>>(max_flags, vector<long>(max_flags)));
-	}
-	// Init best rejected results
-	if (best_rejected) {
-		rcycle = 0;
-		accept_time = CGLib::time();
-		if (method == mScan) rpenalty_min = MAX_PENALTY;
-	}
-	for (int x = fn; x < c_len; ++x) {
-		hm[x].resize(3);
-		hm2[x].resize(3);
-	}
 }
 
 void CGenCF1::ScanCantusInit() {
