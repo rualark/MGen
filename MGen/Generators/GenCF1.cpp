@@ -2589,7 +2589,8 @@ void CGenCF1::ShowScanStatus() {
 	if (clib.size() > 0) st.Format("CY %lld, CL %d, ST %d", cycle, clib.size(), scan_time);
 	else st.Format("CY %lld, ST %d", cycle, scan_time);
 	SetStatusText(5, st);
-	st.Format("WI %d/%d, RP %.0f, DP %d", wid + 1, wcount, rpenalty_min, dpenalty_min);
+	if (task == tCor) st.Format("WI %d/%d, RP %.0f, DP %d", wid + 1, wcount, rpenalty_min, dpenalty_min);
+	else st.Format("WI %d/%d", wid + 1, wcount, rpenalty_min, dpenalty_min);
 	SetStatusText(1, st);
 	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
