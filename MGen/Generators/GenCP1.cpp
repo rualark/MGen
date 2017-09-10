@@ -1261,7 +1261,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
 					dpenalty[x] = 0;
 					for (int z = fn; z < c_len; z++) {
-						int dif = abs(cpoint[i][1][z] - clib[x][z]);
+						int dif = abs(cpoint[i][cpv][z] - clib[x][z]);
 						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
 					}
 					if (dpenalty[x] && dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
