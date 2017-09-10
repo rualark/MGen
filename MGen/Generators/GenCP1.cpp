@@ -913,30 +913,20 @@ void CGenCP1::CalcStepDpenaltyCP(int i) {
 }
 
 void CGenCP1::SaveCP() {
-	dpenalty_cur = dpenalty_step[c_len - 1];
-	/*
-	CalcDpenaltyCP();
-	if (dpenalty_cur != dpenalty_step[c_len - 1]) {
-		CString est;
-		est.Format("Dpenalty wrong: step calculation has %d while total calculation returned %d", dpenalty_step[c_len - 1], dpenalty_cur);
-		WriteLog(5, est);
+	if (method == mScan) dpenalty_cur = dpenalty_step[c_len - 1];
+	if (!dpenalty_cur) dpenalty_cur = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
+	if (rpenalty_cur == rpenalty_min) {
+		// Do not save cantus if it has higher dpenalty
+		if (dpenalty_cur > dpenalty_min) return;
+		// Do not save cantus if it is same as source
+		if (!dpenalty_cur) return;
+		dpenalty_min = dpenalty_cur;
 	}
-	*/
-	if (method == mScan || optimize_dpenalty) {
-		if (rpenalty_cur == rpenalty_min) {
-			// Do not save cantus if it has higher dpenalty
-			if (dpenalty_cur > dpenalty_min) return;
-			// Do not save cantus if it is same as source
-			if (!dpenalty_cur) return;
-			dpenalty_min = dpenalty_cur;
-		}
-		// If rpenalty lowered, clear dpenalty
-		else {
-			dpenalty_min = MAX_PENALTY;
-			dpenalty_cur = MAX_PENALTY;
-		}
-		dpenalty.push_back(dpenalty_cur);
+	// If rpenalty lowered, set new dpenalty_min
+	else {
+		dpenalty_min = dpenalty_cur;
 	}
+	dpenalty.push_back(dpenalty_cur);
 	clib.push_back(acc[cpv]);
 	rpenalty.push_back(rpenalty_cur);
 	rpenalty_min = rpenalty_cur;
@@ -1226,7 +1216,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
 	best_flags = flags;
-	dpenalty_min = MAX_PENALTY;
+	dpenalty_min = 0;
 	acc = cpoint[i];
 	int a;
 	for (a = 0; a < approximations; a++) {
@@ -1239,7 +1229,6 @@ void CGenCP1::SWACP(int i, int dp) {
 		clib_vs.clear();
 		rpenalty.clear();
 		dpenalty.clear();
-		dpenalty_min = MAX_PENALTY;
 		clib.push_back(acc[cpv]);
 		clib_vs.Insert(acc[cpv]);
 		rpenalty.push_back(rpenalty_min_old);
@@ -1247,24 +1236,8 @@ void CGenCP1::SWACP(int i, int dp) {
 		// Sliding Windows Approximation
 		scpoint = acc;
 		ScanCP(tCor, -1);
-		dpenalty_min = MAX_PENALTY;
 		cnum = clib.size();
 		if (cnum) {
-			if (dp) {
-				// Count dpenalty for results, where rpenalty is minimal
-				dpenalty.resize(cnum);
-				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
-					dpenalty[x] = 0;
-					for (int z = fn; z < c_len; z++) {
-						int dif = abs(cpoint[i][cpv][z] - clib[x][z]);
-						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
-					}
-					if (dpenalty[x] && dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
-					//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
-					//AppendLineToFile("temp.log", st);
-					//LogCantus(clib[x]);
-				}
-			}
 			// Get all best corrections
 			cids.clear();
 			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && (!dp || dpenalty[x] <= dpenalty_min)) {
@@ -1280,7 +1253,7 @@ void CGenCP1::SWACP(int i, int dp) {
 		// Send log
 		if (debug_level > 1) {
 			//CString est;
-			//est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+			//est.Format("SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			//WriteLog(3, est);
 			// Send intermediate results for debugging
 			if (s_len > 2) {
@@ -1522,12 +1495,13 @@ check:
 			if (method == mScan) {
 				CalcStepDpenaltyCP(ep2 - 1);
 				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
-			} 
+			}
 			else {
 				dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp1, sp2);
 				if (dpenalty_cur > dpenalty_min) goto skip;
 			}
 		}
+		else dpenalty_cur = 0;
 		//LogCantus("ep2", ep2, cc_id);
 		//if (MatchVectors(acc[cpv], test_cc, 0, 23))
 		//	WriteLog(1, "Found");
@@ -1670,7 +1644,7 @@ check:
 			}
 			else {
 				// Calculate dpenalty if this is evaluation
-				if (task == tEval) CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, c_len - 1);
+				if (task == tEval) dpenalty_cur = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, c_len - 1);
 				if (SendCP()) break;
 			}
 			// Exit if this is evaluation
