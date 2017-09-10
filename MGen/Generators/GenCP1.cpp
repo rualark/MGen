@@ -669,7 +669,7 @@ int CGenCP1::FailRhythm3() {
 		// 1/4 syncope
 		if (beat[ls] == 2 && llen[ls] > 1) FLAG4(235, s);
 		// 1/2 after 1/4
-		if (ls > 0 && beat[ls] && llen[ls] > 1 & llen[ls - 1] == 1) {
+		if (ls > 0 && beat[ls] && llen[ls] > 1 && llen[ls - 1] == 1) {
 			if (s / npm >= c_len / npm - 1) FLAG4(238, s)
 			else if (sus[ls]) FLAG4(239, s)
 			else FLAG4(240, s);
@@ -703,7 +703,7 @@ int CGenCP1::FailRhythm5() {
 	int suml = 0;
 	int ls2 = 0;
 	// Check pause length
-	if (fn * 2 > npm) FLAG4(197, fn);
+	if (fn * 2 > npm) FLAG2(197, fn);
 	for (int ms = 0; ms < mli.size(); ++ms) {
 		s = mli[ms];
 		if (s >= ep2) break;
@@ -994,7 +994,7 @@ int CGenCP1::FailSlurs() {
 	int max_count = 0;
 	int max_i = 0;
 	// Check pause length
-	if (fn*2 > npm) FLAG4(197, fn);
+	if (fn*2 > npm) FLAG2(197, fn);
 	for (int i = fn; i < ep2-1; ++i) {
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check simultaneous slurs
@@ -1737,7 +1737,7 @@ void CGenCP1::LoadSpecies() {
 }
 
 void CGenCP1::Generate() {
-	CString st = "81 81 86 83 83 81 81 80 80 78 78 83 83 81 81 86 86 84 89 88 88 92 92 83";
+	//CString st = "81 81 86 83 83 81 81 80 80 78 78 83 83 81 81 86 86 84 89 88 88 92 92 83";
 	//test_cc.resize(24);
 	//test_cc[0] = 55;
 	//StringToVector(&st, " ", test_cc);

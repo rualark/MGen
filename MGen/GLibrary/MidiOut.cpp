@@ -90,7 +90,7 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 		// Wait for next event with timeout
 		if (pMO->q.wait_dequeue_timed(event, milliseconds(WAIT_MS))) {
 			// Check if we need to exit
-			if (pMO->need_exit) break;
+			if (pMO->need_exit) break; //-V547
 			// Get current timestamp
 			timestamp_current = CGLib::time();
 			wait_time = event.timestamp - timestamp_current;
@@ -102,7 +102,7 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 					Sleep(WAIT_MS);
 					wait_time_left -= WAIT_MS;
 					// Check if we need to exit
-					if (pMO->need_exit) break;
+					if (pMO->need_exit) break; //-V547
 				}
 				Sleep(wait_time_left);
 			}

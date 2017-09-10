@@ -96,7 +96,7 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 			else if (r < lengroup2[ii] + lengroup3[ii] + lengroup4[ii]) lengroup[i][v] = 4;
 			else lengroup[i][v] = 0;
 		}
-		else if (i > 0) {
+		else {
 			// Continue lengroup
 			lengroup[i][v] = lengroup[pi][v] - 1;
 		}

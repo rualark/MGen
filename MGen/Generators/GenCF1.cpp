@@ -7,9 +7,6 @@
 #define new DEBUG_NEW 
 #endif
 
-// Unskippable internal rules:
-// Note repeats note of previous measure
-
 CGenCF1::CGenCF1()
 {
 	av_cnt = 1;
@@ -2299,7 +2296,7 @@ void CGenCF1::TestRpenalty() {
 	if (!flags.size()) return;
 	int rp = 0;
 	int found;
-	CString st, st2;
+	//CString st, st2;
 	for (int z = 0; z < max_flags; ++z) {
 		if (!accept[z] && flags[z]) {
 			rp += severity[z] * flags[z] + fpenalty[z];
@@ -2331,7 +2328,7 @@ void CGenCF1::TestBestRpenalty() {
 	if (!rpenalty_min) return;
 	if (!best_flags.size()) return;
 	int rp = 0;
-	CString st, st2;
+	//CString st, st2;
 	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x] && best_flags[x]) rp += severity[x];
 	}
@@ -2587,7 +2584,7 @@ void CGenCF1::ShowScanStatus() {
 	}
 	int scan_time;
 	if (task == tCor) scan_time = (time() - correct_start_time) / 1000;
-	else (time() - scan_start_time) / 1000;
+	else scan_time = (time() - scan_start_time) / 1000;
 	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + "(Scan progress)");
 	if (clib.size() > 0) st.Format("CY %lld, CL %d, ST %d", cycle, clib.size(), scan_time);
 	else st.Format("CY %lld, ST %d", cycle, scan_time);
@@ -3344,7 +3341,7 @@ void CGenCF1::SWA(int i, int dp) {
 		// Send log
 		if (debug_level > 1) {
 			CString est;
-			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
 		}
 		if (m_cc.size() > 60) {
@@ -3378,7 +3375,7 @@ void CGenCF1::SWA(int i, int dp) {
 	CString est;
 	// For successful rpenalty_cur == 0, show last flag that was fixed. For unsuccessful, show best variant
 	CString stuck_st = GetStuck();
-	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %.0f, cnum %ld (in %d ms): %s", 
+	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %d ms): %s", 
 		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, stuck_st);
 	WriteLog(3, est);
 	TestBestRpenalty();
