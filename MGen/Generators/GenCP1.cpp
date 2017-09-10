@@ -185,7 +185,7 @@ void CGenCP1::SingleCPInit() {
 			FillCantusMap(acc[cpv], smap, sp1, sp2, cc_order);
 			// Prepare dpenalty
 			dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, sp1-1) + 
-				CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp2 + 1, c_len - 1);
+				CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp2, c_len - 1);
 		}
 		// Minimum element
 		ep1 = max(0, GetMinSmap() - 1);
@@ -1506,7 +1506,7 @@ check:
 				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
 			}
 			else {
-				dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp1, sp2);
+				dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp1, sp2-1);
 				if (dpenalty_cur > dpenalty_min) goto skip;
 			}
 		}
