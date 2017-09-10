@@ -1105,6 +1105,8 @@ void CGenCP1::RandomSWACP()
 	calculate_stat = 0;
 	// Create single cantus
 	cpoint.resize(1);
+	// Forget real cantus id and make algorithms think that my counterpoint is 0
+	cantus_id = 0;
 	cpoint[0].resize(2);
 	cpoint[0][cpv] = acc[cfv];
 	cpoint[0][cfv] = acc[cfv];
