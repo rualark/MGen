@@ -2466,6 +2466,15 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 	}
 }
 
+int CGenCF1::CalcDpenaltyCP(vector<int> &cc1, vector<int> &cc2, int s1, int s2) {
+	int dpe = 0;
+	for (int z = s1; z <= s2; ++z) {
+		int dif = abs(cc1[z] - cc2[z]);
+		if (dif) dpe += step_penalty + pitch_penalty * dif;
+	}
+	return dpe;
+}
+
 int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	// If we slided to the end, break
 	if (sp2 == smatrixc) return 1;
@@ -2481,6 +2490,14 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	// Clear scan steps of current window
 	FillCantusMap(cc_id, smap, sp1, sp2, 0);
 	FillCantusMap(cc, smap, sp1, sp2, cc_order);
+	// Prepare dpenalty
+	if (av_cnt == 2) {
+		dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, sp1 - 1) +
+			CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp2 + 1, c_len - 1);
+	}
+	else {
+		// TODO implement for CF1
+	}
 	return 0;
 }
 

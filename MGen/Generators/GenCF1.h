@@ -164,6 +164,7 @@ protected:
 	inline void CalcRpenalty(vector<int>& cc);
 	inline void ScanLeft(vector<int> &cc, int &finished);
 	inline void BackWindow(vector<int>& cc);
+	inline int CalcDpenaltyCP(vector<int>& cc1, vector<int>& cc2, int s1, int s2);
 	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);
 	inline void SaveBestRejected(vector<int>& cc);
 	inline int FailMinor(vector<int>& pcc, vector<int>& cc);
@@ -398,6 +399,7 @@ protected:
 	long long accepted2 = 0, accepted3 = 0;
 	int first_note_dia, first_note_oct;
 	int wid; // Window id
+	int dpenalty_outside_swa; // Sum of dpenalty outside SWA range
 	vector<int> m_cc_old; // Cantus chromatic saved for SWA
 	vector<int> wpos1;
 	vector<int> wpos2;

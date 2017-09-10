@@ -181,6 +181,9 @@ void CGenCP1::SingleCPInit() {
 			// Clear scan steps of current window
 			FillCantusMap(cc_id, smap, sp1, sp2, 0);
 			FillCantusMap(acc[cpv], smap, sp1, sp2, cc_order);
+			// Prepare dpenalty
+			dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, sp1-1) + 
+				CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp2 + 1, c_len - 1);
 		}
 		// Minimum element
 		ep1 = max(0, GetMinSmap() - 1);
@@ -901,16 +904,8 @@ int CGenCP1::FailVIntervals() {
 	return 0;
 }
 
-void CGenCP1::CalcDpenaltyCP() {
-	dpenalty_cur = 0;
-	for (int z = fn; z < ep2; ++z) {
-		int dif = abs(acc_old[cpv][z] - acc[cpv][z]);
-		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
-	}
-}
-
 void CGenCP1::CalcStepDpenaltyCP(int i) {
-	int dif = abs(acc_old[cpv][i] - acc[cpv][i]);
+	int dif = abs(cpoint[cantus_id][cpv][i] - acc[cpv][i]);
 	int dpe = 0;
 	if (dif) dpe = step_penalty + pitch_penalty * dif;
 	if (i > fn) dpenalty_step[i] = dpenalty_step[i-1] + dpe;
@@ -1524,8 +1519,14 @@ check:
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
-			CalcStepDpenaltyCP(ep2 - 1);
-			if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
+			if (method == mScan) {
+				CalcStepDpenaltyCP(ep2 - 1);
+				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
+			} 
+			else {
+				dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp1, sp2);
+				if (dpenalty_cur > dpenalty_min) goto skip;
+			}
 		}
 		//LogCantus("ep2", ep2, cc_id);
 		//if (MatchVectors(acc[cpv], test_cc, 0, 23))
@@ -1668,6 +1669,8 @@ check:
 				}
 			}
 			else {
+				// Calculate dpenalty if this is evaluation
+				if (task == tEval) CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, c_len - 1);
 				if (SendCP()) break;
 			}
 			// Exit if this is evaluation
