@@ -1279,23 +1279,25 @@ void CGenCP1::SWACP(int i, int dp) {
 				WriteLog(3, est);
 			}
 			acycle = acy;
-			scpoint = acc;
-			is_animating = 1;
-			// Start showing from initial step to 0 or 2 voice (for GenCA2)
-			if (m_algo_id == 112) {
-				ScanCP(tEval, 2);
-				ShowLiningCP(acc[cpv]);
+			if (animate_cc != acc[cpv]) {
+				scpoint = acc;
+				is_animating = 1;
+				// Start showing from initial step to 0 or 2 voice (for GenCA2)
+				if (m_algo_id == 112) {
+					ScanCP(tEval, 2);
+					ShowLiningCP(acc[cpv]);
+				}
+				else {
+					ScanCP(tEval, 0);
+				}
+				is_animating = 0;
+				step = step0;
+				ValidateVectors(step0, t_generated - 1);
+				//t_sent = t_generated;
+				// Delay only if cc changed
+				Sleep(animate_delay);
+				animate_cc = acc[cpv];
 			}
-			else {
-				ScanCP(tEval, 0);
-			}
-			is_animating = 0;
-			step = step0;
-			ValidateVectors(step0, t_generated - 1);
-			//t_sent = t_generated;
-			// Delay only if cc changed
-			if (animate_cc != acc[cpv]) Sleep(animate_delay);
-			animate_cc = acc[cpv];
 		}
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing

@@ -2299,7 +2299,7 @@ void CGenCF1::TestRpenalty() {
 	//CString st, st2;
 	for (int z = 0; z < max_flags; ++z) {
 		if (!accept[z] && flags[z]) {
-			rp += severity[z] * flags[z] + fpenalty[z];
+			rp += (severity[z] + 1) * flags[z] + fpenalty[z];
 			found = 0;
 			for (int x = fn; x < ep2; ++x) {
 				if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (anflags[cpv][x][i] == z) {
@@ -2330,7 +2330,7 @@ void CGenCF1::TestBestRpenalty() {
 	int rp = 0;
 	//CString st, st2;
 	for (int x = 0; x < max_flags; ++x) {
-		if (!accept[x] && best_flags[x]) rp += severity[x];
+		if (!accept[x] && best_flags[x]) rp += severity[x] + 1;
 	}
 	if (rpenalty_min < rp) {
 		CString est;
