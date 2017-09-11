@@ -2083,7 +2083,7 @@ void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
 				finished = 1;
 				x += cc_incr[x];
 				x2 -= cc_decr[x2];
-				if (rand2() > RAND_MAX / 2) {
+				if (rand() > RAND_MAX / 2) {
 					if (x <= max_cc[i]) {
 						cc_order[i].push_back(x);
 						finished = 0;
