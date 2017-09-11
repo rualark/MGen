@@ -79,12 +79,19 @@ void CGenCP1::MakeNewCP() {
 			max_cc[i] = min(acc[cfv][i] + burst_between, cf_nmin + sum_interval);
 		}
 	}
-	// Convert limits to diatonic and recalibrate
+	// Recalibrate 
+	for (int i = 0; i < c_len; ++i) {
+		if (minor_cur) {
+			if (!m_diatonic_full[(min_cc[i] + 12 - tonic_cur) % 12]) ++min_cc[i];
+		}
+		else {
+			if (!diatonic[(min_cc[i] + 12 - tonic_cur) % 12]) ++min_cc[i];
+		}
+	}
+	// Convert limits to diatonic
 	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
-		min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
-		max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 	}
 	CalculateCcOrder(acc_old[cpv], 0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
@@ -122,12 +129,19 @@ void CGenCP1::SingleCPInit() {
 						min(acc[cpv][i] - correct_range, max_cc[i] - 2 * correct_range)));
 			}
 		}
-		// Convert limits to diatonic and recalibrate
+		// Recalibrate 
+		for (int i = 0; i < c_len; ++i) {
+			if (minor_cur) {
+				if (!m_diatonic_full[(min_cc[i] + 12 - tonic_cur) % 12]) ++min_cc[i];
+			}
+			else {
+				if (!diatonic[(min_cc[i] + 12 - tonic_cur) % 12]) ++min_cc[i];
+			}
+		}
+		// Convert limits to diatonic
 		for (int i = fn; i < c_len; ++i) {
 			min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 			max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
-			min_cc[i] = C_CC(min_c[i], tonic_cur, minor_cur);
-			max_cc[i] = C_CC(max_c[i], tonic_cur, minor_cur);
 		}
 		sp1 = fn;
 		sp2 = c_len;
