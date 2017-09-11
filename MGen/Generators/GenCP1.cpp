@@ -1258,12 +1258,12 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 		}
 		// Send log
-		if (debug_level > 1) {
+		if (debug_level > 0) {
 			//CString est;
 			//est.Format("SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			//WriteLog(3, est);
 			// Send intermediate results for debugging
-			if (s_len > 2) {
+			if (0) {
 				scpoint = acc;
 				ScanCP(tEval, 0);
 				Adapt(step, t_generated - 1);
