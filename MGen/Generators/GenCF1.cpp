@@ -2178,7 +2178,7 @@ void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 // Calculate flag statistics
 void CGenCF1::CalcFlagStat() {
 	if (calculate_stat || calculate_correlation) {
-		if (ep2 == c_len) for (int i = 0; i < max_flags; ++i) {
+		if (ep2 == c_len) for (int i = 0; i < max_flags; ++i) if (!accept[i]) {
 			if (flags[i]) {
 				++fstat[i];
 				// Calculate correlation
@@ -2666,14 +2666,36 @@ void CGenCF1::WriteFlagCor() {
 
 void CGenCF1::ShowFlagStat() {
 	CString st, st2;
+	int lines = 0;
 	// Show flag statistics
 	if (calculate_stat) {
-		CString est;
-		for (int i = 0; i < max_flags; ++i) {
-			int f1 = i;
-			st.Format("\n%lld %s ", fstat[f1], RuleName[rule_set][f1] + " (" + SubRuleName[rule_set][f1] + ")");
-			st2 += st;
+		for (int d = 1; d < max_flags; ++d) {
+			if (lines > 100) break;
+			int flagc = 0;
+			for (int x = 0; x < max_flags; ++x) {
+				if (fstat[x] > 0) ++flagc;
+			}
+			if (!flagc) continue;
+			int max_flag = 0;
+			long max_value = -1;
+			for (int x = 0; x < max_flags; ++x) {
+				max_value = -1;
+				// Find biggest value
+				for (int i = 0; i < max_flags; ++i) {
+					if (fstat[i] > max_value) {
+						max_value = fstat[i];
+						max_flag = i;
+					}
+				}
+				if (max_value < 1) break;
+				st.Format("\n%ld %s, ", max_value, RuleName[rule_set][max_flag] + " (" + SubRuleName[rule_set][max_flag] + ")");
+				st2 += st;
+				++lines;
+				// Clear biggest value to search for next
+				fstat[max_flag] = -1;
+			}
 		}
+		CString est;
 		est.Format("%d/%d: Accepted %lld/%lld/%lld/%lld variants of %lld: %s",
 			c_len, max_interval, accepted4[wcount - 1], accepted, accepted2,
 			accepted3, cycle, st2);
