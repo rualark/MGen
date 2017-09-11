@@ -3,11 +3,11 @@ include "../../GenCP1/include/CP1.pl"
 rule_set = 1 # Specify which set of rules to use (see rules.xlsx)
 
 # Method parameters
-#method = window-scan # This method can be faster in some cases
-method = swa # This method is best for analysis and corrections in most cases
+method = window-scan # This method can be faster in some cases
+#method = swa # This method is best for analysis and corrections in most cases
 
-accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
-random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
+accept_reseed = 1 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
+random_seed = 1 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 correct_inrange = 2 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.

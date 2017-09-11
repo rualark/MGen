@@ -2178,7 +2178,7 @@ void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 // Calculate flag statistics
 void CGenCF1::CalcFlagStat() {
 	if (calculate_stat || calculate_correlation) {
-		if (ep2 == c_len) for (int i = 0; i < max_flags; ++i) if (!accept[i]) {
+		for (int i = 0; i < max_flags; ++i) if (!accept[i]) {
 			if (flags[i]) {
 				++fstat[i];
 				// Calculate correlation
