@@ -31,6 +31,14 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 	CString st, st2;
 	// Count penalty
 	long cnum = clib.size();
+	dpenalty.resize(cnum);
+	for (int x = 0; x < cnum; x++) {
+		dpenalty[x] = 0;
+		for (int z = 0; z < c_len; z++) {
+			int dif = abs(cpoint[i][cpv][z] - clib[x][z]);
+			if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
+		}
+	}
 	// Find minimum penalty
 	int ccount = 0;
 	// Cycle through all best matches
