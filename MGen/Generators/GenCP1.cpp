@@ -1297,6 +1297,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				else {
 					ScanCP(tEval, 0);
 				}
+				LogCantus("Animate SWA", 0, acc[cpv]);
 				is_animating = 0;
 				step = step0;
 				ValidateVectors(step0, t_generated - 1);
@@ -1499,6 +1500,9 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
+		//LogCantus("ep2", ep2, cc_id);
+		//if (MatchVectors(acc[cpv], test_cc, 0, 20))
+		//	WriteLog(1, "Found");
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
 			if (method == mScan) {
@@ -1511,9 +1515,6 @@ check:
 			}
 		}
 		else dpenalty_cur = 0;
-		//LogCantus("ep2", ep2, cc_id);
-		//if (MatchVectors(acc[cpv], test_cc, 0, 23))
-		//	WriteLog(1, "Found");
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {
@@ -1723,7 +1724,7 @@ void CGenCP1::LoadSpecies() {
 }
 
 void CGenCP1::Generate() {
-	//CString st = "81 81 86 83 83 81 81 80 80 78 78 83 83 81 81 86 86 84 89 88 88 92 92 83";
+	//CString st = "60 52 59 57 55 60 62 57 59 55 57 59 57 50 52 53 55 52 59 59 60";
 	//test_cc.resize(24);
 	//test_cc[0] = 55;
 	//StringToVector(&st, " ", test_cc);

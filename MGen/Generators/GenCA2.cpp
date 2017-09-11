@@ -269,6 +269,10 @@ void CGenCA2::DetectSpecies() {
 }
 
 void CGenCA2::Generate() {
+	CString test_st = "60 52 59 57 55 60 62 57 59 55 57 59 57 50 52 53 55 52 59 59 60";
+	test_cc.resize(21);
+	StringToVector(&test_st, " ", test_cc);
+
 	CString st;
 	int fn0 = fn;
 	int s_len2 = s_len;
