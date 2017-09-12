@@ -499,6 +499,7 @@ protected:
 	int cantus_id2 = 0; // Select particular cantus id. Set to -1 to select random
 	int accept_cantus_rechoose = 1; // Choose new random cantus after accepting counterpoint
 	int pco_apart = 4; // Minimum allowed distance between pco in quarters
+	int emulate_sas = 0; // Enables SAS algorithm emulator in CA2
 
 	// Counterpoint
 	vector<vector<int>> ac; // [s] Diatonic
