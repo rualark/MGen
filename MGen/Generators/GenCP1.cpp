@@ -737,6 +737,11 @@ int CGenCP1::FailRhythm5() {
 		// Build note lengths
 		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
+			// Do not process last note if not full melody generated
+			if (ep2 != c_len && ls2 == fli_size - 1) {
+				full_measure = 0;
+				break;
+			}
 			s2 = fli[ls2];
 			l_len.push_back(llen[ls2]);
 			// Stop if out of measure
@@ -751,7 +756,7 @@ int CGenCP1::FailRhythm5() {
 			slur1 = s - fli[ls];
 		}
 		// Last note in measure with slur
-		if (sus[ls2]) {
+		if (full_measure && sus[ls2]) {
 			l_len[l_len.size()-1] = min(8, llen[ls2] - (sus[ls2] - s2));
 			slur2 = fli2[ls2] - sus[ls2] + 1;
 		}
@@ -759,13 +764,9 @@ int CGenCP1::FailRhythm5() {
 		if (ep2 == c_len) {
 			// Last measure
 			if (ms == mli.size() - 1) {
-				// Check last whole note
+				// Check last whole note (really 1/8)
 				if (l_len.size() == 1) break;
 			}
-		}
-		else {
-			// Check measure not full
-			if (!full_measure) break;
 		}
 		// Set first rhythm id bit
 		rid_cur = slur1?0:1;
@@ -784,10 +785,10 @@ int CGenCP1::FailRhythm5() {
 			}
 			// Calculate rhythm id
 			rid_cur += 1 << (pos + l_len[lp]);
-			// Check 1/8 only if it is not last upbeat
+			// Check 1/8 only if it is not last 1/8
 			if (l_len[lp] == 1) {
 				// 1/8 on leap
-				if (aleap[cpv][s2] || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG4(88, s2);
+				if ((ls2 < fli_size - 1 && aleap[cpv][s2]) || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG4(88, s2);
 				// 1/8 in first measure
 				if (ms == 0) FLAG4(230, s2)
 				// If second 1/8
