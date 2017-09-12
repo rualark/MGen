@@ -741,9 +741,16 @@ int CGenCP1::FailRhythm5() {
 		}
 		// Build note lengths
 		full_measure = 0;
+		pos = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
 			// Do not process last note if not full melody generated
 			if (ep2 != c_len && ls2 == fli_size - 1) {
+				// Whole inside
+				if (llen[ls2] >= 8 && !pos && !sus[ls2]) FLAG4(236, s)
+				// 1/8 syncope
+				else if (llen[ls2] > 1 && pos % 2) FLAG4(232, fli[ls2])
+				// 1/4 syncope
+				else if (llen[ls2] > 2 && pos % 4 == 2) FLAG4(235, fli[ls2])
 				full_measure = 0;
 				break;
 			}
@@ -754,6 +761,7 @@ int CGenCP1::FailRhythm5() {
 				full_measure = 1;
 				break;
 			}
+			pos += l_len.back();
 		}
 		// Check if there is nothing to analyze
 		if (!l_len.size()) continue;
