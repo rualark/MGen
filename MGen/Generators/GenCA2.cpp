@@ -235,6 +235,7 @@ void CGenCA2::LinkCpPauses() {
 }
 
 void CGenCA2::EmulateSASCP() {
+	if (!emulate_sas) return;
 	for (fixed_ep2 = fn+2; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
 		step0 = step;
 		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
@@ -379,12 +380,8 @@ void CGenCA2::Generate() {
 		GetSourceRange(cpoint[i][cpv]);
 		step0 = step;
 		fn = fn0;
-		if (emulate_sas) {
-			EmulateSASCP();
-		}
-		else {
-			ScanCP(tEval, 0);
-		}
+		if (emulate_sas != 1) ScanCP(tEval, 0);
+		EmulateSASCP();
 		key_eval.Empty();
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
