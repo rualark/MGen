@@ -234,6 +234,13 @@ void CGenCA2::LinkCpPauses() {
 	}
 }
 
+void CGenCA2::EmulateSASCP() {
+	for (fixed_ep2 = fn+2; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
+		ScanCP(tEval, 0);
+	}
+	fixed_ep2 = 0;
+}
+
 void CGenCA2::DetectSpecies() {
 	species_detected = 0;
 	// Do not detect if cantus has uneven note length
@@ -368,6 +375,7 @@ void CGenCA2::Generate() {
 		step0 = step;
 		fn = fn0;
 		ScanCP(tEval, 0);
+		EmulateSASCP();
 		key_eval.Empty();
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;

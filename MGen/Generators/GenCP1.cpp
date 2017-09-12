@@ -210,6 +210,10 @@ void CGenCP1::SingleCPInit() {
 	else {
 		// For single cantus scan - cannot skip flags - must show all
 		skip_flags = 0;
+		// SAS emulator
+		if (fixed_ep2) {
+			ep2 = fixed_ep2;
+		}
 	}
 }
 
@@ -287,7 +291,7 @@ int CGenCP1::SendCP() {
 		MakeLenExport(acc[av], x1, av);
 		// Copy cantus to output
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
-		for (int x = x1; x < c_len; ++x) {
+		for (int x = x1; x < ep2; ++x) {
 			SendLyrics(pos, v, av, x);
 			for (int i = 0; i < cc_len[x]; ++i) {
 				if (av == cpv) {
@@ -750,6 +754,8 @@ int CGenCP1::FailRhythm5() {
 				break;
 			}
 		}
+		// Check if there is nothing to analyze
+		if (!l_len.size()) continue;
 		// First note in measure with slur
 		if (fli[ls] < s) {
 			l_len[0] = min(8, (fli2[ls] - s + 1));
