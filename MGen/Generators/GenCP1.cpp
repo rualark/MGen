@@ -1581,6 +1581,10 @@ check:
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
 		if (FailRhythm3()) goto skip;
 		if (FailRhythm5()) goto skip;
+		GetRpos();
+		GetVIntervals();
+		if (FailVMotion()) goto skip;
+		if (FailVIntervals()) goto skip;
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
 		if (FailLastIntervals()) goto skip;
 		if (FailNoteSeq(apc[cpv])) goto skip;
@@ -1600,10 +1604,6 @@ check:
 		if (FailLocalRange(acc[cpv], notes_lrange2, min_lrange2, 198)) goto skip;
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;
-		GetRpos();
-		GetVIntervals();
-		if (FailVMotion()) goto skip;
-		if (FailVIntervals()) goto skip;
 		if (FailPcoApart()) goto skip;
 		if (FailSus()) goto skip;
 		if (FailOverlap()) goto skip;
