@@ -709,6 +709,7 @@ int CGenCP1::FailRhythm5() {
 	// Rhythm id
 	vector<int> rid;
 	int rid_cur = 0;
+	int count8;
 	// Note lengths inside measure
 	vector<int> l_len;
 	l_len.resize(8);
@@ -777,6 +778,7 @@ int CGenCP1::FailRhythm5() {
 		// Set first rhythm id bit
 		rid_cur = slur1?0:1;
 		// Iterative rhythm checks
+		count8 = 0;
 		pos = 0;
 		for (int lp = 0; lp < l_len.size(); ++lp) {
 			s2 = s + pos;
@@ -793,6 +795,9 @@ int CGenCP1::FailRhythm5() {
 			rid_cur += 1 << (pos + l_len[lp]);
 			// Check 1/8 only if it is not last 1/8
 			if (l_len[lp] == 1) {
+				// Too many 1/8
+				++count8;
+				if (count8 > 2) FLAG4(255, s2);
 				// 1/8 on leap
 				if ((ls2 < fli_size - 1 && aleap[cpv][s2]) || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG4(88, s2);
 				// 1/8 in first measure
