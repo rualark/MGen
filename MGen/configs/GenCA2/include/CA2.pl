@@ -25,8 +25,8 @@ swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
-pre_bad = 600 # How many notes to recalculate before rule violation
-post_bad = 1200 # How many notes to recalculate after rule violation
+pre_bad = 12 # How many notes to recalculate before rule violation
+post_bad = 24 # How many notes to recalculate after rule violation
 animate = 0 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
 animate_delay = 0 # Delay in ms after each animation step
 
