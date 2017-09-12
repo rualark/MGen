@@ -12,7 +12,7 @@ random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatic
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 correct_inrange = 2 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.
 optimize_dpenalty = 1 # Saves only melodies closest to source melody. Decreases memory usage. Setting this flag may make corrections farther from source melody. Resetting allows for closer results when corrections>1
-max_correct_ms = 50000 # Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
+max_correct_ms = 500000000 # Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
 
 # Analysis
 show_transpose = 0,0,36,36 # Semitones to transpose each voice (separated with comma)
@@ -25,8 +25,8 @@ swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
-pre_bad = 6 # How many notes to recalculate before rule violation
-post_bad = 12 # How many notes to recalculate after rule violation
+pre_bad = 600 # How many notes to recalculate before rule violation
+post_bad = 1200 # How many notes to recalculate after rule violation
 animate = 0 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
 animate_delay = 0 # Delay in ms after each animation step
 

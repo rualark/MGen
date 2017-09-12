@@ -163,6 +163,7 @@ protected:
 	inline void NextWindow();
 	inline void CalcRpenalty(vector<int>& cc);
 	inline void ScanLeft(vector<int> &cc, int &finished);
+	inline void ShowBestRejected(vector<int>& cc);
 	inline void BackWindow(vector<int>& cc);
 	inline int CalcDpenaltyCP(vector<int>& cc1, vector<int>& cc2, int s1, int s2);
 	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);

@@ -2405,8 +2405,8 @@ void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 	} // while (true)
 }
 
-void CGenCF1::BackWindow(vector<int> &cc) {
-	// Show best rejected variant
+// Show best rejected variant
+void CGenCF1::ShowBestRejected(vector<int> &cc) {
 	if (best_rejected) {
 		long long time = CGLib::time();
 		int rc = (time - accept_time) / best_rejected;
@@ -2440,11 +2440,15 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 				rpenalty_min = MAX_PENALTY;
 			}
 			else {
-				if (debug_level > 1) 
+				if (debug_level > 1)
 					WriteLog(3, "No best rejected results to show");
 			}
 		}
 	}
+}
+
+void CGenCF1::BackWindow(vector<int> &cc) {
+	ShowBestRejected(cc);
 	if (method != mScan) return;
 	if (task == tCor) {
 		// Clear current window
