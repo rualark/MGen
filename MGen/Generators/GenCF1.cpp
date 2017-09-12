@@ -2448,7 +2448,6 @@ void CGenCF1::ShowBestRejected(vector<int> &cc) {
 }
 
 void CGenCF1::BackWindow(vector<int> &cc) {
-	ShowBestRejected(cc);
 	if (method != mScan) return;
 	if (task == tCor) {
 		// Clear current window
@@ -3612,6 +3611,7 @@ check:
 				WriteLog(3, "Last variant in first window reached");
 				break;
 			}
+			ShowBestRejected(m_cc);
 			BackWindow(m_cc);
 			// Goto next variant calculation
 			goto skip;

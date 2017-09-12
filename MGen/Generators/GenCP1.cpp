@@ -961,12 +961,60 @@ void CGenCP1::SaveCP() {
 			ScanCP(tEval, 2);
 			// Reinitialize
 			task = tCor;
-			ShowLiningCP(acc[cpv]);
+			if (m_algo_id == 112) ShowLiningCP(acc[cpv]);
 			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
 			is_animating = 0;
 			step = step0;
 			ValidateVectors(step0, t_generated - 1);
 			Sleep(animate_delay);
+		}
+	}
+}
+
+// Show best rejected variant
+void CGenCP1::ShowBestRejectedCP() {
+	if (best_rejected) {
+		long long time = CGLib::time();
+		int rc = (time - accept_time) / best_rejected;
+		if (debug_level > 2) {
+			CString st;
+			st.Format("Back window with rc %d", rc);
+			WriteLog(3, st);
+		}
+		if (rc > rcycle) {
+			rcycle = rc;
+			if (br_cc.size() > 0) {
+				// Save old cantus
+				vector<int> cc_saved = acc[cpv];
+				// Load best rejected cantus
+				acc[cpv] = br_cc;
+				scpoint = acc;
+				is_animating = 1;
+				// Start showing from initial step to 2 voice (for GenCA2)
+				if (m_algo_id == 112) svoice = 2;
+				ScanCP(tEval, 2);
+				// Reinitialize
+				task = tCor;
+				if (m_algo_id == 112) ShowLiningCP(acc[cpv]);
+				skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+				is_animating = 0;
+				step = step0;
+				ValidateVectors(step0, t_generated - 1);
+				acc[cpv] = cc_saved;
+				// Log
+				if (debug_level > 0) {
+					CString st;
+					st.Format("Showing best rejected results with rpenalty %.0f", rpenalty_min);
+					WriteLog(3, st);
+				}
+				// Clear
+				br_cc.clear();
+				rpenalty_min = MAX_PENALTY;
+			}
+			else {
+				if (debug_level > 1)
+					WriteLog(3, "No best rejected results to show");
+			}
 		}
 	}
 }
@@ -1695,6 +1743,7 @@ check:
 				WriteLog(3, "Last variant in first window reached");
 				break;
 			}
+			ShowBestRejectedCP();
 			BackWindow(acc[cpv]);
 			// Goto next variant calculation
 			goto skip;

@@ -512,6 +512,7 @@ protected:
 	int species = 0; // Counterpoint species
 	int species_detected = 0; // Counterpoint species detected in CA2
 	int sus_count = 0; // Number of suspensions detected in ExplodeCP
-	int local_flag_position; // For FLAG4 macro
+	int local_flag_position;
+	// For FLAG4 macro
 	void CreateULinks();
 };
