@@ -817,10 +817,12 @@ int CGenCP1::FailRhythm5() {
 			pos += l_len[lp];
 		}
 		// Check rhythm repeat
-		if (rid.size()) {
-			if (rid.back() == rid_cur) FLAG4(247, s);
+		if (full_measure) {
+			if (rid.size()) {
+				if (rid.back() == rid_cur) FLAG4(247, s);
+			}
+			rid.push_back(rid_cur);
 		}
-		rid.push_back(rid_cur);
 		// Check rhythm rules
 		// First measure
 		if (!ms) {
@@ -834,7 +836,7 @@ int CGenCP1::FailRhythm5() {
 		else if (l_len.size() > 1 && l_len[1] == 6) FLAG4(234, fli[ls + 1])
 		else if (l_len.size() > 2 && l_len[2] == 6) FLAG4(234, fli[ls + 2])
 		// 1/2 after 1/4 or 1/8 in measure
-		else if (l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
+		else if (full_measure && l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
 			s3 = fli[ls + l_len.size() - 1];
 			if (ms >= mli.size() - 2) FLAG4(238, s3)
 			else if (slur2 != 0) FLAG4(239, s3)
