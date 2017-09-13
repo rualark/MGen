@@ -2294,7 +2294,8 @@ void CGenCF1::NextWindow() {
 				st.Format("%d-%d", wpos1[i], wpos2[i]);
 				st2 += st;
 			}
-			est.Format("Algorithm created %d windows: %s", wcount, st2);
+			//est.Format("Algorithm created %d windows: %s", wcount, st2);
+			est.Format("Algorithm created %d windows", wcount);
 			WriteLog(3, est);
 		}
 	}

@@ -198,7 +198,7 @@ void CGenCP1::SingleCPInit() {
 			FillCantusMap(cc_id, smap, sp1, sp2, 0);
 			FillCantusMap(acc[cpv], smap, sp1, sp2, cc_order);
 			// Prepare dpenalty
-			dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, sp1-1) + 
+			dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, sp1-1) + 
 				CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp2, c_len - 1);
 		}
 		// Minimum element
@@ -1738,7 +1738,7 @@ check:
 			}
 			else {
 				// Calculate dpenalty if this is evaluation
-				if (task == tEval) dpenalty_cur = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, c_len - 1);
+				if (task == tEval) dpenalty_cur = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
 				if (SendCP()) break;
 			}
 			// Exit if this is evaluation
