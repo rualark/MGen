@@ -196,9 +196,9 @@ void CGenCP1::SingleCPInit() {
 			swpos2[swid] = swa2;
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
-			// Prepare dpenalty
-			dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, swa1-1) + 
-				CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], swa2, c_len - 1);
+			dpenalty_outside_swa = 0;
+			if (swa1 > 0) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
+			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
 			fill(dpenalty_step.begin(), dpenalty_step.end(), 0);
 			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
@@ -983,6 +983,7 @@ void CGenCP1::SaveCP() {
 			is_animating = 1;
 			// Start showing from initial step to 2 voice (for GenCA2)
 			if (m_algo_id == 112) svoice = 2;
+			LogCantus("Animate", clib.size(), acc[cpv]);
 			ScanCP(tEval, 2);
 			// Reinitialize
 			task = tCor;
@@ -1384,7 +1385,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				else {
 					ScanCP(tEval, 0);
 				}
-				LogCantus("Animate SWA", 0, acc[cpv]);
+				//LogCantus("Animate SWA", 0, acc[cpv]);
 				is_animating = 0;
 				step = step0;
 				ValidateVectors(step0, t_generated - 1);
@@ -1397,7 +1398,7 @@ void CGenCP1::SWACP(int i, int dp) {
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
-				if (swa_len >= swa_steps)	break;
+				if (swa_len >= swa_steps || swa_len >= smap.size())	break;
 				++swa_len;
 			}
 		}
@@ -1587,9 +1588,11 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-		//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, cc_id);
-		//if (MatchVectors(acc[cpv], test_cc, 0, 20))
-		//	WriteLog(1, "Found");
+		if (swa_len == 79) {
+			//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, acc[cpv]);
+			if (ep2 >= 45 && MatchVectors(acc[cpv], test_cc, 2, ep2 - 1))
+				WriteLog(1, "Found");
+		}
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
 			if (method == mScan) {
@@ -1597,11 +1600,13 @@ check:
 				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
 			}
 			else {
-				CalcStepDpenaltyCP(ep2 - 1);
-				//if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
+				dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa1], smap[sp2 - 1]);
+				if (dpenalty_cur > dpenalty_min) goto skip;
+				//CalcStepDpenaltyCP(ep2 - 1);
+				//if (dpenalty_outside_swa + dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
 			}
 		}
-		dpenalty_cur = 0;
+		else dpenalty_cur = 0;
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {
@@ -1694,11 +1699,19 @@ check:
 		//LogCantus("Rpenalty", rpenalty_cur, flags);
 		SaveBestRejected(acc[cpv]);
 		if (task == tCor && method == mSWA) {
-			CalcRpenalty(acc[cpv]);
-			if (ep2 < smap[swa2 - 1] + 1) {
-				if (rpenalty_cur > source_rpenalty_step[smap[swa1]]) goto skip;
-				NextWindow();
-				goto check;
+			if (skip_flags) {
+				if (ep2 < smap[swa2 - 1] + 1) {
+					NextWindow();
+					goto check;
+				}
+			}
+			else {
+				CalcRpenalty(acc[cpv]);
+				if (ep2 < smap[swa2 - 1] + 1) {
+					if (rpenalty_cur > source_rpenalty_step[smap[swa1]]) goto skip;
+					NextWindow();
+					goto check;
+				}
 			}
 		}
 		// If we are window-scanning

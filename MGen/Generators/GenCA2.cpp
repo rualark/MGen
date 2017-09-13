@@ -274,8 +274,8 @@ void CGenCA2::DetectSpecies() {
 }
 
 void CGenCA2::Generate() {
-	CString test_st = "60 52 59 57 55 60 62 57 59 55 57 59 57 50 52 53 55 52 59 59 60";
-	test_cc.resize(21);
+	CString test_st = "0 0 67 67 64 64 72 72 71 71 69 67 69 69 65 65 67 67 69 71 72 72 72 72 72 72 72 72 71 71 71 71 69 69 69 69 74 74 74 74 74 74 72 72 77 77 69 69 71 71 71 71 76 76 76 76 74 74 74 74 69 69 71 69 67 67 67 67 72 72 72 72 72 72 72 72 71 71 71 71 72";
+	test_cc.resize(81);
 	StringToVector(&test_st, " ", test_cc);
 
 	CString st;

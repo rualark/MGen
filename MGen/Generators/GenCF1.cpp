@@ -2549,8 +2549,9 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	dpenalty_step.resize(c_len, 0);
 	// Prepare dpenalty
 	if (av_cnt == 2) {
-		dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, swa1 - 1) +
-			CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], swa2, c_len - 1);
+		dpenalty_outside_swa = 0;
+		if (swa1 > 0) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
+		if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
 	}
 	else {
 		// TODO implement for CF1
