@@ -2487,6 +2487,15 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 	}
 }
 
+void CGenCF1::WritePerfLog() {
+	if (cycle > 100) {
+		CString est;
+		long long ms = time() - scan_start_time;
+		est.Format("Scan speed: %.1f cycles/ms (%lld cycles during %lld ms)", (double)cycle / ms, cycle, ms);
+		WriteLog(2, est);
+	}
+}
+
 int CGenCF1::CalcDpenaltyCP(vector<int> &cc1, vector<int> &cc2, int s1, int s2) {
 	int dpe = 0;
 	for (int z = s1; z <= s2; ++z) {
@@ -3624,6 +3633,7 @@ check:
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
+	WritePerfLog();
 }
 
 void CGenCF1::ScanRight(vector<int> &cc) {

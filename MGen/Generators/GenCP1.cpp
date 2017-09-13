@@ -1776,6 +1776,7 @@ check:
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
+	WritePerfLog();
 }
 
 void CGenCP1::LoadCantusHigh() {
