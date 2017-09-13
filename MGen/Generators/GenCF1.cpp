@@ -2657,12 +2657,12 @@ void CGenCF1::ShowScanStatus() {
 			progress_st += st;
 		}
 	}
-	int scan_time;
-	if (task == tCor) scan_time = (time() - correct_start_time) / 1000;
-	else scan_time = (time() - scan_start_time) / 1000;
+	long long scan_time;
+	if (task == tCor) scan_time = time() - correct_start_time;
+	else scan_time = time() - scan_start_time;
 	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + "(Scan progress)");
-	if (clib.size() > 0) st.Format("CY %lld, CL %d, ST %d", cycle, clib.size(), scan_time);
-	else st.Format("CY %lld, ST %d", cycle, scan_time);
+	if (clib.size() > 0) st.Format("CY/ms %.1f, CL %d, ST %lld", (double)cycle / scan_time, clib.size(), scan_time / 1000);
+	else st.Format("CY/ms %.1f, ST %lld", (double)cycle/scan_time, scan_time / 1000);
 	SetStatusText(5, st);
 	if (task == tCor) st.Format("WI %d/%d, RP %.0f, DP %d", wid + 1, wcount, rpenalty_min, dpenalty_min);
 	else st.Format("WI %d/%d", wid + 1, wcount, rpenalty_min, dpenalty_min);
