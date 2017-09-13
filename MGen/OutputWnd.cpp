@@ -74,7 +74,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_wndTabs.AddTab(&m_wndOutputWarn,  " Warnings     ", (UINT)0);
 	m_wndTabs.AddTab(&m_wndOutputDebug, " Debug     ", (UINT)1);
-	m_wndTabs.AddTab(&m_wndOutputPerf, " UI performance     ", (UINT)2);
+	m_wndTabs.AddTab(&m_wndOutputPerf, " Performance     ", (UINT)2);
 	m_wndTabs.AddTab(&m_wndOutputAlgo, " Algorithm     ", (UINT)3);
 	m_wndTabs.AddTab(&m_wndOutputMidi, " MIDI out     ", (UINT)3);
 
