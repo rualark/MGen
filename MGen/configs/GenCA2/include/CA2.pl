@@ -21,7 +21,7 @@ random_key = 0 # Select any of possible keys regardless of last note
 #Correction
 correct_range = 14 # Maximum interval allowed between each source and corrected note (chromatic)
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
-swa_steps = 5 # Size of Sliding Window Approximation algorithm window in steps
+swa_steps = 8 # Size of Sliding Window Approximation algorithm window in steps
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.

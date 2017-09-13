@@ -186,6 +186,7 @@ void CGenCP1::SingleCPInit() {
 		}
 		// For sliding windows algorithm evaluate whole melody
 		if (method == mSWA) {
+			sp2 = sp1 + min(swa_len, s_len);
 			swa1 = 0;
 			swa2 = swa1 + swa_len;
 			// Record window
@@ -1586,7 +1587,7 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-		LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, cc_id);
+		//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, cc_id);
 		//if (MatchVectors(acc[cpv], test_cc, 0, 20))
 		//	WriteLog(1, "Found");
 		// Check if dpenalty is already too high
@@ -1597,10 +1598,10 @@ check:
 			}
 			else {
 				CalcStepDpenaltyCP(ep2 - 1);
-				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
+				//if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
 			}
 		}
-		else dpenalty_cur = 0;
+		dpenalty_cur = 0;
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
 		// Limit melody interval
 		if (task == tGen) {

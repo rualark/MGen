@@ -2253,10 +2253,8 @@ int CGenCF1::FailWindowsLimit() {
 void CGenCF1::NextWindow() {
 	if (task == tCor) {
 		sp1 = sp2;
-		sp2 = sp1 + s_len; // End of search window
+		sp2 = sp1 + min(swa_len, s_len);
 		if (sp2 > smatrixc) sp2 = smatrixc;
-		// Reserve last window with maximum length
-		if ((smatrixc - sp1 < s_len * 2) && (smatrixc - sp1 > s_len)) sp2 = (smatrixc + sp1) / 2;
 		// Record window
 		++wid;
 		wpos1[wid] = sp1;
@@ -2269,6 +2267,8 @@ void CGenCF1::NextWindow() {
 			if (sp2 == swa2) ep2 = c_len;
 		}
 		else {
+			// Reserve last window with maximum length
+			if ((smatrixc - sp1 < s_len * 2) && (smatrixc - sp1 > s_len)) sp2 = (smatrixc + sp1) / 2;
 			if (sp2 == smatrixc) ep2 = c_len;
 		}
 		// Minimal position in array to cycle
@@ -2534,7 +2534,7 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	FillCantusMap(cc, smap, swa1, swa2, cc_order);
 	// Init new scan window
 	sp1 = swa1;
-	sp2 = swa1 + s_len;
+	sp2 = swa1 + min(swa_len, s_len);
 	if (sp2 > smatrixc) sp2 = smatrixc;
 	wcount = 1;
 	wid = 0;
