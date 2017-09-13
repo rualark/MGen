@@ -170,6 +170,7 @@ protected:
 	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);
 	inline void SaveBestRejected(vector<int>& cc);
 	inline int FailMinor(vector<int>& pcc, vector<int>& cc);
+	inline void ShowScanSpeed();
 	inline void ShowScanStatus();
 	inline void ReseedCantus();
 	inline void TimeBestRejected();
@@ -356,6 +357,9 @@ protected:
 	CString midi_file;
 
   // Local
+	// Queues for calculating scan speed and displaying in status
+	deque<long long> q_scan_ms;
+	deque<long long> q_scan_cycle;
 	int status_cycle = 0; // Scan time divided by status period (ms)
 	int cpv; // Current counterpoint voice
 	int cfv; // Current cantus voice

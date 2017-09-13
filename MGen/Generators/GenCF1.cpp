@@ -1818,6 +1818,8 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 
 void CGenCF1::ScanInit() {
 	if (!is_animating) {
+		q_scan_cycle.clear();
+		q_scan_ms.clear();
 		scan_start_time = time();
 		anflags.resize(av_cnt);
 		anflagsc.resize(av_cnt);
@@ -2636,6 +2638,41 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 	return 0;
 }
 
+void CGenCF1::ShowScanSpeed() {
+	CString st;
+	long long scan_time;
+	if (task == tCor) scan_time = time() - correct_start_time;
+	else scan_time = time() - scan_start_time;
+	// Push new values
+	q_scan_cycle.push_back(cycle);
+	q_scan_ms.push_back(time());
+	// Get delta
+	long long dms = q_scan_ms.back() - q_scan_ms.front();
+	long long dcycle = q_scan_cycle.back() - q_scan_cycle.front();
+	if (dcycle < 0) {
+		WriteLog(1, "Error");
+	}
+	// If delta big, remove old
+	if (dms > 2000 && q_scan_ms.size() > 2) {
+		q_scan_cycle.pop_front();
+		q_scan_ms.pop_front();
+	}
+	// Create string
+	CString speed_st;
+	if (dms) {
+		double sspeed = (double)dcycle / (double)dms;
+		if (sspeed > 5) speed_st.Format("%.0f/ms", sspeed);
+		else if (sspeed > 0.05) speed_st.Format("%.2f/ms", sspeed);
+		else if (sspeed > 0.0005) speed_st.Format("%.4f/ms", sspeed);
+		else speed_st.Format("%.6f/ms", sspeed);
+	}
+	// Create status
+	if (clib.size() > 0) st.Format("CL %d, ST %lld, CY %s", clib.size(), scan_time / 1000, speed_st);
+	else st.Format("ST %lld, CY %s", scan_time / 1000, speed_st);
+	// Send status
+	SetStatusText(5, st);
+}
+
 void CGenCF1::ShowScanStatus() {
 	if (task == tEval) return;
 	CString st, progress_st;
@@ -2657,18 +2694,13 @@ void CGenCF1::ShowScanStatus() {
 			progress_st += st;
 		}
 	}
-	long long scan_time;
-	if (task == tCor) scan_time = time() - correct_start_time;
-	else scan_time = time() - scan_start_time;
 	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + "(Scan progress)");
-	if (clib.size() > 0) st.Format("CY/ms %.1f, CL %d, ST %lld", (double)cycle / scan_time, clib.size(), scan_time / 1000);
-	else st.Format("CY/ms %.1f, ST %lld", (double)cycle/scan_time, scan_time / 1000);
-	SetStatusText(5, st);
 	if (task == tCor) st.Format("WI %d/%d, RP %.0f, DP %d", wid + 1, wcount, rpenalty_min, dpenalty_min);
 	else st.Format("WI %d/%d", wid + 1, wcount, rpenalty_min, dpenalty_min);
 	SetStatusText(1, st);
 	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
+	ShowScanSpeed();
 }
 
 void CGenCF1::ReseedCantus()
