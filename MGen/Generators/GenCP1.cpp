@@ -166,9 +166,6 @@ void CGenCP1::SingleCPInit() {
 			smap[map_id] = i;
 			++map_id;
 		}
-		// Shuffled smap
-		//unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		//::shuffle(smap.begin(), smap.end(), default_random_engine(seed));
 		sp1 = 0;
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > smatrixc) sp2 = smatrixc;
@@ -177,29 +174,33 @@ void CGenCP1::SingleCPInit() {
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
 		CalculateCcOrder(acc_old[cpv], 0, c_len);
-		// Add last note if this is last window
-		// End of evaluation window
+		// Clear scan steps
+		FillCantusMap(cc_id, smap, 0, smatrixc, 0);
+		FillCantusMap(acc[cpv], smap, 0, smatrixc, cc_order);
+		ep2 = GetMaxSmap() + 1;
+		if (sp2 == smatrixc) ep2 = c_len;
+		dpenalty_step.clear();
+		dpenalty_step.resize(c_len, 0);
 		if (method == mScan) {
-			ep2 = GetMaxSmap() + 1;
-			if (sp2 == smatrixc) ep2 = c_len;
-			// Clear scan steps
-			FillCantusMap(cc_id, smap, 0, smatrixc, 0);
-			FillCantusMap(acc[cpv], smap, 0, smatrixc, cc_order);
 			// Can skip flags - full scan must remove all flags
-			dpenalty_step.clear();
-			dpenalty_step.resize(c_len, 0);
 		}
 		// For sliding windows algorithm evaluate whole melody
 		if (method == mSWA) {
-			ep2 = c_len;
+			swa1 = 0;
+			swa2 = swa1 + swa_len;
+			// Record window
+			swcount = 1;
+			swid = 0;
+			swpos1[swid] = swa1;
+			swpos2[swid] = swa2;
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
-			// Clear scan steps of current window
-			FillCantusMap(cc_id, smap, sp1, sp2, 0);
-			FillCantusMap(acc[cpv], smap, sp1, sp2, cc_order);
 			// Prepare dpenalty
-			dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, sp1-1) + 
-				CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp2, c_len - 1);
+			dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, swa1-1) + 
+				CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], swa2, c_len - 1);
+			fill(dpenalty_step.begin(), dpenalty_step.end(), 0);
+			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
+			if (sp2 == swa2) ep2 = c_len;
 		}
 		// Minimum element
 		ep1 = max(0, GetMinSmap() - 1);
@@ -257,6 +258,7 @@ void CGenCP1::ScanCPInit() {
 	motion.resize(c_len);
 	beat.resize(c_len);
 	sus.resize(c_len);
+	ep2 = c_len;
 }
 
 int CGenCP1::SendCP() {
@@ -1299,7 +1301,7 @@ void CGenCP1::ShowLiningCP(vector<int> &cc) {
 void CGenCP1::SWACP(int i, int dp) {
 	CString st;
 	long long time_start = CGLib::time();
-	s_len = 1;
+	swa_len = 1;
 	// Save source rpenalty
 	float rpenalty_source = rpenalty_cur;
 	long cnum = 0;
@@ -1354,8 +1356,8 @@ void CGenCP1::SWACP(int i, int dp) {
 				t_sent = t_generated;
 			}
 		}
-		if (acc[cfv].size() > 60 || s_len > 0) {
-			st.Format("SWA%d #%d RP %.0f DP %d", s_len, a+1, rpenalty_min, dpenalty_min);
+		if (acc[cfv].size() > 60 || swa_len > 0) {
+			st.Format("SWA%d #%d RP %.0f DP %d", swa_len, a+1, rpenalty_min, dpenalty_min);
 			SetStatusText(4, st);
 		}
 		// Animation
@@ -1366,7 +1368,7 @@ void CGenCP1::SWACP(int i, int dp) {
 			if (debug_level > 2) {
 				CString est;
 				est.Format("Animation at SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld",
-					s_len, a + 1, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+					swa_len, a + 1, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 				WriteLog(3, est);
 			}
 			acycle = acy;
@@ -1394,22 +1396,22 @@ void CGenCP1::SWACP(int i, int dp) {
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
-				if (s_len >= swa_steps)	break;
-				++s_len;
+				if (swa_len >= swa_steps)	break;
+				++swa_len;
 			}
 		}
 		else {
 			// Abort SWA if rpenalty zero or not decreasing
 			if (!rpenalty_min) break;
 			if (rpenalty_min >= rpenalty_min_old) {
-				if (s_len >= swa_steps) {
+				if (swa_len >= swa_steps) {
 					// Record SWA stuck flags
 					if (best_flags.size()) for (int x = 0; x < max_flags; ++x) {
 						if (best_flags[x]) ++ssf[x];
 					}
 					break;
 				}
-				else ++s_len;
+				else ++swa_len;
 			}
 		}
 	}
@@ -1419,7 +1421,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	// For successful rpenalty_cur == 0, show last flag that was fixed. For unsuccessful, show best variant
 	CString sst = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %d ms): %s",
-		s_len, a+1, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
+		swa_len, a+1, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
 	WriteLog(3, est);
 	TestBestRpenalty();
 }
@@ -1584,7 +1586,7 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-		//LogCantus("ep2", ep2, cc_id);
+		LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, cc_id);
 		//if (MatchVectors(acc[cpv], test_cc, 0, 20))
 		//	WriteLog(1, "Found");
 		// Check if dpenalty is already too high
@@ -1594,8 +1596,8 @@ check:
 				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
 			}
 			else {
-				dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp1, sp2-1);
-				if (dpenalty_cur > dpenalty_min) goto skip;
+				CalcStepDpenaltyCP(ep2 - 1);
+				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
 			}
 		}
 		else dpenalty_cur = 0;
@@ -1690,8 +1692,16 @@ check:
 
 		//LogCantus("Rpenalty", rpenalty_cur, flags);
 		SaveBestRejected(acc[cpv]);
+		if (task == tCor && method == mSWA) {
+			CalcRpenalty(acc[cpv]);
+			if (ep2 < smap[swa2 - 1] + 1) {
+				if (rpenalty_cur > source_rpenalty_step[smap[swa1]]) goto skip;
+				NextWindow();
+				goto check;
+			}
+		}
 		// If we are window-scanning
-		if ((task == tGen || task == tCor) && method == mScan) {
+		else if (task == tGen || task == tCor) {
 			++accepted2;
 			CalcFlagStat();
 			if (FailFlagBlock()) goto skip;
@@ -1706,8 +1716,8 @@ check:
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (float)RAND_MAX*random_choose / 100.0) goto skip;
 		}
-		// Calculate rules penalty if we evaluate or correct cantus without full scan
 		else {
+			// Evaluation
 			CalcRpenalty(acc[cpv]);
 		}
 		// Accept cantus
@@ -1749,13 +1759,13 @@ check:
 		if (finished) {
 			// Clear flag to prevent coming here again
 			finished = 0;
-			// Sliding Windows Approximation
-			if (method == mSWA) {
-				if (NextSWA(acc[cpv], acc_old[cpv])) break;
-				goto check;
-			}
 			// Finish if this is last variant in first window and not SWA
-			else if ((p == 0) || (wid == 0)) {
+			if ((p == 0) || (wid == 0)) {
+				// Sliding Windows Approximation
+				if (method == mSWA) {
+					if (NextSWA(acc[cpv], acc_old[cpv])) break;
+					goto check;
+				}
 				if (random_seed && random_range && accept_reseed) {
 					// Infinitely cycle through ranges
 					ReseedCP();

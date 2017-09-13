@@ -477,7 +477,7 @@ void CGenCF1::LogCantus(CString st3, int x, vector<int> &c)
 {
 	CString st, st2;
 	st2.Format("%s %d: ", st3, x);
-	for (int i = 0; i < c.size(); ++i) {
+	for (int i = 0; i < ep2; ++i) {
 		st.Format("%d ", c[i]);
 		st2 += st;
 	}
@@ -1825,6 +1825,7 @@ void CGenCF1::ScanInit() {
 			anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
 			anflagsc[i].resize(c_len); // number of flags for each note
 		}
+		source_rpenalty_step.resize(c_len);
 		uli.resize(c_len);
 		fli.resize(c_len);
 		fli2.resize(c_len);
@@ -1840,6 +1841,8 @@ void CGenCF1::ScanInit() {
 		fpenalty.resize(max_flags);
 		wpos1.resize(c_len / s_len + 1);
 		wpos2.resize(c_len / s_len + 1);
+		swpos1.resize(c_len / s_len + 1);
+		swpos2.resize(c_len / s_len + 1);
 		min_c.resize(c_len);
 		max_c.resize(c_len);
 		min_cc.resize(c_len);
@@ -1859,6 +1862,7 @@ void CGenCF1::ScanInit() {
 		cycle = 0;
 		wscans.resize(MAX_WIND); // number of full scans per window
 		wcount = 1; // Number of windows created
+		swcount = 1; // Number of SWA windows created
 		accepted = 0;
 		accepted2 = 0;
 		accepted3 = 0;
@@ -2261,7 +2265,12 @@ void CGenCF1::NextWindow() {
 		// End of evaluation window
 		ep2 = GetMaxSmap() + 1;
 		ep1 = max(0, GetMinSmap() - 1);
-		if (sp2 == smatrixc) ep2 = c_len;
+		if (method == mSWA) {
+			if (sp2 == swa2) ep2 = c_len;
+		}
+		else {
+			if (sp2 == smatrixc) ep2 = c_len;
+		}
 		// Minimal position in array to cycle
 		pp = sp2 - 1;
 		p = smap[pp];
@@ -2285,7 +2294,7 @@ void CGenCF1::NextWindow() {
 	}
 	if (wcount < wid + 1) {
 		wcount = wid + 1;
-		if (ep2 == c_len) {
+		if (ep2 == c_len && method == mScan) {
 			// Show window statistics
 			CString est;
 			CString st, st2;
@@ -2380,6 +2389,10 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x]) rpenalty_cur += fpenalty[x];
 	}
+	// Save rpenalty
+	if (method == mSWA && !source_rpenalty_step[ep2 - 1] && sp1 == swa1 && cc_id[ep2 - 1] == 0) {
+		source_rpenalty_step[ep2 - 1] = rpenalty_cur;
+	}
 }
 
 void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
@@ -2450,7 +2463,6 @@ void CGenCF1::ShowBestRejected(vector<int> &cc) {
 }
 
 void CGenCF1::BackWindow(vector<int> &cc) {
-	if (method != mScan) return;
 	if (task == tCor) {
 		// Clear current window
 		FillCantusMap(cc_id, smap, sp1, sp2, 0);
@@ -2507,23 +2519,38 @@ int CGenCF1::CalcDpenaltyCP(vector<int> &cc1, vector<int> &cc2, int s1, int s2) 
 
 int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	// If we slided to the end, break
-	if (sp2 == smatrixc) return 1;
+	if (swa2 == smatrixc) return 1;
 	// Slide window further
-	++sp1;
-	++sp2;
+	++swa1;
+	++swa2;
 	ep1 = max(0, GetMinSmap() - 1);
 	// Minimal position in array to cycle
-	pp = sp2 - 1;
+	pp = swa2 - 1;
 	p = smap[pp];
 	// Restore previous step after sliding window
-	cc[smap[sp1 - 1]] = cc_old[smap[sp1 - 1]];
+	cc[smap[swa1 - 1]] = cc_old[smap[swa1 - 1]];
 	// Clear scan steps of current window
-	FillCantusMap(cc_id, smap, sp1, sp2, 0);
-	FillCantusMap(cc, smap, sp1, sp2, cc_order);
+	FillCantusMap(cc_id, smap, swa1, swa2, 0);
+	FillCantusMap(cc, smap, swa1, swa2, cc_order);
+	// Init new scan window
+	sp1 = swa1;
+	sp2 = swa1 + s_len;
+	if (sp2 > smatrixc) sp2 = smatrixc;
+	wcount = 1;
+	wid = 0;
+	wpos1[wid] = sp1;
+	wpos2[wid] = sp2;
+	// Clear scan steps
+	FillCantusMap(cc_id, smap, swa1, swa2, 0);
+	FillCantusMap(acc[cpv], smap, swa1, swa2, cc_order);
+	ep2 = GetMaxSmap() + 1;
+	if (sp2 == swa2) ep2 = c_len;
+	dpenalty_step.clear();
+	dpenalty_step.resize(c_len, 0);
 	// Prepare dpenalty
 	if (av_cnt == 2) {
-		dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, sp1 - 1) +
-			CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], sp2, c_len - 1);
+		dpenalty_outside_swa = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], 0, swa1 - 1) +
+			CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], swa2, c_len - 1);
 	}
 	else {
 		// TODO implement for CF1
@@ -3350,7 +3377,7 @@ void CGenCF1::RandomSWA()
 void CGenCF1::SWA(int i, int dp) {
 	CString st;
 	long long time_start = CGLib::time();
-	s_len = 1;
+	swa_len = 1;
 	// Save source rpenalty
 	float rpenalty_source = rpenalty_cur;
 	long cnum = 0;
@@ -3411,32 +3438,32 @@ void CGenCF1::SWA(int i, int dp) {
 		// Send log
 		if (debug_level > 1) {
 			CString est;
-			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
+			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld", swa_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
 		}
 		if (m_cc.size() > 60) {
-			st.Format("SWA%d attempt: %d", s_len, a);
+			st.Format("SWA%d attempt: %d", swa_len, a);
 			SetStatusText(4, st);
 		}
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
-				if (s_len >= swa_steps)	break;
-				++s_len;
+				if (swa_len >= swa_steps)	break;
+				++swa_len;
 			}
 		}
 		else {
 			// Abort SWA if rpenalty zero or not decreasing
 			if (!rpenalty_min) break;
 			if (rpenalty_min >= rpenalty_min_old) {
-				if (s_len >= swa_steps) {
+				if (swa_len >= swa_steps) {
 					// Record SWA stuck flags
 					for (int x = 0; x < max_flags; ++x) {
 						if (best_flags[x]) ++ssf[x];
 					}
 					break;
 				}
-				else ++s_len;
+				else ++swa_len;
 			}
 		}
 	}
@@ -3446,7 +3473,7 @@ void CGenCF1::SWA(int i, int dp) {
 	// For successful rpenalty_cur == 0, show last flag that was fixed. For unsuccessful, show best variant
 	CString stuck_st = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %d ms): %s", 
-		s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, stuck_st);
+		swa_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, stuck_st);
 	WriteLog(3, est);
 	TestBestRpenalty();
 }

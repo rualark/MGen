@@ -238,7 +238,8 @@ protected:
 	int min_intervald = 4; // Minimum diatonic interval in cantus (7 = octave)
 	int max_intervald = 7; // Maximum diatonic interval in cantus (7 = octave)
 	int c_len = 9; // Number of measures in each cantus. Usually 9 to 11
-	int s_len = 4; // Maximum number of measures to full scan
+	int s_len = 4; // Maximum number of steps to full scan
+	int swa_len = 4; // Maximum number of steps for SWA
 	int first_note = 72; // Starting note of each cantus
 	int first_note0 = 0; // Saved first note during generation
 	int last_note = 72; // Ending note of each cantus
@@ -390,6 +391,7 @@ protected:
 	float rpenalty_cur = 0; // Rules penalty
 	float rpenalty_min; // Minimum rules penalty for this scan
 	vector <float> rpenalty; // Penalty in terms of sum of flag severity
+	vector <float> source_rpenalty_step; // Penalty in terms of sum of flag severity
 	int dpenalty_cur = 0; // Distance from source penalty
 	int dpenalty_min; // Minimum distance penalty for this scan
 	vector <int> dpenalty; // Penalty in terms of distance from source
@@ -397,14 +399,17 @@ protected:
 	vector <float> cc_tempo; // Tempo of each cantus note
 	int real_len; // Total length of cantus in steps
 	int skip_flags, clear_flags;
-	int sp1, sp2, ep1, ep2, p, pp;
+	int sp1, sp2, swa1=0, swa2=0, ep1, ep2, p, pp;
 	long long accepted2 = 0, accepted3 = 0;
 	int first_note_dia, first_note_oct;
 	int wid; // Window id
+	int swid; // SWA Window id
 	int dpenalty_outside_swa; // Sum of dpenalty outside SWA range
 	vector<int> m_cc_old; // Cantus chromatic saved for SWA
 	vector<int> wpos1;
 	vector<int> wpos2;
+	vector<int> swpos1;
+	vector<int> swpos2;
 	vector<int> dpenalty_step; // Dpenalty of all steps up to current
 	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
 	vector<int> min_c;
@@ -421,6 +426,7 @@ protected:
 	vector<long long> accepted5; // number of canti with neede flags per window
 	vector<long long> wscans; // number of full scans per window
 	int wcount = 1; // Number of windows created
+	int swcount = 0; // Number of SWA windows created
 	long long cycle = 0; // Cycle number of full scan
 	long long accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
