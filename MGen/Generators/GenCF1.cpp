@@ -3681,7 +3681,7 @@ check:
 			}
 			else {
 				// Calculate dpenalty if this is evaluation
-				if (task == tEval) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, fn, c_len - 1);
+				if (task == tEval && cantus.size()) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, fn, c_len - 1);
 				if (SendCantus()) break;
 			}
 			// Exit if this is evaluation

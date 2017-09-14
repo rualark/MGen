@@ -341,7 +341,7 @@ protected:
 	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
 	int animate = 100; // Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
 	int animate_delay = 0; // Delay in ms after each animation step
-	int max_correct_ms = 5000; // Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
+	int max_correct_ms = 0; // Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
 
 	// CA1 local variables
 	long long correct_start_time; // Time when current correction started

@@ -1753,7 +1753,7 @@ check:
 			}
 			else {
 				// Calculate dpenalty if this is evaluation
-				if (task == tEval) dpenalty_cur = CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
+				if (task == tEval && cpoint.size()) dpenalty_cur = CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
 				if (SendCP()) break;
 			}
 			// Exit if this is evaluation
