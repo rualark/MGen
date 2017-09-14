@@ -320,6 +320,9 @@ void CGenCF1::CheckConfig() {
 			WriteLog(1, "Warning: accept_cantus_rechoose will not work with cantus_id above zero (check config)");
 		}
 	}
+	if (swa_steps < s_len) {
+		WriteLog(5, "Warning: Swa_steps cannot be below s_len. Changed to ");
+	}
 	if (species == 1 && fn > 0) {
 		WriteLog(5, "Warning: Counterpoint species 1 cannot have starting_pause (check config)");
 	}
@@ -2919,9 +2922,9 @@ void CGenCF1::TransposeVector(vector<float> &v, int t) {
 void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
-	for (int s = 0; s < v.size(); ++s) {
-		pos1 = max(0, s - range);
-		pos2 = min(v.size() - 1, s + range);
+	for (int s = fn; s < ep2; ++s) {
+		pos1 = max(fn, s - range);
+		pos2 = min(ep2 - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
 		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
@@ -2936,9 +2939,9 @@ void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
 void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
-	for (int s = 0; s < v.size(); ++s) {
-		pos1 = max(0, s - range);
-		pos2 = min(v.size() - 1, s + range);
+	for (int s = fn; s < ep2; ++s) {
+		pos1 = max(fn, s - range);
+		pos2 = min(ep2 - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
 		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
@@ -2953,9 +2956,9 @@ void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
 void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
-	for (int s = 0; s < v.size(); ++s) {
-		pos1 = max(0, s - range);
-		pos2 = min(v.size() - 1, s + range);
+	for (int s = fn; s < ep2; ++s) {
+		pos1 = max(fn, s - range);
+		pos2 = min(ep2 - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
 		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
@@ -2970,9 +2973,9 @@ void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
 void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
-	for (int s = 0; s < v.size(); ++s) {
-		pos1 = max(0, s - range);
-		pos2 = min(v.size() - 1, s + range);
+	for (int s = fn; s < ep2; ++s) {
+		pos1 = max(fn, s - range);
+		pos2 = min(ep2 - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
 		for (int x = pos1; x <= pos2; ++x) if (v[x]) {

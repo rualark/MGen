@@ -1384,7 +1384,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				else {
 					ScanCP(tEval, 0);
 				}
-				//LogCantus("Animate SWA", 0, acc[cpv]);
+				LogCantus("Animate SWA", cantus_id, acc[cpv]);
 				is_animating = 0;
 				step = step0;
 				ValidateVectors(step0, t_generated - 1);
@@ -1588,11 +1588,12 @@ check:
 	while (true) {
 		// First pause
 		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-		if (swa_len == 79) {
-			//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, acc[cpv]);
-			if (ep2 >= 45 && MatchVectors(acc[cpv], test_cc, 2, ep2 - 1))
-				WriteLog(1, "Found");
-		}
+		//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, acc[cpv]);
+		//if (ep2 > 56 && MatchVectors(acc[cpv], test_cc, 2, ep2 - 1)) {
+			//CString est;
+			//est.Format("Found ep2 %d", ep2);
+			//WriteLog(1, est);
+		//}
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
 			if (method == mScan) {

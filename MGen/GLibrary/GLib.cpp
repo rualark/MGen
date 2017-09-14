@@ -172,7 +172,7 @@ void CGLib::StringToVector(CString *sValue, CString stDelim, vector<int> & Dest,
 			CString est;
 			est.Format("Cannot load more than %d values into vector. String: '%s'.", Dest.size(), *sValue);
 			WriteLog(5, est);
-			return;
+			continue;
 		}
 		Dest[i] = atoi(st);
 		CheckLimits(sValue, &(Dest[i]), lmin, lmax);
