@@ -249,8 +249,8 @@ ModelManifest.xml
 /MGen/autosaves_old
 /distrib
 *.exe
+/Test2
 /Test
 *.pkf
 *.wav
-/enc_temp_folder/972a83596133f39c852917b6663f498/GenCF1.cpp
-/enc_temp_folder/972a83596133f39c852917b6663f498
+/enc_temp_folder
