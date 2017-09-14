@@ -3747,6 +3747,7 @@ void CGenCF1::Generate()
 	test_cc.resize(10);
 	StringToVector(&test_st, " ", test_cc);
 
+	first_note0 = first_note;
 	// Voice
 	int v = 0;
 	//TestDiatonic();
