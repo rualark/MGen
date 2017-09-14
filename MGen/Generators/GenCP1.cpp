@@ -1394,6 +1394,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				animate_cc = acc[cpv];
 			}
 		}
+		if (max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
@@ -1642,7 +1643,7 @@ check:
 			status_cycle = scycle;
 		}
 		// Limit SAS correction time
-		if (task == tCor && method == mScan && max_correct_ms && time - scan_start_time > max_correct_ms) break;
+		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
 		CreateLinks(acc[cpv]);
