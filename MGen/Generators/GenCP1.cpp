@@ -199,7 +199,6 @@ void CGenCP1::SingleCPInit() {
 			dpenalty_outside_swa = 0;
 			if (swa1 > 0) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
-			fill(dpenalty_step.begin(), dpenalty_step.end(), 0);
 			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
 		}
@@ -945,16 +944,15 @@ int CGenCP1::FailVIntervals() {
 	return 0;
 }
 
-void CGenCP1::CalcStepDpenaltyCP(int i) {
+void CGenCP1::CalcStepDpenaltyCP(int i, int startpos) {
 	int dif = abs(cpoint[cantus_id][cpv][i] - acc[cpv][i]);
 	int dpe = 0;
 	if (dif) dpe = step_penalty + pitch_penalty * dif;
-	if (i > fn) dpenalty_step[i] = dpenalty_step[i-1] + dpe;
+	if (i > startpos) dpenalty_step[i] = dpenalty_step[i - 1] + dpe;
 	else dpenalty_step[i] = dpe;
 }
 
 void CGenCP1::SaveCP() {
-	if (method == mScan) dpenalty_cur = dpenalty_step[c_len - 1];
 	if (!dpenalty_cur) dpenalty_cur = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
 	if (rpenalty_cur == rpenalty_min) {
 		// Do not save cantus if it has higher dpenalty
@@ -1596,15 +1594,19 @@ check:
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
 			if (method == mScan) {
-				CalcStepDpenaltyCP(ep2 - 1);
-				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
+				CalcStepDpenaltyCP(p, fn);
+				dpenalty_cur = dpenalty_step[p];
 			}
 			else {
-				dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa1], smap[sp2 - 1]);
-				if (dpenalty_cur > dpenalty_min) goto skip;
-				//CalcStepDpenaltyCP(ep2 - 1);
-				//if (dpenalty_outside_swa + dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
+				if (dpenalty_step[smap[swa1]] || p == smap[swa1]) {
+					CalcStepDpenaltyCP(p, smap[swa1]);
+					dpenalty_cur = dpenalty_outside_swa + dpenalty_step[p];
+				}
+				else {
+					dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa1], smap[sp2 - 1]);
+				}
 			}
+			if (dpenalty_cur > dpenalty_min) goto skip;
 		}
 		else dpenalty_cur = 0;
 		GetMelodyInterval(acc[cpv], 0, ep2, nmin, nmax);
