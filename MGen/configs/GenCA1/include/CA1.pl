@@ -3,8 +3,8 @@ include "../../GenCF1/include/CF1.pl"
 rule_set = 1 # Specify which set of rules to use (see rules.xlsx)
 
 # Method parameters
-#method = window-scan # This method can be faster in some cases
-method = swa # This method is best for analysis and corrections in most cases
+method = window-scan # This method can be faster in some cases
+#method = swa # This method is best for analysis and corrections in most cases
 
 accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
@@ -26,7 +26,7 @@ post_bad = 12 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
-swa_steps = 2 # Size of Sliding Window Approximation algorithm window in steps
+swa_steps = 100 # Size of Sliding Window Approximation algorithm window in steps
 correct_range = 11 # Maximum interval allowed between each source and corrected note (chromatic)
 animate = 0 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
 animate_delay = 0 # Delay in ms after each animation step

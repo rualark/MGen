@@ -1296,7 +1296,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	long long time_start = CGLib::time();
 	swa_len = 1;
 	// Save source rpenalty
-	float rpenalty_source = rpenalty_cur;
+	rpenalty_source = rpenalty_cur;
 	long cnum = 0;
 	vector<int> animate_cc; // This is cc that was sent in previous animation step
 	// Save cantus only if its penalty is less or equal to source rpenalty
@@ -1416,7 +1416,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	CString sst = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %d ms): %s",
 		swa_len, a+1, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
-	WriteLog(3, est);
+	WriteLog(0, est);
 	TestBestRpenalty();
 }
 
@@ -1777,7 +1777,7 @@ check:
 					// Start evaluating without scan
 					goto check;
 				}
-				WriteLog(3, "Last variant in first window reached");
+				WriteLog(0, "Last variant in first window reached");
 				break;
 			}
 			ShowBestRejectedCP();

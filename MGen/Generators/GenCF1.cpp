@@ -2318,7 +2318,7 @@ void CGenCF1::NextWindow() {
 			}
 			//est.Format("Algorithm created %d windows: %s", wcount, st2);
 			est.Format("Algorithm created %d windows", wcount);
-			WriteLog(3, est);
+			WriteLog(0, est);
 		}
 	}
 	/*
@@ -3401,7 +3401,7 @@ void CGenCF1::SWA(int i, int dp) {
 	long long time_start = CGLib::time();
 	swa_len = 1;
 	// Save source rpenalty
-	float rpenalty_source = rpenalty_cur;
+	rpenalty_source = rpenalty_cur;
 	long cnum = 0;
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
@@ -3483,7 +3483,7 @@ void CGenCF1::SWA(int i, int dp) {
 	CString stuck_st = GetStuck();
 	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %d ms): %s", 
 		swa_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, stuck_st);
-	WriteLog(3, est);
+	WriteLog(0, est);
 	TestBestRpenalty();
 }
 
@@ -3706,7 +3706,7 @@ check:
 					// Start evaluating without scan
 					goto check;
 				}
-				WriteLog(3, "Last variant in first window reached");
+				WriteLog(0, "Last variant in first window reached");
 				break;
 			}
 			ShowBestRejected(m_cc);

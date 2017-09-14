@@ -394,6 +394,7 @@ protected:
 	vector<vector<int>> br_nf; // Note flags (best rejected)
 	vector<int> br_nfc; // Note flags count (best rejected)
 	float rpenalty_cur = 0; // Rules penalty
+	float rpenalty_source = 0; // Source melody rpenalty
 	float rpenalty_min; // Minimum rules penalty for this scan
 	vector <float> rpenalty; // Penalty in terms of sum of flag severity
 	vector <float> source_rpenalty_step; // Penalty in terms of sum of flag severity

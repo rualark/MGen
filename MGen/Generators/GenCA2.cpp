@@ -52,7 +52,7 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 			ccount++;
 			if (ccount > corrections) break;
 			// Write log
-			st.Format("%.0f/%d/%d/%d ", rpenalty_min, dpenalty_min, cids.size(), clib.size());
+			st.Format("%.0f/%d/%.0f/%zu/%zu ", rpenalty_min, dpenalty_min, rpenalty_source, cids.size(), clib.size());
 			st2 += st;
 			// Show initial melody again if this is not first iteration
 			if (ccount > 1) {
@@ -81,7 +81,7 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 	long long time_stop = CGLib::time();
 	// Send log
 	CString est;
-	est.Format("Sent corrections in %d ms to step %d with rp/dp/variants/lib: %s", time_stop - time_start, step, st2);
+	est.Format("Sent corrections in %d ms to step %d with rp/dp/srp/variants/lib: %s", time_stop - time_start, step, st2);
 	WriteLog(3, est);
 }
 
@@ -408,6 +408,8 @@ void CGenCA2::Generate() {
 		// Init animation
 		acycle = 0;
 		correct_start_time = CGLib::time();
+		// Save source rpenalty
+		rpenalty_source = rpenalty_cur;
 		if (method == mSWA) {
 			SWACP(i, 1);
 		}
