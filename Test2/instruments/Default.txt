@@ -1,0 +1,14 @@
+#GROUP   | CONFIG           | CHAN | 
+Violin   | Friedlander      | 1    |
+Trumpet  | SM Trumpet       | 2    |
+Horn     | SM Horn          | 3    |
+Trombone | SM Trombone      | 4    |
+Tuba     | SM Tuba          | 5    |
+Piano    | Default          | 0    | # Default instrument for unmapped instruments
+
+# CHAN is MIDI channel to send this instrument to
+# Last instrument in layout must be default instrument, which will get all unmapped instruments
+
+# Randomization
+rnd_tempo = 6 # Randomize tempo not greater than this percent
+rnd_tempo_step = 1 # Maximum difference in tempo (percent) between adjacent steps while randomizing
