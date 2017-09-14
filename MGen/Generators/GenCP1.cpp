@@ -1176,7 +1176,6 @@ int CGenCP1::FailOverlap() {
 void CGenCP1::RandomSWACP()
 {
 	// Init animation
-	correct_start_time = time();
 	acycle = 0;
 	CString st;
 	//test_cc.resize(24);
@@ -1235,6 +1234,7 @@ void CGenCP1::RandomSWACP()
 		// Optimize cpoint
 		rpenalty_cur = MAX_PENALTY;
 		step0 = step;
+		correct_start_time = time();
 		SWACP(0, 0);
 		is_sent = 0;
 		// Show cantus if it is perfect

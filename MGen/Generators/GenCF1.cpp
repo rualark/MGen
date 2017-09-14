@@ -3326,7 +3326,6 @@ void CGenCF1::TestDiatonic()
 void CGenCF1::RandomSWA()
 {
 	// Init animation
-	correct_start_time = time();
 	acycle = 0;
 	CString st;
 	// Unique checker
@@ -3363,6 +3362,7 @@ void CGenCF1::RandomSWA()
 		}
 		// Optimize cantus
 		rpenalty_cur = MAX_PENALTY;
+		correct_start_time = time();
 		SWA(0, 0);
 		// Show cantus if it is perfect
 		if (rpenalty_min <= rpenalty_accepted) {
