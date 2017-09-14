@@ -199,7 +199,6 @@ void CGenCP1::SingleCPInit() {
 			dpenalty_outside_swa = 0;
 			if (swa1 > 0) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
-			fill(dpenalty_step.begin(), dpenalty_step.end(), 0);
 			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
 		}
