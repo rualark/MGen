@@ -2547,8 +2547,8 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	FillCantusMap(acc[cpv], smap, swa1, swa2, cc_order);
 	ep2 = GetMaxSmap() + 1;
 	if (sp2 == swa2) ep2 = c_len;
-	// Clear only first step, because it will be used as flag for dpenalty calculation. Other steps will be overwritten during scan
-	dpenalty_step[smap[swa1]] = 0;
+	dpenalty_step.clear();
+	dpenalty_step.resize(c_len, 0);
 	// Prepare dpenalty
 	if (av_cnt == 2) {
 		dpenalty_outside_swa = 0;

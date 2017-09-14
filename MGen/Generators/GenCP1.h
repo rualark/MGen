@@ -47,7 +47,7 @@ protected:
 	inline int FailRhythm5();
 	inline int FailPcoApart();
 	inline int FailVIntervals();
-	inline void CalcStepDpenaltyCP(int i, int startpos);
+	inline void CalcStepDpenaltyCP(int i);
 	inline void SaveCP();
 	inline void ShowBestRejectedCP();
 	inline void SaveCPIfRp();
