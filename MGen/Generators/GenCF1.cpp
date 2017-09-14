@@ -2039,7 +2039,7 @@ void CGenCF1::SingleCantusInit() {
 		CalculateCcOrder(m_cc_old, 0, c_len);
 		// Clear scan steps
 		FillCantusMap(cc_id, smap, 0, smatrixc, 0);
-		FillCantusMap(acc[cpv], smap, 0, smatrixc, cc_order);
+		FillCantusMap(m_cc, smap, 0, smatrixc, cc_order);
 		ep2 = GetMaxSmap() + 1;
 		if (sp2 == smatrixc) ep2 = c_len;
 		dpenalty_step.clear();
@@ -2563,7 +2563,7 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	wpos2[wid] = sp2;
 	// Clear scan steps
 	FillCantusMap(cc_id, smap, swa1, swa2, 0);
-	FillCantusMap(acc[cpv], smap, swa1, swa2, cc_order);
+	FillCantusMap(cc, smap, swa1, swa2, cc_order);
 	ep2 = GetMaxSmap() + 1;
 	if (sp2 == swa2) ep2 = c_len;
 	dpenalty_step.clear();
@@ -3624,7 +3624,7 @@ check:
 				}
 			}
 			else {
-				CalcRpenalty(acc[cpv]);
+				CalcRpenalty(m_cc);
 				if (ep2 < smap[swa2 - 1] + 1) {
 					if (rpenalty_cur > source_rpenalty_step[smap[swa1]]) goto skip;
 					NextWindow();
