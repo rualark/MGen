@@ -1222,13 +1222,13 @@ int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
 	}
 	// Wrong second to last note (last note never can be slurred)
 	if (ep2 > c_len - 2) {
-		s_1 = fli[fli_size - 2];
+		s_1 = c_len - 2;
 		if ((pc[s_1] == 0) || (pc[s_1] == 2) || (pc[s_1] == 3) || (pc[s_1] == 5)) FLAG2(13, s_1);
 		if (pc[s_1] == 4) FLAG2(51, s_1);
 	}
 	// Wrong third to last note
 	if (ep2 > c_len - 3) {
-		s_2 = fli[fli_size - 3];
+		s_2 = c_len - 3;
 		if ((pc[s_2] == 0) || (pc[s_2] == 2) || (pc[s_2] == 4)) FLAG2(14, s_2);
 		// Leading third to last note
 		if (pc[s_2] == 6) FLAG2(34, s_2);
@@ -3548,7 +3548,12 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	// Analyze combination
 check:
 	while (true) {
-		//LogCantus(cc);
+		//LogCantus("CF1 ep2", ep2, m_cc);
+		//if (ep2 > 8 && MatchVectors(m_cc, test_cc, 0, ep2-1)) {
+			//CString est;
+			//est.Format("Found id %d ep2 %d cycle %lld sp1 %d sp2 %d p %d", cantus_id, ep2, cycle, sp1, sp2, p);
+			//WriteLog(1, est);
+		//}
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
 			if (method == mScan) {
@@ -3588,8 +3593,6 @@ check:
 			if (FailGisTrail(m_pcc)) goto skip;
 			if (FailFisTrail(m_pcc)) goto skip;
 		}
-		//if (MatchVectors(cc, test_cc, 0, 2)) 
-		//WriteLog(1, "Found");
 		if (FailTonic(m_cc, m_pc)) goto skip;
 		if (FailLastNotes(m_pc, m_pcc)) goto skip;
 		if (FailNoteSeq(m_pc)) goto skip;
@@ -3740,20 +3743,10 @@ void CGenCF1::ScanRight(vector<int> &cc) {
 
 void CGenCF1::Generate()
 {
-	//test_cc[1000] = 1;
-	// Save first note because it will be overwritten by random generator
-	first_note0 = first_note;
+	CString test_st = "72 67 69 71 69 65 67 64 62 60";
 	test_cc.resize(10);
-	test_cc[0] = 72;
-	test_cc[1] = 74;
-	test_cc[2] = 62;
-	test_cc[3] = 64;
-	test_cc[4] = 65;
-	test_cc[5] = 69;
-	test_cc[6] = 67;
-	test_cc[7] = 69;
-	test_cc[8] = 71;
-	test_cc[9] = 72;
+	StringToVector(&test_st, " ", test_cc);
+
 	// Voice
 	int v = 0;
 	//TestDiatonic();

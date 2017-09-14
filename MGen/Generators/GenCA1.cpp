@@ -219,14 +219,6 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 	CString st, st2;
 	// Count penalty
 	long cnum = clib.size();
-	dpenalty.resize(cnum);
-	for (int x = 0; x < cnum; x++) {
-		dpenalty[x] = 0;
-		for (int z = 0; z < c_len; z++) {
-			int dif = abs(cantus[i][z] - clib[x][z]);
-			if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
-		}
-	}
 	// Find minimum penalty
 	int ccount = 0;
 	// Cycle through all best matches
@@ -347,6 +339,10 @@ void CGenCA1::ConfirmExpect() {
 
 void CGenCA1::Generate()
 {
+	CString test_st = "72 67 69 71 64 65 67 64 62 60";
+	test_cc.resize(10);
+	StringToVector(&test_st, " ", test_cc);
+
 	CString st;
 	int s_len2 = s_len;
 	InitCantus();
