@@ -1903,6 +1903,7 @@ void CGenCF1::ScanCantusInit() {
 	m_leap.resize(c_len);
 	m_smooth.resize(c_len);
 	m_slur.resize(c_len);
+	ep2 = c_len;
 }
 
 // Get minimum element in SWA window
@@ -2028,9 +2029,6 @@ void CGenCF1::SingleCantusInit() {
 			smap[map_id] = i;
 			++map_id;
 		}
-		// Shuffled smap
-		//unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-		//::shuffle(smap.begin(), smap.end(), default_random_engine(seed));
 		sp1 = 0;
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > smatrixc) sp2 = smatrixc;
@@ -2039,23 +2037,33 @@ void CGenCF1::SingleCantusInit() {
 		wpos1[wid] = sp1;
 		wpos2[wid] = sp2;
 		CalculateCcOrder(m_cc_old, 0, c_len);
-		// End of evaluation window
+		// Clear scan steps
+		FillCantusMap(cc_id, smap, 0, smatrixc, 0);
+		FillCantusMap(acc[cpv], smap, 0, smatrixc, cc_order);
+		ep2 = GetMaxSmap() + 1;
+		if (sp2 == smatrixc) ep2 = c_len;
+		dpenalty_step.clear();
+		dpenalty_step.resize(c_len, 0);		// End of evaluation window
 		if (method == mScan) {
-			ep2 = GetMaxSmap() + 1;
-			if (sp2 == smatrixc) ep2 = c_len;
-			// Clear scan steps
-			FillCantusMap(cc_id, smap, 0, smatrixc, 0);
-			FillCantusMap(m_cc, smap, 0, smatrixc, cc_order);
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
 		if (method == mSWA) {
-			ep2 = c_len;
+			sp2 = sp1 + min(swa_len, s_len);
+			swa1 = 0;
+			swa2 = swa1 + swa_len;
+			// Record window
+			swcount = 1;
+			swid = 0;
+			swpos1[swid] = swa1;
+			swpos2[swid] = swa2;			
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
-			// Clear scan steps of current window
-			FillCantusMap(cc_id, smap, sp1, sp2, 0);
-			FillCantusMap(m_cc, smap, sp1, sp2, cc_order);
+			dpenalty_outside_swa = 0;
+			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, fn, smap[swa1 - 1]);
+			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, smap[swa2], c_len - 1);
+			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
+			if (sp2 == swa2) ep2 = c_len;
 		}
 		// Minimum element
 		ep1 = max(0, GetMinSmap() - 1);
@@ -2513,13 +2521,21 @@ void CGenCF1::WritePerfLog() {
 	}
 }
 
-int CGenCF1::CalcDpenaltyCP(vector<int> &cc1, vector<int> &cc2, int s1, int s2) {
+int CGenCF1::CalcDpenalty(vector<int> &cc1, vector<int> &cc2, int s1, int s2) {
 	int dpe = 0;
 	for (int z = s1; z <= s2; ++z) {
 		int dif = abs(cc1[z] - cc2[z]);
 		if (dif) dpe += step_penalty + pitch_penalty * dif;
 	}
 	return dpe;
+}
+
+void CGenCF1::CalcStepDpenalty(vector<int> cc1, vector<int> cc2, int i) {
+	int dif = abs(cc1[i] - cc2[i]);
+	int dpe = 0;
+	if (dif) dpe = step_penalty + pitch_penalty * dif;
+	if (i > fn) dpenalty_step[i] = dpenalty_step[i - 1] + dpe;
+	else dpenalty_step[i] = dpe;
 }
 
 int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
@@ -2553,13 +2569,14 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	dpenalty_step.clear();
 	dpenalty_step.resize(c_len, 0);
 	// Prepare dpenalty
+	dpenalty_outside_swa = 0;
 	if (av_cnt == 2) {
-		dpenalty_outside_swa = 0;
-		if (swa1 > 0) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
-		if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
+		if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
+		if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
 	}
 	else {
-		// TODO implement for CF1
+		if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, fn, smap[swa1 - 1]);
+		if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, smap[swa2], c_len - 1);
 	}
 	return 0;
 }
@@ -2873,37 +2890,6 @@ void CGenCF1::ShowFlagBlock() {
 			WriteLog(3, est);
 		}
 	}
-}
-
-void CGenCF1::CalcDpenalty() {
-	dpenalty_cur = 0;
-	for (int z = fn; z < c_len; z++) {
-		int dif = abs(m_cc_old[z] - m_cc[z]);
-		if (dif) dpenalty_cur += step_penalty + pitch_penalty * dif;
-	}
-}
-
-void CGenCF1::SaveCantus() {
-	// If rpenalty is same as min, calculate dpenalty
-	if (method == mScan || optimize_dpenalty) {
-		if (rpenalty_cur == rpenalty_min) {
-			CalcDpenalty();
-			// Do not save cantus if it has higher dpenalty
-			if (dpenalty_cur > dpenalty_min) return;
-			// Do not save cantus if it is same as source
-			if (!dpenalty_cur) return;
-			dpenalty_min = dpenalty_cur;
-		}
-		// If rpenalty lowered, clear dpenalty
-		else {
-			dpenalty_min = MAX_PENALTY;
-			dpenalty_cur = MAX_PENALTY;
-		}
-		dpenalty.push_back(dpenalty_cur);
-	}
-	clib.push_back(m_cc);
-	rpenalty.push_back(rpenalty_cur);
-	rpenalty_min = rpenalty_cur;
 }
 
 void CGenCF1::TransposeVector(vector<int> &v, int t) {
@@ -3419,7 +3405,7 @@ void CGenCF1::SWA(int i, int dp) {
 	long cnum = 0;
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
-	dpenalty_min = MAX_PENALTY;
+	dpenalty_min = 0;
 	m_cc = cantus[i];
 	int a;
 	for (a = 0; a < approximations; a++) {
@@ -3431,7 +3417,6 @@ void CGenCF1::SWA(int i, int dp) {
 		clib_vs.clear();
 		rpenalty.clear();
 		dpenalty.clear();
-		dpenalty_min = MAX_PENALTY;
 		// Add current cantus if this is not first run
 		if (a > 0) {
 			clib.push_back(m_cc);
@@ -3441,24 +3426,8 @@ void CGenCF1::SWA(int i, int dp) {
 		}
 		// Sliding Windows Approximation
 		ScanCantus(tCor, 0, &m_cc);
-		dpenalty_min = MAX_PENALTY;
 		cnum = clib.size();
 		if (cnum) {
-			if (dp) {
-				// Count dpenalty for results, where rpenalty is minimal
-				dpenalty.resize(cnum);
-				for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min) {
-					dpenalty[x] = 0;
-					for (int z = fn; z < c_len; z++) {
-						int dif = abs(cantus[i][z] - clib[x][z]);
-						if (dif) dpenalty[x] += step_penalty + pitch_penalty * dif;
-					}
-					if (dpenalty[x] && dpenalty[x] < dpenalty_min) dpenalty_min = dpenalty[x];
-					//st.Format("rp %.0f, dp %0.f: ", rpenalty[x], dpenalty[x]);
-					//AppendLineToFile("temp.log", st);
-					//LogCantus(clib[x]);
-				}
-			}
 			// Get all best corrections
 			cids.clear();
 			for (int x = 0; x < cnum; x++) if (rpenalty[x] <= rpenalty_min && (!dp || dpenalty[x] == dpenalty_min)) {
@@ -3481,10 +3450,14 @@ void CGenCF1::SWA(int i, int dp) {
 			st.Format("SWA%d attempt: %d", swa_len, a);
 			SetStatusText(4, st);
 		}
+		// Animation
+		long long time = CGLib::time();
+		// Limit correction time
+		if (max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
-				if (swa_len >= swa_steps)	break;
+				if (swa_len >= swa_steps || swa_len >= smap.size()) break;
 				++swa_len;
 			}
 		}
@@ -3522,6 +3495,27 @@ void CGenCF1::TimeBestRejected() {
 	}
 }
 
+void CGenCF1::SaveCantus() {
+	if (method == mScan) dpenalty_cur = dpenalty_step[c_len - 1];
+	if (!dpenalty_cur) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, fn, c_len - 1);
+	// If rpenalty is same as min, calculate dpenalty
+	if (rpenalty_cur == rpenalty_min) {
+		// Do not save cantus if it has higher dpenalty
+		if (dpenalty_cur > dpenalty_min) return;
+		// Do not save cantus if it is same as source
+		if (!dpenalty_cur) return;
+		dpenalty_min = dpenalty_cur;
+	}
+	// If rpenalty lowered, set new dpenalty_min
+	else {
+		dpenalty_min = dpenalty_cur;
+	}
+	dpenalty.push_back(dpenalty_cur);
+	clib.push_back(m_cc);
+	rpenalty.push_back(rpenalty_cur);
+	rpenalty_min = rpenalty_cur;
+}
+
 void CGenCF1::SaveCantusIfRp() {
 	// Is penalty not greater than minimum of all previous?
 	if (rpenalty_cur <= rpenalty_min) {
@@ -3555,6 +3549,18 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 check:
 	while (true) {
 		//LogCantus(cc);
+		// Check if dpenalty is already too high
+		if (task == tCor && !rpenalty_min) {
+			if (method == mScan) {
+				CalcStepDpenalty(cantus[cantus_id], m_cc, ep2 - 1);
+				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
+			}
+			else {
+				dpenalty_cur = dpenalty_outside_swa + CalcDpenalty(cantus[cantus_id], m_cc, smap[swa1], smap[sp2 - 1]);
+				if (dpenalty_cur > dpenalty_min) goto skip;
+			}
+		}
+		else dpenalty_cur = 0;		
 		ClearFlags(0, ep2);
 		if (FailNoteRepeat(m_cc, 0, ep2 - 1)) goto skip;
 		GetMelodyInterval(m_cc, 0, ep2, nmin, nmax);
@@ -3570,7 +3576,7 @@ check:
 			status_cycle = scycle;
 		}
 		// Limit SAS correction time
-		if (task == tCor && method == mScan && max_correct_ms && time - scan_start_time > max_correct_ms) break;
+		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
@@ -3610,8 +3616,24 @@ check:
 		if (FailLocalMacc(notes_arange2, min_arange2, 16)) goto skip;
 
 		SaveBestRejected(m_cc);
+		if (task == tCor && method == mSWA) {
+			if (skip_flags) {
+				if (ep2 < smap[swa2 - 1] + 1) {
+					NextWindow();
+					goto check;
+				}
+			}
+			else {
+				CalcRpenalty(acc[cpv]);
+				if (ep2 < smap[swa2 - 1] + 1) {
+					if (rpenalty_cur > source_rpenalty_step[smap[swa1]]) goto skip;
+					NextWindow();
+					goto check;
+				}
+			}
+		}
 		// If we are window-scanning
-		if ((task == tGen || task == tCor) && method == mScan) {
+		else if (task == tGen || task == tCor) {
 			++accepted2;
 			CalcFlagStat();
 			if (FailFlagBlock()) goto skip;
@@ -3625,7 +3647,7 @@ check:
 			// Check random_choose
 			if (random_choose < 100) if (rand2() >= (float)RAND_MAX*random_choose / 100.0) goto skip;
 		}
-		// Calculate rules penalty if we evaluate or correct cantus without full scan
+		// Calculate rules penalty if we evaluate
 		else {
 			CalcRpenalty(m_cc);
 		}
@@ -3658,6 +3680,8 @@ check:
 				}
 			}
 			else {
+				// Calculate dpenalty if this is evaluation
+				if (task == tEval) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, fn, c_len - 1);
 				if (SendCantus()) break;
 			}
 			// Exit if this is evaluation
@@ -3669,13 +3693,13 @@ check:
 		if (finished) {
 			// Clear flag to prevent coming here again
 			finished = 0;
-			// Sliding Windows Approximation
-			if (method == mSWA) {
-				if (NextSWA(m_cc, m_cc_old)) break;
-				goto check;
-			}
 			// Finish if this is last variant in first window and not SWA
-			else if ((p == 0) || (wid == 0)) {
+			if ((p == 0) || (wid == 0)) {
+				// Sliding Windows Approximation
+				if (method == mSWA) {
+					if (NextSWA(m_cc, m_cc_old)) break;
+					goto check;
+				}
 				if (random_seed && random_range && accept_reseed) {
 					// Infinitely cycle through ranges
 					ReseedCantus();

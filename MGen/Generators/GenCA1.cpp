@@ -411,6 +411,8 @@ void CGenCA1::Generate()
 		}
 		step1 = step;
 		step = step0;
+		// Init animation
+		acycle = 0;
 		correct_start_time = CGLib::time();
 		if (method == mSWA) {
 			SWA(i, 1);

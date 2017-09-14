@@ -197,8 +197,8 @@ void CGenCP1::SingleCPInit() {
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
 			dpenalty_outside_swa = 0;
-			if (swa1 > 0) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
-			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
+			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
+			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
 			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
 		}
@@ -944,58 +944,6 @@ int CGenCP1::FailVIntervals() {
 	return 0;
 }
 
-void CGenCP1::CalcStepDpenaltyCP(int i) {
-	int dif = abs(cpoint[cantus_id][cpv][i] - acc[cpv][i]);
-	int dpe = 0;
-	if (dif) dpe = step_penalty + pitch_penalty * dif;
-	if (i > fn) dpenalty_step[i] = dpenalty_step[i-1] + dpe;
-	else dpenalty_step[i] = dpe;
-}
-
-void CGenCP1::SaveCP() {
-	if (method == mScan) dpenalty_cur = dpenalty_step[c_len - 1];
-	if (!dpenalty_cur) dpenalty_cur = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
-	if (rpenalty_cur == rpenalty_min) {
-		// Do not save cantus if it has higher dpenalty
-		if (dpenalty_cur > dpenalty_min) return;
-		// Do not save cantus if it is same as source
-		if (!dpenalty_cur) return;
-		dpenalty_min = dpenalty_cur;
-	}
-	// If rpenalty lowered, set new dpenalty_min
-	else {
-		dpenalty_min = dpenalty_cur;
-	}
-	dpenalty.push_back(dpenalty_cur);
-	clib.push_back(acc[cpv]);
-	rpenalty.push_back(rpenalty_cur);
-	rpenalty_min = rpenalty_cur;
-	if (method == mScan) {
-		// Animation
-		long long time = CGLib::time();
-		int acy = 0;
-		if (animate) acy = (time - correct_start_time) / animate;
-		if (!animate || acy > acycle) {
-			ShowScanStatus();
-			acycle = acy;
-			scpoint = acc;
-			is_animating = 1;
-			// Start showing from initial step to 2 voice (for GenCA2)
-			if (m_algo_id == 112) svoice = 2;
-			LogCantus("Animate", clib.size(), acc[cpv]);
-			ScanCP(tEval, 2);
-			// Reinitialize
-			task = tCor;
-			if (m_algo_id == 112) ShowLiningCP(acc[cpv]);
-			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
-			is_animating = 0;
-			step = step0;
-			ValidateVectors(step0, t_generated - 1);
-			Sleep(animate_delay);
-		}
-	}
-}
-
 // Show best rejected variant
 void CGenCP1::ShowBestRejectedCP() {
 	if (best_rejected) {
@@ -1040,6 +988,50 @@ void CGenCP1::ShowBestRejectedCP() {
 				if (debug_level > 1)
 					WriteLog(3, "No best rejected results to show");
 			}
+		}
+	}
+}
+
+void CGenCP1::SaveCP() {
+	if (method == mScan) dpenalty_cur = dpenalty_step[c_len - 1];
+	if (!dpenalty_cur) dpenalty_cur = CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
+	if (rpenalty_cur == rpenalty_min) {
+		// Do not save cantus if it has higher dpenalty
+		if (dpenalty_cur > dpenalty_min) return;
+		// Do not save cantus if it is same as source
+		if (!dpenalty_cur) return;
+		dpenalty_min = dpenalty_cur;
+	}
+	// If rpenalty lowered, set new dpenalty_min
+	else {
+		dpenalty_min = dpenalty_cur;
+	}
+	dpenalty.push_back(dpenalty_cur);
+	clib.push_back(acc[cpv]);
+	rpenalty.push_back(rpenalty_cur);
+	rpenalty_min = rpenalty_cur;
+	if (method == mScan) {
+		// Animation
+		long long time = CGLib::time();
+		int acy = 0;
+		if (animate) acy = (time - correct_start_time) / animate;
+		if (!animate || acy > acycle) {
+			ShowScanStatus();
+			acycle = acy;
+			scpoint = acc;
+			is_animating = 1;
+			// Start showing from initial step to 2 voice (for GenCA2)
+			if (m_algo_id == 112) svoice = 2;
+			//LogCantus("Animate", clib.size(), acc[cpv]);
+			ScanCP(tEval, 2);
+			// Reinitialize
+			task = tCor;
+			if (m_algo_id == 112) ShowLiningCP(acc[cpv]);
+			skip_flags = !calculate_blocking && !calculate_correlation && !calculate_stat;
+			is_animating = 0;
+			step = step0;
+			ValidateVectors(step0, t_generated - 1);
+			Sleep(animate_delay);
 		}
 	}
 }
@@ -1345,7 +1337,7 @@ void CGenCP1::SWACP(int i, int dp) {
 			}
 		}
 		// Send log
-		if (debug_level > 0) {
+		if (debug_level > 1) {
 			//CString est;
 			//est.Format("SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld", s_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			//WriteLog(3, est);
@@ -1384,7 +1376,7 @@ void CGenCP1::SWACP(int i, int dp) {
 				else {
 					ScanCP(tEval, 0);
 				}
-				LogCantus("Animate SWA", cantus_id, acc[cpv]);
+				//LogCantus("Animate SWA", cantus_id, acc[cpv]);
 				is_animating = 0;
 				step = step0;
 				ValidateVectors(step0, t_generated - 1);
@@ -1597,14 +1589,12 @@ check:
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
 			if (method == mScan) {
-				CalcStepDpenaltyCP(ep2 - 1);
+				CalcStepDpenalty(cpoint[cantus_id][cpv], acc[cpv], ep2 - 1);
 				if (dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
 			}
 			else {
-				dpenalty_cur = dpenalty_outside_swa + CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], smap[swa1], smap[sp2 - 1]);
+				dpenalty_cur = dpenalty_outside_swa + CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], smap[swa1], smap[sp2 - 1]);
 				if (dpenalty_cur > dpenalty_min) goto skip;
-				//CalcStepDpenaltyCP(ep2 - 1);
-				//if (dpenalty_outside_swa + dpenalty_step[ep2 - 1] > dpenalty_min) goto skip;
 			}
 		}
 		else dpenalty_cur = 0;
@@ -1763,7 +1753,7 @@ check:
 			}
 			else {
 				// Calculate dpenalty if this is evaluation
-				if (task == tEval) dpenalty_cur = CalcDpenaltyCP(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
+				if (task == tEval) dpenalty_cur = CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
 				if (SendCP()) break;
 			}
 			// Exit if this is evaluation

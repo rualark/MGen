@@ -166,7 +166,8 @@ protected:
 	inline void ShowBestRejected(vector<int>& cc);
 	inline void BackWindow(vector<int>& cc);
 	void WritePerfLog();
-	inline int CalcDpenaltyCP(vector<int>& cc1, vector<int>& cc2, int s1, int s2);
+	inline int CalcDpenalty(vector<int>& cc1, vector<int>& cc2, int s1, int s2);
+	inline void CalcStepDpenalty(vector<int> cc1, vector<int> cc2, int i);
 	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);
 	inline void SaveBestRejected(vector<int>& cc);
 	inline int FailMinor(vector<int>& pcc, vector<int>& cc);
