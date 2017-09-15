@@ -713,7 +713,7 @@ void CGMidi::LoadCP(CString path)
 				// Check for pause
 				if (pos2 - last_tick > (float)tpc / 2) {
 					// Add cpoint if it is long
-					if (inter.size() > 5 && !bad) {
+					if (inter.size() >= MIN_CP_SIZE && !bad) {
 						cid++;
 						// Get maximum voice count
 						int max_voice = 0;
@@ -729,6 +729,13 @@ void CGMidi::LoadCP(CString path)
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
 						cpos.push_back(cp);
+					}
+					else {
+						if (inter.size() < MIN_CP_SIZE) {
+							CString st;
+							st.Format("Counterpoint #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s", cantus.size(), inter.size(), MIN_CP_SIZE, mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+							WriteLog(5, st);
+						}
 					}
 					// Go to next cantus
 					nid = 0;
@@ -801,6 +808,13 @@ void CGMidi::LoadCP(CString path)
 			cpos.push_back(cp);
 			// Send incom
 			cp_incom.resize(cid);
+		}
+		else {
+			if (inter.size() < MIN_CP_SIZE) {
+				CString st;
+				st.Format("Counterpoint #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, tpc %d (mul %.03f) in file %s", cantus.size(), inter.size(), MIN_CP_SIZE, last_tick, track, tpc, midifile_in_mul, path);
+				WriteLog(5, st);
+			}
 		}
 	}
 	// Load lyrics
