@@ -1322,6 +1322,7 @@ void CGenCP1::SWACP(int i, int dp) {
 		// Sliding Windows Approximation
 		scpoint = acc;
 		ScanCP(tCor, -1);
+		CheckClibSize();
 		cnum = clib.size();
 		if (cnum) {
 			// Get all best corrections

@@ -219,6 +219,7 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 	CString st, st2;
 	// Count penalty
 	long cnum = clib.size();
+	CheckClibSize();
 	// Find minimum penalty
 	int ccount = 0;
 	// Cycle through all best matches

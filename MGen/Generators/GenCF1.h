@@ -17,6 +17,9 @@
 #define MAX_PENALTY 10000000.0
 #define MAX_RULES 500
 
+// Maximum clib size without warning
+#define MAX_CLIB_WARN 500
+
 #define MAX_RULESETS 100
 #define MAX_SEVERITY 101
 #define MAX_WIND 500
@@ -173,6 +176,7 @@ protected:
 	inline int FailMinor(vector<int>& pcc, vector<int>& cc);
 	inline void ShowScanSpeed();
 	inline void ShowScanStatus();
+	void CheckClibSize();
 	inline void ReseedCantus();
 	inline void TimeBestRejected();
 	inline void SaveCantusIfRp();
@@ -359,6 +363,7 @@ protected:
 
   // Local
 	// Queues for calculating scan speed and displaying in status
+	int warn_clib_max = 0; // If warning of maximum clib size fired
 	deque<long long> q_scan_ms;
 	deque<long long> q_scan_cycle;
 	int status_cycle = 0; // Scan time divided by status period (ms)

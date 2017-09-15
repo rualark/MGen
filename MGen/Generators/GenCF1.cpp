@@ -2723,6 +2723,16 @@ void CGenCF1::ShowScanStatus() {
 	ShowScanSpeed();
 }
 
+void CGenCF1::CheckClibSize() {
+	if (warn_clib_max) return;
+	if (clib.size() > MAX_CLIB_WARN) { 
+		warn_clib_max = 1;
+		CString st;
+		st.Format("Clib size (%zu) is greater than allowed size (%d). Please check your algorithm or increase MAX_CLIB_WARN", clib.size(), (int)MAX_CLIB_WARN);
+		WriteLog(5, st);
+	}
+}
+
 void CGenCF1::ReseedCantus()
 {
 	CString st;
@@ -3426,6 +3436,7 @@ void CGenCF1::SWA(int i, int dp) {
 		}
 		// Sliding Windows Approximation
 		ScanCantus(tCor, 0, &m_cc);
+		CheckClibSize();
 		cnum = clib.size();
 		if (cnum) {
 			// Get all best corrections
