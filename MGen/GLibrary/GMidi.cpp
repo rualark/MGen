@@ -539,12 +539,19 @@ void CGMidi::LoadCantus(CString path)
 				// Check for pause
 				if (pos2 - last_tick > (float)tpc / 2) {
 					// Add cantus if it is long
-					if (nid > 5 && !bad) {
+					if (nid >= MIN_CANTUS_SIZE && !bad) {
 						cantus.push_back(c);
 						cantus_len.push_back(cl);
 						cantus_tempo.push_back(ct);
 						cantus_incom.push_back(incom);
 						//lyrics_pending.Empty();
+					}
+					else {
+						if (nid < MIN_CANTUS_SIZE) {
+							CString st;
+							st.Format("Melody #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s", cantus.size(), nid, MIN_CANTUS_SIZE, mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+							WriteLog(5, st);
+						}
 					}
 					// Go to next cantus
 					nid = 0;
@@ -608,6 +615,13 @@ void CGMidi::LoadCantus(CString path)
 			cantus_tempo.push_back(ct);
 			cantus_incom.push_back(incom);
 			nid = 0;
+		}
+		else {
+			if (nid < MIN_CANTUS_SIZE) {
+				CString st;
+				st.Format("Melody #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, tpc %d (mul %.03f) in file %s. Not loaded.", cantus.size(), nid, MIN_CANTUS_SIZE, last_tick, track, tpc, midifile_in_mul, path);
+				WriteLog(5, st);
+			}
 		}
 	}
 	// Count time
