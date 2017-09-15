@@ -22,6 +22,8 @@
 #include "Generators/GenCP1.h"
 #include "Generators/GenRL1.h"
 
+// Maximum memory usage without warning in Megabytes
+#define MAX_MEMORY_WARN 1000
 #define MIN_HZOOM 1
 #define MAX_HZOOM 500
 #define MIN_PSPEED 1
@@ -77,6 +79,7 @@ public:
 	int show_curve = 1;
 	int show_nsr = 1; // Note scan range
 	int show_notecolors = 1;
+	int warn_memory_usage = 0; // If you already got memory usage warning
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
 	CString m_dir; // Current saved results dir
@@ -153,6 +156,7 @@ public:  // control bar embedded members
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	void ParseCommandLine();
+	void CheckMemoryUsage();
 	afx_msg void OnApplicationLook(UINT id);
 	afx_msg void OnUpdateApplicationLook(CCmdUI* pCmdUI);
 	afx_msg void OnFilePrint();

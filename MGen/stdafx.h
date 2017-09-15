@@ -71,5 +71,7 @@ using namespace std::chrono;
 #include <gdiplus.h>
 using namespace Gdiplus;
 #include "dirent.h"
+#include "windows.h"
+#include "psapi.h"
 
 //#define new new( _NORMAL_BLOCK, __FILE__, __LINE__)

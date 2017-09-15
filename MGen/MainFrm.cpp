@@ -682,6 +682,8 @@ void CMainFrame::OnButtonGen()
 	}
 	NewGen();
 	if (pGen != 0) {
+		// Clear memory usage warning flag
+		warn_memory_usage = 0;
 		// Clear note minimax
 		ng_min = 0;
 		ng_max = 0;
@@ -1042,11 +1044,25 @@ void CMainFrame::OnComboAlgo()
 	SaveSettings();
 }
 
+void CMainFrame::CheckMemoryUsage() {
+	if (warn_memory_usage) return;
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	SIZE_T virtualMemUsedByMe = pmc.PrivateUsage / 1024 / 1024;
+	if (virtualMemUsedByMe > MAX_MEMORY_WARN) {
+		CString st;
+		st.Format("Memory usage is above limit %d Mb", (int)MAX_MEMORY_WARN);
+		WriteLog(5, st);
+		warn_memory_usage = 1;
+	}
+}
+
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	CFrameWndEx::OnTimer(nIDEvent);
 	if (nIDEvent == TIMER1)
 	{
+		CheckMemoryUsage();
 		GetActiveView()->Invalidate();
 		//int play_time = CGLib::time() - pGen->midi_start_time;
 		if ((m_state_gen != 1) && (m_state_play == 2) && pGen && (CGLib::time() > pGen->midi_sent_t)) {
