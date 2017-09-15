@@ -576,7 +576,7 @@ void CGMidi::LoadCantus(CString path)
 						if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
 							CString st;
 							st.Format("Note too long: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Decreasing midifile_in_mul can help.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
-							WriteLog(1, st);
+							WriteLog(5, st);
 							warning_loadmidi_long++;
 						}
 						nlen = MAX_LEN;
