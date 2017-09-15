@@ -743,7 +743,7 @@ void CGMidi::LoadCP(CString path)
 					if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
 						CString st;
 						st.Format("Note too short: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Increasing midifile_in_mul will improve approximation.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
-						WriteLog(1, st);
+						WriteLog(5, st);
 						warning_loadmidi_short++;
 					}
 					bad = 1;
