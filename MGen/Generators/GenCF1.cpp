@@ -2333,7 +2333,6 @@ void CGenCF1::NextWindow() {
 
 // Check if rpenalty is not below than flags sum
 void CGenCF1::TestRpenalty() {
-	if (!m_testing) return;
 	if (!flags.size()) return;
 	int rp = 0;
 	int found;
@@ -2365,7 +2364,6 @@ void CGenCF1::TestRpenalty() {
 
 // Check if rpenalty is not below than flags sum
 void CGenCF1::TestBestRpenalty() {
-	if (!m_testing) return;
 	// Do not test if rpenalty == 0, because in this case best_flags are not saved
 	if (!rpenalty_min) return;
 	if (!best_flags.size()) return;
