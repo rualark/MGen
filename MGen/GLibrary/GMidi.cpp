@@ -723,7 +723,7 @@ void CGMidi::LoadCP(CString path)
 				else if (pos2 - last_tick2 > (float)tpc / 2) {
 					CString st;
 					st.Format("Pauses are prohibited inside counterpoint: tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s. Cannot load.", mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
-					WriteLog(1, st);
+					WriteLog(5, st);
 					bad = 1;
 				}
 				// If new column, then after checking for pause we can now reset last_tick2 to maximum
