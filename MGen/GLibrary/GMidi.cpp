@@ -547,7 +547,7 @@ void CGMidi::LoadCantus(CString path)
 						//lyrics_pending.Empty();
 					}
 					else {
-						if (nid < MIN_CANTUS_SIZE) {
+						if (nid < MIN_CANTUS_SIZE && nid > 0) {
 							CString st;
 							st.Format("Melody #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s", 
 								cantus.size(), nid, (int)MIN_CANTUS_SIZE, mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
@@ -618,7 +618,7 @@ void CGMidi::LoadCantus(CString path)
 			nid = 0;
 		}
 		else {
-			if (nid < MIN_CANTUS_SIZE) {
+			if (nid < MIN_CANTUS_SIZE && nid > 0) {
 				CString st;
 				st.Format("Melody #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, tpc %d (mul %.03f) in file %s. Not loaded.", cantus.size(), nid, (int)MIN_CANTUS_SIZE, last_tick, track, tpc, midifile_in_mul, path);
 				WriteLog(5, st);
@@ -732,7 +732,7 @@ void CGMidi::LoadCP(CString path)
 						cpos.push_back(cp);
 					}
 					else {
-						if (inter.size() < MIN_CP_SIZE) {
+						if (inter.size() < MIN_CP_SIZE && inter.size() > 0) {
 							CString st;
 							st.Format("Counterpoint #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s", cantus.size(), inter.size(), (int)MIN_CP_SIZE, mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
 							WriteLog(5, st);
@@ -811,7 +811,7 @@ void CGMidi::LoadCP(CString path)
 			cp_incom.resize(cid);
 		}
 		else {
-			if (inter.size() < MIN_CP_SIZE) {
+			if (inter.size() < MIN_CP_SIZE && inter.size() > 0) {
 				CString st;
 				st.Format("Counterpoint #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, tpc %d (mul %.03f) in file %s", cantus.size(), inter.size(), (int)MIN_CP_SIZE, last_tick, track, tpc, midifile_in_mul, path);
 				WriteLog(5, st);
