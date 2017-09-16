@@ -719,6 +719,9 @@ void CGVar::SaveResults(CString dir, CString fname)
 		fs.open(dir + "\\midi.log");
 		for (int i = 0; i < logs[4].size(); i++) fs << logs[4][i] << "\n";
 		fs.close();
+		fs.open(dir + "\\test.log");
+		for (int i = 0; i < logs[6].size(); i++) fs << logs[6][i] << "\n";
+		fs.close();
 	}
 	// Count time
 	long long time_stop = CGLib::time();
@@ -1151,6 +1154,24 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 		fs.getline(pch, 2550);
 		st = pch;
 		if (!st.IsEmpty()) WriteLog(0, st);
+		if (++i > MAX_LOAD_LOG) break;
+	}
+	fs.close();
+	// Load logs
+	path = dir + "\\test.log";
+	if (!fileExists(path)) {
+		CString est;
+		est.Format("Cannot find file %s", path);
+		WriteLog(5, est);
+		return;
+	}
+	fs.open(path);
+	pos = 0;
+	i = 0;
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st = pch;
+		if (!st.IsEmpty()) WriteLog(6, st);
 		if (++i > MAX_LOAD_LOG) break;
 	}
 	fs.close();

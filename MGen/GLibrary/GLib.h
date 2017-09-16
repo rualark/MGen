@@ -7,7 +7,7 @@
 // Number of status lines
 #define STATUS_LINES 9
 // Number of log tabs
-#define LOG_TABS 5
+#define LOG_TABS 7
 // Check for new logs every X ms
 #define LOG_TIMER 50
 // Send no more than Y logs every time when checking (maximum stable frequency is LOG_MAX_SEND / LOG_TIMER)

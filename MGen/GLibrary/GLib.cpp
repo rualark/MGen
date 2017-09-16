@@ -784,7 +784,7 @@ void CGLib::WriteLog(int i, CString st)
 {
 	if (can_send_log) {
 		// Check error log
-		if (i == LOG_TABS) {
+		if (i == 5) {
 			EscalateLog(st);
 			i = 1;
 		}

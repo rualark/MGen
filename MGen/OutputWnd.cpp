@@ -64,6 +64,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
 		!m_wndOutputAlgo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
 		!m_wndOutputMidi.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
+		!m_wndOutputTest.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
 		!m_wndOutputPerf.Create(dwStyle, rectDummy, &m_wndTabs, 4))
 	{
 		TRACE0("Failed to create output windows\n");
@@ -76,7 +77,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndTabs.AddTab(&m_wndOutputDebug, " Debug     ", (UINT)1);
 	m_wndTabs.AddTab(&m_wndOutputPerf, " Performance     ", (UINT)2);
 	m_wndTabs.AddTab(&m_wndOutputAlgo, " Algorithm     ", (UINT)3);
-	m_wndTabs.AddTab(&m_wndOutputMidi, " MIDI out     ", (UINT)3);
+	m_wndTabs.AddTab(&m_wndOutputMidi, " MIDI out     ", (UINT)4);
+	m_wndTabs.AddTab(&m_wndOutputTest, " Testing     ", (UINT)5);
 
 	return 0;
 }
@@ -115,6 +117,7 @@ void COutputWnd::UpdateFonts()
 	m_wndOutputPerf.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputAlgo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputMidi.SetFont(&afxGlobalData.fontRegular);
+	m_wndOutputTest.SetFont(&afxGlobalData.fontRegular);
 }
 
 /////////////////////////////////////////////////////////////////////////////

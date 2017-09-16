@@ -350,7 +350,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					est.Format("SAS emulator at step %d assigned moved flag: [%d] %s %s (%s) at %d:%d %s",
 						ep2 - 1, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
 					if (sas_emulator_move_ignore[fl]) {
-						WriteLog(0, est);
+						WriteLog(6, est);
 					}
 					else {
 						WriteLog(1, est);
@@ -405,7 +405,7 @@ void CGenCA1::ConfirmExpect() {
 				CString est;
 				est.Format("Expected flag confirmed: [%d] %s %s (%s) at %d:%d %s",
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
-				WriteLog(0, est);
+				WriteLog(6, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
 			// Do not check local false positives if disabled

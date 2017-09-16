@@ -241,6 +241,10 @@ void CGenCA2::EmulateSASCP() {
 	flags_full = flags;
 	nflags_prev.clear();
 	for (fixed_ep2 = fn+2; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
+		// Show emulator status
+		CString est;
+		est.Format("SAS emulator: %d of %d", fixed_ep2, acc[cpv].size());
+		SetStatusText(7, est);
 		// Visible emulation
 		if (emulate_sas) {
 			step0 = step;
@@ -259,6 +263,7 @@ void CGenCA2::EmulateSASCP() {
 	}
 	OutputFlagDelays();
 	fixed_ep2 = 0;
+	SetStatusText(7, "SAS emulator: finished");
 }
 
 void CGenCA2::DetectSpecies() {
