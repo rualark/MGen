@@ -53,6 +53,7 @@ public:
 	COutputList m_wndOutputPerf;
 	COutputList m_wndOutputAlgo;
 	COutputList m_wndOutputMidi;
+	COutputList m_wndOutputTest;
 
 	// Attributes
 protected:
