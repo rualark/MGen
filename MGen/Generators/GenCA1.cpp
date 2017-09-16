@@ -312,8 +312,26 @@ void CGenCA1::ParseExpect() {
 }
 
 void CGenCA1::CheckSASEmulatorFlags() {
-	// Check for new flags
-	// Get flag delay
+	int fl, found;
+	for (s = fn; s < ep2; ++s) {
+		// Loop through all current flags
+		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
+			fl = anflags[cpv][s][f];
+			// Check that flag exists in full analysis
+			found = 0;
+			for (int f2 = 0; f2 < nflags_full[s].size(); ++f) if (nflags_full[s][f2] == fl) {
+				found = 1;
+				break;
+			}
+			if (!found) {
+				CString est;
+				est.Format("SAS emulator at step %d reveals new flag: [%d] %s (%s) at %d:%d %s",
+					ep2-1, fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+				WriteLog(5, est);
+			}
+			// Get flag delay
+		}
+	}
 }
 
 void CGenCA1::ConfirmExpect() {

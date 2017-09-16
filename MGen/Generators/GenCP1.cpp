@@ -266,6 +266,7 @@ int CGenCP1::SendCP() {
 	CString st, rpst;
 	int pos = 0, plen;
 	int v, x1;
+	if (svoice < 0) return 0;
 	Sleep(sleep_ms);
 	long long time_start = CGLib::time();
 	long long time_stop;
