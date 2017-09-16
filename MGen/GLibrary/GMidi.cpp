@@ -734,7 +734,7 @@ void CGMidi::LoadCP(CString path)
 					else {
 						if (inter.size() < MIN_CP_SIZE && inter.size() > 0) {
 							CString st;
-							st.Format("Counterpoint #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s", cantus.size(), inter.size(), (int)MIN_CP_SIZE, mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
+							st.Format("Counterpoint #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, chan %d, tpc %d (mul %.03f) in file %s", cpoint.size(), inter.size(), (int)MIN_CP_SIZE, mev->tick, track, mev->getChannel(), tpc, midifile_in_mul, path);
 							WriteLog(5, st);
 						}
 					}
@@ -813,7 +813,7 @@ void CGMidi::LoadCP(CString path)
 		else {
 			if (inter.size() < MIN_CP_SIZE && inter.size() > 0) {
 				CString st;
-				st.Format("Counterpoint #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, tpc %d (mul %.03f) in file %s", cantus.size(), inter.size(), (int)MIN_CP_SIZE, last_tick, track, tpc, midifile_in_mul, path);
+				st.Format("Counterpoint #%d is shorter (%d steps) than minimum length (%d steps): tick %d, track %d, tpc %d (mul %.03f) in file %s", cpoint.size(), inter.size(), (int)MIN_CP_SIZE, last_tick, track, tpc, midifile_in_mul, path);
 				WriteLog(5, st);
 			}
 		}
