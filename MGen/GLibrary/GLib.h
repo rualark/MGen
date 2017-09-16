@@ -134,6 +134,7 @@ class CGLib
 public:
 	static void copy_file(CString sName, CString dName);
 	static void AppendLineToFile(CString fname, CString st);
+	static void AppendLineInFile(CString fname, int line, CString st);
 	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int lmin = -1000000, int lmax = -1000000);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, long long * Dest);
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, float * Dest, float lmin = -1000000, float lmax = -1000000);

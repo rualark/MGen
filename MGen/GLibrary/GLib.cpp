@@ -412,6 +412,44 @@ void CGLib::AppendLineToFile(CString fname, CString st)
 	outfile.close();
 }
 
+// Appends line number 'line' in file with st
+void CGLib::AppendLineInFile(CString fname, int line, CString st) {
+	// Load file
+	ifstream fs;
+	if (!fileExists(fname)) {
+		WriteLog(5, "Cannot find file " + fname);
+		return;
+	}
+	fs.open(fname);
+	char pch[2550];
+	int pos = 0;
+	int x = 0;
+	CString st2;
+	vector<CString> ast;
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st2 = pch;
+		ast.push_back(st2);
+	}
+	fs.close();
+	// Append string
+	if (line > ast.size() - 1) {
+		CString est;
+		est.Format("There is no line %d in file '%s': cannot append (total %d line in file)",
+			line, fname, ast.size());
+		WriteLog(5, est);
+		return;
+	}
+	ast[line] += st;
+	// Write file
+	ofstream outfile;
+	outfile.open(fname, ios_base::trunc);
+	for (int i = 0; i < ast.size(); ++i) {
+		outfile << ast[i] << "\n";
+	}
+	outfile.close();
+}
+
 bool CGLib::dirExists(CString dirName_in)
 {
 	DWORD ftyp = GetFileAttributesA(dirName_in);

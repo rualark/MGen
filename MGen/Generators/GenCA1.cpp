@@ -314,8 +314,7 @@ void CGenCA1::ParseExpect() {
 void CGenCA1::ConfirmExpect() {
 	int found, fl;
 	int max_x = enflags.size();
-	vector<int> false_pos;
-	false_pos.resize(enflags.size());
+	if (!max_x) return;
 	for (int x = 0; x < max_x; ++x) if (enflags[x].size()) {
 		for (int e = 0; e < enflags[x].size(); ++e) {
 			fl = enflags[x][e];
@@ -346,7 +345,7 @@ void CGenCA1::ConfirmExpect() {
 				WriteLog(0, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
-			// Do not check false positives if disabled
+			// Do not check local false positives if disabled
 			if (false_positives_ignore[fl]) continue;
 			for (int s = fn; s < c_len; ++s) {
 				for (int f = 0; f < anflagsc[cpv][s]; ++f) if (fl == anflags[cpv][s][f]) {
@@ -359,6 +358,27 @@ void CGenCA1::ConfirmExpect() {
 					}
 				}
 			}
+		}
+	}
+	// Check global false positives
+	vector<int> false_pos;
+	false_pos.resize(MAX_RULES);
+	for (int s = fn; s < c_len; ++s) {
+		for (int f = 0; f < anflagsc[cpv][s]; ++f) {
+			fl = anflags[cpv][s][f];
+			if (!enflags2[fl][s] && false_positives_global[fl]) {
+				CString est;
+				est.Format("Global false positive flag: [%d] %s (%s) at %d:%d %s",
+					fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+				WriteLog(5, est);
+				false_pos[fl] = 1;
+				// Collect global false positives statistics
+				//if (m_testing) AppendLineInFile("autotest\\global_false.txt", fl, " 0");
+			}
+		}
+	}
+	for (int fl = 0; fl < MAX_RULES; ++fl) {
+		if (!false_pos[fl]) {
 		}
 	}
 }
