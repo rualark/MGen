@@ -317,17 +317,27 @@ void CGenCA1::CheckSASEmulatorFlags() {
 		// Loop through all current flags
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
+			// Check that flag exists in previous SAS run if this is not last step and previous run exists
+			found = 0;
+			if (s < ep2 - 1 && nflags_prev.size() > s) {
+				for (int f2 = 0; f2 < nflags_prev[s].size(); ++f2) if (nflags_prev[s][f2] == fl) {
+					found = 1;
+					break;
+				}
+			}
+			// Stop processing if this flag is not new
+			if (found) continue;
 			// Check that flag exists in full analysis
 			found = 0;
-			for (int f2 = 0; f2 < nflags_full[s].size(); ++f) if (nflags_full[s][f2] == fl) {
+			for (int f2 = 0; f2 < nflags_full[s].size(); ++f2) if (nflags_full[s][f2] == fl) {
 				found = 1;
 				break;
 			}
 			if (!found) {
 				CString est;
-				est.Format("SAS emulator at step %d reveals new flag: [%d] %s (%s) at %d:%d %s",
-					ep2-1, fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
-				WriteLog(5, est);
+				est.Format("SAS emulator at step %d reveals new flag: [%d] %s %s (%s) at %d:%d %s",
+					ep2-1, fl, accept[fl]?"+":"-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+				WriteLog(1, est);
 			}
 			// Get flag delay
 		}
@@ -355,16 +365,16 @@ void CGenCA1::ConfirmExpect() {
 				// Do not show errors if flag ignored and not testing
 				if (m_testing || accept[fl] != -1) {
 					CString est;
-					est.Format("Expected flag not confirmed: [%d] %s (%s) at %d:%d %s",
-						fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
+					est.Format("Expected flag not confirmed: [%d] %s %s (%s) at %d:%d %s",
+						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
 					WriteLog(5, est);
 					if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 				}
 			}
 			else if (debug_level > 0) {
 				CString est;
-				est.Format("Expected flag confirmed: [%d] %s (%s) at %d:%d %s",
-					fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
+				est.Format("Expected flag confirmed: [%d] %s %s (%s) at %d:%d %s",
+					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
 				WriteLog(0, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
@@ -374,8 +384,8 @@ void CGenCA1::ConfirmExpect() {
 				for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
 					if (!enflags2[fl][s]) {
 						CString est;
-						est.Format("Local false positive flag: [%d] %s (%s) at %d:%d %s",
-							fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+						est.Format("Local false positive flag: [%d] %s %s (%s) at %d:%d %s",
+							fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
 						WriteLog(5, est);
 						//if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 					}
@@ -391,8 +401,8 @@ void CGenCA1::ConfirmExpect() {
 			fl = anflags[cpv][s][f];
 			if (!enflags2[fl][s] && false_positives_global[fl]) {
 				CString est;
-				est.Format("Global false positive flag: [%d] %s (%s) at %d:%d %s",
-					fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+				est.Format("Global false positive flag: [%d] %s %s (%s) at %d:%d %s",
+					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
 				WriteLog(5, est);
 				false_pos[fl] = 1;
 				// Collect global false positives statistics

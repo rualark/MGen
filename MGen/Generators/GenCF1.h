@@ -391,7 +391,8 @@ protected:
 	vector<float> fpenalty; // Additional penalty for flags
 	vector<int>  flags; // Flags for whole cantus
 	vector<vector<vector<int>>> anflags; // Note flags
-	vector<vector<int>> nflags_full; // Note flags of full analysis
+	vector<vector<int>> nflags_full; // [x][id] Note flags of full analysis
+	vector<vector<int>> nflags_prev; // [x][id] Note flags of previous SAS run
 	vector<int> br_cc; // Cantus chromatic (best rejected)
 	vector<int>  br_f; // Flags for whole cantus (best rejected)
 	vector<long>  ssf; // SWA stuck flags
