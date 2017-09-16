@@ -4,3 +4,4 @@ include "include/CA1.pl"
 Midi_file = midi\GenCA1\test-minor-alter.mid
 
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+cantus_high = 0

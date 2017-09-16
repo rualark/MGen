@@ -19,9 +19,13 @@ configs\GenCA1\test-tonic.pl
 configs\GenCP1\good-cf-maj.pl
 configs\GenCP1\good-cf-maj-high.pl;60;120
 configs\GenCP1\good-cf-maj-scan.pl
-configs\GenCA2\test-alterint.pl
 configs\GenCA2\good-cp1.pl
+configs\GenCA2\good-cp2.pl
+configs\GenCA2\good-cp3.pl
+configs\GenCA2\good-cp4.pl
+configs\GenCA2\good-cp5.pl
 configs\GenCA2\known-cp1.pl
+configs\GenCA2\test-alterint.pl
 configs\GenCA2\test-cp.pl
 configs\GenCA2\test-vint.pl
 configs\GenMP1\autoconf-cloud.pl

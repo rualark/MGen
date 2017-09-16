@@ -489,7 +489,8 @@ protected:
 	vector <long> cids;
 
 	// CA1
-	vector<vector<int>> enflags; // Expected note flags
+	vector<vector<int>> enflags; // [s][id] Expected note flags
+	vector<vector<int>> enflags2; // [r_id][s] Expected note flags
 
 	// Cantus correcting
 	vector <int> smatrix; // Vector of links to steps that were selected for recalculation

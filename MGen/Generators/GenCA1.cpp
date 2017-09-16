@@ -285,18 +285,27 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 
 void CGenCA1::ParseExpect() {
 	int fl;
-	enflags.clear();
-	int max_i = cantus_incom[cantus_id].size();
-	if (!max_i) return;
 	// Continue if there are lyrics
 	vector<CString> ast;
+	// Clear expected flags
+	enflags.clear();
+	enflags2.clear();
+	// Detect maximum lyrics
+	int max_i = cantus_incom[cantus_id].size();
+	if (!max_i) return;
 	enflags.resize(max_i);
+	enflags2.resize(MAX_RULES);
+	for (int i = 0; i < MAX_RULES; ++i) enflags2[i].resize(c_len);
+	// Load expected flags
 	for (int i = 0; i < max_i; ++i) {
 		if (!cantus_incom[cantus_id][i].IsEmpty()) {
 			Tokenize(cantus_incom[cantus_id][i], ast, ",");
 			for (int n = 0; n < ast.size(); ++n) {
 				fl = atoi(ast[n]);
-				if (fl) enflags[i].push_back(fl);
+				if (fl) {
+					enflags[i].push_back(fl);
+					++enflags2[fl][i];
+				}
 			}
 		}
 	}
@@ -305,12 +314,15 @@ void CGenCA1::ParseExpect() {
 void CGenCA1::ConfirmExpect() {
 	int found, fl;
 	int max_x = enflags.size();
+	vector<int> false_pos;
+	false_pos.resize(enflags.size());
 	for (int x = 0; x < max_x; ++x) if (enflags[x].size()) {
 		for (int e = 0; e < enflags[x].size(); ++e) {
 			fl = enflags[x][e];
 			// Do not confirm rule violation if rule checking is disabled
 			//if (accept[fl] == -1) continue;
 			found = 0;
+			// Check if expected flag fires
 			for (int f = 0; f < anflagsc[cpv][x]; ++f) {
 				if (anflags[cpv][x][f] == fl) {
 					found = 1;
@@ -333,6 +345,17 @@ void CGenCA1::ConfirmExpect() {
 					fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
 				WriteLog(0, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+			}
+			for (int s = fn; s < c_len; ++s) {
+				for (int f = 0; f < anflagsc[cpv][s]; ++f) if (fl == anflags[cpv][s][f]) {
+					if (!enflags2[fl][s]) {
+						CString est;
+						est.Format("Local false positive flag: [%d] %s (%s) at %d:%d %s",
+							fl, RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+						WriteLog(5, est);
+						//if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+					}
+				}
 			}
 		}
 	}
