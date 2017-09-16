@@ -185,7 +185,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 	// Search each note
 	for (int x = fn; x < c_len; x++) {
 		// Search each flag
-		if (anflagsc[cpv][x] > 0) for (int f = 0; f < anflagsc[cpv][x]; f++) {
+		for (int f = 0; f < anflags[cpv][x].size(); f++) {
 			// Find prohibited flag
 			if (accept[anflags[cpv][x][f]] == 0) {
 				// Create matrix window
@@ -327,7 +327,7 @@ void CGenCA1::ConfirmExpect() {
 			//if (accept[fl] == -1) continue;
 			found = 0;
 			// Check if expected flag fires
-			for (int f = 0; f < anflagsc[cpv][x]; ++f) {
+			for (int f = 0; f < anflags[cpv][x].size(); ++f) {
 				if (anflags[cpv][x][f] == fl) {
 					found = 1;
 					break;
@@ -353,7 +353,7 @@ void CGenCA1::ConfirmExpect() {
 			// Do not check local false positives if disabled
 			if (false_positives_ignore[fl]) continue;
 			for (int s = fn; s < c_len; ++s) {
-				for (int f = 0; f < anflagsc[cpv][s]; ++f) if (fl == anflags[cpv][s][f]) {
+				for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
 					if (!enflags2[fl][s]) {
 						CString est;
 						est.Format("Local false positive flag: [%d] %s (%s) at %d:%d %s",
@@ -369,7 +369,7 @@ void CGenCA1::ConfirmExpect() {
 	vector<int> false_pos;
 	false_pos.resize(MAX_RULES);
 	for (int s = fn; s < c_len; ++s) {
-		for (int f = 0; f < anflagsc[cpv][s]; ++f) {
+		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
 			if (!enflags2[fl][s] && false_positives_global[fl]) {
 				CString est;

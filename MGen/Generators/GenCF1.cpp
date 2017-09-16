@@ -628,7 +628,7 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 	}
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
-		anflagsc[cpv][i] = 0;
+		anflags[cpv][i].clear();
 	}
 	rpenalty_cur = 0;
 }
@@ -1829,10 +1829,8 @@ void CGenCF1::ScanInit() {
 		q_scan_ms.clear();
 		scan_start_time = time();
 		anflags.resize(av_cnt);
-		anflagsc.resize(av_cnt);
 		for (int i = 0; i < av_cnt; ++i) {
 			anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
-			anflagsc[i].resize(c_len); // number of flags for each note
 		}
 		source_rpenalty_step.resize(c_len);
 		uli.resize(c_len);
@@ -2020,7 +2018,7 @@ void CGenCF1::SingleCantusInit() {
 	fill(flags.begin(), flags.end(), 0);
 	flags[0] = 1;
 	for (int i = 0; i < ep2; ++i) {
-		anflagsc[cpv][i] = 0;
+		anflags[cpv][i].clear();
 	}
 	// Matrix scan
 	if (task != tEval) {
@@ -2346,7 +2344,7 @@ void CGenCF1::TestRpenalty() {
 			rp += (severity[z] + 1) * flags[z] + fpenalty[z];
 			found = 0;
 			for (int x = fn; x < ep2; ++x) {
-				if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (anflags[cpv][x][i] == z) {
+				if (anflags[cpv][x].size()) for (int i = 0; i < anflags[cpv][x].size(); ++i) if (anflags[cpv][x][i] == z) {
 					found = 1;
 				}
 			}
@@ -2398,7 +2396,7 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	// Calculate flags penalty
 	rpenalty_cur = 0;
 	for (int x = fn; x < ep2; ++x) {
-		if (anflagsc[cpv][x] > 0) for (int i = 0; i < anflagsc[cpv][x]; ++i) if (!accept[anflags[cpv][x][i]]) {
+		if (anflags[cpv][x].size()) for (int i = 0; i < anflags[cpv][x].size(); ++i) if (!accept[anflags[cpv][x][i]]) {
 			rpenalty_cur += severity[anflags[cpv][x][i]] + 1;
 		}
 	}
@@ -2456,7 +2454,6 @@ void CGenCF1::ShowBestRejected(vector<int> &cc) {
 				cc = br_cc;
 				flags = br_f;
 				anflags[cpv] = br_nf;
-				anflagsc[cpv] = br_nfc;
 				chm.clear();
 				chm.resize(c_len, -1);
 				SendCantus();
@@ -2594,7 +2591,6 @@ void CGenCF1::SaveBestRejected(vector<int> &cc) {
 			br_cc = cc;
 			br_f = flags;
 			br_nf = anflags[cpv];
-			br_nfc = anflagsc[cpv];
 			rpenalty_min = rpenalty_cur;
 			// Log
 			if (debug_level > 1) {
@@ -3072,7 +3068,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 	comment2[pos+i][v].Empty();
 	comment[pos + i][v].clear();
 	ccolor[pos + i][v].clear();
-	if (anflagsc[av][x] > 0) for (int f = 0; f < anflagsc[av][x]; ++f) {
+	if (anflags[av][x].size() > 0) for (int f = 0; f < anflags[av][x].size(); ++f) {
 		// Do not show colors and comments for base voice
 		if (av == cpv) {
 			int fl = anflags[av][x][f];

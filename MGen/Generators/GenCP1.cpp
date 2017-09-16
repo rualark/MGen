@@ -61,7 +61,6 @@ int CGenCP1::InitCP() {
 	aleap.resize(av_cnt);
 	aslur.resize(av_cnt);
 	anflags.resize(av_cnt);
-	anflagsc.resize(av_cnt);
 	return error;
 }
 
@@ -153,7 +152,7 @@ void CGenCP1::SingleCPInit() {
 	fill(flags.begin(), flags.end(), 0);
 	flags[0] = 1;
 	for (int i = 0; i < ep2; ++i) {
-		anflagsc[cpv][i] = 0;
+		anflags[cpv][i].clear();
 	}
 	// Matrix scan
 	if (task != tEval) {
@@ -1894,7 +1893,6 @@ void CGenCP1::Generate() {
 		// Load first voice
 		vector<int> cc_len_old = cc_len;
 		vector<float> cc_tempo_old = cc_tempo;
-		vector<int> anflagsc_old = anflagsc[cfv];
 		vector<vector<int>> anflags_old = anflags[cfv];
 		c_len = m_c.size() * npm - (npm - 1);
 		ac[cfv].clear();
@@ -1904,10 +1902,8 @@ void CGenCP1::Generate() {
 		cc_len.clear();
 		cc_tempo.clear();
 		anflags[cfv].clear();
-		anflagsc[cfv].clear();
 		// Create empty arrays
 		anflags[cfv].resize(m_c.size()*npm);
-		anflagsc[cfv].resize(m_c.size()*npm);
 		int npm2 = npm;
 		for (int i = 0; i < m_c.size(); ++i) {
 			// Last measure should have one note
@@ -1921,7 +1917,6 @@ void CGenCP1::Generate() {
 				cc_tempo.push_back(cc_tempo_old[i]);
 				if (!x) {
 					int y = i*npm + x;
-					anflagsc[cfv][y] = anflagsc_old[i];
 					anflags[cfv][y] = anflags_old[i];
 				}
 			}

@@ -21,7 +21,7 @@ protected:
 
 	void ParseExpect();
 
-	inline void CheckSASEmulatorFlags();
+	void CheckSASEmulatorFlags();
 
 	void ConfirmExpect();
 
