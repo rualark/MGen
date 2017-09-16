@@ -391,8 +391,6 @@ protected:
 	vector<float> fpenalty; // Additional penalty for flags
 	vector<int>  flags; // Flags for whole cantus
 	vector<vector<vector<int>>> anflags; // Note flags
-	vector<vector<int>> nflags_full; // [x][id] Note flags of full analysis
-	vector<vector<int>> nflags_prev; // [x][id] Note flags of previous SAS run
 	vector<int> br_cc; // Cantus chromatic (best rejected)
 	vector<int>  br_f; // Flags for whole cantus (best rejected)
 	vector<long>  ssf; // SWA stuck flags
@@ -489,11 +487,18 @@ protected:
 	// Local SWA
 	vector <long> cids;
 
-	// CA1
+	// CA1 autotest
 	vector<vector<int>> enflags; // [s][id] Expected note flags
 	vector<vector<int>> enflags2; // [r_id][s] Expected note flags
 	vector<int> false_positives_ignore; // [r_id] Ignore false positives for these flags
 	vector<int> false_positives_global; // [r_id] Always check false positives for these flags
+	vector<int> sas_emulator_max_delay; // [r_id] Specify rule identiefiers, which should not be tested for delay in SAS emulator
+	vector<int> sas_emulator_move_ignore; // [r_id] Specify rule identiefiers, which should not be tested for moves in SAS emulator
+	vector<int> flags_full; // [r_id] Flags of full analysis
+	vector<vector<int>> nflags_full; // [x][id] Note flags of full analysis
+	vector<vector<int>> nflags_prev; // [x][id] Note flags of previous SAS run
+	vector<int> flag_delay; // [r_id] Maximum flag delay in steps
+	vector<CString> flag_delay_st; // [r_id] Information about maximum flag delay
 
 	// Cantus correcting
 	vector <int> smatrix; // Vector of links to steps that were selected for recalculation

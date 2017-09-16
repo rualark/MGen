@@ -202,7 +202,7 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 }
 
 // Increment vector values with indexes specified in string, separated by commas
-void CGLib::LoadVectorPar2(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest, int lmin, int lmax)
+void CGLib::LoadVectorPar2(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest, int value, int lmin, int lmax)
 {
 	int x;
 	if (*sName == sSearch) {
@@ -220,8 +220,8 @@ void CGLib::LoadVectorPar2(CString * sName, CString * sValue, char* sSearch, vec
 				WriteLog(5, est);
 				return;
 			}
-			++Dest[x];
 			CheckLimits(sName, &x, lmin, lmax);
+			Dest[x] += value;
 		}
 	}
 }

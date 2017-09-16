@@ -295,7 +295,7 @@ void CGenCA1::ParseExpect() {
 	if (!max_i) return;
 	enflags.resize(max_i);
 	enflags2.resize(MAX_RULES);
-	for (int i = 0; i < MAX_RULES; ++i) enflags2[i].resize(c_len);
+	for (int f = 0; f < MAX_RULES; ++f) enflags2[f].resize(c_len);
 	// Load expected flags
 	for (int i = 0; i < max_i; ++i) {
 		if (!cantus_incom[cantus_id][i].IsEmpty()) {
@@ -312,7 +312,7 @@ void CGenCA1::ParseExpect() {
 }
 
 void CGenCA1::CheckSASEmulatorFlags() {
-	int fl, found;
+	int fl, found, delay;
 	for (s = fn; s < ep2; ++s) {
 		// Loop through all current flags
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
@@ -327,20 +327,50 @@ void CGenCA1::CheckSASEmulatorFlags() {
 			}
 			// Stop processing if this flag is not new
 			if (found) continue;
-			// Check that flag exists in full analysis
+			// Find longest delay for each new flag
+			delay = ep2 - 1 - s;
+			if (delay > flag_delay[fl]) {
+				CString est;
+				est.Format("SAS emulator at step %d has delay %d steps: [%d] %s %s (%s) at %d:%d %s",
+					ep2 - 1, delay, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+				//WriteLog(1, est);
+				flag_delay[fl] = delay;
+				flag_delay_st[fl] = est;
+			}
+			// Check that flag exists in full analysis in same position
 			found = 0;
 			for (int f2 = 0; f2 < nflags_full[s].size(); ++f2) if (nflags_full[s][f2] == fl) {
 				found = 1;
 				break;
 			}
 			if (!found) {
-				CString est;
-				est.Format("SAS emulator at step %d reveals new flag: [%d] %s %s (%s) at %d:%d %s",
-					ep2-1, fl, accept[fl]?"+":"-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
-				WriteLog(1, est);
+				// Not found in same position: does it exist in any position?
+				if (flags_full[fl]) {
+					CString est;
+					est.Format("SAS emulator at step %d assigned moved flag: [%d] %s %s (%s) at %d:%d %s",
+						ep2 - 1, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+					if (sas_emulator_move_ignore[fl]) {
+						WriteLog(0, est);
+					}
+					else {
+						WriteLog(1, est);
+					}
+				}
+				else {
+					CString est;
+					est.Format("SAS emulator at step %d assigned wrong flag: [%d] %s %s (%s) at %d:%d %s",
+						ep2 - 1, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+					WriteLog(1, est);
+				}
 			}
 			// Get flag delay
 		}
+	}
+}
+
+void CGenCA1::OutputFlagDelays() {
+	for (int f = 0; f < MAX_RULES; ++f) if (flag_delay[f] > sas_emulator_max_delay[f]) {
+		WriteLog(1, flag_delay_st[f]);
 	}
 }
 

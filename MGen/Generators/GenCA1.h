@@ -23,6 +23,8 @@ protected:
 
 	void CheckSASEmulatorFlags();
 
+	void OutputFlagDelays();
+
 	void ConfirmExpect();
 
 	int corrections = 3; // Number of corrections to show

@@ -238,6 +238,7 @@ void CGenCA2::LinkCpPauses() {
 void CGenCA2::EmulateSASCP() {
 	// Save full analysis flags
 	nflags_full = anflags[cpv];
+	flags_full = flags;
 	nflags_prev.clear();
 	for (fixed_ep2 = fn+2; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
 		// Visible emulation
@@ -256,6 +257,7 @@ void CGenCA2::EmulateSASCP() {
 		CheckSASEmulatorFlags();
 		nflags_prev = anflags[cpv];
 	}
+	OutputFlagDelays();
 	fixed_ep2 = 0;
 }
 

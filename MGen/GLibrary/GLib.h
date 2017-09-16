@@ -138,6 +138,7 @@ public:
 	static void CheckVar(CString* sName, CString* sValue, char* sSearch, int* Dest, int lmin = -1000000, int lmax = -1000000);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, long long * Dest);
 	static void CheckVar(CString * sName, CString * sValue, char * sSearch, float * Dest, float lmin = -1000000, float lmax = -1000000);
+	static void LoadVectorPar2(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest, int value, int lmin = -1000000, int lmax = -1000000);
 	static void CheckLimits(CString * sName, int * Dest, int lmin, int lmax);
 	static void CheckLimits(CString * sName, float * Dest, float lmin, float lmax);
 	static void CheckRange(CString * sName, CString * sValue, char * sSearch, int * vmin, int * vmax, int lmin= -1000000, int lmax= -1000000);
@@ -145,7 +146,6 @@ public:
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	static void StringToVector(CString * sValue, CString stDelim, vector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
 	static void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
-	static void LoadVectorPar2(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
 	static void Tokenize(const CString & s, vector<CString>& tokens, const CString & delim);
 	static void GetVint(const CString &st, vector<int> &res);
 	static int CheckInclude(CString st, CString fname, CString & iname);
