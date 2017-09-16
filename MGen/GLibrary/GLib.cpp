@@ -185,7 +185,7 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 		++parameter_found;
 		int pos = 0;
 		CString st;
-		for (int i = 0; i<1000; i++) {
+		for (int i = 0; i<1000000; i++) {
 			st = sValue->Tokenize(",", pos);
 			st.Trim();
 			if (st.IsEmpty()) break;
@@ -197,6 +197,31 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 			}
 			Dest[i] = atoi(st);
 			CheckLimits(sName, &(Dest[i]), lmin, lmax);
+		}
+	}
+}
+
+// Increment vector values with indexes specified in string, separated by commas
+void CGLib::LoadVectorPar2(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest, int lmin, int lmax)
+{
+	int x;
+	if (*sName == sSearch) {
+		++parameter_found;
+		int pos = 0;
+		CString st;
+		for (int i = 0; i<1000000; i++) {
+			st = sValue->Tokenize(",", pos);
+			st.Trim();
+			if (st.IsEmpty()) break;
+			x = atoi(st);
+			if (x >= Dest.size()) {
+				CString est;
+				est.Format("Cannot increment value with index %d in vector with size %d named '%s'. String: '%s'.", x, Dest.size(), *sName, *sValue);
+				WriteLog(5, est);
+				return;
+			}
+			++Dest[x];
+			CheckLimits(sName, &x, lmin, lmax);
 		}
 	}
 }

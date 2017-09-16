@@ -491,6 +491,8 @@ protected:
 	// CA1
 	vector<vector<int>> enflags; // [s][id] Expected note flags
 	vector<vector<int>> enflags2; // [r_id][s] Expected note flags
+	vector<int> false_positives_ignore; // [r_id] Ignore false positives for these flags
+	vector<int> false_positives_global; // [r_id] Always check false positives for these flags
 
 	// Cantus correcting
 	vector <int> smatrix; // Vector of links to steps that were selected for recalculation

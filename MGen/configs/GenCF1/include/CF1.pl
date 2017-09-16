@@ -55,3 +55,7 @@ best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requ
 
 midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 1 # Set to export comments (violations) to midifile lyrics
+
+# Automatic testing
+# Specify rule identiefier, which should not be tested for false positive
+false_positives_ignore = 15,198,76,36,5,16,4

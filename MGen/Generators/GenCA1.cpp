@@ -346,6 +346,8 @@ void CGenCA1::ConfirmExpect() {
 				WriteLog(0, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
+			// Do not check false positives if disabled
+			if (false_positives_ignore[fl]) continue;
 			for (int s = fn; s < c_len; ++s) {
 				for (int f = 0; f < anflagsc[cpv][s]; ++f) if (fl == anflags[cpv][s][f]) {
 					if (!enflags2[fl][s]) {

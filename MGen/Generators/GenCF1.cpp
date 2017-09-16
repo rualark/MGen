@@ -15,6 +15,8 @@ CGenCF1::CGenCF1()
 	cpv = 0;
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_RULES);
+	false_positives_ignore.resize(MAX_RULES);
+	false_positives_global.resize(MAX_RULES);
 	RuleParam.resize(MAX_RULESETS);
 	SubRuleName.resize(MAX_RULESETS);
 	RuleName.resize(MAX_RULESETS);
@@ -400,6 +402,7 @@ int CGenCF1::SelectRuleSet(int rs)
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
+	LoadVectorPar2(sN, sV, "false_positives_ignore", false_positives_ignore, 1);
 	CheckVar(sN, sV, "emulate_sas", &emulate_sas, 0, 2);
 	CheckVar(sN, sV, "max_correct_ms", &max_correct_ms, 0);
 	CheckVar(sN, sV, "animate", &animate, 0);
