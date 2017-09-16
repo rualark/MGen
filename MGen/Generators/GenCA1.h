@@ -21,6 +21,8 @@ protected:
 
 	void ParseExpect();
 
+	inline void CheckSASEmulatorFlags();
+
 	void ConfirmExpect();
 
 	int corrections = 3; // Number of corrections to show

@@ -311,6 +311,11 @@ void CGenCA1::ParseExpect() {
 	}
 }
 
+void CGenCA1::CheckSASEmulatorFlags() {
+	// Check for new flags
+	// Get flag delay
+}
+
 void CGenCA1::ConfirmExpect() {
 	int found, fl;
 	int max_x = enflags.size();

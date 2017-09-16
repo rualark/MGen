@@ -238,12 +238,20 @@ void CGenCA2::LinkCpPauses() {
 void CGenCA2::EmulateSASCP() {
 	if (!emulate_sas) return;
 	for (fixed_ep2 = fn+2; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
-		step0 = step;
-		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
-		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
-		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 2);
-		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 3);
-		ScanCP(tEval, 0);
+		// Visible emulation
+		if (emulate_sas) {
+			step0 = step;
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 2);
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 3);
+			ScanCP(tEval, 0);
+		}
+		// Hidden emulation
+		else {
+			ScanCP(tEval, -1);
+		}
+		CheckSASEmulatorFlags();
 	}
 	fixed_ep2 = 0;
 }
@@ -381,7 +389,7 @@ void CGenCA2::Generate() {
 		GetSourceRange(cpoint[i][cpv]);
 		step0 = step;
 		fn = fn0;
-		if (emulate_sas != 1) ScanCP(tEval, 0);
+		ScanCP(tEval, 0);
 		EmulateSASCP();
 		key_eval.Empty();
 		// Check if cantus was shown
