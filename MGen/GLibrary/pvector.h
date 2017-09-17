@@ -3,7 +3,7 @@
 // Set debug level or comment to disable debug
 #define DEBUG_PVECTOR 2
 
-// Protected vector class with access counting
+// Protected vector class with access analysis
 template<typename T>
 class pvector
 {
@@ -80,6 +80,18 @@ public:
 
 	bool operator!=(const pvector<T>& other) {
 		return !(*this == other);
+	}
+
+	void reset_accessed(int x1, int x2) {
+		for (int x = x1; x < x2; ++x) {
+			v_accessed[x] = 0;
+		}
+	}
+
+	bool was_accessed(int x1, int x2) {
+		for (int x = x1; x < x2; ++x) {
+			if (v_accessed[x]) return TRUE;
+		}
 	}
 
 	vector<T> v;
