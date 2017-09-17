@@ -353,7 +353,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					CString est;
 					est.Format("SAS emulator at step %d assigned moved flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						ep2 - 1, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-						cantus_id + 1, s + 1, (step0 + fn + s) / 8 + 1, (step0 + fn + s:) % 8 + 1, midi_file);
+						cantus_id + 1, s + 1, (step0 + fn + s) / 8 + 1, (step0 + fn + s) % 8 + 1, midi_file);
 					if (sas_emulator_move_ignore[fl]) {
 						WriteLog(6, est);
 					}

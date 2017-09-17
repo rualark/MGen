@@ -1128,7 +1128,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 				if (cc[fli2[ls]] == nmax) {
 					++culm_sum;
 					culm_step = ls;
-					if (culm_sum > 1) FLAG2(12, fli2[culm_step]);
+					if (culm_sum > 1) FLAG2(12, fli[culm_step]); 
 				}
 			}
 			if (culm_step == -1) {
@@ -1150,7 +1150,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			if (cc[fli2[ls]] == nmax) {
 				++culm_sum;
 				culm_step = ls;
-				if (culm_sum > 1) FLAG2(12, fli2[culm_step]);
+				if (culm_sum > 1) FLAG2(12, fli[culm_step]);
 			}
 		}
 		if (culm_step == -1) {
