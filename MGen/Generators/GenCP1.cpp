@@ -810,7 +810,8 @@ int CGenCP1::FailRhythm5() {
 			if (l_len[lp] == 1) {
 				// Too many 1/8
 				++count8;
-				if (count8 > 2) FLAG2(255, s2);
+				if (count8 == 3) FLAG2(255, s2)
+				else if (count8 > 3) ++fpenalty[255];
 				// 1/8 on leap
 				if ((ls2 < fli_size - 1 && aleap[cpv][s2]) || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG2(88, s2);
 				// 1/8 in first measure
