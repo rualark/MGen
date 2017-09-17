@@ -816,8 +816,10 @@ int CGenCP1::FailRhythm5() {
 				if ((ls2 < fli_size - 1 && aleap[cpv][s2]) || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG2(88, s2);
 				// 1/8 in first measure
 				if (ms == 0) FLAG2(230, s2)
+				// 1/8 syncope
+				if (pos == 7 && slur2) FLAG2(232, s2)
 				// If second 1/8
-				if (pos % 2) {
+				else if (pos % 2) {
 					// Isolated 1/8
 					if (l_len[lp - 1] != 1) FLAG2(231, s2)
 				}
