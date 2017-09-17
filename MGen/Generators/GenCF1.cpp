@@ -1024,7 +1024,7 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 
 // Calculate global leap smooth slur variables
 void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
-	for (int i = fn; i < ep2 - 1; ++i) {
+	for (int i = 0; i < ep2 - 1; ++i) {
 		// Find all leaps
 		leap[i] = 0;
 		smooth[i] = 0;
@@ -1106,7 +1106,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int 
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
 	// Prohibit stagnation only for non-slurred notes
 	++nstat[cc[0]];
-	for (int i = fn+1; i < ep2; ++i) if (cc[i-1] != cc[i]) {
+	for (int i = 1; i < ep2; ++i) if (cc[i-1] != cc[i]) {
 		// Add new note to stagnation array
 		++nstat[cc[i]];
 		// Subtract old note
@@ -1174,8 +1174,8 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 int CGenCF1::FailFirstNotes(vector<int> &pc) {
 	// Prohibit first note not tonic
 	if (pc[0] != 0) {
-		FLAG2(49, fn);
-		if (pc[0] != 4) FLAG2(90, fn);
+		FLAG2(49, 0);
+		if (pc[0] != 4) FLAG2(90, 0);
 		// Calculate steps to search for tonic
 		int fst = first_steps_tonic;
 		if (c_len > 10) ++fst;
@@ -1192,7 +1192,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 		}
 		int ok = 0;
 		// No C ?
-		if (c_pos == -1) FLAG2(40, fn)
+		if (c_pos == -1) FLAG2(40, 0)
 		else {
 			// If C found, check previous note
 			if (c_pos > 0) {
@@ -1202,7 +1202,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 			else ok = 1;
 		}
 		// No E ?
-		if (e_pos == -1) FLAG2(41, fn)
+		if (e_pos == -1) FLAG2(41, 0)
 		else {
 			// If E found, check previous note
 			if (e_pos > 0) {
@@ -1212,7 +1212,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 			else ok = 1;
 		}
 		// Is E or C prepared?
-		if (!ok) FLAG2(52, fn);
+		if (!ok) FLAG2(52, 0);
 	}
 	return 0;
 }
@@ -1253,8 +1253,7 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	minl = 10000;
 	maxl = 0;
 	// Set first steps in case there is pause
-	for (int i = 0; i < fn; ++i) bli[i] = 0;
-	for (int i = fn; i < ep2; ++i) {
+	for (int i = 0; i < ep2; ++i) {
 		if (prev_note != cc[i]) {
 			// Save linked note length
 			if (prev_note != -1) {
@@ -1538,7 +1537,7 @@ int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, ve
 	// If uncompensated rules not allowed, flag compensation problems detected (3rd, etc.)
 	int child_leap, leap_next, leap_prev, presecond;
 	int overflow, arpeg, late_leap;
-	for (s = fn; s < ep2 - 1; ++s) {
+	for (s = 0; s < ep2 - 1; ++s) {
 		if (leap[s] != 0) {
 			ls = bli[s];
 			FailLeapInit(c, late_leap, presecond, leap_next, leap_prev,
@@ -1809,7 +1808,7 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 	// Clear nstat
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
 	// Count nstat
-	for (int x = fn; x < ep2; ++x) ++nstat2[c[x]];
+	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
 	// Check nstat
 	if (ep2 < c_len) return 0;
 	int skips = 0;
@@ -1822,9 +1821,9 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 		else ++skips;
 	}
 	// Set flags
-	if (skips2) FLAG2(69, fn);
-	if (skips == 1) FLAG2(67, fn)
-	else if (skips == 2) FLAG2(68, fn);
+	if (skips2) FLAG2(69, 0);
+	if (skips == 1) FLAG2(67, 0)
+	else if (skips == 2) FLAG2(68, 0);
 	return 0;
 }
 
@@ -1889,7 +1888,7 @@ void CGenCF1::ScanInit() {
 			accept_time = CGLib::time();
 			if (method == mScan) rpenalty_min = MAX_PENALTY;
 		}
-		for (int x = fn; x < c_len; ++x) {
+		for (int x = 0; x < c_len; ++x) {
 			hm[x].resize(3);
 			hm2[x].resize(3);
 		}
@@ -1978,7 +1977,7 @@ void CGenCF1::SingleCantusInit() {
 	// Get diatonic steps from chromatic
 	first_note = m_cc[0];
 	last_note = m_cc[c_len - 1];
-	for (int i = fn; i < c_len; ++i) {
+	for (int i = 0; i < c_len; ++i) {
 		m_c[i] = CC_C(m_cc[i], tonic_cur, minor_cur);
 		// Save value for future use;
 		m_cc_old[i] = m_cc[i];
@@ -1990,13 +1989,13 @@ void CGenCF1::SingleCantusInit() {
 	// Set pitch limits
 	// If too wide range is not accepted, correct range to increase scan performance
 	if (!accept[37]) {
-		for (int i = fn; i < c_len; ++i) {
+		for (int i = 0; i < c_len; ++i) {
 			min_cc[i] = max(minc, m_cc[i] - correct_range);
 			max_cc[i] = min(maxc, m_cc[i] + correct_range);
 		}
 	}
 	else {
-		for (int i = fn; i < c_len; ++i) {
+		for (int i = 0; i < c_len; ++i) {
 			min_cc[i] = m_cc[i] - correct_range;
 			max_cc[i] = m_cc[i] + correct_range;
 		}
@@ -2011,7 +2010,7 @@ void CGenCF1::SingleCantusInit() {
 		}
 	}
 	// Convert limits to diatonic
-	for (int i = fn; i < c_len; ++i) {
+	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 	}
@@ -2033,7 +2032,7 @@ void CGenCF1::SingleCantusInit() {
 		// Create map
 		smap.resize(smatrixc);
 		int map_id = 0;
-		for (int i = fn; i < c_len; ++i) if (smatrix[i]) {
+		for (int i = 0; i < c_len; ++i) if (smatrix[i]) {
 			smap[map_id] = i;
 			++map_id;
 		}
@@ -2068,7 +2067,7 @@ void CGenCF1::SingleCantusInit() {
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
 			dpenalty_outside_swa = 0;
-			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, fn, smap[swa1 - 1]);
+			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, 0, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, smap[swa2], c_len - 1);
 			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
@@ -2164,7 +2163,7 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	cc[c_len - 1] = last_note;
 	GetRealRange(c, cc);
 	// Set pitch limits
-	for (int i = fn; i < c_len; ++i) {
+	for (int i = 0; i < c_len; ++i) {
 		min_cc[i] = minc;
 		max_cc[i] = maxc;
 	}
@@ -2178,7 +2177,7 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 		}
 	}
 	// Convert limits to diatonic
-	for (int i = fn; i < c_len; ++i) {
+	for (int i = 0; i < c_len; ++i) {
 		min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 		max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 	}
@@ -2349,7 +2348,7 @@ void CGenCF1::TestRpenalty() {
 		if (!accept[z] && flags[z]) {
 			rp += (severity[z] + 1) * flags[z] + fpenalty[z];
 			found = 0;
-			for (int x = fn; x < ep2; ++x) {
+			for (int x = 0; x < ep2; ++x) {
 				if (anflags[cpv][x].size()) for (int i = 0; i < anflags[cpv][x].size(); ++i) if (anflags[cpv][x][i] == z) {
 					found = 1;
 				}
@@ -2394,14 +2393,14 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	if (!accept[37] && real_range > max_interval) {
 		int nminr = nmin + (real_range - max_interval) / 2;
 		int nmaxr = nminr + max_interval;
-		for (int i = fn; i < ep2; ++i) {
+		for (int i = 0; i < ep2; ++i) {
 			if (cc[i] < nminr) fpenalty[37] += nminr - cc[i];
 			if (cc[i] > nmaxr) fpenalty[37] += cc[i] - nmaxr;
 		}
 	}
 	// Calculate flags penalty
 	rpenalty_cur = 0;
-	for (int x = fn; x < ep2; ++x) {
+	for (int x = 0; x < ep2; ++x) {
 		if (anflags[cpv][x].size()) for (int i = 0; i < anflags[cpv][x].size(); ++i) if (!accept[anflags[cpv][x][i]]) {
 			rpenalty_cur += severity[anflags[cpv][x][i]] + 1;
 		}
@@ -2541,7 +2540,7 @@ void CGenCF1::CalcStepDpenalty(vector<int> cc1, vector<int> cc2, int i) {
 	int dif = abs(cc1[i] - cc2[i]);
 	int dpe = 0;
 	if (dif) dpe = step_penalty + pitch_penalty * dif;
-	if (i > fn) dpenalty_step[i] = dpenalty_step[i - 1] + dpe;
+	if (i > 0) dpenalty_step[i] = dpenalty_step[i - 1] + dpe;
 	else dpenalty_step[i] = dpe;
 }
 
@@ -2578,11 +2577,11 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	// Prepare dpenalty
 	dpenalty_outside_swa = 0;
 	if (av_cnt == 2) {
-		if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
+		if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], 0, smap[swa1 - 1]);
 		if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
 	}
 	else {
-		if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, fn, smap[swa1 - 1]);
+		if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, 0, smap[swa1 - 1]);
 		if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, smap[swa2], c_len - 1);
 	}
 	return 0;
@@ -2924,8 +2923,8 @@ void CGenCF1::TransposeVector(vector<float> &v, int t) {
 void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
-	for (int s = fn; s < ep2; ++s) {
-		pos1 = max(fn, s - range);
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - range);
 		pos2 = min(ep2 - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
@@ -2941,8 +2940,8 @@ void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
 void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
-	for (int s = fn; s < ep2; ++s) {
-		pos1 = max(fn, s - range);
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - range);
 		pos2 = min(ep2 - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
@@ -2958,8 +2957,8 @@ void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
 void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
-	for (int s = fn; s < ep2; ++s) {
-		pos1 = max(fn, s - range);
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - range);
 		pos2 = min(ep2 - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
@@ -2975,8 +2974,8 @@ void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
 void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
-	for (int s = fn; s < ep2; ++s) {
-		pos1 = max(fn, s - range);
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - range);
 		pos2 = min(ep2 - 1, s + range);
 		ma = 0;
 		maw_sum = 0;
@@ -3003,7 +3002,7 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 	// Smooth
 	mawVector(macc, macc2, ma_range);
 	// Deviation
-	for (int s = fn; s < ep2; ++s) {
+	for (int s = 0; s < ep2; ++s) {
 		pos1 = max(0, s - ma_range);
 		pos2 = min(ep2 - 1, s + ma_range);
 		de = 0;
@@ -3221,7 +3220,7 @@ int CGenCF1::SendCantus() {
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
-	for (int x = fn; x < c_len; ++x) {
+	for (int x = 0; x < c_len; ++x) {
 		if (chm.size() > bli[x] && chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 		SendLyrics(pos, v, cpv, x);
@@ -3373,7 +3372,7 @@ void CGenCF1::RandomSWA()
 		// Set scan matrix to scan all
 		smatrixc = c_len;
 		smatrix.resize(c_len);
-		for (int x = fn; x < c_len; ++x) {
+		for (int x = 0; x < c_len; ++x) {
 			smatrix[x] = 1;
 		}
 		// Optimize cantus
@@ -3514,7 +3513,7 @@ void CGenCF1::TimeBestRejected() {
 
 void CGenCF1::SaveCantus() {
 	if (method == mScan) dpenalty_cur = dpenalty_step[c_len - 1];
-	if (!dpenalty_cur) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, fn, c_len - 1);
+	if (!dpenalty_cur) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, 0, c_len - 1);
 	// If rpenalty is same as min, calculate dpenalty
 	if (rpenalty_cur == rpenalty_min) {
 		// Do not save cantus if it has higher dpenalty
@@ -3588,8 +3587,8 @@ check:
 		GetMelodyInterval(m_cc, 0, ep2, nmin, nmax);
 		++accepted3;
 		// Limit melody interval
-		if (nmax - nmin > max_interval) FLAG(37, fn);
-		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, fn);
+		if (nmax - nmin > max_interval) FLAG(37, 0);
+		if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		// Show status
 		long long time = CGLib::time();
 		scycle = (time - gen_start_time) / STATUS_PERIOD;
@@ -3602,8 +3601,8 @@ check:
 		// Calculate diatonic limits
 		nmind = CC_C(nmin, tonic_cur, minor_cur);
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
-		if (FailDiatonic(m_c, m_cc, fn, ep2, minor_cur)) goto skip;
-		GetPitchClass(m_c, m_cc, m_pc, m_pcc, fn, ep2);
+		if (FailDiatonic(m_c, m_cc, 0, ep2, minor_cur)) goto skip;
+		GetPitchClass(m_c, m_cc, m_pc, m_pcc, 0, ep2);
 		CreateLinks(m_cc);
 		if (minor_cur) {
 			if (FailMinor(m_pcc, m_cc)) goto skip;
@@ -3701,7 +3700,7 @@ check:
 			}
 			else {
 				// Calculate dpenalty if this is evaluation
-				if (task == tEval && cantus.size()) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, fn, c_len - 1);
+				if (task == tEval && cantus.size()) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, 0, c_len - 1);
 				if (SendCantus()) break;
 			}
 			// Exit if this is evaluation

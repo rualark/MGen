@@ -10,8 +10,6 @@
 #define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
 // For harmony
 #define FLAG3(id, i) { if (!accept[id]) { if (i == max_p) { last_flag=id; } return 1; } }
-// For rhythm
-#define FLAG4(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; if (i < fn) { local_flag_position = fn; } else { local_flag_position = i; } anflags[cpv][local_flag_position].push_back(id); }
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
@@ -541,6 +539,6 @@ protected:
 	int sus_count = 0; // Number of suspensions detected in ExplodeCP
 	int local_flag_position;
 	int fixed_ep2 = 0; // For SAS emulation
-	// For FLAG4 macro
+	// For FLAG2 macro
 	void CreateULinks();
 };

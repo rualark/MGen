@@ -102,7 +102,7 @@ void CGenCP1::SingleCPInit() {
 	acc = scpoint;
 	// Get diatonic steps from chromatic
 	for (int v = 0; v < acc.size(); ++v) {
-		for (int i = fn; i < c_len; ++i) {
+		for (int i = 0; i < c_len; ++i) {
 			ac[v][i] = CC_C(acc[v][i], tonic_cur, minor_cur);
 		}
 	}
@@ -111,7 +111,7 @@ void CGenCP1::SingleCPInit() {
 		acc_old = acc;
 		// Calculate limits
 		if (cantus_high) {
-			for (int i = fn; i < c_len; ++i) {
+			for (int i = 0; i < c_len; ++i) {
 				min_cc[i] = max(acc[cfv][i] - burst_between,
 					max(src_nmin, max(cf_nmax - sum_interval, acc[cpv][i] - correct_range)));
 				max_cc[i] = min(acc[cfv][i] - min_between,
@@ -120,7 +120,7 @@ void CGenCP1::SingleCPInit() {
 			}
 		}
 		else {
-			for (int i = fn; i < c_len; ++i) {
+			for (int i = 0; i < c_len; ++i) {
 				max_cc[i] = min(acc[cfv][i] + burst_between,
 					min(src_nmax, min(cf_nmin + sum_interval, acc[cpv][i] + correct_range)));
 				min_cc[i] = max(acc[cfv][i] + min_between,
@@ -138,11 +138,11 @@ void CGenCP1::SingleCPInit() {
 			}
 		}
 		// Convert limits to diatonic
-		for (int i = fn; i < c_len; ++i) {
+		for (int i = 0; i < c_len; ++i) {
 			min_c[i] = CC_C(min_cc[i], tonic_cur, minor_cur);
 			max_c[i] = CC_C(max_cc[i], tonic_cur, minor_cur);
 		}
-		sp1 = fn;
+		sp1 = 0;
 		sp2 = c_len;
 		ep1 = max(0, sp1 - 1);
 		ep2 = c_len;
@@ -161,7 +161,7 @@ void CGenCP1::SingleCPInit() {
 		// Create map
 		smap.resize(smatrixc);
 		int map_id = 0;
-		for (int i = fn; i < c_len; ++i) if (smatrix[i]) {
+		for (int i = 0; i < c_len; ++i) if (smatrix[i]) {
 			smap[map_id] = i;
 			++map_id;
 		}
@@ -196,7 +196,7 @@ void CGenCP1::SingleCPInit() {
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
 			dpenalty_outside_swa = 0;
-			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
+			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], 0, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
 			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
@@ -219,9 +219,7 @@ void CGenCP1::SingleCPInit() {
 
 void CGenCP1::MultiCPInit() {
 	MakeNewCP();
-	// First pause
-	for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
-	sp1 = fn; // Start of search window
+	sp1 = 0; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
 	if (sp2 > c_len - 1) sp2 = c_len - 1;
 	// Record window
@@ -282,6 +280,7 @@ int CGenCP1::SendCP() {
 		// Sent voice is the same as acc voice
 		v = svoice + av;
 		MakeLenExport(acc[av], 0, av);
+		// Reset cc_len back after extending first cf note
 		cc_len[0] = cc_len[1];
 		plen = cc_len[0] * fn;
 		if (av == cpv) {
@@ -290,6 +289,7 @@ int CGenCP1::SendCP() {
 		}
 		else {
 			//AddNote(pos, v, acc[cfv][0], len_export[0] + plen, 100);
+			// Extend first cf note
 			cc_len[0] = cc_len[1] * (fn + 1);
 		}
 		// Copy cantus to output
@@ -405,7 +405,7 @@ int CGenCP1::FailAlteredInt2(int i, int c1, int c2, int flag) {
 
 // Fail vertical altered intervals
 int CGenCP1::FailAlteredInt() {
-	for (int i = fn; i < ep2; ++i) {
+	for (int i = 0; i < ep2; ++i) {
 		if (FailAlteredInt2(i, 9, 8, 170)) return 1;
 		if (FailAlteredInt2(i, 11, 10, 171)) return 1;
 		if (FailAlteredInt2(i, 11, 8, 172)) return 1;
@@ -423,7 +423,7 @@ int CGenCP1::FailCrossInt2(int i, int i_1, int c1, int c2, int flag) {
 
 // Fail cross relation altered intervals
 int CGenCP1::FailCrossInt() {
-	for (int s = fn+1; s < ep2; ++s) {
+	for (int s = 1; s < ep2; ++s) {
 		s_1 = s - 1;
 		if (FailCrossInt2(s, s_1, 9, 8, 164)) return 1;
 		if (FailCrossInt2(s, s_1, 11, 10, 165)) return 1;
@@ -438,7 +438,7 @@ int CGenCP1::FailCrossInt() {
 
 void CGenCP1::GetVIntervals() {
 	// Calculate intervals
-	for (int i = fn; i < ep2; ++i) {
+	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = ac[1][i] - ac[0][i];
 		ivlc[i] = ivl[i] % 7;
 		civl[i] = acc[1][i] - acc[0][i];
@@ -454,7 +454,7 @@ int CGenCP1::FailVMotion() {
 	int mtemp;
 	int scontra = 0;
 	int sdirect = 0;
-	for (int i = fn; i < ep2; ++i) {
+	for (int i = 0; i < ep2; ++i) {
 		if (i < ep2 - 1) {
 			motion[i] = mStay;
 			if (acc[cfv][i + 1] != acc[cfv][i] || acc[cpv][i + 1] != acc[cpv][i]) {
@@ -475,8 +475,8 @@ int CGenCP1::FailVMotion() {
 	if (ep2 == c_len) {
 		if (scontra + sdirect) { //-V793
 			int pcontra = (scontra * 100) / (scontra + sdirect);
-			if (pcontra < contrary_min2) FLAG2(46, fn)
-			else if (pcontra < contrary_min) FLAG2(35, fn);
+			if (pcontra < contrary_min2) FLAG2(46, 0)
+			else if (pcontra < contrary_min) FLAG2(35, 0);
 		}
 	}
 	return 0;
@@ -644,7 +644,7 @@ void CGenCP1::GetRpos() {
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
-		if (s % npm == 0) rpos[ls] = pDownbeat;
+		if ((s + fn) % npm == 0) rpos[ls] = pDownbeat;
 		else if (s > 0 && aleap[cpv][s - 1]) rpos[ls] = pLeap;
 		else if (s2 < ep2-1 && aleap[cpv][s2]) rpos[ls] = pLeap;
 		else {
@@ -693,15 +693,15 @@ int CGenCP1::FailRhythm3() {
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		// 1/4 syncope
-		if (beat[ls] == 2 && llen[ls] > 1) FLAG4(235, s);
+		if (beat[ls] == 2 && llen[ls] > 1) FLAG2(235, s);
 		// 1/2 after 1/4
 		if (ls > 0 && beat[ls] && llen[ls] > 1 && llen[ls - 1] == 1) {
-			if (s / npm >= c_len / npm - 1) FLAG4(238, s)
-			else if (sus[ls]) FLAG4(239, s)
-			else FLAG4(240, s);
+			if (s / npm >= c_len / npm - 1) FLAG2(238, s)
+			else if (sus[ls]) FLAG2(239, s)
+			else FLAG2(240, s);
 		}
 		// Non-uniform starting rhythm
-		if (s / npm == 0 && llen[ls] > 1) FLAG4(254, s);
+		if (s / npm == 0 && llen[ls] > 1) FLAG2(254, s);
 	}
 	return 0;
 }
@@ -730,7 +730,7 @@ int CGenCP1::FailRhythm5() {
 	int suml = 0;
 	int ls2 = 0;
 	// Check pause length
-	if (fn * 2 > npm) FLAG2(197, fn);
+	if (fn * 2 > npm) FLAG2(197, 0);
 	for (int ms = 0; ms < mli.size(); ++ms) {
 		s = mli[ms];
 		if (s >= ep2) break;
@@ -739,7 +739,7 @@ int CGenCP1::FailRhythm5() {
 		slur1 = 0;
 		slur2 = 0;
 		// First pause
-		if (s < fn) {
+		if (!ms) {
 			l_len.push_back(fn);
 		}
 		// Build note lengths
@@ -749,11 +749,11 @@ int CGenCP1::FailRhythm5() {
 			// Do not process last note if not full melody generated
 			if (ep2 != c_len && ls2 == fli_size - 1) {
 				// Whole inside
-				if (llen[ls2] >= 8 && !pos && !sus[ls2]) FLAG4(236, s)
+				if (llen[ls2] >= 8 && !pos && !sus[ls2]) FLAG2(236, s)
 				// 1/8 syncope
-				else if (llen[ls2] > 1 && pos % 2) FLAG4(232, fli[ls2])
+				else if (llen[ls2] > 1 && pos % 2) FLAG2(232, fli[ls2])
 				// 1/4 syncope
-				else if (llen[ls2] > 2 && pos % 4 == 2) FLAG4(235, fli[ls2])
+				else if (llen[ls2] > 2 && pos % 4 == 2) FLAG2(235, fli[ls2])
 				full_measure = 0;
 				break;
 			}
@@ -799,8 +799,8 @@ int CGenCP1::FailRhythm5() {
 				// Correct note length
 				l_len[lp] = npm - pos;
 				// Check 
-				if (l_len[lp] == 1) FLAG4(253, s2)
-				else if (l_len[lp] == 2) FLAG4(252, s2)
+				if (l_len[lp] == 1) FLAG2(253, s2)
+				else if (l_len[lp] == 2) FLAG2(252, s2)
 			}
 			// Calculate rhythm id
 			rid_cur += 1 << (pos + l_len[lp]);
@@ -808,40 +808,40 @@ int CGenCP1::FailRhythm5() {
 			if (l_len[lp] == 1) {
 				// Too many 1/8
 				++count8;
-				if (count8 > 2) FLAG4(255, s2);
+				if (count8 > 2) FLAG2(255, s2);
 				// 1/8 on leap
-				if ((ls2 < fli_size - 1 && aleap[cpv][s2]) || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG4(88, s2);
+				if ((ls2 < fli_size - 1 && aleap[cpv][s2]) || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG2(88, s2);
 				// 1/8 in first measure
-				if (ms == 0) FLAG4(230, s2)
+				if (ms == 0) FLAG2(230, s2)
 				// If second 1/8
 				if (pos % 2) {
 					// Isolated 1/8
-					if (l_len[lp - 1] != 1) FLAG4(231, s2)
+					if (l_len[lp - 1] != 1) FLAG2(231, s2)
 				}
 				// If first 8th
 				else {
 					// 1/8 beats
-					if (pos == 0) FLAG4(226, s2)
-					else if (pos == 2) FLAG4(227, s2)
-					else if (pos == 4) FLAG4(228, s2)
-					else if (pos == 6) FLAG4(229, s2)
+					if (pos == 0) FLAG2(226, s2)
+					else if (pos == 2) FLAG2(227, s2)
+					else if (pos == 4) FLAG2(228, s2)
+					else if (pos == 6) FLAG2(229, s2)
 				}
 			}
 			else {
 				// 1/8 syncope
-				if (pos % 2) FLAG4(232, s2)
+				if (pos % 2) FLAG2(232, s2)
 				// 1/4 syncope
-				else if (l_len[lp] > 2 && pos == 2) FLAG4(235, s2)
-				else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG4(235, s2);
+				else if (l_len[lp] > 2 && pos == 2) FLAG2(235, s2)
+				else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG2(235, s2);
 			}
 			// Uneven starting rhythm
-			if (!ms && lp>0 && l_len[lp] != l_len[lp-1]) FLAG4(254, s2);
+			if (!ms && lp>0 && l_len[lp] != l_len[lp-1]) FLAG2(254, s2);
 			pos += l_len[lp];
 		}
 		// Check rhythm repeat
 		if (full_measure) {
 			if (rid.size()) {
-				if (rid.back() == rid_cur) FLAG4(247, s);
+				if (rid.back() == rid_cur) FLAG2(247, s);
 			}
 			rid.push_back(rid_cur);
 		}
@@ -849,30 +849,30 @@ int CGenCP1::FailRhythm5() {
 		// First measure
 		if (!ms) {
 			// Uneven pause
-			if (l_len.size() > 1 && l_len[0] == fn && l_len[0] != l_len[1]) FLAG4(237, s);
+			if (l_len.size() > 1 && l_len[0] == fn && l_len[0] != l_len[1]) FLAG2(237, s);
 		}
 		// Whole inside
-		if (l_len[0] >= 8 && ms < mli.size() - 1) FLAG4(236, s)
+		if (l_len[0] >= 8 && ms < mli.size() - 1) FLAG2(236, s)
 		// 1/2.
-		else if (l_len[0] == 6) FLAG4(233, s)
-		else if (l_len.size() > 1 && l_len[1] == 6) FLAG4(234, fli[ls + 1])
-		else if (l_len.size() > 2 && l_len[2] == 6) FLAG4(234, fli[ls + 2])
+		else if (l_len[0] == 6) FLAG2(233, s)
+		else if (l_len.size() > 1 && l_len[1] == 6) FLAG2(234, fli[ls + 1])
+		else if (l_len.size() > 2 && l_len[2] == 6) FLAG2(234, fli[ls + 2])
 		// 1/2 after 1/4 or 1/8 in measure
 		else if (full_measure && l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
 			s3 = fli[ls + l_len.size() - 1];
-			if (ms >= mli.size() - 2) FLAG4(238, s3)
-			else if (slur2 != 0) FLAG4(239, s3)
-			else FLAG4(240, s3);
+			if (ms >= mli.size() - 2) FLAG2(238, s3)
+			else if (slur2 != 0) FLAG2(239, s3)
+			else FLAG2(240, s3);
 		}
 		// Many notes in measure
-		if (l_len.size() == 5) FLAG4(245, s)
-		else if (l_len.size() > 5) FLAG4(246, s);
+		if (l_len.size() == 5) FLAG2(245, s)
+		else if (l_len.size() > 5) FLAG2(246, s);
 		// Suspensions
-		if (slur1 == 4 && l_len[0] == 2) FLAG4(241, s)
-		else if (slur1 == 4 && l_len[0] == 4) FLAG4(242, s)
-		else if (slur1 == 2) FLAG4(251, s)
-		if (slur1 && l_len[0] == 6) FLAG4(243, s)
-		if (slur1 == 6) FLAG4(244, s);
+		if (slur1 == 4 && l_len[0] == 2) FLAG2(241, s)
+		else if (slur1 == 4 && l_len[0] == 4) FLAG2(242, s)
+		else if (slur1 == 2) FLAG2(251, s)
+		if (slur1 && l_len[0] == 6) FLAG2(243, s)
+		if (slur1 == 6) FLAG2(244, s);
 	}
 	// Check last measure
 	return 0;
@@ -922,7 +922,7 @@ int CGenCP1::FailVIntervals() {
 	// Number of sequential parallel imperfect consonances
 	int pico_count = 0;
 	// Check first step
-	if (tivl[fn] == iDis) FLAG2(83, fn);
+	if (tivl[0] == iDis) FLAG2(83, 0);
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
@@ -995,7 +995,7 @@ void CGenCP1::ShowBestRejectedCP() {
 
 void CGenCP1::SaveCP() {
 	if (method == mScan) dpenalty_cur = dpenalty_step[c_len - 1];
-	if (!dpenalty_cur) dpenalty_cur = CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
+	if (!dpenalty_cur) dpenalty_cur = CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], 0, c_len - 1);
 	if (rpenalty_cur == rpenalty_min) {
 		// Do not save cantus if it has higher dpenalty
 		if (dpenalty_cur > dpenalty_min) return;
@@ -1064,8 +1064,8 @@ int CGenCP1::FailSlurs() {
 	int max_count = 0;
 	int max_i = 0;
 	// Check pause length
-	if (fn*2 > npm) FLAG2(197, fn);
-	for (int i = fn; i < ep2-1; ++i) {
+	if (fn*2 > npm) FLAG2(197, 0);
+	for (int i = 0; i < ep2-1; ++i) {
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check simultaneous slurs
 			//if (acc[cfv][i] == acc[cfv][i + 1]) {
@@ -1077,7 +1077,7 @@ int CGenCP1::FailSlurs() {
 			// Check slurs in window
 			++scount2;
 			// Subtract old slur
-			if ((i - fn >= slurs_window) && (acc[cpv][i - slurs_window] == acc[cpv][i - slurs_window + 1])) --scount2;
+			if ((i >= slurs_window) && (acc[cpv][i - slurs_window] == acc[cpv][i - slurs_window + 1])) --scount2;
 			if (scount2 > max_count) {
 				max_count = scount2;
 				max_i = i;
@@ -1106,10 +1106,10 @@ int CGenCP1::FailMissSlurs() {
 	int scount = 0;
 	int miss, max_miss=0;
 	int max_i=0;
-	for (int i = fn; i < ep2-1; ++i) if (i % 2) { 
-		if (i - fn < miss_slurs_window * npm) ++wcount;
+	for (int i = 0; i < ep2-1; ++i) if ((i + fn) % 2) { 
+		if (i < miss_slurs_window * npm) ++wcount;
 		// Subtract old slur
-		if ((i - fn >= miss_slurs_window * npm) && (acc[cpv][i - miss_slurs_window * npm] == acc[cpv][i - miss_slurs_window * npm + 1])) --scount;
+		if ((i >= miss_slurs_window * npm) && (acc[cpv][i - miss_slurs_window * npm] == acc[cpv][i - miss_slurs_window * npm + 1])) --scount;
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check slurs in window
 			++scount;
@@ -1160,13 +1160,13 @@ int CGenCP1::FailOverlap() {
 	if (fli_size < 3) return 0;
 	if (cantus_high) {
 		for (int i = fli[1]; i < ep2; ++i) {
-			if (i > fn && acc[cpv][i] >= acc[cfv][i - 1]) FLAG2(24, i)
+			if (i > 0 && acc[cpv][i] >= acc[cfv][i - 1]) FLAG2(24, i)
 			else if (i < c_len - 1 && acc[cpv][i] >= acc[cfv][i + 1]) FLAG2(24, i);
 		}
 	}
 	else {
 		for (int i = fli[1]; i < ep2; ++i) {
-			if (i > fn && acc[cpv][i] <= acc[cfv][i - 1]) FLAG2(24, i)
+			if (i > 0 && acc[cpv][i] <= acc[cfv][i - 1]) FLAG2(24, i)
 			else if (i < c_len - 1 && acc[cpv][i] <= acc[cfv][i + 1]) FLAG2(24, i);
 		}
 	}
@@ -1225,11 +1225,11 @@ void CGenCP1::RandomSWACP()
 		scpoint[cpv] = acc[cpv];
 		cpoint[0][cpv] = acc[cpv];
 		// Set scan matrix to scan all
-		smatrixc = c_len - fn;
+		smatrixc = c_len;
 		smatrix.clear();
 		smatrix.resize(c_len, 0);
 		// Do not scan first pause
-		for (int x = fn; x < c_len; ++x) {
+		for (int x = 0; x < c_len; ++x) {
 			smatrix[x] = 1;
 		}
 		// Optimize cpoint
@@ -1468,15 +1468,16 @@ int CGenCP1::FailLastIntervals() {
 }
 
 void CGenCP1::GetNoteTypes() {
-	int s = fn;
+	int s = 0, sf;
 	int l;
 	for (ls = 0; ls < fli_size; ++ls) {
 		if (ls > 0) s = fli2[ls-1]+1;
+		sf = s + fn;
 		l = llen[ls];
 		// Get beat
-		if (s % npm) {
-			if (npm>2 && s % (npm / 2)) {
-				if (npm>4 && s % (npm / 4)) {
+		if (sf % npm) {
+			if (npm>2 && sf % (npm / 2)) {
+				if (npm>4 && sf % (npm / 4)) {
 					beat[ls] = 3;
 				}
 				else beat[ls] = 2;
@@ -1505,7 +1506,7 @@ void CGenCF1::CreateULinks() {
 	uli.clear();
 	// Set first step in case it is pause
 	bli[0] = 0;
-	for (int i = fn; i < ep2; ++i) {
+	for (int i = 0; i < ep2; ++i) {
 		changed = 0;
 		// Did any of voices change?
 		for (int v = 0; v < av_cnt; ++v) {
@@ -1523,7 +1524,7 @@ void CGenCP1::GetMeasures() {
 	mli.clear();
 	for (int i = 0; i < c_len; ++i) {
 		// Find measures
-		if (i % npm == 0) {
+		if ((i+fn) % npm == 0) {
 			mli.push_back(i);
 		}
 	}
@@ -1580,8 +1581,6 @@ void CGenCP1::ScanCP(int t, int v) {
 	// Analyze combination
 check:
 	while (true) {
-		// First pause
-		for (int i = 0; i < fn; ++i) acc[cpv][i] = acc[cpv][fn];
 		//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, acc[cpv]);
 		//if (ep2 > 56 && MatchVectors(acc[cpv], test_cc, 2, ep2 - 1)) {
 			//CString est;
@@ -1615,14 +1614,14 @@ check:
 		}
 		else {
 			ClearFlags(0, ep2);
-			if (nmax - nmin > max_interval) FLAG(37, fn);
+			if (nmax - nmin > max_interval) FLAG(37, 0);
 			if (cantus_high) {
-				if (cf_nmax - nmin > sum_interval) FLAG(7, fn);
+				if (cf_nmax - nmin > sum_interval) FLAG(7, 0);
 			}
 			else {
-				if (nmax - cf_nmin > sum_interval) FLAG(7, fn);
+				if (nmax - cf_nmin > sum_interval) FLAG(7, 0);
 			}
-			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, fn);
+			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
 		if (FailMissSlurs()) goto skip;
 		if (FailSlurs()) goto skip;
@@ -1755,7 +1754,7 @@ check:
 			}
 			else {
 				// Calculate dpenalty if this is evaluation
-				if (task == tEval && cpoint.size()) dpenalty_cur = CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, c_len - 1);
+				if (task == tEval && cpoint.size()) dpenalty_cur = CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], 0, c_len - 1);
 				if (SendCP()) break;
 			}
 			// Exit if this is evaluation

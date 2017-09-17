@@ -183,7 +183,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 	smatrix.resize(c_len);
 	fill(smatrix.begin(), smatrix.end(), 0);
 	// Search each note
-	for (int x = fn; x < c_len; x++) {
+	for (int x = 0; x < c_len; x++) {
 		// Search each flag
 		for (int f = 0; f < anflags[cpv][x].size(); f++) {
 			// Find prohibited flag
@@ -195,7 +195,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 				//if (x > 0 && abs(cantus[i][x - 1] - cantus[i][x]) > 7) pos2 = x + 12;
 				//if (x < c_len - 1 && abs(cantus[i][x + 1] - cantus[i][x]) > 7) pos2 = x + 12;
 				// Do not rescan first and last step
-				if (pos1 < fn) pos1 = fn;
+				if (pos1 < 0) pos1 = 0;
 				if (pos2 > c_len - 1) pos2 = c_len - 1;
 				// Set smatrix values
 				for (int z = pos1; z <= pos2; z++) {
@@ -313,7 +313,7 @@ void CGenCA1::ParseExpect() {
 
 void CGenCA1::CheckSASEmulatorFlags() {
 	int fl, found, delay;
-	for (s = fn; s < ep2; ++s) {
+	for (s = 0; s < ep2; ++s) {
 		// Loop through all current flags
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
@@ -410,7 +410,7 @@ void CGenCA1::ConfirmExpect() {
 			}
 			// Do not check local false positives if disabled
 			if (false_positives_ignore[fl]) continue;
-			for (int s = fn; s < c_len; ++s) {
+			for (int s = 0; s < c_len; ++s) {
 				for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
 					if (!enflags2[fl][s]) {
 						CString est;
@@ -426,7 +426,7 @@ void CGenCA1::ConfirmExpect() {
 	// Check global false positives
 	vector<int> false_pos;
 	false_pos.resize(MAX_RULES);
-	for (int s = fn; s < c_len; ++s) {
+	for (int s = 0; s < c_len; ++s) {
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
 			if (!enflags2[fl][s] && false_positives_global[fl]) {

@@ -204,10 +204,6 @@ void CGenCA2::ExplodeCP() {
 		}
 		else break;
 	}
-	// Copy notes over start pause
-	for (int i = 0; i < fn; ++i) {
-		cpoint[cantus_id][cpv][i] = cpoint[cantus_id][cpv][fn];
-	}
 	// Check that counterpoint did not become shorter
 	if (cpoint[cantus_id][0].size() < cc_old2[0].size()) {
 		CString est;
@@ -240,7 +236,7 @@ void CGenCA2::EmulateSASCP() {
 	nflags_full = anflags[cpv];
 	flags_full = flags;
 	nflags_prev.clear();
-	for (fixed_ep2 = fn+2; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
+	for (fixed_ep2 = 2; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
 		// Show emulator status
 		CString est;
 		est.Format("SAS emulator: %d of %d", fixed_ep2, acc[cpv].size());
