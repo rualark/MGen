@@ -181,7 +181,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 	// Clear scan matrix
 	smatrixc = 0;
 	smatrix.resize(c_len);
-	smatrix.fill(0);
+	fill(smatrix.begin(), smatrix.end(), 0);
 	// Search each note
 	for (int x = fn; x < c_len; x++) {
 		// Search each flag
@@ -485,7 +485,7 @@ void CGenCA1::Generate()
 		// Show imported melody
 		cc_len = cantus_len[i];
 		cc_tempo = cantus_tempo[i];
-		real_len = cantus_len[i].accumulate();
+		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
 		dpenalty_cur = 0;
 		c_len = cantus[i].size();
 		GetSourceRange(cantus[i]);

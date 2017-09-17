@@ -1,5 +1,5 @@
 #pragma once
-#include "pvector.h"
+
 // This is a class for set of vectors
 
 template<typename T>
@@ -13,10 +13,6 @@ public:
 		pair<set<vector<T>>::iterator, bool> p;
 		p = s.insert(v);
 		return p.second;
-	}
-
-	int Insert(pvector<T> const& v) {
-		return Insert(v.v);
 	}
 
 	int size() { return s.size(); }

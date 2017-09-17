@@ -488,10 +488,10 @@ void CGMidi::LoadCantus(CString path)
 
 	int cid = 0;
 	int nid = 0;
-	pvector<CString> incom; // Incoming comments
-	pvector <int> c;
-	pvector <int> cl;
-	pvector <float> ct;
+	vector<CString> incom; // Incoming comments
+	vector <int> c;
+	vector <int> cl;
+	vector <float> ct;
 	int bad = 0;
 	int last_pos = -1;
 	CString lyrics_pending;
@@ -694,10 +694,10 @@ void CGMidi::LoadCP(CString path)
 	int hid = 0; // harmony
 	int pos_old = -1, pos_new = 0;
 	vector <vector<int>> cpos;
-	pvector <int> cl; // length
+	vector <int> cl; // length
 	vector <int> cp; // position
-	pvector <float> ct; // tempo
-	pvector <int> min_len, max_len;
+	vector <float> ct; // tempo
+	vector <int> min_len, max_len;
 	int bad = 0;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		float last_tick = 0, last_tick2 = numeric_limits<float>::infinity();
@@ -720,7 +720,7 @@ void CGMidi::LoadCP(CString path)
 						int max_voice = 0;
 						for (int x = 0; x < inter.size(); ++x) max_voice = max(max_voice, inter[x].size());
 						cpoint.resize(cid);
-						cpoint[cid-1].resize(max_voice, pvector<int>(inter.size()));
+						cpoint[cid-1].resize(max_voice, vector<int>(inter.size()));
 						// Send cpoint
 						for (int x = 0; x < inter.size(); ++x) {
 							for (int i = 0; i < inter[x].size(); ++i) {
@@ -798,7 +798,7 @@ void CGMidi::LoadCP(CString path)
 			int max_voice = 0;
 			for (int x = 0; x < inter.size(); ++x) max_voice = max(max_voice, inter[x].size());
 			cpoint.resize(cid);
-			cpoint[cid - 1].resize(max_voice, pvector<int>(inter.size()));
+			cpoint[cid - 1].resize(max_voice, vector<int>(inter.size()));
 			for (int x = 0; x < inter.size(); ++x) {
 				for (int i = 0; i < inter[x].size(); ++i) {
 					cpoint[cid - 1][i][x] = inter[x][i].first;
@@ -864,7 +864,7 @@ void CGMidi::LoadCP(CString path)
 	WriteLog(0, st);
 }
 
-void CGMidi::ProcessInter(int pos, int pos_old, vector<vector<pair<int, int>>> &inter, int hid, pvector<int> &min_len, pvector<int> &max_len)
+void CGMidi::ProcessInter(int pos, int pos_old, std::vector<std::vector<std::pair<int, int>>> &inter, int hid, std::vector<int> &min_len, std::vector<int> &max_len)
 {
 	if (pos != pos_old && inter.size()) {
 		if (hid > 1) {

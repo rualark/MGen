@@ -486,7 +486,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	}
 }
 
-void CGenCF1::LogCantus(CString st3, int x, pvector<int> &c)
+void CGenCF1::LogCantus(CString st3, int x, vector<int> &c)
 {
 	CString st, st2;
 	st2.Format("%s %d: ", st3, x);
@@ -498,7 +498,7 @@ void CGenCF1::LogCantus(CString st3, int x, pvector<int> &c)
 }
 
 // Step2 must be exclusive
-void CGenCF1::FillCantus(pvector<int>& c, int step1, int step2, int value)
+void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, int value)
 {
 	for (int i = step1; i < step2; ++i) {
 		c[i] = value;
@@ -506,7 +506,7 @@ void CGenCF1::FillCantus(pvector<int>& c, int step1, int step2, int value)
 }
 
 // Step2 must be exclusive
-void CGenCF1::FillCantus(pvector<int>& c, int step1, int step2, pvector<int> &value)
+void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<int> &value)
 {
 	for (int i = step1; i < step2; ++i) {
 		c[i] = value[i];
@@ -514,14 +514,14 @@ void CGenCF1::FillCantus(pvector<int>& c, int step1, int step2, pvector<int> &va
 }
 
 // Step2 must be exclusive
-void CGenCF1::FillCantus(pvector<int>& c, int step1, int step2, pvector<vector<int>> &value)
+void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, vector<vector<int>> &value)
 {
 	for (int i = step1; i < step2; ++i) {
 		c[i] = value[i][0];
 	}
 }
 
-void CGenCF1::FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int step2, pvector<int>& value)
+void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value)
 {
 	// Step2 must be exclusive
 	for (int i = step1; i < step2; ++i) {
@@ -529,7 +529,7 @@ void CGenCF1::FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int s
 	}
 }
 
-void CGenCF1::FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int step2, pvector<vector<int>>& value)
+void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<vector<int>>& value)
 {
 	// Step2 must be exclusive
 	for (int i = step1; i < step2; ++i) {
@@ -537,7 +537,7 @@ void CGenCF1::FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int s
 	}
 }
 
-void CGenCF1::FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int step2, int value)
+void CGenCF1::FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, int value)
 {
 	// Step2 must be exclusive
 	for (int i = step1; i < step2; ++i) {
@@ -546,7 +546,7 @@ void CGenCF1::FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int s
 }
 
 // Detect repeating notes. Step2 excluding
-int CGenCF1::FailNoteRepeat(pvector<int> &cc, int step1, int step2) {
+int CGenCF1::FailNoteRepeat(vector<int> &cc, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
 		if (cc[i] == cc[i + 1]) FLAG2(30, i);
 	}
@@ -554,7 +554,7 @@ int CGenCF1::FailNoteRepeat(pvector<int> &cc, int step1, int step2) {
 }
 
 // Detect prohibited note sequences
-int CGenCF1::FailNoteSeq(pvector<int> &pc) {
+int CGenCF1::FailNoteSeq(vector<int> &pc) {
 	for (int x = 0; x < fli_size-2; ++x) {
 		s = fli2[x];
 		s1 = fli2[x + 1];
@@ -564,7 +564,7 @@ int CGenCF1::FailNoteSeq(pvector<int> &pc) {
 	return 0;
 }
 
-int CGenCF1::FailLocalRange(pvector<int> &cc, int notes, int mrange, int flag) {
+int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	// Do not test if flag disabled and not testing
 	if (!m_testing && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
@@ -616,7 +616,7 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 }
 
 // Count limits
-void CGenCF1::GetMelodyInterval(pvector<int> &cc, int step1, int step2, int &nmin, int &nmax) {
+void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2, int &nmin, int &nmax) {
 	// Calculate range
 	nmin = MAX_NOTE;
 	nmax = 0;
@@ -640,7 +640,7 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 }
 
 // Calculate pitch class
-void CGenCF1::GetPitchClass(pvector<int> &c, pvector<int> &cc, pvector<int> &pc, pvector<int> &pcc, int step1, int step2) {
+void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc, int step1, int step2) {
 	for (int i = step1; i < step2; ++i) {
 		pc[i] = c[i] % 7;
 		pcc[i] = (cc[i] + 12 - tonic_cur) % 12;
@@ -661,7 +661,7 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &la
 	return 0;
 }
 
-int CGenCF1::FailGisTrail(pvector<int> &pcc) {
+int CGenCF1::FailGisTrail(vector<int> &pcc) {
 	int gis_trail = 0;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli2[ls];
@@ -681,7 +681,7 @@ int CGenCF1::FailGisTrail(pvector<int> &pcc) {
 	return 0;
 }
 
-int CGenCF1::FailFisTrail(pvector<int> &pcc) {
+int CGenCF1::FailFisTrail(vector<int> &pcc) {
 	int pos1, pos2, found;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli2[ls];
@@ -740,7 +740,7 @@ int CGenCF1::EvalMelodyHarm(int hp, int &last_flag, int &max_p) {
 	return 0;
 }
 
-int CGenCF1::FailMelodyHarm(pvector<int> &pc) {
+int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	int h;
 	int first_tonic = 0;
 	// Build hm vector
@@ -770,7 +770,7 @@ int CGenCF1::FailMelodyHarm(pvector<int> &pc) {
 		}
 	}
 	// Scan vector
-	pvector<int> chm_saved;
+	vector<int> chm_saved;
 	chm.clear();
 	chmp.clear();
 	chm.resize(fli_size, 0);
@@ -886,7 +886,7 @@ void CGenCF1::CalcCcIncrement() {
 }
 
 // Calculate chromatic positions
-void CGenCF1::GetChromatic(pvector<int> &c, pvector<int> &cc, int step1, int step2, int minor_cur) {
+void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
 	if (minor_cur) {
 		for (int i = step1; i < step2; ++i) {
 			cc[i] = m_C_CC(c[i], tonic_cur);
@@ -900,7 +900,7 @@ void CGenCF1::GetChromatic(pvector<int> &c, pvector<int> &cc, int step1, int ste
 }
 
 // Calculate diatonic positions
-int CGenCF1::FailDiatonic(pvector<int> &c, pvector<int> &cc, int step1, int step2, int minor_cur) {
+int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
 	if (minor_cur) {
 		for (int i = step1; i < step2; ++i) {
 			c[i] = m_CC_C(cc[i], tonic_cur);
@@ -915,7 +915,7 @@ int CGenCF1::FailDiatonic(pvector<int> &c, pvector<int> &cc, int step1, int step
 }
 
 // Search for outstanding repeats
-int CGenCF1::FailOutstandingRepeat(pvector<int> &c, pvector<int> &cc, pvector<int> &leap, int scan_len, int rlen, int flag) {
+int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
 	// Do not test if flag disabled and not testing
 	if (!m_testing && accept[flag] == -1) return 0;
 	int ok, f, f1;
@@ -953,7 +953,7 @@ int CGenCF1::FailOutstandingRepeat(pvector<int> &c, pvector<int> &cc, pvector<in
 	return 0;
 }
 
-int CGenCF1::FailLongRepeat(pvector<int> &cc, pvector<int> &leap, int scan_len, int rlen, int flag) {
+int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
 	// Do not test if flag disabled and not testing
 	if (!m_testing && accept[flag] == -1) return 0;
 	int ok;
@@ -985,7 +985,7 @@ int CGenCF1::FailLongRepeat(pvector<int> &cc, pvector<int> &leap, int scan_len, 
 	return 0;
 }
 
-int CGenCF1::FailManyLeaps(pvector<int> &c, pvector<int> &cc, pvector<int> &leap, pvector<int> &smooth, pvector<int> &slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2) {
+int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2) {
 	int leap_sum = 0;
 	int leaped_sum = 0;
 	int max_leap_sum = 0;
@@ -1023,7 +1023,7 @@ int CGenCF1::FailManyLeaps(pvector<int> &c, pvector<int> &cc, pvector<int> &leap
 }
 
 // Calculate global leap smooth slur variables
-void CGenCF1::GetLeapSmooth(pvector<int> &c, pvector<int> &cc, pvector<int> &leap, pvector<int> &smooth, pvector<int> &slur) {
+void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
 	for (int i = fn; i < ep2 - 1; ++i) {
 		// Find all leaps
 		leap[i] = 0;
@@ -1042,7 +1042,7 @@ void CGenCF1::GetLeapSmooth(pvector<int> &c, pvector<int> &cc, pvector<int> &lea
 }
 
 // Check if too many leaps
-int CGenCF1::FailLeapSmooth(pvector<int> &c, pvector<int> &cc, pvector<int> &leap, pvector<int> &smooth, pvector<int> &slur) {
+int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
 	// Clear variables
 	int leap_sum2 = 0;
 	int thirds_sum = 0;
@@ -1099,7 +1099,7 @@ int CGenCF1::FailLeapSmooth(pvector<int> &c, pvector<int> &cc, pvector<int> &lea
 	return 0;
 }
 
-int CGenCF1::FailStagnation(pvector<int> &cc, vector<int> &nstat, int steps, int notes, int flag) {
+int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int notes, int flag) {
 	// Do not test if flag disabled and not testing
 	if (!m_testing && accept[flag] == -1) return 0;
 	// Clear nstat
@@ -1118,7 +1118,7 @@ int CGenCF1::FailStagnation(pvector<int> &cc, vector<int> &nstat, int steps, int
 }
 
 // Prohibit multiple culminations
-int CGenCF1::FailMultiCulm(pvector<int> &cc, pvector<int> &slur) {
+int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	int culm_sum = 0;
 	culm_step = -1;
 	if (ep2 < c_len) {
@@ -1171,7 +1171,7 @@ int CGenCF1::FailMultiCulm(pvector<int> &cc, pvector<int> &slur) {
 	return 0;
 }
 
-int CGenCF1::FailFirstNotes(pvector<int> &pc) {
+int CGenCF1::FailFirstNotes(vector<int> &pc) {
 	// Prohibit first note not tonic
 	if (pc[0] != 0) {
 		FLAG2(49, fn);
@@ -1217,7 +1217,7 @@ int CGenCF1::FailFirstNotes(pvector<int> &pc) {
 	return 0;
 }
 
-int CGenCF1::FailLastNotes(pvector<int> &pc, pvector<int> &pcc) {
+int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
 	// Do not check if melody is short yet
 	if (fli_size < 3) return 0;
 	// Prohibit last note not tonic
@@ -1246,7 +1246,7 @@ int CGenCF1::FailLastNotes(pvector<int> &pc, pvector<int> &pcc) {
 	return 0;
 }
 
-void CGenCF1::CreateLinks(pvector<int> &cc) {
+void CGenCF1::CreateLinks(vector<int> &cc) {
 	int prev_note = -1;
 	int lpos = 0;
 	int l = 0;
@@ -1276,7 +1276,7 @@ void CGenCF1::CreateLinks(pvector<int> &cc) {
 	// Last note does not affect minl/maxl
 }
 
-void CGenCF1::CountFillInit(pvector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_end) {
+void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_end) {
 	// Create leap tail
 	tc.clear();
 	if (pre) {
@@ -1319,7 +1319,7 @@ void CGenCF1::CountFillInit(pvector<int> &c, int tail_len, int pre, int &t1, int
 	fill_end = -1;
 }
 	
-void CGenCF1::CountFill(pvector<int> &c, int tail_len, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int &fill_end)
+void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int &fill_end)
 {
 	int t1, t2;
 	int cur_deviation = 0;
@@ -1389,7 +1389,7 @@ void CGenCF1::CountFillSkips(int leap_prev, int &skips, int t1, int t2) {
 	}
 }
 
-void CGenCF1::CountFillLimits(pvector<int> &c, int pre, int t1, int t2, int &fill_to, int &fill_to_pre, int &fill_from_pre, int &fill_from) {
+void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill_to, int &fill_to_pre, int &fill_from_pre, int &fill_from) {
 	fill_to = leap_size;
 	fill_to_pre = 0;
 	fill_from_pre = 0;
@@ -1457,7 +1457,7 @@ void CGenCF1::CountFillLimits(pvector<int> &c, int pre, int t1, int t2, int &fil
 	}
 }
 
-void CGenCF1::FailLeapInit(pvector<int> &c, int &late_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, pvector<int> &leap) {
+void CGenCF1::FailLeapInit(vector<int> &c, int &late_leap, int &presecond, int &leap_next, int &leap_prev, int &arpeg, int &overflow, vector<int> &leap) {
 	presecond = 0; // If leap has a filled second
 	leap_next = 0; // Multiply consecutive leaps
 	leap_prev = 0; // Multiply consecutive leaps
@@ -1478,7 +1478,7 @@ void CGenCF1::FailLeapInit(pvector<int> &c, int &late_leap, int &presecond, int 
 	late_leap = fli_size - fleap_start;
 }
 
-int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_leap, pvector<int> &c, pvector<int> &leap) {
+int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_leap, vector<int> &c, vector<int> &leap) {
 	child_leap = 0; // If we have a child_leap
 	// Check if leap is third
 	if (leap_size == 2) {
@@ -1530,7 +1530,7 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 	return 0;
 }
 
-int CGenCF1::FailLeap(pvector<int> &c, pvector<int> &leap, pvector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
+int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
 {
 	// Get leap size, start, end
 	// Check if leap is compensated (without violating compensation rules)
@@ -1553,7 +1553,7 @@ int CGenCF1::FailLeap(pvector<int> &c, pvector<int> &leap, pvector<int> &smooth,
 	return 0;
 }
 
-int CGenCF1::FailLeapFill(pvector<int> &c, int late_leap, int leap_prev, int child_leap) {
+int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int child_leap) {
 	// Do not check fill if this is first third and rule is allowed
 	if (fleap_start == 0 && leap_size == 2 && accept[1]) {
 		FLAG2(1, leap_start);
@@ -1640,7 +1640,7 @@ int CGenCF1::FailLeapFill(pvector<int> &c, int late_leap, int leap_prev, int chi
 	return 0;
 }
 
-int CGenCF1::FailLeapMDC(pvector<int> &leap, pvector<int> &c) {
+int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 	// Melody direction change (MDC)
 	// 0 = close, 1 = far, 2 = no
 	// Default mdc is close, because beginning equals to close mdc
@@ -1685,7 +1685,7 @@ int CGenCF1::FailLeapMDC(pvector<int> &leap, pvector<int> &c) {
 }
 
 // Check tritone t1-t2 which has to resolve from ta to tb
-int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, pvector<int> &c, pvector<int> &cc, pvector<int> &pc, pvector<int> &pcc) {
+int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	int found;
 	int res1 = 0; // First note resolution flag
 	int res2 = 0; // Second note resolution flag
@@ -1743,7 +1743,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, pvector<int> &c, pvecto
 	return 0;
 }
 
-int CGenCF1::FailTonic(pvector<int> &cc, pvector<int> &pc) {
+int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 	int tcount = 0;
 	// Do not check if melody is short
 	if (fli_size < 3) return 0;
@@ -1769,7 +1769,7 @@ int CGenCF1::FailTonic(pvector<int> &cc, pvector<int> &pc) {
 	return 0;
 }
 
-int CGenCF1::FailIntervals(pvector<int> &c, pvector<int> &cc, pvector<int> &pc, pvector<int> &pcc)
+int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
 	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s = fli2[ls];
@@ -1804,7 +1804,7 @@ int CGenCF1::FailIntervals(pvector<int> &c, pvector<int> &cc, pvector<int> &pc, 
 }
 
 // Calculate global fill
-int CGenCF1::FailGlobalFill(pvector<int> &c, vector<int> &nstat2)
+int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 {
 	// Clear nstat
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
@@ -1933,7 +1933,7 @@ int CGenCF1::GetMaxSmap() {
 }
 
 // Calculate real possible range
-void CGenCF1::GetRealRange(pvector<int>& c, pvector<int>& cc) {
+void CGenCF1::GetRealRange(vector<int>& c, vector<int>& cc) {
 	// Get diatonic interval
 	max_intervald = CC_C(cc[0] + max_interval, tonic_cur, minor_cur) - c[0];
 	min_intervald = CC_C(cc[0] + min_interval, tonic_cur, minor_cur) - c[0];
@@ -1956,7 +1956,7 @@ void CGenCF1::GetRealRange(pvector<int>& c, pvector<int>& cc) {
 }
 
 // Calculate source melody range
-void CGenCF1::GetSourceRange(pvector<int> &cc) {
+void CGenCF1::GetSourceRange(vector<int> &cc) {
 	// Get source melody range
 	GetMelodyInterval(cc, 0, c_len, nmin, nmax);
 	// Widen range
@@ -2070,7 +2070,7 @@ void CGenCF1::SingleCantusInit() {
 			dpenalty_outside_swa = 0;
 			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, fn, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, smap[swa2], c_len - 1);
-			source_rpenalty_step.fill(0);
+			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
 		}
 		// Minimum element
@@ -2086,7 +2086,7 @@ void CGenCF1::SingleCantusInit() {
 }
 
 // Step2 must be exclusive
-void CGenCF1::RandCantus(pvector<int>& c, pvector<int>& cc, int step1, int step2)
+void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 {
 	for (int i = step1; i < step2; ++i) { //-V756
 		for (int x = 0; x < 1000; ++x) {
@@ -2099,7 +2099,7 @@ void CGenCF1::RandCantus(pvector<int>& c, pvector<int>& cc, int step1, int step2
 	}
 }
 
-void CGenCF1::CalculateCcOrder(pvector <int> &cc_old, int step1, int step2) {
+void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
 	int x, x2;
 	if (task == tCor) {
 		int finished;
@@ -2156,7 +2156,7 @@ void CGenCF1::CalculateCcOrder(pvector <int> &cc_old, int step1, int step2) {
 	}
 }
 
-void CGenCF1::MakeNewCantus(pvector<int> &c, pvector<int> &cc) {
+void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	// Set first and last notes
 	c[0] = CC_C(first_note, tonic_cur, minor_cur);
 	c[c_len - 1] = CC_C(last_note, tonic_cur, minor_cur);
@@ -2187,7 +2187,7 @@ void CGenCF1::MakeNewCantus(pvector<int> &c, pvector<int> &cc) {
 	FillCantus(cc, 0, c_len, cc_order);
 }
 
-void CGenCF1::MultiCantusInit(pvector<int> &c, pvector<int> &cc) {
+void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 	MakeNewCantus(c, cc);
 	sp1 = 0; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
@@ -2388,7 +2388,7 @@ void CGenCF1::TestBestRpenalty() {
 	}
 }
 
-void CGenCF1::CalcRpenalty(pvector<int> &cc) {
+void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	// Calculate out of range penalty
 	int real_range = nmax - nmin;
 	if (!accept[37] && real_range > max_interval) {
@@ -2416,7 +2416,7 @@ void CGenCF1::CalcRpenalty(pvector<int> &cc) {
 	}
 }
 
-void CGenCF1::ScanLeft(pvector<int> &cc, int &finished) {
+void CGenCF1::ScanLeft(vector<int> &cc, int &finished) {
 	while (true) {
 		if (cc_id[p] < cc_order[p].size() - 1) break;
 		// If current element is max, make it minimum
@@ -2442,7 +2442,7 @@ void CGenCF1::ScanLeft(pvector<int> &cc, int &finished) {
 }
 
 // Show best rejected variant
-void CGenCF1::ShowBestRejected(pvector<int> &cc) {
+void CGenCF1::ShowBestRejected(vector<int> &cc) {
 	if (best_rejected) {
 		long long time = CGLib::time();
 		int rc = (time - accept_time) / best_rejected;
@@ -2455,7 +2455,7 @@ void CGenCF1::ShowBestRejected(pvector<int> &cc) {
 			rcycle = rc;
 			if (br_cc.size() > 0) {
 				// Save old cantus
-				pvector<int> cc_saved = cc;
+				vector<int> cc_saved = cc;
 				// Load best rejected cantus
 				cc = br_cc;
 				flags = br_f;
@@ -2482,7 +2482,7 @@ void CGenCF1::ShowBestRejected(pvector<int> &cc) {
 	}
 }
 
-void CGenCF1::BackWindow(pvector<int> &cc) {
+void CGenCF1::BackWindow(vector<int> &cc) {
 	if (task == tCor) {
 		// Clear current window
 		FillCantusMap(cc_id, smap, sp1, sp2, 0);
@@ -2528,7 +2528,7 @@ void CGenCF1::WritePerfLog() {
 	}
 }
 
-int CGenCF1::CalcDpenalty(pvector<int> &cc1, pvector<int> &cc2, int s1, int s2) {
+int CGenCF1::CalcDpenalty(vector<int> &cc1, vector<int> &cc2, int s1, int s2) {
 	int dpe = 0;
 	for (int z = s1; z <= s2; ++z) {
 		int dif = abs(cc1[z] - cc2[z]);
@@ -2537,7 +2537,7 @@ int CGenCF1::CalcDpenalty(pvector<int> &cc1, pvector<int> &cc2, int s1, int s2) 
 	return dpe;
 }
 
-void CGenCF1::CalcStepDpenalty(pvector<int> cc1, pvector<int> cc2, int i) {
+void CGenCF1::CalcStepDpenalty(vector<int> cc1, vector<int> cc2, int i) {
 	int dif = abs(cc1[i] - cc2[i]);
 	int dpe = 0;
 	if (dif) dpe = step_penalty + pitch_penalty * dif;
@@ -2545,7 +2545,7 @@ void CGenCF1::CalcStepDpenalty(pvector<int> cc1, pvector<int> cc2, int i) {
 	else dpenalty_step[i] = dpe;
 }
 
-int CGenCF1::NextSWA(pvector<int> &cc, pvector<int> &cc_old) {
+int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	// If we slided to the end, break
 	if (swa2 == smatrixc) return 1;
 	// Slide window further
@@ -2588,7 +2588,7 @@ int CGenCF1::NextSWA(pvector<int> &cc, pvector<int> &cc_old) {
 	return 0;
 }
 
-void CGenCF1::SaveBestRejected(pvector<int> &cc) {
+void CGenCF1::SaveBestRejected(vector<int> &cc) {
 	// Save best rejected results if we can analyze full cantus
 	if (best_rejected && ep2 == c_len) {
 		CalcRpenalty(cc);
@@ -2608,7 +2608,7 @@ void CGenCF1::SaveBestRejected(pvector<int> &cc) {
 	}
 }
 
-int CGenCF1::FailMinor(pvector<int> &pcc, pvector<int> &cc) {
+int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 	for (int x = 1; x < fli_size; ++x) {
 		s = fli2[x];
 		s_1 = fli2[x - 1];
@@ -2908,20 +2908,20 @@ void CGenCF1::ShowFlagBlock() {
 	}
 }
 
-void CGenCF1::TransposeVector(pvector<int> &v, int t) {
+void CGenCF1::TransposeVector(vector<int> &v, int t) {
 	for (int i = 0; i < v.size(); ++i) {
 		v[i] += t;
 	}
 }
 
-void CGenCF1::TransposeVector(pvector<float> &v, int t) {
+void CGenCF1::TransposeVector(vector<float> &v, int t) {
 	for (int i = 0; i < v.size(); ++i) {
 		v[i] += t;
 	}
 }
 
 // Moving average
-void CGenCF1::maVector(pvector<float> &v, pvector<float> &v2, int range) {
+void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
 	for (int s = fn; s < ep2; ++s) {
@@ -2938,7 +2938,7 @@ void CGenCF1::maVector(pvector<float> &v, pvector<float> &v2, int range) {
 	}
 }
 
-void CGenCF1::maVector(pvector<int> &v, pvector<float> &v2, int range) {
+void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
 	for (int s = fn; s < ep2; ++s) {
@@ -2955,7 +2955,7 @@ void CGenCF1::maVector(pvector<int> &v, pvector<float> &v2, int range) {
 	}
 }
 
-void CGenCF1::mawVector(pvector<int> &v, pvector<float> &v2, int range) {
+void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
 	for (int s = fn; s < ep2; ++s) {
@@ -2972,7 +2972,7 @@ void CGenCF1::mawVector(pvector<int> &v, pvector<float> &v2, int range) {
 	}
 }
 
-void CGenCF1::mawVector(pvector<float> &v, pvector<float> &v2, int range) {
+void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
 	int pos1, pos2;
 	float ma, maw_sum;
 	for (int s = fn; s < ep2; ++s) {
@@ -2989,7 +2989,7 @@ void CGenCF1::mawVector(pvector<float> &v, pvector<float> &v2, int range) {
 	}
 }
 
-void CGenCF1::MakeMacc(pvector<int> &cc) {
+void CGenCF1::MakeMacc(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2*minl;
 	// Deviation weight
@@ -3125,7 +3125,7 @@ void CGenCF1::TransposeCantusBack() {
 	}
 }
 
-void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, pvector<int> &cc) {
+void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	note[pos + i][v] = cc[x];
 	tonic[pos + i][v] = tonic_cur;
 	minor[pos + i][v] = minor_cur;
@@ -3184,7 +3184,7 @@ int CGenCF1::SendPause(int pos, int v) {
 	return pause_len;
 }
 
-void CGenCF1::MakeLenExport(pvector<int> &cc, int step1, int av)
+void CGenCF1::MakeLenExport(vector<int> &cc, int step1, int av)
 {
 	int len_temp, last_pos;
 	// Create note length
@@ -3549,7 +3549,7 @@ void CGenCF1::SaveCantusIfRp() {
 	}
 }
 
-void CGenCF1::ScanCantus(int t, int v, pvector<int>* pcantus) {
+void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	int finished = 0;
 	int scycle = 0;
 	// Load master parameters
@@ -3743,7 +3743,7 @@ check:
 	WritePerfLog();
 }
 
-void CGenCF1::ScanRight(pvector<int> &cc) {
+void CGenCF1::ScanRight(vector<int> &cc) {
 	// Increase rightmost element, which was not reset to minimum
 	++cc_id[p];
 	cc[p] = cc_order[p][cc_id[p]];

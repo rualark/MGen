@@ -46,7 +46,7 @@ public:
 	void LoadCantus(CString path);
 	void LoadCP(CString path);
 
-	void ProcessInter(int pos, int pos_old, vector<vector<pair<int, int>>> &inter, int hid, pvector<int> &min_len, pvector<int> &max_len);
+	void ProcessInter(int pos, int pos_old, std::vector<std::vector<std::pair<int, int>>> &inter, int hid, std::vector<int> &min_len, std::vector<int> &max_len);
 
 	// RtMidi
 	CMidiOut *mo;
@@ -106,11 +106,11 @@ protected:
 	int midi_voice = 0;
 
 	// Cantus
-	vector< pvector <int> > cantus; // [][s] Cantus loaded from midi file
-	vector< pvector <CString> > cantus_incom; // Cantus lyrics loaded from midi file
-	vector< pvector <int> > cantus_len; // Cantus loaded from midi file
-	vector< pvector <float> > cantus_tempo; // Cantus loaded from midi file
-	vector< vector <pvector<int>>> cpoint; // [][v][s] Counterpoint loaded from midi file
-	vector <pvector<CString>> cp_incom; // Incoming comments for each step of counterpoint
+	vector< vector <int> > cantus; // Cantus loaded from midi file
+	vector< vector <CString> > cantus_incom; // Cantus lyrics loaded from midi file
+	vector< vector <int> > cantus_len; // Cantus loaded from midi file
+	vector< vector <float> > cantus_tempo; // Cantus loaded from midi file
+	vector< vector <vector<int>>> cpoint; // Counterpoint loaded from midi file
+	vector <vector<CString>> cp_incom; // Incoming comments for each step of counterpoint
 };
 

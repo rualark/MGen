@@ -107,81 +107,81 @@ protected:
 	void CheckConfig();
 	int SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
-	void LogCantus(CString st3, int x, pvector<int>& c);
-	inline int FailNoteRepeat(pvector<int> &c, int step1, int step2);
-	inline int FailNoteSeq(pvector<int>& pc);
-	inline int FailLocalRange(pvector<int>& cc, int notes, int mrange, int flag);
+	void LogCantus(CString st3, int x, vector<int>& c);
+	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
+	inline int FailNoteSeq(vector<int>& pc);
+	inline int FailLocalRange(vector<int>& cc, int notes, int mrange, int flag);
 	inline int FailLocalMacc(int notes, float mrange, int flag);
-	inline void GetMelodyInterval(pvector<int>& cc, int step1, int step2, int & nmin, int & nmax);
+	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
-	inline void GetPitchClass(pvector<int>& c, pvector<int>& cc, pvector<int>& pc, pvector<int>& pcc, int step1, int step2);
+	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
 	inline int FailHarmStep(int i, const int * hv, int & count, int & wcount, int & last_flag, int & max_p);
-	inline int FailGisTrail(pvector<int>& pcc);
-	inline int FailFisTrail(pvector<int>& pcc);
+	inline int FailGisTrail(vector<int>& pcc);
+	inline int FailFisTrail(vector<int>& pcc);
 	inline int EvalMelodyHarm(int p, int & last_flag, int & max_p);
-	inline int FailMelodyHarm(pvector<int>& pc);
+	inline int FailMelodyHarm(vector<int>& pc);
 	//inline void UpdateNoteHarm(int i);
 	//inline int FailMelodyHarmMiss(vector<int>& pc, int i, int harm, int & count, int & wcount);
 	//inline int FixNoteHarmRepeat(vector<int>& pc, int i, int harm, int & count, int & wcount);
 	void CalcCcIncrement();
-	inline void GetChromatic(pvector<int>& c, pvector<int>& cc, int step1, int step2, int minor_cur);
-	inline int FailDiatonic(pvector<int>& c, pvector<int>& cc, int step1, int step2, int minor_cur);
-	inline int FailOutstandingRepeat(pvector<int>& c, pvector<int>& cc, pvector<int>& leap, int scan_len, int rlen, int fid);
-	inline int FailLongRepeat(pvector<int>& cc, pvector<int>& leap, int scan_len, int rlen, int fid);
-	inline int FailManyLeaps(pvector<int>& c, pvector<int>& cc, pvector<int>& leap, pvector<int>& smooth, pvector<int>& slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2);
-	inline void GetLeapSmooth(pvector<int>& c, pvector<int>& cc, pvector<int>& leap, pvector<int>& smooth, pvector<int>& slur);
-	inline int FailLeapSmooth(pvector<int>& c, pvector<int>& cc, pvector<int>& leap, pvector<int>& smooth, pvector<int>& slur);
-	inline int FailStagnation(pvector<int>& cc, vector<int>& nstat, int steps, int notes, int flag);
-	inline int FailMultiCulm(pvector<int>& cc, pvector<int>& slur);
-	inline int FailFirstNotes(pvector<int>& pc);
-	inline int FailLastNotes(pvector<int>& pc, pvector<int>& pcc);
-	inline void CreateLinks(pvector<int>& c);
-	inline void CountFillInit(pvector<int>& c, int tail_len, int pre, int & t1, int & t2, int & fill_finish);
-	inline void CountFill(pvector<int>& c, int tail_len, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int & fill_finish);
+	inline void GetChromatic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
+	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
+	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
+	inline int FailLongRepeat(vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
+	inline int FailManyLeaps(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2);
+	inline void GetLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
+	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
+	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int steps, int notes, int flag);
+	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
+	inline int FailFirstNotes(vector<int>& pc);
+	inline int FailLastNotes(vector<int>& pc, vector<int>& pcc);
+	inline void CreateLinks(vector<int>& c);
+	inline void CountFillInit(vector<int>& c, int tail_len, int pre, int & t1, int & t2, int & fill_finish);
+	inline void CountFill(vector<int>& c, int tail_len, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int & fill_finish);
 	inline void CountFillSkips(int leap_prev, int & skips, int t1, int t2);
-	inline void CountFillLimits(pvector<int>& c, int pre, int t1, int t2, int & fill_to, int & fill_to_pre, int & fill_from_pre, int & fill_from);
-	inline void FailLeapInit(pvector<int>& c, int & late_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, pvector<int>& leap);
-	inline int FailLeapMulti(int leap_next, int & arpeg, int & overflow, int & child_leap, pvector<int>& c, pvector<int>& leap);
-	inline int FailLeap(pvector<int>& c, pvector<int>& leap, pvector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
-	inline int FailLeapFill(pvector<int>& c, int late_leap, int leap_prev, int child_leap);
-	inline int FailLeapMDC(pvector<int>& leap, pvector<int>& c);
-	inline int FailTritone(int ta, int t1, int t2, int tb, pvector<int>& c, pvector<int>& cc, pvector<int>& pc, pvector<int>& pcc);
-	inline int FailTonic(pvector<int> &cc, pvector<int>& pc);
-	inline int FailIntervals(pvector<int>& c, pvector<int>& cc, pvector<int>& pc, pvector<int>& pcc);
-	inline int FailGlobalFill(pvector<int>& c, vector<int>& nstat2);
+	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int & fill_to, int & fill_to_pre, int & fill_from_pre, int & fill_from);
+	inline void FailLeapInit(vector<int>& c, int & late_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, vector<int>& leap);
+	inline int FailLeapMulti(int leap_next, int & arpeg, int & overflow, int & child_leap, vector<int>& c, vector<int>& leap);
+	inline int FailLeap(vector<int>& c, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
+	inline int FailLeapFill(vector<int>& c, int late_leap, int leap_prev, int child_leap);
+	inline int FailLeapMDC(vector<int>& leap, vector<int>& c);
+	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline int FailTonic(vector<int> &cc, vector<int>& pc);
+	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline int FailGlobalFill(vector<int>& c, vector<int>& nstat2);
 	void ScanInit();
 	void ScanCantusInit();
 	int GetMinSmap();
 	int GetMaxSmap();
-	void GetRealRange(pvector<int>& c, pvector<int>& cc);
-	void GetSourceRange(pvector<int>& cc);
+	void GetRealRange(vector<int>& c, vector<int>& cc);
+	void GetSourceRange(vector<int>& cc);
 	void ApplySourceRange();
 	void SingleCantusInit();
-	void MakeNewCantus(pvector<int>& c, pvector<int>& cc);
-	void MultiCantusInit(pvector<int>& c, pvector<int>& cc);
+	void MakeNewCantus(vector<int>& c, vector<int>& cc);
+	void MultiCantusInit(vector<int>& c, vector<int>& cc);
 	int FailWindowsLimit();
 	inline void CalcFlagStat();
 	inline int FailFlagBlock();
 	inline int FailAccept();
 	inline void NextWindow();
-	inline void CalcRpenalty(pvector<int>& cc);
-	inline void ScanLeft(pvector<int> &cc, int &finished);
-	inline void ShowBestRejected(pvector<int>& cc);
-	inline void BackWindow(pvector<int>& cc);
+	inline void CalcRpenalty(vector<int>& cc);
+	inline void ScanLeft(vector<int> &cc, int &finished);
+	inline void ShowBestRejected(vector<int>& cc);
+	inline void BackWindow(vector<int>& cc);
 	void WritePerfLog();
-	inline int CalcDpenalty(pvector<int>& cc1, pvector<int>& cc2, int s1, int s2);
-	inline void CalcStepDpenalty(pvector<int> cc1, pvector<int> cc2, int i);
-	inline int NextSWA(pvector<int>& cc, pvector<int>& cc_old);
-	inline void SaveBestRejected(pvector<int>& cc);
-	inline int FailMinor(pvector<int>& pcc, pvector<int>& cc);
+	inline int CalcDpenalty(vector<int>& cc1, vector<int>& cc2, int s1, int s2);
+	inline void CalcStepDpenalty(vector<int> cc1, vector<int> cc2, int i);
+	inline int NextSWA(vector<int>& cc, vector<int>& cc_old);
+	inline void SaveBestRejected(vector<int>& cc);
+	inline int FailMinor(vector<int>& pcc, vector<int>& cc);
 	inline void ShowScanSpeed();
 	inline void ShowScanStatus();
 	void CheckClibSize();
 	inline void ReseedCantus();
 	inline void TimeBestRejected();
 	inline void SaveCantusIfRp();
-	void ScanCantus(int t, int v, pvector<int>* pcantus);
-	inline void ScanRight(pvector<int>& cc);
+	void ScanCantus(int t, int v, vector<int>* pcantus);
+	inline void ScanRight(vector<int>& cc);
 	void WriteFlagCor();
 	void ShowFlagStat();
 	void ShowStuck();
@@ -191,36 +191,36 @@ protected:
 	void SaveCantus();
 	void TestRpenalty();
 	void TestBestRpenalty();
-	inline void TransposeVector(pvector<int>& v, int t);
-	inline void TransposeVector(pvector<float>& v, int t);
-	inline void maVector(pvector<float>& v, pvector<float>& v2, int range);
-	inline void maVector(pvector<int>& v, pvector<float>& v2, int range);
-	inline void mawVector(pvector<int>& v, pvector<float>& v2, int range);
-	inline void mawVector(pvector<float>& v, pvector<float>& v2, int range);
-	inline void MakeMacc(pvector<int>& cc);
+	inline void TransposeVector(vector<int>& v, int t);
+	inline void TransposeVector(vector<float>& v, int t);
+	inline void maVector(vector<float>& v, vector<float>& v2, int range);
+	inline void maVector(vector<int>& v, vector<float>& v2, int range);
+	inline void mawVector(vector<int>& v, vector<float>& v2, int range);
+	inline void mawVector(vector<float>& v, vector<float>& v2, int range);
+	inline void MakeMacc(vector<int>& cc);
 	inline void InterpolateNgraph(int v, int step0, int step);
 	void SendNgraph(int pos, int i, int v, int x);
 	void SendLyrics(int pos, int v, int av, int x);
 	void SendComment(int pos, int v, int av, int x, int i);
 	void TransposeCantusBack();
-	void SendNotes(int pos, int i, int v, int av, int x, pvector<int>& cc);
+	void SendNotes(int pos, int i, int v, int av, int x, vector<int>& cc);
 	void MakeBellDyn(int v, int step1, int step2, int dyn1, int dyn2, int dyn_rand);
 	int SendPause(int pos, int v);
-	inline void MakeLenExport(pvector<int>& cc, int step1, int av);
+	inline void MakeLenExport(vector<int>& cc, int step1, int av);
 	int SendCantus();
 	int InitGen();
 	int InitCantus();
 	void TestDiatonic();
 	void RandomSWA();
 	void SWA(int i, int dp);
-	void FillCantus(pvector<int>& c, int step1, int step2, int value);
-	void FillCantus(pvector<int>& c, int step1, int step2, pvector<int> &value);
-	void FillCantus(pvector<int>& c, int step1, int step2, pvector<vector<int>> &value);
-	void RandCantus(pvector<int>& c, pvector<int>& cc, int step1, int step2);
-	void CalculateCcOrder(pvector<int>& cc_old, int step1, int step2);
-	void FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int step2, pvector<vector<int>>& value);
-	void FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int step2, pvector<int>& value);
-	void FillCantusMap(pvector<int>& c, vector<int>& smap, int step1, int step2, int value);
+	void FillCantus(vector<int>& c, int step1, int step2, int value);
+	void FillCantus(vector<int>& c, int step1, int step2, vector<int> &value);
+	void FillCantus(vector<int>& c, int step1, int step2, vector<vector<int>> &value);
+	void RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2);
+	void CalculateCcOrder(vector<int>& cc_old, int step1, int step2);
+	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<vector<int>>& value);
+	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, vector<int>& value);
+	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, int value);
 	
 	// Rules
 	vector <int> accept; // Each 1 allows showing canti with specific properties
@@ -327,7 +327,7 @@ protected:
 	vector <int> fli; // [ls] Forward links to start of each non-slurred note
 	vector <int> fli2; // [ls] Forward links to end of each non-slurred note
 	vector <int> llen; // [ls] Length of each linked note
-	pvector <int> bli; // [s] Back links from each step to fli2
+	vector <int> bli; // [s] Back links from each step to fli2
 	vector <int> uli; // [us] Forward links to start of each unique note column
 	int minl = 0, maxl = 0;
 	int fli_size; // Size of filled fli2 vector
@@ -354,7 +354,7 @@ protected:
 	int is_animating = 0; // Set to 1 to show than Send is animating
 									
 	// Master parameters
-	pvector <int> *scantus; // [s] Source cantus for processing
+	vector <int> *scantus; // [s] Source cantus for processing
 	int task; // What task to accomplish using the method
 	int svoice; // Voice to send cantus to
 
@@ -377,35 +377,35 @@ protected:
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
 	int flags_need2 = 0; // Number of second level flags set
-	pvector<int> m_c; // [s] Cantus diatonic
-	pvector<int> m_cc; // [s] Cantus chromatic
-	pvector<int> m_pc; // [s] pitch class (diatonic)
-	pvector<int> m_pcc; // [s] pitch class (chromatic)
-	pvector<int> m_leap; // [s]
-	pvector<int> m_smooth; // [s] 
-	pvector<int> m_slur; // [s] 
-	pvector<float> macc; // [s] CC moving average
-	pvector<float> macc2; // [s] CC moving average smoothed
-	pvector<float> decc; // [s] CC deviation
-	pvector<float> decc2; // [s] CC deviation smoothed
+	vector<int> m_c; // [s] Cantus diatonic
+	vector<int> m_cc; // [s] Cantus chromatic
+	vector<int> m_pc; // [s] pitch class (diatonic)
+	vector<int> m_pcc; // [s] pitch class (chromatic)
+	vector<int> m_leap; // [s]
+	vector<int> m_smooth; // [s] 
+	vector<int> m_slur; // [s] 
+	vector<float> macc; // [s] CC moving average
+	vector<float> macc2; // [s] CC moving average smoothed
+	vector<float> decc; // [s] CC deviation
+	vector<float> decc2; // [s] CC deviation smoothed
 	vector<float> fpenalty; // [r_id] Additional penalty for flags
 	vector<int>  flags; // [r_id] Flags for whole cantus
-	vector<pvector<vector<int>>> anflags; // [v][s][] Note flags
-	pvector<int> br_cc; // [s] Cantus chromatic (best rejected)
+	vector<vector<vector<int>>> anflags; // [v][s][] Note flags
+	vector<int> br_cc; // [s] Cantus chromatic (best rejected)
 	vector<int>  br_f; // [r_id] Flags for whole cantus (best rejected)
 	vector<long>  ssf; // [r_id] SWA stuck flags
 	vector<int>  best_flags; // [r_id] best flags of saved cantus for swa
-	pvector<vector<int>> br_nf; // [s][] Note flags (best rejected)
+	vector<vector<int>> br_nf; // [s][] Note flags (best rejected)
 	float rpenalty_cur = 0; // Rules penalty
 	float rpenalty_source = 0; // Source melody rpenalty
 	float rpenalty_min; // Minimum rules penalty for this scan
 	vector <float> rpenalty; // [cid] Penalty in terms of sum of flag severity
-	pvector <float> source_rpenalty_step; // [s] Penalty in terms of sum of flag severity
+	vector <float> source_rpenalty_step; // [s] Penalty in terms of sum of flag severity
 	int dpenalty_cur = 0; // Distance from source penalty
 	int dpenalty_min; // Minimum distance penalty for this scan
 	vector <int> dpenalty; // [cid] Penalty in terms of distance from source
-	pvector <int> cc_len; // [s] Length of each cantus note
-	pvector <float> cc_tempo; // [s] Tempo of each cantus note
+	vector <int> cc_len; // [s] Length of each cantus note
+	vector <float> cc_tempo; // [s] Tempo of each cantus note
 	int real_len; // Total length of cantus in steps
 	int skip_flags, clear_flags;
 	int sp1, sp2, swa1=0, swa2=0, ep1, ep2, p, pp;
@@ -414,19 +414,19 @@ protected:
 	int wid; // Window id
 	int swid; // SWA Window id
 	int dpenalty_outside_swa; // Sum of dpenalty outside SWA range
-	pvector<int> m_cc_old; // [s] Cantus chromatic saved for SWA
+	vector<int> m_cc_old; // [s] Cantus chromatic saved for SWA
 	vector<int> wpos1; // [wid]
 	vector<int> wpos2; // [wid]
 	vector<int> swpos1; // [swid]
 	vector<int> swpos2; // [swid]
-	pvector<int> dpenalty_step; // [s] Dpenalty of all steps up to current
+	vector<int> dpenalty_step; // [s] Dpenalty of all steps up to current
 	vector <int> smap; // [sid] Map of links from matrix local IDs to cantus step IDs
-	pvector<int> min_c; // [s]
-	pvector<int> max_c; // [s]
-	pvector<int> min_cc; // [s] Current range
-	pvector<int> max_cc; // [s]
-	pvector<int> min_cc0; // [s] Source range for RSWA
-	pvector<int> max_cc0; // [s] 
+	vector<int> min_c; // [s]
+	vector<int> max_c; // [s]
+	vector<int> min_cc; // [s] Current range
+	vector<int> max_cc; // [s]
+	vector<int> min_cc0; // [s] Source range for RSWA
+	vector<int> max_cc0; // [s] 
 	int minc, maxc; // Real possible limits
 	vector<vector<vector<long>>> fblock; // [wid][r_id][r_id] number of canti rejected with foreign flags
 	vector<long long> fstat; // [r_id] number of canti with each flag
@@ -443,13 +443,13 @@ protected:
 	int src_nmin = 0, src_nmax = 1000; // Source range (chromatic)
 	int cc_incr[MAX_NOTE]; // cc increments for each step
 	int cc_decr[MAX_NOTE]; // cc decrements for each step
-	pvector<int> test_cc; // [s]
+	vector<int> test_cc; // [s]
 	vector<int> nstat; // [cc]
 	vector<int> nstat2; // [c]
 	vector<int> nstat3; // [c]
-	pvector<vector<int>> hm; // [s][] Available harmonic meanings for each note
-	pvector<vector<int>> hm2; // [s][] Required harmonic meanings for each note
-	pvector <int> chm, chmp; // [s] Current harmonic meaning and its position in hm
+	vector<vector<int>> hm; // [s][] Available harmonic meanings for each note
+	vector<vector<int>> hm2; // [s][] Required harmonic meanings for each note
+	vector <int> chm, chmp; // [s] Current harmonic meaning and its position in hm
 	float hdif;
 	int cantus_id = 0;
 	CString key_eval; // Results of key evaluation
@@ -458,12 +458,12 @@ protected:
 	int fn = 0; // First note of analyzed melody
 	int error = 0;
 	vector<float> maw; // [] Moving average weight
-	pvector<int> len_export; // [s] For Send
-	pvector<int> coff_export; // [s] For Send
+	vector<int> len_export; // [s] For Send
+	vector<int> coff_export; // [s] For Send
 
 	// Random s_len=1 scan
-	pvector<int> cc_id; // [s] Current successive identifier of chromatic step
-	pvector<vector<int>> cc_order; // [s][] Randomized chromatic steps
+	vector<int> cc_id; // [s] Current successive identifier of chromatic step
+	vector<vector<int>> cc_order; // [s][] Randomized chromatic steps
 
 	// FailLeap local variables
 	int leap_start; // Step where leap starts
@@ -487,22 +487,22 @@ protected:
 	vector <long> cids; // []
 
 	// CA1 autotest
-	pvector<vector<int>> enflags; // [s][id] Expected note flags
-	vector<pvector<int>> enflags2; // [r_id][s] Expected note flags
+	vector<vector<int>> enflags; // [s][id] Expected note flags
+	vector<vector<int>> enflags2; // [r_id][s] Expected note flags
 	vector<int> false_positives_ignore; // [r_id] Ignore false positives for these flags
 	vector<int> false_positives_global; // [r_id] Always check false positives for these flags
 	vector<int> sas_emulator_max_delay; // [r_id] Specify rule identiefiers, which should not be tested for delay in SAS emulator
 	vector<int> sas_emulator_move_ignore; // [r_id] Specify rule identiefiers, which should not be tested for moves in SAS emulator
 	vector<int> flags_full; // [r_id] Flags of full analysis
-	pvector<vector<int>> nflags_full; // [s][] Note flags of full analysis
-	pvector<vector<int>> nflags_prev; // [s][] Note flags of previous SAS run
+	vector<vector<int>> nflags_full; // [x][id] Note flags of full analysis
+	vector<vector<int>> nflags_prev; // [x][id] Note flags of previous SAS run
 	vector<int> flag_delay; // [r_id] Maximum flag delay in steps
 	vector<CString> flag_delay_st; // [r_id] Information about maximum flag delay
 
 	// Cantus correcting
-	pvector <int> smatrix; // [s] Vector of links to steps that were selected for recalculation
+	vector <int> smatrix; // [s] Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix
-	vector<pvector<int>> clib; // [][s] Library of cantus
+	vector<vector<int>> clib; // [][s] Library of cantus
 	VSet<int> clib_vs; // Unique clib set
 
 	// CP1 parameters
@@ -528,14 +528,14 @@ protected:
 	int emulate_sas = 0; // 0 = disable emulator, 1 = Enables SAS algorithm emulator in CA2
 
 	// Counterpoint
-	vector<pvector<int>> ac; // [v][s] Diatonic
-	vector<pvector<int>> acc; // [v][s] Chromatic
-	vector<pvector<int>> acc_old; // [v][s] Chromatic
-	vector<pvector<int>> apc; // [v][s] Pitch class (diatonic)
-	vector<pvector<int>> apcc; // [v][s] Pitch class (chromatic)
-	vector<pvector<int>> aleap; // [v][s] Leaps
-	vector<pvector<int>> asmooth; // [v][s] Smooth movements
-	vector<pvector<int>> aslur; // [v][s] Slurs
+	vector<vector<int>> ac; // [v][s] Diatonic
+	vector<vector<int>> acc; // [v][s] Chromatic
+	vector<vector<int>> acc_old; // [v][s] Chromatic
+	vector<vector<int>> apc; // [v][s] Pitch class (diatonic)
+	vector<vector<int>> apcc; // [v][s] Pitch class (chromatic)
+	vector<vector<int>> aleap; // [v][s] Leaps
+	vector<vector<int>> asmooth; // [v][s] Smooth movements
+	vector<vector<int>> aslur; // [v][s] Slurs
 	int species = 0; // Counterpoint species
 	int species_detected = 0; // Counterpoint species detected in CA2
 	int sus_count = 0; // Number of suspensions detected in ExplodeCP

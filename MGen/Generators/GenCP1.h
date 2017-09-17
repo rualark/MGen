@@ -57,7 +57,7 @@ protected:
 	inline int FailCPInterval();
 	inline int FailOverlap();
 	void RandomSWACP();
-	void ShowLiningCP(pvector<int>& cc);
+	void ShowLiningCP(vector<int>& cc);
 	void SWACP(int i, int dp);
 	inline int FailLastIntervals();
 	inline void GetNoteTypes();
@@ -72,17 +72,17 @@ protected:
 	// Variables
 	int cp_culm = 0; // Position of counterpoint culmination
 
-	pvector<int> ivl; // [s] Diatonic interval between voices
-	pvector<int> civl; // [s] Chromatic interval between voices
-	pvector<int> ivlc; // [s] Diatonic interval between voices (class)
-	pvector<int> civlc; // [s] Chromatic interval between voices (class)
-	pvector<int> tivl; // [s] Type of interval between voices
-	pvector<int> motion; // [s] Melody motion type
-	pvector<int> beat; // [ls] Beat type for each fli2
-	pvector<int> sus; // [ls] Note suspension flag (when above zero, links to first cantus-changing step)
-	pvector<int> mli; // [ms] Forward links to first notes of each measure
-	pvector<int> hli; // Forward links to first notes of each harmonic change
-	pvector<int> rpos; // [ls] Rhythm position types for fli
+	vector<int> ivl; // [s] Diatonic interval between voices
+	vector<int> civl; // [s] Chromatic interval between voices
+	vector<int> ivlc; // [s] Diatonic interval between voices (class)
+	vector<int> civlc; // [s] Chromatic interval between voices (class)
+	vector<int> tivl; // [s] Type of interval between voices
+	vector<int> motion; // [s] Melody motion type
+	vector<int> beat; // [ls] Beat type for each fli2
+	vector<int> sus; // [ls] Note suspension flag (when above zero, links to first cantus-changing step)
+	vector<int> mli; // [ms] Forward links to first notes of each measure
+	vector<int> hli; // Forward links to first notes of each harmonic change
+	vector<int> rpos; // [ls] Rhythm position types for fli
 	int hli_size = 0; // Size of hli vector
 
 	// Cantus
@@ -90,6 +90,6 @@ protected:
 	int cf_nmax = 0; // Maximum note in cantus (chromatic)
 
 	// Analysis
-	vector <pvector<int>> scpoint; // [v][s] Source cpoint for processing
+	vector <vector<int>> scpoint; // [v][s] Source cpoint for processing
 
 };

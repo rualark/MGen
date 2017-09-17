@@ -1,93 +1,34 @@
 #pragma once
 
-// Set debug level or comment to disable debug
-#define DEBUG_PVECTOR 2
+// Standard vector class encapsulation
+template<typename T>
+class svector 
+{
+public:
+	svector() {}
+	svector(size_t size) { v.resize(size); }
+	~svector() {}
+	void push_back(T value) { v.push_back(value); }
+	void resize(size_t size) { v.resize(size); }
+	size_t size(T value) { return v.size(); }
+	void clear(T value) { v.clear(); }
+	T& operator[](size_t index)	{	return v[index]; }
+
+	vector<T> v;
+};
 
 // Protected vector class with access counting
 template<typename T>
-class pvector
+class pvector : public svector<T>
 {
 public:
-	pvector() {}
-	pvector(size_t size) { 
-		v.resize(size); 
-#ifdef DEBUG_PVECTOR
-		v_accessed.resize(size); 
-#endif
+	pvector(size_t size) : svector(size) { v_access.resize(size); }
+	void push_back(T value) { v_access.push_back(0);  v.push_back(value); }
+	T& operator[](size_t index) { 
+		v_access[index] = 1; 
+		return v[index]; 
 	}
 
-	size_t size() { return v.size(); }
-
-	void push_back(T value) {
-#if DEBUG_PVECTOR == 2
-		v_resized = 1;
-		v_accessed.push_back(0);
-#endif
-		v.push_back(value);
-	}
-
-	void resize(size_t size) { 
-#ifdef DEBUG_PVECTOR
-		v_resized = 1;
-		v_accessed.resize(size);
-#endif
-		v.resize(size);
-	}
-
-	void resize(size_t size, T value) { 
-#ifdef DEBUG_PVECTOR
-		v_resized = 1;
-		v_accessed.resize(size);
-#endif
-		v.resize(size, value);
-	}
-
-	void clear() { 
-#ifdef DEBUG_PVECTOR
-		v_resized = 1;
-		v_accessed.clear();
-#endif
-		v.clear();
-	}
-
-	T& operator[](size_t index) {
-#if DEBUG_PVECTOR == 2
-		v_accessed[index] = 1;
-#endif
-		return v[index];
-	}
-
-	void fill(T value) {
-#if DEBUG_PVECTOR == 2
-		std::fill(v_accessed.begin(), v_accessed.end(), 1);
-#endif
-		std::fill(v.begin(), v.end(), value);
-	}
-
-	T accumulate() {
-#if DEBUG_PVECTOR == 2
-		std::fill(v_accessed.begin(), v_accessed.end(), 1);
-#endif
-		return std::accumulate(v.begin(), v.end(), (T)0);
-	}
-
-	bool operator==(const pvector<T>& other) {
-#if DEBUG_PVECTOR == 2
-		std::fill(v_accessed.begin(), v_accessed.end(), 1);
-#endif
-		return v == other.v;
-	}
-
-	bool operator!=(const pvector<T>& other) {
-		return !(*this == other);
-	}
-
-	vector<T> v;
-#ifdef DEBUG_PVECTOR
-	// Which elements of vector were accessed
-	vector<int> v_accessed;
-	// If number of vector elements was changed
-	int v_resized = 0;
-#endif
+	vector<int> v_access;
 };
 
