@@ -290,11 +290,13 @@ void CGenCA1::ParseExpect() {
 	// Clear expected flags
 	enflags.clear();
 	enflags2.clear();
+	enflags3.clear();
 	// Detect maximum lyrics
 	int max_i = cantus_incom[cantus_id].size();
 	if (!max_i) return;
 	enflags.resize(max_i);
 	enflags2.resize(MAX_RULES);
+	enflags3.resize(MAX_RULES);
 	for (int f = 0; f < MAX_RULES; ++f) enflags2[f].resize(c_len);
 	// Load expected flags
 	for (int i = 0; i < max_i; ++i) {
@@ -305,6 +307,7 @@ void CGenCA1::ParseExpect() {
 				if (fl) {
 					enflags[i].push_back(fl);
 					++enflags2[fl][i];
+					++enflags3[fl];
 				}
 			}
 		}
@@ -392,14 +395,11 @@ void CGenCA1::ConfirmExpect() {
 				}
 			}
 			if (!found) {
-				// Do not show errors if flag ignored and not testing
-				if (m_testing || accept[fl] != -1) {
-					CString est;
-					est.Format("Expected flag not confirmed: [%d] %s %s (%s) at %d:%d %s",
-						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
-					WriteLog(5, est);
-					if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
-				}
+				CString est;
+				est.Format("Expected flag not confirmed: [%d] %s %s (%s) at %d:%d %s",
+					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
+				WriteLog(5, est);
+				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
 			else if (debug_level > 0) {
 				CString est;
@@ -408,17 +408,19 @@ void CGenCA1::ConfirmExpect() {
 				WriteLog(6, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
-			// Do not check local false positives if disabled
-			if (false_positives_ignore[fl]) continue;
-			for (int s = 0; s < c_len; ++s) {
-				for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
-					if (!enflags2[fl][s]) {
-						CString est;
-						est.Format("Local false positive flag: [%d] %s %s (%s) at %d:%d %s",
-							fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
-						WriteLog(5, est);
-						//if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
-					}
+		}
+	}
+	// Do not check local false positives if disabled
+	for (int fl = 0; fl < MAX_RULES; ++fl) {
+		if (!enflags3[fl] || false_positives_ignore[fl]) continue;
+		for (int s = 0; s < c_len; ++s) {
+			for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
+				if (!enflags2[fl][s]) {
+					CString est;
+					est.Format("Local false positive flag: [%d] %s %s (%s) at %d:%d %s",
+						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, s + 1, midi_file);
+					WriteLog(5, est);
+					//if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 				}
 			}
 		}
