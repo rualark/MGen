@@ -98,7 +98,7 @@ void CGenCA2::MergeCantus() {
 			prev_note = cpoint[cantus_id][cfv][i];
 			m_cc.push_back(prev_note);
 			if (!i) {
-				cc_len.push_back(cantus_len[cantus_id][i] + fn);
+				cc_len.push_back(cantus_len[cantus_id][i] + fn * cantus_len[cantus_id][0]);
 			}
 			else {
 				cc_len.push_back(cantus_len[cantus_id][i]);
@@ -111,9 +111,8 @@ void CGenCA2::MergeCantus() {
 		}
 	}
 	// Check cc_len
-	int last_len = cc_len[0];
 	for (int i = 1; i < cc_len.size(); ++i) {
-		if (cc_len[i] != last_len) {
+		if (cc_len[i] != cc_len[0]) {
 			// Send log
 			CString est;
 			est.Format("Warning: cantus notes usually are all of same length. Cantus #%d has non-uniform length at note %d", cantus_id+1, i);

@@ -1772,7 +1772,9 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 
 int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
+	int s0;
 	for (ls = 0; ls < fli_size - 1; ++ls) {
+		s0 = fli[ls];
 		s = fli2[ls];
 		s1 = fli2[ls + 1];
 		if (ls > 0) s_1 = fli2[ls - 1];
@@ -1788,18 +1790,18 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 			if (FailTritone(4, 5, 11, 0, c, cc, pc, pcc)) return 1;
 		}
 		// Leap size prohibit
-		if (cc[s1] - cc[s] == 8) FLAG2(175, s)
-		else if (cc[s1] - cc[s] == -8) FLAG2(181, s)
-		else if (cc[s1] - cc[s] == 9) FLAG2(176, s)
-		else if (cc[s1] - cc[s] == -9) FLAG2(182, s)
-		else if (cc[s1] - cc[s] == 10) FLAG2(177, s)
-		else if (cc[s1] - cc[s] == -10) FLAG2(183, s)
-		else if (cc[s1] - cc[s] == 11) FLAG2(178, s)
-		else if (cc[s1] - cc[s] == -11) FLAG2(184, s)
-		else if (cc[s1] - cc[s] == 12) FLAG2(179, s)
-		else if (cc[s1] - cc[s] == -12) FLAG2(185, s)
-		else if (cc[s1] - cc[s] > 12) FLAG2(180, s)
-		else if (cc[s1] - cc[s] < -12) FLAG2(186, s)
+		if (cc[s1] - cc[s] == 8) FLAG2(175, s0)
+		else if (cc[s1] - cc[s] == -8) FLAG2(181, s0)
+		else if (cc[s1] - cc[s] == 9) FLAG2(176, s0)
+		else if (cc[s1] - cc[s] == -9) FLAG2(182, s0)
+		else if (cc[s1] - cc[s] == 10) FLAG2(177, s0)
+		else if (cc[s1] - cc[s] == -10) FLAG2(183, s0)
+		else if (cc[s1] - cc[s] == 11) FLAG2(178, s0)
+		else if (cc[s1] - cc[s] == -11) FLAG2(184, s0)
+		else if (cc[s1] - cc[s] == 12) FLAG2(179, s0)
+		else if (cc[s1] - cc[s] == -12) FLAG2(185, s0)
+		else if (cc[s1] - cc[s] > 12) FLAG2(180, s0)
+		else if (cc[s1] - cc[s] < -12) FLAG2(186, s0)
 	}
 	return 0;
 }
