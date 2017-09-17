@@ -738,13 +738,14 @@ int CGenCP1::FailRhythm5() {
 		l_len.clear();
 		slur1 = 0;
 		slur2 = 0;
+		pos = 0;
 		// First pause
 		if (!ms && fn) {
 			l_len.push_back(fn);
+			pos = fn;
 		}
 		// Build note lengths
 		full_measure = 0;
-		pos = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
 			// Do not process last note if not full melody generated
 			if (ep2 != c_len && ls2 == fli_size - 1) {
@@ -760,7 +761,7 @@ int CGenCP1::FailRhythm5() {
 			s2 = fli[ls2];
 			l_len.push_back(llen[ls2]);
 			// Stop if out of measure
-			if (fli2[ls2] >= s + npm - 1) {
+			if (pos + llen[ls2] >= npm) {
 				full_measure = 1;
 				break;
 			}
@@ -1522,6 +1523,7 @@ void CGenCF1::CreateULinks() {
 
 void CGenCP1::GetMeasures() {
 	mli.clear();
+	mli.push_back(0);
 	for (int i = 0; i < c_len; ++i) {
 		// Find measures
 		if ((i+fn) % npm == 0) {
