@@ -243,7 +243,7 @@ void CGenCA2::EmulateSASCP() {
 	nflags_full = anflags[cpv];
 	flags_full = flags;
 	nflags_prev.clear();
-	for (fixed_ep2 = 2; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
+	for (fixed_ep2 = 1; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
 		// Show emulator status
 		CString est;
 		est.Format("SAS emulator: %d of %d", fixed_ep2, acc[cpv].size());
