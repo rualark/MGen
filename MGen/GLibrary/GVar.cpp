@@ -1349,13 +1349,14 @@ void CGVar::UpdateTempoMinMax(int step1, int step2)
 	}
 }
 
-void CGVar::AddNote(int pos, int v, char note2, int len2, int dyn2)
-{
+void CGVar::AddNote(int pos, int v, char note2, int len2, int dyn2) {
+	if (pos + len2 >= t_allocated) ResizeVectors(max(pos + len2 + 1, t_allocated * 2));
 	for (int i = 0; i < len2; i++) {
 		note[pos + i][v] = note2;
-		len[pos][v] = len2;
-		coff[pos][v] = i;
-		dyn[pos][v] = dyn2;
+		len[pos + i][v] = len2;
+		coff[pos + i][v] = i;
+		dyn[pos + i][v] = dyn2;
+		pause[pos + i][v] = 0;
 	}
 }
 

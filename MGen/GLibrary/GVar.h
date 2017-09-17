@@ -250,7 +250,7 @@ protected:
 	void CopyVoice(int v1, int v2, int step1, int step2, int interval);
 	void UpdateNoteMinMax(int step1, int step2);
 	void UpdateTempoMinMax(int step1, int step2);
-	inline void AddNote(int pos, int v, char note2, int len2, int dyn2);
+	void AddNote(int pos, int v, char note2, int len2, int dyn2);
 	void FillPause(int start, int length, int v);
 	void MergeNotes(int step1, int step2, int v);
 	inline void ResizeVectors(int size, int vsize = -1);

@@ -281,19 +281,20 @@ int CGenCP1::SendCP() {
 		pos = step;
 		// Sent voice is the same as acc voice
 		v = svoice + av;
+		MakeLenExport(acc[av], 0, av);
+		cc_len[0] = cc_len[1];
+		plen = cc_len[0] * fn;
 		if (av == cpv) {
-			plen = cc_len[0] * fn;
 			FillPause(pos, plen, v);
 			pos += plen;
-			x1 = fn;
 		}
 		else {
-			x1 = 0;
+			//AddNote(pos, v, acc[cfv][0], len_export[0] + plen, 100);
+			cc_len[0] = cc_len[1] * (fn + 1);
 		}
-		MakeLenExport(acc[av], x1, av);
 		// Copy cantus to output
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
-		for (int x = x1; x < ep2; ++x) {
+		for (int x = 0; x < ep2; ++x) {
 			SendLyrics(pos, v, av, x);
 			for (int i = 0; i < cc_len[x]; ++i) {
 				if (av == cpv) {
@@ -1892,10 +1893,11 @@ void CGenCP1::Generate() {
 		t_generated = step;
 		t_sent = t_generated;
 		// Load first voice
+		fn = fn0;
 		vector<int> cc_len_old = cc_len;
 		vector<float> cc_tempo_old = cc_tempo;
 		vector<vector<int>> anflags_old = anflags[cfv];
-		c_len = m_c.size() * npm - (npm - 1);
+		c_len = m_c.size() * npm - (npm - 1) - fn;
 		ac[cfv].clear();
 		acc[cfv].clear();
 		apc[cfv].clear();
@@ -1905,8 +1907,11 @@ void CGenCP1::Generate() {
 		anflags[cfv].clear();
 		// Create empty arrays
 		anflags[cfv].resize(m_c.size()*npm);
-		int npm2 = npm;
+		int npm2;
 		for (int i = 0; i < m_c.size(); ++i) {
+			npm2 = npm;
+			// First measure should have less notes
+			if (i == 0) npm2 = npm - fn;
 			// Last measure should have one note
 			if (i == m_c.size() - 1) npm2 = 1;
 			for (int x = 0; x < npm2; ++x) {
@@ -1914,7 +1919,12 @@ void CGenCP1::Generate() {
 				acc[cfv].push_back(m_cc[i]);
 				apc[cfv].push_back(m_pc[i]);
 				apcc[cfv].push_back(m_pcc[i]);
-				cc_len.push_back(cc_len_old[i] * npm / npm2);
+				if (i == m_c.size() - 1) {
+					cc_len.push_back(cc_len_old[i] * npm);
+				}
+				else {
+					cc_len.push_back(cc_len_old[i]);
+				}
 				cc_tempo.push_back(cc_tempo_old[i]);
 				if (!x) {
 					int y = i*npm + x;
@@ -1922,7 +1932,6 @@ void CGenCP1::Generate() {
 				}
 			}
 		}
-		fn = fn0;
 		// Generate second voice
 		real_len = accumulate(cc_len.begin(), cc_len.end(), 0);
 		rpenalty_cur = MAX_PENALTY;
