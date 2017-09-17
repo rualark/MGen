@@ -396,8 +396,9 @@ void CGenCA1::ConfirmExpect() {
 			}
 			if (!found) {
 				CString est;
-				est.Format("Expected flag not confirmed: [%d] %s %s (%s) at %d:%d %s",
-					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], cantus_id + 1, x + 1, midi_file);
+				est.Format("Expected flag not confirmed: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
+					cantus_id + 1, x + 1, (step0 + fn + x + 1) / 8 + 1, (step0 + fn + x + 1) % 8, midi_file);
 				WriteLog(5, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}

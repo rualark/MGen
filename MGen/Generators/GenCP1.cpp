@@ -776,7 +776,7 @@ int CGenCP1::FailRhythm5() {
 		}
 		// Last note in measure with slur
 		if (full_measure && sus[ls2]) {
-			l_len[l_len.size()-1] = min(8, llen[ls2] - (sus[ls2] - s2));
+			l_len[l_len.size()-1] = min(8, sus[ls2] - s2);
 			slur2 = fli2[ls2] - sus[ls2] + 1;
 		}
 		// Full evaluation?
@@ -864,7 +864,8 @@ int CGenCP1::FailRhythm5() {
 		else if (full_measure && l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
 			s3 = fli[ls + l_len.size() - 1];
 			if (ms >= mli.size() - 2) FLAG2(238, s3)
-			else if (slur2 != 0) FLAG2(239, s3)
+			else if (slur2 != 0) 
+				FLAG2(239, s3)
 			else FLAG2(240, s3);
 		}
 		// Many notes in measure
