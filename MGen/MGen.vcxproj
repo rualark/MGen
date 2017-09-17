@@ -200,6 +200,7 @@
     <ClInclude Include="GLibrary\GMidi.h" />
     <ClInclude Include="GLibrary\GVar.h" />
     <ClInclude Include="GLibrary\MidiOut.h" />
+    <ClInclude Include="GLibrary\pvector.h" />
     <ClInclude Include="GLibrary\SmRnd.h" />
     <ClInclude Include="GLibrary\VSet.h" />
     <ClInclude Include="InfoDlg.h" />
@@ -239,6 +240,7 @@
     <ClCompile Include="GLibrary\GMidi.cpp" />
     <ClCompile Include="GLibrary\GVar.cpp" />
     <ClCompile Include="GLibrary\MidiOut.cpp" />
+    <ClCompile Include="GLibrary\pvector.cpp" />
     <ClCompile Include="GLibrary\SmRnd.cpp" />
     <ClCompile Include="GLibrary\VSet.cpp" />
     <ClCompile Include="InfoDlg.cpp" />

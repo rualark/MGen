@@ -18,6 +18,6 @@ protected:
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void SendCorrectionsCP(int i, long long time_start);
 	
-	vector<int> min_vlen;
-	vector<int> max_vlen;
+	vector<int> min_vlen; // [v]
+	vector<int> max_vlen; // [v]
 };

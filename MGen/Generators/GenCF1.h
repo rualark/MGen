@@ -322,8 +322,8 @@ protected:
 	int dev_late3 = 3; // Maximum note count to consider non-late leap compensation deviation to 3rd
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
-	vector <vector <int>> hv; //  Variants of note harmonic meaning
-	vector <vector <int>> hsp; // Harmonic sequence penalty
+	vector <vector <int>> hv; //  [pc][] Variants of note harmonic meaning
+	vector <vector <int>> hsp; // [pc][pc] Harmonic sequence penalty
 	vector <int> fli; // [ls] Forward links to start of each non-slurred note
 	vector <int> fli2; // [ls] Forward links to end of each non-slurred note
 	vector <int> llen; // [ls] Length of each linked note
@@ -354,7 +354,7 @@ protected:
 	int is_animating = 0; // Set to 1 to show than Send is animating
 									
 	// Master parameters
-	vector <int> *scantus; // Source cantus for processing
+	vector <int> *scantus; // [s] Source cantus for processing
 	int task; // What task to accomplish using the method
 	int svoice; // Voice to send cantus to
 
@@ -377,36 +377,35 @@ protected:
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
 	int flags_need2 = 0; // Number of second level flags set
-	vector<int> m_c; // Cantus diatonic
-	vector<int> m_cc; // Cantus chromatic
-	vector<int> m_pc; // pitch class (diatonic)
-	vector<int> m_pcc; // pitch class (chromatic)
-	vector<int> m_leap;
-	vector<int> m_smooth;
-	vector<int> m_slur;
-	vector<float> macc; // CC moving average
-	vector<float> macc2; // CC moving average smoothed
-	vector<float> decc; // CC deviation
-	vector<float> decc2; // CC deviation smoothed
-	vector<float> fpenalty; // Additional penalty for flags
-	vector<int>  flags; // Flags for whole cantus
-	vector<vector<vector<int>>> anflags; // Note flags
-	vector<int> br_cc; // Cantus chromatic (best rejected)
-	vector<int>  br_f; // Flags for whole cantus (best rejected)
-	vector<long>  ssf; // SWA stuck flags
-	vector<int>  best_flags; // best flags of saved cantus for swa
-	vector<vector<int>> br_nf; // Note flags (best rejected)
-	vector<int> br_nfc; // Note flags count (best rejected)
+	vector<int> m_c; // [s] Cantus diatonic
+	vector<int> m_cc; // [s] Cantus chromatic
+	vector<int> m_pc; // [s] pitch class (diatonic)
+	vector<int> m_pcc; // [s] pitch class (chromatic)
+	vector<int> m_leap; // [s]
+	vector<int> m_smooth; // [s] 
+	vector<int> m_slur; // [s] 
+	vector<float> macc; // [s] CC moving average
+	vector<float> macc2; // [s] CC moving average smoothed
+	vector<float> decc; // [s] CC deviation
+	vector<float> decc2; // [s] CC deviation smoothed
+	vector<float> fpenalty; // [r_id] Additional penalty for flags
+	vector<int>  flags; // [r_id] Flags for whole cantus
+	vector<vector<vector<int>>> anflags; // [v][s][] Note flags
+	vector<int> br_cc; // [s] Cantus chromatic (best rejected)
+	vector<int>  br_f; // [r_id] Flags for whole cantus (best rejected)
+	vector<long>  ssf; // [r_id] SWA stuck flags
+	vector<int>  best_flags; // [r_id] best flags of saved cantus for swa
+	vector<vector<int>> br_nf; // [s][] Note flags (best rejected)
 	float rpenalty_cur = 0; // Rules penalty
 	float rpenalty_source = 0; // Source melody rpenalty
 	float rpenalty_min; // Minimum rules penalty for this scan
-	vector <float> rpenalty; // Penalty in terms of sum of flag severity
-	vector <float> source_rpenalty_step; // Penalty in terms of sum of flag severity
+	vector <float> rpenalty; // [cid] Penalty in terms of sum of flag severity
+	vector <float> source_rpenalty_step; // [s] Penalty in terms of sum of flag severity
 	int dpenalty_cur = 0; // Distance from source penalty
 	int dpenalty_min; // Minimum distance penalty for this scan
-	vector <int> dpenalty; // Penalty in terms of distance from source
-	vector <int> cc_len; // Length of each cantus note
-	vector <float> cc_tempo; // Tempo of each cantus note
+	vector <int> dpenalty; // [cid] Penalty in terms of distance from source
+	vector <int> cc_len; // [s] Length of each cantus note
+	vector <float> cc_tempo; // [s] Tempo of each cantus note
 	int real_len; // Total length of cantus in steps
 	int skip_flags, clear_flags;
 	int sp1, sp2, swa1=0, swa2=0, ep1, ep2, p, pp;
@@ -415,26 +414,26 @@ protected:
 	int wid; // Window id
 	int swid; // SWA Window id
 	int dpenalty_outside_swa; // Sum of dpenalty outside SWA range
-	vector<int> m_cc_old; // Cantus chromatic saved for SWA
-	vector<int> wpos1;
-	vector<int> wpos2;
-	vector<int> swpos1;
-	vector<int> swpos2;
-	vector<int> dpenalty_step; // Dpenalty of all steps up to current
-	vector <int> smap; // Map of links from matrix local IDs to cantus step IDs
-	vector<int> min_c;
-	vector<int> max_c;
-	vector<int> min_cc; // Current range
-	vector<int> max_cc;
-	vector<int> min_cc0; // Source range for RSWA
-	vector<int> max_cc0;
+	vector<int> m_cc_old; // [s] Cantus chromatic saved for SWA
+	vector<int> wpos1; // [wid]
+	vector<int> wpos2; // [wid]
+	vector<int> swpos1; // [swid]
+	vector<int> swpos2; // [swid]
+	vector<int> dpenalty_step; // [s] Dpenalty of all steps up to current
+	vector <int> smap; // [sid] Map of links from matrix local IDs to cantus step IDs
+	vector<int> min_c; // [s]
+	vector<int> max_c; // [s]
+	vector<int> min_cc; // [s] Current range
+	vector<int> max_cc; // [s]
+	vector<int> min_cc0; // [s] Source range for RSWA
+	vector<int> max_cc0; // [s] 
 	int minc, maxc; // Real possible limits
-	vector<vector<vector<long>>> fblock; // number of canti rejected with foreign flags
-	vector<long long> fstat; // number of canti with each flag
-	vector<vector<long long>> fcor; // Flags correlation matrix
-	vector<long long> accepted4; // number of accepted canti per window
-	vector<long long> accepted5; // number of canti with neede flags per window
-	vector<long long> wscans; // number of full scans per window
+	vector<vector<vector<long>>> fblock; // [wid][r_id][r_id] number of canti rejected with foreign flags
+	vector<long long> fstat; // [r_id] number of canti with each flag
+	vector<vector<long long>> fcor; // [r_id][r_id] Flags correlation matrix
+	vector<long long> accepted4; // [wid] number of accepted canti per window
+	vector<long long> accepted5; // [wid] number of canti with neede flags per window
+	vector<long long> wscans; // [wid] number of full scans per window
 	int wcount = 1; // Number of windows created
 	int swcount = 0; // Number of SWA windows created
 	long long cycle = 0; // Cycle number of full scan
@@ -444,13 +443,13 @@ protected:
 	int src_nmin = 0, src_nmax = 1000; // Source range (chromatic)
 	int cc_incr[MAX_NOTE]; // cc increments for each step
 	int cc_decr[MAX_NOTE]; // cc decrements for each step
-	vector<int> test_cc;
-	vector<int> nstat;
-	vector<int> nstat2;
-	vector<int> nstat3;
-	vector<vector<int>> hm; // Available harmonic meanings for each note
-	vector<vector<int>> hm2; // Required harmonic meanings for each note
-	vector <int> chm, chmp; // Current harmonic meaning and its position in hm
+	vector<int> test_cc; // [s]
+	vector<int> nstat; // [cc]
+	vector<int> nstat2; // [c]
+	vector<int> nstat3; // [c]
+	vector<vector<int>> hm; // [s][] Available harmonic meanings for each note
+	vector<vector<int>> hm2; // [s][] Required harmonic meanings for each note
+	vector <int> chm, chmp; // [s] Current harmonic meaning and its position in hm
 	float hdif;
 	int cantus_id = 0;
 	CString key_eval; // Results of key evaluation
@@ -458,13 +457,13 @@ protected:
 	int cf_culm = 0; // Position of cantus firmus culmination
 	int fn = 0; // First note of analyzed melody
 	int error = 0;
-	vector<float> maw; // Moving average weight
-	vector<int> len_export; // For Send
-	vector<int> coff_export; // For Send
+	vector<float> maw; // [] Moving average weight
+	vector<int> len_export; // [s] For Send
+	vector<int> coff_export; // [s] For Send
 
 	// Random s_len=1 scan
-	vector<int> cc_id; // Current successive identifier of chromatic step
-	vector<vector<int>> cc_order; // Randomized chromatic steps
+	vector<int> cc_id; // [s] Current successive identifier of chromatic step
+	vector<vector<int>> cc_order; // [s][] Randomized chromatic steps
 
 	// FailLeap local variables
 	int leap_start; // Step where leap starts
@@ -476,7 +475,7 @@ protected:
 	int leap_id; // Id of leap size
 	int filled, prefilled; // If leap is filled and prefilled
 	int mdc1, mdc2; // Status of melody direction change before and after leap
-	vector <int> tc; // Tail diatonic notes
+	vector <int> tc; // [] Tail diatonic notes
 
 	// Local link steps
 	int ls; // Link step inside fli2
@@ -485,7 +484,7 @@ protected:
 	int s_1, s_2; // -1, -2 steps
 
 	// Local SWA
-	vector <long> cids;
+	vector <long> cids; // []
 
 	// CA1 autotest
 	vector<vector<int>> enflags; // [s][id] Expected note flags
@@ -501,9 +500,9 @@ protected:
 	vector<CString> flag_delay_st; // [r_id] Information about maximum flag delay
 
 	// Cantus correcting
-	vector <int> smatrix; // Vector of links to steps that were selected for recalculation
+	vector <int> smatrix; // [s] Vector of links to steps that were selected for recalculation
 	int smatrixc = 0; // Number of steps marked in smatrix
-	vector<vector<int>> clib; // Library of cantus
+	vector<vector<int>> clib; // [][s] Library of cantus
 	VSet<int> clib_vs; // Unique clib set
 
 	// CP1 parameters
@@ -529,14 +528,14 @@ protected:
 	int emulate_sas = 0; // 0 = disable emulator, 1 = Enables SAS algorithm emulator in CA2
 
 	// Counterpoint
-	vector<vector<int>> ac; // [s] Diatonic
-	vector<vector<int>> acc; // [s] Chromatic
-	vector<vector<int>> acc_old; // [s] Chromatic
-	vector<vector<int>> apc; // [s] Pitch class (diatonic)
-	vector<vector<int>> apcc; // [s] Pitch class (chromatic)
-	vector<vector<int>> aleap; // [s] Leaps
-	vector<vector<int>> asmooth; // [s] Smooth movements
-	vector<vector<int>> aslur; // [s] Slurs
+	vector<vector<int>> ac; // [v][s] Diatonic
+	vector<vector<int>> acc; // [v][s] Chromatic
+	vector<vector<int>> acc_old; // [v][s] Chromatic
+	vector<vector<int>> apc; // [v][s] Pitch class (diatonic)
+	vector<vector<int>> apcc; // [v][s] Pitch class (chromatic)
+	vector<vector<int>> aleap; // [v][s] Leaps
+	vector<vector<int>> asmooth; // [v][s] Smooth movements
+	vector<vector<int>> aslur; // [v][s] Slurs
 	int species = 0; // Counterpoint species
 	int species_detected = 0; // Counterpoint species detected in CA2
 	int sus_count = 0; // Number of suspensions detected in ExplodeCP

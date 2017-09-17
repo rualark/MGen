@@ -90,6 +90,6 @@ protected:
 	int cf_nmax = 0; // Maximum note in cantus (chromatic)
 
 	// Analysis
-	vector <vector<int>> scpoint; // Source cpoint for processing
+	vector <vector<int>> scpoint; // [v][s] Source cpoint for processing
 
 };

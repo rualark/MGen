@@ -153,6 +153,9 @@
     <ClInclude Include="Generators\GenCA2.h">
       <Filter>Header Files\Generators</Filter>
     </ClInclude>
+    <ClInclude Include="GLibrary\pvector.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="Generators\GenCA2.cpp">
       <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\pvector.cpp">
+      <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
