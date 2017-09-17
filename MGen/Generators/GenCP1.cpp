@@ -808,29 +808,32 @@ int CGenCP1::FailRhythm5() {
 				rid_cur += 1 << (pos + l_len[lp]);
 			// Check 1/8 only if it is not last 1/8
 			if (l_len[lp] == 1) {
-				// Too many 1/8
-				++count8;
-				if (count8 == 3) FLAG2(255, s2)
-				else if (count8 > 3) ++fpenalty[255];
+				// Last 1/8 syncope
+				if (pos == 7 && slur2) FLAG2(232, s2)
+				// Other types of 1/8
+				else {
+					// If second 1/8
+					if (pos % 2) {
+						// Isolated 1/8
+						if (l_len[lp - 1] != 1) FLAG2(231, s2)
+					}
+					// Too many 1/8
+					++count8;
+					if (count8 == 3) FLAG2(255, s2)
+					else if (count8 > 3) ++fpenalty[255];
+					// 1/8 in first measure
+					if (ms == 0) FLAG2(230, s2)
+						// If first 8th
+					else {
+						// 1/8 beats
+						if (pos == 0) FLAG2(226, s2)
+						else if (pos == 2) FLAG2(227, s2)
+						else if (pos == 4) FLAG2(228, s2)
+						else if (pos == 6) FLAG2(229, s2)
+					}
+				}
 				// 1/8 on leap
 				if ((ls2 < fli_size - 1 && aleap[cpv][s2]) || (ls2 > 0 && aleap[cpv][s2 - 1])) FLAG2(88, s2);
-				// 1/8 in first measure
-				if (ms == 0) FLAG2(230, s2)
-				// 1/8 syncope
-				if (pos == 7 && slur2) FLAG2(232, s2)
-				// If second 1/8
-				else if (pos % 2) {
-					// Isolated 1/8
-					if (l_len[lp - 1] != 1) FLAG2(231, s2)
-				}
-				// If first 8th
-				else {
-					// 1/8 beats
-					if (pos == 0) FLAG2(226, s2)
-					else if (pos == 2) FLAG2(227, s2)
-					else if (pos == 4) FLAG2(228, s2)
-					else if (pos == 6) FLAG2(229, s2)
-				}
 			}
 			else {
 				// 1/8 syncope
