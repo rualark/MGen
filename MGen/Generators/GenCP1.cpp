@@ -804,7 +804,8 @@ int CGenCP1::FailRhythm5() {
 				else if (l_len[lp] == 2) FLAG2(252, s2)
 			}
 			// Calculate rhythm id
-			rid_cur += 1 << (pos + l_len[lp]);
+			if (lp < l_len.size() - 1 || !slur2)
+				rid_cur += 1 << (pos + l_len[lp]);
 			// Check 1/8 only if it is not last 1/8
 			if (l_len[lp] == 1) {
 				// Too many 1/8

@@ -404,6 +404,8 @@ void CGenCA2::Generate() {
 		step0 = step;
 		fn = fn0;
 		ScanCP(tEval, 0);
+		ParseExpect();
+		ConfirmExpect();
 		EmulateSASCP();
 		key_eval.Empty();
 		// Check if cantus was shown
