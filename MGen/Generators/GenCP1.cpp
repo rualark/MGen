@@ -1757,7 +1757,7 @@ check:
 				}
 				else {
 					++cantus_ignored;
-					ReseedCantus();
+					ReseedCP();
 					// Start evaluating without scan
 					goto check;
 				}
