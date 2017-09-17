@@ -1141,7 +1141,8 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			}
 			// Prohibit culminations at first steps on highest notes
 			if (cc[fli2[culm_step]] == nmax) {
-				if (culm_step < (early_culm3*c_len) / 100) FLAG2(193, fli2[culm_step]);
+				if (culm_step < (early_culm3 * fli_size) / 100) 
+					FLAG2(193, fli2[culm_step]);
 				if (culm_step < early_culm - 1) FLAG2(78, fli2[culm_step])
 				else if (culm_step < early_culm2 - 1) FLAG2(79, fli2[culm_step]);
 			}
@@ -1162,7 +1163,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			WriteLog(5, est);
 		}
 		// Prohibit culminations at first steps
-		if (culm_step < (early_culm3*c_len)/100) FLAG2(193, fli2[culm_step]);
+		if (culm_step < (early_culm3 * fli_size)/100) FLAG2(193, fli2[culm_step]);
 		if (culm_step < early_culm - 1) FLAG2(78, fli2[culm_step])
 		else if (culm_step < early_culm2 - 1) FLAG2(79, fli2[culm_step]);
 		// Prohibit culminations at last steps
