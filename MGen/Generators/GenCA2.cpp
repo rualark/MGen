@@ -401,6 +401,7 @@ void CGenCA2::Generate() {
 		GetMelodyInterval(cpoint[i][cfv], 0, cpoint[i][cfv].size(), cf_nmin, cf_nmax);
 		GetSourceRange(cpoint[i][cpv]);
 		step0 = step;
+		step00 = step0;
 		fn = fn0;
 		ScanCP(tEval, 0);
 		ParseExpect();
