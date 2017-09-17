@@ -291,6 +291,7 @@ void CGenCA1::ParseExpect() {
 	enflags.clear();
 	enflags2.clear();
 	enflags3.clear();
+	enflags_count = 0;
 	// Detect maximum lyrics
 	int max_i = cantus_incom[cantus_id].size();
 	if (!max_i) return;
@@ -308,6 +309,7 @@ void CGenCA1::ParseExpect() {
 					enflags[i].push_back(fl);
 					++enflags2[fl][i];
 					++enflags3[fl];
+					++enflags_count;
 				}
 			}
 		}
@@ -383,7 +385,7 @@ void CGenCA1::OutputFlagDelays() {
 void CGenCA1::ConfirmExpect() {
 	int found, fl;
 	int max_x = enflags.size();
-	if (!max_x) return;
+	if (!enflags_count) return;
 	for (int x = 0; x < max_x; ++x) if (enflags[x].size()) {
 		for (int e = 0; e < enflags[x].size(); ++e) {
 			fl = enflags[x][e];
