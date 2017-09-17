@@ -90,7 +90,8 @@ BOOL CInfoDlg::OnInitDialog()
 				prev_note = pGen->note[x][mv];
 				if (pGen->comment[x][mv].size()) {
 					// CGLib::GetNoteName(pGen->note[x][mv])
-					st.Format("NOTE %d at %d:%d - %s\n", nnum, x / 8 + 1, x % 8 + 1, NoteName[pGen->note[x][mv] % 12]);
+					st.Format("NOTE %d at %d:%d - %s\n", 
+						nnum, x / 8 + 1, x % 8 + 1, NoteName[pGen->note[x][mv] % 12]);
 					eff = 0;
 					if (x == i) {
 						m_scrollLine = m_info.GetLineCount();
