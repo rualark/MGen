@@ -494,8 +494,8 @@ protected:
 	vector<int> sas_emulator_max_delay; // [r_id] Specify rule identiefiers, which should not be tested for delay in SAS emulator
 	vector<int> sas_emulator_move_ignore; // [r_id] Specify rule identiefiers, which should not be tested for moves in SAS emulator
 	vector<int> flags_full; // [r_id] Flags of full analysis
-	vector<vector<int>> nflags_full; // [x][id] Note flags of full analysis
-	vector<vector<int>> nflags_prev; // [x][id] Note flags of previous SAS run
+	vector<vector<int>> nflags_full; // [s][] Note flags of full analysis
+	vector<vector<int>> nflags_prev; // [s][] Note flags of previous SAS run
 	vector<int> flag_delay; // [r_id] Maximum flag delay in steps
 	vector<CString> flag_delay_st; // [r_id] Information about maximum flag delay
 
