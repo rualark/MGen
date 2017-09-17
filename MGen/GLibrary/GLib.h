@@ -146,7 +146,7 @@ public:
 	static void CheckRange(CString * sName, CString * sValue, char * sSearch, int * vmin, int * vmax, int lmin= -1000000, int lmax= -1000000);
 	static void CheckRange(CString * sName, CString * sValue, char * sSearch, float * vmin, float * vmax, float lmin = -1000000, float lmax = -1000000);
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
-	static void StringToVector(CString * sValue, CString stDelim, vector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
+	static void StringToVector(CString * sValue, CString stDelim, pvector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
 	static void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
 	static void Tokenize(const CString & s, vector<CString>& tokens, const CString & delim);
 	static void GetVint(const CString &st, vector<int> &res);

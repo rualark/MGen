@@ -166,8 +166,8 @@ void CGenCA2::ExplodeCP() {
 	// Calculate npm
 	npm = max(1, min_vlen[cfv] / min_vlen[cpv]);
 	// Save old cantus
-	vector<vector<int>> cc_old2 = cpoint[cantus_id];
-	vector<float> tempo_old = cantus_tempo[cantus_id];
+	vector<pvector<int>> cc_old2 = cpoint[cantus_id];
+	pvector<float> tempo_old = cantus_tempo[cantus_id];
 	cc_len = cantus_len[cantus_id];
 	cantus_len[cantus_id].clear();
 	cantus_tempo[cantus_id].clear();
@@ -356,7 +356,7 @@ void CGenCA2::Generate() {
 		CalcCcIncrement();
 		// Show imported melody
 		MergeCantus();
-		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
+		real_len = cantus_len[i].accumulate();
 		dpenalty_cur = 0;
 		// Create pause
 		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);

@@ -161,7 +161,7 @@ void CGLib::LoadVar(CString * sName, CString * sValue, char* sSearch, CString * 
 	}
 }
 
-void CGLib::StringToVector(CString *sValue, CString stDelim, vector<int> & Dest, int lmin, int lmax) {
+void CGLib::StringToVector(CString *sValue, CString stDelim, pvector<int> & Dest, int lmin, int lmax) {
 	int pos = 0;
 	CString st;
 	for (int i = 0; i<1000; i++) {

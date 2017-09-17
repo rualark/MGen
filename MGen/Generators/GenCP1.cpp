@@ -198,7 +198,7 @@ void CGenCP1::SingleCPInit() {
 			dpenalty_outside_swa = 0;
 			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], fn, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
-			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
+			source_rpenalty_step.fill(0);
 			if (sp2 == swa2) ep2 = c_len;
 		}
 		// Minimum element
@@ -958,7 +958,7 @@ void CGenCP1::ShowBestRejectedCP() {
 			rcycle = rc;
 			if (br_cc.size() > 0) {
 				// Save old cantus
-				vector<int> cc_saved = acc[cpv];
+				pvector<int> cc_saved = acc[cpv];
 				// Load best rejected cantus
 				acc[cpv] = br_cc;
 				scpoint = acc;
@@ -1276,7 +1276,7 @@ void CGenCP1::RandomSWACP()
 	ShowStuck();
 }
 
-void CGenCP1::ShowLiningCP(vector<int> &cc) {
+void CGenCP1::ShowLiningCP(pvector<int> &cc) {
 	// Add lining
 	int pos = step0;
 	int lni;
@@ -1298,7 +1298,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	// Save source rpenalty
 	rpenalty_source = rpenalty_cur;
 	long cnum = 0;
-	vector<int> animate_cc; // This is cc that was sent in previous animation step
+	pvector<int> animate_cc; // This is cc that was sent in previous animation step
 	// Save cantus only if its penalty is less or equal to source rpenalty
 	rpenalty_min = rpenalty_cur;
 	best_flags = flags;
@@ -1867,7 +1867,7 @@ void CGenCP1::Generate() {
 		// Show imported melody
 		cc_len = cantus_len[cantus_id];
 		cc_tempo = cantus_tempo[cantus_id];
-		real_len = accumulate(cantus_len[cantus_id].begin(), cantus_len[cantus_id].end(), 0);
+		real_len = cantus_len[cantus_id].accumulate();
 		dpenalty_cur = 0;
 		fn = 0;
 		// Create pause
@@ -1892,9 +1892,9 @@ void CGenCP1::Generate() {
 		t_generated = step;
 		t_sent = t_generated;
 		// Load first voice
-		vector<int> cc_len_old = cc_len;
-		vector<float> cc_tempo_old = cc_tempo;
-		vector<vector<int>> anflags_old = anflags[cfv];
+		pvector<int> cc_len_old = cc_len;
+		pvector<float> cc_tempo_old = cc_tempo;
+		pvector<vector<int>> anflags_old = anflags[cfv];
 		c_len = m_c.size() * npm - (npm - 1);
 		ac[cfv].clear();
 		acc[cfv].clear();
@@ -1924,7 +1924,7 @@ void CGenCP1::Generate() {
 		}
 		fn = fn0;
 		// Generate second voice
-		real_len = accumulate(cc_len.begin(), cc_len.end(), 0);
+		real_len = cc_len.accumulate();
 		rpenalty_cur = MAX_PENALTY;
 		if (SelectRuleSet(cp_rule_set)) return;
 		if (method == mSWA) {
