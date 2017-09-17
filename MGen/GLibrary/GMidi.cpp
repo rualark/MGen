@@ -808,7 +808,7 @@ void CGMidi::LoadCP(CString path)
 			cantus_tempo.push_back(ct);
 			cpos.push_back(cp);
 			// Send incom
-			cp_incom.resize(cid);
+			cantus_incom.resize(cid);
 		}
 		else {
 			if (inter.size() < MIN_CP_SIZE && inter.size() > 0) {
@@ -820,7 +820,7 @@ void CGMidi::LoadCP(CString path)
 	}
 	// Load lyrics
 	int dist, min_dist, my_c, my_x;
-	cp_incom.resize(cpoint.size());
+	cantus_incom.resize(cpoint.size());
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
@@ -850,8 +850,8 @@ void CGMidi::LoadCP(CString path)
 						}
 					}
 					if (min_dist < INT_MAX) {
-						cp_incom[my_c].resize(my_x + 1);
-						cp_incom[my_c][my_x] = st;
+						cantus_incom[my_c].resize(my_x + 1);
+						cantus_incom[my_c][my_x] = st;
 					}
 				}
 			}

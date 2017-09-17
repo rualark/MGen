@@ -1799,9 +1799,9 @@ check:
 
 void CGenCP1::LoadCantusHigh() {
 	CString st;
-	if (cp_incom[cantus_id].size()) {
-		if (cp_incom[cantus_id][0].Find("cf=low") != -1) cantus_high = 0;
-		else if (cp_incom[cantus_id][0].Find("cf=high") != -1) cantus_high = 1;
+	if (cantus_incom[cantus_id].size()) {
+		if (cantus_incom[cantus_id][0].Find("cf=low") != -1) cantus_high = 0;
+		else if (cantus_incom[cantus_id][0].Find("cf=high") != -1) cantus_high = 1;
 		else {
 			// Use previous cantus_high (of previous cantus or from configuration if first cantus)
 			st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
@@ -1818,12 +1818,12 @@ void CGenCP1::LoadCantusHigh() {
 
 void CGenCP1::LoadSpecies() {
 	species = 0;
-	if (cp_incom[cantus_id].size()) {
-		if (cp_incom[cantus_id][0].Find("sp1") != -1) species = 1;
-		else if (cp_incom[cantus_id][0].Find("sp2") != -1) species = 2;
-		else if (cp_incom[cantus_id][0].Find("sp3") != -1) species = 3;
-		else if (cp_incom[cantus_id][0].Find("sp4") != -1) species = 4;
-		else if (cp_incom[cantus_id][0].Find("sp5") != -1) species = 5;
+	if (cantus_incom[cantus_id].size()) {
+		if (cantus_incom[cantus_id][0].Find("sp1") != -1) species = 1;
+		else if (cantus_incom[cantus_id][0].Find("sp2") != -1) species = 2;
+		else if (cantus_incom[cantus_id][0].Find("sp3") != -1) species = 3;
+		else if (cantus_incom[cantus_id][0].Find("sp4") != -1) species = 4;
+		else if (cantus_incom[cantus_id][0].Find("sp5") != -1) species = 5;
 	}
 }
 
