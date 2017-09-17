@@ -739,7 +739,7 @@ int CGenCP1::FailRhythm5() {
 		slur1 = 0;
 		slur2 = 0;
 		// First pause
-		if (!ms) {
+		if (!ms && fn) {
 			l_len.push_back(fn);
 		}
 		// Build note lengths

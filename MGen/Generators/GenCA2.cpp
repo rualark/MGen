@@ -97,7 +97,12 @@ void CGenCA2::MergeCantus() {
 		if (prev_note != cpoint[cantus_id][cfv][i]) {
 			prev_note = cpoint[cantus_id][cfv][i];
 			m_cc.push_back(prev_note);
-			cc_len.push_back(cantus_len[cantus_id][i]);
+			if (!i) {
+				cc_len.push_back(cantus_len[cantus_id][i] + fn);
+			}
+			else {
+				cc_len.push_back(cantus_len[cantus_id][i]);
+			}
 			cc_tempo.push_back(cantus_tempo[cantus_id][i]);
 		}
 		else {
@@ -175,6 +180,7 @@ void CGenCA2::ExplodeCP() {
 	int steps;
 	// Explode cpoint
 	int ln;
+	fn = 0;
 	for (s = 0; s < cc_old2[0].size(); ++s) {
 		steps = cc_len[s] / min_vlen[cpv];
 		// Do not explode last measure
@@ -183,7 +189,11 @@ void CGenCA2::ExplodeCP() {
 			steps = 1;
 			ln = cc_len[s];
 		}
-		for (int i = 0; i < steps; ++i) {
+		// Detect starting pause
+		if (!cc_old2[cpv][s]) {
+			fn += steps;
+		}
+		else for (int i = 0; i < steps; ++i) {
 			for (int v = 0; v < av_cnt; ++v) {
 				cpoint[cantus_id][v].push_back(cc_old2[v][s]);
 			}
@@ -196,16 +206,8 @@ void CGenCA2::ExplodeCP() {
 		if (cpoint[cantus_id][cpv][i] == cpoint[cantus_id][cpv][i - 1] && 
 			cpoint[cantus_id][cfv][i] != cpoint[cantus_id][cfv][i - 1]) ++sus_count;
 	}
-	// Detect start pause
-	fn = 0;
-	for (int i = 0; i < cpoint[cantus_id][cpv].size(); ++i) {
-		if (!cpoint[cantus_id][cpv][i]) {
-			fn = i + 1;
-		}
-		else break;
-	}
 	// Check that counterpoint did not become shorter
-	if (cpoint[cantus_id][0].size() < cc_old2[0].size()) {
+	if (cpoint[cantus_id][0].size() < cc_old2[0].size() - fn) {
 		CString est;
 		est.Format("Warning: ExplodeCP returned shorter voice than initial for %s cantus #%d (initial=%d, new=%d)",
 			cantus_high ? "higher" : "lower", cantus_id+1, cc_old2[0].size(), cpoint[cantus_id][0].size());
@@ -352,7 +354,7 @@ void CGenCA2::Generate() {
 		CalcCcIncrement();
 		// Show imported melody
 		MergeCantus();
-		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0);
+		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0) + fn * cantus_len[i][0];
 		dpenalty_cur = 0;
 		// Create pause
 		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
