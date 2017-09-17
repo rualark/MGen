@@ -173,9 +173,11 @@ void CGenCA2::ExplodeCP() {
 	// Save old cantus
 	vector<vector<int>> cc_old2 = cpoint[cantus_id];
 	vector<float> tempo_old = cantus_tempo[cantus_id];
+	vector<CString> incom_old = cp_incom[cantus_id];
 	cc_len = cantus_len[cantus_id];
 	cantus_len[cantus_id].clear();
 	cantus_tempo[cantus_id].clear();
+	cp_incom[cantus_id].clear();
 	for (int v = 0; v < av_cnt; ++v) cpoint[cantus_id][v].clear();
 	int steps;
 	// Explode cpoint
@@ -199,6 +201,10 @@ void CGenCA2::ExplodeCP() {
 			}
 			cantus_tempo[cantus_id].push_back(tempo_old[s]);
 			cantus_len[cantus_id].push_back(ln);
+			if (incom_old.size() > s) {
+				if (i) cp_incom[cantus_id].push_back("");
+				else cp_incom[cantus_id].push_back(incom_old[s]);
+			}
 		}
 	}
 	// Calculate sus count

@@ -489,9 +489,7 @@ void CGenCA1::Generate()
 		dpenalty_cur = 0;
 		c_len = cantus[i].size();
 		GetSourceRange(cantus[i]);
-		// Set enflags before evaluation
 		ScanCantus(tEval, 0, &(cantus[i]));
-		// Clear enflags after evaluation
 		ParseExpect();
 		ConfirmExpect();
 		key_eval.Empty();
