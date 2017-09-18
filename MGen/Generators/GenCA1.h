@@ -23,6 +23,8 @@ protected:
 
 	void CheckSASEmulatorFlags();
 
+	void EmulateSAS();
+
 	void OutputFlagDelays();
 
 	void ConfirmExpect();

@@ -2084,6 +2084,10 @@ void CGenCF1::SingleCantusInit() {
 	else {
 		// For single cantus scan - cannot skip flags - must show all
 		skip_flags = 0;
+		// SAS emulator
+		if (fixed_ep2) {
+			ep2 = fixed_ep2;
+		}
 	}
 }
 
@@ -3223,7 +3227,7 @@ int CGenCF1::SendCantus() {
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
-	for (int x = 0; x < c_len; ++x) {
+	for (int x = 0; x < ep2; ++x) {
 		if (chm.size() > bli[x] && chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 		SendLyrics(pos, v, cpv, x);
