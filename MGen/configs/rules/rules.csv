@@ -179,7 +179,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;173;30;Cantus;Minor;Altered interval;VI#<->III;0;If allowed, will be considered dissonance;
 1;174;30;Cantus;Minor;Altered interval;VII#<->III;0;If allowed, will be considered dissonance;
 1;80;0;Cantus;Counterpoint;Perfect consonance;downbeat;-1;;
-1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;-1;;
+1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;1;;
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;
 1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;
 1;85;60;Cantus;Counterpoint;Close perfect consonances;combined;0;;
