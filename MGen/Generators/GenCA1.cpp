@@ -378,7 +378,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 
 void CGenCA1::OutputFlagDelays() {
 	for (int f = 0; f < MAX_RULES; ++f) if (flag_delay[f] > sas_emulator_max_delay[f]) {
-		WriteLog(1, flag_delay_st[f]); // 1
+		WriteLog(6, flag_delay_st[f]); // 1
 	}
 }
 

@@ -499,14 +499,14 @@ int CGenCP1::FailSus() {
 			// Check if suspension second part is discord
 			if (tivl[s2] != iDis) {}
 			// Resolution to discord
-			else if (tivl[s2+1] == iDis) FLAG2(220, s2)
+			else if (tivl[s2+1] == iDis) FLAG2(220, s)
 			// Resolution by leap
-			else if (aleap[cpv][s2]) FLAG2(221, s2)
+			else if (aleap[cpv][s2]) FLAG2(221, s)
 			else {
 				// Resolution up
 				if (acc[cpv][s2 + 1] > acc[cpv][s2]) {
 					// Allowed only for resolution of leading tone
-					if (apcc[cpv][s2] == 11) FLAG2(222, s2)
+					if (apcc[cpv][s2] == 11) FLAG2(222, s)
 					else FLAG2(219, s2);
 				}
 				// 9th to 8va
@@ -516,7 +516,7 @@ int CGenCP1::FailSus() {
 					else FLAG2(218, s2);
 				}
 				// 7th to 8va
-				else if (ivlc[s2] == 6 && ivlc[s2 + 1] == 0) FLAG2(217, s2)
+				else if (ivlc[s2] == 6 && ivlc[s2 + 1] == 0) FLAG2(217, s)
 			}
 		}
 		else {
@@ -546,7 +546,7 @@ int CGenCP1::FailUnison() {
 	// Unison
 	if (!civl[s]) {
 		// Inside
-		if (ls > 1 && ls < fli_size - 1) FLAG2(91, fli2[ls - 1]);
+		if (ls > 1 && ls < fli_size - 1) FLAG2(91, fli[ls - 1]);
 	}
 	return 0;
 }
@@ -563,7 +563,8 @@ int CGenCP1::FailDis() {
 			FLAG2(169, s)
 			// Check if discord is longer than neighboring consonance
 			if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s)
-			else if (ls < fli_size - 2 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis) FLAG2(223, s);
+			else if (ls < fli_size - 2 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis) 
+				FLAG2(223, s);
 		}
 	}
 	return 0;
@@ -1143,17 +1144,16 @@ int CGenCP1::FailMissSlurs() {
 // Count limits
 int CGenCP1::FailCPInterval() {
 	int bsteps = 0;
-	int step = 0;
 	for (int i = 0; i < fli_size; ++i) {
-		step = fli2[i];
+		s = fli[i];
 		// Check between
-		if (acc[1][step] - acc[0][step] > max_between) {
+		if (acc[1][s] - acc[0][s] > max_between) {
 			++bsteps;
 			// Flag very far burst
-			if (acc[1][step] - acc[0][step] > burst_between) FLAG2(11, step);
+			if (acc[1][s] - acc[0][s] > burst_between) FLAG2(11, s);
 			if (bsteps > burst_steps) {
 				// Flag long burst only on first overrun
-				if (bsteps == burst_steps + 1) FLAG2(11, step)
+				if (bsteps == burst_steps + 1) FLAG2(11, s)
 					// Next overruns are sent to fpenalty
 				else fpenalty[37] += bsteps - burst_steps;
 			}
@@ -1467,7 +1467,7 @@ int CGenCP1::FailLastIntervals() {
 				}
 				if (!b_found) {
 					// Set B needed flag if last bass notes are not G-C
-					if (apc[0][c_len - 1] != 0 || apc[0][fli2[fli_size - 2]] != 4) FLAG2(47, start);
+					if (apc[0][c_len - 1] != 0 || apc[0][fli[fli_size - 2]] != 4) FLAG2(47, start);
 				}
 				if (!g_found && !d_found) FLAG2(75, start);
 			}
@@ -1480,7 +1480,7 @@ void CGenCP1::GetNoteTypes() {
 	int s = 0, sf;
 	int l;
 	for (ls = 0; ls < fli_size; ++ls) {
-		if (ls > 0) s = fli2[ls-1]+1;
+		s = fli[ls];
 		sf = s + fn;
 		l = llen[ls];
 		// Get beat
