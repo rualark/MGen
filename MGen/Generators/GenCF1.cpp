@@ -410,6 +410,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	LoadVectorPar2(sN, sV, "sas_emulator_move_ignore", sas_emulator_move_ignore, 1, 1);
 	LoadVectorPar2(sN, sV, "false_positives_ignore", false_positives_ignore, 1, 1);
 	LoadVectorPar2(sN, sV, "false_positives_global", false_positives_global, 1, 1);
+	CheckVar(sN, sV, "show_ignored_flags", &show_ignored_flags, 0, 2);
 	CheckVar(sN, sV, "emulate_sas", &emulate_sas, 0, 2);
 	CheckVar(sN, sV, "max_correct_ms", &max_correct_ms, 0);
 	CheckVar(sN, sV, "animate", &animate, 0);
@@ -1125,7 +1126,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	culm_ls = -1;
 	if (ep2 < c_len) {
 		// Find multiple culminations at highest allowed note
-		if (nmax == max_cc[0] || nmax - nmin == max_interval) {
+		if (nmax == max_cc2 || nmax - nmin == max_interval) {
 			for (ls = 0; ls < fli_size; ++ls) {
 				if (cc[fli[ls]] == nmax) {
 					++culm_sum;
@@ -1143,7 +1144,8 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			if (cc[fli[culm_ls]] == nmax) {
 				if (culm_ls < (early_culm3 * fli_size) / 100) FLAG2(193, fli[culm_ls]);
 				if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
-				else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
+				else if (culm_ls < early_culm2 - 1) 
+					FLAG2(79, fli[culm_ls]);
 			}
 		}
 	}
@@ -2089,6 +2091,8 @@ void CGenCF1::SingleCantusInit() {
 			ep2 = fixed_ep2;
 		}
 	}
+	// Absolute maximum of scan range for culminations
+	max_cc2 = vmax(max_cc);
 }
 
 // Step2 must be exclusive
@@ -2205,6 +2209,8 @@ void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 	ep1 = max(0, sp1 - 1);
 	ep2 = sp2; // End of evaluation window
 	p = sp2 - 1; // Minimal position in array to cycle
+	// Absolute maximum of scan range for culminations
+	max_cc2 = vmax(max_cc);
 }
 
 // Calculate flag statistics
@@ -3085,9 +3091,10 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 		if (av == cpv) {
 			int fl = anflags[av][x][f];
 			// Send comments and color only if rule is not ignored
-			if (accept[fl] != -1) {
+			if (accept[fl] != -1 || show_ignored_flags) {
 				if (!i) {
 					if (!accept[fl]) st = "- ";
+					else if (accept[fl] == -1) st = "# ";
 					else st = "+ ";
 					com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 					if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";

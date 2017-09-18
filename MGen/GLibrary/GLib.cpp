@@ -877,3 +877,33 @@ void CGLib::TestVSet()
 	st.Format("Total elements: %d", vs.s.size());
 	WriteLog(0, st);
 }
+
+// Fill vector with value
+void CGLib::vfill(vector<int> v, int value) {
+	int x2 = v.size();
+	for (int x = 0; x < x2; ++x) v[x] = value;
+}
+
+// Sum of vector
+int CGLib::vsum(vector<int> v) {
+	int res = 0;
+	int x2 = v.size();
+	for (int x = 0; x < x2; ++x) res += v[x];
+	return res;
+}
+
+// Maximum in vector
+int CGLib::vmax(vector<int> v) {
+	int res = 0;
+	int x2 = v.size();
+	for (int x = 0; x < x2; ++x) if (v[x] > res) res = v[x];
+	return res;
+}
+
+// Minimum in vector
+int CGLib::vmin(vector<int> v) {
+	int res = INT_MAX;
+	int x2 = v.size();
+	for (int x = 0; x < x2; ++x) if (v[x] < res) res = v[x];
+	return res;
+}
