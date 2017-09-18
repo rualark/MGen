@@ -696,7 +696,10 @@ int CGenCF1::FailFisTrail(vector<int> &pcc) {
 					break;
 				}
 			}
-			if (!found) FLAG2(199, s);
+			if (!found) {
+				// Flag only if full melody analysis or window is not cut
+				if (ls + fis_gis_max <= fli_size - 1 || ep2 == c_len)	FLAG2(199, s);
+			}
 		}
 	}
 	return 0;

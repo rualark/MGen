@@ -36,4 +36,4 @@ midifile_in_mul = 0.5 # Multiply note length with this value when loading
 t_cnt = 100000 # Maximum number of steps generated
 midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 1 # Set to export comments (violations) to midifile lyrics
-emulate_sas = 0 # 0 = disable emulator, 1 = Enables SAS algorithm emulator in CA2
+emulate_sas = 1 # 0 = disable emulator, 1 = Enables SAS algorithm emulator in CA2

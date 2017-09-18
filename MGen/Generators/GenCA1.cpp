@@ -368,7 +368,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					est.Format("SAS emulator at step %d assigned wrong flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 						cantus_id + 1, s + 1, (step00 + fn + s) / 8 + 1, (step00 + fn + s) % 8 + 1, midi_file);
-					WriteLog(6, est); // 1
+					WriteLog(1, est); // 1
 				}
 			}
 			// Get flag delay
