@@ -567,7 +567,7 @@ int CGenCF1::FailNoteSeq(vector<int> &pc) {
 
 int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return 0;
+	if (task != tEval && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
 	if (fli_size < notes) return 0;
 	int lmin, lmax, s;
@@ -592,7 +592,7 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 
 int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return 0;
+	if (task != tEval && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
 	if (fli_size < notes) return 0;
 	float lmin, lmax;
@@ -918,7 +918,7 @@ int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2,
 // Search for outstanding repeats
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return 0;
+	if (task != tEval && accept[flag] == -1) return 0;
 	int ok, f, f1;
 	if (fli_size > rlen*2) for (ls = 0; ls < fli_size - rlen * 2; ++ls) {
 		s = fli2[ls];
@@ -956,7 +956,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 
 int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return 0;
+	if (task != tEval && accept[flag] == -1) return 0;
 	int ok;
 	int f, f1;
 	if (fli_size > rlen + 1) for (ls = 0; ls < fli_size - rlen - 1; ++ls) {
@@ -1104,7 +1104,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 
 int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int notes, int flag) {
 	// Do not test if flag disabled and not testing
-	if (!m_testing && accept[flag] == -1) return 0;
+	if (task != tEval && accept[flag] == -1) return 0;
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
 	// Prohibit stagnation only for non-slurred notes
@@ -3094,7 +3094,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 			if (accept[fl] != -1 || show_ignored_flags) {
 				if (!i) {
 					if (!accept[fl]) st = "- ";
-					else if (accept[fl] == -1) st = "# ";
+					else if (accept[fl] == -1) st = "$ ";
 					else st = "+ ";
 					com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 					if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
