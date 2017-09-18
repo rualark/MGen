@@ -62,6 +62,7 @@ protected:
 	inline int FailLastIntervals();
 	inline void GetNoteTypes();
 	inline void GetMeasures();
+	inline void GetCfli();
 	inline int FailGisTrail2();
 	inline int FailHarm();
 	void ScanCP(int t, int v);
@@ -81,6 +82,7 @@ protected:
 	vector<int> beat; // [ls] Beat type for each fli2
 	vector<int> sus; // [ls] Note suspension flag (when above zero, links to first cantus-changing step)
 	vector<int> mli; // [ms] Forward links to first notes of each measure
+	vector<int> cfli; // [cfs] Forward links to each cf note
 	vector<int> hli; // Forward links to first notes of each harmonic change
 	vector<int> rpos; // [ls] Rhythm position types for fli
 	int hli_size = 0; // Size of hli vector

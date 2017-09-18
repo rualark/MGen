@@ -624,11 +624,11 @@ int CGenCP1::FailPco() {
 		if (ls < fli_size - 1) {
 			if (beat[ls]) {
 				// Prohibit culmination
-				if (acc[cpv][s] == nmax || acc[cfv][s] == nmax) FLAG2(81, s);
+				if (culm_ls == ls || (cfv == 1 && cf_culm_s == s)) FLAG2(81, s);
 			}
 			else {
 				// Prohibit downbeat culmination
-				if (acc[cpv][s] == nmax || acc[cfv][s] == nmax) FLAG2(82, s)
+				if (culm_ls == ls || (cfv == 1 && cf_culm_s == s)) FLAG2(82, s)
 					// Prohibit downbeat
 				else FLAG2(80, s);
 			}
@@ -1534,8 +1534,20 @@ void CGenCP1::GetMeasures() {
 	mli.push_back(0);
 	for (int i = 0; i < c_len; ++i) {
 		// Find measures
-		if ((i+fn) % npm == 0) {
+		if ((i + fn) % npm == 0) {
 			mli.push_back(i);
+		}
+	}
+}
+
+// Get links to cantus notes
+void CGenCP1::GetCfli() {
+	cfli.clear();
+	int last_note = -1;
+	for (s = 0; s < c_len; ++s) {
+		if (acc[cfv][s] != last_note) {
+			last_note = acc[cfv][s];
+			cfli.push_back(s);
 		}
 	}
 }
@@ -1586,8 +1598,11 @@ void CGenCP1::ScanCP(int t, int v) {
 	if (FailWindowsLimit()) return;
 	// Need to clear flags, because if skip_flags, they can contain previous prohibited flags
 	fill(flags.begin(), flags.end(), 0);
-	// We can call get measures once, because it calculates measures within c_len
+	// We can call get measures and cfli once, because they are calculated within c_len
 	GetMeasures();
+	GetCfli();
+	// Convert cf culmination to steps
+	cf_culm_s = cfli[cf_culm_cfs];
 	// Analyze combination
 check:
 	while (true) {

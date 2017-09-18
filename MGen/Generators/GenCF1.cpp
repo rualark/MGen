@@ -1141,10 +1141,9 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			}
 			// Prohibit culminations at first steps on highest notes
 			if (cc[fli2[culm_ls]] == nmax) {
-				if (culm_ls < (early_culm3 * fli_size) / 100) 
-					FLAG2(193, fli2[culm_ls]);
-				if (culm_ls < early_culm - 1) FLAG2(78, fli2[culm_ls])
-				else if (culm_ls < early_culm2 - 1) FLAG2(79, fli2[culm_ls]);
+				if (culm_ls < (early_culm3 * fli_size) / 100) FLAG2(193, fli[culm_ls]);
+				if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
+				else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
 			}
 		}
 	}
@@ -1163,13 +1162,13 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			WriteLog(5, est);
 		}
 		// Prohibit culminations at first steps
-		if (culm_ls < (early_culm3 * fli_size)/100) FLAG2(193, fli2[culm_ls]);
-		if (culm_ls < early_culm - 1) FLAG2(78, fli2[culm_ls])
-		else if (culm_ls < early_culm2 - 1) FLAG2(79, fli2[culm_ls]);
+		if (culm_ls < (early_culm3 * fli_size)/100) FLAG2(193, fli[culm_ls]);
+		if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
+		else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
 		// Prohibit culminations at last steps
-		if (culm_ls >= fli_size - late_culm) FLAG2(21, fli2[culm_ls]);
-		// Prohibit synchronized culminationsnati
-		if (av_cnt > 1 && culm_ls == cf_culm) FLAG2(26, fli2[culm_ls]);
+		if (culm_ls >= fli_size - late_culm) FLAG2(21, fli[culm_ls]);
+		// Prohibit synchronized culminations
+		if (av_cnt > 1 && fli[culm_ls] == cf_culm_s) FLAG2(26, fli[culm_ls]);
 	}
 	return 0;
 }
@@ -3213,7 +3212,7 @@ void CGenCF1::MakeLenExport(vector<int> &cc, int step1, int av)
 int CGenCF1::SendCantus() {
 	int step00 = step;
 	// Save culmination position
-	cf_culm = culm_ls;
+	cf_culm_cfs = culm_ls;
 	if (svoice < 0) return 0;
 	CString st, rpst;
 	int v = svoice;
