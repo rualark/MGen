@@ -65,4 +65,4 @@ false_positives_global = 1,2,6,9,12,13,14,18,19,24,28,30,32,33,34,40,41,49,50,51
 # Specify rule identiefiers, which should not be tested for delay in SAS emulator
 sas_emulator_delay_ignore = 4,9,35,42,43,44,45,120,121,122,123
 # Specify rule identiefiers, which should not be tested for moves in SAS emulator
-sas_emulator_move_ignore = 11
+sas_emulator_move_ignore = 3,11,15,25,71,202,203
