@@ -1217,7 +1217,9 @@ void CGenCP1::RandomSWACP()
 		int swa_inrange0 = swa_inrange;
 		swa_inrange = 1;
 		// Create random cantus
+		task = tGen;
 		MakeNewCP();
+		task = tCor;
 		// Load initial parameters
 		random_range = random_range0;
 		random_seed = random_seed0;
