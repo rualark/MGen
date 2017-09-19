@@ -9,7 +9,7 @@
 #define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
 #define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
 // For harmony
-#define FLAG3(id, i) { if (!accept[id]) { if (i == max_p) { last_flag=id; } return 1; } }
+#define FLAG3(id, i) { if (!accept[id]) { last_flag=id; return 1; } }
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
@@ -105,7 +105,7 @@ protected:
 	void CheckConfig();
 	int SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
-	void LogCantus(CString st3, int x, vector<int>& c);
+	void LogCantus(CString st3, int x, int size, vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
 	inline int FailNoteSeq(vector<int>& pc);
 	inline int FailLocalRange(vector<int>& cc, int notes, int mrange, int flag);

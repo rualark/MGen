@@ -487,11 +487,11 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	}
 }
 
-void CGenCF1::LogCantus(CString st3, int x, vector<int> &c)
+void CGenCF1::LogCantus(CString st3, int x, int size, vector<int> &c)
 {
 	CString st, st2;
 	st2.Format("%s %d: ", st3, x);
-	for (int i = 0; i < ep2; ++i) {
+	for (int i = 0; i < size; ++i) {
 		st.Format("%d ", c[i]);
 		st2 += st;
 	}
@@ -769,8 +769,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		}
 		// Shuffle
 		if (task == tEval) {
-			long long seed = CGLib::time();
-			::shuffle(hm[ls].begin(), hm[ls].end(), default_random_engine(seed));
+			random_shuffle(hm[ls].begin(), hm[ls].end());
 		}
 	}
 	// Scan vector
@@ -793,17 +792,20 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	check:
 		//st.Format("%d: ", hp);
 		//CGLib::AppendLineToFile("log/temp.log", st);
-		//LogCantus(chmp);
-		//LogCantus(chm);
 		if (need_exit) return 1;
 		if (!hp) {
 			++hp;
 			if (hp > max_p) max_p = hp;
 			goto check;
 		}
+		//if (task == tEval) {
+		//	LogCantus("chm", hp, hp + 1, chm);
+		//	LogCantus("cc", 0, ep2, m_cc);
+		//}
+		//LogCantus(chm);
 		if (EvalMelodyHarm(hp, last_flag, max_p)) goto skip;
 		// Success
-		if (hp == fli_size-1) {
+		if (hp == ep2-1) {
 			found = 1;
 			break;
 		}
@@ -3400,12 +3402,15 @@ void CGenCF1::RandomSWA()
 		if (rpenalty_min <= rpenalty_accepted) {
 			if (vs.Insert(m_cc)) {
 				int step = t_generated;
+				vector<int> chm_old = chm;
 				// Add line
 				linecolor[t_generated] = MakeColor(255, 0, 0, 0);
 				ScanCantus(tEval, 0, &(m_cc));
 				if (rpenalty_cur > rpenalty_accepted) {
-					st.Format("Error calculating rpenalty %f min %f at step %d", rpenalty_cur, rpenalty_min, t_generated);
+					st.Format("Error calculating rpenalty %f min %f at step %d", 
+						rpenalty_cur, rpenalty_min, t_generated);
 					WriteLog(5, st);
+					TestRpenalty();
 				}
 				Adapt(step, t_generated - 1);
 				t_sent = t_generated;
