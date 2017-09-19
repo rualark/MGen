@@ -3490,7 +3490,7 @@ void CGenCF1::SWA(int i, int dp) {
 			est.Format("SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld", swa_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum);
 			WriteLog(3, est);
 		}
-		if (m_cc.size() > 60) {
+		if (m_cc.size() > 60 || swa_len > 0) {
 			st.Format("SWA%d attempt: %d", swa_len, a);
 			SetStatusText(4, st);
 		}
