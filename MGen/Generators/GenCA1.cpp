@@ -317,8 +317,9 @@ void CGenCA1::ParseExpect() {
 }
 
 void CGenCA1::CheckSASEmulatorFlags() {
-	int fl, found, delay;
+	int fl, found, delay, pos = 0;
 	for (s = 0; s < ep2; ++s) {
+		if (s) pos += cc_len[s - 1];
 		// Loop through all current flags
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
@@ -338,7 +339,8 @@ void CGenCA1::CheckSASEmulatorFlags() {
 				CString est;
 				est.Format("SAS emulator at step %d has delay %d steps: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 					ep2, delay, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-					cantus_id + 1, s + 1, (step00 + fn + s) / 8 + 1, (step00 + fn + s) % 8 + 1, midi_file);
+					cantus_id + 1, s + 1, (step00 + fn*cc_len[0] + pos) / 8 + 1, 
+					(step00 + fn*cc_len[0] + pos) % 8 + 1, midi_file);
 				//WriteLog(1, est);
 				flag_delay[fl] = delay;
 				flag_delay_st[fl] = est;
@@ -355,7 +357,8 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					CString est;
 					est.Format("SAS emulator at step %d assigned moved flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-						cantus_id + 1, s + 1, (step00 + fn + s) / 8 + 1, (step00 + fn + s) % 8 + 1, midi_file);
+						cantus_id + 1, s + 1, (step00 + fn*cc_len[0] + pos) / 8 + 1,
+						(step00 + fn*cc_len[0] + pos) % 8 + 1, midi_file);
 					if (sas_emulator_move_ignore[fl]) {
 						WriteLog(6, est);
 					}
@@ -367,7 +370,8 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					CString est;
 					est.Format("SAS emulator at step %d assigned wrong flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-						cantus_id + 1, s + 1, (step00 + fn + s) / 8 + 1, (step00 + fn + s) % 8 + 1, midi_file);
+						cantus_id + 1, s + 1, (step00 + fn*cc_len[0] + pos) / 8 + 1,
+						(step00 + fn*cc_len[0] + pos) % 8 + 1, midi_file);
 					WriteLog(6, est); // 1
 				}
 			}
@@ -412,10 +416,11 @@ void CGenCA1::OutputFlagDelays() {
 }
 
 void CGenCA1::ConfirmExpect() {
-	int found, fl;
+	int found, fl, pos=0;
 	int max_x = enflags.size();
 	if (!enflags_count) return;
 	for (int x = 0; x < max_x; ++x) if (enflags[x].size()) {
+		if (x) pos += cc_len[x - 1];
 		for (int e = 0; e < enflags[x].size(); ++e) {
 			fl = enflags[x][e];
 			// Do not confirm rule violation if rule checking is disabled
@@ -432,7 +437,8 @@ void CGenCA1::ConfirmExpect() {
 				CString est;
 				est.Format("Expected flag not confirmed: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-					cantus_id + 1, x + 1, (step00 + fn + x) / 8 + 1, (step00 + fn + x) % 8 + 1, midi_file);
+					cantus_id + 1, x + 1, (step00 + fn*cc_len[0] + pos) / 8 + 1,
+					(step00 + fn*cc_len[0] + pos) % 8 + 1, midi_file);
 				WriteLog(5, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
@@ -440,7 +446,8 @@ void CGenCA1::ConfirmExpect() {
 				CString est;
 				est.Format("Expected flag confirmed: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-					cantus_id + 1, x + 1, (step00 + fn + x) / 8 + 1, (step00 + fn + x) % 8 + 1, midi_file);
+					cantus_id + 1, x + 1, (step00 + fn*cc_len[0] + pos) / 8 + 1,
+					(step00 + fn*cc_len[0] + pos) % 8 + 1, midi_file);
 				WriteLog(6, est);
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
@@ -449,13 +456,16 @@ void CGenCA1::ConfirmExpect() {
 	// Do not check local false positives if disabled
 	for (int fl = 0; fl < MAX_RULES; ++fl) {
 		if (!enflags3[fl] || false_positives_ignore[fl]) continue;
+		pos = 0;
 		for (int s = 0; s < c_len; ++s) {
+			if (s) pos += cc_len[s - 1];
 			for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
 				if (!enflags2[fl][s]) {
 					CString est;
 					est.Format("Local false positive flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-						cantus_id + 1, s + 1, (step00 + fn + s) / 8 + 1, (step00 + fn + s) % 8 + 1, midi_file);
+						cantus_id + 1, s + 1, (step00 + fn*cc_len[0] + pos) / 8 + 1,
+						(step00 + fn*cc_len[0] + pos) % 8 + 1, midi_file);
 					WriteLog(5, est);
 					//if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 				}
@@ -465,23 +475,22 @@ void CGenCA1::ConfirmExpect() {
 	// Check global false positives
 	vector<int> false_pos;
 	false_pos.resize(MAX_RULES);
+	pos = 0;
 	for (int s = 0; s < c_len; ++s) {
+		if (s) pos += cc_len[s - 1];
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
 			if (!enflags2[fl][s] && false_positives_global[fl]) {
 				CString est;
 				est.Format("Global false positive flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-					cantus_id + 1, s + 1, (step00 + fn + s) / 8 + 1, (step00 + fn + s) % 8 + 1, midi_file);
+					cantus_id + 1, s + 1, (step00 + fn*cc_len[0] + pos) / 8 + 1,
+					(step00 + fn*cc_len[0] + pos) % 8 + 1, midi_file);
 				WriteLog(5, est);
 				false_pos[fl] = 1;
 				// Collect global false positives statistics
 				//if (m_testing) AppendLineInFile("autotest\\global_false.txt", fl, " 0");
 			}
-		}
-	}
-	for (int fl = 0; fl < MAX_RULES; ++fl) {
-		if (!false_pos[fl]) {
 		}
 	}
 }
