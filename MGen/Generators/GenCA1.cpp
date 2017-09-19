@@ -372,7 +372,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 						cantus_id + 1, s + 1, (step00 + fn*cc_len[0] + pos) / 8 + 1,
 						(step00 + fn*cc_len[0] + pos) % 8 + 1, midi_file);
-					WriteLog(1, est); // 1
+					WriteLog(6, est); // 1
 				}
 			}
 			// Get flag delay
