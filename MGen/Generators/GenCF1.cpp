@@ -1562,16 +1562,11 @@ int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, ve
 }
 
 int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int child_leap) {
-	// Do not check fill if this is first third and rule is allowed
-	if (fleap_start == 0 && leap_size == 2 && accept[1]) {
-		FLAG2(1, fli[fleap_start]);
-		return 0;
-	}
 	// Prefill parameters
 	int ptail_len, pfill_to, pfill_to_pre, pfill_from_pre, pfill_from, pdeviates, pfill_end, pdev_count;
 	// Fill parameters
 	int tail_len, fill_to, fill_to_pre, fill_from_pre, fill_from, deviates, fill_end, dev_count;
-	filled = 0;
+	filled = 1;
 	prefilled = 0;
 	int pskips = 10;
 	int skips = 10;
@@ -1587,7 +1582,11 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
 	if ((fleap_end + tail_len < fli_size) || (c_len == ep2)) {
-		filled = 1;
+		// Do not check fill if this is first third and rule is allowed
+		if (fleap_start == 0 && leap_size == 2 && accept[1]) {
+			FLAG2(1, fli[fleap_start]);
+			return 0;
+		}
 		// Check fill only if enough length (checked second time in case of slurs)
 		CountFill(c, tail_len, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from_pre,
 			fill_from, deviates, dev_count, leap_prev, fill_end);
