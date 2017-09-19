@@ -805,7 +805,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 		//LogCantus(chm);
 		if (EvalMelodyHarm(hp, last_flag, max_p)) goto skip;
 		// Success
-		if (hp == ep2-1) {
+		if (hp == fli_size-1) {
 			found = 1;
 			break;
 		}
@@ -2115,6 +2115,7 @@ void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 
 void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
 	int x, x2;
+	// First algorithm is needed when you correct existing melody with SAS or ASWA
 	if (task == tCor) {
 		int finished;
 		// Fill notes starting with source melody, gradually moving apart
@@ -2154,6 +2155,7 @@ void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
 			}
 		}
 	}
+	// Second algorithm is needed when you create new melody for RSWA or SAS
 	else {
 		// Fill consecutive notes
 		for (int i = step1; i < step2; ++i) {
@@ -3383,7 +3385,9 @@ void CGenCF1::RandomSWA()
 		// Load first note, because it was overwritten by random generator
 		first_note = first_note0;
 		// Create random cantus
+		task = tGen;
 		MakeNewCantus(m_c, m_cc);
+		task = tCor;
 		min_cc0 = min_cc;
 		max_cc0 = max_cc;
 		cantus[0] = m_cc;
