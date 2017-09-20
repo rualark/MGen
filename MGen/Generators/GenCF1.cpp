@@ -173,6 +173,10 @@ void CGenCF1::LoadRules(CString fname)
 			//if (m_testing && flag == -1) flag = 1;
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
+			false_positives_ignore[rid] = atoi(ast[10]);
+			false_positives_global[rid] = atoi(ast[11]);
+			sas_emulator_max_delay[rid] = atoi(ast[12]);
+			sas_emulator_move_ignore[rid] = atoi(ast[13]);
 		}
 	}
 	fs.close();
