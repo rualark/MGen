@@ -1682,6 +1682,7 @@ check:
 		if (FailRhythm5()) goto skip;
 		GetRpos();
 		GetVIntervals();
+		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailVMotion()) goto skip;
 		if (FailVIntervals()) goto skip;
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
@@ -1708,7 +1709,6 @@ check:
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
-		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailFirstNotes(apc[cpv])) goto skip;
 		if (FailLeap(ac[cpv], aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
 		//if (FailMelodyHarm(apc[cpv], 0, ep2)) goto skip;

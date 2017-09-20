@@ -368,7 +368,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					est.Format("SAS emulator at step %d assigned wrong flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
-					WriteLog(6, est); // 1
+					WriteLog(1, est); // 1
 				}
 			}
 			// Get flag delay
@@ -407,7 +407,7 @@ void CGenCA1::EmulateSAS() {
 
 void CGenCA1::OutputFlagDelays() {
 	for (int f = 0; f < MAX_RULES; ++f) if (flag_delay[f] > sas_emulator_max_delay[f]) {
-		WriteLog(6, flag_delay_st[f]); // 1
+		//WriteLog(6, flag_delay_st[f]); // 1
 	}
 }
 
@@ -441,7 +441,7 @@ void CGenCA1::ConfirmExpect() {
 				est.Format("Expected flag confirmed: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 					cantus_id + 1, x + 1, cpos[x] / 8 + 1, cpos[x] % 8 + 1, midi_file);
-				WriteLog(1, est); 
+				WriteLog(6, est); 
 				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
 		}
