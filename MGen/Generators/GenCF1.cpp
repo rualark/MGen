@@ -137,7 +137,7 @@ void CGenCF1::LoadRules(CString fname)
 		st.Trim();
 		if (st.Find(";") != -1) {
 			Tokenize(st, ast, ";");
-			if (ast.size() != 10) {
+			if (ast.size() != 16) {
 				est.Format("Wrong column count at line in rules file %s: '%s'", fname, st);
 				WriteLog(5, est);
 				return;
