@@ -279,7 +279,7 @@ int CGenCP1::SendCP() {
 		pos = step;
 		// Sent voice is the same as acc voice
 		v = svoice + av;
-		MakeLenExport(acc[av], 0, av);
+		MakeLenExport(acc[av], av);
 		// Reset cc_len back after extending first cf note
 		cc_len[0] = cc_len[1];
 		plen = cc_len[0] * fn;
@@ -295,6 +295,7 @@ int CGenCP1::SendCP() {
 		// Copy cantus to output
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < ep2; ++x) {
+			if (av == cpv) cpos[x] = pos;
 			SendLyrics(pos, v, av, x);
 			for (int i = 0; i < cc_len[x]; ++i) {
 				if (av == cpv) {

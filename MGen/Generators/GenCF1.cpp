@@ -1857,6 +1857,7 @@ void CGenCF1::ScanInit() {
 		macc2.resize(c_len);
 		decc.resize(c_len);
 		decc2.resize(c_len);
+		cpos.resize(c_len);
 		llen.resize(c_len);
 		cc_order.resize(c_len);
 		dpenalty_step.resize(c_len);
@@ -3206,13 +3207,13 @@ int CGenCF1::SendPause(int pos, int v) {
 	return pause_len;
 }
 
-void CGenCF1::MakeLenExport(vector<int> &cc, int step1, int av)
+void CGenCF1::MakeLenExport(vector<int> &cc, int av)
 {
 	int len_temp, last_pos;
 	// Create note length
 	last_pos = 0;
 	len_temp = 0;
-	for (s = step1; s < c_len; ++s) {
+	for (s = 0; s < c_len; ++s) {
 		if (cc[s] != cc[last_pos]) {
 			for (int s2 = last_pos; s2 < s; ++s2) {
 				len_export[s2] = len_temp;
@@ -3239,11 +3240,12 @@ int CGenCF1::SendCantus() {
 	TransposeCantusBack();
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
-	MakeLenExport(m_cc, 0, 0);
+	MakeLenExport(m_cc, 0);
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 	for (int x = 0; x < ep2; ++x) {
+		cpos[x] = pos;
 		if (chm.size() > bli[x] && chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
 		mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 		SendLyrics(pos, v, cpv, x);
