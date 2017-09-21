@@ -128,8 +128,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;37;70;Melody;Range;Out of range;voice >M9;0;;;;;;;;
 1;7;70;Melody;Range;Out of range;sum >22th;0;;;;;;;;
 1;11;70;Melody;Range;Out of range;int >15va;0;;Maximum burst interval is 16th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);;;;1;;
-1;98;0;Melody;Range;Constrained local range;6 notes <4th;-1;;X consecutive notes have total range less than Y;;;;;;
-1;198;0;Melody;Range;Constrained local range;13 notes <m6;0;;X consecutive notes have total range less than Y;;;;;;
+1;98;0;Melody;Range;Constrained local range;6 notes <4th;-1;;X consecutive notes have total range less than Y;1;;;;;
+1;198;0;Melody;Range;Constrained local range;13 notes <m6;0;;X consecutive notes have total range less than Y;1;;;;;
 1;15;0;Melody;Range;No melody direction;10 notes <16;0;;Melody direction within X notes is less than Y decihalfnotes;1;;;1;;
 1;16;0;Melody;Range;No melody direction;13 notes <20;0;;Melody direction within X notes is less than Y decihalfnotes;1;;;;;
 1;17;70;Cantus;Harmony;Repeating letters in a row;>3;0;;;;;;;;
@@ -215,7 +215,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;47;30;Cantus;Counterpoint;2nd to last measure;no B;0;;no B is allowed if last bass notes are G-C;;;;;;
 1;75;30;Cantus;Counterpoint;2nd to last measure;no G or D;0;;;;1;;;;
 1;225;0;Cantus;Counterpoint;Slurs;suspension;-1;;;;;;;;
-1;97;60;Cantus;Counterpoint;Slurs;consecutive;0;;;1;;;;;
+1;97;60;Cantus;Counterpoint;Slurs;consecutive;0;;;;;;;;
 1;30;100;Cantus;Counterpoint;Slurs;cantus;0;;;;1;;;;
 1;93;0;Cantus;Counterpoint;Slurs within 10 notes;1;-1;For counterpoint species 1-3;;;;;;;
 1;94;40;Cantus;Counterpoint;Slurs within 10 notes;2;0;For counterpoint species 1-3;;;;;;;
@@ -245,7 +245,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;236;60;Cantus;Species 5 rhythm;Rhythm;whole inside;0;;;;;;;;
 1;237;60;Cantus;Species 5 rhythm;Rhythm;uneven pause;0;;Starting pause in first measure does not equal length of next note;;;;;;
 1;254;60;Cantus;Species 5 rhythm;Rhythm;uneven start;0;;Starting measure contains notes of different length;;;;;;
-1;197;60;Cantus;Species 5 rhythm;Rhythm;pause >1/2;0;;Starting pause is longer than 1/2 note;1;;;;;
+1;197;60;Cantus;Species 5 rhythm;Rhythm;pause >1/2;0;;Starting pause is longer than 1/2 note;;;;;;
 1;247;60;Cantus;Species 5 rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures;;;;;;
 1;226;60;Cantus;Species 5 rhythm;1/8 note;beat 1;0;;;;;;;;
 1;227;0;Cantus;Species 5 rhythm;1/8 note;beat 2;1;;;;;;;;
