@@ -323,6 +323,8 @@ void CGenCA1::CheckSASEmulatorFlags() {
 		// Loop through all current flags
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
+			// Do not analyse unstable flags
+			if (sas_emulator_unstable[fl]) continue;
 			// Check that flag exists in previous SAS run if this is not last step and previous run exists
 			found = 0;
 			good = 0;

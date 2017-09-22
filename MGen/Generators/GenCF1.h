@@ -497,6 +497,7 @@ protected:
 	vector<int> false_positives_global; // [r_id] Always check false positives for these flags
 	vector<int> sas_emulator_max_delay; // [r_id] Specify rule identiefiers, which should not be tested for delay in SAS emulator
 	vector<int> sas_emulator_move_ignore; // [r_id] Specify rule identiefiers, which should not be tested for moves in SAS emulator
+	vector<int> sas_emulator_unstable; // [r_id] Specify rule identiefiers, which can appeare in emulator, but not in main analysis
 	vector<vector<int>> sas_emulator_replace; // [r_id][] First flag can replace second in SAS emulator
 	vector<int> flags_full; // [r_id] Flags of full analysis
 	vector<vector<int>> nflags_full; // [s][] Note flags of full analysis

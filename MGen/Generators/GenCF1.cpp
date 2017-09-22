@@ -20,6 +20,7 @@ CGenCF1::CGenCF1()
 	sas_emulator_max_delay.resize(MAX_RULES);
 	sas_emulator_move_ignore.resize(MAX_RULES);
 	sas_emulator_replace.resize(MAX_RULES);
+	sas_emulator_unstable.resize(MAX_RULES);
 	flag_delay.resize(MAX_RULES);
 	flag_delay_st.resize(MAX_RULES);
 	RuleParam.resize(MAX_RULESETS);
@@ -141,6 +142,7 @@ void CGenCF1::LoadRules(CString fname)
 			if (ast.size() != 16) {
 				est.Format("Wrong column count at line in rules file %s: '%s'", fname, st);
 				WriteLog(5, est);
+				error = 1;
 				return;
 			}
 			set = atoi(ast[0]);
@@ -185,6 +187,7 @@ void CGenCF1::LoadRules(CString fname)
 					if (fl) sas_emulator_replace[fl].push_back(rid);
 				}
 			}
+			sas_emulator_unstable[rid] = atoi(ast[15]);
 		}
 	}
 	fs.close();
