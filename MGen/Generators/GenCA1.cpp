@@ -376,7 +376,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 			error_st.Format("- SAS emulator at step %d assigned wrong flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 				ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 				cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
-			error_level = 1;
+			error_level = 5;
 			// Not found in same position: does it exist in any position?
 			if (flags_full[fl]) {
 				if (sas_emulator_move_ignore[fl]) {
@@ -390,7 +390,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					error_st.Format("- SAS emulator at step %d assigned moved flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
-					error_level = 1;
+					error_level = 5;
 				}
 			}
 			// Not found in any position: can it be replaced in any position?
