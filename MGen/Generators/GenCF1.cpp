@@ -1144,9 +1144,9 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int 
 int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	int culm_sum = 0;
 	culm_ls = -1;
+	// Find multiple culminations at highest allowed note
 	if (ep2 < c_len) {
-		// Find multiple culminations at highest allowed note
-		if (nmax == max_cc2 || nmax - nmin == max_interval) {
+		if (method == mScan && (nmax == max_cc2 || nmax - nmin == max_interval)) {
 			for (ls = 0; ls < fli_size; ++ls) {
 				if (cc[fli[ls]] == nmax) {
 					++culm_sum;
@@ -1164,8 +1164,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 			if (cc[fli[culm_ls]] == nmax) {
 				if (culm_ls < (early_culm3 * fli_size) / 100) FLAG2(193, fli[culm_ls]);
 				if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
-				else if (culm_ls < early_culm2 - 1) 
-					FLAG2(79, fli[culm_ls]);
+				else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
 			}
 		}
 	}

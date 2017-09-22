@@ -632,7 +632,8 @@ int CGenCP1::FailPco() {
 			}
 			else {
 				// Prohibit downbeat culmination
-				if (culm_ls == ls || (cfv == 1 && cf_culm_s == s)) FLAG2(82, s)
+				if (culm_ls == ls || (cfv == 1 && cf_culm_s == s)) 
+					FLAG2(82, s)
 				// Prohibit downbeat
 				else FLAG2(80, s);
 			}
