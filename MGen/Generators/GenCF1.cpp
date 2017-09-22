@@ -19,6 +19,7 @@ CGenCF1::CGenCF1()
 	false_positives_global.resize(MAX_RULES);
 	sas_emulator_max_delay.resize(MAX_RULES);
 	sas_emulator_move_ignore.resize(MAX_RULES);
+	sas_emulator_replace.resize(MAX_RULES);
 	flag_delay.resize(MAX_RULES);
 	flag_delay_st.resize(MAX_RULES);
 	RuleParam.resize(MAX_RULESETS);
@@ -112,7 +113,7 @@ void CGenCF1::LoadHSP(CString fname)
 void CGenCF1::LoadRules(CString fname)
 {
 	CString st, est, rule, subrule;
-	vector<CString> ast;
+	vector<CString> ast, ast2;
 	int i = 0;
 	int sev = 0;
 	int set = 0;
@@ -177,6 +178,13 @@ void CGenCF1::LoadRules(CString fname)
 			false_positives_global[rid] = atoi(ast[11]);
 			sas_emulator_max_delay[rid] = atoi(ast[12]);
 			sas_emulator_move_ignore[rid] = atoi(ast[13]);
+			if (ast[14] != "") {
+				Tokenize(ast[14], ast2, ",");
+				for (int x = 0; x < ast2.size(); ++x) {
+					int fl = atoi(ast2[x]);
+					if (fl) sas_emulator_replace[fl].push_back(rid);
+				}
+			}
 		}
 	}
 	fs.close();
@@ -1675,6 +1683,8 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 			++mdc2;
 		}
 	}
+	// Do not flag last 3rd, because it can be later converted to 5th
+	//if (fleap_end == fli_size - 1 && ep2 < c_len && !leap_id) return 0;
 	// Close + 1far
 	if (mdc1 == 0 && mdc2 == 1) FLAG2(128 + leap_id, fli[fleap_start])
 		// Close + 2far
