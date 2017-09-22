@@ -1683,8 +1683,8 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 			++mdc2;
 		}
 	}
-	// Do not flag last 3rd, because it can be later converted to 5th
-	//if (fleap_end == fli_size - 1 && ep2 < c_len && !leap_id) return 0;
+	// Do not flag last 3rd in SAS, because it can be later converted to 5th
+	if (fleap_end == fli_size - 1 && ep2 < c_len && !leap_id) return 0;
 	// Close + 1far
 	if (mdc1 == 0 && mdc2 == 1) FLAG2(128 + leap_id, fli[fleap_start])
 		// Close + 2far
