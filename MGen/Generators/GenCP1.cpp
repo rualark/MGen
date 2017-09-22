@@ -215,6 +215,8 @@ void CGenCP1::SingleCPInit() {
 			ep2 = fixed_ep2;
 		}
 	}
+	// Absolute maximum of scan range for culminations
+	max_cc2 = vmax(max_cc);
 }
 
 void CGenCP1::MultiCPInit() {
