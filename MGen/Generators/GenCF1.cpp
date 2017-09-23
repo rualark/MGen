@@ -1993,8 +1993,8 @@ void CGenCF1::GetSourceRange(vector<int> &cc) {
 void CGenCF1::ApplySourceRange() {
 	if (src_nmax > MAX_NOTE) return;
 	// Decrease current range if it is bigger
-	if (minc < src_nmin) minc = src_nmin;
-	if (maxc > src_nmax) maxc = src_nmax;
+	if (minc > src_nmin) minc = src_nmin;
+	if (maxc < src_nmax) maxc = src_nmax;
 }
 
 void CGenCF1::SingleCantusInit() {
@@ -2016,8 +2016,8 @@ void CGenCF1::SingleCantusInit() {
 	// If too wide range is not accepted, correct range to increase scan performance
 	if (!accept[37]) {
 		for (int i = 0; i < c_len; ++i) {
-			min_cc[i] = max(minc, m_cc[i] - correct_range);
-			max_cc[i] = min(maxc, m_cc[i] + correct_range);
+			min_cc[i] = min(minc, m_cc[i] - correct_range);
+			max_cc[i] = max(maxc, m_cc[i] + correct_range);
 		}
 	}
 	else {
