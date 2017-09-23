@@ -70,6 +70,7 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result
 			ScanCP(tEval, 2);
+			EmulateSASCP();
 			LogCantus("scor", cantus_id + 1, acc[cpv].size(), acc[cpv]);
 			// Go back
 			step = step0;
