@@ -562,8 +562,8 @@ void CGenCA1::CorAck() {
 
 void CGenCA1::Generate()
 {
-	CString test_st = "60 62 64 71 72 74 69 67 65 67 72";
-	test_cc.resize(11);
+	CString test_st = "60 72 71 69 67 71 67 69 71 67 65 64 62 59 60";
+	test_cc.resize(15);
 	StringToVector(&test_st, " ", test_cc);
 
 	CString st;

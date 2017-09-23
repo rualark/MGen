@@ -276,7 +276,7 @@ int CGenCP1::SendCP() {
 		WriteLog(5, "Critical error: ResizeVectors mutex timed out");
 	}
 	for (int av = 0; av < av_cnt; ++av) {
-		CreateLinks(ac[av]);
+		CreateLinks(ac[av], av == cpv);
 		MakeMacc(acc[av]);
 		pos = step;
 		// Sent voice is the same as acc voice
@@ -1678,7 +1678,7 @@ check:
 		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
-		CreateLinks(acc[cpv]);
+		CreateLinks(acc[cpv], 1);
 		//CreateULinks();
 		if (minor_cur) {
 			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;

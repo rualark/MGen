@@ -133,7 +133,7 @@ protected:
 	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
 	inline int FailFirstNotes(vector<int>& pc);
 	inline int FailLastNotes(vector<int>& pc, vector<int>& pcc);
-	inline void CreateLinks(vector<int>& c);
+	inline void CreateLinks(vector<int>& cc, int multivoice);
 	inline void CountFillInit(vector<int>& c, int tail_len, int pre, int & t1, int & t2, int & fill_finish);
 	inline void CountFill(vector<int>& c, int tail_len, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int & fill_finish);
 	inline void CountFillSkips(int leap_prev, int & skips, int t1, int t2);

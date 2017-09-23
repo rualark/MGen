@@ -606,6 +606,106 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	return 0;
 }
 
+
+// Moving average
+void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
+	int pos1, pos2;
+	float ma, maw_sum;
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - range);
+		pos2 = min(ep2 - 1, s + range);
+		ma = 0;
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
+			ma += v[x];
+			++maw_sum;
+		}
+		if (maw_sum) v2[s] = ma / maw_sum;
+		else v2[s] = 0;
+	}
+}
+
+void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
+	int pos1, pos2;
+	float ma, maw_sum;
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - range);
+		pos2 = min(ep2 - 1, s + range);
+		ma = 0;
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
+			ma += v[x];
+			++maw_sum;
+		}
+		if (maw_sum) v2[s] = ma / maw_sum;
+		else v2[s] = 0;
+	}
+}
+
+void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
+	int pos1, pos2;
+	float ma, maw_sum;
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - range);
+		pos2 = min(ep2 - 1, s + range);
+		ma = 0;
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
+			ma += maw[abs(x - s)] * v[x];
+			maw_sum += maw[abs(x - s)];
+		}
+		if (maw_sum) v2[s] = ma / maw_sum;
+		else v2[s] = 0;
+	}
+}
+
+void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
+	int pos1, pos2;
+	float ma, maw_sum;
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - range);
+		pos2 = min(ep2 - 1, s + range);
+		ma = 0;
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
+			ma += maw[abs(x - s)] * v[x];
+			maw_sum += maw[abs(x - s)];
+		}
+		if (maw_sum) v2[s] = ma / maw_sum;
+		else v2[s] = 0;
+	}
+}
+
+void CGenCF1::MakeMacc(vector<int> &cc) {
+	int pos1, pos2;
+	int ma_range = 2 * minl;
+	// Deviation weight
+	maw.clear();
+	for (int i = 0; i <= ma_range; ++i) {
+		maw.push_back(1 - i*0.5 / ma_range);
+	}
+	float de, maw_sum;
+	// Moving average
+	mawVector(cc, macc, ma_range);
+	// Smooth
+	mawVector(macc, macc2, ma_range);
+	// Deviation
+	for (int s = 0; s < ep2; ++s) {
+		pos1 = max(0, s - ma_range);
+		pos2 = min(ep2 - 1, s + ma_range);
+		de = 0;
+		maw_sum = 0;
+		for (int x = pos1; x <= pos2; ++x) if (cc[x]) {
+			de += maw[abs(x - s)] * SQR(cc[x] - macc[s]);
+			maw_sum += maw[abs(x - s)];
+		}
+		if (maw_sum) decc[s] = SQRT(de / maw_sum);
+		else decc[s] = 0;
+	}
+	// Smooth
+	mawVector(decc, decc2, ma_range);
+}
+
 int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 	// Do not test if flag disabled and not testing
 	if (task != tEval && accept[flag] == -1) return 0;
@@ -1271,7 +1371,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
 	return 0;
 }
 
-void CGenCF1::CreateLinks(vector<int> &cc) {
+void CGenCF1::CreateLinks(vector<int> &cc, int multivoice) {
 	int prev_note = -1;
 	int lpos = 0;
 	int l = 0;
@@ -1298,6 +1398,12 @@ void CGenCF1::CreateLinks(vector<int> &cc) {
 	fli_size = lpos;
 	llen[lpos - 1] = l;
 	// Last note does not affect minl/maxl
+	if (multivoice) {
+		// For species 5 minl should be at least 4
+		// For species 3 minl should be at least 2
+		if (npm == 8) minl = max(4, minl);
+		if (npm == 4) minl = max(2, minl);
+	}
 }
 
 void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int &t2, int &fill_end) {
@@ -2949,105 +3055,6 @@ void CGenCF1::TransposeVector(vector<float> &v, int t) {
 	}
 }
 
-// Moving average
-void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
-	int pos1, pos2;
-	float ma, maw_sum;
-	for (int s = 0; s < ep2; ++s) {
-		pos1 = max(0, s - range);
-		pos2 = min(ep2 - 1, s + range);
-		ma = 0;
-		maw_sum = 0;
-		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
-			ma += v[x];
-			++maw_sum;
-		}
-		if (maw_sum) v2[s] = ma / maw_sum;
-		else v2[s] = 0;
-	}
-}
-
-void CGenCF1::maVector(vector<int> &v, vector<float> &v2, int range) {
-	int pos1, pos2;
-	float ma, maw_sum;
-	for (int s = 0; s < ep2; ++s) {
-		pos1 = max(0, s - range);
-		pos2 = min(ep2 - 1, s + range);
-		ma = 0;
-		maw_sum = 0;
-		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
-			ma += v[x];
-			++maw_sum;
-		}
-		if (maw_sum) v2[s] = ma / maw_sum;
-		else v2[s] = 0;
-	}
-}
-
-void CGenCF1::mawVector(vector<int> &v, vector<float> &v2, int range) {
-	int pos1, pos2;
-	float ma, maw_sum;
-	for (int s = 0; s < ep2; ++s) {
-		pos1 = max(0, s - range);
-		pos2 = min(ep2 - 1, s + range);
-		ma = 0;
-		maw_sum = 0;
-		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
-			ma += maw[abs(x - s)] * v[x];
-			maw_sum += maw[abs(x - s)];
-		}
-		if (maw_sum) v2[s] = ma / maw_sum;
-		else v2[s] = 0;
-	}
-}
-
-void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
-	int pos1, pos2;
-	float ma, maw_sum;
-	for (int s = 0; s < ep2; ++s) {
-		pos1 = max(0, s - range);
-		pos2 = min(ep2 - 1, s + range);
-		ma = 0;
-		maw_sum = 0;
-		for (int x = pos1; x <= pos2; ++x) if (v[x]) {
-			ma += maw[abs(x - s)] * v[x];
-			maw_sum += maw[abs(x - s)];
-		}
-		if (maw_sum) v2[s] = ma / maw_sum;
-		else v2[s] = 0;
-	}
-}
-
-void CGenCF1::MakeMacc(vector<int> &cc) {
-	int pos1, pos2;
-	int ma_range = 2*minl;
-	// Deviation weight
-	maw.clear();
-	for (int i = 0; i <= ma_range; ++i) {
-		maw.push_back(1 - i*0.5 / ma_range);
-	}
-	float de, maw_sum;
-	// Moving average
-	mawVector(cc, macc, ma_range);
-	// Smooth
-	mawVector(macc, macc2, ma_range);
-	// Deviation
-	for (int s = 0; s < ep2; ++s) {
-		pos1 = max(0, s - ma_range);
-		pos2 = min(ep2 - 1, s + ma_range);
-		de = 0;
-		maw_sum = 0;
-		for (int x = pos1; x <= pos2; ++x) if (cc[x]) {
-			de += maw[abs(x-s)]*SQR(cc[x]-macc[s]);
-			maw_sum += maw[abs(x - s)];
-		}
-		if (maw_sum) decc[s] = SQRT(de / maw_sum);
-		else decc[s] = 0;
-	}
-	// Smooth
-	mawVector(decc, decc2, ma_range);
-}
-
 void CGenCF1::InterpolateNgraph(int v, int step0, int step) {
 	// Interpolate ngraph
 	int pos1, pos2;
@@ -3608,12 +3615,12 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 check:
 	while (true) {
 		//LogCantus("CF1 ep2", ep2, m_cc);
-		if (method == mScan && task == tCor && cantus_id+1 == 16 && ep2 > 3 && MatchVectors(m_cc, test_cc, 0, ep2-1)) {
-			CString est;
-			est.Format("Found method %d id %d ep2 %d cycle %lld sp1 %d sp2 %d p %d", 
-				method, cantus_id+1, ep2, cycle, sp1, sp2, p);
-			WriteLog(1, est); 
-		}
+		//if (method == mScan && task == tCor && cantus_id+1 == 3 && ep2 > 9 && MatchVectors(m_cc, test_cc, 0, ep2-1)) {
+		//	CString est;
+		//	est.Format("Found method %d id %d ep2 %d cycle %lld sp1 %d sp2 %d p %d", 
+		//		method, cantus_id+1, ep2, cycle, sp1, sp2, p);
+		//	WriteLog(1, est); 
+		//}
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
 			if (method == mScan) {
@@ -3649,7 +3656,7 @@ check:
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailDiatonic(m_c, m_cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(m_c, m_cc, m_pc, m_pcc, 0, ep2);
-		CreateLinks(m_cc);
+		CreateLinks(m_cc, 0);
 		if (minor_cur) {
 			if (FailMinor(m_pcc, m_cc)) goto skip;
 			if (FailGisTrail(m_pcc)) goto skip;
