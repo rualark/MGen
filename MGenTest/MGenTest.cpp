@@ -169,6 +169,7 @@ void LoadConfig() {
 			ClearBuffer();
 			if (continuous_integration) Run("appveyor", "AddTest \"" + pname + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
 			Log("Starting test config: " + pname + "\n");
+			// MGen.exe -test=5 configs\GenCA2\good-cp5.pl
 			st2.Format("-test=%d %s", wait_sec, pname);
 			SHELLEXECUTEINFO sei = { 0 };
 			sei.cbSize = sizeof(SHELLEXECUTEINFO);
