@@ -759,8 +759,7 @@ int CGenCP1::FailRhythm5() {
 				// Whole inside
 				if (llen[ls2] >= 8 && !pos && !sus[ls2]) FLAG2(236, s)
 				// 1/8 syncope
-				else if (llen[ls2] > 1 && pos % 2) 
-					FLAG2(232, fli[ls2])
+				else if (llen[ls2] > 1 && pos % 2) FLAG2(232, fli[ls2])
 				// 1/4 syncope
 				else if (llen[ls2] > 2 && pos % 4 == 2) FLAG2(235, fli[ls2])
 				full_measure = 0;
@@ -801,7 +800,8 @@ int CGenCP1::FailRhythm5() {
 		count8 = 0;
 		pos = 0;
 		for (int lp = 0; lp < l_len.size(); ++lp) {
-			s2 = s + pos;
+			if (!ms && pos >= fn) s2 = s + pos - fn; 
+			else s2 = s + pos;
 			ls2 = bli[s2];
 			// Last note
 			if (ep2 == c_len && ls2 == fli_size - 1) {
