@@ -339,6 +339,7 @@ protected:
 	int transpose_back = 0; // Set to 1 to transpose generated melody closer to initial first note. Can be set to 1 only for CF1 generation algorithms
 
 	// CA1
+	int cor_ack = 0; // Acknowledge correction results by running both algorithms: SAS and ASWA
 	int correct_range = 4; // Maximum interval allowed between each source and corrected note
 	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
 	int animate = 100; // Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)

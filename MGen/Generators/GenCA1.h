@@ -29,6 +29,10 @@ protected:
 
 	void ConfirmExpect();
 
+	void InitCorAck();
+	void SaveCorAck();
+	void CorAck();
+
 	int corrections = 3; // Number of corrections to show
 	int pre_bad = 6; // How many notes to recalculate before rule violation
 	int post_bad = 8; // How many notes to recalculate after rule violation
@@ -37,4 +41,9 @@ protected:
 	int step0 = 0; // Start of current cantus
 	int step1 = 0; // Stop of current cantus
 
+	// Correction acknowledge
+	vector<int> cor_ack_dp; // [] Two resulting dpenalties
+	vector<float> cor_ack_rp; // [] Two resulting rpenalties
+	vector<CString> cor_ack_st; // [] Two resulting log strings
+	CString cor_log;
 };

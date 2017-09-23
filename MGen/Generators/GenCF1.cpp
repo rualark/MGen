@@ -425,6 +425,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	//LoadVectorPar2(sN, sV, "sas_emulator_move_ignore", sas_emulator_move_ignore, 1, 1);
 	//LoadVectorPar2(sN, sV, "false_positives_ignore", false_positives_ignore, 1, 1);
 	//LoadVectorPar2(sN, sV, "false_positives_global", false_positives_global, 1, 1);
+	CheckVar(sN, sV, "cor_ack", &cor_ack, 0, 1);
 	CheckVar(sN, sV, "show_ignored_flags", &show_ignored_flags, 0, 2);
 	CheckVar(sN, sV, "emulate_sas", &emulate_sas, 0, 2);
 	CheckVar(sN, sV, "max_correct_ms", &max_correct_ms, 0);
@@ -1859,7 +1860,7 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 
 void CGenCF1::ScanInit() {
 	if (!is_animating) {
-		scan_full = 0;
+		if (task != tEval) scan_full = 0;
 		q_scan_cycle.clear();
 		q_scan_ms.clear();
 		scan_start_time = time();

@@ -279,9 +279,8 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 	}
 	long long time_stop = CGLib::time();
 	// Send log
-	CString est;
-	est.Format("Sent corrections in %d ms to step %d with rp/dp/srp/variants/lib/full: %s", time_stop - time_start, step, st2);
-	WriteLog(3, est);
+	cor_log.Format("Sent corrections in %d ms to step %d with rp/dp/srp/variants/lib/full: %s", time_stop - time_start, step, st2);
+	WriteLog(3, cor_log);
 }
 
 void CGenCA1::ParseExpect() {
@@ -526,6 +525,38 @@ void CGenCA1::ConfirmExpect() {
 	}
 }
 
+void CGenCA1::InitCorAck() {
+	if (!cor_ack) return;
+	cor_ack_dp.clear();
+	cor_ack_rp.clear();
+	cor_ack_st.clear();
+	cor_log = "";
+	method = mSWA;
+}
+
+void CGenCA1::SaveCorAck() {
+	if (!cor_ack) return;
+	// Do not check if scan was aborted
+	if (!scan_full) return;
+	// Do not check if scan was aborted
+	if (method == mSWA && !swa_full) return;
+	cor_ack_dp.push_back(dpenalty_min);
+	cor_ack_rp.push_back(rpenalty_min);
+	cor_ack_st.push_back(cor_log);
+}
+
+void CGenCA1::CorAck() {
+	CString est;
+	if (!cor_ack || cor_ack_dp.size() < 2 || cor_ack_rp.size() < 2 || cor_ack_st.size() < 2) return;
+	if (cor_ack_dp[0] == cor_ack_dp[1] && cor_ack_rp[0] == cor_ack_rp[1]) {
+		est.Format("Correction acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
+		WriteLog(6, est);
+		return;
+	}
+	est.Format("Correction not acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
+	WriteLog(1, est);
+}
+
 void CGenCA1::Generate()
 {
 	CString test_st = "72 67 69 71 64 65 67 64 62 60";
@@ -601,10 +632,26 @@ void CGenCA1::Generate()
 		correct_start_time = CGLib::time();
 		// Save source rpenalty
 		rpenalty_source = rpenalty_cur;
+		InitCorAck();
 		if (method == mSWA) {
 			SWA(i, 1);
+			// Check if we have results
+			if (clib.size()) {
+				SendCorrections(i, time_start);
+				SaveCorAck();
+			}
+			else {
+				// Go forward
+				step = t_generated;
+				Adapt(step0, step - 1);
+				t_sent = t_generated;
+			}
 		}
-		else {
+		if (cor_ack) {
+			method = mScan;
+			FillPause(step, step - step0, 0);
+		}
+		if (method == mScan) {
 			s_len = s_len2;
 			clib.clear();
 			rpenalty.clear();
@@ -614,19 +661,22 @@ void CGenCA1::Generate()
 			// Full scan marked notes
 			ScanCantus(tCor, 0, &(cantus[i]));
 			rpenalty_min = 0;
+			// Check if we have results
+			if (clib.size()) {
+				SendCorrections(i, time_start);
+				SaveCorAck();
+			}
+			else {
+				// Go forward
+				step = t_generated;
+				Adapt(step0, step - 1);
+				t_sent = t_generated;
+			}
 		}
-		// Check if we have results
-		if (clib.size()) {
-			SendCorrections(i, time_start);
-		}
-		else {
-			// Go forward
-			step = t_generated;
-			Adapt(step0, step - 1);
-			t_sent = t_generated;
-		}
+		CorAck();
 	}
 	st.Format("Analyzed %d of %zu", cantus_id+1, cantus.size());
 	SetStatusText(3, st);
 	ShowStuck();
+	m_testing = 0;
 }
