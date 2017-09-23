@@ -257,6 +257,7 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result
 			ScanCantus(tEval, 1, &(m_cc));
+			LogCantus("scor", cantus_id + 1, m_cc.size(), m_cc);
 			// Go back
 			step = step0;
 			if (step < 0) break;
