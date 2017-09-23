@@ -2009,22 +2009,16 @@ void CGenCF1::SingleCantusInit() {
 		m_cc_old[i] = m_cc[i];
 	}
 	if (!swa_inrange) {
-		GetRealRange(m_c, m_cc);
+		minc = src_nmin;
+		maxc = src_nmax;
+		//GetRealRange(m_c, m_cc);
 		ApplySourceRange();
 	}
 	// Set pitch limits
 	// If too wide range is not accepted, correct range to increase scan performance
-	if (!accept[37]) {
-		for (int i = 0; i < c_len; ++i) {
-			min_cc[i] = min(minc, m_cc[i] - correct_range);
-			max_cc[i] = max(maxc, m_cc[i] + correct_range);
-		}
-	}
-	else {
-		for (int i = 0; i < c_len; ++i) {
-			min_cc[i] = m_cc[i] - correct_range;
-			max_cc[i] = m_cc[i] + correct_range;
-		}
+	for (int i = 0; i < c_len; ++i) {
+		min_cc[i] = minc;
+		max_cc[i] = maxc;
 	}
 	// Recalibrate 
 	for (int i = 0; i < c_len; ++i) {
