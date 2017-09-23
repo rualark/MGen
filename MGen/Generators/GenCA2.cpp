@@ -82,9 +82,9 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 	}
 	long long time_stop = CGLib::time();
 	// Send log
-	CString est;
-	est.Format("Sent corrections in %d ms to step %d with rp/dp/srp/variants/lib/full: %s", time_stop - time_start, step, st2);
-	WriteLog(3, est);
+	cor_log.Format("Sent corrections #%d in %d ms to %d:%d with rp/dp/srp/variants/lib/full: %s",
+		cantus_id + 1, time_stop - time_start, step0 / 8 + 1, step0 % 8 + 1, st2);
+	WriteLog(3, cor_log);
 }
 
 // Create cc, cc_len and cc_tempo
@@ -436,10 +436,28 @@ void CGenCA2::Generate() {
 		correct_start_time = CGLib::time();
 		// Save source rpenalty
 		rpenalty_source = rpenalty_cur;
+		InitCorAck();
 		if (method == mSWA) {
 			SWACP(i, 1);
+			// Check if we have results
+			if (clib.size()) {
+				SendCorrectionsCP(i, time_start);
+				SaveCorAck();
+			}
+			else {
+				// Go forward
+				step = t_generated;
+				Adapt(step0, step - 1);
+				t_sent = t_generated;
+			}
 		}
-		else {
+		if (cor_ack) {
+			method = mScan;
+			FillPause(step, step - step0, 0);
+			FillPause(step, step - step0, 1);
+			step0 = step;
+		}
+		if (method == mScan) {
 			s_len = s_len2;
 			clib.clear();
 			rpenalty.clear();
@@ -450,17 +468,19 @@ void CGenCA2::Generate() {
 			// Full scan marked notes
 			ScanCP(tCor, 0);
 			rpenalty_min = 0;
+			// Check if we have results
+			if (clib.size()) {
+				SendCorrectionsCP(i, time_start);
+				SaveCorAck();
+			}
+			else {
+				// Go forward
+				step = t_generated;
+				Adapt(step0, step - 1);
+				t_sent = t_generated;
+			}
 		}
-		// Check if we have results
-		if (clib.size()) {
-			SendCorrectionsCP(i, time_start);
-		}
-		else {
-			// Go forward
-			step = t_generated;
-			Adapt(step0, step - 1);
-			t_sent = t_generated;
-		}
+		CorAck();
 	}
 	st.Format("Analyzed %d of %d", cantus_id+1, cpoint.size());
 	SetStatusText(3, st);

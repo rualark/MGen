@@ -279,7 +279,8 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 	}
 	long long time_stop = CGLib::time();
 	// Send log
-	cor_log.Format("Sent corrections in %d ms to step %d with rp/dp/srp/variants/lib/full: %s", time_stop - time_start, step, st2);
+	cor_log.Format("Sent corrections #%d in %d ms to %d:%d with rp/dp/srp/variants/lib/full: %s", 
+		cantus_id + 1, time_stop - time_start, step0/8 + 1, step0%8 + 1, st2);
 	WriteLog(3, cor_log);
 }
 
@@ -678,5 +679,4 @@ void CGenCA1::Generate()
 	st.Format("Analyzed %d of %zu", cantus_id+1, cantus.size());
 	SetStatusText(3, st);
 	ShowStuck();
-	m_testing = 0;
 }
