@@ -257,6 +257,7 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result
 			ScanCantus(tEval, 1, &(m_cc));
+			EmulateSAS();
 			LogCantus("scor", cantus_id + 1, m_cc.size(), m_cc);
 			// Go back
 			step = step0;
@@ -429,18 +430,18 @@ void CGenCA1::EmulateSAS() {
 	for (fixed_ep2 = 1; fixed_ep2 <= m_cc.size(); ++fixed_ep2) {
 		// Show emulator status
 		CString est;
-		est.Format("SAS emulator: %d of %d", fixed_ep2, acc[cpv].size());
+		est.Format("SAS emulator: %d of %d", fixed_ep2, m_cc.size());
 		SetStatusText(7, est);
 		// Visible emulation
 		if (emulate_sas) {
 			step0 = step;
 			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
 			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
-			ScanCantus(tEval, 0, &(cantus[cantus_id]));
+			ScanCantus(tEval, 0, &(m_cc));
 		}
 		// Hidden emulation
 		else {
-			ScanCantus(tEval, -1, &(cantus[cantus_id]));
+			ScanCantus(tEval, -1, &(m_cc));
 		}
 		CheckSASEmulatorFlags();
 		nflags_prev = anflags[cpv];
@@ -561,8 +562,8 @@ void CGenCA1::CorAck() {
 
 void CGenCA1::Generate()
 {
-	CString test_st = "72 67 69 71 64 65 67 64 62 60";
-	test_cc.resize(10);
+	CString test_st = "60 62 64 71 72 74 69 67 65 67 72";
+	test_cc.resize(11);
 	StringToVector(&test_st, " ", test_cc);
 
 	CString st;

@@ -1545,7 +1545,7 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 			}
 		}
 	}
-	// Check if we have a greater neighbouring leap
+	// Check if we have a greater opposite neighbouring leap
 	if ((fleap_end < fli_size - 1 && abs(c[fli2[fleap_end + 1]] - c[leap_end]) >= leap_size-1 && leap[leap_start] * leap[leap_end]<0) ||
 		(fleap_start > 0 && abs(c[leap_start] - c[fli2[fleap_start - 1]]) > leap_size && leap[leap_start] * leap[fli2[fleap_start - 1]]<0)) {
 		// Set that we are preleaped (even if we are postleaped)
@@ -1690,25 +1690,19 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 	// Do not flag last 3rd in SAS, because it can be later converted to 5th
 	if (fleap_end == fli_size - 1 && ep2 < c_len && !leap_id) return 0;
 	// Close + 1far
-	if (mdc1 == 0 && mdc2 == 1) FLAG2(128 + leap_id, fli[fleap_start])
+	if (!mdc1 && mdc2 == 1) FLAG2(128 + leap_id, fli[fleap_start])
 		// Close + 2far
-	else if (mdc1 == 0 && mdc2 == 2) FLAG2(140 + leap_id, fli[fleap_start])
-		// No + close
-	else if (mdc1 == 2 && mdc2 == 0) FLAG2(132 + leap_id, fli[fleap_start])
+	else if (!mdc1 && mdc2 == 2) FLAG2(140 + leap_id, fli[fleap_start])
+		// Close + no
+	else if (!mdc1 && mdc2 == 3) FLAG2(108 + leap_id, fli[fleap_start])
 		// Far + close
-	else if (mdc1 == 1 && mdc2 == 0) FLAG2(59 + leap_id, fli[fleap_start])
+	else if (mdc1 == 1 && !mdc2) FLAG2(59 + leap_id, fli[fleap_start])
+		// No + close
+	else if (mdc1 == 2 && !mdc2) FLAG2(132 + leap_id, fli[fleap_start])
 		// Far + far1
-	else if (mdc1 == 1 && mdc2 == 1) {
-		if ((filled || prefilled) && accept[136 + leap_id]) FLAG2(136 + leap_id, fli[fleap_start])
-		else FLAG2(63 + leap_id, fli[fleap_start])
-	}
+	else if (mdc1 == 1 && mdc2 == 1) FLAG2(63 + leap_id, fli[fleap_start])
 	// No close
-	else if (mdc1*mdc2 != 0) {
-		if (filled || prefilled) FLAG2(136 + leap_id, fli[fleap_start])
-		else FLAG2(148 + leap_id, fli[fleap_start]);
-	}
-	// Close + no
-	else if (!mdc1 && mdc2 == 3) FLAG2(108 + leap_id, fli[fleap_start]);
+	else if (mdc1*mdc2 != 0) FLAG2(148 + leap_id, fli[fleap_start])
 	return 0;
 }
 
@@ -3620,11 +3614,12 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 check:
 	while (true) {
 		//LogCantus("CF1 ep2", ep2, m_cc);
-		//if (ep2 > 8 && MatchVectors(m_cc, test_cc, 0, ep2-1)) {
-			//CString est;
-			//est.Format("Found id %d ep2 %d cycle %lld sp1 %d sp2 %d p %d", cantus_id, ep2, cycle, sp1, sp2, p);
-			//WriteLog(1, est);
-		//}
+		if (method == mScan && task == tCor && cantus_id+1 == 16 && ep2 > 3 && MatchVectors(m_cc, test_cc, 0, ep2-1)) {
+			CString est;
+			est.Format("Found method %d id %d ep2 %d cycle %lld sp1 %d sp2 %d p %d", 
+				method, cantus_id+1, ep2, cycle, sp1, sp2, p);
+			WriteLog(1, est); 
+		}
 		// Check if dpenalty is already too high
 		if (task == tCor && !rpenalty_min) {
 			if (method == mScan) {
