@@ -181,7 +181,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;85;60;Cantus;Counterpoint;Close perfect consonances;combined;0;;;;;;;;
 1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;;;;;
 1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances;;;;;;;
-1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;non-harmonic;1;Two same non-close perfect consonances;Only for 5th consonances;;;;;;
+1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;non-harmonic;1;Two same non-close perfect consonances;Only for 5th consonances;;;;;250;
 1;250;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances;If other rules in this row did not apply;;;;;249;
 1;208;0;Cantus;Counterpoint;Direct stepwize movement;5 cadence;1;Direct movement to interval with stepwize motion in higher voice;;;;;;;
 1;209;40;Cantus;Counterpoint;Direct stepwize movement;8 cadence;1;Direct movement to interval with stepwize motion in higher voice;;;;;;;

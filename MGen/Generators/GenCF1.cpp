@@ -1251,53 +1251,29 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int 
 int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	int culm_sum = 0;
 	culm_ls = -1;
-	// Find multiple culminations at highest allowed note
-	if (ep2 < c_len) {
-		if (method == mScan && (nmax == max_cc2 || nmax - nmin == max_interval)) {
-			for (ls = 0; ls < fli_size; ++ls) {
-				if (cc[fli[ls]] == nmax) {
-					++culm_sum;
-					culm_ls = ls;
-					if (culm_sum > 1) FLAG2(12, fli[culm_ls]); 
-				}
-			}
-			if (culm_ls == -1) {
-				culm_ls = 0;
-				CString est;
-				est.Format("Warning: culm_ls cannot be detected at step %d", step);
-				WriteLog(5, est);
-			}
-			// Prohibit culminations at first steps on highest notes
-			if (cc[fli[culm_ls]] == nmax) {
-				if (culm_ls < (early_culm3 * fli_size) / 100) FLAG2(193, fli[culm_ls]);
-				if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
-				else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
-			}
+	// Do not find culminations if too early
+	if (ep2 < c_len) return 0;
+	for (ls = 0; ls < fli_size; ++ls) {
+		if (cc[fli[ls]] == nmax) {
+			++culm_sum;
+			culm_ls = ls;
+			if (culm_sum > 1) FLAG2(12, fli[culm_ls]);
 		}
 	}
-	else {
-		for (ls = 0; ls < fli_size; ++ls) {
-			if (cc[fli[ls]] == nmax) {
-				++culm_sum;
-				culm_ls = ls;
-				if (culm_sum > 1) FLAG2(12, fli[culm_ls]);
-			}
-		}
-		if (culm_ls == -1) {
-			culm_ls = 0;
-			CString est;
-			est.Format("Warning: culm_ls cannot be detected at step %d", step);
-			WriteLog(5, est);
-		}
-		// Prohibit culminations at first steps
-		if (culm_ls < (early_culm3 * fli_size)/100) FLAG2(193, fli[culm_ls]);
-		if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
-		else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
-		// Prohibit culminations at last steps
-		if (culm_ls >= fli_size - late_culm) FLAG2(21, fli[culm_ls]);
-		// Prohibit synchronized culminations
-		if (av_cnt > 1 && fli[culm_ls] == cf_culm_s) FLAG2(26, fli[culm_ls]);
+	if (culm_ls == -1) {
+		culm_ls = 0;
+		CString est;
+		est.Format("Warning: culm_ls cannot be detected at step %d", step);
+		WriteLog(5, est);
 	}
+	// Prohibit culminations at first steps
+	if (culm_ls < (early_culm3 * fli_size)/100) FLAG2(193, fli[culm_ls]);
+	if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
+	else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
+	// Prohibit culminations at last steps
+	if (culm_ls >= fli_size - late_culm) FLAG2(21, fli[culm_ls]);
+	// Prohibit synchronized culminations
+	if (av_cnt > 1 && fli[culm_ls] == cf_culm_s) FLAG2(26, fli[culm_ls]);
 	return 0;
 }
 
