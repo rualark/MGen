@@ -23,7 +23,11 @@ int continuous_integration = 0;
 int nRetCode = 0;
 vector<CString> errorMessages;
 CString pname;
-int wait_sec, wait_sec2;
+
+// Default time to start aborting generation
+int wait_sec = 60;
+// Default time to consider generation timeout
+int wait_sec2 = 120;
 
 void InitErrorMessages() {
 	errorMessages.resize(1000);
@@ -160,13 +164,12 @@ void LoadConfig() {
 		if (st.GetLength()) {
 			CGLib::Tokenize(st, ast, ";");
 			pname = ast[0];
-			wait_sec = 5;
-			wait_sec2 = 60;
 			if (ast.size() > 1 && atoi(ast[1]) > 0) wait_sec = atoi(ast[1]);
 			if (ast.size() > 2 && atoi(ast[2]) > 0) wait_sec2 = atoi(ast[2]);
 			ClearBuffer();
 			if (continuous_integration) Run("appveyor", "AddTest \"" + pname + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
 			Log("Starting test config: " + pname + "\n");
+			// MGen.exe -test=5 configs\GenCA2\good-cp5.pl
 			st2.Format("-test=%d %s", wait_sec, pname);
 			SHELLEXECUTEINFO sei = { 0 };
 			sei.cbSize = sizeof(SHELLEXECUTEINFO);

@@ -56,3 +56,4 @@ show_ignored_flags = 1 # Show even ignored flags (with strikethrough in rules.xl
 
 midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 1 # Set to export comments (violations) to midifile lyrics
+
