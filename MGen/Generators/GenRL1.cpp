@@ -32,7 +32,8 @@ void CGenRL1::Generate()
 		if (i >= t_allocated) ResizeVectors(t_allocated * 2);
 		Sleep(sleep_ms);
 		//note[i][v] = 60 + (i % 12);
-		note[i][v] = 60 + (GetVaue() % 12);
+		//note[i][v] = 60 + (GetVaue() % 12);
+		note[i][v] = 60 + GetVaueInt(0, 12, 3);
 		pause[i][v] = 0;
 		len[i][v] = 1;
 		dyn[i][v] = 100;
@@ -56,5 +57,42 @@ unsigned int CGenRL1::GetVaue()
 	delete gl;
 	return iRes;
 	*/
+	//// Return random value from 0 to RAND_MAX using randrsl
 	return rand2();
+}
+
+int CGenRL1::GetVaueInt(int iMin, int iMax, int iType)
+{
+	/*
+	1 uniform
+	2 linear low priority
+	2 linear high priority
+	*/
+	if (iType == 1)
+	{
+		/*
+		y = ax + b
+		outMax = a inMax + b
+		outMin = a inMin + b
+		a = (outMax - outMin) / (inMax - inMin)
+		b = outMax - a inMax
+		*/
+
+		float a = (float)(iMax - iMin) / (float)RAND_MAX;
+		float b =  -1 * (float)iMin;
+		// Return unsigned int random value from 0 to RAND_MAX using randrsl
+		return a * rand2() + b;
+	}
+	else if (iType == 2)
+	{
+		int iOne = randbw(iMin, iMax);
+		int iTwo = randbw(iMin, iMax);
+		return (iOne < iTwo) ? iOne : iTwo;
+	}
+	else if (iType == 3)
+	{
+		int iOne = randbw(iMin, iMax);
+		int iTwo = randbw(iMin, iMax);
+		return (iOne > iTwo) ? iOne : iTwo;
+	}
 }
