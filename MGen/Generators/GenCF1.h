@@ -185,7 +185,6 @@ protected:
 	void ShowStuck();
 	CString GetStuck();
 	void ShowFlagBlock();
-	void CalcDpenalty();
 	void SaveCantus();
 	void TestRpenalty();
 	void TestBestRpenalty();
@@ -362,9 +361,11 @@ protected:
 
   // Local
 	// Queues for calculating scan speed and displaying in status
-	int warn_clib_max = 0; // If warning of maximum clib size fired
 	deque<long long> q_scan_ms;
 	deque<long long> q_scan_cycle;
+	int warn_clib_max = 0; // If warning of maximum clib size fired
+	int scan_full = 0; // If scan was completed without timeout and interruption
+	int swa_full = 0; // If swa was completed up to maximum possible swa_steps (2 = swa_len cannot be increased)
 	int status_cycle = 0; // Scan time divided by status period (ms)
 	int cpv; // Current counterpoint voice
 	int cfv; // Current cantus voice

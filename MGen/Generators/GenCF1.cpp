@@ -1859,6 +1859,7 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
 
 void CGenCF1::ScanInit() {
 	if (!is_animating) {
+		scan_full = 0;
 		q_scan_cycle.clear();
 		q_scan_ms.clear();
 		scan_start_time = time();
@@ -3469,6 +3470,7 @@ void CGenCF1::SWA(int i, int dp) {
 	rpenalty_min = rpenalty_cur;
 	dpenalty_min = 0;
 	m_cc = cantus[i];
+	swa_full = 0;
 	int a;
 	for (a = 0; a < approximations; a++) {
 		// Save previous minimum penalty
@@ -3520,7 +3522,11 @@ void CGenCF1::SWA(int i, int dp) {
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
-				if (swa_len >= swa_steps || swa_len >= smap.size()) break;
+				if (swa_len >= swa_steps || swa_len >= smap.size()) {
+					swa_full = 1;
+					if (swa_len >= smap.size()) swa_full = 2;
+					break;
+				}
 				++swa_len;
 			}
 		}
@@ -3533,6 +3539,7 @@ void CGenCF1::SWA(int i, int dp) {
 					for (int x = 0; x < max_flags; ++x) {
 						if (best_flags[x]) ++ssf[x];
 					}
+					swa_full = 1;
 					break;
 				}
 				else ++swa_len;
@@ -3763,7 +3770,10 @@ check:
 			if ((p == 0) || (wid == 0)) {
 				// Sliding Windows Approximation
 				if (method == mSWA) {
-					if (NextSWA(m_cc, m_cc_old)) break;
+					if (NextSWA(m_cc, m_cc_old)) {
+						scan_full = 1;
+						break;
+					}
 					goto check;
 				}
 				if (random_seed && random_range && accept_reseed) {
@@ -3773,6 +3783,7 @@ check:
 					goto check;
 				}
 				WriteLog(0, "Last variant in first window reached");
+				scan_full = 1;
 				break;
 			}
 			ShowBestRejected(m_cc);

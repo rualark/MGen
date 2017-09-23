@@ -1320,6 +1320,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	best_flags = flags;
 	dpenalty_min = 0;
 	acc = cpoint[i];
+	swa_full = 0;
 	int a;
 	for (a = 0; a < approximations; a++) {
 		if (need_exit) break;
@@ -1407,7 +1408,11 @@ void CGenCP1::SWACP(int i, int dp) {
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
-				if (swa_len >= swa_steps || swa_len >= smap.size())	break;
+				if (swa_len >= swa_steps || swa_len >= smap.size()) {
+					swa_full = 1;
+					if (swa_len >= smap.size()) swa_full = 2;
+					break;
+				}
 				++swa_len;
 			}
 		}
@@ -1420,6 +1425,7 @@ void CGenCP1::SWACP(int i, int dp) {
 					if (best_flags.size()) for (int x = 0; x < max_flags; ++x) {
 						if (best_flags[x]) ++ssf[x];
 					}
+					swa_full = 1;
 					break;
 				}
 				else ++swa_len;
@@ -1801,7 +1807,10 @@ check:
 			if ((p == 0) || (wid == 0)) {
 				// Sliding Windows Approximation
 				if (method == mSWA) {
-					if (NextSWA(acc[cpv], acc_old[cpv])) break;
+					if (NextSWA(acc[cpv], acc_old[cpv])) {
+						scan_full = 1;
+						break;
+					}
 					goto check;
 				}
 				if (random_seed && random_range && accept_reseed) {
@@ -1811,6 +1820,7 @@ check:
 					goto check;
 				}
 				WriteLog(0, "Last variant in first window reached");
+				scan_full = 1;
 				break;
 			}
 			ShowBestRejectedCP();
