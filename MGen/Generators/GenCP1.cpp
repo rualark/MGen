@@ -752,6 +752,8 @@ int CGenCP1::FailRhythm5() {
 		// Build note lengths
 		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
+			if (!ms && fn) pos = fn + max(0, fli[ls2] - s);
+			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
 			if (ep2 != c_len && ls2 == fli_size - 1) {
 				// Whole inside
