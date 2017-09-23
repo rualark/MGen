@@ -388,6 +388,8 @@ protected:
 	vector<int> m_slur; // [s] 
 	vector<float> macc; // [s] CC moving average
 	vector<float> macc2; // [s] CC moving average smoothed
+	int macc_range = 0; // Steps outside window used to build macc
+	int macc2_range = 0; // Steps outside window used to build macc2
 	vector<float> decc; // [s] CC deviation
 	vector<float> decc2; // [s] CC deviation smoothed
 	vector<float> fpenalty; // [r_id] Additional penalty for flags

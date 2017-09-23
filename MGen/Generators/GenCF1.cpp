@@ -679,6 +679,8 @@ void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
 void CGenCF1::MakeMacc(vector<int> &cc) {
 	int pos1, pos2;
 	int ma_range = 2 * minl;
+	macc_range = ma_range;
+	macc2_range = ma_range * 2;
 	// Deviation weight
 	maw.clear();
 	for (int i = 0; i <= ma_range; ++i) {
@@ -722,9 +724,10 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 		ls_max2 = ls + notes;
 		// Loop inside each window
 		for (int ls2 = ls; ls2 < ls_max2; ++ls2) {
-			s = fli[ls2];
-			if (macc2[s] < lmin) lmin = macc2[s];
-			if (macc2[s] > lmax) lmax = macc2[s];
+			for (s = fli[ls2]; s <= fli2[ls2]; ++s) {
+				if (macc2[s] < lmin) lmin = macc2[s];
+				if (macc2[s] > lmax) lmax = macc2[s];
+			}
 		}
 		// Check range
 		if (lmax - lmin < mrange) FLAG2(flag, fli[ls]);
