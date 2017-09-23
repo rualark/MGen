@@ -1672,6 +1672,8 @@ check:
 			ShowScanStatus();
 			status_cycle = scycle;
 		}
+		// Save last second for analysis
+		if (m_testing && task == tCor && time - gen_start_time > (m_test_sec - 1) * 1000) break;
 		// Limit SAS correction time
 		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
