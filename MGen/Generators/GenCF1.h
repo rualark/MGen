@@ -133,7 +133,7 @@ protected:
 	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
 	inline int FailFirstNotes(vector<int>& pc);
 	inline int FailLastNotes(vector<int>& pc, vector<int>& pcc);
-	inline void CreateLinks(vector<int>& c);
+	inline void CreateLinks(vector<int>& cc, int multivoice);
 	inline void CountFillInit(vector<int>& c, int tail_len, int pre, int & t1, int & t2, int & fill_finish);
 	inline void CountFill(vector<int>& c, int tail_len, vector<int>& nstat2, vector<int>& nstat3, int & skips, int & fill_to, int pre, int & fill_to_pre, int & fill_from_pre, int & fill_from, int & deviates, int & dev_count, int leap_prev, int & fill_finish);
 	inline void CountFillSkips(int leap_prev, int & skips, int t1, int t2);
@@ -185,7 +185,6 @@ protected:
 	void ShowStuck();
 	CString GetStuck();
 	void ShowFlagBlock();
-	void CalcDpenalty();
 	void SaveCantus();
 	void TestRpenalty();
 	void TestBestRpenalty();
@@ -340,6 +339,7 @@ protected:
 	int transpose_back = 0; // Set to 1 to transpose generated melody closer to initial first note. Can be set to 1 only for CF1 generation algorithms
 
 	// CA1
+	int cor_ack = 0; // Acknowledge correction results by running both algorithms: SAS and ASWA
 	int correct_range = 4; // Maximum interval allowed between each source and corrected note
 	int correct_inrange = 0; // Limit allowed range of corrected melody to range of source melody
 	int animate = 100; // Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
@@ -362,9 +362,11 @@ protected:
 
   // Local
 	// Queues for calculating scan speed and displaying in status
-	int warn_clib_max = 0; // If warning of maximum clib size fired
 	deque<long long> q_scan_ms;
 	deque<long long> q_scan_cycle;
+	int warn_clib_max = 0; // If warning of maximum clib size fired
+	int scan_full = 0; // If scan was completed without timeout and interruption
+	int swa_full = 0; // If swa was completed up to maximum possible swa_steps (2 = swa_len cannot be increased)
 	int status_cycle = 0; // Scan time divided by status period (ms)
 	int cpv; // Current counterpoint voice
 	int cfv; // Current cantus voice
@@ -386,6 +388,8 @@ protected:
 	vector<int> m_slur; // [s] 
 	vector<float> macc; // [s] CC moving average
 	vector<float> macc2; // [s] CC moving average smoothed
+	int macc_range = 0; // Steps outside window used to build macc
+	int macc2_range = 0; // Steps outside window used to build macc2
 	vector<float> decc; // [s] CC deviation
 	vector<float> decc2; // [s] CC deviation smoothed
 	vector<float> fpenalty; // [r_id] Additional penalty for flags

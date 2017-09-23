@@ -276,7 +276,7 @@ int CGenCP1::SendCP() {
 		WriteLog(5, "Critical error: ResizeVectors mutex timed out");
 	}
 	for (int av = 0; av < av_cnt; ++av) {
-		CreateLinks(ac[av]);
+		CreateLinks(ac[av], av == cpv);
 		MakeMacc(acc[av]);
 		pos = step;
 		// Sent voice is the same as acc voice
@@ -564,11 +564,11 @@ int CGenCP1::FailDis() {
 		else if (rpos[ls] == pLeap) FLAG2(187, s)
 		else {
 			FLAG2(169, s)
-			// Check if discord is longer than neighboring consonance
-			if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s)
-			else if (ls < fli_size - 2 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis) 
-				FLAG2(223, s);
 		}
+		// Check if discord is longer than neighboring consonance
+		if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s)
+		else if (ls < fli_size - 2 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis)
+			FLAG2(223, s);
 	}
 	return 0;
 }
@@ -752,12 +752,15 @@ int CGenCP1::FailRhythm5() {
 		// Build note lengths
 		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
+			if (!ms && fn) pos = fn + max(0, fli[ls2] - s);
+			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
 			if (ep2 != c_len && ls2 == fli_size - 1) {
 				// Whole inside
 				if (llen[ls2] >= 8 && !pos && !sus[ls2]) FLAG2(236, s)
 				// 1/8 syncope
-				else if (llen[ls2] > 1 && pos % 2) FLAG2(232, fli[ls2])
+				else if (llen[ls2] > 1 && pos % 2) 
+					FLAG2(232, fli[ls2])
 				// 1/4 syncope
 				else if (llen[ls2] > 2 && pos % 4 == 2) FLAG2(235, fli[ls2])
 				full_measure = 0;
@@ -1320,6 +1323,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	best_flags = flags;
 	dpenalty_min = 0;
 	acc = cpoint[i];
+	swa_full = 0;
 	int a;
 	for (a = 0; a < approximations; a++) {
 		if (need_exit) break;
@@ -1407,7 +1411,11 @@ void CGenCP1::SWACP(int i, int dp) {
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {
-				if (swa_len >= swa_steps || swa_len >= smap.size())	break;
+				if (swa_len >= swa_steps || swa_len >= smap.size()) {
+					swa_full = 1;
+					if (swa_len >= smap.size()) swa_full = 2;
+					break;
+				}
 				++swa_len;
 			}
 		}
@@ -1420,6 +1428,7 @@ void CGenCP1::SWACP(int i, int dp) {
 					if (best_flags.size()) for (int x = 0; x < max_flags; ++x) {
 						if (best_flags[x]) ++ssf[x];
 					}
+					swa_full = 1;
 					break;
 				}
 				else ++swa_len;
@@ -1666,11 +1675,13 @@ check:
 			ShowScanStatus();
 			status_cycle = scycle;
 		}
+		// Save last second for analysis
+		if (m_testing && task == tCor && time - gen_start_time > (m_test_sec - 1) * 1000) break;
 		// Limit SAS correction time
 		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], 0, ep2);
-		CreateLinks(acc[cpv]);
+		CreateLinks(acc[cpv], 1);
 		//CreateULinks();
 		if (minor_cur) {
 			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;
@@ -1801,7 +1812,10 @@ check:
 			if ((p == 0) || (wid == 0)) {
 				// Sliding Windows Approximation
 				if (method == mSWA) {
-					if (NextSWA(acc[cpv], acc_old[cpv])) break;
+					if (NextSWA(acc[cpv], acc_old[cpv])) {
+						scan_full = 1;
+						break;
+					}
 					goto check;
 				}
 				if (random_seed && random_range && accept_reseed) {
@@ -1811,6 +1825,7 @@ check:
 					goto check;
 				}
 				WriteLog(0, "Last variant in first window reached");
+				scan_full = 1;
 				break;
 			}
 			ShowBestRejectedCP();

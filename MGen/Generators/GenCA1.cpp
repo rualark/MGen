@@ -241,7 +241,8 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 			ccount++;
 			if (ccount > corrections) break;
 			// Write log
-			st.Format("%.0f/%d/%.0f/%zu/%zu ", rpenalty_min, dpenalty_min, rpenalty_source, cids.size(), clib.size());
+			st.Format("%.0f/%d/%.0f/%zu/%zu/%d:%d ", rpenalty_min, dpenalty_min, 
+				rpenalty_source, cids.size(), clib.size(), swa_full, scan_full);
 			st2 += st;
 			// Show initial melody again if this is not first iteration
 			if (ccount > 1) {
@@ -256,6 +257,8 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result
 			ScanCantus(tEval, 1, &(m_cc));
+			EmulateSAS();
+			LogCantus("scor", cantus_id + 1, m_cc.size(), m_cc);
 			// Go back
 			step = step0;
 			if (step < 0) break;
@@ -278,9 +281,9 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 	}
 	long long time_stop = CGLib::time();
 	// Send log
-	CString est;
-	est.Format("Sent corrections in %d ms to step %d with rp/dp/srp/variants/lib: %s", time_stop - time_start, step, st2);
-	WriteLog(3, est);
+	cor_log.Format("Sent corrections #%d in %d ms to %d:%d with rp/dp/srp/variants/lib/full: %s", 
+		cantus_id + 1, time_stop - time_start, step0/8 + 1, step0%8 + 1, st2);
+	WriteLog(3, cor_log);
 }
 
 void CGenCA1::ParseExpect() {
@@ -427,18 +430,18 @@ void CGenCA1::EmulateSAS() {
 	for (fixed_ep2 = 1; fixed_ep2 <= m_cc.size(); ++fixed_ep2) {
 		// Show emulator status
 		CString est;
-		est.Format("SAS emulator: %d of %d", fixed_ep2, acc[cpv].size());
+		est.Format("SAS emulator: %d of %d", fixed_ep2, m_cc.size());
 		SetStatusText(7, est);
 		// Visible emulation
 		if (emulate_sas) {
 			step0 = step;
 			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
 			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
-			ScanCantus(tEval, 0, &(cantus[cantus_id]));
+			ScanCantus(tEval, 0, &(m_cc));
 		}
 		// Hidden emulation
 		else {
-			ScanCantus(tEval, -1, &(cantus[cantus_id]));
+			ScanCantus(tEval, -1, &(m_cc));
 		}
 		CheckSASEmulatorFlags();
 		nflags_prev = anflags[cpv];
@@ -525,10 +528,42 @@ void CGenCA1::ConfirmExpect() {
 	}
 }
 
+void CGenCA1::InitCorAck() {
+	if (!cor_ack) return;
+	cor_ack_dp.clear();
+	cor_ack_rp.clear();
+	cor_ack_st.clear();
+	cor_log = "";
+	method = mSWA;
+}
+
+void CGenCA1::SaveCorAck() {
+	if (!cor_ack) return;
+	// Do not check if scan was aborted
+	if (!scan_full) return;
+	// Do not check if scan was aborted
+	if (method == mSWA && !swa_full) return;
+	cor_ack_dp.push_back(dpenalty_min);
+	cor_ack_rp.push_back(rpenalty_min);
+	cor_ack_st.push_back(cor_log);
+}
+
+void CGenCA1::CorAck() {
+	CString est;
+	if (!cor_ack || cor_ack_dp.size() < 2 || cor_ack_rp.size() < 2 || cor_ack_st.size() < 2) return;
+	if (cor_ack_dp[0] == cor_ack_dp[1] && cor_ack_rp[0] == cor_ack_rp[1]) {
+		est.Format("Correction acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
+		WriteLog(6, est);
+		return;
+	}
+	est.Format("Correction not acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
+	WriteLog(1, est);
+}
+
 void CGenCA1::Generate()
 {
-	CString test_st = "72 67 69 71 64 65 67 64 62 60";
-	test_cc.resize(10);
+	CString test_st = "60 72 71 69 67 71 67 69 71 67 65 64 62 59 60";
+	test_cc.resize(15);
 	StringToVector(&test_st, " ", test_cc);
 
 	CString st;
@@ -600,10 +635,26 @@ void CGenCA1::Generate()
 		correct_start_time = CGLib::time();
 		// Save source rpenalty
 		rpenalty_source = rpenalty_cur;
+		InitCorAck();
 		if (method == mSWA) {
 			SWA(i, 1);
+			// Check if we have results
+			if (clib.size()) {
+				SendCorrections(i, time_start);
+				SaveCorAck();
+			}
+			else {
+				// Go forward
+				step = t_generated;
+				Adapt(step0, step - 1);
+				t_sent = t_generated;
+			}
 		}
-		else {
+		if (cor_ack) {
+			method = mScan;
+			FillPause(step, step - step0, 0);
+		}
+		if (method == mScan) {
 			s_len = s_len2;
 			clib.clear();
 			rpenalty.clear();
@@ -613,17 +664,19 @@ void CGenCA1::Generate()
 			// Full scan marked notes
 			ScanCantus(tCor, 0, &(cantus[i]));
 			rpenalty_min = 0;
+			// Check if we have results
+			if (clib.size()) {
+				SendCorrections(i, time_start);
+				SaveCorAck();
+			}
+			else {
+				// Go forward
+				step = t_generated;
+				Adapt(step0, step - 1);
+				t_sent = t_generated;
+			}
 		}
-		// Check if we have results
-		if (clib.size()) {
-			SendCorrections(i, time_start);
-		}
-		else {
-			// Go forward
-			step = t_generated;
-			Adapt(step0, step - 1);
-			t_sent = t_generated;
-		}
+		CorAck();
 	}
 	st.Format("Analyzed %d of %zu", cantus_id+1, cantus.size());
 	SetStatusText(3, st);
