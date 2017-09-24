@@ -92,7 +92,7 @@ CString file(CString fname) {
 		fs.getline(pch, 2550);
 		st2 = pch;
 		if (!st2.IsEmpty()) {
-			st += "- " + st2 + "\n";
+			st += "> " + st2 + "\n";
 		}
 	}
 	fs.close();

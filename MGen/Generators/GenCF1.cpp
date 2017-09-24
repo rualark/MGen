@@ -2058,6 +2058,9 @@ void CGenCF1::GetRealRange(vector<int>& c, vector<int>& cc) {
 		minc = cc[0] - max_interval;
 		maxc = cc[c_len - 1] + max_interval;
 	}
+	if (maxc > 127) {
+		WriteLog(5, "Wow3");
+	}
 	if (random_range) {
 		if (maxc - minc > max_interval) {
 			int rstart = randbw(0, maxc - minc - max_interval);
@@ -2099,7 +2102,7 @@ void CGenCF1::SingleCantusInit() {
 		minc = src_nmin;
 		maxc = src_nmax;
 		//GetRealRange(m_c, m_cc);
-		ApplySourceRange();
+		//ApplySourceRange();
 	}
 	// Set pitch limits
 	// If too wide range is not accepted, correct range to increase scan performance
@@ -2299,6 +2302,11 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	CalculateCcOrder(m_cc_old, 0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
 	FillCantus(cc, 0, c_len, cc_order);
+	for (int x = 0; x < cc.size(); ++x) {
+		if (cc[x] > 127) {
+			WriteLog(5, "Wow2");
+		}
+	}
 }
 
 void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
@@ -3384,6 +3392,7 @@ void CGenCF1::RandomSWA()
 		if (need_exit) break;
 		// Load first note, because it was overwritten by random generator
 		first_note = first_note0;
+		last_note = last_note0;
 		// Create random cantus
 		task = tGen;
 		MakeNewCantus(m_c, m_cc);
@@ -3628,8 +3637,8 @@ check:
 			ShowScanStatus();
 			status_cycle = scycle;
 		}
-		// Save last second for analysis
-		if (m_testing && task == tCor && time - gen_start_time > (m_test_sec - 1) * 1000) break;
+		// Save last second for analysis  
+		if (m_testing && task == tCor && m_algo_id != 101 && time - gen_start_time > (m_test_sec - 1) * 1000) break;
 		// Limit SAS correction time
 		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		// Calculate diatonic limits
@@ -3802,6 +3811,7 @@ void CGenCF1::Generate()
 	StringToVector(&test_st, " ", test_cc);
 
 	first_note0 = first_note;
+	last_note0 = last_note;
 	// Voice
 	int v = 0;
 	//TestDiatonic();

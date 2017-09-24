@@ -246,6 +246,7 @@ protected:
 	int first_note = 72; // Starting note of each cantus
 	int first_note0 = 0; // Saved first note during generation
 	int last_note = 72; // Ending note of each cantus
+	int last_note0 = 0; // Saved last note during generation
 	int fill_steps_mul = 2; // Multiply number of notes between leap notes to get steps for filling
 	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
 	int max_smooth_direct = 5; // Maximum linear movement in one direction allowed (in steps)
