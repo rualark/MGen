@@ -1324,6 +1324,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	dpenalty_min = 0;
 	acc = cpoint[i];
 	swa_full = 0;
+	best_flags.clear();
 	int a;
 	for (a = 0; a < approximations; a++) {
 		if (need_exit) break;

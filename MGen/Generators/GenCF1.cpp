@@ -3457,6 +3457,7 @@ void CGenCF1::SWA(int i, int dp) {
 	dpenalty_min = 0;
 	m_cc = cantus[i];
 	swa_full = 0;
+	best_flags.clear();
 	int a;
 	for (a = 0; a < approximations; a++) {
 		// Save previous minimum penalty
@@ -3638,7 +3639,8 @@ check:
 			status_cycle = scycle;
 		}
 		// Save last second for analysis  
-		if (m_testing && task == tCor && m_algo_id != 101 && time - gen_start_time > (m_test_sec - 1) * 1000) break;
+		if (m_testing && task == tCor && m_algo_id != 101 && time - gen_start_time > (m_test_sec - 1) * 1000) 
+			break;
 		// Limit SAS correction time
 		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		// Calculate diatonic limits
