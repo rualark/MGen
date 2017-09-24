@@ -242,6 +242,7 @@ void CGenCA2::LinkCpPauses() {
 }
 
 void CGenCA2::EmulateSASCP() {
+	if (need_exit) return;
 	// Save full analysis flags
 	nflags_full = anflags[cpv];
 	flags_full = flags;

@@ -112,15 +112,19 @@ void CMGenView::OnDraw(CDC* pDC)
 	// Total scrollable size
 	//CSize Size = GetTotalSize();
 
-	CMemDC2 dc(pDC);
-	dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
-
-	if (!mf->m_state_gen || !pGen || !pGen->t_generated) return;
+	if (!mf->m_state_gen || !pGen || !pGen->t_generated) {
+		CMemDC2 dc(pDC);
+		dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
+		return;
+	}
 
 	if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
 		mf->WriteLog(2, "OnDraw mutex timed out: drawing postponed");
 		return;
 	}
+
+	CMemDC2 dc(pDC);
+	dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
 
 	Graphics g(dc->m_hDC);
 	//CClientDC aDC(this); //получить контекст устройства
