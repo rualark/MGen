@@ -436,10 +436,10 @@ void CMGenView::OnDraw(CDC* pDC)
 					SolidBrush brush_v(mcolor);
 					mark = pGen->mark[i][v];
 					if (dc.GetTextExtent(mark).cx > MARK_BACK * nwidth) {
-						mark = "...";
+						mark = ".";
 						if (!warning_mark_long) {
 							++warning_mark_long;
-							mf->WriteLog(1, "Warning: Mark is too long for current zoom and was replaced with '...'. Solution: increase Zoom level, increase MARK_BACK or decrease mark string length in algorithm.");
+							mf->WriteLog(0, "Warning: Mark is too long for current zoom and was replaced with '.'. Solution: increase Zoom level, increase MARK_BACK or decrease mark string length in algorithm.");
 						}
 					}
 					CStringW wst(mark);

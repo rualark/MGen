@@ -339,7 +339,9 @@ void CMainFrame::ShowLog(int log, CString st)
 	if (log == 2) pOL = &m_wndOutput.m_wndOutputPerf;
 	if (log == 3) pOL = &m_wndOutput.m_wndOutputAlgo;
 	if (log == 4) pOL = &m_wndOutput.m_wndOutputMidi;
-	if (log == 6) pOL = &m_wndOutput.m_wndOutputTest;
+	if (log == 6) pOL = &m_wndOutput.m_wndOutputConfirm;
+	if (log == 7) pOL = &m_wndOutput.m_wndOutputEmu;
+	if (log == 8) pOL = &m_wndOutput.m_wndOutputCorack;
 	if (pOL) {
 		pOL->AddString(st);
 		if (pOL->GetCount() > 1000) pOL->DeleteString(0);
@@ -531,7 +533,9 @@ void CMainFrame::ClearLogs() {
 	m_wndOutput.m_wndOutputDebug.ResetContent();
 	m_wndOutput.m_wndOutputWarn.ResetContent();
 	m_wndOutput.m_wndOutputAlgo.ResetContent();
-	m_wndOutput.m_wndOutputTest.ResetContent();
+	m_wndOutput.m_wndOutputConfirm.ResetContent();
+	m_wndOutput.m_wndOutputEmu.ResetContent();
+	m_wndOutput.m_wndOutputCorack.ResetContent();
 	// Clear status lines
 	for (int i=0; i<STATUS_LINES; ++i) CGLib::SetStatusText(i, "");
 }

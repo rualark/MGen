@@ -62,10 +62,12 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndOutputWarn.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
 		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputAlgo.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputMidi.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputTest.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputPerf.Create(dwStyle, rectDummy, &m_wndTabs, 4))
+		!m_wndOutputAlgo.Create(dwStyle, rectDummy, &m_wndTabs, 4) ||
+		!m_wndOutputMidi.Create(dwStyle, rectDummy, &m_wndTabs, 5) ||
+		!m_wndOutputConfirm.Create(dwStyle, rectDummy, &m_wndTabs, 6) ||
+		!m_wndOutputEmu.Create(dwStyle, rectDummy, &m_wndTabs, 7) ||
+		!m_wndOutputCorack.Create(dwStyle, rectDummy, &m_wndTabs, 8) ||
+		!m_wndOutputPerf.Create(dwStyle, rectDummy, &m_wndTabs, 9))
 	{
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
@@ -78,7 +80,9 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndTabs.AddTab(&m_wndOutputPerf, " Performance     ", (UINT)2);
 	m_wndTabs.AddTab(&m_wndOutputAlgo, " Algorithm     ", (UINT)3);
 	m_wndTabs.AddTab(&m_wndOutputMidi, " MIDI out     ", (UINT)4);
-	m_wndTabs.AddTab(&m_wndOutputTest, " Testing     ", (UINT)5);
+	m_wndTabs.AddTab(&m_wndOutputConfirm, " Rule confirmations     ", (UINT)5);
+	m_wndTabs.AddTab(&m_wndOutputEmu, " SAS emulator     ", (UINT)6);
+	m_wndTabs.AddTab(&m_wndOutputCorack, " Correction acknowledge     ", (UINT)7);
 
 	return 0;
 }
@@ -117,7 +121,9 @@ void COutputWnd::UpdateFonts()
 	m_wndOutputPerf.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputAlgo.SetFont(&afxGlobalData.fontRegular);
 	m_wndOutputMidi.SetFont(&afxGlobalData.fontRegular);
-	m_wndOutputTest.SetFont(&afxGlobalData.fontRegular);
+	m_wndOutputConfirm.SetFont(&afxGlobalData.fontRegular);
+	m_wndOutputEmu.SetFont(&afxGlobalData.fontRegular);
+	m_wndOutputCorack.SetFont(&afxGlobalData.fontRegular);
 }
 
 /////////////////////////////////////////////////////////////////////////////
