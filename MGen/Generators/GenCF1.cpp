@@ -1053,6 +1053,8 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 			// Search for repeat of note at same beat until last three notes
 			int finish = ls + scan_len;
 			if (finish > fli_size - rlen) finish = fli_size - rlen;
+			// Do not analyse last note if end of scan window
+			if (finish >= fli_size - rlen && ep2 < c_len) --finish;
 			for (int x = ls + 2; x <= finish; ++x) {
 				f = fli2[x];
 				f1 = fli2[x + 1];
@@ -1090,6 +1092,8 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, in
 		s1 = fli2[ls + 1];
 		int finish = ls + scan_len;
 		if (finish > fli_size - rlen) finish = fli_size - rlen;
+		// Do not analyse last note if end of scan window
+		if (finish >= fli_size - rlen && ep2 < c_len) --finish;
 		for (int x = ls + rlen; x <= finish; ++x) {
 			f = fli2[x];
 			f1 = fli2[x + 1];
