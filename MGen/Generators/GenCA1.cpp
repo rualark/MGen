@@ -373,7 +373,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 				est.Format("+ SAS emulator at step %d replaced flag [%d] with: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 					ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
-				WriteLog(6, est);
+				WriteLog(7, est);
 				if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 				continue;
 			}
@@ -387,7 +387,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					est.Format("+ SAS emulator at step %d assigned moved flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
-					WriteLog(6, est);
+					WriteLog(7, est);
 					if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 					continue;
 				}
@@ -414,7 +414,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					est.Format("+ SAS emulator at step %d replaced and moved flag %d with: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 						ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
-					WriteLog(6, est);
+					WriteLog(7, est);
 					if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 					continue;
 				}
@@ -557,8 +557,8 @@ void CGenCA1::CorAck() {
 	CString est;
 	if (!cor_ack || cor_ack_dp.size() < 2 || cor_ack_rp.size() < 2 || cor_ack_st.size() < 2) return;
 	if (cor_ack_dp[0] == cor_ack_dp[1] && cor_ack_rp[0] == cor_ack_rp[1]) {
-		est.Format("+ Correction acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
-		WriteLog(6, est);
+		est.Format("+ Correction acknowledged in %s: %s %s", midi_file, cor_ack_st[0], cor_ack_st[1]);
+		WriteLog(8, est);
 		if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 		return;
 	}

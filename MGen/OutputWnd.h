@@ -53,7 +53,9 @@ public:
 	COutputList m_wndOutputPerf;
 	COutputList m_wndOutputAlgo;
 	COutputList m_wndOutputMidi;
-	COutputList m_wndOutputTest;
+	COutputList m_wndOutputConfirm;
+	COutputList m_wndOutputEmu;
+	COutputList m_wndOutputCorack;
 
 	// Attributes
 protected:

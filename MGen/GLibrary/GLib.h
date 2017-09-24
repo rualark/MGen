@@ -9,7 +9,7 @@
 // Number of status lines
 #define STATUS_LINES 9
 // Number of log tabs
-#define LOG_TABS 7
+#define LOG_TABS 9
 // Check for new logs every X ms
 #define LOG_TIMER 50
 // Send no more than Y logs every time when checking (maximum stable frequency is LOG_MAX_SEND / LOG_TIMER)
@@ -21,7 +21,7 @@
 // Warn if status frequency is above this value
 #define WARN_STATUS_FREQ 1000
 // Warn if log frequency is above this value
-#define WARN_LOG_FREQ 100
+#define WARN_LOG_FREQ 1000
 
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
