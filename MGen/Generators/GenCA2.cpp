@@ -443,7 +443,7 @@ void CGenCA2::Generate() {
 			SWACP(i, 1);
 			// Check if we have results
 			if (clib.size()) {
-				//SendCorrectionsCP(i, time_start);
+				SendCorrectionsCP(i, time_start);
 				SaveCorAck();
 			}
 			else {
