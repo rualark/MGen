@@ -106,7 +106,7 @@ void ClearBuffer() {
 	remove("autotest\\exit.log");
 }
 
-void PublishTest(CString tname, int result, int tpassed) {
+void PublishTest(CString tname, int result, int tpassed, CString params) {
 	CString emes = GetErrorMessage(result);
 	CString st;
 	CString st2;
@@ -129,7 +129,7 @@ void PublishTest(CString tname, int result, int tpassed) {
 		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log 2>&1", tname, tpassed, cat, result, emes);
 		Run("appveyor", st, 1000);
 		// Send errors separately in case of command line overflow
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1", tname, tpassed, cat, result, emes, errors);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -StdOut \"MGen.exe %s\" -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1", tname, tpassed, cat, result, emes, params, errors);
 		Run("appveyor", st, 1000);
 	}
 }
@@ -168,9 +168,9 @@ void LoadConfig() {
 			if (ast.size() > 2 && atoi(ast[2]) > 0) wait_sec2 = atoi(ast[2]);
 			ClearBuffer();
 			if (continuous_integration) Run("appveyor", "AddTest \"" + pname + "\" -Framework MSTest -FileName MGen.exe -Outcome Running >> autotest\\run.log 2>&1", 1000);
-			Log("Starting test config: " + pname + "\n");
 			// MGen.exe -test=5 configs\GenCA2\good-cp5.pl
 			st2.Format("-test=%d %s", wait_sec, pname);
+			Log("Starting test config: " + st2 + "\n");
 			SHELLEXECUTEINFO sei = { 0 };
 			sei.cbSize = sizeof(SHELLEXECUTEINFO);
 			sei.fMask = SEE_MASK_NOCLOSEPROCESS;
@@ -193,7 +193,7 @@ void LoadConfig() {
 			if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 100;
 			if (!CGLib::fileExists("autotest\\exit.log")) ecode = 101;
 
-			PublishTest(pname, ecode, passed);
+			PublishTest(pname, ecode, passed, st2);
 		}
 	}
 	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log >> run.log 2>&1", 1000);
