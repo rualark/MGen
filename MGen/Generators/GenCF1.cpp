@@ -1256,20 +1256,19 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 }
 
 int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int notes, int flag) {
-	CHECK_READY("nmin");
-	// Do not test if flag disabled and not testing
+	CHECK_READY("nmin,fli");
+	// Do not test if flag disabled and not evaluating
 	if (task != tEval && accept[flag] == -1) return 0;
 	// Clear nstat
 	for (int i = nmin; i <= nmax; ++i) nstat[i] = 0;
-	// Prohibit stagnation only for non-slurred notes
-	++nstat[cc[0]];
-	for (int i = 1; i < ep2; ++i) if (cc[i-1] != cc[i]) {
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
 		// Add new note to stagnation array
-		++nstat[cc[i]];
+		++nstat[cc[s]];
 		// Subtract old note
-		if ((i >= steps)) --nstat[cc[i - steps]];
+		if (ls >= steps) --nstat[cc[fli[ls - steps]]];
 		// Check if too many repeating notes
-		if (nstat[cc[i]] > notes) FLAG2(flag, i);
+		if (nstat[cc[s]] > notes) FLAG2(flag, s);
 	}
 	return 0;
 }
