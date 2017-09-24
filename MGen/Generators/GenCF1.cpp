@@ -750,7 +750,7 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 
 // Count limits
 void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2, int &nmin, int &nmax) {
-	SET_READY("nmin");
+	SET_READY("nmin,nmind");
 	// Calculate range
 	nmin = MAX_NOTE;
 	nmax = 0;
@@ -758,6 +758,9 @@ void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2, int &nmin
 		if (cc[i] < nmin) nmin = cc[i];
 		if (cc[i] > nmax) nmax = cc[i];
 	}
+	// Calculate diatonic limits
+	nmind = CC_C(nmin, tonic_cur, minor_cur);
+	nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 }
 
 // Clear flags
@@ -1177,6 +1180,8 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 
 // Calculate global leap smooth slur variables
 void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
+	CHECK_READY("c");
+	SET_READY("leap,smooth,slur");
 	for (int i = 0; i < ep2 - 1; ++i) {
 		// Find all leaps
 		leap[i] = 0;
@@ -1196,6 +1201,7 @@ void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 
 // Check if too many leaps
 int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
+	CHECK_READY("leap,smooth,c,llen,fli");
 	// Clear variables
 	int leap_sum2 = 0;
 	int thirds_sum = 0;
@@ -1672,8 +1678,8 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 	return 0;
 }
 
-int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3)
-{
+int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3) {
+	CHECK_READY("leap,smooth,c,fli,bli");
 	// Get leap size, start, end
 	// Check if leap is compensated (without violating compensation rules)
 	// If leap is not compensated, check uncompensated rules
@@ -1826,6 +1832,7 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 
 // Check tritone t1-t2 which has to resolve from ta to tb
 int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+	CHECK_READY("pcc,c,fli,bli");
 	int found;
 	int res1 = 0; // First note resolution flag
 	int res2 = 0; // Second note resolution flag
@@ -1911,6 +1918,7 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 
 int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
+	CHECK_READY("fli,c,pc,pcc");
 	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s0 = fli[ls];
 		s = fli2[ls];
@@ -1945,8 +1953,8 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 }
 
 // Calculate global fill
-int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2)
-{
+int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2) {
+	CHECK_READY("nmind");
 	// Clear nstat
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
 	// Count nstat
@@ -2089,9 +2097,6 @@ void CGenCF1::GetRealRange(vector<int>& c, vector<int>& cc) {
 		minc = cc[0] - max_interval;
 		maxc = cc[c_len - 1] + max_interval;
 	}
-	if (maxc > 127) {
-		WriteLog(5, "Wow3");
-	}
 	if (random_range) {
 		if (maxc - minc > max_interval) {
 			int rstart = randbw(0, maxc - minc - max_interval);
@@ -2119,6 +2124,7 @@ void CGenCF1::ApplySourceRange() {
 }
 
 void CGenCF1::SingleCantusInit() {
+	SET_READY_PERSIST("cc_old");
 	// Copy cantus
 	m_cc = *scantus;
 	// Get diatonic steps from chromatic
@@ -2246,9 +2252,11 @@ void CGenCF1::RandCantus(vector<int>& c, vector<int>& cc, int step1, int step2)
 }
 
 void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
+	SET_READY("cc_order");
 	int x, x2;
 	// First algorithm is needed when you correct existing melody with SAS or ASWA
 	if (task == tCor) {
+		CHECK_READY("cc_old");
 		int finished;
 		// Fill notes starting with source melody, gradually moving apart
 		for (int i = step1; i < step2; ++i) {
@@ -2333,11 +2341,6 @@ void CGenCF1::MakeNewCantus(vector<int> &c, vector<int> &cc) {
 	CalculateCcOrder(m_cc_old, 0, c_len);
 	FillCantus(cc_id, 0, c_len, 0);
 	FillCantus(cc, 0, c_len, cc_order);
-	for (int x = 0; x < cc.size(); ++x) {
-		if (cc[x] > 127) {
-			WriteLog(5, "Wow2");
-		}
-	}
 }
 
 void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
@@ -2359,12 +2362,16 @@ void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 // Calculate flag statistics
 void CGenCF1::CalcFlagStat() {
 	if (calculate_stat || calculate_correlation) {
+		SET_READY_PERSIST("fstat");
 		for (int i = 0; i < max_flags; ++i) if (!accept[i]) {
 			if (flags[i]) {
 				++fstat[i];
 				// Calculate correlation
-				if (calculate_correlation) for (int z = 0; z < max_flags; ++z) {
-					if (flags[z]) ++fcor[i][z];
+				if (calculate_correlation) {
+					SET_READY_PERSIST("fcor");
+					for (int z = 0; z < max_flags; ++z) {
+						if (flags[z]) ++fcor[i][z];
+					}
 				}
 			}
 		}
@@ -2374,6 +2381,7 @@ void CGenCF1::CalcFlagStat() {
 // Calculate flag blocking
 int CGenCF1::FailFlagBlock() {
 	if (calculate_blocking) {
+		SET_READY_PERSIST("fblock");
 		int flags_found = 0;
 		int flags_found2 = 0;
 		int flags_conflict = 0;
@@ -2484,14 +2492,6 @@ void CGenCF1::NextWindow() {
 			WriteLog(0, est);
 		}
 	}
-	/*
-	if (debug_level > 0) {
-		CString st;
-		st.Format("Next window with ep2 %d", ep2);
-		WriteLog(3, st);
-		SendCantus(0, 0);
-	}
-	*/
 }
 
 // Check if rpenalty is not below than flags sum
@@ -2544,6 +2544,7 @@ void CGenCF1::TestBestRpenalty() {
 }
 
 void CGenCF1::CalcRpenalty(vector<int> &cc) {
+	SET_READY("rpenalty_cur");
 	// Calculate out of range penalty
 	int real_range = nmax - nmin;
 	if (!accept[37] && real_range > max_interval) {
@@ -2764,6 +2765,7 @@ void CGenCF1::SaveBestRejected(vector<int> &cc) {
 }
 
 int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
+	CHECK_READY("pcc,fli");
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s_1 = fli[ls - 1];
@@ -2911,6 +2913,7 @@ void CGenCF1::ReseedCantus()
 void CGenCF1::WriteFlagCor() {
 	// Write flag correlation
 	if (calculate_correlation) {
+		CHECK_READY("fcor");
 		DeleteFile("cf1-cor.csv");
 		CString st, st2, st3;
 		st3 = "Flag; Total; ";
@@ -2934,6 +2937,7 @@ void CGenCF1::ShowFlagStat() {
 	int lines = 0;
 	// Show flag statistics
 	if (calculate_stat) {
+		CHECK_READY("fstat");
 		for (int d = 1; d < max_flags; ++d) {
 			if (lines > 100) break;
 			int flagc = 0;
@@ -3024,6 +3028,7 @@ void CGenCF1::ShowFlagBlock() {
 	CString st, st2;
 	// Show blocking statistics
 	if (calculate_blocking) {
+		CHECK_READY("fblock");
 		for (int w = 0; w < wcount; ++w) {
 			int lines = 0;
 			CString est;
@@ -3605,6 +3610,7 @@ void CGenCF1::SaveCantus() {
 }
 
 void CGenCF1::SaveCantusIfRp() {
+	CHECK_READY("rpenalty_cur");
 	// Is penalty not greater than minimum of all previous?
 	if (rpenalty_cur <= rpenalty_min) {
 		// If rpenalty 0, we can skip_flags (if allowed)
@@ -3675,9 +3681,6 @@ check:
 			break;
 		// Limit SAS correction time
 		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
-		// Calculate diatonic limits
-		nmind = CC_C(nmin, tonic_cur, minor_cur);
-		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailDiatonic(m_c, m_cc, 0, ep2, minor_cur)) goto skip;
 		GetPitchClass(m_c, m_cc, m_pc, m_pcc, 0, ep2);
 		CreateLinks(m_cc, 0);
@@ -3714,6 +3717,8 @@ check:
 		SaveBestRejected(m_cc);
 		if (task == tCor && method == mSWA) {
 			if (skip_flags) {
+				SET_READY("rpenalty_cur");
+				rpenalty_cur = 0;
 				if (ep2 < smap[swa2 - 1] + 1) {
 					NextWindow();
 					goto check;
