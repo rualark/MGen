@@ -374,6 +374,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 					ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 				WriteLog(6, est);
+				if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 				continue;
 			}
 			error_st.Format("- SAS emulator at step %d assigned wrong flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
@@ -387,6 +388,7 @@ void CGenCA1::CheckSASEmulatorFlags() {
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 					WriteLog(6, est);
+					if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 					continue;
 				}
 				else {
@@ -413,11 +415,13 @@ void CGenCA1::CheckSASEmulatorFlags() {
 						ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 					WriteLog(6, est);
+					if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 					continue;
 				}
 			}
 			// Show error
 			WriteLog(error_level, error_st);
+			if (m_testing) AppendLineToFile("autotest\\sas-emu.log", error_st + "\n");
 		}
 	}
 }
@@ -503,7 +507,7 @@ void CGenCA1::ConfirmExpect() {
 						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 					WriteLog(5, est);
-					//if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+					if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 				}
 			}
 		}
@@ -520,6 +524,7 @@ void CGenCA1::ConfirmExpect() {
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 				WriteLog(5, est);
+				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
 				false_pos[fl] = 1;
 				// Collect global false positives statistics
 				//if (m_testing) AppendLineInFile("autotest\\global_false.txt", fl, " 0");
@@ -552,12 +557,14 @@ void CGenCA1::CorAck() {
 	CString est;
 	if (!cor_ack || cor_ack_dp.size() < 2 || cor_ack_rp.size() < 2 || cor_ack_st.size() < 2) return;
 	if (cor_ack_dp[0] == cor_ack_dp[1] && cor_ack_rp[0] == cor_ack_rp[1]) {
-		est.Format("Correction acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
+		est.Format("+ Correction acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
 		WriteLog(6, est);
+		if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 		return;
 	}
-	est.Format("Correction not acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
+	est.Format("- Correction not acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
 	WriteLog(1, est);
+	if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 }
 
 void CGenCA1::Generate()
