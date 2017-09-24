@@ -99,12 +99,6 @@ void CMGenView::OnDraw(CDC* pDC)
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGMidi *pGen = mf->pGen;
 	//mf->WriteLog(2, "OnDraw start");
-	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
-		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
-			mf->WriteLog(2, "OnDraw mutex timed out: drawing postponed");
-			return;
-		}
-	}
   //CMGenDoc* pDoc = GetDocument();
 	//ASSERT_VALID(pDoc);
 	//if (!pDoc) return;
@@ -120,6 +114,13 @@ void CMGenView::OnDraw(CDC* pDC)
 
 	CMemDC2 dc(pDC);
 	dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
+
+	if (!mf->m_state_gen || !pGen || !pGen->t_generated) return;
+
+	if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
+		mf->WriteLog(2, "OnDraw mutex timed out: drawing postponed");
+		return;
+	}
 
 	Graphics g(dc->m_hDC);
 	//CClientDC aDC(this); //получить контекст устройства
@@ -331,9 +332,6 @@ void CMGenView::OnDraw(CDC* pDC)
 					g.DrawString(wst, -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
 				}
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
-					if (i > 15 && pGen->len[i][0] == 1) {
-						//mf->WriteLog(5, "Data synchronization problem!");
-					}
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
 					// Check if note steps have different dynamics
 					int step_dyn2 = 0;
