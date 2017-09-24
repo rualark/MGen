@@ -2,11 +2,13 @@
 #include "../GLibrary/GMidi.h"
 #include "../GLibrary/VSet.h"
 
-// Checks if we have leap or melody direction change here: needs to be not first and not last note
-#define MELODY_SEPARATION(s, s1) (!s || (leap[s - 1]) || ((c[s] - c[s - 1])*(c[s1] - c[s]) < 0))
+// THESE MACROS CAN BE DISABLED TO IMPROVE PERFORMANCE
 
 // Check rule usage
-#define ASSERT_RULE(id) { if (SubRuleName[rule_set][id].IsEmpty() && warn_rule_undefined < 5) { ++warn_rule_undefined; CString est; est.Format("Detected undefined rule usage: %d", id); WriteLog(5, est); } }
+#define ASSERT_RULE(id) { if (SubRuleName[rule_set][id].IsEmpty() && warn_rule_undefined < 5) { ++warn_rule_undefined; CString est; est.Format("Detected undefined rule usage: %d", id); WriteLog(5, est); ASSERT(0); } }
+
+// Checks if we have leap or melody direction change here: needs to be not first and not last note
+#define MELODY_SEPARATION(s, s1) (!s || (leap[s - 1]) || ((c[s] - c[s - 1])*(c[s1] - c[s]) < 0))
 
 // Report violation
 #define FLAG(id, i) { ASSERT_RULE(id); if ((skip_flags) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }

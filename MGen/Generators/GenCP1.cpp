@@ -1702,7 +1702,7 @@ check:
 		if (FailVIntervals()) goto skip;
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
 		if (FailLastIntervals()) goto skip;
-		if (FailNoteSeq(apc[cpv])) goto skip;
+		//if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;

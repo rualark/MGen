@@ -23,6 +23,17 @@
 // Warn if log frequency is above this value
 #define WARN_LOG_FREQ 1000
 
+// THESE MACROS CAN BE DISABLED TO IMPROVE PERFORMANCE
+
+// Check data ready
+#define CLEAR_READY() ClearReady()
+#define SET_READY(st) SetReady(st)
+#define CLEAR_READY_PERSIST(st) ClearReadyPersist(st)
+#define SET_READY_PERSIST(st) SetReadyPersist(st)
+#define CHECK_READY(st) CheckReady(st)
+
+// END OF MACROS THAT CAN BE DISABLED TO IMPROVE PERFORMANCE
+
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
 const int int_meaning[] = { 0, -1, 0, -1, 0, 1, -1 };
@@ -172,6 +183,16 @@ public:
 	static int vmin(vector<int> v);
 
 protected:
+	// Check data ready
+	map<CString, int> data_ready; // If data is ready to be used
+	map<CString, int> data_ready_persist; // If data is ready to be used (not cleared by ClearReady)
+	int warn_data_ready = 0; // How many warnings of data ready fired
+	inline void ClearReady();
+	inline void SetReady(CString st);
+	inline void ClearReadyPersist(CString st);
+	inline void SetReadyPersist(CString st);
+	inline void CheckReady(CString st);
+
 	// Mathematics
 	int randbw(int n1, int n2); // Random between two numbers
 	float rand01(); // Random float between 0 and 1
@@ -256,3 +277,46 @@ protected:
 	// Time
 	static long long first_time;
 };
+
+
+inline void CGLib::ClearReady() {
+	data_ready.clear();
+}
+
+inline void CGLib::SetReady(CString st) {
+	vector<CString> ast;
+	Tokenize(st, ast, ",");
+	for (int i = 0; i < ast.size(); ++i) {
+		data_ready[ast[i]] = 1;
+	}
+}
+
+inline void CGLib::ClearReadyPersist(CString st) {
+	vector<CString> ast;
+	Tokenize(st, ast, ",");
+	for (int i = 0; i < ast.size(); ++i) {
+		data_ready_persist[ast[i]] = 0;
+	}
+}
+
+inline void CGLib::SetReadyPersist(CString st) {
+	vector<CString> ast;
+	Tokenize(st, ast, ",");
+	for (int i = 0; i < ast.size(); ++i) {
+		data_ready_persist[ast[i]] = 1;
+	}
+}
+
+inline void CGLib::CheckReady(CString st) {
+	if (warn_data_ready > 5) return;
+	vector<CString> ast;
+	Tokenize(st, ast, ",");
+	// data_ready.find(ast[i])->second
+	for (int i = 0; i < ast.size(); ++i) {
+		if (!data_ready[ast[i]] && !data_ready_persist[ast[i]]) {
+			++warn_data_ready;
+			WriteLog(5, "Attemp to use data element '" + ast[i] + "' while it is not ready yet");
+			ASSERT(0);
+		}
+	}
+}

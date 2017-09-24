@@ -41,8 +41,8 @@ CGenCF1::~CGenCF1()
 }
 
 // Load variants of possible harmonic meaning
-void CGenCF1::LoadHarmVar()
-{
+void CGenCF1::LoadHarmVar() {
+	SET_READY_PERSIST("hv");
 	hv.resize(7);
 	if (cantus_high) {
 		// Create harmonic meaning variants for higher cantus
@@ -66,6 +66,7 @@ void CGenCF1::LoadHarmVar()
 // Load harmonic sequence penalties
 void CGenCF1::LoadHSP(CString fname)
 {
+	SET_READY_PERSIST("hsp");
 	CString st, est;
 	vector<CString> ast;
 	int i = 0;
@@ -113,6 +114,7 @@ void CGenCF1::LoadHSP(CString fname)
 // Load rules
 void CGenCF1::LoadRules(CString fname)
 {
+	SET_READY_PERSIST("Rules");
 	CString st, est, rule, subrule;
 	vector<CString> ast, ast2;
 	int i = 0;
@@ -256,6 +258,7 @@ int CGenCF1::GetRuleParam(int rset, int rid, int type, int id) {
 
 // Parse rules
 void CGenCF1::ParseRules() {
+	SET_READY_PERSIST("RuleParam");
 	for (int rset = 0; rset < accepts.size(); ++rset) if (accepts[rset].size()) {
 		RuleParam[rset].resize(MAX_RULES);
 		for (int rid = 0; rid < MAX_RULES; ++rid) {
@@ -268,6 +271,8 @@ void CGenCF1::ParseRules() {
 
 // Set parsed parameters of current ruleset
 void CGenCF1::SetRuleParams() {
+	CHECK_READY("RuleParam");
+	SET_READY_PERSIST("RuleSetParam");
 	pco_apart = GetRuleParam(rule_set, 248, rsName, 0);
 	thirds_ignored = GetRuleParam(rule_set, 70, rsName, 0);
 	c4p_last_leaps = GetRuleParam(rule_set, 144, rsName, 1);
@@ -335,6 +340,8 @@ void CGenCF1::SetRuleParams() {
 }
 
 void CGenCF1::CheckConfig() {
+	CHECK_READY("Config,RuleSet");
+	SET_READY_PERSIST("ConfigTest");
 	// GenCP1
 	if (m_algo_id == 121) {
 		if (accept_cantus_rechoose && cantus_id2) {
@@ -391,8 +398,9 @@ void CGenCF1::CheckConfig() {
 }
 
 // Select rules
-int CGenCF1::SelectRuleSet(int rs)
-{
+int CGenCF1::SelectRuleSet(int rs) {
+	CHECK_READY("Rules");
+	SET_READY_PERSIST("RuleSet");
 	rule_set = rs;
 	if (!accepts[rule_set].size()) {
 		CString est;
@@ -503,8 +511,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	}
 }
 
-void CGenCF1::LogCantus(CString st3, int x, int size, vector<int> &c)
-{
+void CGenCF1::LogCantus(CString st3, int x, int size, vector<int> &c) {
 	CString st, st2;
 	st2.Format("%s %d: ", st3, x);
 	for (int i = 0; i < size; ++i) {
@@ -572,6 +579,7 @@ int CGenCF1::FailNoteRepeat(vector<int> &cc, int step1, int step2) {
 
 // Detect prohibited note sequences
 int CGenCF1::FailNoteSeq(vector<int> &pc) {
+	CHECK_READY("fli");
 	for (int x = 0; x < fli_size-2; ++x) {
 		s = fli[x];
 		s1 = fli[x + 1];
@@ -582,6 +590,7 @@ int CGenCF1::FailNoteSeq(vector<int> &pc) {
 }
 
 int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
+	CHECK_READY("fli");
 	// Do not test if flag disabled and not testing
 	if (task != tEval && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
@@ -677,6 +686,7 @@ void CGenCF1::mawVector(vector<float> &v, vector<float> &v2, int range) {
 }
 
 void CGenCF1::MakeMacc(vector<int> &cc) {
+	SET_READY("macc,macc2,decc,decc2");
 	int pos1, pos2;
 	int ma_range = 2 * minl;
 	macc_range = ma_range;
@@ -709,6 +719,7 @@ void CGenCF1::MakeMacc(vector<int> &cc) {
 }
 
 int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
+	CHECK_READY("fli,macc2");
 	// Do not test if flag disabled and not testing
 	if (task != tEval && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
@@ -739,6 +750,7 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 
 // Count limits
 void CGenCF1::GetMelodyInterval(vector<int> &cc, int step1, int step2, int &nmin, int &nmax) {
+	SET_READY("nmin");
 	// Calculate range
 	nmin = MAX_NOTE;
 	nmax = 0;
@@ -763,6 +775,8 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 
 // Calculate pitch class
 void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc, int step1, int step2) {
+	CHECK_READY("c");
+	SET_READY("pc,pcc");
 	for (int i = step1; i < step2; ++i) {
 		pc[i] = c[i] % 7;
 		pcc[i] = (cc[i] + 12 - tonic_cur) % 12;
@@ -784,6 +798,7 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &la
 }
 
 int CGenCF1::FailGisTrail(vector<int> &pcc) {
+	CHECK_READY("fli,pcc");
 	int gis_trail = 0;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
@@ -804,6 +819,7 @@ int CGenCF1::FailGisTrail(vector<int> &pcc) {
 }
 
 int CGenCF1::FailFisTrail(vector<int> &pcc) {
+	CHECK_READY("fli,pcc");
 	int pos1, pos2, found;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
@@ -866,6 +882,7 @@ int CGenCF1::EvalMelodyHarm(int hp, int &last_flag, int &max_p) {
 }
 
 int CGenCF1::FailMelodyHarm(vector<int> &pc) {
+	CHECK_READY("fli,hv,hsp");
 	int h;
 	int first_tonic = 0;
 	// Build hm vector
@@ -986,6 +1003,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 }
 
 void CGenCF1::CalcCcIncrement() {
+	SET_READY_PERSIST("cc_incr,cc_decr");
 	int pos;
 	for (int i = 0; i < 127; ++i) {
 		pos = (i + 13 - tonic_cur) % 12;
@@ -1028,6 +1046,7 @@ void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2
 
 // Calculate diatonic positions
 int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
+	SET_READY("c");
 	if (minor_cur) {
 		for (int i = step1; i < step2; ++i) {
 			c[i] = m_CC_C(cc[i], tonic_cur);
@@ -1043,6 +1062,7 @@ int CGenCF1::FailDiatonic(vector<int> &c, vector<int> &cc, int step1, int step2,
 
 // Search for outstanding repeats
 int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
+	CHECK_READY("fli,c,llen");
 	// Do not test if flag disabled and not testing
 	if (task != tEval && accept[flag] == -1) return 0;
 	int ok, f, f1;
@@ -1083,6 +1103,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 }
 
 int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
+	CHECK_READY("fli,c,llen");
 	// Do not test if flag disabled and not testing
 	if (task != tEval && accept[flag] == -1) return 0;
 	int ok;
@@ -1117,6 +1138,7 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, in
 }
 
 int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2) {
+	CHECK_READY("fli,c,llen");
 	int leap_sum = 0;
 	int leaped_sum = 0;
 	int max_leap_sum = 0;
@@ -1144,7 +1166,7 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 			max_leaped_sum = leaped_sum;
 			leap_sum_i = s;
 		}
-		// Calculate penalty
+		// Calculate penalty 
 		if (!accept[flag1] && leap_sum > mleaps) ++fpenalty[flag1];
 		if (!accept[flag2] && leaped_sum > mleaped) ++fpenalty[flag2];
 	}
@@ -1234,6 +1256,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 }
 
 int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int notes, int flag) {
+	CHECK_READY("nmin");
 	// Do not test if flag disabled and not testing
 	if (task != tEval && accept[flag] == -1) return 0;
 	// Clear nstat
@@ -1253,6 +1276,8 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int 
 
 // Prohibit multiple culminations
 int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
+	CHECK_READY("fli");
+	SET_READY("culm_ls");
 	int culm_sum = 0;
 	culm_ls = -1;
 	// Do not find culminations if too early
@@ -1282,6 +1307,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 }
 
 int CGenCF1::FailFirstNotes(vector<int> &pc) {
+	CHECK_READY("fli,pc,pcc");
 	// Prohibit first note not tonic
 	if (pc[0] != 0) {
 		FLAG2(49, 0);
@@ -1328,6 +1354,7 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 }
 
 int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
+	CHECK_READY("fli,pc,pcc");
 	// Do not check if melody is short yet
 	if (fli_size < 3) return 0;
 	// Prohibit last note not tonic
@@ -1357,6 +1384,7 @@ int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
 }
 
 void CGenCF1::CreateLinks(vector<int> &cc, int multivoice) {
+	SET_READY("fli,llen,minl,bli");
 	int prev_note = -1;
 	int lpos = 0;
 	int l = 0;
@@ -3609,6 +3637,7 @@ void CGenCF1::ScanCantus(int t, int v, vector<int>* pcantus) {
 	// Analyze combination
 check:
 	while (true) {
+		CLEAR_READY();
 		//LogCantus("CF1 ep2", ep2, m_cc);
 		//if (method == mScan && task == tCor && cantus_id+1 == 3 && ep2 > 9 && MatchVectors(m_cc, test_cc, 0, ep2-1)) {
 		//	CString est;
@@ -3660,7 +3689,7 @@ check:
 		}
 		if (FailTonic(m_cc, m_pc)) goto skip;
 		if (FailLastNotes(m_pc, m_pcc)) goto skip;
-		if (FailNoteSeq(m_pc)) goto skip;
+		//if (FailNoteSeq(m_pc)) goto skip;
 		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
 		GetLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur);
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
@@ -3788,11 +3817,13 @@ check:
 		} // if (finished)
 		ScanRight(m_cc);
 	}
-	if (accepted3 > 100000) ShowScanStatus();
+	if (accepted3 > 100000) {
+		WritePerfLog();
+		ShowScanStatus();
+	}
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
-	WritePerfLog();
 }
 
 void CGenCF1::ScanRight(vector<int> &cc) {
