@@ -5,11 +5,14 @@
 // Checks if we have leap or melody direction change here: needs to be not first and not last note
 #define MELODY_SEPARATION(s, s1) (!s || (leap[s - 1]) || ((c[s] - c[s - 1])*(c[s1] - c[s]) < 0))
 
+// Check rule usage
+#define ASSERT_RULE(id) { if (SubRuleName[rule_set][id].IsEmpty() && warn_rule_undefined < 5) { ++warn_rule_undefined; CString est; est.Format("Detected undefined rule usage: %d", id); WriteLog(5, est); } }
+
 // Report violation
-#define FLAG(id, i) { if ((skip_flags) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
-#define FLAG2(id, i) { if ((skip_flags) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
+#define FLAG(id, i) { ASSERT_RULE(id); if ((skip_flags) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
+#define FLAG2(id, i) { ASSERT_RULE(id); if ((skip_flags) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
 // For harmony
-#define FLAG3(id, i) { if (!accept[id]) { last_flag=id; return 1; } }
+#define FLAG3(id, i) { ASSERT_RULE(id); if (!accept[id]) { last_flag=id; return 1; } }
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
@@ -366,6 +369,7 @@ protected:
 	deque<long long> q_scan_ms;
 	deque<long long> q_scan_cycle;
 	int warn_clib_max = 0; // If warning of maximum clib size fired
+	int warn_rule_undefined = 0; // If warning of undefined rules fired
 	int scan_full = 0; // If scan was completed without timeout and interruption
 	int swa_full = 0; // If swa was completed up to maximum possible swa_steps (2 = swa_len cannot be increased)
 	int status_cycle = 0; // Scan time divided by status period (ms)
