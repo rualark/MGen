@@ -33,11 +33,11 @@ void CGenRL1::Generate()
 		Sleep(sleep_ms);
 		//note[i][v] = 60 + (i % 12);
 		//note[i][v] = 60 + (GetVaue() % 12);
-		note[i][v] = 60 + GetVaueInt(0, 12, 3);
+		note[i][v] = 60 + GetVaueInt(0, 12, 7, 3);
 		pause[i][v] = 0;
 		len[i][v] = 1;
-		dyn[i][v] = 100;
-		tempo[i] = randbw(min_dyn, max_dyn);
+		dyn[i][v] = randbw(min_dyn, max_dyn);
+		tempo[i] = 90;
 		coff[i][v] = 0;
 		CountOff(i, i);
 		CountTime(i, i);
@@ -61,12 +61,16 @@ unsigned int CGenRL1::GetVaue()
 	return rand2();
 }
 
-int CGenRL1::GetVaueInt(int iMin, int iMax, int iType)
+int CGenRL1::GetVaueInt(int iMin, int iMax, int iType, int iDepth)
 {
 	/*
 	1 uniform
 	2 linear low priority
-	2 linear high priority
+	3 linear high priority
+	4 triangular
+	5 linear low priority with depth
+	6 linear high priority with depth
+	7 triangular with depth
 	*/
 	if (iType == 1)
 	{
@@ -95,4 +99,80 @@ int CGenRL1::GetVaueInt(int iMin, int iMax, int iType)
 		int iTwo = randbw(iMin, iMax);
 		return (iOne > iTwo) ? iOne : iTwo;
 	}
+	else if (iType == 4)
+	{
+		int iOne = randbw(iMin, iMax);
+		int iTwo = randbw(iMin, iMax);
+		return (float)(iOne + iTwo) / 2.0;
+	}
+	else if (iType == 5)
+	{
+		int iRnd = iMax;
+		if (iDepth > 0)
+		{
+			int iUniRnd;
+			for (int i = 0; i <= iDepth; i++)
+			{
+				iUniRnd = randbw(iMin, iMax);
+				iRnd = (iUniRnd < iRnd) ? iUniRnd : iRnd;
+			}
+		}
+		else
+		{
+			iRnd = GetVaueInt(iMin, iMax, 2);
+		}
+		
+		return iRnd;
+	}
+	else if (iType == 6)
+	{
+		int iRnd = iMin;
+		if (iDepth > 0)
+		{
+			int iUniRnd;
+			for (int i = 0; i <= iDepth; i++)
+			{
+				iUniRnd = randbw(iMin, iMax);
+				iRnd = (iUniRnd > iRnd) ? iUniRnd : iRnd;
+			}
+		}
+		else
+		{
+			iRnd = GetVaueInt(iMin, iMax, 3);
+		}
+		return iRnd;
+	}
+	else if (iType == 7)
+	{
+		if (iDepth > 0)
+		{
+			int iAccum = 0;
+			for (int i = 0; i <= iDepth; i++)
+			{
+				iAccum += randbw(iMin, iMax);
+			}
+			return (float)iAccum / (float)iDepth;
+		}
+		else
+		{
+			return GetVaueInt(iMin, iMax, 4);
+		}
+	}
+	/*
+	opcode trirnd_depth, i, iii
+	iMin, iMax, iMaxCount xin
+	 ;set a counter and accumulator
+	iCount     =          0
+	iAccum     =          0
+	 ;perform loop and accumulate
+	 until iCount == iMaxCount do
+	iUniRnd    random     iMin, iMax
+	iAccum     +=         iUniRnd
+	iCount     +=         1
+	 enduntil
+	 ;get the mean and output
+	iRnd       =          iAccum / iMaxCount
+			   xout       iRnd
+	endop
+	*/
 }
