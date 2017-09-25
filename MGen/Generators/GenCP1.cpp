@@ -1584,6 +1584,38 @@ void CGenCP1::GetMeasures() {
 	}
 }
 
+void CGenCP1::EmulateSASCP() {
+	if (need_exit) return;
+	// Save full analysis flags
+	nflags_full = anflags[cpv];
+	flags_full = flags;
+	nflags_prev.clear();
+	for (fixed_ep2 = 1; fixed_ep2 <= acc[cpv].size(); ++fixed_ep2) {
+		// Show emulator status
+		CString est;
+		est.Format("SAS emulator: %d of %d", fixed_ep2, acc[cpv].size());
+		SetStatusText(7, est);
+		// Visible emulation
+		if (emulate_sas) {
+			step0 = step;
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 2);
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 3);
+			ScanCP(tEval, 0);
+		}
+		// Hidden emulation
+		else {
+			ScanCP(tEval, -1);
+		}
+		CheckSASEmulatorFlags();
+		nflags_prev = anflags[cpv];
+	}
+	OutputFlagDelays();
+	fixed_ep2 = 0;
+	SetStatusText(7, "SAS emulator: finished");
+}
+
 // Get links to cantus notes
 void CGenCP1::GetCfli() {
 	SET_READY_PERSIST(DR_cfli);

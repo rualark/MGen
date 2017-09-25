@@ -13,7 +13,6 @@ protected:
 	void MergeCantus();
 	void ExplodeCP();
 	void LinkCpPauses();
-	void EmulateSASCP();
 	void DetectSpecies();
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void SendCorrectionsCP(int i, long long time_start);
