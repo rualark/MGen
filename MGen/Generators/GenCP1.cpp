@@ -1251,6 +1251,7 @@ void CGenCP1::RandomSWACP() {
 		task = tGen;
 		MakeNewCP();
 		task = tCor;
+		EmulateSASCP();
 		// Load initial parameters
 		random_range = random_range0;
 		random_seed = random_seed0;
@@ -1291,6 +1292,7 @@ void CGenCP1::RandomSWACP() {
 				linecolor[t_generated] = MakeColor(255, 0, 0, 0);
 				scpoint = acc;
 				ScanCP(tEval, 0);
+				EmulateSASCP();
 				if (rpenalty_cur > rpenalty_accepted) {
 					st.Format("Error calculating rpenalty %f min %f at step %d", rpenalty_cur, rpenalty_min, t_generated);
 					WriteLog(5, st);
@@ -1585,6 +1587,11 @@ void CGenCP1::GetMeasures() {
 }
 
 void CGenCP1::EmulateSASCP() {
+	if (v_cnt == 2) {
+		// Evaluate for CP1
+		scpoint = acc;
+		ScanCP(tEval, -1);
+	}
 	if (need_exit) return;
 	// Save full analysis flags
 	nflags_full = anflags[cpv];
@@ -1600,8 +1607,10 @@ void CGenCP1::EmulateSASCP() {
 			step0 = step;
 			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
 			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
-			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 2);
-			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 3);
+			if (v_cnt == 4) {
+				FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 2);
+				FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 3);
+			}
 			ScanCP(tEval, 0);
 		}
 		// Hidden emulation
@@ -1900,11 +1909,13 @@ check:
 		} // if (finished)
 		ScanRight(acc[cpv]);
 	}
-	if (accepted3 > 100000) ShowScanStatus();
+	if (accepted3 > 100000) {
+		ShowScanStatus();
+		WritePerfLog();
+	}
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
-	WritePerfLog();
 }
 
 void CGenCP1::LoadCantusHigh() {
