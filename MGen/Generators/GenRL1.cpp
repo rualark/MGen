@@ -22,11 +22,14 @@ void CGenRL1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 {
 	CheckVar(sN, sV, "min_dyn", &min_dyn);
 	CheckVar(sN, sV, "max_dyn", &max_dyn);
+	CheckVar(sN, sV, "min_tempo", &min_tempo);
+	CheckVar(sN, sV, "max_tempo", &max_tempo);
 }
 
 void CGenRL1::Generate()
 {
 	int v = 0;
+	int tempo_value = GetVaueInt(min_tempo, max_tempo, 1);
 	for (int i = 0; i < t_cnt; i++) {
 		if (need_exit) return;
 		if (i >= t_allocated) ResizeVectors(t_allocated * 2);
@@ -37,7 +40,13 @@ void CGenRL1::Generate()
 		pause[i][v] = 0;
 		len[i][v] = 1;
 		dyn[i][v] = randbw(min_dyn, max_dyn);
-		tempo[i] = 90;
+		
+		if ((i % 50) == 0)
+		{
+			tempo_value = GetVaueInt(min_tempo, max_tempo, 1);
+		}
+		tempo[i] = tempo_value;
+		
 		coff[i][v] = 0;
 		CountOff(i, i);
 		CountTime(i, i);
@@ -82,10 +91,13 @@ int CGenRL1::GetVaueInt(int iMin, int iMax, int iType, int iDepth)
 		b = outMax - a inMax
 		*/
 
+		/*
 		float a = (float)(iMax - iMin) / (float)RAND_MAX;
 		float b =  -1 * (float)iMin;
 		// Return unsigned int random value from 0 to RAND_MAX using randrsl
 		return a * rand2() + b;
+		*/
+		return randbw(iMin, iMax);
 	}
 	else if (iType == 2)
 	{

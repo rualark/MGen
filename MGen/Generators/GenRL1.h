@@ -12,6 +12,8 @@ public:
 	unsigned int GetVaue();
 	int CGenRL1::GetVaueInt(int iMin, int iMax, int iType, int iDepth = 1);
 private:
-	int min_dyn = 90;
-	int max_dyn = 120;
+	int min_dyn; /*= 90*/
+	int max_dyn;  /*= 120*/
+	int min_tempo;
+	int max_tempo;
 };
