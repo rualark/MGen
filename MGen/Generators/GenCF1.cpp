@@ -3620,6 +3620,7 @@ void CGenCF1::RandomSWA()
 				}
 				Adapt(step, t_generated - 1);
 				t_sent = t_generated;
+				EmulateSAS();
 			}
 			else {
 				++cantus_ignored;
