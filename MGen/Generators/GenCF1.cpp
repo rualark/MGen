@@ -1639,7 +1639,8 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 	// Check if leap is third
 	if (leap_size == 2) {
 		// Check if leap is second third
-		if (fleap_start > 0 && abs(c[leap_end] - c[fli2[fleap_start-1]]) == 4) {
+		if (fleap_start > 0 && abs(c[leap_end] - c[fli2[fleap_start-1]]) == 4 &&
+			abs(c[leap_start] - c[fli2[fleap_start - 1]]) == 2) {
 			// Set middle leap note
 			leap_mid = leap_start;
 			// Set leap start to first note of first third
