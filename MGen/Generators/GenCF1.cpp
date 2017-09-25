@@ -1639,7 +1639,8 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 	// Check if leap is third
 	if (leap_size == 2) {
 		// Check if leap is second third
-		if (fleap_start > 0 && abs(c[leap_end] - c[fli2[fleap_start-1]]) == 4) {
+		if (fleap_start > 0 && abs(c[leap_end] - c[fli2[fleap_start-1]]) == 4 &&
+			abs(c[leap_start] - c[fli2[fleap_start - 1]]) == 2) {
 			// Set middle leap note
 			leap_mid = leap_start;
 			// Set leap start to first note of first third
@@ -3182,9 +3183,11 @@ void CGenCF1::TransposeCantusBack() {
 		int trans = 0;
 		if (nmin > first_note0) {
 			trans = -floor((nmin - first_note0) / 12 + 1) * 12;
+			if (nmax + trans < first_note0) trans = 0;
 		}
 		if (nmax < first_note0) {
 			trans = floor((first_note0 - nmax) / 12 + 1) * 12;
+			if (nmin + trans > first_note0) trans = 0;
 		}
 		TransposeVector(m_cc, trans);
 		TransposeVector(macc2, trans);
@@ -3523,6 +3526,10 @@ void CGenCF1::OutputFlagDelays() {
 }
 
 void CGenCF1::EmulateSAS() {
+	if (v_cnt == 1) {
+		// Evaluate for CF1
+		ScanCantus(tEval, -1, &(m_cc));
+	}
 	// Save full analysis flags
 	nflags_full = anflags[cpv];
 	flags_full = flags;
@@ -3536,7 +3543,7 @@ void CGenCF1::EmulateSAS() {
 		if (emulate_sas) {
 			step0 = step;
 			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
-			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
+			if (v_cnt > 1) FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
 			ScanCantus(tEval, 0, &(m_cc));
 		}
 		// Hidden emulation
@@ -3582,6 +3589,7 @@ void CGenCF1::RandomSWA()
 		// Create random cantus
 		task = tGen;
 		MakeNewCantus(m_c, m_cc);
+		EmulateSAS();
 		task = tCor;
 		min_cc0 = min_cc;
 		max_cc0 = max_cc;
@@ -3612,6 +3620,7 @@ void CGenCF1::RandomSWA()
 				}
 				Adapt(step, t_generated - 1);
 				t_sent = t_generated;
+				EmulateSAS();
 			}
 			else {
 				++cantus_ignored;
