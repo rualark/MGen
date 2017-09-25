@@ -1,4 +1,8 @@
 sleep_ms = 0
+min_pitch = 40
+max_pitch = 72
+distr_type_pitch = 7
+distr_depth = 5
 min_dyn = 90
 max_dyn = 120
 min_tempo = 60
