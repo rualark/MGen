@@ -315,7 +315,6 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 }
 
 void CGVar::LoadConfig(CString fname, int load_includes) {
-	SET_READY_PERSIST("Config");
 	CString st2;
 	LoadConfigFile(fname, load_includes);
 	// Load autotest config

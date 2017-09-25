@@ -4,8 +4,59 @@
 
 // THESE MACROS CAN BE DISABLED TO IMPROVE PERFORMANCE
 
+// Check data ready
+#define MAX_DATA_READY 20
+#define MAX_DATA_READY_PERSIST 100
+
+#define DR_Config				1
+#define DR_ConfigTest		2
+#define DR_Rules				3
+#define DR_RuleSet			4
+#define DR_RuleParam		5
+#define DR_RuleSetParam 6
+#define DR_cc_old				7
+#define DR_rpenalty_cur 8
+#define DR_hv						9
+#define DR_hsp					10
+#define DR_fstat				11
+#define DR_fcor					12
+#define DR_fblock				13
+
+#define DR_c						1
+#define DR_fli					2
+#define DR_macc					3
+#define DR_pc						4
+#define DR_nmin					5
+#define DR_cc_incr			6
+#define DR_cc_order			7
+#define DR_leap					8
+#define DR_slur					9
+#define DR_culm_ls			10
+
+#ifdef CF_DEBUG
+
+#define CLEAR_READY() ClearReady()
+#define CLEAR_READY_PERSIST(...) ClearReadyPersist(##__VA_ARGS__)
+#define SET_READY(...) SetReady(##__VA_ARGS__)
+#define SET_READY_PERSIST(...) SetReadyPersist(##__VA_ARGS__)
+#define CHECK_READY(...) CheckReady(##__VA_ARGS__)
+#define CHECK_READY_PERSIST(...) CheckReadyPersist(##__VA_ARGS__)
+
 // Check rule usage
 #define ASSERT_RULE(id) { if (SubRuleName[rule_set][id].IsEmpty() && warn_rule_undefined < 5) { ++warn_rule_undefined; CString est; est.Format("Detected undefined rule usage: %d", id); WriteLog(5, est); ASSERT(0); } }
+
+#else
+
+#define CLEAR_READY() 
+#define SET_READY(...) 
+#define CLEAR_READY_PERSIST(...) 
+#define SET_READY_PERSIST(...) 
+#define CHECK_READY(...) 
+#define CHECK_READY_PERSIST(...) 
+
+#define ASSERT_RULE(id) 
+
+#endif
 
 // Checks if we have leap or melody direction change here: needs to be not first and not last note
 #define MELODY_SEPARATION(s, s1) (!s || (leap[s - 1]) || ((c[s] - c[s - 1])*(c[s1] - c[s]) < 0))
@@ -560,4 +611,26 @@ protected:
 	int fixed_ep2 = 0; // For SAS emulation
 	// For FLAG2 macro
 	void CreateULinks();
+
+	// Check data ready
+	vector<int> data_ready; // If data is ready to be used
+	int warn_data_ready = 0; // How many warnings of data ready fired
+	inline void ClearReady();
+	inline void SetReady(int id);
+	inline void SetReady(int id, int id2);
+	inline void SetReady(int id, int id2, int id3);
+	inline void CheckReady(int id);
+	inline void CheckReady(int id, int id2);
+	inline void CheckReady(int id, int id2, int id3);
+
+	vector<int> data_ready_persist; // If data is ready to be used (not cleared by ClearReady)
+	inline void ClearReadyPersist(int id);
+	inline void ClearReadyPersist(int id, int id2);
+	inline void ClearReadyPersist(int id, int id2, int id3);
+	inline void SetReadyPersist(int id);
+	inline void SetReadyPersist(int id, int id2);
+	inline void SetReadyPersist(int id, int id2, int id3);
+	inline void CheckReadyPersist(int id);
+	inline void CheckReadyPersist(int id, int id2);
+	inline void CheckReadyPersist(int id, int id2, int id3);
 };
