@@ -62,6 +62,7 @@ protected:
 	inline int FailLastIntervals();
 	inline void GetNoteTypes();
 	inline void GetMeasures();
+	void EmulateSASCP();
 	inline void GetCfli();
 	inline int FailGisTrail2();
 	inline int FailHarm();
