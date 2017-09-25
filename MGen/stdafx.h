@@ -75,3 +75,7 @@ using namespace Gdiplus;
 #include "psapi.h"
 
 //#define new new( _NORMAL_BLOCK, __FILE__, __LINE__)
+
+#ifdef _DEBUG
+#endif
+#define CF_DEBUG
