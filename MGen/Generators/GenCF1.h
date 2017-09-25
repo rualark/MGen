@@ -32,6 +32,14 @@
 #define DR_leap					8
 #define DR_slur					9
 #define DR_culm_ls			10
+#define DR_ivl					11
+#define DR_sus					12
+#define DR_motion				13
+#define DR_beat					14
+#define DR_mli					15
+#define DR_cfli					16
+#define DR_rpos					17
+#define DR_uli					18
 
 #ifdef CF_DEBUG
 
@@ -614,7 +622,7 @@ protected:
 
 	// Check data ready
 	vector<int> data_ready; // If data is ready to be used
-	int warn_data_ready = 0; // How many warnings of data ready fired
+	vector<int> warn_data_ready; // How many warnings of data ready fired
 	inline void ClearReady();
 	inline void SetReady(int id);
 	inline void SetReady(int id, int id2);
@@ -624,6 +632,7 @@ protected:
 	inline void CheckReady(int id, int id2, int id3);
 
 	vector<int> data_ready_persist; // If data is ready to be used (not cleared by ClearReady)
+	vector<int> warn_data_ready_persist; // How many warnings of data ready fired
 	inline void ClearReadyPersist(int id);
 	inline void ClearReadyPersist(int id, int id2);
 	inline void ClearReadyPersist(int id, int id2, int id3);

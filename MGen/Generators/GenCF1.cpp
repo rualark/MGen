@@ -37,6 +37,8 @@ CGenCF1::CGenCF1()
 	// Data ready
 	data_ready.resize(MAX_DATA_READY);
 	data_ready_persist.resize(MAX_DATA_READY_PERSIST);
+	warn_data_ready.resize(MAX_DATA_READY);
+	warn_data_ready_persist.resize(MAX_DATA_READY_PERSIST);
 }
 
 CGenCF1::~CGenCF1()
@@ -1040,6 +1042,7 @@ void CGenCF1::CalcCcIncrement() {
 
 // Calculate chromatic positions
 void CGenCF1::GetChromatic(vector<int> &c, vector<int> &cc, int step1, int step2, int minor_cur) {
+	CHECK_READY(DR_c);
 	if (minor_cur) {
 		for (int i = step1; i < step2; ++i) {
 			cc[i] = m_C_CC(c[i], tonic_cur);
@@ -1959,7 +1962,7 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 
 // Calculate global fill
 int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2) {
-	CHECK_READY(DR_nmin);
+	CHECK_READY(DR_nmin, DR_c);
 	// Clear nstat
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
 	// Count nstat
@@ -3969,8 +3972,8 @@ inline void CGenCF1::SetReadyPersist(int id, int id2, int id3) {
 }
 
 inline void CGenCF1::CheckReady(int id) {
-	if (!data_ready[id]) {
-		++warn_data_ready;
+	if (!data_ready[id] && !warn_data_ready[id]) {
+		++warn_data_ready[id];
 		CString est;
 		est.Format("Attemp to use data element '%d' while it is not ready yet", id);
 		WriteLog(5, est);
@@ -3990,8 +3993,8 @@ inline void CGenCF1::CheckReady(int id, int id2, int id3) {
 }
 
 inline void CGenCF1::CheckReadyPersist(int id) {
-	if (!data_ready_persist[id]) {
-		++warn_data_ready;
+	if (!data_ready_persist[id] && !warn_data_ready_persist[id]) {
+		++warn_data_ready_persist[id];
 		CString est;
 		est.Format("Attemp to use persistent data element '%d' while it is not ready yet", id);
 		WriteLog(5, est);

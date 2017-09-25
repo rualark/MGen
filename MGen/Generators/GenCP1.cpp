@@ -402,12 +402,14 @@ void CGenCP1::ReseedCP()
 }
 
 int CGenCP1::FailAlteredInt2(int i, int c1, int c2, int flag) {
-	if ((apcc[0][i] == c1 && apcc[1][i] == c2) || (apcc[0][i] == c2 && apcc[1][i] == c1)) FLAG2(flag, i);
+	if ((apcc[0][i] == c1 && apcc[1][i] == c2) || (apcc[0][i] == c2 && apcc[1][i] == c1)) 
+		FLAG2(flag, i);
 	return 0;
 }
 
 // Fail vertical altered intervals
 int CGenCP1::FailAlteredInt() {
+	CHECK_READY(DR_pc);
 	for (int i = 0; i < ep2; ++i) {
 		if (FailAlteredInt2(i, 9, 8, 170)) return 1;
 		if (FailAlteredInt2(i, 11, 10, 171)) return 1;
@@ -426,6 +428,7 @@ int CGenCP1::FailCrossInt2(int i, int i_1, int c1, int c2, int flag) {
 
 // Fail cross relation altered intervals
 int CGenCP1::FailCrossInt() {
+	CHECK_READY(DR_pc);
 	for (int s = 1; s < ep2; ++s) {
 		s_1 = s - 1;
 		if (FailCrossInt2(s, s_1, 9, 8, 164)) return 1;
@@ -440,6 +443,8 @@ int CGenCP1::FailCrossInt() {
 }
 
 void CGenCP1::GetVIntervals() {
+	CHECK_READY(DR_c);
+	SET_READY(DR_ivl);
 	// Calculate intervals
 	for (int i = 0; i < ep2; ++i) {
 		ivl[i] = ac[1][i] - ac[0][i];
@@ -454,6 +459,7 @@ void CGenCP1::GetVIntervals() {
 }
 
 int CGenCP1::FailVMotion() {
+	SET_READY(DR_motion);
 	int mtemp;
 	int scontra = 0;
 	int sdirect = 0;
@@ -486,6 +492,8 @@ int CGenCP1::FailVMotion() {
 }
 
 int CGenCP1::FailSus() {
+	CHECK_READY(DR_fli, DR_ivl, DR_sus);
+	CHECK_READY(DR_leap);
 	int pre_end;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls] && (ls < fli_size-1 || ep2 == c_len)) {
 		s = fli[ls];
@@ -643,6 +651,9 @@ int CGenCP1::FailPco() {
 }
 
 void CGenCP1::GetRpos() {
+	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY(DR_fli, DR_leap);
+	SET_READY(DR_rpos, DR_c);
 	int sm1, sm2;
 	// Main calculation
 	rpos[0] = pDownbeat;
@@ -694,6 +705,7 @@ void CGenCP1::GetRpos() {
 
 // Fail rhythm for species 3
 int CGenCP1::FailRhythm3() {
+	CHECK_READY(DR_fli, DR_beat, DR_sus);
 	if (species != 3) return 0;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
@@ -713,6 +725,9 @@ int CGenCP1::FailRhythm3() {
 
 // Fail rhythm for species 5
 int CGenCP1::FailRhythm5() {
+	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY(DR_fli, DR_leap);
+	CHECK_READY(DR_sus);
 	if (species != 5) return 0;
 	// Rhythm id
 	vector<int> rid;
@@ -896,6 +911,8 @@ int CGenCP1::FailRhythm5() {
 }
 
 int CGenCP1::FailPcoApart() {
+	CHECK_READY(DR_fli, DR_ivl, DR_beat);
+	CHECK_READY(DR_rpos);
 	// Step index of last perfect consonance
 	int pco5_last = -1000;
 	int pco8_last = -1000;
@@ -936,6 +953,8 @@ int CGenCP1::FailPcoApart() {
 }
 
 int CGenCP1::FailVIntervals() {
+	CHECK_READY(DR_fli, DR_ivl, DR_rpos);
+	CHECK_READY(DR_motion, DR_culm_ls);
 	// Number of sequential parallel imperfect consonances
 	int pico_count = 0;
 	// Check first step
@@ -1055,6 +1074,7 @@ void CGenCP1::SaveCP() {
 }
 
 void CGenCP1::SaveCPIfRp() {
+	CHECK_READY(DR_rpenalty_cur);
 	// Is penalty not greater than minimum of all previous?
 	if (rpenalty_cur <= rpenalty_min) {
 		// If rpenalty 0, we can skip_flags (if allowed)
@@ -1094,7 +1114,8 @@ int CGenCP1::FailSlurs() {
 			// Check slurs in window
 			++scount2;
 			// Subtract old slur
-			if ((i >= slurs_window) && (acc[cpv][i - slurs_window] == acc[cpv][i - slurs_window + 1])) --scount2;
+			if ((i >= slurs_window) && (acc[cpv][i - slurs_window] == acc[cpv][i - slurs_window + 1])) 
+				--scount2;
 			if (scount2 > max_count) {
 				max_count = scount2;
 				max_i = i;
@@ -1126,7 +1147,9 @@ int CGenCP1::FailMissSlurs() {
 	for (int i = 0; i < ep2-1; ++i) if ((i + fn) % 2) { 
 		if (i < miss_slurs_window * npm) ++wcount;
 		// Subtract old slur
-		if ((i >= miss_slurs_window * npm) && (acc[cpv][i - miss_slurs_window * npm] == acc[cpv][i - miss_slurs_window * npm + 1])) --scount;
+		if ((i >= miss_slurs_window * npm) && 
+			(acc[cpv][i - miss_slurs_window * npm] == acc[cpv][i - miss_slurs_window * npm + 1])) 
+			--scount;
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check slurs in window
 			++scount;
@@ -1150,9 +1173,10 @@ int CGenCP1::FailMissSlurs() {
 
 // Count limits
 int CGenCP1::FailCPInterval() {
+	CHECK_READY(DR_fli);
 	int bsteps = 0;
-	for (int i = 0; i < fli_size; ++i) {
-		s = fli[i];
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
 		// Check between
 		if (acc[1][s] - acc[0][s] > max_between) {
 			++bsteps;
@@ -1172,6 +1196,7 @@ int CGenCP1::FailCPInterval() {
 
 // Find situations when one voice goes over previous note of another voice
 int CGenCP1::FailOverlap() {
+	CHECK_READY(DR_fli);
 	// Do not check overlap for 1 note
 	if (fli_size < 3) return 0;
 	if (cantus_high) {
@@ -1190,8 +1215,7 @@ int CGenCP1::FailOverlap() {
 }
 
 // Create random cantus and optimize it using SWA
-void CGenCP1::RandomSWACP()
-{
+void CGenCP1::RandomSWACP() {
 	// Init animation
 	acycle = 0;
 	CString st;
@@ -1448,6 +1472,8 @@ void CGenCP1::SWACP(int i, int dp) {
 }
 
 int CGenCP1::FailLastIntervals() {
+	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY(DR_fli, DR_pc);
 	// Do not check if melody is short yet
 	if (fli_size < 3) return 0;
 	s = fli[fli_size - 1];
@@ -1493,6 +1519,8 @@ int CGenCP1::FailLastIntervals() {
 }
 
 void CGenCP1::GetNoteTypes() {
+	CHECK_READY(DR_fli);
+	SET_READY(DR_beat, DR_sus);
 	int s = 0, sf;
 	int l;
 	for (ls = 0; ls < fli_size; ++ls) {
@@ -1525,12 +1553,11 @@ void CGenCP1::GetNoteTypes() {
 
 // Create links to unique note columns
 void CGenCF1::CreateULinks() {
+	SET_READY(DR_uli);
 	vector<int> prev_note;
 	prev_note.resize(av_cnt, -1);
 	int changed;
 	uli.clear();
-	// Set first step in case it is pause
-	bli[0] = 0;
 	for (int i = 0; i < ep2; ++i) {
 		changed = 0;
 		// Did any of voices change?
@@ -1546,6 +1573,7 @@ void CGenCF1::CreateULinks() {
 }
 
 void CGenCP1::GetMeasures() {
+	SET_READY_PERSIST(DR_mli);
 	mli.clear();
 	mli.push_back(0);
 	for (int i = 0; i < c_len; ++i) {
@@ -1558,6 +1586,7 @@ void CGenCP1::GetMeasures() {
 
 // Get links to cantus notes
 void CGenCP1::GetCfli() {
+	SET_READY_PERSIST(DR_cfli);
 	cfli.clear();
 	int last_note = -1;
 	for (s = 0; s < c_len; ++s) {
@@ -1569,6 +1598,7 @@ void CGenCP1::GetCfli() {
 }
 
 int CGenCP1::FailGisTrail2() {
+	CHECK_READY(DR_fli, DR_pc);
 	int gis_trail = 0;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
@@ -1589,6 +1619,7 @@ int CGenCP1::FailGisTrail2() {
 }
 
 int CGenCP1::FailHarm() {
+	CHECK_READY(DR_fli);
 	hli_size = 0;
 	hli.clear();
 	// Detect harmony changes
@@ -1623,6 +1654,7 @@ void CGenCP1::ScanCP(int t, int v) {
 	// Analyze combination
 check:
 	while (true) {
+		CLEAR_READY();
 		//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, acc[cpv]);
 		//if (ep2 > 56 && MatchVectors(acc[cpv], test_cc, 2, ep2 - 1)) {
 			//CString est;
