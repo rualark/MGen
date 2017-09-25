@@ -3409,6 +3409,148 @@ void CGenCF1::TestDiatonic()
 	}
 }
 
+void CGenCF1::CheckSASEmulatorFlags() {
+	int fl, fl2, found, delay, good, error_level;
+	CString error_st, est;
+	for (s = 0; s < ep2; ++s) {
+		// Loop through all current flags
+		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
+			fl = anflags[cpv][s][f];
+			// Do not analyse unstable flags
+			if (sas_emulator_unstable[fl]) continue;
+			// Check that flag exists in previous SAS run if this is not last step and previous run exists
+			found = 0;
+			good = 0;
+			error_st = "";
+			error_level = 0;
+			if (s < ep2 - 1 && nflags_prev.size() > s) {
+				for (int f2 = 0; f2 < nflags_prev[s].size(); ++f2) if (nflags_prev[s][f2] == fl) {
+					found = 1;
+					break;
+				}
+			}
+			// Stop processing if this flag is not new
+			if (found) continue;
+			// Find longest delay for each new flag
+			delay = ep2 - 1 - s;
+			if (delay > flag_delay[fl]) {
+				CString est;
+				est.Format("SAS emulator at step %d has delay %d steps: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+					ep2, delay, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+				//WriteLog(1, est);
+				flag_delay[fl] = delay;
+				flag_delay_st[fl] = est;
+			}
+			// Check that flag exists in full analysis in same position
+			for (int f2 = 0; f2 < nflags_full[s].size(); ++f2) if (nflags_full[s][f2] == fl) {
+				found = 1;
+				break;
+			}
+			// Stop processing if this flag is found
+			if (found) continue;
+			// Not found in same position: can it be replaced?
+			if (sas_emulator_replace[fl].size()) {
+				for (int i = 0; i < sas_emulator_replace[fl].size(); ++i) {
+					fl2 = sas_emulator_replace[fl][i];
+					for (int f2 = 0; f2 < nflags_full[s].size(); ++f2) if (nflags_full[s][f2] == fl2) {
+						found = 1;
+						break;
+					}
+				}
+			}
+			if (found) {
+				est.Format("+ SAS emulator at step %d replaced flag [%d] with: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+					ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+				WriteLog(7, est);
+				if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+				continue;
+			}
+			error_st.Format("- SAS emulator at step %d assigned wrong flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+				ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+				cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+			error_level = 5;
+			// Not found in same position: does it exist in any position?
+			if (flags_full[fl]) {
+				if (sas_emulator_move_ignore[fl]) {
+					est.Format("+ SAS emulator at step %d assigned moved flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+					WriteLog(7, est);
+					if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+					continue;
+				}
+				else {
+					error_st.Format("- SAS emulator at step %d assigned moved flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+					error_level = 5;
+				}
+			}
+			// Not found in any position: can it be replaced in any position?
+			if (sas_emulator_replace[fl].size() && sas_emulator_move_ignore[fl]) {
+				if (sas_emulator_replace[fl].size()) {
+					for (int i = 0; i < sas_emulator_replace[fl].size(); ++i) {
+						fl2 = sas_emulator_replace[fl][i];
+						if (flags_full[fl2]) {
+							found = 1;
+							break;
+						}
+					}
+				}
+				if (found) {
+					CString est;
+					est.Format("+ SAS emulator at step %d replaced and moved flag %d with: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+						ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+					WriteLog(7, est);
+					if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+					continue;
+				}
+			}
+			// Show error
+			WriteLog(error_level, error_st);
+			if (m_testing) AppendLineToFile("autotest\\sas-emu.log", error_st + "\n");
+		}
+	}
+}
+
+void CGenCF1::OutputFlagDelays() {
+	for (int f = 0; f < MAX_RULES; ++f) if (flag_delay[f] > sas_emulator_max_delay[f]) {
+		//WriteLog(6, flag_delay_st[f]); // 1
+	}
+}
+
+void CGenCF1::EmulateSAS() {
+	// Save full analysis flags
+	nflags_full = anflags[cpv];
+	flags_full = flags;
+	nflags_prev.clear();
+	for (fixed_ep2 = 1; fixed_ep2 <= m_cc.size(); ++fixed_ep2) {
+		// Show emulator status
+		CString est;
+		est.Format("SAS emulator: %d of %d", fixed_ep2, m_cc.size());
+		SetStatusText(7, est);
+		// Visible emulation
+		if (emulate_sas) {
+			step0 = step;
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
+			FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
+			ScanCantus(tEval, 0, &(m_cc));
+		}
+		// Hidden emulation
+		else {
+			ScanCantus(tEval, -1, &(m_cc));
+		}
+		CheckSASEmulatorFlags();
+		nflags_prev = anflags[cpv];
+	}
+	OutputFlagDelays();
+	fixed_ep2 = 0;
+	SetStatusText(7, "SAS emulator: finished");
+}
+
 // Create random cantus and optimize it using SWA
 void CGenCF1::RandomSWA()
 {

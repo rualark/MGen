@@ -18,17 +18,8 @@ protected:
 	int GetCPKey2(int & tonic_cur, CString & ext_st, int minor_cur);
 	void CreateScanMatrix(int i);
 	void SendCorrections(int i, long long time_start);
-
 	void ParseExpect();
-
-	void CheckSASEmulatorFlags();
-
-	void EmulateSAS();
-
-	void OutputFlagDelays();
-
 	void ConfirmExpect();
-
 	void InitCorAck();
 	void SaveCorAck();
 	void CorAck();
@@ -36,10 +27,6 @@ protected:
 	int corrections = 3; // Number of corrections to show
 	int pre_bad = 6; // How many notes to recalculate before rule violation
 	int post_bad = 8; // How many notes to recalculate after rule violation
-
-	int step00 = 0; // Start of source cantus/counterpoint in case of SAS emulation
-	int step0 = 0; // Start of current cantus
-	int step1 = 0; // Stop of current cantus
 
 	// Correction acknowledge
 	vector<int> cor_ack_dp; // [] Two resulting dpenalties

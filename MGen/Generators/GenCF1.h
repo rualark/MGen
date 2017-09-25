@@ -272,6 +272,9 @@ protected:
 	int InitGen();
 	int InitCantus();
 	void TestDiatonic();
+	void CheckSASEmulatorFlags();
+	void OutputFlagDelays();
+	void EmulateSAS();
 	void RandomSWA();
 	void SWA(int i, int dp);
 	void FillCantus(vector<int>& c, int step1, int step2, int value);
@@ -429,6 +432,9 @@ protected:
 	// Queues for calculating scan speed and displaying in status
 	deque<long long> q_scan_ms;
 	deque<long long> q_scan_cycle;
+	int step00 = 0; // Start of source cantus/counterpoint in case of SAS emulation
+	int step0 = 0; // Start of current cantus
+	int step1 = 0; // Stop of current cantus
 	int warn_clib_max = 0; // If warning of maximum clib size fired
 	int warn_rule_undefined = 0; // If warning of undefined rules fired
 	int scan_full = 0; // If scan was completed without timeout and interruption
