@@ -24,10 +24,20 @@ void CGenRL1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "max_dyn", &max_dyn);
 	CheckVar(sN, sV, "min_tempo", &min_tempo);
 	CheckVar(sN, sV, "max_tempo", &max_tempo);
+	CheckVar(sN, sV, "min_pitch", &min_pitch);
+	CheckVar(sN, sV, "max_pitch", &max_pitch);
+	CheckVar(sN, sV, "distr_type_pitch", &distr_type_pitch);
+	CheckVar(sN, sV, "distr_depth", &distr_depth);
 }
 
 void CGenRL1::Generate()
 {
+	if ((min_pitch <= 0) || (min_pitch > 127)) min_pitch = 40;
+	if ((max_pitch <= 0) || (max_pitch > 127)) max_pitch = 90;
+	if ((distr_type_pitch <= 0) || (distr_type_pitch > 7)) distr_type_pitch = 1;
+	if ((distr_depth <= 0) || (distr_depth > 10)) distr_depth = 10;
+	//distr_depth
+
 	int v = 0;
 	int tempo_value = GetVaueInt(min_tempo, max_tempo, 1);
 	for (int i = 0; i < t_cnt; i++) {
@@ -35,8 +45,10 @@ void CGenRL1::Generate()
 		if (i >= t_allocated) ResizeVectors(t_allocated * 2);
 		Sleep(sleep_ms);
 		//note[i][v] = 60 + (i % 12);
-		//note[i][v] = 60 + (GetVaue() % 12);
-		note[i][v] = 60 + GetVaueInt(0, 12, 7, 3);
+		//note[i][v] = 60 + GetVaueInt(0, 12, 7, 3);
+
+		note[i][v] = GetVaueInt(min_pitch, max_pitch, distr_type_pitch, distr_depth);
+
 		pause[i][v] = 0;
 		len[i][v] = 1;
 		dyn[i][v] = randbw(min_dyn, max_dyn);
