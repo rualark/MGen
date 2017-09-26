@@ -610,22 +610,22 @@ int CGenCP1::FailPco() {
 			if (motion[fli2[ls - 1]] == mDirect) {
 				// Stepwize
 				if (abs(acc[1][s] - acc[1][s - 1]) < 3) {
-					if (s2 == c_len - 1) {
+					if (s2 == c_len - 1 && cfli[cfli.size()-1] == s) {
 						if (civlc[s] == 0) FLAG2(209, s)
 						else FLAG2(208, s);
 					}
-					else {
+					else if (ls < fli_size - 1 || ep2 == c_len) {
 						if (civlc[s] == 0) FLAG2(211, s)
 						else FLAG2(210, s);
 					}
 				}
 				// Non-stepwize
 				else {
-					if (s2 == c_len - 1) {
+					if (s2 == c_len - 1 && cfli[cfli.size() - 1] == s) {
 						if (civlc[s] == 0) FLAG2(213, s)
 						else FLAG2(212, s);
 					}
-					else {
+					else if (ls < fli_size - 1 || ep2 == c_len) {
 						if (civlc[s] == 0) FLAG2(215, s)
 						else FLAG2(214, s);
 					}
