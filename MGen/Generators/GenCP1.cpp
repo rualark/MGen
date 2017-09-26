@@ -712,9 +712,10 @@ int CGenCP1::FailRhythm3() {
 		// 1/4 syncope
 		if (beat[ls] == 2 && llen[ls] > 1) FLAG2(235, s);
 		// 1/2 after 1/4
-		if (ls > 0 && beat[ls] && llen[ls] > 1 && llen[ls - 1] == 1) {
+		if (ls > 0 && beat[ls] == 1 && llen[ls] > 1 && llen[ls - 1] == 1) {
 			if (s / npm >= c_len / npm - 1) FLAG2(238, s)
-			else if (sus[ls]) FLAG2(239, s)
+				// Flag slurred if sus or note is cut by scan window
+			else if (sus[ls] || (ls == fli_size - 1 && c_len > ep2)) FLAG2(239, s)
 			else FLAG2(240, s);
 		}
 		// Non-uniform starting rhythm
