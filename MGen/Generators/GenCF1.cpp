@@ -3415,6 +3415,25 @@ void CGenCF1::TestDiatonic()
 void CGenCF1::CheckSASEmulatorFlags() {
 	int fl, fl2, found, delay, good, error_level;
 	CString error_st, est;
+	if (ep2 == c_len) for (s = 0; s < ep2; ++s) {
+		// Loop through all source flags if last emulator run
+		for (int f = 0; f < nflags_full[s].size(); ++f) {
+			fl = nflags_full[s][f];
+			for (int f2 = 0; f2 < anflags[cpv][s].size(); ++f2) {
+				if (anflags[cpv][s][f2] == fl) {
+					found = 1;
+					break;
+				}
+			}
+			// Stop processing if this flag is found
+			if (found) continue;
+			est.Format("+ Flag does not appear on second full evaluation: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+				ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+				cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+			WriteLog(5, est);
+			if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+		}
+	}
 	for (s = 0; s < ep2; ++s) {
 		// Loop through all current flags
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
