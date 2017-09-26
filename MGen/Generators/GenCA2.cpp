@@ -253,15 +253,17 @@ void CGenCA2::DetectSpecies() {
 	// Write log
 	CString est;
 	est.Format("Detected species %d for counterpoint #%d (%s)",
-		species_detected, cantus_id, cantus_high ? "high" : "low");
+		species_detected, cantus_id + 1, cantus_high ? "high" : "low");
 	WriteLog(0, est);
 	// Check wrong text
 	if (species) {
 		if (species != species_detected) {
 			CString est;
 			est.Format("Counterpoint #%d (%s) looks like species %d, but species %d was specified in MIDI file",
-				cantus_id, cantus_high ? "high" : "low", species_detected, species);
-			WriteLog(5, est);
+				cantus_id + 1, cantus_high ? "high" : "low", species_detected, species);
+			if (species_detected == 4 && species == 2) WriteLog(1, est);
+			else if (species_detected == 2 && species == 4) WriteLog(1, est);
+			else WriteLog(5, est);
 		}
 	}
 	else species = species_detected;
