@@ -7,7 +7,7 @@ include "include/CA2.pl"
 #Midi_file = "midi\GenCA2\test-gis-multivoice.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-tonic-seq.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-overlap.mid" # Path and file name of imported midi file
-#Midi_file = "midi\GenCA2\test-2c1-2.md"i # Path and file name  importedof midi file
+#Midi_file = "midi\GenCA2\test-2c1-2.mid" # Path and file name  importedof midi file
 #Midi_file = "midi\GenCA2\test-2c1.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-vint.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\cp1.mid" # Path and file name of imported midi file
