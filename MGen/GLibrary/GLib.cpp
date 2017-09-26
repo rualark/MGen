@@ -908,3 +908,13 @@ int CGLib::vmin(vector<int> v) {
 	for (int x = 0; x < x2; ++x) if (v[x] < res) res = v[x];
 	return res;
 }
+
+CString CGLib::HumanFloat(float f) {
+	CString st;
+	if (f > 5) st.Format("%.0f", f);
+	else if (f > 0.05) st.Format("%.2f", f);
+	else if (f > 0.0005) st.Format("%.4f", f);
+	else if (f > 0.000005) st.Format("%.6f", f);
+	else st.Format("%.8f", f);
+	return st;
+}

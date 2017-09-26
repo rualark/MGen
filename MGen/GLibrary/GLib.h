@@ -171,6 +171,8 @@ public:
 	static int vmax(vector<int> v);
 	static int vmin(vector<int> v);
 
+	CString HumanFloat(float f);
+
 protected:
 	// Mathematics
 	int randbw(int n1, int n2); // Random between two numbers

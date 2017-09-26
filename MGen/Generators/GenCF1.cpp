@@ -2882,10 +2882,7 @@ void CGenCF1::ShowScanSpeed() {
 	CString speed_st;
 	if (dms) {
 		double sspeed = (double)dcycle / (double)dms;
-		if (sspeed > 5) speed_st.Format("%.0f/ms", sspeed);
-		else if (sspeed > 0.05) speed_st.Format("%.2f/ms", sspeed);
-		else if (sspeed > 0.0005) speed_st.Format("%.4f/ms", sspeed);
-		else speed_st.Format("%.6f/ms", sspeed);
+		speed_st = HumanFloat(sspeed) + "/ms";
 	}
 	// Create status
 	if (clib.size() > 0) st.Format("CL %d, ST %lld, CY %s", clib.size(), scan_time / 1000, speed_st);
@@ -3441,6 +3438,44 @@ void CGenCF1::TestDiatonic()
 	}
 }
 
+void CGenCF1::LogPerf() {
+	CString st, st2;
+	long long ms = time() - gen_start_time;
+	if (!ms) ms = 1;
+	st.Format("%s %s CY %s/ms, sent %s/s, c_len %d, swa_steps %d, sent %d, ignored %d, ", 
+		m_algo_folder, method == mScan ? "SAS" : "SWA",
+		HumanFloat(tcycle/(float)ms), HumanFloat(cantus_sent / (float)ms * 1000),
+		c_len, swa_steps, cantus_sent, cantus_ignored);
+	st2 += st;
+	if (cantus_id) {
+		st.Format("%s #%d, ", midi_file, cantus_id);
+		st2 += st;
+	}
+	if (m_algo_id == 111 || m_algo_id == 112) {
+		st.Format("analy %d/%d, cor %d, cor_full %d, cor_rp0 %d, ", 
+			cantus_id + 1, cpoint.size() + cantus.size(), cor_sent,
+			cor_full, cor_rp0);
+		st2 += st;
+		if (cor_sent) {
+			st.Format("~swa %s, ~rp %s, ~dp %s, ",
+				HumanFloat(swa_sum/cor_sent), HumanFloat(rp_sum / cor_sent), 
+				HumanFloat(dp_sum / cor_sent));
+			st2 += st;
+		}
+	}
+	if (m_testing) {
+		st.Format("time_res %ds, ", ANALYZE_RESERVE);
+		st2 += st;
+	}
+	st.Format("time %ss, cor_ack%d ", HumanFloat(ms / 1000.0), cor_ack);
+	st2 += st;
+#ifdef CF_DEBUG
+	st2 += "DCF ";
+#endif
+	WriteLog(2, st2);
+	if (m_testing) AppendLineToFile("autotest\\perf.log", st2 + "\n");
+}
+
 void CGenCF1::CheckSASEmulatorFlags() {
 	int fl, fl2, found, delay, good, error_level;
 	CString error_st, est;
@@ -3921,7 +3956,8 @@ check:
 			status_cycle = scycle;
 		}
 		// Save last second for analysis  
-		if (m_testing && task == tCor && m_algo_id != 101 && time - gen_start_time > (m_test_sec - 1) * 1000) 
+		if (m_testing && task == tCor && m_algo_id != 101 && 
+			time - gen_start_time > (m_test_sec - ANALYZE_RESERVE) * 1000)
 			break;
 		// Limit SAS correction time
 		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
@@ -4072,6 +4108,7 @@ check:
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
+	tcycle += cycle;
 }
 
 void CGenCF1::ScanRight(vector<int> &cc) {
@@ -4156,6 +4193,7 @@ void CGenCF1::Generate()
 		est.Format("Shuffle of %lld melodies finished", accepted);
 		WriteLog(3, est);
 	}
+	LogPerf();
 }
 
 inline void CGenCF1::ClearReady() {

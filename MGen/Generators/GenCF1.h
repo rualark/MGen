@@ -82,6 +82,9 @@
 // Maximum clib size without warning
 #define MAX_CLIB_WARN 500
 
+// Time to reserve for analysis for autotest
+#define ANALYZE_RESERVE 1
+
 #define MAX_RULESETS 100
 #define MAX_SEVERITY 101
 #define MAX_WIND 500
@@ -273,6 +276,7 @@ protected:
 	int InitGen();
 	int InitCantus();
 	void TestDiatonic();
+	void LogPerf();
 	void CheckSASEmulatorFlags();
 	void OutputFlagDelays();
 	void EmulateSAS();
@@ -515,6 +519,13 @@ protected:
 	int wcount = 1; // Number of windows created
 	int swcount = 0; // Number of SWA windows created
 	long long cycle = 0; // Cycle number of full scan
+	long long tcycle = 0; // Total cycles number
+	long cor_sent = 0; // Total number of corrections sent
+	long cor_full = 0; // Total number of full corrections sent
+	long cor_rp0 = 0; // Total number of corrections up to rpenalty 0 sent
+	long swa_sum = 0; // Total sum of swa levels
+	long dp_sum = 0; // Total sum of dpenalty
+	long rp_sum = 0; // Total sum of rpenalty
 	long long accept_time; // Last accepted timestamp
 	int rcycle = 0; // Rejected time divided by best_rejected (ms)
 	int nmin, nmax, nmind, nmaxd;

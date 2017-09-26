@@ -1751,7 +1751,8 @@ check:
 			status_cycle = scycle;
 		}
 		// Save last second for analysis
-		if (m_testing && task == tCor && m_algo_id != 121 && time - gen_start_time > (m_test_sec - 1) * 1000) break;
+		if (m_testing && task == tCor && m_algo_id != 121 && 
+			time - gen_start_time > (m_test_sec - ANALYZE_RESERVE) * 1000) break;
 		// Limit SAS correction time
 		if (task == tCor && max_correct_ms && time - correct_start_time > max_correct_ms) break;
 		if (FailDiatonic(ac[cpv], acc[cpv], 0, ep2, minor_cur)) goto skip;
@@ -1917,6 +1918,7 @@ check:
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
+	tcycle += cycle;
 }
 
 void CGenCP1::LoadCantusHigh() {
@@ -2068,4 +2070,5 @@ void CGenCP1::Generate() {
 		// Stop generation if finished or not random or not rechoosing
 		if (need_exit || t_generated >= t_cnt || !accept_cantus_rechoose || cantus_id2) break;
 	}
+	LogPerf();
 }

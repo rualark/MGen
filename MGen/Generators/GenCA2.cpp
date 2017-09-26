@@ -70,6 +70,12 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 			dpenalty[cids[x]] = MAX_PENALTY;
 			// Show result
 			ScanCP(tEval, 2);
+			++cor_sent;
+			dp_sum += dpenalty_cur;
+			rp_sum += rpenalty_min;
+			swa_sum += swa_len;
+			if (scan_full && (method != mSWA || swa_full)) ++cor_full;
+			if (!rpenalty_min) ++cor_rp0;
 			EmulateSASCP();
 			LogCantus("scor", cantus_id + 1, acc[cpv].size(), acc[cpv]);
 			// Go back
@@ -395,7 +401,8 @@ void CGenCA2::Generate() {
 		UpdateTempoMinMax(step0, step - 1);
 		CreateScanMatrix(i);
 		// If no corrections needed
-		if (!corrections || !smatrixc) {
+		if (!corrections || !smatrixc || 
+			(m_testing && time() - gen_start_time > (m_test_sec - ANALYZE_RESERVE) * 1000)) {
 			// Go forward
 			t_generated = step;
 			Adapt(step0, step - 1);
@@ -458,4 +465,5 @@ void CGenCA2::Generate() {
 	st.Format("Analyzed %d of %d", cantus_id+1, cpoint.size());
 	SetStatusText(3, st);
 	ShowStuck();
+	LogPerf();
 }
