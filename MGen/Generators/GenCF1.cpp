@@ -3419,6 +3419,7 @@ void CGenCF1::CheckSASEmulatorFlags() {
 		// Loop through all source flags if last emulator run
 		for (int f = 0; f < nflags_full[s].size(); ++f) {
 			fl = nflags_full[s][f];
+			found = 0;
 			for (int f2 = 0; f2 < anflags[cpv][s].size(); ++f2) {
 				if (anflags[cpv][s][f2] == fl) {
 					found = 1;
@@ -3428,7 +3429,7 @@ void CGenCF1::CheckSASEmulatorFlags() {
 			// Stop processing if this flag is found
 			if (found) continue;
 			est.Format("+ Flag does not appear on second full evaluation: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
-				ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+				fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 				cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 			WriteLog(5, est);
 			if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
