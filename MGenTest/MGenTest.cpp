@@ -146,6 +146,7 @@ void LoadConfig() {
 	remove("autotest\\expect.log");
 	remove("autotest\\sas-emu.log");
 	remove("autotest\\cor-ack.log");
+	remove("autotest\\perf.log");
 	// Clear run.log
 	fstream fs;
 	fs.open("autotest\\run.log", ios::out);
@@ -201,6 +202,7 @@ void LoadConfig() {
 	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log >> run.log 2>&1", 1000);
 	Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu.log >> run.log 2>&1", 1000);
 	Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack.log >> run.log 2>&1", 1000);
+	Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf.log >> run.log 2>&1", 1000);
 	// Show run output
 	//Run("cmd.exe", "/c echo Test >> autotest\\run.log", 1000);
 	CString outs = file("autotest\\run.log");
@@ -214,6 +216,9 @@ void LoadConfig() {
 	cout << "SAS emulator log:\n";
 	cout << outs;
 	outs = file("autotest\\cor-ack.log");
+	cout << "Correction acknowledge log:\n";
+	cout << outs;
+	outs = file("autotest\\perf.log");
 	cout << "Correction acknowledge log:\n";
 	cout << outs;
 
