@@ -219,6 +219,7 @@ protected:
 	void GetSourceRange(vector<int>& cc);
 	void ApplySourceRange();
 	void SingleCantusInit();
+	inline void ResizeToWindow();
 	void MakeNewCantus(vector<int>& c, vector<int>& cc);
 	void MultiCantusInit(vector<int>& c, vector<int>& cc);
 	int FailWindowsLimit();
@@ -524,9 +525,9 @@ protected:
 	vector<int> nstat; // [cc]
 	vector<int> nstat2; // [c]
 	vector<int> nstat3; // [c]
-	vector<vector<int>> hm; // [s][] Available harmonic meanings for each note
-	vector<vector<int>> hm2; // [s][] Required harmonic meanings for each note
-	vector <int> chm, chmp; // [s] Current harmonic meaning and its position in hm
+	vector<vector<int>> hm; // [ls][] Available harmonic meanings for each note
+	//vector<vector<int>> hm2; // [ls][] Required harmonic meanings for each note
+	vector <int> chm, chmp; // [ls] Current harmonic meaning and its position in hm
 	float hdif;
 	int cantus_id = 0;
 	CString key_eval; // Results of key evaluation
@@ -575,6 +576,7 @@ protected:
 	vector<int> sas_emulator_move_ignore; // [r_id] Specify rule identiefiers, which should not be tested for moves in SAS emulator
 	vector<int> sas_emulator_unstable; // [r_id] Specify rule identiefiers, which can appeare in emulator, but not in main analysis
 	vector<vector<int>> sas_emulator_replace; // [r_id][] First flag can replace second in SAS emulator
+	vector<vector<int>> flag_replace; // [r_id][] First flag can replace second on second scan or in SAS emulator
 	vector<int> flags_full; // [r_id] Flags of full analysis
 	vector<vector<int>> nflags_full; // [s][] Note flags of full analysis
 	vector<vector<int>> nflags_prev; // [s][] Note flags of previous SAS run

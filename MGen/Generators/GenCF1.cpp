@@ -20,6 +20,7 @@ CGenCF1::CGenCF1()
 	sas_emulator_max_delay.resize(MAX_RULES);
 	sas_emulator_move_ignore.resize(MAX_RULES);
 	sas_emulator_replace.resize(MAX_RULES);
+	flag_replace.resize(MAX_RULES);
 	sas_emulator_unstable.resize(MAX_RULES);
 	flag_delay.resize(MAX_RULES);
 	flag_delay_st.resize(MAX_RULES);
@@ -146,7 +147,7 @@ void CGenCF1::LoadRules(CString fname)
 		st.Trim();
 		if (st.Find(";") != -1) {
 			Tokenize(st, ast, ";");
-			if (ast.size() != 16) {
+			if (ast.size() != 17) {
 				est.Format("Wrong column count at line in rules file %s: '%s'", fname, st);
 				WriteLog(5, est);
 				error = 1;
@@ -195,6 +196,13 @@ void CGenCF1::LoadRules(CString fname)
 				}
 			}
 			sas_emulator_unstable[rid] = atoi(ast[15]);
+			if (ast[16] != "") {
+				Tokenize(ast[16], ast2, ",");
+				for (int x = 0; x < ast2.size(); ++x) {
+					int fl = atoi(ast2[x]);
+					if (fl) flag_replace[fl].push_back(rid);
+				}
+			}
 		}
 	}
 	fs.close();
@@ -2021,7 +2029,7 @@ void CGenCF1::ScanInit() {
 		min_cc.resize(c_len);
 		max_cc.resize(c_len);
 		hm.resize(c_len);
-		hm2.resize(c_len);
+		//hm2.resize(c_len);
 		accepted4.resize(MAX_WIND); // number of accepted canti per window
 		accepted5.resize(MAX_WIND); // number of canti with neede flags per window
 		flags.resize(MAX_RULES); // Flags for whole cantus
@@ -2051,7 +2059,7 @@ void CGenCF1::ScanInit() {
 		}
 		for (int x = 0; x < c_len; ++x) {
 			hm[x].resize(3);
-			hm2[x].resize(3);
+			//hm2[x].resize(3);
 		}
 	}
 	// Can we skip flags?
@@ -2208,6 +2216,7 @@ void CGenCF1::SingleCantusInit() {
 		dpenalty_step.clear();
 		dpenalty_step.resize(c_len, 0);		// End of evaluation window
 		if (method == mScan) {
+			ResizeToWindow();
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
@@ -2244,6 +2253,23 @@ void CGenCF1::SingleCantusInit() {
 	}
 	// Absolute maximum of scan range for culminations
 	max_cc2 = vmax(max_cc);
+}
+
+// Resize main scan vectors to current evaluation window size (ep2)
+void CGenCF1::ResizeToWindow() {
+	m_cc.resize(ep2);
+	m_c.resize(ep2);
+	m_pcc.resize(ep2);
+	m_pc.resize(ep2);
+  bli.resize(ep2);
+	m_leap.resize(ep2);
+	m_smooth.resize(ep2);
+	m_slur.resize(ep2);
+	macc.resize(ep2);
+	macc2.resize(ep2);
+	decc.resize(ep2);
+	decc2.resize(ep2);
+	anflags[cpv].resize(ep2);
 }
 
 // Step2 must be exclusive
@@ -2366,6 +2392,7 @@ void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 	p = sp2 - 1; // Minimal position in array to cycle
 	// Absolute maximum of scan range for culminations
 	max_cc2 = vmax(max_cc);
+	ResizeToWindow();
 }
 
 // Calculate flag statistics
@@ -2501,6 +2528,7 @@ void CGenCF1::NextWindow() {
 			WriteLog(0, est);
 		}
 	}
+	if (method == mScan) ResizeToWindow();
 }
 
 // Check if rpenalty is not below than flags sum
@@ -2682,6 +2710,7 @@ void CGenCF1::BackWindow(vector<int> &cc) {
 		// Go to rightmost element
 		p = sp2 - 1;
 	}
+	if (method == mScan) ResizeToWindow();
 }
 
 void CGenCF1::WritePerfLog() {
@@ -2733,11 +2762,11 @@ int CGenCF1::NextSWA(vector<int> &cc, vector<int> &cc_old) {
 	wid = 0;
 	wpos1[wid] = sp1;
 	wpos2[wid] = sp2;
+	ep2 = GetMaxSmap() + 1;
+	if (sp2 == swa2) ep2 = c_len;
 	// Clear scan steps
 	FillCantusMap(cc_id, smap, swa1, swa2, 0);
 	FillCantusMap(cc, smap, swa1, swa2, cc_order);
-	ep2 = GetMaxSmap() + 1;
-	if (sp2 == swa2) ep2 = c_len;
 	dpenalty_step.clear();
 	dpenalty_step.resize(c_len, 0);
 	// Prepare dpenalty
@@ -3428,7 +3457,25 @@ void CGenCF1::CheckSASEmulatorFlags() {
 			}
 			// Stop processing if this flag is found
 			if (found) continue;
-			est.Format("+ Flag does not appear on second full evaluation: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+			// Not found in same position: can it be replaced?
+			if (flag_replace[fl].size()) {
+				for (int i = 0; i < flag_replace[fl].size(); ++i) {
+					fl2 = flag_replace[fl][i];
+					for (int f2 = 0; f2 < anflags[cpv][s].size(); ++f2) if (anflags[cpv][s][f2] == fl2) {
+						found = 1;
+						break;
+					}
+				}
+			}
+			if (found) {
+				est.Format("+ Second scan at step %d replaced flag [%d] with: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+					ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+				WriteLog(7, est);
+				if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+				continue;
+			}
+			est.Format("- Flag does not appear on second full evaluation: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 				fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 				cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 			WriteLog(5, est);
@@ -3482,6 +3529,15 @@ void CGenCF1::CheckSASEmulatorFlags() {
 					}
 				}
 			}
+			if (!found && flag_replace[fl].size()) {
+				for (int i = 0; i < flag_replace[fl].size(); ++i) {
+					fl2 = flag_replace[fl][i];
+					for (int f2 = 0; f2 < nflags_full[s].size(); ++f2) if (nflags_full[s][f2] == fl2) {
+						found = 1;
+						break;
+					}
+				}
+			}
 			if (found) {
 				est.Format("+ SAS emulator at step %d replaced flag [%d] with: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 					ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
@@ -3516,6 +3572,15 @@ void CGenCF1::CheckSASEmulatorFlags() {
 				if (sas_emulator_replace[fl].size()) {
 					for (int i = 0; i < sas_emulator_replace[fl].size(); ++i) {
 						fl2 = sas_emulator_replace[fl][i];
+						if (flags_full[fl2]) {
+							found = 1;
+							break;
+						}
+					}
+				}
+				if (!found && flag_replace[fl].size()) {
+					for (int i = 0; i < flag_replace[fl].size(); ++i) {
+						fl2 = flag_replace[fl][i];
 						if (flags_full[fl2]) {
 							found = 1;
 							break;
@@ -3961,7 +4026,7 @@ check:
 			}
 			else {
 				// Calculate dpenalty if this is evaluation
-				if (task == tEval && cantus.size()) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, 0, c_len - 1);
+				if (task == tEval && cantus.size()) dpenalty_cur = CalcDpenalty(cantus[cantus_id], m_cc, 0, ep2 - 1);
 				if (SendCantus()) break;
 			}
 			// Exit if this is evaluation
