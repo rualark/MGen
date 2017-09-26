@@ -16,6 +16,11 @@ configs\GenCA1\test-fill.pl
 configs\GenCA1\test-tritone.pl
 configs\GenCA1\test-minor-alter.pl
 configs\GenCA1\test-tonic.pl
+configs\GenCP1\cp1.pl;5;60
+configs\GenCP1\cp2.pl;5;60
+configs\GenCP1\cp3.pl;5;60
+configs\GenCP1\cp4.pl;5;60
+configs\GenCP1\cp5.pl;5;60
 configs\GenCP1\good-cf-maj.pl;10;60
 configs\GenCP1\good-cf-maj-high.pl;10;60
 configs\GenCP1\good-cf-maj-scan.pl;10;60
