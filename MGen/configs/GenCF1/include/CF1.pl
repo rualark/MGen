@@ -45,7 +45,7 @@ fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps fo
 first_steps_tonic = 3 # Number of first steps, which must contain tonic note (will increase by one if cantus is longer than 10 notes)
 
 # Technical parameters
-midifile_out_mul = 2 # All notes length is multiplied by this number before exporting
+midifile_out_mul = 8 # All notes length is multiplied by this number before exporting
 show_severity = 1 # =1 to show severity and flag id in square brackets in comments to notes (also when exporting to MIDI file)
 calculate_correlation = 0 # Enables correlation calculation algorithm. Slows down generation. Outputs to cf1-cor.csv
 calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows down generation.
@@ -55,5 +55,5 @@ best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requ
 show_ignored_flags = 1 # Show even ignored flags (with strikethrough in rules.xlsm)
 
 midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
-midifile_export_comments = 1 # Set to export comments (violations) to midifile lyrics
+midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
 emulate_sas = 0 # 0 = disable emulator, 1 = Enables SAS algorithm emulator
