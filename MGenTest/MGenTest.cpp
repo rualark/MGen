@@ -199,10 +199,19 @@ void LoadConfig() {
 			PublishTest(pname, ecode, passed, st2);
 		}
 	}
-	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect.log >> run.log 2>&1", 1000);
-	Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu.log >> run.log 2>&1", 1000);
-	Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack.log >> run.log 2>&1", 1000);
-	Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf.log >> run.log 2>&1", 1000);
+	CString suffix = "-release";
+#ifdef _DEBUG
+	suffix = "-debug";
+#endif
+	suffix += "-" + CTime::GetCurrentTime().Format("%Y-%M-%D_%H-%M-%S");
+	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" + 
+		suffix + ".log >> run.log 2>&1", 1000);
+	Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
+		suffix + ".log >> run.log 2>&1", 1000);
+	Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack" +
+		suffix + ".log >> run.log 2>&1", 1000);
+	Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
+		suffix + ".log >> run.log 2>&1", 1000);
 	// Show run output
 	//Run("cmd.exe", "/c echo Test >> autotest\\run.log", 1000);
 	CString outs = file("autotest\\run.log");
