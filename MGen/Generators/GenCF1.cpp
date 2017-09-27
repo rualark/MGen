@@ -356,6 +356,32 @@ void CGenCF1::CheckConfig() {
 	CHECK_READY_PERSIST(DR_Config, DR_RuleSet);
 	SET_READY_PERSIST(DR_ConfigTest);
 	// GenCP1
+	if (v_cnt == 2) {
+		if (species == 1) {
+			npm = 1;
+			fn = 0;
+			midifile_out_mul *= 8;
+		}
+		if (species == 2) {
+			npm = 2;
+			fn = 1;
+			midifile_out_mul *= 4;
+		}
+		if (species == 3) {
+			npm = 4;
+			fn = 1;
+			midifile_out_mul *= 2;
+		}
+		if (species == 4) {
+			npm = 2;
+			fn = 1;
+			midifile_out_mul *= 4;
+		}
+		if (species == 5) {
+			npm = 8;
+			fn = 2;
+		}
+	}
 	if (m_algo_id == 121) {
 		if (accept_cantus_rechoose && cantus_id2) {
 			WriteLog(1, "Warning: accept_cantus_rechoose will not work with cantus_id above zero (check config)");

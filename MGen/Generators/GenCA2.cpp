@@ -306,6 +306,21 @@ void CGenCA2::DetectSpecies() {
 		}
 	}
 	else species = species_detected;
+	// Set midi out multiplier
+	if (species_applied) return;
+	species_applied = 1;
+	if (species == 1) {
+		midifile_out_mul *= 8;
+	}
+	if (species == 2) {
+		midifile_out_mul *= 4;
+	}
+	if (species == 3) {
+		midifile_out_mul *= 2;
+	}
+	if (species == 4) {
+		midifile_out_mul *= 4;
+	}
 }
 
 void CGenCA2::Generate() {

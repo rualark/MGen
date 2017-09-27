@@ -47,7 +47,8 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 		// Replace piano with other instrument, because otherways it generates two-stave track in Sibelius
 		if (st == "Piano") st = "Vibraphone";
 		midifile.addTrackName(track, 0, st);
-		midifile.addPatchChange(track, 0, channel, 0); // 40=violin
+		//if (ngv_min[v] < 57) midifile.addPatchChange(track, 0, channel, bass_program[v]); // 0=piano, 40=violin, 70=bassoon
+		midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
 		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
 			midifile.addNoteOn(track, (tpq * 4) + tpc*i, channel, note[i][v], dyn[i][v]);
 			midifile.addNoteOff(track, (tpq * 4) + tpc*(i + len[i][v]) - 1, channel, note[i][v], 0);

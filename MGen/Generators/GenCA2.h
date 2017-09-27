@@ -21,4 +21,6 @@ protected:
 	
 	vector<int> min_vlen; // [v]
 	vector<int> max_vlen; // [v]
+
+	int species_applied = 0; // If species midi out multiplier already applied
 };

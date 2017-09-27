@@ -31,6 +31,9 @@
 #define MIDI_BUF_PROTECT 500 // Number of ms to postpone playback on start
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
+// Bass instruments
+const int bass_program[] = { 45, 33, 70, 58, 34, 35, 36, 37, 38 };
+
 class CGMidi :
 	public CGAdapt
 {
