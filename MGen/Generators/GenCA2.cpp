@@ -130,6 +130,19 @@ void CGenCA2::MergeCantus() {
 	}
 }
 
+void CGenCA2::ShrinkCP() {
+	int l, min_len, max_len;
+	for (int i = 0; i < cpoint.size(); ++i) {
+		min_len = vmin(cantus_len[i]);
+		// Shrink cp
+		for (s = 0; s < cantus_len[i].size(); ++s) {
+			l = cantus_len[i][s] / min_len;
+			cantus_tempo[i][s] = cantus_tempo[i][s] * l / cantus_len[i][s];
+			cantus_len[i][s] = l;
+		}
+	}
+}
+
 // Detect npm and explode notes into uniform length notes
 void CGenCA2::ExplodeCP() {
 	// Detect minimum note length for each voice
@@ -330,6 +343,7 @@ void CGenCA2::Generate() {
 			cpv = 1;
 		}
 		ExplodeCP();
+		ShrinkCP();
 		DetectSpecies();
 		fn0 = fn;
 		// Get key
@@ -339,6 +353,7 @@ void CGenCA2::Generate() {
 		CalcCcIncrement();
 		// Show imported melody
 		MergeCantus();
+		ShrinkCantus();
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0) + fn * cantus_len[i][0];
 		dpenalty_cur = 0;
 		// Create pause

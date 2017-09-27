@@ -11,6 +11,7 @@ public:
 
 protected:
 	void MergeCantus();
+	void ShrinkCP();
 	void ExplodeCP();
 	void LinkCpPauses();
 	void DetectSpecies();
