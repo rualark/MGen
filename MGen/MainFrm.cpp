@@ -1181,18 +1181,18 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 		for (int i = 0; i < STATUS_LINES; ++i) {
 			total += CGLib::status_updates[i];
 			st.Format("\n%d per second (%lld in %d seconds) ",
-				CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time),
+				CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
 				CGLib::status_updates[i], (pGen->time_stopped - pGen->gen_start_time) / 1000);
 			st2 += st;
 		}
 		st.Format("Status updates: %d per second (%lld in %d seconds). Detailed: ",
-			total * 1000 / (pGen->time_stopped - pGen->gen_start_time),
+			total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
 			total, (pGen->time_stopped - pGen->gen_start_time) / 1000);
 		st2 = st + st2;
 		CGLib::WriteLog(2, st2);
-		if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time) > WARN_STATUS_FREQ) {
+		if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1) > WARN_STATUS_FREQ) {
 			st.Format("Algorithm status update is %d per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
-				total * 1000 / (pGen->time_stopped - pGen->gen_start_time), WARN_STATUS_FREQ);
+				total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1), WARN_STATUS_FREQ);
 			CGLib::WriteLog(1, st);
 		}
 	}
