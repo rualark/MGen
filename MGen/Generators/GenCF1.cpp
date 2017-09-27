@@ -3848,7 +3848,7 @@ void CGenCF1::SWA(int i, int dp) {
 		// Animation
 		long long time = CGLib::time();
 		// Limit correction time
-		if (max_correct_ms && time - correct_start_time > max_correct_ms) break;
+		if (max_correct_ms && time - gen_start_time > max_correct_ms) break;
 		if (dp) {
 			// Abort SWA if dpenalty and rpenalty not decreasing
 			if (rpenalty_min >= rpenalty_min_old && dpenalty_min >= dpenalty_min_old) {

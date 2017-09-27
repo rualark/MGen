@@ -1382,7 +1382,7 @@ void CGenCP1::SWACP(int i, int dp) {
 		// Animation
 		long long time = CGLib::time();
 		int acy = 0;
-		if (animate) acy = (time - correct_start_time) / animate;
+		if (animate) acy = (time - gen_start_time) / animate;
 		if (!animate || acy > acycle) {
 			if (debug_level > 2) {
 				CString est;
