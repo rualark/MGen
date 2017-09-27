@@ -162,8 +162,7 @@ void CGenCA2::ShrinkCP() {
 	}
 }
 
-// Detect npm and explode notes into uniform length notes
-void CGenCA2::ExplodeCP() {
+void CGenCA2::GetVlen() {
 	// Detect minimum note length for each voice
 	min_vlen.clear();
 	max_vlen.clear();
@@ -187,6 +186,10 @@ void CGenCA2::ExplodeCP() {
 		}
 		if (cur_len < min_vlen[v]) min_vlen[v] = cur_len;
 	}
+}
+
+// Detect npm and explode notes into uniform length notes
+void CGenCA2::ExplodeCP() {
 	// Check that cantus has longer notes than other voice
 	if (min_vlen[cfv] < min_vlen[cpv]) {
 		CString est;
@@ -323,6 +326,16 @@ void CGenCA2::DetectSpecies() {
 	}
 }
 
+// Move pause from cf voice
+void CGenCA2::FixUnisonPause() {
+	for (s = 0; s < cpoint[cantus_id][0].size(); ++s) {
+		if (!cpoint[cantus_id][0][s] && min_vlen[0] > min_vlen[1])
+			swap(cpoint[cantus_id][0][s], cpoint[cantus_id][1][s]);
+		if (!cpoint[cantus_id][1][s] && min_vlen[1] > min_vlen[0])
+			swap(cpoint[cantus_id][0][s], cpoint[cantus_id][1][s]);
+	}
+}
+
 void CGenCA2::Generate() {
 	//CString test_st = "62 62 62 62 69 69 66 66 67 67 67 67 66 66 64 64 66 66 66 66 66 66 67 67 66 66 66 66 69 69 69 69 71 71 69 69 67 67 76 76 73 73 73 73 71 71 69 69 74 74 73 73 71 71 69 69 67 67 71 71 73 73 73 73 74";
 	//test_cc.resize(65);
@@ -335,7 +348,7 @@ void CGenCA2::Generate() {
 	InitCP();
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCP(midi_file);
-	LinkCpPauses();
+	//LinkCpPauses();
 	if (cpoint.size() < 1) return;
 	// Saved t_generated
 	int t_generated2 = 0;
@@ -361,14 +374,24 @@ void CGenCA2::Generate() {
 		long long time_start = CGLib::time();
 		// Add line
 		linecolor[step] = MakeColor(255, 0, 0, 0);
+		GetVlen();
+		FixUnisonPause();
 		LoadCantusHigh();
 		LoadSpecies();
 		// Check level
 		if ((cantus_high && cpoint[i][1][0] == 0) || (!cantus_high && cpoint[i][0][0] == 0)) {
-			st.Format("Warning: Cantus starts with a pause (%s cantus #%d). Changed to %s",
-				cantus_high ? "high" : "low", cantus_id + 1, (!cantus_high) ? "high" : "low");
-			WriteLog(5, st);
-			cantus_high = !cantus_high;
+			if (specified_high) {
+				st.Format("Cantus starts with a pause (%s cantus #%d). As it was specified in midi, moved pause to other voice",
+					cantus_high ? "high" : "low", cantus_id + 1);
+				WriteLog(0, st);
+				swap(cpoint[cantus_id][0][0], cpoint[cantus_id][1][0]);
+			}
+			else {
+				st.Format("Warning: Cantus starts with a pause (%s cantus #%d). Changed to %s",
+					cantus_high ? "high" : "low", cantus_id + 1, (!cantus_high) ? "high" : "low");
+				WriteLog(5, st);
+				cantus_high = !cantus_high;
+			}
 		}
 		if (cantus_high) {
 			cfv = 1;

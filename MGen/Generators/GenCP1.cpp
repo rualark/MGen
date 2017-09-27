@@ -1900,10 +1900,18 @@ check:
 
 void CGenCP1::LoadCantusHigh() {
 	CString st;
+	specified_high = 0;
 	if (cantus_incom[cantus_id].size()) {
-		if (cantus_incom[cantus_id][0].Find("cf=low") != -1) cantus_high = 0;
-		else if (cantus_incom[cantus_id][0].Find("cf=high") != -1) cantus_high = 1;
+		if (cantus_incom[cantus_id][0].Find("cf=low") != -1) {
+			cantus_high = 0;
+			specified_high = 1;
+		}
+		else if (cantus_incom[cantus_id][0].Find("cf=high") != -1) {
+			cantus_high = 1;
+			specified_high = 1;
+		}
 		else {
+			specified_high = 0;
 			// Use previous cantus_high (of previous cantus or from configuration if first cantus)
 			st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
 				cantus_id + 1, cantus_high ? "high" : "low");
