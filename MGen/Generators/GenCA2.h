@@ -11,6 +11,7 @@ public:
 
 protected:
 	void MergeCantus();
+	void ShrinkCantus2();
 	void ShrinkCP();
 	void ExplodeCP();
 	void LinkCpPauses();

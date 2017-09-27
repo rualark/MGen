@@ -1953,7 +1953,7 @@ void CGenCP1::LoadSpecies() {
 
 void CGenCP1::ShrinkCantus() {
 	int l, min_len, max_len;
-	// Detect minimum note length for each voice
+	// Detect minimum note length
 	for (int i = 0; i < cantus.size(); ++i) {
 		min_len = INT_MAX;
 		max_len = 1;

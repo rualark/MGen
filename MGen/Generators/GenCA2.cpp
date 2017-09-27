@@ -130,6 +130,25 @@ void CGenCA2::MergeCantus() {
 	}
 }
 
+void CGenCA2::ShrinkCantus2() {
+	int l, min_len, max_len;
+	// Detect minimum note length
+	min_len = INT_MAX;
+	max_len = 1;
+	// Get lengths
+	for (s = 0; s < cc_len.size(); ++s) {
+		if (cc_len[s] < min_len) min_len = cc_len[s];
+		if (cc_len[s] > max_len) max_len = cc_len[s];
+	}
+	// Check lengths
+	// Shrink cantus
+	for (s = 0; s < cc_len.size(); ++s) {
+		l = cc_len[s] / min_len;
+		cc_tempo[s] = cc_tempo[s] * l / cc_len[s];
+		cc_len[s] = l;
+	}
+}
+
 void CGenCA2::ShrinkCP() {
 	int l, min_len, max_len;
 	for (int i = 0; i < cpoint.size(); ++i) {
@@ -353,7 +372,7 @@ void CGenCA2::Generate() {
 		CalcCcIncrement();
 		// Show imported melody
 		MergeCantus();
-		ShrinkCantus();
+		ShrinkCantus2();
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0) + fn * cantus_len[i][0];
 		dpenalty_cur = 0;
 		// Create pause
