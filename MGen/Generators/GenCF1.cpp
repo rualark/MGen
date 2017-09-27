@@ -3868,14 +3868,14 @@ void CGenCF1::SWA(int i, int dp) {
 					if (swa_len >= smap.size()) swa_full = 2;
 					break;
 				}
-				++swa_len;
+				else ++swa_len;
 			}
 		}
 		else {
 			// Abort SWA if rpenalty zero or not decreasing
 			if (!rpenalty_min) break;
 			if (rpenalty_min >= rpenalty_min_old) {
-				if (swa_len >= swa_steps) {
+				if (swa_len >= swa_steps || swa_len >= smap.size()) {
 					// Record SWA stuck flags
 					for (int x = 0; x < max_flags; ++x) {
 						if (best_flags[x]) ++ssf[x];
