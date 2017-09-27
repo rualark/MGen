@@ -272,6 +272,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 		st.Trim();
 		// Load include
 		if (load_includes && CheckInclude(st, fname, iname)) LoadConfigFile(iname);
+		if (error) break;
 		pos = st.Find("=");
 		if (pos != -1) {
 			// Get variable name and value
@@ -306,6 +307,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 					WriteLog(5, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
 				}
 			}
+			if (error) break;
 		}
 	}
 	fs.close();

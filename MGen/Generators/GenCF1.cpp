@@ -82,6 +82,7 @@ void CGenCF1::LoadHSP(CString fname)
 	if (!fileExists(fname)) {
 		est.Format("LoadHSP cannot find file: %s", fname);
 		WriteLog(5, est);
+		error = 1;
 		return;
 	}
 	fs.open(fname);
@@ -99,11 +100,13 @@ void CGenCF1::LoadHSP(CString fname)
 			if (ast.size() != 9) {
 				est.Format("Wrong column count at line in hsp file %s: '%s'", fname, st);
 				WriteLog(5, est);
+				error = 1;
 				return;
 			}
 			if (i > 7) {
 				est.Format("Wrong line count at line %d in hsp file %s: '%s'", i, fname, st);
 				WriteLog(5, est);
+				error = 1;
 				return;
 			}
 			hsp[i - 1].clear();
@@ -133,6 +136,7 @@ void CGenCF1::LoadRules(CString fname)
 	if (!fileExists(fname)) {
 		est.Format("LoadRules cannot find file: %s", fname);
 		WriteLog(5, est);
+		error = 1;
 		return;
 	}
 	fs.open(fname);
@@ -165,6 +169,7 @@ void CGenCF1::LoadRules(CString fname)
 				if (max_flags >= MAX_RULES) {
 					est.Format("Rule id (%d) is equal or greater than MAX_RULES (%d). Consider increasing MAX_RULES", rid, MAX_RULES);
 					WriteLog(5, est);
+					error = 1;
 					return;
 				}
 			}
@@ -264,6 +269,7 @@ int CGenCF1::GetRuleParam(int rset, int rid, int type, int id) {
 		if (type == rsSubComment) rs = "subrule comment";
 		est.Format("Error parsing integer #%d from %s %d: '%s' (rule set %d)", id+1, rs, rid, st, rset);
 		WriteLog(5, est);
+		error = 1;
 		return 0;
 	}
 	return RuleParam[rset][rid][type][id];
@@ -455,7 +461,10 @@ int CGenCF1::SelectRuleSet(int rs) {
 		// Check that at least one rule is accepted
 		for (int i = 0; i < max_flags; ++i) {
 			if (accept[i]) break;
-			if (i == max_flags - 1) WriteLog(5, "Warning: all rules are rejected (0) in configuration file");
+			if (i == max_flags - 1) {
+				WriteLog(5, "Warning: all rules are rejected (0) in configuration file");
+				error = 1;
+			}
 		}
 		// Calculate second level flags count
 		flags_need2 = 0;
@@ -532,6 +541,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 			CString est;
 			est.Format("Warning: method name unrecognized: %s", *sV);
 			WriteLog(5, est);
+			error = 1;
 		}
 	}
 	// Load tonic
@@ -2491,6 +2501,7 @@ int CGenCF1::FailWindowsLimit() {
 		est.Format("Error: generating %d notes with search window %d requires more than %d windows. Change MAX_WIND to allow more.",
 			c_len, s_len, MAX_WIND);
 		WriteLog(5, est);
+		error = 1;
 		return 1;
 	}
 	return 0;
@@ -4162,6 +4173,7 @@ void CGenCF1::Generate()
 
 	first_note0 = first_note;
 	last_note0 = last_note;
+	if (error) return;
 	// Voice
 	int v = 0;
 	//TestDiatonic();

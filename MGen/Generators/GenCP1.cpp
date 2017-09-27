@@ -1955,6 +1955,7 @@ void CGenCP1::Generate() {
 	//StringToVector(&st, " ", test_cc);
 
 	int fn0 = fn;
+	if (error) return;
 	if (InitCP()) return;
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCantus(midi_file);

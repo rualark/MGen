@@ -331,6 +331,7 @@ void CGenCA2::Generate() {
 	CString st;
 	int fn0 = fn;
 	int s_len2 = s_len;
+	if (error) return;
 	InitCP();
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCP(midi_file);

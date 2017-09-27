@@ -257,5 +257,7 @@ protected:
 
 	// Time
 	static long long first_time;
+
+	int error = 0;
 };
 

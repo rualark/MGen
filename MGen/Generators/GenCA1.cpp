@@ -431,14 +431,14 @@ void CGenCA1::CorAck() {
 	if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 }
 
-void CGenCA1::Generate()
-{
+void CGenCA1::Generate() {
 	CString test_st = "60 72 71 69 67 71 67 69 71 67 65 64 62 59 60";
 	test_cc.resize(15);
 	StringToVector(&test_st, " ", test_cc);
 
 	CString st;
 	int s_len2 = s_len;
+	if (error) return;
 	InitCantus();
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCantus(midi_file);
