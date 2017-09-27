@@ -915,6 +915,7 @@ CString CGLib::HumanFloat(float f) {
 	else if (f > 0.05) st.Format("%.2f", f);
 	else if (f > 0.0005) st.Format("%.4f", f);
 	else if (f > 0.000005) st.Format("%.6f", f);
-	else st.Format("%.8f", f);
+	else if (f > 0.00000005) st.Format("%.8f", f);
+	else st = "0";
 	return st;
 }
