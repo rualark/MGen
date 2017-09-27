@@ -443,7 +443,7 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 					}
 					CStringW wst(mark);
-					g.DrawString(wst, -1, &font_small2, PointF(X_FIELD + i * nwidth,
+					g.DrawString(wst, -1, &font_small2, PointF(X_FIELD + i * nwidth - 1,
 						y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight), &brush_v);
 				}
 			}
