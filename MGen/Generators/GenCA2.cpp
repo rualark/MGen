@@ -77,7 +77,7 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 			if (scan_full && (method != mSWA || swa_full)) ++cor_full;
 			if (!rpenalty_min) ++cor_rp0;
 			EmulateSASCP();
-			LogCantus("scor", cantus_id + 1, acc[cpv].size(), acc[cpv]);
+			//LogCantus("scor", cantus_id + 1, acc[cpv].size(), acc[cpv]);
 			// Go back
 			step = step0;
 			if (step < 0) break;
@@ -389,6 +389,7 @@ void CGenCA2::Generate() {
 		// Show imported melody
 		MergeCantus();
 		ShrinkCantus2();
+		//LogCantus("ca2", cantus_id, cpoint[cantus_id][cpv].size(), cpoint[cantus_id][cpv]);
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0) + fn * cantus_len[i][0];
 		dpenalty_cur = 0;
 		// Create pause

@@ -1950,9 +1950,8 @@ void CGenCP1::ShrinkCantus() {
 }
 
 void CGenCP1::Generate() {
-	//CString st = "60 52 59 57 55 60 62 57 59 55 57 59 57 50 52 53 55 52 59 59 60";
-	//test_cc.resize(24);
-	//test_cc[0] = 55;
+	//CString st = "57 59 60 62 64 65 67 69 71 69 66 68 69 67 65 64 65 67 69 71 72 60 64 65 67 64 65 67 65 64 62 65 64 57 59 60 62 64 66 68 69";
+	//test_cc.resize(41);
 	//StringToVector(&st, " ", test_cc);
 
 	int fn0 = fn;

@@ -264,7 +264,7 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 			if (scan_full && (method != mSWA || swa_full)) ++cor_full;
 			if (!rpenalty_min) ++cor_rp0;
 			EmulateSAS();
-			LogCantus("scor", cantus_id + 1, m_cc.size(), m_cc);
+			//LogCantus("scor", cantus_id + 1, m_cc.size(), m_cc);
 			// Go back
 			step = step0;
 			if (step < 0) break;
