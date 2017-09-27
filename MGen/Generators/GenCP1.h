@@ -71,6 +71,8 @@ protected:
 	void LoadCantusHigh();
 	void LoadSpecies();
 
+	void ShrinkCantus();
+
 	// Variables
 	int cp_culm = 0; // Position of counterpoint culmination
 

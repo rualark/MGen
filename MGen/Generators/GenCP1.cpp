@@ -1951,6 +1951,27 @@ void CGenCP1::LoadSpecies() {
 	}
 }
 
+void CGenCP1::ShrinkCantus() {
+	int l, min_len, max_len;
+	// Detect minimum note length for each voice
+	for (int i = 0; i < cantus.size(); ++i) {
+		min_len = INT_MAX;
+		max_len = 1;
+		// Get lengths
+		for (s = 0; s < cantus[i].size(); ++s) {
+			if (cantus_len[i][s] < min_len) min_len = cantus_len[i][s];
+			if (cantus_len[i][s] > max_len) max_len = cantus_len[i][s];
+		}
+		// Check lengths
+		// Shrink cantus
+		for (s = 0; s < cantus[i].size(); ++s) {
+			l = cantus_len[i][s] / min_len;
+			cantus_tempo[i][s] = cantus_tempo[i][s] * l / cantus_len[i][s];
+			cantus_len[i][s] = l;
+		}
+	}
+}
+
 void CGenCP1::Generate() {
 	//CString st = "60 52 59 57 55 60 62 57 59 55 57 59 57 50 52 53 55 52 59 59 60";
 	//test_cc.resize(24);
@@ -1961,6 +1982,7 @@ void CGenCP1::Generate() {
 	if (InitCP()) return;
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCantus(midi_file);
+	ShrinkCantus();
 	if (cantus.size() < 1) return;
 	for (int a = 0; a < INT_MAX; ++a) {
 		// Reset note scan range to ignore it for showing cantus
