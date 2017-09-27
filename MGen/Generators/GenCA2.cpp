@@ -144,7 +144,7 @@ void CGenCA2::ShrinkCantus2() {
 	// Shrink cantus
 	for (s = 0; s < cc_len.size(); ++s) {
 		l = cc_len[s] / min_len;
-		cc_tempo[s] = cc_tempo[s] * l / cc_len[s];
+		//cc_tempo[s] = cc_tempo[s] * l / cc_len[s];
 		cc_len[s] = l;
 	}
 }
@@ -206,6 +206,7 @@ void CGenCA2::ExplodeCP() {
 		// Grow counterpoint two times
 		for (int i = 0; i < cantus_len[cantus_id].size(); ++i) {
 			cantus_len[cantus_id][i] *= 2;
+			cantus_tempo[cantus_id][i] *= 2;
 		}
 	}
 	// Calculate npm
