@@ -684,6 +684,11 @@ void CGenCP1::GetRpos() {
 int CGenCP1::FailRhythm3() {
 	CHECK_READY(DR_fli, DR_beat, DR_sus);
 	if (species != 3) return 0;
+	// Last measure not whole
+	if (c_len - fli[fli_size - 1] < npm) {
+		FLAG2(267, c_len - npm)
+		if (c_len - fli[fli_size - 1] == 1) FLAG2(252, fli[fli_size - 1])
+	}
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		// 1/4 syncope
@@ -800,7 +805,7 @@ int CGenCP1::FailRhythm5() {
 			ls2 = bli[s2];
 			// Last note
 			if (ep2 == c_len && ls2 == fli_size - 1) {
-				// Check 
+				// Check length
 				if (l_len[lp] == 1) FLAG2(253, s2)
 				else if (l_len[lp] == 2) FLAG2(252, s2)
 			}
@@ -1456,11 +1461,11 @@ int CGenCP1::FailLastIntervals() {
 	CHECK_READY(DR_fli, DR_pc);
 	// Do not check if melody is short yet
 	if (fli_size < 3) return 0;
-	s = fli[fli_size - 1];
-	s_1 = fli[fli_size - 2];
-	s_2 = fli[fli_size - 3];
 	// Prohibit last note not tonic
 	if (ep2 >= c_len) {
+		s = fli[fli_size - 1];
+		s_1 = fli[fli_size - 2];
+		s_2 = fli[fli_size - 3];
 		if (apc[cpv][c_len - 1] != 0) {
 			// Detect upper last G if lower note is C
 			if (apcc[1][c_len - 1] == 7 && apc[0][c_len - 1] == 0) 
@@ -2044,19 +2049,12 @@ void CGenCP1::Generate() {
 			npm2 = npm;
 			// First measure should have less notes
 			if (i == 0) npm2 = npm - fn;
-			// Last measure should have one note
-			if (i == m_c.size() - 1) npm2 = 1;
 			for (int x = 0; x < npm2; ++x) {
 				ac[cfv].push_back(m_c[i]);
 				acc[cfv].push_back(m_cc[i]);
 				apc[cfv].push_back(m_pc[i]);
 				apcc[cfv].push_back(m_pcc[i]);
-				if (i == m_c.size() - 1) {
-					cc_len.push_back(cc_len_old[i] * npm);
-				}
-				else {
-					cc_len.push_back(cc_len_old[i]);
-				}
+				cc_len.push_back(cc_len_old[i]);
 				cc_tempo.push_back(cc_tempo_old[i]);
 				if (!x) {
 					int y = i*npm + x;
