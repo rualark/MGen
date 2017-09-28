@@ -1556,7 +1556,7 @@ void CGenCF1::CreateULinks() {
 void CGenCP1::GetMeasures() {
 	SET_READY_PERSIST(DR_mli);
 	mli.clear();
-	mli.push_back(0);
+	if (fn) mli.push_back(0);
 	for (int i = 0; i < c_len; ++i) {
 		// Find measures
 		if ((i + fn) % npm == 0) {
