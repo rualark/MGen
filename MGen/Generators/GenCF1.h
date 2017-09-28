@@ -434,7 +434,7 @@ protected:
 
 	// CA1
 	CString midi_file;
-	int corrections = 3; // Number of corrections to show
+	int corrections = 1; // Number of corrections to show
 
   // Local
 	// Queues for calculating scan speed and displaying in status
