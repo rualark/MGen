@@ -749,9 +749,10 @@ int CGenCP1::FailRhythm5() {
 			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
 			if (ep2 != c_len && ls2 == fli_size - 1) {
+				// Last measure without whole note
+				if (ms == mli.size() - 1 && l_len.size()) FLAG2(267, s);
 				// Whole inside if it starts not from first measure, from first step and is not a suspension
-				if (llen[ls2] >= 8 && ms && !pos && !sus[ls2]) 
-					FLAG2(236, s) 
+				if (llen[ls2] >= 8 && ms && !pos && !sus[ls2]) FLAG2(236, s) 
 				// 1/8 syncope
 				else if (llen[ls2] > 1 && pos % 2) FLAG2(232, fli[ls2])
 				// 1/4 syncope
@@ -785,7 +786,7 @@ int CGenCP1::FailRhythm5() {
 			// Last measure
 			if (ms == mli.size() - 1) {
 				// Check last whole note (really 1/8)
-				if (l_len.size() == 1) break;
+				if (l_len[0] != 8) FLAG2(267, s);
 			}
 		}
 		// Set first rhythm id bit
@@ -799,8 +800,6 @@ int CGenCP1::FailRhythm5() {
 			ls2 = bli[s2];
 			// Last note
 			if (ep2 == c_len && ls2 == fli_size - 1) {
-				// Correct note length
-				l_len[lp] = npm - pos;
 				// Check 
 				if (l_len[lp] == 1) FLAG2(253, s2)
 				else if (l_len[lp] == 2) FLAG2(252, s2)
@@ -808,7 +807,7 @@ int CGenCP1::FailRhythm5() {
 			// Calculate rhythm id
 			if (lp < l_len.size() - 1 || !slur2)
 				rid_cur += 1 << (pos + l_len[lp]);
-			// Check 1/8 only if it is not last 1/8
+			// Check 1/8
 			if (l_len[lp] == 1) {
 				// Last 1/8 syncope
 				if (pos == 7 && slur2) FLAG2(232, s2)
