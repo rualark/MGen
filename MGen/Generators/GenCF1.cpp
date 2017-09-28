@@ -380,7 +380,7 @@ void CGenCF1::CheckConfig() {
 	CHECK_READY_PERSIST(DR_Config, DR_RuleSet);
 	SET_READY_PERSIST(DR_ConfigTest);
 	// GenCP1
-	if (v_cnt == 2) {
+	if (m_algo_id == 121) {
 		if (species == 1) {
 			npm = 1;
 			fn = 0;
@@ -405,11 +405,18 @@ void CGenCF1::CheckConfig() {
 			npm = 8;
 			fn = 2;
 		}
-	}
-	if (m_algo_id == 121) {
 		if (accept_cantus_rechoose && cantus_id2) {
 			WriteLog(1, "Warning: accept_cantus_rechoose will not work with cantus_id above zero (check config)");
 		}
+	}
+	if (s_len != 1) {
+		WriteLog(5, "Warning: s_len should equal 1. Other values are not tested and usually do not have any advantages");
+	}
+	if (best_rejected) {
+		WriteLog(5, "Warning: Best rejected algorithm is not tested and can have bugs. Please set best_rejected to 0");
+	}
+	if (corrections > 1) {
+		WriteLog(5, "Warning: Corrections > 1 algorithm is not tested and can have bugs. Please set corrections to 0 or 1");
 	}
 	if (swa_steps < s_len) {
 		WriteLog(5, "Warning: Swa_steps cannot be below s_len. Changed to ");
