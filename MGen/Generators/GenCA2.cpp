@@ -375,7 +375,7 @@ void CGenCA2::Generate() {
 		// Add line
 		linecolor[step] = MakeColor(255, 0, 0, 0);
 		GetVlen();
-		FixUnisonPause();
+		//FixUnisonPause();
 		LoadCantusHigh();
 		LoadSpecies();
 		// Check level
