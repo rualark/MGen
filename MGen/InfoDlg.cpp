@@ -50,7 +50,7 @@ BOOL CInfoDlg::OnInitDialog()
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGMidi *pGen = mf->pGen;
 	if (pGen != 0) {
-		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(1000))) {
+		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(3000))) {
 			mf->WriteLog(5, "InfoDlg output mutex timed out: showing nothing");
 			return TRUE;
 		}

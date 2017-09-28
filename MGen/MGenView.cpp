@@ -118,7 +118,7 @@ void CMGenView::OnDraw(CDC* pDC)
 		return;
 	}
 
-	if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(50))) {
+	if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(3000))) {
 		mf->WriteLog(2, "OnDraw mutex timed out: drawing postponed");
 		return;
 	}
