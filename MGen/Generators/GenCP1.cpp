@@ -749,8 +749,8 @@ int CGenCP1::FailRhythm5() {
 			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
 			if (ep2 != c_len && ls2 == fli_size - 1) {
-				// Whole inside
-				if (llen[ls2] >= 8 && !pos && !sus[ls2]) FLAG2(236, s)
+				// Whole inside if it starts not from first measure, from first step and is not a suspension
+				if (llen[ls2] >= 8 && ms && !pos && !sus[ls2]) FLAG2(236, s)
 				// 1/8 syncope
 				else if (llen[ls2] > 1 && pos % 2) FLAG2(232, fli[ls2])
 				// 1/4 syncope
