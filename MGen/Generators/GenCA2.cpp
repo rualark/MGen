@@ -374,7 +374,6 @@ void CGenCA2::Generate() {
 		long long time_start = CGLib::time();
 		// Add line
 		linecolor[step] = MakeColor(255, 0, 0, 0);
-		GetVlen();
 		//FixUnisonPause();
 		LoadCantusHigh();
 		LoadSpecies();
@@ -401,6 +400,7 @@ void CGenCA2::Generate() {
 			cfv = 0;
 			cpv = 1;
 		}
+		GetVlen();
 		ExplodeCP();
 		ShrinkCP();
 		DetectSpecies();
