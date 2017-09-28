@@ -231,10 +231,10 @@ void CGenCA2::ExplodeCP() {
 		steps = cc_len[s] / min_vlen[cpv];
 		// Do not explode last measure
 		ln = min_vlen[cpv];
-		if (s == cc_old2[0].size() - 1) {
-			steps = 1;
-			ln = cc_len[s];
-		}
+		//if (s == cc_old2[0].size() - 1) {
+		//	steps = 1;
+		//	ln = cc_len[s];
+		//}
 		// Detect starting pause
 		if (!cc_old2[cpv][s]) {
 			fn += steps;
