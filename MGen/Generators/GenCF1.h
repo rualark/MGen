@@ -164,6 +164,7 @@ protected:
 	void LoadHarmVar();
 	void LoadHSP(CString fname);
 	void LoadRules(CString fname);
+	void CheckRuleList(CString list_name, vector<vector<int>>& v);
 	int Interval2Chromatic(int iv);
 	void ParseRule(int rset, int rid, int type);
 	int GetRuleParam(int rset, int rid, int type, int id);

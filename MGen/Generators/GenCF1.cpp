@@ -213,6 +213,24 @@ void CGenCF1::LoadRules(CString fname)
 	fs.close();
 	est.Format("LoadRules loaded %d lines from %s", i, fname);
 	WriteLog(0, est);
+	// Check that all rules in lists exist
+	CheckRuleList("flag_replace", flag_replace);
+	CheckRuleList("sas_emulator_replace", sas_emulator_replace);
+}
+
+void CGenCF1::CheckRuleList(CString list_name, vector<vector<int>> &v) {
+	for (int rs = 0; rs < accepts.size(); ++rs) if (accepts[rs].size()) {
+		for (int f = 0; f < v.size(); ++f) {
+			for (int f2 = 0; f2 < v[f].size(); ++f2) {
+				if (SubRuleName[rs][v[f][f2]].IsEmpty()) {
+					CString est;
+					est.Format("Detected undefined rule %d in rule list %s for rule %d",
+						v[f][f2], list_name, f);
+					WriteLog(5, est);
+				}
+			}
+		}
+	}
 }
 
 // Return chromatic length of an interval (e.g. return 4 from 3rd)
