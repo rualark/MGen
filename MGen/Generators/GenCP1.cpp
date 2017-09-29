@@ -175,7 +175,7 @@ void CGenCP1::SingleCPInit() {
 			dpenalty_outside_swa = 0;
 			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], 0, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
-			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
+			fill(src_rpenalty_step.begin(), src_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
 		}
 		// Minimum element
@@ -1801,7 +1801,7 @@ check:
 			else {
 				CalcRpenalty(acc[cpv]);
 				if (ep2 < smap[swa2 - 1] + 1) {
-					if (rpenalty_cur > source_rpenalty_step[smap[swa1]]) goto skip;
+					if (rpenalty_cur > src_rpenalty_step[smap[swa1]]) goto skip;
 					NextWindow();
 					goto check;
 				}

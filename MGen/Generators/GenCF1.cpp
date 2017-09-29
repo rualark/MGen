@@ -2067,7 +2067,7 @@ void CGenCF1::ScanInit() {
 		for (int i = 0; i < av_cnt; ++i) {
 			anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
 		}
-		source_rpenalty_step.resize(c_len);
+		src_rpenalty_step.resize(c_len);
 		uli.resize(c_len);
 		fli.resize(c_len);
 		fli2.resize(c_len);
@@ -2296,7 +2296,7 @@ void CGenCF1::SingleCantusInit() {
 			dpenalty_outside_swa = 0;
 			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, 0, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, smap[swa2], c_len - 1);
-			fill(source_rpenalty_step.begin(), source_rpenalty_step.end(), 0);
+			fill(src_rpenalty_step.begin(), src_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
 		}
 		// Minimum element
@@ -2667,8 +2667,8 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 		if (!accept[x]) rpenalty_cur += fpenalty[x];
 	}
 	// Save rpenalty
-	if (method == mSWA && !source_rpenalty_step[ep2 - 1] && sp1 == swa1 && cc_id[ep2 - 1] == 0) {
-		source_rpenalty_step[ep2 - 1] = rpenalty_cur;
+	if (method == mSWA && !src_rpenalty_step[ep2 - 1] && sp1 == swa1 && cc_id[ep2 - 1] == 0) {
+		src_rpenalty_step[ep2 - 1] = rpenalty_cur;
 	}
 }
 
@@ -4072,7 +4072,7 @@ check:
 			else {
 				CalcRpenalty(m_cc);
 				if (ep2 < smap[swa2 - 1] + 1) {
-					if (rpenalty_cur > source_rpenalty_step[smap[swa1]]) goto skip;
+					if (rpenalty_cur > src_rpenalty_step[smap[swa1]]) goto skip;
 					NextWindow();
 					goto check;
 				}
