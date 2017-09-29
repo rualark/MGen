@@ -48,6 +48,7 @@ configs\GenCA2\test-last-direct.pl
 configs\GenCA2\test-overlap.pl
 configs\GenCA2\test-pco-apart.pl
 configs\GenCA2\test-rpos.pl
+configs\GenCA2\test-first.pl
 configs\GenCA2\test-sus.pl
 configs\GenCA2\test-tonicroot.pl
 configs\GenCA2\test-tonic-seq.pl
