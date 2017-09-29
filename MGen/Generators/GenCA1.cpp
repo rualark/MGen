@@ -549,6 +549,7 @@ void CGenCA1::Generate() {
 			}
 		}
 		CorAck();
+		if (need_exit) break;
 	}
 	st.Format("Analyzed %d of %zu", cantus_id+1, cantus.size());
 	SetStatusText(3, st);

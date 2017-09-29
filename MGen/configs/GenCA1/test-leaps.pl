@@ -3,5 +3,5 @@ include "include/CA1.pl"
 # Analysis
 Midi_file = midi\GenCA1\test-leaps.mid # Path and file name of imported midi file
 
-corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 cantus_high = 0
