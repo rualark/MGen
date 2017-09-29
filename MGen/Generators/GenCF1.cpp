@@ -2666,7 +2666,7 @@ void CGenCF1::CalcRpenalty(vector<int> &cc) {
 	for (int x = 0; x < max_flags; ++x) {
 		if (!accept[x]) rpenalty_cur += fpenalty[x];
 	}
-	// Save rpenalty
+	// Save rpenalty for first scan position in swa window
 	if (method == mSWA && !src_rpenalty_step[ep2 - 1] && sp1 == swa1 && cc_id[ep2 - 1] == 0) {
 		src_rpenalty_step[ep2 - 1] = rpenalty_cur;
 	}

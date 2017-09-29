@@ -69,9 +69,16 @@
 // Checks if we have leap or melody direction change here: needs to be not first and not last note
 #define MELODY_SEPARATION(s, s1) (!s || (leap[s - 1]) || ((c[s] - c[s - 1])*(c[s1] - c[s]) < 0))
 
+// This variant does not use SWA rpenalty optimization
+//#define SWA_OPTIMIZER(i)
+// This variant skips flags inside SWA window when evaluating not full cp (performance increase)
+//#define SWA_OPTIMIZER(i) || (task == tCor && method == mSWA && i >= swa1 && i < swa2 && ep2 < c_len)
+// This variant always skips flags inside SWA window (more performance increase
+#define SWA_OPTIMIZER(i) || (task == tCor && method == mSWA && i >= swa1 && i < swa2)
+
 // Report violation
-#define FLAG(id, i) { ASSERT_RULE(id); if ((skip_flags) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
-#define FLAG2(id, i) { ASSERT_RULE(id); if ((skip_flags) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
+#define FLAG(id, i) { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
+#define FLAG2(id, i) { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
 // For harmony
 #define FLAG3(id, i) { ASSERT_RULE(id); if (!accept[id]) { last_flag=id; return 1; } }
 
