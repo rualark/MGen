@@ -21,9 +21,9 @@
 // Trailing pauses to add at the end of track. Should be 2 or greater
 #define TAIL_STEPS 4
 // Minimum cantus size in steps to allow loading
-#define MIN_CANTUS_SIZE 6
+#define MIN_CANTUS_SIZE 5
 // Minimum counterpoint size in steps to allow loading
-#define MIN_CP_SIZE 6
+#define MIN_CP_SIZE 5
 
 // PortMIDI
 #define MIN_MIDI_BUF_MSEC 6000

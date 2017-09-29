@@ -1456,6 +1456,22 @@ void CGenCP1::SWACP(int i, int dp) {
 	TestBestRpenalty();
 }
 
+int CGenCP1::FailFirstIntervals() {
+	CHECK_READY(DR_fli, DR_pc);
+	if (apc[0][0] == 0) {
+		if (apc[1][0] == 0) FLAG2(268, 0)
+		else if (apc[1][0] == 4) FLAG2(269, 0)
+		else if (apc[1][0] == 2) FLAG2(270, 0)
+		else FLAG2(272, 0)
+	}
+	else if (apc[0][0] == 2) {
+		if (apc[1][0] == 0) FLAG2(271, 0)
+		else FLAG2(272, 0)
+	}
+	else FLAG2(272, 0);
+	return 0;
+}
+
 int CGenCP1::FailLastIntervals() {
 	CHECK_READY_PERSIST(DR_mli);
 	CHECK_READY(DR_fli, DR_pc);
@@ -1781,7 +1797,7 @@ check:
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
-		if (FailFirstNotes(apc[cpv])) goto skip;
+		if (FailFirstIntervals()) goto skip;
 		if (FailLeap(ac[cpv], aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
 		//if (FailMelodyHarm(apc[cpv], 0, ep2)) goto skip;
 		MakeMacc(acc[cpv]);

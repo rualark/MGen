@@ -59,6 +59,7 @@ protected:
 	void RandomSWACP();
 	void ShowLiningCP(vector<int>& cc);
 	void SWACP(int i, int dp);
+	inline int FailFirstIntervals();
 	inline int FailLastIntervals();
 	inline void GetNoteTypes();
 	inline void GetMeasures();

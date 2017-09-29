@@ -792,7 +792,7 @@ void CGMidi::LoadCP(CString path)
 			}
 		}
 		// Add cpoint if it is long
-		if (inter.size() > 5 && !bad) {
+		if (inter.size() >= MIN_CP_SIZE && !bad) {
 			ProcessInter(pos_new, pos_old, inter, hid, min_len, max_len);
 			cid++;
 			// Get maximum voice count
