@@ -649,10 +649,6 @@ protected:
 	// For FLAG2 macro
 	void CreateULinks();
 
-	// CA2
-	int src_fn = 0; // Starting pause of source counterpoint
-	int dst_fn = 0; // Starting pause of generated correction
-
 	// Check data ready
 	vector<int> data_ready; // If data is ready to be used
 	vector<int> warn_data_ready; // How many warnings of data ready fired

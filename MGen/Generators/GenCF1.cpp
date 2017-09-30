@@ -2800,17 +2800,8 @@ void CGenCF1::WritePerfLog() {
 
 int CGenCF1::CalcDpenalty(vector<int> &cc1, vector<int> &cc2, int s1, int s2) {
 	int dpe = 0;
-	int fn_dif = 0;
-	// Synchronize with source counterpoint
-	if (fn - src_fn > 0) {
-		//fn_dif = fn - src_fn;
-	}
-	else {
-		fn_dif = 0;
-		if (s1 < src_fn - fn) s1 = src_fn - fn;
-	}
 	for (int z = s1; z <= s2; ++z) {
-		int dif = abs(cc1[z + fn_dif] - cc2[z]);
+		int dif = abs(cc1[z] - cc2[z]);
 		if (dif) dpe += step_penalty + pitch_penalty * dif;
 	}
 	return dpe;
