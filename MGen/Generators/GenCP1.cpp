@@ -1648,10 +1648,11 @@ void CGenCP1::EmulateSASCP() {
 		else {
 			ScanCP(tEval, -1);
 		}
+		if (need_exit) break;
 		CheckSASEmulatorFlags();
 		nflags_prev = anflags[cpv];
 	}
-	OutputFlagDelays();
+	if (!need_exit) OutputFlagDelays();
 	fixed_ep2 = 0;
 	SetStatusText(7, "SAS emulator: finished");
 }
