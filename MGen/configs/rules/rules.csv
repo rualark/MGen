@@ -259,7 +259,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;239;0;Cantus;Species 5 rhythm;1/2 after 1/4 or 1/8 in measure;1/2 slurred;1;;;;;;;;;
 1;240;60;Cantus;Species 5 rhythm;1/2 after 1/4 or 1/8 in measure;inside;0;;;;;;;239;;
 1;267;0;Cantus;Species 5 rhythm;Last note;not whole;1;;;;;;;;;
-1;252;60;Cantus;Species 5 rhythm;Last note;1/4;0;;;;;;;;;
+1;252;60;Cantus;Species 5 rhythm;Last note;1/4;1;;;;;;;;;
 1;253;60;Cantus;Species 5 rhythm;Last note;1/8;0;;;;;;;;;
 1;241;0;Cantus;Species 5 rhythm;Suspension;1/2 + 1/4;1;;;;;;;;;
 1;242;0;Cantus;Species 5 rhythm;Suspension;1/2 + 1/2;1;;;;;;;;;
