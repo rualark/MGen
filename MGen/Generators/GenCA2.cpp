@@ -336,13 +336,43 @@ void CGenCA2::FixUnisonPause() {
 	}
 }
 
+void CGenCA2::ChooseStartPause() {
+	src_fn = fn;
+	if (species == 1 && npm == 1) {
+		// Reset fn for species 1
+		if (fn) fn = 0;
+	}
+	if (species == 2 && npm == 2) {
+		if (fn == 1 || (fn == 0 && accept[273])) return;
+		fn = 1;
+		if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
+	}
+	if (species == 3 && npm == 4) {
+		if (fn == 1 || (fn == 0 && accept[273])) return;
+		fn = 1;
+		if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
+	}
+	if (species == 4 && npm == 2) {
+		if (fn == 1 || (fn == 0 && accept[273])) return;
+		fn = 1;
+		if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
+	}
+	if (species == 5) {
+		if (fn == 2 || fn == 4 || (fn == 0 && accept[273])) return;
+		if (accept[273]) fn = randbw(0, 2);
+		else fn = randbw(1, 2);
+		if (fn == 2) fn = 4;
+		else if (fn == 1) fn = 2;
+	}
+}
+
 void CGenCA2::Generate() {
 	//CString test_st = "62 62 62 62 69 69 66 66 67 67 67 67 66 66 64 64 66 66 66 66 66 66 67 67 66 66 66 66 69 69 69 69 71 71 69 69 67 67 76 76 73 73 73 73 71 71 69 69 74 74 73 73 71 71 69 69 67 67 71 71 73 73 73 73 74";
 	//test_cc.resize(65);
 	//StringToVector(&test_st, " ", test_cc);
 
 	CString st;
-	int fn0 = fn;
+	dst_fn = fn;
 	int s_len2 = s_len;
 	if (error) return;
 	InitCP();
@@ -411,7 +441,9 @@ void CGenCA2::Generate() {
 		ExplodeCP();
 		ShrinkCP();
 		DetectSpecies();
-		fn0 = fn;
+		ChooseStartPause();
+		dst_fn = fn;
+		fn = src_fn;
 		// Get key
 		acc = cpoint[i];
 		GetCPKey();
@@ -464,11 +496,21 @@ void CGenCA2::Generate() {
 		GetSourceRange(cpoint[i][cpv]);
 		step0 = step;
 		step00 = step0;
-		fn = fn0;
 		ScanCP(tEval, 0);
 		ParseExpect();
 		ConfirmExpect();
 		EmulateSASCP();
+		fn = dst_fn;
+		// Apply new fn
+		c_len += src_fn - dst_fn;
+		if (src_fn > dst_fn) {
+			vpush_front(acc[cpv], acc[cpv][0], src_fn - dst_fn);
+			vpush_front(acc[cfv], acc[cfv][0], src_fn - dst_fn);
+		}
+		else if (src_fn < dst_fn) {
+			vpop_front(acc[cpv], dst_fn - src_fn);
+			vpop_front(acc[cfv], dst_fn - src_fn);
+		}
 		key_eval.Empty();
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;

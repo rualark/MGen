@@ -259,5 +259,24 @@ protected:
 	static long long first_time;
 
 	int error = 0;
+	template<typename T> void vpop_front(vector<T> &v, int count);
+	template<typename T> void vpush_front(vector<T> &v, T element, int count);
 };
 
+// Pop front vector elements
+template<typename T> void CGLib::vpop_front(vector<T> &v, int count) {
+	// Copy vector back
+	for (int i = 0; i < v.size() - count; ++i) v[i] = v[i + count];
+	// Remove last elements
+	for (int i = 0; i < count; ++i) v.pop_back();
+}
+
+// Push front vector elements
+template<typename T> void CGLib::vpush_front(vector<T> &v, T element, int count) {
+	// Grow vector (actually, elements are loaded, but it is not important which elements because they will be overwritten in the next step)
+	for (int i = 0; i < count; ++i) v.push_back(element);
+	// Copy vector forward
+	for (int i = 0; i < v.size() - count; ++i) v[i + count] = v[i];
+	// Assign new elements
+	for (int i = 0; i < count; ++i) v[i] = element;
+}

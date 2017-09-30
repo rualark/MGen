@@ -919,3 +919,4 @@ CString CGLib::HumanFloat(float f) {
 	else st = "0";
 	return st;
 }
+
