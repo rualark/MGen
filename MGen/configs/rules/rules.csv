@@ -212,7 +212,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;270;30;Cantus;Counterpoint;First harmony;CE;0;;;;;;;;;
 1;271;40;Cantus;Counterpoint;First harmony;EC;0;;;;;;;;;
 1;272;100;Cantus;Counterpoint;First harmony;Other;0;;;;;;;;;
-1;273;0;Cantus;Counterpoint;Start pause;missing;1;;No starting pause in couterpoint voice for species 2-5;;;;;;;
+1;273;0;Cantus;Counterpoint;Start pause;missing;0;;No starting pause in couterpoint voice for species 2-5;;;;;;;
 1;274;100;Cantus;Counterpoint;Start pause;species 1;0;;Starting pause in couterpoint voice for species 1;;;;;;;
 1;91;60;Cantus;Counterpoint;Unison;inside;0;;;;;;;;;
 1;47;30;Cantus;Counterpoint;2nd to last measure;no B;0;;no B is allowed if last bass notes are G-C;;;;;;;
