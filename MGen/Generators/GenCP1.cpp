@@ -1585,6 +1585,34 @@ void CGenCP1::GetMeasures() {
 	}
 }
 
+int CGenCP1::FailStartPause() {
+	if (species == 1 && fn > 0) {
+		// Show warning and exit if not evaluating
+		if (task != tEval && !accept[274] && !warn_wrong_fn) {
+			CString est;
+			est.Format("Rule '%s - %s' prevents from generating any results in counterpoint species %d, because starting pause is set to %d",
+				RuleName[274], SubRuleName[274], species, fn);
+			WriteLog(5, est);
+			++warn_wrong_fn;
+			return 1;
+		}
+		FLAG2(274, 0);
+	}
+	else if (species > 1 && fn == 0) {
+		// Show warning and exit if not evaluating
+		if (task != tEval && !accept[273] && !warn_wrong_fn) {
+			CString est;
+			est.Format("Rule '%s - %s' prevents from generating any results in counterpoint species %d, because starting pause is set to %d",
+				RuleName[273], SubRuleName[273], species, fn);
+			WriteLog(5, est);
+			++warn_wrong_fn;
+			return 1;
+		}
+		FLAG2(273, 0)
+	}
+	return 0;
+}
+
 void CGenCP1::EmulateSASCP() {
 	if (v_cnt == 2) {
 		// Evaluate for CP1
@@ -1691,6 +1719,8 @@ void CGenCP1::ScanCP(int t, int v) {
 	// Convert cf culmination to steps
 	cf_culm_s = -1;
 	if (cf_culm_cfs > -1) cf_culm_s = cfli[cf_culm_cfs];
+	// Check for wrong fn
+	if (FailStartPause()) return;
 	// Analyze combination
 check:
 	while (true) {
@@ -1728,6 +1758,9 @@ check:
 		}
 		else {
 			ClearFlags(0, ep2);
+			// Still skipping even when evaluating to get error if wrong flag set
+			if (task == tEval)
+				if (FailStartPause()) goto skip;
 			if (nmax - nmin > max_interval) FLAG(37, 0);
 			if (cantus_high) {
 				if (cf_nmax - nmin > sum_interval) FLAG(7, 0);

@@ -400,6 +400,13 @@ void CGenCA2::Generate() {
 			cfv = 0;
 			cpv = 1;
 		}
+		// Check if starting pause is greater or equal to cantus note length
+		if (!cpoint[cantus_id][cpv][0] && cpoint[cantus_id][cfv][1] != cpoint[cantus_id][cfv][0]) {
+			st.Format("Warning: Starting pause in counterpoint is greater or equal to cantus note length (%s cpoint #%d). Skipping counterpoint",
+				cantus_high ? "high" : "low", cantus_id + 1);
+			WriteLog(1, st);
+			continue;
+		}
 		GetVlen();
 		ExplodeCP();
 		ShrinkCP();

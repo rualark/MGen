@@ -63,6 +63,7 @@ protected:
 	inline int FailLastIntervals();
 	inline void GetNoteTypes();
 	inline void GetMeasures();
+	inline int FailStartPause();
 	void EmulateSASCP();
 	inline void GetCfli();
 	inline int FailGisTrail2();
@@ -76,6 +77,7 @@ protected:
 
 	// Variables
 	int cp_culm = 0; // Position of counterpoint culmination
+	int warn_wrong_fn = 0; // If warning of wrong fn has fired
 
 	vector<int> ivl; // [s] Diatonic interval between voices
 	vector<int> civl; // [s] Chromatic interval between voices
