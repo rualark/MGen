@@ -3138,7 +3138,7 @@ CString CGenCF1::GetStuck() {
 void CGenCF1::ShowFlagBlock() {
 	CString st, st2;
 	// Show blocking statistics
-	if (calculate_blocking) {
+	if (calculate_blocking && method == mScan) {
 		CHECK_READY_PERSIST(DR_fblock);
 		for (int w = 0; w < wcount; ++w) {
 			int lines = 0;
