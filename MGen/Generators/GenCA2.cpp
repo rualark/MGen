@@ -81,7 +81,7 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 			// Go back
 			step = step0;
 			if (step < 0) break;
-			ShowLiningCP(clib[cids[x]]);
+			ShowLiningCP(acc[cpv]);
 			// Go forward
 			step = t_generated;
 			Adapt(step0, step - 1);

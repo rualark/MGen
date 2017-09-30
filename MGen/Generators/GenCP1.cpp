@@ -880,10 +880,8 @@ int CGenCP1::FailRhythm5() {
 		else if (full_measure && l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
 			s3 = fli[l_ls[l_ls.size() - 1]];
 			if (ms >= mli.size() - 2) FLAG2(238, s3)
-			else if (slur2 != 0) 
-				FLAG2(239, s3)
-			else 
-				FLAG2(240, s3);
+			else if (slur2 != 0) FLAG2(239, s3)
+			else FLAG2(240, s3);
 		}
 		// Many notes in measure
 		if (l_len.size() == 5) FLAG2(245, s)
@@ -1312,7 +1310,7 @@ void CGenCP1::RandomSWACP() {
 
 void CGenCP1::ShowLiningCP(vector<int> &cc) {
 	// Add lining
-	int pos = step0;
+	int pos = step0 + fn;
 	int lni;
 	for (int z = 0; z < c_len; z++) {
 		if (cpoint[cantus_id][cpv][z] != cc[z]) lni = 1;
