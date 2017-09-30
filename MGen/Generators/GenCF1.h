@@ -177,6 +177,7 @@ protected:
 	int GetRuleParam(int rset, int rid, int type, int id);
 	void ParseRules();
 	void SetRuleParams();
+	inline void ProcessSpecies();
 	void CheckConfig();
 	int SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);

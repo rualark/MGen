@@ -376,9 +376,7 @@ void CGenCF1::SetRuleParams() {
 	fis_gis_max = GetRuleParam(rule_set, 199, rsSubName, 0);
 }
 
-void CGenCF1::CheckConfig() {
-	CHECK_READY_PERSIST(DR_Config, DR_RuleSet);
-	SET_READY_PERSIST(DR_ConfigTest);
+void CGenCF1::ProcessSpecies() {
 	// GenCP1
 	if (m_algo_id == 121) {
 		if (species == 1) {
@@ -389,22 +387,37 @@ void CGenCF1::CheckConfig() {
 		if (species == 2) {
 			npm = 2;
 			fn = 1;
+			if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
 			midifile_out_mul *= 4;
 		}
 		if (species == 3) {
 			npm = 4;
 			fn = 1;
+			if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
 			midifile_out_mul *= 2;
 		}
 		if (species == 4) {
 			npm = 2;
 			fn = 1;
+			if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
 			midifile_out_mul *= 4;
 		}
 		if (species == 5) {
 			npm = 8;
-			fn = 2;
+			if (accept[273]) fn = randbw(0, 2);
+			else fn = randbw(1, 2);
+			if (fn == 2) fn = 4;
+			else if (fn == 1) fn = 2;
 		}
+	}
+}
+
+void CGenCF1::CheckConfig() {
+	CHECK_READY_PERSIST(DR_Config, DR_RuleSet);
+	SET_READY_PERSIST(DR_ConfigTest);
+	// GenCP1
+	if (m_algo_id == 121) {
+		ProcessSpecies();
 		if (accept_cantus_rechoose && cantus_id2) {
 			WriteLog(1, "Warning: accept_cantus_rechoose will not work with cantus_id above zero (check config)");
 		}

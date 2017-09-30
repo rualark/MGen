@@ -2016,9 +2016,9 @@ void CGenCP1::Generate() {
 	//test_cc.resize(41);
 	//StringToVector(&st, " ", test_cc);
 
-	int fn0 = fn;
 	if (error) return;
 	if (InitCP()) return;
+	int fn0 = fn;
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCantus(midi_file);
 	ShrinkCantus();
