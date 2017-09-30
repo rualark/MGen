@@ -718,7 +718,9 @@ int CGenCP1::FailRhythm5() {
 	int count8;
 	// Note lengths inside measure
 	vector<int> l_len;
+	vector<int> l_ls;
 	l_len.resize(8);
+	l_ls.resize(8);
 	int s3;
 	// Measure size in notes
 	int m_size = 0;
@@ -739,12 +741,14 @@ int CGenCP1::FailRhythm5() {
 		if (s >= ep2) break;
 		ls = bli[s];
 		l_len.clear();
+		l_ls.clear();
 		slur1 = 0;
 		slur2 = 0;
 		pos = 0;
 		// First pause
 		if (!ms && fn) {
 			l_len.push_back(fn);
+			l_ls.push_back(0);
 			pos = fn;
 		}
 		// Build note lengths
@@ -767,6 +771,7 @@ int CGenCP1::FailRhythm5() {
 			}
 			s2 = fli[ls2];
 			l_len.push_back(llen[ls2]);
+			l_ls.push_back(ls2);
 			// Stop if out of measure
 			if (pos + llen[ls2] >= npm) {
 				full_measure = 1;
@@ -873,11 +878,12 @@ int CGenCP1::FailRhythm5() {
 		else if (l_len.size() > 2 && l_len[2] == 6) FLAG2(234, fli[ls + 2])
 		// 1/2 after 1/4 or 1/8 in measure
 		else if (full_measure && l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
-			s3 = fli[ls + l_len.size() - 1];
+			s3 = fli[l_ls[l_ls.size() - 1]];
 			if (ms >= mli.size() - 2) FLAG2(238, s3)
 			else if (slur2 != 0) 
 				FLAG2(239, s3)
-			else FLAG2(240, s3);
+			else 
+				FLAG2(240, s3);
 		}
 		// Many notes in measure
 		if (l_len.size() == 5) FLAG2(245, s)
