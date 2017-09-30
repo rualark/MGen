@@ -336,6 +336,26 @@ void CGenCA2::FixUnisonPause() {
 	}
 }
 
+int CGenCA2::CheckStartPause() {
+	if (species >= 2 && species <= 5 && fn == 0) {
+		if (!accept[273]) {
+			CString est;
+			est.Format("Counterpoint %s #%d does not have starting pause, which is currently prohibited for species %d. This counterpoint will not be corrected. Please fix midi file or allow no starting pause in rules if you want this counterpoint to be corrected",
+				cantus_high ? "high" : "low", cantus_id + 1, species);
+			WriteLog(1, est);
+			return 1;
+		}
+	}
+	else if ((species == 3 && fn > 1) || (species == 5 && fn != 0 && fn != 2 && fn != 4)) {
+		CString est;
+		est.Format("Counterpoint %s #%d has wrong starting pause (%d) in species %d. This counterpoint will not be corrected. Please fix midi file if you want this counterpoint to be corrected",
+			cantus_high?"high":"low", cantus_id + 1, fn, species);
+		WriteLog(1, est);
+		return 1;
+	}
+	return 0;
+}
+
 void CGenCA2::Generate() {
 	//CString test_st = "62 62 62 62 69 69 66 66 67 67 67 67 66 66 64 64 66 66 66 66 66 66 67 67 66 66 66 66 69 69 69 69 71 71 69 69 67 67 76 76 73 73 73 73 71 71 69 69 74 74 73 73 71 71 69 69 67 67 71 71 73 73 73 73 74";
 	//test_cc.resize(65);
@@ -484,7 +504,8 @@ void CGenCA2::Generate() {
 		CreateScanMatrix(i);
 		// If no corrections needed
 		if (!corrections || !smatrixc || 
-			(m_testing && time() - gen_start_time > (m_test_sec - ANALYZE_RESERVE) * 1000)) {
+			(m_testing && time() - gen_start_time > (m_test_sec - ANALYZE_RESERVE) * 1000) ||
+			CheckStartPause()) {
 			// Go forward
 			t_generated = step;
 			Adapt(step0, step - 1);

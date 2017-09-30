@@ -8,6 +8,7 @@ public:
 	~CGenCA2();
 
 	void FixUnisonPause();
+	int CheckStartPause();
 	void Generate() override;
 
 protected:
