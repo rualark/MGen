@@ -266,6 +266,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;251;60;Cantus;Species 5 rhythm;Suspension;1/4 + ?;0;;;;;;;;;
 1;243;60;Cantus;Species 5 rhythm;Suspension;? + 1/2.;0;;;;;;;;;
 1;244;60;Cantus;Species 5 rhythm;Suspension;1/2. + ?;0;;;;;;;;;
+1;274;60;Cantus;Species 5 rhythm;Suspension;> whole;0;;Total note length is more than whole;;;;;;;
 1;245;0;Cantus;Species 5 rhythm;Many notes in measure;5;1;;;;;;;;;
 1;246;60;Cantus;Species 5 rhythm;Many notes in measure;>5;0;;;;;;;245;;
 1;255;60;Cantus;Species 5 rhythm;Many notes in measure;>2 x 1/8;0;;;;;;;;;

@@ -691,6 +691,8 @@ int CGenCP1::FailRhythm3() {
 	}
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
+		// Note longer than whole
+		if (llen[ls] > 4) FLAG2(274, s);
 		// 1/4 syncope
 		if (beat[ls] == 2 && llen[ls] > 1) FLAG2(235, s);
 		// 1/2 after 1/4
@@ -754,6 +756,8 @@ int CGenCP1::FailRhythm5() {
 		// Build note lengths
 		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
+			// Note longer than whole
+			if (llen[ls2] > 8) FLAG2(274, fli[ls2]);
 			if (!ms && fn) pos = fn + max(0, fli[ls2] - s);
 			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
