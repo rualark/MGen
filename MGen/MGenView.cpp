@@ -731,7 +731,7 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 		if (mouse_voices.size() > 1) {
 			CMenu *menu = new CMenu;
 			menu->CreatePopupMenu();
-			for (int i = 0; i < mouse_voices.size(); ++i) {
+			for (int i = mouse_voices.size() - 1; i >= 0; --i) {
 				int mv = mouse_voices[i];
 				st.Format("Voice %d (%s)", mv, pGen->InstGName[pGen->instr[mv]] + "/" + pGen->InstCName[pGen->instr[mv]]);
 				menu->AppendMenu(MF_STRING, mv+1, st);
