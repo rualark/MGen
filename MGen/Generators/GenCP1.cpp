@@ -896,6 +896,7 @@ int CGenCP1::FailRhythm5() {
 			s3 = fli[l_ls[l_ls.size() - 1]];
 			if (ms >= mli.size() - 2) FLAG2(238, s3)
 			else if (slur2 != 0) FLAG2(239, s3)
+			else if (slur1 != 0) FLAG2(278, s3)
 			else FLAG2(240, s3);
 		}
 		// Many notes in measure
