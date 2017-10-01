@@ -768,7 +768,7 @@ int CGenCP1::FailRhythm5() {
 		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
 			// Note longer than whole
-			if (llen[ls2] > 8) FLAG2(274, fli[ls2]);
+			if (llen[ls2] > 8 && ls2 == ls) FLAG2(274, fli[ls2]);
 			if (!ms && fn) pos = fn + max(0, fli[ls2] - s);
 			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
@@ -1608,22 +1608,21 @@ void CGenCP1::GetMeasures() {
 int CGenCP1::FailStartPause() {
 	if (species == 1 && fn > 0) {
 		// Show warning and exit if not evaluating
-		if (task != tEval && !accept[274] && !warn_wrong_fn) {
+		if (task != tEval&& !warn_wrong_fn) {
 			CString est;
-			est.Format("Rule '%s - %s' prevents from generating any results in counterpoint species %d, because starting pause is set to %d",
-				RuleName[274], SubRuleName[274], species, fn);
+			est.Format("Excessive pause prevents from generating any results in counterpoint species %d, because starting pause is set to %d/%d",
+				species, fn, npm);
 			WriteLog(5, est);
 			++warn_wrong_fn;
 			return 1;
 		}
-		FLAG2(274, 0);
 	}
 	else if (species > 1 && fn == 0) {
 		// Show warning and exit if not evaluating
 		if (task != tEval && !accept[273] && !warn_wrong_fn) {
 			CString est;
-			est.Format("Rule '%s - %s' prevents from generating any results in counterpoint species %d, because starting pause is set to %d",
-				RuleName[273], SubRuleName[273], species, fn);
+			est.Format("Rule '%s - %s' prevents from generating any results in counterpoint species %d, because there is no starting pause",
+				RuleName[273], SubRuleName[273], species);
 			WriteLog(5, est);
 			++warn_wrong_fn;
 			return 1;
