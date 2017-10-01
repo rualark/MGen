@@ -888,7 +888,7 @@ int CGenCP1::FailRhythm5() {
 		// Whole inside
 		if (l_len[0] >= 8 && ms < mli.size() - 1 && ms) FLAG2(236, s)
 		// 1/2.
-		else if (l_len[0] == 6) FLAG2(233, s)
+		else if (l_len[0] == 6 && !slur1) FLAG2(233, s)
 		else if (l_len.size() > 1 && l_len[1] == 6) FLAG2(234, fli[ls + 1])
 		else if (l_len.size() > 2 && l_len[2] == 6) FLAG2(234, fli[ls + 2])
 		// 1/2 after 1/4 or 1/8 in measure
