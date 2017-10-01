@@ -1803,22 +1803,15 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 	int pskips = 10;
 	int skips = 10;
 	// Calculate allowed skips 
-	int allowed_skips = 0;
-	if (leap_size > 2) ++allowed_skips;
+	int allowed_skips = 1;
 	if (leap_size > 6) ++allowed_skips;
 	if (late_leap <= c4p_last_leaps + 1) ++allowed_skips;
-	int allowed_pskips = 0;
-	if (leap_size > 2) ++allowed_pskips;
+	int allowed_pskips = 1;
 	if (leap_size > 6) ++allowed_pskips;
 	// Check if leap is filled
 	tail_len = 2 + (leap_size - 1) * fill_steps_mul;
 	// Do not check fill if search window is cut by end of current not-last scan window
 	if ((fleap_end + tail_len < fli_size) || (c_len == ep2)) {
-		// Do not check fill if this is first third and rule is allowed
-		if (fleap_start == 0 && leap_size == 2 && accept[1]) {
-			FLAG2(1, fli[fleap_start]);
-			return 0;
-		}
 		// Check fill only if enough length (checked second time in case of slurs)
 		CountFill(c, tail_len, nstat2, nstat3, skips, fill_to, 0, fill_to_pre, fill_from_pre,
 			fill_from, deviates, dev_count, leap_prev, fill_end);
@@ -1834,6 +1827,11 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
 		else if (deviates == 2 && !accept[120 + leap_id]) filled = 0;
 		if (!filled) {
+			// If starting 3rd
+			if (fleap_start == 0 && leap_size == 2 && accept[1]) {
+				FLAG2(1, fli[fleap_start]);
+				return 0;
+			}
 			if (child_leap && accept[116 + leap_id]) FLAG2(116 + leap_id, fli[fleap_start])
 			// Check if  leap is prefilled
 			else {
