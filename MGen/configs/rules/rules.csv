@@ -200,12 +200,11 @@ Set;Severity;Class;Group;Rule;Flag
 1;218;60;Cantus;Counterpoint;Suspension resolution;2nd -> unison;0;;Does not include 9th and above;;;;;;;
 1;220;100;Cantus;Counterpoint;Suspension resolution;to discord;0;;;;;;;;;
 1;221;100;Cantus;Counterpoint;Suspension resolution;leap;0;;;;;;;;;
-1;275;60;Cantus;Counterpoint;Dissonance resolution;2nd -> unison;0;;Does not include 9th and above;;;;;;;
 1;83;100;Cantus;Counterpoint;Dissonance;downbeat;0;;;;;;;;;
 1;223;100;Cantus;Counterpoint;Dissonance;long;0;;Dissonance is longer than neighbouring consonance;;;;;;;
 1;224;100;Cantus;Counterpoint;Dissonance;starts sus;0;;Dissonance starts suspension;;;;;;;
 1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;;;;;;;1;
-1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;;;;;;1;
+1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;;;;;276;1;
 1;276;60;Cantus;Counterpoint;Dissonance upbeat;m2;0;;Minor second;;;;;;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;0;More than X same imperfect consonances in a row;;;;;;;;
 1;96;60;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;;;;;;;
@@ -215,7 +214,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;271;40;Cantus;Counterpoint;First harmony;EC;0;;;;;;;;;
 1;272;100;Cantus;Counterpoint;First harmony;Other;0;;;;;;;;;
 1;273;0;Cantus;Counterpoint;Start pause;missing;0;;No starting pause in couterpoint voice for species 2-5;;;;;;;
-1;91;60;Cantus;Counterpoint;Unison;inside;0;;;;;;;;;
+1;91;60;Cantus;Counterpoint;Unison;downbeat inside;0;;Downbeat unison is allowed only as first or last interval of counterpoint;;;;;;;
+1;275;60;Cantus;Counterpoint;Unison;2nd -> unis;0;;Major or minor 2nd resolves to unison;;;;;;;
+1;277;60;Cantus;Counterpoint;Unison;near 2m;0;;Unison is near minor second dyad;;;;;;;
 1;47;30;Cantus;Counterpoint;2nd to last measure;no B;0;;no B is allowed if last bass notes are G-C;;;;;;;
 1;75;30;Cantus;Counterpoint;2nd to last measure;no G or D;0;;;;1;;;;;
 1;225;0;Cantus;Counterpoint;Slurs;suspension;-1;;;;;;;;;
