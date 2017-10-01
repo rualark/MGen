@@ -740,6 +740,8 @@ int CGenCP1::FailRhythm5() {
 	int full_measure = 0;
 	// Position inside measure
 	int pos = 0;
+	// Starting step of measure
+	int mstart = 0;
 	// Length sum
 	int suml = 0;
 	int ls2 = 0;
@@ -754,11 +756,13 @@ int CGenCP1::FailRhythm5() {
 		slur1 = 0;
 		slur2 = 0;
 		pos = 0;
+		mstart = 0;
 		// First pause
 		if (!ms && fn) {
 			l_len.push_back(fn);
 			l_ls.push_back(0);
 			pos = fn;
+			mstart = fn;
 		}
 		// Build note lengths
 		full_measure = 0;
@@ -784,7 +788,7 @@ int CGenCP1::FailRhythm5() {
 			l_len.push_back(llen[ls2]);
 			l_ls.push_back(ls2);
 			// Stop if out of measure
-			if (pos + llen[ls2] >= npm) {
+			if (mstart + fli2[ls2] - s + 1 >= npm) {
 				full_measure = 1;
 				break;
 			}
