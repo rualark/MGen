@@ -534,7 +534,7 @@ int CGenCP1::FailUnison() {
 	// Unison
 	if (!civl[s]) {
 		// Inside
-		if (ls > 1 && ls < fli_size - 1) FLAG2(91, fli[ls - 1]);
+		if (ls > 0 && ls < fli_size - 1) FLAG2(91, fli[ls]);
 	}
 	return 0;
 }
@@ -548,7 +548,9 @@ int CGenCP1::FailDis() {
 		else if (rpos[ls] == pOffbeat) FLAG2(83, s)
 		else if (rpos[ls] == pLeap) FLAG2(187, s)
 		else {
-			FLAG2(169, s)
+			// Stepwize
+			if (civl[s] == 1) FLAG2(276, s)
+			else FLAG2(169, s)
 		}
 		// Check if discord is longer than neighboring consonance
 		if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s)

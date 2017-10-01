@@ -348,8 +348,8 @@ int CGenCA2::CheckStartPause() {
 	}
 	else if ((species == 3 && fn > 1) || (species == 5 && fn != 0 && fn != 2 && fn != 4)) {
 		CString est;
-		est.Format("Counterpoint %s #%d has wrong starting pause (%d) in species %d. This counterpoint will not be corrected. Please fix midi file if you want this counterpoint to be corrected",
-			cantus_high?"high":"low", cantus_id + 1, fn, species);
+		est.Format("Counterpoint %s #%d has wrong starting pause (%d/%d) in species %d. This counterpoint will not be corrected. Please fix midi file if you want this counterpoint to be corrected",
+			cantus_high?"high":"low", cantus_id + 1, fn, npm, species);
 		WriteLog(1, est);
 		return 1;
 	}
