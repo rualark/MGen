@@ -238,7 +238,7 @@ void CGenCP1::ScanCPInit() {
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
-	if (av == cpv && rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLightVertical;
+	if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLightVertical;
 }
 
 int CGenCP1::SendCP() {
@@ -284,9 +284,9 @@ int CGenCP1::SendCP() {
 				if (av == cpv) {
 					// Set color
 					color[pos + i][v] = color_noflag;
+					SendRpos(pos, i, v, av, x);
 				}
 				SendNotes(pos, i, v, av, x, acc[av]);
-				SendRpos(pos, i, v, av, x);
 				SendNgraph(pos, i, v, x);
 				SendComment(pos, v, av, x, i);
 			}
