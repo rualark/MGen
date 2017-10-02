@@ -54,22 +54,22 @@ END_MESSAGE_MAP()
 CMGenView::CMGenView()
 {
 	v_color = vector<vector<unsigned char>>(MAX_VOICE, vector<unsigned char>(3));
-	v_color[0] = {  40,  40, 255 };
-	v_color[1] = { 200, 80, 80 };
+	v_color[0] = {   0,   0, 255 };
+	v_color[1] = { 255,   0, 255 };
 	v_color[2] = { 90, 170, 255 };
-	v_color[3] = { 0, 150, 0 };
-	v_color[4] = { 255, 160, 100 };
+	v_color[3] = {   0, 255,   0 };
+	v_color[4] = { 120, 120,   0 };
 	v_color[5] = { 0, 120, 120 };
-	v_color[6] = { 255,   0, 255 };
+	v_color[6] = { 180, 100, 100 };
 	v_color[7] = { 90, 255, 170 };
 	v_color[8] = { 150, 0, 150 };
-	v_color[9] = { 0, 255,   0 };
+	v_color[9] = { 0, 150, 0 };
 	v_color[10] = { 120, 120, 255 };
 	v_color[11] = { 255, 100, 160 };
-	v_color[12] = { 160, 100, 255 };
+	v_color[12] = { 255, 160, 100 };
 	v_color[13] = { 0, 255, 255 };
 	v_color[14] = { 130, 200, 40 };
-	v_color[15] = { 140, 120,   0 };
+	v_color[15] = { 160, 100, 255 };
 	// Dummy set to avoid assertion failure on first OnPaint
 	SetScrollSizes(MM_TEXT, CSize(20000, 20000));
 }
