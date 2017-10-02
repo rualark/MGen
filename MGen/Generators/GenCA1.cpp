@@ -273,7 +273,7 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 			for (int z = 0; z < c_len; z++) {
 				if (cantus[i][z] != clib[cids[x]][z]) {
 					for (int g = 0; g < cc_len[z]; g++) {
-						lining[pos + g][0] = 1;
+						lining[pos + g][0] = HatchStyleLightUpwardDiagonal;
 					}
 				}
 				pos += cc_len[z];

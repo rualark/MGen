@@ -129,6 +129,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Graphics g(dc->m_hDC);
 	g.SetRenderingOrigin(-ClipBox.left, 0);
 
+	Color color_adgray(200 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/);
 	SolidBrush brush_gray(Color(255 /*A*/, 247 /*R*/, 247 /*G*/, 247 /*B*/));
 	SolidBrush brush_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/));
 	SolidBrush brush_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/));
@@ -136,8 +137,10 @@ void CMGenView::OnDraw(CDC* pDC)
 	SolidBrush brush_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_red(Color(255 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_agray(Color(20 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
+	SolidBrush brush_adgray(color_adgray);
 	SolidBrush brush_ared(Color(20 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
-	Pen pen_agray(Color(100 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
+	Pen pen_agray(Color(120 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
+	Pen pen_adgray(color_adgray);
 	Pen pen_ablue(Color(90 /*A*/, 0 /*R*/, 0 /*G*/, 170 /*B*/), 1);
 	Pen pen_ared(Color(127 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_aared(Color(70 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/), 1);
@@ -145,6 +148,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Pen pen_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/), 1);
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
 	Pen pen_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
+	HatchStyle hatch;
 
 	Gdiplus::Font font(&FontFamily(L"Arial"), 10);
 	Gdiplus::Font font_small(&FontFamily(L"Arial"), 8);
@@ -297,7 +301,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				else if ((mf->zoom_x >= 200) && (i % 2 == 0)) g.DrawLine(&pen_dgray, X_FIELD + i * nwidth, y_start,
 					X_FIELD + i * nwidth, ClientRect.top + Y_HEADER);
 			}
-			Color ncolor, mcolor;
+			Color ncolor, ncolor2, mcolor;
 			// Add step to the left and to the right
 			int step1t = step1;
 			int step2t = step2;
@@ -337,11 +341,11 @@ void CMGenView::OnDraw(CDC* pDC)
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
 					// Check if note steps have different dynamics
 					int step_dyn2 = 0;
-					int late_lining = 0;
+					int note_lining = 0;
 					if ((step_dyn) && (pGen->len[i][v] > 1)) {
-						for (int x = i + 1; x < i + pGen->len[i][v]; x++) {
-							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
-							if (pGen->lining[x][v]) late_lining = 1;
+						for (int x = i; x < i + pGen->len[i][v]; x++) {
+							if (x > i && pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
+							if (pGen->lining[x][v]) note_lining = pGen->lining[x][v];
 						}
 					}
 					// Show without step dynamics
@@ -357,7 +361,16 @@ void CMGenView::OnDraw(CDC* pDC)
 							ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 						}
 						//SolidBrush brush(ncolor);
-						HatchBrush brush(HatchStyleOutlinedDiamond, Color::Black, ncolor);
+						// Show lining
+						if (mf->show_lining && note_lining) {
+							hatch = static_cast<HatchStyle>(note_lining);
+							ncolor2 = Color::Black;
+						}
+						else {
+							hatch = HatchStyleLightUpwardDiagonal;
+							ncolor2 = ncolor;
+						}
+						HatchBrush brush(hatch, ncolor2, ncolor);
 						cutend = 0;
 						// Cut long notes end to prevent glueing with other voices
 						if ((i + pGen->noff[i][v] < pGen->t_generated) &&
@@ -385,8 +398,16 @@ void CMGenView::OnDraw(CDC* pDC)
 							else {
 								ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 							}
-							//SolidBrush brush(ncolor);
-							HatchBrush brush(HatchStyleOutlinedDiamond, Color::Black, ncolor);
+							// Show lining
+							if (mf->show_lining && note_lining) {
+								hatch = static_cast<HatchStyle>(note_lining);
+								ncolor2 = Color::Black;
+							}
+							else {
+								hatch = HatchStyleOutlinedDiamond;
+								ncolor2 = ncolor;
+							}
+							HatchBrush brush(hatch, ncolor2, ncolor);
 							cutend = 0;
 							if ((x == i + pGen->len[i][v] - 1) && (i + pGen->noff[i][v] < pGen->t_generated) &&
 								(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) cutend = 1;
@@ -401,16 +422,9 @@ void CMGenView::OnDraw(CDC* pDC)
 							}
 						}
 					}
-					// Show lining
-					if (mf->show_lining && (pGen->lining[i][v] == 1 || late_lining)) {
-						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - cutend, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight);
-						g.DrawLine(&pen_black, X_FIELD + i * nwidth, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight,
-							X_FIELD + i * nwidth + pGen->len[i][v] * nwidth - cutend, y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
-					}
 					// Show comment
 					if (mf->show_comments && pGen->comment[i][v].size())
-						g.DrawRectangle(&pen_black, X_FIELD + i * nwidth,
+						g.DrawRectangle(&pen_agray, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
 					if (pGen->noff[i][v] == 0) break;

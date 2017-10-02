@@ -1329,7 +1329,7 @@ void CGenCP1::ShowLiningCP(vector<int> &cc) {
 	int pos = step0 + fn;
 	int lni;
 	for (int z = 0; z < c_len; z++) {
-		if (cpoint[cantus_id][cpv][z] != cc[z]) lni = 1;
+		if (cpoint[cantus_id][cpv][z] != cc[z]) lni = HatchStyleLightUpwardDiagonal;
 		else lni = 0;
 		for (int g = 0; g < cc_len[z]; g++) {
 			lining[pos + g][cpv] = lni;
