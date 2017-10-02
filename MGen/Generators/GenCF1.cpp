@@ -310,6 +310,8 @@ void CGenCF1::ParseRules() {
 void CGenCF1::SetRuleParams() {
 	CHECK_READY_PERSIST(DR_RuleParam);
 	SET_READY_PERSIST(DR_RuleSetParam);
+	cambiata_max_leap3 = Interval2Chromatic(GetRuleParam(rule_set, 264, rsSubComment, 1));
+	cambiata_max_leap4 = Interval2Chromatic(GetRuleParam(rule_set, 265, rsSubComment, 1));
 	pco_apart = GetRuleParam(rule_set, 248, rsName, 0);
 	thirds_ignored = GetRuleParam(rule_set, 70, rsName, 0);
 	c4p_last_leaps = GetRuleParam(rule_set, 144, rsName, 1);

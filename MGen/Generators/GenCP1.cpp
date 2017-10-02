@@ -75,6 +75,7 @@ void CGenCP1::MakeNewCP() {
 }
 
 void CGenCP1::SingleCPInit() {
+	bmli.resize(c_len);
 	// Copy cantus
 	acc = scpoint;
 	// Get diatonic steps from chromatic
@@ -197,6 +198,7 @@ void CGenCP1::SingleCPInit() {
 }
 
 void CGenCP1::MultiCPInit() {
+	bmli.resize(c_len);
 	MakeNewCP();
 	sp1 = 0; // Start of search window
 	sp2 = sp1 + s_len; // End of search window
@@ -238,7 +240,7 @@ void CGenCP1::ScanCPInit() {
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
-	if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLightVertical;
+	if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
 }
 
 int CGenCP1::SendCP() {
@@ -637,6 +639,93 @@ int CGenCP1::FailPco() {
 		}
 	}
 	return 0;
+}
+
+void CGenCP1::DetectCambiata() {
+	for (ls = 0; ls < fli_size - 3; ++ls) {
+		s = fli[ls];
+		s2 = fli2[ls];
+		// Second note is upbeat (beats 1 or 3 not allowed)
+		if (beat[ls+1] < 2) continue;
+		// Second note is created by stepwize movement from first
+		if (aleap[cpv][s2]) continue;
+		// Third note is created by leaping motion in same direction as second note moves
+		if (!aleap[cpv][fli2[ls + 1]]) continue;
+		if (asmooth[cpv][s2] * aleap[cpv][fli2[ls + 1]] < 0) continue;
+		// Leap from second note is longer than 4th
+		if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) > 3) continue;
+		// Fourth note is created by direction opposite to third note movement
+		if ((acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) * aleap[cpv][fli2[ls + 1]] > 0) continue;
+		// Both leaps from notes 3 and 4
+		if (aleap[cpv][fli2[ls + 2]] && aleap[cpv][fli2[ls + 3]]) continue;
+		// 1/4 rhythm
+		if (llen[ls] == npm / 4 && llen[ls] == llen[ls + 1] &&
+			llen[ls] == llen[ls + 2] && llen[ls] == llen[ls + 3]) {
+			if (!accept[256]) continue;
+		} 
+		// Mixed rhythm
+		else {
+			if (!accept[257]) continue;
+		}
+		// In bar
+		if (bmli[s] == bmli[fli2[ls + 3]]) {
+			if (!accept[258]) continue;
+		}
+		// Cross-bar
+		else {
+			if (!accept[259]) continue;
+		}
+		// Third diss
+		if (tivl[fli[ls + 2]] == iDis) {
+			if (!accept[261]) continue;
+		}
+		// Third cons
+		else {
+			if (!accept[260]) continue;
+		}
+		// Leap third
+		if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 2) {
+			if (!accept[262]) continue;
+		}
+		// Leap 4th
+		else {
+			if (!accept[263]) continue;
+		}
+		// Leap from note 3
+		if (aleap[cpv][fli2[ls + 2]]) {
+			if (!accept[264]) continue;
+			// Leap too long
+			if (abs(acc[cpv][fli2[ls + 3]] - acc[cpv][fli2[ls + 2]]) > cambiata_max_leap3) continue;
+		}
+		// Inverted
+		if (asmooth[cpv][s2] == 1 && !accept[279]) continue;
+		// Leap from note 4
+		if (ls < fli_size - 4) {
+			if (aleap[cpv][fli2[ls + 3]]) {
+				if (!accept[265]) continue;
+				// Leap too long
+				if (abs(acc[cpv][fli2[ls + 4]] - acc[cpv][fli2[ls + 3]]) > cambiata_max_leap4) continue;
+			}
+			// Fourth note moves back
+			if (ls < fli_size - 4 && (acc[cpv][fli[ls + 4]] - acc[cpv][fli[ls + 3]]) *
+				(acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) < 0) {
+				if (!accept[266]) continue;
+			}
+		}
+		if (task == tEval && ep2 == c_len) {
+			CString est;
+			est.Format("Detected cambiata at %d:%d", cantus_id + 1, s + 1);
+			WriteLog(1, est);
+		}
+	}
+}
+
+void CGenCP1::DetectPatterns() {
+	if (species != 3 && species != 5) return;
+	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY(DR_fli, DR_leap);
+	SET_READY(DR_rpos, DR_c);
+	DetectCambiata();
 }
 
 void CGenCP1::GetRpos() {
@@ -1608,6 +1697,7 @@ void CGenCP1::GetMeasures() {
 		if ((i + fn) % npm == 0) {
 			mli.push_back(i);
 		}
+		bmli[i] = mli.size() - 1;
 	}
 }
 
@@ -1829,6 +1919,7 @@ check:
 		if (FailRhythm5()) goto skip;
 		GetRpos();
 		GetVIntervals();
+		DetectPatterns();
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailVMotion()) goto skip;
 		if (FailVIntervals()) goto skip;

@@ -42,6 +42,8 @@ protected:
 	inline int FailDis();
 	inline int FailPcoSus();
 	inline int FailPco();
+	inline void DetectCambiata();
+	inline void DetectPatterns();
 	inline void GetRpos();
 	inline int FailRhythm3();
 	inline int FailRhythm5();
@@ -86,9 +88,10 @@ protected:
 	vector<int> civlc; // [s] Chromatic interval between voices (class)
 	vector<int> tivl; // [s] Type of interval between voices
 	vector<int> motion; // [s] Melody motion type
-	vector<int> beat; // [ls] Beat type for each fli2
+	vector<int> beat; // [ls] Beat type for each fli2: 0 = downbeat, 1 = beat 3
 	vector<int> sus; // [ls] Note suspension flag (when above zero, links to first cantus-changing step)
-	vector<int> mli; // [ms] Forward links to first notes of each measure
+	vector<int> mli; // [ms] Forward links to first steps of each measure
+	vector<int> bmli; // [s] Backward links to measures from steps
 	vector<int> cfli; // [cfs] Forward links to each cf note
 	vector<int> hli; // Forward links to first notes of each harmonic change
 	vector<int> rpos; // [ls] Rhythm position types for fli
