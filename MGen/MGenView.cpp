@@ -341,10 +341,15 @@ void CMGenView::OnDraw(CDC* pDC)
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
 					// Check if note steps have different dynamics
 					int step_dyn2 = 0;
-					int note_lining = 0;
+					int note_lining = pGen->lining[i][v];
 					if ((step_dyn) && (pGen->len[i][v] > 1)) {
-						for (int x = i; x < i + pGen->len[i][v]; x++) {
-							if (x > i && pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
+						for (int x = i + 1; x < i + pGen->len[i][v]; ++x) {
+							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
+							if (pGen->lining[x][v]) note_lining = pGen->lining[x][v];
+						}
+					}
+					else {
+						for (int x = i + 1; x < i + pGen->len[i][v]; ++x) {
 							if (pGen->lining[x][v]) note_lining = pGen->lining[x][v];
 						}
 					}
