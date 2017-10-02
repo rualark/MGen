@@ -39,6 +39,8 @@ public:
 			m_bitmap.CreateCompatibleBitmap(pDC, m_rect.Width(), m_rect.Height());
 			m_oldBitmap = SelectObject(&m_bitmap);
 			SetWindowOrg(m_rect.left, m_rect.top);
+			//pDC->DPtoLP(&m_rect);
+			//SetBrushOrg(-(m_rect.left % 8), -(m_rect.top % 8));
 		} else {
 			// Make a copy of the relevent parts of the current DC for printing
 			m_bPrinting = pDC->m_bPrinting;

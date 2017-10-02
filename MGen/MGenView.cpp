@@ -127,9 +127,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	dc->FillRect(ClipBox, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
 
 	Graphics g(dc->m_hDC);
-	//CClientDC aDC(this); //получить контекст устройства
-	//OnPrepareDC(&aDC); //уточнить начальную точку в логических координатах
-	//aDC.DPtoLP(&point); //перевод из клиентских координат в логические
+	g.SetRenderingOrigin(-ClipBox.left, 0);
 
 	SolidBrush brush_gray(Color(255 /*A*/, 247 /*R*/, 247 /*G*/, 247 /*B*/));
 	SolidBrush brush_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/));
@@ -358,7 +356,8 @@ void CMGenView::OnDraw(CDC* pDC)
 						else {
 							ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 						}
-						SolidBrush brush(ncolor);
+						//SolidBrush brush(ncolor);
+						HatchBrush brush(HatchStyleOutlinedDiamond, Color::Black, ncolor);
 						cutend = 0;
 						// Cut long notes end to prevent glueing with other voices
 						if ((i + pGen->noff[i][v] < pGen->t_generated) &&
@@ -386,7 +385,8 @@ void CMGenView::OnDraw(CDC* pDC)
 							else {
 								ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 							}
-							SolidBrush brush(ncolor);
+							//SolidBrush brush(ncolor);
+							HatchBrush brush(HatchStyleOutlinedDiamond, Color::Black, ncolor);
 							cutend = 0;
 							if ((x == i + pGen->len[i][v] - 1) && (i + pGen->noff[i][v] < pGen->t_generated) &&
 								(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) cutend = 1;
