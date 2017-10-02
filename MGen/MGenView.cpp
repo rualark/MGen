@@ -57,7 +57,7 @@ CMGenView::CMGenView()
 	v_color[0] = {   0,   0, 255 };
 	v_color[1] = { 255,   0, 255 };
 	v_color[2] = { 90, 170, 255 };
-	v_color[3] = {   0, 255,   0 };
+	v_color[3] = { 160, 100, 255 };
 	v_color[4] = { 120, 120,   0 };
 	v_color[5] = { 0, 120, 120 };
 	v_color[6] = { 180, 100, 100 };
@@ -69,7 +69,7 @@ CMGenView::CMGenView()
 	v_color[12] = { 255, 160, 100 };
 	v_color[13] = { 0, 255, 255 };
 	v_color[14] = { 130, 200, 40 };
-	v_color[15] = { 160, 100, 255 };
+	v_color[15] = { 0, 255,   0 };
 	// Dummy set to avoid assertion failure on first OnPaint
 	SetScrollSizes(MM_TEXT, CSize(20000, 20000));
 }
