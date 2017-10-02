@@ -611,6 +611,7 @@ protected:
 	VSet<int> clib_vs; // Unique clib set
 
 	// CP1 parameters
+	int show_correct_hatch = 1; // Set to 1 to mark corrected notes with hatch
 	int npm = 1; // Number of notes per measure
 	int slurs_window = 10; // Number of steps to check for slur limit
 	int miss_slurs_window = 10; // Number of steps to check for missing slur limit

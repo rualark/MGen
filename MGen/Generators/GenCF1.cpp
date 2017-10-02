@@ -516,10 +516,7 @@ int CGenCF1::SelectRuleSet(int rs) {
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	SET_READY_PERSIST(DR_Config);
-	//LoadVectorPar2(sN, sV, "sas_emulator_delay_ignore", sas_emulator_max_delay, 1000000, 1);
-	//LoadVectorPar2(sN, sV, "sas_emulator_move_ignore", sas_emulator_move_ignore, 1, 1);
-	//LoadVectorPar2(sN, sV, "false_positives_ignore", false_positives_ignore, 1, 1);
-	//LoadVectorPar2(sN, sV, "false_positives_global", false_positives_global, 1, 1);
+	CheckVar(sN, sV, "show_correct_hatch", &show_correct_hatch, 0, 1);
 	CheckVar(sN, sV, "cor_ack", &cor_ack, 0, 1);
 	CheckVar(sN, sV, "show_ignored_flags", &show_ignored_flags, 0, 2);
 	CheckVar(sN, sV, "emulate_sas", &emulate_sas, 0, 2);

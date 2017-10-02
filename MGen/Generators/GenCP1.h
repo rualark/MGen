@@ -52,6 +52,7 @@ protected:
 	inline void SaveCPIfRp();
 	inline int FailSlurs();
 	void ScanCPInit();
+	inline void SendRpos(int pos, int i, int v, int av, int x);
 	inline int SendCP();
 	inline int FailMissSlurs();
 	inline int FailCPInterval();
