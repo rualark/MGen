@@ -658,6 +658,8 @@ void CGenCP1::DetectCambiata() {
 		if ((acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) * aleap[cpv][fli2[ls + 1]] > 0) continue;
 		// Both leaps from notes 3 and 4
 		if (aleap[cpv][fli2[ls + 2]] && aleap[cpv][fli2[ls + 3]]) continue;
+		// Notes 2 and 3 should not be longer than halfnote
+		if (llen[ls + 1] > npm / 2 || llen[ls + 2] > npm / 2) continue;
 		// 1/4 rhythm
 		if (llen[ls] == npm / 4 && llen[ls] == llen[ls + 1] &&
 			llen[ls] == llen[ls + 2] && llen[ls] == llen[ls + 3]) {
