@@ -168,6 +168,7 @@ void CMGenView::OnDraw(CDC* pDC)
 
 	time_stop2 = CGLib::time();
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
+		int y;
 		CString time_st = "";
 		if (pGen->t_sent > 0) time_st = CGLib::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
 		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d meas. / %s in %.1f sec.)", 
@@ -454,16 +455,30 @@ void CMGenView::OnDraw(CDC* pDC)
 					}
 					SolidBrush brush_v(mcolor);
 					mark = pGen->mark[i][v];
-					if (dc.GetTextExtent(mark).cx > MARK_BACK * nwidth) {
+					CSize tex = dc.GetTextExtent(mark);
+					if (tex.cx > MARK_BACK * nwidth) {
 						mark = ".";
 						if (!warning_mark_long) {
 							++warning_mark_long;
 							mf->WriteLog(0, "Warning: Mark is too long for current zoom and was replaced with '.'. Solution: increase Zoom level, increase MARK_BACK or decrease mark string length in algorithm.");
 						}
 					}
+					// Calculate mark y position
+					if (v % 2) {
+						// Find highest note
+						int max_note = pGen->note[i][v];
+						int step24 = min(pGen->t_generated, i + 4);
+						for (int z = i + 1; z < step24; ++z) 
+							if (pGen->note[z][v] > max_note) max_note = pGen->note[z][v];
+						y = y_start - tex.cy - 
+							(max_note + pGen->show_transpose[v] + 1 - ng_min2) * nheight;
+					}
+					else {
+						y = y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight;
+					}
 					CStringW wst(mark);
-					g.DrawString(wst, -1, &font_small2, PointF(X_FIELD + i * nwidth - 1,
-						y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight), &brush_v);
+					g.DrawString(wst, -1, &font_small2, 
+						PointF(X_FIELD + i * nwidth - 1, y), &brush_v);
 				}
 			}
 			// Show generated vertical lines
