@@ -14,6 +14,11 @@
 #define pAux -1
 #define pPass -2
 
+// Patterns
+#define pCam 1 // Cambiata
+#define pDNT 2 // Double-neighbour tone
+#define pPDD 3 // Passing downbeat dissonance
+
 class CGenCP1 :
 	public CGenCA1
 {
@@ -42,7 +47,10 @@ protected:
 	inline int FailDis();
 	inline int FailPcoSus();
 	inline int FailPco();
+	inline void DetectPDD();
+	inline void DetectDNT();
 	inline void DetectCambiata();
+	inline void SavePattern(int pattern);
 	inline void DetectPatterns();
 	inline void GetRpos();
 	inline int FailRhythm3();
@@ -95,6 +103,7 @@ protected:
 	vector<int> cfli; // [cfs] Forward links to each cf note
 	vector<int> hli; // Forward links to first notes of each harmonic change
 	vector<int> rpos; // [ls] Rhythm position types for fli
+	vector<int> pat; // [ls] Pattern (cambiata, dnt...) for fli
 	int hli_size = 0; // Size of hli vector
 
 	// Cantus

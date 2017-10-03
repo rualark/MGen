@@ -228,6 +228,7 @@ void CGenCP1::ScanCPInit() {
 		aslur[i].resize(c_len);
 	}
 	rpos.resize(c_len);
+	pat.resize(c_len);
 	ivl.resize(c_len);
 	ivlc.resize(c_len);
 	civl.resize(c_len);
@@ -280,7 +281,13 @@ int CGenCP1::SendCP() {
 		// Copy cantus to output
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < ep2; ++x) {
-			if (av == cpv) cpos[x] = pos;
+			if (av == cpv) {
+				cpos[x] = pos;
+				if (x == fli[bli[x]] && pat[bli[x]] == pCam) mark[pos][v] = "Cam";
+				if (x == fli[bli[x]] && pat[bli[x]] == pPDD) mark[pos][v] = "Pdd";
+				if (x == fli[bli[x]] && pat[bli[x]] == pDNT) mark[pos][v] = "Dnt";
+			}
+			mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 			SendLyrics(pos, v, av, x);
 			for (int i = 0; i < cc_len[x]; ++i) {
 				if (av == cpv) {
@@ -641,6 +648,43 @@ int CGenCP1::FailPco() {
 	return 0;
 }
 
+// Detect passing downbeat dissonance
+void CGenCP1::DetectPDD() {
+	for (ls = 0; ls < fli_size - 2; ++ls) {
+		s = fli[ls];
+		s2 = fli2[ls];
+		// Second note is downbeat (only beat 1 allowed)
+		if (beat[ls + 1]) continue;
+		// Downward movement
+		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] > 0) continue;
+		if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] > 0) continue;
+		// Stepwize movement
+		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] < -1) continue;
+		if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] < -1) continue;
+		// Third note must be consonance
+		if (tivl[fli[ls + 2]] == iDis) continue;
+		SavePattern(pPDD);
+	}
+}
+
+// Detect downbeat neighbour tone
+void CGenCP1::DetectDNT() {
+	for (ls = 0; ls < fli_size - 3; ++ls) {
+		s = fli[ls];
+		s2 = fli2[ls];
+		// Notes 1 and 4 are equal
+		if (acc[cpv][s] != acc[cpv][fli[ls + 3]]) continue;
+		// Notes 1 and 4 are not dissonances
+		if (tivl[s] == iDis || tivl[fli[ls + 3]] == iDis) continue;
+		// Both movements are stepwize
+		if (!asmooth[cpv][s2]) continue;
+		if (!asmooth[cpv][fli2[ls + 2]]) continue;
+		// Both movements have same direction
+		if (asmooth[cpv][s2] != asmooth[cpv][fli2[ls + 2]]) continue;
+		SavePattern(pDNT);
+	}
+}
+
 void CGenCP1::DetectCambiata() {
 	for (ls = 0; ls < fli_size - 3; ++ls) {
 		s = fli[ls];
@@ -714,26 +758,40 @@ void CGenCP1::DetectCambiata() {
 				if (!accept[266]) continue;
 			}
 		}
-		if (task == tEval && ep2 == c_len) {
-			CString est;
-			est.Format("Detected cambiata at %d:%d", cantus_id + 1, s + 1);
-			WriteLog(1, est);
-		}
+		SavePattern(pCam);
+		//if (task == tEval && ep2 == c_len) {
+		//	CString est;
+		//	est.Format("Detected cambiata at %d:%d", cantus_id + 1, s + 1);
+		//	WriteLog(1, est);
+		//}
 	}
+}
+
+void CGenCP1::SavePattern(int pattern) {
+	if (pat[ls]) {
+		CString est;
+		est.Format("Pattern vector %d (%d) overwrite detected at %d:%d",
+			ls, pat[ls], cantus_id + 1, s + 1);
+		WriteLog(1, est);
+	}
+	pat[ls] = pattern;
 }
 
 void CGenCP1::DetectPatterns() {
 	if (species != 3 && species != 5) return;
 	CHECK_READY_PERSIST(DR_mli);
-	CHECK_READY(DR_fli, DR_leap);
-	SET_READY(DR_rpos, DR_c);
+	CHECK_READY(DR_fli, DR_leap, DR_c);
+	SET_READY(DR_rpos);
+	fill(pat.begin(), pat.end(), 0);
 	DetectCambiata();
+	DetectDNT();
+	DetectPDD();
 }
 
 void CGenCP1::GetRpos() {
-	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY_PERSIST(DR_mli, DR_c);
 	CHECK_READY(DR_fli, DR_leap);
-	SET_READY(DR_rpos, DR_c);
+	SET_READY(DR_rpos);
 	int sm1, sm2;
 	// Main calculation
 	rpos[0] = pDownbeat;
