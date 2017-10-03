@@ -40,6 +40,7 @@
 #define DR_cfli					16
 #define DR_rpos					17
 #define DR_uli					18
+#define DR_pat					19
 
 #ifdef CF_DEBUG
 

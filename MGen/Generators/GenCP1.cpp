@@ -741,6 +741,10 @@ void CGenCP1::DetectCambiata() {
 		// Third diss
 		if (tivl[fli[ls + 2]] == iDis) {
 			if (!accept[261]) continue;
+			// If third note is dissonance, it should not be downbeat
+			if (!beat[ls + 2]) continue;
+			// If third note is dissonance, it should resolve back stepwize
+			if (aleap[cpv][fli2[ls + 1]] * asmooth[cpv][fli2[ls + 2]] >= 0) continue;
 		}
 		// Leap 4th
 		if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
@@ -790,12 +794,13 @@ void CGenCP1::DetectPatterns() {
 	if (species != 3 && species != 5) return;
 	CHECK_READY_PERSIST(DR_mli);
 	CHECK_READY(DR_fli, DR_leap, DR_c);
-	SET_READY(DR_rpos);
+	SET_READY(DR_pat);
 	fill(pat.begin(), pat.end(), 0);
 	DetectCambiata();
 	DetectDNT();
 	DetectPDD();
 }
+
 
 void CGenCP1::GetRpos() {
 	CHECK_READY_PERSIST(DR_mli, DR_c);
