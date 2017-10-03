@@ -283,9 +283,9 @@ int CGenCP1::SendCP() {
 		for (int x = 0; x < ep2; ++x) {
 			if (av == cpv) {
 				cpos[x] = pos;
-				if (x == fli[bli[x]] && pat[bli[x]] == pCam) mark[pos][v] = "Cam";
-				if (x == fli[bli[x]] && pat[bli[x]] == pPDD) mark[pos][v] = "Pdd";
-				if (x == fli[bli[x]] && pat[bli[x]] == pDNT) mark[pos][v] = "Dnt";
+				if (x == fli[bli[x]] && pat[bli[x]] == pCam) mark[pos][v] = "C\nA";
+				if (x == fli[bli[x]] && pat[bli[x]] == pPDD) mark[pos][v] = "P\nD";
+				if (x == fli[bli[x]] && pat[bli[x]] == pDNT) mark[pos][v] = "D\nN";
 			}
 			mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 			SendLyrics(pos, v, av, x);
@@ -800,7 +800,6 @@ void CGenCP1::DetectPatterns() {
 	DetectDNT();
 	DetectPDD();
 }
-
 
 void CGenCP1::GetRpos() {
 	CHECK_READY_PERSIST(DR_mli, DR_c);
