@@ -650,30 +650,38 @@ int CGenCP1::FailPco() {
 
 // Detect passing downbeat dissonance
 void CGenCP1::DetectPDD() {
+	if (!accept[282]) return;
 	for (ls = 0; ls < fli_size - 2; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Second note is downbeat (only beat 1 allowed)
 		if (beat[ls + 1]) continue;
-		// Downward movement
-		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] > 0) continue;
-		if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] > 0) continue;
 		// Stepwize movement
 		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] < -1) continue;
 		if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] < -1) continue;
+		// Note 2 is long
+		if (llen[ls + 1] > npm / 2) continue;
+		// Note 2 is longer than 3
+		if (llen[ls + 1] > llen[ls + 2]) continue;
 		// Third note must be consonance
 		if (tivl[fli[ls + 2]] == iDis) continue;
+		// Downward movement
+		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] > 0) continue;
+		if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] > 0) continue;
 		SavePattern(pPDD);
 	}
 }
 
 // Detect downbeat neighbour tone
 void CGenCP1::DetectDNT() {
+	if (!accept[258]) return;
 	for (ls = 0; ls < fli_size - 3; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
-		// Notes 1 and 4 are equal
-		if (acc[cpv][s] != acc[cpv][fli[ls + 3]]) continue;
+		// Notes 2 and 3 are long
+		if (llen[ls + 1] > npm / 2 || llen[ls + 2] > npm / 2) continue;
+		// Notes 2 and 3 are longer than 1 and 4
+		if (llen[ls + 1] > llen[ls] || llen[ls + 2] > llen[ls + 3]) continue;
 		// Notes 1 and 4 are not dissonances
 		if (tivl[s] == iDis || tivl[fli[ls + 3]] == iDis) continue;
 		// Both movements are stepwize
@@ -681,11 +689,28 @@ void CGenCP1::DetectDNT() {
 		if (!asmooth[cpv][fli2[ls + 2]]) continue;
 		// Both movements have same direction
 		if (asmooth[cpv][s2] != asmooth[cpv][fli2[ls + 2]]) continue;
+		// Mixed rhythm
+		if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
+			llen[ls] != llen[ls + 2] || llen[ls] != llen[ls + 3]) {
+			if (!accept[280]) continue;
+		}
+		// Cross-bar
+		if (bmli[s] != bmli[fli2[ls + 3]]) {
+			if (!accept[281]) continue;
+		}
+		// Maximum leap
+		int lp = abs(acc[cpv][fli[ls + 2]] - acc[cpv][fli[ls + 1]]);
+		if (lp < 3) continue;
+		if (lp > 4) {
+			if (!accept[260]) continue;
+			if (lp > dnt_max_leap) continue;
+		}
 		SavePattern(pDNT);
 	}
 }
 
 void CGenCP1::DetectCambiata() {
+	if (!accept[256]) return;
 	for (ls = 0; ls < fli_size - 3; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
@@ -704,49 +729,33 @@ void CGenCP1::DetectCambiata() {
 		if (aleap[cpv][fli2[ls + 2]] && aleap[cpv][fli2[ls + 3]]) continue;
 		// Notes 2 and 3 should not be longer than halfnote
 		if (llen[ls + 1] > npm / 2 || llen[ls + 2] > npm / 2) continue;
-		// 1/4 rhythm
-		if (llen[ls] == npm / 4 && llen[ls] == llen[ls + 1] &&
-			llen[ls] == llen[ls + 2] && llen[ls] == llen[ls + 3]) {
-			if (!accept[256]) continue;
-		} 
 		// Mixed rhythm
-		else {
+		if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
+			llen[ls] != llen[ls + 2] || llen[ls] != llen[ls + 3]) {
 			if (!accept[257]) continue;
 		}
-		// In bar
-		if (bmli[s] == bmli[fli2[ls + 3]]) {
-			if (!accept[258]) continue;
-		}
 		// Cross-bar
-		else {
+		if (bmli[s] != bmli[fli2[ls + 3]]) {
 			if (!accept[259]) continue;
 		}
 		// Third diss
 		if (tivl[fli[ls + 2]] == iDis) {
 			if (!accept[261]) continue;
 		}
-		// Third cons
-		else {
-			if (!accept[260]) continue;
-		}
-		// Leap third
-		if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 2) {
-			if (!accept[262]) continue;
-		}
 		// Leap 4th
-		else {
+		if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
 			if (!accept[263]) continue;
 		}
+		// Inverted
+		if (asmooth[cpv][s2] == 1 && !accept[279]) continue;
 		// Leap from note 3
 		if (aleap[cpv][fli2[ls + 2]]) {
 			if (!accept[264]) continue;
 			// Leap too long
 			if (abs(acc[cpv][fli2[ls + 3]] - acc[cpv][fli2[ls + 2]]) > cambiata_max_leap3) continue;
 		}
-		// Inverted
-		if (asmooth[cpv][s2] == 1 && !accept[279]) continue;
-		// Leap from note 4
 		if (ls < fli_size - 4) {
+			// Leap from note 4
 			if (aleap[cpv][fli2[ls + 3]]) {
 				if (!accept[265]) continue;
 				// Leap too long

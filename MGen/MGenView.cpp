@@ -464,12 +464,15 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 					}
 					// Calculate mark y position
-					if (v % 2) {
+					//  || (pGen->note[i][v] <= ng_min2)
+					if (v % 2 && pGen->note[i][v] < ng_max2 - 5) {
 						// Find highest note
 						int max_note = pGen->note[i][v];
-						int step24 = min(pGen->t_generated, i + 4);
-						for (int z = i + 1; z < step24; ++z) 
-							if (pGen->note[z][v] > max_note) max_note = pGen->note[z][v];
+						if (!pGen->pause[i][v - 1]) {
+							int step24 = min(pGen->t_generated, i + 4);
+							for (int z = i + 1; z < step24; ++z)
+								if (pGen->note[z][v] > max_note) max_note = pGen->note[z][v];
+						}
 						y = y_start - tex.cy - 
 							(max_note + pGen->show_transpose[v] + 1 - ng_min2) * nheight;
 					}
