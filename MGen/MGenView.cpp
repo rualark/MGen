@@ -169,6 +169,9 @@ void CMGenView::OnDraw(CDC* pDC)
 	time_stop2 = CGLib::time();
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
 		int y;
+		vector<CString> ast;
+		RectF Rect(0, 0, 32767, 32767);
+		RectF tex;
 		CString time_st = "";
 		if (pGen->t_sent > 0) time_st = CGLib::FormatTime(pGen->etime[pGen->t_sent - 1] / pGen->m_pspeed / 10);
 		if (mf->m_state_gen == 1) st.Format("(%d/%d of %d meas. / %s in %.1f sec.)", 
@@ -455,8 +458,13 @@ void CMGenView::OnDraw(CDC* pDC)
 					}
 					SolidBrush brush_v(mcolor);
 					mark = pGen->mark[i][v];
-					CSize tex = dc.GetTextExtent(mark);
-					if (tex.cx > MARK_BACK * nwidth) {
+					CStringW wst(mark);
+					pGen->Tokenize(mark, ast, "\n");
+					//CRect tex(0, 0, 0, 0);
+					//dc.DrawText(mark, 4, &tex, DT_LEFT | DT_CALCRECT);
+					//CSize tex = dc.GetTextExtent(mark);
+					g.MeasureString(wst, 1, &font_small2, Rect, &tex);
+					if (tex.Width > MARK_BACK * nwidth) {
 						mark = ".";
 						if (!warning_mark_long) {
 							++warning_mark_long;
@@ -465,21 +473,22 @@ void CMGenView::OnDraw(CDC* pDC)
 					}
 					// Calculate mark y position
 					//  || (pGen->note[i][v] <= ng_min2)
-					if (v % 2 && pGen->note[i][v] < ng_max2 - 5) {
+					if (v % 2) {
 						// Find highest note
 						int max_note = pGen->note[i][v];
-						if (!pGen->pause[i][v - 1]) {
-							int step24 = min(pGen->t_generated, i + 4);
-							for (int z = i + 1; z < step24; ++z)
-								if (pGen->note[z][v] > max_note) max_note = pGen->note[z][v];
-						}
-						y = y_start - tex.cy - 
+						//if (!pGen->pause[i][v - 1]) {
+						//	int step24 = min(pGen->t_generated, i + 4);
+						//	for (int z = i + 1; z < step24; ++z)
+						//		if (pGen->note[z][v] > max_note) max_note = pGen->note[z][v];
+						//}
+						// Limit
+						if (max_note >= ng_max2 - 1) max_note = ng_max2 - 2;
+						y = y_start - tex.Height * ast.size() - 
 							(max_note + pGen->show_transpose[v] + 1 - ng_min2) * nheight;
 					}
 					else {
 						y = y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight;
 					}
-					CStringW wst(mark);
 					g.DrawString(wst, -1, &font_small2, 
 						PointF(X_FIELD + i * nwidth - 1, y), &brush_v);
 				}
