@@ -659,9 +659,9 @@ void CGenCP1::DetectPDD() {
 		// Stepwize movement
 		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] < -1) continue;
 		if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] < -1) continue;
-		// Note 2 is long
+		// Note 2 is not long
 		if (llen[ls + 1] > npm / 2) continue;
-		// Note 2 is longer than 3
+		// Note 2 is not longer than 3
 		if (llen[ls + 1] > llen[ls + 2]) continue;
 		// Third note must be consonance
 		if (tivl[fli[ls + 2]] == iDis) continue;
@@ -714,8 +714,12 @@ void CGenCP1::DetectCambiata() {
 	for (ls = 0; ls < fli_size - 3; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
-		// Second note is upbeat (beats 1 or 3 not allowed)
-		if (beat[ls+1] < 2) continue;
+		// Second note is upbeat (beat 1 not allowed)
+		if (beat[ls+1] < 1) continue;
+		// Note 1 is not a discord
+		if (tivl[s] == iDis) continue;
+		// Non-harmonic note is not longer than harmonic
+		if (llen[ls + 1] > llen[ls] || llen[ls + 1] > llen[ls + 2]) continue;
 		// Second note is created by stepwize movement from first
 		if (aleap[cpv][s2]) continue;
 		// Third note is created by leaping motion in same direction as second note moves
@@ -745,6 +749,10 @@ void CGenCP1::DetectCambiata() {
 			if (!beat[ls + 2]) continue;
 			// If third note is dissonance, it should resolve back stepwize
 			if (aleap[cpv][fli2[ls + 1]] * asmooth[cpv][fli2[ls + 2]] >= 0) continue;
+			// Non-harmonic note is not longer than harmonic
+			if (llen[ls + 2] > llen[ls] || llen[ls + 2] > llen[ls + 3]) continue;
+			// Fourth note should not be dissonance
+			if (tivl[ls + 3] == iDis) continue;
 		}
 		// Leap 4th
 		if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
