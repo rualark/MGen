@@ -566,11 +566,10 @@ int CGenCP1::FailUnison() {
 int CGenCP1::FailDis() {
 	// Discord
 	if (tivl[s] == iDis) {
-		// Downbeat
-		if (rpos[ls] == pDownbeat) FLAG2(83, s)
-		// Upbeat 
-		else if (rpos[ls] == pOffbeat) FLAG2(83, s)
-		else if (rpos[ls] == pLeap) FLAG2(187, s)
+		// Leap
+		if (rpos[ls] == pLeap) FLAG2(187, s)
+		// Other harmonic
+		else if (rpos[ls] > 0) FLAG2(83, s)
 		else {
 			// Stepwize
 			if (civl[s] == 1) FLAG2(276, s)
@@ -860,9 +859,9 @@ void CGenCP1::GetBasicRpos() {
 }
 
 void CGenCP1::SetRpos(int ls, vector<int> &l_rpos, int val) {
-	if (l_rpos[ls]) {
+	if (l_rpos[ls] * val < 0) {
 		CString est;
-		est.Format("Detected rpos overwrite at note %d with value %d", ls, val);
+		est.Format("Detected rpos overwrite at note %d with value %d (old value %d)", ls, val, l_rpos[ls]);
 		WriteLog(5, est);
 	}
 	l_rpos[ls] = val;
