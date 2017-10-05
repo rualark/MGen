@@ -47,6 +47,7 @@ protected:
 	inline int FailDis();
 	inline int FailPcoSus();
 	inline int FailPco();
+	inline int SkipSus(int notes);
 	inline void DetectPDD();
 	inline void DetectDNT();
 	inline void DetectCambiata();

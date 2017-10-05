@@ -653,10 +653,30 @@ int CGenCP1::FailPco() {
 	return 0;
 }
 
+int CGenCP1::SkipSus(int notes) {
+	int found = -1;
+	if (ls == 0) {
+		for (int ls2 = 0; ls2 < notes; ++ls2) {
+			if (sus[ls2]) found = ls2;
+		}
+	}
+	// Do not scan sus
+	if (sus[ls + notes]) found = ls + notes;
+	if (found > -1) {
+		// Skip to note next to sus
+		ls += found + 1;
+		// Find next downbeat or half-downbeat note
+		while (ls < fli_size && beat[ls] > 1 && ls - found < 3) ++ls;
+		return 1;
+	}
+	return 0;
+}
+
 // Detect passing downbeat dissonance
 void CGenCP1::DetectPDD() {
 	if (!accept[282]) return;
 	for (ls = 0; ls < fli_size - 2; ++ls) {
+		if (SkipSus(2)) continue;
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Second note is downbeat (only beat 1 allowed)
@@ -681,6 +701,7 @@ void CGenCP1::DetectPDD() {
 void CGenCP1::DetectDNT() {
 	if (!accept[258]) return;
 	for (ls = 0; ls < fli_size - 3; ++ls) {
+		if (SkipSus(3)) continue;
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Notes 2 and 3 are long
@@ -717,6 +738,7 @@ void CGenCP1::DetectDNT() {
 void CGenCP1::DetectCambiata() {
 	if (!accept[256]) return;
 	for (ls = 0; ls < fli_size - 3; ++ls) {
+		if (SkipSus(3)) continue;
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Second note is upbeat (beat 1 not allowed)
