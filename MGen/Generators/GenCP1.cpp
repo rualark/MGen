@@ -227,8 +227,11 @@ void CGenCP1::ScanCPInit() {
 		asmooth[i].resize(c_len);
 		aslur[i].resize(c_len);
 	}
+	rposb.resize(c_len);
+	rposf.resize(c_len);
 	rpos.resize(c_len);
 	pat.resize(c_len);
+	pat_state.resize(c_len);
 	ivl.resize(c_len);
 	ivlc.resize(c_len);
 	civl.resize(c_len);
@@ -241,7 +244,8 @@ void CGenCP1::ScanCPInit() {
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
-	if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
+	//if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
+	if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
 }
 
 int CGenCP1::SendCP() {
@@ -281,13 +285,14 @@ int CGenCP1::SendCP() {
 		// Copy cantus to output
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < ep2; ++x) {
+			mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 			if (av == cpv) {
 				cpos[x] = pos;
 				if (x == fli[bli[x]] && pat[bli[x]] == pCam) mark[pos][v] = "C\nA";
 				if (x == fli[bli[x]] && pat[bli[x]] == pPDD) mark[pos][v] = "P\nD";
 				if (x == fli[bli[x]] && pat[bli[x]] == pDNT) mark[pos][v] = "D\nN";
+				if (x == fli[bli[x]] && pat_state[bli[x]] == 1) mark_color[pos][v] = MakeColor(255, 255, 120, 120);
 			}
-			mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 			SendLyrics(pos, v, av, x);
 			for (int i = 0; i < cc_len[x]; ++i) {
 				if (av == cpv) {
@@ -799,67 +804,99 @@ void CGenCP1::SavePattern(int pattern) {
 }
 
 void CGenCP1::DetectPatterns() {
-	if (species != 3 && species != 5) return;
 	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY(DR_beat, DR_ivl);
 	CHECK_READY(DR_fli, DR_leap, DR_c);
 	SET_READY(DR_pat);
+	if (species != 3 && species != 5) return;
 	fill(pat.begin(), pat.end(), 0);
+	fill(pat_state.begin(), pat_state.end(), 0);
 	DetectCambiata();
 	DetectDNT();
 	DetectPDD();
 }
 
-void CGenCP1::GetRpos() {
-	CHECK_READY_PERSIST(DR_mli, DR_c);
+void CGenCP1::GetBasicRpos() {
+	CHECK_READY_PERSIST(DR_c);
 	CHECK_READY(DR_fli, DR_leap);
-	SET_READY(DR_rpos);
-	int sm1, sm2;
+	SET_READY(DR_rposb);
 	// Main calculation
-	rpos[0] = pDownbeat;
+	rposb[0] = pDownbeat;
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
-		if ((s + fn) % npm == 0) rpos[ls] = pDownbeat;
-		else if (s > 0 && aleap[cpv][s - 1]) rpos[ls] = pLeap;
-		else if (s2 < ep2-1 && aleap[cpv][s2]) rpos[ls] = pLeap;
+		if ((s + fn) % npm == 0) rposb[ls] = pDownbeat;
+		else if (s > 0 && aleap[cpv][s - 1]) rposb[ls] = pLeap;
+		else if (s2 < ep2 - 1 && aleap[cpv][s2]) rposb[ls] = pLeap;
 		else {
-			if (s > 0 && s2 < ep2 - 1 && ac[cpv][s - 1] == ac[cpv][s2 + 1]) rpos[ls] = pAux;
-			else rpos[ls] = pPass;
+			if (s > 0 && s2 < ep2 - 1 && ac[cpv][s - 1] == ac[cpv][s2 + 1]) rposb[ls] = pAux;
+			else rposb[ls] = pPass;
 		}
 	}
-	// Calculate cambiata
-	int tlen;
-	if (npm >= 4) {
-		for (int ms = 0; ms < mli.size(); ++ms) {
-			s = mli[ms];
-			if (s >= ep2) break;
-			ls = bli[s];
-			// If last ls
-			if (ls >= fli_size - 4) break;
-			// If longer than measure (removed because it duplicates next test)
-			//if (fli2[ls + 3] - fli[ls] >= npm) continue;
-			tlen = llen[ls] + llen[ls + 1] + llen[ls + 2] + llen[ls + 3];
-			// If total length does not equal measure
-			if (tlen != npm) continue;
-			// Double neighbor tone
-			if (acc[cpv][fli[ls]] == acc[cpv][fli[ls + 3]] &&
-				asmooth[cpv][fli[ls]] * asmooth[cpv][fli[ls + 2]] == 1) {
-				rpos[ls + 1] = pAux;
-				rpos[ls + 2] = pAux;
-				rpos[ls + 3] = pOffbeat;
-			}
-			// Cambiata
-			if (ac[cpv][fli[ls]] - 2 == ac[cpv][fli[ls + 3]] &&
-				asmooth[cpv][fli[ls]] == -1 && asmooth[cpv][fli[ls + 2]] == 1) {
-				rpos[ls + 1] = pAux;
-			}
-			// Inverted cambiata
-			if (ac[cpv][fli[ls]] + 2 == ac[cpv][fli[ls + 3]] &&
-				asmooth[cpv][fli[ls]] == 1 && asmooth[cpv][fli[ls + 2]] == -1) {
-				rpos[ls + 1] = pAux;
-			}
+}
+
+void CGenCP1::SetRpos(int ls, vector<int> &l_rpos, int val) {
+	if (l_rpos[ls]) {
+		CString est;
+		est.Format("Detected rpos overwrite at note %d with value %d", ls, val);
+		WriteLog(5, est);
+	}
+	l_rpos[ls] = val;
+}
+
+void CGenCP1::ApplyPDD(int ls, vector<int> &l_rpos, int state) {
+	SetRpos(ls + 1, l_rpos, -101);
+	SetRpos(ls + 2, l_rpos, 101);
+	pat_state[ls] = state;
+}
+
+void CGenCP1::ApplyDNT(int ls, vector<int> &l_rpos, int state) {
+	SetRpos(ls,     l_rpos, 102);
+	SetRpos(ls + 1, l_rpos, -102);
+	SetRpos(ls + 2, l_rpos, -103);
+	SetRpos(ls + 3, l_rpos, 103);
+	pat_state[ls] = state;
+}
+
+void CGenCP1::ApplyCam(int ls, vector<int> &l_rpos, int state) {
+	SetRpos(ls + 1, l_rpos, -104);
+	pat_state[ls] = state;
+}
+
+// Cambiata with third note non-harmonic allowed
+void CGenCP1::ApplyCam2(int ls, vector<int> &l_rpos, int state) {
+	SetRpos(ls + 1, l_rpos, -105);
+	SetRpos(ls + 2, l_rpos, -106);
+	pat_state[ls] = state;
+	// Do not need to set note 1, because it can be dissonant
+	// Do not need to set note 4, because it can be dissonant if note 3 is consonant
+	// Do not need to set note 4, because if it is stepwize after dissonant, it can be only consonant. If it is not stepwize, it is not resolution
+}
+
+void CGenCP1::ApplyFixedPat() {
+	CHECK_READY(DR_rposb, DR_ivl);
+	CHECK_READY(DR_fli);
+	SET_READY(DR_rpos, DR_rposf);
+	// Clear rposf
+	fill(rposf.begin(), rposf.end(), 0);
+	// Walk through patterns
+	for (int ls = 0; ls < fli_size; ++ls) {
+		if (pat[ls] == 0) continue;
+		if (pat[ls] == pPDD) {
+			if (tivl[fli[ls + 1]] == iDis) ApplyPDD(ls, rposf, 1);
+		}
+		else if (pat[ls] == pDNT) {
+			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 2]] == iDis) ApplyDNT(ls, rposf, 1);
+		}
+		else if (pat[ls] == pCam) {
+			if (tivl[fli[ls + 2]] == iDis) ApplyCam2(ls, rposf, 1);
+			else if (tivl[fli[ls + 1]] == iDis) ApplyCam(ls, rposf, 1);
 		}
 	}
+	// Set rposf for empty
+	for (int ls = 0; ls < fli_size; ++ls) if (!rposf[ls]) rposf[ls] = rposb[ls];
+	// Set rpos
+	for (int ls = 0; ls < fli_size; ++ls) rpos[ls] = rposf[ls];
 }
 
 // Fail rhythm for species 3
@@ -1998,9 +2035,10 @@ check:
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
 		if (FailRhythm3()) goto skip;
 		if (FailRhythm5()) goto skip;
-		GetRpos();
 		GetVIntervals();
 		DetectPatterns();
+		GetBasicRpos();
+		ApplyFixedPat();
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailVMotion()) goto skip;
 		if (FailVIntervals()) goto skip;

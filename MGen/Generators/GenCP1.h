@@ -52,7 +52,13 @@ protected:
 	inline void DetectCambiata();
 	inline void SavePattern(int pattern);
 	inline void DetectPatterns();
-	inline void GetRpos();
+	inline void GetBasicRpos();
+	inline void SetRpos(int ls, vector<int> &l_rpos, int val);
+	inline void ApplyPDD(int ls, vector<int> &l_rpos, int state);
+	inline void ApplyDNT(int ls, vector<int> &l_rpos, int state);
+	inline void ApplyCam(int ls, vector<int> &l_rpos, int state);
+	inline void ApplyCam2(int ls, vector<int> &l_rpos, int state);
+	inline void ApplyFixedPat();
 	inline int FailRhythm3();
 	inline int FailRhythm5();
 	inline int FailPcoApart();
@@ -102,8 +108,11 @@ protected:
 	vector<int> bmli; // [s] Backward links to measures from steps
 	vector<int> cfli; // [cfs] Forward links to each cf note
 	vector<int> hli; // Forward links to first notes of each harmonic change
+	vector<int> rposb; // [ls] Rhythm position types for fli (basic without patterns)
+	vector<int> rposf; // [ls] Rhythm position types for fli (with fixed patterns)
 	vector<int> rpos; // [ls] Rhythm position types for fli
 	vector<int> pat; // [ls] Pattern (cambiata, dnt...) for fli
+	vector<int> pat_state; // [ls] Pattern (cambiata, dnt...) for fli state: 0 - not applied, 1 - fixed, 2,3 - variants
 	int hli_size = 0; // Size of hli vector
 
 	// Cantus

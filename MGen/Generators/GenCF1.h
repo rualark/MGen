@@ -5,8 +5,8 @@
 // THESE MACROS CAN BE DISABLED TO IMPROVE PERFORMANCE
 
 // Check data ready
-#define MAX_DATA_READY 20
-#define MAX_DATA_READY_PERSIST 100
+#define MAX_DATA_READY 30
+#define MAX_DATA_READY_PERSIST 20
 
 #define DR_Config				1
 #define DR_ConfigTest		2
@@ -41,6 +41,8 @@
 #define DR_rpos					17
 #define DR_uli					18
 #define DR_pat					19
+#define DR_rposb				20
+#define DR_rposf				21
 
 #ifdef CF_DEBUG
 
