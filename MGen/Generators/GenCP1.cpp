@@ -653,14 +653,16 @@ int CGenCP1::FailPco() {
 	return 0;
 }
 
+// Do not scan sus
 int CGenCP1::SkipSus(int notes) {
 	int found = -1;
+	// Search for sus in first window
 	if (ls == 0) {
 		for (int ls2 = 0; ls2 < notes; ++ls2) {
 			if (sus[ls2]) found = ls2;
 		}
 	}
-	// Do not scan sus
+	// Search for sus in last note
 	if (sus[ls + notes]) found = ls + notes;
 	if (found > -1) {
 		// Skip to note next to sus
@@ -675,24 +677,24 @@ int CGenCP1::SkipSus(int notes) {
 // Detect passing downbeat dissonance
 void CGenCP1::DetectPDD() {
 	if (!accept[282]) return;
-	for (ls = 0; ls < fli_size - 2; ++ls) {
-		if (SkipSus(2)) continue;
+	for (ls = 0; ls < fli_size - 1; ++ls) {
+		if (ls < fli_size - 2 && SkipSus(2)) continue;
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Second note is downbeat (only beat 1 allowed)
 		if (beat[ls + 1]) continue;
-		// Stepwize movement
-		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] < -1) continue;
-		if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] < -1) continue;
+		// Stepwize downward movement
+		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] != -1) continue;
 		// Note 2 is not long
 		if (llen[ls + 1] > npm / 2) continue;
-		// Note 2 is not longer than 3
-		if (llen[ls + 1] > llen[ls + 2]) continue;
-		// Third note must be consonance
-		if (tivl[fli[ls + 2]] == iDis) continue;
-		// Downward movement
-		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] > 0) continue;
-		if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] > 0) continue;
+		if (ls < fli_size - 2) {
+			// Stepwize downward movement
+			if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] != -1) continue;
+			// Note 2 is not longer than 3
+			if (llen[ls + 1] > llen[ls + 2] && (ep2 == c_len || ls < fli_size - 3)) continue;
+			// Third note must be consonance
+			if (tivl[fli[ls + 2]] == iDis) continue;
+		}
 		SavePattern(pPDD);
 	}
 }
