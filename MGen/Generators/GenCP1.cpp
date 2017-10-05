@@ -716,6 +716,10 @@ void CGenCP1::DetectDNT() {
 		if (!asmooth[cpv][fli2[ls + 2]]) continue;
 		// Both movements have same direction
 		if (asmooth[cpv][s2] != asmooth[cpv][fli2[ls + 2]]) continue;
+		// No leap
+		if (!aleap[cpv][fli2[ls + 1]]) continue;
+		// Leap has same direction
+		if (aleap[cpv][fli2[ls + 1]] == asmooth[cpv][s2]) continue;
 		// Mixed rhythm
 		if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
 			llen[ls] != llen[ls + 2] || llen[ls] != llen[ls + 3]) {
@@ -861,7 +865,8 @@ void CGenCP1::GetBasicRpos() {
 void CGenCP1::SetRpos(int ls, vector<int> &l_rpos, int val) {
 	if (l_rpos[ls] * val < 0) {
 		CString est;
-		est.Format("Detected rpos overwrite at note %d with value %d (old value %d)", ls, val, l_rpos[ls]);
+		est.Format("Detected rpos overwrite at note %d with value %d (old value %d): %s", 
+			ls, val, l_rpos[ls], vint2st(ep2, acc[cpv]));
 		WriteLog(5, est);
 	}
 	l_rpos[ls] = val;

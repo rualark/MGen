@@ -609,6 +609,15 @@ void CGenCF1::LogCantus(CString st3, int x, int size, vector<int> &c) {
 	CGLib::AppendLineToFile("log/temp.log", st2 + " \n");
 }
 
+CString CGenCF1::vint2st(int size, vector<int> &c) {
+	CString st, st2;
+	for (int i = 0; i < size; ++i) {
+		st.Format("%d ", c[i]);
+		st2 += st;
+	}
+	return st2;
+}
+
 // Step2 must be exclusive
 void CGenCF1::FillCantus(vector<int>& c, int step1, int step2, int value)
 {

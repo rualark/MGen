@@ -185,6 +185,7 @@ protected:
 	int SelectRuleSet(int rs);
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(CString st3, int x, int size, vector<int>& c);
+	CString vint2st(int size, vector<int>& c);
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
 	inline int FailNoteSeq(vector<int>& pc);
 	inline int FailLocalRange(vector<int>& cc, int notes, int mrange, int flag);
