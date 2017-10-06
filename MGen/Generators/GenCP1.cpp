@@ -244,8 +244,10 @@ void CGenCP1::ScanCPInit() {
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
-	//if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
-	if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
+	if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
+	else lining[pos + i][v] = 0;
+	//if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
+	//else lining[pos + i][v] = 0;
 }
 
 int CGenCP1::SendCP() {
@@ -288,10 +290,12 @@ int CGenCP1::SendCP() {
 			mark_color[pos][v] = MakeColor(255, 120, 120, 120);
 			if (av == cpv) {
 				cpos[x] = pos;
-				if (x == fli[bli[x]] && pat[bli[x]] == pCam) mark[pos][v] = "C\nA";
-				if (x == fli[bli[x]] && pat[bli[x]] == pPDD) mark[pos][v] = "P\nD";
-				if (x == fli[bli[x]] && pat[bli[x]] == pDNT) mark[pos][v] = "D\nN";
-				if (x == fli[bli[x]] && pat_state[bli[x]] == 1) mark_color[pos][v] = MakeColor(255, 255, 120, 120);
+				if (species == 3 || species == 5) {
+					if (x == fli[bli[x]] && pat[bli[x]] == pCam) mark[pos][v] = "C\nA";
+					if (x == fli[bli[x]] && pat[bli[x]] == pPDD) mark[pos][v] = "P\nD";
+					if (x == fli[bli[x]] && pat[bli[x]] == pDNT) mark[pos][v] = "D\nN";
+					if (x == fli[bli[x]] && pat_state[bli[x]] == 1) mark_color[pos][v] = MakeColor(255, 255, 120, 120);
+				}
 			}
 			SendLyrics(pos, v, av, x);
 			for (int i = 0; i < cc_len[x]; ++i) {
@@ -676,7 +680,9 @@ int CGenCP1::SkipSus(int notes) {
 // Detect passing downbeat dissonance
 void CGenCP1::DetectPDD() {
 	if (!accept[282]) return;
-	for (ls = 0; ls < fli_size - 1; ++ls) {
+	int max_ls = fli_size - 1;
+	if (ep2 == c_len) max_ls = fli_size - 2;
+	for (ls = 0; ls < max_ls; ++ls) {
 		if (ls < fli_size - 2 && SkipSus(2)) continue;
 		s = fli[ls];
 		s2 = fli2[ls];
@@ -701,40 +707,56 @@ void CGenCP1::DetectPDD() {
 // Detect downbeat neighbour tone
 void CGenCP1::DetectDNT() {
 	if (!accept[258]) return;
-	for (ls = 0; ls < fli_size - 3; ++ls) {
-		if (SkipSus(3)) continue;
+	int max_ls = fli_size - 1;
+	if (ep2 == c_len) max_ls = fli_size - 3;
+	for (ls = 0; ls < max_ls; ++ls) {
+		if (ls < fli_size - 3 && SkipSus(3)) continue;
 		s = fli[ls];
 		s2 = fli2[ls];
-		// Notes 2 and 3 are long
-		if (llen[ls + 1] > npm / 2 || llen[ls + 2] > npm / 2) continue;
-		// Notes 2 and 3 are longer than 1 and 4
-		if (llen[ls + 1] > llen[ls] || llen[ls + 2] > llen[ls + 3]) continue;
-		// Notes 1 and 4 are not dissonances
-		if (tivl[s] == iDis || tivl[fli[ls + 3]] == iDis) continue;
-		// Both movements are stepwize
+		// Note 2 is long
+		if (llen[ls + 1] > npm / 2) continue;
+		// Note 1 is not dissonance
+		if (tivl[s] == iDis) continue;
+		// Note 2 is downbeat
+		if (!beat[ls + 1]) continue;
+		// Movements are stepwize
 		if (!asmooth[cpv][s2]) continue;
-		if (!asmooth[cpv][fli2[ls + 2]]) continue;
-		// Both movements have same direction
-		if (asmooth[cpv][s2] != asmooth[cpv][fli2[ls + 2]]) continue;
-		// No leap
-		if (!aleap[cpv][fli2[ls + 1]]) continue;
-		// Leap has same direction
-		if (aleap[cpv][fli2[ls + 1]] == asmooth[cpv][s2]) continue;
-		// Mixed rhythm
-		if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
-			llen[ls] != llen[ls + 2] || llen[ls] != llen[ls + 3]) {
-			if (!accept[280]) continue;
+		if (ls < fli_size - 2) {
+			// Note 2 is longer than 1
+			if (llen[ls + 1] > llen[ls]) continue;
+			// Note 3 is long
+			if (llen[ls + 2] > npm / 2) continue;
+			// No leap
+			if (!aleap[cpv][fli2[ls + 1]]) continue;
+			// Leap has same direction
+			if (aleap[cpv][fli2[ls + 1]] == asmooth[cpv][s2]) continue;
+			// Maximum leap
+			int lp = abs(acc[cpv][fli[ls + 2]] - acc[cpv][fli[ls + 1]]);
+			if (lp < 3) continue;
+			if (lp > 4) {
+				if (!accept[260]) continue;
+				if (lp > dnt_max_leap) continue;
+			}
 		}
-		// Cross-bar
-		if (bmli[s] != bmli[fli2[ls + 3]]) {
-			if (!accept[281]) continue;
-		}
-		// Maximum leap
-		int lp = abs(acc[cpv][fli[ls + 2]] - acc[cpv][fli[ls + 1]]);
-		if (lp < 3) continue;
-		if (lp > 4) {
-			if (!accept[260]) continue;
-			if (lp > dnt_max_leap) continue;
+		if (ls < fli_size - 3) {
+			// Note 3 is longer than 4
+			if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
+			// Note 4 is not dissonance
+			if (tivl[fli[ls + 3]] == iDis) continue;
+			// Movements are stepwize
+			if (!asmooth[cpv][fli2[ls + 2]]) continue;
+			// Both movements have same direction
+			if (asmooth[cpv][s2] != asmooth[cpv][fli2[ls + 2]]) continue;
+			// Mixed rhythm
+			if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
+				llen[ls] != llen[ls + 2] || 
+					(llen[ls] != llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4))) {
+				if (!accept[280]) continue;
+			}
+			// Cross-bar
+			if (bmli[s] != bmli[fli2[ls + 3]]) {
+				if (!accept[281]) continue;
+			}
 		}
 		SavePattern(pDNT);
 	}
@@ -742,61 +764,71 @@ void CGenCP1::DetectDNT() {
 
 void CGenCP1::DetectCambiata() {
 	if (!accept[256]) return;
-	for (ls = 0; ls < fli_size - 3; ++ls) {
-		if (SkipSus(3)) continue;
+	int max_ls = fli_size - 1;
+	if (ep2 == c_len) max_ls = fli_size - 3;
+	for (ls = 0; ls < max_ls; ++ls) {
+		if (ls < fli_size - 3 && SkipSus(3)) continue;
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Second note is upbeat (beat 1 not allowed)
 		if (beat[ls+1] < 1) continue;
 		// Note 1 is not a discord
 		if (tivl[s] == iDis) continue;
-		// Non-harmonic note is not longer than harmonic
-		if (llen[ls + 1] > llen[ls] || llen[ls + 1] > llen[ls + 2]) continue;
 		// Second note is created by stepwize movement from first
 		if (aleap[cpv][s2]) continue;
 		// Third note is created by leaping motion in same direction as second note moves
 		if (!aleap[cpv][fli2[ls + 1]]) continue;
 		if (asmooth[cpv][s2] * aleap[cpv][fli2[ls + 1]] < 0) continue;
-		// Leap from second note is longer than 4th
-		if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) > 3) continue;
-		// Fourth note is created by direction opposite to third note movement
-		if ((acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) * aleap[cpv][fli2[ls + 1]] > 0) continue;
-		// Both leaps from notes 3 and 4
-		if (aleap[cpv][fli2[ls + 2]] && aleap[cpv][fli2[ls + 3]]) continue;
-		// Notes 2 and 3 should not be longer than halfnote
-		if (llen[ls + 1] > npm / 2 || llen[ls + 2] > npm / 2) continue;
-		// Mixed rhythm
-		if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
-			llen[ls] != llen[ls + 2] || llen[ls] != llen[ls + 3]) {
-			if (!accept[257]) continue;
-		}
-		// Cross-bar
-		if (bmli[s] != bmli[fli2[ls + 3]]) {
-			if (!accept[259]) continue;
-		}
-		// Third diss
-		if (tivl[fli[ls + 2]] == iDis) {
-			if (!accept[261]) continue;
-			// If third note is dissonance, it should not be downbeat
-			if (!beat[ls + 2]) continue;
-			// If third note is dissonance, it should resolve back stepwize
-			if (aleap[cpv][fli2[ls + 1]] * asmooth[cpv][fli2[ls + 2]] >= 0) continue;
-			// Non-harmonic note is not longer than harmonic
-			if (llen[ls + 2] > llen[ls] || llen[ls + 2] > llen[ls + 3]) continue;
-			// Fourth note should not be dissonance
-			if (tivl[ls + 3] == iDis) continue;
-		}
-		// Leap 4th
-		if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
-			if (!accept[263]) continue;
-		}
 		// Inverted
 		if (asmooth[cpv][s2] == 1 && !accept[279]) continue;
-		// Leap from note 3
-		if (aleap[cpv][fli2[ls + 2]]) {
-			if (!accept[264]) continue;
-			// Leap too long
-			if (abs(acc[cpv][fli2[ls + 3]] - acc[cpv][fli2[ls + 2]]) > cambiata_max_leap3) continue;
+		if (ls < fli_size - 2) {
+			// Leap from second note is longer than 4th
+			if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) > 3) continue;
+			// Non-harmonic note is not longer than harmonic
+			if (llen[ls + 1] > llen[ls]) continue;
+			// Leap 4th
+			if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
+				if (!accept[263]) continue;
+			}
+		}
+		if (ls < fli_size - 3) {
+			// Fourth note is created by direction opposite to third note movement
+			if ((acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) * aleap[cpv][fli2[ls + 1]] > 0) continue;
+			// Non-harmonic note is not longer than harmonic
+			if (llen[ls + 1] > llen[ls + 2]) continue;
+			// Both leaps from notes 3 and 4
+			if (aleap[cpv][fli2[ls + 2]] && aleap[cpv][fli2[ls + 3]]) continue;
+			// Notes 2 and 3 should not be longer than halfnote
+			if (llen[ls + 1] > npm / 2 || llen[ls + 2] > npm / 2) continue;
+			// Mixed rhythm
+			if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
+				llen[ls] != llen[ls + 2] || 
+				(llen[ls] != llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4))) {
+				if (!accept[257]) continue;
+			}
+			// Cross-bar
+			if (bmli[s] != bmli[fli2[ls + 3]]) {
+				if (!accept[259]) continue;
+			}
+			// Third diss
+			if (tivl[fli[ls + 2]] == iDis) {
+				if (!accept[261]) continue;
+				// If third note is dissonance, it should not be downbeat
+				if (!beat[ls + 2]) continue;
+				// If third note is dissonance, it should resolve back stepwize
+				if (aleap[cpv][fli2[ls + 1]] * asmooth[cpv][fli2[ls + 2]] >= 0) continue;
+				// Non-harmonic note is not longer than harmonic
+				if (llen[ls + 2] > llen[ls]) continue;
+				if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
+				// Fourth note should not be dissonance
+				if (tivl[fli[ls + 3]] == iDis) continue;
+			}
+			// Leap from note 3
+			if (aleap[cpv][fli2[ls + 2]]) {
+				if (!accept[264]) continue;
+				// Leap too long
+				if (abs(acc[cpv][fli2[ls + 3]] - acc[cpv][fli2[ls + 2]]) > cambiata_max_leap3) continue;
+			}
 		}
 		if (ls < fli_size - 4) {
 			// Leap from note 4
@@ -823,8 +855,8 @@ void CGenCP1::DetectCambiata() {
 void CGenCP1::SavePattern(int pattern) {
 	if (pat[ls]) {
 		CString est;
-		est.Format("Pattern vector %d (%d) overwrite detected at %d:%d",
-			ls, pat[ls], cantus_id + 1, s + 1);
+		est.Format("Pattern vector %d (%d -> %d) overwrite detected at %d:%d (ep2=%d)",
+			ls, pat[ls], pattern, cantus_id + 1, s + 1, ep2);
 		WriteLog(1, est);
 	}
 	pat[ls] = pattern;
@@ -863,38 +895,44 @@ void CGenCP1::GetBasicRpos() {
 }
 
 void CGenCP1::SetRpos(int ls, vector<int> &l_rpos, int val) {
-	if (l_rpos[ls] * val < 0) {
+	// Check if in range
+	if (ls >= fli_size) return;
+	// Detect changing sign for dissonance
+	if (l_rpos[ls] * val < 0 && !tivl[fli[ls]]) {
 		CString est;
-		est.Format("Detected rpos overwrite at note %d with value %d (old value %d): %s", 
-			ls, val, l_rpos[ls], vint2st(ep2, acc[cpv]));
+		est.Format("Detected rpos overwrite at note %d:%d (%s) with value %d (old value %d): %s", 
+			cantus_id + 1, ls + 1, tivl[fli[ls]]?"non-Dis":"Dis", 
+			val, l_rpos[ls], vint2st(ep2, acc[cpv]));
 		WriteLog(5, est);
 	}
 	l_rpos[ls] = val;
 }
 
 void CGenCP1::ApplyPDD(int ls, vector<int> &l_rpos, int state) {
-	SetRpos(ls + 1, l_rpos, -101);
-	SetRpos(ls + 2, l_rpos, 101);
+	SetRpos(ls + 1, l_rpos, -11);
+	SetRpos(ls + 2, l_rpos, 12);
 	pat_state[ls] = state;
 }
 
 void CGenCP1::ApplyDNT(int ls, vector<int> &l_rpos, int state) {
-	SetRpos(ls,     l_rpos, 102);
-	SetRpos(ls + 1, l_rpos, -102);
-	SetRpos(ls + 2, l_rpos, -103);
-	SetRpos(ls + 3, l_rpos, 103);
+	SetRpos(ls,     l_rpos, 21);
+	SetRpos(ls + 1, l_rpos, -22);
+	SetRpos(ls + 2, l_rpos, -23);
+	SetRpos(ls + 3, l_rpos, 24);
 	pat_state[ls] = state;
 }
 
 void CGenCP1::ApplyCam(int ls, vector<int> &l_rpos, int state) {
-	SetRpos(ls + 1, l_rpos, -104);
+	SetRpos(ls, l_rpos, 31);
+	SetRpos(ls + 1, l_rpos, -32);
 	pat_state[ls] = state;
 }
 
 // Cambiata with third note non-harmonic allowed
 void CGenCP1::ApplyCam2(int ls, vector<int> &l_rpos, int state) {
-	SetRpos(ls + 1, l_rpos, -105);
-	SetRpos(ls + 2, l_rpos, -106);
+	SetRpos(ls, l_rpos, 41);
+	SetRpos(ls + 1, l_rpos, -42);
+	SetRpos(ls + 2, l_rpos, -43);
 	pat_state[ls] = state;
 	// Do not need to set note 1, because it can be dissonant
 	// Do not need to set note 4, because it can be dissonant if note 3 is consonant
@@ -905,6 +943,10 @@ void CGenCP1::ApplyFixedPat() {
 	CHECK_READY(DR_rposb, DR_ivl);
 	CHECK_READY(DR_fli);
 	SET_READY(DR_rpos, DR_rposf);
+	if (species != 3 && species != 5) {
+		for (int ls = 0; ls < fli_size; ++ls) rpos[ls] = rposb[ls];
+		return;
+	}
 	// Clear rposf
 	fill(rposf.begin(), rposf.end(), 0);
 	// Walk through patterns
@@ -914,7 +956,9 @@ void CGenCP1::ApplyFixedPat() {
 			if (tivl[fli[ls + 1]] == iDis) ApplyPDD(ls, rposf, 1);
 		}
 		else if (pat[ls] == pDNT) {
-			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 2]] == iDis) ApplyDNT(ls, rposf, 1);
+			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 2]] == iDis) {
+				ApplyDNT(ls, rposf, 1);
+			}
 		}
 		else if (pat[ls] == pCam) {
 			if (tivl[fli[ls + 2]] == iDis) ApplyCam2(ls, rposf, 1);

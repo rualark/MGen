@@ -35,4 +35,3 @@ midifile_in_mul = 2 # Multiply note length with this value when loading
 t_cnt = 1000000 # Maximum number of steps generated
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
-show_correct_hatch = 1 # Set to 1 to mark corrected notes with hatch
