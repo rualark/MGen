@@ -291,10 +291,13 @@ int CGenCP1::SendCP() {
 			if (av == cpv) {
 				cpos[x] = pos;
 				if (species == 3 || species == 5) {
-					if (x == fli[bli[x]] && pat[bli[x]] == pCam) mark[pos][v] = "C\nA";
-					if (x == fli[bli[x]] && pat[bli[x]] == pPDD) mark[pos][v] = "P\nD";
-					if (x == fli[bli[x]] && pat[bli[x]] == pDNT) mark[pos][v] = "D\nN";
-					if (x == fli[bli[x]] && pat_state[bli[x]] == 1) mark_color[pos][v] = MakeColor(255, 255, 120, 120);
+					if (x == fli[bli[x]]) {
+						if (pat[bli[x]] == pCam) mark[pos][v] = "C\nA";
+						else if (pat[bli[x]] == pPDD) mark[pos][v] = "P\nD";
+						else if (pat[bli[x]] == pDNT) mark[pos][v] = "D\nN";
+						else if (!pat[bli[x]]) mark[pos][v] = "";
+						if (pat_state[bli[x]] == 1) mark_color[pos][v] = MakeColor(255, 255, 120, 120);
+					}
 				}
 			}
 			SendLyrics(pos, v, av, x);
@@ -933,6 +936,7 @@ void CGenCP1::ApplyCam2(int ls, vector<int> &l_rpos, int state) {
 	SetRpos(ls, l_rpos, 41);
 	SetRpos(ls + 1, l_rpos, -42);
 	SetRpos(ls + 2, l_rpos, -43);
+	SetRpos(ls + 3, l_rpos, 44);
 	pat_state[ls] = state;
 	// Do not need to set note 1, because it can be dissonant
 	// Do not need to set note 4, because it can be dissonant if note 3 is consonant
