@@ -41,6 +41,7 @@ protected:
 	inline int FailCrossInt();
 	inline void GetVIntervals();
 	inline int FailVMotion();
+	inline int FailSusResolution(int s3);
 	inline int FailSus();
 	inline int FailDisSus();
 	inline int FailUnison();

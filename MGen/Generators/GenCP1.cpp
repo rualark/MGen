@@ -494,6 +494,32 @@ int CGenCP1::FailVMotion() {
 	return 0;
 }
 
+int CGenCP1::FailSusResolution(int s3) {
+	// Check if suspension second part is discord
+	if (tivl[s2] != iDis) {}
+	// Resolution to discord
+	else if (tivl[s3] == iDis) FLAG2(220, s)
+		// Resolution by leap
+	else if (aleap[cpv][s2]) FLAG2(221, s)
+	else {
+		// Resolution up
+		if (acc[cpv][s3] > acc[cpv][s2]) {
+			// Allowed only for resolution of leading tone
+			if (apcc[cpv][s2] == 11) FLAG2(222, s)
+			else FLAG2(219, s2);
+		}
+		// 9th to 8va
+		if (ivlc[s2] == 1 && ivlc[s3] == 0) {
+			if (ivl[s2] > 7) FLAG2(216, s2)
+				// 2nd to unison
+			else FLAG2(218, s2);
+		}
+		// 7th to 8va
+		else if (ivlc[s2] == 6 && ivlc[s3] == 0) FLAG2(217, s)
+	}
+	return 0;
+}
+
 int CGenCP1::FailSus() {
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
 	CHECK_READY(DR_leap);
@@ -510,32 +536,11 @@ int CGenCP1::FailSus() {
 		if (s2 == ep2 - 1) pre_end = 0;
 		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) pre_end = 0;
 		if (pre_end) {
-			// Check if suspension second part is discord
-			if (tivl[s2] != iDis) {}
-			// Resolution to discord
-			else if (tivl[s2+1] == iDis) FLAG2(220, s)
-			// Resolution by leap
-			else if (aleap[cpv][s2]) FLAG2(221, s)
-			else {
-				// Resolution up
-				if (acc[cpv][s2 + 1] > acc[cpv][s2]) {
-					// Allowed only for resolution of leading tone
-					if (apcc[cpv][s2] == 11) FLAG2(222, s)
-					else FLAG2(219, s2);
-				}
-				// 9th to 8va
-				if (ivlc[s2] == 1 && ivlc[s2 + 1] == 0) {
-					if (ivl[s2] > 7) FLAG2(216, s2)
-					// 2nd to unison
-					else FLAG2(218, s2);
-				}
-				// 7th to 8va
-				else if (ivlc[s2] == 6 && ivlc[s2 + 1] == 0) FLAG2(217, s)
-			}
+			if (FailSusResolution(s2 + 1)) return 1;
 		}
 		else {
 			last_note = -1;
-			// Check all 
+			// Check all cantus note changes
 			for (s = sus[ls]; s <= s2; ++s) {
 				if (last_note != acc[cfv][s]) {
 					last_note = acc[cfv][s];
