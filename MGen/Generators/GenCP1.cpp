@@ -535,9 +535,10 @@ int CGenCP1::FailSus() {
 		}
 		else {
 			last_note = -1;
+			// Check all 
 			for (s = sus[ls]; s <= s2; ++s) {
-				if (last_note != acc[cpv][s]) {
-					last_note = acc[cpv][s];
+				if (last_note != acc[cfv][s]) {
+					last_note = acc[cfv][s];
 					if (FailUnison()) return 1;
 					if (FailDisSus()) return 1;
 					if (FailPcoSus()) return 1;
