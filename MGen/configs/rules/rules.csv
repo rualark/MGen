@@ -203,11 +203,11 @@ Set;Severity;Class;Group;Rule;Flag
 1;136;0;Cantus;Counterpoint;Suspension insertion;leap down cons.;1;;;;;;;;;
 1;137;0;Cantus;Counterpoint;Suspension insertion;1/4 aux;1;;;;;;;;;
 1;138;0;Cantus;Counterpoint;Suspension insertion;1/8 aux;1;;;;;;;;;
-1;83;100;Cantus;Counterpoint;Dissonance;downbeat;0;;;;;;;;;
+1;83;100;Cantus;Counterpoint;Dissonance;downbeat;0;;;;;;;169;;
 1;223;100;Cantus;Counterpoint;Dissonance;long;0;;Dissonance is longer than neighbouring consonance;;;;;;;
 1;224;100;Cantus;Counterpoint;Dissonance;starts sus;0;;Dissonance starts suspension;;;;;;;
-1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;;;;;;;1;
-1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;;;;;276;1;
+1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;;;;;;;;
+1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;;;;;276,169;;
 1;276;60;Cantus;Counterpoint;Dissonance upbeat;m2;0;;Minor second;;;;;;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;0;More than X same imperfect consonances in a row;;;;;;;;
 1;96;60;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;;;;;;;
