@@ -247,6 +247,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;280;60;Cantus;Nonchord tones;Double-neighbour tone;mixed rhythm;1;;;;;;;;;
 1;281;60;Cantus;Nonchord tones;Double-neighbour tone;cross-bar;1;;;;;;;;;
 1;260;60;Cantus;Nonchord tones;Double-neighbour tone;leap <=4th;1;;;;;;;;;
+1;139;0;Cantus;Nonchord tones;Patterrns;conflict;1;;;;;;;;;
 1;282;0;Cantus;Nonchord tones;Passing downbeat dissonance;descending;1;;Prohibit this rule to prevent detection of any appoggiatura;;;;;;;
 1;262;0;Cantus;Nonchord tones;Appoggiatura;any;1;;Prohibit this rule to prevent detection of any appoggiatura;;;;;;;
 1;283;60;Cantus;Nonchord tones;Appoggiatura;stepwize;1;;Appoggiatura is prepared with stepwize motion ;;;;;;;
