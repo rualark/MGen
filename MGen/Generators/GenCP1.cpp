@@ -647,7 +647,11 @@ int CGenCP1::FailDis() {
 	// Discord
 	if (tivl[s] == iDis) {
 		// Leap
-		if (rpos[ls] == pLeap) FLAG2(187, s)
+		if (rpos[ls] == pLeap) {
+			// Do not flag leap to discord if suspension, because suspension will flag it
+			// Do not flag leap to discord if last note, because it can become suspension
+			if (!sus[ls] && ls < fli_size - 1) FLAG2(187, s)
+		}
 		// Other harmonic
 		else if (rpos[ls] > 0) FLAG2(83, s)
 		else {
@@ -1318,7 +1322,7 @@ int CGenCP1::FailPcoApart() {
 
 int CGenCP1::FailVIntervals() {
 	CHECK_READY(DR_fli, DR_ivl, DR_rpos);
-	CHECK_READY(DR_motion, DR_culm_ls);
+	CHECK_READY(DR_motion, DR_culm_ls, DR_sus);
 	// Number of sequential parallel imperfect consonances
 	int pico_count = 0;
 	// Check first step
