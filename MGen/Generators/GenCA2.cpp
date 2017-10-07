@@ -287,9 +287,11 @@ void CGenCA2::DetectSpecies() {
 	species_detected = 0;
 	// Do not detect if cantus has uneven note length
 	if (max_vlen[cfv] != min_vlen[cfv]) return;
-	if (sus_count > cpoint[cantus_id][cpv].size() / 4 && (min_vlen[cpv] == min_vlen[cfv] || min_vlen[cpv]*2 == min_vlen[cfv])) species_detected = 4;
 	else if (min_vlen[cpv] == min_vlen[cfv]) species_detected = 1;
-	else if (min_vlen[cpv] * 2 == min_vlen[cfv]) species_detected = 2;
+	else if (min_vlen[cpv] * 2 == min_vlen[cfv]) {
+		if (sus_count > cpoint[cantus_id][cpv].size() / 4 && (min_vlen[cpv] == min_vlen[cfv] || min_vlen[cpv] * 2 == min_vlen[cfv])) species_detected = 4;
+		else species_detected = 2;
+	}
 	else if (min_vlen[cpv] * 4 == min_vlen[cfv]) species_detected = 3;
 	else if (min_vlen[cpv] * 8 == min_vlen[cfv]) species_detected = 5;
 	// Write log
