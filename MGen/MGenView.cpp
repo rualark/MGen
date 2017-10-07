@@ -408,8 +408,8 @@ void CMGenView::OnDraw(CDC* pDC)
 								ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 							}
 							// Show lining
-							if (mf->show_lining && note_lining) {
-								hatch = static_cast<HatchStyle>(note_lining);
+							if (mf->show_lining && pGen->lining[x][v]) {
+								hatch = static_cast<HatchStyle>(pGen->lining[x][v]);
 								ncolor2 = Color::Black;
 							}
 							else {
