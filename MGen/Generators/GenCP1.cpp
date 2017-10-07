@@ -244,10 +244,10 @@ void CGenCP1::ScanCPInit() {
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
-	if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
-	else lining[pos + i][v] = 0;
-	//if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
+	//if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
 	//else lining[pos + i][v] = 0;
+	if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
+	else lining[pos + i][v] = 0;
 }
 
 int CGenCP1::SendCP() {
@@ -500,7 +500,7 @@ int CGenCP1::FailSusResolution(int s3) {
 	// Resolution to discord
 	else if (tivl[s3] == iDis) FLAG2(220, s)
 		// Resolution by leap
-	else if (aleap[cpv][s2]) FLAG2(221, s)
+	else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2(221, s)
 	else {
 		// Resolution up
 		if (acc[cpv][s3] > acc[cpv][s2]) {
@@ -520,67 +520,103 @@ int CGenCP1::FailSusResolution(int s3) {
 	return 0;
 }
 
-int CGenCP1::FailSus() {
+int CGenCP1::FailSus1() {
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
-	CHECK_READY(DR_leap);
-	int pre_end, ls3, s3;
-	/*
+	CHECK_READY(DR_leap, DR_beat);
+	int last_cf;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
-		// Run sus checks
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Flag suspension
 		FLAG2(225, s);
 		// Check if sus starts from discord
 		if (tivl[s] == iDis) FLAG2(224, s);
-		// If sus is not last note
-		if (ls < fli_size - 1) {
-			// If mid-bar already generated
-			s3 = sus[ls] + npm / 2;
-			if (s3 < ep2) {
-				// If this step does not start new note
-				if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
-				if (FailSusResolution(s3)) return 1;
-				ls3 = bli[s3];
-				// If there is one intermediate step
-				if (ls3 - ls > 1) {
-					if (ls3 - ls > 2) {
-						if (ls3 - ls > 3) {
-							FLAG2(287, s3);
-						}
-					}
-				}
-				// If there are two intermediate step
+		last_cf = -1;
+		// Check all cantus note changes
+		for (s = sus[ls]; s <= s2; ++s) {
+			if (last_cf != acc[cfv][s]) {
+				last_cf = acc[cfv][s];
+				if (FailUnison()) return 1;
+				if (FailDisSus()) return 1;
+				if (FailPcoSus()) return 1;
 			}
 		}
 	}
-	*/
-	for (ls = 0; ls < fli_size; ++ls) if (sus[ls] && (ls < fli_size-1 || ep2 == c_len)) {
+	return 0;
+}
+
+int CGenCP1::FailSus2() {
+	CHECK_READY(DR_fli, DR_ivl, DR_sus);
+	CHECK_READY(DR_leap);
+	int ls3, s3;
+	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
+		// Run sus checks
 		s = fli[ls];
 		s2 = fli2[ls];
-		// Flag suspension
-		FLAG2(225, s); 
 		// Check if sus starts from discord
-		if (tivl[s] == iDis) FLAG2(224, s);
-		// Check if sus ends before cantus
-		pre_end = 1;
-		if (s2 == ep2 - 1) pre_end = 0;
-		else if (acc[cfv][sus[ls]] != acc[cfv][s2 + 1]) pre_end = 0;
-		if (pre_end) {
-			if (FailSusResolution(s2 + 1)) return 1;
-		}
-		else {
-			last_note = -1;
-			// Check all cantus note changes
-			for (s = sus[ls]; s <= s2; ++s) {
-				if (last_note != acc[cfv][s]) {
-					last_note = acc[cfv][s];
-					if (FailUnison()) return 1;
-					if (FailDisSus()) return 1;
-					if (FailPcoSus()) return 1;
+		if (tivl[s] == iDis) {
+			// Check if start and end of slur is a discord - then it is interbar discord
+			if (tivl[s2] == iDis) {
+				FLAG2(224, s);
+				continue;
+			}
+			// Flag anticipation
+			FLAG2(287, s);
+			// Anticipation approached by leap
+			if (s > 0 && aleap[cpv][s - 1]) FLAG2(289, s);
+			// If anticipation is not last generated note
+			if (ls < fli_size - 1) {
+				// Anticipation is not last note
+				FLAG2(290, s);
+				// Anticipation should be shorter then surrounding notes
+				if (llen[ls] == (sus[ls] - s) * 2) FLAG2(293, s)
+				else if (llen[ls] < (sus[ls] - s) * 2) FLAG2(288, s);
+				if (ls > 0) {
+					if (sus[ls] - s == llen[ls - 1]) FLAG2(293, s)
+					else if (sus[ls] - s > llen[ls - 1]) FLAG2(288, s);
 				}
 			}
 		}
+		else {
+			// Flag suspension
+			FLAG2(225, s);
+			// If sus is not last note
+			if (ls < fli_size - 1) {
+				// If mid-bar already generated
+				s3 = sus[ls] + npm / 2;
+				if (s3 < ep2) {
+					// If this step does not start new note
+					if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
+					if (FailSusResolution(s3)) return 1;
+					ls3 = bli[s3];
+					if (ls3 - ls > 1) {
+						// If there is one intermediate step
+						if (ls3 - ls > 2) {
+							// If there are two intermediate steps
+							if (ls3 - ls > 3) {
+								// If there are more than two intermediate steps
+								FLAG2(292, s3);
+							}
+						}
+					}
+					// If there are two intermediate step
+				}
+			}
+			else if (ep2 == c_len) {
+				// If sus is absolute last note, flag unresolved
+				FLAG2(220, s3);
+			}
+		}
+	}
+	return 0;
+}
+
+int CGenCP1::FailSus() {
+	if (species == 1) {
+		if (FailSus1()) return 1;
+	}
+	else {
+		if (FailSus2()) return 1;
 	}
 	return 0;
 }
