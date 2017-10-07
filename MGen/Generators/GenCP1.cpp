@@ -523,7 +523,38 @@ int CGenCP1::FailSusResolution(int s3) {
 int CGenCP1::FailSus() {
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
 	CHECK_READY(DR_leap);
-	int pre_end;
+	int pre_end, ls3, s3;
+	/*
+	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
+		// Run sus checks
+		s = fli[ls];
+		s2 = fli2[ls];
+		// Flag suspension
+		FLAG2(225, s);
+		// Check if sus starts from discord
+		if (tivl[s] == iDis) FLAG2(224, s);
+		// If sus is not last note
+		if (ls < fli_size - 1) {
+			// If mid-bar already generated
+			s3 = sus[ls] + npm / 2;
+			if (s3 < ep2) {
+				// If this step does not start new note
+				if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
+				if (FailSusResolution(s3)) return 1;
+				ls3 = bli[s3];
+				// If there is one intermediate step
+				if (ls3 - ls > 1) {
+					if (ls3 - ls > 2) {
+						if (ls3 - ls > 3) {
+							FLAG2(287, s3);
+						}
+					}
+				}
+				// If there are two intermediate step
+			}
+		}
+	}
+	*/
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls] && (ls < fli_size-1 || ep2 == c_len)) {
 		s = fli[ls];
 		s2 = fli2[ls];
@@ -746,25 +777,25 @@ void CGenCP1::DetectDNT() {
 				if (!accept[260]) continue;
 				if (lp > dnt_max_leap) continue;
 			}
-		}
-		if (ls < fli_size - 3) {
-			// Note 3 is longer than 4
-			if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
-			// Note 4 is not dissonance
-			if (tivl[fli[ls + 3]] == iDis) continue;
-			// Movements are stepwize
-			if (!asmooth[cpv][fli2[ls + 2]]) continue;
-			// Both movements have same direction
-			if (asmooth[cpv][s2] != asmooth[cpv][fli2[ls + 2]]) continue;
-			// Mixed rhythm
-			if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
-				llen[ls] != llen[ls + 2] || 
+			if (ls < fli_size - 3) {
+				// Note 3 is longer than 4
+				if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
+				// Note 4 is not dissonance
+				if (tivl[fli[ls + 3]] == iDis) continue;
+				// Movements are stepwize
+				if (!asmooth[cpv][fli2[ls + 2]]) continue;
+				// Both movements have same direction
+				if (asmooth[cpv][s2] != asmooth[cpv][fli2[ls + 2]]) continue;
+				// Mixed rhythm
+				if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
+					llen[ls] != llen[ls + 2] ||
 					(llen[ls] != llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4))) {
-				if (!accept[280]) continue;
-			}
-			// Cross-bar
-			if (bmli[s] != bmli[fli2[ls + 3]]) {
-				if (!accept[281]) continue;
+					if (!accept[280]) continue;
+				}
+				// Cross-bar
+				if (bmli[s] != bmli[fli2[ls + 3]]) {
+					if (!accept[281]) continue;
+				}
 			}
 		}
 		SavePattern(pDNT);
@@ -799,57 +830,57 @@ void CGenCP1::DetectCambiata() {
 			if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
 				if (!accept[263]) continue;
 			}
-		}
-		if (ls < fli_size - 3) {
-			// Fourth note is created by direction opposite to third note movement
-			if ((acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) * aleap[cpv][fli2[ls + 1]] > 0) continue;
-			// Non-harmonic note is not longer than harmonic
-			if (llen[ls + 1] > llen[ls + 2]) continue;
-			// Both leaps from notes 3 and 4
-			if (aleap[cpv][fli2[ls + 2]] && aleap[cpv][fli2[ls + 3]]) continue;
-			// Notes 2 and 3 should not be longer than halfnote
-			if (llen[ls + 1] > npm / 2 || llen[ls + 2] > npm / 2) continue;
-			// Mixed rhythm
-			if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
-				llen[ls] != llen[ls + 2] || 
-				(llen[ls] != llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4))) {
-				if (!accept[257]) continue;
-			}
-			// Cross-bar
-			if (bmli[s] != bmli[fli2[ls + 3]]) {
-				if (!accept[259]) continue;
-			}
-			// Third diss
-			if (tivl[fli[ls + 2]] == iDis) {
-				if (!accept[261]) continue;
-				// If third note is dissonance, it should not be downbeat
-				if (!beat[ls + 2]) continue;
-				// If third note is dissonance, it should resolve back stepwize
-				if (aleap[cpv][fli2[ls + 1]] * asmooth[cpv][fli2[ls + 2]] >= 0) continue;
+			if (ls < fli_size - 3) {
+				// Fourth note is created by direction opposite to third note movement
+				if ((acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) * aleap[cpv][fli2[ls + 1]] > 0) continue;
 				// Non-harmonic note is not longer than harmonic
-				if (llen[ls + 2] > llen[ls]) continue;
-				if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
-				// Fourth note should not be dissonance
-				if (tivl[fli[ls + 3]] == iDis) continue;
-			}
-			// Leap from note 3
-			if (aleap[cpv][fli2[ls + 2]]) {
-				if (!accept[264]) continue;
-				// Leap too long
-				if (abs(acc[cpv][fli2[ls + 3]] - acc[cpv][fli2[ls + 2]]) > cambiata_max_leap3) continue;
-			}
-		}
-		if (ls < fli_size - 4) {
-			// Leap from note 4
-			if (aleap[cpv][fli2[ls + 3]]) {
-				if (!accept[265]) continue;
-				// Leap too long
-				if (abs(acc[cpv][fli2[ls + 4]] - acc[cpv][fli2[ls + 3]]) > cambiata_max_leap4) continue;
-			}
-			// Fourth note moves back
-			if (ls < fli_size - 4 && (acc[cpv][fli[ls + 4]] - acc[cpv][fli[ls + 3]]) *
-				(acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) < 0) {
-				if (!accept[266]) continue;
+				if (llen[ls + 1] > llen[ls + 2]) continue;
+				// Both leaps from notes 3 and 4
+				if (aleap[cpv][fli2[ls + 2]] && aleap[cpv][fli2[ls + 3]]) continue;
+				// Notes 2 and 3 should not be longer than halfnote
+				if (llen[ls + 1] > npm / 2 || llen[ls + 2] > npm / 2) continue;
+				// Mixed rhythm
+				if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
+					llen[ls] != llen[ls + 2] ||
+					(llen[ls] != llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4))) {
+					if (!accept[257]) continue;
+				}
+				// Cross-bar
+				if (bmli[s] != bmli[fli2[ls + 3]]) {
+					if (!accept[259]) continue;
+				}
+				// Third diss
+				if (tivl[fli[ls + 2]] == iDis) {
+					if (!accept[261]) continue;
+					// If third note is dissonance, it should not be downbeat
+					if (!beat[ls + 2]) continue;
+					// If third note is dissonance, it should resolve back stepwize
+					if (aleap[cpv][fli2[ls + 1]] * asmooth[cpv][fli2[ls + 2]] >= 0) continue;
+					// Non-harmonic note is not longer than harmonic
+					if (llen[ls + 2] > llen[ls]) continue;
+					if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
+					// Fourth note should not be dissonance
+					if (tivl[fli[ls + 3]] == iDis) continue;
+				}
+				// Leap from note 3
+				if (aleap[cpv][fli2[ls + 2]]) {
+					if (!accept[264]) continue;
+					// Leap too long
+					if (abs(acc[cpv][fli2[ls + 3]] - acc[cpv][fli2[ls + 2]]) > cambiata_max_leap3) continue;
+				}
+				if (ls < fli_size - 4) {
+					// Leap from note 4
+					if (aleap[cpv][fli2[ls + 3]]) {
+						if (!accept[265]) continue;
+						// Leap too long
+						if (abs(acc[cpv][fli2[ls + 4]] - acc[cpv][fli2[ls + 3]]) > cambiata_max_leap4) continue;
+					}
+					// Fourth note moves back
+					if (ls < fli_size - 4 && (acc[cpv][fli[ls + 4]] - acc[cpv][fli[ls + 3]]) *
+						(acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) < 0) {
+						if (!accept[266]) continue;
+					}
+				}
 			}
 		}
 		SavePattern(pCam);
