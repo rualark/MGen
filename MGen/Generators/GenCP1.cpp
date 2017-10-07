@@ -624,7 +624,7 @@ int CGenCP1::FailSus() {
 int CGenCP1::FailDisSus() {
 	// Discord
 	if (tivl[s] == iDis) {
-		FLAG2(83, fli[ls]);
+		FLAG2(83, s);
 	}
 	return 0;
 }
@@ -633,12 +633,12 @@ int CGenCP1::FailUnison() {
 	// Unison
 	if (!civl[s]) {
 		// 2nd -> unison
-		if (ls > 0 && ivl[fli[ls - 1]] == 1) FLAG2(275, fli[ls]);
+		if (ls > 0 && ivl[fli[ls - 1]] == 1) FLAG2(275, s);
 		// Unison near m2
-		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1) FLAG2(277, fli[ls])
-		else if (ls > 0 && civl[fli[ls - 1]] == 1) FLAG2(275, fli[ls]);
+		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1) FLAG2(277, s)
+		else if (ls > 0 && civl[fli[ls - 1]] == 1) FLAG2(275, s);
 		// Inside downbeat
-		if (!beat[ls] && ls > 0 && ls < fli_size - 1) FLAG2(91, fli[ls]);
+		if (!beat[ls] && ls > 0 && ls < fli_size - 1) FLAG2(91, s);
 	}
 	return 0;
 }
@@ -671,10 +671,10 @@ int CGenCP1::FailPcoSus() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
 		// Prohibit combinatory
-		if (civlc[s] == civlc[s-1]) FLAG2(85, fli[ls])
+		if (civlc[s] == civlc[s-1]) FLAG2(85, s)
 			// Prohibit different
 		else if (tivl[s-1] == iPco) 
-			FLAG2(86, fli[ls])
+			FLAG2(86, s)
 	}
 	return 0;
 }
