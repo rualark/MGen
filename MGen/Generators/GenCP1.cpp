@@ -498,24 +498,24 @@ int CGenCP1::FailSusResolution(int s3) {
 	// Check if suspension second part is discord
 	if (tivl[s2] != iDis) {}
 	// Resolution to discord
-	else if (tivl[s3] == iDis) FLAG2(220, s)
+	else if (tivl[s3] == iDis) FLAG2(220, s3)
 		// Resolution by leap
-	else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2(221, s)
+	else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2(221, s3)
 	else {
 		// Resolution up
 		if (acc[cpv][s3] > acc[cpv][s2]) {
 			// Allowed only for resolution of leading tone
-			if (apcc[cpv][s2] == 11) FLAG2(222, s)
-			else FLAG2(219, s2);
+			if (apcc[cpv][s2] == 11) FLAG2(222, s3)
+			else FLAG2(219, s3);
 		}
 		// 9th to 8va
 		if (ivlc[s2] == 1 && ivlc[s3] == 0) {
-			if (ivl[s2] > 7) FLAG2(216, s2)
+			if (ivl[s2] > 7) FLAG2(216, s3)
 				// 2nd to unison
-			else FLAG2(218, s2);
+			else FLAG2(218, s3);
 		}
 		// 7th to 8va
-		else if (ivlc[s2] == 6 && ivlc[s3] == 0) FLAG2(217, s)
+		else if (ivlc[s2] == 6 && ivlc[s3] == 0) FLAG2(217, s3)
 	}
 	return 0;
 }
@@ -624,7 +624,7 @@ int CGenCP1::FailSus() {
 int CGenCP1::FailDisSus() {
 	// Discord
 	if (tivl[s] == iDis) {
-		FLAG2(83, s);
+		FLAG2(83, fli[ls]);
 	}
 	return 0;
 }
@@ -633,10 +633,10 @@ int CGenCP1::FailUnison() {
 	// Unison
 	if (!civl[s]) {
 		// 2nd -> unison
-		if (ls > 0 && ivl[fli[ls - 1]] == 1) FLAG2(275, s);
+		if (ls > 0 && ivl[fli[ls - 1]] == 1) FLAG2(275, fli[ls]);
 		// Unison near m2
-		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1) FLAG2(277, s)
-		else if (ls > 0 && civl[fli[ls - 1]] == 1) FLAG2(275, s);
+		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1) FLAG2(277, fli[ls])
+		else if (ls > 0 && civl[fli[ls - 1]] == 1) FLAG2(275, fli[ls]);
 		// Inside downbeat
 		if (!beat[ls] && ls > 0 && ls < fli_size - 1) FLAG2(91, fli[ls]);
 	}
@@ -671,10 +671,10 @@ int CGenCP1::FailPcoSus() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
 		// Prohibit combinatory
-		if (civlc[s] == civlc[s-1]) FLAG2(85, s)
+		if (civlc[s] == civlc[s-1]) FLAG2(85, fli[ls])
 			// Prohibit different
 		else if (tivl[s-1] == iPco) 
-			FLAG2(86, s)
+			FLAG2(86, fli[ls])
 	}
 	return 0;
 }
