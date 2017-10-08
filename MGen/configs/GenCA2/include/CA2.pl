@@ -36,6 +36,6 @@ midifile_in_mul = 1 # Multiply note length with this value when loading
 t_cnt = 100000 # Maximum number of steps generated
 midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
-emulate_sas = 0 # 0 = disable emulator, 1 = Enables SAS algorithm emulator
+emulate_sas = 1 # 0 = disable emulator, 1 = Enables SAS algorithm emulator
 cor_ack = 0 # Acknowledge correction results by running both algorithms: SAS and ASWA
 show_correct_hatch = 0 # Set to 1 to mark corrected notes with hatch
