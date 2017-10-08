@@ -646,11 +646,12 @@ int CGenCP1::FailUnison() {
 int CGenCP1::FailDis() {
 	// Discord
 	if (tivl[s] == iDis) {
+		// Do not flag discord if suspension, because anticipation will flag it
+		// Do not flag discord if last note, because it can become suspension
+		if (sus[ls] || ls == fli_size - 1) return 0;
 		// Leap
 		if (rpos[ls] == pLeap) {
-			// Do not flag leap to discord if suspension, because suspension will flag it
-			// Do not flag leap to discord if last note, because it can become suspension
-			if (!sus[ls] && ls < fli_size - 1) FLAG2(187, s)
+			FLAG2(187, s)
 		}
 		// Other harmonic
 		else if (rpos[ls] > 0) FLAG2(83, s)
