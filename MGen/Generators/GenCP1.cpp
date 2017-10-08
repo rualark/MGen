@@ -548,13 +548,23 @@ int CGenCP1::FailSus1() {
 int CGenCP1::FailSus2() {
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
 	CHECK_READY(DR_leap);
-	int ls3, s3;
+	int ls3, s3, antici;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		// Run sus checks
 		s = fli[ls];
 		s2 = fli2[ls];
+		antici = 0;
+		// If sus starts with dissonance, it is anticipation
+		if (tivl[s] == iDis) antici = 1;
+		// If both consonances
+		else if (tivl[s2] != iDis) {
+			// If sus starts with note shorter than 1/2, it is anticipation
+			if (sus[ls] - s < npm / 2) antici = 1;
+			// If sus is longer than whole note
+			else if (llen[ls] > npm) antici = 1;
+		}
 		// Check if sus starts from discord
-		if (tivl[s] == iDis) {
+		if (antici) {
 			// Check if start and end of slur is a discord - then it is interbar discord
 			if (tivl[s2] == iDis) {
 				FLAG2(224, s);
@@ -578,6 +588,8 @@ int CGenCP1::FailSus2() {
 		else {
 			// Flag suspension
 			FLAG2(225, s);
+			// 1/4 syncope (for last 1/4)
+			if (beat[ls] == 5 && llen[ls] > 1) FLAG2(235, s);
 			// If sus is not last note
 			if (ls < fli_size - 1) {
 				// If mid-bar already generated
@@ -1063,9 +1075,9 @@ int CGenCP1::FailRhythm3() {
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		// Note longer than whole
-		if (llen[ls] > 4) FLAG2(274, s);
-		// 1/4 syncope
-		if (beat[ls] == 2 && llen[ls] > 1) FLAG2(235, s);
+		if (llen[ls] > 4 && ls < fli_size - 1) FLAG2(274, s);
+		// 1/4 syncope (not for last 1/4 because it is applied with anticipation or sus)
+		if (beat[ls] == 3 && llen[ls] > 1) FLAG2(235, s);
 		// 1/2 after 1/4
 		if (ls > 0 && beat[ls] == 1 && llen[ls] > 1 && llen[ls - 1] == 1) {
 			if (s / npm >= c_len / npm - 1) FLAG2(238, s)
@@ -1907,19 +1919,20 @@ int CGenCP1::FailLastIntervals() {
 void CGenCP1::GetNoteTypes() {
 	CHECK_READY(DR_fli);
 	SET_READY(DR_beat, DR_sus);
-	int s = 0, sf;
+	int s = 0, sf, sl;
 	int l;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		sf = s + fn;
 		l = llen[ls];
+		sl = sf - (sf / npm) * npm;
 		// Get beat
 		if (sf % npm) {
 			if (npm>2 && sf % (npm / 2)) {
 				if (npm>4 && sf % (npm / 4)) {
-					beat[ls] = 3;
+					beat[ls] = 10 + sl / (npm / 4);
 				}
-				else beat[ls] = 2;
+				else beat[ls] = 2 + sl / (npm / 4);
 			}
 			else beat[ls] = 1;
 		}
