@@ -599,19 +599,25 @@ int CGenCP1::FailSus2() {
 					if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
 					// If resolution note is too short
 					ls3 = bli[s3];
-					if (llen[ls3] < npm / 4) FLAG2(291, s3);
+					if (llen[ls3] < npm / 4 && ls3 < fli_size - 1) FLAG2(291, s3);
 					if (FailSusResolution(s3)) return 1;
-					if (ls3 - ls > 1) {
-						// If there is one intermediate step
-						if (ls3 - ls > 2) {
-							// If there are two intermediate steps
-							if (ls3 - ls > 3) {
-								// If there are more than two intermediate steps
-								FLAG2(292, s3);
-							}
-						}
+					// If there is one intermediate step
+					if (ls3 - ls == 2) {
+						// If leap is too long
+						if (abs(acc[cpv][fli[ls + 1]] - acc[cpv][s2]) > sus_insert_max_leap) FLAG2(295, fli[ls + 1])
+						// If second movement is leap
+						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2(136, fli[ls + 1])
+						else if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(296, fli[ls + 1])
+						else if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2(137, fli[ls + 1])
+						else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2(138, fli[ls + 1])
 					}
-					// If there are two intermediate step
+					// If there are two intermediate steps
+					//else if (ls3 - ls == 3) {
+					//}
+					// If there are more than two intermediate steps
+					else if (ls3 - ls > 3) {
+						FLAG2(292, s3);
+					}
 				}
 			}
 			else if (ep2 == c_len) {

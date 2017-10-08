@@ -615,6 +615,7 @@ protected:
 	VSet<int> clib_vs; // Unique clib set
 
 	// CP1 parameters
+	int sus_insert_max_leap = 9; // Maximum leap in sus resolution insertion
 	int dnt_max_leap = 5; // Maximum leap (chromatic) allowed in double-neighbour tones
 	int cambiata_max_leap3 = 5; // Maximum allowed leap from third note in cambiata
 	int cambiata_max_leap4 = 5; // Maximum allowed leap from fourth note in cambiata

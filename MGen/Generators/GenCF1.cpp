@@ -310,6 +310,7 @@ void CGenCF1::ParseRules() {
 void CGenCF1::SetRuleParams() {
 	CHECK_READY_PERSIST(DR_RuleParam);
 	SET_READY_PERSIST(DR_RuleSetParam);
+	sus_insert_max_leap = Interval2Chromatic(GetRuleParam(rule_set, 295, rsSubComment, 0));
 	dnt_max_leap = Interval2Chromatic(GetRuleParam(rule_set, 260, rsSubName, 0));
 	cambiata_max_leap3 = Interval2Chromatic(GetRuleParam(rule_set, 264, rsSubComment, 1));
 	cambiata_max_leap4 = Interval2Chromatic(GetRuleParam(rule_set, 265, rsSubComment, 1));
