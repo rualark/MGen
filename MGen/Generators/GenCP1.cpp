@@ -569,12 +569,10 @@ int CGenCP1::FailSus2() {
 				// Anticipation is not last note
 				FLAG2(290, s);
 				// Anticipation should be shorter then surrounding notes
-				if (llen[ls] == (sus[ls] - s) * 2) FLAG2(293, s)
-				else if (llen[ls] < (sus[ls] - s) * 2) FLAG2(288, s);
-				if (ls > 0) {
-					if (sus[ls] - s == llen[ls - 1]) FLAG2(293, s)
-					else if (sus[ls] - s > llen[ls - 1]) FLAG2(288, s);
-				}
+				if (llen[ls] == (sus[ls] - s) * 2 || 
+					(ls > 0 && sus[ls] - s == llen[ls - 1])) FLAG2(293, s)
+				else if (llen[ls] < (sus[ls] - s) * 2 || 
+					(ls > 0 && sus[ls] - s > llen[ls - 1])) FLAG2(288, s);
 			}
 		}
 		else {
