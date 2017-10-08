@@ -597,8 +597,10 @@ int CGenCP1::FailSus2() {
 				if (s3 < ep2) {
 					// If this step does not start new note
 					if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
-					if (FailSusResolution(s3)) return 1;
+					// If resolution note is too short
 					ls3 = bli[s3];
+					if (llen[ls3] < npm / 4) FLAG2(291, s3);
+					if (FailSusResolution(s3)) return 1;
 					if (ls3 - ls > 1) {
 						// If there is one intermediate step
 						if (ls3 - ls > 2) {

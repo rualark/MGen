@@ -200,7 +200,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;218;60;Cantus;Counterpoint;Suspension resolution;2nd -> unison;0;;Does not include 9th and above;;;;;;;
 1;220;100;Cantus;Counterpoint;Suspension resolution;unresolved;0;;;;;;;;;
 1;221;100;Cantus;Counterpoint;Suspension resolution;leap;0;;;;;;;;;
-1;291;50;Cantus;Counterpoint;Suspension resolution;short;1;;If resolution note is shorter than 1/4;;;;;;;
+1;291;100;Cantus;Counterpoint;Suspension resolution;short;0;;If resolution note is shorter than 1/4;;;;;;;
 1;136;0;Cantus;Counterpoint;Suspension insertion;leap down cons.;1;;;;;;;;;
 1;137;0;Cantus;Counterpoint;Suspension insertion;1/4 aux;1;;;;;;;;;
 1;138;0;Cantus;Counterpoint;Suspension insertion;1/8 aux;1;;;;;;;;;
