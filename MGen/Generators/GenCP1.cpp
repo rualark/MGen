@@ -668,7 +668,12 @@ int CGenCP1::FailDis() {
 		else {
 			// Stepwize
 			if (civl[s] == 1) FLAG2(276, s)
-			else FLAG2(169, s)
+			else {
+				if (rpos[ls] < -30) FLAG2(256, s)
+				else if (rpos[ls] < -20) FLAG2(258, s)
+				else if (rpos[ls] < -10) FLAG2(282, s)
+				else FLAG2(169, s)
+			}
 		}
 		// Check if discord is longer than neighboring consonance
 		if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s)
