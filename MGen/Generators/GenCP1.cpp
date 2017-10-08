@@ -1484,7 +1484,7 @@ void CGenCP1::SaveCPIfRp() {
 
 // Detect many slurs
 int CGenCP1::FailSlurs() {
-	// For species 5 there are separate rules
+	// For species 5 there are separate rules (FailRhythm5)
 	if (species == 5) return 0;
 	// Number of sequential slurs 
 	int scount = 0;
@@ -1494,7 +1494,9 @@ int CGenCP1::FailSlurs() {
 	int max_i = 0;
 	// Check pause length
 	if (fn*2 > npm) FLAG2(197, 0);
-	for (int i = 0; i < ep2-1; ++i) {
+	// Do not process last measure, because it can be whole note
+	int max_step = min(ep2 - 1, mli[mli.size()-1]);
+	for (int i = 0; i < max_step; ++i) {
 		if (acc[cpv][i] == acc[cpv][i + 1]) {
 			// Check simultaneous slurs
 			//if (acc[cfv][i] == acc[cfv][i + 1]) {
