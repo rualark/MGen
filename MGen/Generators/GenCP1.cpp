@@ -578,11 +578,11 @@ int CGenCP1::FailSus2() {
 			if (ls < fli_size - 1) {
 				// Anticipation is not last note
 				FLAG2(290, s);
-				// Anticipation should be shorter then surrounding notes
-				if (llen[ls] == (sus[ls] - s) * 2 || 
-					(ls > 0 && sus[ls] - s == llen[ls - 1])) FLAG2(293, s)
-				else if (llen[ls] < (sus[ls] - s) * 2 || 
-					(ls > 0 && sus[ls] - s > llen[ls - 1])) FLAG2(288, s);
+				// Anticipation should be shorter then next note
+				if (llen[ls] == (sus[ls] - s) * 2) FLAG2(293, s)
+				else if (llen[ls] < (sus[ls] - s) * 2) FLAG2(288, s);
+				// Anticipation should be shorter then previous note
+				if (ls > 0 && sus[ls] - s > llen[ls - 1]) FLAG2(294, s);
 			}
 		}
 		else {
@@ -1887,7 +1887,7 @@ int CGenCP1::FailLastIntervals() {
 		if (apc[cpv][c_len - 1] != 0) {
 			// Detect upper last G if lower note is C
 			if (apcc[1][c_len - 1] == 7 && apc[0][c_len - 1] == 0) 
-				FLAG2(33, c_len-1)
+				FLAG2(33, fli[fli_size - 1])
 			// Detect upper last E if lower note is C
 			else if ((apcc[1][c_len - 1] == 3 || apcc[1][c_len - 1] == 4) && apc[0][c_len - 1] == 0)
 				FLAG2(87, c_len - 1)

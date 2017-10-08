@@ -252,9 +252,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;260;60;Cantus;Nonchord tones;Double-neighbour tone;leap <=4th;1;;;;;;;;;
 1;139;0;Cantus;Nonchord tones;Patterrns;conflict;1;;;;;;;;;
 1;282;0;Cantus;Nonchord tones;Passing downbeat dissonance;descending;1;;Prohibit this rule to prevent detection of any appoggiatura;;;;;;1;
-1;287;0;Cantus;Nonchord tones;Anticipation;any;1;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with length shorter than surrounding notes;;;;;;;
-1;293;40;Cantus;Nonchord tones;Anticipation;equal length;0;;Anticipation note has same length as surrounding notes;;;;;;;
-1;288;40;Cantus;Nonchord tones;Anticipation;long;0;;Anticipation note should not be longer than surrounding notes of the same voice;;;;;;;
+1;287;0;Cantus;Nonchord tones;Anticipation;any;1;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with length shorter than surrounding notes;;;;;225;;
+1;294;40;Cantus;Nonchord tones;Anticipation;prev shorter;0;;Anticipation note has same length as next note;;;;;;;
+1;293;40;Cantus;Nonchord tones;Anticipation;next equal;0;;Anticipation note has same length as next note;;;;;;;
+1;288;40;Cantus;Nonchord tones;Anticipation;next shorter;0;;Anticipation note should not be longer than surrounding notes of the same voice;;;;;;;
 1;289;40;Cantus;Nonchord tones;Anticipation;leap;0;;Leap to anticipation note;;;;;;;
 1;290;60;Cantus;Nonchord tones;Anticipation;inside;0;;Anticipation inside counterpoint - not in cadence;;;;;;;
 1;262;0;Cantus;Nonchord tones;Appoggiatura;any;1;;Prohibit this rule to prevent detection of any appoggiatura;;;;;;;
