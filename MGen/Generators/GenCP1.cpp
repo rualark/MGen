@@ -288,6 +288,7 @@ int CGenCP1::SendCP() {
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < ep2; ++x) {
 			mark_color[pos][v] = MakeColor(255, 120, 120, 120);
+			mark[pos][v] = "";
 			if (av == cpv) {
 				cpos[x] = pos;
 				if (species == 3 || species == 5) {
@@ -295,7 +296,6 @@ int CGenCP1::SendCP() {
 						if (pat[bli[x]] == pCam) mark[pos][v] = "C\nA";
 						else if (pat[bli[x]] == pPDD) mark[pos][v] = "P\nD";
 						else if (pat[bli[x]] == pDNT) mark[pos][v] = "D\nN";
-						else if (!pat[bli[x]]) mark[pos][v] = "";
 						if (pat_state[bli[x]] == 1) mark_color[pos][v] = MakeColor(255, 255, 120, 120);
 					}
 				}
