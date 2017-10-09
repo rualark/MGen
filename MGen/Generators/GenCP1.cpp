@@ -624,7 +624,7 @@ int CGenCP1::FailSus2() {
 			}
 			else if (ep2 == c_len) {
 				// If sus is absolute last note, flag unresolved
-				FLAG2(220, s3);
+				FLAG2(220, s);
 			}
 		}
 	}
