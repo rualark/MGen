@@ -1345,7 +1345,7 @@ int CGenCP1::FailPcoApart() {
 					if (!beat[ls]) FLAG2(250, s)
 					else if ((acc[0][s] - acc[0][pco8_last])*
 						(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
-						//else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
+					else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
 					else FLAG2(250, s);
 				}
 			}
