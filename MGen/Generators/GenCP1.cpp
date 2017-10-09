@@ -799,6 +799,14 @@ void CGenCP1::DetectPDD() {
 		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] != -1) continue;
 		// Note 2 is not long
 		if (llen[ls + 1] > npm / 2) continue;
+		// Parallel motion
+		if (ac[cfv][fli[ls + 1]] - ac[cfv][s] == -1) {
+			if (!accept[298]) continue;
+		}
+		// Direct motion
+		else if (ac[cfv][fli[ls + 1]] - ac[cfv][s] < 0) {
+			if (!accept[297]) continue;
+		}
 		if (ls < fli_size - 2) {
 			// Stepwize downward movement
 			if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] != -1) continue;

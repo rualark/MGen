@@ -2,16 +2,16 @@
 # This file is loaded on MGen startup and automatically saved on every setting change
 
 Algorithm = 112 # Id of the currently selected algorithm
-Config = test-2c1 # Name of configuration file for selected algorithm
+Config = test-rpos # Name of configuration file for selected algorithm
 MIDI_OUT = [DISABLE PLAYBACK] # Name of MIDI device used for playing notes
 Horizontal_zoom = 200 # Zoom of the piano roll. Can be from 1 to 500
 playback_speed = 100 # Playback speed in percent
 show_marks = 1 # Set to 1 to show note mark strings
 show_comments = 1 # Set to 1 to surround notes which have comments with rectangles
-show_lining = 0 # Set to 1 to show note lining
+show_lining = 1 # Set to 1 to show note lining
 show_lines = 1 # Set to 1 to show line separators
 show_vel = 1 # Set to 1 to show note velocity using alpha
-show_curve = 0 # Set to 1 to show melody curves (MeloCurve)
+show_curve = 1 # Set to 1 to show melody curves (MeloCurve)
 show_nsr = 1 # Set to 1 to show note scan range
 show_tempo = 0 # Set to 1 to show tempo
 show_notecolors = 1 # Set to 1 to show note colors instead of instrument colors

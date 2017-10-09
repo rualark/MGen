@@ -253,7 +253,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;281;60;Cantus;Nonchord tones;Double-neighbour tone;cross-bar;1;;;;;;;;;
 1;260;60;Cantus;Nonchord tones;Double-neighbour tone;leap <=4th;1;;;;;;;;;
 1;139;0;Cantus;Nonchord tones;Patterrns;conflict;1;;;;;;;;;
-1;282;0;Cantus;Nonchord tones;Passing downbeat dissonance;descending;1;;Prohibit this rule to prevent detection of any appoggiatura;;;;;;1;
+1;282;0;Cantus;Nonchord tones;Passing downbeat dissonance;descending;1;;Prohibit this rule to prevent detection of any descending passing downbeat discord;;;;;;1;
+1;297;40;Cantus;Nonchord tones;Passing downbeat dissonance;direct;0;;Dissonance is formed by direct movement of voices;;;;;;;
+1;298;100;Cantus;Nonchord tones;Passing downbeat dissonance;parallel;0;;Dissonance is formed by parallel movement of voices;;;;;;;
 1;287;0;Cantus;Nonchord tones;Anticipation;any;1;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with length shorter than surrounding notes;;;;;225;;
 1;294;40;Cantus;Nonchord tones;Anticipation;prev shorter;0;;Anticipation note has same length as next note;;;;;;;
 1;293;40;Cantus;Nonchord tones;Anticipation;next equal;0;;Anticipation note has same length as next note;;;;;;;
