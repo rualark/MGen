@@ -284,7 +284,8 @@ protected:
 	void SendNotes(int pos, int i, int v, int av, int x, vector<int>& cc);
 	void MakeBellDyn(int v, int step1, int step2, int dyn1, int dyn2, int dyn_rand);
 	int SendPause(int pos, int v);
-	inline void MakeLenExport(vector<int>& cc, int av);
+	inline void MakeLenExport(vector<int>& cc, int av, int retr_on);
+	void MergeNotes(int step1, int step2, int v);
 	int SendCantus();
 	int InitGen();
 	int InitCantus();
@@ -650,6 +651,7 @@ protected:
 	vector<vector<int>> aleap; // [v][s] Leaps
 	vector<vector<int>> asmooth; // [v][s] Smooth movements
 	vector<vector<int>> aslur; // [v][s] Slurs
+	vector<int> retrigger; // [s] Equals 1 if note should be retriggered
 	int species = 0; // Counterpoint species
 	int species_detected = 0; // Counterpoint species detected in CA2
 	int sus_count = 0; // Number of suspensions detected in ExplodeCP

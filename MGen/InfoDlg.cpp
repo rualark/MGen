@@ -85,7 +85,7 @@ BOOL CInfoDlg::OnInitDialog()
 			for (int x = m1; x <= m2; ++x) {
 				// When pause, reset previous note because notes can be the same left and right from the pause
 				if (pGen->pause[x][mv]) prev_note = -1;
-				if (pGen->note[x][mv] == prev_note || pGen->pause[x][mv]) continue;
+				if (pGen->coff[x][mv] || pGen->pause[x][mv]) continue;
 				++nnum;
 				prev_note = pGen->note[x][mv];
 				if (pGen->comment[x][mv].size()) {

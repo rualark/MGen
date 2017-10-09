@@ -227,6 +227,7 @@ void CGenCP1::ScanCPInit() {
 		asmooth[i].resize(c_len);
 		aslur[i].resize(c_len);
 	}
+	retrigger.resize(c_len);
 	rposb.resize(c_len);
 	rposf.resize(c_len);
 	rpos.resize(c_len);
@@ -271,7 +272,7 @@ int CGenCP1::SendCP() {
 		pos = step;
 		// Sent voice is the same as acc voice
 		v = svoice + av;
-		MakeLenExport(acc[av], av);
+		MakeLenExport(acc[av], av, av == cpv);
 		// Reset cc_len back after extending first cf note
 		cc_len[0] = cc_len[1];
 		plen = cc_len[0] * fn;
@@ -572,6 +573,7 @@ int CGenCP1::FailSus2() {
 			}
 			// Flag anticipation
 			FLAG2(287, s);
+			++retrigger[sus[ls]];
 			// Anticipation approached by leap
 			if (s > 0 && aleap[cpv][s - 1]) FLAG2(289, s);
 			// If anticipation is not last generated note
@@ -630,6 +632,7 @@ int CGenCP1::FailSus2() {
 }
 
 int CGenCP1::FailSus() {
+	fill(retrigger.begin(), retrigger.end(), 0);
 	if (species == 1) {
 		if (FailSus1()) return 1;
 	}

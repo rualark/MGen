@@ -3367,14 +3367,14 @@ int CGenCF1::SendPause(int pos, int v) {
 	return pause_len;
 }
 
-void CGenCF1::MakeLenExport(vector<int> &cc, int av)
+void CGenCF1::MakeLenExport(vector<int> &cc, int av, int retr_on)
 {
 	int len_temp, last_pos;
 	// Create note length
 	last_pos = 0;
 	len_temp = 0;
 	for (s = 0; s < c_len; ++s) {
-		if (cc[s] != cc[last_pos]) {
+		if (cc[s] != cc[last_pos] || (retr_on && retrigger[s])) {
 			for (int s2 = last_pos; s2 < s; ++s2) {
 				len_export[s2] = len_temp;
 			}
@@ -3389,6 +3389,40 @@ void CGenCF1::MakeLenExport(vector<int> &cc, int av)
 	}
 }
 
+// Merge notes of same pitch, that do not have pauses between them. Step2 inclusive
+void CGenCF1::MergeNotes(int step1, int step2, int v) {
+	// Start of current note
+	int first_pos = step1;
+	DWORD col = color[step1][v];
+	for (int x = step1 + 1; x <= step2; ++x) {
+		// Detect steps that have same pitch and there is no retrigger 
+		if (coff[x][v]) { 
+			// select best color: gray is ignored, then most red is selected
+			if (color[x][v] != color_noflag &&
+				(col == color_noflag || GetRed(color[x][v]) > GetRed(col))) {
+				col = color[x][v];
+				// update color of previous steps
+				for (int z = first_pos; z < x; ++z) {
+					color[z][v] = col;
+				}
+			}
+			coff[x][v] = coff[x - 1][v] + 1;
+			if (comment[x][v].size()) {
+				comment[first_pos][v].insert(end(comment[first_pos][v]), begin(comment[x][v]), end(comment[x][v]));
+				ccolor[first_pos][v].insert(end(ccolor[first_pos][v]), begin(ccolor[x][v]), end(ccolor[x][v]));
+			}
+			comment2[first_pos][v] += comment2[x][v];
+			// Copy color forward
+			color[x][v] = col;
+		}
+		// New note
+		else {
+			first_pos = x;
+			col = color[x][v];
+		}
+	}
+}
+
 int CGenCF1::SendCantus() {
 	int step00 = step;
 	// Save culmination position
@@ -3400,7 +3434,7 @@ int CGenCF1::SendCantus() {
 	TransposeCantusBack();
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
-	MakeLenExport(m_cc, 0);
+	MakeLenExport(m_cc, 0, 0);
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
