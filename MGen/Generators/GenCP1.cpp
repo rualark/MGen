@@ -790,7 +790,7 @@ void CGenCP1::DetectPDD() {
 	int max_ls = fli_size - 1;
 	if (ep2 == c_len) max_ls = fli_size - 2;
 	for (ls = 0; ls < max_ls; ++ls) {
-		if (ls < fli_size - 2 && SkipSus(2)) continue;
+		if (ls < fli_size - 2 && SkipSus(1)) continue;
 		s = fli[ls];
 		s2 = fli2[ls];
 		// Second note is downbeat (only beat 1 allowed)
@@ -982,12 +982,15 @@ void CGenCP1::DetectPatterns() {
 	CHECK_READY(DR_beat, DR_ivl);
 	CHECK_READY(DR_fli, DR_leap, DR_c);
 	SET_READY(DR_pat);
-	if (species != 3 && species != 5) return;
+	// Detect no patterns for species 1
+	if (species == 1) return;
 	fill(pat.begin(), pat.end(), 0);
 	fill(pat_state.begin(), pat_state.end(), 0);
+	DetectPDD();
+	// Detect next patterns only for species 3 and 5
+	if (species != 3 && species != 5) return;
 	DetectCambiata();
 	DetectDNT();
-	DetectPDD();
 }
 
 void CGenCP1::GetBasicRpos() {
@@ -1059,7 +1062,7 @@ void CGenCP1::ApplyFixedPat() {
 	CHECK_READY(DR_rposb, DR_ivl);
 	CHECK_READY(DR_fli);
 	SET_READY(DR_rpos, DR_rposf);
-	if (species != 3 && species != 5) {
+	if (species == 1) {
 		for (int ls = 0; ls < fli_size; ++ls) rpos[ls] = rposb[ls];
 		return;
 	}
