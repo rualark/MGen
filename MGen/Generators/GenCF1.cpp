@@ -1317,7 +1317,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 		// Add new leap
 		if (leap[s] != 0) {
 			++leap_sum2;
-			if (c[s1] - c[s] == 2) ++thirds_sum;
+			if (abs(c[s1] - c[s]) == 2) ++thirds_sum;
 		}
 		else {
 			leap_sum2 = 0;
