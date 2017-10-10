@@ -2010,7 +2010,13 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 			if (abs(cc[s] - cc[s_1]) > tonic_leap) tcount += tonic_leap_weight;
 			else ++tcount;
 			// Check count of tonic notes
-			if (tcount > tonic_max) FLAG2(196, s);
+			if (tcount > tonic_max) {
+				// Grant one more tonic in first window if first note not tonic
+				if (ls < tonic_window && !pc[0]) {
+					if (tcount > tonic_max + 1)	FLAG2(196, s);
+				}
+				else FLAG2(196, s);
+			}
 		}
 	}
 	return 0;
