@@ -1609,14 +1609,16 @@ int CGenCP1::FailOverlap() {
 	if (fli_size < 3) return 0;
 	if (cantus_high) {
 		for (int i = fli[1]; i < ep2; ++i) {
-			if (i > 0 && acc[cpv][i] >= acc[cfv][i - 1]) FLAG2(24, i)
-			else if (i < ep2 - 1 && acc[cpv][i] >= acc[cfv][i + 1]) FLAG2(24, i);
+			if (acc[cpv][i] == acc[cpv][i - 1] || acc[cfv][i] == acc[cfv][i - 1]) continue;
+			if (acc[cpv][i] >= acc[cfv][i - 1]) FLAG2(24, i)
+			else if (acc[cfv][i] <= acc[cpv][i - 1]) FLAG2(24, i);
 		}
 	}
 	else {
 		for (int i = fli[1]; i < ep2; ++i) {
-			if (i > 0 && acc[cpv][i] <= acc[cfv][i - 1]) FLAG2(24, i)
-			else if (i < ep2 - 1 && acc[cpv][i] <= acc[cfv][i + 1]) FLAG2(24, i);
+			if (acc[cpv][i] == acc[cpv][i - 1] || acc[cfv][i] == acc[cfv][i - 1]) continue;
+			if (acc[cpv][i] <= acc[cfv][i - 1]) FLAG2(24, i)
+			else if (acc[cfv][i] >= acc[cpv][i - 1]) FLAG2(24, i);
 		}
 	}
 	return 0;
