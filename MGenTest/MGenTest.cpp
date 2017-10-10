@@ -203,7 +203,7 @@ void LoadConfig() {
 #ifdef _DEBUG
 	suffix = "-debug";
 #endif
-	suffix += "-" + CTime::GetCurrentTime().Format("%Y-%M-%D_%H-%M-%S");
+	suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
 	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" + 
 		suffix + ".log >> run.log 2>&1", 1000);
 	Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
