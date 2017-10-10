@@ -421,13 +421,15 @@ void CGenCA1::CorAck() {
 	CString est;
 	if (!cor_ack || cor_ack_dp.size() < 2 || cor_ack_rp.size() < 2 || cor_ack_st.size() < 2) return;
 	if (cor_ack_dp[0] == cor_ack_dp[1] && cor_ack_rp[0] == cor_ack_rp[1]) {
-		est.Format("+ Correction acknowledged in %s: %s %s", midi_file, cor_ack_st[0], cor_ack_st[1]);
+		est.Format("+ Correction acknowledged in %s: %s %s", 
+			midi_file, cor_ack_st[0], cor_ack_st[1]);
 		WriteLog(8, est);
 		if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 		return;
 	}
-	est.Format("- Correction not acknowledged: %s %s", cor_ack_st[0], cor_ack_st[1]);
-	WriteLog(1, est);
+	est.Format("- Correction not acknowledged in %s: %s %s", 
+		midi_file, cor_ack_st[0], cor_ack_st[1]);
+	WriteLog(5, est);
 	if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 }
 
