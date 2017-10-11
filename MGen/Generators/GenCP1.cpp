@@ -294,7 +294,7 @@ int CGenCP1::SendCP() {
 			mark[pos][v] = "";
 			if (av == cpv) {
 				cpos[x] = pos;
-				if (species == 3 || species == 5) {
+				if (species != 1) {
 					if (x == fli[bli[x]]) {
 						if (pat[bli[x]] == pCam) mark[pos][v] = "C\nA";
 						else if (pat[bli[x]] == pPDD) mark[pos][v] = "P\nD";
