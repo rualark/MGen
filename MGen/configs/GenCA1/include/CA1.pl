@@ -12,7 +12,7 @@ random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatic
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 correct_inrange = 10 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.
 optimize_dpenalty = 1 # Saves only melodies closest to source melody. Decreases memory usage. Setting this flag may make corrections farther from source melody. Resetting allows for more close results when corrections>1
-max_correct_ms = 1000 # Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
+max_correct_ms = 1000000 # Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
 transpose_back = 0 # Should be set to 1 for CF1 generation algorithm only
 
 # Analysis
@@ -21,8 +21,8 @@ show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 
 # Correction
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
-pre_bad = 6 # How many notes to recalculate before rule violation
-post_bad = 12 # How many notes to recalculate after rule violation
+pre_bad = 60 # How many notes to recalculate before rule violation
+post_bad = 120 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
 pitch_penalty = 1 # Penalty for changing note one more diatonic step while correcting cantus
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
