@@ -2618,7 +2618,10 @@ void CGenCF1::NextWindow() {
 			WriteLog(0, est);
 		}
 	}
-	if (method == mScan) ResizeToWindow();
+	if (method == mScan) {
+		ResizeToWindow();
+		m_cc[ep2 - 1] = cc_order[ep2 - 1][cc_id[p]];
+	}
 }
 
 // Check if rpenalty is not below than flags sum
@@ -4050,7 +4053,7 @@ check:
 	while (true) {
 		CLEAR_READY();
 		//LogCantus("CF1 ep2", ep2, m_cc);
-		//if (method == mScan && task == tCor && cantus_id+1 == 3 && ep2 > 9 && MatchVectors(m_cc, test_cc, 0, ep2-1)) {
+		//if (method == mScan && task == tCor && cantus_id+1 == 1 && ep2 > 1 && MatchVectors(m_cc, test_cc, 0, ep2-1)) {
 		//	CString est;
 		//	est.Format("Found method %d id %d ep2 %d cycle %lld sp1 %d sp2 %d p %d", 
 		//		method, cantus_id+1, ep2, cycle, sp1, sp2, p);

@@ -527,6 +527,7 @@ void CGenCA1::Generate() {
 		if (cor_ack) {
 			method = mScan;
 			FillPause(step, step - step0, 0);
+			test_cc = m_cc;
 		}
 		if (method == mScan) {
 			s_len = s_len2;
