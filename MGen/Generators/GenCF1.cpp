@@ -826,6 +826,7 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 	int s;
 	int ls_max = fli_size - notes;
 	int ls_max2;
+	int fired = 0;
 	// Loop through windows
 	for (ls = 0; ls <= ls_max; ++ls) {
 		lmin = MAX_NOTE;
@@ -841,8 +842,15 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 			}
 		}
 		// Check range
-		if (lmin < MAX_NOTE && lmax > 0 && lmax - lmin < mrange) 
-			FLAG2(flag, fli[ls]);
+		if (lmin < MAX_NOTE && lmax > 0 && lmax - lmin < mrange) {
+			if (fired) {
+				fpenalty[flag] += severity[flag] + 1;
+			}
+			else {
+				FLAG2(flag, fli[ls]);
+				fired = 1;
+			}
+		}
 	}
 	return 0;
 }
