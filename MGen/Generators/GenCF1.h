@@ -242,7 +242,7 @@ protected:
 	inline void CalcFlagStat();
 	inline int FailFlagBlock();
 	inline int FailAccept();
-	inline void NextWindow();
+	inline void NextWindow(vector<int> &cc);
 	inline void CalcRpenalty(vector<int>& cc);
 	inline void ScanLeft(vector<int> &cc, int &finished);
 	inline void ShowBestRejected(vector<int>& cc);

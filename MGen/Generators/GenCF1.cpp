@@ -2346,14 +2346,25 @@ void CGenCF1::SingleCantusInit() {
 
 // Resize main scan vectors to current evaluation window size (ep2)
 void CGenCF1::ResizeToWindow() {
-	m_cc.resize(ep2);
-	m_c.resize(ep2);
-	m_pcc.resize(ep2);
-	m_pc.resize(ep2);
-  bli.resize(ep2);
-	m_leap.resize(ep2);
-	m_smooth.resize(ep2);
-	m_slur.resize(ep2);
+	if (av_cnt > 1) {
+		acc[cpv].resize(ep2);
+		ac[cpv].resize(ep2);
+		apcc[cpv].resize(ep2);
+		apc[cpv].resize(ep2);
+		aleap[cpv].resize(ep2);
+		asmooth[cpv].resize(ep2);
+		aslur[cpv].resize(ep2);
+	}
+	else {
+		m_cc.resize(ep2);
+		m_c.resize(ep2);
+		m_pcc.resize(ep2);
+		m_pc.resize(ep2);
+		m_leap.resize(ep2);
+		m_smooth.resize(ep2);
+		m_slur.resize(ep2);
+	}
+	bli.resize(ep2);
 	macc.resize(ep2);
 	macc2.resize(ep2);
 	decc.resize(ep2);
@@ -2560,7 +2571,7 @@ int CGenCF1::FailWindowsLimit() {
 	return 0;
 }
 
-void CGenCF1::NextWindow() {
+void CGenCF1::NextWindow(vector<int> &cc) {
 	if (task == tCor) {
 		sp1 = sp2;
 		sp2 = sp1 + min(swa_len, s_len);
@@ -2620,7 +2631,7 @@ void CGenCF1::NextWindow() {
 	}
 	if (method == mScan) {
 		ResizeToWindow();
-		m_cc[ep2 - 1] = cc_order[ep2 - 1][cc_id[p]];
+		cc[ep2 - 1] = cc_order[ep2 - 1][cc_id[p]];
 	}
 }
 
@@ -4130,7 +4141,7 @@ check:
 				SET_READY(DR_rpenalty_cur);
 				rpenalty_cur = 0;
 				if (ep2 < smap[swa2 - 1] + 1) {
-					NextWindow();
+					NextWindow(m_cc);
 					goto check;
 				}
 			}
@@ -4138,7 +4149,7 @@ check:
 				CalcRpenalty(m_cc);
 				if (ep2 < smap[swa2 - 1] + 1) {
 					if (rpenalty_cur > src_rpenalty_step[smap[swa1]]) goto skip;
-					NextWindow();
+					NextWindow(m_cc);
 					goto check;
 				}
 			}
@@ -4152,7 +4163,7 @@ check:
 			++accepted4[wid];
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
-				NextWindow();
+				NextWindow(m_cc);
 				goto check;
 			}
 			// Check random_choose

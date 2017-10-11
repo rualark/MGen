@@ -159,6 +159,7 @@ void CGenCP1::SingleCPInit() {
 		dpenalty_step.clear();
 		dpenalty_step.resize(c_len, 0);
 		if (method == mScan) {
+			ResizeToWindow();
 			// Can skip flags - full scan must remove all flags
 		}
 		// For sliding windows algorithm evaluate whole melody
@@ -210,6 +211,7 @@ void CGenCP1::MultiCPInit() {
 	ep1 = max(0, sp1 - 1);
 	ep2 = sp2; // End of evaluation window
 	p = sp2 - 1; // Minimal position in array to cycle
+	ResizeToWindow();
 }
 
 void CGenCP1::ScanCPInit() {
@@ -2275,7 +2277,7 @@ check:
 		if (task == tCor && method == mSWA) {
 			if (skip_flags) {
 				if (ep2 < smap[swa2 - 1] + 1) {
-					NextWindow();
+					NextWindow(acc[cpv]);
 					goto check;
 				}
 			}
@@ -2283,7 +2285,7 @@ check:
 				CalcRpenalty(acc[cpv]);
 				if (ep2 < smap[swa2 - 1] + 1) {
 					if (rpenalty_cur > src_rpenalty_step[smap[swa1]]) goto skip;
-					NextWindow();
+					NextWindow(acc[cpv]);
 					goto check;
 				}
 			}
@@ -2298,7 +2300,7 @@ check:
 			//LogCantus(acc[cpv]);
 			// If this is not last window, go to next window
 			if (ep2 < c_len) {
-				NextWindow();
+				NextWindow(acc[cpv]);
 				goto check;
 			}
 			// Check random_choose
