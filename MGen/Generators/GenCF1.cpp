@@ -696,6 +696,7 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	int lmin, lmax, s;
 	int ls_max = fli_size - notes;
 	int ls_max2;
+	int fired = 0;
 	// Loop through windows
 	for (ls = 0; ls <= ls_max; ++ls) {
 		lmin = MAX_NOTE;
@@ -708,7 +709,15 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 			if (cc[s] > lmax) lmax = cc[s];
 		}
 		// Check range
-		if (lmax - lmin < mrange) FLAG2(flag, fli[ls]);
+		if (lmax - lmin < mrange) {
+			if (fired) {
+				fpenalty[flag] += severity[flag] + 1;
+			}
+			else {
+				FLAG2(flag, fli[ls]);
+				fired = 1;
+			}
+		}
 	}
 	return 0;
 }
@@ -2000,6 +2009,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 
 int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 	int tcount = 0;
+	int fire, fired = 0;
 	// Do not check if melody is short
 	if (fli_size < 3) return 0;
 	// Loop from second to second to last note
@@ -2020,10 +2030,20 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 			// Check count of tonic notes
 			if (tcount > tonic_max) {
 				// Grant one more tonic in first window if first note not tonic
+				fire = 0;
 				if (ls < tonic_window && !pc[0]) {
-					if (tcount > tonic_max + 1)	FLAG2(196, s);
+					if (tcount > tonic_max + 1)	fire = 1;
 				}
-				else FLAG2(196, s);
+				else fire = 1;
+				if (fire) {
+					if (fired) {
+						fpenalty[196] += severity[196] + 1;
+					}
+					else {
+						FLAG2(196, s);
+						fired = 1;
+					}
+				}
 			}
 		}
 	}
