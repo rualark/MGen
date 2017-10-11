@@ -1328,6 +1328,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 	int smooth_sum = 0;
 	int smooth_sum2 = 0;
 	int leap_sum_s2 = 0;
+	int fired4 = 0, fired5 = 0;
 	for (ls = 0; ls < fli_size - 2; ++ls) {
 		s = fli2[ls];
 		s1 = fli2[ls+1];
@@ -1354,15 +1355,30 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 		// Prohibit long smooth movement
 		if (smooth[s] != 0) {
 			++smooth_sum;
-			if (smooth_sum >= max_smooth) FLAG2(4, s);
+			if (smooth_sum >= max_smooth) {
+				if (fired4) {
+					fpenalty[4] += severity[4] + 1;
+				}
+				else {
+					FLAG2(4, s);
+					fired4 = 1;
+				}
+			}
 		}
 		else if (leap[s]) smooth_sum = 0;
 		if (ls < fli_size - 2) {
 			// Prohibit long smooth movement in one direction
 			if (smooth[s] != 0 && smooth[s] == smooth[fli2[ls+1]]) {
 				++smooth_sum2;
-				if (smooth_sum2 >= max_smooth_direct) 
-					FLAG2(5, s);
+				if (smooth_sum2 >= max_smooth_direct) {
+					if (fired5) {
+						fpenalty[5] += severity[5] + 1;
+					}
+					else {
+						FLAG2(5, s);
+						fired5 = 1;
+					}
+				}
 			}
 			else if (smooth[s] || leap[s]) smooth_sum2 = 0;
 			// Check if two notes repeat with same length
