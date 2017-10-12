@@ -16,7 +16,7 @@
 
 #include "stdafx.h"
 #include "afxwinappex.h"
-#include "afxdialogex.h"
+#include "afxdialogex.h" 
 #include "MGen.h"
 #include "MainFrm.h"
 
