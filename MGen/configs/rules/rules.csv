@@ -294,7 +294,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;243;60;Cantus;Rhythm;Suspension;? + 1/2.;0;;;;1;;;;;
 1;244;60;Cantus;Rhythm;Suspension;1/2. + ?;0;;;;1;;;;;
 1;274;60;Cantus;Rhythm;Suspension;> whole;0;;Total note length is more than whole (except last note);;1;;;;;
-1;139;0;Cantus;Rhythm;Suspension;not last 3;1;;Suspension before N last measures;;;;;;;
+1;139;0;Cantus;Rhythm;Suspension;not last 3;0;;Suspension before N last measures;;;;;;;
 1;245;0;Cantus;Rhythm;Many notes in measure;5;1;;;;1;;;;;
 1;246;60;Cantus;Rhythm;Many notes in measure;>5;0;;;;1;;;245;;
 1;255;60;Cantus;Rhythm;Many notes in measure;>2 x 1/8;0;;;;1;;;;;
