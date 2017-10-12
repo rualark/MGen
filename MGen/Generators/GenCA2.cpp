@@ -310,7 +310,9 @@ void CGenCA2::DetectSpecies() {
 			else WriteLog(5, est);
 		}
 	}
-	else species = species_detected;
+	else {
+		species = species_detected;
+	}
 	// Set midi out multiplier
 	if (species_applied) return;
 	species_applied = 1;
@@ -433,6 +435,13 @@ void CGenCA2::Generate() {
 		ExplodeCP();
 		ShrinkCP();
 		DetectSpecies();
+		if (!species) {
+			CString est;
+			est.Format("Counterpoint #%d (%s): cannot detect species, also species not specified in MIDI file",
+				cantus_id + 1, cantus_high ? "high" : "low");
+			WriteLog(5, est);
+			//continue;
+		}
 		fn0 = fn;
 		// Get key
 		acc = cpoint[i];
