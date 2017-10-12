@@ -23,6 +23,7 @@
 #include "MGenDoc.h"
 #include "MGenView.h"
 #include "GLibrary/GLib.h"
+#include "git-version.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
