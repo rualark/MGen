@@ -73,9 +73,12 @@ using namespace Gdiplus;
 #include "dirent.h"
 #include "windows.h"
 #include "psapi.h"
+#include "git-version.h"
 
 //#define new new( _NORMAL_BLOCK, __FILE__, __LINE__)
 
 #ifdef _DEBUG
 #endif
 #define CF_DEBUG
+
+const char* const COMPILED = __DATE__ " @ " __TIME__;

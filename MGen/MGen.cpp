@@ -215,8 +215,9 @@ END_MESSAGE_MAP()
 // App command to run the dialog
 void CMGenApp::OnAppAbout()
 {
-	CAboutDlg aboutDlg;
-	aboutDlg.m_ver.Format("Music Generator Laboratory, Version %s", APP_VERSION);
+	CAboutDlg aboutDlg; 
+	// APP_VERSION
+	aboutDlg.m_ver.Format("Music Generator Laboratory, Version %s", GEN_VER_VERSION_STRING);
 	aboutDlg.DoModal();
 }
 
