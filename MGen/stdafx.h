@@ -73,7 +73,6 @@ using namespace Gdiplus;
 #include "dirent.h"
 #include "windows.h"
 #include "psapi.h"
-#include "git-version.h"
 
 //#define new new( _NORMAL_BLOCK, __FILE__, __LINE__)
 
