@@ -2520,7 +2520,7 @@ void CGenCP1::Generate() {
 		vector<int> cc_len_old = cc_len;
 		vector<float> cc_tempo_old = cc_tempo;
 		vector<vector<int>> anflags_old = anflags[cfv];
-		c_len = m_c.size() * npm - (npm - 1) - fn;
+		c_len = m_c.size() * npm - fn;
 		ac[cfv].clear();
 		acc[cfv].clear();
 		apc[cfv].clear();
