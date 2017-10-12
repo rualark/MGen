@@ -592,6 +592,9 @@ int CGenCP1::FailSus2() {
 		else {
 			// Flag suspension
 			FLAG2(225, s);
+			if (species < 4) {
+				if (bmli[s] < mli.size() - sus_last_measures) FLAG2(139, s);
+			}
 			// 1/4 syncope (for last 1/4)
 			if (beat[ls] == 5 && llen[ls] > 1) FLAG2(235, s);
 			// If sus is not last note

@@ -320,6 +320,7 @@ protected:
 	int max_flags = 82; // Maximum number of rules
 
 	// Parameters
+	int sus_last_measures = 3; // Last measures in which sus is allowed in species 2 and 3
 	int cantus_high = 0; // Set to 1 to consider cantus to be higher voice
 	int specified_high = 0; // If cantus_high was specified in midi file
 	int method = mUndefined; // Which generation / analysis method to use
