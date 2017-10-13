@@ -2,7 +2,6 @@
 
 #include "pvector.h"
 
-#define APP_VERSION "2.7"
 #define MGR_VERSION "1.9" // Version of MGR file format (should change only when format changes)
 #define MAX_VOICE 200
 #define MAX_INSTR 100
@@ -220,6 +219,7 @@ public:
 
 public:
 	// Thread interface
+	static char* APP_VERSION;
 	static int debug_level;
 	static int play_enabled;
 	static HWND m_hWnd;

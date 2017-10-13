@@ -199,7 +199,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		WriteLog(5, error.getMessage().c_str());
 	}
 
-	st.Format("Started MGen version %s", APP_VERSION);
+	st.Format("Started MGen version %s", CGLib::APP_VERSION);
 	WriteLog(0, st);
 	AfxInitRichEdit2();
 
@@ -591,7 +591,7 @@ void CMainFrame::LoadResults(CString path) {
 		// Load results
 		pGen->LoadResults(dir, fname);
 		pGen->LoadResultLogs(dir, fname);
-		if (pGen->save_format_version != MGR_VERSION) MessageBox("This file was created with a different file format " + pGen->save_format_version + "\nYou can get errors trying to load it. This application version " + APP_VERSION + " works with file format version " + MGR_VERSION + ". Loading of older file formats is sometimes supported.", "Error");
+		if (pGen->save_format_version != MGR_VERSION) MessageBox("This file was created with a different file format " + pGen->save_format_version + "\nYou can get errors trying to load it. This application version " + CGLib::APP_VERSION + " works with file format version " + MGR_VERSION + ". Loading of older file formats is sometimes supported.", "Error");
 		m_algo_id = pGen->m_algo_id;
 		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
 		pGen->m_algo_insts = AlgInsts[m_algo];

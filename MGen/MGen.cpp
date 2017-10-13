@@ -46,6 +46,8 @@ END_MESSAGE_MAP()
 
 CMGenApp::CMGenApp()
 {
+	// Load current version
+	CGLib::APP_VERSION = GEN_VER_VERSION_STRING;
 	m_bHiColorIcons = TRUE;
 
 	// support Restart Manager
@@ -218,7 +220,7 @@ void CMGenApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg; 
 	// APP_VERSION
-	aboutDlg.m_ver.Format("Music Generator Laboratory, Version %s", GEN_VER_VERSION_STRING);
+	aboutDlg.m_ver.Format("Music Generator Laboratory, Version %s", CGLib::APP_VERSION);
 	aboutDlg.DoModal();
 }
 

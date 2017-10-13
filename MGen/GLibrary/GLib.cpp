@@ -9,6 +9,7 @@
 #define new DEBUG_NEW 
 #endif
 
+char* CGLib::APP_VERSION = "Undefined";
 long long CGLib::first_time = 0;
 int CGLib::can_send_log = 1;
 HWND CGLib::m_hWnd = 0;
