@@ -1097,7 +1097,8 @@ void CGenCP1::ApplyFixedPat() {
 
 int CGenCP1::FailRhythm() {
 	CHECK_READY(DR_fli, DR_beat, DR_sus);
-	CHECK_READY_PERSIST(DR_mli, DR_leap);
+	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY(DR_leap);
 	if (species == 2) {
 		if (FailRhythm2()) return 1;
 	}
@@ -1115,21 +1116,24 @@ int CGenCP1::FailRhythm() {
 
 // Fail rhythm for species 2
 int CGenCP1::FailRhythm2() {
+	// Last measure not whole
+	if (c_len - fli[fli_size - 1] < npm) {
+		FLAG2(267, c_len - npm)
+	}
 	return 0;
 }
 
 // Fail rhythm for species 4
 int CGenCP1::FailRhythm4() {
+	// Last measure not whole
+	if (c_len - fli[fli_size - 1] < npm) {
+		FLAG2(267, c_len - npm)
+	}
 	return 0;
 }
 
 // Fail rhythm for species 3
 int CGenCP1::FailRhythm3() {
-	// Last measure not whole
-	if (c_len - fli[fli_size - 1] < npm) {
-		FLAG2(267, c_len - npm)
-		if (c_len - fli[fli_size - 1] == 1) FLAG2(252, fli[fli_size - 1])
-	}
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		// Note longer than whole
