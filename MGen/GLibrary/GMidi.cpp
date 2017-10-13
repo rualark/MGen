@@ -36,7 +36,7 @@ void CGMidi::SaveMidi(CString dir, CString fname)
 	// Save tempo
 	midifile.addTempo(track, 0, tempo[0]);
 	for (int i = 0; i < t_generated; i++) {
-		midifile.addTempo(track, (tpq * 4) + tpc * i, tempo[i]);
+		midifile.addTempo(track, (tpq * 4) + tpc * i, tempo[i] * midifile_out_mul);
 	}
 	// Save notes
 	for (int v = 0; v < v_cnt; v++) {
