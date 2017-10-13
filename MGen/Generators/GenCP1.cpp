@@ -2481,7 +2481,7 @@ void CGenCP1::Generate() {
 	if (error) return;
 	if (InitCP()) return;
 	int fn0 = fn;
-	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
+	CString st;
 	LoadCantus(midi_file);
 	ShrinkCantus();
 	if (cantus.size() < 1) return;
@@ -2503,6 +2503,9 @@ void CGenCP1::Generate() {
 				cantus_id = cantus.size() - 1;
 			}
 		}
+		// Show status
+		st.Format("IN: %s #%d", fname_from_path(midi_file), cantus_id + 1);
+		SetStatusText(8, st);
 		c_len = cantus[cantus_id].size();
 		// Get key
 		av_cnt = 1;
