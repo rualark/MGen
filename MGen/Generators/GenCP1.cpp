@@ -560,7 +560,7 @@ int CGenCP1::FailSus2() {
 		// If sus starts with dissonance, it is anticipation
 		if (tivl[s] == iDis) antici = 1;
 		// If both consonances
-		else if (tivl[s2] != iDis) {
+		else if (tivl[sus[ls]] != iDis) {
 			// If sus starts with note shorter than 1/2, it is anticipation
 			if (sus[ls] - s < npm / 2) antici = 1;
 			// If sus is longer than whole note
@@ -569,7 +569,7 @@ int CGenCP1::FailSus2() {
 		// Check if sus starts from discord
 		if (antici) {
 			// Check if start and end of slur is a discord - then it is interbar discord
-			if (tivl[s2] == iDis) {
+			if (tivl[sus[ls]] == iDis) {
 				FLAG2(224, s);
 				continue;
 			}
@@ -2105,7 +2105,7 @@ void CGenCP1::EmulateSASCP() {
 			ScanCP(tEval, -1);
 		}
 		if (need_exit) break;
-		CheckSASEmulatorFlags();
+		CheckSASEmulatorFlags(scpoint[cpv]);
 		nflags_prev = anflags[cpv];
 	}
 	if (!need_exit) OutputFlagDelays();

@@ -291,7 +291,7 @@ protected:
 	int InitCantus();
 	void TestDiatonic();
 	void LogPerf();
-	void CheckSASEmulatorFlags();
+	void CheckSASEmulatorFlags(vector<int> &cc);
 	void OutputFlagDelays();
 	void EmulateSAS();
 	void RandomSWA();

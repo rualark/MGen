@@ -3661,7 +3661,7 @@ void CGenCF1::LogPerf() {
 	if (m_testing) AppendLineToFile("autotest\\perf.log", st2 + "\n");
 }
 
-void CGenCF1::CheckSASEmulatorFlags() {
+void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 	int fl, fl2, found, delay, good, error_level;
 	CString error_st, est;
 	if (ep2 == c_len) for (s = 0; s < ep2; ++s) {
@@ -3818,7 +3818,7 @@ void CGenCF1::CheckSASEmulatorFlags() {
 				}
 			}
 			// Show error
-			WriteLog(error_level, error_st);
+			WriteLog(error_level, error_st + " [" + vint2st(c_len, cc) + "]");
 			if (m_testing) AppendLineToFile("autotest\\sas-emu.log", error_st + "\n");
 		}
 	}
@@ -3856,7 +3856,7 @@ void CGenCF1::EmulateSAS() {
 			ScanCantus(tEval, -1, &(m_cc));
 		}
 		if (need_exit) break;
-		CheckSASEmulatorFlags();
+		CheckSASEmulatorFlags(m_cc);
 		nflags_prev = anflags[cpv];
 	}
 	if (!need_exit) OutputFlagDelays();
