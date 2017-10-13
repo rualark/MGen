@@ -1095,10 +1095,36 @@ void CGenCP1::ApplyFixedPat() {
 	for (int ls = 0; ls < fli_size; ++ls) rpos[ls] = rposf[ls];
 }
 
+int CGenCP1::FailRhythm() {
+	CHECK_READY(DR_fli, DR_beat, DR_sus);
+	CHECK_READY_PERSIST(DR_mli, DR_leap);
+	if (species == 2) {
+		if (FailRhythm2()) return 1;
+	}
+	else if (species == 3) {
+		if (FailRhythm3()) return 1;
+	}
+	else if (species == 4) {
+		if (FailRhythm4()) return 1;
+	}
+	else if (species == 5) {
+		if (FailRhythm5()) return 1;
+	}
+	return 0;
+}
+
+// Fail rhythm for species 2
+int CGenCP1::FailRhythm2() {
+	return 0;
+}
+
+// Fail rhythm for species 4
+int CGenCP1::FailRhythm4() {
+	return 0;
+}
+
 // Fail rhythm for species 3
 int CGenCP1::FailRhythm3() {
-	CHECK_READY(DR_fli, DR_beat, DR_sus);
-	if (species != 3) return 0;
 	// Last measure not whole
 	if (c_len - fli[fli_size - 1] < npm) {
 		FLAG2(267, c_len - npm)
@@ -1125,10 +1151,6 @@ int CGenCP1::FailRhythm3() {
 
 // Fail rhythm for species 5
 int CGenCP1::FailRhythm5() {
-	CHECK_READY_PERSIST(DR_mli);
-	CHECK_READY(DR_fli, DR_leap);
-	CHECK_READY(DR_sus);
-	if (species != 5) return 0;
 	// Rhythm id
 	vector<int> rid;
 	int rid_cur = 0;
@@ -2234,8 +2256,7 @@ check:
 		if (FailCPInterval()) goto skip;
 		GetNoteTypes();
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
-		if (FailRhythm3()) goto skip;
-		if (FailRhythm5()) goto skip;
+		if (FailRhythm()) goto skip;
 		GetVIntervals();
 		DetectPatterns();
 		GetBasicRpos();

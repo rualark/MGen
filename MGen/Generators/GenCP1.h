@@ -63,6 +63,9 @@ protected:
 	inline void ApplyCam(int ls, vector<int> &l_rpos, int state);
 	inline void ApplyCam2(int ls, vector<int> &l_rpos, int state);
 	inline void ApplyFixedPat();
+	inline int FailRhythm();
+	inline int FailRhythm2();
+	inline int FailRhythm4();
 	inline int FailRhythm3();
 	inline int FailRhythm5();
 	inline int FailPcoApart();
