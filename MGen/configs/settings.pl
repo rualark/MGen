@@ -1,9 +1,9 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 112 # Id of the currently selected algorithm
-Config = good-cp3 # Name of configuration file for selected algorithm
-MIDI_OUT = Microsoft GS Wavetable Synth 0 # Name of MIDI device used for playing notes
+Algorithm = 121 # Id of the currently selected algorithm
+Config = cp2 # Name of configuration file for selected algorithm
+MIDI_OUT = [DISABLE PLAYBACK] # Name of MIDI device used for playing notes
 Horizontal_zoom = 200 # Zoom of the piano roll. Can be from 1 to 500
 playback_speed = 100 # Playback speed in percent
 show_marks = 1 # Set to 1 to show note mark strings
@@ -13,7 +13,7 @@ show_lines = 1 # Set to 1 to show line separators
 show_vel = 1 # Set to 1 to show note velocity using alpha
 show_curve = 1 # Set to 1 to show melody curves (MeloCurve)
 show_nsr = 1 # Set to 1 to show note scan range
-show_tempo = 1 # Set to 1 to show tempo
+show_tempo = 0 # Set to 1 to show tempo
 show_notecolors = 1 # Set to 1 to show note colors instead of instrument colors
 
 # The following settings cannot be changed in GUI. You can change them only in this file
