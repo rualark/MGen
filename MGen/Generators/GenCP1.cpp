@@ -1146,6 +1146,11 @@ int CGenCP1::FailRhythm4() {
 
 // Fail rhythm for species 3
 int CGenCP1::FailRhythm3() {
+	// Last measure not whole
+	if (c_len - fli[fli_size - 1] < npm) {
+		FLAG2(267, c_len - npm)
+		if (c_len - fli[fli_size - 1] == 1) FLAG2(252, fli[fli_size - 1])
+	}
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		// Note longer than whole
@@ -1256,7 +1261,7 @@ int CGenCP1::FailRhythm5() {
 		if (ep2 == c_len) {
 			// Last measure
 			if (ms == mli.size() - 1) {
-				// Check last whole note (really 1/8)
+				// Check last whole note
 				if (l_len[0] != 8) FLAG2(267, s);
 			}
 		}
