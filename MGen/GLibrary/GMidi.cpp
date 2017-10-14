@@ -117,7 +117,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 	int pos1, pos2, found;
 	if (comment[i][v].size()) {
 		note_st = "\\markup \\wordwrap \\bold {\n  ";
-		st.Format("NOTE %d at %d:%d - %s\n",
+		st.Format("\"NOTE %d at %d:%d - %s\"\n",
 			nnum, pos / 8 + 1, pos % 8 + 1, NoteName[note[i][v] % 12]);
 		note_st += st + "\n}\n";
 		found = 0;
@@ -145,7 +145,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 }
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
-	CString comm_st;
+	CString comm_st, st3;
 	int pos, pos2, le, le2, vm_cnt, nnum;
 	float mul;
 	// Voice melody min pitch
@@ -157,13 +157,15 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	vm_cnt = GetLyVcnt(step1, step2, vm_max);
 	mul = midifile_out_mul;
 	if (vm_cnt == 1 && (m_algo_id == 121 || m_algo_id == 112)) mul = 8;
+	// Key
+	st3.Format("Key: %s%s\n", NoteName[tonic[step1][0]], minor[step1][0] ? "m" : "");
 	// First info
 	st.Replace("\n", ", ");
 	st.Replace("#", "\"#\"");
 	st.Replace("\\", "/");
 	fs << "\\markup \\wordwrap \\bold {\n  ";
 	if (step1) fs << "    \\vspace #2\n";
-	fs << st << "\n}\n";
+	fs << st << ", " << st3 << "\n}\n";
 	// Save notes
 	fs << "<<\n";
 	for (int v = v_cnt - 1; v >= 0; --v) {
@@ -221,7 +223,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 	fs << "\\language \"english\"\n";
 	if (!mel_info.size()) {
 		CString st;
-		st = "General";
+		st = "Whole piece";
 		SaveLySegment(fs, st, "", 0, t_generated);
 	}
 	else {
