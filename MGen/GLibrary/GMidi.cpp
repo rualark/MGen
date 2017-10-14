@@ -109,6 +109,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le) {
 }
 
 CString CGMidi::GetLyColor(DWORD col) {
+	if (col == color_noflag) return "0 0 0";
 	CString st;
 	st.Format("%.3f %.3f %.3f",
 		GetRed(col) / 255.0, GetGreen(col) / 1.5 / 255.0, GetBlue(col) / 255.0);
