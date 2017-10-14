@@ -138,7 +138,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 			}
 			com_st += "\\markup \\wordwrap \\with-color #(rgb-color " +
 				GetLyColor(ccolor[i][v][c]) + ") {\n  ";
-			com_st += com + "\n";
+			com_st += "\"" + com + "\"\n";
 			com_st += "\n}\n";
 		}
 	}
@@ -171,8 +171,12 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	for (int v = v_cnt - 1; v >= 0; --v) {
 		// Do not show voice if no notes inside
 		if (!vm_max[v]) continue;
+		// Select clef
+		st = NoteName[tonic[step1][0]];
 		fs << "\\new Staff {\n";
-		fs << "  \\clef \"treble\" \\key d \\major \\time 4/4\n";
+		fs << "  \\clef \"treble\" \\key " << st.MakeLower();
+		fs << " \\" << (minor[step1][0] ? "minor" : "major");
+		fs << " \\time 4/4\n";
 		fs << "  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n";
 		fs << "  \\override Score.BarNumber.break-visibility = ##(#f #t #t)\n  ";
 		fs << "  \\new Voice \\with {\n";
