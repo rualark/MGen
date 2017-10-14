@@ -3528,6 +3528,7 @@ int CGenCF1::SendCantus() {
 	// Increment cantus_sent only if is not animating
 	if (!is_animating) ++cantus_sent;
 	// Create rule penalty string
+	l_rpenalty_cur = rpenalty_cur;
 	if (!skip_flags) {
 		for (int x = 0; x < max_flags; ++x) {
 			if (!accept[x] && fpenalty[x]) {
@@ -3536,7 +3537,6 @@ int CGenCF1::SendCantus() {
 				rpst += st;
 			}
 		}
-		l_rpenalty_cur = rpenalty_cur;
 		if (rpenalty_cur == MAX_PENALTY) {
 			l_rpenalty_cur = 0;
 			rpst.Empty();
