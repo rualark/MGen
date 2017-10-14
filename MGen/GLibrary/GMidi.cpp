@@ -138,7 +138,8 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 			}
 			com_st += "\\markup \\wordwrap \\with-color #(rgb-color " +
 				GetLyColor(ccolor[i][v][c]) + ") {\n  ";
-			com_st += "\"" + com + "\"\n";
+			com.Replace("#", "\"#\"");
+			com_st += com + "\n";
 			com_st += "\n}\n";
 		}
 	}
@@ -146,7 +147,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	CString comm_st, st3, clef;
-	int pos, pos2, le, le2, vm_cnt, nnum;
+	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum;
 	float mul;
 	// Voice melody min pitch
 	vector<int> vm_min;
@@ -189,14 +190,19 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		fs << "  }\n";
 		fs << "  { ";
 		nnum = 0;
+		pause_accum = 0;
 		for (int i = step1; i < step2; i++) {
 			++nnum;
 			pos = mul * (i - step1);
 			le = mul * len[i][v];
 			if (pause[i][v]) {
-				SendLyEvent(fs, pos, "r", le);
+				pause_accum += le;
 			}
 			else {
+				if (pause_accum) {
+					SendLyEvent(fs, pos, "r", pause_accum);
+					pause_accum = 0;
+				}
 				SendLyNoteColor(fs, color[i][v]);
 				SendLyEvent(fs, pos, GetLyNote(note[i][v]), le);
 				SaveLyComments(comm_st, i, v, nnum, pos);
@@ -206,6 +212,10 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
+		}
+		if (pause_accum) {
+			SendLyEvent(fs, pos, "r", pause_accum);
+			pause_accum = 0;
 		}
 		// Finish with pause
 		if ((pos + le) % 8) {
