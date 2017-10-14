@@ -90,6 +90,9 @@ public:
 	CString GetLyLen(int length);
 	void SplitLyNote(int pos, int le, vector<int>& la);
 	void SendLyEvent(ofstream & fs, int pos, CString ev, int le);
+	CString GetLyColor(DWORD col);
+	void SendLyNoteColor(ofstream & fs, DWORD col);
+	void SaveLyComments(CString & com_st, int i, int v, int nnum, int pos);
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
 	void SaveLy(CString dir, CString fname);
 	virtual void Generate() = 0;

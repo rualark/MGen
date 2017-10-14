@@ -100,9 +100,53 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le) {
 	}
 }
 
+CString CGMidi::GetLyColor(DWORD col) {
+	CString st;
+	st.Format("%.3f %.3f %.3f",
+		GetRed(col) / 255.0, GetGreen(col) / 1.5 / 255.0, GetBlue(col) / 255.0);
+	return st;
+}
+
+// Send note or pause
+void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
+	fs << "\n    \\override NoteHead.color = #(rgb-color " << GetLyColor(col) << ") ";
+}
+
+void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
+	CString st, com, note_st;
+	int pos1, pos2, found;
+	if (comment[i][v].size()) {
+		note_st = "\\markup \\wordwrap \\bold {\n  ";
+		st.Format("NOTE %d at %d:%d - %s\n",
+			nnum, pos / 8 + 1, pos % 8 + 1, NoteName[note[i][v] % 12]);
+		note_st += st + "\n}\n";
+		found = 0;
+		for (int c = 0; c < comment[i][v].size(); ++c) {
+			com = comment[i][v][c];
+			// Do not show accepted rules
+			if (com[0] == '+') continue;
+			// Remove ending technical information
+			pos1 = com.Find('[');
+			pos2 = com.Find(']');
+			if (pos1 != -1 && pos2 != -1) {
+				com = com.Left(pos1 - 1) + com.Right(com.GetLength() - pos2 - 1);
+			}
+			// Send note number with first comment
+			if (!found) {
+				found = 1;
+				com_st += note_st;
+			}
+			com_st += "\\markup \\wordwrap \\with-color #(rgb-color " +
+				GetLyColor(ccolor[i][v][c]) + ") {\n  ";
+			com_st += com + "\n";
+			com_st += "\n}\n";
+		}
+	}
+}
+
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
-	CString note_st;
-	int pos, pos2, le, le2, vm_cnt;
+	CString comm_st;
+	int pos, pos2, le, le2, vm_cnt, nnum;
 	float mul;
 	// Voice melody min pitch
 	vector<int> vm_min;
@@ -135,17 +179,20 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		fs << "  	\\remove \"Rest_engraver\"\n";
 		fs << "  	\\consists \"Completion_rest_engraver\"\n";
 		fs << "  }\n";
-		fs << "  {\n";
+		fs << "  { ";
+		nnum = 0;
 		for (int i = step1; i < step2; i++) {
+			++nnum;
 			pos = mul * (i - step1);
 			le = mul * len[i][v];
 			if (pause[i][v]) {
 				SendLyEvent(fs, pos, "r", le);
 			}
 			else {
+				SendLyNoteColor(fs, color[i][v]);
 				SendLyEvent(fs, pos, GetLyNote(note[i][v]), le);
+				SaveLyComments(comm_st, i, v, nnum, pos);
 			}
-			//len[i][v];
 			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 				//mark[i][v];
 			}
@@ -156,14 +203,15 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		if ((pos + le) % 8) {
 			SendLyEvent(fs, pos, "r", 8 - (pos + le) % 8);
 		}
-		fs << "  }\n";
-		fs << "\n}\n";
+		fs << "\n  }\n";
+		fs << "}\n";
 	}
 	fs << ">>\n";
+	fs << comm_st;
 	// Second info
-	st2.Replace("\n", "\n}\n\\markup \\wordwrap \\italic {\n  ");
-	st2.Replace("#", "\"#\"");
-	fs << "\\markup \\wordwrap \\italic {\n  " << st2 << "\n}\n";
+	//st2.Replace("\n", "\n}\n\\markup \\wordwrap \\italic {\n  ");
+	//st2.Replace("#", "\"#\"");
+	//fs << "\\markup \\wordwrap \\italic {\n  \\vspace #2\n  " << st2 << "\n}\n";
 }
 
 void CGMidi::SaveLy(CString dir, CString fname) {
