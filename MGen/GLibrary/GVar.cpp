@@ -125,7 +125,7 @@ void CGVar::InitVectors()
 	}
 }
 
-void CGVar::AddMelody(int step1, int step2, int v, CString info) {
+void CGVar::AddMelody(int step1, int step2, int v, CString info, CString info2) {
 	// Find existing mel_info
 	int found = 1;
 	if (mel_id[step1][v] > -1) {
@@ -138,6 +138,7 @@ void CGVar::AddMelody(int step1, int step2, int v, CString info) {
 		if (found) {
 			// Update existing mel_info
 			mel_info[mel_id[step1][v]] = info;
+			mel_info2[mel_id[step1][v]] = info2;
 			return;
 		}
 	}
@@ -145,6 +146,7 @@ void CGVar::AddMelody(int step1, int step2, int v, CString info) {
 		mel_id[i][v] = mel_info.size();
 	}
 	mel_info.push_back(info);
+	mel_info2.push_back(info2);
 }
 
 void CGVar::ResizeVectors(int size, int vsize)

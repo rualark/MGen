@@ -256,7 +256,8 @@ void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
 int CGenCP1::SendCP() {
 	int step00 = step;
 	int pause_len = 0;
-	CString st, rpst;
+	float l_rpenalty_cur;
+	CString st, st2, rpst;
 	int pos = 0, plen;
 	int v, x1;
 	if (svoice < 0) return 0;
@@ -334,6 +335,7 @@ int CGenCP1::SendCP() {
 	// Increment cantus_sent only if is not animating
 	if (!is_animating) ++cantus_sent;
 	// Create rule penalty string
+	l_rpenalty_cur = rpenalty_cur;
 	if (!skip_flags) {
 		for (int x = 0; x < max_flags; ++x) {
 			if (!accept[x] && fpenalty[x]) {
@@ -342,35 +344,45 @@ int CGenCP1::SendCP() {
 				rpst += st;
 			}
 		}
-		st.Format("%.0f", rpenalty_cur);
-		if (!rpst.IsEmpty()) rpst = st + " (" + rpst + ")";
-		else rpst = st;
-		if (rpenalty_cur == MAX_PENALTY) rpst = "0";
+		if (rpenalty_cur == MAX_PENALTY) {
+			l_rpenalty_cur = 0;
+			rpst.Empty();
+		}
 	}
 	if (task == tGen) {
 		if (!shuffle) {
 			Adapt(step00, step - 1);
 		}
 		// If  window-scan
-		st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %s", cantus_sent, cantus_high?"high":"low", species, rpst);
-		AddMelody(step00, step - 1, svoice + cpv, st);
+		st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
+			cantus_sent, cantus_high?"high":"low", species, l_rpenalty_cur);
+		st2.Format("Flags penalty: %s", rpst);
+		AddMelody(step00, pos - 1, svoice + cpv, st, st2);
+		AddMelody(step00, pos - 1, svoice + cfv, st, st2);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
 			// If RSWA
-			st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %s", cantus_sent, cantus_high ? "high" : "low", species, rpst);
+			st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
+				cantus_sent, cantus_high ? "high" : "low", species, l_rpenalty_cur);
+			st2.Format("Flags penalty: %s", rpst);
 		}
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %s\nDistance penalty: %d", cantus_id+1, midi_file, cantus_high ? "high" : "low", species, rpst, dpenalty_cur);
+				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f\nDistance penalty: %d", 
+					cantus_id+1, midi_file, cantus_high ? "high" : "low", species, l_rpenalty_cur, dpenalty_cur);
+				st2.Format("Flags penalty: %s", rpst);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, cantus_high ? "high" : "low", species, rpst, key_eval);
+				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
+					cantus_id + 1, midi_file, cantus_high ? "high" : "low", species, l_rpenalty_cur, key_eval);
+				st2.Format("Flags penalty: %s\nKey selection: %s", rpst, key_eval);
 			}
 		}
-		AddMelody(step00, step - 1, svoice + cpv, st);
+		AddMelody(step00, pos - 1, svoice + cpv, st, st2);
+		AddMelody(step00, pos - 1, svoice + cfv, st, st2);
 	}
 	if (debug_level > 2) {
 		time_stop = CGLib::time();

@@ -3490,10 +3490,11 @@ void CGenCF1::MergeNotes(int step1, int step2, int v) {
 
 int CGenCF1::SendCantus() {
 	int step00 = step;
+	float l_rpenalty_cur;
 	// Save culmination position
 	cf_culm_cfs = culm_ls;
 	if (svoice < 0) return 0;
-	CString st, rpst;
+	CString st, st2, rpst;
 	int v = svoice;
 	Sleep(sleep_ms);
 	TransposeCantusBack();
@@ -3535,35 +3536,42 @@ int CGenCF1::SendCantus() {
 				rpst += st;
 			}
 		}
-		st.Format("%.0f", rpenalty_cur);
-		if (!rpst.IsEmpty()) rpst = st + " (" + rpst + ")";
-		else rpst = st;
-		if (rpenalty_cur == MAX_PENALTY) rpst = "0";
+		l_rpenalty_cur = rpenalty_cur;
+		if (rpenalty_cur == MAX_PENALTY) {
+			l_rpenalty_cur = 0;
+			rpst.Empty();
+		}
 	}
 	if (task == tGen) {
 		if (!shuffle) {
 			Adapt(step00, step - 1);
 		}
 		// If  window-scan
-		st.Format("#%d\nRule penalty: %s", cantus_sent, rpst);
-		AddMelody(step00, step - 1, v, st);
+		st.Format("#%d\nRule penalty: %.0f", cantus_sent, l_rpenalty_cur);
+		st2.Format("Flags penalty: %s", rpst);
+		AddMelody(step00, pos - 1, v, st, st2);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
 			// If RSWA
-			st.Format("#%d\nRule penalty: %s", cantus_sent, rpst);
+			st.Format("#%d\nRule penalty: %.0f", cantus_sent, l_rpenalty_cur);
+			st2.Format("Flags penalty: %s", rpst);
 		}
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nDistance penalty: %d", cantus_id+1, midi_file, rpst, dpenalty_cur);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f\nDistance penalty: %d", 
+					cantus_id+1, midi_file, l_rpenalty_cur, dpenalty_cur);
+				st2.Format("Flags penalty: %s", rpst);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d (from MIDI file %s)\nRule penalty: %s\nKey selection: %s", cantus_id+1, midi_file, rpst, key_eval);
+				st.Format("#%d (from MIDI file %s)\nRule penalty: %.0f", 
+					cantus_id + 1, midi_file, l_rpenalty_cur);
+				st2.Format("Flags penalty: %s\nKey selection: %s", rpst, key_eval);
 			}
 		}
-		AddMelody(step00, step - 1, v, st);
+		AddMelody(step00, pos - 1, v, st, st2);
 	}
 	// Send
 	t_generated = step;

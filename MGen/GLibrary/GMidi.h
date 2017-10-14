@@ -2,7 +2,6 @@
 #include "GAdapt.h"
 #include "MidiOut.h"
 
-
 #define MAX_WARN_MIDI_OVERLAP 5
 #define MAX_WARN_MIDI_ALIGN 5
 #define MAX_WARN_MIDI_SHORT 5
@@ -34,12 +33,64 @@
 // Bass instruments
 const int bass_program[] = { 45, 33, 70, 58, 34, 35, 36, 37, 38 };
 
+const CString LyNoteSharp[] = {
+	"c", // 0
+	"cs", // 1
+	"d", // 2
+	"ds", // 3
+	"e", // 4
+	"f", // 5
+	"fs", // 6
+	"g", // 7
+	"gs", // 8
+	"a", // 9
+	"as", // 10
+	"b" // 11
+};
+
+const CString LyNoteFlat[] = {
+	"c", // 0
+	"des", // 1
+	"d", // 2
+	"ees", // 3
+	"e", // 4
+	"f", // 5
+	"ges", // 6
+	"g", // 7
+	"aes", // 8
+	"a", // 9
+	"bes", // 10
+	"b" // 11
+};
+
+const CString LyOctave[] = {
+	",,,,", // 0
+	",,,", // 1
+	",,", // 2
+	",", // 3
+	"", // 4
+	"'", // 5
+	"''", // 6
+	"'''", // 7
+	"''''", // 8
+	"'''''", // 9
+	"''''''", // 10
+	"'''''''" // 11
+};
+
 class CGMidi :
 	public CGAdapt
 {
 public:
 	CGMidi();
 	~CGMidi();
+	void GetLyRange(int step1, int step2, vector<int>& vm_min, vector<int>& vm_max);
+	CString GetLyNote(int pitch);
+	CString GetLyLen(int length);
+	void SplitLyNote(int pos, int le, vector<int>& la);
+	void SendLyEvent(ofstream & fs, int pos, CString ev, int le);
+	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
+	void SaveLy(CString dir, CString fname);
 	virtual void Generate() = 0;
 
 	// Midi files

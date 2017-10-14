@@ -17,7 +17,7 @@ public:
 	~CGVar();
 
 	void InitVectors();
-	void AddMelody(int step1, int step2, int v, CString info);
+	void AddMelody(int step1, int step2, int v, CString info, CString info2);
 	void LoadInstruments(); // Load instruments config
 	void LoadInstrument(int i, CString fname);
 	void LoadConfig(CString fname, int load_includes = 1);
@@ -88,10 +88,11 @@ public:
 	vector< vector <unsigned char> > artic; // Velocity of midi notes
 	vector< vector <vector<float>> > ngraph; // Graph using chromatic scale
 	int ngraph_size = 0; // Number of ngraphs
-	vector< vector <int> > mel_id; // Link from note step to melody id
+	vector< vector <int> > mel_id; // [i][v] Link from note step to melody id
 	vector< vector <unsigned char> > lining; // Visual lining pattern
 	vector< vector <CString> > mark; // Mark on note
 	vector<CString> mel_info; // Information about melody
+	vector<CString> mel_info2; // Information about melody
 	vector< vector <DWORD> > mark_color; // Mark color
 	vector< vector <unsigned char> > midi_ch; // Midi channel of each note
 	vector< vector <short> > midi_delta; // Midi file delta in ms

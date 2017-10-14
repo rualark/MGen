@@ -21,8 +21,177 @@ CGMidi::~CGMidi()
 	StopMIDI();
 }
 
-void CGMidi::SaveMidi(CString dir, CString fname)
-{
+void CGMidi::GetLyRange(int step1, int step2, vector<int> &vm_min, vector<int> &vm_max) {
+	vm_min.clear();
+	vm_max.clear();
+	vm_min.resize(v_cnt, 128);
+	vm_max.resize(v_cnt, 0);
+	for (int s = step1; s < step2; ++s) {
+		for (int v = v_cnt - 1; v >= 0; --v) {
+			if (!pause[s][v]) {
+				if (vm_min[v] > note[s][v]) vm_min[v] = note[s][v];
+				if (vm_max[v] < note[s][v]) vm_max[v] = note[s][v];
+			}
+		}
+	}
+}
+
+CString CGMidi::GetLyNote(int pitch) {
+	return LyNoteSharp[pitch % 12] + LyOctave[pitch / 12];
+}
+
+CString CGMidi::GetLyLen(int length) {
+	if (length == 1) return "8";
+	else if (length == 2) return "4";
+	else if (length == 3) return "4.";
+	else if (length == 4) return "2";
+	else if (length == 5) return "2"; // This is wrong length
+	else if (length == 6) return "2.";
+	else if (length == 7) return "2..";
+	else if (length == 8) return "1";
+	else if (length == 16) return "\\breve";
+	else if (length == 32) return "\\longa";
+	else return "";
+}
+
+void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
+	la.clear();
+	if (le < 5 || le == 6 || le == 7 || le == 8 || le == 16 || le == 32) {
+		la.push_back(le);
+		return;
+	}
+	if (le == 5) {
+		if (pos % 4 == 0) {
+			la.push_back(4);
+			la.push_back(1);
+		}
+		else if (pos % 4 == 1) {
+			la.push_back(3);
+			la.push_back(2);
+		}
+		else if (pos % 4 == 2) {
+			la.push_back(2);
+			la.push_back(3);
+		}
+		else if (pos % 4 == 3) {
+			la.push_back(1);
+			la.push_back(4);
+		}
+	}
+}
+
+// Send note or pause
+void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le) {
+	// Length array
+	vector<int> la;
+	SplitLyNote(pos, le, la);
+	for (int lc = 0; lc < la.size(); ++lc) {
+		fs << ev + GetLyLen(la[lc]);
+		if (lc < la.size() - 1) fs << "~";
+		fs << " ";
+	}
+}
+
+void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
+	CString note_st;
+	int pos, pos2, le, le2;
+	// Voice melody min pitch
+	vector<int> vm_min;
+	// Voice melody max pitch
+	vector<int> vm_max;
+	// Calculate stats
+	GetLyRange(step1, step2, vm_min, vm_max);
+	// First info
+	st.Replace("\n", ", ");
+	st.Replace("#", "\"#\"");
+	st.Replace("\\", "/");
+	fs << "\\markup \\wordwrap \\bold {\n  ";
+	if (step1) fs << "    \\vspace #2\n";
+	fs << st << "\n}\n";
+	// Save notes
+	fs << "<<\n";
+	for (int v = v_cnt - 1; v >= 0; --v) {
+		// Do not show voice if no notes inside
+		if (!vm_max[v]) continue;
+		fs << "\\new Staff {\n";
+		fs << "  \\clef \"treble\" \\key d \\major \\time 4/4\n";
+		fs << "  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n";
+		fs << "  \\override Score.BarNumber.break-visibility = ##(#f #t #t)\n  ";
+		fs << "  \\new Voice \\with {\n";
+		fs << "  	\\remove \"Note_heads_engraver\"\n";
+		fs << "  	\\consists \"Completion_heads_engraver\"\n";
+		fs << "  	\\remove \"Rest_engraver\"\n";
+		fs << "  	\\consists \"Completion_rest_engraver\"\n";
+		fs << "  }\n";
+		fs << "  {\n";
+		for (int i = step1; i < step2; i++) {
+			pos = midifile_out_mul * (i - step1);
+			le = midifile_out_mul * len[i][v];
+			if (pause[i][v]) {
+				SendLyEvent(fs, pos, "r", le);
+			}
+			else {
+				SendLyEvent(fs, pos, GetLyNote(note[i][v]), le);
+			}
+			//len[i][v];
+			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
+				//mark[i][v];
+			}
+			if (noff[i][v] == 0) break;
+			i += noff[i][v] - 1;
+		}
+		// Finish with pause
+		if ((pos + le) % 8) {
+			SendLyEvent(fs, pos, "r", 8 - (pos + le) % 8);
+		}
+		fs << "  }\n";
+		fs << "\n}\n";
+	}
+	fs << ">>\n";
+	// Second info
+	st2.Replace("\n", "\n}\n\\markup \\wordwrap \\italic {\n  ");
+	st2.Replace("#", "\"#\"");
+	fs << "\\markup \\wordwrap \\italic {\n  " << st2 << "\n}\n";
+}
+
+void CGMidi::SaveLy(CString dir, CString fname) {
+	ofstream fs;
+	fs.open(dir + "\\" + fname + ".ly");
+	fs << "\\version \"2.18.2\"\n";
+	fs << "\\language \"english\"\n";
+	if (!mel_info.size()) {
+		CString st;
+		st = "General";
+		SaveLySegment(fs, st, "", 0, t_generated);
+	}
+	else {
+		int first_step = 0;
+		int last_step = 0;
+		int found, s;
+		for (int m = 0; m < mel_info.size(); ++m) {
+			found = 0;
+			for (s = last_step; s < t_generated; ++s) {
+				if (!found && mel_id[s][0] == m && mel_id[s][0] > -1) {
+					first_step = s;
+					last_step = s;
+					found = 1;
+				}
+				if (found && mel_id[s][0] != m) {
+					last_step = s;
+					break;
+				}
+			}
+			if (s >= t_generated - 1 && mel_id[t_generated - 1][0] > -1 && 
+				found && first_step == last_step)	last_step = t_generated - 1;
+			if (found) SaveLySegment(fs, mel_info[m], mel_info2[m], first_step, last_step);
+		}
+	}
+	fs << "\\header {tagline = \"This file was created by MGen and engraved by LilyPond\"}\n";
+	fs.close();
+	//::ShellExecute(GetDesktopWindow(), "open", dir + "\\" + fname + ".ly", NULL, NULL, SW_SHOWNORMAL);
+}
+
+void CGMidi::SaveMidi(CString dir, CString fname) {
 	MidiFile midifile;
 	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
 	int tpq = 120;                // ticks per quarter note

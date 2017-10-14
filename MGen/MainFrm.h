@@ -232,4 +232,10 @@ public:
 	afx_msg void OnUpdateCheckCurve(CCmdUI *pCmdUI);
 	afx_msg void OnCheckNsr();
 	afx_msg void OnUpdateCheckNsr(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateButtonFolder(CCmdUI *pCmdUI);
+	afx_msg void OnButtonFolder();
+	afx_msg void OnUpdateButtonLy(CCmdUI *pCmdUI);
+	afx_msg void OnButtonLy();
+	afx_msg void OnUpdateButtonPdf(CCmdUI *pCmdUI);
+	afx_msg void OnButtonPdf();
 };
