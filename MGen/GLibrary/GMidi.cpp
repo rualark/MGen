@@ -45,6 +45,14 @@ int CGMidi::GetLyVcnt(int step1, int step2, vector<int> &vm_max) {
 }
 
 CString CGMidi::GetLyNote(int i, int v) {
+	// Use flat version of note only if key is flat and note is in diatonic scale
+	if ((minor[i][v] && !LyMinorKeySharp[tonic[i][v]]) || 
+		(!minor[i][v] && !LyMajorKeySharp[tonic[i][v]])) {
+		// Convert chromatic to diatonic and back to check if it is in diatonic scale
+		if (note[i][v] == C_CC(CC_C(note[i][v], tonic[i][v], minor[i][v]), tonic[i][v], minor[i][v])) {
+			return LyNoteFlat[note[i][v] % 12] + LyOctave[note[i][v] / 12];
+		}
+	}
 	return LyNoteSharp[note[i][v] % 12] + LyOctave[note[i][v] / 12];
 }
 

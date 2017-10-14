@@ -22,6 +22,16 @@
 // Warn if log frequency is above this value
 #define WARN_LOG_FREQ 1000
 
+// Convert chromatic to diatonic
+#define CC_C(note, tonic, minor) (minor?m_CC_C(note, tonic):maj_CC_C(note, tonic))
+#define maj_CC_C(note, tonic) (chrom_to_dia[(note + 12 - tonic) % 12] + ((note + 12 - tonic) / 12) * 7)
+#define m_CC_C(note, tonic) (m_chrom_to_dia[(note + 12 - tonic) % 12] + ((note + 12 - tonic) / 12) * 7)
+
+// Convert diatonic to chromatic
+#define C_CC(note, tonic, minor) (minor?m_C_CC(note, tonic):maj_C_CC(note, tonic))
+#define maj_C_CC(note, tonic) (dia_to_chrom[note % 7] + (note / 7 - 1) * 12 + tonic)
+#define m_C_CC(note, tonic) (m_dia_to_chrom[note % 7] + (note / 7 - 1) * 12 + tonic)
+
 typedef  unsigned long int  ub4; // a ub4 is an unsigned 4-byte quantity
 
 const int int_meaning[] = { 0, -1, 0, -1, 0, 1, -1 };

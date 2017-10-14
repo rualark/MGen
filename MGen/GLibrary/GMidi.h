@@ -110,16 +110,16 @@ const CString LyNoteSharp[] = {
 
 const CString LyNoteFlat[] = {
 	"c", // 0
-	"des", // 1
+	"df", // 1
 	"d", // 2
-	"ees", // 3
+	"ef", // 3
 	"e", // 4
 	"f", // 5
-	"ges", // 6
+	"gf", // 6
 	"g", // 7
-	"aes", // 8
+	"af", // 8
 	"a", // 9
-	"bes", // 10
+	"bf", // 10
 	"b" // 11
 };
 
