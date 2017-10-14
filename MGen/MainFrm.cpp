@@ -106,6 +106,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_CURVE, &CMainFrame::OnUpdateCheckCurve)
 	ON_COMMAND(ID_CHECK_NSR, &CMainFrame::OnCheckNsr)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_NSR, &CMainFrame::OnUpdateCheckNsr)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_FOLDER, &CMainFrame::OnUpdateButtonFolder)
+	ON_COMMAND(ID_BUTTON_FOLDER, &CMainFrame::OnButtonFolder)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_LY, &CMainFrame::OnUpdateButtonLy)
+	ON_COMMAND(ID_BUTTON_LY, &CMainFrame::OnButtonLy)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_PDF, &CMainFrame::OnUpdateButtonPdf)
+	ON_COMMAND(ID_BUTTON_PDF, &CMainFrame::OnButtonPdf)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -761,6 +767,7 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		CreateDirectory("autosaves\\" + AlgFolder[m_algo], NULL);
 		pGen->SaveResults(dir, fname);
 		pGen->SaveMidi(dir, fname);
+		pGen->SaveLy(dir, fname);
 		m_dir = dir;
 		m_fname = fname;
 		GetActiveDocument()->SetTitle(fname);
@@ -1400,40 +1407,28 @@ void CMainFrame::OnSpinZoom()
 }
 
 
-void CMainFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-
-	CFrameWndEx::OnKeyDown(nChar, nRepCnt, nFlags);
+void CMainFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  CFrameWndEx::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-
-void CMainFrame::OnUpdateButtonOpenmidi(CCmdUI *pCmdUI)
-{
+void CMainFrame::OnUpdateButtonOpenmidi(CCmdUI *pCmdUI) {
 	pCmdUI->Enable(m_fname != "");
 }
 
-
-void CMainFrame::OnButtonOpenmidi()
-{
+void CMainFrame::OnButtonOpenmidi() {
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir + "\\" + m_fname + ".mid", NULL, NULL, SW_SHOWNORMAL);
 }
 
-
-void CMainFrame::OnButtonEditalgo()
-{
+void CMainFrame::OnButtonEditalgo() {
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "configs\\algorithms.txt", NULL, NULL, SW_SHOWNORMAL);
 }
 
-
-void CMainFrame::OnButtonEditinst()
-{
+void CMainFrame::OnButtonEditinst() {
 	//::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "instruments.pl", NULL, NULL, SW_SHOWNORMAL);
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", "instruments", NULL, NULL, SW_SHOWNORMAL);
 }
 
-
-void CMainFrame::OnButtonReloadalgo()
-{
+void CMainFrame::OnButtonReloadalgo() {
 	LoadAlgo();
 }
 
@@ -1464,29 +1459,21 @@ void CMainFrame::OnButtonEcsv()
 	}
 }
 
-void CMainFrame::OnButtonOpencsv()
-{
+void CMainFrame::OnButtonOpencsv() {
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir + "\\" + m_fname + ".csv", NULL, NULL, SW_SHOWNORMAL);
 }
 
-
-void CMainFrame::OnUpdateButtonOpencsv(CCmdUI *pCmdUI)
-{
+void CMainFrame::OnUpdateButtonOpencsv(CCmdUI *pCmdUI) {
 	pCmdUI->Enable(m_state_gen == 2 && CGLib::fileExists(m_dir + "\\" + m_fname + ".csv"));
 }
 
-
-void CMainFrame::OnButtonReloadSettings()
-{
+void CMainFrame::OnButtonReloadSettings() {
 	LoadSettings();
 }
 
-
-void CMainFrame::OnUpdateButtonReloadSettings(CCmdUI *pCmdUI)
-{
+void CMainFrame::OnUpdateButtonReloadSettings(CCmdUI *pCmdUI) {
 	pCmdUI->Enable();
 }
-
 
 void CMainFrame::OnCheckTempo() {
 	show_tempo = !show_tempo;
@@ -1610,3 +1597,31 @@ void CMainFrame::OnButtonSstatus2()
 	dlg.DoModal();
 }
 
+void CMainFrame::OnUpdateButtonFolder(CCmdUI *pCmdUI) {
+	pCmdUI->Enable(!m_fname.IsEmpty());
+}
+
+void CMainFrame::OnButtonFolder() {
+	if (!m_fname.IsEmpty()) 
+		::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir, NULL, NULL, SW_SHOWNORMAL);
+}
+
+void CMainFrame::OnUpdateButtonLy(CCmdUI *pCmdUI) {
+	pCmdUI->Enable(!m_fname.IsEmpty());
+}
+
+void CMainFrame::OnButtonLy() {
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", 
+		m_dir + "\\" + m_fname + ".ly", 
+		NULL, NULL, SW_SHOWNORMAL);
+}
+
+void CMainFrame::OnUpdateButtonPdf(CCmdUI *pCmdUI) {
+	pCmdUI->Enable(!m_fname.IsEmpty() && CGLib::fileExists(m_dir + "\\" + m_fname + ".pdf"));
+}
+
+void CMainFrame::OnButtonPdf() {
+	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", 
+		m_dir + "\\" + m_fname + ".pdf",
+		NULL, NULL, SW_SHOWNORMAL);
+}
