@@ -36,6 +36,14 @@ void CGMidi::GetLyRange(int step1, int step2, vector<int> &vm_min, vector<int> &
 	}
 }
 
+int CGMidi::GetLyVcnt(int step1, int step2, vector<int> &vm_max) {
+	int vm_cnt = 0;
+	for (int v = v_cnt - 1; v >= 0; --v) {
+		if (vm_max[v]) ++vm_cnt;
+	}
+	return vm_cnt;
+}
+
 CString CGMidi::GetLyNote(int pitch) {
 	return LyNoteSharp[pitch % 12] + LyOctave[pitch / 12];
 }
@@ -94,13 +102,17 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le) {
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	CString note_st;
-	int pos, pos2, le, le2;
+	int pos, pos2, le, le2, vm_cnt;
+	float mul;
 	// Voice melody min pitch
 	vector<int> vm_min;
 	// Voice melody max pitch
 	vector<int> vm_max;
 	// Calculate stats
 	GetLyRange(step1, step2, vm_min, vm_max);
+	vm_cnt = GetLyVcnt(step1, step2, vm_max);
+	mul = midifile_out_mul;
+	if (vm_cnt == 1 && (m_algo_id == 121 || m_algo_id == 112)) mul = 8;
 	// First info
 	st.Replace("\n", ", ");
 	st.Replace("#", "\"#\"");
@@ -125,8 +137,8 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		fs << "  }\n";
 		fs << "  {\n";
 		for (int i = step1; i < step2; i++) {
-			pos = midifile_out_mul * (i - step1);
-			le = midifile_out_mul * len[i][v];
+			pos = mul * (i - step1);
+			le = mul * len[i][v];
 			if (pause[i][v]) {
 				SendLyEvent(fs, pos, "r", le);
 			}

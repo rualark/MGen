@@ -85,6 +85,7 @@ public:
 	CGMidi();
 	~CGMidi();
 	void GetLyRange(int step1, int step2, vector<int>& vm_min, vector<int>& vm_max);
+	int GetLyVcnt(int step1, int step2, vector<int>& vm_max);
 	CString GetLyNote(int pitch);
 	CString GetLyLen(int length);
 	void SplitLyNote(int pos, int le, vector<int>& la);
