@@ -370,13 +370,13 @@ int CGenCP1::SendCP() {
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f\nDistance penalty: %d", 
+				st.Format("#%d (from %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f\nDistance penalty: %d", 
 					cantus_id+1, midi_file, cantus_high ? "high" : "low", species, l_rpenalty_cur, dpenalty_cur);
 				st2.Format("Flags penalty: %s", rpst);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d (from MIDI file %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
+				st.Format("#%d (from %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
 					cantus_id + 1, midi_file, cantus_high ? "high" : "low", species, l_rpenalty_cur, key_eval);
 				st2.Format("Flags penalty: %s\nKey selection: %s", rpst, key_eval);
 			}

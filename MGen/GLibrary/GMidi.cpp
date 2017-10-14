@@ -145,7 +145,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 }
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
-	CString comm_st, st3;
+	CString comm_st, st3, clef;
 	int pos, pos2, le, le2, vm_cnt, nnum;
 	float mul;
 	// Voice melody min pitch
@@ -171,10 +171,12 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	for (int v = v_cnt - 1; v >= 0; --v) {
 		// Do not show voice if no notes inside
 		if (!vm_max[v]) continue;
-		// Select clef
+		// Select bass clef if melody goes mostly below middle C
+		clef = "treble";
+		if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
 		st = NoteName[tonic[step1][0]];
 		fs << "\\new Staff {\n";
-		fs << "  \\clef \"treble\" \\key " << st.MakeLower();
+		fs << "  \\clef \"" << clef << "\" \\key " << st.MakeLower();
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
 		fs << " \\time 4/4\n";
 		fs << "  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n";
