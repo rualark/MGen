@@ -119,7 +119,7 @@ const CString NoteName[] = {
 	"G#", // 8
 	"A", // 9
 	"A#", // 10
-	"H" // 11
+	"B" // 11
 };
 
 const CString NoteName2[] = {

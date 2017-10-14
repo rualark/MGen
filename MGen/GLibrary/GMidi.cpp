@@ -13,8 +13,56 @@
 CGMidi::CGMidi()
 {
 	mo = 0;
+	//BuildKeyMatrix();
 }
 
+// One-time function
+void CGMidi::BuildKeyMatrix() {
+	CString st, st2, st3;
+	vector<int> v;
+	for (int k = 0; k < 12; ++k) {
+		v.clear();
+		v.resize(12, -1);
+		int d0 = CC_C(key_base[k], 0, 0);
+		st2.Empty();
+		for (int n = 0; n < 7; ++n) {
+			int d = (d0 + n) % 7;
+			int c0 = (C_CC(d, 0, 0) + 12) % 12;
+			int c = (C_CC(n, k, 0) + 12) % 12;
+			v[c] = c0;
+			st.Format("%d, ", d);
+			st2 += st;
+		}
+		//AppendLineToFile("log\\key_build.log", "  { " + st2 + "}, \n");
+		st2.Empty();
+		for (int i = 0; i < 12; ++i) {
+			st.Format("%d, ", v[i]);
+			st2 += st;
+		}
+		//AppendLineToFile("log\\key_build.log", "  { " + st2 + "}, \n");
+	}
+	for (int k = 0; k < 12; ++k) {
+		v.clear();
+		v.resize(12, -1);
+		int d0 = CC_C(key_base_m[k], 0, 0);
+		st2.Empty();
+		for (int n = 0; n < 7; ++n) {
+			int d = (d0 + n) % 7;
+			int c0 = (C_CC(d, 0, 0) + 12) % 12;
+			int c = (C_CC(n, k, 1) + 12) % 12;
+			v[c] = c0;
+			st.Format("%d, ", d);
+			st2 += st;
+		}
+		//AppendLineToFile("log\\key_build.log", "  { " + st2 + "}, \n");
+		st2.Empty();
+		for (int i = 0; i < 12; ++i) {
+			st.Format("%d, ", v[i]);
+			st2 += st;
+		}
+		AppendLineToFile("log\\key_build.log", "  { " + st2 + "}, \n");
+	}
+}
 
 CGMidi::~CGMidi()
 {
@@ -44,37 +92,88 @@ int CGMidi::GetLyVcnt(int step1, int step2, vector<int> &vm_max) {
 	return vm_cnt;
 }
 
+CString CGMidi::GetLyAlter(int alter) {
+	if (alter > 2) alter -= 12;
+	if (alter < -2) alter += 12;
+	if (alter == -1) return "f";
+	else if (alter == -2) return "ff";
+	else if (alter == 1) return "s";
+	else if (alter == 2) return "ss";
+	return "";
+}
+
+CString CGMidi::GetLyAlterVisual(int alter) {
+	if (alter > 2) alter -= 12;
+	if (alter < -2) alter += 12;
+	if (alter == -1) return "\\flat ";
+	else if (alter == -2) return "\\doubleflat ";
+	else if (alter == 1) return "\"#\"";
+	else if (alter == 2) return "\\doublesharp ";
+	return "";
+}
+
 CString CGMidi::GetLyNote(int i, int v) {
-	// Use flat version of note only if key is flat and note is in diatonic scale
-	if ((minor[i][v] && !LyMinorKeySharp[tonic[i][v]]) ||
-		(!minor[i][v] && !LyMajorKeySharp[tonic[i][v]])) {
-		// Convert chromatic to diatonic and back to check if it is in diatonic scale
-		if (note[i][v] == C_CC(CC_C(note[i][v], tonic[i][v], minor[i][v]), tonic[i][v], minor[i][v])) {
-			return LyNoteFlat[note[i][v] % 12] + LyOctave[note[i][v] / 12];
+	int nb, nb2, oct;
+	oct = note[i][v] / 12;
+	if (minor[i][v]) {
+		// Get base chromatic note for current note
+		nb = note_base_m[tonic[i][v]][note[i][v] % 12];
+		// If it is diatonic, just return it
+		if (nb > -1) {
+			if (nb > note[i][v] % 12 + 6) --oct;
+			if (nb < note[i][v] % 12 - 6) ++oct;
+			return LyNoteSharp[nb] + GetLyAlter(note[i][v] % 12 - nb) + LyOctave[oct];
+		} 
+		// If not, build needed note from next lower note
+		else {
+			nb2 = note_base_m[tonic[i][v]][(note[i][v] + 11) % 12];
+			if (nb2 > note[i][v] % 12 + 6) --oct;
+			if (nb2 < note[i][v] % 12 - 6) ++oct;
+			return LyNoteSharp[nb2] + GetLyAlter(note[i][v] % 12 - nb2) + LyOctave[oct];
 		}
 	}
-	return LyNoteSharp[note[i][v] % 12] + LyOctave[note[i][v] / 12];
+	else {
+		nb = note_base[tonic[i][v]][note[i][v] % 12];
+		if (nb > -1) {
+			if (nb > note[i][v] % 12 + 6) --oct;
+			if (nb < note[i][v] % 12 - 6) ++oct;
+			return LyNoteSharp[nb] + GetLyAlter(note[i][v] % 12 - nb) + LyOctave[oct];
+		}
+		else {
+			nb2 = note_base[tonic[i][v]][(note[i][v] + 11) % 12];
+			if (nb2 > note[i][v] % 12 + 6) --oct;
+			if (nb2 < note[i][v] % 12 - 6) ++oct;
+			return LyNoteSharp[nb2] + GetLyAlter(note[i][v] % 12 - nb2) + LyOctave[oct];
+		}
+	}
 }
 
 CString CGMidi::GetLyNoteVisual(int i, int v) {
 	CString st, key_visual;
-	// Use flat version of note only if key is flat and note is in diatonic scale
-	if ((minor[i][v] && !LyMinorKeySharp[tonic[i][v]]) ||
-		(!minor[i][v] && !LyMajorKeySharp[tonic[i][v]])) {
-		// Convert chromatic to diatonic and back to check if it is in diatonic scale
-		if (note[i][v] == C_CC(CC_C(note[i][v], tonic[i][v], minor[i][v]), tonic[i][v], minor[i][v])) {
-			st = LyNoteFlat[note[i][v] % 12];
-			key_visual = st[0];
-			key_visual.MakeUpper();
-			if (st[1] == 'f') key_visual += "\\flat";
-			return key_visual;
+	int nb, nb2;
+	if (minor[i][v]) {
+		// Get base chromatic note for current note
+		nb = note_base_m[tonic[i][v]][note[i][v] % 12];
+		// If it is diatonic, just return it
+		if (nb > -1) {
+			return NoteName[nb] + GetLyAlterVisual(note[i][v] % 12 - nb);
+		}
+		// If not, build needed note from next lower note
+		else {
+			nb2 = note_base_m[tonic[i][v]][(note[i][v] + 11) % 12];
+			return NoteName[nb2] + GetLyAlterVisual(note[i][v] % 12 - nb2);
 		}
 	}
-	st = LyNoteSharp[note[i][v] % 12];
-	key_visual = st[0];
-	key_visual.MakeUpper();
-	if (st[1] == 's') key_visual = "\"" + key_visual + "#\"";
-	return key_visual;
+	else {
+		nb = note_base[tonic[i][v]][note[i][v] % 12];
+		if (nb > -1) {
+			return NoteName[nb] + GetLyAlterVisual(note[i][v] % 12 - nb);
+		}
+		else {
+			nb2 = note_base[tonic[i][v]][(note[i][v] + 11) % 12];
+			return NoteName[nb2] + GetLyAlterVisual(note[i][v] % 12 - nb2);
+		}
+	}
 }
 
 CString CGMidi::GetLyLen(int length) {
@@ -152,6 +251,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 			nnum, pos / 8 + 1, pos % 8 + 1, GetLyNoteVisual(i, v));
 		// NoteName[note[i][v] % 12]
 		note_st += st + "\n}\n";
+		com_st += note_st;
 		found = 0;
 		for (int c = 0; c < comment[i][v].size(); ++c) {
 			com = comment[i][v][c];

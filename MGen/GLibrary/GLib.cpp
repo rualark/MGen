@@ -52,7 +52,6 @@ CGLib::CGLib()
 	fill(begin(rmm), end(rmm), (ub4)0);
 }
 
-
 CGLib::~CGLib()
 {
 }
