@@ -158,6 +158,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	if (vsize == -1) vsize = v_cnt;
 	pause.resize(size);
 	note.resize(size);
+	midifile_out_mul.resize(size, 1);
 	ngraph.resize(size, vector<vector<float> >(vsize, vector<float>(ngraph_size)));
 	len.resize(size);
 	coff.resize(size);
@@ -292,7 +293,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 			CheckVar(&st2, &st3, "t_allocated", &t_allocated, 0);
 			CheckVar(&st2, &st3, "t_send", &t_send, 1);
 			CheckVar(&st2, &st3, "midifile_in_mul", &midifile_in_mul, 0.00000001);
-			CheckVar(&st2, &st3, "midifile_out_mul", &midifile_out_mul, 0.00000001);
+			CheckVar(&st2, &st3, "midifile_out_mul", &midifile_out_mul0, 0.00000001);
 			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms, 0);
 			CheckVar(&st2, &st3, "midifile_export_marks", &midifile_export_marks, 0, 1);
 			CheckVar(&st2, &st3, "midifile_export_comments", &midifile_export_comments, 0, 1);
@@ -1374,6 +1375,7 @@ void CGVar::FillPause(int start, int length, int v) {
 		dyn[x][v] = 0;
 		tonic[x][v] = tonic_cur;
 		minor[x][v] = minor_cur;
+		midifile_out_mul[x] = midifile_out_mul0 * midifile_out_mul2;
 		comment[x][v].clear();
 		comment2[x][v].Empty();
 	}

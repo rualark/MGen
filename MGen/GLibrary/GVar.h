@@ -47,7 +47,6 @@ public:
 	int t_allocated = 1600; // Timeslot count to initialize vectors
 	int t_send = 60; // Timeslot count to send
 	float midifile_in_mul = 1; // Multiply note length with this value when loading
-	float midifile_out_mul = 1; // Multiply note length with this value when saving
 	int shuffle = 0; // If you want to shuffle all canti after generation (can shuffle up to 32000 canti)
 	int sleep_ms = 0;
 	int adapt_enable = 1;
@@ -73,8 +72,11 @@ public:
 	float basic_tempo = 100; // Basic tempo
 	int tonic_cur = 0; // Tonic key
 	int minor_cur = 0; // Key minor indicator (0 = major, 1 = minor)
+	int midifile_out_mul0 = 1; // Multiply note length with this value when saving
+	int midifile_out_mul2 = 1; // Multiply note length with this value when saving
 
 	// Output
+	vector<float> midifile_out_mul; // [s] Multiply note length with this value when saving
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
 	vector< vector <unsigned char> > note; // Note values (midi)
 	vector< vector <unsigned short> > len; // Note length in timeslots

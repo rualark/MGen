@@ -19,6 +19,7 @@ protected:
 	void ExplodeCP();
 	void LinkCpPauses();
 	void DetectSpecies();
+	void ApplyMidiOutSpecies();
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void SendCorrectionsCP(int i, long long time_start);
 	

@@ -387,25 +387,25 @@ void CGenCF1::ProcessSpecies() {
 		if (species == 1) {
 			npm = 1;
 			fn = 0;
-			midifile_out_mul *= 8;
+			midifile_out_mul2 = 8;
 		}
 		if (species == 2) {
 			npm = 2;
 			fn = 1;
 			if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
-			midifile_out_mul *= 4;
+			midifile_out_mul2 = 4;
 		}
 		if (species == 3) {
 			npm = 4;
 			fn = 1;
 			if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
-			midifile_out_mul *= 2;
+			midifile_out_mul2 = 2;
 		}
 		if (species == 4) {
 			npm = 2;
 			fn = 1;
 			if (accept[273] && rand() > RAND_MAX / 2) fn = 0;
-			midifile_out_mul *= 4;
+			midifile_out_mul2 = 4;
 		}
 		if (species == 5) {
 			npm = 8;
@@ -413,6 +413,7 @@ void CGenCF1::ProcessSpecies() {
 			else fn = randbw(1, 2);
 			if (fn == 2) fn = 4;
 			else if (fn == 1) fn = 2;
+			midifile_out_mul2 = 1;
 		}
 	}
 }
@@ -3377,6 +3378,7 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	note[pos + i][v] = cc[x];
 	tonic[pos + i][v] = tonic_cur;
 	minor[pos + i][v] = minor_cur;
+	midifile_out_mul[pos + i] = midifile_out_mul0 * midifile_out_mul2;
 	len[pos + i][v] = len_export[x];
 	pause[pos + i][v] = 0;
 	coff[pos + i][v] = coff_export[x] + i;

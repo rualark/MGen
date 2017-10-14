@@ -195,6 +195,8 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Pause indicator: %d\n", pGen->pause[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("MIDI export multiplier: %.0f\n", pGen->midifile_out_mul[ms]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
 		//AddText("Some text text text\r\n", RGB(250, 100, 0), CFE_BOLD | CFE_ITALIC | CFE_STRIKEOUT | CFE_UNDERLINE);
 		m_info.SetSel(0, 0);
 		pGen->mutex_output.unlock();

@@ -313,20 +313,24 @@ void CGenCA2::DetectSpecies() {
 	else {
 		species = species_detected;
 	}
+}
+
+void CGenCA2::ApplyMidiOutSpecies() {
 	// Set midi out multiplier
-	if (species_applied) return;
-	species_applied = 1;
 	if (species == 1) {
-		midifile_out_mul *= 8;
+		midifile_out_mul2 = 8;
 	}
 	if (species == 2) {
-		midifile_out_mul *= 4;
+		midifile_out_mul2 = 4;
 	}
 	if (species == 3) {
-		midifile_out_mul *= 2;
+		midifile_out_mul2 = 2;
 	}
 	if (species == 4) {
-		midifile_out_mul *= 4;
+		midifile_out_mul2 = 4;
+	}
+	if (species == 5) {
+		midifile_out_mul2 = 1;
 	}
 }
 
@@ -454,6 +458,7 @@ void CGenCA2::Generate() {
 		//LogCantus("ca2", cantus_id, cpoint[cantus_id][cpv].size(), cpoint[cantus_id][cpv]);
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0) + fn * cantus_len[i][0];
 		dpenalty_cur = 0;
+		midifile_out_mul2 = 8;
 		// Create pause
 		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 0);
 		FillPause(step0, floor((real_len + 1) / 8 + 1) * 8, 1);
@@ -464,6 +469,7 @@ void CGenCA2::Generate() {
 		show_note_scan_range = 0;
 		SelectRuleSet(cf_rule_set);
 		ScanCantus(tEval, cfv, &(m_cc));
+		ApplyMidiOutSpecies();
 		// Go forward
 		show_note_scan_range = 1;
 		t_generated = step;

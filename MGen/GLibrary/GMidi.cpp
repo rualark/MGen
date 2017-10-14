@@ -188,8 +188,8 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	// Calculate stats
 	GetLyRange(step1, step2, vm_min, vm_max);
 	vm_cnt = GetLyVcnt(step1, step2, vm_max);
-	mul = midifile_out_mul;
-	if (vm_cnt == 1 && (m_algo_id == 121 || m_algo_id == 112)) mul = 8;
+	mul = midifile_out_mul[step1];
+	//if (vm_cnt == 1 && (m_algo_id == 121 || m_algo_id == 112)) mul = 8;
 	// Key
 	if (minor[step1][0]) {
 		key = LyMinorKey[tonic[step1][0]];
@@ -313,17 +313,19 @@ void CGMidi::SaveMidi(CString dir, CString fname) {
 	MidiFile midifile;
 	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
 	int tpq = 120;                // ticks per quarter note
-	int tpc = 60 * midifile_out_mul; // ticks per croche
+	int tpc = 60; // ticks per croche
 	midifile.setTicksPerQuarterNote(tpq);
 	int track = 0;
 	int channel = 0;
+	int pos = tpq * 4;
 	// Add some expression track (track 0) messages:
 	string st = fname;
 	midifile.addTrackName(track, 0, st);
 	// Save tempo
 	midifile.addTempo(track, 0, tempo[0]);
 	for (int i = 0; i < t_generated; i++) {
-		midifile.addTempo(track, (tpq * 4) + tpc * i, tempo[i] * midifile_out_mul);
+		midifile.addTempo(track, pos, tempo[i] * midifile_out_mul[i]);
+		pos += tpc * midifile_out_mul[i];
 	}
 	// Save notes
 	for (int v = 0; v < v_cnt; v++) {
@@ -336,20 +338,26 @@ void CGMidi::SaveMidi(CString dir, CString fname) {
 		midifile.addTrackName(track, 0, st);
 		//if (ngv_min[v] < 57) midifile.addPatchChange(track, 0, channel, bass_program[v]); // 0=piano, 40=violin, 70=bassoon
 		midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
-		for (int i = 0; i < t_generated; i++) if (pause[i][v] == 0) {
-			midifile.addNoteOn(track, (tpq * 4) + tpc*i, channel, note[i][v], dyn[i][v]);
-			midifile.addNoteOff(track, (tpq * 4) + tpc*(i + len[i][v]) - 1, channel, note[i][v], 0);
+		pos = tpq * 4;
+		for (int i = 0; i < t_generated; i++) {
+			if (pause[i][v]) {
+				pos += tpc * midifile_out_mul[i];
+				continue;
+			}
+			midifile.addNoteOn(track, pos, channel, note[i][v], dyn[i][v]);
+			midifile.addNoteOff(track, pos + tpc*midifile_out_mul[i]*(len[i][v]) - 1, channel, note[i][v], 0);
 			if (midifile_export_comments && !comment2[i][v].IsEmpty()) {
 				string st;
 				st = comment2[i][v];
-				midifile.addLyric(track, (tpq * 4) + tpc*i, st);
+				midifile.addLyric(track, pos, st);
 			}
 			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 				string st;
 				st = mark[i][v];
-				midifile.addLyric(track, (tpq * 4) + tpc*i, st);
+				midifile.addLyric(track, pos, st);
 			}
 			if (noff[i][v] == 0) break;
+			pos += tpc * midifile_out_mul[i] * noff[i][v];
 			i += noff[i][v] - 1;
 		}
 	}
