@@ -46,7 +46,7 @@ int CGMidi::GetLyVcnt(int step1, int step2, vector<int> &vm_max) {
 
 CString CGMidi::GetLyNote(int i, int v) {
 	// Use flat version of note only if key is flat and note is in diatonic scale
-	if ((minor[i][v] && !LyMinorKeySharp[tonic[i][v]]) || 
+	if ((minor[i][v] && !LyMinorKeySharp[tonic[i][v]]) ||
 		(!minor[i][v] && !LyMajorKeySharp[tonic[i][v]])) {
 		// Convert chromatic to diatonic and back to check if it is in diatonic scale
 		if (note[i][v] == C_CC(CC_C(note[i][v], tonic[i][v], minor[i][v]), tonic[i][v], minor[i][v])) {
@@ -54,6 +54,27 @@ CString CGMidi::GetLyNote(int i, int v) {
 		}
 	}
 	return LyNoteSharp[note[i][v] % 12] + LyOctave[note[i][v] / 12];
+}
+
+CString CGMidi::GetLyNoteVisual(int i, int v) {
+	CString st, key_visual;
+	// Use flat version of note only if key is flat and note is in diatonic scale
+	if ((minor[i][v] && !LyMinorKeySharp[tonic[i][v]]) ||
+		(!minor[i][v] && !LyMajorKeySharp[tonic[i][v]])) {
+		// Convert chromatic to diatonic and back to check if it is in diatonic scale
+		if (note[i][v] == C_CC(CC_C(note[i][v], tonic[i][v], minor[i][v]), tonic[i][v], minor[i][v])) {
+			st = LyNoteFlat[note[i][v] % 12];
+			key_visual = st[0];
+			key_visual.MakeUpper();
+			if (st[1] == 'f') key_visual += "\\flat";
+			return key_visual;
+		}
+	}
+	st = LyNoteSharp[note[i][v] % 12];
+	key_visual = st[0];
+	key_visual.MakeUpper();
+	if (st[1] == 's') key_visual = "\"" + key_visual + "#\"";
+	return key_visual;
 }
 
 CString CGMidi::GetLyLen(int length) {
@@ -119,6 +140,7 @@ CString CGMidi::GetLyColor(DWORD col) {
 // Send note or pause
 void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
 	fs << "\n    \\override NoteHead.color = #(rgb-color " << GetLyColor(col) << ") ";
+	fs << "\n    \\override Stem.color = #(rgb-color " << GetLyColor(col) << ") ";
 }
 
 void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
@@ -126,8 +148,9 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 	int pos1, pos2, found;
 	if (comment[i][v].size()) {
 		note_st = "\\markup \\wordwrap \\bold {\n  ";
-		st.Format("\"NOTE %d at %d:%d - %s\"\n",
-			nnum, pos / 8 + 1, pos % 8 + 1, NoteName[note[i][v] % 12]);
+		st.Format("NOTE %d at %d:%d - %s\n",
+			nnum, pos / 8 + 1, pos % 8 + 1, GetLyNoteVisual(i, v));
+		// NoteName[note[i][v] % 12]
 		note_st += st + "\n}\n";
 		found = 0;
 		for (int c = 0; c < comment[i][v].size(); ++c) {
@@ -155,7 +178,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 }
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
-	CString comm_st, st3, clef, key;
+	CString comm_st, clef, key, key_visual;
 	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum;
 	float mul;
 	// Voice melody min pitch
@@ -168,14 +191,23 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	mul = midifile_out_mul;
 	if (vm_cnt == 1 && (m_algo_id == 121 || m_algo_id == 112)) mul = 8;
 	// Key
-	st3.Format("Key: %s%s\n", NoteName[tonic[step1][0]], minor[step1][0] ? "m" : "");
+	if (minor[step1][0]) {
+		key = LyMinorKey[tonic[step1][0]];
+	}
+	else {
+		key = LyMajorKey[tonic[step1][0]];
+	}
+	key_visual = key[0];
+	key_visual.MakeUpper();
+	if (key[1] == 'f') key_visual += "\\flat ";
+	if (key[1] == 's') key_visual = "\"" + key_visual + "#\"";
 	// First info
 	st.Replace("\n", ", ");
 	st.Replace("#", "\"#\"");
 	st.Replace("\\", "/");
 	fs << "\\markup \\wordwrap \\bold {\n  ";
 	if (step1) fs << "    \\vspace #2\n";
-	fs << st << ", " << st3 << "\n}\n";
+	fs << st << ", Key: " << key_visual << (minor[step1][0]?"m":"") << "\n}\n";
 	// Save notes
 	fs << "<<\n";
 	for (int v = v_cnt - 1; v >= 0; --v) {
@@ -184,12 +216,6 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		// Select bass clef if melody goes mostly below middle C
 		clef = "treble";
 		if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
-		if (minor[step1][0]) {
-			key = LyMinorKey[tonic[step1][0]];
-		}
-		else {
-			key = LyMajorKey[tonic[step1][0]];
-		}
 		fs << "\\new Staff {\n";
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
