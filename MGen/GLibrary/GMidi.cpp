@@ -44,8 +44,8 @@ int CGMidi::GetLyVcnt(int step1, int step2, vector<int> &vm_max) {
 	return vm_cnt;
 }
 
-CString CGMidi::GetLyNote(int pitch) {
-	return LyNoteSharp[pitch % 12] + LyOctave[pitch / 12];
+CString CGMidi::GetLyNote(int i, int v) {
+	return LyNoteSharp[note[i][v] % 12] + LyOctave[note[i][v] / 12];
 }
 
 CString CGMidi::GetLyLen(int length) {
@@ -146,7 +146,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 }
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
-	CString comm_st, st3, clef;
+	CString comm_st, st3, clef, key;
 	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum;
 	float mul;
 	// Voice melody min pitch
@@ -175,9 +175,14 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		// Select bass clef if melody goes mostly below middle C
 		clef = "treble";
 		if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
-		st = NoteName[tonic[step1][0]];
+		if (minor[step1][0]) {
+			key = LyMinorKey[tonic[step1][0]];
+		}
+		else {
+			key = LyMajorKey[tonic[step1][0]];
+		}
 		fs << "\\new Staff {\n";
-		fs << "  \\clef \"" << clef << "\" \\key " << st.MakeLower();
+		fs << "  \\clef \"" << clef << "\" \\key " << key;
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
 		fs << " \\time 4/4\n";
 		fs << "  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n";
@@ -204,7 +209,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 					pause_accum = 0;
 				}
 				SendLyNoteColor(fs, color[i][v]);
-				SendLyEvent(fs, pos, GetLyNote(note[i][v]), le);
+				SendLyEvent(fs, pos, GetLyNote(i, v), le);
 				SaveLyComments(comm_st, i, v, nnum, pos);
 			}
 			if (midifile_export_marks && !mark[i][v].IsEmpty()) {

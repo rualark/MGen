@@ -33,6 +33,66 @@
 // Bass instruments
 const int bass_program[] = { 45, 33, 70, 58, 34, 35, 36, 37, 38 };
 
+const CString LyMajorKey[] = {
+	"c", // 0
+	"df", // 1
+	"d", // 2
+	"ef", // 3
+	"e", // 4
+	"f", // 5
+	"gf", // 6
+	"g", // 7
+	"af", // 8
+	"a", // 9
+	"bf", // 10
+	"b" // 11
+};
+
+const CString LyMinorKey[] = {
+	"c", // 0
+	"cs", // 1
+	"d", // 2
+	"ef", // 3
+	"e", // 4
+	"f", // 5
+	"fs", // 6
+	"g", // 7
+	"gs", // 8
+	"a", // 9
+	"bf", // 10
+	"b" // 11
+};
+
+const int LyMajorKeySharp[] = {
+	1, // 0
+	0, // 1
+	1, // 2
+	0, // 3
+	1, // 4
+	0, // 5
+	0, // 6
+	1, // 7
+	0, // 8
+	1, // 9
+	0, // 10
+	1 // 11
+};
+
+const int LyMinorKeySharp[] = {
+	0, // 0
+	1, // 1
+	0, // 2
+	0, // 3
+	1, // 4
+	0, // 5
+	1, // 6
+	0, // 7
+	1, // 8
+	1, // 9
+	0, // 10
+	1 // 11
+};
+
 const CString LyNoteSharp[] = {
 	"c", // 0
 	"cs", // 1
@@ -86,7 +146,7 @@ public:
 	~CGMidi();
 	void GetLyRange(int step1, int step2, vector<int>& vm_min, vector<int>& vm_max);
 	int GetLyVcnt(int step1, int step2, vector<int>& vm_max);
-	CString GetLyNote(int pitch);
+	CString GetLyNote(int i, int v);
 	CString GetLyLen(int length);
 	void SplitLyNote(int pos, int le, vector<int>& la);
 	void SendLyEvent(ofstream & fs, int pos, CString ev, int le);

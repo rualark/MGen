@@ -4,6 +4,23 @@
 \markup {
   "123.mid Cantus #1, counterpoint #2, species 3, CF=low"
 }
+\new Staff { \clef "treble" \key c \major }
+\new Staff { \clef "treble" \key d \major }
+\new Staff { \clef "treble" \key e \major }
+\new Staff { \clef "treble" \key f \major }
+\new Staff { \clef "treble" \key g \major }
+\new Staff { \clef "treble" \key a \major }
+\new Staff { \clef "treble" \key b \major }
+\new Staff { \clef "treble" \key cs \major }
+\new Staff { \clef "treble" \key ds \major }
+\new Staff { \clef "treble" \key fs \major }
+\new Staff { \clef "treble" \key gs \major }
+\new Staff { \clef "treble" \key as \major }
+\new Staff { \clef "treble" \key bf \major }
+\new Staff { \clef "treble" \key ds \major }
+\new Staff { \clef "treble" \key fs \major }
+\new Staff { \clef "treble" \key gs \major }
+\new Staff { \clef "treble" \key as \major }
 <<
 \new Staff { \clef "treble" \key d \major \time 4/4
   \set Score.barNumberVisibility = #all-bar-numbers-visible
