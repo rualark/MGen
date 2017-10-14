@@ -71,7 +71,9 @@ public:
 	float tg_min = 1000; // Minimum generated tempo
 	float tg_max = 0; // Maximum generated tempo
 	float basic_tempo = 100; // Basic tempo
-	
+	int tonic_cur = 0; // Tonic key
+	int minor_cur = 0; // Key minor indicator (0 = major, 1 = minor)
+
 	// Output
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
 	vector< vector <unsigned char> > note; // Note values (midi)

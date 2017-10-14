@@ -1372,6 +1372,8 @@ void CGVar::FillPause(int start, int length, int v) {
 		len[x][v] = 1;
 		coff[x][v] = 0;
 		dyn[x][v] = 0;
+		tonic[x][v] = tonic_cur;
+		minor[x][v] = minor_cur;
 		comment[x][v].clear();
 		comment2[x][v].Empty();
 	}
