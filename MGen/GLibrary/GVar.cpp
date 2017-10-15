@@ -295,6 +295,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 			CheckVar(&st2, &st3, "midifile_in_mul", &midifile_in_mul, 0.00000001);
 			CheckVar(&st2, &st3, "midifile_out_mul", &midifile_out_mul0, 0.00000001);
 			CheckVar(&st2, &st3, "sleep_ms", &sleep_ms, 0);
+			CheckVar(&st2, &st3, "midifile_export_allowed", &midifile_export_allowed, 0, 1);
 			CheckVar(&st2, &st3, "midifile_export_marks", &midifile_export_marks, 0, 1);
 			CheckVar(&st2, &st3, "midifile_export_comments", &midifile_export_comments, 0, 1);
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable, 0, 1);
