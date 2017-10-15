@@ -55,6 +55,6 @@ best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requ
 show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
 show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
 
-midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
+midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
 emulate_sas = 0 # 0 = disable emulator, 1 = Enables SAS algorithm emulator
