@@ -53,6 +53,7 @@ calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down g
 calculate_ssf = 0 # Enables SWA stuck flags statistics calculation algorithm.
 best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
 show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
+show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
 
 midifile_export_marks = 0 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics

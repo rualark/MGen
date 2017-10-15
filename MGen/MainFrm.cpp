@@ -984,6 +984,7 @@ void CMainFrame::LoadSettings()
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
 	}
+	CGLib::show_lining = show_lining;
 	CGLib::debug_level = m_debug_level;
 	fs.close();
 	// Resave file to update format
@@ -1517,6 +1518,7 @@ void CMainFrame::OnUpdateCheckComments(CCmdUI *pCmdUI) {
 
 void CMainFrame::OnCheckLining() {
 	show_lining = !show_lining;
+	CGLib::show_lining = show_lining;
 	SaveSettings();
 	GetActiveView()->Invalidate();
 }
