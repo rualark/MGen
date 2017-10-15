@@ -3553,7 +3553,8 @@ int CGenCF1::SendCantus() {
 			Adapt(step00, step - 1);
 		}
 		// If  window-scan
-		st.Format("#%d\nRule penalty: %.0f", cantus_sent, l_rpenalty_cur);
+		st.Format("#%d\nRule penalty: %.0f\nCantus: %s", 
+			cantus_sent, l_rpenalty_cur, cantus_high?"high":"low");
 		st2.Format("Flags penalty: %s", rpst);
 		AddMelody(step00, pos - 1, v, st, st2);
 		if (v) AddMelody(step00, pos - 1, 0, st, st2);
@@ -3561,20 +3562,22 @@ int CGenCF1::SendCantus() {
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
 			// If RSWA
-			st.Format("#%d\nRule penalty: %.0f", cantus_sent, l_rpenalty_cur);
+			st.Format("#%d\nRule penalty: %.0f\nCantus: %s", 
+				cantus_sent, l_rpenalty_cur, cantus_high ? "high" : "low");
 			st2.Format("Flags penalty: %s", rpst);
 		}
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from %s)\nRule penalty: %.0f => %.0f\nDistance penalty: %d", 
-					cantus_id+1, midi_file, rpenalty_source, l_rpenalty_cur, dpenalty_cur);
+				st.Format("#%d (from %s)\nRule penalty: %.0f => %.0f\nDistance penalty: %d\nCantus: %s", 
+					cantus_id+1, midi_file, rpenalty_source, l_rpenalty_cur, 
+					dpenalty_cur, cantus_high ? "high" : "low");
 				st2.Format("Flags penalty: %s => %s", fpenalty_source, rpst);
 			}
 			else {
 				// If evaluating
-				st.Format("#%d (from %s)\nRule penalty: %.0f", 
-					cantus_id + 1, midi_file, l_rpenalty_cur);
+				st.Format("#%d (from %s)\nRule penalty: %.0f\nCantus: %s", 
+					cantus_id + 1, midi_file, l_rpenalty_cur, cantus_high ? "high" : "low");
 				st2.Format("Flags penalty: %s\nKey selection: %s", rpst, key_eval);
 			}
 		}
