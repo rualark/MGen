@@ -422,7 +422,11 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				SaveLyComments(comm_st, i, v, vm_cnt, nnum, pos);
 			}
 			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
-				//mark[i][v];
+				CString st = mark[i][v];
+				st.Replace("\n", "");
+				fs << "_\\markup{ \\tiny \\with-color #(rgb-color ";
+				fs << GetLyColor(mark_color[i][v]);
+				fs << ") " << st << " }\n";
 			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
