@@ -259,14 +259,12 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	for (int lc = 0; lc < la.size(); ++lc) {
 		if (show_lining && ev != "r") {
 			if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOn ";
+			else fs << " \\speakOff ";
 			if (lining[i][v] == HatchStyleLightUpwardDiagonal) fs << " \\circle ";
 		}
 		fs << ev + GetLyLen(la[lc]);
 		if (lc < la.size() - 1 && ev != "r") fs << "~";
 		fs << " ";
-		if (ev != "r") {
-			if (show_lining && lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOff ";
-		}
 		if (i > -1) i += la[lc] / midifile_out_mul[i];
 	}
 }
