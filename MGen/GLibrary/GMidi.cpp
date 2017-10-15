@@ -311,6 +311,25 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 	}
 }
 
+CString CGMidi::DetectLyClef(int vmin, int vmax) {
+	vector<int> clef_penalty;
+	int min_penalty = INT_MAX;
+	int best_clef = 4;
+	clef_penalty.resize(MAX_CLEF);
+	// Calculate penalty
+	for (int c = 0; c < MAX_CLEF; ++c) {
+		clef_penalty[c] = max(abs(vmax - LyClefCenter[c]), abs(vmin - LyClefCenter[c]));
+	}
+	// Get best clef
+	for (int c = 0; c < MAX_CLEF; ++c) {
+		if (clef_penalty[c] < min_penalty) {
+			min_penalty = clef_penalty[c];
+			best_clef = c;
+		}
+	}
+	return LyClef[best_clef];
+}
+
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	CString comm_st, clef, key, key_visual;
 	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum, pause_pos;
@@ -348,9 +367,10 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		// Do not show voice if no notes inside
 		if (!vm_max[v]) continue;
 		// Select bass clef if melody goes mostly below middle C
-		clef = "treble";
-		if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
+		clef = DetectLyClef(vm_min[v], vm_max[v]);
+		//if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
 		fs << "\\new Staff {\n";
+		fs << "  \\accidentalStyle modern-cautionary";
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
 		fs << " \\time 4/4\n";
