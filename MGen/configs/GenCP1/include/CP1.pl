@@ -32,6 +32,6 @@ rpenalty_accepted = 0 # Maximum accepted rule penalty for RandomSWA
 # Technical parameters
 midifile_out_mul = 1 # All notes length is multiplied by this number before exporting
 midifile_in_mul = 2 # Multiply note length with this value when loading
-t_cnt = 1000 # Maximum number of steps generated
+t_cnt = 1000000 # Maximum number of steps generated
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics

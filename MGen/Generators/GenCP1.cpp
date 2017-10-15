@@ -570,6 +570,8 @@ int CGenCP1::FailSus2() {
 		// Run sus checks
 		s = fli[ls];
 		s2 = fli2[ls];
+		// Do not check last note in scan window, because llen can change
+		if (ep2 < c_len && ls == fli_size - 1) break;
 		antici = 0;
 		// If sus starts with dissonance, it is anticipation
 		if (tivl[s] == iDis) antici = 1;

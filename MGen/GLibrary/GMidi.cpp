@@ -342,6 +342,7 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 }
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
+	vector<CString> sv;
 	CString comm_st, clef, key, key_visual;
 	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum, pause_pos;
 	float mul;
@@ -385,18 +386,10 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		fs << "\\new Staff {\n";
 		st.Format("  \\set Staff.instrumentName = #\"%d\"\n", v + 1); //InstGName[instr[v]]
 		fs << st;
-		fs << "  \\accidentalStyle modern-cautionary\n";
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
-		fs << " \\time 4/4\n";
-		fs << "  \\set Score.barNumberVisibility = #all-bar-numbers-visible\n";
-		fs << "  \\override Score.BarNumber.break-visibility = ##(#f #t #t)\n  ";
-		fs << "  \\new Voice \\with {\n";
-		fs << "  	\\remove \"Note_heads_engraver\"\n";
-		fs << "  	\\consists \"Completion_heads_engraver\"\n";
-		fs << "  	\\remove \"Rest_engraver\"\n";
-		fs << "  	\\consists \"Completion_rest_engraver\"\n";
-		fs << "  }\n";
+		read_file_sv("configs\\ly\\staff.ly", sv);
+		write_file_sv(fs, sv);
 		fs << "  { ";
 		nnum = 0;
 		pause_accum = 0;
