@@ -12,6 +12,7 @@
 char* CGLib::APP_VERSION = "Undefined";
 long long CGLib::first_time = 0;
 int CGLib::can_send_log = 1;
+int CGLib::show_lining = 1;
 HWND CGLib::m_hWnd = 0;
 int CGLib::debug_level = 1;
 int CGLib::m_ci = 1;
@@ -402,6 +403,31 @@ void CGLib::copy_file(CString sName, CString dName) {
 	dst << src.rdbuf();
 	src.close();
 	dst.close();
+}
+
+void CGLib::write_file_sv(ofstream &fs, vector<CString> &sv) {
+	for (int i = 0; i < sv.size(); ++i) {
+		fs << sv[i] << "\n";
+	}
+}
+
+void CGLib::read_file_sv(CString fname, vector<CString> &sv) {
+	// Load file
+	ifstream fs;
+	if (!fileExists(fname)) {
+		WriteLog(5, "Cannot find file " + fname);
+		return;
+	}
+	fs.open(fname);
+	char pch[2550];
+	CString st2;
+	sv.clear();
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st2 = pch;
+		sv.push_back(st2);
+	}
+	fs.close();
 }
 
 void CGLib::AppendLineToFile(CString fname, CString st)

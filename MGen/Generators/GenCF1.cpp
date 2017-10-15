@@ -524,8 +524,9 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	SET_READY_PERSIST(DR_Config);
 	CheckVar(sN, sV, "show_correct_hatch", &show_correct_hatch, 0, 1);
 	CheckVar(sN, sV, "cor_ack", &cor_ack, 0, 1);
-	CheckVar(sN, sV, "show_ignored_flags", &show_ignored_flags, 0, 2);
-	CheckVar(sN, sV, "emulate_sas", &emulate_sas, 0, 2);
+	CheckVar(sN, sV, "show_ignored_flags", &show_ignored_flags, 0, 1);
+	CheckVar(sN, sV, "show_allowed_flags", &show_allowed_flags, 0, 1);
+	CheckVar(sN, sV, "emulate_sas", &emulate_sas, 0, 1);
 	CheckVar(sN, sV, "max_correct_ms", &max_correct_ms, 0);
 	CheckVar(sN, sV, "animate", &animate, 0);
 	CheckVar(sN, sV, "animate_delay", &animate_delay, 0);
@@ -3325,29 +3326,30 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 		if (av == cpv) {
 			int fl = anflags[av][x][f];
 			// Send comments and color only if rule is not ignored
-			if (accept[fl] != -1 || show_ignored_flags) {
-				if (!i) {
-					if (!accept[fl]) st = "- ";
-					else if (accept[fl] == -1) st = "$ ";
-					else st = "+ ";
-					com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-					if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
-					comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-					if (show_severity) {
-						st.Format(" [%d/%d]", fl, severity[fl]);
-						com += st;
-					}
-					if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];
-					if (!SubRuleComment[rule_set][fl].IsEmpty()) com += " (" + SubRuleComment[rule_set][fl] + ")";
-					//com += ". ";
-					comment[pos][v].push_back(com);
-					ccolor[pos][v].push_back(flag_color[severity[fl]]);
+			if (accept[fl] == -1 && !show_ignored_flags) continue;
+			// Send comments and color only if rule is not ignored
+			if (accept[fl] == 1 && !show_allowed_flags) continue;
+			if (!i) {
+				if (!accept[fl]) st = "- ";
+				else if (accept[fl] == -1) st = "$ ";
+				else st = "+ ";
+				com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+				if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
+				comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+				if (show_severity) {
+					st.Format(" [%d/%d]", fl, severity[fl]);
+					com += st;
 				}
-				// Set note color if this is maximum flag severity
-				if (severity[fl] > current_severity) {
-					current_severity = severity[fl];
-					color[pos + i][v] = flag_color[severity[fl]];
-				}
+				if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];
+				if (!SubRuleComment[rule_set][fl].IsEmpty()) com += " (" + SubRuleComment[rule_set][fl] + ")";
+				//com += ". ";
+				comment[pos][v].push_back(com);
+				ccolor[pos][v].push_back(flag_color[severity[fl]]);
+			}
+			// Set note color if this is maximum flag severity
+			if (severity[fl] > current_severity) {
+				current_severity = severity[fl];
+				color[pos + i][v] = flag_color[severity[fl]];
 			}
 		}
 	}

@@ -341,6 +341,7 @@ protected:
 	int early_culm = 3; // Early culmination step
 	int late_culm = 3; // Late culmination step
 
+	int show_allowed_flags = 0; // Show even allowed flags(bold in rules.xlsm)
 	int show_ignored_flags = 0; // Show even ignored flags(with strikethrough in rules.xlsm)
 	int show_note_scan_range = 1; // Internal variable - allows to disable showing note scan range
 	int early_culm2 = 4; // Early culmination step (second rule)

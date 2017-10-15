@@ -143,6 +143,8 @@ const CString NoteName2[] = {
 class CGLib
 {
 public:
+	static void read_file_sv(CString fname, vector<CString> &sv);
+	static void write_file_sv(ofstream &fs, vector<CString> &sv);
 	static void copy_file(CString sName, CString dName);
 	static void AppendLineToFile(CString fname, CString st);
 	static void AppendLineInFile(CString fname, int line, CString st);
@@ -232,6 +234,7 @@ public:
 	static char* APP_VERSION;
 	static int debug_level;
 	static int play_enabled;
+	static int show_lining;
 	static HWND m_hWnd;
 	static UINT WM_DEBUG_MSG, WM_STATUS_MSG;
 	static int can_send_log; // If thread can send log to MainFrame (disabled OnClose)

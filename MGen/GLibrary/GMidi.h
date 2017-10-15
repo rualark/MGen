@@ -218,7 +218,7 @@ public:
 	CString GetLyLen(int length);
 	void SplitLyNote5(int pos, vector<int>& la);
 	void SplitLyNote(int pos, int le, vector<int>& la);
-	void SendLyEvent(ofstream & fs, int pos, CString ev, int le);
+	void SendLyEvent(ofstream & fs, int pos, CString ev, int le, int i, int v);
 	CString GetLyColor(DWORD col);
 	void SendLyNoteColor(ofstream & fs, DWORD col);
 	void SaveLyComments(CString & com_st, int i, int v, int vm_cnt, int nnum, int pos);
