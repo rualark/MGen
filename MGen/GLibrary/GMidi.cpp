@@ -223,7 +223,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le) {
 	SplitLyNote(pos, le, la);
 	for (int lc = 0; lc < la.size(); ++lc) {
 		fs << ev + GetLyLen(la[lc]);
-		if (lc < la.size() - 1) fs << "~";
+		if (lc < la.size() - 1 && ev != "r") fs << "~";
 		fs << " ";
 	}
 }
@@ -251,7 +251,6 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 			nnum, pos / 8 + 1, pos % 8 + 1, GetLyNoteVisual(i, v));
 		// NoteName[note[i][v] % 12]
 		note_st += st + "\n}\n";
-		com_st += note_st;
 		found = 0;
 		for (int c = 0; c < comment[i][v].size(); ++c) {
 			com = comment[i][v][c];
