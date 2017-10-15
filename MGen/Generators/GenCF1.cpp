@@ -3544,6 +3544,8 @@ int CGenCF1::SendCantus() {
 			rpst.Empty();
 		}
 	}
+	// Save source fpenalty 
+	if (!v) fpenalty_source = rpst;
 	if (task == tGen) {
 		if (!shuffle) {
 			Adapt(step00, step - 1);
@@ -3563,9 +3565,9 @@ int CGenCF1::SendCantus() {
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from %s)\nRule penalty: %.0f\nDistance penalty: %d", 
-					cantus_id+1, midi_file, l_rpenalty_cur, dpenalty_cur);
-				st2.Format("Flags penalty: %s", rpst);
+				st.Format("#%d (from %s)\nRule penalty: %.0f => %.0f\nDistance penalty: %d", 
+					cantus_id+1, midi_file, rpenalty_source, l_rpenalty_cur, dpenalty_cur);
+				st2.Format("Flags penalty: %s => %s", fpenalty_source, rpst);
 			}
 			else {
 				// If evaluating

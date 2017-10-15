@@ -277,11 +277,16 @@ void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
 	fs << "\n    \\override Stem.color = #(rgb-color " << GetLyColor(col) << ") ";
 }
 
-void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
+void CGMidi::SaveLyComments(CString &com_st, int i, int v, int vm_cnt, int nnum, int pos) {
 	CString st, com, note_st;
 	int pos1, pos2, found;
 	if (comment[i][v].size()) {
 		note_st = "\\markup \\wordwrap \\bold {\n  ";
+		// Show voice number if more than 1 voice
+		if (vm_cnt > 1) {
+			st.Format("\\char ##x246%d ", v);
+			note_st += st;
+		}
 		st.Format("NOTE %d at %d:%d - %s\n",
 			nnum, pos / 8 + 1, pos % 8 + 1, GetLyNoteVisual(i, v));
 		// NoteName[note[i][v] % 12]
@@ -290,8 +295,8 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 		for (int c = 0; c < comment[i][v].size(); ++c) {
 			com = comment[i][v][c];
 			// Do not show accepted rules
-			if (com[0] == '+') continue;
-			// Remove ending technical information
+			//if (com[0] == '+') continue;
+			// Remove technical information
 			pos1 = com.Find('[');
 			pos2 = com.Find(']');
 			if (pos1 != -1 && pos2 != -1) {
@@ -358,6 +363,8 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	st.Replace("\n", ", ");
 	st.Replace("#", "\"#\"");
 	st.Replace("\\", "/");
+	st.Replace("=>", " \\char ##x27F9 ");
+	st.Replace("->", " \\char ##x27F6 ");
 	fs << "\\markup \\wordwrap \\bold {\n  ";
 	if (step1) fs << "    \\vspace #2\n";
 	fs << st << ", Key: " << key_visual << (minor[step1][0]?"m":"") << "\n}\n";
@@ -370,7 +377,9 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
 		//if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
 		fs << "\\new Staff {\n";
-		fs << "  \\accidentalStyle modern-cautionary";
+		st.Format("  \\set Staff.instrumentName = #\"%d\"\n", v + 1); //InstGName[instr[v]]
+		fs << st;
+		fs << "  \\accidentalStyle modern-cautionary\n";
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
 		fs << " \\time 4/4\n";
@@ -402,7 +411,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				}
 				SendLyNoteColor(fs, color[i][v]);
 				SendLyEvent(fs, pos, GetLyNote(i, v), le);
-				SaveLyComments(comm_st, i, v, nnum, pos);
+				SaveLyComments(comm_st, i, v, vm_cnt, nnum, pos);
 			}
 			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 				//mark[i][v];
@@ -434,6 +443,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 	fs.open(dir + "\\" + fname + ".ly");
 	fs << "\\version \"2.18.2\"\n";
 	fs << "\\language \"english\"\n";
+	fs << "\\paper { #(include-special-characters) }";
 	if (!mel_info.size()) {
 		CString st;
 		st = "Whole piece";

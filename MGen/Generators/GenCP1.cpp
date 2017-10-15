@@ -349,6 +349,7 @@ int CGenCP1::SendCP() {
 			rpst.Empty();
 		}
 	}
+	if (!svoice) fpenalty_source = rpst;
 	if (task == tGen) {
 		if (!shuffle) {
 			Adapt(step00, step - 1);
@@ -358,7 +359,7 @@ int CGenCP1::SendCP() {
 			cantus_sent, cantus_high?"high":"low", species, l_rpenalty_cur);
 		st2.Format("Flags penalty: %s", rpst);
 		AddMelody(step00, pos - 1, svoice + cpv, st, st2);
-		AddMelody(step00, pos - 1, svoice + cfv, st, st2);
+		AddMelody(step00, pos - 1, 0, st, st2);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -370,9 +371,9 @@ int CGenCP1::SendCP() {
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
-				st.Format("#%d (from %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f\nDistance penalty: %d", 
-					cantus_id+1, midi_file, cantus_high ? "high" : "low", species, l_rpenalty_cur, dpenalty_cur);
-				st2.Format("Flags penalty: %s", rpst);
+				st.Format("#%d (from %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f => %.0f\nDistance penalty: %d", 
+					cantus_id+1, midi_file, cantus_high ? "high" : "low", species, rpenalty_source, l_rpenalty_cur, dpenalty_cur);
+				st2.Format("Flags penalty: %s => %s", fpenalty_source, rpst);
 			}
 			else {
 				// If evaluating
@@ -382,7 +383,7 @@ int CGenCP1::SendCP() {
 			}
 		}
 		AddMelody(step00, pos - 1, svoice + cpv, st, st2);
-		AddMelody(step00, pos - 1, svoice + cfv, st, st2);
+		AddMelody(step00, pos - 1, 0, st, st2);
 	}
 	if (debug_level > 2) {
 		time_stop = CGLib::time();
