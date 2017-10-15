@@ -333,7 +333,8 @@ int CGenCP1::SendCP() {
 	UpdateTempoMinMax(step00, step - 1);
 	mutex_animate.unlock();
 	// Increment cantus_sent only if is not animating
-	if (!is_animating) ++cantus_sent;
+	if (!is_animating) 
+		++cantus_sent;
 	// Create rule penalty string
 	l_rpenalty_cur = rpenalty_cur;
 	if (!skip_flags) {
@@ -362,7 +363,7 @@ int CGenCP1::SendCP() {
 		AddMelody(step00, pos - 1, 0, st, st2);
 	}
 	else if (task == tEval) {
-		if (m_algo_id == 101) {
+		if (m_algo_id == 121) {
 			// If RSWA
 			st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
 				cantus_sent, cantus_high ? "high" : "low", species, l_rpenalty_cur);
