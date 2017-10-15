@@ -216,24 +216,21 @@ void CGenCA2::ExplodeCP() {
 	npm = max(1, min_vlen[cfv] / min_vlen[cpv]);
 	if (species == 1) {
 		npm = 1;
-		min_vlen[cpv] = 1;
 	}
 	else if (species == 2) {
 		npm = 2;
-		min_vlen[cpv] = 1;
 	}
 	else if (species == 3) {
 		npm = 4;
-		min_vlen[cpv] = 1;
 	}
 	else if (species == 4) {
 		npm = 2;
-		min_vlen[cpv] = 1;
 	}
 	else if (species == 5) {
 		npm = 8;
-		min_vlen[cpv] = 1;
 	}
+	if (min_vlen[cpv] > min_vlen[cfv] / npm) min_vlen[cpv] = min_vlen[cfv] / npm;
+	if (!min_vlen[cpv]) min_vlen[cpv] = 1;
 	// Save old cantus
 	vector<vector<int>> cc_old2 = cpoint[cantus_id];
 	vector<float> tempo_old = cantus_tempo[cantus_id];

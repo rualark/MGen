@@ -3552,6 +3552,7 @@ int CGenCF1::SendCantus() {
 		st.Format("#%d\nRule penalty: %.0f", cantus_sent, l_rpenalty_cur);
 		st2.Format("Flags penalty: %s", rpst);
 		AddMelody(step00, pos - 1, v, st, st2);
+		if (v) AddMelody(step00, pos - 1, 0, st, st2);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -3574,6 +3575,7 @@ int CGenCF1::SendCantus() {
 			}
 		}
 		AddMelody(step00, pos - 1, v, st, st2);
+		if (v) AddMelody(step00, pos - 1, 0, st, st2);
 	}
 	// Send
 	t_generated = step;
