@@ -2540,6 +2540,7 @@ void CGenCP1::Generate() {
 		real_len = accumulate(cantus_len[cantus_id].begin(), cantus_len[cantus_id].end(), 0);
 		dpenalty_cur = 0;
 		fn = 0;
+		midifile_out_mul2 = 8;
 		// Create pause
 		FillPause(step, step + floor(real_len / 8 + 1) * 8, 0);
 		FillPause(step, step + floor(real_len / 8 + 1) * 8, 1);
@@ -2561,6 +2562,7 @@ void CGenCP1::Generate() {
 		Adapt(0, step - 1);
 		t_generated = step;
 		t_sent = t_generated;
+		ProcessSpecies();
 		// Load first voice
 		fn = fn0;
 		vector<int> cc_len_old = cc_len;
