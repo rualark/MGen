@@ -31,3 +31,7 @@ speakOff = {
   \revert Stem.stencil
   \revert Flag.stencil
 }
+
+\header {
+  subtitle = "$TITLE$"
+}
