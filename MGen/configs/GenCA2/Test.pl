@@ -27,5 +27,5 @@ include "include/CA2.pl"
 #Midi_file = "midi\GenCA2\test-cp2-rhythm.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-cp3-rhythm.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-cp4-slurs.mid" # Path and file name of imported midi file
-#Midi_file = "midi\GenCA2\test-ly-rhythm.mid" # Path and file name of imported midi file
-Midi_file = "midi\GenCA2\test-ly-key.mid" # Path and file name of imported midi file
+Midi_file = "midi\GenCA2\test-ly-rhythm.mid" # Path and file name of imported midi file
+#Midi_file = "midi\GenCA2\test-ly-key.mid" # Path and file name of imported midi file
