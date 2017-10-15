@@ -1218,8 +1218,8 @@ int CGenCP1::FailRhythm5() {
 		// Build note lengths
 		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
-			// Note longer than whole
-			if (llen[ls2] > 8 && ls2 == ls) FLAG2(274, fli[ls2]);
+			// Note longer than whole (flag only in first measure)
+			if (llen[ls2] > 8 && fli[ls2] >= s) FLAG2(274, fli[ls2]);
 			if (!ms && fn) pos = fn + max(0, fli[ls2] - s);
 			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
