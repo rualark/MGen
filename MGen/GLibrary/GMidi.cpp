@@ -374,7 +374,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	st.Replace("=>", " \\char ##x27F9 ");
 	st.Replace("->", " \\char ##x27F6 ");
 	fs << "\\markup \\wordwrap \\bold {\n  ";
-	if (step1) fs << "    \\vspace #2\n";
+	fs << "    \\vspace #2\n";
 	fs << st << ", Key: " << key_visual << (minor[step1][0]?"m":"") << "\n}\n";
 	// Save notes
 	fs << "<<\n";
@@ -453,9 +453,15 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 void CGMidi::SaveLy(CString dir, CString fname) {
 	ofstream fs;
 	vector<CString> sv;
+	CString title;
+	title = m_algo_folder + ": " + m_config + " (" + 
+		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M") + ")";
 	fs.open(dir + "\\" + fname + ".ly");
 	read_file_sv("configs\\ly\\header.ly", sv);
-	write_file_sv(fs, sv);
+	for (int i = 0; i < sv.size(); ++i) {
+		sv[i].Replace("$TITLE$", title);
+		fs << sv[i] << "\n";
+	}
 
 	if (!mel_info.size()) {
 		CString st;
@@ -484,7 +490,8 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 			if (found) SaveLySegment(fs, mel_info[m], mel_info2[m], first_step, last_step);
 		}
 	}
-	fs << "\\header {tagline = \"This file was created by MGen and engraved by LilyPond\"}\n";
+	fs << "\\header {tagline = \"This file was created by MGen ";
+	fs << APP_VERSION << " and engraved by LilyPond\"}\n";
 	fs.close();
 	//::ShellExecute(GetDesktopWindow(), "open", dir + "\\" + fname + ".ly", NULL, NULL, SW_SHOWNORMAL);
 }
