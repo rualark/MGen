@@ -190,6 +190,27 @@ CString CGMidi::GetLyLen(int length) {
 	else return "";
 }
 
+// Split note of length 5
+void CGMidi::SplitLyNote5(int pos, vector<int> &la) {
+	if (pos % 4 == 0) {
+		la.push_back(4);
+		la.push_back(1);
+	}
+	else if (pos % 4 == 1) {
+		la.push_back(3);
+		la.push_back(2);
+	}
+	else if (pos % 4 == 2) {
+		la.push_back(2);
+		la.push_back(3);
+	}
+	else if (pos % 4 == 3) {
+		la.push_back(1);
+		la.push_back(4);
+	}
+}
+
+// Create la array of common lengths if note is too long for single note
 void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 	la.clear();
 	if (le < 5 || le == 6 || le == 7 || le == 8 || le == 16 || le == 32) {
@@ -197,21 +218,35 @@ void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 		return;
 	}
 	if (le == 5) {
-		if (pos % 4 == 0) {
+		SplitLyNote5(pos, la);
+	}
+	// All other lengths starting from 9
+	else {
+		// Get first length
+		if (pos % 8 == 3) {
+			la.push_back(1);
+			la.push_back(4);
+			le -= 5;
+			pos += 5;
+		}
+		else {
+			la.push_back(8 - pos % 8);
+			le -= 8 - pos % 8;
+			pos += 8 - pos % 8;
+		}
+		// Create middle lengths
+		while (le > 8) {
+			la.push_back(8);
+			le -= 8;
+			pos += 8;
+		}
+		// Get last length
+		if (le == 5) {
 			la.push_back(4);
 			la.push_back(1);
 		}
-		else if (pos % 4 == 1) {
-			la.push_back(3);
-			la.push_back(2);
-		}
-		else if (pos % 4 == 2) {
-			la.push_back(2);
-			la.push_back(3);
-		}
-		else if (pos % 4 == 3) {
-			la.push_back(1);
-			la.push_back(4);
+		else {
+			if (le) la.push_back(le);
 		}
 	}
 }
@@ -278,7 +313,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	CString comm_st, clef, key, key_visual;
-	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum;
+	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum, pause_pos;
 	float mul;
 	// Voice melody min pitch
 	vector<int> vm_min;
@@ -330,17 +365,20 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		fs << "  { ";
 		nnum = 0;
 		pause_accum = 0;
+		pause_pos = -1;
 		for (int i = step1; i < step2; i++) {
 			++nnum;
 			pos = mul * (i - step1);
 			le = mul * len[i][v];
 			if (pause[i][v]) {
 				pause_accum += le;
+				if (pause_pos == -1) pause_pos = pos;
 			}
 			else {
 				if (pause_accum) {
-					SendLyEvent(fs, pos, "r", pause_accum);
+					SendLyEvent(fs, pause_pos, "r", pause_accum);
 					pause_accum = 0;
+					pause_pos = -1;
 				}
 				SendLyNoteColor(fs, color[i][v]);
 				SendLyEvent(fs, pos, GetLyNote(i, v), le);
