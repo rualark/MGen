@@ -52,7 +52,6 @@ public:
 	int adapt_enable = 1;
 	int comment_adapt = 1; // If you want to have each adaptation decision commented
 	vector <int> show_transpose; // Semitone transpose for showing
-	int midifile_export_allowed = 0; // Set to export allowed rule violations
 	int midifile_export_marks = 0; // Set to export marks (harmony) to midifile lyrics
 	int midifile_export_comments = 1; // Set to export comments (violations) to midifile lyrics
 
