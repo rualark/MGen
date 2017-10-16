@@ -160,6 +160,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	strTitlePane2 = "Debug";
 #endif
 
+#ifdef _WIN64
+	strTitlePane2 += " x64";
+#else
+	strTitlePane2 += " x86";
+#endif
+	strTitlePane2 += APP_VERSION;
+
 	CMFCRibbonStatusBarPane* pPane = new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, strTitlePane1, TRUE);
 	pPane->SetAlmostLargeText(_T("Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting"));
 	m_wndStatusBar.AddElement(pPane, strTitlePane1);
