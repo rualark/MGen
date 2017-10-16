@@ -220,7 +220,8 @@ void CMGenApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg; 
 	// APP_VERSION
-	aboutDlg.m_ver.Format("Music Generator Laboratory, Version %s", CGLib::APP_VERSION);
+	aboutDlg.m_ver.Format("Music Generators Laboratory, Version %s (compiled on %s)", 
+		CGLib::APP_VERSION, COMPILED);
 	aboutDlg.DoModal();
 }
 

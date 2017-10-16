@@ -165,7 +165,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 #else
 	strTitlePane2 += " x86";
 #endif
-	strTitlePane2 += APP_VERSION;
+	strTitlePane2 += " ";
+	strTitlePane2 += CGLib::APP_VERSION;
+	strTitlePane2 += " (compiled on ";
+	strTitlePane2 += COMPILED;
+	strTitlePane2 += ")";
 
 	CMFCRibbonStatusBarPane* pPane = new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, strTitlePane1, TRUE);
 	pPane->SetAlmostLargeText(_T("Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting Connecting"));
