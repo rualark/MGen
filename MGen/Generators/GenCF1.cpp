@@ -3644,7 +3644,7 @@ void CGenCF1::LogPerf() {
 	CString st, st2;
 	long long ms = time() - gen_start_time;
 	if (!ms) ms = 1;
-	st.Format("%s\\%s.pl %s CY %s/ms, sent %s/s, c_len %d, swa_steps %d, sent %d, ignored %d, ", 
+	st.Format("%s\\%s.pl %s CY %s/ms, sent %s/s, c_len %d, swa_steps %d, sent %d, ignored %d, ",
 		m_algo_folder, m_config, method == mScan ? "SAS" : "SWA",
 		HumanFloat(tcycle/(float)ms), HumanFloat(cantus_sent / (float)ms * 1000),
 		c_len, swa_steps, cantus_sent, cantus_ignored);
@@ -3675,6 +3675,18 @@ void CGenCF1::LogPerf() {
 	st2 += st;
 #ifdef CF_DEBUG
 	st2 += "DCF ";
+#endif
+
+#if defined(_DEBUG)
+	st2 += "Debug ";
+#else
+	st2 += "Release ";
+#endif
+
+#ifdef _WIN64
+	st2 += "x64 ";
+#else
+	st2 += "x86 ";
 #endif
 	WriteLog(2, st2);
 	if (m_testing) AppendLineToFile("autotest\\perf.log", st2 + "\n");
