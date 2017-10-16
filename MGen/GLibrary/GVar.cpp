@@ -714,7 +714,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 		fs.open(dir + "\\warning.log");
 		for (int i = 0; i < logs[1].size(); i++) fs << logs[1][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\gui.log");
+		fs.open(dir + "\\perf.log");
 		for (int i = 0; i < logs[2].size(); i++) fs << logs[2][i] << "\n";
 		fs.close();
 		fs.open(dir + "\\algorithm.log");
@@ -723,8 +723,14 @@ void CGVar::SaveResults(CString dir, CString fname)
 		fs.open(dir + "\\midi.log");
 		for (int i = 0; i < logs[4].size(); i++) fs << logs[4][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\test.log");
+		fs.open(dir + "\\confirm.log");
 		for (int i = 0; i < logs[6].size(); i++) fs << logs[6][i] << "\n";
+		fs.close();
+		fs.open(dir + "\\sasemu.log");
+		for (int i = 0; i < logs[7].size(); i++) fs << logs[7][i] << "\n";
+		fs.close();
+		fs.open(dir + "\\corack.log");
+		for (int i = 0; i < logs[8].size(); i++) fs << logs[8][i] << "\n";
 		fs.close();
 	}
 	// Count time
