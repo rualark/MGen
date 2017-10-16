@@ -90,8 +90,8 @@ void CGenCA2::SendCorrectionsCP(int i, long long time_start) {
 	}
 	long long time_stop = CGLib::time();
 	// Send log
-	cor_log.Format("Sent corrections #%d in %d ms to %d:%d with rp/dp/srp/variants/lib/full: %s",
-		cantus_id + 1, time_stop - time_start, step0 / 8 + 1, step0 % 8 + 1, st2);
+	cor_log.Format("Sent corrections #%d in %d ms to %d:%d with rp/dp/srp/variants/lib/full: " + st2,
+		cantus_id + 1, time_stop - time_start, step0 / 8 + 1, step0 % 8 + 1);
 	WriteLog(3, cor_log);
 }
 
