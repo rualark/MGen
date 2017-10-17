@@ -809,6 +809,8 @@ int CGenCP1::SkipSus(int notes) {
 // Detect passing downbeat dissonance
 void CGenCP1::DetectPDD() {
 	if (!accept[282]) return;
+	// Do not detect PDD in lower voice
+	if (!cpv) return;
 	int max_ls = fli_size - 1;
 	if (ep2 == c_len) max_ls = fli_size - 2;
 	for (ls = 0; ls < max_ls; ++ls) {
