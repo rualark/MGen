@@ -287,7 +287,7 @@ void CGenCA1::SendCorrections(int i, long long time_start) {
 	}
 	long long time_stop = CGLib::time();
 	// Send log
-	cor_log.Format("Sent corrections #%d in %d ms to %d:%d with rp/dp/srp/variants/lib/full: %s", 
+	cor_log.Format("Sent corrections #%d in %lld ms to %d:%d with rp/dp/srp/variants/lib/full: %s", 
 		cantus_id + 1, time_stop - time_start, step0/8 + 1, step0%8 + 1, st2);
 	WriteLog(3, cor_log);
 }
@@ -363,7 +363,7 @@ void CGenCA1::ConfirmExpect() {
 	// Do not check local false positives if disabled
 	for (int fl = 0; fl < MAX_RULES; ++fl) {
 		if (!enflags3[fl] || false_positives_ignore[fl]) continue;
-		for (int s = 0; s < c_len; ++s) {
+		for (s = 0; s < c_len; ++s) {
 			for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
 				if (!enflags2[fl][s]) {
 					CString est;
@@ -379,7 +379,7 @@ void CGenCA1::ConfirmExpect() {
 	// Check global false positives
 	vector<int> false_pos;
 	false_pos.resize(MAX_RULES);
-	for (int s = 0; s < c_len; ++s) {
+	for (s = 0; s < c_len; ++s) {
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
 			if (!enflags2[fl][s] && false_positives_global[fl]) {

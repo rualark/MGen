@@ -92,6 +92,7 @@ public:
 		for (int x = x1; x < x2; ++x) {
 			if (v_accessed[x]) return TRUE;
 		}
+		return FALSE;
 	}
 
 	vector<T> v;

@@ -175,7 +175,8 @@ void CGenCP1::SingleCPInit() {
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
 			dpenalty_outside_swa = 0;
-			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], 0, smap[swa1 - 1]);
+			// Next line is always false here, but this code is part of consistent solution
+			//if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], 0, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cpoint[cantus_id][cpv], acc[cpv], smap[swa2], c_len - 1);
 			fill(src_rpenalty_step.begin(), src_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
@@ -254,7 +255,7 @@ void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
 }
 
 int CGenCP1::SendCP() {
-	int step00 = step;
+	int step000 = step;
 	int pause_len = 0;
 	float l_rpenalty_cur;
 	CString st, st2, rpst;
@@ -292,7 +293,7 @@ int CGenCP1::SendCP() {
 		if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
 		for (int x = 0; x < ep2; ++x) {
 			mark_color[pos][v] = MakeColor(255, 120, 120, 120);
-			mark[pos][v] = "";
+			mark[pos][v].Empty();
 			if (av == cpv) {
 				cpos[x] = pos;
 				if (species != 1) {
@@ -325,12 +326,12 @@ int CGenCP1::SendCP() {
 		MakeBellDyn(v, step, pos - 1, 40, 100, 20);
 	}
 	step = pos + pause_len;
-	FixLen(step00, step - 1);
+	FixLen(step000, step - 1);
 	// Count additional variables
-	CountOff(step00, step - 1);
-	CountTime(step00, step - 1);
-	UpdateNoteMinMax(step00, step - 1);
-	UpdateTempoMinMax(step00, step - 1);
+	CountOff(step000, step - 1);
+	CountTime(step000, step - 1);
+	UpdateNoteMinMax(step000, step - 1);
+	UpdateTempoMinMax(step000, step - 1);
 	mutex_animate.unlock();
 	// Increment cantus_sent only if is not animating
 	if (!is_animating) 
@@ -353,14 +354,14 @@ int CGenCP1::SendCP() {
 	if (!svoice) fpenalty_source = rpst;
 	if (task == tGen) {
 		if (!shuffle) {
-			Adapt(step00, step - 1);
+			Adapt(step000, step - 1);
 		}
 		// If  window-scan
 		st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
 			cantus_sent, cantus_high?"high":"low", species, l_rpenalty_cur);
 		st2.Format("Flags penalty: %s", rpst);
-		AddMelody(step00, pos - 1, svoice + cpv, st, st2);
-		AddMelody(step00, pos - 1, 0, st, st2);
+		AddMelody(step000, pos - 1, svoice + cpv, st, st2);
+		AddMelody(step000, pos - 1, 0, st, st2);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 121) {
@@ -379,16 +380,16 @@ int CGenCP1::SendCP() {
 			else {
 				// If evaluating
 				st.Format("#%d (from %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
-					cantus_id + 1, midi_file, cantus_high ? "high" : "low", species, l_rpenalty_cur, key_eval);
+					cantus_id + 1, midi_file, cantus_high ? "high" : "low", species, l_rpenalty_cur);
 				st2.Format("Flags penalty: %s\nKey selection: %s", rpst, key_eval);
 			}
 		}
-		AddMelody(step00, pos - 1, svoice + cpv, st, st2);
-		AddMelody(step00, pos - 1, 0, st, st2);
+		AddMelody(step000, pos - 1, svoice + cpv, st, st2);
+		AddMelody(step000, pos - 1, 0, st, st2);
 	}
 	if (debug_level > 2) {
 		time_stop = CGLib::time();
-		st.Format("SendCP run time %d ms", time_stop - time_start);
+		st.Format("SendCP run time %lld ms", time_stop - time_start);
 		//WriteLog(1, st);
 	}
 	// Send
@@ -2084,7 +2085,7 @@ int CGenCP1::FailStartPause() {
 		if (task != tEval && !accept[273] && !warn_wrong_fn) {
 			CString est;
 			est.Format("Rule '%s - %s' prevents from generating any results in counterpoint species %d, because there is no starting pause",
-				RuleName[273], SubRuleName[273], species);
+				RuleName[rule_set][273], SubRuleName[rule_set][273], species);
 			WriteLog(5, est);
 			++warn_wrong_fn;
 			return 1;

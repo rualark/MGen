@@ -193,7 +193,7 @@ void CGenCF1::LoadRules(CString fname)
 			false_positives_global[rid] = atoi(ast[11]);
 			sas_emulator_max_delay[rid] = atoi(ast[12]);
 			sas_emulator_move_ignore[rid] = atoi(ast[13]);
-			if (ast[14] != "") {
+			if (!ast[14].IsEmpty()) {
 				Tokenize(ast[14], ast2, ",");
 				for (int x = 0; x < ast2.size(); ++x) {
 					int fl = atoi(ast2[x]);
@@ -201,7 +201,7 @@ void CGenCF1::LoadRules(CString fname)
 				}
 			}
 			sas_emulator_unstable[rid] = atoi(ast[15]);
-			if (ast[16] != "") {
+			if (!ast[16].IsEmpty()) {
 				Tokenize(ast[16], ast2, ",");
 				for (int x = 0; x < ast2.size(); ++x) {
 					int fl = atoi(ast2[x]);
@@ -2368,7 +2368,8 @@ void CGenCF1::SingleCantusInit() {
 			// Cannot skip flags - need them for penalty if cannot remove all flags
 			skip_flags = 0;
 			dpenalty_outside_swa = 0;
-			if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, 0, smap[swa1 - 1]);
+			// Next line is always false, but it is an important part of consistent approach
+			//if (swa1 > 0) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, 0, smap[swa1 - 1]);
 			if (swa2 < smap.size()) dpenalty_outside_swa += CalcDpenalty(cantus[cantus_id], m_cc, smap[swa2], c_len - 1);
 			fill(src_rpenalty_step.begin(), src_rpenalty_step.end(), 0);
 			if (sp2 == swa2) ep2 = c_len;
@@ -2882,7 +2883,7 @@ int CGenCF1::CalcDpenalty(vector<int> &cc1, vector<int> &cc2, int s1, int s2) {
 	return dpe;
 }
 
-void CGenCF1::CalcStepDpenalty(vector<int> cc1, vector<int> cc2, int i) {
+void CGenCF1::CalcStepDpenalty(vector<int> &cc1, vector<int> &cc2, int i) {
 	int dif = abs(cc1[i] - cc2[i]);
 	int dpe = 0;
 	if (dif) dpe = step_penalty + pitch_penalty * dif;
