@@ -539,6 +539,7 @@ int CGenCP1::FailSusResolution(int s3) {
 }
 
 int CGenCP1::FailSus1() {
+	CHECK_READY_PERSIST(DR_mli);
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
 	CHECK_READY(DR_leap, DR_beat);
 	int last_cf;
@@ -677,8 +678,8 @@ int CGenCP1::FailUnison() {
 	if (!civl[s]) {
 		// 2nd -> unison
 		if (ls > 0 && ivl[fli[ls - 1]] == 1) FLAG2(275, s);
-		// Unison near m2
-		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1) FLAG2(277, s)
+		// Unison near m2 in same measure
+		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1 && bmli[s] == bmli[fli[ls + 1]]) FLAG2(277, s)
 		else if (ls > 0 && civl[fli[ls - 1]] == 1) FLAG2(275, s);
 		// Inside downbeat
 		if (!beat[ls] && ls > 0 && ls < fli_size - 1) FLAG2(91, s);
@@ -1415,6 +1416,7 @@ int CGenCP1::FailPcoApart() {
 
 int CGenCP1::FailVIntervals() {
 	CHECK_READY(DR_fli, DR_ivl, DR_rpos);
+	CHECK_READY_PERSIST(DR_mli);
 	CHECK_READY(DR_motion, DR_culm_ls, DR_sus);
 	// Number of sequential parallel imperfect consonances
 	int pico_count = 0;
