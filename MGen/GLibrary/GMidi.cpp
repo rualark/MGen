@@ -184,8 +184,8 @@ CString CGMidi::GetLyLen(int length) {
 	else if (length == 6) return "2.";
 	else if (length == 7) return "2..";
 	else if (length == 8) return "1";
-	else if (length == 16) return "\\breve";
-	else if (length == 32) return "\\longa";
+	//else if (length == 16) return "\\breve";
+	//else if (length == 32) return "\\longa";
 	else return "";
 }
 
@@ -212,7 +212,7 @@ void CGMidi::SplitLyNote5(int pos, vector<int> &la) {
 // Create la array of common lengths if note is too long for single note
 void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 	la.clear();
-	if (le < 5 || le == 6 || le == 7 || le == 8 || le == 16 || le == 32) {
+	if (le < 5 || le == 6 || le == 7 || le == 8) {
 		la.push_back(le);
 		return;
 	}
