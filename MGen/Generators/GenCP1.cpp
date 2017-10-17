@@ -1931,7 +1931,7 @@ void CGenCP1::SWACP(int i, int dp) {
 	CString est;
 	// For successful rpenalty_cur == 0, show last flag that was fixed. For unsuccessful, show best variant
 	CString sst = GetStuck();
-	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %d ms): %s",
+	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %lld ms): %s",
 		swa_len, a+1, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, sst);
 	WriteLog(0, est);
 	TestBestRpenalty();

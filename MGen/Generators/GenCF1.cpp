@@ -3066,7 +3066,7 @@ void CGenCF1::ShowScanStatus() {
 	}
 	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + "(Scan progress)");
 	if (task == tCor) st.Format("WI %d/%d, RP %.0f, DP %d", wid + 1, wcount, rpenalty_min, dpenalty_min);
-	else st.Format("WI %d/%d", wid + 1, wcount, rpenalty_min, dpenalty_min);
+	else st.Format("WI %d/%d", wid + 1, wcount);
 	SetStatusText(1, st);
 	st.Format("Sent: %ld (ignored %ld)", cantus_sent, cantus_ignored);
 	SetStatusText(0, st);
@@ -3106,7 +3106,9 @@ void CGenCF1::WriteFlagCor() {
 		st3 = "Flag; Total; ";
 		for (int i = 0; i < max_flags; ++i) {
 			int f1 = i;
-			st2.Format("%s; %d; ", RuleName[rule_set][f1] + " (" + SubRuleName[rule_set][f1] + ")", fcor[f1][f1]);
+			st2.Format("%s; %lld; ", 
+				RuleName[rule_set][f1] + " (" + SubRuleName[rule_set][f1] + ")", 
+				fcor[f1][f1]);
 			st3 += RuleName[rule_set][f1] + " (" + SubRuleName[rule_set][f1] + "); ";
 			for (int z = 0; z < max_flags; ++z) {
 				int f2 = i;
@@ -3494,7 +3496,7 @@ void CGenCF1::MergeNotes(int step1, int step2, int v) {
 }
 
 int CGenCF1::SendCantus() {
-	int step00 = step;
+	int step000 = step;
 	float l_rpenalty_cur;
 	// Save culmination position
 	cf_culm_cfs = culm_ls;
@@ -3524,12 +3526,12 @@ int CGenCF1::SendCantus() {
 	}
 	MakeBellDyn(v, step, pos - 1, 40, 100, 20);
 	step = pos + SendPause(pos, v);
-	InterpolateNgraph(v, step00, step);
+	InterpolateNgraph(v, step000, step);
 	// Count additional variables
-	CountOff(step00, step - 1);
-	CountTime(step00, step - 1);
-	UpdateNoteMinMax(step00, step - 1);
-	UpdateTempoMinMax(step00, step - 1);
+	CountOff(step000, step - 1);
+	CountTime(step000, step - 1);
+	UpdateNoteMinMax(step000, step - 1);
+	UpdateTempoMinMax(step000, step - 1);
 	// Increment cantus_sent only if is not animating
 	if (!is_animating) ++cantus_sent;
 	// Create rule penalty string
@@ -3551,14 +3553,14 @@ int CGenCF1::SendCantus() {
 	if (!v) fpenalty_source = rpst;
 	if (task == tGen) {
 		if (!shuffle) {
-			Adapt(step00, step - 1);
+			Adapt(step000, step - 1);
 		}
 		// If  window-scan
 		st.Format("#%d\nRule penalty: %.0f\nCantus: %s", 
 			cantus_sent, l_rpenalty_cur, cantus_high?"high":"low");
 		st2.Format("Flags penalty: %s", rpst);
-		AddMelody(step00, pos - 1, v, st, st2);
-		if (v) AddMelody(step00, pos - 1, 0, st, st2);
+		AddMelody(step000, pos - 1, v, st, st2);
+		if (v) AddMelody(step000, pos - 1, 0, st, st2);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -3582,8 +3584,8 @@ int CGenCF1::SendCantus() {
 				st2.Format("Flags penalty: %s\nKey selection: %s", rpst, key_eval);
 			}
 		}
-		AddMelody(step00, pos - 1, v, st, st2);
-		if (v) AddMelody(step00, pos - 1, 0, st, st2);
+		AddMelody(step000, pos - 1, v, st, st2);
+		if (v) AddMelody(step000, pos - 1, 0, st, st2);
 	}
 	// Send
 	t_generated = step;
@@ -3743,7 +3745,7 @@ void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 			// Check that flag exists in previous SAS run if this is not last step and previous run exists
 			found = 0;
 			good = 0;
-			error_st = "";
+			error_st.Empty();
 			error_level = 0;
 			if (s < ep2 - 1 && nflags_prev.size() > s) {
 				for (int f2 = 0; f2 < nflags_prev[s].size(); ++f2) if (nflags_prev[s][f2] == fl) {
@@ -3821,13 +3823,11 @@ void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 			}
 			// Not found in any position: can it be replaced in any position?
 			if (sas_emulator_replace[fl].size() && sas_emulator_move_ignore[fl]) {
-				if (sas_emulator_replace[fl].size()) {
-					for (int i = 0; i < sas_emulator_replace[fl].size(); ++i) {
-						fl2 = sas_emulator_replace[fl][i];
-						if (flags_full[fl2]) {
-							found = 1;
-							break;
-						}
+				for (int i = 0; i < sas_emulator_replace[fl].size(); ++i) {
+					fl2 = sas_emulator_replace[fl][i];
+					if (flags_full[fl2]) {
+						found = 1;
+						break;
 					}
 				}
 				if (!found && flag_replace[fl].size()) {
@@ -3946,7 +3946,6 @@ void CGenCF1::RandomSWA()
 		if (rpenalty_min <= rpenalty_accepted) {
 			if (vs.Insert(m_cc)) {
 				int step = t_generated;
-				vector<int> chm_old = chm;
 				// Add line
 				linecolor[t_generated] = MakeColor(255, 0, 0, 0);
 				ScanCantus(tEval, 0, &(m_cc));
@@ -4071,7 +4070,7 @@ void CGenCF1::SWA(int i, int dp) {
 	CString est;
 	// For successful rpenalty_cur == 0, show last flag that was fixed. For unsuccessful, show best variant
 	CString stuck_st = GetStuck();
-	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %d ms): %s", 
+	est.Format("Finished SWA%d #%d: rp %.0f from %.0f, dp %d, cnum %ld (in %lld ms): %s", 
 		swa_len, a, rpenalty_min, rpenalty_source, dpenalty_min, cnum, time_stop - time_start, stuck_st);
 	WriteLog(0, est);
 	TestBestRpenalty();

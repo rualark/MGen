@@ -72,8 +72,8 @@ public:
 	float basic_tempo = 100; // Basic tempo
 	int tonic_cur = 0; // Tonic key
 	int minor_cur = 0; // Key minor indicator (0 = major, 1 = minor)
-	int midifile_out_mul0 = 1; // Multiply note length with this value when saving
-	int midifile_out_mul2 = 1; // Multiply note length with this value when saving
+	float midifile_out_mul0 = 1; // Multiply note length with this value when saving
+	float midifile_out_mul2 = 1; // Multiply note length with this value when saving
 
 	// Output
 	vector<float> midifile_out_mul; // [s] Multiply note length with this value when saving

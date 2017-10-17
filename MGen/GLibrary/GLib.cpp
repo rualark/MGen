@@ -757,7 +757,8 @@ void CGLib::TestRandom()
 	// Count time
 	long long time_stop = CGLib::time();
 	CString est;
-	est.Format("TestRandom with %d buckets, %d samples, %d variants took %d ms", n_buckets, n_samples, n_variants, time_stop - time_start);
+	est.Format("TestRandom with %d buckets, %d samples, %d variants took %lld ms", 
+		n_buckets, n_samples, n_variants, time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -781,7 +782,7 @@ void CGLib::TestSmoothRandom()
 	// Count time
 	long long time_stop = CGLib::time();
 	CString est;
-	est.Format("TestSmoothRandom with %d samples took %d ms", n_samples, time_stop - time_start);
+	est.Format("TestSmoothRandom with %d samples took %lld ms", n_samples, time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -906,13 +907,13 @@ void CGLib::TestVSet()
 }
 
 // Fill vector with value
-void CGLib::vfill(vector<int> v, int value) {
+void CGLib::vfill(vector<int> &v, int value) {
 	int x2 = v.size();
 	for (int x = 0; x < x2; ++x) v[x] = value;
 }
 
 // Sum of vector
-int CGLib::vsum(vector<int> v) {
+int CGLib::vsum(vector<int> &v) {
 	int res = 0;
 	int x2 = v.size();
 	for (int x = 0; x < x2; ++x) res += v[x];
@@ -920,7 +921,7 @@ int CGLib::vsum(vector<int> v) {
 }
 
 // Maximum in vector
-int CGLib::vmax(vector<int> v) {
+int CGLib::vmax(vector<int> &v) {
 	int res = 0;
 	int x2 = v.size();
 	for (int x = 0; x < x2; ++x) if (v[x] > res) res = v[x];
@@ -928,7 +929,7 @@ int CGLib::vmax(vector<int> v) {
 }
 
 // Minimum in vector
-int CGLib::vmin(vector<int> v) {
+int CGLib::vmin(vector<int> &v) {
 	int res = INT_MAX;
 	int x2 = v.size();
 	for (int x = 0; x < x2; ++x) if (v[x] < res) res = v[x];

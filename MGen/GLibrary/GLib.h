@@ -177,10 +177,10 @@ public:
 	static int GetNoteI(CString &st);
 	static int GetPC(CString &st);
 	static int MatchVectors(vector <int> &v1, vector <int> &v2, int i1, int i2);
-	static void vfill(vector<int> v, int value);
-	static int vsum(vector<int> v);
-	static int vmax(vector<int> v);
-	static int vmin(vector<int> v);
+	static void vfill(vector<int> &v, int value);
+	static int vsum(vector<int> &v);
+	static int vmax(vector<int> &v);
+	static int vmin(vector<int> &v);
 
 	CString HumanFloat(float f);
 

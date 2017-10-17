@@ -670,7 +670,7 @@ void CGAdapt::Adapt(int step1, int step2)
 	if (debug_level > 1) {
 		long long time_stop = CGLib::time();
 		CString st;
-		st.Format("Adapt steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+		st.Format("Adapt steps %d-%d in %lld ms", step1, step2, time_stop - time_start);
 		WriteLog(0, st);
 	}
 	// Tempo could change

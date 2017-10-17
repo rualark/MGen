@@ -234,7 +234,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 	if (debug_level > 1) {
 		long long time_stop = CGLib::time();
 		CString st;
-		st.Format("ResizeVectors from %d to %d steps, from %d to %d voices (in %d ms)", t_allocated, size, v_cnt, vsize, time_stop - time_start);
+		st.Format("ResizeVectors from %d to %d steps, from %d to %d voices (in %lld ms)", 
+			t_allocated, size, v_cnt, vsize, time_stop - time_start);
 		WriteLog(0, st);
 	}
 
@@ -736,7 +737,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 	// Count time
 	long long time_stop = CGLib::time();
 	CString est;
-	est.Format("Saved results to files in %d ms", time_stop - time_start);
+	est.Format("Saved results to files in %lld ms", time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -793,7 +794,7 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 	// Count time
 	long long time_stop = CGLib::time();
 	CString est;
-	est.Format("Saved CSV vectors to file %s\\%s.csv in %d ms", dir, fname, time_stop - time_start);
+	est.Format("Saved CSV vectors to file %s\\%s.csv in %lld ms", dir, fname, time_stop - time_start);
 	WriteLog(0, est);
 }
 
@@ -973,7 +974,7 @@ void CGVar::LoadResultMusic(CString dir, CString fname)
 	// Count time
 	long long time_stop = CGLib::time();
 	CString est;
-	est.Format("Loaded result music from folder %s in %d ms", dir, time_stop - time_start);
+	est.Format("Loaded result music from folder %s in %lld ms", dir, time_stop - time_start);
 	WriteLog(0, est);
 	ValidateVectors(0, t_generated - 1);
 }
@@ -1001,7 +1002,7 @@ void CGVar::ValidateVectors2(int step1, int step2) {
 	if (debug_level > 1) {
 		long long time_stop = CGLib::time();
 		CString est;
-		est.Format("Post-validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+		est.Format("Post-validated vectors steps %d-%d in %lld ms", step1, step2, time_stop - time_start);
 		WriteLog(0, est);
 	}
 }
@@ -1120,7 +1121,7 @@ void CGVar::ValidateVectors(int step1, int step2) {
 	if (debug_level > 1) {
 		long long time_stop = CGLib::time();
 		CString est;
-		est.Format("Validated vectors steps %d-%d in %d ms", step1, step2, time_stop - time_start);
+		est.Format("Validated vectors steps %d-%d in %lld ms", step1, step2, time_stop - time_start);
 		WriteLog(0, est);
 	}
 }
@@ -1265,7 +1266,7 @@ void CGVar::LoadResults(CString dir, CString fname)
 	// Count time
 	long long time_stop = CGLib::time();
 	CString est;
-	est.Format("Loaded result info from folder %s in %d ms", dir, time_stop - time_start);
+	est.Format("Loaded result info from folder %s in %lld ms", dir, time_stop - time_start);
 	WriteLog(0, est);
 }
 

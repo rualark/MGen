@@ -167,7 +167,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	g.DrawString(A2W(st), -1, &font, PointF(800, 0), &brush_black);
 
 	time_stop2 = CGLib::time();
-	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) {
+	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) { //-V560
 		int y;
 		vector<CString> ast;
 		RectF Rect(0, 0, 32767, 32767);
@@ -185,7 +185,7 @@ void CMGenView::OnDraw(CDC* pDC)
 		if (mf->m_state_play > 0) play_step = pGen->GetPlayStep();
 		if (play_step > 0) {
 			long long play_time = CGLib::time() - pGen->midi_start_time;
-			st.Format("(%02d:%02d - meas. %d)", play_time/60000, (play_time/1000) % 60, play_step/8 + 1);
+			st.Format("(%02lld:%02lld - meas. %d)", play_time/60000, (play_time/1000) % 60, play_step/8 + 1);
 			g.DrawString(A2W(st), -1, &font, PointF(900, 0), &brush_black);
 		}
 		if (pGen->need_exit == 1)
@@ -573,13 +573,13 @@ void CMGenView::OnDraw(CDC* pDC)
 	}
 	time_stop = CGLib::time();
 	if (time_stop - time_start > 80 && mf->m_debug_level > 1) {
-		st.Format("OnDraw run time %d (%d / %d / %d / %d) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
+		st.Format("OnDraw run time %lld (%lld / %lld / %lld / %lld) ms", time_stop - time_start, time_stop2 - time_start, time_stop3 - time_start, time_stop4 - time_start, time_stop5 - time_start);
 		mf->WriteLog(2, st);
 	}
 	if (time_stop - time_start > max_draw_time) {
 		max_draw_time = time_stop - time_start;
 		if (max_draw_time > WARN_DRAW * (double)(mf->m_view_timer)) {
-			st.Format("Warning: drawing takes %d ms. Your delay between drawings (View_timer) is %d ms. It is recommended to increase zoom or increase View_timer in settings.pl or disable Dynamics, MeloCurve or Scan range output if you face performance issues.", time_stop - time_start, mf->m_view_timer);
+			st.Format("Warning: drawing takes %lld ms. Your delay between drawings (View_timer) is %d ms. It is recommended to increase zoom or increase View_timer in settings.pl or disable Dynamics, MeloCurve or Scan range output if you face performance issues.", time_stop - time_start, mf->m_view_timer);
 			mf->WriteLog(2, st);
 		}
 	}
