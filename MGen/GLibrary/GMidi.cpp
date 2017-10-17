@@ -257,8 +257,14 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	SplitLyNote(pos, le, la);
 	for (int lc = 0; lc < la.size(); ++lc) {
 		if (show_lining && ev != "r") {
-			if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOn ";
-			else fs << " \\speakOff ";
+			if (la[lc] == 8) {
+				if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOff \\override NoteHead.style = #'xcircle ";
+				else fs << " \\speakOff \\revert NoteHead.style ";
+			}
+			else {
+				if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\revert NoteHead.style \\speakOn ";
+				else fs << " \\revert NoteHead.style \\speakOff ";
+			}
 			if (lining[i][v] == HatchStyleLightUpwardDiagonal) fs << " \\circle ";
 		}
 		fs << ev + GetLyLen(la[lc]);
