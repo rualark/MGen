@@ -2027,7 +2027,8 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 }
 
 int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
-	int tcount = 0;
+	vector<int> tcount;
+	tcount.resize(13);
 	int fire, fired = 0;
 	// Do not check if melody is short
 	if (fli_size < 3) return 0;
@@ -2038,20 +2039,21 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 		// Decrement for previous tonic note
 		if (ls > tonic_window) {
 			if (!pc[fli[ls - tonic_window]]) {
-				if (ls > tonic_window+1 && abs(cc[fli[ls - tonic_window]] - cc[fli[ls - tonic_window - 1]]) > tonic_leap) tcount -= tonic_leap_weight;
-				else --tcount;
+				if (ls > tonic_window+1 && abs(cc[fli[ls - tonic_window]] - cc[fli[ls - tonic_window - 1]]) > tonic_leap) tcount[cc[s] / 12] -= tonic_leap_weight;
+				else --tcount[cc[s] / 12];
 			}
 		}
 		if (!pc[s]) {
 			// Increment for current tonic note
-			if (abs(cc[s] - cc[s_1]) > tonic_leap) tcount += tonic_leap_weight;
-			else ++tcount;
+			if (abs(cc[s] - cc[s_1]) > tonic_leap) tcount[cc[s] / 12] += tonic_leap_weight;
+			else 
+				++tcount[cc[s] / 12];
 			// Check count of tonic notes
-			if (tcount > tonic_max) {
+			if (tcount[cc[s] / 12] > tonic_max) {
 				// Grant one more tonic in first window if first note not tonic
 				fire = 0;
 				if (ls < tonic_window && !pc[0]) {
-					if (tcount > tonic_max + 1)	fire = 1;
+					if (tcount[cc[s] / 12] > tonic_max + 1)	fire = 1;
 				}
 				else fire = 1;
 				if (fire) {
