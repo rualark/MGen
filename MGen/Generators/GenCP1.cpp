@@ -620,6 +620,14 @@ int CGenCP1::FailSus2() {
 				// If mid-bar already generated
 				s3 = sus[ls] + npm / 2;
 				if (s3 < ep2) {
+					// If second part is 3/4 in species 5
+					if (npm == 8 && s2 - sus[ls] == 5) {
+						// If next note is 1/8
+						if (llen[ls + 1] == 1) FLAG2(291, fli[ls + 1]);
+						if (FailSusResolution(fli[ls + 1])) return 1;
+						// Stop processing this sus
+						continue;
+					}
 					// If this step does not start new note
 					if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
 					// If resolution note is too short
@@ -636,9 +644,7 @@ int CGenCP1::FailSus2() {
 						else if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2(137, fli[ls + 1])
 						else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2(138, fli[ls + 1])
 					}
-					// If there are two intermediate steps
-					//else if (ls3 - ls == 3) {
-					//}
+					// If there are two intermediate steps - do nothing
 					// If there are more than two intermediate steps
 					else if (ls3 - ls > 3) {
 						FLAG2(292, s3);
@@ -1161,8 +1167,8 @@ int CGenCP1::FailRhythm3() {
 	}
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
-		// Note longer than whole
-		if (llen[ls] > 4 && ls < fli_size - 1) FLAG2(274, s);
+		// Note longer than 5/4
+		if (llen[ls] > 5 && ls < fli_size - 1) FLAG2(274, s);
 		// 1/4 syncope (not for last 1/4 because it is applied with anticipation or sus)
 		if (beat[ls] == 3 && llen[ls] > 1) FLAG2(235, s);
 		// 1/2 after 1/4
@@ -1226,8 +1232,8 @@ int CGenCP1::FailRhythm5() {
 		// Build note lengths
 		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
-			// Note longer than whole (flag only in first measure)
-			if (llen[ls2] > 8 && fli[ls2] >= s) FLAG2(274, fli[ls2]);
+			// Note longer than 5/4 (flag only in first measure)
+			if (llen[ls2] > 10 && fli[ls2] >= s) FLAG2(274, fli[ls2]);
 			if (!ms && fn) pos = fn + max(0, fli[ls2] - s);
 			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
