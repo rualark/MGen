@@ -27,7 +27,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;146;40;Melody;Compensated leap;C4P last 4 leaps;5th;-1;Compensated to 4th, precompensated;;;;;;;;
 1;147;100;Melody;Compensated leap;C4P last 4 leaps;>5th;0;Compensated to 4th, precompensated;;;;;;;;
 1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;;;;;;;;
-1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;0;;;;;;;;;
+1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;-1;;;;;;;;;
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated;5th;0;;;;;;;;;
 1;115;100;Melody;Uncompensated leap;Uncompensated: precompensated;>5th;0;;;;;;;;;
 1;204;0;Melody;Uncompensated leap;Precompensated last 2 leaps;3rd;-1;;;;;;;;;
@@ -35,11 +35,11 @@ Set;Severity;Class;Group;Rule;Flag
 1;206;40;Melody;Uncompensated leap;Precompensated last 2 leaps;5th;-1;;;;;;;;;
 1;207;100;Melody;Uncompensated leap;Precompensated last 2 leaps;>5th;-1;;;;;;;;;
 1;116;0;Melody;Uncompensated leap;Uncompensated child leap;3rd;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;;
-1;117;30;Melody;Uncompensated leap;Uncompensated child leap;4th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;;
+1;117;0;Melody;Uncompensated leap;Uncompensated child leap;4th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;;
 1;118;60;Melody;Uncompensated leap;Uncompensated child leap;5th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;;
 1;119;100;Melody;Uncompensated leap;Uncompensated child leap;>5th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;;
-1;124;40;Melody;Uncompensated leap;Uncompensated leap;3rd;0;If no other uncompensated rules worked.;;;;;;;;
-1;125;60;Melody;Uncompensated leap;Uncompensated leap;4th;0;If no other uncompensated rules worked.;;;;;;;;
+1;124;0;Melody;Uncompensated leap;Uncompensated leap;3rd;-1;If no other uncompensated rules worked.;;;;;;;;
+1;125;0;Melody;Uncompensated leap;Uncompensated leap;4th;0;If no other uncompensated rules worked.;;;;;;;;
 1;126;60;Melody;Uncompensated leap;Uncompensated leap;5th;0;If no other uncompensated rules worked.;;;;;;;;
 1;127;100;Melody;Uncompensated leap;Uncompensated leap;>5th;0;If no other uncompensated rules worked.;;;;;;;;
 1;1;0;Melody;Uncompensated leap;Uncompensated leap;start 3rd;-1;If no other uncompensated rules worked.;;;1;;;;;
@@ -180,11 +180,11 @@ Set;Severity;Class;Group;Rule;Flag
 1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;1;;;;;;;;;
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;;;;;;80;;
 1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;;;;;;;;
-1;85;60;Cantus;Counterpoint;Close perfect consonances;combined;0;;;;;;;;;
+1;85;60;Cantus;Counterpoint;Close perfect consonances;combined;1;;;;;;;;;
 1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;;;;;;
-1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances;;;;;;;;
-1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;non-harmonic;1;Two same non-close perfect consonances;;;;;;250;;
-1;250;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances;If other rules in this row did not apply;;;;;249;;
+1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighbouring measures;;;;;;;;
+1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;non-harmonic;1;Two same non-close perfect consonances in neighbouring measures;;;;;;250;;
+1;250;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances in neighbouring measures;If other rules in this row did not apply;;;;;249;;
 1;208;0;Cantus;Counterpoint;Direct stepwize movement;5 cadence;1;Direct movement to interval with stepwize motion in higher voice;;;;;;;;
 1;209;40;Cantus;Counterpoint;Direct stepwize movement;8 cadence;1;Direct movement to interval with stepwize motion in higher voice;;;;;;;;
 1;210;40;Cantus;Counterpoint;Direct stepwize movement;5;0;Direct movement to interval with stepwize motion in higher voice;;;;;;;;
@@ -214,7 +214,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;;;;;;;;
 1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;;;;;276,169;;
 1;276;60;Cantus;Counterpoint;Dissonance upbeat;m2;0;;Minor second;;;;;;;
-1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;0;More than X same imperfect consonances in a row;;;;;;;;
+1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;1;More than X same imperfect consonances in a row;;;;;;;;
 1;96;60;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;;;;;;;
 1;268;0;Cantus;Counterpoint;First harmony;CC;-1;;;;;;;;;
 1;269;10;Cantus;Counterpoint;First harmony;CG;-1;;;;;;;;;
