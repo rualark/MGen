@@ -581,8 +581,8 @@ int CGenCP1::FailSus2() {
 		else if (tivl[sus[ls]] != iDis) {
 			// If sus starts with note shorter than 1/2, it is anticipation
 			if (sus[ls] - s < npm / 2) antici = 1;
-			// If sus is longer than whole note
-			else if (llen[ls] > npm) antici = 1;
+			// If sus second part is equal or longer than whole note
+			else if (s2 - sus[ls] >= npm - 1) antici = 1;
 		}
 		// Check if sus starts from discord
 		if (antici) {
