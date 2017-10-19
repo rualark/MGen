@@ -1380,7 +1380,7 @@ int CGenCP1::FailRhythm5() {
 		// Suspensions
 		if (slur1 == 4 && l_len[0] == 2) FLAG2(241, s)
 		else if (slur1 == 4 && l_len[0] == 4) FLAG2(242, s)
-		else if (slur1 == 2) FLAG2(251, s)
+		//else if (slur1 == 2) FLAG2(251, s)
 		if (slur1 && l_len[0] == 6) FLAG2(243, s)
 		if (slur1 == 6) FLAG2(244, s);
 	}
