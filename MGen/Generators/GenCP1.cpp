@@ -684,10 +684,10 @@ int CGenCP1::FailUnison() {
 	// Unison
 	if (!civl[s]) {
 		// 2nd -> unison
-		if (ls > 0 && ivl[fli[ls - 1]] == 1) FLAG2(275, s);
+		if (s > 0 && ivl[s - 1] == 1) FLAG2(275, s);
 		// Unison near m2 in same measure
 		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1 && bmli[s] == bmli[fli[ls + 1]]) FLAG2(277, s)
-		else if (ls > 0 && civl[fli[ls - 1]] == 1) FLAG2(275, s);
+		else if (s > 0 && civl[s - 1] == 1) FLAG2(275, s);
 		// Inside downbeat
 		if (!beat[ls] && ls > 0 && ls < fli_size - 1) FLAG2(91, s);
 	}
