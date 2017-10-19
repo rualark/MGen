@@ -1249,8 +1249,8 @@ int CGenCP1::FailRhythm5() {
 				if (llen[ls2] >= 8 && ms && !pos && !sus[ls2]) FLAG2(236, s) 
 				// 1/8 syncope
 				else if (llen[ls2] > 1 && pos % 2) FLAG2(232, fli[ls2])
-				// 1/4 syncope
-				else if (llen[ls2] > 2 && pos % 4 == 2) FLAG2(235, fli[ls2])
+				// 1/4 syncope (not last, because it is flagged in suspension)
+				else if (llen[ls2] > 2 && pos == 2) FLAG2(235, fli[ls2])
 				full_measure = 0;
 				break;
 			}
@@ -1272,13 +1272,13 @@ int CGenCP1::FailRhythm5() {
 			slur1 = s - fli[ls];
 		}
 		// Last note in measure with slur
-		if (full_measure && sus[ls2]) {
+		if (full_measure && sus[ls2] && fli[ls2] >= s) {
 			l_len[l_len.size()-1] = min(8, sus[ls2] - s2);
 			slur2 = fli2[ls2] - sus[ls2] + 1;
 		}
 		// Full evaluation?
 		if (ep2 == c_len) {
-			// Last measure
+			// Last measuref
 			if (ms == mli.size() - 1) {
 				// Check last whole note
 				if (l_len[0] != 8) FLAG2(267, s);
@@ -1294,7 +1294,7 @@ int CGenCP1::FailRhythm5() {
 			else s2 = s + pos;
 			ls2 = bli[s2];
 			// Last note
-			if (ep2 == c_len && ls2 == fli_size - 1) {
+			if (ep2 == c_len && ls2 == fli_size - 1 && ms == mli.size() - 1) {
 				// Check length
 				if (l_len[lp] == 1) FLAG2(253, s2)
 				else if (l_len[lp] == 2) FLAG2(252, s2)
@@ -1336,7 +1336,7 @@ int CGenCP1::FailRhythm5() {
 				if (pos % 2) FLAG2(232, s2)
 				// 1/4 syncope
 				else if (l_len[lp] > 2 && pos == 2) FLAG2(235, s2)
-				else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG2(235, s2);
+				//else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG2(235, s2);
 			}
 			// Uneven starting rhythm
 			if (!ms && lp>0 && l_len[lp] != l_len[lp-1]) FLAG2(254, s2);
