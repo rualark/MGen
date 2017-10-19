@@ -567,6 +567,7 @@ int CGenCP1::FailSus1() {
 int CGenCP1::FailSus2() {
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
 	CHECK_READY(DR_leap);
+	SET_READY(DR_retrigger);
 	int ls3, s3, antici;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		// Run sus checks
@@ -1272,7 +1273,7 @@ int CGenCP1::FailRhythm5() {
 			slur1 = s - fli[ls];
 		}
 		// Last note in measure with slur
-		if (full_measure && sus[ls2]) {
+		if (full_measure && sus[ls2] && fli[ls] >= s) {
 			l_len[l_len.size()-1] = min(8, sus[ls2] - s2);
 			slur2 = fli2[ls2] - sus[ls2] + 1;
 		}
@@ -1281,7 +1282,8 @@ int CGenCP1::FailRhythm5() {
 			// Last measure
 			if (ms == mli.size() - 1) {
 				// Check last whole note
-				if (l_len[0] != 8) FLAG2(267, s);
+				if (l_len[0] != 8) 
+					FLAG2(267, s);
 			}
 		}
 		// Set first rhythm id bit

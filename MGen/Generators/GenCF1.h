@@ -43,6 +43,7 @@
 #define DR_pat					19
 #define DR_rposb				20
 #define DR_rposf				21
+#define DR_retrigger    22
 
 #ifdef CF_DEBUG
 
