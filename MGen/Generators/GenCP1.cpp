@@ -1366,7 +1366,10 @@ int CGenCP1::FailRhythm5() {
 			else FLAG2(240, s3);
 		}
 		// Many notes in measure
-		if (l_len.size() == 5) FLAG2(245, s)
+		if (l_len.size() == 5) {
+			if (slur1) FLAG2(301, s)
+			else FLAG2(245, s)
+		}
 		else if (l_len.size() > 5) FLAG2(246, s);
 		// Suspensions
 		if (slur1 == 4 && l_len[0] == 2) FLAG2(241, s)
