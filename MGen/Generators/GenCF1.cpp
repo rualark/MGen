@@ -1208,11 +1208,11 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 				if ((f - s) % 2) continue;
 				if (MELODY_SEPARATION(f, f1)) {
 					// Check if same note
-					if (cc[f] == cc[s] && llen[x] == llen[ls]) {
+					if (c[f] == c[s] && llen[x] == llen[ls]) {
 						// Check that more notes repeat
 						ok = 0;
 						for (int z = 1; z < rlen; ++z) {
-							if (cc[fli[x + z]] != cc[fli[ls + z]] || llen[x+z] != llen[ls+z]) {
+							if (c[fli[x + z]] != c[fli[ls + z]] || llen[x+z] != llen[ls+z]) {
 								ok = 1;
 								break;
 							}
@@ -1228,7 +1228,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 	return 0;
 }
 
-int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
+int CGenCF1::FailLongRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, int scan_len, int rlen, int flag) {
 	CHECK_READY(DR_fli, DR_c);
 	// Do not test if flag disabled and not testing
 	if (task != tEval && accept[flag] == -1) return 0;
@@ -1245,11 +1245,11 @@ int CGenCF1::FailLongRepeat(vector<int> &cc, vector<int> &leap, int scan_len, in
 			f = fli2[x];
 			f1 = fli2[x + 1];
 			// Check if same note
-			if (cc[f] == cc[s] && llen[x] == llen[ls]) {
+			if (c[f] == c[s] && llen[x] == llen[ls]) {
 				// Check that more notes repeat
 				ok = 0;
 				for (int z = 1; z < rlen; ++z) {
-					if (cc[fli2[x + z]] != cc[fli2[ls + z]] || llen[x + z] != llen[ls + z]) {
+					if (c[fli2[x + z]] != c[fli2[ls + z]] || llen[x + z] != llen[ls + z]) {
 						ok = 1;
 						break;
 					}
@@ -4200,8 +4200,8 @@ check:
 		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps2, repeat_notes2, 76)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps3, repeat_notes3, 36)) goto skip;
-		if (FailLongRepeat(m_cc, m_leap, repeat_steps5, repeat_notes5, 72)) goto skip;
-		if (FailLongRepeat(m_cc, m_leap, repeat_steps7, repeat_notes7, 73)) goto skip;
+		if (FailLongRepeat(m_c, m_cc, m_leap, repeat_steps5, repeat_notes5, 72)) goto skip;
+		if (FailLongRepeat(m_c, m_cc, m_leap, repeat_steps7, repeat_notes7, 73)) goto skip;
 		if (FailGlobalFill(m_c, nstat2)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
