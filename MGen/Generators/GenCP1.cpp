@@ -1273,7 +1273,7 @@ int CGenCP1::FailRhythm5() {
 			slur1 = s - fli[ls];
 		}
 		// Last note in measure with slur
-		if (full_measure && sus[ls2] && fli[ls] >= s) {
+		if (full_measure && sus[ls2] && fli[ls2] >= s) {
 			l_len[l_len.size()-1] = min(8, sus[ls2] - s2);
 			slur2 = fli2[ls2] - sus[ls2] + 1;
 		}
@@ -1296,10 +1296,10 @@ int CGenCP1::FailRhythm5() {
 			else s2 = s + pos;
 			ls2 = bli[s2];
 			// Last note
-			if (ep2 == c_len && ls2 == fli_size - 1) {
+			if (ep2 == c_len && ls2 == fli_size - 1 && ms == mli.size() - 1) {
 				// Check length
-				if (llen[ls2] == 1) FLAG2(253, s2)
-				else if (llen[ls2] == 2) FLAG2(252, s2)
+				if (l_len[lp] == 1) FLAG2(253, s2)
+				else if (l_len[lp] == 2) FLAG2(252, s2)
 			}
 			// Calculate rhythm id
 			if (lp < l_len.size() - 1 || !slur2)
