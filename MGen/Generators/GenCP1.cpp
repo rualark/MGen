@@ -567,6 +567,7 @@ int CGenCP1::FailSus1() {
 int CGenCP1::FailSus2() {
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
 	CHECK_READY(DR_leap);
+	SET_READY(DR_retrigger);
 	int ls3, s3, antici;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		// Run sus checks
@@ -1281,7 +1282,8 @@ int CGenCP1::FailRhythm5() {
 			// Last measuref
 			if (ms == mli.size() - 1) {
 				// Check last whole note
-				if (l_len[0] != 8) FLAG2(267, s);
+				if (l_len[0] != 8) 
+					FLAG2(267, s);
 			}
 		}
 		// Set first rhythm id bit
