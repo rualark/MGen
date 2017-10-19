@@ -1250,8 +1250,8 @@ int CGenCP1::FailRhythm5() {
 				if (llen[ls2] >= 8 && ms && !pos && !sus[ls2]) FLAG2(236, s) 
 				// 1/8 syncope
 				else if (llen[ls2] > 1 && pos % 2) FLAG2(232, fli[ls2])
-				// 1/4 syncope
-				else if (llen[ls2] > 2 && pos % 4 == 2) FLAG2(235, fli[ls2])
+				// 1/4 syncope (not last, because it is flagged in suspension)
+				else if (llen[ls2] > 2 && pos == 2) FLAG2(235, fli[ls2])
 				full_measure = 0;
 				break;
 			}
@@ -1338,7 +1338,7 @@ int CGenCP1::FailRhythm5() {
 				if (pos % 2) FLAG2(232, s2)
 				// 1/4 syncope
 				else if (l_len[lp] > 2 && pos == 2) FLAG2(235, s2)
-				else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG2(235, s2);
+				//else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG2(235, s2);
 			}
 			// Uneven starting rhythm
 			if (!ms && lp>0 && l_len[lp] != l_len[lp-1]) FLAG2(254, s2);
