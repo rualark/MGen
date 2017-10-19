@@ -356,6 +356,8 @@ void CGenCF1::SetRuleParams() {
 	min_lrange = Interval2Chromatic(GetRuleParam(rule_set, 98, rsSubName, 1));
 	notes_lrange2 = GetRuleParam(rule_set, 198, rsSubName, 0);
 	min_lrange2 = Interval2Chromatic(GetRuleParam(rule_set, 198, rsSubName, 1));
+	notes_lrange3 = GetRuleParam(rule_set, 300, rsSubName, 0);
+	min_lrange3 = Interval2Chromatic(GetRuleParam(rule_set, 300, rsSubName, 1));
 	notes_arange = GetRuleParam(rule_set, 15, rsSubName, 0);
 	min_arange = GetRuleParam(rule_set, 15, rsSubName, 1) / 10.0;
 	notes_arange2 = GetRuleParam(rule_set, 16, rsSubName, 0);
@@ -4203,6 +4205,7 @@ check:
 		if (FailGlobalFill(m_c, nstat2)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
+		if (FailLocalRange(m_cc, notes_lrange3, min_lrange3, 300)) goto skip;
 		if (FailStagnation(m_cc, nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(m_cc, nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;

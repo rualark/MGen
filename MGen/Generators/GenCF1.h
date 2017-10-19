@@ -355,10 +355,12 @@ protected:
 	int max_tempo = 120;
 	int rpenalty_accepted = 0; // Maximum accepted rule penalty for RandomSWA
 	int first_steps_tonic = 3; // Number of first steps, which must contain tonic note
-	int notes_lrange = 5; // Maximum number of consecutive notes having low range
+	int notes_lrange = 6; // Maximum number of consecutive notes having low range
 	int min_lrange = 5; // Minimum allowed local range of notes_lrange consecutive notes
-	int notes_lrange2 = 5; // Maximum number of consecutive notes having low range
-	int min_lrange2 = 5; // Minimum allowed local range of notes_lrange consecutive notes
+	int notes_lrange2 = 13; // Maximum number of consecutive notes having low range
+	int min_lrange2 = 8; // Minimum allowed local range of notes_lrange consecutive notes
+	int notes_lrange3 = 5; // Maximum number of consecutive notes having low range
+	int min_lrange3 = 3; // Minimum allowed local range of notes_lrange consecutive notes
 	int notes_arange = 5; // Maximum number of consecutive notes having low average range
 	float min_arange = 5; // Minimum allowed local range of notes_arange consecutive notes
 	int notes_arange2 = 5; // Maximum number of consecutive notes having low average range

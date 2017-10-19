@@ -2322,6 +2322,7 @@ check:
 		if (FailGlobalFill(ac[cpv], nstat2)) goto skip;
 		if (FailLocalRange(acc[cpv], notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(acc[cpv], notes_lrange2, min_lrange2, 198)) goto skip;
+		if (FailLocalRange(acc[cpv], notes_lrange3, min_lrange3, 300)) goto skip;
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;
 		if (FailPcoApart()) goto skip;
