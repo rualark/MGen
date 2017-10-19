@@ -1622,13 +1622,13 @@ int CGenCP1::FailMissSlurs() {
 	// Check only for species 4
 	if (species != 4) return 0;
 	// Current window size
-	int wcount = 0;
+	int wsize = 0;
 	// Number of slurs in window
 	int scount = 0;
 	int miss, max_miss=0;
 	int max_i=0;
 	for (int i = 0; i < ep2-1; ++i) if ((i + fn) % 2) { 
-		if (i < miss_slurs_window * npm) ++wcount;
+		if (i < miss_slurs_window * npm) ++wsize;
 		// Subtract old slur
 		if ((i >= miss_slurs_window * npm) && 
 			(acc[cpv][i - miss_slurs_window * npm] == acc[cpv][i - miss_slurs_window * npm + 1])) 
@@ -1638,7 +1638,7 @@ int CGenCP1::FailMissSlurs() {
 			++scount;
 		}
 		else {
-			miss = wcount - scount;
+			miss = wsize - scount;
 			if (miss > max_miss) {
 				max_miss = miss;
 				max_i = i;
