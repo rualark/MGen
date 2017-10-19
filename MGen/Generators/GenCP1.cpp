@@ -610,6 +610,7 @@ int CGenCP1::FailSus2() {
 		else {
 			// Flag suspension
 			FLAG2(225, s);
+			// Suspension not in last measures
 			if (species < 4) {
 				if (bmli[s] < mli.size() - sus_last_measures) FLAG2(139, s);
 			}
@@ -623,7 +624,7 @@ int CGenCP1::FailSus2() {
 					// If second part is 3/4 in species 5
 					if (npm == 8 && s2 - sus[ls] == 5) {
 						// If next note is 1/8
-						if (llen[ls + 1] == 1) FLAG2(291, fli[ls + 1]);
+						if (llen[ls + 1] == 1 && ls < fli_size - 2) FLAG2(291, fli[ls + 1]);
 						if (FailSusResolution(fli[ls + 1])) return 1;
 						// Stop processing this sus
 						continue;
