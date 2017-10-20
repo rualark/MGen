@@ -344,8 +344,8 @@ void CGenCF1::SetRuleParams() {
 	repeat_notes5 = GetRuleParam(rule_set, 72, rsSubName, 0);
 	repeat_notes7 = GetRuleParam(rule_set, 73, rsSubName, 0);
 	min_interval = Interval2Chromatic(GetRuleParam(rule_set, 38, rsSubName, 0));
-	max_interval = Interval2Chromatic(GetRuleParam(rule_set, 37, rsSubName, 0));
-	max_interval2 = Interval2Chromatic(GetRuleParam(rule_set, 304, rsSubName, 0));
+	max_interval_cf = Interval2Chromatic(GetRuleParam(rule_set, 37, rsSubName, 0));
+	max_interval_cp = Interval2Chromatic(GetRuleParam(rule_set, 304, rsSubName, 0));
 	sum_interval = Interval2Chromatic(GetRuleParam(rule_set, 7, rsSubName, 0));
 	max_between = Interval2Chromatic(GetRuleParam(rule_set, 11, rsSubName, 0));
 	burst_between = Interval2Chromatic(GetRuleParam(rule_set, 11, rsSubComment, 0));
@@ -2226,6 +2226,7 @@ void CGenCF1::ScanCantusInit() {
 	m_slur.resize(c_len);
 	ep2 = c_len;
 	voice_high = cantus_high;
+	max_interval = max_interval_cf;
 }
 
 // Get minimum element in SWA window

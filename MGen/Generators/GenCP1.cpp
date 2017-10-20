@@ -246,6 +246,7 @@ void CGenCP1::ScanCPInit() {
 	sus.resize(c_len);
 	ep2 = c_len;
 	voice_high = cpv;
+	max_interval = max_interval_cp;
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
@@ -2275,7 +2276,7 @@ check:
 			// Still skipping even when evaluating to get error if wrong flag set
 			if (task == tEval)
 				if (FailStartPause()) goto skip;
-			if (nmax - nmin > max_interval2) FLAG(304, 0);
+			if (nmax - nmin > max_interval) FLAG(304, 0);
 			if (cantus_high) {
 				if (cf_nmax - nmin > sum_interval) FLAG(7, 0);
 			}
