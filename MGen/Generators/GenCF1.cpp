@@ -1430,7 +1430,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		if (cc[fli[ls]] == nmax) {
 			++culm_sum;
 			culm_ls = ls;
-			if (culm_sum > 1) FLAG2(12, fli[culm_ls]);
+			if (culm_sum > 1 && cantus_high) FLAG2(12, fli[culm_ls]);
 		}
 	}
 	if (culm_ls == -1) {
@@ -1439,12 +1439,14 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		est.Format("Warning: culm_ls cannot be detected at step %d", step);
 		WriteLog(5, est);
 	}
-	// Prohibit culminations at first steps
-	if (culm_ls < (early_culm3 * fli_size)/100) FLAG2(193, fli[culm_ls]);
-	if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
-	else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
-	// Prohibit culminations at last steps
-	if (culm_ls >= fli_size - late_culm) FLAG2(21, fli[culm_ls]);
+	if (cantus_high) {
+		// Prohibit culminations at first steps
+		if (culm_ls < (early_culm3 * fli_size) / 100) FLAG2(193, fli[culm_ls]);
+		if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
+		else if (culm_ls < early_culm2 - 1) FLAG2(79, fli[culm_ls]);
+		// Prohibit culminations at last steps
+		if (culm_ls >= fli_size - late_culm) FLAG2(21, fli[culm_ls]);
+	}
 	// Prohibit synchronized culminations
 	if (av_cnt > 1 && fli[culm_ls] == cf_culm_s) FLAG2(26, fli[culm_ls]);
 	return 0;
