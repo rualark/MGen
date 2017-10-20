@@ -98,7 +98,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;4;60;Melody;Stepwise;CF Stepwise motion;>7 any direction;0;;Stepwise motion more than X notes in any direction;1;;999;;;;
 1;5;60;Melody;Stepwise;CF Stepwise motion;>4 one direction;0;;Stepwise motion more than X notes in one direction;1;;;;;;
 1;302;60;Melody;Stepwise;CP Stepwise motion;>14 any direction;0;;Stepwise motion more than X notes in any direction;;;;;;;
-1;303;60;Melody;Stepwise;CP Stepwise motion;>8 one direction;0;;Stepwise motion more than X notes in one direction;;;;;;;
+1;303;60;Melody;Stepwise;CP Stepwise motion;>7 one direction;0;;Stepwise motion more than X notes in one direction;;;;;;;
 1;9;60;Melody;Repeats;Adjacent repeat;2 notes;0;;;;1;999;;;;
 1;193;0;Melody;Repeats;Culmination;early 50%;1;;Only for upper voice;;;;1;;;
 1;79;30;Melody;Repeats;Culmination;early <5;-1;;Only for upper voice;;;;1;;;
