@@ -839,11 +839,15 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 	if (task != tEval && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
 	if (fli_size < notes) return 0;
-	float lmin, lmax;
+	float lmin, lmax, maccr;
+	int maccr_count = 0;
 	int s;
 	int ls_max = fli_size - notes;
 	int ls_max2;
 	int fired = 0;
+	pm_maccr_min = INT_MAX;
+	pm_maccr_max = 0;
+	pm_maccr_av = 0;
 	// Loop through windows
 	for (ls = 0; ls <= ls_max; ++ls) {
 		lmin = MAX_NOTE;
@@ -852,14 +856,18 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 		// Do not check if later notes are not created
 		if (ep2 < c_len && fli2[ls_max2 - 1] + macc2_range >= ep2) continue;
 		// Loop inside each window
-		for (int ls2 = ls; ls2 < ls_max2; ++ls2) {
-			for (s = fli[ls2]; s <= fli2[ls2]; ++s) {
-				if (macc2[s] < lmin) lmin = macc2[s];
-				if (macc2[s] > lmax) lmax = macc2[s];
-			}
+		for (s = fli[ls]; s <= fli2[ls_max2 - 1]; ++s) {
+			if (macc2[s] < lmin) lmin = macc2[s];
+			if (macc2[s] > lmax) lmax = macc2[s];
 		}
+		// Record range
+		maccr = lmax - lmin;
+		pm_maccr_av += maccr;
+		++maccr_count;
+		if (pm_maccr_min > maccr) pm_maccr_min = maccr;
+		if (pm_maccr_max < maccr) pm_maccr_max = maccr;
 		// Check range
-		if (lmin < MAX_NOTE && lmax > 0 && lmax - lmin < mrange) {
+		if (lmin < MAX_NOTE && lmax > 0 && maccr < mrange) {
 			if (fired) {
 				fpenalty[flag] += severity[flag] + 1;
 			}
@@ -869,6 +877,7 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 			}
 		}
 	}
+	pm_maccr_av /= maccr_count;
 	return 0;
 }
 
@@ -1425,15 +1434,15 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int 
 int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 	CHECK_READY(DR_fli);
 	SET_READY(DR_culm_ls);
-	int culm_sum = 0;
+	pm_culm_count = 0;
 	culm_ls = -1;
 	// Do not find culminations if too early
 	if (ep2 < c_len) return 0;
 	for (ls = 0; ls < fli_size; ++ls) {
 		if (cc[fli[ls]] == nmax) {
-			++culm_sum;
+			++pm_culm_count;
 			culm_ls = ls;
-			if (culm_sum > 1 && voice_high) FLAG2(12, fli[culm_ls]);
+			if (pm_culm_count > 1 && voice_high) FLAG2(12, fli[culm_ls]);
 		}
 	}
 	if (culm_ls == -1) {
@@ -3506,6 +3515,97 @@ void CGenCF1::MergeNotes(int step1, int step2, int v) {
 	}
 }
 
+// Calculate parameter map
+void CGenCF1::CalcPmap(vector<int> &pcc, vector<int> &cc) {
+	CHECK_READY(DR_pc, DR_fli);
+	pm_range = nmax - nmin;
+	pm_tonic = 0;
+	pm_sharp6 = 0;
+	pm_sharp7 = 0;
+	pm_flat6 = 0;
+	pm_flat7 = 0;
+	pm_decc_min = INT_MAX;
+	pm_decc_max = 0;
+	pm_decc_av = 0;
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		// Note frequency
+		if (!pcc[s]) ++pm_tonic;
+		else if (pcc[s] == 11) ++pm_sharp7;
+		else if (pcc[s] == 10) ++pm_flat7;
+		else if (pcc[s] == 9) ++pm_sharp6;
+		else if (pcc[s] == 8) ++pm_flat6;
+		// Average decc
+		pm_decc_av += decc2[s];
+	}
+	pm_decc_av /= fli_size;
+	for (s = 0; s < ep2; ++s) {
+		if (pm_decc_min > decc2[s]) pm_decc_min = decc2[s];
+		if (pm_decc_max < decc2[s]) pm_decc_max = decc2[s];
+	}
+}
+
+// Get parameter map string
+void CGenCF1::GetPmap() {
+	CString st;
+	pmap.Empty();
+	st.Format("Range: %d semitones\n", pm_range);
+	pmap += st;
+	st.Format("Culminations: %d\n", pm_culm_count);
+	pmap += st;
+	st.Format("Tonic notes: %d\n", pm_tonic);
+	pmap += st;
+	st.Format("Min pitch deviation: %.5f\n", pm_decc_min);
+	pmap += st;
+	st.Format("Max pitch deviation: %.5f\n", pm_decc_max);
+	pmap += st;
+	st.Format("Av pitch deviation: %.5f\n", pm_decc_av);
+	pmap += st;
+	st.Format("Min MA pitch range: %.5f\n", pm_maccr_min);
+	pmap += st;
+	st.Format("Max MA pitch range: %.5f\n", pm_maccr_max);
+	pmap += st;
+	st.Format("Av MA pitch range: %.5f\n", pm_maccr_av);
+	pmap += st;
+	if (minor_cur) {
+		st.Format("VI: %d\n", pm_flat6);
+		pmap += st;
+		st.Format("VI#: %d\n", pm_sharp6);
+		pmap += st;
+		st.Format("VII: %d\n", pm_flat7);
+		pmap += st;
+		st.Format("VII#: %d\n", pm_sharp7);
+		pmap += st;
+	}
+}
+
+// Log parameter map
+void CGenCF1::LogPmap() {
+	CString st, st2;
+	CString fname = "log\\cf-pmap.csv";
+	// Header
+	if (!fileExists(fname)) {
+		st += "Voice;File;ID;High;Len;Tonic;Minor;";
+		st += "Range;Culminations;";
+		st += "Decc_min;Decc_max;Decc_av;Maccr_min;Maccr_max;Maccr_av;";
+		st += "Tonics;VI;VI#;VII;VII#;";
+		AppendLineToFile(fname, st + "\n");
+	}
+	st.Format("%d;%s;%d;%d;%d;%d;%d;",
+		svoice, midi_file, cantus_id, cantus_high, ep2, tonic_cur, minor_cur);
+	st2 += st;
+	st.Format("%d;%d;",
+		pm_range, pm_culm_count);
+	st2 += st;
+	st.Format("%.5f;%.5f;%.5f;%.5f;%.5f;%.5f;",
+		pm_decc_min, pm_decc_max, pm_decc_av, pm_maccr_min, pm_maccr_max, pm_maccr_av);
+	st2 += st;
+	st.Format("%d;%d;%d;%d;%d;",
+		pm_tonic, pm_flat6, pm_sharp6, pm_flat7, pm_sharp7);
+	st2 += st;
+	AppendLineToFile(fname, st2 + "\n");
+}
+
 int CGenCF1::SendCantus() {
 	int step000 = step;
 	float l_rpenalty_cur;
@@ -3518,6 +3618,9 @@ int CGenCF1::SendCantus() {
 	TransposeCantusBack();
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
+	CalcPmap(m_pcc, m_cc);
+	GetPmap();
+	LogPmap();
 	MakeLenExport(m_cc, 0, 0);
 	// Copy cantus to output
 	int pos = step;
@@ -3569,7 +3672,7 @@ int CGenCF1::SendCantus() {
 		// If  window-scan
 		st.Format("#%d\nRule penalty: %.0f\nCantus: %s", 
 			cantus_sent, l_rpenalty_cur, cantus_high?"high":"low");
-		st2.Format("Flags penalty: %s", rpst);
+		st2.Format("Flags penalty: %s\n%s", rpst, pmap);
 		AddMelody(step000, pos - 1, v, st, st2);
 		if (v) AddMelody(step000, pos - 1, 0, st, st2);
 	}
@@ -3578,7 +3681,7 @@ int CGenCF1::SendCantus() {
 			// If RSWA
 			st.Format("#%d\nRule penalty: %.0f\nCantus: %s", 
 				cantus_sent, l_rpenalty_cur, cantus_high ? "high" : "low");
-			st2.Format("Flags penalty: %s", rpst);
+			st2.Format("Flags penalty: %s\n%s", rpst, pmap);
 		}
 		else {
 			if (key_eval.IsEmpty()) {
@@ -3586,13 +3689,13 @@ int CGenCF1::SendCantus() {
 				st.Format("#%d (from %s)\nRule penalty: %.0f => %.0f\nDistance penalty: %d\nCantus: %s", 
 					cantus_id+1, midi_file, rpenalty_source, l_rpenalty_cur, 
 					dpenalty_cur, cantus_high ? "high" : "low");
-				st2.Format("Flags penalty: %s => %s", fpenalty_source, rpst);
+				st2.Format("Flags penalty: %s => %s\n%s", fpenalty_source, rpst, pmap);
 			}
 			else {
 				// If evaluating
 				st.Format("#%d (from %s)\nRule penalty: %.0f\nCantus: %s", 
 					cantus_id + 1, midi_file, l_rpenalty_cur, cantus_high ? "high" : "low");
-				st2.Format("Flags penalty: %s\nKey selection: %s", rpst, key_eval);
+				st2.Format("Flags penalty: %s\nKey selection: %s\n%s", rpst, key_eval, pmap);
 			}
 		}
 		AddMelody(step000, pos - 1, v, st, st2);

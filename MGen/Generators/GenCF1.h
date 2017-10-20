@@ -277,6 +277,9 @@ protected:
 	int SendPause(int pos, int v);
 	inline void MakeLenExport(vector<int>& cc, int av, int retr_on);
 	void MergeNotes(int step1, int step2, int v);
+	inline void CalcPmap(vector<int>& pcc, vector<int>& cc);
+	inline void GetPmap();
+	inline void LogPmap();
 	int SendCantus();
 	int InitGen();
 	int InitCantus();
@@ -448,8 +451,25 @@ protected:
 	CString midi_file;
 	int corrections = 1; // Number of corrections to show
 
+	// Parameter map
+	int pm_range, pm_sumint, pm_between_min, pm_between_max;
+	int pm_culm_count;
+	int pm_sharp6, pm_flat6, pm_tonic;
+	int pm_sharp7, pm_flat7;
+	int pm_contrary, pm_direct, pm_parallel;
+	int pm_dis, pm_ico, pm_pco, pm_pico;
+	float pm_llen;
+	float pm_decc_min, pm_decc_max, pm_decc_av;
+	float pm_maccr_min, pm_maccr_max, pm_maccr_av;
+	int pm_slurs, pm_sus, pm_anti;
+	int pm_croche;
+	int pm_leaps, pm_smooth, pm_leaps2, pm_leaps3;
+	int pm_leapsum;
+	int pm_win_leaps, pm_win_leapnotes;
+
   // Local
 	// Queues for calculating scan speed and displaying in status
+	CString pmap;
 	deque<long long> q_scan_ms;
 	deque<long long> q_scan_cycle;
 	int step00 = 0; // Start of source cantus/counterpoint in case of SAS emulation
