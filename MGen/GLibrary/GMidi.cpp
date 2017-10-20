@@ -305,8 +305,8 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int vm_cnt, int nnum,
 		found = 0;
 		for (int c = 0; c < comment[i][v].size(); ++c) {
 			com = comment[i][v][c];
-			// Do not show accepted rules
-			//if (com[0] == '+') continue;
+			// Do not show hidden rules
+			if (com[0] == '$') continue;
 			// Remove technical information
 			pos1 = com.Find('[');
 			pos2 = com.Find(']');
