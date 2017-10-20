@@ -1,8 +1,7 @@
 configs\GenRS1\Test.pl;5;60
 configs\GenCF1\window-scan.pl;5;60
 configs\GenCF1\swa.pl;5;60
-# swa-high has some bug, that I cannot reproduce on my PC
-#configs\GenCF1\swa-high.pl;5;60
+configs\GenCF1\swa-high.pl;5;60
 configs\GenCA1\known-cf-maj.pl
 configs\GenCA1\good-cf-maj.pl
 configs\GenCA1\known-cf-min.pl
