@@ -2275,7 +2275,7 @@ check:
 			// Still skipping even when evaluating to get error if wrong flag set
 			if (task == tEval)
 				if (FailStartPause()) goto skip;
-			if (nmax - nmin > max_interval) FLAG(37, 0);
+			if (nmax - nmin > max_interval2) FLAG(304, 0);
 			if (cantus_high) {
 				if (cf_nmax - nmin > sum_interval) FLAG(7, 0);
 			}
@@ -2328,7 +2328,7 @@ check:
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;
-		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv])) goto skip;
+		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_smooth2, max_smooth_direct2, 302, 303)) goto skip;
 		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps2, 2, 76)) goto skip;
 		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps3, 3, 36)) goto skip;
 		if (FailLongRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps5, 5, 72)) goto skip;

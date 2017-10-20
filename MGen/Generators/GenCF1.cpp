@@ -321,6 +321,8 @@ void CGenCF1::SetRuleParams() {
 	pre_last_leaps = GetRuleParam(rule_set, 204, rsName, 0);
 	max_smooth = GetRuleParam(rule_set, 4, rsSubName, 0);
 	max_smooth_direct = GetRuleParam(rule_set, 5, rsSubName, 0);
+	max_smooth2 = GetRuleParam(rule_set, 302, rsSubName, 0);
+	max_smooth_direct2 = GetRuleParam(rule_set, 303, rsSubName, 0);
 	max_leap_steps = GetRuleParam(rule_set, 3, rsName, 0);
 	max_leaps = GetRuleParam(rule_set, 3, rsSubName, 0);
 	max_leaped = GetRuleParam(rule_set, 25, rsSubName, 0);
@@ -343,6 +345,7 @@ void CGenCF1::SetRuleParams() {
 	repeat_notes7 = GetRuleParam(rule_set, 73, rsSubName, 0);
 	min_interval = Interval2Chromatic(GetRuleParam(rule_set, 38, rsSubName, 0));
 	max_interval = Interval2Chromatic(GetRuleParam(rule_set, 37, rsSubName, 0));
+	max_interval2 = Interval2Chromatic(GetRuleParam(rule_set, 304, rsSubName, 0));
 	sum_interval = Interval2Chromatic(GetRuleParam(rule_set, 7, rsSubName, 0));
 	max_between = Interval2Chromatic(GetRuleParam(rule_set, 11, rsSubName, 0));
 	burst_between = Interval2Chromatic(GetRuleParam(rule_set, 11, rsSubComment, 0));
@@ -1323,7 +1326,7 @@ void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 }
 
 // Check if too many leaps
-int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur) {
+int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur, int l_max_smooth, int l_max_smooth_direct, int flag1, int flag2) {
 	CHECK_READY(DR_leap, DR_c, DR_fli);
 	// Clear variables
 	int leap_sum2 = 0;
@@ -1360,12 +1363,12 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 		// Prohibit long smooth movement
 		if (smooth[s] != 0) {
 			++smooth_sum;
-			if (smooth_sum >= max_smooth) {
+			if (smooth_sum >= l_max_smooth) {
 				if (fired4) {
 					fpenalty[4] += severity[4] + 1;
 				}
 				else {
-					FLAG2(4, s);
+					FLAG2(flag1, s);
 					fired4 = 1;
 				}
 			}
@@ -1375,12 +1378,12 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 			// Prohibit long smooth movement in one direction
 			if (smooth[s] != 0 && smooth[s] == smooth[fli2[ls+1]]) {
 				++smooth_sum2;
-				if (smooth_sum2 >= max_smooth_direct) {
+				if (smooth_sum2 >= l_max_smooth_direct) {
 					if (fired5) {
 						fpenalty[5] += severity[5] + 1;
 					}
 					else {
-						FLAG2(5, s);
+						FLAG2(flag2, s);
 						fired5 = 1;
 					}
 				}
@@ -4200,7 +4203,7 @@ check:
 		GetLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur);
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;
-		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur)) goto skip;
+		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur, max_smooth, max_smooth_direct, 4, 5)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps2, repeat_notes2, 76)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps3, repeat_notes3, 36)) goto skip;
 		if (FailLongRepeat(m_c, m_cc, m_leap, repeat_steps5, repeat_notes5, 72)) goto skip;

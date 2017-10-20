@@ -199,7 +199,7 @@ protected:
 	inline int FailLongRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
 	inline int FailManyLeaps(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2);
 	inline void GetLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
-	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
+	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int l_max_smooth, int l_max_smooth_direct, int flag1, int flag2);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int steps, int notes, int flag);
 	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
 	inline int FailFirstNotes(vector<int>& pc);
@@ -318,6 +318,7 @@ protected:
 	int method = mUndefined; // Which generation / analysis method to use
 	int min_interval = 7; // Minimum chromatic interval in cantus (12 = octave)
 	int max_interval = 12; // Maximum chromatic interval in cantus (12 = octave)
+	int max_interval2 = 12; // Maximum chromatic interval in cp (12 = octave)
 	int min_intervald = 4; // Minimum diatonic interval in cantus (7 = octave)
 	int max_intervald = 7; // Maximum diatonic interval in cantus (7 = octave)
 	int c_len = 9; // Number of measures in each cantus. Usually 9 to 11
@@ -331,6 +332,8 @@ protected:
 	int max_repeat_mul = 2; // Allow repeat of X notes after at least X*max_repeat_mul steps if beats are different
 	int max_smooth_direct = 5; // Maximum linear movement in one direction allowed (in steps)
 	int max_smooth = 7; // Maximum linear movement allowed (in steps)
+	int max_smooth_direct2 = 5; // Maximum linear movement in one direction allowed in cp (in steps)
+	int max_smooth2 = 7; // Maximum linear movement allowed in cp (in steps)
 	int max_leaps = 2; // Maximum allowed leaps during max_leap_steps
 	int max_leaped = 3; // Maximum allowed leaped-over-notes during max_leap_steps
 	int max_leap_steps = 7;
