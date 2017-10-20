@@ -1430,7 +1430,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		if (cc[fli[ls]] == nmax) {
 			++culm_sum;
 			culm_ls = ls;
-			if (culm_sum > 1 && cantus_high) FLAG2(12, fli[culm_ls]);
+			if (culm_sum > 1 && voice_high) FLAG2(12, fli[culm_ls]);
 		}
 	}
 	if (culm_ls == -1) {
@@ -1439,7 +1439,7 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		est.Format("Warning: culm_ls cannot be detected at step %d", step);
 		WriteLog(5, est);
 	}
-	if (cantus_high) {
+	if (voice_high) {
 		// Prohibit culminations at first steps
 		if (culm_ls < (early_culm3 * fli_size) / 100) FLAG2(193, fli[culm_ls]);
 		if (culm_ls < early_culm - 1) FLAG2(78, fli[culm_ls])
@@ -2222,6 +2222,7 @@ void CGenCF1::ScanCantusInit() {
 	m_smooth.resize(c_len);
 	m_slur.resize(c_len);
 	ep2 = c_len;
+	voice_high = cantus_high;
 }
 
 // Get minimum element in SWA window

@@ -245,6 +245,7 @@ void CGenCP1::ScanCPInit() {
 	beat.resize(c_len);
 	sus.resize(c_len);
 	ep2 = c_len;
+	voice_high = cpv;
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {

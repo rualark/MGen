@@ -313,6 +313,7 @@ protected:
 	// Parameters
 	int sus_last_measures = 3; // Last measures in which sus is allowed in species 2 and 3
 	int cantus_high = 0; // Set to 1 to consider cantus to be higher voice
+	int voice_high = 0; // Shows if currently processed voice is high
 	int specified_high = 0; // If cantus_high was specified in midi file
 	int method = mUndefined; // Which generation / analysis method to use
 	int min_interval = 7; // Minimum chromatic interval in cantus (12 = octave)
