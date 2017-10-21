@@ -184,6 +184,8 @@ public:
 
 	CString HumanFloat(float f);
 
+	CString HumanFloatPrecision(float f);
+
 protected:
 	// Mathematics
 	int randbw(int n1, int n2); // Random between two numbers

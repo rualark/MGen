@@ -946,3 +946,16 @@ CString CGLib::HumanFloat(float f) {
 	else st = "0";
 	return st;
 }
+
+// Add more precision by showing additional digits
+CString CGLib::HumanFloatPrecision(float f) {
+	CString st;
+	if (f > 5) st.Format("%.2f", f);
+	else if (f > 0.05) st.Format("%.4f", f);
+	else if (f > 0.0005) st.Format("%.6f", f);
+	else if (f > 0.000005) st.Format("%.8f", f);
+	else if (f > 0.00000005) st.Format("%.10f", f);
+	else st = "0";
+	return st;
+}
+

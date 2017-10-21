@@ -315,10 +315,26 @@ void CGenCP1::GetPmap2() {
 	);
 	pmap += st;
 	st.Format("Uncompensated precompensated / child: %d / %d\n",
-		flags[144] + flags[145] + flags[146] + flags[147] + 
+		flags[144] + flags[145] + flags[146] + flags[147] +
 		flags[112] + flags[113] + flags[114] + flags[115] +
 		flags[204] + flags[205] + flags[206] + flags[207],
 		flags[116] + flags[117] + flags[118] + flags[119]
+	);
+	pmap += st;
+	st.Format("Close + 1far / 2far / no MDC: %d / %d / %d\n",
+		flags[128] + flags[129] + flags[130] + flags[131],
+		flags[140] + flags[141] + flags[142] + flags[143],
+		flags[108] + flags[109] + flags[110] + flags[111]
+	);
+	pmap += st;
+	st.Format("No / far + close MDC: %d / %d\n",
+		flags[132] + flags[133] + flags[134] + flags[135],
+		flags[59] + flags[60] + flags[61] + flags[62]
+	);
+	pmap += st;
+	st.Format("No close MDC: %d\n",
+		flags[63] + flags[64] + flags[65] + flags[66] +
+		flags[148] + flags[149] + flags[150] + flags[151]
 	);
 	pmap += st;
 }
@@ -341,7 +357,7 @@ CString CGenCP1::GetPmapLogSt2() {
 	st.Format("%d;%d;%d;%d;%d;%d;",
 		pm_contrary, pm_direct, pm_pico, pm_dis, pm_ico, pm_pco);
 	st2 += st;
-	st.Format("%.5f;%d;%d;%d;",
+	st.Format("%.3f;%d;%d;%d;",
 		pm_llen, pm_croche, pm_sus, pm_anti);
 	st2 += st;
 	st.Format("%d;%d;%d;%d;%d;%d;",
@@ -385,6 +401,7 @@ int CGenCP1::SendCP() {
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
 	if (!is_animating) {
+		// Warning: corack will trigger duplicate pmap logs
 		CalcPmap2();
 		GetPmap2();
 		LogPmap2();

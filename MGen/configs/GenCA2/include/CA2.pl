@@ -27,7 +27,7 @@ pitch_penalty = 1 # Penalty for changing note one more diatonic step while corre
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 pre_bad = 120 # How many notes to recalculate before rule violation
 post_bad = 240 # How many notes to recalculate after rule violation
-animate = 0 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
+animate = 100000 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
 animate_delay = 0 # Delay in ms after each animation step
 
 # Technical parameters
@@ -37,5 +37,5 @@ t_cnt = 100000 # Maximum number of steps generated
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
 emulate_sas = 0 # 0 = disable emulator, 1 = Enables SAS algorithm emulator
-cor_ack = 1 # Acknowledge correction results by running both algorithms: SAS and ASWA
+cor_ack = 0 # Acknowledge correction results by running both algorithms: SAS and ASWA
 show_correct_hatch = 1 # Set to 1 to mark corrected notes with hatch

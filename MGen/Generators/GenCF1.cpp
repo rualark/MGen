@@ -3571,11 +3571,13 @@ void CGenCF1::GetPmap() {
 	pmap += st;
 	st.Format("Tonic notes: %d\n", pm_tonic);
 	pmap += st;
-	st.Format("Min / av / max pitch deviation: %.5f / %.5f / %.5f\n", 
-		pm_decc_min, pm_decc_av, pm_decc_max);
+	st.Format("Min / av / max pitch deviation: %s / %s / %s\n", 
+		HumanFloatPrecision(pm_decc_min), HumanFloatPrecision(pm_decc_av), 
+		HumanFloatPrecision(pm_decc_max));
 	pmap += st;
-	st.Format("Min / av / max MA pitch range in window %d: %.5f / %.5f / %.5f\n", 
-		notes_arange2, pm_maccr_min, pm_maccr_av, pm_maccr_max);
+	st.Format("Min / av / max MA pitch range in window %d: %s / %s / %s\n", 
+		notes_arange2, HumanFloatPrecision(pm_maccr_min), 
+		HumanFloatPrecision(pm_maccr_av), HumanFloatPrecision(pm_maccr_max));
 	pmap += st;
 	st.Format("Smooth / leaps / leaped: %d / %d / %d\n", pm_smooth, pm_leaps, pm_leapsum);
 	pmap += st;
@@ -3618,8 +3620,10 @@ CString CGenCF1::GetPmapLogSt() {
 	st.Format("%d;%d;",
 		pm_range, pm_culm_count);
 	st2 += st;
-	st.Format("%.5f;%.5f;%.5f;%.5f;%.5f;%.5f;",
-		pm_decc_min, pm_decc_max, pm_decc_av, pm_maccr_min, pm_maccr_max, pm_maccr_av);
+	st.Format("%s;%s;%s;%s;%s;%s;",
+		HumanFloatPrecision(pm_decc_min), HumanFloatPrecision(pm_decc_max), 
+		HumanFloatPrecision(pm_decc_av), HumanFloatPrecision(pm_maccr_min), 
+		HumanFloatPrecision(pm_maccr_max), HumanFloatPrecision(pm_maccr_av));
 	st2 += st;
 	st.Format("%d;%d;%d;%d;%d;",
 		pm_tonic, pm_flat6, pm_sharp6, pm_flat7, pm_sharp7);
