@@ -260,6 +260,31 @@ void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
 void CGenCP1::CalcPmap2() {
 	CalcPmap(apcc[cpv], acc[cpv], ac[cpv], asmooth[cpv], aleap[cpv]);
 	pm_sumint = max(cf_nmax, nmax) - min(cf_nmin, nmin);
+	pm_dis = 0;
+	pm_pco = 0;
+	pm_ico = 0;
+	pm_llen = 0;
+	pm_croche = 0;
+	pm_anti = 0;
+	pm_sus = 0;
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		// Intervals
+		if (tivl[s] == iDis) ++pm_dis;
+		else if (tivl[s] == iPco) ++pm_pco;
+		else if (tivl[s] == iIco) ++pm_ico;
+		if (sus[ls]) {
+			if (retrigger[sus[ls]]) ++pm_anti;
+			else ++pm_sus;
+			if (tivl[sus[ls]] == iDis) ++pm_dis;
+			else if (tivl[sus[ls]] == iPco) ++pm_pco;
+			else if (tivl[sus[ls]] == iIco) ++pm_ico;
+		}
+		// Length
+		pm_llen += llen[ls];
+		if (llen[ls] == 1) ++pm_croche;
+	}
+	pm_llen /= fli_size;
 }
 
 // Get parameter map string
@@ -268,18 +293,70 @@ void CGenCP1::GetPmap2() {
 	GetPmap();
 	st.Format("Sum interval: %d semitones\n", pm_sumint);
 	pmap += st;
+	st.Format("Min / max between voices: %d / %d semitones\n", pm_between_min, pm_between_max);
+	pmap += st;
+	st.Format("Contrary / direct / parallel ico motions: %d / %d / %d\n", 
+		pm_contrary, pm_direct, pm_pico);
+	pmap += st;
+	st.Format("Dissonances / imperfect / perfect consonances: %d / %d / %d\n",
+		pm_dis, pm_ico, pm_pco);
+	pmap += st;
+	st.Format("Av note length / croches count: %.5f / %d\n",
+		pm_llen, pm_croche);
+	pmap += st;
+	st.Format("Suspensions / anticipations: %d / %d\n",
+		pm_sus, pm_anti);
+	st.Format("Compensated to 3rd / after 3rd / deviation to 2nd / deviation to 3rd: %d / %d / %d / %d\n",
+		flags[100] + flags[101] + flags[102] + flags[103] + 
+		flags[104] + flags[105] + flags[106] + flags[107],
+		flags[53] + flags[54] + flags[55] + flags[56],
+		flags[42] + flags[43] + flags[44] + flags[45],
+		flags[120] + flags[121] + flags[122] + flags[123]
+	);
+	pmap += st;
+	st.Format("Uncompensated precompensated / child: %d / %d\n",
+		flags[144] + flags[145] + flags[146] + flags[147] + 
+		flags[112] + flags[113] + flags[114] + flags[115] +
+		flags[204] + flags[205] + flags[206] + flags[207],
+		flags[116] + flags[117] + flags[118] + flags[119]
+	);
+	pmap += st;
 }
 
 CString CGenCP1::GetPmapLogHeader2() {
 	CString st = GetPmapLogHeader();
-	st += "Sum_int;";
+	st += "Sum_int;Between_min;Between_max;";
+	st += "Contra;Direct;Pico;";
+	st += "Dis;Ico;Pco;";
+	st += "Llen;Croches;Sus;Anti;";
+	st += "to3;after3;dev2;dev3;uncomp_precomp;uncomp_child;";
 	return st;
 }
 
 CString CGenCP1::GetPmapLogSt2() {
 	CString st, st2 = GetPmapLogSt();
-	st.Format("%d;",
-		pm_sumint);
+	st.Format("%d;%d;%d;",
+		pm_sumint, pm_between_min, pm_between_max);
+	st2 += st;
+	st.Format("%d;%d;%d;%d;%d;%d;",
+		pm_contrary, pm_direct, pm_pico, pm_dis, pm_ico, pm_pco);
+	st2 += st;
+	st.Format("%.5f;%d;%d;%d;",
+		pm_llen, pm_croche, pm_sus, pm_anti);
+	st2 += st;
+	st.Format("%d;%d;%d;%d;%d;%d;",
+		flags[100] + flags[101] + flags[102] + flags[103] +
+		flags[104] + flags[105] + flags[106] + flags[107],
+		flags[53] + flags[54] + flags[55] + flags[56],
+		flags[42] + flags[43] + flags[44] + flags[45],
+		flags[120] + flags[121] + flags[122] + flags[123],
+		flags[144] + flags[145] + flags[146] + flags[147] +
+		flags[112] + flags[113] + flags[114] + flags[115] +
+		flags[204] + flags[205] + flags[206] + flags[207],
+		flags[116] + flags[117] + flags[118] + flags[119]
+	);
+	st2 += st;
+	st2.Replace(".", ",");
 	return st2;
 }
 
@@ -307,9 +384,11 @@ int CGenCP1::SendCP() {
 	long long time_stop;
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
-	CalcPmap2();
-	GetPmap2();
-	LogPmap2();
+	if (!is_animating) {
+		CalcPmap2();
+		GetPmap2();
+		LogPmap2();
+	}
 	if (!mutex_animate.try_lock_for(chrono::milliseconds(5000))) {
 		WriteLog(5, "Critical error: ResizeVectors mutex timed out");
 	}
@@ -525,8 +604,8 @@ void CGenCP1::GetVIntervals() {
 int CGenCP1::FailVMotion() {
 	SET_READY(DR_motion);
 	int mtemp;
-	int scontra = 0;
-	int sdirect = 0;
+	pm_contrary = 0;
+	pm_direct = 0;
 	for (int i = 0; i < ep2; ++i) {
 		if (i < ep2 - 1) {
 			motion[i] = mStay;
@@ -534,11 +613,11 @@ int CGenCP1::FailVMotion() {
 				mtemp = (acc[cfv][i + 1] - acc[cfv][i])*(acc[cpv][i + 1] - acc[cpv][i]);
 				if (mtemp > 0) {
 					motion[i] = mDirect;
-					++sdirect;
+					++pm_direct;
 				}
 				else if (mtemp < 0) {
 					motion[i] = mContrary;
-					++scontra;
+					++pm_contrary;
 				}
 				else motion[i] = mOblique;
 			}
@@ -546,8 +625,8 @@ int CGenCP1::FailVMotion() {
 	}
 	// Check how many contrary if full melody analyzed
 	if (ep2 == c_len) {
-		if (scontra + sdirect) { //-V793
-			int pcontra = (scontra * 100) / (scontra + sdirect);
+		if (pm_contrary + pm_direct) { //-V793
+			int pcontra = (pm_contrary * 100) / (pm_contrary + pm_direct);
 			if (pcontra < contrary_min2) FLAG2(46, 0)
 			else if (pcontra < contrary_min) FLAG2(35, 0);
 		}
@@ -1489,6 +1568,7 @@ int CGenCP1::FailVIntervals() {
 	CHECK_READY(DR_motion, DR_culm_ls, DR_sus);
 	// Number of sequential parallel imperfect consonances
 	int pico_count = 0;
+	pm_pico = 0;
 	// Check first step
 	if (tivl[0] == iDis) FLAG2(83, 0);
 	for (ls = 1; ls < fli_size; ++ls) {
@@ -1500,6 +1580,7 @@ int CGenCP1::FailVIntervals() {
 		// Long parallel ico
 		if (tivl[s] == iIco && ivl[s] == ivl[fli2[ls - 1]]) {
 			++pico_count;
+			++pm_pico;
 			// Two same ico transitions means three intervals already
 			if (pico_count == ico_chain-1) {
 				FLAG2(89, s)
@@ -1709,10 +1790,17 @@ int CGenCP1::FailMissSlurs() {
 int CGenCP1::FailCPInterval() {
 	CHECK_READY(DR_fli);
 	int bsteps = 0;
+	int between;
+	pm_between_min = INT_MAX;
+	pm_between_max = 0;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		// Check between
-		if (acc[1][s] - acc[0][s] > max_between) {
+		between = acc[1][s] - acc[0][s];
+		// Record
+		if (between > pm_between_max) pm_between_max = between;
+		if (between < pm_between_min) pm_between_min = between;
+		if (between > max_between) {
 			++bsteps;
 			// Flag very far burst
 			if (acc[1][s] - acc[0][s] > burst_between) FLAG2(11, s);

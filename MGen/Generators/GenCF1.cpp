@@ -3571,40 +3571,21 @@ void CGenCF1::GetPmap() {
 	pmap += st;
 	st.Format("Tonic notes: %d\n", pm_tonic);
 	pmap += st;
-	st.Format("Min pitch deviation: %.5f\n", pm_decc_min);
+	st.Format("Min / av / max pitch deviation: %.5f / %.5f / %.5f\n", 
+		pm_decc_min, pm_decc_av, pm_decc_max);
 	pmap += st;
-	st.Format("Max pitch deviation: %.5f\n", pm_decc_max);
+	st.Format("Min / av / max MA pitch range in window %d: %.5f / %.5f / %.5f\n", 
+		notes_arange2, pm_maccr_min, pm_maccr_av, pm_maccr_max);
 	pmap += st;
-	st.Format("Av pitch deviation: %.5f\n", pm_decc_av);
+	st.Format("Smooth / leaps / leaped: %d / %d / %d\n", pm_smooth, pm_leaps, pm_leapsum);
 	pmap += st;
-	st.Format("Min MA pitch range: %.5f\n", pm_maccr_min);
+	st.Format("2 / 3 consecutive leaps: %d / %d\n", pm_leaps2, pm_leaps3);
 	pmap += st;
-	st.Format("Max MA pitch range: %.5f\n", pm_maccr_max);
-	pmap += st;
-	st.Format("Av MA pitch range: %.5f\n", pm_maccr_av);
-	pmap += st;
-	st.Format("Smooth: %d\n", pm_smooth);
-	pmap += st;
-	st.Format("Leaps: %d\n", pm_leaps);
-	pmap += st;
-	st.Format("2 consecutive leaps: %d\n", pm_leaps2);
-	pmap += st;
-	st.Format("3 consecutive leaps: %d\n", pm_leaps3);
-	pmap += st;
-	st.Format("Leaped: %d\n", pm_leapsum);
-	pmap += st;
-	st.Format("Leaps in window: %d\n", pm_win_leaps);
-	pmap += st;
-	st.Format("Leaped in window: %d\n", pm_win_leapnotes);
+	st.Format("Leaps / leaped in window %d: %d / %d\n", max_leap_steps2, pm_win_leaps, pm_win_leapnotes);
 	pmap += st;
 	if (minor_cur) {
-		st.Format("VI: %d\n", pm_flat6);
-		pmap += st;
-		st.Format("VI#: %d\n", pm_sharp6);
-		pmap += st;
-		st.Format("VII: %d\n", pm_flat7);
-		pmap += st;
-		st.Format("VII#: %d\n", pm_sharp7);
+		st.Format("VI / VI# / VII / VII#: %d / %d / %d / %d\n", 
+			pm_flat6, pm_sharp6, pm_flat7, pm_sharp7);
 		pmap += st;
 	}
 }
@@ -3646,6 +3627,7 @@ CString CGenCF1::GetPmapLogSt() {
 	st.Format("%d;%d;%d;%d;%d;%d;%d;",
 		pm_smooth, pm_leaps, pm_leaps2, pm_leaps3, pm_leapsum, pm_win_leaps, pm_win_leapnotes);
 	st2 += st;
+	st2.Replace(".", ",");
 	return st2;
 }
 

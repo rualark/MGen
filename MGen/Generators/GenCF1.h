@@ -463,7 +463,7 @@ protected:
 	float pm_llen;
 	float pm_decc_min, pm_decc_max, pm_decc_av;
 	float pm_maccr_min, pm_maccr_max, pm_maccr_av;
-	int pm_slurs, pm_sus, pm_anti;
+	int pm_sus, pm_anti;
 	int pm_croche;
 	int pm_leaps, pm_smooth, pm_leaps2, pm_leaps3;
 	int pm_leapsum;
