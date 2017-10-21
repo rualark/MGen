@@ -277,8 +277,10 @@ protected:
 	int SendPause(int pos, int v);
 	inline void MakeLenExport(vector<int>& cc, int av, int retr_on);
 	void MergeNotes(int step1, int step2, int v);
-	inline void CalcPmap(vector<int>& pcc, vector<int>& cc);
+	inline void CalcPmap(vector<int>& pcc, vector<int>& cc, vector<int>& c, vector<int>& smooth, vector<int>& leap);
 	inline void GetPmap();
+	CString GetPmapLogHeader();
+	CString GetPmapLogSt();
 	inline void LogPmap();
 	int SendCantus();
 	int InitGen();

@@ -76,6 +76,11 @@ protected:
 	inline int FailSlurs();
 	void ScanCPInit();
 	inline void SendRpos(int pos, int i, int v, int av, int x);
+	void CalcPmap2();
+	void GetPmap2();
+	CString GetPmapLogHeader2();
+	CString GetPmapLogSt2();
+	void LogPmap2();
 	inline int SendCP();
 	inline int FailMissSlurs();
 	inline int FailCPInterval();

@@ -1279,8 +1279,8 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 	CHECK_READY(DR_fli, DR_c);
 	int leap_sum = 0;
 	int leaped_sum = 0;
-	int max_leap_sum = 0;
-	int max_leaped_sum = 0;
+	pm_win_leaps = 0;
+	pm_win_leapnotes = 0;
 	int leap_sum_i = 0;
 	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s = fli2[ls];
@@ -1296,20 +1296,20 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 			leaped_sum -= abs(c[fli[ls - mleapsteps]] - c[fli[ls - mleapsteps + 1]]) + 1;
 		}
 		// Get maximum leap_sum
-		if (leap_sum >= mleaps && leap_sum > max_leap_sum) {
-			max_leap_sum = leap_sum;
+		if (leap_sum > pm_win_leaps) {
+			pm_win_leaps = leap_sum;
 			leap_sum_i = s;
 		}
-		if (leaped_sum > mleaped && leaped_sum > max_leaped_sum) {
-			max_leaped_sum = leaped_sum;
+		if (leaped_sum > pm_win_leapnotes) {
+			pm_win_leapnotes = leaped_sum;
 			leap_sum_i = s;
 		}
 		// Calculate penalty 
 		if (!accept[flag1] && leap_sum > mleaps) ++fpenalty[flag1];
 		if (!accept[flag2] && leaped_sum > mleaped) ++fpenalty[flag2];
 	}
-	if (max_leap_sum > mleaps) FLAG2(flag1, fli[bli[leap_sum_i]]);
-	if (max_leaped_sum > mleaped) FLAG2(flag2, fli[bli[leap_sum_i]]);
+	if (pm_win_leaps > mleaps) FLAG2(flag1, fli[bli[leap_sum_i]]);
+	if (pm_win_leapnotes > mleaped) FLAG2(flag2, fli[bli[leap_sum_i]]);
 	return 0;
 }
 
@@ -1346,6 +1346,8 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 	int smooth_sum2 = 0;
 	int leap_sum_s2 = 0;
 	int fired4 = 0, fired5 = 0;
+	pm_leaps2 = 0;
+	pm_leaps3 = 0;
 	for (ls = 0; ls < fli_size - 2; ++ls) {
 		s = fli2[ls];
 		s1 = fli2[ls+1];
@@ -1358,6 +1360,9 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 			leap_sum2 = 0;
 			thirds_sum = 0;
 		}
+		// Record
+		if (leap_sum2 == 2) ++pm_leaps2;
+		else if (leap_sum2 == 3) ++pm_leaps3;
 		// Get maximum leap_sum
 		leap_sum_corrected = leap_sum2 - min(thirds_sum, thirds_ignored);
 		if (leap_sum_corrected > max_leap_sum2) {
@@ -3516,8 +3521,7 @@ void CGenCF1::MergeNotes(int step1, int step2, int v) {
 }
 
 // Calculate parameter map
-void CGenCF1::CalcPmap(vector<int> &pcc, vector<int> &cc) {
-	CHECK_READY(DR_pc, DR_fli);
+void CGenCF1::CalcPmap(vector<int> &pcc, vector<int> &cc, vector<int> &c, vector<int> &smooth, vector<int> &leap) {
 	pm_range = nmax - nmin;
 	pm_tonic = 0;
 	pm_sharp6 = 0;
@@ -3527,6 +3531,9 @@ void CGenCF1::CalcPmap(vector<int> &pcc, vector<int> &cc) {
 	pm_decc_min = INT_MAX;
 	pm_decc_max = 0;
 	pm_decc_av = 0;
+	pm_leapsum = 0;
+	pm_leaps = 0;
+	pm_smooth = 0;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		// Note frequency
@@ -3537,6 +3544,13 @@ void CGenCF1::CalcPmap(vector<int> &pcc, vector<int> &cc) {
 		else if (pcc[s] == 8) ++pm_flat6;
 		// Average decc
 		pm_decc_av += decc2[s];
+		if (ls) {
+			if (smooth[s - 1]) ++pm_smooth;
+			else if (leap[s - 1]) {
+				++pm_leaps;
+				pm_leapsum += abs(c[s] - c[s - 1]) + 1;
+			}
+		}
 	}
 	pm_decc_av /= fli_size;
 	for (s = 0; s < ep2; ++s) {
@@ -3553,6 +3567,8 @@ void CGenCF1::GetPmap() {
 	pmap += st;
 	st.Format("Culminations: %d\n", pm_culm_count);
 	pmap += st;
+	st.Format("Notes: %d\n", fli_size);
+	pmap += st;
 	st.Format("Tonic notes: %d\n", pm_tonic);
 	pmap += st;
 	st.Format("Min pitch deviation: %.5f\n", pm_decc_min);
@@ -3567,6 +3583,20 @@ void CGenCF1::GetPmap() {
 	pmap += st;
 	st.Format("Av MA pitch range: %.5f\n", pm_maccr_av);
 	pmap += st;
+	st.Format("Smooth: %d\n", pm_smooth);
+	pmap += st;
+	st.Format("Leaps: %d\n", pm_leaps);
+	pmap += st;
+	st.Format("2 consecutive leaps: %d\n", pm_leaps2);
+	pmap += st;
+	st.Format("3 consecutive leaps: %d\n", pm_leaps3);
+	pmap += st;
+	st.Format("Leaped: %d\n", pm_leapsum);
+	pmap += st;
+	st.Format("Leaps in window: %d\n", pm_win_leaps);
+	pmap += st;
+	st.Format("Leaped in window: %d\n", pm_win_leapnotes);
+	pmap += st;
 	if (minor_cur) {
 		st.Format("VI: %d\n", pm_flat6);
 		pmap += st;
@@ -3579,20 +3609,30 @@ void CGenCF1::GetPmap() {
 	}
 }
 
-// Log parameter map
-void CGenCF1::LogPmap() {
+CString GetPmapLogHeader() {
+	CString st;
+	st += "Voice;File;ID;High;Steps;Notes;Tonic;Minor;";
+	st += "Range;Culminations;";
+	st += "Decc_min;Decc_max;Decc_av;Maccr_min;Maccr_max;Maccr_av;";
+	st += "Tonics;VI;VI#;VII;VII#;";
+	st += "Smooth;Leaps;2leaps;3leaps;Leaped;Leaps_win;Leaped_win;";
+	return st;
+}
+
+CString CGenCF1::GetPmapLogHeader() {
+	CString st;
+	st += "Voice;File;ID;High;Steps;Notes;Tonic;Minor;";
+	st += "Range;Culminations;";
+	st += "Decc_min;Decc_max;Decc_av;Maccr_min;Maccr_max;Maccr_av;";
+	st += "Tonics;VI;VI#;VII;VII#;";
+	st += "Smooth;Leaps;2leaps;3leaps;Leaped;Leaps_win;Leaped_win;";
+	return st;
+}
+
+CString CGenCF1::GetPmapLogSt() {
 	CString st, st2;
-	CString fname = "log\\cf-pmap.csv";
-	// Header
-	if (!fileExists(fname)) {
-		st += "Voice;File;ID;High;Len;Tonic;Minor;";
-		st += "Range;Culminations;";
-		st += "Decc_min;Decc_max;Decc_av;Maccr_min;Maccr_max;Maccr_av;";
-		st += "Tonics;VI;VI#;VII;VII#;";
-		AppendLineToFile(fname, st + "\n");
-	}
-	st.Format("%d;%s;%d;%d;%d;%d;%d;",
-		svoice, midi_file, cantus_id, cantus_high, ep2, tonic_cur, minor_cur);
+	st.Format("%d;%s;%d;%d;%d;%d;%d;%d;",
+		svoice, midi_file, cantus_id + 1, cantus_high, ep2, fli_size, tonic_cur, minor_cur);
 	st2 += st;
 	st.Format("%d;%d;",
 		pm_range, pm_culm_count);
@@ -3603,7 +3643,21 @@ void CGenCF1::LogPmap() {
 	st.Format("%d;%d;%d;%d;%d;",
 		pm_tonic, pm_flat6, pm_sharp6, pm_flat7, pm_sharp7);
 	st2 += st;
-	AppendLineToFile(fname, st2 + "\n");
+	st.Format("%d;%d;%d;%d;%d;%d;%d;",
+		pm_smooth, pm_leaps, pm_leaps2, pm_leaps3, pm_leapsum, pm_win_leaps, pm_win_leapnotes);
+	st2 += st;
+	return st2;
+}
+
+// Log parameter map
+void CGenCF1::LogPmap() {
+	CString st, st2;
+	CString fname = "log\\cf-pmap.csv";
+	// Header
+	if (!fileExists(fname)) {
+		AppendLineToFile(fname, GetPmapLogHeader() + "\n");
+	}
+	AppendLineToFile(fname, GetPmapLogSt() + "\n");
 }
 
 int CGenCF1::SendCantus() {
@@ -3618,7 +3672,7 @@ int CGenCF1::SendCantus() {
 	TransposeCantusBack();
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
-	CalcPmap(m_pcc, m_cc);
+	CalcPmap(m_pcc, m_cc, m_c, m_smooth, m_leap);
 	GetPmap();
 	LogPmap();
 	MakeLenExport(m_cc, 0, 0);
@@ -3674,7 +3728,7 @@ int CGenCF1::SendCantus() {
 			cantus_sent, l_rpenalty_cur, cantus_high?"high":"low");
 		st2.Format("Flags penalty: %s\n%s", rpst, pmap);
 		AddMelody(step000, pos - 1, v, st, st2);
-		if (v) AddMelody(step000, pos - 1, 0, st, st2);
+		if (v) AddMelody(step000, pos - 1, 0, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 101) {
@@ -3699,7 +3753,7 @@ int CGenCF1::SendCantus() {
 			}
 		}
 		AddMelody(step000, pos - 1, v, st, st2);
-		if (v) AddMelody(step000, pos - 1, 0, st, st2);
+		if (v) AddMelody(step000, pos - 1, 0, st);
 	}
 	// Send
 	t_generated = step;

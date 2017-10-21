@@ -125,6 +125,7 @@ void CGVar::InitVectors()
 	}
 }
 
+// If info2 is empty, it is not overwritten
 void CGVar::AddMelody(int step1, int step2, int v, CString info, CString info2) {
 	// Find existing mel_info
 	int found = 1;
@@ -138,7 +139,7 @@ void CGVar::AddMelody(int step1, int step2, int v, CString info, CString info2) 
 		if (found) {
 			// Update existing mel_info
 			mel_info[mel_id[step1][v]] = info;
-			mel_info2[mel_id[step1][v]] = info2;
+			if (!info2.IsEmpty()) mel_info2[mel_id[step1][v]] = info2;
 			return;
 		}
 	}

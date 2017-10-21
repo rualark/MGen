@@ -256,6 +256,44 @@ void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
 	else lining[pos + i][v] = 0;
 }
 
+// Calculate parameter map
+void CGenCP1::CalcPmap2() {
+	CalcPmap(apcc[cpv], acc[cpv], ac[cpv], asmooth[cpv], aleap[cpv]);
+	pm_sumint = max(cf_nmax, nmax) - min(cf_nmin, nmin);
+}
+
+// Get parameter map string
+void CGenCP1::GetPmap2() {
+	CString st;
+	GetPmap();
+	st.Format("Sum interval: %d semitones\n", pm_sumint);
+	pmap += st;
+}
+
+CString CGenCP1::GetPmapLogHeader2() {
+	CString st = GetPmapLogHeader();
+	st += "Sum_int;";
+	return st;
+}
+
+CString CGenCP1::GetPmapLogSt2() {
+	CString st, st2 = GetPmapLogSt();
+	st.Format("%d;",
+		pm_sumint);
+	return st2;
+}
+
+// Log parameter map
+void CGenCP1::LogPmap2() {
+	CString st, st2;
+	CString fname = "log\\cp-pmap.csv";
+	// Header
+	if (!fileExists(fname)) {
+		AppendLineToFile(fname, GetPmapLogHeader2() + "\n");
+	}
+	AppendLineToFile(fname, GetPmapLogSt2() + "\n");
+}
+
 int CGenCP1::SendCP() {
 	int step000 = step;
 	int pause_len = 0;
@@ -269,6 +307,9 @@ int CGenCP1::SendCP() {
 	long long time_stop;
 	len_export.resize(c_len);
 	coff_export.resize(c_len);
+	CalcPmap2();
+	GetPmap2();
+	LogPmap2();
 	if (!mutex_animate.try_lock_for(chrono::milliseconds(5000))) {
 		WriteLog(5, "Critical error: ResizeVectors mutex timed out");
 	}
@@ -361,33 +402,33 @@ int CGenCP1::SendCP() {
 		// If  window-scan
 		st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
 			cantus_sent, cantus_high?"high":"low", species, l_rpenalty_cur);
-		st2.Format("Flags penalty: %s", rpst);
+		st2.Format("Flags penalty: %s\n%s", rpst, pmap);
 		AddMelody(step000, pos - 1, svoice + cpv, st, st2);
-		AddMelody(step000, pos - 1, 0, st, st2);
+		AddMelody(step000, pos - 1, 0, st);
 	}
 	else if (task == tEval) {
 		if (m_algo_id == 121) {
 			// If RSWA
 			st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
 				cantus_sent, cantus_high ? "high" : "low", species, l_rpenalty_cur);
-			st2.Format("Flags penalty: %s", rpst);
+			st2.Format("Flags penalty: %s\n%s", rpst, pmap);
 		}
 		else {
 			if (key_eval.IsEmpty()) {
 				// If SWA
 				st.Format("#%d (from %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f => %.0f\nDistance penalty: %d", 
 					cantus_id+1, midi_file, cantus_high ? "high" : "low", species, rpenalty_source, l_rpenalty_cur, dpenalty_cur);
-				st2.Format("Flags penalty: %s => %s", fpenalty_source, rpst);
+				st2.Format("Flags penalty: %s => %s\n%s", fpenalty_source, rpst, pmap);
 			}
 			else {
 				// If evaluating
 				st.Format("#%d (from %s)\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
 					cantus_id + 1, midi_file, cantus_high ? "high" : "low", species, l_rpenalty_cur);
-				st2.Format("Flags penalty: %s\nKey selection: %s", rpst, key_eval);
+				st2.Format("Flags penalty: %s\nKey selection: %s\n%s", rpst, key_eval, pmap);
 			}
 		}
 		AddMelody(step000, pos - 1, svoice + cpv, st, st2);
-		AddMelody(step000, pos - 1, 0, st, st2);
+		AddMelody(step000, pos - 1, 0, st);
 	}
 	if (debug_level > 2) {
 		time_stop = CGLib::time();

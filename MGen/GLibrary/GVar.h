@@ -17,7 +17,7 @@ public:
 	~CGVar();
 
 	void InitVectors();
-	void AddMelody(int step1, int step2, int v, CString info, CString info2);
+	void AddMelody(int step1, int step2, int v, CString info, CString info2 = "");
 	void LoadInstruments(); // Load instruments config
 	void LoadInstrument(int i, CString fname);
 	void LoadConfig(CString fname, int load_includes = 1);

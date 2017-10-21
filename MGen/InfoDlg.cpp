@@ -110,8 +110,8 @@ BOOL CInfoDlg::OnInitDialog()
 			st.Format("%s\n", pGen->mel_info[pGen->mel_id[i][mv]]);
 			m_info.AddText(st, RGB(0, 0, 180), 0);
 			st.Format("%s\n", pGen->mel_info2[pGen->mel_id[i][mv]]);
-			m_info.AddText(st, RGB(0, 0, 180), 0);
-			m_info.AddText("\n", RGB(0, 0, 0), 0);
+			m_info.AddText(st, RGB(0, 0, 180), CFE_ITALIC);
+			//m_info.AddText("\n", RGB(0, 0, 0), 0);
 		}
 
 		st.Format("Note: %s (midi %d)\n", CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv]);
