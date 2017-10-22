@@ -4015,7 +4015,9 @@ void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 				}
 			}
 			// Show error
-			WriteLog(error_level, error_st + " [" + vint2st(c_len, cc) + "]");
+			error_st += " [" + vint2st(c_len, cc) + "]";
+			error_st += " {" + vint2st(nflags_full[s].size(), nflags_full[s]) + "}";
+			WriteLog(error_level, error_st);
 			if (m_testing) AppendLineToFile("autotest\\sas-emu.log", error_st + "\n");
 		}
 	}
