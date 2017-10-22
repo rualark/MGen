@@ -355,38 +355,46 @@ CString CGenCP1::GetPmapLogSt2() {
 	st.Format("%d;%d;%d;",
 		pm_sumint, pm_between_min, pm_between_max);
 	st2 += st;
-	st.Format("%d;%d;%d;%d;%d;%d;",
-		pm_contrary, pm_direct, pm_pico, pm_dis, pm_ico, pm_pco);
+	st.Format("%.0f%%;%.0f%%;%.0f%%;%.0f%%;%.0f%%;%.0f%%;",
+		100.0 * pm_contrary / (pm_contrary + pm_direct), 
+		100.0 * pm_direct / (pm_contrary + pm_direct), 
+		100.0 * pm_pico / (pm_contrary + pm_direct),
+		100.0 * pm_dis / (pm_dis + pm_ico + pm_pco), 
+		100.0 * pm_ico / (pm_dis + pm_ico + pm_pco),
+		100.0 * pm_pco / (pm_dis + pm_ico + pm_pco));
 	st2 += st;
-	st.Format("%.3f;%d;%d;%d;",
-		pm_llen, pm_croche, pm_sus, pm_anti);
+	st.Format("%.3f;%.0f%%;%.0f%%;%.0f%%;",
+		pm_llen, 
+		100.0 * pm_croche / fli_size, 
+		100.0 * pm_sus / fli_size, 
+		100.0 * pm_anti / fli_size);
 	st2 += st;
-	st.Format("%d;%d;%d;%d;%d;%d;",
-		flags[100] + flags[101] + flags[102] + flags[103] +
-		flags[104] + flags[105] + flags[106] + flags[107],
-		flags[53] + flags[54] + flags[55] + flags[56],
-		flags[42] + flags[43] + flags[44] + flags[45],
-		flags[120] + flags[121] + flags[122] + flags[123],
-		flags[144] + flags[145] + flags[146] + flags[147] +
+	st.Format("%.0f%%;%.0f%%;%.0f%%;%.0f%%;%.0f%%;%.0f%%;",
+		100.0 * (flags[100] + flags[101] + flags[102] + flags[103] +
+		flags[104] + flags[105] + flags[106] + flags[107]) / pm_leaps,
+		100.0 * (flags[53] + flags[54] + flags[55] + flags[56]) / pm_leaps,
+		100.0 * (flags[42] + flags[43] + flags[44] + flags[45]) / pm_leaps,
+		100.0 * (flags[120] + flags[121] + flags[122] + flags[123]) / pm_leaps,
+		100.0 * (flags[144] + flags[145] + flags[146] + flags[147] +
 		flags[112] + flags[113] + flags[114] + flags[115] +
-		flags[204] + flags[205] + flags[206] + flags[207],
-		flags[116] + flags[117] + flags[118] + flags[119]
+		flags[204] + flags[205] + flags[206] + flags[207]) / pm_leaps,
+		100.0 * (flags[116] + flags[117] + flags[118] + flags[119]) / pm_leaps
 	);
 	st2 += st;
-	st.Format("%d;%d;%d;",
-		flags[128] + flags[129] + flags[130] + flags[131],
-		flags[140] + flags[141] + flags[142] + flags[143],
-		flags[108] + flags[109] + flags[110] + flags[111]
+	st.Format("%.0f%%;%.0f%%;%.0f%%;",
+		100.0 * (flags[128] + flags[129] + flags[130] + flags[131]) / pm_leaps,
+		100.0 * (flags[140] + flags[141] + flags[142] + flags[143]) / pm_leaps,
+		100.0 * (flags[108] + flags[109] + flags[110] + flags[111]) / pm_leaps
 	);
 	st2 += st;
-	st.Format("%d;%d;",
-		flags[132] + flags[133] + flags[134] + flags[135],
-		flags[59] + flags[60] + flags[61] + flags[62]
+	st.Format("%.0f%%;%.0f%%;",
+		100.0 * (flags[132] + flags[133] + flags[134] + flags[135]) / pm_leaps,
+		100.0 * (flags[59] + flags[60] + flags[61] + flags[62]) / pm_leaps
 	);
 	st2 += st;
-	st.Format("%d;",
-		flags[63] + flags[64] + flags[65] + flags[66] +
-		flags[148] + flags[149] + flags[150] + flags[151]
+	st.Format("%.0f%%;",
+		100.0 * (flags[63] + flags[64] + flags[65] + flags[66] +
+		flags[148] + flags[149] + flags[150] + flags[151]) / pm_leaps
 	);
 	st2 += st;
 	st2.Replace(".", ",");

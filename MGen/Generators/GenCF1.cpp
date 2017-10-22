@@ -3157,8 +3157,8 @@ void CGenCF1::ShowFlagStat() {
 	CString st, st2;
 	int lines = 0;
 	// Show flag statistics
-	if (calculate_stat) {
-		CHECK_READY_PERSIST(DR_fstat);
+	if (calculate_stat && data_ready_persist[DR_fstat]) {
+		//CHECK_READY_PERSIST(DR_fstat);
 		for (int d = 1; d < max_flags; ++d) {
 			if (lines > 100) break;
 			int flagc = 0;
@@ -3599,46 +3599,41 @@ void CGenCF1::GetPmap() {
 	}
 }
 
-CString GetPmapLogHeader() {
-	CString st;
-	st += "Time;Algorithm;File;Voice;ID;High;Steps;Notes;Tonic;Minor;";
-	st += "Range;Culminations;";
-	st += "Decc_min;Decc_max;Decc_av;Maccr_min;Maccr_max;Maccr_av;";
-	st += "Tonics;VI;VI#;VII;VII#;";
-	st += "Smooth;Leaps;2leaps;3leaps;Leaped;Leaps_win;Leaped_win;";
-	return st;
-}
-
 CString CGenCF1::GetPmapLogHeader() {
 	CString st;
-	st += "Algorithm;Config;Voice;ID;High;Steps;Notes;Tonic;Minor;";
+	st += "Time;Algorithm;Config;Midi;Voice;ID;High;Steps;Notes;Tonic;Minor;";
 	st += "Range;Culminations;";
-	st += "Decc_min;Decc_max;Decc_av;Maccr_min;Maccr_max;Maccr_av;";
+	st += "Decc_min;Decc_av;Decc_max;Maccr_min;Maccr_av;Maccr_max;";
 	st += "Tonics;VI;VI#;VII;VII#;";
-	st += "Smooth;Leaps;2leaps;3leaps;Leaped;Leaps_win;Leaped_win;";
+	st += "Smooth;Leaps;2leaps;3leaps;Leap size;Leaps_win;Leaped_win;";
 	return st;
 }
 
 CString CGenCF1::GetPmapLogSt() {
 	CString st, st2;
-	st.Format("%s;%s;%d;%d;%d;%d;%d;%d;%d;",
+	st.Format("%s;%s;%s;%s;%d;%d;%d;%d;%d;%d;%d;",
 		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S"),
-		m_algo_folder, m_config, svoice, cantus_id + 1, cantus_high, ep2, 
+		m_algo_folder, m_config, bname_from_path(midi_file), svoice, cantus_id + 1, cantus_high, ep2, 
 		fli_size, tonic_cur, minor_cur);
 	st2 += st;
 	st.Format("%d;%d;",
 		pm_range, pm_culm_count);
 	st2 += st;
 	st.Format("%s;%s;%s;%s;%s;%s;",
-		HumanFloatPrecision(pm_decc_min), HumanFloatPrecision(pm_decc_max), 
-		HumanFloatPrecision(pm_decc_av), HumanFloatPrecision(pm_maccr_min), 
-		HumanFloatPrecision(pm_maccr_max), HumanFloatPrecision(pm_maccr_av));
+		HumanFloatPrecision(pm_decc_min), HumanFloatPrecision(pm_decc_av), 
+		HumanFloatPrecision(pm_decc_max), HumanFloatPrecision(pm_maccr_min), 
+		HumanFloatPrecision(pm_maccr_av), HumanFloatPrecision(pm_maccr_max));
 	st2 += st;
 	st.Format("%d;%d;%d;%d;%d;",
 		pm_tonic, pm_flat6, pm_sharp6, pm_flat7, pm_sharp7);
 	st2 += st;
-	st.Format("%d;%d;%d;%d;%d;%d;%d;",
-		pm_smooth, pm_leaps, pm_leaps2, pm_leaps3, pm_leapsum, pm_win_leaps, pm_win_leapnotes);
+	st.Format("%.0f%%;%.0f%%;%.0f%%;%.0f%%;%.2f;%d;%d;",
+		100.0 * pm_smooth / (pm_leaps + pm_smooth), 
+		100.0 * pm_leaps / (pm_leaps + pm_smooth), 
+		100.0 * pm_leaps2 / pm_leaps, 
+		100.0 * pm_leaps3 / pm_leaps, 
+		1.0 * pm_leapsum / pm_leaps, 
+		pm_win_leaps, pm_win_leapnotes);
 	st2 += st;
 	st2.Replace(".", ",");
 	return st2;
