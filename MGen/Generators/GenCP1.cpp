@@ -421,6 +421,7 @@ int CGenCP1::SendCP() {
 	CString st, st2, rpst;
 	int pos = 0, plen;
 	int v, x1;
+	int chm_id = 0;
 	if (svoice < 0) return 0;
 	Sleep(sleep_ms);
 	long long time_start = CGLib::time();
@@ -469,6 +470,13 @@ int CGenCP1::SendCP() {
 						else if (pat[bli[x]] == pDNT) mark[pos][v] = "D\nN";
 						if (pat_state[bli[x]] == 1) mark_color[pos][v] = MakeColor(255, 255, 120, 120);
 					}
+				}
+			}
+			else {
+				if (chm.size() > chm_id && hli[chm_id] == x) {
+					mark[pos][v] = HarmNames[chm[chm_id]];
+					mark_color[pos][v] = MakeColor(255, 120, 120, 120);
+					++chm_id;
 				}
 			}
 			SendLyrics(pos, v, av, x);
@@ -2376,14 +2384,67 @@ int CGenCP1::FailGisTrail2() {
 
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli);
-	hli_size = 0;
+	int mli_ready = 0;
+	int ls1, ls2, r, n, ns, harm_conflict;
+	vector<int> chn;
+	chn.resize(7);
 	hli.clear();
-	// Detect harmony changes
-	for (ls = 0; ls < fli_size; ++ls) {
-		s = fli[ls];
-	}
+	chm.clear();
+	harm_conflict = 0;
 	// Build chm vector
-	for (ls = 0; ls < hli_size; ++ls) {
+	for (int ms = 0; ms < mli.size(); ++ms) {
+		// Count ready measures
+		mli_ready = ms + 1;
+		// Stop processing when measure is not fully generated
+		if (mli[ms] + npm > ep2) break;
+		// Get first and last measure notes
+		ls1 = bli[mli[ms]];
+		ls2 = bli[mli[ms] + npm - 1];
+		r = ac[cfv][mli[ms]] % 7;
+		// Do not process end of sus
+		if (sus[ls1]) ls1++;
+		// Clear harmonic notes vector
+		fill(chn.begin(), chn.end(), 0);
+		hli.push_back(mli[ms]);
+		chm.push_back(0);
+		// Loop inside measure
+		for (ls = ls1; ls <= ls2; ++ls) {
+			// Do not process non-harmonic notes
+			if (rpos[ls] <= 0) continue;
+			s = fli[ls];
+			n = ac[cpv][s] % 7;
+			ns = (n - r + 7) % 7;
+			// Find conflicting notes
+			if (cantus_high) {
+				if (ns == 2 && chn[3]) harm_conflict = 1;
+				else if (ns == 3 && chn[2]) harm_conflict = 1;
+			}
+			else {
+				if (ns == 4 && chn[5]) harm_conflict = 1;
+				else if (ns == 5 && chn[4]) harm_conflict = 1;
+			}
+			// Start new harmony if harmonic conflict
+			if (harm_conflict) {
+				if (ms == mli.size() - 2) FLAG2(306, s)
+				else FLAG2(307, s);
+				harm_conflict = 0;
+				fill(chn.begin(), chn.end(), 0);
+				hli.push_back(s);
+				chm.push_back(0);
+			}
+			// Record note
+			++chn[ns];
+			// Detect harmony
+			if (cantus_high) {
+				if (chn[3]) chm[chm.size() - 1] = (r + 3) % 7;
+				else if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
+				else chm[chm.size() - 1] = r;
+			}
+			else {
+				if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
+				else chm[chm.size() - 1] = r;
+			}
+		}
 	}
 	return 0;
 }

@@ -125,7 +125,6 @@ protected:
 	vector<int> rpos; // [ls] Rhythm position types for fli
 	vector<int> pat; // [ls] Pattern (cambiata, dnt...) for fli
 	vector<int> pat_state; // [ls] Pattern (cambiata, dnt...) for fli state: 0 - not applied, 1 - fixed, 2,3 - variants
-	int hli_size = 0; // Size of hli vector
 
 	// Cantus
 	int cf_nmin = 0; // Minimum note in cantus (chromatic)
