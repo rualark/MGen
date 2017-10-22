@@ -247,6 +247,8 @@ void CGenCP1::ScanCPInit() {
 	ep2 = c_len;
 	voice_high = cpv;
 	max_interval = max_interval_cp;
+	// Calculate last steps that are allowed to have C4P
+	c4p_last_steps = c4p_last_meas * npm;
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
