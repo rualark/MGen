@@ -1451,7 +1451,10 @@ int CGenCF1::FailMultiCulm(vector<int> &cc, vector<int> &slur) {
 		if (cc[fli[ls]] == nmax) {
 			++pm_culm_count;
 			culm_ls = ls;
-			if (pm_culm_count > 1 && voice_high) FLAG2(12, fli[culm_ls]);
+			if (pm_culm_count > 1) {
+				if (voice_high) FLAG2(12, fli[culm_ls])
+				else FLAG2(305, fli[culm_ls])
+			}
 		}
 	}
 	if (culm_ls == -1) {

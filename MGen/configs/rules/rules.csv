@@ -104,7 +104,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;79;30;Melody;Repeats;Culmination;early <5;-1;;Only for upper voice;;;;1;;;
 1;78;60;Melody;Repeats;Culmination;early <3;-1;;Only for upper voice;;;;1;;;
 1;21;60;Melody;Repeats;Culmination;late 3;-1;;Only for upper voice;;;;1;;;
-1;305;100;Melody;Repeats;Culmination;multi low;0;;Multiple culminations in lower voice;;;;;;;
+1;305;0;Melody;Repeats;Culmination;multi low;0;;Multiple culminations in lower voice;;;;;;;
 1;12;100;Melody;Repeats;Culmination;multi high;0;;Multiple culminations in higher voice;;1;;;21,78,79,193;;
 1;26;60;Melody;Repeats;Culmination;sync;-1;;Synchronized culminations in both voices;;;;1;;;
 1;76;20;Melody;Repeats;Notes repeat;2 sym. in 3;0;;Symmetric repeat of X notes within Y notes;1;;;;;;
