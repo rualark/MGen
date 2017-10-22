@@ -482,6 +482,9 @@ void CGenCF1::CheckConfig() {
 	if (calculate_correlation || calculate_blocking || calculate_stat || calculate_ssf || best_rejected) {
 		WriteLog(1, "Algorithm is running in low performance mode. To increase performance, reset calculate_correlation, calculate_blocking, calculate_stat, calculate_ssf, best_rejected (check config)");
 	}
+	if (log_pmap && !calculate_correlation && !calculate_blocking && !calculate_stat) {
+		WriteLog(1, "Log_pmap will not work correctly if all these flags are reset: calculate_correlation, calculate_blocking, calculate_stat. Enable at least one of them.");
+	}
 	if (shuffle && random_seed) {
 		WriteLog(1, "Shuffling after random_seed will not add randomness (check config)");
 	}
@@ -527,6 +530,7 @@ int CGenCF1::SelectRuleSet(int rs) {
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	SET_READY_PERSIST(DR_Config);
+	CheckVar(sN, sV, "log_pmap", &log_pmap, 0, 1);
 	CheckVar(sN, sV, "show_correct_hatch", &show_correct_hatch, 0, 1);
 	CheckVar(sN, sV, "cor_ack", &cor_ack, 0, 1);
 	CheckVar(sN, sV, "show_ignored_flags", &show_ignored_flags, 0, 1);
@@ -3594,7 +3598,7 @@ void CGenCF1::GetPmap() {
 
 CString GetPmapLogHeader() {
 	CString st;
-	st += "Voice;File;ID;High;Steps;Notes;Tonic;Minor;";
+	st += "Time;Algorithm;File;Voice;ID;High;Steps;Notes;Tonic;Minor;";
 	st += "Range;Culminations;";
 	st += "Decc_min;Decc_max;Decc_av;Maccr_min;Maccr_max;Maccr_av;";
 	st += "Tonics;VI;VI#;VII;VII#;";
@@ -3604,7 +3608,7 @@ CString GetPmapLogHeader() {
 
 CString CGenCF1::GetPmapLogHeader() {
 	CString st;
-	st += "Voice;File;ID;High;Steps;Notes;Tonic;Minor;";
+	st += "Algorithm;Config;Voice;ID;High;Steps;Notes;Tonic;Minor;";
 	st += "Range;Culminations;";
 	st += "Decc_min;Decc_max;Decc_av;Maccr_min;Maccr_max;Maccr_av;";
 	st += "Tonics;VI;VI#;VII;VII#;";
@@ -3614,8 +3618,10 @@ CString CGenCF1::GetPmapLogHeader() {
 
 CString CGenCF1::GetPmapLogSt() {
 	CString st, st2;
-	st.Format("%d;%s;%d;%d;%d;%d;%d;%d;",
-		svoice, midi_file, cantus_id + 1, cantus_high, ep2, fli_size, tonic_cur, minor_cur);
+	st.Format("%s;%s;%d;%d;%d;%d;%d;%d;%d;",
+		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S"),
+		m_algo_folder, m_config, svoice, cantus_id + 1, cantus_high, ep2, 
+		fli_size, tonic_cur, minor_cur);
 	st2 += st;
 	st.Format("%d;%d;",
 		pm_range, pm_culm_count);

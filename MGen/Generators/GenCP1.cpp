@@ -346,6 +346,7 @@ CString CGenCP1::GetPmapLogHeader2() {
 	st += "Dis;Ico;Pco;";
 	st += "Llen;Croches;Sus;Anti;";
 	st += "to3;after3;dev2;dev3;uncomp_precomp;uncomp_child;";
+	st += "Close+1far;Close+2far;Close+no;No+close;Far+close;No close;"; 
 	return st;
 }
 
@@ -370,6 +371,22 @@ CString CGenCP1::GetPmapLogSt2() {
 		flags[112] + flags[113] + flags[114] + flags[115] +
 		flags[204] + flags[205] + flags[206] + flags[207],
 		flags[116] + flags[117] + flags[118] + flags[119]
+	);
+	st2 += st;
+	st.Format("%d;%d;%d;",
+		flags[128] + flags[129] + flags[130] + flags[131],
+		flags[140] + flags[141] + flags[142] + flags[143],
+		flags[108] + flags[109] + flags[110] + flags[111]
+	);
+	st2 += st;
+	st.Format("%d;%d;",
+		flags[132] + flags[133] + flags[134] + flags[135],
+		flags[59] + flags[60] + flags[61] + flags[62]
+	);
+	st2 += st;
+	st.Format("%d;",
+		flags[63] + flags[64] + flags[65] + flags[66] +
+		flags[148] + flags[149] + flags[150] + flags[151]
 	);
 	st2 += st;
 	st2.Replace(".", ",");
