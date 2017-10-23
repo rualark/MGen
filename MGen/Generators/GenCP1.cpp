@@ -2459,6 +2459,8 @@ int CGenCP1::FailHarm() {
 		// Get first and last measure notes
 		ls1 = bli[mli[ms]];
 		ls2 = bli[mli[ms] + npm - 1];
+		// Do not process harmony if it can be influenced by interbar patterns
+		if (ep2 < c_len && ls2 >= fli_size - 4) break;
 		r = ac[cfv][mli[ms]] % 7;
 		// Do not process end of sus
 		if (sus[ls1]) ls1++;
