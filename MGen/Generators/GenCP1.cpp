@@ -252,10 +252,10 @@ void CGenCP1::ScanCPInit() {
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
-	//if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
-	//else lining[pos + i][v] = 0;
-	if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
+	if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
 	else lining[pos + i][v] = 0;
+	//if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
+	//else lining[pos + i][v] = 0;
 }
 
 // Calculate parameter map
@@ -687,6 +687,8 @@ int CGenCP1::FailVMotion() {
 }
 
 int CGenCP1::FailSusResolution(int s3) {
+	// Mark resolution as obligatory harmonic in basic rpos
+	rposb[bli[s3]] = pOffbeat;
 	// Check if suspension second part is discord
 	if (tivl[s2] != iDis) {}
 	// Resolution to discord
@@ -2467,7 +2469,7 @@ int CGenCP1::FailHarm() {
 		// Clear harmonic notes vector
 		fill(chn.begin(), chn.end(), 0);
 		hli.push_back(mli[ms]);
-		chm.push_back(0);
+		chm.push_back(r);
 		// Loop inside measure
 		for (ls = ls1; ls <= ls2; ++ls) {
 			// Do not process non-harmonic notes
@@ -2613,8 +2615,9 @@ check:
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
 		if (FailRhythm()) goto skip;
 		GetVIntervals();
-		DetectPatterns();
 		GetBasicRpos();
+		DetectPatterns();
+		if (FailSus()) goto skip;
 		ApplyFixedPat();
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailVMotion()) goto skip;
@@ -2640,7 +2643,6 @@ check:
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;
 		if (FailPcoApart()) goto skip;
-		if (FailSus()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
