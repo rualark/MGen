@@ -1250,7 +1250,9 @@ void CGenCP1::ApplyPDD(int ls, vector<int> &l_rpos, int state) {
 }
 
 void CGenCP1::ApplyDNT(int ls, vector<int> &l_rpos, int state) {
-	SetRpos(ls,     l_rpos, 21);
+	// Do not apply requirement if not fully generated
+	if (ls < fli_size - 3 || ep2 == c_len) 
+		SetRpos(ls,     l_rpos, 21);
 	SetRpos(ls + 1, l_rpos, -22);
 	SetRpos(ls + 2, l_rpos, -23);
 	SetRpos(ls + 3, l_rpos, 24);
@@ -1258,14 +1260,18 @@ void CGenCP1::ApplyDNT(int ls, vector<int> &l_rpos, int state) {
 }
 
 void CGenCP1::ApplyCam(int ls, vector<int> &l_rpos, int state) {
-	SetRpos(ls, l_rpos, 31);
+	// Do not apply requirement if not fully generated
+	if (ls < fli_size - 4 || ep2 == c_len)
+		SetRpos(ls, l_rpos, 31);
 	SetRpos(ls + 1, l_rpos, -32);
 	pat_state[ls] = state;
 }
 
 // Cambiata with third note non-harmonic allowed
 void CGenCP1::ApplyCam2(int ls, vector<int> &l_rpos, int state) {
-	SetRpos(ls, l_rpos, 41);
+	// Do not apply requirement if not fully generated
+	if (ls < fli_size - 4 || ep2 == c_len)
+		SetRpos(ls, l_rpos, 41);
 	SetRpos(ls + 1, l_rpos, -42);
 	SetRpos(ls + 2, l_rpos, -43);
 	SetRpos(ls + 3, l_rpos, 44);
