@@ -924,20 +924,6 @@ void CGenCF1::GetPitchClass(vector<int> &c, vector<int> &cc, vector<int> &pc, ve
 	}
 }
 
-int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount, int &last_flag, int &max_p) {
-	if (hv[chm[i]]) {
-		++count;
-		wcount = 0;
-	}
-	else {
-		++wcount;
-		count = 0;
-	}
-	if (count > repeat_letters) FLAG3(17, i);
-	if (wcount > miss_letters) FLAG3(20, i);
-	return 0;
-}
-
 int CGenCF1::FailGisTrail(vector<int> &pcc) {
 	CHECK_READY(DR_fli, DR_pc);
 	int gis_trail = 0;
@@ -983,6 +969,20 @@ int CGenCF1::FailFisTrail(vector<int> &pcc) {
 	return 0;
 }
 
+int CGenCF1::FailMelodyHarmStep(int i, const int* hv, int &count, int &wcount, int &last_flag, int &max_p) {
+	if (hv[chm[i]]) {
+		++count;
+		wcount = 0;
+	}
+	else {
+		++wcount;
+		count = 0;
+	}
+	if (count > repeat_letters) FLAG3(17, i);
+	if (wcount > miss_letters) FLAG3(20, i);
+	return 0;
+}
+
 int CGenCF1::EvalMelodyHarm(int hp, int &last_flag, int &max_p) {
 	int pen1;
 	int p2c = 0; // Count of consecutive penalty 2
@@ -1014,10 +1014,10 @@ int CGenCF1::EvalMelodyHarm(int hp, int &last_flag, int &max_p) {
 				p2c = 0;
 			}
 		}
-		// Check harmony repeat and miss
-		if (FailHarmStep(i, hvt, tcount, wtcount, last_flag, max_p)) return 1;
-		if (FailHarmStep(i, hvd, dcount, wdcount, last_flag, max_p)) return 1;
-		if (FailHarmStep(i, hvs, scount, wscount, last_flag, max_p)) return 1;
+		// Check letter repeat and miss
+		if (FailMelodyHarmStep(i, hvt, tcount, wtcount, last_flag, max_p)) return 1;
+		if (FailMelodyHarmStep(i, hvd, dcount, wdcount, last_flag, max_p)) return 1;
+		if (FailMelodyHarmStep(i, hvs, scount, wscount, last_flag, max_p)) return 1;
 	}
 	return 0;
 }

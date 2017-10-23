@@ -2388,6 +2388,59 @@ int CGenCP1::FailGisTrail2() {
 	return 0;
 }
 
+int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount) {
+	if (hv[chm[i]]) {
+		++count;
+		wcount = 0;
+	}
+	else {
+		++wcount;
+		count = 0;
+	}
+	if (count > repeat_letters) FLAG2(17, s);
+	if (wcount > miss_letters) FLAG2(20, s);
+	return 0;
+}
+
+int CGenCP1::EvalHarm() {
+	int pen1;
+	int p2c = 0; // Count of consecutive penalty 2
+	int dcount = 0;
+	int scount = 0;
+	int tcount = 0;
+	int wdcount = 0;
+	int wscount = 0;
+	int wtcount = 0;
+	for (int i = 0; i < chm.size(); ++i) {
+		s = hli[i];
+		ls = bli[s];
+		if (i > 0) {
+			// Check GC for low voice and not last note (last note in any window is ignored)
+			if (ls < fli_size - 1 && chm[i] == 0 && chm[i - 1] == 4) {
+				if (apc[0][s] == 0 && apc[0][fli[ls - 1]] == 4) FLAG2(48, s);
+			}
+			// Check harmonic penalty	
+			pen1 = hsp[chm[i - 1]][chm[i]];
+			if (pen1 == 3) FLAG2(99, s)
+			else if (pen1 == 1) FLAG2(77, s);
+			if (pen1 == 2) {
+				FLAG2(57, s);
+				++p2c;
+				if (p2c == 2) FLAG2(92, s)
+				else if (p2c == 3) FLAG2(23, s);
+			}
+			else {
+				p2c = 0;
+			}
+		}
+		// Check letter repeat and miss
+		if (FailHarmStep(i, hvt, tcount, wtcount)) return 1;
+		if (FailHarmStep(i, hvd, dcount, wdcount)) return 1;
+		if (FailHarmStep(i, hvs, scount, wscount)) return 1;
+	}
+	return 0;
+}
+
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli);
 	int mli_ready = 0;
@@ -2452,6 +2505,7 @@ int CGenCP1::FailHarm() {
 			}
 		}
 	}
+	if (EvalHarm()) return 1;
 	return 0;
 }
 

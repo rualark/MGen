@@ -103,6 +103,7 @@
 // How often to show statistics (ms)
 #define STATUS_PERIOD 100
 
+// Letters in harmonies
 const int hvt[] = { 1, 0, 1, 0, 0, 1, 0 };
 const int hvd[] = { 0, 0, 1, 0, 1, 0, 1 };
 const int hvs[] = { 0, 1, 0, 1, 0, 1, 0 };
@@ -184,7 +185,7 @@ protected:
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
 	inline void GetPitchClass(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, int step1, int step2);
-	inline int FailHarmStep(int i, const int * hv, int & count, int & wcount, int & last_flag, int & max_p);
+	inline int FailMelodyHarmStep(int i, const int * hv, int & count, int & wcount, int & last_flag, int & max_p);
 	inline int FailGisTrail(vector<int>& pcc);
 	inline int FailFisTrail(vector<int>& pcc);
 	inline int EvalMelodyHarm(int p, int & last_flag, int & max_p);
@@ -684,6 +685,8 @@ protected:
 	int fixed_ep2 = 0; // For SAS emulation
 	// For FLAG2 macro
 	void CreateULinks();
+
+	inline int FailHarmStep(int i, const int * hv, int & count, int & wcount);
 
 	// Check data ready
 	vector<int> data_ready; // If data is ready to be used

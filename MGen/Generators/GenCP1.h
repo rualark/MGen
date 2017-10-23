@@ -96,6 +96,7 @@ protected:
 	void EmulateSASCP();
 	inline void GetCfli();
 	inline int FailGisTrail2();
+	inline int EvalHarm();
 	inline int FailHarm();
 	void ScanCP(int t, int v);
 
