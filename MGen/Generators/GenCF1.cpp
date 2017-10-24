@@ -3502,6 +3502,23 @@ void CGenCF1::MakeLenExport(vector<int> &cc, int av, int retr_on)
 	}
 }
 
+void CGenCF1::SendHarmColor(int pos, int v) {
+	mark_color[pos][v] = MakeColor(255, 150, 150, 150);
+	// Scan flags
+	int f_cnt = anflags[cpv][s].size();
+	int max_severity = -1;
+	int fl;
+	for (int f = 0; f < f_cnt; ++f) {
+		fl = anflags[cpv][s][f];
+		if (RuleGroup[fl] == "Harmony" && !accept[fl]) {
+			if (severity[fl] > max_severity) max_severity = severity[fl];
+		}
+	}
+	if (max_severity > -1) {
+		mark_color[pos][v] = flag_color[severity[fl]];
+	}
+}
+
 // Merge notes of same pitch, that do not have pauses between them. Step2 inclusive
 void CGenCF1::MergeNotes(int step1, int step2, int v) {
 	// Start of current note
@@ -3678,18 +3695,20 @@ int CGenCF1::SendCantus() {
 	// Copy cantus to output
 	int pos = step;
 	if (step + real_len >= t_allocated) ResizeVectors(t_allocated * 2);
-	for (int x = 0; x < ep2; ++x) {
-		cpos[x] = pos;
-		if (chm.size() > bli[x] && chm[bli[x]] > -1) mark[pos][v] = HarmNames[chm[bli[x]]];
-		mark_color[pos][v] = MakeColor(255, 120, 120, 120);
-		SendLyrics(pos, v, cpv, x);
-		for (int i = 0; i < cc_len[x]; ++i) {
-			color[pos + i][v] = MakeColor(0, 100, 100, 100);
-			SendNotes(pos, i, v, cpv, x, m_cc);
-			SendNgraph(pos, i, v, x);
-			SendComment(pos, v, cpv, x, i);
+	for (s = 0; s < ep2; ++s) {
+		cpos[s] = pos;
+		if (chm.size() > bli[s] && chm[bli[s]] > -1) {
+			mark[pos][v] = HarmNames[chm[bli[s]]];
+			SendHarmColor(pos, v);
 		}
-		pos += cc_len[x];
+		SendLyrics(pos, v, cpv, s);
+		for (int i = 0; i < cc_len[s]; ++i) {
+			color[pos + i][v] = MakeColor(0, 100, 100, 100);
+			SendNotes(pos, i, v, cpv, s, m_cc);
+			SendNgraph(pos, i, v, s);
+			SendComment(pos, v, cpv, s, i);
+		}
+		pos += cc_len[s];
 	}
 	MakeBellDyn(v, step, pos - 1, 40, 100, 20);
 	step = pos + SendPause(pos, v);

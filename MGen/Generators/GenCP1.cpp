@@ -414,7 +414,7 @@ void CGenCP1::LogPmap2() {
 	AppendLineToFile(fname, GetPmapLogSt2() + "\n");
 }
 
-void CGenCP1::SendHarmColor(int pos, int av, int v, int chm_id) {
+void CGenCP1::SendHarmColorCP(int pos, int v, int chm_id) {
 	mark_color[pos][v] = MakeColor(255, 170, 170, 170);
 	// Scan flags
 	int s = hli[chm_id];
@@ -493,7 +493,7 @@ int CGenCP1::SendCP() {
 			else {
 				if (chm.size() > chm_id && hli[chm_id] == x) {
 					mark[pos][v] = HarmNames[chm[chm_id]];
-					SendHarmColor(pos, v, av, chm_id);
+					SendHarmColorCP(pos, v, chm_id);
 					++chm_id;
 				}
 			}

@@ -277,6 +277,7 @@ protected:
 	void MakeBellDyn(int v, int step1, int step2, int dyn1, int dyn2, int dyn_rand);
 	int SendPause(int pos, int v);
 	inline void MakeLenExport(vector<int>& cc, int av, int retr_on);
+	inline void SendHarmColor(int pos, int v);
 	void MergeNotes(int step1, int step2, int v);
 	inline void CalcPmap(vector<int>& pcc, vector<int>& cc, vector<int>& c, vector<int>& smooth, vector<int>& leap);
 	inline void GetPmap();
