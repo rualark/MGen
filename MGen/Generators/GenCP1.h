@@ -81,6 +81,7 @@ protected:
 	CString GetPmapLogHeader2();
 	CString GetPmapLogSt2();
 	void LogPmap2();
+	inline void SendHarmColor(int pos, int av, int v, int chm_id);
 	inline int SendCP();
 	inline int FailMissSlurs();
 	inline int FailCPInterval();

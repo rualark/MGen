@@ -313,6 +313,7 @@ protected:
 	vector<vector <CString>> SubRuleName; // Names of all rules
 	vector<vector<vector<vector<int>>>> RuleParam; // Parsed rule parameters
 	vector <CString> RuleComment; // Comments for flag groups
+	vector <CString> RuleGroup; // Groups for flag groups
 	vector<vector <CString>> SubRuleComment; // Comments for flags
 	int max_flags = 82; // Maximum number of rules
 

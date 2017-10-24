@@ -414,6 +414,24 @@ void CGenCP1::LogPmap2() {
 	AppendLineToFile(fname, GetPmapLogSt2() + "\n");
 }
 
+void CGenCP1::SendHarmColor(int pos, int av, int v, int chm_id) {
+	mark_color[pos][v] = MakeColor(255, 170, 170, 170);
+	// Scan flags
+	int s = hli[chm_id];
+	int f_cnt = anflags[cpv][s].size();
+	int max_severity = -1;
+	int fl;
+	for (int f = 0; f < f_cnt; ++f) {
+		fl = anflags[cpv][s][f];
+		if (RuleGroup[fl] == "Harmony" && !accept[fl]) {
+			if (severity[fl] > max_severity) max_severity = severity[fl];
+		}
+	}
+	if (max_severity > -1) {
+		mark_color[pos][v] = flag_color[severity[fl]];
+	}
+}
+
 int CGenCP1::SendCP() {
 	int step000 = step;
 	int pause_len = 0;
@@ -475,7 +493,7 @@ int CGenCP1::SendCP() {
 			else {
 				if (chm.size() > chm_id && hli[chm_id] == x) {
 					mark[pos][v] = HarmNames[chm[chm_id]];
-					mark_color[pos][v] = MakeColor(255, 120, 120, 120);
+					SendHarmColor(pos, v, av, chm_id);
 					++chm_id;
 				}
 			}

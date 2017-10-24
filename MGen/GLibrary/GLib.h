@@ -202,16 +202,13 @@ public:
 	virtual ~CGLib();
 
 	static int FileHasHeader(CString fname, CString header);
-
-	static DWORD GetRed(DWORD col);
-
-	static DWORD GetGreen(DWORD col);
-
-	static DWORD GetBlue(DWORD col);
-
-	static DWORD GetAlpha(DWORD col);
-
-	static DWORD MakeColor(DWORD alpha, DWORD red, DWORD green, DWORD blue);
+	
+	static DWORD GetRed(DWORD col) { return (col >> 16) & 0xff; }
+	static DWORD GetGreen(DWORD col) { return (col >> 8) & 0xff; }
+	static DWORD GetBlue(DWORD col) { return col & 0xff; }
+	static DWORD GetAlpha(DWORD col) { return (col >> 24) & 0xff; }
+	static DWORD MakeColor(DWORD alpha, DWORD red, DWORD green, DWORD blue)
+		{ return (alpha << 24) + (red << 16) + (green << 8) + blue; }
 
 	static long long time();
 

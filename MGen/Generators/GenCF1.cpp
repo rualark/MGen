@@ -29,6 +29,7 @@ CGenCF1::CGenCF1()
 	RuleName.resize(MAX_RULESETS);
 	SubRuleComment.resize(MAX_RULESETS);
 	RuleComment.resize(MAX_RULES);
+	RuleGroup.resize(MAX_RULES);
 	ssf.resize(MAX_RULES);
 	severity.resize(MAX_RULES);
 	flag_color.resize(MAX_SEVERITY);
@@ -183,6 +184,7 @@ void CGenCF1::LoadRules(CString fname)
 			}
 			RuleName[set][rid] = rule;
 			SubRuleName[set][rid] = subrule;
+			RuleGroup[rid] = ast[4];
 			RuleComment[rid] = ast[8];
 			SubRuleComment[set][rid] = ast[9];
 			// If testing, enable all disabled rules so that expected violations can be confirmed

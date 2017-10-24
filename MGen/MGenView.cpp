@@ -153,6 +153,8 @@ void CMGenView::OnDraw(CDC* pDC)
 	Gdiplus::Font font(&FontFamily(L"Arial"), 10);
 	Gdiplus::Font font_small(&FontFamily(L"Arial"), 8);
 	Gdiplus::Font font_small2(&FontFamily(L"Arial"), 6);
+	Gdiplus::Font font_small2_b(&FontFamily(L"Arial"), 6, FontStyleBold);
+	Gdiplus::Font *cur_font;
 	long long current_time = CGLib::time();
   USES_CONVERSION;
 	CString st;
@@ -460,10 +462,17 @@ void CMGenView::OnDraw(CDC* pDC)
 					mark = pGen->mark[i][v];
 					CStringW wst(mark);
 					pGen->Tokenize(mark, ast, "\n");
+					// Make colored marks bold
+					if (mcolor.GetRed() == mcolor.GetBlue() && mcolor.GetRed() == mcolor.GetGreen()) {
+						cur_font = &font_small2;
+					}
+					else {
+						cur_font = &font_small2_b;
+					}
 					//CRect tex(0, 0, 0, 0);
 					//dc.DrawText(mark, 4, &tex, DT_LEFT | DT_CALCRECT);
 					//CSize tex = dc.GetTextExtent(mark);
-					g.MeasureString(wst, 1, &font_small2, Rect, &tex);
+					g.MeasureString(wst, 1, cur_font, Rect, &tex);
 					if (tex.Width > MARK_BACK * nwidth) {
 						mark = ".";
 						if (!warning_mark_long) {
@@ -489,7 +498,7 @@ void CMGenView::OnDraw(CDC* pDC)
 					else {
 						y = y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight;
 					}
-					g.DrawString(wst, -1, &font_small2, 
+					g.DrawString(wst, -1, cur_font,
 						PointF(X_FIELD + i * nwidth - 1, y), &brush_v);
 				}
 			}

@@ -79,28 +79,6 @@ int CGLib::FileHasHeader(CString fname, CString header) {
 	if (st != header) return 0;
 	return 1;
 }
-
-DWORD CGLib::GetAlpha(DWORD col) {
-	return (col >> 24) & 0xff;
-}
-
-DWORD CGLib::GetRed(DWORD col) {
-	return (col >> 16) & 0xff;
-}
-
-DWORD CGLib::GetGreen(DWORD col) {
-	return (col >> 8) & 0xff;
-}
-
-DWORD CGLib::GetBlue(DWORD col) {
-	return col & 0xff;
-}
-
-DWORD CGLib::MakeColor(DWORD alpha, DWORD red, DWORD green, DWORD blue) {
-	DWORD d = (alpha << 24) + (red << 16) + (green << 8) + blue;
-	return d;
-}
-
 long long CGLib::time() {
 	long long t = abstime();
 	if (!first_time) first_time = t;
