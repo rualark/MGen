@@ -3503,6 +3503,7 @@ void CGenCF1::MakeLenExport(vector<int> &cc, int av, int retr_on)
 }
 
 void CGenCF1::SendHarmColor(int pos, int v) {
+	DWORD fc;
 	mark_color[pos][v] = MakeColor(255, 150, 150, 150);
 	// Scan flags
 	int f_cnt = anflags[cpv][s].size();
@@ -3515,7 +3516,9 @@ void CGenCF1::SendHarmColor(int pos, int v) {
 		}
 	}
 	if (max_severity > -1) {
-		mark_color[pos][v] = flag_color[severity[fl]];
+		fc = flag_color[severity[fl]];
+		mark_color[pos][v] = MakeColor(GetAlpha(fc), GetRed(fc), 
+			GetGreen(fc)/1.5, GetBlue(fc));
 	}
 }
 

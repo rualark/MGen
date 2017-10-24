@@ -415,6 +415,7 @@ void CGenCP1::LogPmap2() {
 }
 
 void CGenCP1::SendHarmColorCP(int pos, int v, int chm_id) {
+	DWORD fc;
 	mark_color[pos][v] = MakeColor(255, 170, 170, 170);
 	// Scan flags
 	int s = hli[chm_id];
@@ -428,7 +429,9 @@ void CGenCP1::SendHarmColorCP(int pos, int v, int chm_id) {
 		}
 	}
 	if (max_severity > -1) {
-		mark_color[pos][v] = flag_color[severity[fl]];
+		fc = flag_color[severity[fl]];
+		mark_color[pos][v] = MakeColor(GetAlpha(fc), GetRed(fc),
+			GetGreen(fc) / 1.5, GetBlue(fc));
 	}
 }
 
