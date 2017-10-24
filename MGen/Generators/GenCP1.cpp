@@ -688,7 +688,7 @@ int CGenCP1::FailVMotion() {
 
 int CGenCP1::FailSusResolution(int s3) {
 	// Mark resolution as obligatory harmonic in basic rpos
-	rposb[bli[s3]] = pOffbeat;
+	if (tivl[s3] != iDis) rposb[bli[s3]] = pOffbeat;
 	// Check if suspension second part is discord
 	if (tivl[s2] != iDis) {}
 	// Resolution to discord
@@ -828,9 +828,13 @@ int CGenCP1::FailSus2() {
 						if (abs(acc[cpv][fli[ls + 1]] - acc[cpv][s2]) > sus_insert_max_leap) FLAG2(295, fli[ls + 1])
 						// If second movement is leap
 						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2(136, fli[ls + 1])
-						else if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(296, fli[ls + 1])
-						else if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2(137, fli[ls + 1])
-						else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2(138, fli[ls + 1])
+						else {
+							// Mark insertion as non-harmonic in basic rpos if resolution is harmonic
+							if (tivl[s3] != iDis) rposb[ls + 1] = pAux;
+							if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(296, fli[ls + 1])
+							else if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2(137, fli[ls + 1])
+							else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2(138, fli[ls + 1])
+						}
 					}
 					// If there are two intermediate steps - do nothing
 					// If there are more than two intermediate steps
