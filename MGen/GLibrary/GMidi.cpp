@@ -275,10 +275,12 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 }
 
 CString CGMidi::GetLyColor(DWORD col) {
+	float coef = 1.5;
 	if (col == color_noflag) return "0 0 0";
 	CString st;
+	if (GetGreen(col) == GetRed(col) && GetRed(col) == GetBlue(col)) coef = 1;
 	st.Format("%.3f %.3f %.3f",
-		GetRed(col) / 255.0, GetGreen(col) / 1.5 / 255.0, GetBlue(col) / 255.0);
+		GetRed(col) / 255.0, GetGreen(col) / coef / 255.0, GetBlue(col) / 255.0);
 	return st;
 }
 
@@ -420,9 +422,16 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 				CString st = mark[i][v];
 				st.Replace("\n", "");
+				// Search for conflicting harmonies
+				for (int s = 1; s < len[i][v]; ++s) {
+					if (!mark[i + s][v].IsEmpty()) {
+						st += ", " + mark[i + s][v];
+						st.Replace("\n", "");
+					}
+				}
 				fs << "_\\markup{ \\tiny \\with-color #(rgb-color ";
 				fs << GetLyColor(mark_color[i][v]);
-				fs << ") " << st << " }\n";
+				fs << ") \"" << st << "\" }\n";
 			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
