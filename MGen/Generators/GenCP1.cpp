@@ -2528,9 +2528,9 @@ int CGenCP1::FailTonicCP() {
 
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli);
-	int mli_ready = 0;
 	int ls1, ls2, r, n, ns, harm_conflict;
 	vector<int> chn, cchn;
+	int mea_end;
 	chn.resize(7);
 	cchn.resize(12);
 	hli.clear();
@@ -2539,13 +2539,13 @@ int CGenCP1::FailHarm() {
 	harm_conflict = 0;
 	// Build chm vector
 	for (int ms = 0; ms < mli.size(); ++ms) {
-		// Count ready measures
-		mli_ready = ms + 1;
 		// Stop processing when measure is not fully generated
-		if (mli[ms] + npm > ep2) break;
+		if (ep2 < c_len && ms == mli.size() - 1) break;
 		// Get first and last measure notes
+		if (ms < mli.size() - 1) mea_end = mli[ms + 1] - 1;
+		else mea_end = c_len - 1;
 		ls1 = bli[mli[ms]];
-		ls2 = bli[mli[ms] + npm - 1];
+		ls2 = bli[mea_end];
 		// Do not process harmony if it can be influenced by interbar patterns
 		if (ep2 < c_len && ls2 >= fli_size - 4) break;
 		r = ac[cfv][mli[ms]] % 7;
