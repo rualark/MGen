@@ -284,10 +284,16 @@ CString CGMidi::GetLyColor(DWORD col) {
 	return st;
 }
 
-// Send note or pause
 void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
 	fs << "\n    \\override NoteHead.color = #(rgb-color " << GetLyColor(col) << ") ";
 	fs << "\n    \\override Stem.color = #(rgb-color " << GetLyColor(col) << ") ";
+}
+
+void CGMidi::SendLyFlagColor(ofstream &fs, DWORD col) {
+	if (!col || col == color_noflag) return;
+	fs << "^\\markup{ \\tiny \\with-color #(rgb-color ";
+	fs << GetLyColor(col);
+	fs << ") \\char ##x2716  }\n";
 }
 
 void CGMidi::SaveLyComments(CString &com_st, int i, int v, int vm_cnt, int nnum, int pos) {
@@ -415,9 +421,10 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 					pause_accum = 0;
 					pause_pos = -1;
 				}
-				SendLyNoteColor(fs, color[i][v]);
+				if (ly_flag_style == 1) SendLyNoteColor(fs, color[i][v]);
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 				SaveLyComments(comm_st, i, v, vm_cnt, nnum, pos);
+				if (ly_flag_style == 2) SendLyFlagColor(fs, color[i][v]);
 			}
 			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 				CString st = mark[i][v];

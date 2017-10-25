@@ -536,6 +536,8 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "log_pmap", &log_pmap, 0, 1);
 	CheckVar(sN, sV, "show_correct_hatch", &show_correct_hatch, 0, 1);
 	CheckVar(sN, sV, "show_hatch", &show_hatch, 0, 2);
+	CheckVar(sN, sV, "show_min_severity", &show_min_severity, 0, 100);
+	CheckVar(sN, sV, "ly_flag_style", &ly_flag_style, 0, 2);
 	CheckVar(sN, sV, "cor_ack", &cor_ack, 0, 1);
 	CheckVar(sN, sV, "show_ignored_flags", &show_ignored_flags, 0, 1);
 	CheckVar(sN, sV, "show_allowed_flags", &show_allowed_flags, 0, 1);
@@ -3397,7 +3399,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 				ccolor[pos][v].push_back(flag_color[severity[fl]]);
 			}
 			// Set note color if this is maximum flag severity
-			if (severity[fl] > current_severity) {
+			if (severity[fl] > current_severity && severity[fl] >= show_min_severity) {
 				current_severity = severity[fl];
 				color[pos + i][v] = flag_color[severity[fl]];
 			}
