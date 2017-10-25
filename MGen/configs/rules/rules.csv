@@ -135,11 +135,13 @@ Set;Severity;Class;Group;Rule;Flag
 1;16;0;Melody;Range;No melody development;13 notes <20;0;;Melody direction within X notes is less than Y decisemitones;1;;;;;;
 1;17;70;Cantus;Harmony;Repeating letters in a row;>3;0;;;;;;;;;17,20,23,48,57,77,92,99
 1;20;70;Cantus;Harmony;Missing letters in a row;>3;0;;;;;;;;;17,20,23,48,57,77,92,99
-1;194;70;Cantus;Harmony;Accented bad harmony;leap >4th;-1;;;;;;;;;
-1;195;70;Cantus;Harmony;Accented bad harmony;culmination;-1;;;;;;;;;
-1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate;1;;In penultimate measure;;;;;;;17,20,23,48,57,77,92,99
-1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;;;;;;;17,20,23,48,57,77,92,99
-1;48;30;Cantus;Harmony;Early cadence;G-C;0;;Tonic chord is prohibited in root position after Dominant chord in root position;;;;;;;17,20,23,48,57,77,92,99
+1;194;70;Cantus;Harmony;Accented bad harmony;leap >4th;-1;Only for cantus;;;;;;;;
+1;195;70;Cantus;Harmony;Accented bad harmony;culmination;-1;Only for cantus;;;;;;;;
+1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate;1;;In penultimate measure;;;;;;;
+1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;;;;;;;
+1;48;30;Cantus;Harmony;Prohibited progression;early G-C;0;;Tonic chord is prohibited in root position after Dominant chord in root position;;;;;;;17,20,23,48,57,77,92,99
+1;308;30;Cantus;Harmony;Prohibited progression;S-dVII (m);0;;Prohibit dVII (GBD) in root position after S (DF#A) in root position;;;;;;;17,20,23,48,57,77,92,99
+1;309;30;Cantus;Harmony;Prohibited progression;dVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after dVII (GBD) in root position;;;;;;;17,20,23,48,57,77,92,99
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;;;;;;;17,20,23,48,57,77,92,99
 1;57;10;Cantus;Harmony;Harmonic penalty;2;-1;;;;;;;;;17,20,23,48,57,77,92,99
 1;92;30;Cantus;Harmony;Harmonic penalty;2x2;-1;;;;;;;;;17,20,23,48,57,77,92,99
@@ -302,7 +304,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;244;60;Cantus;Rhythm;Suspension rhythm;1/2. + ?;0;;;;1;;;;;
 1;274;60;Cantus;Rhythm;Suspension rhythm;> 5/4;0;;Total note length is more than 5/4 (except last note);;1;;;;;
 1;139;0;Cantus;Rhythm;Suspension;not last 3;0;;Suspension before N last measures {sp2-5};;;;;;;
-1;299;0;Cantus;Rhythm;Suspension;not leading;0;;Suspension of not leading tone;;;;;;;
+1;299;0;Cantus;Rhythm;Suspension;not leading;0;;Suspension of not leading tone {sp2,4};;;;;;;
 1;301;0;Cantus;Rhythm;Many notes in measure;5 after sus;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;;;;;
 1;245;0;Cantus;Rhythm;Many notes in measure;5;0;;;;1;;;;;
 1;246;60;Cantus;Rhythm;Many notes in measure;>5;0;;;;1;;;245;;

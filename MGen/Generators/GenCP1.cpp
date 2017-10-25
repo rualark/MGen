@@ -2438,6 +2438,7 @@ int CGenCP1::EvalHarm() {
 	int wdcount = 0;
 	int wscount = 0;
 	int wtcount = 0;
+	int harm_end, s2, found;
 	for (int i = 0; i < chm.size(); ++i) {
 		s = hli[i];
 		ls = bli[s];
@@ -2445,6 +2446,16 @@ int CGenCP1::EvalHarm() {
 			// Check GC for low voice and not last note (last note in any window is ignored)
 			if (ls < fli_size - 1 && chm[i] == 0 && chm[i - 1] == 4) {
 				if (apc[0][s] == 0 && apc[0][fli[ls - 1]] == 4) FLAG2(48, s);
+			}
+			if (minor_cur) {
+				// Prohibit dVII (GBD) in root position after S (DF#A) in root position
+				if (chm[i] == 6 && chm[i - 1] == 3 && chm_alter[i - 1]) {
+					if (apc[0][s] == 6 && apc[0][fli[ls - 1]] == 3) FLAG2(308, s);
+				}
+				// Prohibit DTIII (CEG) in root position after dVII (GBD) in root position
+				if (chm[i] == 2 && chm[i - 1] == 6) {
+					if (apc[0][s] == 2 && apc[0][fli[ls - 1]] == 6) FLAG2(309, s);
+				}
 			}
 			// Check harmonic penalty	
 			pen1 = hsp[chm[i - 1]][chm[i]];
@@ -2472,10 +2483,12 @@ int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli);
 	int mli_ready = 0;
 	int ls1, ls2, r, n, ns, harm_conflict;
-	vector<int> chn;
+	vector<int> chn, cchn;
 	chn.resize(7);
+	cchn.resize(12);
 	hli.clear();
 	chm.clear();
+	chm_alter.clear();
 	harm_conflict = 0;
 	// Build chm vector
 	for (int ms = 0; ms < mli.size(); ++ms) {
@@ -2493,8 +2506,10 @@ int CGenCP1::FailHarm() {
 		if (sus[ls1]) ls1++;
 		// Clear harmonic notes vector
 		fill(chn.begin(), chn.end(), 0);
+		fill(cchn.begin(), cchn.end(), 0);
 		hli.push_back(mli[ms]);
 		chm.push_back(r);
+		chm_alter.push_back(0);
 		// Loop inside measure
 		for (ls = ls1; ls <= ls2; ++ls) {
 			// Do not process non-harmonic notes
@@ -2517,11 +2532,14 @@ int CGenCP1::FailHarm() {
 				else FLAG2(307, s);
 				harm_conflict = 0;
 				fill(chn.begin(), chn.end(), 0);
+				fill(cchn.begin(), cchn.end(), 0);
 				hli.push_back(s);
-				chm.push_back(0);
+				chm.push_back(r);
+				chm_alter.push_back(0);
 			}
 			// Record note
 			++chn[ns];
+			++cchn[ns];
 			// Detect harmony
 			if (cantus_high) {
 				if (chn[3]) chm[chm.size() - 1] = (r + 3) % 7;
@@ -2532,6 +2550,8 @@ int CGenCP1::FailHarm() {
 				if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
 				else chm[chm.size() - 1] = r;
 			}
+			// Detect altered chord
+			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[chm_alter.size() - 1] = 1;
 		}
 	}
 	if (EvalHarm()) return 1;
