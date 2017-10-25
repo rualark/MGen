@@ -430,6 +430,8 @@ protected:
 	int repeat_steps7 = 100; // Prohibit repeating of 7 notes closer than repeat_steps between first notes
 	int tonic_window = 9; // Number of notes that are searched for number of tonic notes
 	int tonic_max = 1; // Maximum number of tonic notes that can be contained in tonic window
+	int tonic_window_cp = 9; // Number of harmonies that are searched for number of tonic chords
+	int tonic_max_cp = 1; // Maximum number of tonic chords that can be contained in tonic window
 	int tonic_leap = 4; // Maximum allowed leap to tonic (chromatic)
 	int tonic_leap_weight = 2; // Weight of leap to tonic
 	int thirds_ignored = 1; // Number of thirds ignored for consecutive leaps rule

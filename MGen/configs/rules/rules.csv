@@ -139,9 +139,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;195;70;Cantus;Harmony;Accented bad harmony;culmination;-1;Only for cantus;;;;;;;;
 1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate;1;;In penultimate measure;;;;;;;
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;;;;;;;
+1;310;20;Cantus;Harmony;Tonic chord;>3 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;;;;;;;
 1;48;30;Cantus;Harmony;Prohibited progression;early G-C;0;;Tonic chord is prohibited in root position after Dominant chord in root position;;;;;;;17,20,23,48,57,77,92,99
-1;308;30;Cantus;Harmony;Prohibited progression;S-dVII (m);0;;Prohibit dVII (GBD) in root position after S (DF#A) in root position;;;;;;;17,20,23,48,57,77,92,99
-1;309;30;Cantus;Harmony;Prohibited progression;dVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after dVII (GBD) in root position;;;;;;;17,20,23,48,57,77,92,99
+1;308;30;Cantus;Harmony;Prohibited progression;S-dVII (m);0;;Prohibit dVII (GBD) in root position after S (DF#A) in root position;;;;;;;
+1;309;30;Cantus;Harmony;Prohibited progression;dVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after dVII (GBD) in root position;;;;;;;
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;;;;;;;17,20,23,48,57,77,92,99
 1;57;10;Cantus;Harmony;Harmonic penalty;2;-1;;;;;;;;;17,20,23,48,57,77,92,99
 1;92;30;Cantus;Harmony;Harmonic penalty;2x2;-1;;;;;;;;;17,20,23,48,57,77,92,99

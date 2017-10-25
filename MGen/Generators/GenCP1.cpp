@@ -2487,6 +2487,45 @@ int CGenCP1::EvalHarm() {
 	return 0;
 }
 
+
+int CGenCP1::FailTonicCP() {
+	int tcount = 0;
+	int fire, fired = 0;
+	// Do not check if melody is short
+	if (hli.size() < 3) return 0;
+	// Loop from second to second to last note
+	for (int hs = 1; hs < hli.size() - 1; ++hs) {
+		s = hli[hs];
+		// Decrement for previous tonic note
+		if (hs > tonic_window_cp) {
+			if (!chm[hs - tonic_window_cp]) --tcount;
+		}
+		if (!chm[hs]) {
+			// Increment for current tonic note
+			++tcount;
+			// Check count of tonic notes
+			if (tcount > tonic_max_cp) {
+				// Grant one more tonic in first window if first chord not tonic
+				fire = 0;
+				if (ls < tonic_window_cp && !chm[0]) {
+					if (tcount > tonic_max_cp + 1)	fire = 1;
+				}
+				else fire = 1;
+				if (fire) {
+					if (fired) {
+						fpenalty[310] += severity[310] + 1;
+					}
+					else {
+						FLAG2(310, s);
+						fired = 1;
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
+
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli);
 	int mli_ready = 0;
@@ -2563,6 +2602,7 @@ int CGenCP1::FailHarm() {
 		}
 	}
 	if (EvalHarm()) return 1;
+	if (FailTonicCP()) return 1;
 	return 0;
 }
 

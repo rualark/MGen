@@ -384,6 +384,8 @@ void CGenCF1::SetRuleParams() {
 	fis_leap = Interval2Chromatic(GetRuleParam(rule_set, 201, rsSubName, 0));
 	tonic_max = GetRuleParam(rule_set, 196, rsSubName, 0);
 	tonic_window = GetRuleParam(rule_set, 196, rsSubName, 1);
+	tonic_max_cp = GetRuleParam(rule_set, 310, rsSubName, 0);
+	tonic_window_cp = GetRuleParam(rule_set, 310, rsSubName, 1);
 	tonic_leap = Interval2Chromatic(GetRuleParam(rule_set, 196, rsSubComment, 1));
 	tonic_leap_weight = Interval2Chromatic(GetRuleParam(rule_set, 196, rsSubComment, 2));
 	fis_gis_max = GetRuleParam(rule_set, 199, rsSubName, 0);
