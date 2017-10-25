@@ -55,6 +55,10 @@ best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requ
 show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
 show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
 show_hatch = 0 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show rpos hatch
+show_min_severity = 0 # Minimum severity to highlight note
+
+# Lilypond parameters
+ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note
 
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
