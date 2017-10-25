@@ -123,6 +123,26 @@ const CString HarmNames[] = {
 	"DVII", // 6
 };
 
+const CString HarmNames_m[] = {
+	"t", // 0
+	"sII", // 1
+	"DTIII", // 2
+	"s", // 3
+	"d", // 4
+	"TSVI", // 5
+	"dVII", // 6
+};
+
+const CString HarmNames_ma[] = {
+	"t", // 0
+	"SII", // 1
+	"DTIII", // 2
+	"S", // 3
+	"D", // 4
+	"TSVI", // 5
+	"DVII", // 6
+};
+
 #define mUndefined -1
 #define mScan 0
 #define mSWA 1
@@ -189,7 +209,7 @@ protected:
 	inline int FailGisTrail(vector<int>& pcc);
 	inline int FailFisTrail(vector<int>& pcc);
 	inline int EvalMelodyHarm(int p, int & last_flag, int & max_p);
-	inline int FailMelodyHarm(vector<int>& pc);
+	inline int FailMelodyHarm(vector<int>& pc, vector<int>& pcc);
 	//inline void UpdateNoteHarm(int i);
 	//inline int FailMelodyHarmMiss(vector<int>& pc, int i, int harm, int & count, int & wcount);
 	//inline int FixNoteHarmRepeat(vector<int>& pc, int i, int harm, int & count, int & wcount);

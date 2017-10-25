@@ -1024,8 +1024,8 @@ int CGenCF1::EvalMelodyHarm(int hp, int &last_flag, int &max_p) {
 	return 0;
 }
 
-int CGenCF1::FailMelodyHarm(vector<int> &pc) {
-	CHECK_READY(DR_fli);
+int CGenCF1::FailMelodyHarm(vector<int> &pc, vector<int> &pcc) {
+	CHECK_READY(DR_fli, DR_pc);
 	CHECK_READY_PERSIST(DR_hv, DR_hsp);
 	int h;
 	int first_tonic = 0;
@@ -1057,10 +1057,15 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc) {
 	// Scan vector
 	vector<int> chm_saved;
 	chm.clear();
+	chm_alter.clear();
+	chm_alter.resize(fli_size, 0);
 	chmp.clear();
 	chm.resize(fli_size, 0);
 	chmp.resize(fli_size, 0);
-	for (int i = 0; i < fli_size; ++i) chm[i] = hm[i][0];
+	for (int i = 0; i < fli_size; ++i) {
+		chm[i] = hm[i][0];
+		if (pcc[fli[i]] == 9 || pcc[fli[i]] == 11) chm_alter[i] = 1;
+	}
 	int hp = 0;
 	int finished = 0;
 	int found = 0;
@@ -3701,7 +3706,11 @@ int CGenCF1::SendCantus() {
 	for (s = 0; s < ep2; ++s) {
 		cpos[s] = pos;
 		if (chm.size() > bli[s] && chm[bli[s]] > -1) {
-			mark[pos][v] = HarmNames[chm[bli[s]]];
+			if (minor_cur) {
+				if (chm_alter[bli[s]]) mark[pos][v] = HarmNames_ma[chm[bli[s]]];
+				else mark[pos][v] = HarmNames_m[chm[bli[s]]];
+			}
+			else mark[pos][v] = HarmNames[chm[bli[s]]];
 			SendHarmColor(pos, v);
 		}
 		SendLyrics(pos, v, cpv, s);
@@ -4398,7 +4407,7 @@ check:
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
 		if (FailFirstNotes(m_pc)) goto skip;
 		if (FailLeap(m_c, m_leap, m_smooth, nstat2, nstat3)) goto skip;
-		if ((fli_size>1) && FailMelodyHarm(m_pc)) goto skip;
+		if ((fli_size>1) && FailMelodyHarm(m_pc, m_pcc)) goto skip;
 		MakeMacc(m_cc);
 		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;
 		if (FailLocalMacc(notes_arange2, min_arange2, 16)) goto skip;

@@ -495,7 +495,11 @@ int CGenCP1::SendCP() {
 			}
 			else {
 				if (chm.size() > chm_id && hli[chm_id] == x) {
-					mark[pos][v] = HarmNames[chm[chm_id]];
+					if (minor_cur) {
+						if (chm_alter[chm_id]) mark[pos][v] = HarmNames_ma[chm[chm_id]];
+						else mark[pos][v] = HarmNames_m[chm[chm_id]];
+					}
+					else mark[pos][v] = HarmNames[chm[chm_id]];
 					SendHarmColorCP(pos, v, chm_id);
 					++chm_id;
 				}
@@ -2539,7 +2543,7 @@ int CGenCP1::FailHarm() {
 			}
 			// Record note
 			++chn[ns];
-			++cchn[ns];
+			++cchn[apcc[cpv][s]];
 			// Detect harmony
 			if (cantus_high) {
 				if (chn[3]) chm[chm.size() - 1] = (r + 3) % 7;
