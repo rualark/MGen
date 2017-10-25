@@ -252,10 +252,14 @@ void CGenCP1::ScanCPInit() {
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
-	//if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
-	//else lining[pos + i][v] = 0;
-	if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
-	else lining[pos + i][v] = 0;
+	if (show_hatch == 1) {
+		if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
+		else lining[pos + i][v] = 0;
+	}
+	if (show_hatch == 2) {
+		if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
+		else lining[pos + i][v] = 0;
+	}
 }
 
 // Calculate parameter map

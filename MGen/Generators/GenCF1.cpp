@@ -535,6 +535,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	SET_READY_PERSIST(DR_Config);
 	CheckVar(sN, sV, "log_pmap", &log_pmap, 0, 1);
 	CheckVar(sN, sV, "show_correct_hatch", &show_correct_hatch, 0, 1);
+	CheckVar(sN, sV, "show_hatch", &show_hatch, 0, 2);
 	CheckVar(sN, sV, "cor_ack", &cor_ack, 0, 1);
 	CheckVar(sN, sV, "show_ignored_flags", &show_ignored_flags, 0, 1);
 	CheckVar(sN, sV, "show_allowed_flags", &show_allowed_flags, 0, 1);
