@@ -830,7 +830,7 @@ int CGenCP1::FailSus2() {
 			if (beat[ls] == 5 && llen[ls] > 1) FLAG2(235, s);
 			// If sus is not last note
 			if (ls < fli_size - 1) {
-				// If mid-bar already generated
+				// If mid-bar already generated (sus cannot be in first measure, thus npm usage is correct)
 				s3 = sus[ls] + npm / 2;
 				if (s3 < ep2) {
 					// If second part is 3/4 in species 5
@@ -1400,7 +1400,7 @@ int CGenCP1::FailRhythm3() {
 		if (beat[ls] == 3 && llen[ls] > 1) FLAG2(235, s);
 		// 1/2 after 1/4
 		if (ls > 0 && beat[ls] == 1 && llen[ls] > 1 && llen[ls - 1] == 1) {
-			if (s / npm >= c_len / npm - 1) FLAG2(238, s)
+			if (bmli[s] >= mli.size() - 2) FLAG2(238, s)
 				// Flag slurred if sus or note is cut by scan window
 			else if (sus[ls] || (ls == fli_size - 1 && c_len > ep2)) FLAG2(239, s)
 			else FLAG2(240, s);
