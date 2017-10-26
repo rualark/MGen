@@ -2232,11 +2232,12 @@ int CGenCP1::FailLastIntervals() {
 		// Scan 2nd to last measure
 		if (mli.size() > 1) {
 			int start = mli[mli.size() - 2];
-			if (start + npm < ep2) {
+			int end = mli[mli.size() - 1] - 1;
+			if (end < ep2) {
 				int b_found = 0;
 				int g_found = 0;
 				int d_found = 0;
-				for (int x = start; x < start + npm; ++x) {
+				for (int x = start; x <= end; ++x) {
 					for (int v = 0; v < av_cnt; ++v) {
 						if (apc[v][x] == 6) b_found = 1;
 						if (apc[v][x] == 4) g_found = 1;
