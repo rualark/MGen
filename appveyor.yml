@@ -16,7 +16,7 @@ before_build:
   - ps: pwd
 
   - cmd: appveyor DownloadFile https://www.dropbox.com/s/1h7cx3qxzdgc07g/LilyPond.zip
-  - ps: Expand-Archive LilyPond.zip -DestinationPath LilyPond
+  - cmd: 7z x LilyPond.zip
   - cmd: LilyPond\usr\bin\lilypond.exe
 
 on_success:
