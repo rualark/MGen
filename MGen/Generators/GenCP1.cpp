@@ -1035,10 +1035,10 @@ int CGenCP1::SkipSus(int notes) {
 }
 
 // Detect passing downbeat dissonance
-void CGenCP1::DetectPDD() {
-	if (!accept[282]) return;
+int CGenCP1::DetectPDD() {
+	if (!accept[282]) return 0;
 	// Do not detect PDD in lower voice
-	if (!cpv) return;
+	if (!cpv) return 0;
 	int max_ls = fli_size - 1;
 	if (ep2 == c_len) max_ls = fli_size - 2;
 	for (ls = 0; ls < max_ls; ++ls) {
@@ -1051,16 +1051,6 @@ void CGenCP1::DetectPDD() {
 		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] != -1) continue;
 		// Note 2 is not long
 		if (llen[ls + 1] > npm / 2) continue;
-		// Parallel motion - flag but allow
-		if (ac[cfv][fli[ls + 1]] - ac[cfv][s] == -1) {
-			if (tivl[fli[ls + 1]] == iDis) FLAG4(298, fli[ls + 1]);
-			//if (!accept[298]) continue;
-		}
-		// Direct motion - flag but allow
-		else if (ac[cfv][fli[ls + 1]] - ac[cfv][s] < 0) {
-			if (tivl[fli[ls + 1]] == iDis) FLAG4(297, fli[ls + 1]);
-			//if (!accept[297]) continue;
-		}
 		if (ls < fli_size - 2) {
 			// Stepwize downward movement
 			if (ac[cpv][fli[ls + 2]] - ac[cpv][fli[ls + 1]] != -1) continue;
@@ -1069,8 +1059,19 @@ void CGenCP1::DetectPDD() {
 			// Third note must be consonance
 			if (tivl[fli[ls + 2]] == iDis) continue;
 		}
+		// Parallel motion - flag but allow
+		if (ac[cfv][fli[ls + 1]] - ac[cfv][s] == -1) {
+			if (tivl[fli[ls + 1]] == iDis) FLAG2(298, fli[ls + 1]);
+			//if (!accept[298]) continue;
+		}
+		// Direct motion - flag but allow
+		else if (ac[cfv][fli[ls + 1]] - ac[cfv][s] < 0) {
+			if (tivl[fli[ls + 1]] == iDis) FLAG2(297, fli[ls + 1]);
+			//if (!accept[297]) continue;
+		}
 		SavePattern(pPDD);
 	}
+	return 0;
 }
 
 // Detect downbeat neighbour tone
@@ -1231,20 +1232,21 @@ void CGenCP1::SavePattern(int pattern) {
 	pat[ls] = pattern;
 }
 
-void CGenCP1::DetectPatterns() {
+int CGenCP1::DetectPatterns() {
 	CHECK_READY_PERSIST(DR_mli);
 	CHECK_READY(DR_beat, DR_ivl);
 	CHECK_READY(DR_fli, DR_leap, DR_c);
 	SET_READY(DR_pat);
 	// Detect no patterns for species 1
-	if (species == 1) return;
+	if (species == 1) return 0;
 	fill(pat.begin(), pat.end(), 0);
 	fill(pat_state.begin(), pat_state.end(), 0);
-	DetectPDD();
+	if (DetectPDD()) return 1;
 	// Detect next patterns only for species 3 and 5
-	if (species != 3 && species != 5) return;
+	if (species != 3 && species != 5) return 0;
 	DetectCambiata();
 	DetectDNT();
+	return 0;
 }
 
 void CGenCP1::GetBasicRpos() {
@@ -2718,7 +2720,7 @@ check:
 		if (FailRhythm()) goto skip;
 		GetVIntervals();
 		GetBasicRpos();
-		DetectPatterns();
+		if (DetectPatterns()) goto skip;
 		if (FailSus()) goto skip;
 		ApplyFixedPat();
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;

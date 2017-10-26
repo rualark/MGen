@@ -51,11 +51,11 @@ protected:
 	inline int FailPcoSus();
 	inline int FailPco();
 	inline int SkipSus(int notes);
-	inline void DetectPDD();
+	inline int DetectPDD();
 	inline void DetectDNT();
 	inline void DetectCambiata();
 	inline void SavePattern(int pattern);
-	inline void DetectPatterns();
+	inline int DetectPatterns();
 	inline void GetBasicRpos();
 	inline void SetRpos(int ls, vector<int> &l_rpos, int val);
 	inline void ApplyPDD(int ls, vector<int> &l_rpos, int state);
