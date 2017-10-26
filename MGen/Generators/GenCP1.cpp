@@ -1391,6 +1391,8 @@ int CGenCP1::FailRhythm4() {
 
 // Fail rhythm for species 3
 int CGenCP1::FailRhythm3() {
+	// Check uneven pause
+	if (fn && fn != llen[0]) FLAG2(237, 0);
 	// Last measure not whole
 	if (c_len - fli[fli_size - 1] < npm) {
 		FLAG2(267, c_len - npm)
@@ -1814,8 +1816,6 @@ int CGenCP1::FailSlurs() {
 	int max_i = 0;
 	// Check pause length
 	if (fn * 2 > npm) FLAG2(197, 0);
-	// Check uneven pause
-	if (fn && fn != llen[0]) FLAG2(237, 0);
 	// Do not process last measure, because it can be whole note
 	int max_step = min(ep2 - 1, mli[mli.size()-1]);
 	for (int i = 0; i < max_step; ++i) {
