@@ -1406,7 +1406,7 @@ int CGenCP1::FailRhythm3() {
 			else FLAG2(240, s);
 		}
 		// Non-uniform starting rhythm
-		if (s / npm == 0 && llen[ls] > 1) FLAG2(254, s);
+		if (bmli[s] == 0 && llen[ls] > 1) FLAG2(254, s);
 	}
 	return 0;
 }
