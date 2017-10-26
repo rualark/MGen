@@ -831,6 +831,12 @@ void CMGenView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_F5) {
 		mf->OnButtonGen();
 	}
+	if (nChar == VK_F8) {
+		mf->OnButtonOpenmidi();
+	}
+	if (nChar == VK_F7) {
+		mf->OnButtonLy();
+	}
 	if (nChar == VK_SPACE) {
 		mf->OnButtonPlay();
 	}
