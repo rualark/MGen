@@ -13,12 +13,9 @@ test: off
 before_build:
 #  - ps: Start-FileDownload 'http://alch.mooo.com/temp/LilyPond.zip'
 #  - cmd: appveyor DownloadFile https://www.dropbox.com/s/1h7cx3qxzdgc07g/LilyPond.zip
-  - cmd: >-
-    cd "%APPVEYOR_BUILD_FOLDER%\Mgen\autotest"
-
-    7z x LilyPond.zip
-
-    LilyPond\usr\bin\lilypond.exe
+  - cmd: cd "%APPVEYOR_BUILD_FOLDER%\Mgen\autotest"
+  - cmd: 7z x LilyPond.zip
+  - cmd: LilyPond\usr\bin\lilypond.exe
 
 on_success:
 - cmd: >-
