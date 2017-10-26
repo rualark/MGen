@@ -17,7 +17,7 @@ before_build:
 
   - cmd: appveyor DownloadFile https://www.dropbox.com/s/1h7cx3qxzdgc07g/LilyPond.zip
   - ps: Expand-Archive LilyPond.zip -DestinationPath LilyPond
-  - cmd: LilyPond\lilypond
+  - cmd: LilyPond\usr\bin\lilypond.exe
 
 on_success:
 - cmd: >-
