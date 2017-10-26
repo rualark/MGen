@@ -1051,13 +1051,15 @@ void CGenCP1::DetectPDD() {
 		if (ac[cpv][fli[ls + 1]] - ac[cpv][s] != -1) continue;
 		// Note 2 is not long
 		if (llen[ls + 1] > npm / 2) continue;
-		// Parallel motion
+		// Parallel motion - flag but allow
 		if (ac[cfv][fli[ls + 1]] - ac[cfv][s] == -1) {
-			if (!accept[298]) continue;
+			if (tivl[fli[ls + 1]] == iDis) FLAG4(298, fli[ls + 1]);
+			//if (!accept[298]) continue;
 		}
-		// Direct motion
+		// Direct motion - flag but allow
 		else if (ac[cfv][fli[ls + 1]] - ac[cfv][s] < 0) {
-			if (!accept[297]) continue;
+			if (tivl[fli[ls + 1]] == iDis) FLAG4(297, fli[ls + 1]);
+			//if (!accept[297]) continue;
 		}
 		if (ls < fli_size - 2) {
 			// Stepwize downward movement
