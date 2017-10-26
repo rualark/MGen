@@ -15,7 +15,8 @@ before_build:
   - ps: $PSVersionTable.PSVersion
   - ps: pwd
 
-  - cmd: appveyor DownloadFile https://www.dropbox.com/s/1h7cx3qxzdgc07g/LilyPond.zip
+  - ps: Start-FileDownload 'http://alch.mooo.com/temp/LilyPond.zip'
+#  - cmd: appveyor DownloadFile https://www.dropbox.com/s/1h7cx3qxzdgc07g/LilyPond.zip
   - cmd: 7z x LilyPond.zip
   - cmd: LilyPond\usr\bin\lilypond.exe
 
