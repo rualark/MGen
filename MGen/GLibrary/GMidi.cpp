@@ -427,18 +427,21 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				if (ly_flag_style == 2) SendLyFlagColor(fs, color[i][v]);
 			}
 			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
-				CString st = mark[i][v];
-				st.Replace("\n", "");
 				// Search for conflicting harmonies
-				for (int s = 1; s < len[i][v]; ++s) {
+				fs << "_\\markup{ ";
+				int found = 0;
+				for (int s = 0; s < len[i][v]; ++s) {
 					if (!mark[i + s][v].IsEmpty()) {
-						st += ", " + mark[i + s][v];
+						CString st = mark[i + s][v];
 						st.Replace("\n", "");
+						if (found) st = ", " + st;
+						found = 1;
+						fs << "\\tiny \\with-color #(rgb-color ";
+						fs << GetLyColor(mark_color[i + s][v]);
+						fs << ") \"" << st << "\" ";
 					}
 				}
-				fs << "_\\markup{ \\tiny \\with-color #(rgb-color ";
-				fs << GetLyColor(mark_color[i][v]);
-				fs << ") \"" << st << "\" }\n";
+				fs << "}\n";
 			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
