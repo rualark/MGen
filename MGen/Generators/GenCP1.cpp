@@ -2326,7 +2326,7 @@ void CGenCP1::GetMeasures() {
 int CGenCP1::FailStartPause() {
 	if (species == 1 && fn > 0) {
 		// Show warning and exit if not evaluating
-		if (task != tEval&& !warn_wrong_fn) {
+		if (task != tEval && !warn_wrong_fn) {
 			CString est;
 			est.Format("Excessive pause prevents from generating any results in counterpoint species %d, because starting pause is set to %d/%d",
 				species, fn, npm);
@@ -2540,11 +2540,13 @@ int CGenCP1::FailHarm() {
 	harm_conflict = 0;
 	// Build chm vector
 	for (int ms = 0; ms < mli.size(); ++ms) {
-		// Stop processing when measure is not fully generated
-		if (ep2 < c_len && ms == mli.size() - 1) break;
+		// Stop processing when last measure is not fully generated
+		if (ms == mli.size() - 1 && ep2 < c_len) break;
 		// Get first and last measure notes
 		if (ms < mli.size() - 1) mea_end = mli[ms + 1] - 1;
 		else mea_end = c_len - 1;
+		// Prevent going out of window
+		if (mea_end >= ep2) break;
 		ls1 = bli[mli[ms]];
 		ls2 = bli[mea_end];
 		// Do not process harmony if it can be influenced by interbar patterns
