@@ -9,6 +9,16 @@ configuration:
 build:
   verbosity: minimal
 test: off
+
+before_build:
+  # Print Powershell version.
+  - ps: $PSVersionTable.PSVersion
+  - ps: pwd
+
+  - ps: Start-FileDownload https://www.dropbox.com/s/1h7cx3qxzdgc07g/LilyPond.zip?dl=0 -FileName LilyPond.zip
+  - ps: Expand-Archive LilyPond.zip -DestinationPath LilyPond
+  - cmd: LilyPond\lilypond
+
 on_success:
 - cmd: >-
     cd "%APPVEYOR_BUILD_FOLDER%\Mgen\autotest"
