@@ -15,7 +15,7 @@ before_build:
   - ps: $PSVersionTable.PSVersion
   - ps: pwd
 
-  - ps: Start-FileDownload https://www.dropbox.com/s/1h7cx3qxzdgc07g/LilyPond.zip?dl=0 -FileName LilyPond.zip
+  - cmd: appveyor DownloadFile https://www.dropbox.com/s/1h7cx3qxzdgc07g/LilyPond.zip
   - ps: Expand-Archive LilyPond.zip -DestinationPath LilyPond
   - cmd: LilyPond\lilypond
 
