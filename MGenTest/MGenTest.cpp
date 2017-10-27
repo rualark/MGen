@@ -144,6 +144,16 @@ void ParseLyLogs() {
 	vector<CString> sv;
 	int error;
 	for (int i = 0; i < lyLogs.size(); ++i) {
+		// Send log
+		CString suffix = "-release";
+#ifdef _DEBUG
+		suffix = "-debug";
+#endif
+		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
+		Run("appveyor", "PushArtifact autotest\\ly\\" + lyLogs[i] + 
+			".log -Verbosity Normal -Type Auto -FileName " + lyLogs[i] +
+			suffix + ".log >> run.log 2>&1", 1000);
+
 		CGLib::read_file_sv("autotest\\ly\\" + lyLogs[i] + ".log", sv);
 		CString errors;
 		for (int x = 0; x < sv.size(); ++x) {
@@ -185,6 +195,8 @@ void LoadConfig() {
 	remove("autotest\\perf.log");
 	// Clear run.log
 	fstream fs;
+	fs.open("autotest\\ly.log", ios::out);
+	fs.close();
 	fs.open("autotest\\run.log", ios::out);
 	fs.close();
 	// Open file
@@ -260,6 +272,7 @@ void LoadConfig() {
 		suffix + ".log >> run.log 2>&1", 1000);
 	Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
 		suffix + ".log >> run.log 2>&1", 1000);
+	/*
 	// Show run output
 	//Run("cmd.exe", "/c echo Test >> autotest\\run.log", 1000);
 	CString outs = file("autotest\\run.log");
@@ -281,6 +294,7 @@ void LoadConfig() {
 	outs = file("autotest\\ly.log");
 	cout << "Lilypond log:\n";
 	cout << outs;
+	*/
 
 	fs.close();
 }
