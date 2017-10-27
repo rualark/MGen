@@ -33,7 +33,7 @@ speakOff = {
 }
 
 \header {
-  subtitle = "GenCA1: test-culm (2017-10-27 19:19)"
+  subtitle = "GenCA1: test-culm (2017-10-27 19:35)"
 }
 
 \markup \wordwrap \bold {
@@ -58,9 +58,9 @@ speakOff = {
  \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -79,12 +79,12 @@ speakOff = {
   }
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style g'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style  \circle g'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style  \circle f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style  \circle e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
@@ -118,12 +118,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
   }
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -148,12 +148,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
   }
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -172,14 +172,14 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
   }
 
   {  \speakOff \revert NoteHead.style  \circle a'1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style f'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style  \circle e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -232,12 +232,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
   }
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -262,11 +262,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
@@ -288,9 +288,9 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
   {  \speakOff \revert NoteHead.style  \circle f'1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style  \circle f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style e'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style  \circle d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
@@ -347,11 +347,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -381,7 +381,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -402,11 +402,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
   {  \speakOff \revert NoteHead.style  \circle d'1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -448,9 +448,9 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
@@ -477,12 +477,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -501,12 +501,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
   }
 
   {  \speakOff \revert NoteHead.style  \circle b1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style  \circle c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
@@ -549,10 +549,10 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
@@ -578,12 +578,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -603,11 +603,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
 
   {  \speakOff \revert NoteHead.style  \circle a1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style  \circle b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style d'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style  \circle f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style  \circle e'1 ^\markup{ \tiny \with-color #(rgb-color 0.294 0.468 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
@@ -663,11 +663,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
@@ -694,11 +694,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -719,13 +719,13 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
   {  \speakOff \revert NoteHead.style  \circle b1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style  \circle c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style  \circle a'1 ^\markup{ \tiny \with-color #(rgb-color 0.294 0.468 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -778,8 +778,8 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
@@ -808,11 +808,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
@@ -832,13 +832,13 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
   }
 
   {  \speakOff \revert NoteHead.style  \circle b1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style  \circle c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style e'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style  \circle a'1 ^\markup{ \tiny \with-color #(rgb-color 0.294 0.468 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
@@ -893,12 +893,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -923,22 +923,22 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
   }
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
 }
 >>
-\header {tagline = "This file was created by MGen 2.7.83.g6594e.dirty and engraved by LilyPond"}
+\header {tagline = "This file was created by MGen 2.7.87.gaa39b.dirty and engraved by LilyPond"}

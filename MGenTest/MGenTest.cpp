@@ -139,7 +139,7 @@ void PublishTest(CString tname, int result, int tpassed, CString params) {
 }
 
 void ParseLyLogs() {
-	Sleep(5000);
+	Sleep(1000);
 	CString st;
 	vector<CString> sv;
 	int error;
@@ -151,7 +151,7 @@ void ParseLyLogs() {
 #endif
 		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
 		Run("appveyor", "PushArtifact autotest\\ly\\" + lyLogs[i] + 
-			".ly -Verbosity Normal -Type Auto -FileName " + lyLogs[i] +
+			".log -Verbosity Normal -Type Auto -FileName " + lyLogs[i] +
 			suffix + ".log >> run.log 2>&1", 1000);
 
 		CGLib::read_file_sv("autotest\\ly\\" + lyLogs[i] + ".log", sv);
