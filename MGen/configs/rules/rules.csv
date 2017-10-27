@@ -305,7 +305,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;244;60;Cantus;Rhythm;Suspension rhythm;1/2. + ?;0;;;;1;;;;;
 1;274;60;Cantus;Rhythm;Suspension rhythm;> 5/4;0;;Total note length is more than 5/4 (except last note);;1;;;;;
 1;139;0;Cantus;Rhythm;Suspension;not last 3;0;;Suspension before N last measures {sp2-5};;;;;;;
-1;299;0;Cantus;Rhythm;Suspension;not leading;0;;Suspension of not leading tone {sp2,4};;;;;;;
+1;299;0;Cantus;Rhythm;Suspension;not leading;0;;Suspension of not leading tone {sp2};;;;;;;
 1;301;0;Cantus;Rhythm;Many notes in measure;5 after sus;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;;;;;
 1;245;0;Cantus;Rhythm;Many notes in measure;5;0;;;;1;;;;;
 1;246;60;Cantus;Rhythm;Many notes in measure;>5;0;;;;1;;;245;;
