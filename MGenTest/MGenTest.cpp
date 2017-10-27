@@ -170,12 +170,12 @@ void ParseLyLogs() {
 		if (continuous_integration) {
 			CString cat = "Passed";
 			if (!errors.IsEmpty()) cat = "Failed";
-			st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Outcome %s >> autotest\\run.log 2>&1",
-				"LY: " + lyLogs[i], cat);
+			st.Format("UpdateTest \"LY: %s\" -Framework MSTest -FileName MGen.exe -Duration 0 -Outcome %s >> autotest\\run.log 2>&1",
+				lyLogs[i], cat);
 			Run("appveyor", st, 1000);
 			// Send errors separately in case of command line overflow
-			st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Outcome %s -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1",
-				"LY: " + lyLogs[i], cat, errors);
+			st.Format("UpdateTest \"LY: %s\" -Framework MSTest -FileName MGen.exe -Duration 0 -Outcome %s -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1",
+				lyLogs[i], cat, errors);
 			Run("appveyor", st, 1000);
 		}
 	}
