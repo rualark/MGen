@@ -256,3 +256,5 @@ ModelManifest.xml
 /enc_temp_folder
 /MGen/git-version.h
 /MGen/git-version.h
+/MGen/autotest/LilyPond
+/MGen/autotest/ly

@@ -210,6 +210,8 @@ public:
 	static DWORD MakeColor(DWORD alpha, DWORD red, DWORD green, DWORD blue)
 		{ return (alpha << 24) + (red << 16) + (green << 8) + blue; }
 
+	DWORD Run(CString fname, CString par, int delay = 0);
+
 	static long long time();
 
 	static FILETIME fileTime(CString fname);

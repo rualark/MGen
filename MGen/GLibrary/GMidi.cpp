@@ -396,7 +396,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		// Select bass clef if melody goes mostly below middle C
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
 		//if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
-		fs << "\\new Staff {\n";
+		fs << "\\new Sta ff {\n";
 		st.Format("  \\set Staff.instrumentName = #\"%d\"\n", v + 1); //InstGName[instr[v]]
 		fs << st;
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
@@ -508,7 +508,17 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 	fs << "\\header {tagline = \"This file was created by MGen ";
 	fs << APP_VERSION << " and engraved by LilyPond\"}\n";
 	fs.close();
-	//::ShellExecute(GetDesktopWindow(), "open", dir + "\\" + fname + ".ly", NULL, NULL, SW_SHOWNORMAL);
+	if (m_testing) {
+		CreateDirectory("autotest\\ly", NULL);
+		// This will rewrite file if exists (tested)
+		copy_file(dir + "\\" + fname + ".ly", 
+			"autotest\\ly\\" + m_algo_folder + "-" + m_config + ".ly");
+		// Test run lilypond
+		CString par =
+			"-dgui --output autotest\\ly" 
+			" autotest\\ly\\" + m_algo_folder + "-" + m_config + ".ly";
+		Run("autotest\\LilyPond\\usr\\bin\\lilypond.exe", par, 0);
+	}
 }
 
 void CGMidi::SaveMidi(CString dir, CString fname) {

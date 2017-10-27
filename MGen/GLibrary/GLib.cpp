@@ -79,6 +79,26 @@ int CGLib::FileHasHeader(CString fname, CString header) {
 	if (st != header) return 0;
 	return 1;
 }
+
+// Run process with parameters, wait for delay (maximum), return exit code
+DWORD CGLib::Run(CString fname, CString par, int delay) {
+	DWORD ecode;
+	SHELLEXECUTEINFO sei = { 0 };
+	sei.cbSize = sizeof(SHELLEXECUTEINFO);
+	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
+	sei.hwnd = NULL;
+	sei.lpVerb = NULL;
+	sei.lpFile = fname;
+	sei.lpParameters = par;
+	sei.lpDirectory = NULL;
+	sei.nShow = SW_SHOWNORMAL;
+	sei.hInstApp = NULL;
+	ShellExecuteEx(&sei);
+	if (delay) WaitForSingleObject(sei.hProcess, delay);
+	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
+	return ecode;
+}
+
 long long CGLib::time() {
 	long long t = abstime();
 	if (!first_time) first_time = t;

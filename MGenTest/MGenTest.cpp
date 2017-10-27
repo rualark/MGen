@@ -22,6 +22,8 @@ ofstream logfile;
 int continuous_integration = 0;
 int nRetCode = 0;
 vector<CString> errorMessages;
+vector<CString> lyLogs;
+vector<CString> lyConfigs;
 CString pname;
 
 // Default time to start aborting generation
@@ -126,11 +128,45 @@ void PublishTest(CString tname, int result, int tpassed, CString params) {
 	if (continuous_integration) {
 		CString cat = "Passed";
 		if (result) cat = "Failed";
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log 2>&1", tname, tpassed, cat, result, emes);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log 2>&1", 
+			tname, tpassed, cat, result, emes);
 		Run("appveyor", st, 1000);
 		// Send errors separately in case of command line overflow
-		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -StdOut \"MGen.exe %s\" -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1", tname, tpassed, cat, result, emes, params, errors);
+		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -StdOut \"MGen.exe %s\" -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1", 
+			tname, tpassed, cat, result, emes, params, errors);
 		Run("appveyor", st, 1000);
+	}
+}
+
+void ParseLyLogs() {
+	Sleep(5000);
+	CString st;
+	vector<CString> sv;
+	int error;
+	for (int i = 0; i < lyLogs.size(); ++i) {
+		CGLib::read_file_sv("autotest\\ly\\" + lyLogs[i] + ".log", sv);
+		CString errors;
+		for (int x = 0; x < sv.size(); ++x) {
+			error = 0;
+			if (sv[x].Find(" error: ") > -1) error = 1;
+			if (sv[x].Find(" warning: ") > -1) error = 2;
+			if (sv[x].Find("Exited with return code") > -1) error = 3;
+			if (error) {
+				errors += "- " + sv[x] + "\n";
+				CGLib::AppendLineToFile("autotest\\ly.log", lyLogs[i] + ": " + sv[x] + "\n");
+			}
+		}
+		if (continuous_integration) {
+			CString cat = "Passed";
+			if (!errors.IsEmpty()) cat = "Failed";
+			st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s >> autotest\\run.log 2>&1",
+				"LY: " + lyLogs[i], 0, cat);
+			Run("appveyor", st, 1000);
+			// Send errors separately in case of command line overflow
+			st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1",
+				"LY: " + lyLogs[i], 0, cat, errors);
+			Run("appveyor", st, 1000);
+		}
 	}
 }
 
@@ -196,9 +232,19 @@ void LoadConfig() {
 			if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 100;
 			if (!CGLib::fileExists("autotest\\exit.log")) ecode = 101;
 
+			if (!ecode) {
+				CString pname2 = pname;
+				pname2.Replace("configs\\", "");
+				pname2.Replace(".pl", "");
+				pname2.Replace("\\", "-");
+				lyConfigs.push_back(pname);
+				lyLogs.push_back(pname2);
+			}
+
 			PublishTest(pname, ecode, passed, st2);
 		}
 	}
+	ParseLyLogs();
 	CString suffix = "-release";
 #ifdef _DEBUG
 	suffix = "-debug";
@@ -209,6 +255,8 @@ void LoadConfig() {
 	Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
 		suffix + ".log >> run.log 2>&1", 1000);
 	Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack" +
+		suffix + ".log >> run.log 2>&1", 1000);
+	Run("appveyor", "PushArtifact autotest\\ly.log -Verbosity Normal -Type Auto -FileName ly" +
 		suffix + ".log >> run.log 2>&1", 1000);
 	Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
 		suffix + ".log >> run.log 2>&1", 1000);
@@ -229,6 +277,9 @@ void LoadConfig() {
 	cout << outs;
 	outs = file("autotest\\perf.log");
 	cout << "Correction acknowledge log:\n";
+	cout << outs;
+	outs = file("autotest\\ly.log");
+	cout << "Lilypond log:\n";
 	cout << outs;
 
 	fs.close();
