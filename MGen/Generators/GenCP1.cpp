@@ -843,8 +843,8 @@ int CGenCP1::FailSus2() {
 					}
 					// If this step does not start new note
 					if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
-					// Suspension of non-leading tone in species 2,4
-					if (species == 2 || species == 4) {
+					// Suspension of non-leading tone in species 2
+					if (species == 2) {
 						if (apcc[cpv][s3] != 11) FLAG2(299, s3);
 					}
 					// If resolution note is too short
