@@ -273,6 +273,8 @@ void LoadConfig() {
 		suffix + ".log >> run.log 2>&1", 1000);
 	Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
 		suffix + ".log >> run.log 2>&1", 1000);
+	Run("appveyor", "PushArtifact autotest\\run.log -Verbosity Normal -Type Auto -FileName run" +
+		suffix + ".log", 1000);
 	// Show run output
 	//Run("cmd.exe", "/c echo Test >> autotest\\run.log", 1000);
 	CString outs = file("autotest\\run.log");
