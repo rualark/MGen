@@ -162,7 +162,7 @@ void ParseLyLogs() {
 			if (sv[x].Find(" warning: ") > -1) error = 2;
 			if (sv[x].Find("Exited with return code") > -1) error = 3;
 			if (error) {
-				errors += "- " + sv[x] + "\n";
+				if (errors.GetLength() < 1000) errors += "- " + sv[x] + "\n";
 				CGLib::AppendLineToFile("autotest\\ly.log", lyLogs[i] + ": " + sv[x] + "\n");
 			}
 		}
