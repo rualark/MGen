@@ -145,40 +145,41 @@ void ParseLyLogs() {
 	int error;
 	for (int i = 0; i < lyLogs.size(); ++i) 
 		if (CGLib::fileExists("autotest\\ly\\" + lyLogs[i] + ".log")) {
-		// Send log
-		CString suffix = "-release";
+			// Send log
+			if (continuous_integration) {
+				CString suffix = "-release";
 #ifdef _DEBUG
-		suffix = "-debug";
+				suffix = "-debug";
 #endif
-		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
-		Run("appveyor", "PushArtifact autotest\\ly\\" + lyLogs[i] + 
-			".log -Verbosity Normal -Type Auto -FileName " + lyLogs[i] +
-			suffix + ".log >> run.log 2>&1", 1000);
-
-		CGLib::read_file_sv("autotest\\ly\\" + lyLogs[i] + ".log", sv);
-		CString errors;
-		for (int x = 0; x < sv.size(); ++x) {
-			error = 0;
-			if (sv[x].Find(" error: ") > -1) error = 1;
-			if (sv[x].Find(" warning: ") > -1) error = 2;
-			if (sv[x].Find("Exited with return code") > -1) error = 3;
-			if (error) {
-				if (errors.GetLength() < 1000) errors += "- " + sv[x] + "\n";
-				CGLib::AppendLineToFile("autotest\\ly.log", lyLogs[i] + ": " + sv[x] + "\n");
+				suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
+				Run("appveyor", "PushArtifact autotest\\ly\\" + lyLogs[i] +
+					".log -Verbosity Normal -Type Auto -FileName " + lyLogs[i] +
+					suffix + ".log >> run.log 2>&1", 1000);
+			}
+			CGLib::read_file_sv("autotest\\ly\\" + lyLogs[i] + ".log", sv);
+			CString errors;
+			for (int x = 0; x < sv.size(); ++x) {
+				error = 0;
+				if (sv[x].Find(" error: ") > -1) error = 1;
+				if (sv[x].Find(" warning: ") > -1) error = 2;
+				if (sv[x].Find("Exited with return code") > -1) error = 3;
+				if (error) {
+					if (errors.GetLength() < 1000) errors += "- " + sv[x] + "\n";
+					CGLib::AppendLineToFile("autotest\\ly.log", lyLogs[i] + ": " + sv[x] + "\n");
+				}
+			}
+			if (continuous_integration) {
+				CString cat = "Passed";
+				if (!errors.IsEmpty()) cat = "Failed";
+				st.Format("AddTest \"LY: %s\" -Framework MSTest -FileName MGen.exe -Duration 0 -Outcome %s >> autotest\\run.log 2>&1",
+					lyLogs[i], cat);
+				Run("appveyor", st, 1000);
+				// Send errors separately in case of command line overflow
+				st.Format("AddTest \"LY: %s\" -Framework MSTest -FileName MGen.exe -Duration 0 -Outcome %s -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1",
+					lyLogs[i], cat, errors);
+				Run("appveyor", st, 1000);
 			}
 		}
-		if (continuous_integration) {
-			CString cat = "Passed";
-			if (!errors.IsEmpty()) cat = "Failed";
-			st.Format("UpdateTest \"LY: %s\" -Framework MSTest -FileName MGen.exe -Duration 0 -Outcome %s >> autotest\\run.log 2>&1",
-				lyLogs[i], cat);
-			Run("appveyor", st, 1000);
-			// Send errors separately in case of command line overflow
-			st.Format("UpdateTest \"LY: %s\" -Framework MSTest -FileName MGen.exe -Duration 0 -Outcome %s -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1",
-				lyLogs[i], cat, errors);
-			Run("appveyor", st, 1000);
-		}
-	}
 }
 
 void LoadConfig() {
@@ -258,23 +259,25 @@ void LoadConfig() {
 		}
 	}
 	ParseLyLogs();
-	CString suffix = "-release";
+	if (continuous_integration) {
+		CString suffix = "-release";
 #ifdef _DEBUG
-	suffix = "-debug";
+		suffix = "-debug";
 #endif
-	suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
-	Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" + 
-		suffix + ".log >> run.log 2>&1", 1000);
-	Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
-		suffix + ".log >> run.log 2>&1", 1000);
-	Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack" +
-		suffix + ".log >> run.log 2>&1", 1000);
-	Run("appveyor", "PushArtifact autotest\\ly.log -Verbosity Normal -Type Auto -FileName ly" +
-		suffix + ".log >> run.log 2>&1", 1000);
-	Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
-		suffix + ".log >> run.log 2>&1", 1000);
-	Run("appveyor", "PushArtifact autotest\\run.log -Verbosity Normal -Type Auto -FileName run" +
-		suffix + ".log", 1000);
+		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
+		Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" +
+			suffix + ".log >> run.log 2>&1", 1000);
+		Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
+			suffix + ".log >> run.log 2>&1", 1000);
+		Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack" +
+			suffix + ".log >> run.log 2>&1", 1000);
+		Run("appveyor", "PushArtifact autotest\\ly.log -Verbosity Normal -Type Auto -FileName ly" +
+			suffix + ".log >> run.log 2>&1", 1000);
+		Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
+			suffix + ".log >> run.log 2>&1", 1000);
+		Run("appveyor", "PushArtifact autotest\\run.log -Verbosity Normal -Type Auto -FileName run" +
+			suffix + ".log", 1000);
+	}
 	// Show run output
 	//Run("cmd.exe", "/c echo Test >> autotest\\run.log", 1000);
 	CString outs = file("autotest\\run.log");
