@@ -21,6 +21,7 @@ CString current_dir;
 ofstream logfile;
 int continuous_integration = 0;
 int nRetCode = 0;
+int debug_level = 0;
 vector<CString> errorMessages;
 vector<CString> lyLogs;
 vector<CString> lyConfigs;
@@ -146,7 +147,7 @@ void ParseLyLogs() {
 	for (int i = 0; i < lyLogs.size(); ++i) 
 		if (CGLib::fileExists("autotest\\ly\\" + lyLogs[i] + ".log")) {
 			// Send log
-			if (continuous_integration) {
+			if (continuous_integration && debug_level > 0) {
 				CString suffix = "-release";
 #ifdef _DEBUG
 				suffix = "-debug";
