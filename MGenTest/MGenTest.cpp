@@ -143,7 +143,8 @@ void ParseLyLogs() {
 	CString st;
 	vector<CString> sv;
 	int error;
-	for (int i = 0; i < lyLogs.size(); ++i) {
+	for (int i = 0; i < lyLogs.size(); ++i) 
+		if (CGLib::fileExists("autotest\\ly\\" + lyLogs[i] + ".log")) {
 		// Send log
 		CString suffix = "-release";
 #ifdef _DEBUG
@@ -151,7 +152,7 @@ void ParseLyLogs() {
 #endif
 		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
 		Run("appveyor", "PushArtifact autotest\\ly\\" + lyLogs[i] + 
-			".ly -Verbosity Normal -Type Auto -FileName " + lyLogs[i] +
+			".log -Verbosity Normal -Type Auto -FileName " + lyLogs[i] +
 			suffix + ".log >> run.log 2>&1", 1000);
 
 		CGLib::read_file_sv("autotest\\ly\\" + lyLogs[i] + ".log", sv);
