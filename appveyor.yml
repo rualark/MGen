@@ -22,3 +22,5 @@ on_success:
     cd "%APPVEYOR_BUILD_FOLDER%\Mgen\autotest"
 
     test
+
+    autotest\LilyPond\usr\bin\lilypond.exe autotest\ly\GenCA1-test-culm.ly
