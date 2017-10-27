@@ -170,12 +170,12 @@ void ParseLyLogs() {
 		if (continuous_integration) {
 			CString cat = "Passed";
 			if (!errors.IsEmpty()) cat = "Failed";
-			st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s >> autotest\\run.log 2>&1",
-				"LY: " + lyLogs[i], 0, cat);
+			st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Outcome %s >> autotest\\run.log 2>&1",
+				"LY: " + lyLogs[i], cat);
 			Run("appveyor", st, 1000);
 			// Send errors separately in case of command line overflow
-			st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1",
-				"LY: " + lyLogs[i], 0, cat, errors);
+			st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Outcome %s -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1",
+				"LY: " + lyLogs[i], cat, errors);
 			Run("appveyor", st, 1000);
 		}
 	}
@@ -273,12 +273,12 @@ void LoadConfig() {
 		suffix + ".log >> run.log 2>&1", 1000);
 	Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
 		suffix + ".log >> run.log 2>&1", 1000);
-	/*
 	// Show run output
 	//Run("cmd.exe", "/c echo Test >> autotest\\run.log", 1000);
 	CString outs = file("autotest\\run.log");
 	cout << "Run log:\n";
 	cout << outs;
+	/*
 	// Show expect output
 	outs = file("autotest\\expect.log");
 	cout << "Expect log:\n";
