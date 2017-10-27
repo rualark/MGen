@@ -16,11 +16,10 @@ before_build:
   - cmd: cd "%APPVEYOR_BUILD_FOLDER%\Mgen\autotest"
   - cmd: 7z x LilyPond.zip
 #  - cmd: LilyPond\usr\bin\lilypond.exe
+#    autotest\LilyPond\usr\bin\lilypond.exe autotest\ly\GenCA1-test-culm.ly
 
 on_success:
 - cmd: >-
     cd "%APPVEYOR_BUILD_FOLDER%\Mgen\autotest"
 
     test
-
-    autotest\LilyPond\usr\bin\lilypond.exe autotest\ly\GenCA1-test-culm.ly

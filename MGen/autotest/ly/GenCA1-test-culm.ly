@@ -33,7 +33,7 @@ speakOff = {
 }
 
 \header {
-  subtitle = "GenCA1: test-culm (2017-10-27 20:35)"
+  subtitle = "GenCA1: test-culm (2017-10-27 21:04)"
 }
 
 \markup \wordwrap \bold {
@@ -41,7 +41,7 @@ speakOff = {
 "#"1 (from midi/GenCA1/test-culm.mid), Rule penalty: 183  \char ##x27F9  0, Distance penalty: 6, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -56,16 +56,16 @@ speakOff = {
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
 }
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"1"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -79,13 +79,13 @@ speakOff = {
   }
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style g'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style  \circle g'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style  \circle f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style  \circle e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -104,7 +104,37 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 "#"1 (from midi/GenCA1/test-culm.mid), Rule penalty: 183  \char ##x27F9  0, Distance penalty: 6, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
+  \set Staff.instrumentName = #"2"
+  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
+  \time 4/4
+  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
+  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
+  \new Voice \with {
+  	\remove "Note_heads_engraver"
+  	\consists "Completion_heads_engraver"
+  	\remove "Rest_engraver"
+  	\consists "Completion_rest_engraver"
+  }
+
+  {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+
+  }
+}
+>>
+\markup \wordwrap \bold {
+      \vspace #2
+"#"2 (from midi/GenCA1/test-culm.mid), Rule penalty: 396  \char ##x27F9  0, Distance penalty: 12, Cantus: high, Key: C
+}
+<<
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -121,44 +151,14 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
 }
->>
-\markup \wordwrap \bold {
-      \vspace #2
-"#"2 (from midi/GenCA1/test-culm.mid), Rule penalty: 396  \char ##x27F9  0, Distance penalty: 12, Cantus: high, Key: C
-}
-<<
-\new Sta ff {
-  \set Staff.instrumentName = #"2"
-  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
-  \time 4/4
-  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
-  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
-  \new Voice \with {
-  	\remove "Note_heads_engraver"
-  	\consists "Completion_heads_engraver"
-  	\remove "Rest_engraver"
-  	\consists "Completion_rest_engraver"
-  }
-
-  {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
-
-  }
-}
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"1"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -174,12 +174,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
   {  \speakOff \revert NoteHead.style  \circle a'1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style  \circle f'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style f'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style  \circle e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -218,7 +218,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
 "#"2 (from midi/GenCA1/test-culm.mid), Rule penalty: 396  \char ##x27F9  0, Distance penalty: 12, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -232,11 +232,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
   }
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
@@ -248,7 +248,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
 "#"3 (from midi/GenCA1/test-culm.mid), Rule penalty: 335  \char ##x27F9  0, Distance penalty: 14, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -263,16 +263,16 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
 }
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"1"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -289,11 +289,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style  \circle d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style  \circle e'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -332,7 +332,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
 "#"3 (from midi/GenCA1/test-culm.mid), Rule penalty: 335  \char ##x27F9  0, Distance penalty: 14, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -347,11 +347,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -362,7 +362,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
 "#"4 (from midi/GenCA1/test-culm.mid), Rule penalty: 133  \char ##x27F9  0, Distance penalty: 10, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -381,12 +381,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
 }
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"1"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -400,7 +400,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
   }
 
   {  \speakOff \revert NoteHead.style  \circle d'1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
@@ -433,7 +433,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
 "#"4 (from midi/GenCA1/test-culm.mid), Rule penalty: 133  \char ##x27F9  0, Distance penalty: 10, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -448,11 +448,11 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -463,7 +463,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
 "#"5 (from midi/GenCA1/test-culm.mid), Rule penalty: 133  \char ##x27F9  0, Distance penalty: 10, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -477,17 +477,17 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
 }
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"1"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -505,8 +505,8 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style  \circle c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
@@ -534,7 +534,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
 "#"5 (from midi/GenCA1/test-culm.mid), Rule penalty: 133  \char ##x27F9  0, Distance penalty: 10, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -548,12 +548,12 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -564,7 +564,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
 "#"6 (from midi/GenCA1/test-culm.mid), Rule penalty: 224  \char ##x27F9  0, Distance penalty: 16, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -578,17 +578,17 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
   }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
 }
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"1"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -602,13 +602,13 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
   }
 
   {  \speakOff \revert NoteHead.style  \circle a1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style  \circle b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style  \circle b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style d'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style  \circle f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style  \circle f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style  \circle e'1 ^\markup{ \tiny \with-color #(rgb-color 0.294 0.468 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
@@ -649,37 +649,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
 "#"6 (from midi/GenCA1/test-culm.mid), Rule penalty: 224  \char ##x27F9  0, Distance penalty: 16, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
-  \set Staff.instrumentName = #"2"
-  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
-  \time 4/4
-  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
-  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
-  \new Voice \with {
-  	\remove "Note_heads_engraver"
-  	\consists "Completion_heads_engraver"
-  	\remove "Rest_engraver"
-  	\consists "Completion_rest_engraver"
-  }
-
-  {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style a1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
-
-  }
-}
->>
-\markup \wordwrap \bold {
-      \vspace #2
-"#"7 (from midi/GenCA1/test-culm.mid), Rule penalty: 285  \char ##x27F9  0, Distance penalty: 18, Cantus: high, Key: C
-}
-<<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -694,8 +664,123 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
 
   {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+
+  }
+}
+>>
+\markup \wordwrap \bold {
+      \vspace #2
+"#"7 (from midi/GenCA1/test-culm.mid), Rule penalty: 285  \char ##x27F9  0, Distance penalty: 18, Cantus: high, Key: C
+}
+<<
+\new Staff {
+  \set Staff.instrumentName = #"2"
+  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
+  \time 4/4
+  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
+  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
+  \new Voice \with {
+  	\remove "Note_heads_engraver"
+  	\consists "Completion_heads_engraver"
+  	\remove "Rest_engraver"
+  	\consists "Completion_rest_engraver"
+  }
+
+  {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+
+  }
+}
+\new Staff {
+  \set Staff.instrumentName = #"1"
+  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
+  \time 4/4
+  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
+  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
+  \new Voice \with {
+  	\remove "Note_heads_engraver"
+  	\consists "Completion_heads_engraver"
+  	\remove "Rest_engraver"
+  	\consists "Completion_rest_engraver"
+  }
+
+  {  \speakOff \revert NoteHead.style  \circle b1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style  \circle c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style e'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style  \circle a'1 ^\markup{ \tiny \with-color #(rgb-color 0.294 0.468 0.000) \char ##x2716  }
+_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+
+  }
+}
+>>
+\markup \wordwrap \bold {
+  \char ##x2460 NOTE 1 at 1:1 - B
+
+}
+\markup \wordwrap \with-color #(rgb-color 0.592 0.269 0.000) {
+  - First note (not GC)
+
+}
+\markup \wordwrap \with-color #(rgb-color 0.690 0.204 0.000) {
+  - Start steps tonic (no E)
+
+}
+\markup \wordwrap \bold {
+  \char ##x2460 NOTE 4 at 4:1 - E
+
+}
+\markup \wordwrap \with-color #(rgb-color 0.592 0.269 0.000) {
+  - CF Stepwise motion (>4 one direction) (Stepwise motion more than X notes in one direction)
+
+}
+\markup \wordwrap \bold {
+  \char ##x2460 NOTE 7 at 7:1 - A
+
+}
+\markup \wordwrap \with-color #(rgb-color 0.294 0.468 0.000) {
+  - 2nd to last note (not GBD)
+
+}
+\markup \wordwrap \bold {
+      \vspace #2
+"#"7 (from midi/GenCA1/test-culm.mid), Rule penalty: 285  \char ##x27F9  0, Distance penalty: 18, Cantus: high, Key: C
+}
+<<
+\new Staff {
+  \set Staff.instrumentName = #"2"
+  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
+  \time 4/4
+  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
+  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
+  \new Voice \with {
+  	\remove "Note_heads_engraver"
+  	\consists "Completion_heads_engraver"
+  	\remove "Rest_engraver"
+  	\consists "Completion_rest_engraver"
+  }
+
+  {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
@@ -703,7 +788,37 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
 
   }
 }
-\new Sta ff {
+>>
+\markup \wordwrap \bold {
+      \vspace #2
+"#"8 (from midi/GenCA1/test-culm.mid), Rule penalty: 285  \char ##x27F9  0, Distance penalty: 18, Cantus: high, Key: C
+}
+<<
+\new Staff {
+  \set Staff.instrumentName = #"2"
+  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
+  \time 4/4
+  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
+  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
+  \new Voice \with {
+  	\remove "Note_heads_engraver"
+  	\consists "Completion_heads_engraver"
+  	\remove "Rest_engraver"
+  	\consists "Completion_rest_engraver"
+  }
+
+  {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+ \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
+
+  }
+}
+\new Staff {
   \set Staff.instrumentName = #"1"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -723,124 +838,9 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style e'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style  \circle a'1 ^\markup{ \tiny \with-color #(rgb-color 0.294 0.468 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
-
-  }
-}
->>
-\markup \wordwrap \bold {
-  \char ##x2460 NOTE 1 at 1:1 - B
-
-}
-\markup \wordwrap \with-color #(rgb-color 0.592 0.269 0.000) {
-  - First note (not GC)
-
-}
-\markup \wordwrap \with-color #(rgb-color 0.690 0.204 0.000) {
-  - Start steps tonic (no E)
-
-}
-\markup \wordwrap \bold {
-  \char ##x2460 NOTE 4 at 4:1 - E
-
-}
-\markup \wordwrap \with-color #(rgb-color 0.592 0.269 0.000) {
-  - CF Stepwise motion (>4 one direction) (Stepwise motion more than X notes in one direction)
-
-}
-\markup \wordwrap \bold {
-  \char ##x2460 NOTE 7 at 7:1 - A
-
-}
-\markup \wordwrap \with-color #(rgb-color 0.294 0.468 0.000) {
-  - 2nd to last note (not GBD)
-
-}
-\markup \wordwrap \bold {
-      \vspace #2
-"#"7 (from midi/GenCA1/test-culm.mid), Rule penalty: 285  \char ##x27F9  0, Distance penalty: 18, Cantus: high, Key: C
-}
-<<
-\new Sta ff {
-  \set Staff.instrumentName = #"2"
-  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
-  \time 4/4
-  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
-  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
-  \new Voice \with {
-  	\remove "Note_heads_engraver"
-  	\consists "Completion_heads_engraver"
-  	\remove "Rest_engraver"
-  	\consists "Completion_rest_engraver"
-  }
-
-  {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
-
-  }
-}
->>
-\markup \wordwrap \bold {
-      \vspace #2
-"#"8 (from midi/GenCA1/test-culm.mid), Rule penalty: 285  \char ##x27F9  0, Distance penalty: 18, Cantus: high, Key: C
-}
-<<
-\new Sta ff {
-  \set Staff.instrumentName = #"2"
-  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
-  \time 4/4
-  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
-  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
-  \new Voice \with {
-  	\remove "Note_heads_engraver"
-  	\consists "Completion_heads_engraver"
-  	\remove "Rest_engraver"
-  	\consists "Completion_rest_engraver"
-  }
-
-  {  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style b1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
-
-  }
-}
-\new Sta ff {
-  \set Staff.instrumentName = #"1"
-  \clef "treble" \key c \major  \accidentalStyle modern-cautionary
-  \time 4/4
-  % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
-  % \override Score.BarNumber.break-visibility = ##(#f #t #t)
-  \new Voice \with {
-  	\remove "Note_heads_engraver"
-  	\consists "Completion_heads_engraver"
-  	\remove "Rest_engraver"
-  	\consists "Completion_rest_engraver"
-  }
-
-  {  \speakOff \revert NoteHead.style  \circle b1 ^\markup{ \tiny \with-color #(rgb-color 0.690 0.204 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style  \circle c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
- \speakOff \revert NoteHead.style e'1 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style  \circle g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
- \speakOff \revert NoteHead.style  \circle a'1 ^\markup{ \tiny \with-color #(rgb-color 0.294 0.468 0.000) \char ##x2716  }
-_\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -879,7 +879,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
 "#"8 (from midi/GenCA1/test-culm.mid), Rule penalty: 285  \char ##x27F9  0, Distance penalty: 18, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"2"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -898,7 +898,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
@@ -909,7 +909,7 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
 "#"9 (from midi/GenCA1/test-culm.mid), Rule penalty: 0, Cantus: high, Key: C
 }
 <<
-\new Sta ff {
+\new Staff {
   \set Staff.instrumentName = #"1"
   \clef "treble" \key c \major  \accidentalStyle modern-cautionary
   \time 4/4
@@ -924,21 +924,21 @@ _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
 
   {  \speakOff \revert NoteHead.style c''1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
  \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
+ \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
+ \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "TSVI" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
- \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
- \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style b'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style a'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style g'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
- \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "S" }
+ \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
  \speakOff \revert NoteHead.style e'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DTIII" }
  \speakOff \revert NoteHead.style f'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "SII" }
- \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "DVII" }
+ \speakOff \revert NoteHead.style d'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "D" }
  \speakOff \revert NoteHead.style c'1 _\markup{ \tiny \with-color #(rgb-color 0.588 0.588 0.588) "T" }
 
   }
 }
 >>
-\header {tagline = "This file was created by MGen 2.7.87.gaa39b.dirty and engraved by LilyPond"}
+\header {tagline = "This file was created by MGen 2.7.95.g2fdef.dirty and engraved by LilyPond"}

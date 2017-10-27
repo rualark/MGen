@@ -396,7 +396,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		// Select bass clef if melody goes mostly below middle C
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
 		//if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
-		fs << "\\new Sta ff {\n";
+		fs << "\\new Staff {\n";
 		st.Format("  \\set Staff.instrumentName = #\"%d\"\n", v + 1); //InstGName[instr[v]]
 		fs << st;
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
@@ -517,7 +517,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 		CString par =
 			"-dgui --output autotest\\ly" 
 			" autotest\\ly\\" + m_algo_folder + "-" + m_config + ".ly";
-		Run("autotest\\LilyPond\\usr\\bin\\lilypond.exe", par, 100000);
+		Run("autotest\\LilyPond\\usr\\bin\\lilypond.exe", par, 0);
 	}
 }
 
