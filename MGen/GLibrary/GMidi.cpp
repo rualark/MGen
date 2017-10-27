@@ -517,7 +517,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 		CString par =
 			"-dgui --output autotest\\ly" 
 			" autotest\\ly\\" + m_algo_folder + "-" + m_config + ".ly";
-		//Run("autotest\\LilyPond\\usr\\bin\\lilypond.exe", par, 10000);
+		Run("autotest\\LilyPond\\usr\\bin\\lilypond.exe", par, 10000);
 	}
 }
 
