@@ -560,8 +560,8 @@ int CGenCP1::SendCP() {
 			Adapt(step000, step - 1);
 		}
 		// If  window-scan
-		st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
-			cantus_sent, cantus_high?"high":"low", species, l_rpenalty_cur);
+		st.Format("#%d (from %s) N%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
+			cantus_id + 1, midi_file, cantus_sent - 1, cantus_high?"high":"low", species, l_rpenalty_cur);
 		st2.Format("Flags penalty: %s\n%s", rpst, pmap);
 		AddMelody(step000, pos - 1, svoice + cpv, st, st2);
 		AddMelody(step000, pos - 1, 0, st);
@@ -569,8 +569,8 @@ int CGenCP1::SendCP() {
 	else if (task == tEval) {
 		if (m_algo_id == 121) {
 			// If RSWA
-			st.Format("#%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
-				cantus_sent, cantus_high ? "high" : "low", species, l_rpenalty_cur);
+			st.Format("#%d (from %s) N%d\nCantus: %s\nSpecies: %d\nRule penalty: %.0f", 
+				cantus_id + 1, midi_file, cantus_sent - 1, cantus_high ? "high" : "low", species, l_rpenalty_cur);
 			st2.Format("Flags penalty: %s\n%s", rpst, pmap);
 		}
 		else {
