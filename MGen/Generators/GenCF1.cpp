@@ -4398,8 +4398,11 @@ check:
 		GetLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur);
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;
-		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur, max_smooth, max_smooth_direct, 4, 5)) goto skip;
 		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur, max_smooth2, max_smooth_direct2, 302, 303)) goto skip;
+		// Run green tests only if orange did not fire
+		if (skip_flags || (!flags[302] && flags[303])) {
+			if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur, max_smooth, max_smooth_direct, 4, 5)) goto skip;
+		}
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps2, repeat_notes2, 76)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps3, repeat_notes3, 36)) goto skip;
 		if (FailLongRepeat(m_c, m_cc, m_leap, repeat_steps5, repeat_notes5, 72)) goto skip;
