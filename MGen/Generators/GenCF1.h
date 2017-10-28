@@ -220,7 +220,7 @@ protected:
 	inline int FailDiatonic(vector<int>& c, vector<int>& cc, int step1, int step2, int minor_cur);
 	inline int FailOutstandingRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
 	inline int FailLongRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
-	inline int FailManyLeaps(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int mleaps, int mleaped, int mleapsteps, int flag1, int flag2);
+	inline int FailManyLeaps(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int mleaps, int mleaped, int mleaps2, int mleaped2, int mleapsteps, int flag1, int flag2, int flag3, int flag4);
 	inline void GetLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
 	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int l_max_smooth, int l_max_smooth_direct, int flag1, int flag2);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int steps, int notes, int flag);
@@ -371,6 +371,14 @@ protected:
 	int max_leaps2 = 2; // Maximum allowed leaps during max_leap_steps2
 	int max_leaped2 = 3; // Maximum allowed leaped-over-notes during max_leap_steps
 	int max_leap_steps2 = 7;
+	int max_leaps3 = 2; // Maximum allowed leaps during max_leap_steps
+	int max_leaped3 = 3; // Maximum allowed leaped-over-notes during max_leap_steps
+	int max_leaps4 = 2; // Maximum allowed leaps during max_leap_steps
+	int max_leaped4 = 3; // Maximum allowed leaped-over-notes during max_leap_steps
+	int max_leaps5 = 2; // Maximum allowed leaps during max_leap_steps (virtual)
+	int max_leaped5 = 3; // Maximum allowed leaped-over-notes during max_leap_steps (virtual)
+	int max_leaps6 = 2; // Maximum allowed leaps during max_leap_steps (virtual)
+	int max_leaped6 = 3; // Maximum allowed leaped-over-notes during max_leap_steps (virtual)
 	int cse_leaps = 2; // Maximum allowed consecutive leaps for Consecutive leaps
 	int cse_leaps2 = 3; // Maximum allowed consecutive leaps for Consecutive leaps+
 	int hsp_leap = 5; // Maximum allowed leap before bad harmonic sequence

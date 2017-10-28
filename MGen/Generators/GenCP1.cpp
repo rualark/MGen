@@ -249,6 +249,19 @@ void CGenCP1::ScanCPInit() {
 	max_interval = max_interval_cp;
 	// Calculate last steps that are allowed to have C4P
 	c4p_last_steps = c4p_last_meas * npm;
+	// Set green leap limits
+	if (npm > 2) {
+		max_leaps5 = max_leaps3;
+		max_leaped5 = max_leaped3;
+		max_leaps6 = max_leaps4;
+		max_leaped6 = max_leaped4;
+	}
+	else {
+		max_leaps5 = max_leaps;
+		max_leaped5 = max_leaped;
+		max_leaps6 = max_leaps2;
+		max_leaped6 = max_leaped2;
+	}
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
@@ -2730,13 +2743,8 @@ check:
 		if (FailLastIntervals()) goto skip;
 		//if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
-		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leap_steps, 3, 25)) goto skip;
-		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leap_steps2, 202, 203)) goto skip;
-		// Run green tests if orange did not fire
-		//if (npm > 2 && (skip_flags || (!flags[3] && !flags[25] && !flags[202] && !flags[203]))) {
-			if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leap_steps, 311, 312)) goto skip;
-			if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leap_steps2, 313, 314)) goto skip;
-		//}
+		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leaps5, max_leaped5, max_leap_steps, 3, 25, 311, 312)) goto skip;
+		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leaps6, max_leaped6, max_leap_steps2, 202, 203, 313, 314)) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_smooth2, max_smooth_direct2, 302, 303)) goto skip;
 		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps2, 2, 76)) goto skip;
 		if (FailOutstandingRepeat(ac[cpv], acc[cpv], aleap[cpv], repeat_steps3, 3, 36)) goto skip;
