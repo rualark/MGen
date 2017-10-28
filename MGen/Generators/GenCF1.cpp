@@ -1326,13 +1326,17 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 			leap_sum_i = s;
 		}
 		// Calculate penalty 
-		if (!accept[flag1]) {
-			if (leap_sum > mleaps) ++fpenalty[flag1];
-			else if (leap_sum > mleaps2) ++fpenalty[flag3];
+		if (leap_sum > mleaps) {
+			if (!accept[flag1]) ++fpenalty[flag1];
 		}
-		if (!accept[flag2]) {
-			if (leaped_sum > mleaped) ++fpenalty[flag2];
-			else if (leaped_sum > mleaped2) ++fpenalty[flag4];
+		else if (leap_sum > mleaps2) {
+			if (!accept[flag3]) ++fpenalty[flag3];
+		}
+		if (leaped_sum > mleaped) {
+			if (!accept[flag2]) ++fpenalty[flag2];
+		}
+		else if (leaped_sum > mleaped2) {
+			if (!accept[flag4]) ++fpenalty[flag4];
 		}
 	}
 	if (pm_win_leaps > mleaps) FLAG2(flag1, fli[bli[leap_sum_i]])
