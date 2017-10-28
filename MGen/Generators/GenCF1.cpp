@@ -1408,7 +1408,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 			++smooth_sum;
 			if (smooth_sum >= l_max_smooth) {
 				if (fired4) {
-					fpenalty[4] += severity[4] + 1;
+					fpenalty[flag1] += severity[flag1] + 1;
 				}
 				else {
 					FLAG2(flag1, s);
@@ -1423,7 +1423,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 				++smooth_sum2;
 				if (smooth_sum2 >= l_max_smooth_direct) {
 					if (fired5) {
-						fpenalty[5] += severity[5] + 1;
+						fpenalty[flag2] += severity[flag2] + 1;
 					}
 					else {
 						FLAG2(flag2, s);
