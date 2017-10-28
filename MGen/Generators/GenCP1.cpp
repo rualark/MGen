@@ -1392,7 +1392,7 @@ int CGenCP1::FailRhythm4() {
 // Fail rhythm for species 3
 int CGenCP1::FailRhythm3() {
 	// Check uneven pause
-	if (fn && fn != llen[0]) FLAG2(237, 0);
+	if (fn && fn != llen[0] && fli_size > 1) FLAG2(237, 0);
 	// Last measure not whole
 	if (c_len - fli[fli_size - 1] < npm) {
 		FLAG2(267, c_len - npm)
@@ -1412,7 +1412,7 @@ int CGenCP1::FailRhythm3() {
 			else FLAG2(240, s);
 		}
 		// Non-uniform starting rhythm
-		if (ls > 0 && bmli[s] == 0 && llen[ls] != llen[ls - 1]) FLAG2(254, s);
+		if (ls > 0 && bmli[s] == 0 && llen[ls] != llen[ls - 1] && ls < fli_size - 1) FLAG2(254, s);
 	}
 	return 0;
 }
