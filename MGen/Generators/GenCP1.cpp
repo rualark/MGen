@@ -2495,16 +2495,16 @@ int CGenCP1::EvalHarm() {
 		if (i > 0) {
 			// Check GC for low voice and not last note (last note in any window is ignored)
 			if (ls < fli_size - 1 && chm[i] == 0 && chm[i - 1] == 4) {
-				if (apc[0][s] == 0 && apc[0][fli[ls - 1]] == 4) FLAG2(48, s);
+				if (ls > 0 && apc[0][s] == 0 && apc[0][fli[ls - 1]] == 4) FLAG2(48, s);
 			}
 			if (minor_cur) {
 				// Prohibit dVII (GBD) in root position after S (DF#A) in root position
 				if (chm[i] == 6 && chm[i - 1] == 3 && chm_alter[i - 1]) {
-					if (apc[0][s] == 6 && apc[0][fli[ls - 1]] == 3) FLAG2(308, s);
+					if (ls > 0 && apc[0][s] == 6 && apc[0][fli[ls - 1]] == 3) FLAG2(308, s);
 				}
 				// Prohibit DTIII (CEG) in root position after dVII (GBD) in root position
 				if (chm[i] == 2 && chm[i - 1] == 6) {
-					if (apc[0][s] == 2 && apc[0][fli[ls - 1]] == 6) FLAG2(309, s);
+					if (ls > 0 && apc[0][s] == 2 && apc[0][fli[ls - 1]] == 6) FLAG2(309, s);
 				}
 			}
 			// Check harmonic penalty	
