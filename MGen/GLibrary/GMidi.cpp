@@ -259,11 +259,13 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		if (show_lining && ev != "r") {
 			if (la[lc] == 8) {
 				if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOff \\override NoteHead.style = #'xcircle ";
+				else if (lining[i][v] == HatchStyleLargeConfetti) fs << " \\speakOff \\override NoteHead.style = #'petrucci ";
 				else fs << " \\speakOff \\revert NoteHead.style ";
 			}
 			else {
 				if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\revert NoteHead.style \\speakOn ";
-				else fs << " \\revert NoteHead.style \\speakOff ";
+				else if (lining[i][v] == HatchStyleLargeConfetti) fs << " \\speakOff \\override NoteHead.style = #'petrucci ";
+				else fs << " \\speakOff \\revert NoteHead.style ";
 			}
 			if (lining[i][v] == HatchStyleLightUpwardDiagonal) fs << " \\circle ";
 		}
