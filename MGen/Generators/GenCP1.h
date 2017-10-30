@@ -3,9 +3,10 @@
 
 // Movement types
 #define mStay 0
-#define mOblique 1
+#define mParallel 1
 #define mDirect 2
-#define mContrary 3
+#define mOblique 3
+#define mContrary 4
 
 // Rhythm position types
 #define pDownbeat 1

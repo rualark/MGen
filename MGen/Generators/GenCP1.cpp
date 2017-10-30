@@ -696,17 +696,20 @@ void CGenCP1::GetVIntervals() {
 }
 
 int CGenCP1::FailVMotion() {
-	SET_READY(DR_motion);
-	int mtemp;
+	SET_READY(DR_motion, DR_c);
+	int mtemp, vm1, vm2;
 	pm_contrary = 0;
 	pm_direct = 0;
 	for (int i = 0; i < ep2; ++i) {
 		if (i < ep2 - 1) {
 			motion[i] = mStay;
-			if (acc[cfv][i + 1] != acc[cfv][i] || acc[cpv][i + 1] != acc[cpv][i]) {
-				mtemp = (acc[cfv][i + 1] - acc[cfv][i])*(acc[cpv][i + 1] - acc[cpv][i]);
+			vm1 = ac[cfv][i + 1] - ac[cfv][i];
+			vm2 = ac[cpv][i + 1] - ac[cpv][i];
+			if (vm1 || vm2) {
+				mtemp = vm1 * vm2;
 				if (mtemp > 0) {
-					motion[i] = mDirect;
+					if (vm1 == vm2)	motion[i] = mParallel;
+					else motion[i] = mDirect;
 					++pm_direct;
 				}
 				else if (mtemp < 0) {
@@ -973,9 +976,9 @@ int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
 		// Prohibit parallel first - first (this is for sus notes, which starts are parallel)
-		if (civl[s] == civl[fli[ls - 1]]) FLAG2(84, s)
+		if (ivl[s] == ivl[fli[ls - 1]]) FLAG2(84, s)
 			// Prohibit parallel last - first
-		else if (civl[s] == civl[fli2[ls - 1]]) FLAG2(84, s)
+		else if (ivl[s] == ivl[fli2[ls - 1]]) FLAG2(84, s)
 		else {
 			// Prohibit combinatory
 			if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
