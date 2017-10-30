@@ -1632,44 +1632,59 @@ int CGenCP1::FailPcoApart() {
 	CHECK_READY(DR_fli, DR_ivl, DR_beat);
 	CHECK_READY(DR_rpos);
 	// Step index of last perfect consonance
-	int pco5_last = -1000;
-	int pco8_last = -1000;
-	int mli5_last = -1;
-	int mli8_last = -1;
-	int skip_len;
+	pco5_last = -1000;
+	pco8_last = -1000;
+	mli5_last = -1;
+	mli8_last = -1;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
-		// 5th apart
-		if (civlc[s] == 7) {
-			if (pco5_last > -1 && bmli[s] != mli5_last) {
-				skip_len = s - pco5_last - llen[bli[pco5_last]];
-				if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
-					if (!beat[ls]) FLAG2(250, s)
-					else if ((acc[0][s] - acc[0][pco5_last])*
-						(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
-					else if (rpos[ls] < 0 || rpos[bli[pco5_last]] < 0) FLAG2(249, s)
-					else FLAG2(250, s);
-				}
-			}
-			pco5_last = s;
-			mli5_last = bmli[s];
+		if (FailPcoApartStep()) return 1;
+		if (sus[ls] && retrigger[sus[ls]]) {
+			s = sus[ls];
+			if (FailPcoApartStep()) return 1;
 		}
-		// 8va apart
-		if (civlc[s] == 0) {
-			if (pco8_last > -1 && bmli[s] != mli8_last) {
-				skip_len = s - pco8_last - llen[bli[pco8_last]];
-				if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
-					if (!beat[ls]) FLAG2(250, s)
-					else if ((acc[0][s] - acc[0][pco8_last])*
-						(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
-					else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
-					else FLAG2(250, s);
+	}
+	return 0;
+}
+
+int CGenCP1::FailPcoApartStep() {
+	int skip_len;
+	// 5th apart
+	if (civlc[s] == 7) {
+		if (pco5_last > -1 && bmli[s] != mli5_last) {
+			skip_len = s - pco5_last - llen[bli[pco5_last]];
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
+				if (acc[cfv][s] != acc[cfv][s - 1]) {
+					if (retrigger[s]) FLAG2(315, s)
+					else FLAG2(316, s);
 				}
+				else if ((acc[0][s] - acc[0][pco5_last])*
+					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
+				else if (rpos[ls] < 0 || rpos[bli[pco5_last]] < 0) FLAG2(249, s)
+				else FLAG2(250, s);
 			}
-			pco8_last = s;
-			mli8_last = bmli[s];
 		}
+		pco5_last = s;
+		mli5_last = bmli[s];
+	}
+	// 8va apart
+	if (civlc[s] == 0) {
+		if (pco8_last > -1 && bmli[s] != mli8_last) {
+			skip_len = s - pco8_last - llen[bli[pco8_last]];
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
+				if (acc[cfv][s] != acc[cfv][s - 1]) {
+					if (retrigger[s]) FLAG2(315, s)
+					else FLAG2(316, s);
+				}
+				else if ((acc[0][s] - acc[0][pco8_last])*
+					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
+				else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
+				else FLAG2(250, s);
+			}
+		}
+		pco8_last = s;
+		mli8_last = bmli[s];
 	}
 	return 0;
 }

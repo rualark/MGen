@@ -69,6 +69,7 @@ protected:
 	inline int FailRhythm3();
 	inline int FailRhythm5();
 	inline int FailPcoApart();
+	inline int FailPcoApartStep();
 	inline int FailVIntervals();
 	inline void SaveCP();
 	inline void ShowBestRejectedCP();
@@ -136,4 +137,9 @@ protected:
 	// Analysis
 	vector <vector<int>> scpoint; // [v][s] Source cpoint for processing
 
+	// PcoApart
+	int pco5_last;
+	int pco8_last;
+	int mli5_last;
+	int mli8_last;
 };

@@ -127,7 +127,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;67;0;Melody;Range;Skipped notes;1;-1;;;;1;;;;;
 1;68;70;Melody;Range;Skipped notes;>1;-1;;;;1;;;;;
 1;69;100;Melody;Range;Skipped notes;>1 joined;0;;;;1;;;;;
-1;38;0;Melody;Range;Range;voice <m6;0;;;;;;;;;
+1;38;0;Melody;Range;Range;voice <m6;0;;Range below m6 is acceptable for cantus up to 10 notes;;;;;;;
 1;304;70;Melody;Range;Range;cp voice >M13;0;;;;;;;;;
 1;37;70;Melody;Range;Range;cf >M9;0;;;;;;;;;
 1;7;70;Melody;Range;Range;sum >22th;0;;;;;;;;;
@@ -138,7 +138,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;15;0;Melody;Range;No melody development;10 notes <16;0;;Melody direction within X notes is less than Y decisemitones;1;;;1;;;
 1;16;0;Melody;Range;No melody development;13 notes <20;0;;Melody direction within X notes is less than Y decisemitones;1;;;;;;
 1;17;20;Cantus;Harmony;Repeating letters in a row;>3;0;;;;;;;;;17,20,23,48,57,77,92,99
-1;20;20;Cantus;Harmony;Missing letters in a row;>3;0;;;;;;;;;17,20,23,48,57,77,92,99
+1;20;20;Cantus;Harmony;Missing letters in a row;>4;0;;;;;;;;;17,20,23,48,57,77,92,99
 1;194;0;Cantus;Harmony;Accented bad harmony;leap >4th;-1;Only for cantus;;;;;;;;
 1;195;0;Cantus;Harmony;Accented bad harmony;culmination;-1;Only for cantus;;;;;;;;
 1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate;1;;In penultimate measure;;;;;;;
@@ -198,6 +198,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;;;;;;
 1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures;;;;;;;;
 1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;non-harmonic;1;Two same non-close perfect consonances in neighboring measures;;;;;;250;;
+1;315;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures;Second interval is anticipation downbeat;;;;;;;
+1;316;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures;Second interval is downbeat;;;;;;;
 1;250;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances in neighboring measures;If other rules in this row did not apply;;;;;249;;
 1;208;0;Cantus;Counterpoint;Direct stepwize movement;5 cadence;1;Direct movement to interval with stepwize motion in higher voice;;;;;;;;
 1;209;40;Cantus;Counterpoint;Direct stepwize movement;8 cadence;1;Direct movement to interval with stepwize motion in higher voice;;;;;;;;
