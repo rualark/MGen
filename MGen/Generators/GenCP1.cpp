@@ -1280,6 +1280,8 @@ void CGenCP1::GetBasicRpos() {
 		else {
 			if (s > 0 && s2 < ep2 - 1 && ac[cpv][s - 1] == ac[cpv][s2 + 1]) rposb[ls] = pAux;
 			else rposb[ls] = pPass;
+			// Check aux/passing sus
+			if (sus[ls] && !retrigger[sus[ls]]) rposb[ls] = pOffbeat;
 		}
 	}
 }
