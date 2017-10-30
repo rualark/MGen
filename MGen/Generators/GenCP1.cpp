@@ -2599,6 +2599,8 @@ int CGenCP1::FailHarm() {
 		hli.push_back(mli[ms]);
 		chm.push_back(r);
 		chm_alter.push_back(0);
+		// Record cantus alteration
+		++cchn[apcc[cfv][mli[ms]]];
 		// Loop inside measure
 		for (ls = ls1; ls <= ls2; ++ls) {
 			// Do not process non-harmonic notes
@@ -2625,6 +2627,8 @@ int CGenCP1::FailHarm() {
 				hli.push_back(s);
 				chm.push_back(r);
 				chm_alter.push_back(0);
+				// Record cantus alteration
+				++cchn[apcc[cfv][mli[ms]]];
 			}
 			// Record note
 			++chn[ns];
