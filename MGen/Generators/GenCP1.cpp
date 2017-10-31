@@ -788,7 +788,6 @@ int CGenCP1::FailSus1() {
 int CGenCP1::FailSus2() {
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
 	CHECK_READY(DR_leap);
-	SET_READY(DR_retrigger);
 	int ls3, s3, antici;
 	for (ls = 0; ls < fli_size; ++ls) if (sus[ls]) {
 		// Run sus checks
@@ -898,6 +897,7 @@ int CGenCP1::FailSus2() {
 }
 
 int CGenCP1::FailSus() {
+	SET_READY(DR_retrigger);
 	fill(retrigger.begin(), retrigger.end(), 0);
 	if (species == 1) {
 		if (FailSus1()) return 1;
@@ -1267,7 +1267,7 @@ int CGenCP1::DetectPatterns() {
 
 void CGenCP1::GetBasicRpos() {
 	CHECK_READY_PERSIST(DR_c);
-	CHECK_READY(DR_fli, DR_leap);
+	CHECK_READY(DR_fli, DR_leap, DR_retrigger);
 	SET_READY(DR_rposb);
 	// Main calculation
 	rposb[0] = pDownbeat;
@@ -2762,9 +2762,9 @@ check:
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
 		if (FailRhythm()) goto skip;
 		GetVIntervals();
+		if (FailSus()) goto skip;
 		GetBasicRpos();
 		if (DetectPatterns()) goto skip;
-		if (FailSus()) goto skip;
 		ApplyFixedPat();
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
 		if (FailVMotion()) goto skip;
