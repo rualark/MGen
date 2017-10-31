@@ -1639,6 +1639,8 @@ int CGenCP1::FailPcoApart() {
 	// Step index of last perfect consonance
 	pco5_last = -1000;
 	pco8_last = -1000;
+	pco5_last2 = -1000;
+	pco8_last2 = -1000;
 	mli5_last = -1;
 	mli8_last = -1;
 	for (ls = 0; ls < fli_size; ++ls) {
@@ -1658,7 +1660,7 @@ int CGenCP1::FailPcoApartStep() {
 	// 5th apart
 	if (civlc[s] == 7) {
 		if (pco5_last > -1 && bmli[s] != mli5_last) {
-			skip_len = s - pco5_last - llen[bli[pco5_last]];
+			skip_len = s - pco5_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
 				if (acc[cfv][s] != acc[cfv][s - 1]) {
 					if (retrigger[s]) FLAG2(315, s)
@@ -1666,17 +1668,19 @@ int CGenCP1::FailPcoApartStep() {
 				}
 				else if ((acc[0][s] - acc[0][pco5_last])*
 					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
-				else if (rpos[ls] < 0 || rpos[bli[pco5_last]] < 0) FLAG2(249, s)
+				else if (rpos[ls] < 0 || rpos[bli[pco5_last]] < 0) 
+					FLAG2(249, s)
 				else FLAG2(250, s);
 			}
 		}
 		pco5_last = s;
+		pco5_last2 = s2;
 		mli5_last = bmli[s];
 	}
 	// 8va apart
 	if (civlc[s] == 0) {
 		if (pco8_last > -1 && bmli[s] != mli8_last) {
-			skip_len = s - pco8_last - llen[bli[pco8_last]];
+			skip_len = s - pco8_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
 				if (acc[cfv][s] != acc[cfv][s - 1]) {
 					if (retrigger[s]) FLAG2(315, s)
@@ -1685,10 +1689,12 @@ int CGenCP1::FailPcoApartStep() {
 				else if ((acc[0][s] - acc[0][pco8_last])*
 					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
 				else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
-				else FLAG2(250, s);
+				else 
+					FLAG2(250, s);
 			}
 		}
 		pco8_last = s;
+		pco8_last2 = s2;
 		mli8_last = bmli[s];
 	}
 	return 0;
