@@ -2581,7 +2581,8 @@ int CGenCP1::FailTonicCP() {
 
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli);
-	int ls1, ls2, r, n, ns, harm_conflict;
+	int ls1, ls2, r, n, ns, harm_conflict, hcount;
+	int first_b; // First harmony in measure has b
 	vector<int> chn, cchn;
 	int mea_end;
 	chn.resize(7);
@@ -2614,6 +2615,8 @@ int CGenCP1::FailHarm() {
 		chm_alter.push_back(0);
 		// Record cantus alteration
 		++cchn[apcc[cfv][mli[ms]]];
+		hcount = 0;
+		first_b = 0;
 		// Loop inside measure
 		for (ls = ls1; ls <= ls2; ++ls) {
 			// Do not process non-harmonic notes
@@ -2634,6 +2637,8 @@ int CGenCP1::FailHarm() {
 			if (harm_conflict) {
 				if (ms == mli.size() - 2) FLAG2(306, s)
 				else FLAG2(307, s);
+				// Does first harmony contain leading tone?
+				if (cchn[11]) first_b = 1;
 				harm_conflict = 0;
 				fill(chn.begin(), chn.end(), 0);
 				fill(cchn.begin(), cchn.end(), 0);
@@ -2642,6 +2647,8 @@ int CGenCP1::FailHarm() {
 				chm_alter.push_back(0);
 				// Record cantus alteration
 				++cchn[apcc[cfv][mli[ms]]];
+				// Next harmony counter
+				++hcount;
 			}
 			// Record note
 			++chn[ns];
@@ -2659,6 +2666,8 @@ int CGenCP1::FailHarm() {
 			// Detect altered chord
 			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[chm_alter.size() - 1] = 1;
 		}
+		// Prohibit harmony without leading tone in penultimate measure if previous harmony contained leading tone
+		if (hcount && ms == mli.size() - 2 && first_b && !cchn[11]) FLAG2(318, s);
 	}
 	if (EvalHarm()) return 1;
 	if (FailTonicCP()) return 1;
