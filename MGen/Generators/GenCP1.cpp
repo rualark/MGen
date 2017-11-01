@@ -2493,6 +2493,7 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount) {
 int CGenCP1::EvalHarm() {
 	int pen1;
 	int p2c = 0; // Count of consecutive penalty 2
+	int p3c = 0; // Count of consecutive penalty 3
 	int dcount = 0;
 	int scount = 0;
 	int tcount = 0;
@@ -2520,16 +2521,23 @@ int CGenCP1::EvalHarm() {
 			}
 			// Check harmonic penalty	
 			pen1 = hsp[chm[i - 1]][chm[i]];
-			if (pen1 == 3) FLAG2(99, s)
-			else if (pen1 == 1) FLAG2(77, s);
+			if (pen1 == 1) FLAG2(77, s);
 			if (pen1 == 2) {
-				FLAG2(57, s);
 				++p2c;
-				if (p2c == 2) FLAG2(92, s)
+				if (p3c == 1) FLAG2(57, s)
+				else if (p2c == 2) FLAG2(92, s)
 				else if (p2c == 3) FLAG2(23, s);
 			}
 			else {
 				p2c = 0;
+			}
+			if (pen1 == 3) {
+				++p3c;
+				if (p3c == 1) FLAG2(99, s)
+				else if (p3c == 2) FLAG2(321, s)
+			}
+			else {
+				p3c = 0;
 			}
 		}
 		// Check letter repeat and miss
