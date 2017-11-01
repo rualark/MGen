@@ -1437,10 +1437,16 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 			}
 			else if (smooth[s] || leap[s]) smooth_sum2 = 0;
 			// Check if two notes repeat with same length
-			if ((ls > 0) && (cc[s] == cc[fli2[ls+2]]) && (cc[fli2[ls - 1]] == cc[fli2[ls+1]])
-				&& llen[ls] == llen[ls + 2] && llen[ls - 1] == llen[ls + 1] &&
-				(ep2 == c_len || ls + 2 < fli_size - 1)) 
-				FLAG2(9, fli[ls-1]);
+			if ((ls > 0) && (cc[s] == cc[fli2[ls + 2]]) && (cc[fli2[ls - 1]] == cc[fli2[ls + 1]]) &&
+				(ep2 == c_len || ls + 2 < fli_size - 1)) {
+				// llen[ls] == llen[ls + 2]
+				// Same rhythm in first notes of repeat?
+				if (llen[ls - 1] == llen[ls + 1]) {
+					if (llen[ls - 1] == llen[ls]) FLAG2(320, fli[ls - 1])
+					else FLAG2(319, fli[ls - 1]);
+				}
+				else FLAG2(9, fli[ls - 1]);
+			}
 		}
 	}
 	if (max_leap_sum2 >= cse_leaps) {
