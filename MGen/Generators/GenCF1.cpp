@@ -1442,10 +1442,10 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 				// llen[ls] == llen[ls + 2]
 				// Same rhythm in first notes of repeat?
 				if (llen[ls - 1] == llen[ls + 1]) {
-					if (llen[ls - 1] == llen[ls]) FLAG2(320, fli[ls - 1])
-					else FLAG2(319, fli[ls - 1]);
+					if (llen[ls - 1] == llen[ls]) FLAG2(9, fli[ls - 1])
+					else FLAG2(320, fli[ls - 1]);
 				}
-				else FLAG2(9, fli[ls - 1]);
+				else FLAG2(319, fli[ls - 1]);
 			}
 		}
 	}
