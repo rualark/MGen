@@ -2674,8 +2674,14 @@ int CGenCP1::FailHarm() {
 			// Detect altered chord
 			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[chm_alter.size() - 1] = 1;
 		}
-		// Prohibit harmony without leading tone in penultimate measure if previous harmony contained leading tone
-		if (hcount && ms == mli.size() - 2 && first_b && !cchn[11]) FLAG2(318, s);
+		if (hcount && ms == mli.size() - 2) {
+			// Prohibit harmony without leading tone in penultimate measure if previous harmony contained leading tone
+			if (first_b && !cchn[11]) 
+				FLAG2(318, s);
+			// Prohibit D or DVII harmony in penultimate measure before non-D / DVII harmony
+			if ((chm[chm.size() - 2] == 4 || chm[chm.size() - 2] == 6) &&
+				(chm[chm.size() - 1] != 4 && chm[chm.size() - 1] != 6)) FLAG2(322, s);
+		}
 	}
 	if (EvalHarm()) return 1;
 	if (FailTonicCP()) return 1;
