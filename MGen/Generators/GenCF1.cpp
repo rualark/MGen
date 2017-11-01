@@ -3553,7 +3553,7 @@ void CGenCF1::SendHarmColor(int pos, int v) {
 		}
 	}
 	if (max_severity > -1) {
-		fc = flag_color[severity[fl]];
+		fc = flag_color[max_severity];
 		mark_color[pos][v] = MakeColor(GetAlpha(fc), GetRed(fc), 
 			GetGreen(fc)/1.5, GetBlue(fc));
 	}
