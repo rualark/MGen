@@ -519,7 +519,7 @@ int CGenCP1::SendCP() {
 						else mark[pos][v] = HarmNames_m[chm[chm_id]];
 					}
 					else mark[pos][v] = HarmNames[chm[chm_id]];
-					if (show_harmony_bass)
+					if (show_harmony_bass && hbc[chm_id] % 7 != chm[chm_id])
 						mark[pos][v] += "/" + NoteName[hbcc[chm_id] % 12];
 					SendHarmColorCP(pos, v, chm_id);
 					++chm_id;
@@ -2511,7 +2511,8 @@ int CGenCP1::EvalHarm() {
 		if (i > 0) {
 			// Check GC for low voice and not last note (last note in any window is ignored)
 			if (ls < fli_size - 1 && chm[i] == 0 && chm[i - 1] == 4) {
-				if (ls > 0 && apc[0][s] == 0 && apc[0][fli[ls - 1]] == 4) FLAG2(48, s);
+				if (apc[0][s] == 0 && apc[0][hli[i - 1]] == 4 &&
+					hbc[i] % 7 == 0 && hbc[i - 1] % 7 == 4) FLAG2(48, s);
 			}
 			if (minor_cur) {
 				// Prohibit dVII (GBD) in root position after S (DF#A) in root position
