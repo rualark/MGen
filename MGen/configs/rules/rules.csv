@@ -121,8 +121,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;10;0;Melody;Repeats;Note stagnation;>3 in 7 notes;-1;Same note repeats more than X times during stag_note_steps steps;;1;;;;;;
 1;39;60;Melody;Repeats;Note stagnation;>4 in 9 notes;0;Same note repeats more than X times during stag_note_steps steps;;;;;;;;
 1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;;;;;;;;
-1;2;40;Melody;Tritone;Tritone;resolved;1;;;;1;;;;;
-1;31;100;Melody;Tritone;Tritone;unresolved;0;;;;;;;;;
+1;2;40;Melody;Tritone;Tritone;resolved;1;;Search 4 quarters for resolution;;1;;;;;
+1;31;100;Melody;Tritone;Tritone;unresolved;0;;;;;;;2;;
 1;32;100;Melody;Tritone;Tritone;on climax;-1;;;;1;;;;;
 1;18;0;Melody;Tritone;Compound tritone;resolved;1;;;;1;;;;;
 1;19;60;Melody;Tritone;Compound tritone;unresolved;0;;;;1;;;;;

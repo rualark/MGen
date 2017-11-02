@@ -262,6 +262,8 @@ void CGenCP1::ScanCPInit() {
 		max_leaps6 = max_leaps2;
 		max_leaped6 = max_leaped2;
 	}
+	// Set scan voices count
+	svoices = av_cnt;
 }
 
 void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {

@@ -312,6 +312,7 @@ void CGenCF1::ParseRules() {
 void CGenCF1::SetRuleParams() {
 	CHECK_READY_PERSIST(DR_RuleParam);
 	SET_READY_PERSIST(DR_RuleSetParam);
+	tritone_res_quart = GetRuleParam(rule_set, 2, rsSubComment, 0);
 	sus_last_measures = GetRuleParam(rule_set, 139, rsSubName, 0);
 	sus_insert_max_leap = Interval2Chromatic(GetRuleParam(rule_set, 295, rsSubComment, 0));
 	dnt_max_leap = Interval2Chromatic(GetRuleParam(rule_set, 260, rsSubName, 0));
@@ -2075,10 +2076,35 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 			ta2 = tb;
 			tb2 = ta;
 		}
-		if (fleap_start > 0 && pcc[fli[fleap_start - 1]] == ta2) res1 = 1;
-		else if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
-		if (fleap_end < fli_size - 1 && pcc[fli[fleap_end + 1]] == tb2) res2 = 1;
-		else if (pcc[fli[fleap_end - 1]] == tb2) res2 = 1;
+		// Get resolution window
+		int rwin = 1;
+		if (svoices > 1) rwin = max(1, (npm * tritone_res_quart) / 4);
+		// Scan preparation
+		if (fleap_start > 0) {
+			int pos1 = max(0, fli[fleap_start] - rwin);
+			int pos2 = fli[fleap_start];
+			for (int i = pos1; i < pos2; ++i) {
+				if (pcc[i] == ta2 && abs(cc[i] - cc[leap_start]) < 5) {
+					res1 = 1;
+					break;
+				}
+			}
+		}
+		if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
+		// Scan resolution
+		if (fleap_end < fli_size - 1) {
+			int pos1 = fli2[fleap_end] + 1;
+			int pos2 = min(ep2, fli2[fleap_end] + 1 + npm);
+			for (int i = pos1; i < pos2; ++i) {
+				if (pcc[i] == tb2 && abs(cc[i] - cc[s1]) < 5) {
+					res2 = 1;
+					break;
+				}
+			}
+		}
+		// Consider resolved if window cut and not fully generated
+		if (fli2[fleap_end] + npm >= ep2 && ep2 < c_len) res2 = 1;
+		if (pcc[fli[fleap_end - 1]] == tb2) res2 = 1;
 		// Flag resolution for consecutive tritone
 		if (found == 1) {
 			if (res1*res2 == 0) FLAG2(31, s0)
@@ -2294,6 +2320,8 @@ void CGenCF1::ScanCantusInit() {
 	max_leaped5 = max_leaped;
 	max_leaps6 = max_leaps2;
 	max_leaped6 = max_leaped2;
+	// Set scan voices count
+	svoices = 1;
 }
 
 // Get minimum element in SWA window

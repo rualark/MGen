@@ -155,6 +155,7 @@ const CString TaskNames[] = {
 	"generate" // 2
 };
 
+// Task
 #define tGen 0
 #define tEval 1
 #define tCor 2
@@ -384,6 +385,7 @@ protected:
 	int hsp_leap = 5; // Maximum allowed leap before bad harmonic sequence
 	int early_culm = 3; // Early culmination step
 	int late_culm = 3; // Late culmination step
+	int tritone_res_quart = 4; // Search X quarters for tritone resolution
 
 	int log_pmap = 0; // Set to 1 to enable logging parameter map to log folder. Needs canculate_stat to work correctly
 	int show_allowed_flags = 0; // Show even allowed flags(bold in rules.xlsm)
@@ -510,6 +512,7 @@ protected:
 
   // Local
 	// Queues for calculating scan speed and displaying in status
+	int svoices = 1; // Scan voices
 	CString pmap;
 	deque<long long> q_scan_ms;
 	deque<long long> q_scan_cycle;
