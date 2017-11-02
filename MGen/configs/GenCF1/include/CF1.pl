@@ -54,6 +54,7 @@ calculate_ssf = 0 # Enables SWA stuck flags statistics calculation algorithm.
 best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
 show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
 show_allowed_flags = 1 # Show even allowed flags (bold in rules.xlsm)
+show_harmony_bass = 1 # 0 = do not show bass, 1 = Show harmony bass
 show_hatch = 2 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show rpos hatch
 show_min_severity = 0 # Minimum severity to highlight note
 
