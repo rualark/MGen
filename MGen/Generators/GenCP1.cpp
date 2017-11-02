@@ -2625,6 +2625,13 @@ int CGenCP1::FailHarm() {
 		++cchn[apcc[cfv][mli[ms]]];
 		hcount = 0;
 		first_b = 0;
+		// Make last leading tone in penultimate measure harmonic
+		if (ms == mli.size() - 2 && fli_size > 1) {
+			int s9 = fli[fli_size - 2];
+			if (apcc[cpv][s9] == 11 && tivl[s9] != iDis && rpos[fli_size - 2] < 0) {
+				rpos[fli_size - 2] = pOffbeat;
+			}
+		}
 		// Loop inside measure
 		for (ls = ls1; ls <= ls2; ++ls) {
 			// Do not process non-harmonic notes
@@ -2674,10 +2681,9 @@ int CGenCP1::FailHarm() {
 			// Detect altered chord
 			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[chm_alter.size() - 1] = 1;
 		}
-		if (hcount && ms == mli.size() - 2) {
+		if (ms == mli.size() && hcount) {
 			// Prohibit harmony without leading tone in penultimate measure if previous harmony contained leading tone
-			if (first_b && !cchn[11]) 
-				FLAG2(318, s);
+			if (first_b && !cchn[11]) FLAG2(318, s);
 			// Prohibit D or DVII harmony in penultimate measure before non-D / DVII harmony
 			if ((chm[chm.size() - 2] == 4 || chm[chm.size() - 2] == 6) &&
 				(chm[chm.size() - 1] != 4 && chm[chm.size() - 1] != 6)) FLAG2(322, s);
