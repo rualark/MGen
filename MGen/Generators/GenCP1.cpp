@@ -519,6 +519,8 @@ int CGenCP1::SendCP() {
 						else mark[pos][v] = HarmNames_m[chm[chm_id]];
 					}
 					else mark[pos][v] = HarmNames[chm[chm_id]];
+					if (show_harmony_bass)
+						mark[pos][v] += "/" + NoteName[hbcc[chm_id] % 12];
 					SendHarmColorCP(pos, v, chm_id);
 					++chm_id;
 				}
@@ -2599,6 +2601,8 @@ int CGenCP1::FailHarm() {
 	cchn.resize(12);
 	hli.clear();
 	chm.clear();
+	hbcc.clear();
+	hbc.clear();
 	chm_alter.clear();
 	harm_conflict = 0;
 	// Build chm vector
@@ -2621,6 +2625,8 @@ int CGenCP1::FailHarm() {
 		fill(chn.begin(), chn.end(), 0);
 		fill(cchn.begin(), cchn.end(), 0);
 		hli.push_back(mli[ms]);
+		hbcc.push_back(acc[cfv][mli[ms]]);
+		hbc.push_back(ac[cfv][mli[ms]]);
 		chm.push_back(r);
 		chm_alter.push_back(0);
 		// Record cantus alteration
@@ -2661,6 +2667,8 @@ int CGenCP1::FailHarm() {
 				fill(cchn.begin(), cchn.end(), 0);
 				hli.push_back(s);
 				chm.push_back(r);
+				hbcc.push_back(acc[cfv][mli[ms]]);
+				hbc.push_back(ac[cfv][mli[ms]]);
 				chm_alter.push_back(0);
 				// Record cantus alteration
 				++cchn[apcc[cfv][mli[ms]]];
@@ -2675,6 +2683,8 @@ int CGenCP1::FailHarm() {
 				if (chn[3]) chm[chm.size() - 1] = (r + 3) % 7;
 				else if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
 				else chm[chm.size() - 1] = r;
+				if (hbcc[hbcc.size() - 1] > acc[0][s]) hbcc[hbcc.size() - 1] = acc[0][s];
+				if (hbc[hbc.size() - 1] > ac[0][s]) hbc[hbc.size() - 1] = ac[0][s];
 			}
 			else {
 				if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
