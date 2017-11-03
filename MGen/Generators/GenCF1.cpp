@@ -321,6 +321,8 @@ void CGenCF1::SetRuleParams() {
 	pco_apart = GetRuleParam(rule_set, 248, rsName, 0);
 	thirds_ignored = GetRuleParam(rule_set, 70, rsName, 0);
 	c4p_last_meas = GetRuleParam(rule_set, 144, rsName, 1);
+	fill_pre3_notes = GetRuleParam(rule_set, 100, rsComment, 0);
+	fill_pre4_notes = GetRuleParam(rule_set, 144, rsComment, 1);
 	c4p_last_notes = GetRuleParam(rule_set, 144, rsName, 2);
 	pre_last_leaps = GetRuleParam(rule_set, 204, rsName, 0);
 	max_smooth = GetRuleParam(rule_set, 4, rsSubName, 0);
@@ -1759,7 +1761,9 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 	}
 	// Check prepared fill to
 	if (!pre && fill_to > 1) {
-		int pos = max(0, fleap_start - fill_to*2 + 1);
+		int pos;
+		if (fill_to == 2) pos = max(0, fleap_start - fill_pre3_notes);
+		else pos = max(0, fleap_start - fill_pre4_notes);
 		vector<int> nstat4;
 		nstat4.resize(2, 0);
 		if (c[leap_start] < c[leap_end]) {
@@ -1783,7 +1787,9 @@ void CGenCF1::CountFillLimits(vector<int> &c, int pre, int t1, int t2, int &fill
 	}
 	// Check prepared fill from
 	if (!pre && fill_from > 1) {
-		int pos = max(0, fleap_start - fill_from*2 + 1);
+		int pos;
+		if (fill_from == 2) pos = max(0, fleap_start - fill_pre3_notes);
+		else pos = max(0, fleap_start - fill_pre4_notes);
 		vector<int> nstat4;
 		nstat4.resize(2, 0);
 		if (c[leap_start] < c[leap_end]) {

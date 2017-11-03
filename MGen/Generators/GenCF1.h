@@ -387,6 +387,8 @@ protected:
 	int late_culm = 3; // Late culmination step
 	int tritone_res_quart = 4; // Search X quarters for tritone resolution
 	int show_harmony_bass = 1; // 0 = do not show bass, 1 = Show harmony bass for higher cantus only, 2 = always show harmony bass
+	int fill_pre3_notes = 5; // How many notes to search for fill preparation for compensation to 3rd
+	int fill_pre4_notes = 5; // How many notes to search for fill preparation for compensation to 4th
 
 	int log_pmap = 0; // Set to 1 to enable logging parameter map to log folder. Needs canculate_stat to work correctly
 	int show_allowed_flags = 0; // Show even allowed flags(bold in rules.xlsm)
