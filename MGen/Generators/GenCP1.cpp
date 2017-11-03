@@ -1178,7 +1178,7 @@ void CGenCP1::DetectCambiata() {
 			if (llen[ls + 1] > llen[ls]) continue;
 			// Leap 4th
 			if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
-				if (!accept[263]) continue;
+				if (!accept[263] && !accept[323]) continue;
 			}
 			if (ls < fli_size - 3) {
 				// Fourth note is created by direction opposite to third note movement
@@ -1217,6 +1217,10 @@ void CGenCP1::DetectCambiata() {
 					if (!accept[264]) continue;
 					// Leap too long
 					if (abs(acc[cpv][fli2[ls + 3]] - acc[cpv][fli2[ls + 2]]) > cambiata_max_leap3) continue;
+					// Leap 4th
+					if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
+						if (!accept[263]) continue;
+					}
 				}
 				if (ls < fli_size - 4) {
 					// Leap from note 4
@@ -1224,11 +1228,19 @@ void CGenCP1::DetectCambiata() {
 						if (!accept[265]) continue;
 						// Leap too long
 						if (abs(acc[cpv][fli2[ls + 4]] - acc[cpv][fli2[ls + 3]]) > cambiata_max_leap4) continue;
+						// Leap 4th
+						if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
+							if (!accept[263]) continue;
+						}
 					}
 					// Fourth note moves back
 					if (ls < fli_size - 4 && (acc[cpv][fli[ls + 4]] - acc[cpv][fli[ls + 3]]) *
 						(acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) < 0) {
 						if (!accept[266]) continue;
+						// Leap 4th
+						if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
+							if (!accept[263]) continue;
+						}
 					}
 				}
 			}
