@@ -1608,7 +1608,8 @@ int CGenCP1::FailRhythm5() {
 		// Check rhythm repeat
 		if (full_measure) {
 			if (rid.size()) {
-				if (rid.back() == rid_cur) FLAG2(247, s);
+				// Do not fire for first measure if measure starts with pause
+				if (rid.back() == rid_cur && (ms > 1 || !fn)) FLAG2(247, s);
 			}
 			rid.push_back(rid_cur);
 		}
