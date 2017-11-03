@@ -1285,8 +1285,9 @@ void CGenCP1::GetBasicRpos() {
 	CHECK_READY_PERSIST(DR_c);
 	CHECK_READY(DR_fli, DR_leap, DR_retrigger);
 	SET_READY(DR_rposb);
-	// Main calculation
+	// First note is always downbeat
 	rposb[0] = pDownbeat;
+	// Main calculation
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
@@ -1298,6 +1299,18 @@ void CGenCP1::GetBasicRpos() {
 			else rposb[ls] = pPass;
 			// Check aux/passing sus
 			if (sus[ls] && !retrigger[sus[ls]]) rposb[ls] = pOffbeat;
+		}
+	}
+	// Detect long notes
+	for (ls = 1; ls < fli_size - 1; ++ls) {
+		s = fli[ls];
+		if (rposb[ls] < 0 && tivl[s] != iDis) {
+			// Check too long note
+			if (llen[ls] > llen[ls - 1] &&
+				rposb[ls - 1] > 0 && tivl[fli2[ls - 1]] != iDis) rposb[ls] = pLong;
+			// Check too long note
+			if (llen[ls] > llen[ls + 1] &&
+				rposb[ls + 1] > 0 && tivl[fli2[ls + 1]] != iDis) rposb[ls] = pLong;
 		}
 	}
 }

@@ -12,6 +12,7 @@
 #define pDownbeat 1
 #define pLeap 2
 #define pOffbeat 3
+#define pLong 4
 #define pAux -1
 #define pPass -2
 
