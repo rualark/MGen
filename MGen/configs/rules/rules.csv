@@ -265,8 +265,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;257;60;Cantus;Nonchord tones;Cambiata;mixed rhythm;1;;Rhythm of this pattern contains not only 1/4 notes;;;;;;;
 1;259;60;Cantus;Nonchord tones;Cambiata;cross-bar;0;;;;;;;;;
 1;261;60;Cantus;Nonchord tones;Cambiata;third diss.;1;;;;;;;;;
-1;263;60;Cantus;Nonchord tones;Cambiata;leap 4th;1;;;;;;;;;
-1;264;60;Cantus;Nonchord tones;Cambiata;leap from 3;1;;Leap from note #3 up to 4th interval;;;;;;;
+1;323;0;Cantus;Nonchord tones;Cambiata;leap 4th comp.;1;;4th leap from 2nd note compensated by stepwize movement;;;;;;;
+1;263;60;Cantus;Nonchord tones;Cambiata;leap 4th;0;;4th leap from 2nd note;;;;;;;
+1;264;60;Cantus;Nonchord tones;Cambiata;leap from 3;0;;Leap from note #3 up to 4th interval;;;;;;;
 1;265;60;Cantus;Nonchord tones;Cambiata;leap from 4;1;;Leap from note #4 up to 4th interval;;;;;;;
 1;266;60;Cantus;Nonchord tones;Cambiata;back from 4;1;;;;;;;;;
 1;279;60;Cantus;Nonchord tones;Cambiata;inverted;1;;;;;;;;;
