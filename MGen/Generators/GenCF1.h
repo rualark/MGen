@@ -389,6 +389,10 @@ protected:
 	int show_harmony_bass = 1; // 0 = do not show bass, 1 = Show harmony bass for higher cantus only, 2 = always show harmony bass
 	int fill_pre3_notes = 5; // How many notes to search for fill preparation for compensation to 3rd
 	int fill_pre4_notes = 5; // How many notes to search for fill preparation for compensation to 4th
+	float tonic1_wei = 100; // Weight of whole tonic
+	float tonic2_wei = 80; // Weight of whole tonic
+	float tonic4_wei = 60; // Weight of whole tonic
+	float tonic8_wei = 40; // Weight of whole tonic
 
 	int log_pmap = 0; // Set to 1 to enable logging parameter map to log folder. Needs canculate_stat to work correctly
 	int show_allowed_flags = 0; // Show even allowed flags(bold in rules.xlsm)
@@ -459,7 +463,8 @@ protected:
 	vector <vector <int>> hsp; // [pc][pc] Harmonic sequence penalty
 	vector <int> fli; // [ls] Forward links to start of each non-slurred note
 	vector <int> fli2; // [ls] Forward links to end of each non-slurred note
-	vector <int> llen; // [ls] Length of each linked note
+	vector <int> llen; // [ls] Length of each linked note in steps
+	vector <int> rlen; // [ls] Real length of each linked note (in croches)
 	vector <int> bli; // [s] Back links from each step to fli2
 	vector <int> uli; // [us] Forward links to start of each unique note column
 	int minl = 0, maxl = 0;

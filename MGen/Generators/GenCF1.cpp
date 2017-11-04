@@ -393,8 +393,8 @@ void CGenCF1::SetRuleParams() {
 	tonic_window = GetRuleParam(rule_set, 196, rsSubName, 1);
 	tonic_max_cp = GetRuleParam(rule_set, 310, rsSubName, 0);
 	tonic_window_cp = GetRuleParam(rule_set, 310, rsSubName, 1);
-	tonic_leap = Interval2Chromatic(GetRuleParam(rule_set, 196, rsSubComment, 1));
-	tonic_leap_weight = Interval2Chromatic(GetRuleParam(rule_set, 196, rsSubComment, 2));
+	tonic_leap = Interval2Chromatic(GetRuleParam(rule_set, 196, rsSubComment, 2));
+	tonic_leap_weight = Interval2Chromatic(GetRuleParam(rule_set, 196, rsSubComment, 3));
 	fis_gis_max = GetRuleParam(rule_set, 199, rsSubName, 0);
 }
 
@@ -1597,6 +1597,7 @@ void CGenCF1::CreateLinks(vector<int> &cc, int multivoice) {
 	int prev_note = -1;
 	int lpos = 0;
 	int l = 0;
+	int npm2 = (svoices == 1 ? 1 : npm);
 	minl = 10000;
 	maxl = 0;
 	// Set first steps in case there is pause
@@ -1605,6 +1606,7 @@ void CGenCF1::CreateLinks(vector<int> &cc, int multivoice) {
 			// Save linked note length
 			if (prev_note != -1) {
 				llen[lpos - 1] = l;
+				rlen[lpos - 1] = l * 8.0 / npm2;
 				if (minl > l) minl = l;
 				if (maxl < l) maxl = l;
 				l = 0;
@@ -2253,6 +2255,7 @@ void CGenCF1::ScanInit() {
 		decc2.resize(c_len);
 		cpos.resize(c_len);
 		llen.resize(c_len);
+		rlen.resize(c_len);
 		cc_order.resize(c_len);
 		dpenalty_step.resize(c_len);
 		cc_id.resize(c_len);
