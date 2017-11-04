@@ -551,7 +551,7 @@ int CGenCP1::SendCP() {
 	// Count additional variables
 	CountOff(step000, step - 1);
 	CountTime(step000, step - 1);
-	UpdateNoteMinMax(step000, step - 1);
+	UpdateNoteMinMax(step000, step - 1, !is_animating);
 	UpdateTempoMinMax(step000, step - 1);
 	mutex_animate.unlock();
 	// Increment cantus_sent only if is not animating

@@ -109,6 +109,7 @@ CGVar::CGVar()
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;
+	nfreq.resize(128);
 }
 
 CGVar::~CGVar()
@@ -1336,7 +1337,7 @@ void CGVar::CopyVoice(int v1, int v2, int step1, int step2, int interval)
 	}
 }
 
-void CGVar::UpdateNoteMinMax(int step1, int step2)
+void CGVar::UpdateNoteMinMax(int step1, int step2, int final_run)
 {
 	for (int i = step1; i <= step2; i++) {
 		for (int v = 0; v < v_cnt; v++) if ((pause[i][v] == 0) && (note[i][v] != 0)) {
@@ -1351,6 +1352,10 @@ void CGVar::UpdateNoteMinMax(int step1, int step2)
 			// Voice minimax does not include show_transpose, because it is used for Adaptation
 			if (ngv_min[v] > note[i][v]) ngv_min[v] = note[i][v];
 			if (ngv_max[v] < note[i][v]) ngv_max[v] = note[i][v];
+			// Count note frequency
+			if (final_run) {
+				++nfreq[note[i][v] + show_transpose[v]];
+			}
 		}
 	}
 }

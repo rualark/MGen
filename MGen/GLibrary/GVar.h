@@ -77,6 +77,7 @@ public:
 
 	// Output
 	vector<float> midifile_out_mul; // [s] Multiply note length with this value when saving
+	vector <int> nfreq; // Note frequency
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
 	vector< vector <unsigned char> > note; // Note values (midi)
 	vector< vector <unsigned short> > len; // Note length in timeslots
@@ -256,7 +257,7 @@ protected:
 	void FixLen(int step1, int step2);
 	void CountTime(int step1, int step2);
 	void CopyVoice(int v1, int v2, int step1, int step2, int interval);
-	void UpdateNoteMinMax(int step1, int step2);
+	void UpdateNoteMinMax(int step1, int step2, int final_run = 1);
 	void UpdateTempoMinMax(int step1, int step2);
 	void AddNote(int pos, int v, char note2, int len2, int dyn2);
 	void FillPause(int start, int length, int v);

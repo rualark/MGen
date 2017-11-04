@@ -179,8 +179,8 @@ public:
 	static int MatchVectors(vector <int> &v1, vector <int> &v2, int i1, int i2);
 	static void vfill(vector<int> &v, int value);
 	static int vsum(vector<int> &v);
-	template<typename T> static int vmax(vector<T> &v);
-	template<typename T> static int vmin(vector<T> &v);
+	template<typename T> static T vmax(vector<T> &v);
+	template<typename T> static T vmin(vector<T> &v);
 
 	static CString HumanFloat(float f);
 
@@ -296,17 +296,17 @@ template<typename T> void CGLib::vpush_front(vector<T> &v, T element, int count)
 }
 
 // Maximum in vector
-template<typename T> int CGLib::vmax(vector<T> &v) {
-	int res = 0;
+template<typename T> T CGLib::vmax(vector<T> &v) {
+	T res = v[0];
 	int x2 = v.size();
-	for (int x = 0; x < x2; ++x) if (v[x] > res) res = v[x];
+	for (int x = 1; x < x2; ++x) if (v[x] > res) res = v[x];
 	return res;
 }
 
 // Minimum in vector
-template<typename T> int CGLib::vmin(vector<T> &v) {
-	int res = INT_MAX;
+template<typename T> T CGLib::vmin(vector<T> &v) {
+	T res = v[0];
 	int x2 = v.size();
-	for (int x = 0; x < x2; ++x) if (v[x] < res) res = v[x];
+	for (int x = 1; x < x2; ++x) if (v[x] < res) res = v[x];
 	return res;
 }

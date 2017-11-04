@@ -2167,6 +2167,7 @@ float CGenCF1::GetTonicWeight(int l_ls, vector<int> &cc, vector<int> &pc) {
 
 int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 	vector<float> tcount;
+	int s9;
 	pm_tw_max = 0;
 	tcount.resize(13);
 	int fire, fired = 0;
@@ -2180,8 +2181,9 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 		s_1 = fli[ls-1];
 		// Decrement for previous tonic note
 		if (ls > tonic_window) {
-			if (!pc[fli[ls - tonic_window]]) {
-				tcount[cc[s] / 12] -= GetTonicWeight(ls - tonic_window, cc, pc);
+			s9 = fli[ls - tonic_window];
+			if (!pc[s9]) {
+				tcount[cc[s9] / 12] -= GetTonicWeight(ls - tonic_window, cc, pc);
 			}
 		}
 		if (!pc[s]) {
@@ -3848,7 +3850,7 @@ int CGenCF1::SendCantus() {
 	// Count additional variables
 	CountOff(step000, step - 1);
 	CountTime(step000, step - 1);
-	UpdateNoteMinMax(step000, step - 1);
+	UpdateNoteMinMax(step000, step - 1, !is_animating);
 	UpdateTempoMinMax(step000, step - 1);
 	// Increment cantus_sent only if is not animating
 	if (!is_animating) ++cantus_sent;
