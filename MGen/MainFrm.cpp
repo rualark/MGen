@@ -112,12 +112,16 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_LY, &CMainFrame::OnButtonLy)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_PDF, &CMainFrame::OnUpdateButtonPdf)
 	ON_COMMAND(ID_BUTTON_PDF, &CMainFrame::OnButtonPdf)
+	ON_COMMAND(ID_CHECK_GRAPH1, &CMainFrame::OnCheckGraph1)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_GRAPH1, &CMainFrame::OnUpdateCheckGraph1)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
 
 CMainFrame::CMainFrame()
 {
+	show_graph.resize(MAX_GRAPH);
+	cur_ui_text.resize(MAX_UI_TEXT);
 	AlgGroups.resize(MAX_ALGO);
 	fill(begin(AlgID), end(AlgID), 0);
 	fill(begin(AlgMFI), end(AlgMFI), 0);
@@ -940,7 +944,7 @@ void CMainFrame::LoadSettings()
 	}
 	ifstream fs;
 	fs.open(fname);
-	CString st, st2, st3;
+	CString st, st2, st3, st4;
 	char pch[2550];
 	int pos = 0;
 	while (fs.good()) {
@@ -991,6 +995,10 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "show_nsr", &show_nsr);
 			CGLib::CheckVar(&st2, &st3, "show_notecolors", &show_notecolors);
 			CGLib::CheckVar(&st2, &st3, "debug_level", &m_debug_level);
+			for (int i = 0; i < MAX_GRAPH; ++i) {
+				st4.Format("show_graph%d", i);
+				CGLib::CheckVar(&st2, &st3, st4.GetBuffer(), &show_graph[i], 0, 1);
+			}
 			CGLib::LoadVar(&st2, &st3, "config", &m_config);
 			//CGLib::LoadVar(&st2, &st3, "midi_program", &midi_program);
 		}
@@ -1053,6 +1061,10 @@ void CMainFrame::SaveSettings()
 	fs << st;
 	st.Format("show_tempo = %d # Set to 1 to show tempo\n", show_tempo);
 	fs << st;
+	for (int i = 0; i < MAX_GRAPH; ++i) {
+		st.Format("show_graph%d = %d # Set to 1 to show graph %d\n", i, show_graph[i], i);
+		fs << st;
+	}
 	st.Format("show_notecolors = %d # Set to 1 to show note colors instead of instrument colors\n", show_notecolors);
 	fs << st;
 	fs << "\n";
@@ -1280,15 +1292,15 @@ void CMainFrame::OnUpdateButtonPlay(CCmdUI *pCmdUI)
 	if ((m_state_gen == 1) && (m_state_play == 0)) pCmdUI->Enable(0);
 	else if (m_state_gen != 0) pCmdUI->Enable(1);
 	else pCmdUI->Enable(0);
-	if (m_state_play > 0) pCmdUI->SetText("Stop Playback");
-	else pCmdUI->SetText("Play");
+	if (m_state_play > 0) UpdateUIText(pCmdUI, 3, "Stop Playback");
+	else UpdateUIText(pCmdUI, 3, "Play");
 }
 
 void CMainFrame::OnUpdateButtonGen(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable();
-	if (m_state_gen == 1) pCmdUI->SetText("Stop Generator");
-	else pCmdUI->SetText("Generate");
+	if (m_state_gen == 1) UpdateUIText(pCmdUI, 2, "Stop Generator");
+	else UpdateUIText(pCmdUI, 2, "Generate");
 }
 
 void CMainFrame::OnButtonPlay()
@@ -1332,8 +1344,8 @@ void CMainFrame::OnComboMidiout()
 void CMainFrame::OnUpdateButtonAlgo(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_state_gen != 1);
-	if (m_algo != -1) pCmdUI->SetText("Algorithm: " + AlgName[m_algo]);
-	else pCmdUI->SetText("Algorithm: click to select");
+	if (m_algo != -1) UpdateUIText(pCmdUI, 0, "Algorithm: " + AlgName[m_algo]);
+	else UpdateUIText(pCmdUI, 0, "Algorithm: click to select");
 }
 
 
@@ -1341,9 +1353,9 @@ void CMainFrame::OnUpdateButtonParams(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(m_state_gen != 1 && m_algo > -1 && m_config != "");
 	if (m_config != "") {
-		pCmdUI->SetText("Config: " + m_config + "                                       ");
+		UpdateUIText(pCmdUI, 1, "Config: " + m_config);
 	}
-	else pCmdUI->SetText("Config:                             ");
+	else UpdateUIText(pCmdUI, 1, "Config: ");
 }
 
 void CMainFrame::OnUpdateButtonEparams(CCmdUI *pCmdUI)
@@ -1637,4 +1649,26 @@ void CMainFrame::OnButtonPdf() {
 	::ShellExecute(GetDesktopWindow()->m_hWnd, "open", 
 		m_dir + "\\" + m_fname + ".pdf",
 		NULL, NULL, SW_SHOWNORMAL);
+}
+
+void CMainFrame::OnCheckGraph1() {
+	show_graph[0] = !show_graph[0];
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckGraph1(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_graph[0]);
+	if (pGen && pGen->graph_name.size()) {
+		UpdateUIText(pCmdUI, 4, pGen->graph_name[0]);
+	}
+	else UpdateUIText(pCmdUI, 4, "Unnamed graph #1");
+}
+
+void CMainFrame::UpdateUIText(CCmdUI *pCmdUI, int UI_id, CString st) {
+	if (cur_ui_text[UI_id] != st) {
+		pCmdUI->SetText(st);
+		cur_ui_text[UI_id] = st;
+		m_wndRibbonBar.ForceRecalcLayout();
+	}
 }

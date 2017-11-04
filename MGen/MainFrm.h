@@ -32,6 +32,7 @@
 #define MAX_VIEW_TIMER 3000
 
 #define MAX_ALGO 100
+#define MAX_UI_TEXT 10
 #define MAX_MIDI_DEVICES 100
 #define DISABLE_PLAYBACK "[DISABLE PLAYBACK]"
 
@@ -79,6 +80,8 @@ public:
 	int show_curve = 1;
 	int show_nsr = 1; // Note scan range
 	int show_notecolors = 1;
+	vector<int> show_graph;
+	vector<CString> cur_ui_text;
 	int warn_memory_usage = 0; // If you already got memory usage warning
 	CString m_config; // Current config
 	CString m_fname; // Current saved results filename
@@ -238,4 +241,7 @@ public:
 	afx_msg void OnButtonLy();
 	afx_msg void OnUpdateButtonPdf(CCmdUI *pCmdUI);
 	afx_msg void OnButtonPdf();
+	afx_msg void OnCheckGraph1();
+	inline void UpdateUIText(CCmdUI * pCmdUI, int UI_id, CString st);
+	afx_msg void OnUpdateCheckGraph1(CCmdUI *pCmdUI);
 };
