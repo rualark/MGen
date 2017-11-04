@@ -109,7 +109,7 @@ CGVar::CGVar()
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;
-	nfreq.resize(128);
+	nfreq.resize(256);
 }
 
 CGVar::~CGVar()
