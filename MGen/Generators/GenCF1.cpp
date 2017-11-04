@@ -2157,7 +2157,7 @@ float CGenCF1::GetTonicWeight(int l_ls, vector<int> &cc, vector<int> &pc) {
 	if (l_ls > 0 && abs(cc[l_s] - cc[fli[l_ls] - 1]) > tonic_leap)
 		tw *= 1.0 + tonic_wei_leap / 100.0;
 	if (svoices > 1) {
-		if (!beat[l_ls]) tw *= 1.0 + tonic_wei_beat / 100.0;
+		if (npm > 1 && !beat[l_ls]) tw *= 1.0 + tonic_wei_beat / 100.0;
 		if (l_ls > 0 && llen[l_ls] > llen[l_ls - 1]) 
 			tw *= 1.0 + tonic_wei_long / 100.0;
 		if (tivl[l_s] == iPco) tw *= 1.0 + tonic_wei_pco / 100.0;
@@ -3800,9 +3800,9 @@ void CGenCF1::LogPmap() {
 	CString fname = "log\\cf-pmap.csv";
 	// Header
 	if (!fileExists(fname)) {
-		AppendLineToFile(fname, GetPmapLogHeader() + "\n");
+		//AppendLineToFile(fname, GetPmapLogHeader() + "\n");
 	}
-	AppendLineToFile(fname, GetPmapLogSt() + "\n");
+	//AppendLineToFile(fname, GetPmapLogSt() + "\n");
 }
 
 int CGenCF1::SendCantus() {

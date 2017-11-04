@@ -428,9 +428,9 @@ void CGenCP1::LogPmap2() {
 	CString fname = "log\\cp-pmap.csv";
 	// Header
 	if (!fileExists(fname)) {
-		AppendLineToFile(fname, GetPmapLogHeader2() + "\n");
+		//AppendLineToFile(fname, GetPmapLogHeader2() + "\n");
 	}
-	AppendLineToFile(fname, GetPmapLogSt2() + "\n");
+	//AppendLineToFile(fname, GetPmapLogSt2() + "\n");
 }
 
 void CGenCP1::SendHarmColorCP(int pos, int v, int chm_id) {

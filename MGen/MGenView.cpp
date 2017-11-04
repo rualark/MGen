@@ -528,7 +528,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 			}
 			// Show graphs
-			if (mf->show_curve) {
+			if (mf->show_graph[0]) {
 				// Find empty space
 				int cur_empty = 0;
 				int max_empty = 0;

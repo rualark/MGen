@@ -5,6 +5,7 @@
 #define MGR_VERSION "1.9" // Version of MGR file format (should change only when format changes)
 #define MAX_VOICE 200
 #define MAX_INSTR 100
+#define MAX_GRAPH 1
 // Number of status lines
 #define STATUS_LINES 9
 // Number of log tabs
