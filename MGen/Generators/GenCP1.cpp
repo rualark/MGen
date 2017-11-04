@@ -531,10 +531,10 @@ int CGenCP1::SendCP() {
 					// Set color
 					color[pos + i][v] = color_noflag;
 					SendRpos(pos, i, v, av, x);
+					SendGraph(pos, i, v, x);
 				}
 				SendNotes(pos, i, v, av, x, acc[av]);
 				SendNgraph(pos, i, v, x);
-				SendGraph(pos, i, v, x);
 				SendComment(pos, v, av, x, i);
 			}
 			pos += cc_len[x];

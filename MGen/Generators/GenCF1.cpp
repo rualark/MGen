@@ -2207,7 +2207,7 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 				}
 			}
 		}
-		tweight[ls] = tcount[cc[s] / 12];
+		tweight[ls] = vmax(tcount);
 	}
 	return 0;
 }

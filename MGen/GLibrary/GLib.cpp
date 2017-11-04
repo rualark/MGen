@@ -918,22 +918,6 @@ int CGLib::vsum(vector<int> &v) {
 	return res;
 }
 
-// Maximum in vector
-int CGLib::vmax(vector<int> &v) {
-	int res = 0;
-	int x2 = v.size();
-	for (int x = 0; x < x2; ++x) if (v[x] > res) res = v[x];
-	return res;
-}
-
-// Minimum in vector
-int CGLib::vmin(vector<int> &v) {
-	int res = INT_MAX;
-	int x2 = v.size();
-	for (int x = 0; x < x2; ++x) if (v[x] < res) res = v[x];
-	return res;
-}
-
 CString CGLib::HumanFloat(float f) {
 	CString st;
 	if (f > 5) st.Format("%.0f", f);
