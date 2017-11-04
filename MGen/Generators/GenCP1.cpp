@@ -534,6 +534,7 @@ int CGenCP1::SendCP() {
 				}
 				SendNotes(pos, i, v, av, x, acc[av]);
 				SendNgraph(pos, i, v, x);
+				SendGraph(pos, i, v, x);
 				SendComment(pos, v, av, x, i);
 			}
 			pos += cc_len[x];

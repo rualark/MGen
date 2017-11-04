@@ -182,9 +182,9 @@ public:
 	static int vmax(vector<int> &v);
 	static int vmin(vector<int> &v);
 
-	CString HumanFloat(float f);
+	static CString HumanFloat(float f);
 
-	CString HumanFloatPrecision(float f);
+	static CString HumanFloatPrecision(float f);
 
 protected:
 	// Mathematics

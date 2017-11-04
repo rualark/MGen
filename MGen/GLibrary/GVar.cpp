@@ -161,6 +161,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	note.resize(size);
 	midifile_out_mul.resize(size, 1);
 	ngraph.resize(size, vector<vector<float> >(vsize, vector<float>(ngraph_size)));
+	graph.resize(size, vector<vector<float> >(vsize, vector<float>(graph_size)));
 	len.resize(size);
 	coff.resize(size);
 	poff.resize(size);
@@ -202,6 +203,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		pause[i].resize(vsize);
 		note[i].resize(vsize);
 		ngraph[i].resize(vsize);
+		graph[i].resize(vsize);
 		len[i].resize(vsize);
 		coff[i].resize(vsize);
 		poff[i].resize(vsize);

@@ -114,26 +114,6 @@ protected:
 	int cp_culm = 0; // Position of counterpoint culmination
 	int warn_wrong_fn = 0; // If warning of wrong fn has fired
 
-	vector<int> ivl; // [s] Diatonic interval between voices
-	vector<int> civl; // [s] Chromatic interval between voices
-	vector<int> ivlc; // [s] Diatonic interval between voices (class)
-	vector<int> civlc; // [s] Chromatic interval between voices (class)
-	vector<int> tivl; // [s] Type of interval between voices
-	vector<int> motion; // [s] Melody motion type
-	vector<int> beat; // [ls] Beat type for each fli2: 0 = downbeat, 1 = beat 3
-	vector<int> sus; // [ls] Note suspension flag (when above zero, links to first cantus-changing step)
-	vector<int> mli; // [ms] Forward links to first steps of each measure
-	vector<int> bmli; // [s] Backward links to measures from steps
-	vector<int> cfli; // [cfs] Forward links to each cf note
-	vector<int> hli; // Forward links to first notes of each harmonic change
-	vector<int> hbcc; // Bass note of each harmony (chromatic)
-	vector<int> hbc; // Bass note of each harmony (diatonic)
-	vector<int> rposb; // [ls] Rhythm position types for fli (basic without patterns)
-	vector<int> rposf; // [ls] Rhythm position types for fli (with fixed patterns)
-	vector<int> rpos; // [ls] Rhythm position types for fli
-	vector<int> pat; // [ls] Pattern (cambiata, dnt...) for fli
-	vector<int> pat_state; // [ls] Pattern (cambiata, dnt...) for fli state: 0 - not applied, 1 - fixed, 2,3 - variants
-
 	// Cantus
 	int cf_nmin = 0; // Minimum note in cantus (chromatic)
 	int cf_nmax = 0; // Maximum note in cantus (chromatic)

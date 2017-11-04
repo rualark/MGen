@@ -239,6 +239,8 @@ protected:
 	inline int FailLeapFill(vector<int>& c, int late_leap, int leap_prev, int child_leap);
 	inline int FailLeapMDC(vector<int>& leap, vector<int>& c);
 	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline void PrepareTonicWeight();
+	inline float GetTonicWeight(int l_ls, vector<int>& cc, vector<int>& pc);
 	inline int FailTonic(vector<int> &cc, vector<int>& pc);
 	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailGlobalFill(vector<int>& c, vector<int>& nstat2);
@@ -293,6 +295,7 @@ protected:
 	inline void MakeMacc(vector<int>& cc);
 	inline void InterpolateNgraph(int v, int step0, int step);
 	void SendNgraph(int pos, int i, int v, int x);
+	void SendGraph(int pos, int i, int v, int x);
 	void SendLyrics(int pos, int v, int av, int x);
 	void SendComment(int pos, int v, int av, int x, int i);
 	void TransposeCantusBack();
@@ -389,10 +392,6 @@ protected:
 	int show_harmony_bass = 1; // 0 = do not show bass, 1 = Show harmony bass for higher cantus only, 2 = always show harmony bass
 	int fill_pre3_notes = 5; // How many notes to search for fill preparation for compensation to 3rd
 	int fill_pre4_notes = 5; // How many notes to search for fill preparation for compensation to 4th
-	float tonic1_wei = 100; // Weight of whole tonic
-	float tonic2_wei = 80; // Weight of whole tonic
-	float tonic4_wei = 60; // Weight of whole tonic
-	float tonic8_wei = 40; // Weight of whole tonic
 
 	int log_pmap = 0; // Set to 1 to enable logging parameter map to log folder. Needs canculate_stat to work correctly
 	int show_allowed_flags = 0; // Show even allowed flags(bold in rules.xlsm)
@@ -451,8 +450,14 @@ protected:
 	int tonic_max = 1; // Maximum number of tonic notes that can be contained in tonic window
 	int tonic_window_cp = 9; // Number of harmonies that are searched for number of tonic chords
 	int tonic_max_cp = 1; // Maximum number of tonic chords that can be contained in tonic window
-	int tonic_leap = 4; // Maximum allowed leap to tonic (chromatic)
-	int tonic_leap_weight = 2; // Weight of leap to tonic
+
+	int tonic_leap = 4; // Maximum allowed leap to tonic (chromatic) without weight change
+	int tonic_wei_leap = 50; // Weight of leap to tonic
+	int tonic_wei_pco = 30; // Weight of tonic perfect consonance
+	int tonic_wei_beat = 30; // Weight of downbeat tonic
+	int tonic_wei_long = 30; // Weight of tonic longer than left neighbor
+	int tonic_wei_len = 20; // Tonic length decrease two times decreases weight by X
+
 	int thirds_ignored = 1; // Number of thirds ignored for consecutive leaps rule
 	int fis_gis_max = 3; // Maximum allowed distance between F# and G#
 	int dev_late2 = 3; // Maximum note count to consider non-late leap compensation deviation to 2nd
@@ -467,6 +472,7 @@ protected:
 	vector <int> rlen; // [ls] Real length of each linked note (in croches)
 	vector <int> bli; // [s] Back links from each step to fli2
 	vector <int> uli; // [us] Forward links to start of each unique note column
+	vector <float> tweight; // [ls] Tonic weight for each note
 	int minl = 0, maxl = 0;
 	int fli_size; // Size of filled fli2 vector
 	// Random SWA
@@ -517,11 +523,13 @@ protected:
 	int pm_leaps, pm_smooth, pm_leaps2, pm_leaps3;
 	int pm_leapsum;
 	int pm_win_leaps, pm_win_leapnotes;
+	float pm_tw_max; // Maximum tonic weight
 
   // Local
 	// Queues for calculating scan speed and displaying in status
 	int svoices = 1; // Scan voices
 	CString pmap;
+	vector<float> tonic_weight; // Vector of tonic weights based on length
 	deque<long long> q_scan_ms;
 	deque<long long> q_scan_cycle;
 	int step00 = 0; // Start of source cantus/counterpoint in case of SAS emulation
@@ -758,4 +766,25 @@ protected:
 	inline void CheckReadyPersist(int id);
 	inline void CheckReadyPersist(int id, int id2);
 	inline void CheckReadyPersist(int id, int id2, int id3);
+
+	// CP1
+	vector<int> ivl; // [s] Diatonic interval between voices
+	vector<int> civl; // [s] Chromatic interval between voices
+	vector<int> ivlc; // [s] Diatonic interval between voices (class)
+	vector<int> civlc; // [s] Chromatic interval between voices (class)
+	vector<int> tivl; // [s] Type of interval between voices
+	vector<int> motion; // [s] Melody motion type
+	vector<int> beat; // [ls] Beat type for each fli2: 0 = downbeat, 1 = beat 3
+	vector<int> sus; // [ls] Note suspension flag (when above zero, links to first cantus-changing step)
+	vector<int> mli; // [ms] Forward links to first steps of each measure
+	vector<int> bmli; // [s] Backward links to measures from steps
+	vector<int> cfli; // [cfs] Forward links to each cf note
+	vector<int> hli; // Forward links to first notes of each harmonic change
+	vector<int> hbcc; // Bass note of each harmony (chromatic)
+	vector<int> hbc; // Bass note of each harmony (diatonic)
+	vector<int> rposb; // [ls] Rhythm position types for fli (basic without patterns)
+	vector<int> rposf; // [ls] Rhythm position types for fli (with fixed patterns)
+	vector<int> rpos; // [ls] Rhythm position types for fli
+	vector<int> pat; // [ls] Pattern (cambiata, dnt...) for fli
+	vector<int> pat_state; // [ls] Pattern (cambiata, dnt...) for fli state: 0 - not applied, 1 - fixed, 2,3 - variants
 };

@@ -90,8 +90,11 @@ public:
 	vector< vector <unsigned char> > vib; // Vibrato intensity
 	vector< vector <unsigned char> > vibf; // Vibrato frequency
 	vector< vector <unsigned char> > artic; // Velocity of midi notes
-	vector< vector <vector<float>> > ngraph; // Graph using chromatic scale
+	vector< vector <vector<float>> > ngraph; // [s][v][] Graph using chromatic scale
+	vector< vector <vector<float>> > graph; // [s][v][] Graph using arbitrary scale
+	vector<CString> graph_name; // [] Graph name
 	int ngraph_size = 0; // Number of ngraphs
+	int graph_size = 0; // Number of graphs
 	vector< vector <int> > mel_id; // [i][v] Link from note step to melody id
 	vector< vector <unsigned char> > lining; // Visual lining pattern
 	vector< vector <CString> > mark; // Mark on note
