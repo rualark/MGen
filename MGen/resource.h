@@ -132,13 +132,16 @@
 #define ID_BUTTON2                      32844
 #define ID_BUTTON_LY                    32844
 #define ID_BUTTON_FOLDER                32845
+#define ID_CHECK3                       32846
+#define ID_CHECK_GRAPH1                 32846
+#define ID_CHECK4                       32847
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32846
+#define _APS_NEXT_COMMAND_VALUE         32847
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
