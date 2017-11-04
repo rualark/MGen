@@ -527,6 +527,21 @@ void CMGenView::OnDraw(CDC* pDC)
 					}
 				}
 			}
+			// Show graphs
+			if (mf->show_curve) {
+				for (int v = 0; v < pGen->v_cnt; v++) {
+					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+					Pen pen(ncolor, 1);
+					for (int n = 0; n < pGen->graph_size; ++n) {
+						for (int i = step1t; i < step2t; i++) if (i > 0 && pGen->graph[i][v][n] > -1 && pGen->graph[i - 1][v][n] > -1) {
+							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
+								(int)((ClientRect.top + Y_HEADER + y_start) / 2 - pGen->graph[i][v][n] * 10),
+								X_FIELD + (i - 1) * nwidth + nwidth / 2,
+								(int)((ClientRect.top + Y_HEADER + y_start) / 2 - pGen->graph[i - 1][v][n] * 10));
+						}
+					}
+				}
+			}
 			// Show tempo
 			if (mf->show_tempo) {
 				for (int i = step1t; i < step2t; i++) if (i > 0) {
