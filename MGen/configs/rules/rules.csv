@@ -117,7 +117,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;36;60;Melody;Repeats;Notes repeat;3 sym. in 4;0;;Symmetric repeat of X notes within Y notes;1;;;;;;
 1;72;60;Melody;Repeats;Notes repeat;5 in 7;0;;Repeat of X notes within Y notes;;;;;;;
 1;73;60;Melody;Repeats;Notes repeat;7 in 10;0;;Repeat of X notes within Y notes;;;;;;;
-1;196;20;Melody;Repeats;Tonic note;>3 within 9;0;;More than X tonic note equivalents within Y notes (except first and last tonic). At border without tonic - one more tonic is allowed.  Weights:  Leap >M3 to tonic adds 50% Note length decrease two times decreases 20%. Downbeat adds 30% Longer than previous adds 20% Perfect consonance adds 10%;;;;;;;
+1;196;20;Melody;Repeats;Tonic note;>2 within 9;0;;More than X tonic note equivalents within Y notes (except first and last tonic). At border without tonic - one more tonic is allowed.  Weights:  Leap >M3 to tonic adds 50% Note length decrease two times decreases 20%. Downbeat adds 30% Longer than previous adds 20% Perfect consonance adds 10%;;;;;;;
 1;10;0;Melody;Repeats;Note stagnation;>3 in 7 notes;-1;Same note repeats more than X times during stag_note_steps steps;Rualark Rualark: ;1;;;;;;
 1;39;60;Melody;Repeats;Note stagnation;>4 in 9 notes;0;Same note repeats more than X times during stag_note_steps steps;;;;;;;;
 1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;;;;;;;;
