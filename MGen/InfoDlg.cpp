@@ -133,6 +133,11 @@ BOOL CInfoDlg::OnInitDialog()
 		}
 		if (st2 != "") m_info.AddText("MeloCurve: " + st2 + "\n", RGB(0, 0, 0), 0);
 
+		for (int n = 0; n < pGen->graph_name.size(); ++n) {
+			m_info.AddText(pGen->graph_name[n] + ": " + 
+				CGLib::HumanFloat(pGen->graph[i][mv][n]) + "\n", RGB(0, 0, 0), 0);
+		}
+
 		st.Format("Lengroup: %d\n", pGen->lengroup[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 170), 0);
 		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);
