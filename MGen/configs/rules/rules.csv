@@ -8,7 +8,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;120;0;Melody;Compensated leap;Compensation deviation to 3rd;3rd;-1;;;;;999;;;;
 1;121;0;Melody;Compensated leap;Compensation deviation to 3rd;4th;-1;;;;;999;;;;
 1;122;60;Melody;Compensated leap;Compensation deviation to 3rd;5th;-1;;;;;999;;;;
-1;123;100;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;;;;999;;;;
+1;123;60;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;Possible in species 3,5;;;999;;;;
 1;192;60;Melody;Compensated leap;Compensation deviation to 3rd;late >3;0;;Deviation after compensation note X;;;;;;;
 1;53;0;Melody;Compensated leap;Compensation after 3rd;3rd;-1;;;;;;;;;
 1;54;10;Melody;Compensated leap;Compensation after 3rd;4th;-1;;;;;;;;;
@@ -39,7 +39,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;118;60;Melody;Uncompensated leap;Uncompensated child leap;5th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;146,122,44;;
 1;119;100;Melody;Uncompensated leap;Uncompensated child leap;>5th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;147,123,45;;
 1;124;0;Melody;Uncompensated leap;Uncompensated leap;3rd;-1;If no other uncompensated rules worked.;;;;;;144,120,42;;
-1;125;0;Melody;Uncompensated leap;Uncompensated leap;4th;0;If no other uncompensated rules worked.;;;;;;145,121,43;;
+1;125;0;Melody;Uncompensated leap;Uncompensated leap;4th;0;If no other uncompensated rules worked.;Possible in cantus;;;;;145,121,43;;
 1;126;60;Melody;Uncompensated leap;Uncompensated leap;5th;0;If no other uncompensated rules worked.;;;;;;146,122,44;;
 1;127;100;Melody;Uncompensated leap;Uncompensated leap;>5th;0;If no other uncompensated rules worked.;;;;;;147,123,45;;
 1;1;0;Melody;Uncompensated leap;Uncompensated leap;start 3rd;-1;If no other uncompensated rules worked.;;;1;;;;;
