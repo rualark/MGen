@@ -60,6 +60,7 @@ show_min_severity = 0 # Minimum severity to highlight note
 
 # Lilypond parameters
 ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note
+ly_rpos = 1 # 0 - do not show rpos, 1 - show rpos
 
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
