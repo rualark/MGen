@@ -14,8 +14,8 @@ show_vel = 1 # Set to 1 to show note velocity using alpha
 show_curve = 1 # Set to 1 to show melody curves (MeloCurve)
 show_nsr = 1 # Set to 1 to show note scan range
 show_tempo = 0 # Set to 1 to show tempo
-show_graph0 = 0 # Set to 1 to show graph 0
-show_graph1 = 0 # Set to 1 to show graph 1
+show_graph0 = 1 # Set to 1 to show graph 0
+show_graph1 = 1 # Set to 1 to show graph 1
 show_graph2 = 1 # Set to 1 to show graph 2
 show_notecolors = 1 # Set to 1 to show note colors instead of instrument colors
 
