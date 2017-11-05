@@ -284,7 +284,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		}
 		fs << ev + GetLyLen(la[lc]);
 		if (lc < la.size() - 1 && ev != "r") fs << "~";
-		fs << " ";
+		fs << "\n";
 		mv = v / 2 + !(v % 2);
 		if (midifile_export_marks && !mark[i][mv].IsEmpty()) {
 			// Search for conflicting harmonies
@@ -305,11 +305,16 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 					}
 				}
 				else {
+					// Replace dominant symbol
+					if (st[0] == 'D') {
+						st = "\\concat { \\char ##x00D0 \"" + st.Right(st.GetLength() - 1) + "\" } ";
+					}
+					else st = "\"" + st + "\"";
 					//if (found) st = ", " + st;
 					found = 1;
 					fs << "\\tiny \\on-color #(rgb-color ";
 					fs << GetLyMarkColor(mark_color[i][mv]);
-					fs << ") \\pad-markup #0.4 \"" << st << "\" ";
+					fs << ") \\pad-markup #0.4 " << st << " ";
 				}
 			}
 			fs << "}\n";
