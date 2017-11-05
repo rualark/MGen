@@ -94,6 +94,8 @@ public:
 	vector< vector <vector<float>> > ngraph; // [s][v][] Graph using chromatic scale
 	vector< vector <vector<float>> > graph; // [s][v][] Graph using arbitrary scale
 	vector<CString> graph_name; // [] Graph name
+	vector<float> graph_max; // [] Maximum graph value
+	vector<float> graph_scale; // [] Maximum graph scale (semitones per unit)
 	int ngraph_size = 0; // Number of ngraphs
 	int graph_size = 0; // Number of graphs
 	vector< vector <int> > mel_id; // [i][v] Link from note step to melody id
@@ -261,6 +263,7 @@ protected:
 	void UpdateTempoMinMax(int step1, int step2);
 	void AddNote(int pos, int v, char note2, int len2, int dyn2);
 	void FillPause(int start, int length, int v);
+	void RegisterGraph(CString name, float scale);
 	inline void ResizeVectors(int size, int vsize = -1);
 
 	DWORD color_noflag; // Color for notes with no flags

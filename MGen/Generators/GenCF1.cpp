@@ -12,11 +12,9 @@ CGenCF1::CGenCF1()
 	av_cnt = 1;
 	v_cnt = 1;
 	ngraph_size = 3;
-	graph_size = 3;
-	graph_name.resize(graph_size);
-	graph_name[0] = "Tonic rating";
-	graph_name[1] = "Leaps rating";
-	graph_name[2] = "Leaped rating";
+	RegisterGraph("Tonic rating", 2);
+	RegisterGraph("Leaps rating", 1);
+	RegisterGraph("Leaped rating", 0.2);
 	cpv = 0;
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_RULES);
@@ -3484,8 +3482,8 @@ void CGenCF1::SendNgraph(int pos, int i, int v, int x) {
 
 void CGenCF1::SendGraph(int pos, int i, int v, int x) {
 	graph[pos + i][v][0] = tweight[bli[x]];
-	graph[pos + i][v][1] = g_leaps[bli[x]] / 3.0;
-	graph[pos + i][v][2] = g_leaped[bli[x]] / 15.0;
+	graph[pos + i][v][1] = g_leaps[bli[x]];
+	graph[pos + i][v][2] = g_leaped[bli[x]];
 }
 
 void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
