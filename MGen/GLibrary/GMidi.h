@@ -220,6 +220,7 @@ public:
 	void SplitLyNote(int pos, int le, vector<int>& la);
 	void SendLyEvent(ofstream & fs, int pos, CString ev, int le, int i, int v);
 	CString GetLyColor(DWORD col);
+	CString GetLyMarkColor(DWORD col);
 	void SendLyNoteColor(ofstream & fs, DWORD col);
 	void SendLyFlagColor(ofstream & fs, DWORD col);
 	void SaveLyComments(CString & com_st, int i, int v, int vm_cnt, int nnum, int pos);
@@ -264,6 +265,7 @@ public:
 
 	// Lilypond
 	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
+	int ly_rpos = 1; // 0 - do not show rpos, 1 - show rpos
 
 	// Midi files
 	int midifile_loaded = 0; // If MIDI was loaded from file

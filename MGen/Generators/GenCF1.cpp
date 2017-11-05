@@ -552,6 +552,7 @@ int CGenCF1::SelectRuleSet(int rs) {
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	SET_READY_PERSIST(DR_Config);
+	CheckVar(sN, sV, "ly_rpos", &ly_rpos, 0, 1); 
 	CheckVar(sN, sV, "show_harmony_bass", &show_harmony_bass, 0, 2);
 	CheckVar(sN, sV, "log_pmap", &log_pmap, 0, 1);
 	CheckVar(sN, sV, "show_correct_hatch", &show_correct_hatch, 0, 1);

@@ -286,6 +286,17 @@ CString CGMidi::GetLyColor(DWORD col) {
 	return st;
 }
 
+CString CGMidi::GetLyMarkColor(DWORD col) {
+	if (col == color_noflag) return "1 1 1";
+	CString st;
+	if (GetGreen(col) == GetRed(col) && GetRed(col) == GetBlue(col)) return "1 1 1";
+	st.Format("%.3f %.3f %.3f",
+		Lighten(GetRed(col), 4) / 255.0, 
+		Lighten(GetGreen(col) * 1.5, 4) / 255.0, 
+		Lighten(GetBlue(col), 4) / 255.0);
+	return st;
+}
+
 void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
 	fs << "\n    \\override NoteHead.color = #(rgb-color " << GetLyColor(col) << ") ";
 	fs << "\n    \\override Stem.color = #(rgb-color " << GetLyColor(col) << ") ";
@@ -436,11 +447,24 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 					if (!mark[i + s][v].IsEmpty()) {
 						CString st = mark[i + s][v];
 						st.Replace("\n", "");
-						if (found) st = ", " + st;
-						found = 1;
-						fs << "\\tiny \\with-color #(rgb-color ";
-						fs << GetLyColor(mark_color[i + s][v]);
-						fs << ") \"" << st << "\" ";
+						if (st == "PD" || st == "CA" || st == "DN") {
+							if (!ly_rpos) continue;
+							if (GetGreen(mark_color[i + s][v]) == GetRed(mark_color[i + s][v])) {
+								fs << "\\teeny \\with-color #(x11-color 'LightGrey) ";
+								fs << "\"" << st << "\" ";
+							}
+							else {
+								fs << "\\teeny ";
+								fs << "\"" << st << "\" ";
+							}
+						}
+						else {
+							if (found) st = ", " + st;
+							found = 1;
+							fs << "\\tiny \\on-color #(rgb-color ";
+							fs << GetLyMarkColor(mark_color[i + s][v]);
+							fs << ") \\pad-markup #0.4 \"" << st << "\" ";
+						}
 					}
 				}
 				fs << "}\n";

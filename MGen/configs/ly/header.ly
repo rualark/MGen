@@ -32,6 +32,15 @@ speakOff = {
   \revert Flag.stencil
 }
 
+#(define-markup-command (on-color layout props color arg) (color? markup?)
+   (let* ((stencil (interpret-markup layout props arg))
+          (X-ext (ly:stencil-extent stencil X))
+          (Y-ext (ly:stencil-extent stencil Y)))
+     (ly:stencil-add (ly:make-stencil
+                      (list 'color color
+                        (ly:stencil-expr (ly:round-filled-box X-ext Y-ext 0))
+                        X-ext Y-ext)) stencil)))
+
 \header {
   subtitle = "$TITLE$"
 }
