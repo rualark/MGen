@@ -528,30 +528,33 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 			}
 			// Show graphs
+			int cur_empty = 0;
+			int max_empty = 0;
+			int best_pos = ng_min2;
 			for (int n = 0; n < pGen->graph_size; ++n) if (mf->show_graph[n]) {
 				// Find empty space
-				int cur_empty = 0;
-				int max_empty = 0;
-				int best_pos = ng_min2;
-				for (int i = ng_min2; i <= ng_max2; i++) {
-					if (!pGen->nfreq[i]) ++cur_empty;
-					else cur_empty = 0;
-					if (cur_empty > max_empty) {
-						max_empty = cur_empty;
-						best_pos = i - cur_empty + 1;
+				if (!max_empty) {
+					for (int i = ng_min2; i <= ng_max2; i++) {
+						if (!pGen->nfreq[i]) ++cur_empty;
+						else cur_empty = 0;
+						if (cur_empty > max_empty) {
+							max_empty = cur_empty;
+							best_pos = i - cur_empty + 1;
+						}
 					}
-					//if (cur_empty > 10) break;
 				}
-				if (cur_empty > ng_min2) ++cur_empty;
+				// Scale
+				float scale = min(max_empty / pGen->graph_max[n], pGen->graph_scale[n]);
 				for (int v = 0; v < pGen->v_cnt; v++) {
 					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 					Pen pen(ncolor, 1);
+					pen.SetDashStyle(DashStyleDash);
 					for (int i = step1t; i < step2t; i++) 
 						if (i > 0 && (pGen->graph[i][v][n] > -1 && pGen->graph[i - 1][v][n] > -1)) {
 							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
-								(int)(y_start - (best_pos - ng_min2) * nheight - pGen->graph[i][v][n] * 2.0 * nheight),
+								(int)(y_start - (best_pos - ng_min2) * nheight - pGen->graph[i][v][n] * scale * nheight),
 								X_FIELD + (i - 1) * nwidth + nwidth / 2,
-								(int)(y_start - (best_pos - ng_min2) * nheight - pGen->graph[i - 1][v][n] * 2.0 * nheight));
+								(int)(y_start - (best_pos - ng_min2) * nheight - pGen->graph[i - 1][v][n] * scale * nheight));
 						}
 				}
 			}
