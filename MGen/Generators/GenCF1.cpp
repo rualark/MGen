@@ -12,9 +12,11 @@ CGenCF1::CGenCF1()
 	av_cnt = 1;
 	v_cnt = 1;
 	ngraph_size = 3;
-	graph_size = 1;
+	graph_size = 3;
 	graph_name.resize(graph_size);
-	graph_name[0] = "Tonic weight";
+	graph_name[0] = "Tonic rating";
+	graph_name[1] = "Leaps rating";
+	graph_name[2] = "Leaped rating";
 	cpv = 0;
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_RULES);
@@ -1318,6 +1320,8 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 	pm_win_leaps = 0;
 	pm_win_leapnotes = 0;
 	int leap_sum_i = 0;
+	g_leaps[fli_size - 1] = 0;
+	g_leaped[fli_size - 1] = 0;
 	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s = fli2[ls];
 		s1 = fli2[ls + 1];
@@ -1340,6 +1344,9 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 			pm_win_leapnotes = leaped_sum;
 			leap_sum_i = s;
 		}
+		// Record for graph
+		g_leaps[ls] = leap_sum;
+		g_leaped[ls] = leaped_sum;
 		// Calculate penalty 
 		if (leap_sum > mleaps) {
 			if (!accept[flag1]) ++fpenalty[flag1];
@@ -2293,6 +2300,8 @@ void CGenCF1::ScanInit() {
 		fli.resize(c_len);
 		fli2.resize(c_len);
 		tweight.resize(c_len);
+		g_leaps.resize(c_len);
+		g_leaped.resize(c_len);
 		macc.resize(c_len);
 		macc2.resize(c_len);
 		decc.resize(c_len);
@@ -3475,6 +3484,8 @@ void CGenCF1::SendNgraph(int pos, int i, int v, int x) {
 
 void CGenCF1::SendGraph(int pos, int i, int v, int x) {
 	graph[pos + i][v][0] = tweight[bli[x]];
+	graph[pos + i][v][1] = g_leaps[bli[x]] / 3.0;
+	graph[pos + i][v][2] = g_leaped[bli[x]] / 15.0;
 }
 
 void CGenCF1::SendLyrics(int pos, int v, int av, int x) {

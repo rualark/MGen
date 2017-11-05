@@ -473,6 +473,8 @@ protected:
 	vector <int> bli; // [s] Back links from each step to fli2
 	vector <int> uli; // [us] Forward links to start of each unique note column
 	vector <float> tweight; // [ls] Tonic weight for each note
+	vector <int> g_leaps; // [s] Number or leaps in window
+	vector <int> g_leaped; // [s] Number or leaped notes in window
 	int minl = 0, maxl = 0;
 	int fli_size; // Size of filled fli2 vector
 	// Random SWA

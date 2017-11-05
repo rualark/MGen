@@ -244,4 +244,8 @@ public:
 	afx_msg void OnCheckGraph1();
 	inline void UpdateUIText(CCmdUI * pCmdUI, int UI_id, CString st);
 	afx_msg void OnUpdateCheckGraph1(CCmdUI *pCmdUI);
+	afx_msg void OnCheckGraph2();
+	afx_msg void OnUpdateCheckGraph2(CCmdUI *pCmdUI);
+	afx_msg void OnCheckGraph3();
+	afx_msg void OnUpdateCheckGraph3(CCmdUI *pCmdUI);
 };
