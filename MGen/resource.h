@@ -135,6 +135,8 @@
 #define ID_CHECK3                       32846
 #define ID_CHECK_GRAPH1                 32846
 #define ID_CHECK4                       32847
+#define ID_CHECK_GRAPH2                 32848
+#define ID_CHECK_GRAPH3                 32849
 
 // Next default values for new objects
 // 

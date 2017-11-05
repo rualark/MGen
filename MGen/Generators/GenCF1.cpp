@@ -3528,7 +3528,8 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 				ccolor[pos][v].push_back(flag_color[severity[fl]]);
 			}
 			// Set note color if this is maximum flag severity
-			if (severity[fl] > current_severity && severity[fl] >= show_min_severity) {
+			if (severity[fl] > current_severity && severity[fl] >= show_min_severity
+				&& RuleGroup[fl] != "Harmony") {
 				current_severity = severity[fl];
 				color[pos + i][v] = flag_color[severity[fl]];
 			}

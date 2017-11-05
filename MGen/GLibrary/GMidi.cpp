@@ -252,6 +252,7 @@ void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 
 // Send note or pause
 void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v) {
+	int mv;
 	// Length array
 	vector<int> la;
 	SplitLyNote(pos, le, la);
@@ -272,6 +273,37 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		fs << ev + GetLyLen(la[lc]);
 		if (lc < la.size() - 1 && ev != "r") fs << "~";
 		fs << " ";
+		mv = v / 2 + !(v % 2);
+		if (midifile_export_marks && !mark[i][mv].IsEmpty()) {
+			// Search for conflicting harmonies
+			fs << "_\\markup{ ";
+			int found = 0;
+			for (int s = 0; s < len[i][v]; ++s) {
+				if (!mark[i + s][mv].IsEmpty()) {
+					CString st = mark[i + s][mv];
+					st.Replace("\n", "");
+					if (st == "PD" || st == "CA" || st == "DN") {
+						if (!ly_rpos) continue;
+						if (GetGreen(mark_color[i + s][mv]) == GetRed(mark_color[i + s][mv])) {
+							fs << "\\teeny \\with-color #(x11-color 'LightGrey) ";
+							fs << "\"" << st << "\" ";
+						}
+						else {
+							fs << "\\teeny ";
+							fs << "\"" << st << "\" ";
+						}
+					}
+					else {
+						//if (found) st = ", " + st;
+						found = 1;
+						fs << "\\tiny \\on-color #(rgb-color ";
+						fs << GetLyMarkColor(mark_color[i + s][mv]);
+						fs << ") \\pad-markup #0.4 \"" << st << "\" ";
+					}
+				}
+			}
+			fs << "}\n";
+		}
 		if (i > -1) i += la[lc] / midifile_out_mul[i];
 	}
 }
@@ -370,7 +402,7 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	vector<CString> sv;
 	CString comm_st, clef, key, key_visual;
-	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum, pause_pos;
+	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum, pause_pos, pause_i;
 	float mul;
 	// Voice melody min pitch
 	vector<int> vm_min;
@@ -426,55 +458,24 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 			le = mul * len[i][v];
 			if (pause[i][v]) {
 				pause_accum += le;
-				if (pause_pos == -1) pause_pos = pos;
+				if (pause_pos == -1) {
+					pause_pos = pos;
+					pause_i = i;
+				}
 			}
 			else {
-				if (pause_accum) {
-					SendLyEvent(fs, pause_pos, "r", pause_accum, 0, 0);
-					pause_accum = 0;
-					pause_pos = -1;
-				}
 				if (ly_flag_style == 1) SendLyNoteColor(fs, color[i][v]);
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 				SaveLyComments(comm_st, i, v, vm_cnt, nnum, pos);
 				if (ly_flag_style == 2) SendLyFlagColor(fs, color[i][v]);
 			}
-			if (midifile_export_marks && !mark[i][v].IsEmpty()) {
-				// Search for conflicting harmonies
-				fs << "_\\markup{ ";
-				int found = 0;
-				for (int s = 0; s < len[i][v]; ++s) {
-					if (!mark[i + s][v].IsEmpty()) {
-						CString st = mark[i + s][v];
-						st.Replace("\n", "");
-						if (st == "PD" || st == "CA" || st == "DN") {
-							if (!ly_rpos) continue;
-							if (GetGreen(mark_color[i + s][v]) == GetRed(mark_color[i + s][v])) {
-								fs << "\\teeny \\with-color #(x11-color 'LightGrey) ";
-								fs << "\"" << st << "\" ";
-							}
-							else {
-								fs << "\\teeny ";
-								fs << "\"" << st << "\" ";
-							}
-						}
-						else {
-							if (found) st = ", " + st;
-							found = 1;
-							fs << "\\tiny \\on-color #(rgb-color ";
-							fs << GetLyMarkColor(mark_color[i + s][v]);
-							fs << ") \\pad-markup #0.4 \"" << st << "\" ";
-						}
-					}
-				}
-				fs << "}\n";
+			if (pause_accum && (i == step2 - 1 || !pause[i + 1][v])) {
+				SendLyEvent(fs, pause_pos, "r", pause_accum, pause_i, v);
+				pause_accum = 0;
+				pause_pos = -1;
 			}
 			if (noff[i][v] == 0) break;
 			i += noff[i][v] - 1;
-		}
-		if (pause_accum) {
-			SendLyEvent(fs, pos, "r", pause_accum, 0, 0);
-			pause_accum = 0;
 		}
 		// Finish with pause
 		if ((pos + le) % 8) {
