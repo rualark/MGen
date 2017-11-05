@@ -114,6 +114,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_BUTTON_PDF, &CMainFrame::OnButtonPdf)
 	ON_COMMAND(ID_CHECK_GRAPH1, &CMainFrame::OnCheckGraph1)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_GRAPH1, &CMainFrame::OnUpdateCheckGraph1)
+	ON_COMMAND(ID_CHECK_GRAPH2, &CMainFrame::OnCheckGraph2)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_GRAPH2, &CMainFrame::OnUpdateCheckGraph2)
+	ON_COMMAND(ID_CHECK_GRAPH3, &CMainFrame::OnCheckGraph3)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_GRAPH3, &CMainFrame::OnUpdateCheckGraph3)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1671,4 +1675,32 @@ void CMainFrame::UpdateUIText(CCmdUI *pCmdUI, int UI_id, CString st) {
 		cur_ui_text[UI_id] = st;
 		m_wndRibbonBar.ForceRecalcLayout();
 	}
+}
+
+void CMainFrame::OnCheckGraph2() {
+	show_graph[1] = !show_graph[1];
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckGraph2(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_graph[1]);
+	if (pGen && pGen->graph_name.size() > 1) {
+		UpdateUIText(pCmdUI, 5, pGen->graph_name[1]);
+	}
+	else UpdateUIText(pCmdUI, 5, "Unnamed graph #2");
+}
+
+void CMainFrame::OnCheckGraph3() {
+	show_graph[2] = !show_graph[2];
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckGraph3(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_graph[2]);
+	if (pGen && pGen->graph_name.size() > 2) {
+		UpdateUIText(pCmdUI, 6, pGen->graph_name[2]);
+	}
+	else UpdateUIText(pCmdUI, 6, "Unnamed graph #3");
 }

@@ -715,7 +715,6 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_BUTTON_SHOW_STATUS   "Show all algorithm status output"
     ID_BUTTON_LY            "Open Lilypond file with resulting score (F7)\nOpen Lilypond file"
     ID_BUTTON_FOLDER        "Open folder with resulting files\nOpen folder"
 END
