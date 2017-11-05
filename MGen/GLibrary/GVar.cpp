@@ -1400,9 +1400,10 @@ void CGVar::FillPause(int start, int length, int v) {
 	}
 }
 
+// Adds new graph, 
 void CGVar::RegisterGraph(CString name, float scale) {
-	++graph_size;
 	graph_name.push_back(name);
 	graph_scale.push_back(scale);
 	graph_max.push_back(0);
+	++graph_size;
 }

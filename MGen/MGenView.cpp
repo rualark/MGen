@@ -784,6 +784,13 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 			st2.Format("Note %s (%d). ", CGLib::GetNoteName(mouse_note), mouse_note);
 			st += st2;
 		}
+		if (mouse_voice > -1 && mouse_step > -1) {
+			for (int n = 0; n < pGen->graph_size; ++n) if (mf->show_graph[n]) {
+				st2.Format("%s: %s. ", pGen->graph_name[n], 
+					CGLib::HumanFloat(pGen->graph[mouse_step][mouse_voice][n]));
+				st += st2;
+			}
+		}
 		mf->m_wndStatusBar.GetElement(0)->SetText(st);
 		mf->m_wndStatusBar.Invalidate(1);
 		//mf->WriteLog(0, "Mouse move");
