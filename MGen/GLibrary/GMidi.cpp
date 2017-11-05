@@ -209,6 +209,17 @@ void CGMidi::SplitLyNote5(int pos, vector<int> &la) {
 	}
 }
 
+// Split note at first measure border
+void CGMidi::SplitLyNoteMeasure(int pos, int le, vector<int> &la) {
+	int left = 8 - (pos % 8);
+	if (la[0] > left) {
+		// Convert first part to second
+		la[0] = la[0] - left;
+		// Add first part
+		vpush_front(la, left, 1);
+	}
+}
+
 // Create la array of common lengths if note is too long for single note
 void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 	la.clear();
@@ -256,6 +267,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	// Length array
 	vector<int> la;
 	SplitLyNote(pos, le, la);
+	SplitLyNoteMeasure(pos, le, la);
 	for (int lc = 0; lc < la.size(); ++lc) {
 		if (show_lining && ev != "r") {
 			if (la[lc] == 8) {
