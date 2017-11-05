@@ -287,38 +287,38 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		fs << "\n";
 		mv = v;
 		if (v_cnt > 1) mv = v / 2 + !(v % 2);
-		if (midifile_export_marks && !mark[i][mv].IsEmpty()) {
-			// Search for conflicting harmonies
-			fs << "_\\markup{ ";
-			int found = 0;
-			if (!mark[i][mv].IsEmpty()) {
-				CString st = mark[i][mv];
-				st.Replace("\n", "");
-				if (st == "PD" || st == "CA" || st == "DN") {
-					if (!ly_rpos) continue;
-					if (GetGreen(mark_color[i][mv]) == GetRed(mark_color[i][mv])) {
-						fs << "\\teeny \\with-color #(x11-color 'LightGrey) ";
-						fs << "\"" << st << "\" ";
-					}
-					else {
-						fs << "\\teeny ";
-						fs << "\"" << st << "\" ";
-					}
+		if (midifile_export_marks && !mark[i][v].IsEmpty()) {
+			CString st = mark[i][v];
+			st.Replace("\n", "");
+			if (st == "PD" || st == "CA" || st == "DN") {
+				if (!ly_rpos) continue;
+				if (GetGreen(mark_color[i][v]) == GetRed(mark_color[i][v])) {
+					fs << " \\staccato ";
 				}
 				else {
-					// Replace dominant symbol
-					if (st[0] == 'D') {
-						st = "\\concat { \\char ##x00D0 \"" + st.Right(st.GetLength() - 1) + "\" } ";
-					}
-					else st = "\"" + st + "\"";
-					//if (found) st = ", " + st;
-					found = 1;
-					fs << "\\tiny \\on-color #(rgb-color ";
-					fs << GetLyMarkColor(mark_color[i][mv]);
-					fs << ") \\pad-markup #0.4 " << st << " ";
+					fs << "  \\staccatissimo ";
 				}
 			}
-			fs << "}\n";
+		}
+		if (midifile_export_marks && !mark[i][mv].IsEmpty()) {
+			// Search for conflicting harmonies
+			CString st = mark[i][mv];
+			st.Replace("\n", "");
+			if (st != "PD" && st != "CA" && st != "DN") {
+				fs << "_\\markup{ ";
+				int found = 0;
+				// Replace dominant symbol
+				if (st[0] == 'D') {
+					st = "\\concat { \\char ##x00D0 \"" + st.Right(st.GetLength() - 1) + "\" } ";
+				}
+				else st = "\"" + st + "\"";
+				//if (found) st = ", " + st;
+				found = 1;
+				fs << "\\teeny \\on-color #(rgb-color ";
+				fs << GetLyMarkColor(mark_color[i][mv]);
+				fs << ") \\pad-markup #0.4 " << st << " ";
+				fs << "}\n";
+			}
 		}
 		if (i > -1) i += la[lc] / midifile_out_mul[i];
 	}
