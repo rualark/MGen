@@ -285,7 +285,8 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		fs << ev + GetLyLen(la[lc]);
 		if (lc < la.size() - 1 && ev != "r") fs << "~";
 		fs << "\n";
-		mv = v / 2 + !(v % 2);
+		mv = v;
+		if (v_cnt > 1) mv = v / 2 + !(v % 2);
 		if (midifile_export_marks && !mark[i][mv].IsEmpty()) {
 			// Search for conflicting harmonies
 			fs << "_\\markup{ ";
