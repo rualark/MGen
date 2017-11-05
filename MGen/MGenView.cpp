@@ -791,10 +791,13 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 				st += st2;
 			}
 		}
-		mf->m_wndStatusBar.GetElement(0)->SetText(st);
-		mf->m_wndStatusBar.Invalidate(1);
-		//mf->WriteLog(0, "Mouse move");
 		pGen->mutex_output.unlock();
+		mf->m_wndStatusBar.SetInformation(st);
+		mf->m_wndStatusBar.RedrawWindow();
+		//mf->m_wndStatusBar.Invalidate(1);
+		//mf->WriteLog(0, "Mouse move");
+		//mf->m_wndStatusBar.GetElement(0)->SetText(st);
+		//mf->m_wndStatusBar.ForceRecalcLayout();
 	}
 
 	CScrollView::OnMouseMove(nFlags, point);
