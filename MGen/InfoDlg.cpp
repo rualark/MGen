@@ -154,6 +154,8 @@ BOOL CInfoDlg::OnInitDialog()
 		*/
 		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("Step mark: %s\n", pGen->mark[ms][mv]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note length: %d steps\n", pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note velocity: %d\n", pGen->vel[i][mv]);
