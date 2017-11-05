@@ -278,28 +278,26 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 			// Search for conflicting harmonies
 			fs << "_\\markup{ ";
 			int found = 0;
-			for (int s = 0; s < len[i][v]; ++s) {
-				if (!mark[i + s][mv].IsEmpty()) {
-					CString st = mark[i + s][mv];
-					st.Replace("\n", "");
-					if (st == "PD" || st == "CA" || st == "DN") {
-						if (!ly_rpos) continue;
-						if (GetGreen(mark_color[i + s][mv]) == GetRed(mark_color[i + s][mv])) {
-							fs << "\\teeny \\with-color #(x11-color 'LightGrey) ";
-							fs << "\"" << st << "\" ";
-						}
-						else {
-							fs << "\\teeny ";
-							fs << "\"" << st << "\" ";
-						}
+			if (!mark[i][mv].IsEmpty()) {
+				CString st = mark[i][mv];
+				st.Replace("\n", "");
+				if (st == "PD" || st == "CA" || st == "DN") {
+					if (!ly_rpos) continue;
+					if (GetGreen(mark_color[i][mv]) == GetRed(mark_color[i][mv])) {
+						fs << "\\teeny \\with-color #(x11-color 'LightGrey) ";
+						fs << "\"" << st << "\" ";
 					}
 					else {
-						//if (found) st = ", " + st;
-						found = 1;
-						fs << "\\tiny \\on-color #(rgb-color ";
-						fs << GetLyMarkColor(mark_color[i + s][mv]);
-						fs << ") \\pad-markup #0.4 \"" << st << "\" ";
+						fs << "\\teeny ";
+						fs << "\"" << st << "\" ";
 					}
+				}
+				else {
+					//if (found) st = ", " + st;
+					found = 1;
+					fs << "\\tiny \\on-color #(rgb-color ";
+					fs << GetLyMarkColor(mark_color[i][mv]);
+					fs << ") \\pad-markup #0.4 \"" << st << "\" ";
 				}
 			}
 			fs << "}\n";
