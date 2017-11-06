@@ -29,6 +29,16 @@
       \musicglyph #"noteheads.s0harmonic"
       \lower #0.6 "    This note has negative rpos (can be passing or auxiliary)"
     } 
+    \vspace #0.5
+    \line { 
+      \char ##x00D0
+      "    This letter is used for major Dominant chord to distinguish from D note"
+    } 
+    \vspace #0.3
+    \line { 
+      \char ##x0111
+      "    This letter is used for minor Dominant chord to distinguish from D note"
+    } 
     \vspace #0.3
   }
 } 
