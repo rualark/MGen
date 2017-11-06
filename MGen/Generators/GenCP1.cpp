@@ -967,9 +967,10 @@ int CGenCP1::FailDis() {
 int CGenCP1::FailPcoSus() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
+		// Do not need to prohibit parallel, because one of note is slurred from previous step
 		// Prohibit combinatory
 		if (civlc[s] == civlc[s-1]) FLAG2(85, s)
-			// Prohibit different
+		// Prohibit different
 		else if (tivl[s-1] == iPco) 
 			FLAG2(86, s)
 	}
@@ -984,7 +985,7 @@ int CGenCP1::FailPco() {
 			// Prohibit parallel last - first
 		else if (ivl[s] == ivl[fli2[ls - 1]]) FLAG2(84, s)
 		else {
-			// Prohibit combinatory
+			// Prohibit contrary movement
 			if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
 			// Prohibit different
 			else if (tivl[fli2[ls - 1]] == iPco) FLAG2(86, s)

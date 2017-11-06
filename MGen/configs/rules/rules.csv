@@ -197,7 +197,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;1;;;;;;;;;
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;;;;;;80;;
 1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;;;;;;;;
-1;85;60;Cantus;Counterpoint;Close perfect consonances;combined;1;;;;;;;;;
+1;85;60;Cantus;Counterpoint;Close perfect consonances;contrary;0;;;;;;;;;
 1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;;;;;;
 1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures;;;;;;;;
 1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;non-harmonic;1;Two same non-close perfect consonances in neighboring measures;;;;;;250;;
