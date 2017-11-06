@@ -28,6 +28,9 @@
 // How many steps back to show marks OnDraw
 #define MARK_BACK 8
 
+const Gdiplus::DashStyle graph_dash[] = 
+{ DashStyleSolid, DashStyleDot, DashStyleDash, DashStyleDashDot, DashStyleDashDotDot };
+
 class CMGenDoc;
 
 class CMGenView : public CScrollView
