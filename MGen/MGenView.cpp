@@ -514,10 +514,11 @@ void CMGenView::OnDraw(CDC* pDC)
 			mouse_voice_old = mouse_voice;
 			// Show note graph
 			if (mf->show_curve) {
-				for (int v = 0; v < pGen->v_cnt; v++) {
-					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
-					Pen pen(ncolor, 1);
-					for (int n = 0; n < pGen->ngraph_size; ++n) {
+				for (int n = 0; n < pGen->ngraph_size; ++n) {
+					for (int v = 0; v < pGen->v_cnt; v++) {
+						ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+						Pen pen(ncolor, 1);
+						//if (n != 1) pen.SetDashStyle(DashStyleDot);
 						for (int i = step1t; i < step2t; i++) if (i > 0 && pGen->ngraph[i][v][n] && pGen->ngraph[i - 1][v][n]) {
 							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
 								(int)(y_start - (pGen->ngraph[i][v][n] + pGen->show_transpose[v] - ng_min2 + 0.5) * nheight),
@@ -548,7 +549,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				for (int v = 0; v < pGen->v_cnt; v++) {
 					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 					Pen pen(ncolor, 1);
-					pen.SetDashStyle(DashStyleDash);
+					pen.SetDashStyle(graph_dash[n]);
 					for (int i = step1t; i < step2t; i++) 
 						if (i > 0 && (pGen->graph[i][v][n] > -1 && pGen->graph[i - 1][v][n] > -1)) {
 							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
