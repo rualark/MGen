@@ -57,6 +57,7 @@ show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
 show_harmony_bass = 1 # 0 = do not show bass, 1 = Show harmony bass
 show_hatch = 2 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show rpos hatch
 show_min_severity = 0 # Minimum severity to highlight note
+harm_notation = 1 # 1 - Sposobin harmonic notation (T, SII...), 2 - wordwide harmonic notation (I, II...), 
 
 # Lilypond parameters
 ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note

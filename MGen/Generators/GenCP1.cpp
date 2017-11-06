@@ -514,11 +514,10 @@ int CGenCP1::SendCP() {
 			}
 			else {
 				if (chm.size() > chm_id && hli[chm_id] == x) {
-					if (minor_cur) {
-						if (chm_alter[chm_id]) mark[pos][v] = HarmNames_ma[chm[chm_id]];
-						else mark[pos][v] = HarmNames_m[chm[chm_id]];
-					}
-					else mark[pos][v] = HarmNames[chm[chm_id]];
+					if (harm_notation == 1)
+						mark[pos][v] = GetHarmName(chm[chm_id], chm_alter[chm_id]);
+					else
+						mark[pos][v] = GetHarmName2(chm[chm_id], chm_alter[chm_id]);
 					if (show_harmony_bass && hbc[chm_id] % 7 != chm[chm_id])
 						mark[pos][v] += "/" + NoteName[hbcc[chm_id] % 12];
 					SendHarmColorCP(pos, v, chm_id);

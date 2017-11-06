@@ -117,32 +117,62 @@ const CString MethodNames[] = {
 
 const CString HarmNames[] = {
 	"T", // 0
-	"SII", // 1
-	"DTIII", // 2
+	"sII", // 1
+	"dtIII", // 2
 	"S", // 3
 	"D", // 4
-	"TSVI", // 5
-	"DVII", // 6
+	"tsVI", // 5
+	"dVIIo", // 6
 };
 
 const CString HarmNames_m[] = {
 	"t", // 0
-	"sII", // 1
+	"sIIo", // 1
 	"DTIII", // 2
 	"s", // 3
 	"d", // 4
 	"TSVI", // 5
-	"dVII", // 6
+	"DVII", // 6
 };
 
 const CString HarmNames_ma[] = {
 	"t", // 0
-	"SII", // 1
-	"DTIII", // 2
+	"sII", // 1
+	"DTIII+", // 2
 	"S", // 3
 	"D", // 4
 	"TSVI", // 5
-	"DVII", // 6
+	"dVIIo", // 6
+};
+
+const CString HarmNames2[] = {
+	"I", // 0
+	"ii", // 1
+	"iii", // 2
+	"IV", // 3
+	"V", // 4
+	"vi", // 5
+	"viio", // 6
+};
+
+const CString HarmNames2_m[] = {
+	"i", // 0
+	"iio", // 1
+	"III", // 2
+	"iv", // 3
+	"v", // 4
+	"VI", // 5
+	"VII", // 6
+};
+
+const CString HarmNames2_ma[] = {
+	"i", // 0
+	"ii", // 1
+	"III+", // 2
+	"IV", // 3
+	"V", // 4
+	"VI", // 5
+	"viio", // 6
 };
 
 #define mUndefined -1
@@ -310,6 +340,8 @@ protected:
 	CString GetPmapLogHeader();
 	CString GetPmapLogSt();
 	inline void LogPmap();
+	CString GetHarmName(int pitch, int alter);
+	CString GetHarmName2(int pitch, int alter);
 	int SendCantus();
 	int InitGen();
 	int InitCantus();
@@ -704,6 +736,7 @@ protected:
 	int cambiata_max_leap4 = 5; // Maximum allowed leap from fourth note in cambiata
 	int show_correct_hatch = 1; // Set to 1 to mark corrected notes with hatch
 	int show_min_severity = 0; // Minimum severity to highlight note
+	int harm_notation = 1; // 1 - wordwide harmonic notation(I, II...), 2 - Sposobin harmonic notation(T, SII...)
 	int show_hatch = 1; // 0 - show no hatch, 1 = show dissonance hatch, 2 = show rpos hatch
 	int npm = 1; // Number of notes per measure
 	int slurs_window = 10; // Number of steps to check for slur limit

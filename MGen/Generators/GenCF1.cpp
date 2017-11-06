@@ -553,6 +553,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 {
 	SET_READY_PERSIST(DR_Config);
 	CheckVar(sN, sV, "ly_rpos", &ly_rpos, 0, 1); 
+	CheckVar(sN, sV, "harm_notation", &harm_notation, 0, 2);
 	CheckVar(sN, sV, "show_harmony_bass", &show_harmony_bass, 0, 2);
 	CheckVar(sN, sV, "log_pmap", &log_pmap, 0, 1);
 	CheckVar(sN, sV, "show_correct_hatch", &show_correct_hatch, 0, 1);
@@ -3816,6 +3817,22 @@ void CGenCF1::LogPmap() {
 	//AppendLineToFile(fname, GetPmapLogSt() + "\n");
 }
 
+CString CGenCF1::GetHarmName(int pitch, int alter) {
+	if (minor_cur) {
+		if (alter) return HarmNames_ma[pitch];
+		else return HarmNames_m[pitch];
+	}
+	else return HarmNames[pitch];
+}
+
+CString CGenCF1::GetHarmName2(int pitch, int alter) {
+	if (minor_cur) {
+		if (alter) return HarmNames2_ma[pitch];
+		else return HarmNames2_m[pitch];
+	}
+	else return HarmNames2[pitch];
+}
+
 int CGenCF1::SendCantus() {
 	int step000 = step;
 	float l_rpenalty_cur;
@@ -3838,11 +3855,10 @@ int CGenCF1::SendCantus() {
 	for (s = 0; s < ep2; ++s) {
 		cpos[s] = pos;
 		if (chm.size() > bli[s] && chm[bli[s]] > -1) {
-			if (minor_cur) {
-				if (chm_alter[bli[s]]) mark[pos][v] = HarmNames_ma[chm[bli[s]]];
-				else mark[pos][v] = HarmNames_m[chm[bli[s]]];
-			}
-			else mark[pos][v] = HarmNames[chm[bli[s]]];
+			if (harm_notation == 1) 
+				mark[pos][v] = GetHarmName(chm[bli[s]], m_cc[s] == 9 || m_cc[s] == 11);
+			else
+				mark[pos][v] = GetHarmName2(chm[bli[s]], m_cc[s] == 9 || m_cc[s] == 11);
 			SendHarmColor(pos, v);
 		}
 		SendLyrics(pos, v, cpv, s);
