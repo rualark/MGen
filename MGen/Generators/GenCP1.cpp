@@ -2658,6 +2658,7 @@ int CGenCP1::FailHarm() {
 		hbc.push_back(ac[cfv][mli[ms]]);
 		chm.push_back(r);
 		chm_alter.push_back(0);
+		++chn[0];
 		// Record cantus alteration
 		++cchn[apcc[cfv][mli[ms]]];
 		hcount = 0;
@@ -2677,14 +2678,7 @@ int CGenCP1::FailHarm() {
 			n = ac[cpv][s] % 7;
 			ns = (n - r + 7) % 7;
 			// Find conflicting notes
-			if (cantus_high) {
-				if (ns == 2 && chn[3]) harm_conflict = 1;
-				else if (ns == 3 && chn[2]) harm_conflict = 1;
-			}
-			else {
-				if (ns == 4 && chn[5]) harm_conflict = 1;
-				else if (ns == 5 && chn[4]) harm_conflict = 1;
-			}
+			if (chn[ns + 1] || chn[(ns + 6) % 7]) harm_conflict = 1;
 			// Start new harmony if harmonic conflict
 			if (harm_conflict) {
 				if (ms == mli.size() - 2) FLAG2(306, s)
@@ -2699,6 +2693,7 @@ int CGenCP1::FailHarm() {
 				hbcc.push_back(acc[cfv][mli[ms]]);
 				hbc.push_back(ac[cfv][mli[ms]]);
 				chm_alter.push_back(0);
+				++chn[0];
 				// Record cantus alteration
 				++cchn[apcc[cfv][mli[ms]]];
 				// Next harmony counter
