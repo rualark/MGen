@@ -1693,7 +1693,7 @@ int CGenCP1::FailPcoApartStep() {
 	if (civlc[s] == 7) {
 		if (pco5_last > -1 && bmli[s] != mli5_last) {
 			skip_len = s - pco5_last2 - 1;
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco5_last] < 4) {
 				if (acc[cfv][s] != acc[cfv][s - 1]) {
 					if (retrigger[s]) FLAG2(315, s)
 					else FLAG2(316, s);
@@ -1713,7 +1713,7 @@ int CGenCP1::FailPcoApartStep() {
 	if (civlc[s] == 0) {
 		if (pco8_last > -1 && bmli[s] != mli8_last) {
 			skip_len = s - pco8_last2 - 1;
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco8_last] < 4) {
 				if (acc[cfv][s] != acc[cfv][s - 1]) {
 					if (retrigger[s]) FLAG2(315, s)
 					else FLAG2(316, s);
@@ -2678,7 +2678,7 @@ int CGenCP1::FailHarm() {
 			n = ac[cpv][s] % 7;
 			ns = (n - r + 7) % 7;
 			// Find conflicting notes
-			if (chn[ns + 1] || chn[(ns + 6) % 7]) harm_conflict = 1;
+			if (chn[(ns + 1) % 7] || chn[(ns + 6) % 7]) harm_conflict = 1;
 			// Start new harmony if harmonic conflict
 			if (harm_conflict) {
 				if (ms == mli.size() - 2) FLAG2(306, s)
