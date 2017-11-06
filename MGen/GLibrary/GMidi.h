@@ -224,7 +224,7 @@ public:
 	CString GetLyMarkColor(DWORD col);
 	void SendLyNoteColor(ofstream & fs, DWORD col);
 	void SendLyFlagColor(ofstream & fs, DWORD col);
-	void SaveLyComments(CString & com_st, int i, int v, int vm_cnt, int nnum, int pos);
+	void SaveLyComments(CString & com_st, int i, int v, int nnum, int pos);
 	CString DetectLyClef(int vmin, int vmax);
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
 	void SaveLy(CString dir, CString fname);
@@ -306,5 +306,8 @@ protected:
 	vector< vector <int> > cantus_len; // Cantus loaded from midi file
 	vector< vector <float> > cantus_tempo; // Cantus loaded from midi file
 	vector< vector <vector<int>>> cpoint; // Counterpoint loaded from midi file
+
+	// Lilypond
+	int vm_cnt = 1; // Number of voices in segment to display
 };
 

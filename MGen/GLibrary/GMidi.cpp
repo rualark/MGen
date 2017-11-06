@@ -286,7 +286,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		if (lc < la.size() - 1 && ev != "r") fs << "~";
 		fs << "\n";
 		mv = v;
-		if (v_cnt > 1) mv = v / 2 + !(v % 2);
+		if (vm_cnt > 1) mv = v / 2 + !(v % 2);
 		if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 			CString st = mark[i][v];
 			st.Replace("\n", "");
@@ -357,7 +357,7 @@ void CGMidi::SendLyFlagColor(ofstream &fs, DWORD col) {
 	fs << ") \\char ##x2716  }\n";
 }
 
-void CGMidi::SaveLyComments(CString &com_st, int i, int v, int vm_cnt, int nnum, int pos) {
+void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 	CString st, com, note_st;
 	int pos1, pos2, found;
 	if (comment[i][v].size()) {
@@ -418,7 +418,7 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	vector<CString> sv;
 	CString comm_st, clef, key, key_visual;
-	int pos, pos2, le, le2, vm_cnt, nnum, pause_accum, pause_pos, pause_i;
+	int pos, pos2, le, le2, nnum, pause_accum, pause_pos, pause_i;
 	float mul;
 	// Voice melody min pitch
 	vector<int> vm_min;
@@ -482,7 +482,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 			else {
 				if (ly_flag_style == 1) SendLyNoteColor(fs, color[i][v]);
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
-				SaveLyComments(comm_st, i, v, vm_cnt, nnum, pos);
+				SaveLyComments(comm_st, i, v, nnum, pos);
 				if (ly_flag_style == 2) SendLyFlagColor(fs, color[i][v]);
 			}
 			if (pause_accum && (i == step2 - 1 || !pause[i + 1][v])) {
