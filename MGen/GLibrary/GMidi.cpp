@@ -550,6 +550,8 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 	}
 	fs << "\\header {tagline = \"This file was created by MGen ";
 	fs << APP_VERSION << " and engraved by LilyPond\"}\n";
+	read_file_sv("configs\\ly\\footer.ly", sv);
+	write_file_sv(fs, sv);
 	fs.close();
 	if (m_testing) {
 		CreateDirectory("autotest\\ly", NULL);
