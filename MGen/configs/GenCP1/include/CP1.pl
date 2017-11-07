@@ -15,7 +15,7 @@ cantus_id = 34 # Select particular cantus id. Set to 0 to select random
 accept_cantus_rechoose = 0 # Choose new random cantus after accepting counterpoint
 transpose_back = 0 # Should be set to 1 for CF1 generation algorithm only
 
-animate = 100 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
+animate = 0 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
 animate_delay = 0 # Delay in ms after each animation step
 
 shuffle = 0 # If you want to shuffle all canti after generation (can shuffle up to 32000 canti)

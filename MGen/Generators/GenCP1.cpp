@@ -2083,9 +2083,9 @@ void CGenCP1::RandomSWACP() {
 				//if (acc[cpv] == test_cc) {
 					//WriteLog(1, "Wow");
 				//}
-				int step = t_generated;
+				int step = t_sent;
 				// Add line
-				linecolor[t_generated] = MakeColor(255, 0, 0, 0);
+				linecolor[t_sent] = MakeColor(255, 0, 0, 0);
 				scpoint = acc;
 				ScanCP(tEval, 0);
 				EmulateSASCP();
