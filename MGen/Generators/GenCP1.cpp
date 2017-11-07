@@ -443,7 +443,7 @@ void CGenCP1::SendHarmColorCP(int pos, int v, int chm_id) {
 	int fl;
 	for (int f = 0; f < f_cnt; ++f) {
 		fl = anflags[cpv][s][f];
-		if (RuleGroup[fl] == "Harmony" && !accept[fl]) {
+		if ((harmonic_rule[fl] || RuleGroup[fl] == "Harmony") && !accept[fl]) {
 			if (severity[fl] > max_severity) max_severity = severity[fl];
 		}
 	}
@@ -2736,7 +2736,7 @@ int CGenCP1::FailHarm() {
 			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[chm_alter.size() - 1] = 1;
 		}
 		RemoveHarmDuplicate();
-		if (ms == mli.size() && hcount) {
+		if (ms == mli.size() - 2 && hcount) {
 			// Prohibit harmony without leading tone in penultimate measure if previous harmony contained leading tone
 			if (first_b && !cchn[11]) FLAG2(318, s);
 			// Prohibit D or DVII harmony in penultimate measure before non-D / DVII harmony

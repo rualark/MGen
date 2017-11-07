@@ -18,6 +18,7 @@ CGenCF1::CGenCF1()
 	cpv = 0;
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_RULES);
+	harmonic_rule.resize(MAX_RULES);
 	false_positives_ignore.resize(MAX_RULES);
 	false_positives_global.resize(MAX_RULES);
 	sas_emulator_max_delay.resize(MAX_RULES);
@@ -155,8 +156,8 @@ void CGenCF1::LoadRules(CString fname)
 		st.Trim();
 		if (st.Find(";") != -1) {
 			Tokenize(st, ast, ";");
-			if (ast.size() != 17) {
-				est.Format("Wrong column count at line in rules file %s: '%s'", fname, st);
+			if (ast.size() != 18) {
+				est.Format("Wrong column count at line %d in rules file %s: '%s'", i, fname, st);
 				WriteLog(5, est);
 				error = 1;
 				return;
@@ -194,20 +195,21 @@ void CGenCF1::LoadRules(CString fname)
 			//if (m_testing && flag == -1) flag = 1;
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
-			false_positives_ignore[rid] = atoi(ast[10]);
-			false_positives_global[rid] = atoi(ast[11]);
-			sas_emulator_max_delay[rid] = atoi(ast[12]);
-			sas_emulator_move_ignore[rid] = atoi(ast[13]);
-			if (!ast[14].IsEmpty()) {
-				Tokenize(ast[14], ast2, ",");
+			harmonic_rule[rid] = atoi(ast[10]);
+			false_positives_ignore[rid] = atoi(ast[11]);
+			false_positives_global[rid] = atoi(ast[12]);
+			sas_emulator_max_delay[rid] = atoi(ast[13]);
+			sas_emulator_move_ignore[rid] = atoi(ast[14]);
+			if (!ast[15].IsEmpty()) {
+				Tokenize(ast[15], ast2, ",");
 				for (int x = 0; x < ast2.size(); ++x) {
 					int fl = atoi(ast2[x]);
 					if (fl) sas_emulator_replace[fl].push_back(rid);
 				}
 			}
-			sas_emulator_unstable[rid] = atoi(ast[15]);
-			if (!ast[16].IsEmpty()) {
-				Tokenize(ast[16], ast2, ",");
+			sas_emulator_unstable[rid] = atoi(ast[16]);
+			if (!ast[17].IsEmpty()) {
+				Tokenize(ast[17], ast2, ",");
 				for (int x = 0; x < ast2.size(); ++x) {
 					int fl = atoi(ast2[x]);
 					if (fl) flag_replace[fl].push_back(rid);
@@ -3528,7 +3530,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 			}
 			// Set note color if this is maximum flag severity
 			if (severity[fl] > current_severity && severity[fl] >= show_min_severity
-				&& RuleGroup[fl] != "Harmony") {
+				&& !harmonic_rule[fl] && RuleGroup[fl] != "Harmony") {
 				current_severity = severity[fl];
 				color[pos + i][v] = flag_color[severity[fl]];
 			}
