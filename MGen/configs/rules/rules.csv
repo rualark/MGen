@@ -146,7 +146,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate;1;;In penultimate measure;;;;;;;;
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;;;;;;;;
 1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;;;;;;;;
-1;48;30;Cantus;Harmony;Prohibited progression;early G-C;0;;Tonic chord is prohibited in root position after Dominant chord in root position;;;;;;;;17,20,23,48,57,77,92,99
+1;48;30;Cantus;Harmony;Prohibited progression;early G-C;0;;Bass note going from G to C octave before cadence;;;;;;;;17,20,23,48,57,77,92,99
 1;308;30;Cantus;Harmony;Prohibited progression;S-dVII (m);0;;Prohibit dVII (GBD) in root position after S (DF#A) in root position;;;;;;;;
 1;309;30;Cantus;Harmony;Prohibited progression;dVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after dVII (GBD) in root position;;;;;;;;
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;;;;;;;;17,20,23,48,57,77,92,99
@@ -246,8 +246,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;277;60;Cantus;Counterpoint;Unison;near 2m;0;;Unison is near minor second dyad in same measure;;;;;;;;
 1;47;30;Cantus;Counterpoint;Penultimate measure;no B;0;;no leading tone is allowed if last bass notes are G-C;;;;;;;;
 1;75;30;Cantus;Counterpoint;Penultimate measure;no G or D;0;;;;;1;;;;;
-1;317;30;Cantus;Counterpoint;Penultimate measure;unaltered VII;0;;;;;;;;;;
-1;318;60;Cantus;Counterpoint;Penultimate measure;isolated B;0;;;1;;;;;;;
+1;317;30;Cantus;Counterpoint;Penultimate measure;unaltered VII;0;;Unaltered VII minor note in penultimate measure;;;;;;;;
+1;318;60;Cantus;Counterpoint;Penultimate measure;isolated B;0;;There is a harmony between leading tone and tonic note in penultimate measure;1;;;;;;;
 1;322;60;Cantus;Counterpoint;Penultimate measure;T/S after D;0;;Tonic or subdominant chord goes after dominant chord in penultimate measure;;;;;;;;
 1;225;0;Cantus;Counterpoint;Slurs;suspension;1;;;;;;;;;;
 1;97;60;Cantus;Counterpoint;Slurs;consecutive;0;;For counterpoint species 1-4;;;;;;;;
