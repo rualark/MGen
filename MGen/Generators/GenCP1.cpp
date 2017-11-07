@@ -2538,10 +2538,8 @@ int CGenCP1::EvalHarm() {
 		ls = bli[s];
 		if (i > 0) {
 			// Check GC for low voice and not last note (last note in any window is ignored)
-			if (ls < fli_size - 1 && chm[i] == 0 && chm[i - 1] == 4) {
-				if (apc[0][s] == 0 && apc[0][hli[i - 1]] == 4 &&
-					hbc[i] % 7 == 0 && hbc[i - 1] % 7 == 4) FLAG2(48, s);
-			}
+			if (ls < fli_size - 1 && apc[0][s] == 0 && apc[1][s] == 0 && 
+				s > 0 && apc[0][s - 1] == 4) FLAG2(48, s);
 			if (minor_cur) {
 				// Prohibit dVII (GBD) in root position after S (DF#A) in root position
 				if (chm[i] == 6 && chm[i - 1] == 3 && chm_alter[i - 1]) {
