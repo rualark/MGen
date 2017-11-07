@@ -2680,7 +2680,7 @@ int CGenCP1::FailHarm() {
 			// Find conflicting notes
 			if (chn[(ns + 1) % 7] || chn[(ns + 6) % 7]) harm_conflict = 1;
 			// Start new harmony if harmonic conflict
-			if (harm_conflict) {
+			if (harm_conflict && s > mli[ms]) {
 				if (ms == mli.size() - 2) FLAG2(306, s)
 				else FLAG2(307, s);
 				// Does first harmony contain leading tone?
