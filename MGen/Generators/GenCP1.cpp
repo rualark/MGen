@@ -2723,6 +2723,7 @@ int CGenCP1::FailHarm() {
 			if (cantus_high) {
 				if (chn[3]) chm[chm.size() - 1] = (r + 3) % 7;
 				else if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
+				else if (chn[1]) chm[chm.size() - 1] = (r + 1) % 7;
 				else chm[chm.size() - 1] = r;
 				if (hbcc[hbcc.size() - 1] > acc[0][s]) hbcc[hbcc.size() - 1] = acc[0][s];
 				if (hbc[hbc.size() - 1] > ac[0][s]) hbc[hbc.size() - 1] = ac[0][s];
