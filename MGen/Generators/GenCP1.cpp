@@ -2620,6 +2620,22 @@ int CGenCP1::FailTonicCP() {
 	return 0;
 }
 
+void CGenCP1::RemoveHarmDuplicate() {
+	int chm_id = hli.size() - 1;
+	// Need to be at least two harmonies
+	if (chm_id == 0) return;
+	// Harmony should be not first in measure
+	if (hli[chm_id] <= mli[ms]) return;
+	// Harmonies should match
+	if (chm[chm_id] != chm[chm_id - 1]) return;
+	// Alterations should match
+	if (chm_alter[chm_id] != chm_alter[chm_id - 1]) return;
+	// Remove duplicate
+	hli.resize(chm_id);
+	chm.resize(chm_id);
+	chm_alter.resize(chm_id);
+}
+
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli);
 	int ls1, ls2, r, n, ns, harm_conflict, hcount;
@@ -2635,7 +2651,7 @@ int CGenCP1::FailHarm() {
 	chm_alter.clear();
 	harm_conflict = 0;
 	// Build chm vector
-	for (int ms = 0; ms < mli.size(); ++ms) {
+	for (ms = 0; ms < mli.size(); ++ms) {
 		// Stop processing when last measure is not fully generated
 		if (ms == mli.size() - 1 && ep2 < c_len) break;
 		// Get first and last measure notes
@@ -2681,6 +2697,7 @@ int CGenCP1::FailHarm() {
 			if (chn[(ns + 1) % 7] || chn[(ns + 6) % 7]) harm_conflict = 1;
 			// Start new harmony if harmonic conflict
 			if (harm_conflict && s > mli[ms]) {
+				RemoveHarmDuplicate();
 				if (ms == mli.size() - 2) FLAG2(306, s)
 				else FLAG2(307, s);
 				// Does first harmony contain leading tone?
@@ -2717,6 +2734,7 @@ int CGenCP1::FailHarm() {
 			// Detect altered chord
 			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[chm_alter.size() - 1] = 1;
 		}
+		RemoveHarmDuplicate();
 		if (ms == mli.size() && hcount) {
 			// Prohibit harmony without leading tone in penultimate measure if previous harmony contained leading tone
 			if (first_b && !cchn[11]) FLAG2(318, s);

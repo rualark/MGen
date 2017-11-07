@@ -697,7 +697,8 @@ protected:
 	vector <int> tc; // [] Tail diatonic notes
 
 	// Local link steps
-	int ls; // Link step inside fli2
+	int ms; // Link step inside mli
+	int ls; // Link step inside fli
 	int s; // Current step
 	int s0, s1, s2; // +1, +2 steps
 	int s_1, s_2; // -1, -2 steps

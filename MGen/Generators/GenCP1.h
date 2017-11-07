@@ -102,6 +102,7 @@ protected:
 	inline int FailGisTrail2();
 	inline int EvalHarm();
 	inline int FailTonicCP();
+	inline void RemoveHarmDuplicate();
 	inline int FailHarm();
 	void ScanCP(int t, int v);
 
