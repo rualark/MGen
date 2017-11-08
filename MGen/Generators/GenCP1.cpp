@@ -2639,19 +2639,22 @@ void CGenCP1::RemoveHarmDuplicate() {
 	if (chm_alter[chm_id] != chm_alter[chm_id - 1]) return;
 	// Remove duplicate
 	hli.resize(chm_id);
+	hli2.resize(chm_id);
 	chm.resize(chm_id);
 	chm_alter.resize(chm_id);
 }
 
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli);
-	int ls1, ls2, r, n, ns, harm_conflict, hcount;
+	int ls1, ls2 = 0;
+	int r, n, ns, harm_conflict, hcount;
 	int first_b; // First harmony in measure has b
 	vector<int> chn, cchn;
 	int mea_end;
 	chn.resize(7);
 	cchn.resize(12);
 	hli.clear();
+	hli2.clear();
 	chm.clear();
 	hbcc.clear();
 	hbc.clear();
@@ -2677,6 +2680,8 @@ int CGenCP1::FailHarm() {
 		fill(chn.begin(), chn.end(), 0);
 		fill(cchn.begin(), cchn.end(), 0);
 		hli.push_back(mli[ms]);
+		hli2.push_back(0);
+		if (hli2.size() > 1) hli2[hli2.size() - 2] = hli[hli.size() - 1] - 1;
 		hbcc.push_back(acc[cfv][mli[ms]]);
 		hbc.push_back(ac[cfv][mli[ms]]);
 		chm.push_back(r);
@@ -2713,6 +2718,8 @@ int CGenCP1::FailHarm() {
 				fill(chn.begin(), chn.end(), 0);
 				fill(cchn.begin(), cchn.end(), 0);
 				hli.push_back(s);
+				hli2.push_back(0);
+				if (hli2.size() > 1) hli2[hli2.size() - 2] = hli[hli.size() - 1] - 1;
 				chm.push_back(r);
 				hbcc.push_back(acc[cfv][mli[ms]]);
 				hbc.push_back(ac[cfv][mli[ms]]);
@@ -2751,9 +2758,32 @@ int CGenCP1::FailHarm() {
 				(chm[chm.size() - 1] != 4 && chm[chm.size() - 1] != 6)) FLAG2(322, s);
 		}
 	}
+	if (ls2 && hli2.size()) hli2[hli2.size() - 1] = fli2[ls2];
+	GetHarmBass();
 	if (EvalHarm()) return 1;
 	if (FailTonicCP()) return 1;
 	return 0;
+}
+
+void CGenCP1::GetHarmBass() {
+	int ls1, ls2;
+	int harm_end, nt;
+	int de1, de2, de3;
+	for (int hs = 0; hs < hli.size(); ++hs) {
+		// Get harmonic notes
+		de1 = chm[hs];
+		de2 = (de1 + 2) % 7;
+		de3 = (de1 + 4) % 7;
+		// Loop inside harmony
+		for (ls = bli[hli[hs]]; ls <= bli[hli2[hs]]; ++ls) {
+			s = fli[ls];
+			nt = ac[cpv][s] % 7;
+			// Do not process notes that are not harmonic
+			if (nt != de1 && nt != de2 && nt != de3) continue;
+			if (hbcc[hs] > acc[0][s]) hbcc[hs] = acc[0][s];
+			if (hbc[hs] > ac[0][s]) hbc[hs] = ac[0][s];
+		}
+	}
 }
 
 void CGenCP1::ScanCP(int t, int v) {
