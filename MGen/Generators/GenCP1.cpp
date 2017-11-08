@@ -424,7 +424,6 @@ CString CGenCP1::GetPmapLogSt2() {
 
 // Log parameter map
 void CGenCP1::LogPmap2() {
-	CString st, st2;
 	CString fname = "log\\cp-pmap.csv";
 	// Header
 	if (!fileExists(fname)) {
@@ -1516,7 +1515,7 @@ int CGenCP1::FailRhythm5() {
 	int ls2 = 0;
 	// Check pause length
 	if (fn * 2 > npm) FLAG2(197, 0);
-	for (int ms = 0; ms < mli.size(); ++ms) {
+	for (ms = 0; ms < mli.size(); ++ms) {
 		s = mli[ms];
 		if (s >= ep2) break;
 		ls = bli[s];
@@ -2563,7 +2562,7 @@ int CGenCP1::EvalHarm() {
 	int wdcount = 0;
 	int wscount = 0;
 	int wtcount = 0;
-	int harm_end, s2, found;
+	int harm_end, found;
 	for (int i = 0; i < chm.size(); ++i) {
 		s = hli[i];
 		ls = bli[s];

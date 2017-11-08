@@ -124,10 +124,10 @@ protected:
 	vector <vector<int>> scpoint; // [v][s] Source cpoint for processing
 
 	// PcoApart
-	int pco5_last; // Last note start
-	int pco8_last;
-	int pco5_last2; // Last note end
-	int pco8_last2;
-	int mli5_last; // Last note measure
-	int mli8_last;
+	int pco5_last = 0; // Last note start
+	int pco8_last = 0;
+	int pco5_last2 = 0; // Last note end
+	int pco8_last2 = 0;
+	int mli5_last = 0; // Last note measure
+	int mli8_last = 0;
 };

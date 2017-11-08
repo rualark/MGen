@@ -3811,7 +3811,6 @@ CString CGenCF1::GetPmapLogSt() {
 
 // Log parameter map
 void CGenCF1::LogPmap() {
-	CString st, st2;
 	CString fname = "log\\cf-pmap.csv";
 	// Header
 	if (!fileExists(fname)) {
