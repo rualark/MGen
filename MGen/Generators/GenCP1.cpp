@@ -980,6 +980,17 @@ int CGenCP1::FailPcoSus() {
 int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
+		// Prohibit long downbeat octave
+		if (!beat[ls]) {
+			if (ivlc[s]) {
+				if ((species == 3 || species == 5) && rlen[ls] > 3) FLAG2(325, s)
+				else if ((species == 2 || species == 4) && rlen[ls] > 7) FLAG2(325, s);
+			}
+			else {
+				if ((species == 3 || species == 5) && rlen[ls] > 3) FLAG2(326, s)
+				else if ((species == 2 || species == 4) && rlen[ls] > 7) FLAG2(326, s);
+			}
+		}
 		// Prohibit leading tone octave
 		if (apcc[0][s] == 11 && apcc[1][s] == 11) FLAG2(324, s);
 		// Prohibit parallel first - first (this is for sus notes, which starts are parallel)

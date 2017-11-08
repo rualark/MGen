@@ -1640,6 +1640,7 @@ void CGenCF1::CreateLinks(vector<int> &cc, int multivoice) {
 	}
 	fli_size = lpos;
 	llen[lpos - 1] = l;
+	rlen[lpos - 1] = l * 8.0 / npm2;
 	// Last note does not affect minl/maxl
 	if (multivoice) {
 		// For species 5 minl should be at least 4
