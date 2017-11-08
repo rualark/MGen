@@ -980,6 +980,8 @@ int CGenCP1::FailPcoSus() {
 int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
+		// Prohibit leading tone octave
+		if (apcc[0][s] == 11 && apcc[1][s] == 11) FLAG2(324, s);
 		// Prohibit parallel first - first (this is for sus notes, which starts are parallel)
 		if (ivl[s] == ivl[fli[ls - 1]]) FLAG2(84, s)
 			// Prohibit parallel last - first
