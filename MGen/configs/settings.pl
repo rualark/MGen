@@ -2,12 +2,12 @@
 # This file is loaded on MGen startup and automatically saved on every setting change
 
 Algorithm = 112 # Id of the currently selected algorithm
-Config = known-cp5 # Name of configuration file for selected algorithm
+Config = good-cp3 # Name of configuration file for selected algorithm
 MIDI_OUT = [DISABLE PLAYBACK] # Name of MIDI device used for playing notes
 Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 500
 playback_speed = 100 # Playback speed in percent
 show_marks = 1 # Set to 1 to show note mark strings
-show_comments = 1 # Set to 1 to surround notes which have comments with rectangles
+show_comments = 0 # Set to 1 to surround notes which have comments with rectangles
 show_lining = 1 # Set to 1 to show note lining
 show_lines = 1 # Set to 1 to show line separators
 show_vel = 1 # Set to 1 to show note velocity using alpha
