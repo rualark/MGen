@@ -1329,12 +1329,12 @@ void CGenCP1::GetBasicRpos() {
 	for (ls = 1; ls < fli_size - 1; ++ls) {
 		s = fli[ls];
 		if (rposb[ls] < 0 && tivl[s] != iDis) {
-			// Check too long note
+			// Check longer than previous
 			if (llen[ls] > llen[ls - 1] &&
 				rposb[ls - 1] > 0 && tivl[fli2[ls - 1]] != iDis) rposb[ls] = pLong;
-			// Check too long note
-			if (llen[ls] > llen[ls + 1] &&
-				rposb[ls + 1] > 0 && tivl[fli2[ls + 1]] != iDis) rposb[ls] = pLong;
+			// Check longer than next
+			//if (llen[ls] > llen[ls + 1] &&
+				//rposb[ls + 1] > 0 && tivl[fli2[ls + 1]] != iDis) rposb[ls] = pLong;
 		}
 	}
 }
