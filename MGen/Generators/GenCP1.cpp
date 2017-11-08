@@ -2318,24 +2318,28 @@ int CGenCP1::FailLastIntervals() {
 			if (end < ep2) {
 				int b_found = 0;
 				int bb_found = 0;
+				int bb_step = 0;
 				int g_found = 0;
 				int d_found = 0;
 				for (int x = start; x <= end; ++x) {
 					for (int v = 0; v < av_cnt; ++v) {
 						if (apcc[v][x] == 11) b_found = 1;
-						if (apcc[v][x] == 10) bb_found = 1;
+						if (apcc[v][x] == 10) {
+							bb_found = 1;
+							bb_step = x;
+						}
 						if (apc[v][x] == 4) g_found = 1;
 						if (apc[v][x] == 1) d_found = 1;
 					}
 				}
 				if (!b_found) {
 					// Set B needed flag if last bass notes are not G-C
-					if (apc[0][c_len - 1] != 0 || apc[0][fli[fli_size - 2]] != 4) FLAG2(47, start);
+					if (apc[0][c_len - 1] != 0 || apc[0][fli[fli_size - 2]] != 4) FLAG2(47, fli[bli[end]]);
 				}
 				if (bb_found) {
-					FLAG2(317, start);
+					FLAG2(317, bb_step);
 				}
-				if (!g_found && !d_found) FLAG2(75, start);
+				if (!g_found && !d_found) FLAG2(75, fli[bli[end]]);
 			}
 		}
 	}
