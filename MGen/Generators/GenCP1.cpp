@@ -2645,7 +2645,8 @@ void CGenCP1::RemoveHarmDuplicate() {
 }
 
 int CGenCP1::FailHarm() {
-	CHECK_READY(DR_fli);
+	CHECK_READY(DR_fli, DR_c, DR_pc);
+	CHECK_READY_PERSIST(DR_mli);
 	int ls1, ls2 = 0;
 	int r, n, ns, harm_conflict, hcount;
 	int first_b; // First harmony in measure has b
@@ -2739,8 +2740,6 @@ int CGenCP1::FailHarm() {
 				else if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
 				else if (chn[1]) chm[chm.size() - 1] = (r + 1) % 7;
 				else chm[chm.size() - 1] = r;
-				if (hbcc[hbcc.size() - 1] > acc[0][s]) hbcc[hbcc.size() - 1] = acc[0][s];
-				if (hbc[hbc.size() - 1] > ac[0][s]) hbc[hbc.size() - 1] = ac[0][s];
 			}
 			else {
 				if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
@@ -2766,6 +2765,7 @@ int CGenCP1::FailHarm() {
 }
 
 void CGenCP1::GetHarmBass() {
+	SET_READY(DR_hbc);
 	int ls1, ls2;
 	int harm_end, nt;
 	int de1, de2, de3;

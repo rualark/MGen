@@ -44,6 +44,7 @@
 #define DR_rposb				20
 #define DR_rposf				21
 #define DR_retrigger    22
+#define DR_hbc			    23
 
 #ifdef CF_DEBUG
 
