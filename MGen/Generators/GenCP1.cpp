@@ -2347,12 +2347,13 @@ int CGenCP1::FailLastIntervals() {
 				}
 				if (!b_found) {
 					// Set B needed flag if last bass notes are not G-C
-					if (apc[0][c_len - 1] != 0 || apc[0][fli[fli_size - 2]] != 4) FLAG2(47, fli[bli[end]]);
+					if (apc[0][c_len - 1] != 0 || apc[0][fli[fli_size - 2]] != 4) 
+						FLAG2(47, max(start, fli[bli[end]]));
 				}
 				if (bb_found) {
 					FLAG2(317, bb_step);
 				}
-				if (!g_found && !d_found) FLAG2(75, fli[bli[end]]);
+				if (!g_found && !d_found) FLAG2(75, max(start, fli[bli[end]]));
 			}
 		}
 	}
