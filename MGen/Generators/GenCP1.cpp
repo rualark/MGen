@@ -1700,7 +1700,8 @@ int CGenCP1::FailPcoApartStep() {
 				}
 				else if ((acc[0][s] - acc[0][pco5_last])*
 					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
-				else if (rpos[ls] < 0 || rpos[bli[pco5_last]] < 0) 
+				else if ((!sus[ls] && rpos[ls] < 0) || 
+					(!sus[bli[pco5_last]] && rpos[bli[pco5_last]] < 0))
 					FLAG2(249, s)
 				else FLAG2(250, s);
 			}
@@ -1720,8 +1721,10 @@ int CGenCP1::FailPcoApartStep() {
 				}
 				else if ((acc[0][s] - acc[0][pco8_last])*
 					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
-				else if (rpos[ls] < 0 || rpos[bli[pco8_last]] < 0) FLAG2(249, s)
-				else 
+				else if ((!sus[ls] && rpos[ls] < 0) || 
+					(!sus[bli[pco8_last]] && rpos[bli[pco8_last]] < 0))
+					FLAG2(249, s)
+				else
 					FLAG2(250, s);
 			}
 		}
