@@ -1158,7 +1158,12 @@ void CGenCP1::DetectDNT() {
 				}
 				// Cross-bar
 				if (bmli[s] != bmli[fli2[ls + 3]]) {
-					if (!accept[281]) continue;
+					if (bmli[s] == bmli[fli2[ls + 2]]) {
+						if (!accept[328]) continue;
+					}
+					else {
+						if (!accept[281]) continue;
+					}
 				}
 			}
 		}
@@ -1211,7 +1216,12 @@ void CGenCP1::DetectCambiata() {
 				}
 				// Cross-bar
 				if (bmli[s] != bmli[fli2[ls + 3]]) {
-					if (!accept[259]) continue;
+					if (bmli[s] == bmli[fli2[ls + 2]]) {
+						if (!accept[327]) continue;
+					}
+					else {
+						if (!accept[259]) continue;
+					}
 				}
 				// Third diss
 				if (tivl[fli[ls + 2]] == iDis) {

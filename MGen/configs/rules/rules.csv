@@ -266,6 +266,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;46;60;Cantus;Counterpoint;Contrary motion;<30%;-1;;;;;;;;;;
 1;256;0;Cantus;Nonchord tones;Cambiata;any;1;;Prohibit this rule to prevent detection of any cambiata;;;;;;;1;
 1;257;60;Cantus;Nonchord tones;Cambiata;mixed rhythm;1;;Rhythm of this pattern contains not only 1/4 notes;;;;;;;;
+1;327;60;Cantus;Nonchord tones;Cambiata;last note out;1;;;;;;;;;;
 1;259;60;Cantus;Nonchord tones;Cambiata;cross-bar;0;;;;;;;;;;
 1;261;60;Cantus;Nonchord tones;Cambiata;third diss.;1;;;;;;;;;;
 1;323;0;Cantus;Nonchord tones;Cambiata;leap 4th comp.;1;;4th leap from 2nd note compensated by stepwize movement;;;;;;;;
@@ -276,6 +277,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;279;60;Cantus;Nonchord tones;Cambiata;inverted;1;;;;;;;;;;
 1;258;0;Cantus;Nonchord tones;Double-neighbour tone;any;1;;Prohibit this rule to prevent detection of any double-neighbour tone;;;;;;;1;
 1;280;60;Cantus;Nonchord tones;Double-neighbour tone;mixed rhythm;1;;;;;;;;;;
+1;328;60;Cantus;Nonchord tones;Double-neighbour tone;last note out;1;;;;;;;;;;
 1;281;60;Cantus;Nonchord tones;Double-neighbour tone;cross-bar;0;;;;;;;;;;
 1;260;60;Cantus;Nonchord tones;Double-neighbour tone;leap <=4th;0;;Allow leaps up to specified size;;;;;;;;
 1;282;0;Cantus;Nonchord tones;Passing downbeat dissonance;descending;1;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat discord;;;;;;;1;
