@@ -197,6 +197,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;1;;;;;;;;;;
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;;;;;;;80;;
 1;324;60;Cantus;Counterpoint;Perfect consonance;LT 8va;0;;Leading tone octave;;;;;;;;
+1;326;60;Cantus;Counterpoint;Perfect consonance;db. long 8va;0;;Downbeat octave longer than whole (species 2,4) or 1/2 (species 3,5);;;;;;;;
+1;325;60;Cantus;Counterpoint;Perfect consonance;db. long 5th;0;;Downbeat 5th longer than whole (species 2,4) or 1/2 (species 3,5);;;;;;;;
 1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;;;;;;;;;
 1;85;60;Cantus;Counterpoint;Close perfect consonances;contrary;0;;Contrary octaves are possible in cadence;;;;;;;;
 1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;;;;;;;
