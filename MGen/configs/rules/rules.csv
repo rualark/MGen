@@ -144,6 +144,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;194;0;Cantus;Harmony;Accented bad progression;leap >4th;-1;Only for cantus;;;;;;;;;
 1;195;0;Cantus;Harmony;Accented bad progression;culmination;-1;Only for cantus;;;;;;;;;
 1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate;1;;In penultimate measure;;;;;;;;
+1;329;30;Cantus;Harmony;Multiple harmonies in measure;sus 5/6 smooth;0;;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure;;;;;;;;
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;;;;;;;;
 1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;;;;;;;;
 1;48;30;Cantus;Harmony;Prohibited progression;early G-C;0;;Bass note going from G to C octave before cadence;;;;;;;;17,20,23,48,57,77,92,99
