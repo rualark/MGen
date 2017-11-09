@@ -2731,10 +2731,12 @@ int CGenCP1::FailHarm() {
 			if (ls == ls1 && sus[ls1]) s9 = fli2[ls];
 			else s9 = fli[ls];
 			// Do not process non-harmonic notes if they are not consonant ending of first sus
+			// For first suspended note do not check rpos
 			if (ls == ls1 && sus[ls]) {
 				if (tivl[s9] == iDis) continue;
 			}
-			if (rpos[ls] <= 0) continue;
+			// For all other notes, check rpos
+			else if (rpos[ls] <= 0) continue;
 			s = fli[ls];
 			n = ac[cpv][s9] % 7;
 			ns = (n - r + 7) % 7;
