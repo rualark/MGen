@@ -735,29 +735,30 @@ int CGenCP1::FailVMotion() {
 }
 
 int CGenCP1::FailSusResolution(int s3) {
-	// Mark resolution as obligatory harmonic in basic rpos
-	if (tivl[s3] != iDis) rposb[bli[s3]] = pOffbeat;
 	// Check if suspension second part is discord
-	if (tivl[s2] != iDis) {}
-	// Resolution to discord
-	else if (tivl[s3] == iDis) FLAG2(220, s3)
-		// Resolution by leap
-	else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2(221, s3)
-	else {
-		// Resolution up
-		if (acc[cpv][s3] > acc[cpv][s2]) {
-			// Allowed only for resolution of leading tone
-			if (apcc[cpv][s2] == 11) FLAG2(222, s3)
-			else FLAG2(219, s3);
+	if (tivl[s2] == iDis) {
+		// Mark resolution as obligatory harmonic in basic rpos
+		if (tivl[s3] != iDis) rposb[bli[s3]] = pOffbeat;
+		// Resolution to discord
+		if (tivl[s3] == iDis) FLAG2(220, s3)
+			// Resolution by leap
+		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2(221, s3)
+		else {
+			// Resolution up
+			if (acc[cpv][s3] > acc[cpv][s2]) {
+				// Allowed only for resolution of leading tone
+				if (apcc[cpv][s2] == 11) FLAG2(222, s3)
+				else FLAG2(219, s3);
+			}
+			// 9th to 8va
+			if (ivlc[s2] == 1 && ivlc[s3] == 0) {
+				if (ivl[s2] > 7) FLAG2(216, s3)
+					// 2nd to unison
+				else FLAG2(218, s3);
+			}
+			// 7th to 8va
+			else if (ivlc[s2] == 6 && ivlc[s3] == 0) FLAG2(217, s3)
 		}
-		// 9th to 8va
-		if (ivlc[s2] == 1 && ivlc[s3] == 0) {
-			if (ivl[s2] > 7) FLAG2(216, s3)
-				// 2nd to unison
-			else FLAG2(218, s3);
-		}
-		// 7th to 8va
-		else if (ivlc[s2] == 6 && ivlc[s3] == 0) FLAG2(217, s3)
 	}
 	return 0;
 }
