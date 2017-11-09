@@ -832,14 +832,14 @@ int CGenCP1::FailSus2() {
 			}
 		}
 		else {
-			// Mark sus start as harmonic always
-			rposb[ls] = pOffbeat;
 			// Flag suspension
 			FLAG2(225, s);
 			// Suspension not in last measures
 			if (species < 4) {
 				if (bmli[s] < mli.size() - sus_last_measures) FLAG2(139, s);
 			}
+			// Mark sus start as harmonic always
+			rposb[ls] = pOffbeat;
 			if (species == 3) {
 				if (sus[ls] - fli[ls] == 1) FLAG2(251, s);
 			}
@@ -2670,6 +2670,7 @@ int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli, DR_c, DR_pc);
 	CHECK_READY_PERSIST(DR_mli);
 	int ls1, ls2 = 0;
+	int s9;
 	int r, n, ns, harm_conflict, hcount;
 	int first_b; // First harmony in measure has b
 	vector<int> chn, cchn;
@@ -2698,7 +2699,7 @@ int CGenCP1::FailHarm() {
 		if (ep2 < c_len && ls2 >= fli_size - 4) break;
 		r = ac[cfv][mli[ms]] % 7;
 		// Do not process end of sus
-		if (sus[ls1]) ls1++;
+		//if (sus[ls1]) ls1++;
 		// Clear harmonic notes vector
 		fill(chn.begin(), chn.end(), 0);
 		fill(cchn.begin(), cchn.end(), 0);
@@ -2723,10 +2724,15 @@ int CGenCP1::FailHarm() {
 		}
 		// Loop inside measure
 		for (ls = ls1; ls <= ls2; ++ls) {
-			// Do not process non-harmonic notes
+			if (ls == ls1 && sus[ls1]) s9 = fli2[ls];
+			else s9 = fli[ls];
+			// Do not process non-harmonic notes if they are not consonant ending of first sus
+			if (ls == ls1 && sus[ls]) {
+				if (tivl[s9] == iDis) continue;
+			}
 			if (rpos[ls] <= 0) continue;
 			s = fli[ls];
-			n = ac[cpv][s] % 7;
+			n = ac[cpv][s9] % 7;
 			ns = (n - r + 7) % 7;
 			// Find conflicting notes
 			if (chn[(ns + 1) % 7] || chn[(ns + 6) % 7]) harm_conflict = 1;
@@ -2755,7 +2761,7 @@ int CGenCP1::FailHarm() {
 			}
 			// Record note
 			++chn[ns];
-			++cchn[apcc[cpv][s]];
+			++cchn[apcc[cpv][s9]];
 			// Detect harmony
 			if (cantus_high) {
 				if (chn[3]) chm[chm.size() - 1] = (r + 3) % 7;

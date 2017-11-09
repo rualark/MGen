@@ -25,7 +25,7 @@
 // Maximum memory usage without warning in Megabytes
 #define MAX_MEMORY_WARN 1000
 #define MIN_HZOOM 1
-#define MAX_HZOOM 500
+#define MAX_HZOOM 2000
 #define MIN_PSPEED 1
 #define MAX_PSPEED 5000
 #define MIN_VIEW_TIMER 50
