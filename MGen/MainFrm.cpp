@@ -1045,7 +1045,7 @@ void CMainFrame::SaveSettings()
 		st.Format("MIDI_OUT = %s # Name of MIDI device used for playing notes\n", DISABLE_PLAYBACK);
 		fs << st;
 	}
-	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 1 to 500\n", zoom_x);
+	st.Format("Horizontal_zoom = %d # Zoom of the piano roll. Can be from 1 to %d\n", zoom_x, MAX_HZOOM);
 	fs << st;
 	st.Format("playback_speed = %d # Playback speed in percent\n", m_pspeed);
 	fs << st;
