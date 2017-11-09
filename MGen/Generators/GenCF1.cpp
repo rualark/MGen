@@ -4406,7 +4406,7 @@ void CGenCF1::SWA(int i, int dp) {
 			if (rpenalty_min >= rpenalty_min_old) {
 				if (swa_len >= swa_steps || swa_len >= smap.size()) {
 					// Record SWA stuck flags
-					for (int x = 0; x < max_flags; ++x) {
+					if (best_flags.size()) for (int x = 0; x < max_flags; ++x) {
 						if (best_flags[x]) ++ssf[x];
 					}
 					swa_full = 1;
