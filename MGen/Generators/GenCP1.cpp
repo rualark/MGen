@@ -810,6 +810,8 @@ int CGenCP1::FailSus2() {
 		}
 		// Check if sus starts from discord
 		if (antici) {
+			// Mark anticipation start as non-harmonic always
+			rposb[ls] = pPass;
 			// Check if start and end of slur is a discord - then it is interbar discord
 			if (tivl[sus[ls]] == iDis) {
 				FLAG2(224, s);
