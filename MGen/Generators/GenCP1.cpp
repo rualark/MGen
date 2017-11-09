@@ -2746,8 +2746,21 @@ int CGenCP1::FailHarm() {
 			// Start new harmony if harmonic conflict
 			if (harm_conflict && s > mli[ms]) {
 				RemoveHarmDuplicate();
-				if (ms == mli.size() - 2) FLAG2(306, s)
-				else FLAG2(307, s);
+				// More than two harmonies
+				if (hcount) FLAG2(307, s)
+				else {
+					// Two harmonies penultimate
+					if (ms == mli.size() - 2) FLAG2(306, s)
+					else {
+						// Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure
+						if (sus[ls1] && (
+							(ivlc[mli[ms]] == 4 && ivlc[mli[ms] + npm / 2] == 5) ||
+							(ivlc[mli[ms]] == 5 && ivlc[mli[ms] + npm / 2] == 4) ) &&
+							abs(ac[cpv][mli[ms]] - ac[cpv][mli[ms] + npm / 2]) < 2)
+							FLAG2(329, s)
+						else FLAG2(307, s);
+					}
+				}
 				// Does first harmony contain leading tone?
 				if (cchn[11]) first_b = 1;
 				harm_conflict = 0;
