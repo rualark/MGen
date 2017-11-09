@@ -832,6 +832,8 @@ int CGenCP1::FailSus2() {
 			}
 		}
 		else {
+			// Mark sus start as harmonic always
+			rposb[ls] = pOffbeat;
 			// Flag suspension
 			FLAG2(225, s);
 			// Suspension not in last measures
@@ -900,6 +902,7 @@ int CGenCP1::FailSus2() {
 }
 
 int CGenCP1::FailSus() {
+	CHECK_READY(DR_rposb);
 	SET_READY(DR_retrigger);
 	fill(retrigger.begin(), retrigger.end(), 0);
 	if (species == 1) {
@@ -1306,7 +1309,7 @@ int CGenCP1::DetectPatterns() {
 
 void CGenCP1::GetBasicRpos() {
 	CHECK_READY_PERSIST(DR_c);
-	CHECK_READY(DR_fli, DR_leap, DR_retrigger);
+	CHECK_READY(DR_fli, DR_leap);
 	SET_READY(DR_rposb);
 	// First note is always downbeat
 	rposb[0] = pDownbeat;
@@ -1320,8 +1323,6 @@ void CGenCP1::GetBasicRpos() {
 		else {
 			if (s > 0 && s2 < ep2 - 1 && ac[cpv][s - 1] == ac[cpv][s2 + 1]) rposb[ls] = pAux;
 			else rposb[ls] = pPass;
-			// Check aux/passing sus
-			if (sus[ls] && !retrigger[sus[ls]]) rposb[ls] = pOffbeat;
 		}
 	}
 	// Detect long notes
@@ -2909,8 +2910,8 @@ check:
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
 		if (FailRhythm()) goto skip;
 		GetVIntervals();
-		if (FailSus()) goto skip;
 		GetBasicRpos();
+		if (FailSus()) goto skip;
 		if (DetectPatterns()) goto skip;
 		ApplyFixedPat();
 		if (FailMultiCulm(acc[cpv], aslur[cpv])) goto skip;
