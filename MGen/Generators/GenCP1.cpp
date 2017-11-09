@@ -2664,6 +2664,8 @@ void CGenCP1::RemoveHarmDuplicate() {
 	hli2.resize(chm_id);
 	chm.resize(chm_id);
 	chm_alter.resize(chm_id);
+	hbc.resize(chm_id);
+	hbcc.resize(chm_id);
 }
 
 int CGenCP1::FailHarm() {
@@ -2794,6 +2796,8 @@ int CGenCP1::FailHarm() {
 
 void CGenCP1::GetHarmBass() {
 	SET_READY(DR_hbc);
+	// Do not process for lower cantus, because in this case lowest note is cantus
+	if (!cantus_high) return;
 	int ls1, ls2;
 	int harm_end, nt;
 	int de1, de2, de3;
