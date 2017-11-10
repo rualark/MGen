@@ -1001,7 +1001,14 @@ int CGenCP1::FailPco() {
 		// Prohibit leading tone octave
 		if (apcc[0][s] == 11 && apcc[1][s] == 11) FLAG2(324, s);
 		// Prohibit parallel first - first (this is for sus notes, which starts are parallel)
-		if (ivl[s] == ivl[fli[ls - 1]]) FLAG2(84, s)
+		if (ivl[s] == ivl[fli[ls - 1]]) {
+			// In case of 6-5 resolution, allow parallel 5th
+			if (sus[ls - 1] && 
+				ivlc[sus[ls - 1]] == 5 && ivlc[s] == 4 &&
+				abs(ac[cpv][s] - ac[cpv][fli[ls - 1]]) < 2)
+				FLAG2(330, s)
+			else FLAG2(84, s)
+		}
 			// Prohibit parallel last - first
 		else if (ivl[s] == ivl[fli2[ls - 1]]) FLAG2(84, s)
 		else {
