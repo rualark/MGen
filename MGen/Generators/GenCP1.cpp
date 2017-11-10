@@ -1695,7 +1695,7 @@ int CGenCP1::FailRhythm5() {
 
 int CGenCP1::FailPcoApart() {
 	CHECK_READY(DR_fli, DR_ivl, DR_beat);
-	CHECK_READY(DR_rpos, DR_hli);
+	CHECK_READY(DR_rpos);
 	// Step index of last perfect consonance
 	pco5_last = -1000;
 	pco8_last = -1000;
@@ -1721,12 +1721,7 @@ int CGenCP1::FailPcoApartStep() {
 	if (civlc[s] == 7) {
 		if (pco5_last > -1 && bmli[s] != mli5_last) {
 			skip_len = s - pco5_last2 - 1;
-			// Step distance should be less than 4/4
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && 
-				// No more than 3 notes allowed between consonances
-				ls - bli[pco5_last] < 4 &&
-				// No intermediate harmony allowed if harmony already processed
-				(!bhli[s] || bhli[s] - bhli[pco5_last] < 2)) {
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco5_last] < 4) {
 				if (acc[cfv][s] != acc[cfv][s - 1]) {
 					if (retrigger[s]) FLAG2(315, s)
 					else FLAG2(316, s);
@@ -1747,12 +1742,7 @@ int CGenCP1::FailPcoApartStep() {
 	if (civlc[s] == 0) {
 		if (pco8_last > -1 && bmli[s] != mli8_last) {
 			skip_len = s - pco8_last2 - 1;
-			// Step distance should be less than 4/4
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 &&
-				// No more than 3 notes allowed between consonances
-				ls - bli[pco8_last] < 4 &&
-				// No intermediate harmony allowed if harmony already processed
-				(!bhli[s] || bhli[s] - bhli[pco8_last] < 2)) {
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco8_last] < 5) {
 				if (acc[cfv][s] != acc[cfv][s - 1]) {
 					if (retrigger[s]) FLAG2(315, s)
 					else FLAG2(316, s);
@@ -2686,7 +2676,6 @@ void CGenCP1::RemoveHarmDuplicate() {
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli, DR_c, DR_pc);
 	CHECK_READY_PERSIST(DR_mli);
-	SET_READY(DR_hli);
 	int ls1, ls2 = 0;
 	int s9;
 	int r, n, ns, harm_conflict, hcount;
@@ -2826,7 +2815,6 @@ int CGenCP1::FailHarm() {
 	return 0;
 }
 
-// Calculate back links to harmonies
 void CGenCP1::GetBhli() {
 	fill(bhli.begin(), bhli.end(), 0);
 	for (int hs = 0; hs < chm.size(); ++hs) {
@@ -2989,6 +2977,7 @@ check:
 		if (FailLocalRange(acc[cpv], notes_lrange3, min_lrange3, 300)) goto skip;
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;
+		if (FailPcoApart()) goto skip;
 		if (FailOverlap()) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
@@ -2999,7 +2988,6 @@ check:
 		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;
 		if (FailLocalMacc(notes_arange2, min_arange2, 16)) goto skip;
 		if (FailHarm()) goto skip;
-		if (FailPcoApart()) goto skip;
 
 		//LogCantus("Rpenalty", rpenalty_cur, flags);
 		SaveBestRejected(acc[cpv]);
