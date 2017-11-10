@@ -117,30 +117,9 @@ CString CGMidi::GetLyNote(int i, int v) {
 }
 
 CString CGMidi::GetLyNoteVisual(int i, int v) {
-	int nb, nb2;
-	if (minor[i][v]) {
-		// Get base chromatic note for current note
-		nb = note_base_m[tonic[i][v]][note[i][v] % 12];
-		// If it is diatonic, just return it
-		if (nb > -1) {
-			return NoteName[nb] + GetLyAlterVisual(note[i][v] % 12 - nb);
-		}
-		// If not, build needed note from next lower note
-		else {
-			nb2 = note_base_m[tonic[i][v]][(note[i][v] + 11) % 12];
-			return NoteName[nb2] + GetLyAlterVisual(note[i][v] % 12 - nb2);
-		}
-	}
-	else {
-		nb = note_base[tonic[i][v]][note[i][v] % 12];
-		if (nb > -1) {
-			return NoteName[nb] + GetLyAlterVisual(note[i][v] % 12 - nb);
-		}
-		else {
-			nb2 = note_base[tonic[i][v]][(note[i][v] + 11) % 12];
-			return NoteName[nb2] + GetLyAlterVisual(note[i][v] % 12 - nb2);
-		}
-	}
+	int no2, oct, alter;
+	GetRealNote(note[i][v], tonic[i][v], minor[i][v], no2, oct, alter);
+	return NoteName[no2] + GetLyAlterVisual(alter);
 }
 
 CString CGMidi::GetLyLen(int length) {

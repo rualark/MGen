@@ -983,3 +983,16 @@ void CGLib::GetRealNote(int no, int key, int mi, int &no2, int &oct, int &alter)
 	if (alter < -2) alter += 12;
 }
 
+CString CGLib::GetAlterName(int alter) {
+	if (alter == -1) return "b";
+	else if (alter == -2) return "bb";
+	else if (alter == 1) return "#";
+	else if (alter == 2) return "##";
+	return "";
+}
+
+CString CGLib::GetRealNoteName(int no, int key, int mi) {
+	int no2, oct, alter;
+	GetRealNote(no, key, mi, no2, oct, alter);
+	return NoteName[no2] + GetAlterName(alter);
+}

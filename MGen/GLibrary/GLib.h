@@ -308,6 +308,8 @@ protected:
 	template<typename T> void vpop_front(vector<T> &v, int count);
 	template<typename T> void vpush_front(vector<T> &v, T element, int count);
 	static void GetRealNote(int no, int key, int mi, int & no2, int & oct, int & alter);
+	CString GetAlterName(int alter);
+	CString GetRealNoteName(int no, int key, int mi);
 };
 
 // Pop front vector elements

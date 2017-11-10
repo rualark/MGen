@@ -518,7 +518,8 @@ int CGenCP1::SendCP() {
 					else
 						mark[pos][v] = GetHarmName2(chm[chm_id], chm_alter[chm_id]);
 					if (show_harmony_bass && hbc[chm_id] % 7 != chm[chm_id])
-						mark[pos][v] += "/" + NoteName[hbcc[chm_id] % 12];
+						mark[pos][v] += "/" + 
+						GetRealNoteName(hbcc[chm_id] % 12, tonic_cur, minor_cur);
 					SendHarmColorCP(pos, v, chm_id);
 					++chm_id;
 				}
