@@ -93,8 +93,6 @@ int CGMidi::GetLyVcnt(int step1, int step2, vector<int> &vm_max) {
 }
 
 CString CGMidi::GetLyAlter(int alter) {
-	if (alter > 2) alter -= 12;
-	if (alter < -2) alter += 12;
 	if (alter == -1) return "f";
 	else if (alter == -2) return "ff";
 	else if (alter == 1) return "s";
@@ -113,39 +111,9 @@ CString CGMidi::GetLyAlterVisual(int alter) {
 }
 
 CString CGMidi::GetLyNote(int i, int v) {
-	int nb, nb2, oct;
-	oct = note[i][v] / 12;
-	if (minor[i][v]) {
-		// Get base chromatic note for current note
-		nb = note_base_m[tonic[i][v]][note[i][v] % 12];
-		// If it is diatonic, just return it
-		if (nb > -1) {
-			if (nb > note[i][v] % 12 + 6) --oct;
-			if (nb < note[i][v] % 12 - 6) ++oct;
-			return LyNoteSharp[nb] + GetLyAlter(note[i][v] % 12 - nb) + LyOctave[oct];
-		} 
-		// If not, build needed note from next lower note
-		else {
-			nb2 = note_base_m[tonic[i][v]][(note[i][v] + 11) % 12];
-			if (nb2 > note[i][v] % 12 + 6) --oct;
-			if (nb2 < note[i][v] % 12 - 6) ++oct;
-			return LyNoteSharp[nb2] + GetLyAlter(note[i][v] % 12 - nb2) + LyOctave[oct];
-		}
-	}
-	else {
-		nb = note_base[tonic[i][v]][note[i][v] % 12];
-		if (nb > -1) {
-			if (nb > note[i][v] % 12 + 6) --oct;
-			if (nb < note[i][v] % 12 - 6) ++oct;
-			return LyNoteSharp[nb] + GetLyAlter(note[i][v] % 12 - nb) + LyOctave[oct];
-		}
-		else {
-			nb2 = note_base[tonic[i][v]][(note[i][v] + 11) % 12];
-			if (nb2 > note[i][v] % 12 + 6) --oct;
-			if (nb2 < note[i][v] % 12 - 6) ++oct;
-			return LyNoteSharp[nb2] + GetLyAlter(note[i][v] % 12 - nb2) + LyOctave[oct];
-		}
-	}
+	int no2, oct, alter;
+	GetRealNote(note[i][v], tonic[i][v], minor[i][v], no2, oct, alter);
+	return LyNoteSharp[no2] + GetLyAlter(alter) + LyOctave[oct];
 }
 
 CString CGMidi::GetLyNoteVisual(int i, int v) {

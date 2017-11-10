@@ -941,3 +941,45 @@ CString CGLib::HumanFloatPrecision(float f) {
 	return st;
 }
 
+// Take chromatic note, key and minor flag and convert to real note, octave and alteration
+void CGLib::GetRealNote(int no, int key, int mi, int &no2, int &oct, int &alter) {
+	oct = no / 12;
+	if (mi) {
+		// Get base chromatic note for current note
+		no2 = note_base_m[key][no % 12];
+		// If it is diatonic, just return it
+		if (no2 > -1) {
+			if (no2 > no % 12 + 6) --oct;
+			if (no2 < no % 12 - 6) ++oct;
+			alter = no % 12 - no2;
+			no2 = no2;
+		}
+		// If not, build needed note from next lower note
+		else {
+			no2 = note_base_m[key][(no + 11) % 12];
+			if (no2 > no % 12 + 6) --oct;
+			if (no2 < no % 12 - 6) ++oct;
+			alter = no % 12 - no2;
+			no2 = no2;
+		}
+	}
+	else {
+		no2 = note_base[key][no % 12];
+		if (no2 > -1) {
+			if (no2 > no % 12 + 6) --oct;
+			if (no2 < no % 12 - 6) ++oct;
+			alter = no % 12 - no2;
+			no2 = no2;
+		}
+		else {
+			no2 = note_base[key][(no + 11) % 12];
+			if (no2 > no % 12 + 6) --oct;
+			if (no2 < no % 12 - 6) ++oct;
+			alter = no % 12 - no2;
+			no2 = no2;
+		}
+	}
+	if (alter > 2) alter -= 12;
+	if (alter < -2) alter += 12;
+}
+
