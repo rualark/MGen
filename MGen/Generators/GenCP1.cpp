@@ -2676,6 +2676,7 @@ void CGenCP1::RemoveHarmDuplicate() {
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli, DR_c, DR_pc);
 	CHECK_READY_PERSIST(DR_mli);
+	SET_READY(DR_hli);
 	int ls1, ls2 = 0;
 	int s9;
 	int r, n, ns, harm_conflict, hcount;
