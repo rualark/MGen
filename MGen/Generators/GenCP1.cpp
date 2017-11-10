@@ -234,6 +234,7 @@ void CGenCP1::ScanCPInit() {
 	rposb.resize(c_len);
 	rposf.resize(c_len);
 	rpos.resize(c_len);
+	bhli.resize(c_len);
 	pat.resize(c_len);
 	pat_state.resize(c_len);
 	ivl.resize(c_len);
@@ -2807,11 +2808,21 @@ int CGenCP1::FailHarm() {
 		}
 	}
 	if (ls2 && hli2.size()) hli2[hli2.size() - 1] = fli2[ls2];
+	GetBhli();
 	GetHarmBass();
 	if (EvalHarm()) return 1;
 	if (FailTonicCP()) return 1;
 	return 0;
 }
+
+void CGenCP1::GetBhli() {
+	fill(bhli.begin(), bhli.end(), 0);
+	for (int hs = 0; hs < chm.size(); ++hs) {
+		for (s = hli[hs]; s <= hli2[hs]; ++s) {
+			bhli[s] = hs;
+		}
+	}
+} 
 
 void CGenCP1::GetHarmBass() {
 	SET_READY(DR_hbc);

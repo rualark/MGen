@@ -104,6 +104,7 @@ protected:
 	inline int FailTonicCP();
 	inline void RemoveHarmDuplicate();
 	inline int FailHarm();
+	inline void GetBhli();
 	inline void GetHarmBass();
 	void ScanCP(int t, int v);
 

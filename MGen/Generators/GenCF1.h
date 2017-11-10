@@ -817,10 +817,11 @@ protected:
 	vector<int> mli; // [ms] Forward links to first steps of each measure
 	vector<int> bmli; // [s] Backward links to measures from steps
 	vector<int> cfli; // [cfs] Forward links to each cf note
-	vector<int> hli; // Forward links to first notes of each harmony
-	vector<int> hli2; // Forward links to last notes of each harmony
-	vector<int> hbcc; // Bass note of each harmony (chromatic)
-	vector<int> hbc; // Bass note of each harmony (diatonic)
+	vector<int> hli; // [hs] Forward links to first notes of each harmony
+	vector<int> hli2; // [hs] Forward links to last notes of each harmony
+	vector<int> hbcc; // [hs] Bass note of each harmony (chromatic)
+	vector<int> hbc; // [hs] Bass note of each harmony (diatonic)
+	vector<int> bhli; // [s] Back links to first notes of each harmony
 	vector<int> rposb; // [ls] Rhythm position types for fli (basic without patterns)
 	vector<int> rposf; // [ls] Rhythm position types for fli (with fixed patterns)
 	vector<int> rpos; // [ls] Rhythm position types for fli
