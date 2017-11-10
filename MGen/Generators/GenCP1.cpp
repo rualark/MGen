@@ -294,13 +294,13 @@ void CGenCP1::CalcPmap2() {
 		// Intervals
 		if (tivl[s] == iDis) ++pm_dis;
 		else if (tivl[s] == iPco) ++pm_pco;
-		else if (tivl[s] == iIco) ++pm_ico;
+		else if (tivl[s] == iIco || tivl[s] == iHarm4) ++pm_ico;
 		if (sus[ls]) {
 			if (retrigger[sus[ls]]) ++pm_anti;
 			else ++pm_sus;
 			if (tivl[sus[ls]] == iDis) ++pm_dis;
 			else if (tivl[sus[ls]] == iPco) ++pm_pco;
-			else if (tivl[sus[ls]] == iIco) ++pm_ico;
+			else if (tivl[sus[ls]] == iIco || tivl[sus[ls]] == iHarm4) ++pm_ico;
 		}
 		// Length
 		pm_llen += llen[ls];
@@ -700,6 +700,42 @@ void CGenCP1::GetVIntervals() {
 	}
 }
 
+void CGenCP1::Get4th() {
+	CHECK_READY(DR_fli, DR_sus, DR_ivl);
+	// Do not process if upbeat not lowest 4th is prohibited
+	if (!accept[331]) return;
+	// Do not process lower cantus, because it forms downbeat 4th
+	if (!cantus_high) return;
+	int mea_end, found;
+	// Calculate intervals
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		// Do not process suspension and anticipation 4th
+		if (sus[ls]) continue;
+		// Process only 4th
+		if (ivlc[s] != 3) continue;
+		// Do not process downbeat
+		if (!beat[ls]) continue;
+		// Detect consonant note in measure that is lower than current
+		ms = bmli[s];
+		if (ms < mli.size() - 1) mea_end = mli[ms + 1] - 1;
+		else mea_end = c_len - 1;
+		// Prevent going out of window
+		if (mea_end >= ep2) {
+			tivl[s] = iHarm4;
+			break;
+		}
+		found = 0;
+		for (int s2 = mli[ms]; s2 <= mea_end; ++s2) {
+			if (tivl[s2] != iDis && acc[cpv][s2] < acc[cpv][s]) {
+				found = 1;
+				break;
+			}
+		}
+		if (found) tivl[s] = iHarm4;
+	}
+}
+
 int CGenCP1::FailVMotion() {
 	SET_READY(DR_motion, DR_c);
 	int mtemp, vm1, vm2;
@@ -740,9 +776,9 @@ int CGenCP1::FailSusResolution(int s3) {
 	// Check if suspension second part is discord
 	if (tivl[s2] == iDis) {
 		// Mark resolution as obligatory harmonic in basic rpos
-		if (tivl[s3] != iDis) rposb[bli[s3]] = pOffbeat;
+		if (tivl[s3] != iDis && tivl[s3] != iHarm4) rposb[bli[s3]] = pOffbeat;
 		// Resolution to discord
-		if (tivl[s3] == iDis) FLAG2(220, s3)
+		if (tivl[s3] == iDis || tivl[s3] == iHarm4) FLAG2(220, s3)
 			// Resolution by leap
 		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2(221, s3)
 		else {
@@ -776,7 +812,7 @@ int CGenCP1::FailSus1() {
 		// Flag suspension
 		FLAG2(225, s);
 		// Check if sus starts from discord
-		if (tivl[s] == iDis) FLAG2(224, s);
+		if (tivl[s] == iDis || tivl[s] == iHarm4) FLAG2(224, s);
 		last_cf = -1;
 		// Check all cantus note changes
 		for (s = sus[ls]; s <= s2; ++s) {
@@ -884,7 +920,7 @@ int CGenCP1::FailSus2() {
 						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2(136, fli[ls + 1])
 						else {
 							// Mark insertion as non-harmonic in basic rpos if resolution is harmonic
-							if (tivl[s3] != iDis) rposb[ls + 1] = pAux;
+							if (tivl[s3] != iDis && tivl[s3] != iHarm4) rposb[ls + 1] = pAux;
 							if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(296, fli[ls + 1])
 							else if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2(137, fli[ls + 1])
 							else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2(138, fli[ls + 1])
@@ -921,7 +957,7 @@ int CGenCP1::FailSus() {
 
 int CGenCP1::FailDisSus() {
 	// Discord
-	if (tivl[s] == iDis) {
+	if (tivl[s] == iDis || tivl[s] == iHarm4) {
 		FLAG2(83, s);
 	}
 	return 0;
@@ -1105,16 +1141,16 @@ int CGenCP1::DetectPDD() {
 			// Note 2 is not longer than 3
 			if (llen[ls + 1] > llen[ls + 2] && (ep2 == c_len || ls < fli_size - 3)) continue;
 			// Third note must be consonance
-			if (tivl[fli[ls + 2]] == iDis) continue;
+			if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) continue;
 		}
 		// Parallel motion - flag but allow
 		if (ac[cfv][fli[ls + 1]] - ac[cfv][s] == -1) {
-			if (tivl[fli[ls + 1]] == iDis) FLAG2(298, fli[ls + 1]);
+			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) FLAG2(298, fli[ls + 1]);
 			//if (!accept[298]) continue;
 		}
 		// Direct motion - flag but allow
 		else if (ac[cfv][fli[ls + 1]] - ac[cfv][s] < 0) {
-			if (tivl[fli[ls + 1]] == iDis) FLAG2(297, fli[ls + 1]);
+			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) FLAG2(297, fli[ls + 1]);
 			//if (!accept[297]) continue;
 		}
 		SavePattern(pPDD);
@@ -1134,7 +1170,7 @@ void CGenCP1::DetectDNT() {
 		// Note 2 is long
 		if (llen[ls + 1] > npm / 2) continue;
 		// Note 1 is not dissonance
-		if (tivl[s] == iDis) continue;
+		if (tivl[s] == iDis || tivl[s] == iHarm4) continue;
 		// Note 2 is downbeat
 		if (!beat[ls + 1]) continue;
 		// Movements are stepwize
@@ -1159,7 +1195,7 @@ void CGenCP1::DetectDNT() {
 				// Note 3 is longer than 4
 				if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
 				// Note 4 is not dissonance
-				if (tivl[fli[ls + 3]] == iDis) continue;
+				if (tivl[fli[ls + 3]] == iDis || tivl[fli[ls + 3]] == iHarm4) continue;
 				// Movements are stepwize
 				if (!asmooth[cpv][fli2[ls + 2]]) continue;
 				// Both movements have same direction
@@ -1196,7 +1232,7 @@ void CGenCP1::DetectCambiata() {
 		// Second note is upbeat (beat 1 not allowed)
 		if (beat[ls+1] < 1) continue;
 		// Note 1 is not a discord
-		if (tivl[s] == iDis) continue;
+		if (tivl[s] == iDis || tivl[s] == iHarm4) continue;
 		// Second note is created by stepwize movement from first
 		if (aleap[cpv][s2]) continue;
 		// Third note is created by leaping motion in same direction as second note moves
@@ -1238,7 +1274,7 @@ void CGenCP1::DetectCambiata() {
 					}
 				}
 				// Third diss
-				if (tivl[fli[ls + 2]] == iDis) {
+				if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) {
 					if (!accept[261]) continue;
 					// If third note is dissonance, it should not be downbeat
 					if (!beat[ls + 2]) continue;
@@ -1248,7 +1284,7 @@ void CGenCP1::DetectCambiata() {
 					if (llen[ls + 2] > llen[ls]) continue;
 					if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
 					// Fourth note should not be dissonance
-					if (tivl[fli[ls + 3]] == iDis) continue;
+					if (tivl[fli[ls + 3]] == iDis || tivl[fli[ls + 3]] == iHarm4) continue;
 				}
 				// Leap from note 3
 				if (aleap[cpv][fli2[ls + 2]]) {
@@ -1343,7 +1379,8 @@ void CGenCP1::GetBasicRpos() {
 		if (rposb[ls] < 0 && tivl[s] != iDis) {
 			// Check longer than previous
 			if (llen[ls] > llen[ls - 1] &&
-				rposb[ls - 1] > 0 && tivl[fli2[ls - 1]] != iDis) rposb[ls] = pLong;
+				rposb[ls - 1] > 0 && tivl[fli2[ls - 1]] != iDis) 
+				rposb[ls] = pLong;
 			// Check longer than next
 			//if (llen[ls] > llen[ls + 1] &&
 				//rposb[ls + 1] > 0 && tivl[fli2[ls + 1]] != iDis) rposb[ls] = pLong;
@@ -1355,10 +1392,10 @@ void CGenCP1::SetRpos(int ls, vector<int> &l_rpos, int val) {
 	// Check if in range
 	if (ls >= fli_size) return;
 	// Detect changing sign for dissonance
-	if (l_rpos[ls] * val < 0 && !tivl[fli[ls]]) {
+	if (l_rpos[ls] * val < 0 && tivl[fli[ls]] < 2) {
 		CString est;
 		est.Format("Detected rpos overwrite at note %d:%d (%s) with value %d (old value %d): %s", 
-			cantus_id + 1, ls + 1, tivl[fli[ls]]?"non-Dis":"Dis", 
+			cantus_id + 1, ls + 1, tivl[fli[ls]] < 2?"Dis":"non-Dis", 
 			val, l_rpos[ls], vint2st(ep2, acc[cpv]));
 		WriteLog(5, est);
 	}
@@ -1417,16 +1454,19 @@ void CGenCP1::ApplyFixedPat() {
 	for (int ls = 0; ls < fli_size; ++ls) {
 		if (pat[ls] == 0) continue;
 		if (pat[ls] == pPDD) {
-			if (tivl[fli[ls + 1]] == iDis) ApplyPDD(ls, rposf, 1);
+			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) ApplyPDD(ls, rposf, 1);
 		}
 		else if (pat[ls] == pDNT) {
-			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 2]] == iDis) {
+			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 2]] == iDis ||
+				tivl[fli[ls + 1]] == iHarm4 || tivl[fli[ls + 2]] == iHarm4) {
 				ApplyDNT(ls, rposf, 1);
 			}
 		}
 		else if (pat[ls] == pCam) {
-			if (tivl[fli[ls + 2]] == iDis) ApplyCam2(ls, rposf, 1);
-			else if (tivl[fli[ls + 1]] == iDis) ApplyCam(ls, rposf, 1);
+			if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) 
+				ApplyCam2(ls, rposf, 1);
+			else if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) 
+				ApplyCam(ls, rposf, 1);
 		}
 	}
 	// Set rposf for empty
@@ -2744,7 +2784,7 @@ int CGenCP1::FailHarm() {
 			// Do not process non-harmonic notes if they are not consonant ending of first sus
 			// For first suspended note do not check rpos
 			if (ls == ls1 && sus[ls]) {
-				if (tivl[s9] == iDis) continue;
+				if (tivl[s9] < 2) continue;
 			}
 			// For all other notes, check rpos
 			else if (rpos[ls] <= 0) continue;
@@ -2958,6 +2998,7 @@ check:
 		GetLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv]);
 		if (FailRhythm()) goto skip;
 		GetVIntervals();
+		Get4th();
 		GetBasicRpos();
 		if (FailSus()) goto skip;
 		if (DetectPatterns()) goto skip;
