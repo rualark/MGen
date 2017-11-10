@@ -199,9 +199,10 @@ const CString TaskNames[] = {
 #define hDom 2
 
 // Interval types
-#define iDis 0 // Dissonance
-#define iPco 1 // Perfect consonance
-#define iIco 2 // Imperfect consonance
+#define iDis   0 // Dissonance
+#define iHarm4 1 // Harmonic 4th
+#define iPco   2 // Perfect consonance
+#define iIco   3 // Imperfect consonance
 
 // Rule string types
 #define rsName 0 // Rule name
