@@ -532,17 +532,32 @@ void CMGenView::OnDraw(CDC* pDC)
 			int cur_empty = 0;
 			int max_empty = 0;
 			int best_pos = ng_min2;
+			int cur_empty2 = 0;
+			int max_empty2 = 0;
+			int best_pos2 = ng_min2;
 			for (int n = 0; n < pGen->graph_size; ++n) if (mf->show_graph[n]) {
 				// Find empty space
 				if (!max_empty) {
 					for (int i = ng_min2; i <= ng_max2; i++) {
+						// Find fully empty space
 						if (!pGen->nfreq[i]) ++cur_empty;
 						else cur_empty = 0;
 						if (cur_empty > max_empty) {
 							max_empty = cur_empty;
 							best_pos = i - cur_empty + 1;
 						}
+						// Find less crowded zone
+						if (pGen->nfreq[i] < pGen->t_sent * 0.03) ++cur_empty2;
+						else cur_empty2 = 0;
+						if (cur_empty2 > max_empty2) {
+							max_empty2 = cur_empty2;
+							best_pos2 = i - cur_empty2 + 1;
+						}
 					}
+				}
+				if (max_empty < 6 && max_empty2 > max_empty) {
+					max_empty = max_empty2;
+					best_pos = best_pos2;
 				}
 				// Scale
 				float scale = min(max_empty / pGen->graph_max[n], pGen->graph_scale[n]);
