@@ -1273,7 +1273,7 @@ void CGenCP1::DetectCambiata() {
 						if (!accept[259]) continue;
 					}
 				}
-				// Third diss
+				// Third diss or harmonic 4th
 				if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) {
 					if (!accept[261]) continue;
 					// If third note is dissonance, it should not be downbeat
@@ -1454,18 +1454,17 @@ void CGenCP1::ApplyFixedPat() {
 	for (int ls = 0; ls < fli_size; ++ls) {
 		if (pat[ls] == 0) continue;
 		if (pat[ls] == pPDD) {
-			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) ApplyPDD(ls, rposf, 1);
+			if (tivl[fli[ls + 1]] == iDis) ApplyPDD(ls, rposf, 1);
 		}
 		else if (pat[ls] == pDNT) {
-			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 2]] == iDis ||
-				tivl[fli[ls + 1]] == iHarm4 || tivl[fli[ls + 2]] == iHarm4) {
+			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 2]] == iDis) {
 				ApplyDNT(ls, rposf, 1);
 			}
 		}
 		else if (pat[ls] == pCam) {
-			if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) 
+			if (tivl[fli[ls + 2]] == iDis) 
 				ApplyCam2(ls, rposf, 1);
-			else if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) 
+			else if (tivl[fli[ls + 1]] == iDis) 
 				ApplyCam(ls, rposf, 1);
 		}
 	}
