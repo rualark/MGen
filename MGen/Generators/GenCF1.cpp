@@ -1959,8 +1959,8 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		if (skips > allowed_skips) filled = 0;
 		else if (fill_to > 3) filled = 0;
 		else if (fill_to == 3 && (!fill_to_pre || late_leap > c4p_last_notes2 + 1 || !accept[144 + leap_id])) filled = 0;
-		else if (fill_to == 2 && fill_to_pre && !accept[100 + leap_id]) filled = 0;
-		else if (fill_to == 2 && !fill_to_pre && !accept[104 + leap_id]) filled = 0;
+		else if (fill_to == 2 && (fill_to_pre || !fleap_start) && !accept[100 + leap_id]) filled = 0;
+		else if (fill_to == 2 && !fill_to_pre && fleap_start && !accept[104 + leap_id]) filled = 0;
 		else if (fill_from > 3) filled = 0;
 		else if (fill_from == 3 && (!fill_from_pre || late_leap > c4p_last_notes2 + 1 || !accept[144 + leap_id])) filled = 0;
 		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
@@ -2005,9 +2005,9 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 				FLAG2(144 + leap_id, fli[fleap_start])
 			else if (fill_from == 3 && late_leap <= c4p_last_notes2 + 1) 
 				FLAG2(144 + leap_id, fli[fleap_start])
+			// Flag prepared unfinished fill if it is not blocking 
+			else if (fill_to == 2 && (fill_to_pre || !fleap_start)) FLAG2(100 + leap_id, fli[fleap_start])
 			// Flag unfinished fill if it is not blocking
-			else if (fill_to == 2 && fill_to_pre) FLAG2(100 + leap_id, fli[fleap_start])
-			// Flag prepared unfinished fill if it is not blocking
 			else if (fill_to == 2 && !fill_to_pre) FLAG2(104 + leap_id, fli[fleap_start]);
 			// Flag after 3rd if it is not blocking
 			if (fill_from == 2) FLAG2(53 + leap_id, fli[fleap_start]);
