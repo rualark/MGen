@@ -215,6 +215,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	vector<int> la;
 	SplitLyNote(pos, le, la);
 	SplitLyNoteMeasure(pos, le, la);
+	if (ev != 'r' && ly_flag_style == 1) SendLyNoteColor(fs, color[i][v]);
 	for (int lc = 0; lc < la.size(); ++lc) {
 		if (show_lining && ev != "r") {
 			if (la[lc] == 8) {
@@ -270,6 +271,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 				fs << "}\n";
 			}
 		}
+		if (!lc && ev != 'r' && ly_flag_style == 2) SendLyFlagColor(fs, color[i][v]);
 		if (i > -1) i += la[lc] / midifile_out_mul[i];
 	}
 }
@@ -430,10 +432,8 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				}
 			}
 			else {
-				if (ly_flag_style == 1) SendLyNoteColor(fs, color[i][v]);
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 				SaveLyComments(comm_st, i, v, nnum, pos);
-				if (ly_flag_style == 2) SendLyFlagColor(fs, color[i][v]);
 			}
 			if (pause_accum && (i == step2 - 1 || !pause[i + 1][v])) {
 				SendLyEvent(fs, pause_pos, "r", pause_accum, pause_i, v);
