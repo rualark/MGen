@@ -1023,8 +1023,8 @@ int CGenCP1::FailPcoSus() {
 int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (tivl[s] == iPco) {
-		// Prohibit long downbeat octave
-		if (!beat[ls]) {
+		// Prohibit long downbeat octave except last measure
+		if (!beat[ls] && bmli[s] < mli.size() - 1) {
 			if (ivlc[s]) {
 				if ((species == 3 || species == 5) && rlen[ls] > 3) FLAG2(325, s)
 				else if ((species == 2 || species == 4) && rlen[ls] > 7) FLAG2(325, s);
