@@ -1647,8 +1647,8 @@ int CGenCP1::FailRhythm5() {
 			// Last note
 			if (ep2 == c_len && ls2 == fli_size - 1 && ms == mli.size() - 1) {
 				// Check length
-				if (l_len[lp] == 1) FLAG2(253, s2)
-				else if (l_len[lp] == 2) FLAG2(252, s2)
+				if (l_len[lp] == 1) FLAG2(253, fli[fli_size - 1])
+				else if (l_len[lp] == 2) FLAG2(252, fli[fli_size - 1])
 			}
 			// Calculate rhythm id
 			if (lp < l_len.size() - 1 || !slur2)

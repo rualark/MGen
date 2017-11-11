@@ -316,9 +316,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;239;0;Cantus;Rhythm;1/2 after 1/4 or 1/8 in measure;slur forward;1;;;;;1;;;;;
 1;278;0;Cantus;Rhythm;1/2 after 1/4 or 1/8 in measure;slur back;1;;;;;1;;;;;
 1;240;60;Cantus;Rhythm;1/2 after 1/4 or 1/8 in measure;inside;0;;;;;1;;;239;;
-1;267;0;Cantus;Rhythm;Last note;not whole;0;;;;;1;;;;;
-1;252;60;Cantus;Rhythm;Last note;1/4;0;;;;;1;;;;;
-1;253;60;Cantus;Rhythm;Last note;1/8;0;;;;;1;;;;;
+1;267;0;Cantus;Rhythm;Last note;not whole;0;;;;;1;;1;;;
+1;252;60;Cantus;Rhythm;Last note;1/4;0;;;;;1;;1;;;
+1;253;60;Cantus;Rhythm;Last note;1/8;0;;;;;1;;1;;;
 1;241;0;Cantus;Rhythm;Suspension rhythm;1/2 + 1/4;1;;;;;1;;;;;
 1;242;0;Cantus;Rhythm;Suspension rhythm;1/2 + 1/2;1;;;;;1;;;;;
 1;251;60;Cantus;Rhythm;Suspension rhythm;1/4 + ?;0;;;;;1;;;;;
