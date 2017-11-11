@@ -1497,7 +1497,7 @@ int CGenCP1::FailRhythm() {
 int CGenCP1::FailRhythm2() {
 	// Last measure not whole
 	if (c_len - fli[fli_size - 1] < npm) {
-		FLAG2(267, c_len - npm)
+		FLAG2(267, fli[fli_size - 1])
 	}
 	return 0;
 }
@@ -1506,7 +1506,7 @@ int CGenCP1::FailRhythm2() {
 int CGenCP1::FailRhythm4() {
 	// Last measure not whole
 	if (c_len - fli[fli_size - 1] < npm) {
-		FLAG2(267, c_len - npm)
+		FLAG2(267, fli[fli_size - 1])
 	}
 	return 0;
 }
@@ -1517,7 +1517,7 @@ int CGenCP1::FailRhythm3() {
 	if (fn && fn != llen[0] && fli_size > 1) FLAG2(237, 0);
 	// Last measure not whole
 	if (c_len - fli[fli_size - 1] < npm) {
-		FLAG2(267, c_len - npm)
+		FLAG2(267, fli[fli_size - 1])
 		if (c_len - fli[fli_size - 1] == 1) FLAG2(252, fli[fli_size - 1])
 	}
 	for (ls = 0; ls < fli_size; ++ls) {
@@ -1594,7 +1594,7 @@ int CGenCP1::FailRhythm5() {
 			// Do not process last note if not full melody generated
 			if (ep2 != c_len && ls2 == fli_size - 1) {
 				// Last measure without whole note
-				if (ms == mli.size() - 1 && l_len.size()) FLAG2(267, s);
+				if (ms == mli.size() - 1 && l_len.size()) FLAG2(267, fli[fli_size - 1]);
 				// Whole inside if it starts not from first measure, from first step and is not a suspension
 				if (llen[ls2] >= 8 && ms && !pos && !sus[ls2]) FLAG2(236, s) 
 				// 1/8 syncope
@@ -1632,7 +1632,7 @@ int CGenCP1::FailRhythm5() {
 			if (ms == mli.size() - 1) {
 				// Check last whole note
 				if (l_len[0] != 8) 
-					FLAG2(267, s);
+					FLAG2(267, fli[fli_size - 1]);
 			}
 		}
 		// Set first rhythm id bit
