@@ -2724,7 +2724,7 @@ int CGenCP1::FailHarm() {
 	CHECK_READY_PERSIST(DR_mli);
 	SET_READY(DR_hli);
 	int ls1, ls2 = 0;
-	int s9;
+	int s9, hs;
 	int r, n, ns, harm_conflict, hcount;
 	int first_b; // First harmony in measure has b
 	vector<int> chn, cchn;
@@ -2759,6 +2759,7 @@ int CGenCP1::FailHarm() {
 		fill(cchn.begin(), cchn.end(), 0);
 		hli.push_back(mli[ms]);
 		hli2.push_back(0);
+		hs = hli.size() - 1;
 		if (hli2.size() > 1) hli2[hli2.size() - 2] = hli[hli.size() - 1] - 1;
 		hbcc.push_back(acc[cfv][mli[ms]]);
 		hbc.push_back(ac[cfv][mli[ms]]);
@@ -2817,6 +2818,7 @@ int CGenCP1::FailHarm() {
 				fill(cchn.begin(), cchn.end(), 0);
 				hli.push_back(s);
 				hli2.push_back(0);
+				hs = hli.size() - 1;
 				if (hli2.size() > 1) hli2[hli2.size() - 2] = hli[hli.size() - 1] - 1;
 				chm.push_back(r);
 				hbcc.push_back(acc[cfv][mli[ms]]);
@@ -2833,17 +2835,17 @@ int CGenCP1::FailHarm() {
 			++cchn[apcc[cpv][s9]];
 			// Detect harmony
 			if (cantus_high) {
-				if (chn[3]) chm[chm.size() - 1] = (r + 3) % 7;
-				else if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
-				else if (chn[1]) chm[chm.size() - 1] = (r + 1) % 7;
-				else chm[chm.size() - 1] = r;
+				if (chn[3]) chm[hs] = (r + 3) % 7;
+				else if (chn[5]) chm[hs] = (r + 5) % 7;
+				else if (chn[1]) chm[hs] = (r + 1) % 7;
+				else chm[hs] = r;
 			}
 			else {
-				if (chn[5]) chm[chm.size() - 1] = (r + 5) % 7;
-				else chm[chm.size() - 1] = r;
+				if (chn[5]) chm[hs] = (r + 5) % 7;
+				else chm[hs] = r;
 			}
 			// Detect altered chord
-			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[chm_alter.size() - 1] = 1;
+			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[hs] = 1;
 		}
 		RemoveHarmDuplicate();
 		if (ms == mli.size() - 2 && hcount) {
