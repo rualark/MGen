@@ -3531,7 +3531,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i)
 			}
 			// Set note color if this is maximum flag severity
 			if (severity[fl] > current_severity && severity[fl] >= show_min_severity
-				&& !harmonic_rule[fl] && RuleGroup[fl] != "Harmony") {
+				&& !harmonic_rule[fl]) {
 				current_severity = severity[fl];
 				color[pos + i][v] = flag_color[severity[fl]];
 			}
@@ -3651,7 +3651,7 @@ void CGenCF1::SendHarmColor(int pos, int v) {
 	int fl;
 	for (int f = 0; f < f_cnt; ++f) {
 		fl = anflags[cpv][s][f];
-		if (RuleGroup[fl] == "Harmony" && !accept[fl]) {
+		if (harmonic_rule[fl] && !accept[fl]) {
 			if (severity[fl] > max_severity) max_severity = severity[fl];
 		}
 	}

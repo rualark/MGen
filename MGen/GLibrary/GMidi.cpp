@@ -496,6 +496,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 			if (s >= t_generated - 1 && mel_id[t_generated - 1][0] > -1 && 
 				found && first_step == last_step)	last_step = t_generated - 1;
 			if (found) SaveLySegment(fs, mel_info[m], mel_info2[m], first_step, last_step);
+			//if (m < mel_info.size() - 1) fs << "\\pageBreak\n";
 		}
 	}
 	fs << "\\header {tagline = \"This file was created by MGen ";

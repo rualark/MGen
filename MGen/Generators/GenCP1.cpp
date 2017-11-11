@@ -443,7 +443,7 @@ void CGenCP1::SendHarmColorCP(int pos, int v, int chm_id) {
 	int fl;
 	for (int f = 0; f < f_cnt; ++f) {
 		fl = anflags[cpv][s][f];
-		if ((harmonic_rule[fl] || RuleGroup[fl] == "Harmony") && !accept[fl]) {
+		if (harmonic_rule[fl] && !accept[fl]) {
 			if (severity[fl] > max_severity) max_severity = severity[fl];
 		}
 	}
