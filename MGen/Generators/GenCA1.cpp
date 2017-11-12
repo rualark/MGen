@@ -511,6 +511,7 @@ void CGenCA1::Generate() {
 		rpenalty_source = rpenalty_cur;
 		InitCorAck();
 		if (method == mSWA) {
+			clib.clear();
 			SWA(i, 1);
 			// Check if we have results
 			if (clib.size()) {
