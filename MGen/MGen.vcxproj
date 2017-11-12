@@ -107,7 +107,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)MGen\GIT-VS-VERSION-GEN.bat --quiet $(SolutionDir)MGen\git-version.h</Command>
+      <Command>CALL $(SolutionDir)MGen\git-version.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -132,7 +132,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)MGen\GIT-VS-VERSION-GEN.bat --quiet $(SolutionDir)MGen\git-version.h</Command>
+      <Command>CALL $(SolutionDir)MGen\git-version.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -161,7 +161,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)MGen\GIT-VS-VERSION-GEN.bat --quiet $(SolutionDir)MGen\git-version.h</Command>
+      <Command>CALL $(SolutionDir)MGen\git-version.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
