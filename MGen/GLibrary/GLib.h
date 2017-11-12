@@ -220,7 +220,9 @@ public:
 protected:
 	// Mathematics
 	int randbw(int n1, int n2); // Random between two numbers
+	int randbw2(int n1, int n2); // Random between two numbers
 	float rand01(); // Random float between 0 and 1
+	float rand01_2();
 	// Random
 	void isaac();
 	void randinit(int flag);

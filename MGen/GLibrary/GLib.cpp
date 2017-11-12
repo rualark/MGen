@@ -714,8 +714,7 @@ unsigned int CGLib::rand2() {
 void CGLib::InitRandom()
 {
 	// Init rand
-	long long seed = CGLib::time();
-	srand(seed);
+	srand(GetTickCount());
 	//CString est;
 	//est.Format("Random test: %d", rand());
 	//WriteLog(1, est);
@@ -724,7 +723,7 @@ void CGLib::InitRandom()
 	raa = rbb = rcc = (ub4)0;
 	for (i = 0; i < 256; ++i) rmm[i] = randrsl[i] = rand()*rand();
 	randinit(1);
-	//TestRandom();
+	TestRandom();
 }
 
 void CGLib::TestRandom()
@@ -758,6 +757,7 @@ void CGLib::TestRandom()
 	est.Format("TestRandom with %d buckets, %d samples, %d variants took %lld ms", 
 		n_buckets, n_samples, n_variants, time_stop - time_start);
 	WriteLog(0, est);
+	// In case of successful test, you will see approximately same numbers in each column in output file
 }
 
 void CGLib::TestSmoothRandom()
@@ -864,6 +864,15 @@ void CGLib::SetStatusText(int line, CString st)
 
 int CGLib::randbw(int n1, int n2)
 {
+	int re = (float)(n2 - n1 + 1) * rand() / (float)RAND_MAX;
+	re = re + n1;
+	if (re < n1) re = n1;
+	if (re > n2) re = n2;
+	return re;
+}
+
+int CGLib::randbw2(int n1, int n2)
+{
 	int re = (float)(n2 - n1 + 1) * rand2() / (float)RAND_MAX;
 	re = re + n1;
 	if (re < n1) re = n1;
@@ -873,7 +882,12 @@ int CGLib::randbw(int n1, int n2)
 
 float CGLib::rand01()
 {
-	return (float) rand2() / (float)RAND_MAX;
+	return (float)rand() / (float)RAND_MAX;
+}
+
+float CGLib::rand01_2()
+{
+	return (float)rand2() / (float)RAND_MAX;
 }
 
 void CGLib::TestVSet()
