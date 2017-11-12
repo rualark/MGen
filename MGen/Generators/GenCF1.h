@@ -391,7 +391,8 @@ protected:
 	int max_interval_cp = 12; // Maximum chromatic interval in cp (12 = octave)
 	int min_intervald = 4; // Minimum diatonic interval in cantus (7 = octave)
 	int max_intervald = 7; // Maximum diatonic interval in cantus (7 = octave)
-	int c_len = 9; // Number of measures in each cantus. Usually 9 to 11
+	int c_len = 9; // Number of steps in each cantus. Usually 9 to 11
+	int scan_len; // Number of steps to scan
 	int s_len = 4; // Maximum number of steps to full scan
 	int swa_len = 4; // Maximum number of steps for SWA
 	int first_note = 72; // Starting note of each cantus

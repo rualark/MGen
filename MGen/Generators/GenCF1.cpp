@@ -2365,6 +2365,7 @@ void CGenCF1::ScanInit() {
 void CGenCF1::ScanCantusInit() {
 	// Get cantus size
 	if (task != tGen) c_len = scantus->size();
+	scan_len = c_len;
 	ScanInit();
 	// Resize global vectors
 	m_c.resize(c_len); // cantus (diatonic)
@@ -2818,7 +2819,7 @@ void CGenCF1::NextWindow(vector<int> &cc) {
 	else {
 		sp1 = sp2;
 		sp2 = sp1 + s_len; // End of search window
-		if (sp2 > c_len) sp2 = c_len;
+		if (sp2 > scan_len) sp2 = scan_len;
 		// Reserve last window with maximum length
 		if ((c_len - sp1 < s_len * 2) && (c_len - sp1 > s_len)) sp2 = (c_len + sp1) / 2;
 		// Record window

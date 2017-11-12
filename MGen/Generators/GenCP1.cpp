@@ -218,6 +218,8 @@ void CGenCP1::MultiCPInit() {
 void CGenCP1::ScanCPInit() {
 	// Get cantus size
 	if (task != tGen) c_len = scpoint[0].size();
+	scan_len = c_len;
+	InitLastMeasure();
 	ScanInit();
 	// Resize global vectors
 	for (int i = 0; i < av_cnt; ++i) {
@@ -2897,6 +2899,29 @@ void CGenCP1::GetHarmBass() {
 	}
 }
 
+void CGenCP1::InitLastMeasure() {
+	// Do not optimize when evaluating
+	if (task == tEval) return;
+	// Do not optimize if last note non-whole allowed
+	if (accept[267]) return;
+	// Scan up to starting step of last measure
+	scan_len = mli.back() + 1;
+}
+
+void CGenCP1::OptimizeLastMeasure() {
+	// Do not optimize when evaluating
+	if (task == tEval) return;
+	// Do not optimize if last note non-whole allowed
+	if (accept[267]) return;
+	// Optimize only starting step of last measure
+	if (ep2 <= mli.back()) return;
+	// Duplicate notes
+	for (s = mli.back() + 1; s < c_len; ++s) {
+		acc[cpv][s] = acc[cpv][mli.back()];
+	}
+	ep2 = c_len;
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	int finished = 0;
 	int scycle = 0;
@@ -2921,6 +2946,7 @@ void CGenCP1::ScanCP(int t, int v) {
 	// Analyze combination
 check:
 	while (true) {
+		OptimizeLastMeasure();
 		CLEAR_READY();
 		//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, acc[cpv]);
 		//if (ep2 > 56 && MatchVectors(acc[cpv], test_cc, 2, ep2 - 1)) {
