@@ -2820,7 +2820,7 @@ void CGenCF1::NextWindow(vector<int> &cc) {
 		sp2 = sp1 + s_len; // End of search window
 		if (sp2 > c_len) sp2 = c_len;
 		// Reserve last window with maximum length
-		if ((c_len - sp1 < s_len * 2) && (c_len - sp1 > s_len)) sp2 = (c_len + sp1) / 2;
+		//if ((c_len - sp1 < s_len * 2) && (c_len - sp1 > s_len)) sp2 = (c_len + sp1) / 2;
 		// Record window
 		++wid;
 		wpos1[wid] = sp1;
@@ -3214,28 +3214,36 @@ void CGenCF1::ShowScanSpeed() {
 	SetStatusText(5, st);
 }
 
+char CGenCF1::GetScanVisualCode(int i) {
+	if (!i) return '\'';
+	else return scan_visual_code[(i - 1) % SCAN_VISUAL_CODE_BASE];
+}
+
 void CGenCF1::ShowScanStatus() {
 	if (task == tEval) return;
 	CString st, progress_st;
 	if (task == tGen && method == mScan) {
 		for (int i = 0; i < wcount; ++i) {
-			st.Format("%d ", cc_id[wpos1[i]]);
-			progress_st += st;
+			//st.Format("%d ", cc_id[wpos1[i]]);
+			//progress_st += st;
+			progress_st += GetScanVisualCode(cc_id[wpos1[i]]);
 		}
 	}
 	else if (task == tCor && method == mScan) {
 		for (int i = 0; i < smatrixc; ++i) {
-			st.Format("%d ", cc_id[smap[i]]);
-			progress_st += st;
+			//st.Format("%d ", cc_id[smap[i]]);
+			//progress_st += st;
+			progress_st += GetScanVisualCode(cc_id[smap[i]]);
 		}
 	}
 	else if (method == mSWA) {
 		for (int i = 0; i < smatrixc; ++i) {
-			st.Format("%d ", cc_id[smap[i]]);
-			progress_st += st;
+			//st.Format("%d ", cc_id[smap[i]]);
+			//progress_st += st;
+			progress_st += GetScanVisualCode(cc_id[smap[i]]);
 		}
 	}
-	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + "(Scan progress)");
+	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + " (Scan progress)");
 	if (task == tCor) st.Format("WI %d/%d, RP %.0f, DP %d", wid + 1, wcount, rpenalty_min, dpenalty_min);
 	else st.Format("WI %d/%d", wid + 1, wcount);
 	SetStatusText(1, st);

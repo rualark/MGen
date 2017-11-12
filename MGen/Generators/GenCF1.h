@@ -107,15 +107,18 @@
 // How often to show statistics (ms)
 #define STATUS_PERIOD 100
 
+const CString MethodNames[] = {
+	"window-scan", // 0
+	"swa" // 1
+};
+
 // Letters in harmonies
 const int hvt[] = { 1, 0, 1, 0, 0, 1, 0 };
 const int hvd[] = { 0, 0, 1, 0, 1, 0, 1 };
 const int hvs[] = { 0, 1, 0, 1, 0, 1, 0 };
 
-const CString MethodNames[] = {
-	"window-scan", // 0
-	"swa" // 1
-};
+#define SCAN_VISUAL_CODE_BASE 3
+const char scan_visual_code[] = { '!', '.', ',', ':', ';', '`', '|', '(', ')', '[', ']', '{', '}', ' / ', '\\' };
 
 const CString HarmNames[] = {
 	"T", // 0
@@ -304,6 +307,7 @@ protected:
 	inline void SaveBestRejected(vector<int>& cc);
 	inline int FailMinor(vector<int>& pcc, vector<int>& cc);
 	inline void ShowScanSpeed();
+	inline char GetScanVisualCode(int i);
 	inline void ShowScanStatus();
 	void CheckClibSize();
 	inline void ReseedCantus();
