@@ -236,7 +236,7 @@ public:
 
 	// Lilypond
 	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
-	int ly_rpos = 1; // 0 - do not show rpos, 1 - show rpos
+	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
 
 	// Midi files
 	int midifile_loaded = 0; // If MIDI was loaded from file

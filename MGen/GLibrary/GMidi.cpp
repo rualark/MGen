@@ -239,7 +239,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 			CString st = mark[i][v];
 			st.Replace("\n", "");
 			if (st == "PD" || st == "CA" || st == "DN") {
-				if (!ly_rpos) continue;
+				if (!ly_msh) continue;
 				if (GetGreen(mark_color[i][v]) == GetRed(mark_color[i][v])) {
 					fs << " \\staccato ";
 				}

@@ -38,11 +38,11 @@
 #define DR_beat					14
 #define DR_mli					15
 #define DR_cfli					16
-#define DR_rpos					17
+#define DR_msh					17
 #define DR_uli					18
 #define DR_pat					19
-#define DR_rposb				20
-#define DR_rposf				21
+#define DR_mshb				20
+#define DR_mshf				21
 #define DR_retrigger    22
 #define DR_hbc			    23
 #define DR_hli			    24
@@ -742,7 +742,7 @@ protected:
 	int show_correct_hatch = 1; // Set to 1 to mark corrected notes with hatch
 	int show_min_severity = 0; // Minimum severity to highlight note
 	int harm_notation = 1; // 1 - wordwide harmonic notation(I, II...), 2 - Sposobin harmonic notation(T, SII...)
-	int show_hatch = 1; // 0 - show no hatch, 1 = show dissonance hatch, 2 = show rpos hatch
+	int show_hatch = 1; // 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
 	int npm = 1; // Number of notes per measure
 	int slurs_window = 10; // Number of steps to check for slur limit
 	int miss_slurs_window = 10; // Number of steps to check for missing slur limit
@@ -824,9 +824,9 @@ protected:
 	vector<int> hbcc; // [hs] Bass note of each harmony (chromatic)
 	vector<int> hbc; // [hs] Bass note of each harmony (diatonic)
 	vector<int> bhli; // [s] Back links to first notes of each harmony
-	vector<int> rposb; // [ls] Rhythm position types for fli (basic without patterns)
-	vector<int> rposf; // [ls] Rhythm position types for fli (with fixed patterns)
-	vector<int> rpos; // [ls] Rhythm position types for fli
+	vector<int> mshb; // [ls] Melody shape types for fli (basic without patterns)
+	vector<int> mshf; // [ls] Melody shape types for fli (with fixed patterns)
+	vector<int> msh; // [ls] Melody shape types for fli
 	vector<int> pat; // [ls] Pattern (cambiata, dnt...) for fli
 	vector<int> pat_state; // [ls] Pattern (cambiata, dnt...) for fli state: 0 - not applied, 1 - fixed, 2,3 - variants
 };

@@ -231,9 +231,9 @@ void CGenCP1::ScanCPInit() {
 		aslur[i].resize(c_len);
 	}
 	retrigger.resize(c_len);
-	rposb.resize(c_len);
-	rposf.resize(c_len);
-	rpos.resize(c_len);
+	mshb.resize(c_len);
+	mshf.resize(c_len);
+	msh.resize(c_len);
 	bhli.resize(c_len);
 	pat.resize(c_len);
 	pat_state.resize(c_len);
@@ -267,13 +267,13 @@ void CGenCP1::ScanCPInit() {
 	svoices = av_cnt;
 }
 
-void CGenCP1::SendRpos(int pos, int i, int v, int av, int x) {
+void CGenCP1::SendMsh(int pos, int i, int v, int av, int x) {
 	if (show_hatch == 1) {
 		if (tivl[x] == iDis) lining[pos + i][v] = HatchStyleNarrowHorizontal;
 		else lining[pos + i][v] = 0;
 	}
 	if (show_hatch == 2) {
-		if (rpos[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
+		if (msh[bli[x]] < 0) lining[pos + i][v] = HatchStyleLargeConfetti;
 		else lining[pos + i][v] = 0;
 	}
 }
@@ -530,7 +530,7 @@ int CGenCP1::SendCP() {
 				if (av == cpv) {
 					// Set color
 					color[pos + i][v] = color_noflag;
-					SendRpos(pos, i, v, av, x);
+					SendMsh(pos, i, v, av, x);
 					SendGraph(pos, i, v, x);
 				}
 				SendNotes(pos, i, v, av, x, acc[av]);
@@ -775,8 +775,8 @@ int CGenCP1::FailVMotion() {
 int CGenCP1::FailSusResolution(int s3) {
 	// Check if suspension second part is discord
 	if (tivl[s2] == iDis) {
-		// Mark resolution as obligatory harmonic in basic rpos
-		if (tivl[s3] != iDis && tivl[s3] != iHarm4) rposb[bli[s3]] = pOffbeat;
+		// Mark resolution as obligatory harmonic in basic msh
+		if (tivl[s3] != iDis && tivl[s3] != iHarm4) mshb[bli[s3]] = pOffbeat;
 		// Resolution to discord
 		if (tivl[s3] == iDis || tivl[s3] == iHarm4) FLAG2(220, s3)
 			// Resolution by leap
@@ -850,7 +850,7 @@ int CGenCP1::FailSus2() {
 		// Check if sus starts from discord
 		if (antici) {
 			// Mark anticipation start as non-harmonic always
-			rposb[ls] = pPass;
+			mshb[ls] = pPass;
 			// Check if start and end of slur is a discord - then it is interbar discord
 			if (tivl[sus[ls]] == iDis) {
 				FLAG2(224, s);
@@ -880,7 +880,7 @@ int CGenCP1::FailSus2() {
 				if (bmli[s] < mli.size() - sus_last_measures) FLAG2(139, s);
 			}
 			// Mark sus start as harmonic always
-			rposb[ls] = pOffbeat;
+			mshb[ls] = pOffbeat;
 			if (species == 3) {
 				if (sus[ls] - fli[ls] == 1) FLAG2(251, s);
 			}
@@ -919,8 +919,8 @@ int CGenCP1::FailSus2() {
 						// If second movement is leap
 						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2(136, fli[ls + 1])
 						else {
-							// Mark insertion as non-harmonic in basic rpos if resolution is harmonic
-							if (tivl[s3] != iDis && tivl[s3] != iHarm4) rposb[ls + 1] = pAux;
+							// Mark insertion as non-harmonic in basic msh if resolution is harmonic
+							if (tivl[s3] != iDis && tivl[s3] != iHarm4) mshb[ls + 1] = pAux;
 							if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(296, fli[ls + 1])
 							else if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2(137, fli[ls + 1])
 							else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2(138, fli[ls + 1])
@@ -943,7 +943,7 @@ int CGenCP1::FailSus2() {
 }
 
 int CGenCP1::FailSus() {
-	CHECK_READY(DR_rposb);
+	CHECK_READY(DR_mshb);
 	SET_READY(DR_retrigger);
 	fill(retrigger.begin(), retrigger.end(), 0);
 	if (species == 1) {
@@ -984,18 +984,18 @@ int CGenCP1::FailDis() {
 		// Do not flag discord if last note, because it can become suspension
 		if (sus[ls] || ls == fli_size - 1) return 0;
 		// Leap
-		if (rpos[ls] == pLeap) {
+		if (msh[ls] == pLeap) {
 			FLAG2(187, s)
 		}
 		// Other harmonic
-		else if (rpos[ls] > 0) FLAG2(83, s)
+		else if (msh[ls] > 0) FLAG2(83, s)
 		else {
 			// Stepwize
 			if (civl[s] == 1) FLAG2(276, s)
 			else {
-				if (rpos[ls] < -30) FLAG2(256, s)
-				else if (rpos[ls] < -20) FLAG2(258, s)
-				else if (rpos[ls] < -10) FLAG2(282, s)
+				if (msh[ls] < -30) FLAG2(256, s)
+				else if (msh[ls] < -20) FLAG2(258, s)
+				else if (msh[ls] < -10) FLAG2(282, s)
 				else FLAG2(169, s)
 			}
 		}
@@ -1355,85 +1355,85 @@ int CGenCP1::DetectPatterns() {
 	return 0;
 }
 
-void CGenCP1::GetBasicRpos() {
+void CGenCP1::GetBasicMsh() {
 	CHECK_READY_PERSIST(DR_c);
 	CHECK_READY(DR_fli, DR_leap);
-	SET_READY(DR_rposb);
+	SET_READY(DR_mshb);
 	// First note is always downbeat
-	rposb[0] = pDownbeat;
+	mshb[0] = pDownbeat;
 	// Main calculation
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
-		if ((s + fn) % npm == 0) rposb[ls] = pDownbeat;
-		else if (s > 0 && aleap[cpv][s - 1]) rposb[ls] = pLeap;
-		else if (s2 < ep2 - 1 && aleap[cpv][s2]) rposb[ls] = pLeap;
+		if ((s + fn) % npm == 0) mshb[ls] = pDownbeat;
+		else if (s > 0 && aleap[cpv][s - 1]) mshb[ls] = pLeap;
+		else if (s2 < ep2 - 1 && aleap[cpv][s2]) mshb[ls] = pLeap;
 		else {
-			if (s > 0 && s2 < ep2 - 1 && ac[cpv][s - 1] == ac[cpv][s2 + 1]) rposb[ls] = pAux;
-			else rposb[ls] = pPass;
+			if (s > 0 && s2 < ep2 - 1 && ac[cpv][s - 1] == ac[cpv][s2 + 1]) mshb[ls] = pAux;
+			else mshb[ls] = pPass;
 		}
 	}
 	// Detect long notes
 	for (ls = 1; ls < fli_size - 1; ++ls) {
 		s = fli[ls];
-		if (rposb[ls] < 0 && tivl[s] != iDis) {
+		if (mshb[ls] < 0 && tivl[s] != iDis) {
 			// Check longer than previous
 			if (llen[ls] > llen[ls - 1] &&
-				rposb[ls - 1] > 0 && tivl[fli2[ls - 1]] != iDis) 
-				rposb[ls] = pLong;
+				mshb[ls - 1] > 0 && tivl[fli2[ls - 1]] != iDis) 
+				mshb[ls] = pLong;
 			// Check longer than next
 			//if (llen[ls] > llen[ls + 1] &&
-				//rposb[ls + 1] > 0 && tivl[fli2[ls + 1]] != iDis) rposb[ls] = pLong;
+				//mshb[ls + 1] > 0 && tivl[fli2[ls + 1]] != iDis) mshb[ls] = pLong;
 		}
 	}
 }
 
-void CGenCP1::SetRpos(int ls, vector<int> &l_rpos, int val) {
+void CGenCP1::SetMsh(int ls, vector<int> &l_msh, int val) {
 	// Check if in range
 	if (ls >= fli_size) return;
 	// Detect changing sign for dissonance
-	if (l_rpos[ls] * val < 0 && tivl[fli[ls]] < 2) {
+	if (l_msh[ls] * val < 0 && tivl[fli[ls]] < 2) {
 		CString est;
-		est.Format("Detected rpos overwrite at note %d:%d (%s) with value %d (old value %d): %s", 
+		est.Format("Detected msh overwrite at note %d:%d (%s) with value %d (old value %d): %s", 
 			cantus_id + 1, ls + 1, tivl[fli[ls]] < 2?"Dis":"non-Dis", 
-			val, l_rpos[ls], vint2st(ep2, acc[cpv]));
+			val, l_msh[ls], vint2st(ep2, acc[cpv]));
 		WriteLog(5, est);
 	}
-	l_rpos[ls] = val;
+	l_msh[ls] = val;
 }
 
-void CGenCP1::ApplyPDD(int ls, vector<int> &l_rpos, int state) {
-	SetRpos(ls + 1, l_rpos, -11);
-	SetRpos(ls + 2, l_rpos, 12);
+void CGenCP1::ApplyPDD(int ls, vector<int> &l_msh, int state) {
+	SetMsh(ls + 1, l_msh, -11);
+	SetMsh(ls + 2, l_msh, 12);
 	pat_state[ls] = state;
 }
 
-void CGenCP1::ApplyDNT(int ls, vector<int> &l_rpos, int state) {
+void CGenCP1::ApplyDNT(int ls, vector<int> &l_msh, int state) {
 	// Do not apply requirement if not fully generated
 	if (ls < fli_size - 3 || ep2 == c_len) 
-		SetRpos(ls,     l_rpos, 21);
-	SetRpos(ls + 1, l_rpos, -22);
-	SetRpos(ls + 2, l_rpos, -23);
-	SetRpos(ls + 3, l_rpos, 24);
+		SetMsh(ls,     l_msh, 21);
+	SetMsh(ls + 1, l_msh, -22);
+	SetMsh(ls + 2, l_msh, -23);
+	SetMsh(ls + 3, l_msh, 24);
 	pat_state[ls] = state;
 }
 
-void CGenCP1::ApplyCam(int ls, vector<int> &l_rpos, int state) {
+void CGenCP1::ApplyCam(int ls, vector<int> &l_msh, int state) {
 	// Do not apply requirement if not fully generated
 	if (ls < fli_size - 4 || ep2 == c_len)
-		SetRpos(ls, l_rpos, 31);
-	SetRpos(ls + 1, l_rpos, -32);
+		SetMsh(ls, l_msh, 31);
+	SetMsh(ls + 1, l_msh, -32);
 	pat_state[ls] = state;
 }
 
 // Cambiata with third note non-harmonic allowed
-void CGenCP1::ApplyCam2(int ls, vector<int> &l_rpos, int state) {
+void CGenCP1::ApplyCam2(int ls, vector<int> &l_msh, int state) {
 	// Do not apply requirement if not fully generated
 	if (ls < fli_size - 4 || ep2 == c_len)
-		SetRpos(ls, l_rpos, 41);
-	SetRpos(ls + 1, l_rpos, -42);
-	SetRpos(ls + 2, l_rpos, -43);
-	SetRpos(ls + 3, l_rpos, 44);
+		SetMsh(ls, l_msh, 41);
+	SetMsh(ls + 1, l_msh, -42);
+	SetMsh(ls + 2, l_msh, -43);
+	SetMsh(ls + 3, l_msh, 44);
 	pat_state[ls] = state;
 	// Do not need to set note 1, because it can be dissonant
 	// Do not need to set note 4, because it can be dissonant if note 3 is consonant
@@ -1441,37 +1441,37 @@ void CGenCP1::ApplyCam2(int ls, vector<int> &l_rpos, int state) {
 }
 
 void CGenCP1::ApplyFixedPat() {
-	CHECK_READY(DR_rposb, DR_ivl);
+	CHECK_READY(DR_mshb, DR_ivl);
 	CHECK_READY(DR_fli);
-	SET_READY(DR_rpos, DR_rposf);
+	SET_READY(DR_msh, DR_mshf);
 	if (species == 1) {
-		for (int ls = 0; ls < fli_size; ++ls) rpos[ls] = rposb[ls];
+		for (int ls = 0; ls < fli_size; ++ls) msh[ls] = mshb[ls];
 		return;
 	}
-	// Clear rposf
-	fill(rposf.begin(), rposf.end(), 0);
+	// Clear mshf
+	fill(mshf.begin(), mshf.end(), 0);
 	// Walk through patterns
 	for (int ls = 0; ls < fli_size; ++ls) {
 		if (pat[ls] == 0) continue;
 		if (pat[ls] == pPDD) {
-			if (tivl[fli[ls + 1]] == iDis) ApplyPDD(ls, rposf, 1);
+			if (tivl[fli[ls + 1]] == iDis) ApplyPDD(ls, mshf, 1);
 		}
 		else if (pat[ls] == pDNT) {
 			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 2]] == iDis) {
-				ApplyDNT(ls, rposf, 1);
+				ApplyDNT(ls, mshf, 1);
 			}
 		}
 		else if (pat[ls] == pCam) {
 			if (tivl[fli[ls + 2]] == iDis) 
-				ApplyCam2(ls, rposf, 1);
+				ApplyCam2(ls, mshf, 1);
 			else if (tivl[fli[ls + 1]] == iDis) 
-				ApplyCam(ls, rposf, 1);
+				ApplyCam(ls, mshf, 1);
 		}
 	}
-	// Set rposf for empty
-	for (int ls = 0; ls < fli_size; ++ls) if (!rposf[ls]) rposf[ls] = rposb[ls];
-	// Set rpos
-	for (int ls = 0; ls < fli_size; ++ls) rpos[ls] = rposf[ls];
+	// Set mshf for empty
+	for (int ls = 0; ls < fli_size; ++ls) if (!mshf[ls]) mshf[ls] = mshb[ls];
+	// Set msh
+	for (int ls = 0; ls < fli_size; ++ls) msh[ls] = mshf[ls];
 }
 
 int CGenCP1::FailRhythm() {
@@ -1741,7 +1741,7 @@ int CGenCP1::FailRhythm5() {
 
 int CGenCP1::FailPcoApart() {
 	CHECK_READY(DR_fli, DR_ivl, DR_beat);
-	CHECK_READY(DR_rpos);
+	CHECK_READY(DR_msh);
 	// Step index of last perfect consonance
 	pco5_last = -1000;
 	pco8_last = -1000;
@@ -1774,8 +1774,8 @@ int CGenCP1::FailPcoApartStep() {
 				}
 				else if ((acc[0][s] - acc[0][pco5_last])*
 					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
-				else if ((!sus[ls] && rpos[ls] < 0) || 
-					(!sus[bli[pco5_last]] && rpos[bli[pco5_last]] < 0))
+				else if ((!sus[ls] && msh[ls] < 0) || 
+					(!sus[bli[pco5_last]] && msh[bli[pco5_last]] < 0))
 					FLAG2(249, s)
 				else FLAG2(250, s);
 			}
@@ -1795,8 +1795,8 @@ int CGenCP1::FailPcoApartStep() {
 				}
 				else if ((acc[0][s] - acc[0][pco8_last])*
 					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
-				else if ((!sus[ls] && rpos[ls] < 0) || 
-					(!sus[bli[pco8_last]] && rpos[bli[pco8_last]] < 0))
+				else if ((!sus[ls] && msh[ls] < 0) || 
+					(!sus[bli[pco8_last]] && msh[bli[pco8_last]] < 0))
 					FLAG2(249, s)
 				else
 					FLAG2(250, s);
@@ -1810,7 +1810,7 @@ int CGenCP1::FailPcoApartStep() {
 }
 
 int CGenCP1::FailVIntervals() {
-	CHECK_READY(DR_fli, DR_ivl, DR_rpos);
+	CHECK_READY(DR_fli, DR_ivl, DR_msh);
 	CHECK_READY_PERSIST(DR_mli);
 	CHECK_READY(DR_motion, DR_culm_ls, DR_sus);
 	// Number of sequential parallel imperfect consonances
@@ -2773,8 +2773,8 @@ int CGenCP1::FailHarm() {
 		// Make last leading tone in penultimate measure harmonic
 		if (ms == mli.size() - 2 && fli_size > 1) {
 			int s9 = fli[fli_size - 2];
-			if (apcc[cpv][s9] == 11 && tivl[s9] != iDis && rpos[fli_size - 2] < 0) {
-				rpos[fli_size - 2] = pOffbeat;
+			if (apcc[cpv][s9] == 11 && tivl[s9] != iDis && msh[fli_size - 2] < 0) {
+				msh[fli_size - 2] = pOffbeat;
 			}
 		}
 		// Loop inside measure
@@ -2782,12 +2782,12 @@ int CGenCP1::FailHarm() {
 			if (ls == ls1 && sus[ls1]) s9 = fli2[ls];
 			else s9 = fli[ls];
 			// Do not process non-harmonic notes if they are not consonant ending of first sus
-			// For first suspended note do not check rpos
+			// For first suspended note do not check msh
 			if (ls == ls1 && sus[ls]) {
 				if (tivl[s9] < 2) continue;
 			}
-			// For all other notes, check rpos
-			else if (rpos[ls] <= 0) continue;
+			// For all other notes, check msh
+			else if (msh[ls] <= 0) continue;
 			s = fli[ls];
 			n = ac[cpv][s9] % 7;
 			ns = (n - r + 7) % 7;
@@ -3000,7 +3000,7 @@ check:
 		if (FailRhythm()) goto skip;
 		GetVIntervals();
 		Get4th();
-		GetBasicRpos();
+		GetBasicMsh();
 		if (FailSus()) goto skip;
 		if (DetectPatterns()) goto skip;
 		ApplyFixedPat();

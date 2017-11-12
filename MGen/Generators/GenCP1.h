@@ -59,12 +59,12 @@ protected:
 	inline void DetectCambiata();
 	inline void SavePattern(int pattern);
 	inline int DetectPatterns();
-	inline void GetBasicRpos();
-	inline void SetRpos(int ls, vector<int> &l_rpos, int val);
-	inline void ApplyPDD(int ls, vector<int> &l_rpos, int state);
-	inline void ApplyDNT(int ls, vector<int> &l_rpos, int state);
-	inline void ApplyCam(int ls, vector<int> &l_rpos, int state);
-	inline void ApplyCam2(int ls, vector<int> &l_rpos, int state);
+	inline void GetBasicMsh();
+	inline void SetMsh(int ls, vector<int> &l_msh, int val);
+	inline void ApplyPDD(int ls, vector<int> &l_msh, int state);
+	inline void ApplyDNT(int ls, vector<int> &l_msh, int state);
+	inline void ApplyCam(int ls, vector<int> &l_msh, int state);
+	inline void ApplyCam2(int ls, vector<int> &l_msh, int state);
 	inline void ApplyFixedPat();
 	inline int FailRhythm();
 	inline int FailRhythm2();
@@ -79,7 +79,7 @@ protected:
 	inline void SaveCPIfRp();
 	inline int FailSlurs();
 	void ScanCPInit();
-	inline void SendRpos(int pos, int i, int v, int av, int x);
+	inline void SendMsh(int pos, int i, int v, int av, int x);
 	void CalcPmap2();
 	void GetPmap2();
 	CString GetPmapLogHeader2();
