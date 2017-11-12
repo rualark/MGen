@@ -70,6 +70,13 @@ CMGenView::CMGenView()
 	v_color[13] = { 0, 255, 255 };
 	v_color[14] = { 130, 200, 40 };
 	v_color[15] = { 0, 255,   0 };
+
+	//p_color[0] = RGB(0, 0, 0);
+	//p_color[1] = RGB(0, 0, 255);
+	//p_color[2] = RGB(0, 255, 0);
+	//p_color[3] = RGB(255, 0, 0);
+	//p_color[4] = RGB(0, 255, 255);
+
 	// Dummy set to avoid assertion failure on first OnPaint
 	SetScrollSizes(MM_TEXT, CSize(20000, 20000));
 }
@@ -129,6 +136,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Graphics g(dc->m_hDC);
 	g.SetRenderingOrigin(-ClipBox.left, 0);
 
+	COLORREF cr_black = RGB(0, 0, 0);
 	Color color_adgray(200 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/);
 	SolidBrush brush_gray(Color(255 /*A*/, 247 /*R*/, 247 /*G*/, 247 /*B*/));
 	SolidBrush brush_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/));
@@ -136,6 +144,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	SolidBrush brush_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/));
 	SolidBrush brush_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_red(Color(255 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
+	SolidBrush brush_green(Color(255 /*A*/, 100 /*R*/, 255 /*G*/, 100 /*B*/));
 	SolidBrush brush_agray(Color(20 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/));
 	SolidBrush brush_adgray(color_adgray);
 	SolidBrush brush_ared(Color(20 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/));
@@ -148,6 +157,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Pen pen_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/), 1);
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
 	Pen pen_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
+	Pen pen_white(Color(255 /*A*/, 255 /*R*/, 255 /*G*/, 255 /*B*/), 1);
 	HatchStyle hatch;
 
 	Gdiplus::Font font(&FontFamily(L"Arial"), 10);
@@ -168,8 +178,29 @@ void CMGenView::OnDraw(CDC* pDC)
 	if (mf->m_state_play == 2) st = "Playback ";
 	g.DrawString(A2W(st), -1, &font, PointF(800, 0), &brush_black);
 
+	//g.DrawLine(&pen_white, X_FIELD, ClientRect.top + Y_HEADER - Y_TIMELINE - 1,
+	//	X_FIELD + 1000, ClientRect.top + Y_HEADER - Y_TIMELINE - 1);
+
 	time_stop2 = CGLib::time();
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) { //-V560
+		// Show progress
+		int max_progress = min(pGen->progress_size, MAX_PROGRESS);
+		if (max_progress > 0) {
+			g.FillRectangle(&brush_green, 800, ClientRect.top + Y_HEADER - Y_TIMELINE - 5,
+				max_progress, 5);
+		}
+		for (int i = 0; i < max_progress; ++i) {
+			if (pGen->progress[i] % 2)  
+				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 1, cr_black);
+			if (pGen->progress[i] / 2 % 2) 
+				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 2, cr_black);
+			if (pGen->progress[i] / 4 % 2)
+				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 3, cr_black);
+			if (pGen->progress[i] / 8 % 2)
+				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 4, cr_black);
+			if (pGen->progress[i] / 16 % 2)
+				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 5, cr_black);
+		}
 		if (pGen->t_sent > pGen->t_adapted && warn_noadapt < 5) {
 			CString est;
 			est.Format("Detected t_sent %d greater than t_adapted %d",

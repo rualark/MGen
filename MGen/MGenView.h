@@ -80,6 +80,7 @@ public:
 
 protected:
 	vector< vector <unsigned char> > v_color; // Voice colors
+	vector< COLORREF > p_color; // Progress colors
 
 // Generated message map functions
 protected:
