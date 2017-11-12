@@ -190,7 +190,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)MGen\GIT-VS-VERSION-GEN.bat --quiet $(SolutionDir)MGen\git-version.h</Command>
+      <Command>CALL $(SolutionDir)MGen\git-version.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
