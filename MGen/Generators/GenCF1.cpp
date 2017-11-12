@@ -9,6 +9,7 @@
 
 CGenCF1::CGenCF1()
 {
+	progress.resize(MAX_PROGRESS);
 	av_cnt = 1;
 	v_cnt = 1;
 	ngraph_size = 3;
@@ -2288,6 +2289,8 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2) {
 
 void CGenCF1::ScanInit() {
 	if (!is_animating) {
+		progress_size = c_len;
+		fill(progress.begin(), progress.end(), 0);
 		PrepareTonicWeight();
 		if (task != tEval) scan_full = 0;
 		q_scan_cycle.clear();
@@ -3226,24 +3229,27 @@ void CGenCF1::ShowScanStatus() {
 		for (int i = 0; i < wcount; ++i) {
 			//st.Format("%d ", cc_id[wpos1[i]]);
 			//progress_st += st;
-			progress_st += GetScanVisualCode(cc_id[wpos1[i]]);
+			//progress_st += GetScanVisualCode(cc_id[wpos1[i]]);
+			SetProgress(i, cc_id[wpos1[i]]);
 		}
 	}
 	else if (task == tCor && method == mScan) {
 		for (int i = 0; i < smatrixc; ++i) {
 			//st.Format("%d ", cc_id[smap[i]]);
 			//progress_st += st;
-			progress_st += GetScanVisualCode(cc_id[smap[i]]);
+			//progress_st += GetScanVisualCode(cc_id[smap[i]]);
+			SetProgress(i, cc_id[smap[i]]);
 		}
 	}
 	else if (method == mSWA) {
 		for (int i = 0; i < smatrixc; ++i) {
 			//st.Format("%d ", cc_id[smap[i]]);
 			//progress_st += st;
-			progress_st += GetScanVisualCode(cc_id[smap[i]]);
+			//progress_st += GetScanVisualCode(cc_id[smap[i]]);
+			SetProgress(i, cc_id[smap[i]]);
 		}
 	}
-	if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + " (Scan progress)");
+	//if (!progress_st.IsEmpty()) SetStatusText(2, progress_st + " (Scan progress)");
 	if (task == tCor) st.Format("WI %d/%d, RP %.0f, DP %d", wid + 1, wcount, rpenalty_min, dpenalty_min);
 	else st.Format("WI %d/%d", wid + 1, wcount);
 	SetStatusText(1, st);

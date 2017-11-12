@@ -1407,3 +1407,4 @@ void CGVar::RegisterGraph(CString name, float scale) {
 	graph_max.push_back(0);
 	++graph_size;
 }
+

@@ -1,6 +1,9 @@
 #pragma once
 #include "GLib.h"
 
+// Maximum size of progress
+#define MAX_PROGRESS 1000
+
 // Maximum number of lines to load from saved logs
 #define MAX_LOAD_LOG 10
 
@@ -56,6 +59,8 @@ public:
 	int midifile_export_comments = 1; // Set to export comments (violations) to midifile lyrics
 
   // Main variables
+	vector<int> progress; // Show progress
+	int progress_size = 0; // Effective progress size to use
 	float m_pspeed = 100; // Playback speed in percent
 	long long gen_start_time = 0; // Time in milliseconds when generation started
 	long long time_stopped = 0; // Time in milliseconds when generation stopped
@@ -265,8 +270,22 @@ protected:
 	void AddNote(int pos, int v, char note2, int len2, int dyn2);
 	void FillPause(int start, int length, int v);
 	void RegisterGraph(CString name, float scale);
+	inline void SetProgress(int i, int value);
 	inline void ResizeVectors(int size, int vsize = -1);
 
 	DWORD color_noflag; // Color for notes with no flags
+
+	// Warnings
+	int warn_progress = 0; // Progress too long
 };
 
+void CGVar::SetProgress(int i, int value) {
+	if (i > MAX_PROGRESS) {
+		if (!warn_progress) {
+			WriteLog(5, "Exceeded progress size. Please increase progress size or check algorithm.");
+			++warn_progress;
+		}
+		return;
+	}
+	progress[i] = value;
+}
