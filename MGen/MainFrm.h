@@ -75,6 +75,7 @@ public:
 	int show_comments = 1;
 	int show_lining = 1;
 	int show_lines = 1;
+	int autoplay = 1;
 	int show_tempo = 1;
 	int show_vel = 1;
 	int show_curve = 1;
@@ -87,14 +88,14 @@ public:
 	CString m_fname; // Current saved results filename
 	CString m_dir; // Current saved results dir
 	//CString midi_program; // Path to MIDI program to use
-	int m_state_gen=0;
 	// 0 = No music
 	// 1 = Generation started
 	// 2 = Generation finished
-	int m_state_play=0;
+	int m_state_gen=0;
 	// 0 = No playback
 	// 1 = Playback
 	// 2 = Playback into buffer finished. Buffer is still playing
+	int m_state_play=0;
 	CWinThread* m_GenThread = 0;
 
 	// Algorithm / configs constants
