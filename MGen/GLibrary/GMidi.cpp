@@ -318,7 +318,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 		if (vm_cnt > 1) {
 			st.Format("\\char ##x246%d ", v);
 			note_st += st;
-		}
+		} 
 		st.Format("NOTE %d at %d:%d - %s\n",
 			nnum, pos / 8 + 1, pos % 8 + 1, GetLyNoteVisual(i, v));
 		// NoteName[note[i][v] % 12]
