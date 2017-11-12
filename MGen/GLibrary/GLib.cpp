@@ -723,7 +723,7 @@ void CGLib::InitRandom()
 	raa = rbb = rcc = (ub4)0;
 	for (i = 0; i < 256; ++i) rmm[i] = randrsl[i] = rand()*rand();
 	randinit(1);
-	TestRandom();
+	//TestRandom();
 }
 
 void CGLib::TestRandom()

@@ -266,18 +266,24 @@ void LoadConfig() {
 		suffix = "-debug";
 #endif
 		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
-		Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" +
-			suffix + ".log >> run.log 2>&1", 1000);
-		Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
-			suffix + ".log >> run.log 2>&1", 1000);
-		Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack" +
-			suffix + ".log >> run.log 2>&1", 1000);
-		Run("appveyor", "PushArtifact autotest\\ly.log -Verbosity Normal -Type Auto -FileName ly" +
-			suffix + ".log >> run.log 2>&1", 1000);
-		Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
-			suffix + ".log >> run.log 2>&1", 1000);
-		Run("appveyor", "PushArtifact autotest\\run.log -Verbosity Normal -Type Auto -FileName run" +
-			suffix + ".log", 1000);
+		if (CGLib::fileExists("autotest\\expect.log"))
+			Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" +
+				suffix + ".log >> run.log 2>&1", 1000);
+		if (CGLib::fileExists("autotest\\sas-emu.log"))
+			Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
+				suffix + ".log >> run.log 2>&1", 1000);
+		if (CGLib::fileExists("autotest\\cor-ack.log"))
+			Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack" +
+				suffix + ".log >> run.log 2>&1", 1000);
+		if (CGLib::fileExists("autotest\\ly.log"))
+			Run("appveyor", "PushArtifact autotest\\ly.log -Verbosity Normal -Type Auto -FileName ly" +
+				suffix + ".log >> run.log 2>&1", 1000);
+		if (CGLib::fileExists("autotest\\perf.log"))
+			Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
+				suffix + ".log >> run.log 2>&1", 1000);
+		if (CGLib::fileExists("autotest\\run.log"))
+			Run("appveyor", "PushArtifact autotest\\run.log -Verbosity Normal -Type Auto -FileName run" +
+				suffix + ".log", 1000);
 	}
 	// Show run output
 	//Run("cmd.exe", "/c echo Test >> autotest\\run.log", 1000);
