@@ -3229,7 +3229,7 @@ void CGenCP1::Generate() {
 		min_cc0.clear();
 		max_cc0.clear();
 		// Choose cantus to use
-		cantus_id = randbw(0, cantus.size() - 1);
+		cantus_id = randbw2(0, cantus.size() - 1);
 		if (cantus_id2) {
 			if (cantus_id2 <= cantus.size()) {
 				cantus_id = cantus_id2 - 1;

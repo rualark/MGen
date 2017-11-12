@@ -2293,8 +2293,6 @@ void CGenCF1::ScanInit() {
 		fill(progress.begin(), progress.end(), 0);
 		PrepareTonicWeight();
 		if (task != tEval) scan_full = 0;
-		q_scan_cycle.clear();
-		q_scan_ms.clear();
 		scan_start_time = time();
 		anflags.resize(av_cnt);
 		for (int i = 0; i < av_cnt; ++i) {
@@ -3191,13 +3189,13 @@ void CGenCF1::ShowScanSpeed() {
 	if (task == tCor) scan_time = time() - correct_start_time;
 	else scan_time = time() - scan_start_time;
 	// Push new values
-	q_scan_cycle.push_back(cycle);
+	q_scan_cycle.push_back(tcycle);
 	q_scan_ms.push_back(time());
 	// Get delta
 	long long dms = q_scan_ms.back() - q_scan_ms.front();
 	long long dcycle = q_scan_cycle.back() - q_scan_cycle.front();
 	if (dcycle < 0) {
-		WriteLog(1, "Error");
+		WriteLog(5, "Error calculating scan speed: dcycle < 0");
 	}
 	// If delta big, remove old
 	if (dms > 2000 && q_scan_ms.size() > 2) {
@@ -4695,7 +4693,6 @@ check:
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
-	tcycle += cycle;
 }
 
 void CGenCF1::ScanRight(vector<int> &cc) {
@@ -4711,6 +4708,7 @@ void CGenCF1::ScanRight(vector<int> &cc) {
 		p = smap[pp];
 	}
 	++cycle;
+	++tcycle;
 }
 
 void CGenCF1::Generate()
