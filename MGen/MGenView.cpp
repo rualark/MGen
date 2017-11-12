@@ -170,6 +170,13 @@ void CMGenView::OnDraw(CDC* pDC)
 
 	time_stop2 = CGLib::time();
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) { //-V560
+		if (pGen->t_sent > pGen->t_adapted && warn_noadapt < 5) {
+			CString est;
+			est.Format("Detected t_sent %d greater than t_adapted %d",
+				pGen->t_sent, pGen->t_adapted);
+			mf->WriteLog(5, est);
+			++warn_noadapt;
+		}
 		int y;
 		vector<CString> ast;
 		RectF Rect(0, 0, 32767, 32767);
