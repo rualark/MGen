@@ -76,6 +76,7 @@ public:
 	int nheight = 0; // Note height
 	int y_start = 0; // Position of lowest note
 	int warning_mark_long = 0; // Mark is too long
+	int warn_noadapt = 0; // Sent not adapted music
 
 protected:
 	vector< vector <unsigned char> > v_color; // Voice colors

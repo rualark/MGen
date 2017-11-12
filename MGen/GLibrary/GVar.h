@@ -60,6 +60,7 @@ public:
 	long long gen_start_time = 0; // Time in milliseconds when generation started
 	long long time_stopped = 0; // Time in milliseconds when generation stopped
 	int t_generated = 0; // Timeslots generated
+	int t_adapted = 0; // Timeslot count adapted
 	int t_sent = 0; // Timeslot count sent to mainframe
 	int ng_min = 1000; // Minimum generated note
 	int ng_max = 0; // Maximum generated note

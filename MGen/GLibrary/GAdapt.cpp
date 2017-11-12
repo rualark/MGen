@@ -532,6 +532,14 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 void CGAdapt::Adapt(int step1, int step2)
 {
 	if (step2 < 0) return;
+	if (step1 > t_adapted) {
+		CString est;
+		est.Format("Attempt to adapt from %d to %d steps, while last adapted step was %d. This means that some part of music is going to be not validated and not adapted.",
+			step1, step2, t_adapted);
+		WriteLog(5, est);
+	}
+	// Set new adapted limit
+	t_adapted = step2 + 1;
 	ValidateVectors(step1, step2);
 	long long time_start = CGLib::time();
 	int ei; // ending step
