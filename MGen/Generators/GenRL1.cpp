@@ -368,4 +368,5 @@ int CGenRL1::GetVaueInt(int iMin, int iMax, int iType, int iDepth)
 			   xout       iRnd
 	endop
 	*/
+	return 0;
 }
