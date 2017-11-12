@@ -747,7 +747,7 @@ void CMainFrame::OnButtonGen()
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		// Start timer
 		SetTimer(TIMER1, m_view_timer, NULL);
-		if (pGen->shuffle == 0 && GetMidiI() != -1) SetTimer(TIMER2, 1000, NULL);
+		if (autoplay && pGen->shuffle == 0 && GetMidiI() != -1) SetTimer(TIMER2, 1000, NULL);
 	}
 }
 
@@ -803,7 +803,7 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 		//WriteLog(1, dir + "\\config.pl");
 		// Start playback after shuffle
 		if (pGen->shuffle) {
-			if ((m_state_play == 0) && (pGen->t_sent > 0)) OnButtonPlay();
+			if (autoplay && m_state_play == 0 && pGen->t_sent > 0) OnButtonPlay();
 		}
 		if (CGLib::m_testing) {
 			SetTimer(TIMER4, 300, NULL);
@@ -993,6 +993,7 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "show_comments", &show_comments);
 			CGLib::CheckVar(&st2, &st3, "show_lining", &show_lining);
 			CGLib::CheckVar(&st2, &st3, "show_lines", &show_lines);
+			CGLib::CheckVar(&st2, &st3, "autoplay", &autoplay);
 			CGLib::CheckVar(&st2, &st3, "show_tempo", &show_tempo);
 			CGLib::CheckVar(&st2, &st3, "show_vel", &show_vel);
 			CGLib::CheckVar(&st2, &st3, "show_curve", &show_curve);
@@ -1073,6 +1074,8 @@ void CMainFrame::SaveSettings()
 	fs << st;
 	fs << "\n";
 	fs << "# The following settings cannot be changed in GUI. You can change them only in this file\n";
+	st.Format("Autoplay = %d # Set to 1 to start playback as soon as first notes are generated\n", autoplay);
+	fs << st;
 	st.Format("View_timer = %d # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers\n", m_view_timer);
 	fs << st;
 	st.Format("Step_dyn = %d # Show dynamics with note opacity for each step of note. Disable for slower computers.\n", m_step_dyn);
@@ -1108,6 +1111,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 		CheckMemoryUsage();
 		GetActiveView()->Invalidate();
 		//int play_time = CGLib::time() - pGen->midi_start_time;
+		// Stop playback
 		if ((m_state_gen != 1) && (m_state_play == 2) && pGen && (CGLib::time() > pGen->midi_sent_t)) {
 			OnButtonPlay();
 		}

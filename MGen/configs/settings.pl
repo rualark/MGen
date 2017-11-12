@@ -3,7 +3,7 @@
 
 Algorithm = 112 # Id of the currently selected algorithm
 Config = good-cp5 # Name of configuration file for selected algorithm
-MIDI_OUT = [DISABLE PLAYBACK] # Name of MIDI device used for playing notes
+MIDI_OUT = loopMIDI Port 2 # Name of MIDI device used for playing notes
 Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 2000
 playback_speed = 300 # Playback speed in percent
 show_marks = 1 # Set to 1 to show note mark strings
@@ -20,6 +20,7 @@ show_graph2 = 1 # Set to 1 to show graph 2
 show_notecolors = 0 # Set to 1 to show note colors instead of instrument colors
 
 # The following settings cannot be changed in GUI. You can change them only in this file
+Autoplay = 0 # Set to 1 to start playback as soon as first notes are generated
 View_timer = 100 # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers
 Step_dyn = 1 # Show dynamics with note opacity for each step of note. Disable for slower computers.
 Debug_level = 1 # Increase to show more debug logs
