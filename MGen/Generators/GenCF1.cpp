@@ -2819,6 +2819,11 @@ void CGenCF1::NextWindow(vector<int> &cc) {
 	else {
 		sp1 = sp2;
 		sp2 = sp1 + s_len; // End of search window
+		// Move window forward
+		if (!accept[267] && svoices > 1 && sp1 == mli.back()) {
+			sp1 = c_len - s_len;
+			sp2 = c_len;
+		}
 		if (sp2 > c_len) sp2 = c_len;
 		// Reserve last window with maximum length
 		//if ((c_len - sp1 < s_len * 2) && (c_len - sp1 > s_len)) sp2 = (c_len + sp1) / 2;

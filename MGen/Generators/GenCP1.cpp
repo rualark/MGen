@@ -2897,6 +2897,19 @@ void CGenCP1::GetHarmBass() {
 	}
 }
 
+void CGenCP1::OptimizeLastMeasure() {
+	// Do not optimize when evaluating
+	if (task == tEval || task == tCor) return;
+	// Do not optimize if last note non-whole allowed
+	if (accept[267]) return;
+	// Optimize only starting step of last measure
+	if (ep2 < c_len) return;
+	// Duplicate notes
+	for (s = mli.back(); s < c_len - 1; ++s) {
+		acc[cpv][s] = acc[cpv][c_len - 1];
+	}
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	int finished = 0;
 	int scycle = 0;
@@ -2921,6 +2934,7 @@ void CGenCP1::ScanCP(int t, int v) {
 	// Analyze combination
 check:
 	while (true) {
+		OptimizeLastMeasure();
 		CLEAR_READY();
 		//LogCantus("sp2-swa2-ep2", ep2 + swa2 * 1000 + sp2 * 1000000, acc[cpv]);
 		//if (ep2 > 56 && MatchVectors(acc[cpv], test_cc, 2, ep2 - 1)) {
