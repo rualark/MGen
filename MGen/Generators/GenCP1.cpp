@@ -3165,7 +3165,6 @@ check:
 	WriteFlagCor();
 	ShowFlagStat();
 	ShowFlagBlock();
-	tcycle += cycle;
 }
 
 void CGenCP1::LoadCantusHigh() {
