@@ -2899,7 +2899,7 @@ void CGenCP1::GetHarmBass() {
 
 void CGenCP1::OptimizeLastMeasure() {
 	// Do not optimize when evaluating
-	if (task == tEval || task == tCor) return;
+	if (task == tEval) return;
 	// Do not optimize if last note non-whole allowed
 	if (accept[267]) return;
 	// Optimize only starting step of last measure

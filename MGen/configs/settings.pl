@@ -1,8 +1,8 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 121 # Id of the currently selected algorithm
-Config = cp5 # Name of configuration file for selected algorithm
+Algorithm = 112 # Id of the currently selected algorithm
+Config = good-cp5 # Name of configuration file for selected algorithm
 MIDI_OUT = loopMIDI Port 2 # Name of MIDI device used for playing notes
 Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 2000
 playback_speed = 300 # Playback speed in percent
@@ -17,7 +17,7 @@ show_tempo = 0 # Set to 1 to show tempo
 show_graph0 = 1 # Set to 1 to show graph 0
 show_graph1 = 1 # Set to 1 to show graph 1
 show_graph2 = 1 # Set to 1 to show graph 2
-show_notecolors = 0 # Set to 1 to show note colors instead of instrument colors
+show_notecolors = 1 # Set to 1 to show note colors instead of instrument colors
 
 # The following settings cannot be changed in GUI. You can change them only in this file
 Autoplay = 0 # Set to 1 to start playback as soon as first notes are generated

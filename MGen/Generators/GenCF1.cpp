@@ -2795,6 +2795,10 @@ void CGenCF1::NextWindow(vector<int> &cc) {
 	if (task == tCor) {
 		sp1 = sp2;
 		sp2 = sp1 + min(swa_len, s_len);
+		if (!accept[267] && svoices > 1 && sp1 == mli.back()) {
+			sp1 = smatrixc - s_len;
+			sp2 = smatrixc;
+		}
 		if (sp2 > smatrixc) sp2 = smatrixc;
 		// Record window
 		++wid;
