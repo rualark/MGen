@@ -181,7 +181,10 @@ void CGenCA1::CreateScanMatrix(int i) {
 	// Clear scan matrix
 	smatrixc = 0;
 	smatrix.resize(c_len);
-	fill(smatrix.begin(), smatrix.end(), 0);
+	fill(smatrix.begin(), smatrix.end(), 1);
+	smatrixc = c_len;
+	return;
+	/*
 	// Search each note
 	for (int x = 0; x < c_len; x++) {
 		// Search each flag
@@ -213,6 +216,7 @@ void CGenCA1::CreateScanMatrix(int i) {
 	CString est;
 	est.Format("Scan matrix for cantus %d created with %d steps of %d: %s", i + 1, smatrixc, c_len, st2);
 	WriteLog(0, est);
+	*/
 }
 
 void CGenCA1::SendCorrections(int i, long long time_start) {

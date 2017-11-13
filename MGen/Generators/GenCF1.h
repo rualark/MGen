@@ -683,6 +683,7 @@ protected:
 	int cf_culm_s = -1; // Position of cantus firmus culmination in cp steps
 	int cf_culm_cfs = -1; // Position of cantus firmus culmination in cf notes
 	int fn = 0; // First note of analyzed melody
+	int fn_source = 0; // First note of source melody
 	vector<float> maw; // [] Moving average weight
 	vector<int> len_export; // [s] For Send
 	vector<int> coff_export; // [s] For Send

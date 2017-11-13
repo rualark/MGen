@@ -2109,6 +2109,7 @@ void CGenCP1::RandomSWACP() {
 	cpoint[0][cfv] = acc[cfv];
 	scpoint = cpoint[0];
 	ScanCPInit();
+	fn_source = fn;
 	for (int i = 0; i < INT_MAX; ++i) {
 		if (need_exit) break;
 		// Set random_seed to initiate random cantus

@@ -462,7 +462,7 @@ void CGenCF1::CheckConfig() {
 		WriteLog(5, "Warning: Best rejected algorithm is not tested and can have bugs. Please set best_rejected to 0");
 	}
 	if (corrections > 1) {
-		WriteLog(5, "Warning: Corrections > 1 algorithm is not tested and can have bugs. Please set corrections to 0 or 1");
+		WriteLog(5, "Warning: Corrections > 1 algorithm is not tested and can have bugs. Please set corrections to 0 or 1. Also, it is not optimized for fn_source.");
 	}
 	if (swa_steps < s_len) {
 		WriteLog(5, "Warning: Swa_steps cannot be below s_len. Changed to ");

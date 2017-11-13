@@ -369,24 +369,47 @@ void CGenCA2::FixUnisonPause() {
 	}
 }
 
-int CGenCA2::CheckStartPause() {
+void CGenCA2::FixStartPause() {
+	fn_source = fn;
 	if (species >= 2 && species <= 5 && fn == 0) {
-		if (!accept[273]) {
-			CString est;
-			est.Format("Counterpoint %s #%d does not have starting pause, which is currently prohibited for species %d. This counterpoint will not be corrected. Please fix midi file or allow no starting pause in rules if you want this counterpoint to be corrected",
-				cantus_high ? "high" : "low", cantus_id + 1, species);
-			WriteLog(1, est);
-			return 1;
-		}
-	}
-	else if ((species == 3 && fn > 1) || (species == 5 && fn != 0 && fn != 2 && fn != 4)) {
+		if (accept[273]) return;
 		CString est;
-		est.Format("Counterpoint %s #%d has wrong starting pause (%d/%d) in species %d. This counterpoint will not be corrected. Please fix midi file if you want this counterpoint to be corrected",
-			cantus_high?"high":"low", cantus_id + 1, fn, npm, species);
-		WriteLog(1, est);
-		return 1;
+		est.Format("Counterpoint %s #%d does not have starting pause, which is currently prohibited for species %d.",
+			cantus_high ? "high" : "low", cantus_id + 1, species);
+		WriteLog(0, est);
 	}
-	return 0;
+	// Calculate correct fn
+	if (species == 1) {
+		fn = 0;
+	}
+	if (species == 2) {
+		fn = 1;
+	}
+	if (species == 3) {
+		fn = 1;
+	}
+	if (species == 4) {
+		fn = 1;
+	}
+	if (species == 5) {
+		if (fn_source < 4) fn = 2;
+		else fn = 4;
+	}
+	if (fn_source != fn) {
+		if (fn_source < fn) {
+			vpop_front(cpoint[cantus_id][0], fn - fn_source);
+			vpop_front(cpoint[cantus_id][1], fn - fn_source);
+			vpop_front(cc_len, fn - fn_source);
+			vpop_front(cc_tempo, fn - fn_source);
+		}
+		if (fn_source > fn) {
+			vpush_front(cpoint[cantus_id][0], cpoint[cantus_id][0][0], fn_source - fn);
+			vpush_front(cpoint[cantus_id][1], cpoint[cantus_id][1][0], fn_source - fn);
+			vpush_front(cc_len, cc_len[0], fn_source - fn);
+			vpush_front(cc_tempo, cc_tempo[0], fn_source - fn);
+		}
+		c_len = cpoint[cantus_id][0].size();
+	}
 }
 
 void CGenCA2::Generate() {
@@ -531,6 +554,7 @@ void CGenCA2::Generate() {
 		ParseExpect();
 		ConfirmExpect();
 		EmulateSASCP();
+		FixStartPause();
 		key_eval.Empty();
 		// Check if cantus was shown
 		if (t_generated2 == t_generated) continue;
@@ -546,8 +570,7 @@ void CGenCA2::Generate() {
 		CreateScanMatrix(i);
 		// If no corrections needed
 		if (!corrections || !smatrixc || 
-			(m_testing && time() - gen_start_time > (m_test_sec - ANALYZE_RESERVE) * 1000) ||
-			CheckStartPause()) {
+			(m_testing && time() - gen_start_time > (m_test_sec - ANALYZE_RESERVE) * 1000)) {
 			// Go forward
 			t_generated = step;
 			Adapt(step0, step - 1);
