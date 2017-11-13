@@ -7,8 +7,12 @@
 #include "MGenTest.h"
 #include "../MGen/GLibrary/GLib.h"
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
+int is_debug = 1;
+#else
+int is_debug = 0;
 #endif
 
 // The one and only application object
@@ -272,16 +276,17 @@ void LoadConfig() {
 		//if (CGLib::fileExists("autotest\\sas-emu.log"))
 			Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
 				suffix + ".log >> run.log 2>&1", 1000);
-		//if (CGLib::fileExists("autotest\\cor-ack.log"))
+		// cor-ack log must exist only in release, because in debug it can be not enough time to be created
+		if (CGLib::fileExists("autotest\\cor-ack.log") || !is_debug)
 			Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack" +
 				suffix + ".log >> run.log 2>&1", 1000);
-		//if (CGLib::fileExists("autotest\\ly.log"))
+		if (CGLib::fileExists("autotest\\ly.log"))
 			Run("appveyor", "PushArtifact autotest\\ly.log -Verbosity Normal -Type Auto -FileName ly" +
 				suffix + ".log >> run.log 2>&1", 1000);
 		//if (CGLib::fileExists("autotest\\perf.log"))
 			Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
 				suffix + ".log >> run.log 2>&1", 1000);
-		//if (CGLib::fileExists("autotest\\run.log"))
+		if (CGLib::fileExists("autotest\\run.log"))
 			Run("appveyor", "PushArtifact autotest\\run.log -Verbosity Normal -Type Auto -FileName run" +
 				suffix + ".log", 1000);
 	}
