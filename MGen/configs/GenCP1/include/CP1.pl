@@ -14,6 +14,7 @@ s_len = 1 # Maximum number of measures to full scan. Higher values are slow to c
 cantus_id = 34 # Select particular cantus id. Set to 0 to select random
 accept_cantus_rechoose = 0 # Choose new random cantus after accepting counterpoint
 transpose_back = 0 # Should be set to 1 for CF1 generation algorithm only
+transpose_cantus = 5 # Specify octave to transpose lower cantus to
 
 animate = 0 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
 animate_delay = 0 # Delay in ms after each animation step

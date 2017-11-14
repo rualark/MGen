@@ -575,6 +575,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "rpenalty_accepted", &rpenalty_accepted, 0);
 	CheckVar(sN, sV, "c_len", &c_len, 1);
 	CheckVar(sN, sV, "s_len", &s_len, 1);
+	CheckVar(sN, sV, "transpose_cantus", &transpose_cantus, 0, 127);
 	LoadNote(sN, sV, "first_note", &first_note);
 	LoadNote(sN, sV, "last_note", &last_note);
 	CheckVar(sN, sV, "fill_steps_mul", &fill_steps_mul);

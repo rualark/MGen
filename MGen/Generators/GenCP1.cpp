@@ -3226,6 +3226,23 @@ void CGenCP1::ShrinkCantus() {
 	}
 }
 
+void CGenCP1::TransposeCantus() {
+	for (int cantus_id = 0; cantus_id < cantus.size(); ++cantus_id) {
+		// Get current average pitch
+		int pitch_sum = 0;
+		// If reduce_between is zero, do not process
+		if (!transpose_cantus) return;
+		for (s = 0; s < cantus[cantus_id].size(); ++s) {
+			pitch_sum += cantus[cantus_id][s];
+		}
+		int src_oct = pitch_sum / cantus[cantus_id].size() / 12;
+		// Transpose
+		for (s = 0; s < cantus[cantus_id].size(); ++s) {
+			cantus[cantus_id][s] += (transpose_cantus - src_oct + cantus_high) * 12;
+		}
+	}
+}
+
 void CGenCP1::Generate() {
 	//CString st = "57 59 60 62 64 65 67 69 71 69 66 68 69 67 65 64 65 67 69 71 72 60 64 65 67 64 65 67 65 64 62 65 64 57 59 60 62 64 66 68 69";
 	//test_cc.resize(41);
@@ -3237,6 +3254,7 @@ void CGenCP1::Generate() {
 	CString st;
 	LoadCantus(midi_file);
 	ShrinkCantus();
+	TransposeCantus();
 	if (cantus.size() < 1) return;
 	for (int a = 0; a < INT_MAX; ++a) {
 		// Reset note scan range to ignore it for showing cantus

@@ -112,8 +112,8 @@ protected:
 
 	void LoadCantusHigh();
 	void LoadSpecies();
-
 	void ShrinkCantus();
+	void TransposeCantus();
 
 	// Variables
 	int cp_culm = 0; // Position of counterpoint culmination

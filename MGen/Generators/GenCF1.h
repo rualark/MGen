@@ -524,6 +524,7 @@ protected:
 	int pitch_penalty = 1; // Penalty for changing note one more diatonic step while correcting cantus
 	int optimize_dpenalty = 1; // Saves only melodies closest to source melody. Decreases memory usage. Resetting allows for more close results when corrections>1
 	int transpose_back = 0; // Set to 1 to transpose generated melody closer to initial first note. Can be set to 1 only for CF1 generation algorithms
+	int transpose_cantus = 5; // Specify octave to transpose lower cantus to
 
 	// CA1
 	CString fpenalty_source; // Source fpenalty string
