@@ -758,6 +758,7 @@ protected:
 	int sum_interval = 22; // Maximum chromatic range of cantus and counterpoint
 	int burst_steps = 3; // Maximum number of steps for which max_between can be exceeded
 	int burst_between = 11; // Maximum interval between voices for burst_steps steps
+	int reduce_between = 50; // How many percent of notes have to be outsize max_between range to be moved closer. Set to 0 to disable reduction
 	int c_repeats = 1; // Maximum number of C note repeats within window
 	int ca_repeats = 1; // Maximum number of accented C note repeats within window
 	int c_window = 10; // Maximum number of C note repeats within window

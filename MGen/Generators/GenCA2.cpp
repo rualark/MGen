@@ -417,6 +417,8 @@ void CGenCA2::ReduceBetween() {
 	int between;
 	int between_sum = 0;
 	int between_min = 0;
+	// If reduce_between is zero, do not process
+	if (!reduce_between) return;
 	for (s = 0; s < cpoint[cantus_id][0].size(); ++s) {
 		between = cpoint[cantus_id][1][s] - cpoint[cantus_id][0][s];
 		if (between > max_between) {
@@ -427,7 +429,7 @@ void CGenCA2::ReduceBetween() {
 			between_min = between;
 		}
 	}
-	if (bsteps > cpoint[cantus_id][0].size() / 2) {
+	if (bsteps > cpoint[cantus_id][0].size() * reduce_between / 100.0) {
 		int move_oct = ((between_sum * 1.0 / bsteps) - max_between) / 12 + 1;
 		if (move_oct * 12 < between_min) move_oct = between_min / 12;
 		if (cantus_high) {
