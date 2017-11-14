@@ -234,7 +234,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		if (lc < la.size() - 1 && ev != "r") fs << "~";
 		fs << "\n";
 		mv = v;
-		if (vm_cnt > 1) mv = v / 2 + !(v % 2);
+		if (vm_cnt > 1) mv = (v / 2) * 2 + !(v % 2);
 		if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 			CString st = mark[i][v];
 			st.Replace("\n", "");
