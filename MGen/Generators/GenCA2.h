@@ -9,6 +9,7 @@ public:
 
 	void FixUnisonPause();
 	void FixStartPause();
+	void ReduceBetween();
 	void Generate() override;
 
 protected:

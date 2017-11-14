@@ -412,6 +412,35 @@ void CGenCA2::FixStartPause() {
 	}
 }
 
+void CGenCA2::ReduceBetween() {
+	int bsteps = 0;
+	int between;
+	int between_sum = 0;
+	int between_min = 0;
+	for (s = 0; s < cpoint[cantus_id][0].size(); ++s) {
+		between = cpoint[cantus_id][1][s] - cpoint[cantus_id][0][s];
+		if (between > max_between) {
+			++bsteps;
+			between_sum += between;
+		}
+		if (between < between_min) {
+			between_min = between;
+		}
+	}
+	if (bsteps > cpoint[cantus_id][0].size() / 2) {
+		int move_oct = ((between_sum * 1.0 / bsteps) - max_between) / 12 + 1;
+		if (move_oct * 12 < between_min) move_oct = between_min / 12;
+		if (cantus_high) {
+			for (s = 0; s < cpoint[cantus_id][cpv].size(); ++s)
+				cpoint[cantus_id][cpv][s] += move_oct * 12;
+		}
+		else {
+			for (s = 0; s < cpoint[cantus_id][cpv].size(); ++s)
+				cpoint[cantus_id][cpv][s] -= move_oct * 12;
+		}
+	}
+}
+
 void CGenCA2::Generate() {
 	//CString test_st = "62 62 62 62 69 69 66 66 67 67 67 67 66 66 64 64 66 66 66 66 66 66 67 67 66 66 66 66 69 69 69 69 71 71 69 69 67 67 76 76 73 73 73 73 71 71 69 69 74 74 73 73 71 71 69 69 67 67 71 71 73 73 73 73 74";
 	//test_cc.resize(65);
@@ -494,6 +523,7 @@ void CGenCA2::Generate() {
 			WriteLog(5, est);
 			//continue;
 		}
+		ReduceBetween(); 
 		fn0 = fn;
 		// Get key
 		acc = cpoint[i];
