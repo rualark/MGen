@@ -661,6 +661,16 @@ void CGenCA2::Generate() {
 				SaveCorAck();
 			}
 			else {
+				CString est;
+				if (scan_full) {
+					est.Format("Could not correct counterpoint #%d using window-scan method (full scan reached). Please try to use SWA method",
+						cantus_id + 1);
+				}
+				else {
+					est.Format("Could not correct counterpoint #%d using window-scan method due to timeout. Please increase max_correct_ms in configuration file or try to use SWA method",
+						cantus_id + 1);
+				}
+				WriteLog(1, est);
 				// Go forward
 				step = t_generated;
 				Adapt(step0, step - 1);
