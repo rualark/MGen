@@ -432,6 +432,12 @@ void CGenCA2::ReduceBetween() {
 	if (bsteps > cpoint[cantus_id][0].size() * reduce_between / 100.0) {
 		int move_oct = ((between_sum * 1.0 / bsteps) - max_between) / 12 + 1;
 		if (move_oct * 12 < between_min) move_oct = between_min / 12;
+		if (move_oct > 0) {
+			CString est;
+			est.Format("In counterpoint #%d (cantus %s), counterpoint voice was moved closer to cantus by %d octaves, because it was too far. Reset reduce_between to disable this function",
+				cantus_id + 1, cantus_high ? "high" : "low", move_oct);
+			WriteLog(0, est); 
+		}
 		if (cantus_high) {
 			for (s = 0; s < cpoint[cantus_id][cpv].size(); ++s)
 				cpoint[cantus_id][cpv][s] += move_oct * 12;
