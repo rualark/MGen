@@ -178,45 +178,29 @@ int CGenCA1::GetCPKey2(int &tonic_cur2, CString &ext_st, int minor_cur2)
 
 void CGenCA1::CreateScanMatrix(int i) {
 	CString st, st2;
-	// Clear scan matrix
-	smatrixc = 0;
+	int found = 0;
 	smatrix.resize(c_len);
-	fill(smatrix.begin(), smatrix.end(), 1);
-	smatrixc = c_len;
-	return;
-	/*
 	// Search each note
 	for (int x = 0; x < c_len; x++) {
 		// Search each flag
 		for (int f = 0; f < anflags[cpv][x].size(); f++) {
 			// Find prohibited flag
 			if (accept[anflags[cpv][x][f]] == 0) {
-				// Create matrix window
-				int pos1 = x - pre_bad;
-				int pos2 = x + post_bad;
-				// Increase post_bad if long leap
-				//if (x > 0 && abs(cantus[i][x - 1] - cantus[i][x]) > 7) pos2 = x + 12;
-				//if (x < c_len - 1 && abs(cantus[i][x + 1] - cantus[i][x]) > 7) pos2 = x + 12;
-				// Do not rescan first and last step
-				if (pos1 < 0) pos1 = 0;
-				if (pos2 > c_len - 1) pos2 = c_len - 1;
-				// Set smatrix values
-				for (int z = pos1; z <= pos2; z++) {
-					if (smatrix[z] == 0) smatrixc++;
-					smatrix[z] = 1;
-				}
+				++found;
+				break;
 			}
 		}
+		if (found) break;
 	}
-	st2.Empty();
-	for (int x = 0; x < c_len; x++) {
-		st.Format("%d ", smatrix[x]);
-		st2 += st;
+	if (found) {
+		fill(smatrix.begin(), smatrix.end(), 1);
+		smatrixc = c_len;
 	}
-	CString est;
-	est.Format("Scan matrix for cantus %d created with %d steps of %d: %s", i + 1, smatrixc, c_len, st2);
-	WriteLog(0, est);
-	*/
+	else {
+		fill(smatrix.begin(), smatrix.end(), 0);
+		smatrixc = 0;
+		WriteLog(0, "No need to correct - no prohibited rule violations found");
+	}
 }
 
 void CGenCA1::SendCorrections(int i, long long time_start) {
