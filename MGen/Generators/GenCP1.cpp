@@ -2682,7 +2682,7 @@ int CGenCP1::FailTonicCP() {
 			if (tcount > tonic_max_cp) {
 				// Grant one more tonic in first window if first chord not tonic
 				fire = 0;
-				if (ls < tonic_window_cp && !chm[0]) {
+				if (hs < tonic_window_cp && chm[0]) {
 					if (tcount > tonic_max_cp + 1)	fire = 1;
 				}
 				else fire = 1;
