@@ -31,9 +31,9 @@ include "include/CA2.pl"
 #Midi_file = "midi\GenCA2\test-ly-key.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-ly-alter.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-ly-clef.mid" # Path and file name of imported midi file
-Midi_file = "midi\GenCA2\test-repeat.mid" # Path and file name of imported midi file
+#Midi_file = "midi\GenCA2\test-repeat.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-tritone.mid" # Path and file name of imported midi file
-#Midi_file = "midi\GenCA2\test-gc.mid" # Path and file name of imported midi file
+Midi_file = "midi\GenCA2\test-gc.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-leaps.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-multiharm.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-4th.mid" # Path and file name of imported midi file
