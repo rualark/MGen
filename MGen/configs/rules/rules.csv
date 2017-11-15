@@ -154,7 +154,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;57;0;Cantus;Harmony;Harmonic penalty;2;-1;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;92;0;Cantus;Harmony;Harmonic penalty;2x2;-1;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;23;20;Cantus;Harmony;Harmonic penalty;3x2;0;;;1;;;;;;;17,20,23,48,57,77,92,99
-1;99;30;Cantus;Harmony;Harmonic penalty;repeat;0;;;1;;1;;;;;17,20,23,48,57,77,92,99
+1;99;30;Cantus;Harmony;Harmonic penalty;repeat;0;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;321;70;Cantus;Harmony;Harmonic penalty;2 x repeat;0;;;1;;1;;;;;
 1;52;70;Cantus;Border;Start steps tonic;unprepared;0;;;;;1;;;;;
 1;40;70;Cantus;Border;Start steps tonic;no C;0;;;;;1;;;;;
