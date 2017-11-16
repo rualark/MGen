@@ -589,6 +589,7 @@ void CGenCA2::Generate() {
 		step00 = step0;
 		fn = fn0;
 		ScanCP(tEval, 0);
+		LogFlags();
 		ParseExpect();
 		ConfirmExpect();
 		EmulateSASCP();

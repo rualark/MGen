@@ -24,6 +24,8 @@ protected:
 	void SaveCorAck();
 	void CorAck();
 
+	void LogFlags();
+
 	int pre_bad = 6; // How many notes to recalculate before rule violation
 	int post_bad = 8; // How many notes to recalculate after rule violation
 

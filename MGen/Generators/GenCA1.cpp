@@ -420,6 +420,26 @@ void CGenCA1::CorAck() {
 	if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 }
 
+void CGenCA1::LogFlags() {
+	if (!m_testing) return;
+	CString st, fst;
+	int fl;
+	for (s = 0; s < ep2; ++s) {
+		// Loop through all flags 
+		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
+			fl = anflags[cpv][s][f];
+			fst = "";
+			if (accept[fl] == 0) fst = "-";
+			if (accept[fl] == 1) fst = "+";
+			if (accept[fl] == -1) fst = "$";
+			st.Format("Detected flag: [%d] %s %s (%s) at %d:%d %s",
+				fl, fst, RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+				cantus_id + 1, s + 1, midi_file);
+			AppendLineToFile("autotest\\flags.log", st + "\n");
+		}
+	}
+}
+
 void CGenCA1::Generate() {
 	CString test_st = "60 72 71 69 67 71 67 69 71 67 65 64 62 59 60";
 	test_cc.resize(15);
@@ -465,6 +485,7 @@ void CGenCA1::Generate() {
 		c_len = cantus[i].size();
 		GetSourceRange(cantus[i]);
 		ScanCantus(tEval, 0, &(cantus[i]));
+		LogFlags();
 		ParseExpect();
 		ConfirmExpect();
 		EmulateSAS();
