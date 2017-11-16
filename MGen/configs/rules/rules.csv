@@ -241,7 +241,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;276;60;Cantus;Counterpoint;Dissonance upbeat;m2;0;;Minor second;;;;;;;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;1;More than X same imperfect consonances in a row;;;;;;;;;
 1;96;0;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;;;;;;;;
-1;268;0;Cantus;Counterpoint;First harmony;CC;-1;;;;;1;;;;;
+1;268;0;Cantus;Counterpoint;First harmony;CC;-1;;;;;;;;;;
 1;269;10;Cantus;Counterpoint;First harmony;CG;-1;;;;;1;;;;;
 1;270;30;Cantus;Counterpoint;First harmony;CE;0;;;;;1;;;;;
 1;271;40;Cantus;Counterpoint;First harmony;EC;0;;;;;1;;;;;
