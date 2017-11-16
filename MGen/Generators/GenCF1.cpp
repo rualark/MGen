@@ -3229,7 +3229,8 @@ char CGenCF1::GetScanVisualCode(int i) {
 
 void CGenCF1::ShowScanStatus() {
 	if (task == tEval) return;
-	CString st, progress_st;
+	CString st;
+	//CString progress_st;
 	if (task == tGen && method == mScan) {
 		for (int i = 0; i < wcount; ++i) {
 			//st.Format("%d ", cc_id[wpos1[i]]);

@@ -177,7 +177,6 @@ int CGenCA1::GetCPKey2(int &tonic_cur2, CString &ext_st, int minor_cur2)
 }
 
 void CGenCA1::CreateScanMatrix(int i) {
-	CString st, st2;
 	int found = 0;
 	smatrix.resize(c_len);
 	// Search each note
