@@ -196,6 +196,7 @@ void LoadConfig() {
 		cout << "Not found file " << fname << "\n";
 	}
 	// Clear expect.log
+	remove("autotest\\flags.log");
 	remove("autotest\\expect.log");
 	remove("autotest\\sas-emu.log");
 	remove("autotest\\cor-ack.log");
@@ -270,6 +271,9 @@ void LoadConfig() {
 		suffix = "-debug";
 #endif
 		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
+		if (CGLib::fileExists("autotest\\flags.log"))
+			Run("appveyor", "PushArtifact autotest\\flags.log -Verbosity Normal -Type Auto -FileName flags" +
+				suffix + ".log >> run.log 2>&1", 1000);
 		//if (CGLib::fileExists("autotest\\expect.log"))
 			Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" +
 				suffix + ".log >> run.log 2>&1", 1000);
