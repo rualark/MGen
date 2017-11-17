@@ -200,7 +200,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;324;60;Cantus;Counterpoint;Perfect consonance;LT 8va;0;;Leading tone octave;;;1;;;;;
 1;326;60;Cantus;Counterpoint;Perfect consonance;db. long 8va;0;;Downbeat octave lwhole or longer (species 2,4), 1/2 or longer (species 3,5);;;1;;;;;
 1;325;60;Cantus;Counterpoint;Perfect consonance;db. long 5th;0;;Downbeat 5th whole or longer(species 2,4), 1/2 or longer (species 3,5);;;1;;;;;
-1;330;0;Cantus;Counterpoint;Close perfect consonances;parallel sus 6-5;1;;Parallel 5th after sus from 5th to 6th;;;;;;;;
+1;330;0;Cantus;Counterpoint;Close perfect consonances;parallel sus 6-5;1;;Parallel 5th after sus from 5th to 6th;;;1;;;;;
 1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;;;;;;;;;
 1;85;60;Cantus;Counterpoint;Close perfect consonances;contrary;0;;Contrary octaves are possible in cadence;;;;;;;;
 1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;;;;;;;
@@ -325,7 +325,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;243;60;Cantus;Rhythm;Suspension rhythm;? + 1/2.;1;;;;;1;;;;;
 1;244;60;Cantus;Rhythm;Suspension rhythm;1/2. + ?;0;;;;;1;;;;;
 1;274;60;Cantus;Rhythm;Suspension rhythm;> 5/4;0;;Total note length is more than 5/4 (except last note);;;1;;;;;
-1;139;0;Cantus;Rhythm;Suspension;not last 3;0;;Suspension before N last measures {sp2-5};;;;;;;;
+1;139;0;Cantus;Rhythm;Suspension;not last 3;0;;Suspension before N last measures {sp2,3};;;;;;;;
 1;299;0;Cantus;Rhythm;Suspension;not leading;0;;Suspension of not leading tone {sp2};;;;;;;;
 1;301;0;Cantus;Rhythm;Many notes in measure;5 after sus;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;;;;;;
 1;245;0;Cantus;Rhythm;Many notes in measure;5;0;;;;;1;;;;;
