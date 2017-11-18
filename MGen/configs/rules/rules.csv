@@ -256,7 +256,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;318;60;Cantus;Counterpoint;Penultimate measure;isolated B;0;;There is a harmony between leading tone and tonic note in penultimate measure;1;;1;;;;;
 1;322;60;Cantus;Counterpoint;Penultimate measure;T/S after D;0;;Tonic or subdominant chord goes after dominant chord in penultimate measure;;;1;;;;;
 1;225;0;Cantus;Counterpoint;Slurs;suspension;1;;;;;;;;;;
-1;97;60;Cantus;Counterpoint;Slurs;consecutive;0;;For counterpoint species 1-4;;;1;;;;;
+1;97;60;Cantus;Counterpoint;Slurs;consecutive;0;;For counterpoint species 1-4;;;;;;;;
 1;30;100;Cantus;Counterpoint;Slurs;cantus;0;;;;;1;;;;;
 1;93;0;Cantus;Counterpoint;Slurs within 10 notes;1;0;For counterpoint species 1-3;;;;;;1;;;
 1;94;40;Cantus;Counterpoint;Slurs within 10 notes;2;0;For counterpoint species 1-3;;;;;;1;93;;
