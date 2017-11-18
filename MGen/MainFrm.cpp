@@ -715,6 +715,8 @@ void CMainFrame::OnButtonGen()
 	}
 	NewGen();
 	if (pGen != 0) {
+		// Clear document title
+		GetActiveDocument()->SetTitle("Untitled");
 		// Clear memory usage warning flag
 		warn_memory_usage = 0;
 		// Clear note minimax
