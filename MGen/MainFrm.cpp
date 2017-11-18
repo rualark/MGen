@@ -762,6 +762,7 @@ void CMainFrame::OnButtonSettings()
 void CMainFrame::OnButtonAlgo()
 {
 	if (m_state_gen != 1) {
+		LoadAlgo();
 		CAlgoDlg dlg;
 		if (dlg.DoModal() == IDOK) {
 			OnButtonGen();
