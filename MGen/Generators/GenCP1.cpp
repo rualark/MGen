@@ -2399,7 +2399,7 @@ int CGenCP1::FailLastIntervals() {
 				for (int x = start; x <= end; ++x) {
 					for (int v = 0; v < av_cnt; ++v) {
 						if (apcc[v][x] == 11) b_found = 1;
-						if (apcc[v][x] == 10) {
+						if (apcc[v][x] == 10 && !bb_found) {
 							bb_found = 1;
 							bb_step = x;
 						}
