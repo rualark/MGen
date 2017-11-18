@@ -135,7 +135,8 @@ void PublishTest(CString tname, int result, int tpassed, CString params) {
 		if (result) cat = "Failed";
 		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log 2>&1", 
 			tname, tpassed, cat, result, emes);
-		Run("appveyor", st, 1000);
+		// First run is done without error stack to ensure that too long error stack will not prevent test from reporting
+		//Run("appveyor", st, 1000);
 		// Send errors separately in case of command line overflow
 		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" -StdOut \"MGen.exe %s\" -ErrorStackTrace \"%s\" >> autotest\\run.log 2>&1", 
 			tname, tpassed, cat, result, emes, params, errors);
