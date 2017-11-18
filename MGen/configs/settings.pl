@@ -10,6 +10,7 @@ show_marks = 1 # Set to 1 to show note mark strings
 show_comments = 0 # Set to 1 to surround notes which have comments with rectangles
 show_lining = 1 # Set to 1 to show note lining
 show_lines = 1 # Set to 1 to show line separators
+show_progress = 0 # Set to 1 to show note scan progress
 show_vel = 1 # Set to 1 to show note velocity using alpha
 show_curve = 1 # Set to 1 to show melody curves (MeloCurve)
 show_nsr = 1 # Set to 1 to show note scan range

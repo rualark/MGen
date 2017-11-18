@@ -118,6 +118,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_GRAPH2, &CMainFrame::OnUpdateCheckGraph2)
 	ON_COMMAND(ID_CHECK_GRAPH3, &CMainFrame::OnCheckGraph3)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_GRAPH3, &CMainFrame::OnUpdateCheckGraph3)
+	ON_COMMAND(ID_CHECK_PROGRESS, &CMainFrame::OnCheckProgress)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_PROGRESS, &CMainFrame::OnUpdateCheckProgress)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -995,6 +997,7 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "show_comments", &show_comments);
 			CGLib::CheckVar(&st2, &st3, "show_lining", &show_lining);
 			CGLib::CheckVar(&st2, &st3, "show_lines", &show_lines);
+			CGLib::CheckVar(&st2, &st3, "show_progress", &show_progress);
 			CGLib::CheckVar(&st2, &st3, "autoplay", &autoplay);
 			CGLib::CheckVar(&st2, &st3, "show_tempo", &show_tempo);
 			CGLib::CheckVar(&st2, &st3, "show_vel", &show_vel);
@@ -1059,6 +1062,8 @@ void CMainFrame::SaveSettings()
 	st.Format("show_lining = %d # Set to 1 to show note lining\n", show_lining);
 	fs << st;
 	st.Format("show_lines = %d # Set to 1 to show line separators\n", show_lines);
+	fs << st;
+	st.Format("show_progress = %d # Set to 1 to show note scan progress\n", show_progress);
 	fs << st;
 	st.Format("show_vel = %d # Set to 1 to show note velocity using alpha\n", show_vel);
 	fs << st;
@@ -1709,4 +1714,14 @@ void CMainFrame::OnUpdateCheckGraph3(CCmdUI *pCmdUI) {
 		UpdateUIText(pCmdUI, 6, pGen->graph_name[2]);
 	}
 	else UpdateUIText(pCmdUI, 6, "Unnamed graph #3");
+}
+
+void CMainFrame::OnCheckProgress() {
+	show_progress = !show_progress;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckProgress(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_progress);
 }
