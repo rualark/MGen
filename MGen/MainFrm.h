@@ -75,6 +75,7 @@ public:
 	int show_comments = 1;
 	int show_lining = 1;
 	int show_lines = 1;
+	int show_progress = 1;
 	int autoplay = 1;
 	int show_tempo = 1;
 	int show_vel = 1;
@@ -249,4 +250,6 @@ public:
 	afx_msg void OnUpdateCheckGraph2(CCmdUI *pCmdUI);
 	afx_msg void OnCheckGraph3();
 	afx_msg void OnUpdateCheckGraph3(CCmdUI *pCmdUI);
+	afx_msg void OnCheckProgress();
+	afx_msg void OnUpdateCheckProgress(CCmdUI *pCmdUI);
 };

@@ -177,24 +177,27 @@ void CMGenView::OnDraw(CDC* pDC)
 
 	time_stop2 = CGLib::time();
 	if ((mf->m_state_gen > 0) && (pGen != 0)) if (pGen->t_generated > 0) { //-V560
-		// Show progress
-		int max_progress = min(pGen->progress_size, MAX_PROGRESS);
-		if (max_progress > 0) {
-			g.FillRectangle(&brush_green, 800, ClientRect.top + Y_HEADER - Y_TIMELINE - 5,
-				max_progress, 5);
+		if (mf->show_progress) {
+			// Show progress
+			int max_progress = min(pGen->progress_size, MAX_PROGRESS);
+			if (max_progress > 0) {
+				g.FillRectangle(&brush_green, 800, ClientRect.top + Y_HEADER - Y_TIMELINE - 5,
+					max_progress, 5);
+			}
+			for (int i = 0; i < max_progress; ++i) {
+				if (pGen->progress[i] % 2)
+					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 1, cr_black);
+				if (pGen->progress[i] / 2 % 2)
+					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 2, cr_black);
+				if (pGen->progress[i] / 4 % 2)
+					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 3, cr_black);
+				if (pGen->progress[i] / 8 % 2)
+					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 4, cr_black);
+				if (pGen->progress[i] / 16 % 2)
+					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 5, cr_black);
+			}
 		}
-		for (int i = 0; i < max_progress; ++i) {
-			if (pGen->progress[i] % 2)  
-				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 1, cr_black);
-			if (pGen->progress[i] / 2 % 2) 
-				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 2, cr_black);
-			if (pGen->progress[i] / 4 % 2)
-				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 3, cr_black);
-			if (pGen->progress[i] / 8 % 2)
-				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 4, cr_black);
-			if (pGen->progress[i] / 16 % 2)
-				dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 5, cr_black);
-		}
+		// Check if non-adapted music is sent
 		if (pGen->t_sent > pGen->t_adapted && warn_noadapt < 5) {
 			CString est;
 			est.Format("Detected t_sent %d greater than t_adapted %d",
