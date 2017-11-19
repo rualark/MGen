@@ -174,6 +174,7 @@ const CString NoteName2[] = {
 class CGLib
 {
 public:
+	static CString reg_replace(CString st, CString pat, CString replace);
 	static void read_file_sv(CString fname, vector<CString> &sv);
 	static void read_file_st(CString fname, CString & st);
 	static void write_file_sv(ofstream &fs, vector<CString> &sv);
