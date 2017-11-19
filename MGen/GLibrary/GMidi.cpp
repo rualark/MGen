@@ -256,13 +256,15 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 				fs << "_\\markup{ ";
 				int found = 0;
 				// Replace dominant symbol
+				st.Replace("#", " \"#\" ");
 				if (st[0] == 'D') {
-					st = "\\concat { \\char ##x00D0 \"" + st.Right(st.GetLength() - 1) + "\" } ";
+					st = "\\concat { \\char ##x00D0 " + st.Right(st.GetLength() - 1) + " } ";
 				}
 				else if (st[0] == 'd') {
-					st = "\\concat { \\char ##x0111 \"" + st.Right(st.GetLength() - 1) + "\" } ";
+					st = "\\concat { \\char ##x0111 " + st.Right(st.GetLength() - 1) + " } ";
 				}
-				else st = "\"" + st + "\"";
+				else st = "\\concat { " + st + " } ";
+				st.Replace("6", " \\raise #0.7 6");
 				//if (found) st = ", " + st;
 				found = 1;
 				fs << "\\teeny \\on-color #(rgb-color ";
