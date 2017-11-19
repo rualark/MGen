@@ -137,6 +137,7 @@
 #define ID_CHECK4                       32847
 #define ID_CHECK_GRAPH2                 32848
 #define ID_CHECK_GRAPH3                 32849
+#define ID_CHECK_PROGRESS               32850
 
 // Next default values for new objects
 // 
