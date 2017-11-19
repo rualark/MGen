@@ -3,8 +3,8 @@
 struct ExcelCell {
 	CString val; // value
 	CString com; // comment
-	//unsigned short int mergeAcross = 0;
-	//unsigned short int mergeDown = 0;
+	unsigned short int mergeAcross = 0;
+	unsigned short int mergeDown = 0;
 	
 	// Style
 	DWORD col = 0; // color
@@ -31,7 +31,7 @@ public:
 
 public:
 	map<CString, ExcelCell> s; // [sheet][row][col] Styles
-	vector<vector<vector<ExcelCell>>> d; // [sheet][row][col] Resulting cells
+	vector<vector<vector<ExcelCell>>> c; // [sheet][row][col] Resulting cells
 	vector<CString> sheetName;
 
 	CString fst; // String read from file

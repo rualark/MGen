@@ -1029,8 +1029,3 @@ CString CGLib::GetRealNoteName(int no, int key, int mi) {
 	GetRealNote(no, key, mi, no2, oct, alter);
 	return NoteName[no2] + GetAlterName(alter);
 }
-
-CString CGLib::reg_replace(CString st, CString pat, CString replace) {
-	regex e("\<[^\>]*\>");
-	return regex_replace(st.GetBuffer(), e, "").c_str();
-}

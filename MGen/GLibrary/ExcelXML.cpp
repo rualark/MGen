@@ -12,11 +12,6 @@ CExcelXML::CExcelXML() {
 CExcelXML::~CExcelXML() {
 }
 
-// Problems with manual parse solution:
-// - Text inside quotes can interfere with detection
-// - Case sensitive
-// - Whitespace not allowed
-// - Properties are attached to search tags directly
 int CExcelXML::LoadXML(CString fname) {
 	if (!CGLib::fileExists(fname)) {
 		error_st.Format("LoadXML cannot find file: %s", fname);
@@ -115,73 +110,19 @@ int CExcelXML::LoadCells() {
 	CString sst1 = "<Worksheet ss:Name=\"";
 	CString sst2 = "</Worksheet>";
 	CString sst3 = "<Row ";
-	CString sst4 = "</Row>";
-	CString sst5 = "<Cell";
-	CString sst6 = "</Cell>";
-	CString sst7 = "<Data ss:Type=\"";
-	CString sst8 = "</Data>";
-	CString sst9 = "><Comment";
-	CString sst10 = "</Comment>";
-	CString sst11 = " ss:Index=\"";
-	CString sst12 = " ss:MergeAcross=\"";
-	CString sst13 = " ss:StyleID=\"";
-	int wpos = 0;
-	int rpos, cpos, pos1, pos2, pos3, pos4, pos5, pos6, pos7, pos8, pos9, pos10, pos11;
-	int pos12, pos13;
+	CString sst4 = "<Cell ss:StyleID=\"";
+	CString sst5 = "<Data ss:Type=\"";
+	CString sst6 = "><Comment";
+	CString sst7 = "</Comment>";
+	CString sst8 = "";
+	CString sst9 = "";
+	int pos = 0;
+	int pos1, pos2, pos3, pos4, pos5, pos6;
 	int slen;
-	d.clear();
-	CString st, st2, st3, sname;
-	// Load worksheets
+	s.clear();
+	CString st, st2, st3, sst, sname;
 	for (int w = 0; w < INT_MAX; ++w) {
-		CString wst;
-		if (GetTagSt(fst, wst, wpos, sst1, sst2, pos1, pos2)) break;
-		d.resize(w + 1);
-		// Load rows
-		rpos = 0;
-		for (int r = 0; r < INT_MAX; ++r) {
-			CString rst;
-			if (GetTagSt(wst, rst, rpos, sst3, sst4, pos3, pos4)) break;
-			d[w].resize(r + 1);
-			// Load cells
-			cpos = 0;
-			for (int c = 0; c < INT_MAX; ++c) {
-				CString cst, dst, mst, ist, ist2;
-				if (GetTagSt(rst, cst, cpos, sst5, sst6, pos5, pos6)) break;
-				d[w][r].resize(c + 1);
-				// Data
-				GetTagSt(cst, dst, 0, sst7, sst8, pos7, pos8);
-				// Index
-				if (!GetTagSt(cst, ist, 0, sst11, "\"", pos12, pos13)) {
-					int c2 = atoi(ist) - 1;
-					d[w][r].resize(c2 + 1);
-					c = c2;
-				}
-				// Style
-				if (!GetTagSt(cst, ist, 0, sst13, "\"", pos12, pos13)) {
-					d[w][r][c] = s[ist];
-				}
-				// Remove first tag close
-				pos11 = dst.Find(">");
-				if (pos11 > -1) dst = dst.Mid(pos11 + 1);
-				d[w][r][c].val = dst;
-				// Comment
-				if (!GetTagSt(cst, mst, 0, sst9, sst10, pos9, pos10)) {
-					// Remove first tag close
-					pos11 = mst.Find(">");
-					if (pos11 > -1) mst = mst.Mid(pos11 + 1);
-					d[w][r][c].com = CGLib::reg_replace(mst, "\<[^\>]*\>", "");
-				}
-				// Merge across
-				if (!GetTagSt(cst, ist2, 0, sst12, "\"", pos12, pos13)) {
-					int c2 = c + atoi(ist2);
-					d[w][r].resize(c2 + 1);
-					c = c2;
-				}
-				cpos = pos6 + 1;
-			}
-			rpos = pos4 + 1;
-		}
-		wpos = pos2 + 1;
+		if (GetTagSt(fst, sst, pos, sst1, sst2, pos1, pos2)) break;
 	}
 	return 0;
 }
