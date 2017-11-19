@@ -30,9 +30,9 @@ public:
 	int LoadCells();
 
 public:
-	map<CString, int> sheet_id; // Sheet id by name
-	map<CString, ExcelCell> s; // Styles by name
+	map<CString, ExcelCell> s; // [sheet][row][col] Styles
 	vector<vector<vector<ExcelCell>>> d; // [sheet][row][col] Resulting cells
+	vector<CString> sheetName;
 
 	CString fst; // String read from file
 	CString error_st;
