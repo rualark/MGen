@@ -134,6 +134,9 @@ void CGenCF1::LoadRules(CString fname) {
 	vector<CString> ast, ast2;
 	CExcelXML xml;
 	xml.LoadXML("configs\\rules\\rules.xml");
+	// Detect number of subrules
+	// Load subrules
+	// Load parameters
 	int i = 0;
 	int sev = 0;
 	int set = 0;
