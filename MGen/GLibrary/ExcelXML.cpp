@@ -130,12 +130,19 @@ int CExcelXML::LoadCells() {
 	int pos12, pos13;
 	int slen;
 	d.clear();
-	CString st, st2, st3, sname;
+	sheet_id.clear();
+	CString st, st2, st3, wname;
 	// Load worksheets
 	for (int w = 0; w < INT_MAX; ++w) {
 		CString wst;
 		if (GetTagSt(fst, wst, wpos, sst1, sst2, pos1, pos2)) break;
 		d.resize(w + 1);
+		// Get sheet name
+		pos11 = wst.Find("\"");
+		if (pos11 > -1) {
+			wname = wst.Left(pos11);
+			sheet_id.insert(pair<CString, int>(wname, w));
+		}
 		// Load rows
 		rpos = 0;
 		for (int r = 0; r < INT_MAX; ++r) {
@@ -158,7 +165,7 @@ int CExcelXML::LoadCells() {
 				}
 				// Style
 				if (!GetTagSt(cst, ist, 0, sst13, "\"", pos12, pos13)) {
-					d[w][r][c] = s[ist];
+					if (s.find(ist) != s.end()) d[w][r][c] = s[ist];
 				}
 				// Remove first tag close
 				pos11 = dst.Find(">");
