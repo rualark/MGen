@@ -156,9 +156,6 @@
     <ClInclude Include="GLibrary\pvector.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
-    <ClInclude Include="ExcelXML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -268,9 +265,6 @@
     </ClCompile>
     <ClCompile Include="GLibrary\pvector.cpp">
       <Filter>Source Files\GLibrary</Filter>
-    </ClCompile>
-    <ClCompile Include="ExcelXML.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
