@@ -175,6 +175,7 @@ class CGLib
 {
 public:
 	static void read_file_sv(CString fname, vector<CString> &sv);
+	static void read_file_st(CString fname, CString & st);
 	static void write_file_sv(ofstream &fs, vector<CString> &sv);
 	static void copy_file(CString sName, CString dName);
 	static void AppendLineToFile(CString fname, CString st);

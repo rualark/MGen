@@ -428,6 +428,25 @@ void CGLib::read_file_sv(CString fname, vector<CString> &sv) {
 	fs.close();
 }
 
+void CGLib::read_file_st(CString fname, CString &st) {
+	// Load file
+	ifstream fs;
+	if (!fileExists(fname)) {
+		WriteLog(5, "Cannot find file " + fname);
+		return;
+	}
+	fs.open(fname);
+	char pch[2550];
+	CString st2;
+	st.Empty();
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st2 = pch;
+		st += st2;
+	}
+	fs.close();
+}
+
 void CGLib::AppendLineToFile(CString fname, CString st)
 {
 	ofstream outfile;
