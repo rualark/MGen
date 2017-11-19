@@ -2,7 +2,6 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../stdafx.h"
 #include "GenCF1.h"
-#include "../GLibrary/ExcelXML.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW 
@@ -128,12 +127,11 @@ void CGenCF1::LoadHSP(CString fname)
 }
 
 // Load rules
-void CGenCF1::LoadRules(CString fname) {
+void CGenCF1::LoadRules(CString fname)
+{
 	SET_READY_PERSIST(DR_Rules);
 	CString st, est, rule, subrule;
 	vector<CString> ast, ast2;
-	CExcelXML xml;
-	xml.LoadXML("configs\\rules\\rules.xml");
 	int i = 0;
 	int sev = 0;
 	int set = 0;
