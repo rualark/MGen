@@ -436,6 +436,7 @@ void CGenCA1::LogFlags() {
 				fl, fst, RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 				cantus_id + 1, s + 1, midi_file);
 			AppendLineToFile("autotest\\flags.log", st + "\n");
+			//if (fl == 98) WriteLog(1, st);
 		}
 	}
 }
