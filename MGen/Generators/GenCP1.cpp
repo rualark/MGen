@@ -898,8 +898,6 @@ int CGenCP1::FailSus2() {
 			else if (species == 5) {
 				if (sus[ls] - fli[ls] == 2) FLAG2(251, s);
 			}
-			// 1/4 syncope (for last 1/4)
-			if (beat[ls] == 5 && llen[ls] > 1) FLAG2(235, s);
 			// If sus is not last note
 			if (ls < fli_size - 1) {
 				// If mid-bar already generated (sus cannot be in first measure, thus npm usage is correct)
