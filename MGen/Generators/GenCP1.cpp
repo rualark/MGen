@@ -2454,6 +2454,11 @@ void CGenCP1::GetNoteTypes() {
 			else beat[ls] = 1;
 		}
 		else beat[ls] = 0;
+		// Beats for species 1: 0 0 0 0
+		// Beats for species 2: 0 1 0 1
+		// Beats for species 3: 0 3 1 5
+		// Beats for species 4: 0 1 0 1
+		// Beats for species 5: 0 10 3 11 1 12 5 13
 		// Get suspension if cantus note changes during counterpoint note
 		sus[ls] = 0;
 		if (l > 1) {
