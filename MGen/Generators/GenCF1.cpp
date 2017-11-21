@@ -2284,7 +2284,7 @@ int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2) {
 	// Set flags
 	if (skips2) FLAG2(69, 0);
 	if (skips == 1) FLAG2(67, 0)
-	else if (skips == 2) FLAG2(68, 0);
+	else if (skips >= 2) FLAG2(68, 0);
 	return 0;
 }
 
