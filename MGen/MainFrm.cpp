@@ -715,6 +715,7 @@ void CMainFrame::OnButtonGen()
 		CSize DocSize(0, 0);
 		((CMGenView*)(GetActiveView()))->SetScrollSizes(MM_TEXT, DocSize, CSize(500, 500), CSize(50, 50));
 	}
+	LoadAlgo();
 	NewGen();
 	if (pGen != 0) {
 		// Clear document title
