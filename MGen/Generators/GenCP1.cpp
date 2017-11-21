@@ -2639,11 +2639,11 @@ int CGenCP1::EvalHarm() {
 				s > 0 && apc[0][s - 1] == 4) FLAG2(48, s);
 			if (minor_cur) {
 				// Prohibit dVII (GBD) in root position after S (DF#A) in root position
-				if (chm[i] == 6 && chm[i - 1] == 3 && chm_alter[i - 1]) {
+				if (chm[i] == 6 && chm[i - 1] == 3 && !chm_alter[i] && chm_alter[i - 1]) {
 					if (ls > 0 && apc[0][s] == 6 && apc[0][fli[ls - 1]] == 3) FLAG2(308, s);
 				}
 				// Prohibit DTIII (CEG) in root position after dVII (GBD) in root position
-				if (chm[i] == 2 && chm[i - 1] == 6) {
+				if (chm[i] == 2 && chm[i - 1] == 6 && !chm_alter[i] && !chm_alter[i - 1]) {
 					if (ls > 0 && apc[0][s] == 2 && apc[0][fli[ls - 1]] == 6) FLAG2(309, s);
 				}
 			}
