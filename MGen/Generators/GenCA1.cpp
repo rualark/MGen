@@ -421,7 +421,7 @@ void CGenCA1::CorAck() {
 }
 
 void CGenCA1::LogFlags() {
-	if (!m_testing) return;
+	//if (!m_testing) return;
 	CString st, fst;
 	int fl;
 	for (s = 0; s < ep2; ++s) {
@@ -436,7 +436,7 @@ void CGenCA1::LogFlags() {
 				fl, fst, RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 				cantus_id + 1, s + 1, midi_file);
 			AppendLineToFile("autotest\\flags.log", st + "\n");
-			//if (fl == 98) WriteLog(1, st);
+			if (fl == 98) WriteLog(1, st);
 		}
 	}
 }
