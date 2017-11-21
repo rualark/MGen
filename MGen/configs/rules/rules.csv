@@ -14,11 +14,11 @@ Set;Severity;Class;Group;Rule;Flag
 1;54;10;Melody;Compensated leap;Compensation after 3rd;4th;-1;;;;;;;;;;
 1;55;40;Melody;Compensated leap;Compensation after 3rd;5th;-1;;;;;;;;;;
 1;56;60;Melody;Compensated leap;Compensation after 3rd;>5th;-1;;;;;;;;;;
-1;100;0;Melody;Compensated leap;Compensated to 3rd: prepared;-;1;Prepared within 5 notes;;;;;;;;;
+1;100;0;Melody;Compensated leap;Compensated to 3rd: prepared;-;0;Prepared within 5 notes;;;;;;;;;
 1;101;0;Melody;Compensated leap;Compensated to 3rd: prepared;4th;-1;Prepared within 5 notes;;;;;;;;;
 1;102;40;Melody;Compensated leap;Compensated to 3rd: prepared;5th;-1;Prepared within 5 notes;;;;;;;;;
 1;103;60;Melody;Compensated leap;Compensated to 3rd: prepared;>5th;-1;Prepared within 5 notes;;;;;;;;;
-1;104;0;Melody;Compensated leap;Compensated to 3rd;-;1;;;;;;;;;;
+1;104;0;Melody;Compensated leap;Compensated to 3rd;-;0;;;;;;;;;;
 1;105;10;Melody;Compensated leap;Compensated to 3rd;4th;-1;;;;;;;;;;
 1;106;40;Melody;Compensated leap;Compensated to 3rd;5th;0;;;;;;;;;;
 1;107;60;Melody;Compensated leap;Compensated to 3rd;>5th;0;;;;;;;;;;
@@ -147,9 +147,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;329;30;Cantus;Harmony;Multiple harmonies in measure;sus 5/6 stepw;1;;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure;1;;;;;;;
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;1;;;;;;;
 1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;;;;;;;
-1;48;30;Cantus;Harmony;Prohibited progression;early G-C;1;;Bass note going from G to C octave before cadence;;;;;;;;17,20,23,48,57,77,92,99
-1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);1;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;1;;;;;
-1;309;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);1;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;1;;;;;
+1;48;30;Cantus;Harmony;Prohibited progression;early G-C;0;;Bass note going from G to C octave before cadence;;;;;;;;17,20,23,48,57,77,92,99
+1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;1;;;;;
+1;309;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;1;;;;;
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;57;0;Cantus;Harmony;Harmonic penalty;2;-1;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;92;0;Cantus;Harmony;Harmonic penalty;2x2;-1;;;1;;;;;;;17,20,23,48,57,77,92,99
