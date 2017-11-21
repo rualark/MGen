@@ -2614,8 +2614,14 @@ int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount) {
 		++wcount;
 		count = 0;
 	}
-	if (count > repeat_letters) FLAG2(17, s);
-	if (wcount > miss_letters) FLAG2(20, s);
+	if (count > repeat_letters && !hrepeat_fired) {
+		FLAG2(17, s);
+		hrepeat_fired = 1;
+	}
+	if (wcount > miss_letters && !hmiss_fired) {
+		FLAG2(20, s);
+		hmiss_fired = 1;
+	}
 	return 0;
 }
 
@@ -2669,6 +2675,8 @@ int CGenCP1::EvalHarm() {
 			}
 		}
 		// Check letter repeat and miss
+		hrepeat_fired = 0;
+		hmiss_fired = 0;
 		if (FailHarmStep(i, hvt, tcount, wtcount)) return 1;
 		if (FailHarmStep(i, hvd, dcount, wdcount)) return 1;
 		if (FailHarmStep(i, hvs, scount, wscount)) return 1;

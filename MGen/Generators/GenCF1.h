@@ -568,6 +568,8 @@ protected:
 	float pm_tw_max; // Maximum tonic weight
 
   // Local
+	int hrepeat_fired = 0; // Harmonic repeat in step
+	int hmiss_fired = 0; // Harmonic miss in step
 	// Queues for calculating scan speed and displaying in status
 	int svoices = 1; // Scan voices
 	CString pmap;
