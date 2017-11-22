@@ -2872,7 +2872,7 @@ int CGenCP1::FailHarm() {
 		}
 		RemoveHarmDuplicate();
 		// If penultimate measure
-		if (ms == mli.size() - 2) {
+		if (ms == mli.size() - 2 && hcount) {
 			// Prohibit harmony without leading tone in penultimate measure if previous harmony contained leading tone
 			if (first_b && !cchn[11]) FLAG2(318, s);
 			// Prohibit D or DVII harmony in penultimate measure before non-D / DVII harmony
