@@ -1983,7 +1983,7 @@ int CGenCP1::FailSlurs() {
 			//}
 			// Check slurs sequence
 			++scount;
-			if (scount > 1) FLAG2(97, i);
+			//if (scount > 1) FLAG2(97, i);
 			// Check slurs in window
 			++scount2;
 			// Subtract old slur
@@ -2939,6 +2939,15 @@ void CGenCP1::OptimizeLastMeasure() {
 	}
 }
 
+int CGenCP1::FailMaxNoteLen() {
+	CHECK_READY(DR_fli);
+	// Never check last note, either end of scan window or end of counterpoint
+	for (ls = 0; ls < fli_size - 1; ++ls) {
+		if (rlen[ls] > max_note_len[species] * 2) FLAG2(335 + species, fli[ls]);
+	}
+	return 0;
+}
+
 void CGenCP1::ScanCP(int t, int v) {
 	int finished = 0;
 	int scycle = 0;
@@ -3011,6 +3020,7 @@ check:
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
 		CreateLinks(acc[cpv], 1);
+		if (FailMaxNoteLen()) goto skip;
 		if (FailMissSlurs()) goto skip;
 		if (FailSlurs()) goto skip;
 		++accepted3;

@@ -108,6 +108,7 @@ protected:
 	inline void GetBhli();
 	inline void GetHarmBass();
 	inline void OptimizeLastMeasure();
+	inline int FailMaxNoteLen();
 	void ScanCP(int t, int v);
 
 	void LoadCantusHigh();

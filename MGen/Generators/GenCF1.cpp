@@ -39,6 +39,7 @@ CGenCF1::CGenCF1()
 	severity.resize(MAX_RULES);
 	flag_color.resize(MAX_SEVERITY);
 	accepts.resize(MAX_RULESETS);
+	max_note_len.resize(6);
 	// Start severity
 	severity[0] = 0;
 	// Data ready
@@ -318,6 +319,11 @@ void CGenCF1::ParseRules() {
 void CGenCF1::SetRuleParams() {
 	CHECK_READY_PERSIST(DR_RuleParam);
 	SET_READY_PERSIST(DR_RuleSetParam);
+	max_note_len[1] = GetRuleParam(rule_set, 336, rsSubName, 1);
+	max_note_len[2] = GetRuleParam(rule_set, 337, rsSubName, 1);
+	max_note_len[3] = GetRuleParam(rule_set, 338, rsSubName, 1);
+	max_note_len[4] = GetRuleParam(rule_set, 339, rsSubName, 1);
+	max_note_len[5] = GetRuleParam(rule_set, 340, rsSubName, 1);
 	tritone_res_quart = GetRuleParam(rule_set, 2, rsSubComment, 0);
 	sus_last_measures = GetRuleParam(rule_set, 139, rsSubName, 0);
 	sus_insert_max_leap = Interval2Chromatic(GetRuleParam(rule_set, 295, rsSubComment, 0));
