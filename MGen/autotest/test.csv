@@ -37,6 +37,7 @@ configs\GenCA2\test-alterint.pl
 configs\GenCA2\test-cp.pl
 #configs\GenCA2\test-cp2-rhythm.pl
 configs\GenCA2\test-cp3.pl
+configs\GenCA2\test-long.pl
 configs\GenCA2\test-cp3-rhythm.pl
 configs\GenCA2\test-cp4-slurs.pl
 configs\GenCA2\test-cp5-rhythm.pl
