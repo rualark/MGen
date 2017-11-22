@@ -201,15 +201,28 @@ void CGenCA2::ExplodeCP() {
 		cpv = !cpv;
 		cfv = !cfv;
 	}
-	if (min_vlen[cpv] * 4 == min_vlen[cfv] && species == 5) {
+	if (min_vlen[cfv] / min_vlen[cpv] < 8 && species == 5) {
 		// Do not increase cpv length - it will decrease two times this way
+		int coef = 8 * min_vlen[cpv] / min_vlen[cfv];
 		// Increase minimum cantus length
-		min_vlen[cfv] *= 2;
-		max_vlen[cfv] *= 2;
+		min_vlen[cfv] *= coef;
+		max_vlen[cfv] *= coef;
 		// Grow counterpoint two times
 		for (int i = 0; i < cantus_len[cantus_id].size(); ++i) {
-			cantus_len[cantus_id][i] *= 2;
-			cantus_tempo[cantus_id][i] *= 2;
+			cantus_len[cantus_id][i] *= coef;
+			cantus_tempo[cantus_id][i] *= coef;
+		}
+	}
+	if (min_vlen[cfv] / min_vlen[cpv] < 4 && species == 3) {
+		// Do not increase cpv length - it will decrease two times this way
+		int coef = 4 * min_vlen[cpv] / min_vlen[cfv];
+		// Increase minimum cantus length
+		min_vlen[cfv] *= coef;
+		max_vlen[cfv] *= coef;
+		// Grow counterpoint two times
+		for (int i = 0; i < cantus_len[cantus_id].size(); ++i) {
+			cantus_len[cantus_id][i] *= coef;
+			cantus_tempo[cantus_id][i] *= coef;
 		}
 	}
 	// Calculate npm
