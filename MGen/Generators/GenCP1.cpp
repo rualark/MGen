@@ -863,7 +863,7 @@ int CGenCP1::FailSus2() {
 			// Long start
 			if (sus[ls] - fli[ls] > npm / 2) FLAG2(333, s);
 			// Long finish
-			if (fli2[ls] - sus[ls] > npm) FLAG2(334, s);
+			if (fli2[ls] - sus[ls] + 1 > npm) FLAG2(334, s);
 			// Mark anticipation start as non-harmonic always
 			mshb[ls] = pPass;
 			// Check if start and end of slur is a discord - then it is interbar discord
@@ -1405,7 +1405,6 @@ void CGenCP1::SetMsh(int ls, vector<int> &l_msh, int val) {
 	// Check if in range
 	if (ls >= fli_size) return;
 	// Detect changing sign for dissonance
-	/*
 	if (l_msh[ls] * val < 0 && tivl[fli[ls]] < 2 ) {
 		CString est;
 		est.Format("Detected msh overwrite at note %d:%d (%s) with value %d (old value %d): %s", 
@@ -1413,7 +1412,6 @@ void CGenCP1::SetMsh(int ls, vector<int> &l_msh, int val) {
 			val, l_msh[ls], vint2st(ep2, acc[cpv]));
 		WriteLog(5, est);
 	}
-	*/
 	l_msh[ls] = val;
 }
 
