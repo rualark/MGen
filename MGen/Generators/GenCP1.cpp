@@ -1048,18 +1048,11 @@ int CGenCP1::FailPco() {
 			}
 		}
 		// Prohibit leading tone octave
-		if (apcc[0][s] == 11 && apcc[1][s] == 11) FLAG2(324, s);
-		// Prohibit parallel first - first (this is for sus notes, which starts are parallel)
-		if (ivl[s] == ivl[fli[ls - 1]]) {
-			// In case of 6-5 resolution, allow parallel 5th
-			if (sus[ls - 1] && 
-				ivlc[sus[ls - 1]] == 5 && ivlc[s] == 4 &&
-				abs(ac[cpv][s] - ac[cpv][fli[ls - 1]]) < 2)
-				FLAG2(330, s)
-			else FLAG2(84, s)
-		}
+		if (apcc[0][s] == 11 && apcc[1][s] == 11) FLAG2(324, s)
+		// Do not prohibit parallel first - first (this is for sus notes, which starts are parallel)
+		// because they are detected as pco apart now
 			// Prohibit parallel last - first
-		else if (ivl[s] == ivl[fli2[ls - 1]]) FLAG2(84, s)
+		if (ivl[s] == ivl[fli2[ls - 1]]) FLAG2(84, s)
 		else {
 			// Prohibit contrary movement
 			if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
@@ -1760,10 +1753,15 @@ int CGenCP1::FailPcoApart() {
 	mli8_last = -1;
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
-		s2 = fli2[ls];
-		if (FailPcoApartStep()) return 1;
-		if (sus[ls] && retrigger[sus[ls]]) {
+		if (sus[ls]) {
+			s2 = sus[ls] - 1;
+			if (FailPcoApartStep()) return 1;
 			s = sus[ls];
+			s2 = fli2[ls];
+			if (FailPcoApartStep()) return 1;
+		}
+		else {
+			s2 = fli2[ls];
 			if (FailPcoApartStep()) return 1;
 		}
 	}
@@ -1774,7 +1772,7 @@ int CGenCP1::FailPcoApartStep() {
 	int skip_len;
 	// 5th apart
 	if (civlc[s] == 7) {
-		if (pco5_last > -1 && bmli[s] != mli5_last) {
+		if (pco5_last > -1 && bmli[s] == mli5_last + 1) {
 			skip_len = s - pco5_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco5_last] < 4) {
 				if (acc[cfv][s] != acc[cfv][s - 1]) {
@@ -1786,7 +1784,14 @@ int CGenCP1::FailPcoApartStep() {
 				else if ((!sus[ls] && msh[ls] < 0) || 
 					(!sus[bli[pco5_last]] && msh[bli[pco5_last]] < 0))
 					FLAG2(249, s)
-				else FLAG2(250, s);
+				else {
+					// In case of 6-5 resolution, allow parallel 5th
+					if (bli[pco5_last] == ls - 1 && sus[ls - 1] &&
+						ivlc[sus[ls - 1]] == 5 && ivlc[fli[ls]] == 4 &&
+						abs(ac[cpv][fli[ls]] - ac[cpv][fli[ls - 1]]) < 2)
+						FLAG2(330, s)
+					else FLAG2(250, s);
+				}
 			}
 		}
 		pco5_last = s;
@@ -1795,7 +1800,7 @@ int CGenCP1::FailPcoApartStep() {
 	}
 	// 8va apart
 	if (civlc[s] == 0) {
-		if (pco8_last > -1 && bmli[s] != mli8_last) {
+		if (pco8_last > -1 && bmli[s] == mli8_last + 1) {
 			skip_len = s - pco8_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco8_last] < 5) {
 				if (acc[cfv][s] != acc[cfv][s - 1]) {
