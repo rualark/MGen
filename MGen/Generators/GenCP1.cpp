@@ -2871,13 +2871,19 @@ int CGenCP1::FailHarm() {
 			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[hs] = 1;
 		}
 		RemoveHarmDuplicate();
-		if (ms == mli.size() - 2 && hcount) {
+		// If penultimate measure
+		if (ms == mli.size() - 2) {
 			// Prohibit harmony without leading tone in penultimate measure if previous harmony contained leading tone
 			if (first_b && !cchn[11]) FLAG2(318, s);
 			// Prohibit D or DVII harmony in penultimate measure before non-D / DVII harmony
 			if (chm.size() > 1 && (chm[chm.size() - 2] == 4 || chm[chm.size() - 2] == 6) &&
-				(chm[chm.size() - 1] != 4 && chm[chm.size() - 1] != 6)) FLAG2(322, s);
+				(chm[chm.size() - 1] != 4 && chm[chm.size() - 1] != 6)) FLAG2(322, hli[chm.size() - 1]);
 		}
+	}
+	// Check penultimate harmony not D / DVII
+	if (ep2 == c_len && hli.size() > 1) {
+		hs = hli.size() - 2;
+		if (chm[hs] != 4 && chm[hs] != 6) FLAG2(335, hli[hs]);
 	}
 	if (ls2 && hli2.size()) hli2[hli2.size() - 1] = fli2[ls2];
 	GetBhli();
