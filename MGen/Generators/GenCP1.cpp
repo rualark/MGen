@@ -860,6 +860,10 @@ int CGenCP1::FailSus2() {
 		}
 		// Check if sus starts from discord
 		if (antici) {
+			// Long start
+			if (sus[ls] - fli[ls] > npm / 2) FLAG2(333, s);
+			// Long finish
+			if (fli2[ls] - sus[ls] > npm) FLAG2(334, s);
 			// Mark anticipation start as non-harmonic always
 			mshb[ls] = pPass;
 			// Check if start and end of slur is a discord - then it is interbar discord
@@ -892,12 +896,12 @@ int CGenCP1::FailSus2() {
 			}
 			// Mark sus start as harmonic always
 			mshb[ls] = pOffbeat;
-			if (species == 3) {
-				if (sus[ls] - fli[ls] == 1) FLAG2(251, s);
-			}
-			else if (species == 5) {
-				if (sus[ls] - fli[ls] == 2) FLAG2(251, s);
-			}
+			// 1/4 + ?
+			if (sus[ls] - fli[ls] == npm / 4) FLAG2(251, s);
+			// Long start
+			if (sus[ls] - fli[ls] > npm / 2) FLAG2(274, s);
+			// Long finish
+			if (fli2[ls] - sus[ls] + 1 > 3 * npm / 4) FLAG2(332, s);
 			// If sus is not last note
 			if (ls < fli_size - 1) {
 				// If mid-bar already generated (sus cannot be in first measure, thus npm usage is correct)
@@ -1401,13 +1405,15 @@ void CGenCP1::SetMsh(int ls, vector<int> &l_msh, int val) {
 	// Check if in range
 	if (ls >= fli_size) return;
 	// Detect changing sign for dissonance
-	if (l_msh[ls] * val < 0 && tivl[fli[ls]] < 2) {
+	/*
+	if (l_msh[ls] * val < 0 && tivl[fli[ls]] < 2 ) {
 		CString est;
 		est.Format("Detected msh overwrite at note %d:%d (%s) with value %d (old value %d): %s", 
 			cantus_id + 1, ls + 1, tivl[fli[ls]] < 2?"Dis":"non-Dis", 
 			val, l_msh[ls], vint2st(ep2, acc[cpv]));
 		WriteLog(5, est);
 	}
+	*/
 	l_msh[ls] = val;
 }
 
@@ -1528,8 +1534,6 @@ int CGenCP1::FailRhythm3() {
 	}
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
-		// Note longer than 5/4
-		if (llen[ls] > 5 && ls < fli_size - 1) FLAG2(274, s);
 		// 1/4 syncope (not for last 1/4 because it is applied with anticipation or sus)
 		if (beat[ls] == 3 && llen[ls] > 1) FLAG2(235, s);
 		// 1/2 after 1/4
@@ -1593,8 +1597,6 @@ int CGenCP1::FailRhythm5() {
 		// Build note lengths
 		full_measure = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
-			// Note longer than 5/4 (flag only in first measure)
-			if (llen[ls2] > 10 && fli[ls2] >= s) FLAG2(274, fli[ls2]);
 			if (!ms && fn) pos = fn + max(0, fli[ls2] - s);
 			else pos = max(0, fli[ls2] - s);
 			// Do not process last note if not full melody generated
