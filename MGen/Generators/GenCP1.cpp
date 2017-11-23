@@ -789,7 +789,7 @@ int CGenCP1::FailSusResolution(int s3) {
 		// Mark resolution as obligatory harmonic in basic msh
 		if (tivl[s3] != iDis && tivl[s3] != iHarm4) mshb[bli[s3]] = pOffbeat;
 		// Resolution to discord
-		if (tivl[s3] == iDis || tivl[s3] == iHarm4) FLAG2(220, s3)
+		if (tivl[s3] == iDis || tivl[s3] == iHarm4) FLAG2(220, s)
 			// Resolution by leap
 		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2(221, s3)
 		else {
