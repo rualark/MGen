@@ -298,7 +298,7 @@ void CGenCA1::ParseExpect() {
 	// Load expected flags
 	for (int i = 0; i < max_i; ++i) {
 		if (!cantus_incom[cantus_id][i].IsEmpty()) {
-			Tokenize(cantus_incom[cantus_id][i], ast, ",");
+			Tokenize(cantus_incom[cantus_id][i], ast, ", ");
 			for (int n = 0; n < ast.size(); ++n) {
 				fl = atoi(ast[n]);
 				if (fl) {

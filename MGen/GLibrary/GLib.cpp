@@ -321,17 +321,25 @@ void CGLib::CheckRange(CString * sName, CString * sValue, char* sSearch, float *
 
 void CGLib::Tokenize(const CString& s, vector<CString>& tokens, const CString &delim)
 {
-	int pos = 0;
-	int end = pos;
-	int len = s.GetLength();
+	CString s2 = s;
+	int pos;
+	int end;
 	tokens.clear();
 
-	while (end != len)
+	while (!s2.IsEmpty())
 	{
-		end = s.Find(delim, pos);
-		if (end == -1) end = len;
-		tokens.push_back(s.Mid(pos, end-pos));
-		pos = end + 1;
+		pos = s2.FindOneOf(delim);
+		end = pos;
+		if (end == -1) end = s2.GetLength();
+		if (end) {
+			tokens.push_back(s2.Left(end));
+		}
+		else {
+			tokens.push_back("");
+		}
+		s2.Delete(0, end + 1);
+		// If last token saved, but last character was delimiter, push empty token
+		if (s2.IsEmpty() && pos != -1) tokens.push_back("");
 	}
 }
 
