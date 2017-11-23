@@ -1751,7 +1751,9 @@ int CGenCP1::FailPcoApart() {
 	pco8_last2 = -1000;
 	mli5_last = -1;
 	mli8_last = -1;
-	for (ls = 0; ls < fli_size; ++ls) {
+	int max_ls = fli_size;
+	if (ep2 < c_len) max_ls = fli_size - 1;
+	for (ls = 0; ls < max_ls; ++ls) {
 		s = fli[ls];
 		if (sus[ls]) {
 			s2 = sus[ls] - 1;
@@ -1775,9 +1777,9 @@ int CGenCP1::FailPcoApartStep() {
 		if (pco5_last > -1 && bmli[s] == mli5_last + 1) {
 			skip_len = s - pco5_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco5_last] < 4) {
-				if (acc[cfv][s] != acc[cfv][s - 1]) {
-					if (retrigger[s]) FLAG2(315, s)
-					else FLAG2(316, s);
+				if (retrigger[s]) FLAG2(315, s)
+				else if (acc[cfv][s] != acc[cfv][s - 1]) {
+					FLAG2(316, s);
 				}
 				else if ((acc[0][s] - acc[0][pco5_last])*
 					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
@@ -1803,9 +1805,9 @@ int CGenCP1::FailPcoApartStep() {
 		if (pco8_last > -1 && bmli[s] == mli8_last + 1) {
 			skip_len = s - pco8_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco8_last] < 5) {
-				if (acc[cfv][s] != acc[cfv][s - 1]) {
-					if (retrigger[s]) FLAG2(315, s)
-					else FLAG2(316, s);
+				if (retrigger[s]) FLAG2(315, s)
+				else if (fli[ls] == s && acc[cfv][s] != acc[cfv][s - 1]) {
+					FLAG2(316, s);
 				}
 				else if ((acc[0][s] - acc[0][pco8_last])*
 					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
