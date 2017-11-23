@@ -919,7 +919,7 @@ int CGenCP1::FailSus2() {
 					if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
 					// Suspension of non-leading tone in species 2
 					if (species == 2) {
-						if (apcc[cpv][s3] != 11) FLAG2(299, s3);
+						if (apcc[cpv][s3] != 11) FLAG2(299, s);
 					}
 					// If resolution note is too short
 					ls3 = bli[s3];
