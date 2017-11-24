@@ -283,6 +283,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;328;60;Cantus;Nonchord tones;Double-neighbour tone;last note out;0;;;;;;;;;1;
 1;281;60;Cantus;Nonchord tones;Double-neighbour tone;cross-bar;0;;;;;;;;;1;
 1;260;60;Cantus;Nonchord tones;Double-neighbour tone;leap <=4th;0;;Allow leaps up to specified size;;;;;;;1;
+1;97;40;Cantus;Nonchord tones;Double-neighbour tone;no exit;0;;There is no same-direction stepwize motion after 4th note;;;1;;;;;
 1;282;0;Cantus;Nonchord tones;Passing downbeat dissonance;descending;1;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat discord;;;;;;;1;
 1;297;40;Cantus;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;;;;;;;1;
 1;298;40;Cantus;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;;;;;;;1;
