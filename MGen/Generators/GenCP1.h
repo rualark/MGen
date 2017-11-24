@@ -55,8 +55,8 @@ protected:
 	inline int FailPco();
 	inline int SkipSus(int notes);
 	inline int DetectPDD();
-	inline void DetectDNT();
-	inline void DetectCambiata();
+	inline int DetectDNT();
+	inline int DetectCambiata();
 	inline void SavePattern(int pattern);
 	inline int DetectPatterns();
 	inline void GetBasicMsh();

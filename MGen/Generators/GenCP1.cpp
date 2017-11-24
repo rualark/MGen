@@ -1127,6 +1127,7 @@ int CGenCP1::SkipSus(int notes) {
 // Detect passing downbeat dissonance
 int CGenCP1::DetectPDD() {
 	if (!accept[282]) return 0;
+	int pattern_needed;
 	// Do not detect PDD in lower voice
 	if (!cpv) return 0;
 	int max_ls = fli_size - 1;
@@ -1149,14 +1150,16 @@ int CGenCP1::DetectPDD() {
 			// Third note must be consonance
 			if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) continue;
 		}
+		pattern_needed = 0;
+		if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) pattern_needed = 1;
 		// Parallel motion - flag but allow
 		if (ac[cfv][fli[ls + 1]] - ac[cfv][s] == -1) {
-			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) FLAG2(298, fli[ls + 1]);
+			if (pattern_needed) FLAG2(298, fli[ls + 1]);
 			//if (!accept[298]) continue;
 		}
 		// Direct motion - flag but allow
 		else if (ac[cfv][fli[ls + 1]] - ac[cfv][s] < 0) {
-			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) FLAG2(297, fli[ls + 1]);
+			if (pattern_needed) FLAG2(297, fli[ls + 1]);
 			//if (!accept[297]) continue;
 		}
 		SavePattern(pPDD);
@@ -1165,8 +1168,9 @@ int CGenCP1::DetectPDD() {
 }
 
 // Detect downbeat neighbour tone
-void CGenCP1::DetectDNT() {
-	if (!accept[258]) return;
+int CGenCP1::DetectDNT() {
+	if (!accept[258]) return 0;
+	int pattern_needed;
 	int max_ls = fli_size - 1;
 	if (ep2 == c_len) max_ls = fli_size - 3;
 	for (ls = 0; ls < max_ls; ++ls) {
@@ -1190,10 +1194,14 @@ void CGenCP1::DetectDNT() {
 			if (!aleap[cpv][fli2[ls + 1]]) continue;
 			// Leap has same direction
 			if (aleap[cpv][fli2[ls + 1]] == asmooth[cpv][s2]) continue;
+			pattern_needed = 0;
+			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) pattern_needed = 1;
+			else if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) pattern_needed = 1;
 			// Maximum leap
 			int lp = abs(acc[cpv][fli[ls + 2]] - acc[cpv][fli[ls + 1]]);
 			if (lp < 3) continue;
 			if (lp > 4) {
+				if (pattern_needed) FLAG2(260, fli[ls]);
 				if (!accept[260]) continue;
 				if (lp > dnt_max_leap) continue;
 			}
@@ -1210,14 +1218,17 @@ void CGenCP1::DetectDNT() {
 				if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
 					llen[ls] != llen[ls + 2] ||
 					(llen[ls] != llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4))) {
+					if (pattern_needed) FLAG2(280, fli[ls]);
 					if (!accept[280]) continue;
 				}
 				// Cross-bar
 				if (bmli[s] != bmli[fli2[ls + 3]]) {
 					if (bmli[s] == bmli[fli2[ls + 2]]) {
+						if (pattern_needed) FLAG2(328, fli[ls]);
 						if (!accept[328]) continue;
 					}
 					else {
+						if (pattern_needed) FLAG2(281, fli[ls]);
 						if (!accept[281]) continue;
 					}
 				}
@@ -1225,10 +1236,12 @@ void CGenCP1::DetectDNT() {
 		}
 		SavePattern(pDNT);
 	}
+	return 0;
 }
 
-void CGenCP1::DetectCambiata() {
-	if (!accept[256]) return;
+int CGenCP1::DetectCambiata() {
+	if (!accept[256]) return 0;
+	int pattern_needed;
 	int max_ls = fli_size - 1;
 	if (ep2 == c_len) max_ls = fli_size - 3;
 	for (ls = 0; ls < max_ls; ++ls) {
@@ -1244,8 +1257,14 @@ void CGenCP1::DetectCambiata() {
 		// Third note is created by leaping motion in same direction as second note moves
 		if (!aleap[cpv][fli2[ls + 1]]) continue;
 		if (asmooth[cpv][s2] * aleap[cpv][fli2[ls + 1]] < 0) continue;
+		pattern_needed = 0;
+		if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) pattern_needed = 1;
+		else if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) pattern_needed = 1;
 		// Inverted
-		if (asmooth[cpv][s2] == 1 && !accept[279]) continue;
+		if (asmooth[cpv][s2] == 1) {
+			if (pattern_needed) FLAG2(279, fli[ls]);
+			if (!accept[279]) continue;
+		}
 		if (ls < fli_size - 2) {
 			// Leap from second note is longer than 4th
 			if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) > 3) continue;
@@ -1268,19 +1287,23 @@ void CGenCP1::DetectCambiata() {
 				if (llen[ls] != npm / 4 || llen[ls] != llen[ls + 1] ||
 					llen[ls] != llen[ls + 2] ||
 					(llen[ls] != llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4))) {
+					if (pattern_needed) FLAG2(257, fli[ls]);
 					if (!accept[257]) continue;
 				}
 				// Cross-bar
 				if (bmli[s] != bmli[fli2[ls + 3]]) {
 					if (bmli[s] == bmli[fli2[ls + 2]]) {
+						if (pattern_needed) FLAG2(327, fli[ls]);
 						if (!accept[327]) continue;
 					}
 					else {
+						if (pattern_needed) FLAG2(259, fli[ls]);
 						if (!accept[259]) continue;
 					}
 				}
 				// Third diss or harmonic 4th
 				if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) {
+					if (pattern_needed) FLAG2(261, fli[ls]);
 					if (!accept[261]) continue;
 					// If third note is dissonance, it should not be downbeat
 					if (!beat[ls + 2]) continue;
@@ -1294,31 +1317,37 @@ void CGenCP1::DetectCambiata() {
 				}
 				// Leap from note 3
 				if (aleap[cpv][fli2[ls + 2]]) {
+					if (pattern_needed) FLAG2(264, fli[ls]);
 					if (!accept[264]) continue;
 					// Leap too long
 					if (abs(acc[cpv][fli2[ls + 3]] - acc[cpv][fli2[ls + 2]]) > cambiata_max_leap3) continue;
 					// Leap 4th
 					if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
+						if (pattern_needed) FLAG2(263, fli[ls]);
 						if (!accept[263]) continue;
 					}
 				}
 				if (ls < fli_size - 4) {
 					// Leap from note 4
 					if (aleap[cpv][fli2[ls + 3]]) {
+						if (pattern_needed) FLAG2(265, fli[ls]);
 						if (!accept[265]) continue;
 						// Leap too long
 						if (abs(acc[cpv][fli2[ls + 4]] - acc[cpv][fli2[ls + 3]]) > cambiata_max_leap4) continue;
 						// Leap 4th
 						if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
+							if (pattern_needed) FLAG2(263, fli[ls]);
 							if (!accept[263]) continue;
 						}
 					}
 					// Fourth note moves back
 					if (ls < fli_size - 4 && (acc[cpv][fli[ls + 4]] - acc[cpv][fli[ls + 3]]) *
 						(acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) < 0) {
+						if (pattern_needed) FLAG2(266, fli[ls]);
 						if (!accept[266]) continue;
 						// Leap 4th
 						if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
+							if (pattern_needed) FLAG2(263, fli[ls]);
 							if (!accept[263]) continue;
 						}
 					}
@@ -1332,6 +1361,7 @@ void CGenCP1::DetectCambiata() {
 		//	WriteLog(1, est);
 		//}
 	}
+	return 0;
 }
 
 void CGenCP1::SavePattern(int pattern) {
@@ -1356,8 +1386,8 @@ int CGenCP1::DetectPatterns() {
 	if (DetectPDD()) return 1;
 	// Detect next patterns only for species 3 and 5
 	if (species != 3 && species != 5) return 0;
-	DetectCambiata();
-	DetectDNT();
+	if (DetectCambiata()) return 1;
+	if (DetectDNT()) return 1;
 	return 0;
 }
 
