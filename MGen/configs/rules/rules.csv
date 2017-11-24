@@ -124,8 +124,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;2;40;Melody;Tritone;Tritone;resolved;1;;Search 4 quarters for resolution;;;1;;;;;
 1;31;100;Melody;Tritone;Tritone;unresolved;0;;;;;;;;2;;
 1;32;100;Melody;Tritone;Tritone;on climax;-1;;;;;1;;;;;
-1;18;0;Melody;Tritone;Compound tritone;resolved;1;;;;;1;;;;;
-1;19;60;Melody;Tritone;Compound tritone;unresolved;0;;;;;1;;;18;;
+1;18;0;Melody;Tritone;Compound tritone framed;resolved;1;Tritone with one intermediate note, framed by two melody direction changes;;;;1;;;;;
+1;19;60;Melody;Tritone;Compound tritone framed;unresolved;0;Tritone with one intermediate note, framed by two melody direction changes;;;;1;;;18;;
+1;342;0;Melody;Tritone;Compound tritone accented;resolved;1;Tritone with one intermediate note, last note is longer;;;;;;;;;
+1;343;60;Melody;Tritone;Compound tritone accented;unresolved;0;Tritone with one intermediate note, last note is longer;;;;;;;;;
 1;67;0;Melody;Range;Skipped notes;1;-1;;;;;1;;;;;
 1;68;70;Melody;Range;Skipped notes;>1;-1;;;;;1;;;;;
 1;69;100;Melody;Range;Skipped notes;>1 joined;0;;;;;1;;;;;
