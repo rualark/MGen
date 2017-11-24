@@ -319,6 +319,7 @@ void CGenCF1::ParseRules() {
 void CGenCF1::SetRuleParams() {
 	CHECK_READY_PERSIST(DR_RuleParam);
 	SET_READY_PERSIST(DR_RuleSetParam);
+	mea_per_sus = GetRuleParam(rule_set, 341, rsSubName, 0);
 	max_note_len[1] = GetRuleParam(rule_set, 336, rsSubName, 1);
 	max_note_len[2] = GetRuleParam(rule_set, 337, rsSubName, 1);
 	max_note_len[3] = GetRuleParam(rule_set, 338, rsSubName, 1);

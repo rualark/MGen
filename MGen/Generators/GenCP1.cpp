@@ -328,6 +328,7 @@ void CGenCP1::GetPmap2() {
 	pmap += st;
 	st.Format("Suspensions / anticipations: %d / %d\n",
 		pm_sus, pm_anti);
+	pmap += st;
 	st.Format("Compensated to 3rd / after 3rd / deviation to 2nd / deviation to 3rd: %d / %d / %d / %d\n",
 		flags[100] + flags[101] + flags[102] + flags[103] + 
 		flags[104] + flags[105] + flags[106] + flags[107],
@@ -955,6 +956,25 @@ int CGenCP1::FailSus2() {
 	return 0;
 }
 
+int CGenCP1::FailSusCount() {
+	CHECK_READY(DR_sus, DR_retrigger);
+	pm_sus = 0;
+	pm_anti = 0;
+	for (ls = 0; ls < fli_size; ++ls) {
+		if (sus[ls]) {
+			if (retrigger[sus[ls]]) ++pm_anti;
+			else ++pm_sus;
+		}
+	}
+	int mcount = bmli[ep2 - 1];
+	// Do not check for first measure
+	if (!mcount) return 0;
+	// Check for not enough sus
+	if ((pm_sus + pm_anti + 1) * 1.0 / mcount < 1.0 / mea_per_sus) 
+		FLAG2(341, 0);
+	return 0;
+}
+
 int CGenCP1::FailSus() {
 	CHECK_READY(DR_mshb);
 	SET_READY(DR_retrigger);
@@ -964,6 +984,9 @@ int CGenCP1::FailSus() {
 	}
 	else {
 		if (FailSus2()) return 1;
+		if (species == 5) {
+			if (FailSusCount()) return 1;
+		}
 	}
 	return 0;
 }
