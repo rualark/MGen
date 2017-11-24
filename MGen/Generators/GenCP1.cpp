@@ -1255,6 +1255,14 @@ int CGenCP1::DetectDNT() {
 						if (!accept[281]) continue;
 					}
 				}
+				if (ls < fli_size - 4) {
+					// Leap from note 4
+					if (aleap[cpv][fli2[ls + 3]] || 
+						asmooth[cpv][fli2[ls + 3]] * asmooth[cpv][fli2[ls]] < 1) {
+						if (pattern_needed) FLAG2(97, fli[ls]);
+						//if (!accept[97]) continue;
+					}
+				}
 			}
 		}
 		SavePattern(pDNT);
