@@ -2075,7 +2075,6 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
 
 // Check tritone t1-t2 which has to resolve from ta to tb
 int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
-	CHECK_READY(DR_pc, DR_c, DR_fli);
 	int found;
 	int res1 = 0; // First note resolution flag
 	int res2 = 0; // Second note resolution flag
@@ -2086,7 +2085,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 	// Check consecutive tritone
 	if ((pcc[s1] == t2 && pcc[s] == t1) || (pcc[s1] == t1 && pcc[s] == t2)) found = 1;
 	// Check tritone with additional note inside
-	if (ls > 0) {
+	if (ls > 0 && (svoices == 1 || bmli[s1] == bmli[s_1])) {
 		// Check pitches
 		if ((pcc[s1] == t2 && pcc[s_1] == t1) || (pcc[s1] == t1 && pcc[s_1] == t2))
 			// Check intermediate note and mdc
@@ -2236,7 +2235,7 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 
 int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
 {
-	CHECK_READY(DR_fli, DR_c, DR_pc);
+	CHECK_READY(DR_pc, DR_c, DR_fli);
 	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s0 = fli[ls];
 		s = fli2[ls];
