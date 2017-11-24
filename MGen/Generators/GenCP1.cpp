@@ -1152,12 +1152,12 @@ int CGenCP1::DetectPDD() {
 		}
 		pattern_needed = 0;
 		if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) pattern_needed = 1;
-		// Parallel motion - flag but allow
+		// Parallel motion - flag but allow (this will make dissonance legal, but will add flag with problem)
 		if (ac[cfv][fli[ls + 1]] - ac[cfv][s] == -1) {
 			if (pattern_needed) FLAG2(298, fli[ls + 1]);
 			//if (!accept[298]) continue;
 		}
-		// Direct motion - flag but allow
+		// Direct motion - flag but allow (this will make dissonance legal, but will add flag with problem)
 		else if (ac[cfv][fli[ls + 1]] - ac[cfv][s] < 0) {
 			if (pattern_needed) FLAG2(297, fli[ls + 1]);
 			//if (!accept[297]) continue;
@@ -1263,7 +1263,7 @@ int CGenCP1::DetectCambiata() {
 		// Inverted
 		if (asmooth[cpv][s2] == 1) {
 			if (pattern_needed) FLAG2(279, fli[ls]);
-			if (!accept[279]) continue;
+			//if (!accept[279]) continue;
 		}
 		if (ls < fli_size - 2) {
 			// Leap from second note is longer than 4th
@@ -1304,7 +1304,7 @@ int CGenCP1::DetectCambiata() {
 				// Third diss or harmonic 4th
 				if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) {
 					if (pattern_needed) FLAG2(261, fli[ls]);
-					if (!accept[261]) continue;
+					//if (!accept[261]) continue;
 					// If third note is dissonance, it should not be downbeat
 					if (!beat[ls + 2]) continue;
 					// If third note is dissonance, it should resolve back stepwize
@@ -1331,7 +1331,7 @@ int CGenCP1::DetectCambiata() {
 					// Leap from note 4
 					if (aleap[cpv][fli2[ls + 3]]) {
 						if (pattern_needed) FLAG2(265, fli[ls]);
-						if (!accept[265]) continue;
+						//if (!accept[265]) continue;
 						// Leap too long
 						if (abs(acc[cpv][fli2[ls + 4]] - acc[cpv][fli2[ls + 3]]) > cambiata_max_leap4) continue;
 						// Leap 4th
@@ -1344,7 +1344,7 @@ int CGenCP1::DetectCambiata() {
 					if (ls < fli_size - 4 && (acc[cpv][fli[ls + 4]] - acc[cpv][fli[ls + 3]]) *
 						(acc[cpv][fli[ls + 3]] - acc[cpv][fli[ls + 2]]) < 0) {
 						if (pattern_needed) FLAG2(266, fli[ls]);
-						if (!accept[266]) continue;
+						//if (!accept[266]) continue;
 						// Leap 4th
 						if (abs(ac[cpv][fli2[ls + 2]] - ac[cpv][fli2[ls + 1]]) == 3) {
 							if (pattern_needed) FLAG2(263, fli[ls]);
