@@ -1055,7 +1055,7 @@ int CGenCP1::FailPco() {
 		if (ivl[s] == ivl[fli2[ls - 1]]) FLAG2(84, s)
 		else {
 			// Prohibit contrary movement
-			if (civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
+			if (bmli[s] - 1 == bmli[fli2[ls - 1]] && civlc[s] == civlc[fli2[ls - 1]]) FLAG2(85, s)
 			// Prohibit different
 			else if (tivl[fli2[ls - 1]] == iPco) FLAG2(86, s)
 			// All other cases if previous interval is not pco
