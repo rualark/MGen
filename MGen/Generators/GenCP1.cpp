@@ -1838,21 +1838,35 @@ int CGenCP1::FailPcoApartStep() {
 		if (pco5_last > -1 && bmli[s] == mli5_last + 1) {
 			skip_len = s - pco5_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco5_last] < 4) {
-				if (retrigger[s]) FLAG2(315, s)
+				// Compound
+				if (civl[s] != civl[pco5_last]) {
+					// Direct compound
+					if ((acc[0][s] - acc[0][pco5_last]) * (acc[1][s] - acc[1][pco5_last]) > 0) {
+						FLAG2(347, s);
+					}
+					// Contrary compound ignored
+				}
+				// Anticipation
+				else if (retrigger[s]) FLAG2(315, s)
+				// Downbeat
 				else if (acc[cfv][s] != acc[cfv][s - 1]) {
 					FLAG2(316, s);
 				}
+				// Upbeat contrary
 				else if ((acc[0][s] - acc[0][pco5_last])*
 					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
+				// Non-harmonic
 				else if ((!sus[ls] && msh[ls] < 0) || 
 					(!sus[bli[pco5_last]] && msh[bli[pco5_last]] < 0))
 					FLAG2(249, s)
+				// Other
 				else {
 					// In case of 6-5 resolution, allow parallel 5th
 					if (bli[pco5_last] == ls - 1 && sus[ls - 1] &&
 						ivlc[sus[ls - 1]] == 5 && ivlc[fli[ls]] == 4 &&
 						abs(ac[cpv][fli[ls]] - ac[cpv][fli[ls - 1]]) < 2)
 						FLAG2(330, s)
+					// Other
 					else FLAG2(250, s);
 				}
 			}
@@ -1866,15 +1880,28 @@ int CGenCP1::FailPcoApartStep() {
 		if (pco8_last > -1 && bmli[s] == mli8_last + 1) {
 			skip_len = s - pco8_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco8_last] < 5) {
-				if (retrigger[s]) FLAG2(315, s)
+				// Compound
+				if (civl[s] != civl[pco8_last]) {
+					// Direct compound
+					if ((acc[0][s] - acc[0][pco8_last]) * (acc[1][s] - acc[1][pco8_last]) > 0) {
+						FLAG2(347, s);
+					}
+					// Contrary compound ignored
+				}
+				// Anticipation
+				else if (retrigger[s]) FLAG2(315, s)
+				// Downbeat
 				else if (fli[ls] == s && acc[cfv][s] != acc[cfv][s - 1]) {
 					FLAG2(316, s);
 				}
+				// Upbeat contrary
 				else if ((acc[0][s] - acc[0][pco8_last])*
 					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
+				// Non-harmonic
 				else if ((!sus[ls] && msh[ls] < 0) || 
 					(!sus[bli[pco8_last]] && msh[bli[pco8_last]] < 0))
 					FLAG2(249, s)
+				// Other
 				else
 					FLAG2(250, s);
 			}
