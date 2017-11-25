@@ -120,6 +120,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;196;20;Melody;Repeats;Tonic note;>3 within 9;0;;More than X tonic note equivalents within Y notes (except first and last tonic). At border without tonic - one more tonic is allowed.  Weights:  Leap >M3 to tonic adds 30%. Note length decrease two times decreases 30%. Downbeat adds 30%. Longer than previous adds 30%. Perfect consonance adds 20%.;;;;;;;;
 1;10;0;Melody;Repeats;Note stagnation;>3 in 7 notes;-1;Same note repeats more than X times during stag_note_steps steps;Rualark Rualark: ;;1;;;;;;
 1;39;60;Melody;Repeats;Note stagnation;>4 in 9 notes;0;Same note repeats more than X times during stag_note_steps steps;;;;;;;;;
+1;344;0;Melody;Repeats;Notes stagnation;5 notes <3 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;
+1;345;0;Melody;Repeats;Notes stagnation;7 notes <4 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;
+1;346;0;Melody;Repeats;Notes stagnation;17 notes <6 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;
 1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;;;;;;;;;
 1;2;40;Melody;Tritone;Tritone;resolved;1;;Search 4 quarters for resolution;;;1;;;;;
 1;31;100;Melody;Tritone;Tritone;unresolved;0;;;;;;;;2;;
@@ -139,8 +142,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;300;0;Melody;Range;Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;;;;;;;;
 1;98;0;Melody;Range;Constrained local range;7 notes <4th;0;;X consecutive notes have total range less than Y;;1;;;;;;
 1;198;0;Melody;Range;Constrained local range;17 notes <m6;0;;X consecutive notes have total range less than Y;;1;;;;;;
-1;15;0;Melody;Range;No melody development;10 notes <16;0;;Melody direction within X notes is less than Y decisemitones;;1;;;1;;;
-1;16;0;Melody;Range;No melody development;13 notes <20;0;;Melody direction within X notes is less than Y decisemitones;;1;;;;;;
+1;15;0;Melody;Range;No melody development;10 notes <16;0;;Melody direction within X notes is less than Y deci-semitones;;1;;;1;;;
+1;16;0;Melody;Range;No melody development;13 notes <20;0;;Melody direction within X notes is less than Y deci-semitones;;1;;;;;;
 1;17;20;Cantus;Harmony;Repeating letters in a row;>3;0;;;1;1;;;;;;17,20,23,48,57,77,92,99
 1;20;20;Cantus;Harmony;Missing letters in a row;>4;0;;;1;1;;;;;;17,20,23,48,57,77,92,99
 1;194;0;Cantus;Harmony;Accented bad progression;leap >4th;-1;Only for cantus;;1;;;;;;;
