@@ -2899,6 +2899,7 @@ int CGenCP1::FailHarm() {
 		}
 		// Loop inside measure
 		for (ls = ls1; ls <= ls2; ++ls) {
+			// For first suspension in measure, evaluate last note. In other cases - first note
 			if (ls == ls1 && sus[ls1]) s9 = fli2[ls];
 			else s9 = fli[ls];
 			// Do not process non-harmonic notes if they are not consonant ending of first sus
@@ -2907,7 +2908,7 @@ int CGenCP1::FailHarm() {
 				if (tivl[s9] < 2) continue;
 			}
 			// For all other notes, check msh
-			else if (msh[ls] <= 0) continue;
+			else if (msh[ls] <= 0 || tivl[s9] == iHarm4) continue;
 			s = fli[ls];
 			n = ac[cpv][s9] % 7;
 			ns = (n - r + 7) % 7;
