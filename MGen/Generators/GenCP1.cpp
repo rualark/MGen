@@ -1833,11 +1833,13 @@ int CGenCP1::FailPcoApart() {
 
 int CGenCP1::FailPcoApartStep() {
 	int skip_len;
+	int ls_1;
 	// 5th apart
 	if (civlc[s] == 7) {
 		if (pco5_last > -1 && bmli[s] == mli5_last + 1) {
+			ls_1 = bli[pco5_last];
 			skip_len = s - pco5_last2 - 1;
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco5_last] < 4) {
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - ls_1 < 4) {
 				// Compound
 				if (civl[s] != civl[pco5_last]) {
 					// Direct compound
@@ -1857,14 +1859,14 @@ int CGenCP1::FailPcoApartStep() {
 					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
 				// Non-harmonic
 				else if ((!sus[ls] && msh[ls] < 0) || 
-					(!sus[bli[pco5_last]] && msh[bli[pco5_last]] < 0))
+					(!sus[ls_1] && msh[ls_1] < 0))
 					FLAG2(249, s)
 				// Other
 				else {
 					// In case of 6-5 resolution, allow parallel 5th
-					if (bli[pco5_last] == ls - 1 && sus[ls - 1] &&
-						ivlc[sus[ls - 1]] == 5 && ivlc[fli[ls]] == 4 &&
-						abs(ac[cpv][fli[ls]] - ac[cpv][fli[ls - 1]]) < 2)
+					if (bmli[sus[ls_1]] == bmli[s] && sus[ls_1] &&
+						ivlc[sus[ls_1]] == 5 && ivlc[s] == 4 &&
+						abs(ac[cpv][s] - ac[cpv][pco5_last]) < 2)
 						FLAG2(330, s)
 					// Other
 					else FLAG2(250, s);
@@ -1878,8 +1880,9 @@ int CGenCP1::FailPcoApartStep() {
 	// 8va apart
 	if (civlc[s] == 0) {
 		if (pco8_last > -1 && bmli[s] == mli8_last + 1) {
+			ls_1 = bli[pco8_last];
 			skip_len = s - pco8_last2 - 1;
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - bli[pco8_last] < 5) {
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - ls_1 < 5) {
 				// Compound
 				if (civl[s] != civl[pco8_last]) {
 					// Direct compound
@@ -1899,7 +1902,7 @@ int CGenCP1::FailPcoApartStep() {
 					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
 				// Non-harmonic
 				else if ((!sus[ls] && msh[ls] < 0) || 
-					(!sus[bli[pco8_last]] && msh[bli[pco8_last]] < 0))
+					(!sus[ls_1] && msh[ls_1] < 0))
 					FLAG2(249, s)
 				// Other
 				else
