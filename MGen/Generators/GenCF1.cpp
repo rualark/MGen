@@ -2303,7 +2303,9 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 		else if (cc[s1] - cc[s] == 12) FLAG2(179, s0)
 		else if (cc[s1] - cc[s] == -12) FLAG2(185, s0)
 		else if (cc[s1] - cc[s] > 12) FLAG2(180, s0)
-		else if (cc[s1] - cc[s] < -12) FLAG2(186, s0)
+		else if (cc[s1] - cc[s] < -12) FLAG2(186, s0);
+		// Prohibit BB
+		if (pcc[fli[ls + 1]] == 11 && pcc[s] == 11) FLAG2(348, s0);
 	}
 	return 0;
 }
