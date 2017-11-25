@@ -1840,19 +1840,19 @@ int CGenCP1::FailPcoApartStep() {
 			ls_1 = bli[pco5_last];
 			skip_len = s - pco5_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - ls_1 < 4) {
+				// Anticipation
+				if (retrigger[s]) FLAG2(315, s)
+					// Downbeat
+				else if (acc[cfv][s] != acc[cfv][s - 1]) {
+					FLAG2(316, s);
+				}
 				// Compound
-				if (civl[s] != civl[pco5_last]) {
+				else if (civl[s] != civl[pco5_last]) {
 					// Direct compound
 					if ((acc[0][s] - acc[0][pco5_last]) * (acc[1][s] - acc[1][pco5_last]) > 0) {
 						FLAG2(347, s);
 					}
 					// Contrary compound ignored
-				}
-				// Anticipation
-				else if (retrigger[s]) FLAG2(315, s)
-				// Downbeat
-				else if (acc[cfv][s] != acc[cfv][s - 1]) {
-					FLAG2(316, s);
 				}
 				// Upbeat contrary
 				else if ((acc[0][s] - acc[0][pco5_last])*
