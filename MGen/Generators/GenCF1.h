@@ -240,6 +240,7 @@ protected:
 	inline int FailNoteRepeat(vector<int> &c, int step1, int step2);
 	inline int FailNoteSeq(vector<int>& pc);
 	inline int FailLocalRange(vector<int>& cc, int notes, int mrange, int flag);
+	inline int FailLocalPiCount(vector<int>& cc, int notes, int picount, int flag);
 	inline int FailLocalMacc(int notes, float mrange, int flag);
 	inline void GetMelodyInterval(vector<int>& cc, int step1, int step2, int & nmin, int & nmax);
 	inline void ClearFlags(int step1, int step2);
@@ -448,6 +449,12 @@ protected:
 	int max_tempo = 120;
 	int rpenalty_accepted = 0; // Maximum accepted rule penalty for RandomSWA
 	int first_steps_tonic = 3; // Number of first steps, which must contain tonic note
+	int notes_picount = 5; // Maximum number of consecutive notes having low pitch count
+	int min_picount = 3; // Minimum allowed pitch count of notes_picount consecutive notes
+	int notes_picount2 = 5; // Maximum number of consecutive notes having low pitch count
+	int min_picount2 = 3; // Minimum allowed pitch count of notes_picount2 consecutive notes
+	int notes_picount3 = 5; // Maximum number of consecutive notes having low pitch count
+	int min_picount3 = 3; // Minimum allowed pitch count of notes_picount3 consecutive notes
 	int notes_lrange = 6; // Maximum number of consecutive notes having low range
 	int min_lrange = 5; // Minimum allowed local range of notes_lrange consecutive notes
 	int notes_lrange2 = 13; // Maximum number of consecutive notes having low range

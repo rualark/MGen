@@ -376,8 +376,14 @@ void CGenCF1::SetRuleParams() {
 	slurs_window = GetRuleParam(rule_set, 93, rsName, 0);
 	miss_slurs_window = GetRuleParam(rule_set, 188, rsName, 0);
 	contrary_min = GetRuleParam(rule_set, 35, rsSubName, 0);
-	contrary_min2 = GetRuleParam(rule_set, 46, rsSubName, 0);
+	contrary_min2 = GetRuleParam(rule_set, 46, rsSubName, 0); 
 
+	notes_picount = GetRuleParam(rule_set, 344, rsSubName, 0);
+	min_picount = GetRuleParam(rule_set, 344, rsSubName, 1);
+	notes_picount2 = GetRuleParam(rule_set, 345, rsSubName, 0);
+	min_picount2 = GetRuleParam(rule_set, 345, rsSubName, 1);
+	notes_picount3 = GetRuleParam(rule_set, 346, rsSubName, 0);
+	min_picount3 = GetRuleParam(rule_set, 346, rsSubName, 1);
 	notes_lrange = GetRuleParam(rule_set, 98, rsSubName, 0);
 	min_lrange = Interval2Chromatic(GetRuleParam(rule_set, 98, rsSubName, 1));
 	notes_lrange2 = GetRuleParam(rule_set, 198, rsSubName, 0);
@@ -774,6 +780,30 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 	return 0;
 }
 
+int CGenCF1::FailLocalPiCount(vector<int> &cc, int notes, int picount, int flag) {
+	CHECK_READY(DR_fli, DR_nmin);
+	// Do not test if flag disabled and not testing
+	if (task != tEval && accept[flag] == -1) return 0;
+	// Do not test if not enough notes
+	if (fli_size < notes) return 0;
+	int picount2, i;
+	// Clear nstat
+	for (i = nmin; i <= nmax; ++i) nstat[i] = 0;
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		// Add new note to stagnation array
+		++nstat[cc[s]];
+		// Subtract old note
+		if (ls >= notes) --nstat[cc[fli[ls - notes]]];
+		// Check if little pitches
+		if (ls >= notes - 1) {
+			picount2 = 0;
+			for (i = nmin; i <= nmax; ++i) if (nstat[i]) ++picount2;
+			if (picount2 < picount) FLAG2(flag, fli[ls - notes + 1]);
+		}
+	}
+	return 0;
+}
 
 // Moving average
 void CGenCF1::maVector(vector<float> &v, vector<float> &v2, int range) {
@@ -2281,11 +2311,11 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 // Calculate global fill
 int CGenCF1::FailGlobalFill(vector<int> &c, vector<int> &nstat2) {
 	CHECK_READY(DR_nmin, DR_c);
-	// Clear nstat
+	// Clear nstat2
 	for (int i = nmind; i <= nmaxd; ++i) nstat2[i] = 0;
-	// Count nstat
+	// Count nstat2
 	for (int x = 0; x < ep2; ++x) ++nstat2[c[x]];
-	// Check nstat
+	// Check nstat2
 	if (ep2 < c_len) return 0;
 	int skips = 0;
 	int skips2 = 0;
@@ -4591,6 +4621,10 @@ check:
 		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange3, min_lrange3, 300)) goto skip;
+		if (FailLocalRange(m_cc, notes_lrange3, min_lrange3, 300)) goto skip;
+		if (FailLocalPiCount(m_cc, notes_picount, min_picount, 344)) goto skip;
+		if (FailLocalPiCount(m_cc, notes_picount2, min_picount2, 345)) goto skip;
+		if (FailLocalPiCount(m_cc, notes_picount3, min_picount3, 346)) goto skip;
 		if (FailStagnation(m_cc, nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(m_cc, nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
