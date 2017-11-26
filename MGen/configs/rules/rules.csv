@@ -265,7 +265,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;47;30;Cantus;Counterpoint;Penultimate measure;no B;0;;no leading tone is allowed if last bass notes are G-C;;;;;;;;
 1;75;30;Cantus;Counterpoint;Penultimate measure;no G or D;0;;;;;1;;;;;
 1;317;30;Cantus;Counterpoint;Penultimate measure;unaltered VII;0;;Unaltered VII minor note in penultimate measure;;;1;;;;;
-1;318;30;Cantus;Counterpoint;Penultimate measure;isolated B;0;;There is a harmony between leading tone and tonic note in penultimate measure;1;;1;;;;;
+1;318;30;Cantus;Counterpoint;Penultimate measure;isolated LT;0;;There is a harmony between leading tone and tonic note in penultimate measure;1;;1;;;;;
 1;322;30;Cantus;Counterpoint;Penultimate measure;T/S after D;0;;Tonic or subdominant chord goes after dominant chord in penultimate measure;;;1;;;;;
 1;335;30;Cantus;Counterpoint;Penultimate measure;not D/DVII;0;;Penultimate harmony is not D / DVII;1;;;;;;;
 1;225;0;Cantus;Counterpoint;Slurs;suspension;1;;;;;;;;;;
