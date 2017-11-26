@@ -2871,7 +2871,6 @@ int CGenCP1::FailHarm() {
 	hbcc.clear();
 	hbc.clear();
 	chm_alter.clear();
-	harm_conflict = 0;
 	// Build chm vector
 	for (ms = 0; ms < mli.size(); ++ms) {
 		// Stop processing when last measure is not fully generated
@@ -2923,9 +2922,12 @@ int CGenCP1::FailHarm() {
 			// For all other notes, check msh
 			else if (msh[ls] <= 0 || tivl[s9] == iHarm4) continue;
 			s = fli[ls];
+			// Pitch class
 			n = ac[cpv][s9] % 7;
+			// Pitch class from root
 			ns = (n - r + 7) % 7;
 			// Find conflicting notes
+			harm_conflict = 0;
 			if (chn[(ns + 1) % 7] || chn[(ns + 6) % 7]) harm_conflict = 1;
 			// Start new harmony if harmonic conflict
 			if (harm_conflict && s > mli[ms]) {
