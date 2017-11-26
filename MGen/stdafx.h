@@ -80,4 +80,4 @@ using namespace Gdiplus;
 #endif
 #define CF_DEBUG
 
-const char* const COMPILED = __DATE__ " @ " __TIME__;
+const char* const COMPILED = __DATE__ " " __TIME__;
