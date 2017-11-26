@@ -165,18 +165,14 @@ Set;Severity;Class;Group;Rule;Flag
 1;23;20;Cantus;Harmony;Harmonic penalty;3x2;0;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;99;30;Cantus;Harmony;Harmonic penalty;repeat;0;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;321;70;Cantus;Harmony;Harmonic penalty;2 x repeat;0;;;1;;1;;;;;
-1;52;70;Cantus;Border;Start steps tonic;unprepared;0;;;;;1;;;;;
-1;40;70;Cantus;Border;Start steps tonic;no C;0;;;;;1;;;;;
-1;41;70;Cantus;Border;Start steps tonic;no E;0;;;;;1;;;;;
-1;49;60;Cantus;Border;First note;not C;1;;;;;1;;;;;
-1;90;60;Cantus;Border;First note;not GC;0;;;;;1;;;;;
-1;33;0;Cantus;Border;Last note;upper G;0;;Last G note in upper voice is allowed only when last note in lower voice is C;;;1;;;;;
-1;87;0;Cantus;Border;Last note;upper E;0;;Last E note in upper voice is allowed only when last note in lower voice is C;;;1;;;;;
-1;50;100;Cantus;Border;Last note;not C;0;;;;;1;;;;;
-1;14;0;Cantus;Border;3rd to last note;CEG;-1;;;;;1;;;;;
-1;34;0;Cantus;Border;3rd to last note;leading;-1;;;;;1;;;;;
-1;51;30;Cantus;Border;2nd to last note;not BD;-1;;;;;1;;;;;
-1;13;30;Cantus;Border;2nd to last note;not GBD;0;;;;;1;;;;;
+1;49;0;Cantus;CF Border;First note not C;G high;1;;;;;1;;;;;
+1;90;60;Cantus;CF Border;First note not C;E high;0;;;;;1;;;;;
+1;33;100;Cantus;CF Border;First note not C;Other;0;;;;;1;;;;;
+1;14;0;Cantus;CF Border;3rd to last note;CEG;-1;;;;;1;;;;;
+1;34;0;Cantus;CF Border;3rd to last note;leading;-1;;;;;1;;;;;
+1;51;30;Cantus;CF Border;2nd to last note;not BD;-1;;;;;1;;;;;
+1;13;30;Cantus;CF Border;2nd to last note;not GBD;0;;;;;1;;;;;
+1;50;100;Cantus;CF Border;Last note;not C;0;;;;;1;;;;;
 1;74;60;Cantus;Minor;Unaltered VII;before Im;0;;Next (or second to next in cadence);;;1;;;;;
 1;200;60;Cantus;Minor;Unaltered VII;10 after VII#;0;;X notes after VII#;;;;;;;;
 1;349;60;Cantus;Minor;VII near VI#;4 notes before;0;;X notes before VI#;;;;;;;;
@@ -253,11 +249,16 @@ Set;Severity;Class;Group;Rule;Flag
 1;276;60;Cantus;Counterpoint;Dissonance upbeat;m2;0;;Minor second;;;1;;;;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;1;More than X same imperfect consonances in a row;;;;;;;;;
 1;96;0;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;;;;;;;;
-1;268;0;Cantus;Counterpoint;First harmony;CC;-1;;;;;;;;;;
-1;269;0;Cantus;Counterpoint;First harmony;CG;-1;;;;;1;;;;;
-1;270;30;Cantus;Counterpoint;First harmony;CE;0;;;;;1;;;;;
-1;271;40;Cantus;Counterpoint;First harmony;EC;0;;;;;1;;;;;
-1;272;100;Cantus;Counterpoint;First harmony;Other;0;;;;;1;;;;;
+1;268;0;Cantus;Counterpoint;First harmonic interval;CC;-1;;;;;;;;;;
+1;269;0;Cantus;Counterpoint;First harmonic interval;CG;-1;;;;;1;;;;;
+1;270;30;Cantus;Counterpoint;First harmonic interval;CE;0;;;;;1;;;;;
+1;271;40;Cantus;Counterpoint;First harmonic interval;EC;0;;;;;1;;;;;
+1;272;100;Cantus;Counterpoint;First harmonic interval;Other;0;;;;;1;;;;;
+1;354;0;Cantus;Counterpoint;Last harmonic interval;CC;-1;;;;;;;;;;
+1;355;0;Cantus;Counterpoint;Last harmonic interval;CG;-1;;;;;;;;;;
+1;356;30;Cantus;Counterpoint;Last harmonic interval;CE;1;;;;;;;;;;
+1;357;40;Cantus;Counterpoint;Last harmonic interval;EC;0;;;;;;;;;;
+1;358;100;Cantus;Counterpoint;Last harmonic interval;Other;0;;;;;;;;;;
 1;273;0;Cantus;Counterpoint;Start pause;missing;0;;No starting pause in couterpoint voice for species 2-5;;;1;;;;;
 1;91;60;Cantus;Counterpoint;Unison;downbeat inside;0;;Downbeat unison is allowed only as first or last interval of counterpoint;;;1;;;;;
 1;275;60;Cantus;Counterpoint;Unison;2nd -> unis;0;;Major or minor 2nd resolves to unison;;;1;;;;;

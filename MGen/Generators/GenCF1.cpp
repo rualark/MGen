@@ -1626,45 +1626,14 @@ int CGenCF1::FailFirstNotes(vector<int> &pc) {
 	CHECK_READY(DR_fli, DR_pc);
 	// Prohibit first note not tonic
 	if (pc[0] != 0) {
-		FLAG2(49, 0);
-		if (pc[0] != 4) FLAG2(90, 0);
-		// Calculate steps to search for tonic
-		int fst = first_steps_tonic;
-		if (c_len > 10) ++fst;
-		// Do not search if cantus is short
-		if (fli_size <= fst) return 0;
-		// Prohibit tonic miss at start
-		int c_pos = -1;
-		int e_pos = -1;
-		for (int i = 0; i < fst; ++i) {
-			// Detect C note
-			if (pc[fli[i]] == 0) c_pos = i;
-			// Detect E note
-			if (pc[fli[i]] == 2) e_pos = i;
+		if (cantus_high) {
+			if (pc[0] == 4) FLAG2(49, 0)
+			else if (pc[0] == 2) FLAG2(90, 0)
+			else FLAG2(33, 0);
 		}
-		int ok = 0;
-		// No C ?
-		if (c_pos == -1) FLAG2(40, 0)
 		else {
-			// If C found, check previous note
-			if (c_pos > 0) {
-				if (pc[fli[c_pos - 1]] == 6 || pc[fli[c_pos - 1]] == 1 || pc[fli[c_pos - 1]] == 4) ok = 1;
-			}
-			// If C is first note, it does not need to be prepared (actually, this cannot happen because of flag 49)
-			else ok = 1;
+			FLAG2(33, 0);
 		}
-		// No E ?
-		if (e_pos == -1) FLAG2(41, 0)
-		else {
-			// If E found, check previous note
-			if (e_pos > 0) {
-				if (pc[fli[e_pos - 1]] == 1 || pc[fli[e_pos - 1]] == 4) ok = 1;
-			}
-			// If E is first note, it does not need to be prepared
-			else ok = 1;
-		}
-		// Is E or C prepared?
-		if (!ok) FLAG2(52, 0);
 	}
 	return 0;
 }
@@ -1679,9 +1648,11 @@ int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
 		s_1 = fli[fli_size - 2];
 		s_2 = fli[fli_size - 3];
 		if (pc[s] != 0) FLAG2(50, s);
-		// Prohibit major second up before I (applicable to major and minor)
-		if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1);
-		if (pcc[s] == 0 && pcc[s_2] == 10) FLAG2(74, s_2);
+		if (minor_cur) {
+			// Prohibit major second up before I
+			if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1);
+			if (pcc[s] == 0 && pcc[s_2] == 10) FLAG2(74, s_2);
+		}
 	}
 	// Wrong second to last note (last note never can be slurred)
 	if (ep2 > c_len - 2) {
