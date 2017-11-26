@@ -1038,20 +1038,38 @@ int CGenCF1::FailFisTrail(vector<int> &pcc) {
 			}
 			// Find VII before
 			pos1 = max(0, ls - fis_g_max);
-			found = 0;
-			for (int x = pos1; x < ls; ++x) {
-				if (pcc[fli[x]] == 10) {
-					FLAG2(349, s);
-					break;
+			if (svoices > 1) {
+				for (int x = pos1; x < ls; ++x) {
+					if (apcc[0][fli[x]] == 10 || apcc[1][fli[x]] == 10) {
+						FLAG2(349, s);
+						break;
+					}
+				}
+			}
+			else {
+				for (int x = pos1; x < ls; ++x) {
+					if (pcc[fli[x]] == 10) {
+						FLAG2(349, s);
+						break;
+					}
 				}
 			}
 			// Find VII after
 			pos2 = min(fli_size - 1, ls + fis_g_max2);
-			found = 0;
-			for (int x = ls + 1; x <= pos2; ++x) {
-				if (pcc[fli[x]] == 10) {
-					FLAG2(350, s);
-					break;
+			if (svoices > 1) {
+				for (int x = ls + 1; x <= pos2; ++x) {
+					if (apcc[0][fli[x]] == 10 || apcc[1][fli[x]] == 10) {
+						FLAG2(350, s);
+						break;
+					}
+				}
+			}
+			else {
+				for (int x = ls + 1; x <= pos2; ++x) {
+					if (pcc[fli[x]] == 10) {
+						FLAG2(350, s);
+						break;
+					}
 				}
 			}
 		}

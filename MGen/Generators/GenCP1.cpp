@@ -657,7 +657,7 @@ void CGenCP1::ReseedCP()
 
 int CGenCP1::FailAlteredInt2(int i, int c1, int c2, int flag) {
 	if ((apcc[0][i] == c1 && apcc[1][i] == c2) || (apcc[0][i] == c2 && apcc[1][i] == c1)) 
-		FLAG2(flag, i);
+		FLAG2(flag, fli[bli[i]]);
 	return 0;
 }
 
@@ -675,8 +675,8 @@ int CGenCP1::FailAlteredInt() {
 }
 
 int CGenCP1::FailCrossInt2(int i, int i_1, int c1, int c2, int flag) {
-	if ((apcc[cfv][i_1] == c1 && apcc[cpv][i] == c2) || (apcc[cfv][i_1] == c2 && apcc[cpv][i] == c1)) FLAG2(flag, i)
-	else if ((apcc[cpv][i_1] == c1 && apcc[cfv][i] == c2) || (apcc[cpv][i_1] == c2 && apcc[cfv][i] == c1)) FLAG2(flag, i_1);
+	if ((apcc[cfv][i_1] == c1 && apcc[cpv][i] == c2) || (apcc[cfv][i_1] == c2 && apcc[cpv][i] == c1)) FLAG2(flag, fli[bli[i]])
+	else if ((apcc[cpv][i_1] == c1 && apcc[cfv][i] == c2) || (apcc[cpv][i_1] == c2 && apcc[cfv][i] == c1)) FLAG2(flag, fli[bli[i_1]]);
 	return 0;
 }
 
