@@ -455,12 +455,22 @@ protected:
 	int min_picount2 = 3; // Minimum allowed pitch count of notes_picount2 consecutive notes
 	int notes_picount3 = 5; // Maximum number of consecutive notes having low pitch count
 	int min_picount3 = 3; // Minimum allowed pitch count of notes_picount3 consecutive notes
+
 	int notes_lrange = 6; // Maximum number of consecutive notes having low range
 	int min_lrange = 5; // Minimum allowed local range of notes_lrange consecutive notes
 	int notes_lrange2 = 13; // Maximum number of consecutive notes having low range
 	int min_lrange2 = 8; // Minimum allowed local range of notes_lrange consecutive notes
 	int notes_lrange3 = 5; // Maximum number of consecutive notes having low range
 	int min_lrange3 = 3; // Minimum allowed local range of notes_lrange consecutive notes
+
+	// For CF/sp1:
+	int notes_lrange1 = 6; // Maximum number of consecutive notes having low range
+	int min_lrange1 = 5; // Minimum allowed local range of notes_lrange consecutive notes
+	int notes_lrange12 = 13; // Maximum number of consecutive notes having low range
+	int min_lrange12 = 8; // Minimum allowed local range of notes_lrange consecutive notes
+	int notes_lrange13 = 5; // Maximum number of consecutive notes having low range
+	int min_lrange13 = 3; // Minimum allowed local range of notes_lrange consecutive notes
+
 	int notes_arange = 5; // Maximum number of consecutive notes having low average range
 	float min_arange = 5; // Minimum allowed local range of notes_arange consecutive notes
 	int notes_arange2 = 5; // Maximum number of consecutive notes having low average range

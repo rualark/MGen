@@ -384,12 +384,21 @@ void CGenCF1::SetRuleParams() {
 	min_picount2 = GetRuleParam(rule_set, 345, rsSubName, 1);
 	notes_picount3 = GetRuleParam(rule_set, 346, rsSubName, 0);
 	min_picount3 = GetRuleParam(rule_set, 346, rsSubName, 1);
+
 	notes_lrange = GetRuleParam(rule_set, 98, rsSubName, 0);
 	min_lrange = Interval2Chromatic(GetRuleParam(rule_set, 98, rsSubName, 1));
 	notes_lrange2 = GetRuleParam(rule_set, 198, rsSubName, 0);
 	min_lrange2 = Interval2Chromatic(GetRuleParam(rule_set, 198, rsSubName, 1));
 	notes_lrange3 = GetRuleParam(rule_set, 300, rsSubName, 0);
 	min_lrange3 = Interval2Chromatic(GetRuleParam(rule_set, 300, rsSubName, 1));
+
+	notes_lrange1 = GetRuleParam(rule_set, 352, rsSubName, 0);
+	min_lrange1 = Interval2Chromatic(GetRuleParam(rule_set, 352, rsSubName, 1));
+	notes_lrange12 = GetRuleParam(rule_set, 353, rsSubName, 0);
+	min_lrange12 = Interval2Chromatic(GetRuleParam(rule_set, 353, rsSubName, 1));
+	notes_lrange13 = GetRuleParam(rule_set, 351, rsSubName, 0);
+	min_lrange13 = Interval2Chromatic(GetRuleParam(rule_set, 351, rsSubName, 1));
+
 	notes_arange = GetRuleParam(rule_set, 15, rsSubName, 0);
 	min_arange = GetRuleParam(rule_set, 15, rsSubName, 1) / 10.0;
 	notes_arange2 = GetRuleParam(rule_set, 16, rsSubName, 0);
@@ -4659,9 +4668,9 @@ check:
 		if (FailLongRepeat(m_c, m_cc, m_leap, repeat_steps5, repeat_notes5, 72)) goto skip;
 		if (FailLongRepeat(m_c, m_cc, m_leap, repeat_steps7, repeat_notes7, 73)) goto skip;
 		if (FailGlobalFill(m_c, nstat2)) goto skip;
-		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
-		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
-		if (FailLocalRange(m_cc, notes_lrange3, min_lrange3, 300)) goto skip;
+		if (FailLocalRange(m_cc, notes_lrange1, min_lrange1, 352)) goto skip;
+		if (FailLocalRange(m_cc, notes_lrange12, min_lrange12, 353)) goto skip;
+		if (FailLocalRange(m_cc, notes_lrange13, min_lrange13, 351)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount, min_picount, 344)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount2, min_picount2, 345)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount3, min_picount3, 346)) goto skip;
