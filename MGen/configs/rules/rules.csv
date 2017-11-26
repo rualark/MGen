@@ -234,8 +234,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;221;100;Cantus;Counterpoint;Suspension resolution;leap;0;;;;;1;;;;;
 1;291;100;Cantus;Counterpoint;Suspension resolution;short;0;;If resolution note is shorter than 1/4;;;1;;;;;
 1;286;60;Cantus;Counterpoint;Suspension resolution;shift;0;;Suspension is not resolved at the middle of next measure;;;1;;;;;
-1;136;0;Cantus;Counterpoint;Suspension insertion;cons. leap down;1;;Leap down from consonance insertion to resolution;;;1;;;;;
-1;296;0;Cantus;Counterpoint;Suspension insertion;cons. leap up;1;;Leap up from consonance insertion to resolution;;;1;;;;;
+1;296;0;Cantus;Counterpoint;Suspension insertion;cons. leap down;1;;Leap down from consonance insertion to resolution;;;1;;;;;
+1;136;0;Cantus;Counterpoint;Suspension insertion;cons. leap up;1;;Leap up from consonance insertion to resolution;;;1;;;;;
 1;137;0;Cantus;Counterpoint;Suspension insertion;down aux;1;;;;;1;;;;;
 1;138;0;Cantus;Counterpoint;Suspension insertion;up aux;1;;;;;1;;;;;
 1;292;60;Cantus;Counterpoint;Suspension insertion;chatty;0;;There are more than 2 inserted notes between suspension and resolution;;;1;;;;;

@@ -933,8 +933,8 @@ int CGenCP1::FailSus2() {
 						// If leap is too long
 						if (abs(acc[cpv][fli[ls + 1]] - acc[cpv][s2]) > sus_insert_max_leap) FLAG2(295, fli[ls + 1])
 						// If second movement is leap
-						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2(296, fli[ls + 1])
-						else if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(136, fli[ls + 1])
+						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2(136, fli[ls + 1])
+						else if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(296, fli[ls + 1])
 						else {
 							// Mark insertion as non-harmonic in basic msh if resolution is harmonic
 							if (tivl[s3] != iDis && tivl[s3] != iHarm4) mshb[ls + 1] = pAux;
