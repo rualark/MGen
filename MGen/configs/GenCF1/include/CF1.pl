@@ -55,7 +55,7 @@ best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requ
 show_ignored_flags = 1 # Show even ignored flags (with strikethrough in rules.xlsm)
 show_allowed_flags = 1 # Show even allowed flags (bold in rules.xlsm)
 show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show chord type (6 or 64)
-show_hatch = 1 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
+show_hatch = 2 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
 show_min_severity = 0 # Minimum severity to highlight note
 harm_notation = 1 # 1 - Sposobin harmonic notation (T, SII...), 2 - wordwide harmonic notation (I, II...), 
 
