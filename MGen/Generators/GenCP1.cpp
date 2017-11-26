@@ -1859,9 +1859,9 @@ int CGenCP1::FailPcoApartStep() {
 					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
 				// Non-harmonic
 				else if ((!sus[ls_1] && (!pco5_last || asmooth[cpv][pco5_last - 1]) && 
-					(pco5_last2 + 1 >= ep2 || asmooth[cpv][pco5_last2 + 1])) ||
+					(pco5_last2 + 1 >= ep2 || asmooth[cpv][pco5_last2])) ||
 					(!sus[ls] && (!s || asmooth[cpv][s - 1]) && 
-					(s2 + 1 >= ep2 || asmooth[cpv][s2 + 1])))
+					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
 					FLAG2(249, s)
 				// Other
 				else {
@@ -1904,9 +1904,9 @@ int CGenCP1::FailPcoApartStep() {
 					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
 				// Non-harmonic
 				else if ((!sus[ls_1] && (!pco8_last || asmooth[cpv][pco8_last - 1]) &&
-					(pco8_last2 + 1 >= ep2 || asmooth[cpv][pco8_last2 + 1])) ||
+					(pco8_last2 + 1 >= ep2 || asmooth[cpv][pco8_last2])) ||
 					(!sus[ls] && (!s || asmooth[cpv][s - 1]) &&
-					(s2 + 1 >= ep2 || asmooth[cpv][s2 + 1])))
+					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
 					FLAG2(249, s)
 				// Other
 				else
