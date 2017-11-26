@@ -419,6 +419,8 @@ void CGenCF1::SetRuleParams() {
 	tonic_wei_long = GetRuleParam(rule_set, 196, rsSubComment, 4);
 	tonic_wei_pco = GetRuleParam(rule_set, 196, rsSubComment, 5);
 	fis_gis_max = GetRuleParam(rule_set, 199, rsSubName, 0);
+	fis_g_max = GetRuleParam(rule_set, 349, rsSubName, 0);
+	fis_g_max2 = GetRuleParam(rule_set, 350, rsSubName, 0);
 }
 
 void CGenCF1::ProcessSpecies() {
@@ -1020,6 +1022,7 @@ int CGenCF1::FailFisTrail(vector<int> &pcc) {
 	for (ls = 0; ls < fli_size; ++ls) {
 		s = fli[ls];
 		if (pcc[s] == 9) {
+			// Find VII#
 			pos1 = max(0, ls - fis_gis_max);
 			pos2 = min(fli_size - 1, ls + fis_gis_max);
 			found = 0;
@@ -1032,6 +1035,24 @@ int CGenCF1::FailFisTrail(vector<int> &pcc) {
 			if (!found) {
 				// Flag only if full melody analysis or window is not cut
 				if (ls + fis_gis_max <= fli_size - 1 || ep2 == c_len)	FLAG2(199, s);
+			}
+			// Find VII before
+			pos1 = max(0, ls - fis_g_max);
+			found = 0;
+			for (int x = pos1; x < ls; ++x) {
+				if (pcc[fli[x]] == 10) {
+					FLAG2(349, s);
+					break;
+				}
+			}
+			// Find VII after
+			pos2 = min(fli_size - 1, ls + fis_g_max2);
+			found = 0;
+			for (int x = ls + 1; x <= pos2; ++x) {
+				if (pcc[fli[x]] == 10) {
+					FLAG2(350, s);
+					break;
+				}
 			}
 		}
 	}

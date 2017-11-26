@@ -508,6 +508,8 @@ protected:
 
 	int thirds_ignored = 1; // Number of thirds ignored for consecutive leaps rule
 	int fis_gis_max = 3; // Maximum allowed distance between F# and G#
+	int fis_g_max = 3; // Minimum distance from G to F# (+1 to allow)
+	int fis_g_max2 = 3; // Minimum distance from F# to G (+1 to allow)
 	int dev_late2 = 3; // Maximum note count to consider non-late leap compensation deviation to 2nd
 	int dev_late3 = 3; // Maximum note count to consider non-late leap compensation deviation to 3rd
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
