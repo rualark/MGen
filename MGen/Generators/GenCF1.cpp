@@ -4662,7 +4662,6 @@ check:
 		if (FailLocalRange(m_cc, notes_lrange, min_lrange, 98)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange2, min_lrange2, 198)) goto skip;
 		if (FailLocalRange(m_cc, notes_lrange3, min_lrange3, 300)) goto skip;
-		if (FailLocalRange(m_cc, notes_lrange3, min_lrange3, 300)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount, min_picount, 344)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount2, min_picount2, 345)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount3, min_picount3, 346)) goto skip;
