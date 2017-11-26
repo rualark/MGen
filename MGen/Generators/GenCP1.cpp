@@ -802,12 +802,14 @@ int CGenCP1::FailSusResolution(int s3) {
 			}
 			// 9th to 8va
 			if (ivlc[s2] == 1 && ivlc[s3] == 0) {
-				if (ivl[s2] > 7) FLAG2(216, s3)
-					// 2nd to unison
+				if (ivl[s2] > 7) {
+					if (cantus_high) FLAG2(216, s3)
+				}
+				// 2nd to unison
 				else FLAG2(218, s3);
 			}
 			// 7th to 8va
-			else if (ivlc[s2] == 6 && ivlc[s3] == 0) FLAG2(217, s3)
+			else if (cantus_high && ivlc[s2] == 6 && ivlc[s3] == 0) FLAG2(217, s3)
 		}
 	}
 	return 0;
