@@ -2482,20 +2482,22 @@ int CGenCP1::FailLastIntervals() {
 	CHECK_READY(DR_fli, DR_pc);
 	// Do not check if melody is short yet
 	if (fli_size < 3) return 0;
-	// Prohibit last note not tonic
 	if (ep2 >= c_len) {
 		s = fli[fli_size - 1];
 		s_1 = fli[fli_size - 2];
 		s_2 = fli[fli_size - 3];
-		if (apc[cpv][c_len - 1] != 0) {
-			// Detect upper last G if lower note is C
-			if (apcc[1][c_len - 1] == 7 && apc[0][c_len - 1] == 0) 
-				FLAG2(33, s)
-			// Detect upper last E if lower note is C
-			else if ((apcc[1][c_len - 1] == 3 || apcc[1][c_len - 1] == 4) && apc[0][c_len - 1] == 0)
-				FLAG2(87, s)
-			else FLAG2(50, s);
+		// Check last intervals
+		if (apc[0][c_len - 1] == 0) {
+			if (apc[1][c_len - 1] == 0) FLAG2(354, mli[mli.size() - 1])
+			else if (apc[1][c_len - 1] == 4) FLAG2(355, mli[mli.size() - 1])
+			else if (apc[1][c_len - 1] == 2) FLAG2(356, mli[mli.size() - 1])
+			else FLAG2(358, mli[mli.size() - 1])
 		}
+		else if (apc[0][c_len - 1] == 2) {
+			if (apc[1][c_len - 1] == 0) FLAG2(357, mli[mli.size() - 1])
+			else FLAG2(358, mli[mli.size() - 1])
+		}
+		else FLAG2(358, mli[mli.size() - 1]);
 		// Prohibit major second up before I (applicable to major and minor)
 		if (apcc[cpv][s] == 0 && apcc[cpv][s_1] == 10) FLAG2(74, s_1);
 		if (apcc[cpv][s] == 0 && apcc[cpv][s_2] == 10) FLAG2(74, s_2);
