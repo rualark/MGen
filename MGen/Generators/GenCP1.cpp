@@ -788,7 +788,7 @@ int CGenCP1::FailSusResolution(int s3) {
 	// Check if suspension second part is discord
 	if (tivl[s2] == iDis) {
 		// Mark resolution as obligatory harmonic in basic msh
-		if (tivl[s3] != iDis && tivl[s3] != iHarm4) mshb[bli[s3]] = pOffbeat;
+		if (tivl[s3] != iDis && tivl[s3] != iHarm4) mshb[bli[s3]] = pSusRes;
 		// Resolution to discord
 		if (tivl[s3] == iDis || tivl[s3] == iHarm4) FLAG2(220, s)
 			// Resolution by leap
@@ -898,7 +898,7 @@ int CGenCP1::FailSus2() {
 				if (bmli[s] < mli.size() - sus_last_measures) FLAG2(139, s);
 			}
 			// Mark sus start as harmonic always
-			mshb[ls] = pOffbeat;
+			mshb[ls] = pSusStart;
 			// 1/4 + ?
 			if (sus[ls] - fli[ls] == npm / 4) FLAG2(251, s);
 			// Long start
@@ -1021,11 +1021,12 @@ int CGenCP1::FailDis() {
 		// Do not flag discord if suspension, because anticipation will flag it
 		// Do not flag discord if last note, because it can become suspension
 		if (sus[ls] || ls == fli_size - 1) return 0;
-		// Leap
-		if (msh[ls] == pLeap) {
-			FLAG2(187, s)
-		}
-		// Other harmonic
+		if (msh[ls] == pLeap) FLAG2(187, s)
+		else if (msh[ls] == pDownbeat) FLAG2(83, s)
+		else if (msh[ls] == pSusStart) FLAG2(359, s)
+		else if (msh[ls] == pSusRes) FLAG2(360, s)
+		else if (msh[ls] == pLastLT) FLAG2(361, s)
+		// This is protection against wrong melodic shape value
 		else if (msh[ls] > 0) FLAG2(83, s)
 		else {
 			// Stepwize
@@ -2480,24 +2481,26 @@ int CGenCP1::FailFirstIntervals() {
 int CGenCP1::FailLastIntervals() {
 	CHECK_READY_PERSIST(DR_mli);
 	CHECK_READY(DR_fli, DR_pc);
+	int fs;
 	// Do not check if melody is short yet
 	if (fli_size < 3) return 0;
 	if (ep2 >= c_len) {
 		s = fli[fli_size - 1];
 		s_1 = fli[fli_size - 2];
 		s_2 = fli[fli_size - 3];
+		fs = max(mli[mli.size() - 1], fli[fli_size - 1]);
 		// Check last intervals
 		if (apc[0][c_len - 1] == 0) {
-			if (apc[1][c_len - 1] == 0) FLAG2(354, mli[mli.size() - 1])
-			else if (apc[1][c_len - 1] == 4) FLAG2(355, mli[mli.size() - 1])
-			else if (apc[1][c_len - 1] == 2) FLAG2(356, mli[mli.size() - 1])
-			else FLAG2(358, mli[mli.size() - 1])
+			if (apc[1][c_len - 1] == 0) FLAG2(354, fs)
+			else if (apc[1][c_len - 1] == 4) FLAG2(355, fs)
+			else if (apc[1][c_len - 1] == 2) FLAG2(356, fs)
+			else FLAG2(358, fs)
 		}
 		else if (apc[0][c_len - 1] == 2) {
-			if (apc[1][c_len - 1] == 0) FLAG2(357, mli[mli.size() - 1])
-			else FLAG2(358, mli[mli.size() - 1])
+			if (apc[1][c_len - 1] == 0) FLAG2(357, fs)
+			else FLAG2(358, fs)
 		}
-		else FLAG2(358, mli[mli.size() - 1]);
+		else FLAG2(358, fs);
 		// Prohibit major second up before I (applicable to major and minor)
 		if (apcc[cpv][s] == 0 && apcc[cpv][s_1] == 10) FLAG2(74, s_1);
 		if (apcc[cpv][s] == 0 && apcc[cpv][s_2] == 10) FLAG2(74, s_2);
@@ -2904,7 +2907,7 @@ int CGenCP1::FailHarm() {
 		if (ms == mli.size() - 2 && fli_size > 1) {
 			int s9 = fli[fli_size - 2];
 			if (apcc[cpv][s9] == 11 && tivl[s9] != iDis && msh[fli_size - 2] < 0) {
-				msh[fli_size - 2] = pOffbeat;
+				msh[fli_size - 2] = pLastLT;
 			}
 		}
 		// Loop inside measure

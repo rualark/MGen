@@ -11,8 +11,10 @@
 // Rhythm position types
 #define pDownbeat 1
 #define pLeap 2
-#define pOffbeat 3
-#define pLong 4
+#define pSusStart 3
+#define pSusRes 4
+#define pLastLT 5
+#define pLong 6
 #define pAux -1
 #define pPass -2
 
