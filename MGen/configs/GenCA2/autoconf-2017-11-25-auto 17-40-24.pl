@@ -9,5 +9,3 @@ include "include/CA2.pl"
 # This config was created from default config file configs\GenCA2.pl
 # Created at 2017-11-26 12-28-04
 Midi_file = midi\result\2017-11-25-auto 17-40-24.mid
-
-species = 5
