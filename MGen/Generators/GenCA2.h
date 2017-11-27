@@ -28,4 +28,7 @@ protected:
 	vector<int> max_vlen; // [v]
 
 	int species_applied = 0; // If species midi out multiplier already applied
+
+	// Save configuration parameters
+	int npm_conf, species_conf, cantus_high_conf;
 };

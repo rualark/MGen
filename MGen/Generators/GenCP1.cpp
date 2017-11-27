@@ -22,7 +22,7 @@ void CGenCP1::LoadConfigLine(CString * sN, CString * sV, int idata, float fdata)
 	CheckVar(sN, sV, "accept_cantus_rechoose", &accept_cantus_rechoose, 0, 1);
 	CheckVar(sN, sV, "notes_per_measure", &npm, 1, 8);
 	CheckVar(sN, sV, "start_pause", &fn, 0, 7);
-	CheckVar(sN, sV, "species", &species, 1, 5);
+	CheckVar(sN, sV, "species", &species, 0, 5);
 
 	CGenCA1::LoadConfigLine(sN, sV, idata, fdata);
 }

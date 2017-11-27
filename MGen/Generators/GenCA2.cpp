@@ -479,6 +479,10 @@ void CGenCA2::Generate() {
 	// Saved t_generated
 	int t_generated2 = 0;
 	cantus_id = -1;
+	species_conf = species;
+	npm_conf = npm;
+	cantus_high_conf = cantus_high;
+	if (species_conf) WriteLog(1, "Warning: species and cantus_high in configuration file will override marks in imported music files");
 	for (int i = 0; i < cpoint.size(); i++) {
 		++cantus_id;
 		if (cpoint[cantus_id].size() != av_cnt) {
@@ -501,8 +505,15 @@ void CGenCA2::Generate() {
 		// Add line
 		linecolor[step] = MakeColor(255, 0, 0, 0);
 		//FixUnisonPause();
-		LoadCantusHigh();
-		LoadSpecies();
+		if (species_conf) {
+			species = species_conf;
+			cantus_high = cantus_high_conf;
+			npm = npm_conf;
+		}
+		else {
+			LoadCantusHigh();
+			LoadSpecies();
+		}
 		// Check level
 		if ((cantus_high && cpoint[i][1][0] == 0) || (!cantus_high && cpoint[i][0][0] == 0)) {
 			if (specified_high) {
