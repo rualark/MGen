@@ -156,7 +156,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;329;30;Cantus;Harmony;Multiple harmonies in measure;sus 5/6 stepw;1;;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure;1;;;;;;;
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;1;;;;;;;
 1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;;;;;;;
-1;48;30;Cantus;Harmony;Prohibited progression;early G-C;0;;Bass note going from G to C octave before cadence in D-T progression;;;1;;;;;17,20,23,48,57,77,92,99
+1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;;;1;;;;;17,20,23,48,57,77,92,99
 1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;1;;;;;
 1;309;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;1;;;;;
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;1;;;;;;;17,20,23,48,57,77,92,99
@@ -165,14 +165,14 @@ Set;Severity;Class;Group;Rule;Flag
 1;23;20;Cantus;Harmony;Harmonic penalty;3x2;0;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;99;30;Cantus;Harmony;Harmonic penalty;repeat;0;;;1;;;;;;;17,20,23,48,57,77,92,99
 1;321;70;Cantus;Harmony;Harmonic penalty;2 x repeat;0;;;1;;1;;;;;
-1;49;0;Cantus;CF Border;First note not C;G high;1;;;;;1;;;;;
-1;90;60;Cantus;CF Border;First note not C;E high;0;;;;;1;;;;;
-1;33;100;Cantus;CF Border;First note not C;Other;0;;;;;1;;;;;
-1;14;0;Cantus;CF Border;3rd to last note;CEG;-1;;;;;1;;;;;
-1;34;0;Cantus;CF Border;3rd to last note;leading;-1;;;;;1;;;;;
-1;51;30;Cantus;CF Border;2nd to last note;not BD;-1;;;;;1;;;;;
-1;13;30;Cantus;CF Border;2nd to last note;not GBD;0;;;;;1;;;;;
-1;50;100;Cantus;CF Border;Last note;not C;0;;;;;1;;;;;
+1;49;0;Cantus;CF Border;First note not tonic;V high;1;;;;;1;;;;;
+1;90;60;Cantus;CF Border;First note not tonic;III high;0;;;;;1;;;;;
+1;33;100;Cantus;CF Border;First note not tonic;Other;0;;;;;1;;;;;
+1;14;0;Cantus;CF Border;3rd to last note;I/III/V;-1;;;;;1;;;;;
+1;34;0;Cantus;CF Border;3rd to last note;leading tone;-1;;;;;1;;;;;
+1;51;30;Cantus;CF Border;2nd to last note;not VII/II;-1;;;;;1;;;;;
+1;13;30;Cantus;CF Border;2nd to last note;not V/VIII/II;0;;;;;1;;;;;
+1;50;100;Cantus;CF Border;Last note;not tonic;0;;;;;1;;;;;
 1;74;60;Cantus;Minor;Unaltered VII;before Im;0;;Next (or second to next in cadence);;;1;;;;;
 1;200;60;Cantus;Minor;Unaltered VII;10 after VII#;0;;X notes after VII#;;;;;;;;
 1;349;60;Cantus;Minor;VII near VI#;4 notes before;0;;X notes before VI#;;;;;;;;
@@ -205,8 +205,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;1;;;;;;;;;;
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;;;;1;;;80;;
 1;324;60;Cantus;Counterpoint;Perfect consonance;LT 8va;0;;Leading tone octave;;;1;;;;;
-1;326;60;Cantus;Counterpoint;Perfect consonance;db. long 8va;0;;Downbeat octave lwhole or longer (species 2,4), 1/2 or longer (species 3,5);;;1;;;;;
-1;325;60;Cantus;Counterpoint;Perfect consonance;db. long 5th;0;;Downbeat 5th whole or longer(species 2,4), 1/2 or longer (species 3,5);;;1;;;;;
+1;326;60;Cantus;Counterpoint;Perfect consonance;db. long 8va;0;;Downbeat octave whole or longer (species 2,4), 1/2 or longer (species 3,5);;;1;;;;;
+1;325;60;Cantus;Counterpoint;Perfect consonance;db. long 5th;0;;Downbeat 5th whole or longer (species 2,4), 1/2 or longer (species 3,5);;;1;;;;;
 1;330;0;Cantus;Counterpoint;Close perfect consonances;parallel sus 6-5;1;;Parallel 5th after sus from 5th to 6th;;;1;;;249;;
 1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;;;;;;;;;
 1;85;60;Cantus;Counterpoint;Close perfect consonances;contrary;0;;Contrary octaves are possible in cadence;;;;;;;;
@@ -252,22 +252,22 @@ Set;Severity;Class;Group;Rule;Flag
 1;276;60;Cantus;Counterpoint;Dissonance upbeat;m2;0;;Minor second;;;1;;;;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;1;More than X same imperfect consonances in a row;;;;;;;;;
 1;96;0;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;;;;;;;;
-1;268;0;Cantus;Counterpoint;First harmonic interval;CC;-1;;;;;;;;;;
-1;269;0;Cantus;Counterpoint;First harmonic interval;CG;-1;;;;;1;;;;;
-1;270;30;Cantus;Counterpoint;First harmonic interval;CE;0;;;;;1;;;;;
-1;271;40;Cantus;Counterpoint;First harmonic interval;EC;0;;;;;1;;;;;
+1;268;0;Cantus;Counterpoint;First harmonic interval;I-I;-1;;;;;;;;;;
+1;269;0;Cantus;Counterpoint;First harmonic interval;I-V;-1;;;;;1;;;;;
+1;270;30;Cantus;Counterpoint;First harmonic interval;I-III;0;;;;;1;;;;;
+1;271;40;Cantus;Counterpoint;First harmonic interval;III-I;0;;;;;1;;;;;
 1;272;100;Cantus;Counterpoint;First harmonic interval;Other;0;;;;;1;;;;;
-1;354;0;Cantus;Counterpoint;Last harmonic interval;CC;-1;;;;;;;;;;
-1;355;0;Cantus;Counterpoint;Last harmonic interval;CG;-1;;;;;;;;;;
-1;356;30;Cantus;Counterpoint;Last harmonic interval;CE;1;;;;;;;;;;
-1;357;40;Cantus;Counterpoint;Last harmonic interval;EC;0;;;;;;;;;;
+1;354;0;Cantus;Counterpoint;Last harmonic interval;I-I;-1;;;;;;;;;;
+1;355;0;Cantus;Counterpoint;Last harmonic interval;I-V;-1;;;;;;;;;;
+1;356;30;Cantus;Counterpoint;Last harmonic interval;I-III;1;;;;;;;;;;
+1;357;40;Cantus;Counterpoint;Last harmonic interval;III-I;0;;;;;;;;;;
 1;358;100;Cantus;Counterpoint;Last harmonic interval;Other;0;;;;;;;;;;
 1;273;0;Cantus;Counterpoint;Start pause;missing;0;;No starting pause in couterpoint voice for species 2-5;;;1;;;;;
 1;91;60;Cantus;Counterpoint;Unison;downbeat inside;0;;Downbeat unison is allowed only as first or last interval of counterpoint;;;1;;;;;
 1;275;60;Cantus;Counterpoint;Unison;2nd -> unis;0;;Major or minor 2nd resolves to unison;;;1;;;;;
 1;277;60;Cantus;Counterpoint;Unison;near 2m;0;;Unison is near minor second dyad in same measure;;;1;;;;;
-1;47;30;Cantus;Counterpoint;Penultimate measure;no B;0;;no leading tone is allowed if last bass notes are G-C;;;;;;;;
-1;75;30;Cantus;Counterpoint;Penultimate measure;no G or D;0;;;;;1;;;;;
+1;47;30;Cantus;Counterpoint;Penultimate measure;no leading tone;0;;no leading tone is allowed if last bass notes are G-C;;;;;;;;
+1;75;30;Cantus;Counterpoint;Penultimate measure;no V or II;0;;No V or II note;;;1;;;;;
 1;317;30;Cantus;Counterpoint;Penultimate measure;unaltered VII;0;;Unaltered VII minor note in penultimate measure;;;1;;;;;
 1;318;30;Cantus;Counterpoint;Penultimate measure;isolated LT;0;;There is a harmony between leading tone and tonic note in penultimate measure;1;;1;;;;;
 1;322;30;Cantus;Counterpoint;Penultimate measure;T/S after D;0;;Tonic or subdominant chord goes after dominant chord in penultimate measure;;;1;;;;;
