@@ -478,6 +478,30 @@ void CGenCF1::CheckConfig() {
 		if (accept_cantus_rechoose && cantus_id2) {
 			WriteLog(1, "Warning: accept_cantus_rechoose will not work with cantus_id above zero (check config)");
 		}
+		if (species == 1 && fn > 0) {
+			WriteLog(5, "Warning: Counterpoint species 1 cannot have starting_pause (check config)");
+		}
+		if (fn >= npm) {
+			WriteLog(5, "Warning: Starting_pause is greater or equals to notes_per_measure (check config)");
+		}
+		if (fn > 1 && npm < 8) {
+			WriteLog(1, "Warning: Starting_pause > 1 is not recommended for 1-4 notes per measure (check config)");
+		}
+		if (fn == 1 && npm == 8) {
+			WriteLog(1, "Warning: Starting_pause 1 is not recommended for 8 notes per measure (check config)");
+		}
+		if (species == 2 && npm != 2) {
+			WriteLog(5, "Warning: Counterpoint species 2 should have notes_per_measure = 2 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
+		}
+		if (species == 3 && npm != 4) {
+			WriteLog(5, "Warning: Counterpoint species 3 should have notes_per_measure = 4 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
+		}
+		if (species == 4 && npm != 2) {
+			WriteLog(5, "Warning: Counterpoint species 4 should have notes_per_measure = 2 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
+		}
+		if (species == 5 && npm != 8) {
+			WriteLog(5, "Warning: Counterpoint species 5 should have notes_per_measure = 8 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
+		}
 	}
 	if (s_len != 1) {
 		WriteLog(5, "Warning: s_len should equal 1. Other values are not tested and usually do not have any advantages");
@@ -490,30 +514,6 @@ void CGenCF1::CheckConfig() {
 	}
 	if (swa_steps < s_len) {
 		WriteLog(5, "Warning: Swa_steps cannot be below s_len. Changed to ");
-	}
-	if (species == 1 && fn > 0) {
-		WriteLog(5, "Warning: Counterpoint species 1 cannot have starting_pause (check config)");
-	}
-	if (fn >= npm) {
-		WriteLog(5, "Warning: Starting_pause is greater or equals to notes_per_measure (check config)");
-	}
-	if (fn > 1 && npm < 8) {
-		WriteLog(1, "Warning: Starting_pause > 1 is not recommended for 1-4 notes per measure (check config)");
-	}
-	if (fn == 1 && npm == 8) {
-		WriteLog(1, "Warning: Starting_pause 1 is not recommended for 8 notes per measure (check config)");
-	}
-	if (species == 2 && npm != 2) {
-		WriteLog(5, "Warning: Counterpoint species 2 should have notes_per_measure = 2 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
-	}
-	if (species == 3 && npm != 4) {
-		WriteLog(5, "Warning: Counterpoint species 3 should have notes_per_measure = 4 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
-	}
-	if (species == 4 && npm != 2) {
-		WriteLog(5, "Warning: Counterpoint species 4 should have notes_per_measure = 2 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
-	}
-	if (species == 5 && npm != 8) {
-		WriteLog(5, "Warning: Counterpoint species 5 should have notes_per_measure = 8 or just comment out notes_per_measure so that it is controlled by species parameter automatically (check config)");
 	}
 	// Check configuration parameters
 	if (accept_reseed == 1 && random_seed == 0) {
