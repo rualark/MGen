@@ -126,6 +126,7 @@ void CGenCA2::MergeCantus() {
 			CString est;
 			est.Format("Warning: cantus notes usually are all of same length. Cantus #%d has non-uniform length at note %d", cantus_id+1, i);
 			WriteLog(1, est);
+			error = 1;
 		}
 	}
 }
@@ -185,6 +186,11 @@ void CGenCA2::GetVlen() {
 			cur_len += cantus_len[cantus_id][s];
 		}
 		if (cur_len < min_vlen[v]) min_vlen[v] = cur_len;
+	}
+	// Calculate sus count
+	for (int i = 1; i < cpoint[cantus_id][cpv].size(); ++i) {
+		if (cpoint[cantus_id][cpv][i] == cpoint[cantus_id][cpv][i - 1] &&
+			cpoint[cantus_id][cfv][i] != cpoint[cantus_id][cfv][i - 1]) ++sus_count;
 	}
 }
 
@@ -281,17 +287,13 @@ void CGenCA2::ExplodeCP() {
 			}
 		}
 	}
-	// Calculate sus count
-	for (int i = 1; i < cpoint[cantus_id][cpv].size(); ++i) {
-		if (cpoint[cantus_id][cpv][i] == cpoint[cantus_id][cpv][i - 1] && 
-			cpoint[cantus_id][cfv][i] != cpoint[cantus_id][cfv][i - 1]) ++sus_count;
-	}
 	// Check that counterpoint did not become shorter
 	if (cpoint[cantus_id][0].size() < cc_old2[0].size() - fn) {
 		CString est;
 		est.Format("Warning: ExplodeCP returned shorter voice than initial for %s cantus #%d (initial=%d, new=%d)",
 			cantus_high ? "higher" : "lower", cantus_id+1, cc_old2[0].size(), cpoint[cantus_id][0].size());
 		WriteLog(5, est);
+		error = 1;
 	}
 }
 
@@ -316,35 +318,66 @@ void CGenCA2::LinkCpPauses() {
 void CGenCA2::DetectSpecies() {
 	species_detected = 0;
 	// Do not detect if cantus has uneven note length
+	species_pos.clear();
+	species_pos.resize(6);
 	if (max_vlen[cfv] != min_vlen[cfv]) return;
-	else if (min_vlen[cpv] == min_vlen[cfv]) species_detected = 1;
+	else if (min_vlen[cpv] == min_vlen[cfv]) {
+		species_detected = 1;
+		species_pos[1] = 1;
+	}
 	else if (min_vlen[cpv] * 2 == min_vlen[cfv]) {
+		species_pos[2] = 1;
+		species_pos[4] = 1;
+		species_pos[5] = 1;
+		species_pos[3] = 1;
 		if (sus_count > cpoint[cantus_id][cpv].size() / 4 && (min_vlen[cpv] == min_vlen[cfv] || min_vlen[cpv] * 2 == min_vlen[cfv])) species_detected = 4;
 		else species_detected = 2;
 	}
-	else if (min_vlen[cpv] * 4 == min_vlen[cfv]) species_detected = 3;
-	else if (min_vlen[cpv] * 8 == min_vlen[cfv]) species_detected = 5;
+	else if (min_vlen[cpv] * 4 == min_vlen[cfv]) {
+		species_pos[3] = 1;
+		species_pos[5] = 1;
+		species_detected = 3;
+	}
+	else if (min_vlen[cpv] * 8 == min_vlen[cfv]) {
+		species_pos[5] = 1;
+		species_detected = 5;
+	}
 	// Write log
 	CString est;
-	est.Format("Detected species %d for counterpoint #%d (%s)",
-		species_detected, cantus_id + 1, cantus_high ? "high" : "low");
+	est.Format("Detected species %d (possible 1=%s, 2=%s, 3=%s, 4=%s, 5=%s) for counterpoint #%d (%s)",
+		species_detected, 
+		species_pos[1] ? "yes" : "no", species_pos[2] ? "yes" : "no",
+		species_pos[3] ? "yes" : "no", species_pos[4] ? "yes" : "no",
+		species_pos[5] ? "yes" : "no", cantus_id + 1, cantus_high ? "high" : "low");
 	WriteLog(0, est);
 	// Check wrong text
 	if (species) {
 		if (species != species_detected) {
 			if (!species_detected) {
 				CString est;
-				est.Format("Counterpoint #%d (%s): unable to detect species. Species %d was specified in MIDI file, going with it",
+				est.Format("Counterpoint #%d (%s): unable to detect species. Species %d was specified, going with it",
 					cantus_id + 1, cantus_high ? "high" : "low", species);
 				WriteLog(1, est);
 			}
 			else {
 				CString est;
-				est.Format("Counterpoint #%d (%s) looks like species %d, but species %d was specified in MIDI file",
-					cantus_id + 1, cantus_high ? "high" : "low", species_detected, species);
-				if (species_detected == 4 && species == 2) WriteLog(1, est);
-				else if (species_detected == 2 && species == 4) WriteLog(1, est);
-				else WriteLog(5, est);
+				if (species_pos[species]) {
+					est.Format("Counterpoint #%d (%s) looks like species %d (possible 1=%s, 2=%s, 3=%s, 4=%s, 5=%s), but species %d was specified",
+						cantus_id + 1, cantus_high ? "high" : "low", species_detected,
+						species_pos[1] ? "yes" : "no", species_pos[2] ? "yes" : "no",
+						species_pos[3] ? "yes" : "no", species_pos[4] ? "yes" : "no",
+						species_pos[5] ? "yes" : "no", species);
+					WriteLog(1, est);
+				}
+				else {
+					est.Format("Counterpoint #%d (%s) looks like species %d (possible 1=%s, 2=%s, 3=%s, 4=%s, 5=%s), but species %d was specified. This is impossible. Switched to detected species",
+						cantus_id + 1, cantus_high ? "high" : "low", species_detected,
+						species_pos[1] ? "yes" : "no", species_pos[2] ? "yes" : "no",
+						species_pos[3] ? "yes" : "no", species_pos[4] ? "yes" : "no",
+						species_pos[5] ? "yes" : "no", species);
+					WriteLog(5, est);
+					species = species_detected;
+				}
 			}
 		}
 	}
@@ -483,7 +516,10 @@ void CGenCA2::Generate() {
 	npm_conf = npm;
 	cantus_high_conf = cantus_high;
 	if (species_conf) WriteLog(1, "Warning: species and cantus_high in configuration file will override marks in imported music files");
+	if (error) return;
 	for (int i = 0; i < cpoint.size(); i++) {
+		error = 0;
+		specified_high = 0;
 		++cantus_id;
 		if (cpoint[cantus_id].size() != av_cnt) {
 			st.Format("Error: need %d voices in counterpoint. Loaded only %d instead in counterpoint %d. Skipping this counterpoint.",
@@ -509,6 +545,7 @@ void CGenCA2::Generate() {
 			species = species_conf;
 			cantus_high = cantus_high_conf;
 			npm = npm_conf;
+			specified_high = 1;
 		}
 		else {
 			LoadCantusHigh();
@@ -545,9 +582,9 @@ void CGenCA2::Generate() {
 			continue;
 		}
 		GetVlen();
+		DetectSpecies();
 		ExplodeCP();
 		ShrinkCP();
-		DetectSpecies();
 		if (!species) {
 			CString est;
 			est.Format("Counterpoint #%d (%s): cannot detect species, also species not specified in MIDI file",
@@ -565,6 +602,7 @@ void CGenCA2::Generate() {
 		// Show imported melody
 		MergeCantus();
 		ShrinkCantus2();
+		if (error) continue;
 		//LogCantus("ca2", cantus_id, cpoint[cantus_id][cpv].size(), cpoint[cantus_id][cpv]);
 		real_len = accumulate(cantus_len[i].begin(), cantus_len[i].end(), 0) + fn * cantus_len[i][0];
 		dpenalty_cur = 0;

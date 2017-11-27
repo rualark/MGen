@@ -806,6 +806,7 @@ protected:
 	vector<int> retrigger; // [s] Equals 1 if note should be retriggered
 	int species = 0; // Counterpoint species
 	int species_detected = 0; // Counterpoint species detected in CA2
+	vector<int> species_pos; // Possible species
 	int sus_count = 0; // Number of suspensions detected in ExplodeCP
 	int local_flag_position;
 	int fixed_ep2 = 0; // For SAS emulation
