@@ -1227,9 +1227,9 @@ int CGenCP1::DetectDNT() {
 			int lp = abs(acc[cpv][fli[ls + 2]] - acc[cpv][fli[ls + 1]]);
 			if (lp < 3) continue;
 			if (lp > 4) {
+				if (lp > dnt_max_leap) continue;
 				if (pattern_needed) FLAG2(260, fli[ls]);
 				if (!accept[260]) continue;
-				if (lp > dnt_max_leap) continue;
 			}
 			if (ls < fli_size - 3) {
 				// Note 3 is longer than 4
