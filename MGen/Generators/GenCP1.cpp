@@ -3202,14 +3202,14 @@ check:
 		nmaxd = CC_C(nmax, tonic_cur, minor_cur);
 		if (FailGlobalFill(ac[cpv], nstat2)) goto skip;
 		if (npm == 1) {
-			if (FailLocalRange(acc[cpv], notes_lrange1, min_lrange1, 352)) goto skip;
-			if (FailLocalRange(acc[cpv], notes_lrange12, min_lrange12, 353)) goto skip;
-			if (FailLocalRange(acc[cpv], notes_lrange13, min_lrange13, 351)) goto skip;
+			if (FailLocalRange(ac[cpv], notes_lrange1, min_lrange1, 352)) goto skip;
+			if (FailLocalRange(ac[cpv], notes_lrange12, min_lrange12, 353)) goto skip;
+			if (FailLocalRange(ac[cpv], notes_lrange13, min_lrange13, 351)) goto skip;
 		}
 		else {
-			if (FailLocalRange(acc[cpv], notes_lrange, min_lrange, 98)) goto skip;
-			if (FailLocalRange(acc[cpv], notes_lrange2, min_lrange2, 198)) goto skip;
-			if (FailLocalRange(acc[cpv], notes_lrange3, min_lrange3, 300)) goto skip;
+			if (FailLocalRange(ac[cpv], notes_lrange, min_lrange, 98)) goto skip;
+			if (FailLocalRange(ac[cpv], notes_lrange2, min_lrange2, 198)) goto skip;
+			if (FailLocalRange(ac[cpv], notes_lrange3, min_lrange3, 300)) goto skip;
 		}
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;

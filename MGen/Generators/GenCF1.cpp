@@ -386,18 +386,18 @@ void CGenCF1::SetRuleParams() {
 	min_picount3 = GetRuleParam(rule_set, 346, rsSubName, 1);
 
 	notes_lrange = GetRuleParam(rule_set, 98, rsSubName, 0);
-	min_lrange = Interval2Chromatic(GetRuleParam(rule_set, 98, rsSubName, 1));
+	min_lrange = abs(GetRuleParam(rule_set, 98, rsSubName, 1)) - 1;
 	notes_lrange2 = GetRuleParam(rule_set, 198, rsSubName, 0);
-	min_lrange2 = Interval2Chromatic(GetRuleParam(rule_set, 198, rsSubName, 1));
+	min_lrange2 = abs(GetRuleParam(rule_set, 198, rsSubName, 1)) - 1;
 	notes_lrange3 = GetRuleParam(rule_set, 300, rsSubName, 0);
-	min_lrange3 = Interval2Chromatic(GetRuleParam(rule_set, 300, rsSubName, 1));
+	min_lrange3 = abs(GetRuleParam(rule_set, 300, rsSubName, 1)) - 1;
 
 	notes_lrange1 = GetRuleParam(rule_set, 352, rsSubName, 0);
-	min_lrange1 = Interval2Chromatic(GetRuleParam(rule_set, 352, rsSubName, 1));
+	min_lrange1 = abs(GetRuleParam(rule_set, 352, rsSubName, 1)) - 1;
 	notes_lrange12 = GetRuleParam(rule_set, 353, rsSubName, 0);
-	min_lrange12 = Interval2Chromatic(GetRuleParam(rule_set, 353, rsSubName, 1));
+	min_lrange12 = abs(GetRuleParam(rule_set, 353, rsSubName, 1)) - 1;
 	notes_lrange13 = GetRuleParam(rule_set, 351, rsSubName, 0);
-	min_lrange13 = Interval2Chromatic(GetRuleParam(rule_set, 351, rsSubName, 1));
+	min_lrange13 = abs(GetRuleParam(rule_set, 351, rsSubName, 1)) - 1;
 
 	notes_arange = GetRuleParam(rule_set, 15, rsSubName, 0);
 	min_arange = GetRuleParam(rule_set, 15, rsSubName, 1) / 10.0;
@@ -756,8 +756,8 @@ int CGenCF1::FailNoteSeq(vector<int> &pc) {
 	return 0;
 }
 
-int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
-	CHECK_READY(DR_fli);
+int CGenCF1::FailLocalRange(vector<int> &c, int notes, int mrange, int flag) {
+	CHECK_READY(DR_fli, DR_c);
 	// Do not test if flag disabled and not testing
 	if (task != tEval && accept[flag] == -1) return 0;
 	// Do not test if not enough notes. If melody is short, than global range check is enough
@@ -774,8 +774,8 @@ int CGenCF1::FailLocalRange(vector<int> &cc, int notes, int mrange, int flag) {
 		// Loop inside each window
 		for (int ls2 = ls; ls2 < ls_max2; ++ls2) {
 			s = fli[ls2];
-			if (cc[s] < lmin) lmin = cc[s];
-			if (cc[s] > lmax) lmax = cc[s];
+			if (c[s] < lmin) lmin = c[s];
+			if (c[s] > lmax) lmax = c[s];
 		}
 		// Check range
 		if (lmax - lmin < mrange) {
@@ -4639,9 +4639,9 @@ check:
 		if (FailLongRepeat(m_c, m_cc, m_leap, repeat_steps5, repeat_notes5, 72)) goto skip;
 		if (FailLongRepeat(m_c, m_cc, m_leap, repeat_steps7, repeat_notes7, 73)) goto skip;
 		if (FailGlobalFill(m_c, nstat2)) goto skip;
-		if (FailLocalRange(m_cc, notes_lrange1, min_lrange1, 352)) goto skip;
-		if (FailLocalRange(m_cc, notes_lrange12, min_lrange12, 353)) goto skip;
-		if (FailLocalRange(m_cc, notes_lrange13, min_lrange13, 351)) goto skip;
+		if (FailLocalRange(m_c, notes_lrange1, min_lrange1, 352)) goto skip;
+		if (FailLocalRange(m_c, notes_lrange12, min_lrange12, 353)) goto skip;
+		if (FailLocalRange(m_c, notes_lrange13, min_lrange13, 351)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount, min_picount, 344)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount2, min_picount2, 345)) goto skip;
 		if (FailLocalPiCount(m_cc, notes_picount3, min_picount3, 346)) goto skip;
