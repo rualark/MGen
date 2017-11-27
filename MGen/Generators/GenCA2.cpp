@@ -167,21 +167,26 @@ void CGenCA2::GetVlen() {
 	// Detect minimum note length for each voice
 	min_vlen.clear();
 	max_vlen.clear();
+	med_vlen.clear();
 	sus_count = 0;
 	int cur_len = 0;
 	int n;
 	min_vlen.resize(av_cnt, INT_MAX);
 	max_vlen.resize(av_cnt, 0);
+	med_vlen.resize(av_cnt, 0.0);
 	for (int v = 0; v < av_cnt; ++v) {
 		int prev_note = cpoint[cantus_id][v][0];
+		int note_count = 0;
 		cur_len = cantus_len[cantus_id][0];
 		for (s = 1; s < cpoint[cantus_id][v].size(); ++s) {
 			n = cpoint[cantus_id][v][s];
 			if (n != prev_note) {
 				if (cur_len < min_vlen[v]) min_vlen[v] = cur_len;
 				if (cur_len > max_vlen[v]) max_vlen[v] = cur_len;
+				med_vlen[v] = (med_vlen[v] * note_count + cur_len) * 1.0 / (note_count + 1);
 				cur_len = 0;
 				prev_note = n;
+				++note_count;
 			}
 			cur_len += cantus_len[cantus_id][s];
 		}
@@ -336,7 +341,11 @@ void CGenCA2::DetectSpecies() {
 	else if (min_vlen[cpv] * 4 == min_vlen[cfv]) {
 		species_pos[3] = 1;
 		species_pos[5] = 1;
-		species_detected = 3;
+		// Notes longer than 1/2 ?
+		if (max_vlen[cpv] > min_vlen[cpv] * 2)	species_detected = 5;
+		// More than 15% notes slurred?
+		else if (med_vlen[cpv] > min_vlen[cpv] * 1.15)	species_detected = 5;
+		else species_detected = 3;
 	}
 	else if (min_vlen[cpv] * 8 == min_vlen[cfv]) {
 		species_pos[5] = 1;
