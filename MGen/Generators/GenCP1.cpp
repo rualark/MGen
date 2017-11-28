@@ -3069,7 +3069,9 @@ int CGenCP1::FailMaxNoteLen() {
 	CHECK_READY(DR_fli);
 	// Never check last note, either end of scan window or end of counterpoint
 	for (ls = 0; ls < fli_size - 1; ++ls) {
-		if (rlen[ls] > max_note_len[species] * 2) FLAG2(335 + species, fli[ls]);
+		if (rlen[ls] > max_note_len[species] * 2) FLAG2(336 + species - 1, fli[ls]);
+		// Check notes crossing multiple measures
+		if (bmli[fli2[ls]] - bmli[fli[ls]] > 1) FLAG2(41, fli[ls]);
 	}
 	return 0;
 }
