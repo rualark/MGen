@@ -405,8 +405,6 @@ int main()
         nRetCode = 4;
     }
     else {
-			ParseFlags();
-			return 0;
 			test();
 		}
   }
