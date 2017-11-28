@@ -31,5 +31,7 @@ protected:
 	int species_applied = 0; // If species midi out multiplier already applied
 
 	// Save configuration parameters
-	int npm_conf, species_conf, cantus_high_conf;
+	int npm_conf = 0;
+	int species_conf = 0;
+	int cantus_high_conf = 0;
 };

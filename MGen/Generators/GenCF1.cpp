@@ -2207,7 +2207,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 			else FLAG2(18, s0);
 		}
 		// Flag resolution for tritone with intermediate note, accented
-		else if (found == 3) {
+		else if (found == 3) { //-V547
 			if (res1*res2 == 0) FLAG2(342, s0)
 			else FLAG2(343, s0);
 		}

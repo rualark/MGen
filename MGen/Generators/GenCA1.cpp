@@ -428,7 +428,7 @@ void CGenCA1::LogFlags() {
 		// Loop through all flags 
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
 			fl = anflags[cpv][s][f];
-			fst = "";
+			fst.Empty();
 			if (accept[fl] == 0) fst = "-";
 			if (accept[fl] == 1) fst = "+";
 			if (accept[fl] == -1) fst = "$";

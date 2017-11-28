@@ -152,9 +152,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;20;20;Cantus;Harmony;Missing letters in a row;>4;0;;;1;1;;;;;;17,20,23,48,57,77,92,99
 1;194;0;Cantus;Harmony;Accented bad progression;leap >4th;-1;Only for cantus;;1;;;;;;;
 1;195;0;Cantus;Harmony;Accented bad progression;culmination;-1;Only for cantus;;1;;;;;;;
-1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate;1;;In penultimate measure;1;;;;;;;
+1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate 2;1;;In penultimate measure;1;;;;;;;
 1;329;30;Cantus;Harmony;Multiple harmonies in measure;sus 5/6 stepw;1;;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure;1;;;;;;;
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;1;;;;;;;
+1;40;70;Cantus;Harmony;Multiple harmonies in measure;3;0;;3 harmonies;;;;;;;;
 1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;;;;;;;
 1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;;;1;;;;;17,20,23,48,57,77,92,99
 1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;1;;;;;
@@ -337,7 +338,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;240;60;Cantus;Rhythm;1/2 after 1/4 or 1/8 in measure;inside;0;;;;;1;;;239;;
 1;336;60;Cantus;Rhythm;Max note length;sp1: >8/4;0;Except last note;Usually >8/4;;;;;;;;
 1;337;60;Cantus;Rhythm;Max note length;sp2: >4/4;0;Except last note;Usually >2/4 or >4/4;;;;;;;;
-1;338;60;Cantus;Rhythm;Max note length;sp3: >2/4;0;Except last note;Usually >1/4 or >2/4;;;;;;;;
+1;338;60;Cantus;Rhythm;Max note length;sp3: >1/4;0;Except last note;Usually >1/4 or >2/4;;;;;;;;
 1;339;60;Cantus;Rhythm;Max note length;sp4: >4/4;0;Except last note;Usually >4/4;;;;;;;;
 1;340;60;Cantus;Rhythm;Max note length;sp5: >6/4;0;Except last note;Usually >6/4;;;;;;;;
 1;267;0;Cantus;Rhythm;Last note;not whole;0;;;;;1;;1;;;
