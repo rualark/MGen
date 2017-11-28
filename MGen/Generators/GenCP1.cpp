@@ -2933,7 +2933,7 @@ int CGenCP1::FailHarm() {
 			if (harm_conflict && s > mli[ms]) {
 				RemoveHarmDuplicate();
 				// More than two harmonies
-				if (hcount) FLAG2(307, s)
+				if (hcount) FLAG2(40, s)
 				else {
 					// Two harmonies penultimate
 					if (ms == mli.size() - 2) FLAG2(306, s)
