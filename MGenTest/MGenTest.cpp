@@ -21,6 +21,8 @@ CWinApp theApp;
 
 using namespace std;
 
+#define MAX_FLAGS 500
+
 CString current_dir;
 ofstream logfile;
 int continuous_integration = 0;
@@ -276,8 +278,8 @@ void PushArtifacts() {
 		suffix = "-debug";
 #endif
 		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
-		if (CGLib::fileExists("autotest\\ffreq.csv"))
-			Run("appveyor", "PushArtifact autotest\\ffreq.csv -Verbosity Normal -Type Auto -FileName ffreq" +
+		if (CGLib::fileExists("autotest\\fstat.csv"))
+			Run("appveyor", "PushArtifact autotest\\fstat.csv -Verbosity Normal -Type Auto -FileName ffreq" +
 				suffix + ".csv", 1000);
 		if (CGLib::fileExists("autotest\\flags.log"))
 			Run("appveyor", "PushArtifact autotest\\flags.log -Verbosity Normal -Type Auto -FileName flags" +
@@ -306,14 +308,15 @@ void PushArtifacts() {
 
 void ParseFlags() {
 	vector<CString> sv;
-	vector<int> fstat;
-	fstat.resize(500);
+	vector<int> fstat, fconfirmed;
+	fstat.resize(MAX_FLAGS);
+	fconfirmed.resize(MAX_FLAGS);
 	if (!CGLib::fileExists("autotest\\flags.log")) return;
 	CGLib::read_file_sv("autotest\\flags.log", sv);
 	for (int i = 0; i < sv.size(); ++i) {
 		int pos = sv[i].Find("[");
 		if (pos == -1) continue;
-		CString fid = sv[i].Mid(pos, 10);
+		CString fid = sv[i].Mid(pos + 1, 10);
 		pos = fid.Find("]");
 		fid = fid.Left(pos);
 		int fidi = atoi(fid);
@@ -329,10 +332,34 @@ void ParseFlags() {
 		}
 		++fstat[fidi];
 	}
+	if (CGLib::fileExists("autotest\\expect.log")) {
+		CGLib::read_file_sv("autotest\\expect.log", sv);
+		for (int i = 0; i < sv.size(); ++i) {
+			int pos = sv[i].Find("[");
+			if (pos == -1) continue;
+			CString fid = sv[i].Mid(pos + 1, 10);
+			pos = fid.Find("]");
+			fid = fid.Left(pos);
+			int fidi = atoi(fid);
+			if (fidi <= 0) {
+				nRetCode = 5;
+				cout << "Flag ID is below 1: " << sv[i] << "\n";
+				continue;
+			}
+			if (fidi >= fconfirmed.size()) {
+				nRetCode = 5;
+				cout << "Flag ID is above maximum flag count " << fconfirmed.size() <<
+					": " << sv[i] << "\n";
+				continue;
+			}
+			++fconfirmed[fidi];
+		}
+	}
 	ofstream outfile;
-	outfile.open("autotest\\ffreq.csv");
+	outfile.open("autotest\\fstat.csv");
+	outfile << "Flag,Freq,Confirmed\n";
 	for (int i = 0; i < fstat.size(); ++i) {
-		outfile << i << "," << fstat[i] << "\n";
+		outfile << i << "," << fstat[i] << "," << fconfirmed[i] << "\n";
 	}
 	outfile.close();
 }
@@ -371,24 +398,22 @@ int main()
 	InitErrorMessages();
 	HMODULE hModule = ::GetModuleHandle(nullptr);
 
-    if (hModule != nullptr)
-    {
-        // initialize MFC and print and error on failure
-        if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0))
-        {
-            wprintf(L"Fatal Error: MFC initialization failed\n");
-            nRetCode = 4;
-        }
-        else
-        {
-					test();
-				}
+  if (hModule != nullptr) {
+    // initialize MFC and print and error on failure
+    if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0)) {
+        wprintf(L"Fatal Error: MFC initialization failed\n");
+        nRetCode = 4;
     }
-    else
-    {
-        wprintf(L"Fatal Error: GetModuleHandle failed\n");
-        nRetCode = 1;
-    }
+    else {
+			ParseFlags();
+			return 0;
+			test();
+		}
+  }
+  else {
+      wprintf(L"Fatal Error: GetModuleHandle failed\n");
+      nRetCode = 1;
+  }
 
-    return nRetCode;
+  return nRetCode;
 }
