@@ -279,7 +279,7 @@ void PushArtifacts() {
 #endif
 		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
 		if (CGLib::fileExists("autotest\\fstat.csv"))
-			Run("appveyor", "PushArtifact autotest\\fstat.csv -Verbosity Normal -Type Auto -FileName ffreq" +
+			Run("appveyor", "PushArtifact autotest\\fstat.csv -Verbosity Normal -Type Auto -FileName fstat" +
 				suffix + ".csv", 1000);
 		if (CGLib::fileExists("autotest\\flags.log"))
 			Run("appveyor", "PushArtifact autotest\\flags.log -Verbosity Normal -Type Auto -FileName flags" +
@@ -357,9 +357,9 @@ void ParseFlags() {
 	}
 	ofstream outfile;
 	outfile.open("autotest\\fstat.csv");
-	outfile << "Flag,Freq,Confirmed\n";
+	outfile << "Rule ID;Freq;Confirmed\n";
 	for (int i = 0; i < fstat.size(); ++i) {
-		outfile << i << "," << fstat[i] << "," << fconfirmed[i] << "\n";
+		outfile << i << ";" << fstat[i] << ";" << fconfirmed[i] << "\n";
 	}
 	outfile.close();
 }
