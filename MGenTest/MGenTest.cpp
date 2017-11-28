@@ -265,22 +265,29 @@ void LoadConfig() {
 			PublishTest(pname, ecode, passed, st2);
 		}
 	}
-	ParseLyLogs();
+
+	fs.close();
+}
+
+void PushArtifacts() {
 	if (continuous_integration) {
 		CString suffix = "-release";
 #ifdef _DEBUG
 		suffix = "-debug";
 #endif
 		suffix += "-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S");
+		if (CGLib::fileExists("autotest\\ffreq.csv"))
+			Run("appveyor", "PushArtifact autotest\\ffreq.csv -Verbosity Normal -Type Auto -FileName ffreq" +
+				suffix + ".csv", 1000);
 		if (CGLib::fileExists("autotest\\flags.log"))
 			Run("appveyor", "PushArtifact autotest\\flags.log -Verbosity Normal -Type Auto -FileName flags" +
 				suffix + ".log >> run.log 2>&1", 1000);
 		//if (CGLib::fileExists("autotest\\expect.log"))
-			Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" +
-				suffix + ".log >> run.log 2>&1", 1000);
+		Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" +
+			suffix + ".log >> run.log 2>&1", 1000);
 		//if (CGLib::fileExists("autotest\\sas-emu.log"))
-			Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
-				suffix + ".log >> run.log 2>&1", 1000);
+		Run("appveyor", "PushArtifact autotest\\sas-emu.log -Verbosity Normal -Type Auto -FileName sas-emu" +
+			suffix + ".log >> run.log 2>&1", 1000);
 		// cor-ack log must exist only in release, because in debug it can be not enough time to be created
 		if (CGLib::fileExists("autotest\\cor-ack.log") || !is_debug)
 			Run("appveyor", "PushArtifact autotest\\cor-ack.log -Verbosity Normal -Type Auto -FileName cor-ack" +
@@ -289,37 +296,45 @@ void LoadConfig() {
 			Run("appveyor", "PushArtifact autotest\\ly.log -Verbosity Normal -Type Auto -FileName ly" +
 				suffix + ".log >> run.log 2>&1", 1000);
 		//if (CGLib::fileExists("autotest\\perf.log"))
-			Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
-				suffix + ".log >> run.log 2>&1", 1000);
+		Run("appveyor", "PushArtifact autotest\\perf.log -Verbosity Normal -Type Auto -FileName perf" +
+			suffix + ".log >> run.log 2>&1", 1000);
 		if (CGLib::fileExists("autotest\\run.log"))
 			Run("appveyor", "PushArtifact autotest\\run.log -Verbosity Normal -Type Auto -FileName run" +
 				suffix + ".log", 1000);
 	}
-	// Show run output
-	//Run("cmd.exe", "/c echo Test >> autotest\\run.log", 1000);
-	CString outs = file("autotest\\run.log");
-	cout << "Run log:\n";
-	cout << outs;
-	/*
-	// Show expect output
-	outs = file("autotest\\expect.log");
-	cout << "Expect log:\n";
-	cout << outs;
-	outs = file("autotest\\sas-emu.log");
-	cout << "SAS emulator log:\n";
-	cout << outs;
-	outs = file("autotest\\cor-ack.log");
-	cout << "Correction acknowledge log:\n";
-	cout << outs;
-	outs = file("autotest\\perf.log");
-	cout << "Correction acknowledge log:\n";
-	cout << outs;
-	outs = file("autotest\\ly.log");
-	cout << "Lilypond log:\n";
-	cout << outs;
-	*/
+}
 
-	fs.close();
+void ParseFlags() {
+	vector<CString> sv;
+	vector<int> fstat;
+	fstat.resize(500);
+	if (!CGLib::fileExists("autotest\\flags.log")) return;
+	CGLib::read_file_sv("autotest\\flags.log", sv);
+	for (int i = 0; i < sv.size(); ++i) {
+		int pos = sv[i].Find("[");
+		if (pos == -1) continue;
+		CString fid = sv[i].Mid(pos, 10);
+		pos = fid.Find("]");
+		fid = fid.Left(pos);
+		int fidi = atoi(fid);
+		if (fidi <= 0) {
+			nRetCode = 5;
+			cout << "Flag ID is below 1: " << sv[i] << "\n";
+			continue;
+		}
+		if (fidi >= fstat.size()) {
+			nRetCode = 5;
+			cout << "Flag ID is above maximum flag count " << fstat.size() << ": " << sv[i] << "\n";
+			continue;
+		}
+		++fstat[fidi];
+	}
+	ofstream outfile;
+	outfile.open("autotest\\ffreq.csv");
+	for (int i = 0; i < fstat.size(); ++i) {
+		outfile << i << "," << fstat[i] << "\n";
+	}
+	outfile.close();
 }
 
 int test() {
@@ -334,6 +349,14 @@ int test() {
 	Log("Current dir: " + current_dir + "\n");
 
 	LoadConfig();
+	ParseLyLogs();
+	ParseFlags();
+	PushArtifacts();
+
+	CString outs = file("autotest\\run.log");
+	cout << "Run log:\n";
+	cout << outs;
+
 	logfile.close();
 	// Do not pause if continuous integration
 	if (!continuous_integration) {
