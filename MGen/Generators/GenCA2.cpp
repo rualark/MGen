@@ -581,7 +581,7 @@ void CGenCA2::Generate() {
 		if (cpoint[cantus_id].size() != av_cnt) {
 			st.Format("Error: need %d voices in counterpoint. Loaded only %d instead in counterpoint %d. Skipping this counterpoint.",
 				av_cnt, cpoint[cantus_id].size(), cantus_id+1);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			continue;
 		}
 		step0 = step;
@@ -653,7 +653,7 @@ void CGenCA2::Generate() {
 		if (!cpoint[cantus_id][cpv][0] && cpoint[cantus_id][cfv][1] != cpoint[cantus_id][cfv][0]) {
 			st.Format("Warning: Starting pause in counterpoint is greater or equal to cantus note length (%s cpoint #%d). Skipping counterpoint",
 				cantus_high ? "high" : "low", cantus_id + 1);
-			WriteLog(1, st);
+			WriteLog(5, st);
 			continue;
 		}
 		GetVlen();
