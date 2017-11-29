@@ -1025,7 +1025,8 @@ int CGenCP1::FailDis() {
 		else if (msh[ls] == pDownbeat) FLAG2(83, s)
 		else if (msh[ls] == pSusStart) FLAG2(359, s)
 		else if (msh[ls] == pSusRes) FLAG2(360, s)
-		else if (msh[ls] == pLastLT) FLAG2(361, s)
+			// pLastLT cannot be dissonance, because it is set only if it is not dissonance
+		//else if (msh[ls] == pLastLT) FLAG2(361, s)
 		// This is protection against wrong melodic shape value
 		else if (msh[ls] > 0) FLAG2(83, s)
 		else {
