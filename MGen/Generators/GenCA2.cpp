@@ -562,8 +562,8 @@ void CGenCA2::Generate() {
 	InitCP();
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCP(midi_file);
-	cantus_incom.clear();
-	cantus_incom.resize(cpoint.size());
+	//cantus_incom.clear();
+	//cantus_incom.resize(cpoint.size());
 	//LinkCpPauses();
 	if (cpoint.size() < 1) return;
 	// Saved t_generated
