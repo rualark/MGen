@@ -752,6 +752,7 @@ void CMainFrame::OnButtonGen()
 		m_GenThread = AfxBeginThread(CMainFrame::GenThread, pGen);
 		// Start timer
 		SetTimer(TIMER1, m_view_timer, NULL);
+		::KillTimer(m_hWnd, TIMER2);
 		if (autoplay && pGen->shuffle == 0 && GetMidiI() != -1) SetTimer(TIMER2, 1000, NULL);
 	}
 }
