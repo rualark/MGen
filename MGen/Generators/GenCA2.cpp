@@ -658,7 +658,7 @@ void CGenCA2::Generate() {
 		}
 		GetVlen();
 		GetSusCount();
-		//CheckCantusLonger();
+		//CheckCantusLonger(); 
 		DetectSpecies();
 		SplitSpecies();
 		ExplodeCP();
