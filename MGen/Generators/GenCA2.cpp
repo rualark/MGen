@@ -192,26 +192,31 @@ void CGenCA2::GetVlen() {
 		}
 		if (cur_len < min_vlen[v]) min_vlen[v] = cur_len;
 	}
-	// Calculate sus count
+}
+
+// Calculate sus count
+void CGenCA2::GetSusCount() {
 	for (int i = 1; i < cpoint[cantus_id][cpv].size(); ++i) {
 		if (cpoint[cantus_id][cpv][i] == cpoint[cantus_id][cpv][i - 1] &&
 			cpoint[cantus_id][cfv][i] != cpoint[cantus_id][cfv][i - 1]) ++sus_count;
 	}
 }
 
-// Detect npm and explode notes into uniform length notes
-void CGenCA2::ExplodeCP() {
+void CGenCA2::CheckCantusLonger() {
 	// Check that cantus has longer notes than other voice
-	if (min_vlen[cfv] < min_vlen[cpv]) {
+	if (med_vlen[cfv] < med_vlen[cpv]) {
 		CString est;
-		est.Format("Warning: minimum counterpoint note length %d is longer than minimum cantus note %d of %s cantus #%d. Changed cantus to %s", 
-			min_vlen[cpv], min_vlen[cfv], cantus_high?"higher":"lower", cantus_id+1, (!cantus_high) ? "higher" : "lower");
-		WriteLog(5, est);
+		est.Format("Warning: minimum counterpoint note length %d is longer than minimum cantus note %d of %s cantus #%d. Changed cantus to %s",
+			min_vlen[cpv], min_vlen[cfv], cantus_high ? "higher" : "lower", cantus_id + 1, (!cantus_high) ? "higher" : "lower");
+		WriteLog(0, est);
 		// Change cantus type
 		cantus_high = !cantus_high;
 		cpv = !cpv;
 		cfv = !cfv;
 	}
+}
+
+void CGenCA2::SplitSpecies() {
 	if (min_vlen[cfv] / min_vlen[cpv] < 8 && species == 5) {
 		// Do not increase cpv length - it will decrease two times this way
 		int coef = 8 * min_vlen[cpv] / min_vlen[cfv];
@@ -236,6 +241,10 @@ void CGenCA2::ExplodeCP() {
 			cantus_tempo[cantus_id][i] *= coef;
 		}
 	}
+}
+
+// Detect npm and explode notes into uniform length notes
+void CGenCA2::ExplodeCP() {
 	// Calculate npm
 	npm = max(1, min_vlen[cfv] / min_vlen[cpv]);
 	if (species == 1) {
@@ -504,6 +513,34 @@ void CGenCA2::ReduceBetween() {
 	}
 }
 
+int CGenCA2::GetCantusVoice() {
+	if (med_vlen[0] >= med_vlen[1] && min_vlen[0] == max_vlen[0]) return 0;
+	if (med_vlen[1] >= med_vlen[0] && min_vlen[1] == max_vlen[1]) return 1;
+	return -1;
+}
+
+void CGenCA2::FindBestPause() {
+	// Continue only if there is starting pause
+	if (cpoint[cantus_id][0][0] && cpoint[cantus_id][1][0]) return;
+	// Cantus is voice with longest med_vlen and constant note length
+	// Detect cantus in current pause position
+	GetVlen();
+	int v1 = GetCantusVoice();
+	// Return if cantus detected
+	if (v1 > -1) {
+		cantus_high = v1;
+		return;
+	}
+	// Change position and detect cantus
+	swap(cpoint[cantus_id][0][0], cpoint[cantus_id][1][0]);
+	GetVlen();
+	int v2 = GetCantusVoice();
+	// Return detected cantus
+	if (v2 > -1) {
+		cantus_high = v2;
+	}
+}
+
 void CGenCA2::Generate() {
 	//CString test_st = "62 62 62 62 69 69 66 66 67 67 67 67 66 66 64 64 66 66 66 66 66 66 67 67 66 66 66 66 69 69 69 69 71 71 69 69 67 67 76 76 73 73 73 73 71 71 69 69 74 74 73 73 71 71 69 69 67 67 71 71 73 73 73 73 74";
 	//test_cc.resize(65);
@@ -516,6 +553,8 @@ void CGenCA2::Generate() {
 	InitCP();
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCP(midi_file);
+	cantus_incom.clear();
+	cantus_incom.resize(cpoint.size());
 	//LinkCpPauses();
 	if (cpoint.size() < 1) return;
 	// Saved t_generated
@@ -560,6 +599,23 @@ void CGenCA2::Generate() {
 			LoadCantusHigh();
 			LoadSpecies();
 		}
+		GetVlen();
+		/*
+		// Fix shifted pause in longer voice
+		if (cpoint[i][1][0] == 0 && med_vlen[1] > med_vlen[0]) {
+			st.Format("Detected pause in voice 1 with longer notes (%s cantus #%d). Moved pause to other voice",
+				cantus_high ? "high" : "low", cantus_id + 1);
+			WriteLog(0, st);
+			swap(cpoint[cantus_id][0][0], cpoint[cantus_id][1][0]);
+		}
+		if (cpoint[i][0][0] == 0 && med_vlen[0] > med_vlen[1]) {
+			st.Format("Detected pause in voice 0 with longer notes (%s cantus #%d). Moved pause to other voice",
+				cantus_high ? "high" : "low", cantus_id + 1);
+			WriteLog(0, st);
+			swap(cpoint[cantus_id][0][0], cpoint[cantus_id][1][0]);
+		}
+		*/
+		FindBestPause();
 		// Check level
 		if ((cantus_high && cpoint[i][1][0] == 0) || (!cantus_high && cpoint[i][0][0] == 0)) {
 			if (specified_high) {
@@ -571,7 +627,7 @@ void CGenCA2::Generate() {
 			else {
 				st.Format("Warning: Cantus starts with a pause (%s cantus #%d). Changed to %s",
 					cantus_high ? "high" : "low", cantus_id + 1, (!cantus_high) ? "high" : "low");
-				WriteLog(5, st);
+				WriteLog(0, st);
 				cantus_high = !cantus_high;
 			}
 		}
@@ -591,7 +647,10 @@ void CGenCA2::Generate() {
 			continue;
 		}
 		GetVlen();
+		GetSusCount();
+		CheckCantusLonger();
 		DetectSpecies();
+		SplitSpecies();
 		ExplodeCP();
 		ShrinkCP();
 		if (!species) {
@@ -599,7 +658,7 @@ void CGenCA2::Generate() {
 			est.Format("Counterpoint #%d (%s): cannot detect species, also species not specified in MIDI file",
 				cantus_id + 1, cantus_high ? "high" : "low");
 			WriteLog(5, est);
-			//continue;
+			continue;
 		}
 		ReduceBetween(); 
 		fn0 = fn;

@@ -10,6 +10,8 @@ public:
 	void FixUnisonPause();
 	void FixStartPause();
 	void ReduceBetween();
+	int GetCantusVoice();
+	void FindBestPause();
 	void Generate() override;
 
 protected:
@@ -17,6 +19,9 @@ protected:
 	void ShrinkCantus2();
 	void ShrinkCP();
 	void GetVlen();
+	void GetSusCount();
+	void CheckCantusLonger();
+	void SplitSpecies();
 	void ExplodeCP();
 	void LinkCpPauses();
 	void DetectSpecies();

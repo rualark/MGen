@@ -3357,13 +3357,13 @@ void CGenCP1::LoadCantusHigh() {
 			// Use previous cantus_high (of previous cantus or from configuration if first cantus)
 			st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
 				cantus_id + 1, cantus_high ? "high" : "low");
-			WriteLog(5, st);
+			WriteLog(0, st);
 		}
 	}
 	else {
 		st.Format("Warning: no CF=high or CF=low lyrics for counterpoint #%d. Assuming %s",
 			cantus_id + 1, cantus_high ? "high" : "low");
-		WriteLog(5, st);
+		WriteLog(0, st);
 	}
 }
 
