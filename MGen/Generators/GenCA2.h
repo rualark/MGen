@@ -11,6 +11,7 @@ public:
 	void FixStartPause();
 	void ReduceBetween();
 	int GetCantusVoice();
+	int DetectCantusHigh();
 	void FindBestPause();
 	void Generate() override;
 

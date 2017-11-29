@@ -519,6 +519,15 @@ int CGenCA2::GetCantusVoice() {
 	return -1;
 }
 
+int CGenCA2::DetectCantusHigh() {
+	if (min_vlen[0] == max_vlen[0] && min_vlen[1] == max_vlen[1]) {
+		if (med_vlen[1] > med_vlen[0]) return 1;
+		else return 0;
+	}
+	if (min_vlen[1] == max_vlen[1]) return 1;
+	return 0;
+}
+
 void CGenCA2::FindBestPause() {
 	// Continue only if there is starting pause
 	if (cpoint[cantus_id][0][0] && cpoint[cantus_id][1][0]) return;
@@ -616,6 +625,7 @@ void CGenCA2::Generate() {
 		}
 		*/
 		FindBestPause();
+		if (!specified_high) cantus_high = DetectCantusHigh();
 		// Check level
 		if ((cantus_high && cpoint[i][1][0] == 0) || (!cantus_high && cpoint[i][0][0] == 0)) {
 			if (specified_high) {
@@ -648,7 +658,7 @@ void CGenCA2::Generate() {
 		}
 		GetVlen();
 		GetSusCount();
-		CheckCantusLonger();
+		//CheckCantusLonger();
 		DetectSpecies();
 		SplitSpecies();
 		ExplodeCP();
