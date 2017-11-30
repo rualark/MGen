@@ -1022,10 +1022,12 @@ int CGenCP1::FailDis() {
 		// Do not flag discord if last note, because it can become suspension
 		if (sus[ls] || ls == fli_size - 1) return 0;
 		if (msh[ls] == pLeap) FLAG2(187, s)
-			// pSusStart does not have separate flag, because it is marked as interbar
 			// pLastLT cannot be dissonance, because it is set only if it is not dissonance
+			// pSusStart does not have separate flag, because it is marked as interbar
+			// Here pSusStart will never fire flag, because pSusStart is set only if sus start is not a dissonance
+		else if (msh[ls] == pSusStart) FLAG2(224, s)
 		else if (msh[ls] == pSusRes) FLAG2(360, s)
-		// This is protection against wrong melodic shape value
+			// This is protection against wrong melodic shape value
 		else if (msh[ls] > 0) FLAG2(83, s)
 		else {
 			// Stepwize
