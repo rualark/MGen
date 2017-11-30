@@ -1023,10 +1023,9 @@ int CGenCP1::FailDis() {
 		if (sus[ls] || ls == fli_size - 1) return 0;
 		if (msh[ls] == pLeap) FLAG2(187, s)
 		else if (msh[ls] == pDownbeat) FLAG2(83, s)
-		else if (msh[ls] == pSusStart) FLAG2(359, s)
-		else if (msh[ls] == pSusRes) FLAG2(360, s)
+			// pSusStart is not checked, because it is marked as  interbar
 			// pLastLT cannot be dissonance, because it is set only if it is not dissonance
-		//else if (msh[ls] == pLastLT) FLAG2(361, s)
+		else if (msh[ls] == pSusRes) FLAG2(360, s)
 		// This is protection against wrong melodic shape value
 		else if (msh[ls] > 0) FLAG2(83, s)
 		else {
