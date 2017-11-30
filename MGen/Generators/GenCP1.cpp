@@ -1891,23 +1891,21 @@ int CGenCP1::FailPcoApartStep() {
 			ls_1 = bli[pco8_last];
 			skip_len = s - pco8_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - ls_1 < 5) {
-				// Compound
-				if (civl[s] != civl[pco8_last]) {
-					// Direct compound
-					if ((acc[0][s] - acc[0][pco8_last]) * (acc[1][s] - acc[1][pco8_last]) > 0) {
-						FLAG2(347, s);
-					}
-					// Contrary compound ignored
-				}
 				// Anticipation
-				else if (retrigger[s]) FLAG2(315, s)
+				if (retrigger[s]) FLAG2(315, s)
 				// Downbeat
 				else if (fli[ls] == s && acc[cfv][s] != acc[cfv][s - 1]) {
 					FLAG2(316, s);
 				}
-				// Upbeat contrary
-				else if ((acc[0][s] - acc[0][pco8_last])*
-					(acc[1][s] - acc[1][pco8_last]) < 0) FLAG2(248, s)
+				// Compound
+				else if (civl[s] != civl[pco8_last]) {
+					// Direct compound
+					if ((acc[0][s] - acc[0][pco8_last]) * (acc[1][s] - acc[1][pco8_last]) > 0) {
+						FLAG2(347, s);
+					}
+					// Contrary compound upbeat
+					else FLAG2(248, s);
+				}
 				// Non-harmonic
 				else if ((!sus[ls_1] && (!pco8_last || asmooth[cpv][pco8_last - 1]) &&
 					(pco8_last2 + 1 >= ep2 || asmooth[cpv][pco8_last2])) ||
