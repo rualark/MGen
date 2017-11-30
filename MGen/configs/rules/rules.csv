@@ -336,7 +336,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;336;60;Cantus;Rhythm;Max note length;sp1: >8/4;0;Except last note;Usually >8/4;;;;;;;;;3;2
 1;337;60;Cantus;Rhythm;Max note length;sp2: >4/4;0;Except last note;Usually >2/4 or >4/4;;;;;;;;;6;6
 1;338;60;Cantus;Rhythm;Max note length;sp3: >1/4;0;Except last note;Usually >1/4 or >2/4;;1;;;;;;;45;6
-1;339;60;Cantus;Rhythm;Max note length;sp4: >4/4;0;Except last note;Usually >4/4;;;;;;;;;0;0
+1;339;60;Cantus;Rhythm;Max note length;sp4: >4/4;0;Except last note;Usually >4/4;;;1;;;;;;0;0
 1;340;60;Cantus;Rhythm;Max note length;sp5: >6/4;0;Except last note;Usually >6/4;;;;;;;;;5;4
 1;41;60;Cantus;Rhythm;Note crosses many measures;>2;0;;Note crosses more than two measures;;;1;;;;;;15;11
 1;267;0;Cantus;Rhythm;Last note;not whole;0;;;;;1;;1;;;;45;16
