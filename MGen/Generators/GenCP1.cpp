@@ -786,11 +786,11 @@ int CGenCP1::FailVMotion() {
 
 int CGenCP1::FailSusResolution(int s3) {
 	// Check if suspension second part is discord
-	if (tivl[s2] == iDis) {
+	if (tivl[s2] < 0) {
 		// Mark resolution as obligatory harmonic in basic msh
-		if (tivl[s3] != iDis && tivl[s3] != iHarm4) mshb[bli[s3]] = pSusRes;
+		if (tivl[s3] > 0) mshb[bli[s3]] = pSusRes;
 		// Resolution to discord
-		if (tivl[s3] == iDis || tivl[s3] == iHarm4) FLAG2(220, s)
+		if (tivl[s3] < 0) FLAG2(220, s)
 			// Resolution by leap
 		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2(221, s3)
 		else {
@@ -826,7 +826,7 @@ int CGenCP1::FailSus1() {
 		// Flag suspension
 		FLAG2(225, s);
 		// Check if sus starts from discord
-		if (tivl[s] == iDis || tivl[s] == iHarm4) FLAG2(224, s);
+		if (tivl[s] < 0) FLAG2(224, s);
 		last_cf = -1;
 		// Check all cantus note changes
 		for (s = sus[ls]; s <= s2; ++s) {
@@ -853,9 +853,9 @@ int CGenCP1::FailSus2() {
 		if (ep2 < c_len && ls == fli_size - 1) break;
 		antici = 0;
 		// If sus starts with dissonance, it is anticipation
-		if (tivl[s] == iDis) antici = 1;
+		if (tivl[s] < 0) antici = 1;
 		// If both consonances
-		else if (tivl[sus[ls]] != iDis) {
+		else if (tivl[sus[ls]] > 0) {
 			// If sus starts with note shorter than 1/2, it is anticipation
 			if (sus[ls] - s < npm / 2) antici = 1;
 			// If sus second part is equal or longer than whole note
@@ -937,7 +937,7 @@ int CGenCP1::FailSus2() {
 						else if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(296, fli[ls + 1])
 						else {
 							// Mark insertion as non-harmonic in basic msh if resolution is harmonic
-							if (tivl[s3] != iDis && tivl[s3] != iHarm4) mshb[ls + 1] = pAux;
+							if (tivl[s3] > 0) mshb[ls + 1] = pAux;
 							if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2(137, fli[ls + 1])
 							else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2(138, fli[ls + 1])
 						}
@@ -995,7 +995,7 @@ int CGenCP1::FailSus() {
 
 int CGenCP1::FailDisSus() {
 	// Discord
-	if (tivl[s] == iDis || tivl[s] == iHarm4) {
+	if (tivl[s] < 0) {
 		FLAG2(83, s);
 	}
 	return 0;
@@ -1175,10 +1175,10 @@ int CGenCP1::DetectPDD() {
 			// Note 2 is not longer than 3
 			if (llen[ls + 1] > llen[ls + 2] && (ep2 == c_len || ls < fli_size - 3)) continue;
 			// Third note must be consonance
-			if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) continue;
+			if (tivl[fli[ls + 2]] < 0) continue;
 		}
 		pattern_needed = 0;
-		if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) pattern_needed = 1;
+		if (tivl[fli[ls + 1]] < 0) pattern_needed = 1;
 		// Parallel motion - flag but allow (this will make dissonance legal, but will add flag with problem)
 		if (ac[cfv][fli[ls + 1]] - ac[cfv][s] == -1) {
 			if (pattern_needed) FLAG2(298, fli[ls + 1]);
@@ -1207,7 +1207,7 @@ int CGenCP1::DetectDNT() {
 		// Note 2 is long
 		if (llen[ls + 1] > npm / 2) continue;
 		// Note 1 is not dissonance
-		if (tivl[s] == iDis || tivl[s] == iHarm4) continue;
+		if (tivl[s] < 0) continue;
 		// Note 2 is downbeat
 		if (!beat[ls + 1]) continue;
 		// Movements are stepwize
@@ -1222,8 +1222,8 @@ int CGenCP1::DetectDNT() {
 			// Leap has same direction
 			if (aleap[cpv][fli2[ls + 1]] == asmooth[cpv][s2]) continue;
 			pattern_needed = 0;
-			if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) pattern_needed = 1;
-			else if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) pattern_needed = 1;
+			if (tivl[fli[ls + 1]] < 0) pattern_needed = 1;
+			else if (tivl[fli[ls + 2]] < 0) pattern_needed = 1;
 			// Maximum leap
 			int lp = abs(acc[cpv][fli[ls + 2]] - acc[cpv][fli[ls + 1]]);
 			if (lp < 3) continue;
@@ -1236,7 +1236,7 @@ int CGenCP1::DetectDNT() {
 				// Note 3 is longer than 4
 				if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
 				// Note 4 is not dissonance
-				if (tivl[fli[ls + 3]] == iDis || tivl[fli[ls + 3]] == iHarm4) continue;
+				if (tivl[fli[ls + 3]] < 0) continue;
 				// Movements are stepwize
 				if (!asmooth[cpv][fli2[ls + 2]]) continue;
 				// Both movements have same direction
@@ -1286,15 +1286,15 @@ int CGenCP1::DetectCambiata() {
 		// Second note is upbeat (beat 1 not allowed)
 		if (beat[ls+1] < 1) continue;
 		// Note 1 is not a discord
-		if (tivl[s] == iDis || tivl[s] == iHarm4) continue;
+		if (tivl[s] < 0) continue;
 		// Second note is created by stepwize movement from first
 		if (aleap[cpv][s2]) continue;
 		// Third note is created by leaping motion in same direction as second note moves
 		if (!aleap[cpv][fli2[ls + 1]]) continue;
 		if (asmooth[cpv][s2] * aleap[cpv][fli2[ls + 1]] < 0) continue;
 		pattern_needed = 0;
-		if (tivl[fli[ls + 1]] == iDis || tivl[fli[ls + 1]] == iHarm4) pattern_needed = 1;
-		else if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) pattern_needed = 1;
+		if (tivl[fli[ls + 1]] < 0) pattern_needed = 1;
+		else if (tivl[fli[ls + 2]] < 0) pattern_needed = 1;
 		// Inverted
 		if (asmooth[cpv][s2] == 1) {
 			if (pattern_needed) FLAG2(279, fli[ls]);
@@ -1337,7 +1337,7 @@ int CGenCP1::DetectCambiata() {
 					}
 				}
 				// Third diss or harmonic 4th
-				if (tivl[fli[ls + 2]] == iDis || tivl[fli[ls + 2]] == iHarm4) {
+				if (tivl[fli[ls + 2]] < 0) {
 					if (pattern_needed) FLAG2(261, fli[ls]);
 					//if (!accept[261]) continue;
 					// If third note is dissonance, it should not be downbeat
@@ -1348,7 +1348,7 @@ int CGenCP1::DetectCambiata() {
 					if (llen[ls + 2] > llen[ls]) continue;
 					if (llen[ls + 2] > llen[ls + 3] && (ep2 == c_len || ls < fli_size - 4)) continue;
 					// Fourth note should not be dissonance
-					if (tivl[fli[ls + 3]] == iDis || tivl[fli[ls + 3]] == iHarm4) continue;
+					if (tivl[fli[ls + 3]] < 0) continue;
 				}
 				// Leap from note 3
 				if (aleap[cpv][fli2[ls + 2]]) {
@@ -1463,10 +1463,10 @@ void CGenCP1::SetMsh(int ls, vector<int> &l_msh, int val) {
 	// Check if in range
 	if (ls >= fli_size) return;
 	// Detect changing sign for dissonance
-	if (l_msh[ls] * val < 0 && tivl[fli[ls]] < 2 ) {
+	if (l_msh[ls] * val < 0 && tivl[fli[ls]] < 0 ) {
 		CString est;
 		est.Format("Detected msh overwrite at note %d:%d (%s) with value %d (old value %d): %s", 
-			cantus_id + 1, ls + 1, tivl[fli[ls]] < 2?"Dis":"non-Dis", 
+			cantus_id + 1, ls + 1, tivl[fli[ls]] < 0?"Dis":"non-Dis", 
 			val, l_msh[ls], vint2st(ep2, acc[cpv]));
 		WriteLog(5, est);
 	}
@@ -2906,7 +2906,7 @@ int CGenCP1::FailHarm() {
 		// Make last leading tone in penultimate measure harmonic
 		if (ms == mli.size() - 2 && fli_size > 1) {
 			int s9 = fli[fli_size - 2];
-			if (apcc[cpv][s9] == 11 && tivl[s9] != iDis && msh[fli_size - 2] < 0) {
+			if (apcc[cpv][s9] == 11 && tivl[s9] > 0 && msh[fli_size - 2] < 0) {
 				msh[fli_size - 2] = pLastLT;
 			}
 		}
@@ -2918,9 +2918,9 @@ int CGenCP1::FailHarm() {
 			// Do not process non-harmonic notes if they are not consonant ending of first sus
 			// For first suspended note do not check msh
 			if (ls == ls1 && sus[ls]) {
-				if (tivl[s9] < 2) continue;
+				if (tivl[s9] < 0) continue;
 			}
-			// For all other notes, check msh
+			// For all other notes, check msh and iHarm4
 			else if (msh[ls] <= 0 || tivl[s9] == iHarm4) continue;
 			s = fli[ls];
 			// Pitch class

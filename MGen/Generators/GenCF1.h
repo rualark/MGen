@@ -202,8 +202,8 @@ const CString TaskNames[] = {
 #define hDom 2
 
 // Interval types
-#define iDis   0 // Dissonance
-#define iHarm4 1 // Harmonic 4th
+#define iDis   -2 // Dissonance
+#define iHarm4 -1 // Harmonic 4th
 #define iPco   2 // Perfect consonance
 #define iIco   3 // Imperfect consonance
 
