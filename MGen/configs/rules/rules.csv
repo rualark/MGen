@@ -1,6 +1,6 @@
 Set;Severity;Class;Group;Rule;Flag
 1;0;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;
-1;42;0;Melody;Compensated leap;Compensation deviation to 2nd;3rd;-1;Compensation can be deviated one note above last note;;;;;999;;;;;188;0
+1;42;0;Melody;Compensated leap;Compensation deviation to 2nd;3rd;-1;Compensation can be deviated one note above last note;;;;;999;;;;;187;0
 1;43;0;Melody;Compensated leap;Compensation deviation to 2nd;4th;-1;Compensation can be deviated one note above last note;;;;;999;;;;;78;0
 1;44;40;Melody;Compensated leap;Compensation deviation to 2nd;5th;-1;Compensation can be deviated one note above last note;;;;;999;;;;;65;0
 1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;-1;Compensation can be deviated one note above last note;;;;;999;;;;;14;0
@@ -10,10 +10,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;122;60;Melody;Compensated leap;Compensation deviation to 3rd;5th;-1;;;;;;999;;;;;12;0
 1;123;60;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;Possible in species 3,5;;;;999;;;;;0;0
 1;192;60;Melody;Compensated leap;Compensation deviation to 3rd;late >3;0;;Deviation after compensation note X;;;;;;;;;0;0
-1;53;0;Melody;Compensated leap;Compensation after 3rd;3rd;-1;;;;;;;;;;;43;0
+1;53;0;Melody;Compensated leap;Compensation after 3rd;3rd;-1;;;;;;;;;;;42;0
 1;54;10;Melody;Compensated leap;Compensation after 3rd;4th;-1;;;;;;;;;;;23;0
-1;55;40;Melody;Compensated leap;Compensation after 3rd;5th;-1;;;;;;;;;;;40;0
-1;56;60;Melody;Compensated leap;Compensation after 3rd;>5th;-1;;;;;;;;;;;22;0
+1;55;40;Melody;Compensated leap;Compensation after 3rd;5th;-1;;;;;;;;;;;39;0
+1;56;60;Melody;Compensated leap;Compensation after 3rd;>5th;-1;;;;;;;;;;;23;0
 1;100;0;Melody;Compensated leap;Compensated to 3rd: prepared;-;0;Prepared within 5 notes;;;;;;;;;;0;0
 1;101;0;Melody;Compensated leap;Compensated to 3rd: prepared;4th;-1;Prepared within 5 notes;;;;;;;;;;80;0
 1;102;40;Melody;Compensated leap;Compensated to 3rd: prepared;5th;-1;Prepared within 5 notes;;;;;;;;;;65;0
@@ -26,7 +26,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;145;0;Melody;Compensated leap;C4P last 4 measures, 8 notes;4th;-1;Compensated to 4th, precompensated within 5 notes;;;;;;;;;;48;0
 1;146;40;Melody;Compensated leap;C4P last 4 measures, 8 notes;5th;-1;Compensated to 4th, precompensated within 5 notes;;;;;;;;;;31;0
 1;147;100;Melody;Compensated leap;C4P last 4 measures, 8 notes;>5th;-1;Compensated to 4th, precompensated within 5 notes;;;;;;;;;;10;0
-1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;;;;;;;144,120,42;;;136;0
+1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;;;;;;;144,120,42;;;135;0
 1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;-1;;;;;;;;145,121,43;;;19;0
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated;5th;0;;;;;;;;146,122,44;;;15;0
 1;115;100;Melody;Uncompensated leap;Uncompensated: precompensated;>5th;0;;;;;;;;147,123,45;;;21;0
@@ -34,24 +34,24 @@ Set;Severity;Class;Group;Rule;Flag
 1;205;0;Melody;Uncompensated leap;Precompensated last 2 leaps;4th;-1;;;;;;;;;;;16;0
 1;206;40;Melody;Uncompensated leap;Precompensated last 2 leaps;5th;-1;;;;;;;;;;;30;0
 1;207;100;Melody;Uncompensated leap;Precompensated last 2 leaps;>5th;-1;;;;;;;;;;;17;0
-1;116;0;Melody;Uncompensated leap;Uncompensated child leap;3rd;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;144,120,42;;;41;0
+1;116;0;Melody;Uncompensated leap;Uncompensated child leap;3rd;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;144,120,42;;;40;0
 1;117;0;Melody;Uncompensated leap;Uncompensated child leap;4th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;145,121,43;;;47;0
 1;118;60;Melody;Uncompensated leap;Uncompensated child leap;5th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;146,122,44;;;29;0
 1;119;100;Melody;Uncompensated leap;Uncompensated child leap;>5th;-1;After longer leap or before longer/same/one-note-smaller leap.;;;;;;;147,123,45;;;21;0
 1;124;0;Melody;Uncompensated leap;Uncompensated leap;3rd;-1;If no other uncompensated rules worked.;;;;;;;144,120,42;;;32;1
 1;125;0;Melody;Uncompensated leap;Uncompensated leap;4th;0;If no other uncompensated rules worked.;Possible in cantus;;;;;;145,121,43;;;22;1
 1;126;60;Melody;Uncompensated leap;Uncompensated leap;5th;0;If no other uncompensated rules worked.;;;;;;;146,122,44;;;90;1
-1;127;100;Melody;Uncompensated leap;Uncompensated leap;>5th;0;If no other uncompensated rules worked.;;;;;;;147,123,45;;;95;1
+1;127;100;Melody;Uncompensated leap;Uncompensated leap;>5th;0;If no other uncompensated rules worked.;;;;;;;147,123,45;;;94;1
 1;1;0;Melody;Uncompensated leap;Uncompensated leap;start 3rd;-1;If no other uncompensated rules worked.;;;;1;;;;;;17;1
 1;128;0;Melody;Melodic direction change near leap;Close + 1far MDC;3rd;-1;;;;;;;;;;;137;0
 1;129;0;Melody;Melodic direction change near leap;Close + 1far MDC;4th;-1;;;;;;;;;;;61;0
 1;130;40;Melody;Melodic direction change near leap;Close + 1far MDC;5th;-1;;;;;;;;;;;38;1
 1;131;100;Melody;Melodic direction change near leap;Close + 1far MDC;>5th;0;;;;;;;;;;;29;0
-1;140;0;Melody;Melodic direction change near leap;Close + 2far MDC;3rd;-1;;;;;;;;128;;;68;0
+1;140;0;Melody;Melodic direction change near leap;Close + 2far MDC;3rd;-1;;;;;;;;128;;;67;0
 1;141;0;Melody;Melodic direction change near leap;Close + 2far MDC;4th;-1;;;;;;;;129;;;27;0
 1;142;60;Melody;Melodic direction change near leap;Close + 2far MDC;5th;0;;;;;;;;130;;;13;1
 1;143;100;Melody;Melodic direction change near leap;Close + 2far MDC;>5th;0;;;;;;;;131;;;5;0
-1;108;0;Melody;Melodic direction change near leap;Close + no MDC;3rd;-1;;;;;;;;128,140;;;69;0
+1;108;0;Melody;Melodic direction change near leap;Close + no MDC;3rd;-1;;;;;;;;128,140;;;68;0
 1;109;0;Melody;Melodic direction change near leap;Close + no MDC;4th;0;;;;;;;;129,141;;;10;0
 1;110;60;Melody;Melodic direction change near leap;Close + no MDC;5th;0;;;;;;;;130,142;;;9;1
 1;111;100;Melody;Melodic direction change near leap;Close + no MDC;>5th;0;;;;;;;;131,143;;;2;0
@@ -60,20 +60,20 @@ Set;Severity;Class;Group;Rule;Flag
 1;134;40;Melody;Melodic direction change near leap;No + close MDC;5th;1;;;;;;;;;;;36;2
 1;135;100;Melody;Melodic direction change near leap;No + close MDC;>5th;0;;;;;;;;;;;12;0
 1;59;0;Melody;Melodic direction change near leap;Far + close MDC;3rd;1;;;;;;;;;;;187;0
-1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;1;;;;;;;;;;;54;0
+1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;1;;;;;;;;;;;55;0
 1;61;40;Melody;Melodic direction change near leap;Far + close MDC;5th;1;;;;;;;;;;;47;1
 1;62;100;Melody;Melodic direction change near leap;Far + close MDC;>5th;0;;;;;;;;;;;29;0
-1;63;0;Melody;Melodic direction change near leap;Far + 1far MDC;3rd;0;;;;;;;;59;;;23;0
+1;63;0;Melody;Melodic direction change near leap;Far + 1far MDC;3rd;0;;;;;;;;59;;;22;0
 1;64;0;Melody;Melodic direction change near leap;Far + 1far MDC;4th;0;;;;;;;;60;;;5;0
 1;65;60;Melody;Melodic direction change near leap;Far + 1far MDC;5th;0;;;;;;;;61;;;7;1
 1;66;100;Melody;Melodic direction change near leap;Far + 1far MDC;>5th;0;;;;;;;;62;;;5;0
-1;148;0;Melody;Melodic direction change near leap;No close MDC;3rd;0;Except far+1far;;;;;;;59,132,63;;;46;0
+1;148;0;Melody;Melodic direction change near leap;No close MDC;3rd;0;Except far+1far;;;;;;;59,132,63;;;47;0
 1;149;0;Melody;Melodic direction change near leap;No close MDC;4th;0;Except far+1far;;;;;;;60,133,64;;;5;0
 1;150;60;Melody;Melodic direction change near leap;No close MDC;5th;0;Except far+1far;;;;;;;61,134,65;;;12;3
 1;151;100;Melody;Melodic direction change near leap;No close MDC;>5th;0;Except far+1far;;;;;;;62,135,66;;;2;0
-1;8;0;Melody;Melodic direction change near leap;Leap back;<=6th;-1;;;;;;;;;;;459;1
+1;8;0;Melody;Melodic direction change near leap;Leap back;<=6th;-1;;;;;;;;;;;458;1
 1;22;30;Melody;Melodic direction change near leap;Leap back;>6th;-1;;;;;;;;;;;23;1
-1;58;0;Melody;Melodic direction change near leap;Leap back;overflow;-1;;;;;1;;;;;;158;17
+1;58;0;Melody;Melodic direction change near leap;Leap back;overflow;-1;;;;;1;;;;;;159;17
 1;175;0;Melody;Leaps;Leap up size;m6;-1;;;;;1;;;;;;60;5
 1;176;0;Melody;Leaps;Leap up size;maj6;-1;;;;;1;;;;;;68;4
 1;177;30;Melody;Leaps;Leap up size;m7;0;;;;;1;;;;;;6;3
@@ -92,13 +92,13 @@ Set;Severity;Class;Group;Rule;Flag
 1;312;0;Melody;Leaps;Many leaps within 9 notes;>18 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp3,5};;;;;1;;;;14;0
 1;202;60;Melody;Leaps;Many leaps within 15 notes;>8 leaps;0;;;;;;;1;313;;;6;0
 1;203;60;Melody;Leaps;Many leaps within 15 notes;>32 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;;;;;1;314;;;9;0
-1;313;0;Melody;Leaps;Many leaps within 15 notes;>7 leaps;0;;{sp3,5};;;;;1;;;;4;0
-1;314;0;Melody;Leaps;Many leaps within 15 notes;>26 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp3,5};;;;;1;;;;12;0
+1;313;0;Melody;Leaps;Many leaps within 15 notes;>7 leaps;0;;{sp3,5};;;;;1;;;;3;0
+1;314;0;Melody;Leaps;Many leaps within 15 notes;>26 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp3,5};;;;;1;;;;11;0
 1;70;60;Melody;Leaps;Consecutive leaps, 1x3rd ignored;3;0;;;;;;;1;;;;36;0
 1;71;100;Melody;Leaps;Consecutive leaps, 1x3rd ignored;>3;0;;;;;;;1;70;;;10;1
 1;27;100;Melody;Leaps;Consecutive unidirectional leaps;Sum >6th;0;;;;;;;;;;;59;1
-1;28;0;Melody;Leaps;Two consecutive 3rds;after 6/8;-1;;;;;1;;;;;;10;0
-1;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;;;;1;;;;;;82;23
+1;28;0;Melody;Leaps;Two consecutive 3rds;after 6/8;-1;;;;;1;;;;;;11;0
+1;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;;;;1;;;;;;81;23
 1;4;0;Melody;Stepwise;CF Stepwise motion;>7 any direction;0;;Stepwise motion more than X notes in any direction in cantus;;1;;999;;;;;19;0
 1;5;0;Melody;Stepwise;CF Stepwise motion;>4 one direction;0;;Stepwise motion more than X notes in one direction in cantus;;1;;;;;;;34;0
 1;302;60;Melody;Stepwise;Stepwise motion;>14 any direction;0;;Stepwise motion more than X notes in any direction;;;;;;;;;12;0
@@ -114,7 +114,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;12;100;Melody;Repeats;Culmination;multi high;0;;Multiple culminations in higher voice;;;1;;;21,78,79,193;;;102;38
 1;26;60;Melody;Repeats;Culmination;sync;-1;;Synchronized culminations in both voices;;;;;1;;;;29;0
 1;76;20;Melody;Repeats;Notes repeat;2 sym. in 3;0;;Symmetric repeat of X notes within Y notes;;1;;;;;;;45;1
-1;36;60;Melody;Repeats;Notes repeat;3 sym. in 4;0;;Symmetric repeat of X notes within Y notes;;1;;;;;;;46;1
+1;36;60;Melody;Repeats;Notes repeat;3 sym. in 4;0;;Symmetric repeat of X notes within Y notes;;1;;;;;;;45;1
 1;72;60;Melody;Repeats;Notes repeat;5 in 7;0;;Repeat of X notes within Y notes;;;;;;;;;22;0
 1;73;60;Melody;Repeats;Notes repeat;7 in 10;0;;Repeat of X notes within Y notes;;;;;;;;;22;0
 1;196;20;Melody;Repeats;Tonic note;>3 within 9;0;;More than X tonic note equivalents within Y notes (except first and last tonic). At border without tonic - one more tonic is allowed.  Weights:  Leap >M3 to tonic adds 30%. Note length decrease two times decreases 30%. Downbeat adds 30%. Longer than previous adds 30%. Perfect consonance adds 20%.;;;;;;;;;7;0
@@ -124,7 +124,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;344;0;Melody;Repeats;Notes stagnation;5 notes <3 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;;17;0
 1;345;0;Melody;Repeats;Notes stagnation;7 notes <4 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;;27;0
 1;346;0;Melody;Repeats;Notes stagnation;17 notes <6 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;;3;0
-1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;;;;;;;;;;300;0
+1;29;0;Melody;Tritone;Tritone;cross rel.;-1;;;;;;;;;;;302;0
 1;2;40;Melody;Tritone;Tritone;resolved;1;;Search 4 quarters for resolution;;;1;;;;;;27;2
 1;31;100;Melody;Tritone;Tritone;unresolved;0;;;;;;;;2;;;50;0
 1;32;100;Melody;Tritone;Tritone;on climax;-1;;;;;1;;;;;;51;3
@@ -133,7 +133,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;342;0;Melody;Tritone;Compound tritone accented;resolved;1;Tritone with one intermediate note, last note is longer;;;;;;;;;;0;0
 1;343;60;Melody;Tritone;Compound tritone accented;unresolved;0;Tritone with one intermediate note, last note is longer;;;;;;;;;;1;1
 1;67;0;Melody;Range;Skipped notes;1;-1;;;;;1;;;;;;165;30
-1;68;70;Melody;Range;Skipped notes;>1;-1;;;;;1;;;;;;18;9
+1;68;70;Melody;Range;Skipped notes;>1;-1;;;;;1;;;;;;17;9
 1;69;100;Melody;Range;Skipped notes;>1 joined;0;;;;;1;;;;;;63;16
 1;38;0;Melody;Range;Range;voice <m6;0;;Range below m6 is acceptable for cantus up to 10 notes;;;;;;;;;147;3
 1;304;70;Melody;Range;Range;cp voice >M13;0;;;;;;;;;;;1;1
@@ -144,33 +144,33 @@ Set;Severity;Class;Group;Rule;Flag
 1;352;0;Melody;Range;CF/sp1 Constrained local range;7 notes <4th;0;;X consecutive notes have total range less than Y;;;;;;;;;9;1
 1;353;0;Melody;Range;CF/sp1 Constrained local range;15 notes <m6;0;;X consecutive notes have total range less than Y;;;;;;;;;4;1
 1;300;0;Melody;Range;Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;;;;;;;;;4;0
-1;98;0;Melody;Range;Constrained local range;8 notes <4th;0;;X consecutive notes have total range less than Y;;1;;;;;;;16;0
-1;198;0;Melody;Range;Constrained local range;17 notes <m6;0;;X consecutive notes have total range less than Y;;1;;;;;;;6;0
-1;15;0;Melody;Range;No melody development;10 notes <16;0;;Melody direction within X notes is less than Y deci-semitones;;1;;;1;;;;85;2
-1;16;0;Melody;Range;No melody development;13 notes <20;0;;Melody direction within X notes is less than Y deci-semitones;;1;;;;;;;36;1
-1;17;20;Cantus;Harmony;Repeating letters in a row;>3;0;;;1;1;;;;;;17,20,23,48,57,77,92,99;32;1
-1;20;20;Cantus;Harmony;Missing letters in a row;>4;0;;;1;1;;;;;;17,20,23,48,57,77,92,99;101;1
+1;98;0;Melody;Range;Constrained local range;8 notes <4th;0;;X consecutive notes have total range less than Y;;1;;;;;;;17;0
+1;198;0;Melody;Range;Constrained local range;17 notes <m6;0;;X consecutive notes have total range less than Y;;1;;;;;;;7;0
+1;15;0;Melody;Range;No melody development;10 notes <16;0;;Melody direction within X notes is less than Y deci-semitones;;1;;;1;;;;87;2
+1;16;0;Melody;Range;No melody development;13 notes <20;0;;Melody direction within X notes is less than Y deci-semitones;;1;;;;;;;38;1
+1;17;20;Cantus;Harmony;Repeating letters in a row;>3;0;;;1;1;;;;;;17,20,23,48,57,77,92,99;35;1
+1;20;20;Cantus;Harmony;Missing letters in a row;>4;0;;;1;1;;;;;;17,20,23,48,57,77,92,99;104;1
 1;194;0;Cantus;Harmony;Accented bad progression;leap >4th;-1;Only for cantus;;1;;;;;;;;0;0
 1;195;0;Cantus;Harmony;Accented bad progression;culmination;-1;Only for cantus;;1;;;;;;;;0;0
 1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate 2;1;;In penultimate measure;1;;;;;;;;73;11
 1;329;30;Cantus;Harmony;Multiple harmonies in measure;sus 5/6 stepw;1;;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure;1;;;;;;;;32;1
-1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;1;;;;;;;;112;9
-1;40;70;Cantus;Harmony;Multiple harmonies in measure;>2;0;;More than 2 harmonies;1;;;;;;;;25;2
-1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;;;;;;;;12;0
+1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;1;;;;;;;;115;9
+1;40;70;Cantus;Harmony;Multiple harmonies in measure;>2;0;;More than 2 harmonies;1;;;;;;;;27;2
+1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;;;;;;;;13;0
 1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;;;1;;;;;17,20,23,48,57,77,92,99;1;0
 1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;1;;;;;;1;1
 1;309;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;1;;;;;;2;1
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;1;;;;;;;17,20,23,48,57,77,92,99;542;0
-1;57;0;Cantus;Harmony;Harmonic penalty;2;-1;;;1;;;;;;;17,20,23,48,57,77,92,99;457;1
-1;92;0;Cantus;Harmony;Harmonic penalty;2x2;-1;;;1;;;;;;;17,20,23,48,57,77,92,99;88;1
+1;57;0;Cantus;Harmony;Harmonic penalty;2;-1;;;1;;;;;;;17,20,23,48,57,77,92,99;458;1
+1;92;0;Cantus;Harmony;Harmonic penalty;2x2;-1;;;1;;;;;;;17,20,23,48,57,77,92,99;90;1
 1;23;20;Cantus;Harmony;Harmonic penalty;3x2;0;;;1;;;;;;;17,20,23,48,57,77,92,99;16;1
-1;99;30;Cantus;Harmony;Harmonic penalty;repeat;0;;;1;;;;;;;17,20,23,48,57,77,92,99;148;5
-1;321;70;Cantus;Harmony;Harmonic penalty;2 x repeat;0;;;1;;1;;;;;;4;1
+1;99;30;Cantus;Harmony;Harmonic penalty;repeat;0;;;1;;;;;;;17,20,23,48,57,77,92,99;147;5
+1;321;70;Cantus;Harmony;Harmonic penalty;2 x repeat;0;;;1;;1;;;;;;5;1
 1;49;0;Cantus;CF Border;First note not tonic;V high;1;;;;;1;;;;;;5;0
 1;90;60;Cantus;CF Border;First note not tonic;III high;0;;;;;1;;;;;;3;1
 1;33;100;Cantus;CF Border;First note not tonic;Other;0;;;;;1;;;;;;50;3
-1;14;0;Cantus;CF Border;3rd to last note;I/III/V;-1;;;;;1;;;;;;177;25
-1;34;0;Cantus;CF Border;3rd to last note;leading tone;-1;;;;;1;;;;;;38;1
+1;14;0;Cantus;CF Border;3rd to last note;I/III/V;-1;;;;;1;;;;;;176;25
+1;34;0;Cantus;CF Border;3rd to last note;leading tone;-1;;;;;1;;;;;;40;1
 1;51;30;Cantus;CF Border;2nd to last note;not VII/II;-1;;;;;1;;;;;;19;2
 1;13;30;Cantus;CF Border;2nd to last note;not V/VIII/II;0;;;;;1;;;;;;57;8
 1;50;100;Cantus;CF Border;Last note;not tonic;0;;;;;1;;;;;;24;1
@@ -182,7 +182,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;201;60;Cantus;Minor;Leap to VI#;>4th;0;;;;;;;;;;;6;2
 1;152;30;Cantus;Minor;Altered neighbour;VI<->VI#;0;;Chromatic;;;1;;;;;;1;1
 1;153;30;Cantus;Minor;Altered neighbour;VII<->VII#;0;;Chromatic;;;1;;;;;;3;2
-1;154;30;Cantus;Minor;Altered neighbour;VI<->VII#;0;;Augmented / diminished;;;1;;;;;;11;3
+1;154;30;Cantus;Minor;Altered neighbour;VI<->VII#;0;;Augmented / diminished;;;1;;;;;;12;3
 1;155;30;Cantus;Minor;Altered neighbour;VI#<->III;0;;Augmented / diminished;;;1;;;;;;2;1
 1;156;30;Cantus;Minor;Altered neighbour;VII#-III;0;;Augmented / diminished;;;1;;;;;;4;3
 1;157;30;Cantus;Minor;Altered neighbour;III-VII#;0;;Augmented / diminished;;;1;;;;;;1;1
@@ -190,8 +190,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;159;30;Cantus;Minor;Altered far neighbour;VII<->VII#;0;;;;;1;;;;;;3;1
 1;160;0;Cantus;Minor;Altered far neighbour;VI<->VII#;-1;;;;;1;;;;;;16;3
 1;161;0;Cantus;Minor;Altered far neighbour;VI#<->III;-1;;;;;1;;;;;;18;4
-1;162;0;Cantus;Minor;Altered far neighbour;VII#-III;-1;;;;;1;;;;;;9;1
-1;163;0;Cantus;Minor;Altered far neighbour;III-VII#;-1;;;;;1;;;;;;18;2
+1;162;0;Cantus;Minor;Altered far neighbour;VII#-III;-1;;;;;1;;;;;;8;1
+1;163;0;Cantus;Minor;Altered far neighbour;III-VII#;-1;;;;;1;;;;;;17;2
 1;164;30;Cantus;Minor;Cross relation;VI<->VI#;0;;;;;1;;;;;;9;2
 1;165;30;Cantus;Minor;Cross relation;VII<->VII#;0;;;;;1;;;;;;11;4
 1;166;0;Cantus;Minor;Cross relation;VI<->VII#;-1;;;;;1;;;;;;30;3
@@ -202,7 +202,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;172;30;Cantus;Minor;Altered interval;VI<->VII#;0;If allowed, will be considered dissonance;;;;1;;;;;;10;2
 1;173;30;Cantus;Minor;Altered interval;VI#<->III;0;If allowed, will be considered dissonance;;;;1;;;;;;7;3
 1;174;30;Cantus;Minor;Altered interval;VII#<->III;0;If allowed, will be considered dissonance;;;;1;;;;;;11;2
-1;80;0;Cantus;Counterpoint;Perfect consonance;downbeat;-1;;;;;;;;;;;302;2
+1;80;0;Cantus;Counterpoint;Perfect consonance;downbeat;-1;;;;;;;;;;;305;2
 1;81;60;Cantus;Counterpoint;Perfect consonance;culmination;1;;;;;;;;;;;55;2
 1;82;60;Cantus;Counterpoint;Perfect consonance;db. culm.;-1;;;;;1;;;80;;;47;9
 1;324;60;Cantus;Counterpoint;Perfect consonance;LT 8va;0;;Leading tone octave;;;1;;;;;;17;7
@@ -211,9 +211,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;330;0;Cantus;Counterpoint;Close perfect consonances;parallel sus 6-5;1;;Parallel 5th after sus from 5th to 6th;;;1;;;249;;;4;3
 1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;;;;;;;;;;95;5
 1;85;60;Cantus;Counterpoint;Close perfect consonances;contrary;0;;Contrary octaves are possible in cadence;;;;;;;;;11;1
-1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;;;;;;;;141;1
+1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;;;;;;;;142;1
 1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;;1;;;;;;0;0
-1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;stepwize;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;;1;;;;;;91;17
+1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;stepwize;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;;1;;;;;;93;17
 1;347;30;Cantus;Counterpoint;Perfect consonances < 4/4 apart;direct comp.;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Direct compound intervals.;;;1;;;;;;2;2
 1;315;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;;;1;;;;;;13;11
 1;316;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;;;1;;;;;;42;8
@@ -245,8 +245,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;223;60;Cantus;Counterpoint;Dissonance;longer;0;;Dissonance is longer than neighbouring consonance;;;1;;;;;;17;3
 1;224;100;Cantus;Counterpoint;Dissonance;interbar;0;;Dissonance starts and ends suspension/anticipation;;;1;;;;;;8;4
 1;331;0;Cantus;Counterpoint;Dissonance;4th cons;1;;Prohibit 4th upbeat not lowest consonance;;;1;;;;;;0;0
-1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;;;;;;;;;;696;3
-1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;;;;;;276,169;;;107;8
+1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;;;;;;;;;;701;3
+1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;;;;;;276,169;;;110;8
 1;276;60;Cantus;Counterpoint;Dissonance upbeat;m2;0;;Minor second;;;1;;;;;;5;3
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;1;More than X same imperfect consonances in a row;;;;;;;;;;38;0
 1;96;0;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;;;;;;;;;14;0
@@ -272,8 +272,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;335;30;Cantus;Counterpoint;Penultimate measure;not D/DVII;0;;Penultimate harmony is not D / DVII;1;;;;;;;;127;0
 1;225;0;Cantus;Counterpoint;Slurs;suspension;1;;;;;;;;;;;393;2
 1;30;100;Cantus;Counterpoint;Slurs;cantus;0;;;;;1;;;;;;0;0
-1;93;0;Cantus;Counterpoint;Slurs within 10 notes;1;0;For counterpoint species 1-3;;;;;;1;;;;36;0
-1;94;40;Cantus;Counterpoint;Slurs within 10 notes;2;0;For counterpoint species 1-3;;;;;;1;93;;;3;0
+1;93;0;Cantus;Counterpoint;Slurs within 10 notes;1;0;For counterpoint species 1-3;;;;;;1;;;;35;0
+1;94;40;Cantus;Counterpoint;Slurs within 10 notes;2;0;For counterpoint species 1-3;;;;;;1;93;;;4;0
 1;95;60;Cantus;Counterpoint;Slurs within 10 notes;>2;0;For counterpoint species 1-3;;;;;;1;93,94;;;21;0
 1;188;0;Cantus;Counterpoint;Missing slurs within 10 notes;1;1;For counterpoint species 4;;;;;;1;;;;19;2
 1;189;40;Cantus;Counterpoint;Missing slurs within 10 notes;2;1;For counterpoint species 4;;;;;;1;188;;;14;0
@@ -284,21 +284,21 @@ Set;Severity;Class;Group;Rule;Flag
 1;256;0;Cantus;Nonchord tones;Cambiata;any;1;;Prohibit this rule to prevent detection of any cambiata;;;;;;;1;;29;0
 1;257;60;Cantus;Nonchord tones;Cambiata;mixed rhythm;1;;Rhythm of this pattern contains not only 1/4 notes;;;;;;;1;;7;0
 1;327;60;Cantus;Nonchord tones;Cambiata;last note out;0;;;;;;;;;1;;2;0
-1;259;60;Cantus;Nonchord tones;Cambiata;cross-bar;0;;;;;;;;;1;;6;0
+1;259;60;Cantus;Nonchord tones;Cambiata;cross-bar;0;;;;;;;;;1;;7;0
 1;261;40;Cantus;Nonchord tones;Cambiata;third diss.;1;;;;;;;;;1;;15;0
 1;323;40;Cantus;Nonchord tones;Cambiata;leap 4th comp.;1;;4th leap from 2nd note compensated by stepwize movement;;;1;;;;;;0;0
 1;263;60;Cantus;Nonchord tones;Cambiata;leap 4th;0;;4th leap from 2nd note;;;;;;;1;;3;0
-1;264;60;Cantus;Nonchord tones;Cambiata;leap from 3;1;;Leap from note #3 up to 4th interval;;;;;;;1;;0;0
+1;264;60;Cantus;Nonchord tones;Cambiata;leap from 3;1;;Leap from note #3 up to 4th interval;;;;;;;1;;1;0
 1;265;40;Cantus;Nonchord tones;Cambiata;leap from 4;1;;Leap from note #4 up to 4th interval;;;;;;;1;;11;0
 1;266;40;Cantus;Nonchord tones;Cambiata;back from 4;1;;;;;;;;;1;;5;0
-1;279;40;Cantus;Nonchord tones;Cambiata;inverted;1;;;;;;;;;1;;17;0
+1;279;40;Cantus;Nonchord tones;Cambiata;inverted;1;;;;;;;;;1;;18;0
 1;258;0;Cantus;Nonchord tones;Double-neighbour tone;any;1;;Prohibit this rule to prevent detection of any double-neighbour tone;;;;;;;1;;33;0
-1;280;60;Cantus;Nonchord tones;Double-neighbour tone;mixed rhythm;1;;;;;;;;;1;;2;0
+1;280;60;Cantus;Nonchord tones;Double-neighbour tone;mixed rhythm;1;;;;;;;;;1;;3;0
 1;328;60;Cantus;Nonchord tones;Double-neighbour tone;last note out;0;;;;;;;;;1;;4;0
-1;281;60;Cantus;Nonchord tones;Double-neighbour tone;cross-bar;0;;;;;1;;;;1;;0;0
+1;281;60;Cantus;Nonchord tones;Double-neighbour tone;cross-bar;0;;;;;1;;;;1;;1;0
 1;260;60;Cantus;Nonchord tones;Double-neighbour tone;leap <=4th;0;;Allow leaps up to specified size;;;;;;;1;;2;0
 1;97;40;Cantus;Nonchord tones;Double-neighbour tone;no exit;0;;There is no same-direction stepwize motion after 4th note;;;1;;;;;;4;0
-1;282;0;Cantus;Nonchord tones;Passing downbeat dissonance;descending;1;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat discord;;;;;;;1;;43;1
+1;282;0;Cantus;Nonchord tones;Passing downbeat dissonance;descending;1;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat discord;;;;;;;1;;42;1
 1;297;40;Cantus;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;;;;;;;1;;6;0
 1;298;40;Cantus;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;;;;;;;1;;14;1
 1;287;0;Cantus;Nonchord tones;Anticipation;any;1;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with next note longer and previous note longer or equal;;;;;;225;;;57;21
@@ -315,12 +315,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;285;60;Cantus;Nonchord tones;Appoggiatura;forward;1;;Appogiatura is resolved in same direction as it was prepared;;;;;;;;;0;0
 1;233;0;Cantus;Rhythm;Rhythm;1/2. downbeat;1;;;;;1;;;;;;21;4
 1;234;60;Cantus;Rhythm;Rhythm;1/2. upbeat;0;;;;;1;;;;;;8;8
-1;235;60;Cantus;Rhythm;Rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;1;;;;;;19;17
+1;235;60;Cantus;Rhythm;Rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;1;;;;;;20;17
 1;236;60;Cantus;Rhythm;Rhythm;whole inside;0;;;;;1;;;;;;11;8
 1;237;60;Cantus;Rhythm;Rhythm;uneven pause;0;;Starting pause in first measure does not equal length of next note;;;1;;;;;;19;16
 1;254;60;Cantus;Rhythm;Rhythm;uneven start;0;;Starting measure contains notes of different length;;;1;;;;;;18;15
 1;197;60;Cantus;Rhythm;Rhythm;pause >1/2;0;;Starting pause is longer than 1/2 note;;;1;;;;;;4;3
-1;247;60;Cantus;Rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures;;;1;;;;;;25;11
+1;247;60;Cantus;Rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures;;;1;;;;;;27;11
 1;226;60;Cantus;Rhythm;1/8 note;beat 1;0;;;;;1;;;;;;6;4
 1;227;0;Cantus;Rhythm;1/8 note;beat 2;1;;;;;1;;;;;;44;5
 1;228;60;Cantus;Rhythm;1/8 note;beat 3;0;;;;;1;;;;;;17;7
@@ -335,7 +335,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;240;60;Cantus;Rhythm;1/2 after 1/4 or 1/8 in measure;inside;0;;;;;1;;;239;;;7;6
 1;336;60;Cantus;Rhythm;Max note length;sp1: >8/4;0;Except last note;Usually >8/4;;;;;;;;;3;2
 1;337;60;Cantus;Rhythm;Max note length;sp2: >4/4;0;Except last note;Usually >2/4 or >4/4;;;;;;;;;6;6
-1;338;60;Cantus;Rhythm;Max note length;sp3: >1/4;0;Except last note;Usually >1/4 or >2/4;;1;;;;;;;43;6
+1;338;60;Cantus;Rhythm;Max note length;sp3: >1/4;0;Except last note;Usually >1/4 or >2/4;;1;;;;;;;44;6
 1;339;60;Cantus;Rhythm;Max note length;sp4: >4/4;0;Except last note;Usually >4/4;;;1;;;;;;2;2
 1;340;60;Cantus;Rhythm;Max note length;sp5: >6/4;0;Except last note;Usually >6/4;;;;;;;;;5;4
 1;41;60;Cantus;Rhythm;Note crosses many measures;>2;0;;Note crosses more than two measures;;;1;;;;;;15;12
