@@ -1026,7 +1026,9 @@ int CGenCP1::FailDis() {
 			// pSusStart does not have separate flag, because it is marked as interbar
 			// Here pSusStart will never fire flag, because pSusStart is set only if sus start is not a dissonance
 		else if (msh[ls] == pSusStart) FLAG2(224, s)
-		else if (msh[ls] == pSusRes) FLAG2(360, s)
+			// pSusRes does not have separate flag, because it is marked as not resolved
+			// Here pSusRes will never fire flag, because pSusRes is set only if sus resolution is harmonic
+		else if (msh[ls] == pSusRes) FLAG2(220, s)
 			// This is protection against wrong melodic shape value
 		else if (msh[ls] > 0) FLAG2(83, s)
 		else {

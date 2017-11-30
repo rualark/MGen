@@ -242,7 +242,6 @@ Set;Severity;Class;Group;Rule;Flag
 1;292;60;Cantus;Counterpoint;Suspension insertion;chatty;0;;There are more than 2 inserted notes between suspension and resolution;;;1;;;;;;1;1
 1;295;100;Cantus;Counterpoint;Suspension insertion;long leap;0;;Leap is longer than M6;;;1;;;;;;2;2
 1;83;100;Cantus;Counterpoint;Dissonance;downbeat;0;;;;;;;;169;;;190;5
-1;360;100;Cantus;Counterpoint;Dissonance;sus resolut.;0;;Suspension resolution note is disoonance;;;;;;;;;0;0
 1;223;60;Cantus;Counterpoint;Dissonance;longer;0;;Dissonance is longer than neighbouring consonance;;;1;;;;;;16;3
 1;224;100;Cantus;Counterpoint;Dissonance;interbar;0;;Dissonance starts and ends suspension/anticipation;;;1;;;;;;8;4
 1;331;0;Cantus;Counterpoint;Dissonance;4th cons;1;;Prohibit 4th upbeat not lowest consonance;;;;;;;;;0;0
