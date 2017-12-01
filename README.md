@@ -5,7 +5,6 @@ Issues: [![Stories Shegolev](https://badge.waffle.io/rualark/MGen.png?label=sheg
 [![Stories Thinking](https://badge.waffle.io/rualark/MGen.png?label=thinking&title=Thinking)](http://waffle.io/rualark/MGen)
 [![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=ready&title=Ready)](http://waffle.io/rualark/MGen) 
 [![Stories in Progress](https://badge.waffle.io/rualark/MGen.png?label=in%20progress&title=In%20progress)](http://waffle.io/rualark/MGen)
-[![Stories testing](https://badge.waffle.io/rualark/MGen.png?label=testing&title=Testing)](http://waffle.io/rualark/MGen)
 
 Code analysis: [![Codacy Badge](https://api.codacy.com/project/badge/Grade/73206f26408f420bb4f89c751963aef5)](https://www.codacy.com/app/rualark/MGen?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rualark/MGen&amp;utm_campaign=Badge_Grade)
 [![BCH compliance](https://bettercodehub.com/edge/badge/rualark/MGen?branch=master)](https://bettercodehub.com/)
