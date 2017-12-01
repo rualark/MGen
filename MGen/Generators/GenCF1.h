@@ -272,9 +272,9 @@ protected:
 	inline void CountFillLimits(vector<int>& c, int pre, int t1, int t2, int & fill_to, int & fill_to_pre, int & fill_from_pre, int & fill_from);
 	inline void FailLeapInit(vector<int>& c, int & late_leap, int & presecond, int & leap_next, int & leap_prev, int & arpeg, int & overflow, vector<int>& leap);
 	inline int FailLeapMulti(int leap_next, int & arpeg, int & overflow, int & child_leap, vector<int>& c, vector<int>& leap);
-	inline int FailLeap(vector<int>& c, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
+	inline int FailLeap(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(vector<int>& c, int late_leap, int leap_prev, int child_leap);
-	inline int FailLeapMDC(vector<int>& leap, vector<int>& c);
+	inline int FailLeapMDC(vector<int>& leap, vector<int>& cc);
 	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline void PrepareTonicWeight();
 	inline float GetTonicWeight(int l_ls, vector<int>& cc, vector<int>& pc);

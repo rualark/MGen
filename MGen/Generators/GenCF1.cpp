@@ -1970,7 +1970,7 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 	return 0;
 }
 
-int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3) {
+int CGenCF1::FailLeap(vector<int> &c, vector<int>& cc, vector<int> &leap, vector<int> &smooth, vector<int> &nstat2, vector<int> &nstat3) {
 	CHECK_READY(DR_leap, DR_c, DR_fli);
 	// Get leap size, start, end
 	// Check if leap is compensated (without violating compensation rules)
@@ -1987,7 +1987,7 @@ int CGenCF1::FailLeap(vector<int> &c, vector<int> &leap, vector<int> &smooth, ve
 			// If leap back overflow or arpeggio, do not check leap compensation, because compensating next leap will be enough
 			if (!overflow && !arpeg)
 				if (FailLeapFill(c, late_leap, leap_prev, child_leap)) return 1;
-			if (!arpeg) if (FailLeapMDC(leap, c)) return 1;
+			if (!arpeg) if (FailLeapMDC(leap, cc)) return 1;
 		}
 	}
 	return 0;
@@ -2079,27 +2079,27 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 	return 0;
 }
 
-int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &c) {
+int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &cc) {
 	// Melody direction change (MDC)
 	// 0 = close, 1 = far, 2 = no
 	// Default mdc is close, because beginning equals to close mdc
 	mdc1 = 0;
-	int prev_note = c[leap_start];
+	int prev_note = cc[leap_start];
 	for (int pos = leap_start - 1; pos >= 0; --pos) {
-		if (c[pos] != prev_note) {
+		if (cc[pos] != prev_note) {
 			// Check if direction changes or long without changes
-			if (leap[leap_start] * (c[pos] - prev_note) > 0 || mdc1 > 1) break;
-			prev_note = c[pos];
+			if (leap[leap_start] * (cc[pos] - prev_note) > 0 || mdc1 > 1) break;
+			prev_note = cc[pos];
 			++mdc1;
 		}
 	}
 	mdc2 = 0;
-	prev_note = c[leap_end];
+	prev_note = cc[leap_end];
 	for (int pos = leap_end + 1; pos < ep2; ++pos) {
-		if (c[pos] != prev_note) {
+		if (cc[pos] != prev_note) {
 			// Check if direction changes or long without changes
-			if (leap[leap_start] * (c[pos] - prev_note) < 0 || mdc2 > 2) break;
-			prev_note = c[pos];
+			if (leap[leap_start] * (cc[pos] - prev_note) < 0 || mdc2 > 2) break;
+			prev_note = cc[pos];
 			++mdc2;
 		}
 	}
@@ -4649,7 +4649,7 @@ check:
 		if (FailStagnation(m_cc, nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
 		if (FailMultiCulm(m_cc, m_slur)) goto skip;
 		if (FailFirstNotes(m_pc)) goto skip;
-		if (FailLeap(m_c, m_leap, m_smooth, nstat2, nstat3)) goto skip;
+		if (FailLeap(m_c, m_cc, m_leap, m_smooth, nstat2, nstat3)) goto skip;
 		if ((fli_size>1) && FailMelodyHarm(m_pc, m_pcc)) goto skip;
 		MakeMacc(m_cc);
 		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;

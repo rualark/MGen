@@ -3224,7 +3224,7 @@ check:
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps, stag_notes, 10)) goto skip;
 		if (FailStagnation(acc[cpv], nstat, stag_note_steps2, stag_notes2, 39)) goto skip;
 		if (FailFirstIntervals()) goto skip;
-		if (FailLeap(ac[cpv], aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
+		if (FailLeap(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], nstat2, nstat3)) goto skip;
 		//if (FailMelodyHarm(apc[cpv], 0, ep2)) goto skip;
 		MakeMacc(acc[cpv]);
 		if (FailLocalMacc(notes_arange, min_arange, 15)) goto skip;
