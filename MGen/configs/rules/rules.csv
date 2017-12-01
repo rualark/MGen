@@ -44,35 +44,35 @@ Set;Severity;Class;Group;Rule;Flag
 1;127;100;Melody;Uncompensated leap;Uncompensated leap;>5th;0;If no other uncompensated rules worked.;;;;;;;147,123,45;;;96;1
 1;1;0;Melody;Uncompensated leap;Uncompensated leap;start 3rd;-1;If no other uncompensated rules worked.;;;;1;;;;;;17;1
 1;128;0;Melody;Melodic direction change near leap;Close + 1far MDC;3rd;-1;;;;;;;;;;;137;0
-1;129;0;Melody;Melodic direction change near leap;Close + 1far MDC;4th;-1;;;;;;;;;;;61;0
-1;130;40;Melody;Melodic direction change near leap;Close + 1far MDC;5th;-1;;;;;;;;;;;38;1
-1;131;100;Melody;Melodic direction change near leap;Close + 1far MDC;>5th;0;;;;;;;;;;;29;0
-1;140;0;Melody;Melodic direction change near leap;Close + 2far MDC;3rd;-1;;;;;;;;128;;;68;0
-1;141;0;Melody;Melodic direction change near leap;Close + 2far MDC;4th;-1;;;;;;;;129;;;27;0
-1;142;60;Melody;Melodic direction change near leap;Close + 2far MDC;5th;0;;;;;;;;130;;;13;1
-1;143;100;Melody;Melodic direction change near leap;Close + 2far MDC;>5th;0;;;;;;;;131;;;5;0
-1;108;0;Melody;Melodic direction change near leap;Close + no MDC;3rd;-1;;;;;;;;128,140;;;68;0
-1;109;0;Melody;Melodic direction change near leap;Close + no MDC;4th;0;;;;;;;;129,141;;;10;0
-1;110;60;Melody;Melodic direction change near leap;Close + no MDC;5th;0;;;;;;;;130,142;;;9;1
-1;111;100;Melody;Melodic direction change near leap;Close + no MDC;>5th;0;;;;;;;;131,143;;;2;0
+1;129;0;Melody;Melodic direction change near leap;Close + 1far MDC;4th;-1;;;;;1;;;;;;61;0
+1;130;40;Melody;Melodic direction change near leap;Close + 1far MDC;5th;-1;;;;;1;;;;;;38;1
+1;131;100;Melody;Melodic direction change near leap;Close + 1far MDC;>5th;0;;;;;1;;;;;;29;0
+1;140;0;Melody;Melodic direction change near leap;Close + 2far MDC;3rd;-1;;;;;1;;;128;;;68;0
+1;141;0;Melody;Melodic direction change near leap;Close + 2far MDC;4th;-1;;;;;1;;;129;;;27;0
+1;142;60;Melody;Melodic direction change near leap;Close + 2far MDC;5th;0;;;;;1;;;130;;;13;1
+1;143;100;Melody;Melodic direction change near leap;Close + 2far MDC;>5th;0;;;;;1;;;131;;;5;0
+1;108;0;Melody;Melodic direction change near leap;Close + no MDC;3rd;-1;;;;;1;;;128,140;;;68;0
+1;109;0;Melody;Melodic direction change near leap;Close + no MDC;4th;0;;;;;1;;;129,141;;;10;0
+1;110;60;Melody;Melodic direction change near leap;Close + no MDC;5th;0;;;;;1;;;130,142;;;9;1
+1;111;100;Melody;Melodic direction change near leap;Close + no MDC;>5th;0;;;;;1;;;131,143;;;2;0
 1;132;0;Melody;Melodic direction change near leap;No + close MDC;3rd;-1;;;;;;;;;;;170;0
-1;133;0;Melody;Melodic direction change near leap;No + close MDC;4th;1;;;;;;;;;;;55;0
-1;134;40;Melody;Melodic direction change near leap;No + close MDC;5th;1;;;;;;;;;;;36;2
-1;135;100;Melody;Melodic direction change near leap;No + close MDC;>5th;0;;;;;;;;;;;12;0
+1;133;0;Melody;Melodic direction change near leap;No + close MDC;4th;1;;;;;1;;;;;;55;0
+1;134;40;Melody;Melodic direction change near leap;No + close MDC;5th;1;;;;;1;;;;;;36;2
+1;135;100;Melody;Melodic direction change near leap;No + close MDC;>5th;0;;;;;1;;;;;;12;0
 1;59;0;Melody;Melodic direction change near leap;Far + close MDC;3rd;1;;;;;;;;;;;187;0
-1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;1;;;;;;;;;;;55;0
-1;61;40;Melody;Melodic direction change near leap;Far + close MDC;5th;1;;;;;;;;;;;47;1
-1;62;100;Melody;Melodic direction change near leap;Far + close MDC;>5th;0;;;;;;;;;;;30;0
-1;63;0;Melody;Melodic direction change near leap;Far + 1far MDC;3rd;0;;;;;;;;59;;;22;0
-1;64;0;Melody;Melodic direction change near leap;Far + 1far MDC;4th;0;;;;;;;;60;;;5;0
-1;65;60;Melody;Melodic direction change near leap;Far + 1far MDC;5th;0;;;;;;;;61;;;7;1
-1;66;100;Melody;Melodic direction change near leap;Far + 1far MDC;>5th;0;;;;;;;;62;;;5;0
-1;148;0;Melody;Melodic direction change near leap;No close MDC;3rd;0;Except far+1far;;;;;;;59,132,63;;;47;0
-1;149;0;Melody;Melodic direction change near leap;No close MDC;4th;0;Except far+1far;;;;;;;60,133,64;;;5;0
-1;150;60;Melody;Melodic direction change near leap;No close MDC;5th;0;Except far+1far;;;;;;;61,134,65;;;12;3
-1;151;100;Melody;Melodic direction change near leap;No close MDC;>5th;0;Except far+1far;;;;;;;62,135,66;;;2;0
+1;60;0;Melody;Melodic direction change near leap;Far + close MDC;4th;1;;;;;1;;;;;;55;0
+1;61;40;Melody;Melodic direction change near leap;Far + close MDC;5th;1;;;;;1;;;;;;47;1
+1;62;100;Melody;Melodic direction change near leap;Far + close MDC;>5th;0;;;;;1;;;;;;30;0
+1;63;0;Melody;Melodic direction change near leap;Far + 1far MDC;3rd;0;;;;;1;;;59;;;22;0
+1;64;0;Melody;Melodic direction change near leap;Far + 1far MDC;4th;0;;;;;1;;;60;;;5;0
+1;65;60;Melody;Melodic direction change near leap;Far + 1far MDC;5th;0;;;;;1;;;61;;;7;1
+1;66;100;Melody;Melodic direction change near leap;Far + 1far MDC;>5th;0;;;;;1;;;62;;;5;0
+1;148;0;Melody;Melodic direction change near leap;No close MDC;3rd;0;Except far+1far;;;;1;;;59,132,63;;;47;0
+1;149;0;Melody;Melodic direction change near leap;No close MDC;4th;0;Except far+1far;;;;1;;;60,133,64;;;5;0
+1;150;60;Melody;Melodic direction change near leap;No close MDC;5th;0;Except far+1far;;;;1;;;61,134,65;;;12;3
+1;151;100;Melody;Melodic direction change near leap;No close MDC;>5th;0;Except far+1far;;;;1;;;62,135,66;;;2;0
 1;8;0;Melody;Melodic direction change near leap;Leap back;<=6th;-1;;;;;;;;;;;460;1
-1;22;30;Melody;Melodic direction change near leap;Leap back;>6th;-1;;;;;;;;;;;23;1
+1;22;30;Melody;Melodic direction change near leap;Leap back;>6th;-1;;;;;1;;;;;;23;1
 1;58;0;Melody;Melodic direction change near leap;Leap back;overflow;-1;;;;;1;;;;;;159;17
 1;175;0;Melody;Leaps;Leap up size;m6;-1;;;;;1;;;;;;60;5
 1;176;0;Melody;Leaps;Leap up size;maj6;-1;;;;;1;;;;;;68;4
@@ -120,7 +120,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;196;20;Melody;Repeats;Tonic note;>3 within 9;0;;More than X tonic note equivalents within Y notes (except first and last tonic). At border without tonic - one more tonic is allowed.  Weights:  Leap >M3 to tonic adds 30%. Note length decrease two times decreases 30%. Downbeat adds 30%. Longer than previous adds 30%. Perfect consonance adds 20%.;;;;;;;;;7;0
 1;10;0;Melody;Repeats;Note stagnation;>3 in 7 notes;-1;Same note repeats more than X times during stag_note_steps steps;Rualark Rualark: ;;1;;;;;;;35;1
 1;39;60;Melody;Repeats;Note stagnation;>4 in 9 notes;0;Same note repeats more than X times during stag_note_steps steps;;;;;;;;;;21;0
-1;348;20;Melody;Repeats;Note stagnation;LT 8va leap;0;Same note repeats more than X times during stag_note_steps steps;Octave leap to leading tone;;;;;;;;;2;0
+1;348;20;Melody;Repeats;Note stagnation;LT 8va leap;0;Same note repeats more than X times during stag_note_steps steps;Octave leap to leading tone;;;1;;;;;;2;0
 1;344;0;Melody;Repeats;Notes stagnation;5 notes <3 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;;17;0
 1;345;0;Melody;Repeats;Notes stagnation;7 notes <4 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;;27;0
 1;346;0;Melody;Repeats;Notes stagnation;17 notes <6 pi;0;;X consecutive notes use less than Y pitches;;;;;;;;;3;0
