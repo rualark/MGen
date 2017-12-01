@@ -424,6 +424,9 @@ void CGenCA1::LogFlags() {
 	if (!m_testing) return;
 	CString st, fst;
 	int fl;
+	st.Format("+ Finished analysis of %s #%d",
+		midi_file, cantus_id + 1);
+	AppendLineToFile("autotest\\analysis.log", st + "\n");
 	for (s = 0; s < ep2; ++s) {
 		// Loop through all flags 
 		for (int f = 0; f < anflags[cpv][s].size(); ++f) {

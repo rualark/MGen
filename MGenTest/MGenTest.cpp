@@ -199,6 +199,7 @@ void LoadConfig() {
 		cout << "Not found file " << fname << "\n";
 	}
 	// Clear expect.log
+	remove("autotest\\analysis.log");
 	remove("autotest\\flags.log");
 	remove("autotest\\expect.log");
 	remove("autotest\\sas-emu.log");
@@ -283,6 +284,9 @@ void PushArtifacts() {
 				suffix + ".csv", 1000);
 		if (CGLib::fileExists("autotest\\flags.log"))
 			Run("appveyor", "PushArtifact autotest\\flags.log -Verbosity Normal -Type Auto -FileName flags" +
+				suffix + ".log >> run.log 2>&1", 1000);
+		if (CGLib::fileExists("autotest\\analysis.log"))
+			Run("appveyor", "PushArtifact autotest\\analysis.log -Verbosity Normal -Type Auto -FileName analysis" +
 				suffix + ".log >> run.log 2>&1", 1000);
 		//if (CGLib::fileExists("autotest\\expect.log"))
 		Run("appveyor", "PushArtifact autotest\\expect.log -Verbosity Normal -Type Auto -FileName expect" +
