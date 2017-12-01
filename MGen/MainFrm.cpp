@@ -1253,18 +1253,18 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 		for (int i = 0; i < LOG_TABS; ++i) {
 			total += CGLib::logs_sent[i];
 			st.Format("\n%lld per second (%lld in %lld seconds) ",
-				CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time),
+				CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
 				CGLib::logs_sent[i], (pGen->time_stopped - pGen->gen_start_time) / 1000);
 			st2 += st;
 		}
 		st.Format("Logs sent: %lld per second (%lld in %lld seconds). Detailed: ",
-			total * 1000 / (pGen->time_stopped - pGen->gen_start_time),
+			total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
 			total, (pGen->time_stopped - pGen->gen_start_time) / 1000);
 		st2 = st + st2;
 		CGLib::WriteLog(2, st2);
 		if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time) > WARN_LOG_FREQ) {
 			st.Format("Algorithm sends %lld logs per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
-				total * 1000 / (pGen->time_stopped - pGen->gen_start_time), WARN_LOG_FREQ);
+				total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1), WARN_LOG_FREQ);
 			CGLib::WriteLog(1, st);
 		}
 	}
