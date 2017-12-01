@@ -1932,7 +1932,10 @@ int CGenCP1::FailVIntervals() {
 	int pico_count = 0;
 	pm_pico = 0;
 	// Check first step
-	if (tivl[0] == iDis) FLAG2(83, 0);
+	if (tivl[0] == iDis) {
+		if (fn) FLAG2(359, 0)
+		else FLAG2(83, 0);
+	}
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
 		s2 = fli2[ls];
