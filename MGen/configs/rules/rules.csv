@@ -3,7 +3,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;42;0;Melody;Compensated leap;Compensation deviation to 2nd;3rd;-1;Compensation can be deviated one note above last note;;;182;0;;;999;;;;
 1;43;0;Melody;Compensated leap;Compensation deviation to 2nd;4th;-1;Compensation can be deviated one note above last note;;;73;0;;;999;;;;
 1;44;40;Melody;Compensated leap;Compensation deviation to 2nd;5th;-1;Compensation can be deviated one note above last note;;;64;0;;;999;;;;
-1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;-1;Compensation can be deviated one note above last note;;;13;0;;;999;;;;
+1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;0;Compensation can be deviated one note above last note;;;13;0;;;999;;;;
 1;191;60;Melody;Compensated leap;Compensation deviation to 2nd;late >3;0;Compensation can be deviated one note above last note;Deviation after compensation note X;;0;0;;;;;;;
 1;120;0;Melody;Compensated leap;Compensation deviation to 3rd;3rd;-1;;;;83;0;;;999;;;;
 1;121;0;Melody;Compensated leap;Compensation deviation to 3rd;4th;-1;;;;50;0;;;999;;;;
@@ -19,7 +19,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;102;40;Melody;Compensated leap;Compensated to 3rd: prepared;5th;-1;Prepared within 5 notes;;;63;0;;;;;;;
 1;103;60;Melody;Compensated leap;Compensated to 3rd: prepared;>5th;-1;Prepared within 5 notes;;;39;0;;;;;;;
 1;104;0;Melody;Compensated leap;Compensated to 3rd;-;0;;;;0;0;;;;;;;
-1;105;10;Melody;Compensated leap;Compensated to 3rd;4th;-1;;;;22;0;;;;;;;
+1;105;10;Melody;Compensated leap;Compensated to 3rd;4th;0;;;;22;0;;;;;;;
 1;106;40;Melody;Compensated leap;Compensated to 3rd;5th;0;;;;0;0;;;;;;;
 1;107;60;Melody;Compensated leap;Compensated to 3rd;>5th;0;;;;0;0;;;;;;;
 1;144;0;Melody;Compensated leap;C4P last 4 measures, 8 notes;3rd;-1;Compensated to 4th, precompensated within 5 notes;;;0;0;;;;;;;
