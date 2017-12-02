@@ -1025,7 +1025,8 @@ void CGMidi::LoadCantus(CString path)
 					if (pos == last_pos) {
 						incom.resize(c.size());
 						if (c.size()) {
-							incom[c.size() - 1] = st;
+							if (!incom[c.size() - 1].IsEmpty()) incom[c.size() - 1] += ",";
+							incom[c.size() - 1] += st;
 						}
 						else {
 							CString est;
