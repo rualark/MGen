@@ -122,32 +122,32 @@ const char scan_visual_code[] = { '!', '.', ',', ':', ';', '`', '|', '(', ')', '
 
 const CString HarmNames[] = {
 	"T", // 0
-	"sII", // 1
-	"dtIII", // 2
+	"SII", // 1
+	"DTIII", // 2
 	"S", // 3
 	"D", // 4
-	"tsVI", // 5
-	"dVIIo", // 6
+	"TSVI", // 5
+	"DVII", // 6
 };
 
 const CString HarmNames_m[] = {
 	"t", // 0
-	"sIIo", // 1
+	"sIIb5", // 1
 	"DTIII", // 2
 	"s", // 3
 	"d", // 4
-	"TSVI", // 5
-	"DVII", // 6
+	"tsVI", // 5
+	"dVII", // 6
 };
 
 const CString HarmNames_ma[] = {
 	"t", // 0
 	"sII", // 1
-	"DTIII+", // 2
+	"DTIII#5", // 2
 	"S", // 3
 	"D", // 4
-	"TSVI", // 5
-	"dVIIo", // 6
+	"tsvib5", // 5 F#A should mean S, not tsVIo
+	"DVII", // 6
 };
 
 const CString HarmNames2[] = {
@@ -173,10 +173,10 @@ const CString HarmNames2_m[] = {
 const CString HarmNames2_ma[] = {
 	"i", // 0
 	"ii", // 1
-	"III+", // 2
+	"V#5", // 2
 	"IV", // 3
 	"V", // 4
-	"VI", // 5
+	"vib5", // 5
 	"viio", // 6
 };
 

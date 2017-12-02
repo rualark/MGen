@@ -20,4 +20,4 @@ Midi_file = midi\good-cf-maj.mid # Path and file name of imported midi file
 #Midi_file = midi\GenCA1\test-lrange.mid
 #Midi_file = "midi\result\2017-07-22-auto 18-42-47.mid"
 
-corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
