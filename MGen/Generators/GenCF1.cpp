@@ -198,25 +198,25 @@ void CGenCF1::LoadRules(CString fname)
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
 			harmonic_rule[rid] = atoi(ast[10]);
-			false_positives_ignore[rid] = atoi(ast[11]);
-			false_positives_global[rid] = atoi(ast[12]);
-			sas_emulator_max_delay[rid] = atoi(ast[13]);
-			sas_emulator_move_ignore[rid] = atoi(ast[14]);
-			if (!ast[15].IsEmpty()) {
-				Tokenize(ast[15], ast2, ",");
+			sas_emulator_max_delay[rid] = atoi(ast[11]);
+			sas_emulator_move_ignore[rid] = atoi(ast[12]);
+			if (!ast[13].IsEmpty()) {
+				Tokenize(ast[13], ast2, ",");
 				for (int x = 0; x < ast2.size(); ++x) {
 					int fl = atoi(ast2[x]);
 					if (fl) sas_emulator_replace[fl].push_back(rid);
 				}
 			}
-			sas_emulator_unstable[rid] = atoi(ast[16]);
-			if (!ast[17].IsEmpty()) {
-				Tokenize(ast[17], ast2, ",");
+			sas_emulator_unstable[rid] = atoi(ast[14]);
+			if (!ast[15].IsEmpty()) {
+				Tokenize(ast[15], ast2, ",");
 				for (int x = 0; x < ast2.size(); ++x) {
 					int fl = atoi(ast2[x]);
 					if (fl) flag_replace[fl].push_back(rid);
 				}
 			}
+			false_positives_ignore[rid] = atoi(ast[16]);
+			false_positives_global[rid] = atoi(ast[17]);
 		}
 	}
 	fs.close();
