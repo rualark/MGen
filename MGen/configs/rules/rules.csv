@@ -3,12 +3,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;42;0;Melody;Compensated leap;Compensation deviation to 2nd;3rd;-1;Compensation can be deviated one note above last note;;;182;0;;;999;;;;
 1;43;0;Melody;Compensated leap;Compensation deviation to 2nd;4th;-1;Compensation can be deviated one note above last note;;;73;0;;;999;;;;
 1;44;40;Melody;Compensated leap;Compensation deviation to 2nd;5th;-1;Compensation can be deviated one note above last note;;;64;0;;;999;;;;
-1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;0;Compensation can be deviated one note above last note;;;13;0;;;999;;;;
+1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;1;Compensation can be deviated one note above last note;Only immediate;;13;0;;;999;;;;
 1;191;60;Melody;Compensated leap;Compensation deviation to 2nd;late >3;0;Compensation can be deviated one note above last note;Deviation after compensation note X;;0;0;;;;;;;
 1;120;0;Melody;Compensated leap;Compensation deviation to 3rd;3rd;-1;;;;83;0;;;999;;;;
 1;121;0;Melody;Compensated leap;Compensation deviation to 3rd;4th;-1;;;;50;0;;;999;;;;
 1;122;60;Melody;Compensated leap;Compensation deviation to 3rd;5th;-1;;;;11;0;;;999;;;;
-1;123;60;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;Possible in species 3,5;;0;0;;;999;;;;
+1;123;60;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;Only immediate. Possible in species 3,5;;0;0;;;999;;;;
 1;192;60;Melody;Compensated leap;Compensation deviation to 3rd;late >3;0;;Deviation after compensation note X;;0;0;;;;;;;
 1;53;0;Melody;Compensated leap;Compensation after 3rd;3rd;-1;;;;35;0;;;;;;;
 1;54;10;Melody;Compensated leap;Compensation after 3rd;4th;-1;;;;20;0;;;;;;;
