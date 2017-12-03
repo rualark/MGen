@@ -47,6 +47,10 @@ CGenCF1::CGenCF1()
 	data_ready_persist.resize(MAX_DATA_READY_PERSIST);
 	warn_data_ready.resize(MAX_DATA_READY);
 	warn_data_ready_persist.resize(MAX_DATA_READY_PERSIST);
+	// Harmony notation
+	HarmName.resize(7);
+	HarmName_m.resize(7);
+	HarmName_ma.resize(7);
 }
 
 CGenCF1::~CGenCF1()
@@ -576,12 +580,67 @@ int CGenCF1::SelectRuleSet(int rs) {
 	return error;
 }
 
-void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
-{
+void CGenCF1::LoadHarmNotation() {
+	CString fname = "configs\\harm\\harm-notation.csv";
+	if (!CGLib::fileExists(fname)) {
+		CString est;
+		est.Format("Cannot find file: %s", fname);
+		WriteLog(5, est);
+		error = 1;
+		return;
+	}
+	vector <CString> sv;
+	ifstream fs;
+	int cur_nid = -1;
+	fs.open(fname);
+	CString st, st2;
+	char pch[2550];
+	int pos = 0;
+	// Load header
+	//fs.getline(pch, 2550);
+	while (fs.good()) {
+		fs.getline(pch, 2550);
+		st = pch;
+		// Skip comments
+		pos = st.Find("#");
+		if (pos == 0)	continue;
+		st.Trim();
+		pos = 0;
+		if (st.Find(";") != -1) {
+			Tokenize(st, sv, ";");
+			if (sv.size() != 8) {
+				CString est;
+				est.Format("Wrong count of columns (%d) in file %s", sv.size(), fname);
+				WriteLog(5, est);
+				error = 1;
+				return;
+			}
+			for (int i = 0; i < sv.size(); ++i) sv[i].Trim();
+			if (sv[0] == "Major") ++cur_nid;
+			if (cur_nid == harm_notation) {
+				if (sv[0] == "Major")
+					for (int i = 1; i < 8; ++i) HarmName[i - 1] = sv[i];
+				if (sv[0] == "Minor natural")
+					for (int i = 1; i < 8; ++i) HarmName_m[i - 1] = sv[i];
+				if (sv[0] == "Minor altered")
+					for (int i = 1; i < 8; ++i) HarmName_ma[i - 1] = sv[i];
+			}
+		}
+	}
+	fs.close();
+	if (HarmName[6].IsEmpty() || HarmName_m[6].IsEmpty() || HarmName_ma[6].IsEmpty()) {
+		CString est;
+		est.Format("Error loading harmonic notation");
+		WriteLog(5, est);
+		error = 1;
+	}
+}
+
+void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) {
 	SET_READY_PERSIST(DR_Config);
 	CheckVar(sN, sV, "reduce_between", &reduce_between, 0, 100);
 	CheckVar(sN, sV, "ly_msh", &ly_msh, 0, 1); 
-	CheckVar(sN, sV, "harm_notation", &harm_notation, 0, 2);
+	CheckVar(sN, sV, "harm_notation", &harm_notation, 0, 5);
 	CheckVar(sN, sV, "show_harmony_bass", &show_harmony_bass, 0, 2);
 	CheckVar(sN, sV, "log_pmap", &log_pmap, 0, 1);
 	CheckVar(sN, sV, "show_correct_hatch", &show_correct_hatch, 0, 1);
@@ -629,10 +688,14 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata)
 	CheckVar(sN, sV, "cf_rule_set", &cf_rule_set, 0);
 	CheckVar(sN, sV, "cp_rule_set", &cp_rule_set, 0);
 
+	// Load harmonic notation
+	if (*sN == "harm_notation") {
+		LoadHarmNotation();
+	}
 	// Load HSP
 	if (*sN == "hsp_file") {
 		++parameter_found;
-		LoadHSP("configs\\rules\\" + *sV);
+		LoadHSP("configs\\harm\\" + *sV);
 	}
 	// Load rules
 	if (*sN == "rules_file") {
@@ -3906,18 +3969,10 @@ void CGenCF1::LogPmap() {
 
 CString CGenCF1::GetHarmName(int pitch, int alter) {
 	if (minor_cur) {
-		if (alter) return HarmNames_ma[pitch];
-		else return HarmNames_m[pitch];
+		if (alter) return HarmName_ma[pitch];
+		else return HarmName_m[pitch];
 	}
-	else return HarmNames[pitch];
-}
-
-CString CGenCF1::GetHarmName2(int pitch, int alter) {
-	if (minor_cur) {
-		if (alter) return HarmNames2_ma[pitch];
-		else return HarmNames2_m[pitch];
-	}
-	else return HarmNames2[pitch];
+	else return HarmName[pitch];
 }
 
 int CGenCF1::SendCantus() {
@@ -3942,10 +3997,7 @@ int CGenCF1::SendCantus() {
 	for (s = 0; s < ep2; ++s) {
 		cpos[s] = pos;
 		if (chm.size() > bli[s] && chm[bli[s]] > -1) {
-			if (harm_notation == 1) 
-				mark[pos][v] = GetHarmName(chm[bli[s]], m_cc[s] == 9 || m_cc[s] == 11);
-			else
-				mark[pos][v] = GetHarmName2(chm[bli[s]], m_cc[s] == 9 || m_cc[s] == 11);
+			mark[pos][v] = GetHarmName(chm[bli[s]], m_cc[s] == 9 || m_cc[s] == 11);
 			SendHarmColor(pos, v);
 		}
 		SendLyrics(pos, v, cpv, s);

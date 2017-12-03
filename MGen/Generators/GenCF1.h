@@ -120,66 +120,6 @@ const int hvs[] = { 0, 1, 0, 1, 0, 1, 0 };
 #define SCAN_VISUAL_CODE_BASE 3
 const char scan_visual_code[] = { '!', '.', ',', ':', ';', '`', '|', '(', ')', '[', ']', '{', '}', ' / ', '\\' };
 
-const CString HarmNames[] = {
-	"T", // 0
-	"SII", // 1
-	"DTIII", // 2
-	"S", // 3
-	"D", // 4
-	"TSVI", // 5
-	"DVII", // 6
-};
-
-const CString HarmNames_m[] = {
-	"t", // 0
-	"sIIb5", // 1
-	"DTIII", // 2
-	"s", // 3
-	"d", // 4
-	"tsVI", // 5
-	"dVII", // 6
-};
-
-const CString HarmNames_ma[] = {
-	"t", // 0
-	"sII", // 1
-	"DTIII#5", // 2
-	"S", // 3
-	"D", // 4
-	"tsvib5", // 5 F#A should mean S, not tsVIo
-	"DVII", // 6
-};
-
-const CString HarmNames2[] = {
-	"I", // 0
-	"ii", // 1
-	"iii", // 2
-	"IV", // 3
-	"V", // 4
-	"vi", // 5
-	"viio", // 6
-};
-
-const CString HarmNames2_m[] = {
-	"i", // 0
-	"iio", // 1
-	"III", // 2
-	"iv", // 3
-	"v", // 4
-	"VI", // 5
-	"VII", // 6
-};
-
-const CString HarmNames2_ma[] = {
-	"i", // 0
-	"ii", // 1
-	"V#5", // 2
-	"IV", // 3
-	"V", // 4
-	"vib5", // 5
-	"viio", // 6
-};
-
 #define mUndefined -1
 #define mScan 0
 #define mSWA 1
@@ -234,6 +174,7 @@ protected:
 	inline void ProcessSpecies();
 	void CheckConfig();
 	int SelectRuleSet(int rs);
+	void LoadHarmNotation();
 	void LoadConfigLine(CString * sN, CString * sV, int idata, float fdata);
 	void LogCantus(CString st3, int x, int size, vector<int>& c);
 	CString vint2st(int size, vector<int>& c);
@@ -349,7 +290,6 @@ protected:
 	CString GetPmapLogSt();
 	inline void LogPmap();
 	CString GetHarmName(int pitch, int alter);
-	CString GetHarmName2(int pitch, int alter);
 	int SendCantus();
 	int InitGen();
 	int InitCantus();
@@ -860,4 +800,9 @@ protected:
 	vector<int> msh; // [ls] Melody shape types for fli
 	vector<int> pat; // [ls] Pattern (cambiata, dnt...) for fli
 	vector<int> pat_state; // [ls] Pattern (cambiata, dnt...) for fli state: 0 - not applied, 1 - fixed, 2,3 - variants
+
+	// Harmony notation
+	vector <CString> HarmName;
+	vector <CString> HarmName_m;
+	vector <CString> HarmName_ma;
 };
