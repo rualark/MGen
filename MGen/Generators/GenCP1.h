@@ -63,6 +63,7 @@ protected:
 	inline void SavePattern(int pattern);
 	inline int DetectPatterns();
 	inline void GetBasicMsh();
+	inline int FailTritone();
 	inline void SetMsh(int ls, vector<int> &l_msh, int val);
 	inline void ApplyPDD(int ls, vector<int> &l_msh, int state);
 	inline void ApplyDNT(int ls, vector<int> &l_msh, int state);

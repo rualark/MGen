@@ -1458,6 +1458,22 @@ void CGenCP1::GetBasicMsh() {
 	}
 }
 
+int CGenCP1::FailTritone() {
+	// Find both tritone notes in measure
+	// Are notes adjacent?
+	// If not adjacent, do intermediate notes exceed pitch range?
+	// Is tritone framed?
+	// Is last note repeated?
+	if (species == 5) {
+		// Is last note at least 1/2 ?
+		// Is last note not shorter than previous ?
+	}
+	else {
+		// Is last note longer then previous?
+	}
+	return 0;
+}
+
 void CGenCP1::SetMsh(int ls, vector<int> &l_msh, int val) {
 	// Check if in range
 	if (ls >= fli_size) return;

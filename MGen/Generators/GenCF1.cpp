@@ -2361,8 +2361,32 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 	return 0;
 }
 
-int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc)
-{
+int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+	CHECK_READY(DR_pc, DR_c, DR_fli);
+	for (ls = 0; ls < fli_size - 1; ++ls) {
+		s0 = fli[ls];
+		s = fli2[ls];
+		s1 = fli2[ls + 1];
+		// Leap size prohibit
+		if (cc[s1] - cc[s] == 8) FLAG2(175, s0)
+		else if (cc[s1] - cc[s] == -8) FLAG2(181, s0)
+		else if (cc[s1] - cc[s] == 9) FLAG2(176, s0)
+		else if (cc[s1] - cc[s] == -9) FLAG2(182, s0)
+		else if (cc[s1] - cc[s] == 10) FLAG2(177, s0)
+		else if (cc[s1] - cc[s] == -10) FLAG2(183, s0)
+		else if (cc[s1] - cc[s] == 11) FLAG2(178, s0)
+		else if (cc[s1] - cc[s] == -11) FLAG2(184, s0)
+		else if (cc[s1] - cc[s] == 12) FLAG2(179, s0)
+		else if (cc[s1] - cc[s] == -12) FLAG2(185, s0)
+		else if (cc[s1] - cc[s] > 12) FLAG2(180, s0)
+		else if (cc[s1] - cc[s] < -12) FLAG2(186, s0);
+		// Prohibit BB
+		if (pcc[fli[ls + 1]] == 11 && pcc[s] == 11) FLAG2(348, s0);
+	}
+	return 0;
+}
+
+int CGenCF1::FailTritones(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	CHECK_READY(DR_pc, DR_c, DR_fli);
 	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s0 = fli[ls];
@@ -2380,21 +2404,6 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 		else {
 			if (FailTritone(4, 5, 11, 0, c, cc, pc, pcc)) return 1;
 		}
-		// Leap size prohibit
-		if (cc[s1] - cc[s] == 8) FLAG2(175, s0)
-		else if (cc[s1] - cc[s] == -8) FLAG2(181, s0)
-		else if (cc[s1] - cc[s] == 9) FLAG2(176, s0)
-		else if (cc[s1] - cc[s] == -9) FLAG2(182, s0)
-		else if (cc[s1] - cc[s] == 10) FLAG2(177, s0)
-		else if (cc[s1] - cc[s] == -10) FLAG2(183, s0)
-		else if (cc[s1] - cc[s] == 11) FLAG2(178, s0)
-		else if (cc[s1] - cc[s] == -11) FLAG2(184, s0)
-		else if (cc[s1] - cc[s] == 12) FLAG2(179, s0)
-		else if (cc[s1] - cc[s] == -12) FLAG2(185, s0)
-		else if (cc[s1] - cc[s] > 12) FLAG2(180, s0)
-		else if (cc[s1] - cc[s] < -12) FLAG2(186, s0);
-		// Prohibit BB
-		if (pcc[fli[ls + 1]] == 11 && pcc[s] == 11) FLAG2(348, s0);
 	}
 	return 0;
 }
@@ -4685,6 +4694,7 @@ check:
 		if (FailLastNotes(m_pc, m_pcc)) goto skip;
 		//if (FailNoteSeq(m_pc)) goto skip;
 		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
+		if (FailTritones(m_c, m_cc, m_pc, m_pcc)) goto skip;
 		GetLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur);
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps, max_leaped, max_leaps, max_leaped, max_leap_steps, 3, 25, 3, 25)) goto skip;
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps2, max_leaped2, max_leaps2, max_leaped2, max_leap_steps2, 202, 203, 202, 203)) goto skip;
