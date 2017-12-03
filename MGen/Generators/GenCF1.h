@@ -751,6 +751,7 @@ protected:
 	int sus_count = 0; // Number of suspensions detected in ExplodeCP
 	int local_flag_position;
 	int fixed_ep2 = 0; // For SAS emulation
+	inline int FailAdjacentTritone2(int ta, int t1, int t2, int tb);
 	// For FLAG2 macro
 	void CreateULinks();
 

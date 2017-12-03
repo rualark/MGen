@@ -1458,9 +1458,29 @@ void CGenCP1::GetBasicMsh() {
 	}
 }
 
-int CGenCP1::FailTritone() {
+int CGenCF1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
+	int found = 0;
+	// Check consecutive tritone
+	if ((apcc[cpv][s2] == t2 && apcc[cpv][s] == t1) || 
+		(apcc[cpv][s2] == t1 && apcc[cpv][s] == t2)) found = 1;
+	else return 0;
+}
+
+int CGenCP1::FailTritones2() {
+	// Find adjacent notes
+	CHECK_READY(DR_pc, DR_c, DR_fli);
+	for (ls = 0; ls < fli_size - 1; ++ls) {
+		s = fli2[ls];
+		s2 = fli[ls];
+		if (minor_cur) {
+			if (FailAdjacentTritone2(3, 5, 11, 0)) return 1;
+			if (FailAdjacentTritone2(7, 8, 2, 3)) return 1;
+		}
+		else {
+			if (FailAdjacentTritone2(4, 5, 11, 0)) return 1;
+		}
+	}
 	// Find both tritone notes in measure
-	// Are notes adjacent?
 	// If not adjacent, do intermediate notes exceed pitch range?
 	// Is tritone framed?
 	// Is last note repeated?

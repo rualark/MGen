@@ -2192,99 +2192,6 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &cc) {
 	return 0;
 }
 
-// Check tritone t1-t2 which has to resolve from ta to tb
-int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
-	int found;
-	int res1 = 0; // First note resolution flag
-	int res2 = 0; // Second note resolution flag
-	int ta2, tb2; // Real resolution notes
-	// Tritone prohibit
-	leap_start = s;
-	found = 0;
-	// Check consecutive tritone
-	if ((pcc[s1] == t2 && pcc[s] == t1) || (pcc[s1] == t1 && pcc[s] == t2)) found = 1;
-	// Check tritone with additional note inside
-	if (ls > 0 && (svoices == 1 || bmli[s1] == bmli[s_1])) {
-		// Check pitches
-		if ((pcc[s1] == t2 && pcc[s_1] == t1) || (pcc[s1] == t1 && pcc[s_1] == t2))
-			// Check intermediate note and mdc
-			if ((c[s] > c[s1] && c[s] < c[s_1] && (ls<2 || c[s_2] < c[s_1]) && (ls>fli_size - 3 || c[s2] > c[s1])) ||
-				(c[s] < c[s1] && c[s] > c[s_1] && (ls<2 || c[s_2] > c[s_1]) && (ls>fli_size - 3 || c[s2] < c[s1]))) {
-				found = 2;
-				leap_start = s_1;
-			}
-			else if (svoices > 1 && llen[ls + 1] > llen[ls]) {
-				found = 3;
-				leap_start = s_1;
-			}
-	}
-	fleap_start = bli[leap_start];
-	fleap_end = bli[s1];
-	// Do not check tritone if it is at the end of not-last window
-	if (ls == fli_size - 2 && ep2 != c_len) return 0;
-	if (found) {
-		// Check if tritone is highest leap if this is last window
-		if (ep2 == c_len) {
-			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s0);
-		}
-		// Check if resolution is correct
-		// Get real resolution notes
-		if (pcc[s1] == t2) {
-			ta2 = ta;
-			tb2 = tb;
-		}
-		else {
-			ta2 = tb;
-			tb2 = ta;
-		}
-		// Get resolution window
-		int rwin = 1;
-		if (svoices > 1) rwin = max(1, (npm * tritone_res_quart) / 4);
-		// Scan preparation
-		if (fleap_start > 0) {
-			int pos1 = max(0, fli[fleap_start] - rwin);
-			int pos2 = fli[fleap_start];
-			for (int i = pos1; i < pos2; ++i) {
-				if (pcc[i] == ta2 && abs(cc[i] - cc[leap_start]) < 5) {
-					res1 = 1;
-					break;
-				}
-			}
-		}
-		if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
-		// Scan resolution
-		if (fleap_end < fli_size - 1) {
-			int pos1 = fli2[fleap_end] + 1;
-			int pos2 = min(ep2, fli2[fleap_end] + 1 + npm);
-			for (int i = pos1; i < pos2; ++i) {
-				if (pcc[i] == tb2 && abs(cc[i] - cc[s1]) < 5) {
-					res2 = 1;
-					break;
-				}
-			}
-		}
-		// Consider resolved if window cut and not fully generated
-		if (fli2[fleap_end] + npm >= ep2 && ep2 < c_len) res2 = 1;
-		if (pcc[fli[fleap_end - 1]] == tb2) res2 = 1;
-		// Flag resolution for consecutive tritone
-		if (found == 1) {
-			if (res1*res2 == 0) FLAG2(31, s0)
-			else FLAG2(2, s0);
-		}
-		// Flag resolution for tritone with intermediate note, framed
-		else if (found == 2) {
-			if (res1*res2 == 0) FLAG2(19, s0)
-			else FLAG2(18, s0);
-		}
-		// Flag resolution for tritone with intermediate note, accented
-		else if (found == 3) { //-V547
-			if (res1*res2 == 0) FLAG2(342, s0)
-			else FLAG2(343, s0);
-		}
-	}
-	return 0;
-}
-
 void CGenCF1::PrepareTonicWeight() {
 	tonic_weight.resize(9);
 	for (int i = 1; i <= 8; ++i) {
@@ -2382,6 +2289,99 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 		else if (cc[s1] - cc[s] < -12) FLAG2(186, s0);
 		// Prohibit BB
 		if (pcc[fli[ls + 1]] == 11 && pcc[s] == 11) FLAG2(348, s0);
+	}
+	return 0;
+}
+
+// Check tritone t1-t2 which has to resolve from ta to tb
+int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+	int found;
+	int res1 = 0; // First note resolution flag
+	int res2 = 0; // Second note resolution flag
+	int ta2, tb2; // Real resolution notes
+								// Tritone prohibit
+	leap_start = s;
+	found = 0;
+	// Check consecutive tritone
+	if ((pcc[s1] == t2 && pcc[s] == t1) || (pcc[s1] == t1 && pcc[s] == t2)) found = 1;
+	// Check tritone with additional note inside
+	else if (ls > 0 && (svoices == 1 || bmli[s1] == bmli[s_1])) {
+		// Check pitches
+		if ((pcc[s1] == t2 && pcc[s_1] == t1) || (pcc[s1] == t1 && pcc[s_1] == t2))
+			// Check intermediate note and mdc
+			if ((c[s] > c[s1] && c[s] < c[s_1] && (ls<2 || c[s_2] < c[s_1]) && (ls>fli_size - 3 || c[s2] > c[s1])) ||
+				(c[s] < c[s1] && c[s] > c[s_1] && (ls<2 || c[s_2] > c[s_1]) && (ls>fli_size - 3 || c[s2] < c[s1]))) {
+				found = 2;
+				leap_start = s_1;
+			}
+			else if (svoices > 1 && llen[ls + 1] > llen[ls]) {
+				found = 3;
+				leap_start = s_1;
+			}
+	}
+	fleap_start = bli[leap_start];
+	fleap_end = bli[s1];
+	// Do not check tritone if it is at the end of not-last window
+	if (ls == fli_size - 2 && ep2 != c_len) return 0;
+	if (found) {
+		// Check if tritone is highest leap if this is last window
+		if (ep2 == c_len) {
+			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s0);
+		}
+		// Check if resolution is correct
+		// Get real resolution notes
+		if (pcc[s1] == t2) {
+			ta2 = ta;
+			tb2 = tb;
+		}
+		else {
+			ta2 = tb;
+			tb2 = ta;
+		}
+		// Get resolution window
+		int rwin = 1;
+		if (svoices > 1) rwin = max(1, (npm * tritone_res_quart) / 4);
+		// Scan preparation
+		if (fleap_start > 0) {
+			int pos1 = max(0, fli[fleap_start] - rwin);
+			int pos2 = fli[fleap_start];
+			for (int i = pos1; i < pos2; ++i) {
+				if (pcc[i] == ta2 && abs(cc[i] - cc[leap_start]) < 5) {
+					res1 = 1;
+					break;
+				}
+			}
+		}
+		if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
+		// Scan resolution
+		if (fleap_end < fli_size - 1) {
+			int pos1 = fli2[fleap_end] + 1;
+			int pos2 = min(ep2, fli2[fleap_end] + 1 + npm);
+			for (int i = pos1; i < pos2; ++i) {
+				if (pcc[i] == tb2 && abs(cc[i] - cc[s1]) < 5) {
+					res2 = 1;
+					break;
+				}
+			}
+		}
+		// Consider resolved if window cut and not fully generated
+		if (fli2[fleap_end] + npm >= ep2 && ep2 < c_len) res2 = 1;
+		if (pcc[fli[fleap_end - 1]] == tb2) res2 = 1;
+		// Flag resolution for consecutive tritone
+		if (found == 1) {
+			if (res1*res2 == 0) FLAG2(31, s0)
+			else FLAG2(2, s0);
+		}
+		// Flag resolution for tritone with intermediate note, framed
+		else if (found == 2) {
+			if (res1*res2 == 0) FLAG2(19, s0)
+			else FLAG2(18, s0);
+		}
+		// Flag resolution for tritone with intermediate note, accented
+		else if (found == 3) { //-V547
+			if (res1*res2 == 0) FLAG2(342, s0)
+			else FLAG2(343, s0);
+		}
 	}
 	return 0;
 }
