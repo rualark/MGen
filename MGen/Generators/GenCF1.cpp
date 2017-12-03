@@ -1815,8 +1815,8 @@ void CGenCF1::CountFillInit(vector<int> &c, int tail_len, int pre, int &t1, int 
 	fill_end = -1;
 }
 	
-void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int &fill_end)
-{
+void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vector<int> &nstat3, int &skips, int &fill_to, int pre, int &fill_to_pre, int &fill_from_pre, int &fill_from, int &deviates, int &dev_count, int leap_prev, int &fill_end) {
+	// Leap starting and finishing note
 	int t1, t2;
 	int cur_deviation = 0;
 	int dev_state = 0;
@@ -1826,14 +1826,20 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 	CountFillInit(c, tail_len, pre, t1, t2, fill_end);
 	// Detect fill_end
 	deviates = 0;
+	int dl2 = dev_late2;
+	int dl3 = dev_late3;
+	if (leap_size > 4) {
+		dl2 = 1;
+		dl3 = 2;
+	}
 	// Deviation state: 0 = before deviation, 1 = in deviation, 2 = after deviation, 3 = multiple deviations
 	for (int x = 0; x < tc.size(); ++x) {
 		// If deviating, start deviation state and calculate maximum deviation
 		if (tc[x] > t2) {
 			cur_deviation = tc[x] - t2;
 			// Detect late deviation
-			if (cur_deviation == 1 && x >= dev_late2 && !accept[191]) break;
-			if (cur_deviation == 2 && x >= dev_late3 && !accept[192]) break;
+			if (cur_deviation == 1 && x >= dl2 && !accept[191]) break;
+			if (cur_deviation == 2 && x >= dl3 && !accept[192]) break;
 			if (cur_deviation > deviates) {
 				// If deviation is unacceptable, break leap compensation
 				if (cur_deviation > max_deviation) break;
@@ -1969,8 +1975,9 @@ void CGenCF1::FailLeapInit(vector<int> &c, int &late_leap, int &presecond, int &
 	leap_mid = 0;
 	fleap_start = ls;
 	fleap_end = ls + 1;
+	// leap_size = 4 for 5th
 	leap_size = abs(c[leap_end] - c[s]);
-										// Next is leap?
+	// Next is leap?
 	if (fleap_end < fli_size - 1) leap_next = leap[leap_start] * leap[leap_end];
 	// Prev is leap?
 	if (fleap_start > 0) leap_prev = leap[leap_start] * leap[fli2[fleap_start] - 1];
