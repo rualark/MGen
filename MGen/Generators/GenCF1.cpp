@@ -2293,12 +2293,14 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 	return 0;
 }
 
-// Check tritone t1-t2 which has to resolve from ta to tb
+// Check tritone t1-t2 which has to resolve from ta to tb. Use fleap_start/fleap_end
 void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, int &res2, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+	res1 = 0;
+	res2 = 0;
 	// Real resolution notes
 	int ta2, tb2; 
 	// Get real resolution notes
-	if (pcc[s1] == t2) {
+	if (pcc[fli[fleap_end]] == t2) {
 		ta2 = ta;
 		tb2 = tb;
 	}
@@ -2326,7 +2328,7 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, in
 		int pos1 = fli2[fleap_end] + 1;
 		int pos2 = min(ep2, fli2[fleap_end] + 1 + npm);
 		for (int i = pos1; i < pos2; ++i) {
-			if (pcc[i] == tb2 && abs(cc[i] - cc[s1]) < 5) {
+			if (pcc[i] == tb2 && abs(cc[i] - cc[fli[fleap_end]]) < 5) {
 				res2 = 1;
 				break;
 			}

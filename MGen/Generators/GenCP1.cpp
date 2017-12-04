@@ -1467,9 +1467,11 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 		(apcc[cpv][s2] != t1 || apcc[cpv][s] != t2)) return 0;
 	// Check different measures
 	if (bmli[s] != bmli[s2]) return 0;
+	fleap_start = ls;
+	fleap_end = ls + 1;
 	// Check framed
-	if ((ls >= fli_size - 2 || aleap[cpv][s] * (acc[cpv][fli2[ls + 2]] - acc[cpv][fli2[ls + 1]]) == -1) &&
-		(ls == 0 || aleap[cpv][s] * (acc[cpv][s] - acc[cpv][fli2[ls - 1]]) == -1)) found = 1;
+	if ((ls >= fli_size - 2 || aleap[cpv][s] * (acc[cpv][fli2[ls + 2]] - acc[cpv][fli2[ls + 1]]) < 0) &&
+		(ls == 0 || aleap[cpv][s] * (acc[cpv][s] - acc[cpv][fli2[ls - 1]]) < 0)) found = 1;
 	if (!found) {
 		if (species == 5) {
 			// Is last note at least 1/2 and not shorter than previous?
@@ -1500,22 +1502,20 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 	// Check if tritone is highest leap if this is last window
 	if (ep2 == c_len) {
 		if ((acc[cpv][s] == nmax) || (acc[cpv][s2] == nmax)) {
-			if (found == 1) FLAG2(32, s)
-			else FLAG2(362, s);
+			if (found == 1) FLAG2(32, fli[fleap_start])
+			else FLAG2(362, fli[fleap_start]);
 		}
 	}
-	fleap_start = ls;
-	fleap_end = ls + 1;
 	GetTritoneResolution(ta, t1, t2, tb, res1, res2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv]);
 	// Flag resolution for framed tritone
 	if (found == 1) {
-		if (res1*res2 == 0) FLAG2(31, s)
-		else FLAG2(2, s);
+		if (res1*res2 == 0) FLAG2(31, fli[fleap_start])
+		else FLAG2(2, fli[fleap_start]);
 	}
 	// Flag resolution for accented tritone
 	else {
-		if (res1*res2 == 0) FLAG2(361, s)
-		else FLAG2(360, s);
+		if (res1*res2 == 0) FLAG2(361, fli[fleap_start])
+		else FLAG2(360, fli[fleap_start]);
 	}
 	return 0;
 }
@@ -3284,7 +3284,12 @@ check:
 		if (FailLastIntervals()) goto skip;
 		//if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
-		if (FailTritones2()) goto skip;
+		if (npm > 1) {
+			if (FailTritones2()) goto skip;
+		}
+		else {
+			if (FailTritones(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
+		}
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leaps5, max_leaped5, max_leap_steps, 3, 25, 311, 312)) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leaps6, max_leaped6, max_leap_steps2, 202, 203, 313, 314)) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_smooth2, max_smooth_direct2, 302, 303)) goto skip;
