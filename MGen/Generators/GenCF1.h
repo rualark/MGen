@@ -221,7 +221,7 @@ protected:
 	inline float GetTonicWeight(int l_ls, vector<int>& cc, vector<int>& pc);
 	inline int FailTonic(vector<int> &cc, vector<int>& pc);
 	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
-	inline void GetTritoneResolution(int ta, int t1, int t2, int tb, int fleap_start, int fleap_end, int & res1, int & res2, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline void GetTritoneResolution(int ta, int t1, int t2, int tb, int & res1, int & res2, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailTritones(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline int FailGlobalFill(vector<int>& c, vector<int>& nstat2);
 	void ScanInit();

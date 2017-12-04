@@ -2294,7 +2294,7 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 }
 
 // Check tritone t1-t2 which has to resolve from ta to tb
-void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int fleap_start, int fleap_end, int &res1, int &res2, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, int &res2, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	// Real resolution notes
 	int ta2, tb2; 
 	// Get real resolution notes
@@ -2314,7 +2314,7 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int fleap_sta
 		int pos1 = max(0, fli[fleap_start] - rwin);
 		int pos2 = fli[fleap_start];
 		for (int i = pos1; i < pos2; ++i) {
-			if (pcc[i] == ta2 && abs(cc[i] - cc[leap_start]) < 5) {
+			if (pcc[i] == ta2 && abs(cc[i] - cc[fli[fleap_start]]) < 5) {
 				res1 = 1;
 				break;
 			}
@@ -2376,7 +2376,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 			}
 		}
 		// Check if resolution is correct
-		GetTritoneResolution(ta, t1, t2, tb, fleap_start, fleap_end, res1, res2, c, cc, pc, pcc);
+		GetTritoneResolution(ta, t1, t2, tb, res1, res2, c, cc, pc, pcc);
 		// Flag resolution for consecutive tritone
 		if (found == 1) {
 			if (res1*res2 == 0) FLAG2(31, s0)

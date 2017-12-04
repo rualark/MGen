@@ -1504,16 +1504,18 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 			else FLAG2(362, s);
 		}
 	}
-	GetTritoneResolution(ta, t1, t2, tb, ls, ls + 1, res1, res2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv]);
+	fleap_start = ls;
+	fleap_end = ls + 1;
+	GetTritoneResolution(ta, t1, t2, tb, res1, res2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv]);
 	// Flag resolution for framed tritone
 	if (found == 1) {
-		if (res1*res2 == 0) FLAG2(31, s0)
-		else FLAG2(2, s0);
+		if (res1*res2 == 0) FLAG2(31, s)
+		else FLAG2(2, s);
 	}
 	// Flag resolution for accented tritone
 	else {
-		if (res1*res2 == 0) FLAG2(361, s0)
-		else FLAG2(360, s0);
+		if (res1*res2 == 0) FLAG2(361, s)
+		else FLAG2(360, s);
 	}
 	return 0;
 }
@@ -3282,6 +3284,7 @@ check:
 		if (FailLastIntervals()) goto skip;
 		//if (FailNoteSeq(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
+		if (FailTritones2()) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leaps5, max_leaped5, max_leap_steps, 3, 25, 311, 312)) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leaps6, max_leaped6, max_leap_steps2, 202, 203, 313, 314)) goto skip;
 		if (FailLeapSmooth(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_smooth2, max_smooth_direct2, 302, 303)) goto skip;
