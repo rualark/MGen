@@ -1498,19 +1498,25 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 			if (note_count > 1) found = 3;
 		}
 	}
-	if (!found) return 0;
+	//if (!found) return 0;
 	// Check if tritone is highest leap if this is last window
 	if (ep2 == c_len) {
 		if ((acc[cpv][s] == nmax) || (acc[cpv][s2] == nmax)) {
-			if (found == 1) FLAG2(32, fli[fleap_start])
+			if (found == 0) FLAG2(370, fli[fleap_start])
+			else if (found == 1) FLAG2(367, fli[fleap_start])
 			else FLAG2(362, fli[fleap_start]);
 		}
 	}
 	GetTritoneResolution(ta, t1, t2, tb, res1, res2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv]);
 	// Flag resolution for framed tritone
-	if (found == 1) {
-		if (res1*res2 == 0) FLAG2(31, fli[fleap_start])
-		else FLAG2(2, fli[fleap_start]);
+	if (found == 0) {
+		if (res1*res2 == 0) FLAG2(369, fli[fleap_start])
+		else FLAG2(368, fli[fleap_start]);
+	}
+	// Flag resolution for framed tritone
+	else if (found == 1) {
+		if (res1*res2 == 0) FLAG2(366, fli[fleap_start])
+		else FLAG2(365, fli[fleap_start]);
 	}
 	// Flag resolution for accented tritone
 	else {

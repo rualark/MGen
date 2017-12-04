@@ -2359,10 +2359,6 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 				found = 2;
 				leap_start = s_1;
 			}
-			else if (svoices > 1 && llen[ls + 1] > llen[ls]) {
-				found = 3;
-				leap_start = s_1;
-			}
 	}
 	fleap_start = bli[leap_start];
 	fleap_end = bli[s1];
@@ -2372,9 +2368,10 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 		// Check if tritone is highest leap if this is last window
 		if (ep2 == c_len) {
 			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) {
+				// Consecutive
 				if (found == 1) FLAG2(32, s0)
-				else if (found == 2) FLAG2(363, s0)
-				else if (found == 3) FLAG2(364, s0);
+				// Compound framed
+				else if (found == 2) FLAG2(373, s0)
 			}
 		}
 		// Check if resolution is correct
@@ -2386,13 +2383,8 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 		}
 		// Flag resolution for tritone with intermediate note, framed
 		else if (found == 2) {
-			if (res1*res2 == 0) FLAG2(19, s0)
-			else FLAG2(18, s0);
-		}
-		// Flag resolution for tritone with intermediate note, accented
-		else if (found == 3) { //-V547
-			if (res1*res2 == 0) FLAG2(342, s0)
-			else FLAG2(343, s0);
+			if (res1*res2 == 0) FLAG2(372, s0)
+			else FLAG2(371, s0);
 		}
 	}
 	return 0;
