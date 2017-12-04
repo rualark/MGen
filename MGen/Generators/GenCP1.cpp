@@ -1469,7 +1469,7 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 	if (bmli[s] != bmli[s2]) return 0;
 	fleap_start = ls;
 	fleap_end = ls + 1;
-	// Check framed
+	// Check framed 
 	if ((ls >= fli_size - 2 || aleap[cpv][s] * (acc[cpv][fli2[ls + 2]] - acc[cpv][fli2[ls + 1]]) < 0) &&
 		(ls == 0 || aleap[cpv][s] * (acc[cpv][s] - acc[cpv][fli2[ls - 1]]) < 0)) found = 1;
 	if (!found) {
