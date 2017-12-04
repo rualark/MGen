@@ -63,6 +63,7 @@ protected:
 	inline void SavePattern(int pattern);
 	inline int DetectPatterns();
 	inline void GetBasicMsh();
+	inline int FailAdjacentTritone2(int ta, int t1, int t2, int tb);
 	inline int FailTritones2();
 	inline void SetMsh(int ls, vector<int> &l_msh, int val);
 	inline void ApplyPDD(int ls, vector<int> &l_msh, int state);
@@ -100,11 +101,13 @@ protected:
 	inline int FailFirstIntervals();
 	inline int FailLastIntervals();
 	inline void GetNoteTypes();
+	inline void CreateULinks();
 	inline void GetMeasures();
 	inline int FailStartPause();
 	void EmulateSASCP();
 	inline void GetCfli();
 	inline int FailGisTrail2();
+	inline int FailHarmStep(int i, const int * hv, int & count, int & wcount);
 	inline int EvalHarm();
 	inline int FailTonicCP();
 	inline void RemoveHarmDuplicate();

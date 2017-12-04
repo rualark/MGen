@@ -2294,11 +2294,54 @@ int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vec
 }
 
 // Check tritone t1-t2 which has to resolve from ta to tb
+void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int fleap_start, int fleap_end, int &res1, int &res2, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
+	// Real resolution notes
+	int ta2, tb2; 
+	// Get real resolution notes
+	if (pcc[s1] == t2) {
+		ta2 = ta;
+		tb2 = tb;
+	}
+	else {
+		ta2 = tb;
+		tb2 = ta;
+	}
+	// Get resolution window
+	int rwin = 1;
+	if (svoices > 1) rwin = max(1, (npm * tritone_res_quart) / 4);
+	// Scan preparation
+	if (fleap_start > 0) {
+		int pos1 = max(0, fli[fleap_start] - rwin);
+		int pos2 = fli[fleap_start];
+		for (int i = pos1; i < pos2; ++i) {
+			if (pcc[i] == ta2 && abs(cc[i] - cc[leap_start]) < 5) {
+				res1 = 1;
+				break;
+			}
+		}
+	}
+	if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
+	// Scan resolution
+	if (fleap_end < fli_size - 1) {
+		int pos1 = fli2[fleap_end] + 1;
+		int pos2 = min(ep2, fli2[fleap_end] + 1 + npm);
+		for (int i = pos1; i < pos2; ++i) {
+			if (pcc[i] == tb2 && abs(cc[i] - cc[s1]) < 5) {
+				res2 = 1;
+				break;
+			}
+		}
+	}
+	// Consider resolved if window cut and not fully generated
+	if (fli2[fleap_end] + npm >= ep2 && ep2 < c_len) res2 = 1;
+	if (pcc[fli[fleap_end - 1]] == tb2) res2 = 1;
+}
+
+// Check tritone t1-t2 which has to resolve from ta to tb
 int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	int found;
 	int res1 = 0; // First note resolution flag
 	int res2 = 0; // Second note resolution flag
-	int ta2, tb2; // Real resolution notes
 								// Tritone prohibit
 	leap_start = s;
 	found = 0;
@@ -2329,44 +2372,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s0);
 		}
 		// Check if resolution is correct
-		// Get real resolution notes
-		if (pcc[s1] == t2) {
-			ta2 = ta;
-			tb2 = tb;
-		}
-		else {
-			ta2 = tb;
-			tb2 = ta;
-		}
-		// Get resolution window
-		int rwin = 1;
-		if (svoices > 1) rwin = max(1, (npm * tritone_res_quart) / 4);
-		// Scan preparation
-		if (fleap_start > 0) {
-			int pos1 = max(0, fli[fleap_start] - rwin);
-			int pos2 = fli[fleap_start];
-			for (int i = pos1; i < pos2; ++i) {
-				if (pcc[i] == ta2 && abs(cc[i] - cc[leap_start]) < 5) {
-					res1 = 1;
-					break;
-				}
-			}
-		}
-		if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
-		// Scan resolution
-		if (fleap_end < fli_size - 1) {
-			int pos1 = fli2[fleap_end] + 1;
-			int pos2 = min(ep2, fli2[fleap_end] + 1 + npm);
-			for (int i = pos1; i < pos2; ++i) {
-				if (pcc[i] == tb2 && abs(cc[i] - cc[s1]) < 5) {
-					res2 = 1;
-					break;
-				}
-			}
-		}
-		// Consider resolved if window cut and not fully generated
-		if (fli2[fleap_end] + npm >= ep2 && ep2 < c_len) res2 = 1;
-		if (pcc[fli[fleap_end - 1]] == tb2) res2 = 1;
+		GetTritoneResolution(ta, t1, t2, tb, fleap_start, fleap_end, res1, res2, c, cc, pc, pcc);
 		// Flag resolution for consecutive tritone
 		if (found == 1) {
 			if (res1*res2 == 0) FLAG2(31, s0)

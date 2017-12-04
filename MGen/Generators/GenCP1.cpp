@@ -1458,20 +1458,60 @@ void CGenCP1::GetBasicMsh() {
 	}
 }
 
-int CGenCF1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
+int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 	int found = 0;
 	// Check consecutive tritone
-	if ((apcc[cpv][s2] == t2 && apcc[cpv][s] == t1) || 
-		(apcc[cpv][s2] == t1 && apcc[cpv][s] == t2)) found = 1;
-	else return 0;
+	if ((apcc[cpv][s2] != t2 || apcc[cpv][s] != t1) &&
+		(apcc[cpv][s2] != t1 || apcc[cpv][s] != t2)) return 0;
+	// Check different measures
+	if (bmli[s] != bmli[s2]) return 0;
+	// Check framed
+	if ((ls >= fli_size - 2 || aleap[cpv][s] * (acc[cpv][fli2[ls + 2]] - acc[cpv][fli2[ls + 1]]) == -1) &&
+		(ls == 0 || aleap[cpv][s] * (acc[cpv][s] - acc[cpv][fli2[ls - 1]]) == -1)) found = 1;
+	if (!found) {
+		if (species == 5) {
+			// Is last note at least 1/2 and not shorter than previous?
+			if (rlen[ls + 1] >= 4 && llen[ls + 1] >= llen[ls]) found = 2;
+		}
+		// Is last note longer than previous ?
+		if (llen[ls + 1] > llen[ls]) found = 2;
+	}
+	// Search measure for repeat
+	if (!found) {
+		int ms = bmli[s2];
+		int mea_end, ls1, ls2;
+		int note_count = 0;
+		if (ms < mli.size() - 1) mea_end = mli[ms + 1] - 1;
+		else mea_end = c_len - 1;
+		// Prevent going out of window
+		if (mea_end < ep2) {
+			ls1 = bli[mli[ms]];
+			ls2 = bli[mea_end];
+			// Loop inside measure
+			for (int ls3 = ls1; ls3 <= ls2; ++ls3) {
+				if (acc[cpv][fli[ls3]] == acc[cpv][s2]) ++note_count;
+			}
+			if (note_count > 1) found = 3;
+		}
+	}
+	if (!found) return 0;
+	// Check if tritone is highest leap if this is last window
+	if (ep2 == c_len) {
+		if ((acc[cpv][s] == nmax) || (acc[cpv][s2] == nmax)) {
+			if (found == 1) FLAG2(32, s)
+			else FLAG2(362, s);
+		}
+	}
+	return 0;
 }
 
+// This function is for species 2-5
 int CGenCP1::FailTritones2() {
 	// Find adjacent notes
 	CHECK_READY(DR_pc, DR_c, DR_fli);
 	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s = fli2[ls];
-		s2 = fli[ls];
+		s2 = fli[ls + 1];
 		if (minor_cur) {
 			if (FailAdjacentTritone2(3, 5, 11, 0)) return 1;
 			if (FailAdjacentTritone2(7, 8, 2, 3)) return 1;
@@ -2617,7 +2657,7 @@ void CGenCP1::GetNoteTypes() {
 }
 
 // Create links to unique note columns
-void CGenCF1::CreateULinks() {
+void CGenCP1::CreateULinks() {
 	SET_READY(DR_uli);
 	vector<int> prev_note;
 	prev_note.resize(av_cnt, -1);
@@ -2751,7 +2791,7 @@ int CGenCP1::FailGisTrail2() {
 	return 0;
 }
 
-int CGenCF1::FailHarmStep(int i, const int* hv, int &count, int &wcount) {
+int CGenCP1::FailHarmStep(int i, const int* hv, int &count, int &wcount) {
 	if (hv[chm[i]]) {
 		++count;
 		wcount = 0;
