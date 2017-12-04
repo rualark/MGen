@@ -1460,6 +1460,8 @@ void CGenCP1::GetBasicMsh() {
 
 int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 	int found = 0;
+	int res1 = 0;
+	int res2 = 0;
 	// Check consecutive tritone
 	if ((apcc[cpv][s2] != t2 || apcc[cpv][s] != t1) &&
 		(apcc[cpv][s2] != t1 || apcc[cpv][s] != t2)) return 0;
@@ -1501,6 +1503,17 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 			if (found == 1) FLAG2(32, s)
 			else FLAG2(362, s);
 		}
+	}
+	GetTritoneResolution(ta, t1, t2, tb, ls, ls + 1, res1, res2, ac[cpv], acc[cpv], apc[cpv], apcc[cpv]);
+	// Flag resolution for framed tritone
+	if (found == 1) {
+		if (res1*res2 == 0) FLAG2(31, s0)
+		else FLAG2(2, s0);
+	}
+	// Flag resolution for accented tritone
+	else {
+		if (res1*res2 == 0) FLAG2(361, s0)
+		else FLAG2(360, s0);
 	}
 	return 0;
 }

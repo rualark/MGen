@@ -2369,7 +2369,11 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 	if (found) {
 		// Check if tritone is highest leap if this is last window
 		if (ep2 == c_len) {
-			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) FLAG2(32, s0);
+			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) {
+				if (found == 1) FLAG2(32, s0)
+				else if (found == 2) FLAG2(363, s0)
+				else if (found == 3) FLAG2(364, s0);
+			}
 		}
 		// Check if resolution is correct
 		GetTritoneResolution(ta, t1, t2, tb, fleap_start, fleap_end, res1, res2, c, cc, pc, pcc);
