@@ -329,6 +329,8 @@ protected:
 	// Parameters
 	int sus_last_measures = 3; // Last measures in which sus is allowed in species 2 and 3
 	int mea_per_sus = 5; // Maximum measures per suspension
+	int lclimax_notes = 12; // Number of adjacent notes to calculate local climax
+	int lclimax_mea = 6; // Number of adjacent measures to calculate local climax
 	int cantus_high = 0; // Set to 1 to consider cantus to be higher voice
 	int voice_high = 0; // Shows if currently processed voice is high
 	int specified_high = 0; // If cantus_high was specified in midi file
@@ -567,6 +569,7 @@ protected:
 	vector<int> m_slur; // [s] 
 	vector<float> macc; // [s] CC moving average
 	vector<float> macc2; // [s] CC moving average smoothed
+	vector<int> lclimax; // [ls] Local highest note
 	int macc_range = 0; // Steps outside window used to build macc
 	int macc2_range = 0; // Steps outside window used to build macc2
 	vector<float> decc; // [s] CC deviation

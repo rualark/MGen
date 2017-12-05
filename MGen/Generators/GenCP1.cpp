@@ -3350,6 +3350,7 @@ check:
 			if (c_len == ep2 && nmax - nmin < min_interval) FLAG(38, 0);
 		}
 		CreateLinks(acc[cpv], 1);
+		GetMovingMax(acc[cpv], max(lclimax_notes, lclimax_mea*npm), lclimax);
 		if (FailMaxNoteLen()) goto skip;
 		if (FailMissSlurs()) goto skip;
 		if (FailSlurs()) goto skip;

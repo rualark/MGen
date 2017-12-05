@@ -323,6 +323,8 @@ void CGenCF1::ParseRules() {
 void CGenCF1::SetRuleParams() {
 	CHECK_READY_PERSIST(DR_RuleParam);
 	SET_READY_PERSIST(DR_RuleSetParam);
+	lclimax_notes = GetRuleParam(rule_set, 32, rsSubComment, 0);
+	lclimax_mea = GetRuleParam(rule_set, 32, rsSubComment, 1);
 	mea_per_sus = GetRuleParam(rule_set, 341, rsSubName, 0);
 	max_note_len[1] = GetRuleParam(rule_set, 336, rsSubName, 1);
 	max_note_len[2] = GetRuleParam(rule_set, 337, rsSubName, 1);
@@ -2466,6 +2468,7 @@ void CGenCF1::ScanInit() {
 		cpos.resize(c_len);
 		llen.resize(c_len);
 		rlen.resize(c_len);
+		lclimax.resize(c_len); 
 		cc_order.resize(c_len);
 		dpenalty_step.resize(c_len);
 		cc_id.resize(c_len);
@@ -4697,6 +4700,7 @@ check:
 			if (FailGisTrail(m_pcc)) goto skip;
 			if (FailFisTrail(m_pcc)) goto skip;
 		}
+		GetMovingMax(m_cc, max(lclimax_notes, lclimax_mea*npm), lclimax);
 		if (FailTonic(m_cc, m_pc)) goto skip;
 		if (FailLastNotes(m_pc, m_pcc)) goto skip;
 		//if (FailNoteSeq(m_pc)) goto skip;
