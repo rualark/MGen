@@ -2314,7 +2314,7 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, in
 	// Scan preparation
 	if (fleap_start > 0) {
 		int pos1 = max(0, fli[fleap_start] - rwin);
-		int pos2 = fli[fleap_start];
+		int pos2 = min(ep2, fli2[fleap_end] + 1 + rwin);
 		for (int i = pos1; i < pos2; ++i) {
 			if (pcc[i] == ta2 && abs(cc[i] - cc[fli[fleap_start]]) < 5) {
 				res1 = 1;
@@ -2325,7 +2325,7 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, in
 	if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
 	// Scan resolution
 	if (fleap_end < fli_size - 1) {
-		int pos1 = fli2[fleap_end] + 1;
+		int pos1 = max(0, fli[fleap_start] - rwin);
 		int pos2 = min(ep2, fli2[fleap_end] + 1 + rwin);
 		for (int i = pos1; i < pos2; ++i) {
 			if (pcc[i] == tb2 && abs(cc[i] - cc[fli[fleap_end]]) < 5) {

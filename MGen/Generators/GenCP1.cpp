@@ -1502,7 +1502,7 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 	}
 	//if (!found) return 0;
 	// Check if tritone is highest leap if this is last window
-	if (ep2 == c_len) {
+	if (ep2 == c_len && !cantus_high) {
 		if ((acc[cpv][s] == nmax) || (acc[cpv][s2] == nmax)) {
 			if (found == 0) FLAG2(370, fli[fleap_start])
 			else if (found == 1) FLAG2(367, fli[fleap_start])
@@ -1543,6 +1543,7 @@ int CGenCP1::FailAdjacentTritones() {
 			if (FailAdjacentTritone2(4, 5, 11, 0)) return 1;
 		}
 	}
+	return 0;
 }
 
 // This function is for species 2-5
@@ -1623,7 +1624,7 @@ int CGenCP1::FailTritones2() {
 					}
 					if (!found) continue;
 					// Check if tritone is highest leap if this is last window
-					if (ep2 == c_len) {
+					if (ep2 == c_len && !cantus_high) {
 						if ((acc[cpv][fli[fleap_start]] == nmax) || (acc[cpv][fli[fleap_end]] == nmax)) {
 							if (found == 1) FLAG2(363, fli[fleap_start])
 							else FLAG2(364, fli[fleap_start]);
