@@ -137,7 +137,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;366;100;Melody;sp2-5 Tritone;Adjacent tritone framed;unresolved;0;Melodic tritone within measure, framed by two melody direction changes;;;15;4;;;;;365;;
 1;367;100;Melody;sp2-5 Tritone;Adjacent tritone framed;on climax;0;Melodic tritone within measure, framed by two melody direction changes;;;6;4;;;;;;;
 1;360;40;Melody;sp2-5 Tritone;Adjacent tritone accented;resolved;0;Melodic tritone within measure, last note is long or repeated;;;1;1;;;;;368;;
-1;361;100;Melody;sp2-5 Tritone;Adjacent tritone accented;unresolved;0;Melodic tritone within measure, last note is long or repeated;;;6;2;1;;;;360,368;;
+1;361;100;Melody;sp2-5 Tritone;Adjacent tritone accented;unresolved;0;Melodic tritone within measure, last note is long or repeated;;;6;2;1;;;;360,368,369;;
 1;362;100;Melody;sp2-5 Tritone;Adjacent tritone accented;on climax;0;Melodic tritone within measure, last note is long or repeated;;;4;1;;;;;;;
 1;18;0;Melody;sp2-5 Tritone;Compound tritone framed;resolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;7;2;;;;;;;
 1;19;60;Melody;sp2-5 Tritone;Compound tritone framed;unresolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;19;12;1;;;;18;;
@@ -173,7 +173,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;;1;1;1;;;;;;17,20,23,48,57,77,92,99
 1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;1;1;1;;;;;;
 1;309;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;2;1;1;;;;;;
-1;375;30;Cantus;Harmony;Prohibited progression;Augmented;0;;Augmented chord is prohibited;1;;;;;;;;;
+1;375;30;Cantus;Harmony;Prohibited progression;Augmented;0;;Augmented chord is prohibited;1;0;0;;;;;;;
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;1;558;0;;;;;;;17,20,23,48,57,77,92,99
 1;57;0;Cantus;Harmony;Harmonic penalty;2;-1;;;1;485;1;;;;;;;17,20,23,48,57,77,92,99
 1;92;0;Cantus;Harmony;Harmonic penalty;2x2;-1;;;1;96;1;;;;;;;17,20,23,48,57,77,92,99
