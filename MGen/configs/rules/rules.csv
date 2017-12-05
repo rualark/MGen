@@ -126,7 +126,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;346;0;Melody;Repeats;Notes stagnation;17 notes <6 pi;0;;X consecutive notes use less than Y pitches;;3;0;;;;;;;
 1;2;0;Melody;CF/sp1 Tritone;Adjacent tritone;resolved;0;Melodic tritone within measure, framed by two melody direction changes;Search 4 quarters for resolution;;25;1;1;;;;;;
 1;31;60;Melody;CF/sp1 Tritone;Adjacent tritone;unresolved;0;Melodic tritone within measure, framed by two melody direction changes;;;44;0;;;;;2;;
-1;32;100;Melody;CF/sp1 Tritone;Adjacent tritone;on climax;0;Melodic tritone within measure, framed by two melody direction changes;Highest note in higher voice within 13 notes or 8 measures - which is smaller;;47;2;1;;;;;;
+1;32;100;Melody;CF/sp1 Tritone;Adjacent tritone;on climax;0;Melodic tritone within measure, framed by two melody direction changes;Highest note in higher voice within 13 notes or 6 measures - which is smaller;;47;2;1;;;;;;
 1;371;0;Melody;CF/sp1 Tritone;Compound tritone framed;resolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;;;;;;;;;
 1;372;60;Melody;CF/sp1 Tritone;Compound tritone framed;unresolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;;;;;;;371;;
 1;373;100;Melody;CF/sp1 Tritone;Compound tritone framed;on climax;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;;;;;;;;;
