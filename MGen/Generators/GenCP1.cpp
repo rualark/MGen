@@ -1061,6 +1061,9 @@ int CGenCP1::FailPcoSus() {
 
 int CGenCP1::FailPco() {
 	// Perfect consonance
+	if (tivl[s2] == iPco) {
+		if (apcc[0][s2] == 11 && apcc[1][s2] == 11) FLAG2(324, s);
+	}
 	if (tivl[s] == iPco) {
 		// Prohibit long downbeat octave except last measure
 		if (!beat[ls] && bmli[s] < mli.size() - 1) {
@@ -1075,7 +1078,6 @@ int CGenCP1::FailPco() {
 		}
 		// Prohibit leading tone octave
 		if (apcc[0][s] == 11 && apcc[1][s] == 11) FLAG2(324, s);
-		if (apcc[0][s2] == 11 && apcc[1][s2] == 11) FLAG2(324, s);
 		// Do not prohibit parallel first - first (this is for sus notes, which starts are parallel)
 		// because they are detected as pco apart now
 			// Prohibit parallel last - first
