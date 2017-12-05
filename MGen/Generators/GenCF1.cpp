@@ -2321,7 +2321,7 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, in
 				break;
 			}
 		}
-	}
+	} 
 	// Do not check if cut by scan window
 	if (fli2[fleap_end] + 1 + rwin > ep2 && ep2 < c_len) {
 		res2 = 1;
