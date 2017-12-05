@@ -2270,6 +2270,15 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 	return 0;
 }
 
+int CGenCF1::FailLastNoteRes(vector<int> &pc) {
+	CHECK_READY(DR_pc, DR_fli);
+	if (ep2 < c_len) return 0;
+	if (fli_size < 2) return 0;
+	if (pc[fli[fli_size - 2]] == 6 && pc[c_len - 1] != 0) FLAG2(52, fli[fli_size - 2]);
+	if (pc[fli[fli_size - 2]] == 3 && pc[c_len - 1] != 2) FLAG2(87, fli[fli_size - 2]);
+	return 0;
+}
+
 int CGenCF1::FailIntervals(vector<int> &c, vector<int> &cc, vector<int> &pc, vector<int> &pcc) {
 	CHECK_READY(DR_pc, DR_c, DR_fli);
 	for (ls = 0; ls < fli_size - 1; ++ls) {
@@ -4705,6 +4714,7 @@ check:
 		if (FailLastNotes(m_pc, m_pcc)) goto skip;
 		//if (FailNoteSeq(m_pc)) goto skip;
 		if (FailIntervals(m_c, m_cc, m_pc, m_pcc)) goto skip;
+		if (FailLastNoteRes(m_pc)) goto skip;
 		if (FailTritones(m_c, m_cc, m_pc, m_pcc)) goto skip;
 		GetLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur);
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps, max_leaped, max_leaps, max_leaped, max_leap_steps, 3, 25, 3, 25)) goto skip;

@@ -3395,6 +3395,7 @@ check:
 		if (FailTonic(acc[cpv], apc[cpv])) goto skip;
 		if (FailLastIntervals()) goto skip;
 		//if (FailNoteSeq(apc[cpv])) goto skip;
+		if (FailLastNoteRes(apc[cpv])) goto skip;
 		if (FailIntervals(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
 		if (npm > 1) {
 			if (FailAdjacentTritones()) goto skip;
