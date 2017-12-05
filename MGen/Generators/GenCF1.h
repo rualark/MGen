@@ -83,12 +83,12 @@
 #define SWA_OPTIMIZER(i) || (task == tCor && method == mSWA && i >= swa1 && i < swa2)
 
 // Report violation
-#define FLAG(id, i) { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
-#define FLAG2(id, i) { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
+#define FLAG(id, i) do { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)
+#define FLAG2(id, i) do { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)
 // For harmony
-#define FLAG3(id, i) { ASSERT_RULE(id); if (!accept[id]) { last_flag=id; return 1; } }
+#define FLAG3(id, i) do { ASSERT_RULE(id); if (!accept[id]) { last_flag=id; return 1; } } while (0)
 // Simply flag
-#define FLAG4(id, i) { ASSERT_RULE(id); flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); }
+#define FLAG4(id, i) do { ASSERT_RULE(id); flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
