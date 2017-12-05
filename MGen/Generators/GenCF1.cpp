@@ -2371,8 +2371,8 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 	if (ls == fli_size - 2 && ep2 != c_len) return 0;
 	if (found) {
 		// Check if tritone is highest leap if this is last window
-		if (ep2 == c_len) {
-			if ((cc[leap_start] == nmax) || (cc[s1] == nmax)) {
+		if (ep2 == c_len && (svoices == 1 || !cantus_high)) {
+			if ((cc[leap_start] >= lclimax[leap_start]) || (cc[s1] >= lclimax[leap_start])) {
 				// Consecutive
 				if (found == 1) FLAG2(32, s0)
 				// Compound framed
