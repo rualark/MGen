@@ -173,6 +173,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;;1;1;1;;;;;;17,20,23,48,57,77,92,99
 1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;1;1;1;;;;;;
 1;309;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;2;1;1;;;;;;
+1;375;30;Cantus;Harmony;Prohibited progression;Augmented;0;;Augmented chord is prohibited;1;;;;;;;;;
 1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;1;558;0;;;;;;;17,20,23,48,57,77,92,99
 1;57;0;Cantus;Harmony;Harmonic penalty;2;-1;;;1;485;1;;;;;;;17,20,23,48,57,77,92,99
 1;92;0;Cantus;Harmony;Harmonic penalty;2x2;-1;;;1;96;1;;;;;;;17,20,23,48,57,77,92,99

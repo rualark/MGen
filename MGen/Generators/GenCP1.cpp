@@ -2967,6 +2967,10 @@ int CGenCP1::EvalHarm() {
 				apc[0][s] == 0 && apc[1][s] == 0 &&
 				s > 0 && apc[0][s - 1] == 4) FLAG2(48, s);
 			if (minor_cur) {
+				// Prohibit DTIII#5 augmented chord
+				if (chm[i] == 2 && chm_alter[i]) {
+					FLAG2(375, s);
+				}
 				// Prohibit dVII (GBD) in root position after S (DF#A) in root position
 				if (chm[i] == 6 && chm[i - 1] == 3 && !chm_alter[i] && chm_alter[i - 1]) {
 					if (ls > 0 && apc[0][s] == 6 && apc[0][fli[ls - 1]] == 3) FLAG2(308, s);
