@@ -2314,7 +2314,7 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, in
 	// Scan preparation
 	if (fleap_start > 0) {
 		int pos1 = max(0, fli[fleap_start] - rwin);
-		int pos2 = min(ep2, fli2[fleap_end] + 1 + rwin);
+		int pos2 = min(ep2, fli[fleap_end]);
 		for (int i = pos1; i < pos2; ++i) {
 			if (pcc[i] == ta2 && abs(cc[i] - cc[fli[fleap_start]]) < 5) {
 				res1 = 1;
@@ -2322,10 +2322,14 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, in
 			}
 		}
 	}
-	if (pcc[fli[fleap_start + 1]] == ta2) res1 = 1;
+	// Do not check if cut by scan window
+	if (fli2[fleap_end] + 1 + rwin > ep2 && ep2 < c_len) {
+		res2 = 1;
+		return;
+	}
 	// Scan resolution
 	if (fleap_end < fli_size - 1) {
-		int pos1 = max(0, fli[fleap_start] - rwin);
+		int pos1 = max(0, fli2[fleap_start] + 1);
 		int pos2 = min(ep2, fli2[fleap_end] + 1 + rwin);
 		for (int i = pos1; i < pos2; ++i) {
 			if (pcc[i] == tb2 && abs(cc[i] - cc[fli[fleap_end]]) < 5) {
@@ -2334,9 +2338,6 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, in
 			}
 		}
 	}
-	// Consider resolved if window cut and not fully generated
-	if (fli2[fleap_end] + npm >= ep2 && ep2 < c_len) res2 = 1;
-	if (pcc[fli[fleap_end - 1]] == tb2) res2 = 1;
 }
 
 // Check tritone t1-t2 which has to resolve from ta to tb

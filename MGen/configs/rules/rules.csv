@@ -130,14 +130,14 @@ Set;Severity;Class;Group;Rule;Flag
 1;371;0;Melody;CF/sp1 Tritone;Compound tritone framed;resolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;;;;;;;;;
 1;372;60;Melody;CF/sp1 Tritone;Compound tritone framed;unresolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;;;;;;;371;;
 1;373;100;Melody;CF/sp1 Tritone;Compound tritone framed;on climax;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;;;;;;;;;
-1;368;0;Melody;sp2-5 Tritone;Adjacent tritone;resolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;;;;365;;
+1;368;0;Melody;sp2-5 Tritone;Adjacent tritone;resolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;;;;;;
 1;369;60;Melody;sp2-5 Tritone;Adjacent tritone;unresolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;;;;368;;
 1;370;100;Melody;sp2-5 Tritone;Adjacent tritone;on climax;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;;;;;;
 1;365;40;Melody;sp2-5 Tritone;Adjacent tritone framed;resolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;;;;;;
 1;366;100;Melody;sp2-5 Tritone;Adjacent tritone framed;unresolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;;;;365;;
 1;367;100;Melody;sp2-5 Tritone;Adjacent tritone framed;on climax;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;;;;;;
 1;360;40;Melody;sp2-5 Tritone;Adjacent tritone accented;resolved;0;Melodic tritone within measure, last note is long or repeated;;;;;;;;;368;;
-1;361;100;Melody;sp2-5 Tritone;Adjacent tritone accented;unresolved;0;Melodic tritone within measure, last note is long or repeated;;;;;1;;;;360,368,365;;
+1;361;100;Melody;sp2-5 Tritone;Adjacent tritone accented;unresolved;0;Melodic tritone within measure, last note is long or repeated;;;;;1;;;;360,368;;
 1;362;100;Melody;sp2-5 Tritone;Adjacent tritone accented;on climax;0;Melodic tritone within measure, last note is long or repeated;;;;;;;;;;;
 1;18;0;Melody;sp2-5 Tritone;Compound tritone framed;resolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;18;0;;;;;;;
 1;19;60;Melody;sp2-5 Tritone;Compound tritone framed;unresolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;26;2;1;;;;18;;
