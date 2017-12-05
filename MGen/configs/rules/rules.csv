@@ -231,6 +231,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;18;2;1;;;;;;
 1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;stepwize;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;100;22;1;;;;;;
 1;347;30;Cantus;Counterpoint;Perfect consonances < 4/4 apart;direct comp.;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Direct compound intervals.;;2;2;1;;;;;;
+1;374;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;asymmetric;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;;;;;;;;;;
 1;315;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;;13;11;1;;;;;;
 1;316;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;;51;11;1;;;;;;
 1;250;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;;65;16;1;;;;249;;

@@ -2044,30 +2044,32 @@ int CGenCP1::FailPcoApartStep() {
 		if (pco5_last > -1 && bmli[s] == mli5_last + 1) {
 			ls_1 = bli[pco5_last];
 			skip_len = s - pco5_last2 - 1;
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - ls_1 < 4) {
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
 				// Anticipation
 				if (retrigger[s]) FLAG2(315, s)
-					// Downbeat
+				// Downbeat
 				else if (acc[cfv][s] != acc[cfv][s - 1]) {
 					FLAG2(316, s);
 				}
+				// Many notes in between
+				else if (ls - ls_1 > 4) {}
 				// Compound
 				else if (civl[s] != civl[pco5_last]) {
 					// Direct compound
 					if ((acc[0][s] - acc[0][pco5_last]) * (acc[1][s] - acc[1][pco5_last]) > 0) {
 						FLAG2(347, s);
 					}
-					// Contrary compound ignored
+					// Contrary compound
+					else FLAG2(248, s)
 				}
-				// Upbeat contrary
-				else if ((acc[0][s] - acc[0][pco5_last])*
-					(acc[1][s] - acc[1][pco5_last]) < 0) FLAG2(248, s)
-				// Non-harmonic
+				// Stepwize
 				else if ((!sus[ls_1] && (!pco5_last || asmooth[cpv][pco5_last - 1]) && 
 					(pco5_last2 + 1 >= ep2 || asmooth[cpv][pco5_last2])) ||
 					(!sus[ls] && (!s || asmooth[cpv][s - 1]) && 
 					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
 					FLAG2(249, s)
+				// Asymmetric
+				else if (beat[ls_1] != beat[ls]) FLAG2(374, s)
 				// Other
 				else {
 					// In case of 6-5 resolution, allow parallel 5th
@@ -2089,28 +2091,32 @@ int CGenCP1::FailPcoApartStep() {
 		if (pco8_last > -1 && bmli[s] == mli8_last + 1) {
 			ls_1 = bli[pco8_last];
 			skip_len = s - pco8_last2 - 1;
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4 && ls - ls_1 < 5) {
+			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
 				// Anticipation
 				if (retrigger[s]) FLAG2(315, s)
 				// Downbeat
 				else if (fli[ls] == s && acc[cfv][s] != acc[cfv][s - 1]) {
 					FLAG2(316, s);
 				}
+				// Many notes in between
+				else if (ls - ls_1 > 4) {}
 				// Compound
 				else if (civl[s] != civl[pco8_last]) {
 					// Direct compound
 					if ((acc[0][s] - acc[0][pco8_last]) * (acc[1][s] - acc[1][pco8_last]) > 0) {
 						FLAG2(347, s);
 					}
-					// Contrary compound upbeat
-					else FLAG2(248, s);
+					// Contrary compound
+					else FLAG2(248, s)
 				}
-				// Non-harmonic
+				// Stepwize
 				else if ((!sus[ls_1] && (!pco8_last || asmooth[cpv][pco8_last - 1]) &&
 					(pco8_last2 + 1 >= ep2 || asmooth[cpv][pco8_last2])) ||
 					(!sus[ls] && (!s || asmooth[cpv][s - 1]) &&
 					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
 					FLAG2(249, s)
+				// Asymmetric
+				else if (beat[ls_1] != beat[ls]) FLAG2(374, s)
 				// Other
 				else
 					FLAG2(250, s);
