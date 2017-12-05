@@ -1466,7 +1466,7 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 	if ((apcc[cpv][s2] != t2 || apcc[cpv][s] != t1) &&
 		(apcc[cpv][s2] != t1 || apcc[cpv][s] != t2)) return 0;
 	// Check different measures
-	if (bmli[s] != bmli[s2]) return 0;
+	//if (bmli[s] != bmli[s2]) return 0;
 	fleap_start = ls;
 	fleap_end = ls + 1;
 	// Do not check tritone if it is at the end of not-last window
