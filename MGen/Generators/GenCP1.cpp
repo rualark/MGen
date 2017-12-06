@@ -2047,10 +2047,22 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 			skip_len = s - pco_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
 				// Anticipation
-				if (retrigger[s]) FLAG2(315, s);
+				if (retrigger[s]) {
+					// Last contrary
+					if (ep2 == c_len && ls == fli_size - 1 && 
+						(acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) < 0) 
+						FLAG2(376, s);
+					// Other anticipation
+					else FLAG2(315, s);
+				}
 				// Downbeat
 				else if (fli[ls] == s && acc[cfv][s] != acc[cfv][s - 1]) {
-					FLAG2(316, s);
+					// Last contrary
+					if (ep2 == c_len && ls == fli_size - 1 &&
+						(acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) < 0) 
+						FLAG2(376, s);
+					// Other downbeat
+					else FLAG2(316, s);
 				}
 				// Many notes in between
 				else if (ls - ls_1 > 4) {}
