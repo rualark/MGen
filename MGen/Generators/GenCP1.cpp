@@ -1066,15 +1066,10 @@ int CGenCP1::FailPco() {
 	}
 	if (tivl[s] == iPco) {
 		// Prohibit long downbeat octave except last measure
-		if (!beat[ls] && bmli[s] < mli.size() - 1) {
-			if (ivlc[s]) {
-				if ((species == 3 || species == 5) && rlen[ls] > 3) FLAG2(325, s);
-				else if ((species == 2 || species == 4) && rlen[ls] > 7) FLAG2(325, s);
-			}
-			else {
-				if ((species == 3 || species == 5) && rlen[ls] > 3) FLAG2(326, s);
-				else if ((species == 2 || species == 4) && rlen[ls] > 7) FLAG2(326, s);
-			}
+		if (!cantus_high && species == 5 && !beat[ls] && bmli[s] < mli.size() - 1 && 
+			acc[cpv][s] >= lclimax2[s] && rlen[ls] > 3 && ls > 0 && rlen[ls] > rlen[ls - 1]) {
+			if (ivlc[s]) FLAG2(325, s);
+			else FLAG2(326, s);
 		}
 		// Prohibit leading tone octave
 		if (apcc[0][s] == 11 && apcc[1][s] == 11) FLAG2(324, s);
@@ -3355,6 +3350,7 @@ check:
 		}
 		CreateLinks(acc[cpv], 1);
 		GetMovingMax(acc[cpv], max(lclimax_notes, lclimax_mea*npm), lclimax);
+		GetMovingMax(acc[cpv], lclimax_mea2*npm, lclimax2);
 		if (FailMaxNoteLen()) goto skip;
 		if (FailMissSlurs()) goto skip;
 		if (FailSlurs()) goto skip;

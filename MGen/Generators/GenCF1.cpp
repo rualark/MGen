@@ -325,6 +325,7 @@ void CGenCF1::SetRuleParams() {
 	SET_READY_PERSIST(DR_RuleSetParam);
 	lclimax_notes = GetRuleParam(rule_set, 32, rsSubComment, 0);
 	lclimax_mea = GetRuleParam(rule_set, 32, rsSubComment, 1);
+	lclimax_mea2 = GetRuleParam(rule_set, 325, rsComment, 0);
 	mea_per_sus = GetRuleParam(rule_set, 341, rsSubName, 0);
 	max_note_len[1] = GetRuleParam(rule_set, 336, rsSubName, 1);
 	max_note_len[2] = GetRuleParam(rule_set, 337, rsSubName, 1);
@@ -2477,7 +2478,8 @@ void CGenCF1::ScanInit() {
 		cpos.resize(c_len);
 		llen.resize(c_len);
 		rlen.resize(c_len);
-		lclimax.resize(c_len); 
+		lclimax.resize(c_len);
+		lclimax2.resize(c_len);
 		cc_order.resize(c_len);
 		dpenalty_step.resize(c_len);
 		cc_id.resize(c_len);
