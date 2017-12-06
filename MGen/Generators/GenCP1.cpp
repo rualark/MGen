@@ -1473,7 +1473,7 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 	fleap_start = ls;
 	fleap_end = ls + 1;
 	// Do not check tritone if it is at the end of not-last window
-	if (ls == fli_size - 2 && ep2 != c_len) return 0;
+	if (ls >= fli_size - 2 && ep2 != c_len) return 0;
 	// Check framed 
 	if ((ls >= fli_size - 2 || aleap[cpv][s] * (acc[cpv][fli2[ls + 2]] - acc[cpv][fli2[ls + 1]]) < 0) &&
 		(ls == 0 || aleap[cpv][s] * (acc[cpv][s] - acc[cpv][fli2[ls - 1]]) < 0)) found = 1;
@@ -1553,7 +1553,7 @@ int CGenCP1::FailAdjacentTritones() {
 int CGenCP1::FailTritones2() {
 	CHECK_READY(DR_pc, DR_c, DR_fli);
 	// Find both tritone notes in measure (non-adjacent)
-	int mea_end, ls1, ls2, lpcc, cch, ccl, exceed, found, res1, res2;
+	int mea_end, ls1, ls2, lpcc, cch, ccl, exceed, found, res1, res2, last_repeat;
 	for (ms = 0; ms < mli.size(); ++ms) {
 		// Stop processing when last measure is not fully generated
 		if (ms == mli.size() - 1 && ep2 < c_len) break;
@@ -1587,10 +1587,18 @@ int CGenCP1::FailTritones2() {
 					// Do not check adjacent
 					if (abs(tfound[tt][tn] - tfound2[tt][tn2]) == 1) continue;
 					// Do intermediate notes exceed pitch range?
-					fleap_start = min(tfound[tt][tn], tfound2[tt][tn2]);
-					fleap_end = max(tfound[tt][tn], tfound2[tt][tn2]);
+					if (tfound[tt][tn] > tfound2[tt][tn]) {
+						last_repeat = tfound[tt].size();
+						fleap_start = tfound2[tt][tn2];
+						fleap_end = tfound[tt][tn];
+					}
+					else {
+						last_repeat = tfound2[tt].size();
+						fleap_start = tfound[tt][tn];
+						fleap_end = tfound2[tt][tn2];
+					}
 					// Do not check if fleap_end is last note in scan window
-					if (fleap_end == fli_size - 1 && ep2 != c_len) return 0;
+					if (fleap_end >= fli_size - 1 && ep2 != c_len) return 0;
 					// Low / high notes
 					ccl = min(acc[cpv][fli[tfound[tt][tn]]], acc[cpv][fli[tfound2[tt][tn2]]]);
 					cch = max(acc[cpv][fli[tfound[tt][tn]]], acc[cpv][fli[tfound2[tt][tn2]]]);
@@ -1614,6 +1622,10 @@ int CGenCP1::FailTritones2() {
 						}
 						// Is last note longer than previous ?
 						if (llen[fleap_end] > llen[fleap_start]) found = 2;
+					}
+					// Check last note repeats
+					if (!found) {
+						if (last_repeat > 1) found = 3;
 					}
 					if (minor_cur) {
 						if (tt == 0)
@@ -1644,21 +1656,9 @@ int CGenCP1::FailTritones2() {
 						if (res1*res2 == 0) FLAG2(343, fli[fleap_start]);
 						else FLAG2(342, fli[fleap_start]);
 					}
-					// Do not check other combinations if found tritone in measure
-					if (found) break;
 				}
-				if (found) break;
 			}
 		}
-	}
-	// Is tritone framed?
-	// Is last note repeated?
-	if (species == 5) {
-		// Is last note at least 1/2 ?
-		// Is last note not shorter than previous ?
-	}
-	else {
-		// Is last note longer then previous?
 	}
 	return 0;
 }
