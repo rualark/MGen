@@ -1577,17 +1577,16 @@ int CGenCP1::FailTritones2() {
 				if (lpcc == 2) tfound2[1].push_back(ls);
 			}
 		}
-		// Loop through tritone types
+		// Loop through tritone types 
 		for (int tt = 0; tt < 2; ++tt) {
 			// Check each note combination
 			for (int tn = 0; tn < tfound[tt].size(); ++tn) {
-				found = 0;
 				for (int tn2 = 0; tn2 < tfound2[tt].size(); ++tn2) {
 					found = 0;
 					// Do not check adjacent
 					if (abs(tfound[tt][tn] - tfound2[tt][tn2]) == 1) continue;
 					// Do intermediate notes exceed pitch range?
-					if (tfound[tt][tn] > tfound2[tt][tn]) {
+					if (tfound[tt][tn] > tfound2[tt][tn2]) {
 						last_repeat = tfound[tt].size();
 						fleap_start = tfound2[tt][tn2];
 						fleap_end = tfound[tt][tn];
