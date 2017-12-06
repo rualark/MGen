@@ -1067,7 +1067,7 @@ int CGenCP1::FailPco() {
 	if (tivl[s] == iPco) {
 		// Prohibit long downbeat octave except last measure
 		if (!cantus_high && species == 5 && !beat[ls] && bmli[s] < mli.size() - 1 && 
-			acc[cpv][s] >= lclimax2[s] && rlen[ls] > 3 && ls > 0 && rlen[ls] > rlen[ls - 1]) {
+			acc[cpv][s] >= lclimax2[s] && rlen[ls] > 3 && ls > 0 && rlen[ls] >= rlen[ls - 1]) {
 			if (ivlc[s]) FLAG2(325, s);
 			else FLAG2(326, s);
 		}
