@@ -2038,61 +2038,13 @@ int CGenCP1::FailPcoApart() {
 	return 0;
 }
 
-int CGenCP1::FailPcoApartStep() {
+int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_last2) {
 	int skip_len;
 	int ls_1;
-	// 5th apart
-	if (civlc[s] == 7) {
-		if (pco5_last > -1 && bmli[s] == mli5_last + 1) {
-			ls_1 = bli[pco5_last];
-			skip_len = s - pco5_last2 - 1;
-			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
-				// Anticipation
-				if (retrigger[s]) FLAG2(315, s);
-					// Downbeat
-				else if (acc[cfv][s] != acc[cfv][s - 1]) {
-					FLAG2(316, s);
-				}
-				// Many notes in between
-				else if (ls - ls_1 > 4) {}
-				// Compound
-				else if (civl[s] != civl[pco5_last]) {
-					// Direct compound
-					if ((acc[0][s] - acc[0][pco5_last]) * (acc[1][s] - acc[1][pco5_last]) > 0) {
-						FLAG2(347, s);
-					}
-					// Contrary compound
-					else FLAG2(248, s);
-				}
-				// Stepwize
-				else if ((!sus[ls_1] && (!pco5_last || asmooth[cpv][pco5_last - 1]) &&
-					(pco5_last2 + 1 >= ep2 || asmooth[cpv][pco5_last2])) ||
-					(!sus[ls] && (!s || asmooth[cpv][s - 1]) &&
-					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
-					FLAG2(249, s);
-				// Asymmetric
-				else if (beat[ls_1] != beat[ls]) FLAG2(374, s);
-				// Other
-				else {
-					// In case of 6-5 resolution, allow parallel 5th
-					if (bmli[sus[ls_1]] == bmli[s] && sus[ls_1] &&
-						ivlc[sus[ls_1]] == 5 && ivlc[s] == 4 &&
-						abs(ac[cpv][s] - ac[cpv][pco5_last]) < 2)
-						FLAG2(330, s);
-					// Other
-					else FLAG2(250, s);
-				}
-			}
-		}
-		pco5_last = s;
-		pco5_last2 = s2;
-		mli5_last = bmli[s];
-	}
-	// 8va apart
-	if (civlc[s] == 0) {
-		if (pco8_last > -1 && bmli[s] == mli8_last + 1) {
-			ls_1 = bli[pco8_last];
-			skip_len = s - pco8_last2 - 1;
+	if (civlc[s] == iv) {
+		if (pco_last > -1 && bmli[s] == mli_last + 1) {
+			ls_1 = bli[pco_last];
+			skip_len = s - pco_last2 - 1;
 			if (skip_len > 0 && skip_len < (pco_apart * npm) / 4) {
 				// Anticipation
 				if (retrigger[s]) FLAG2(315, s);
@@ -2103,31 +2055,49 @@ int CGenCP1::FailPcoApartStep() {
 				// Many notes in between
 				else if (ls - ls_1 > 4) {}
 				// Compound
-				else if (civl[s] != civl[pco8_last]) {
+				else if (civl[s] != civl[pco_last]) {
 					// Direct compound
-					if ((acc[0][s] - acc[0][pco8_last]) * (acc[1][s] - acc[1][pco8_last]) > 0) {
+					if ((acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) > 0) {
 						FLAG2(347, s);
 					}
 					// Contrary compound
 					else FLAG2(248, s);
 				}
 				// Stepwize
-				else if ((!sus[ls_1] && (!pco8_last || asmooth[cpv][pco8_last - 1]) &&
-					(pco8_last2 + 1 >= ep2 || asmooth[cpv][pco8_last2])) ||
+				else if ((!sus[ls_1] && (!pco_last || asmooth[cpv][pco_last - 1]) &&
+					(pco_last2 + 1 >= ep2 || asmooth[cpv][pco_last2])) ||
 					(!sus[ls] && (!s || asmooth[cpv][s - 1]) &&
 					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
 					FLAG2(249, s);
-					// Asymmetric
+				// Asymmetric
 				else if (beat[ls_1] != beat[ls]) FLAG2(374, s);
 				// Other
-				else
-					FLAG2(250, s);
+				else {
+					if (iv == 7) {
+						// In case of 6-5 resolution, allow parallel 5th
+						if (bmli[sus[ls_1]] == bmli[s] && sus[ls_1] &&
+							ivlc[sus[ls_1]] == 5 && ivlc[s] == 4 &&
+							abs(ac[cpv][s] - ac[cpv][pco_last]) < 2)
+							FLAG2(330, s);
+						// Other
+						else FLAG2(250, s);
+					}
+					else {
+						FLAG2(250, s);
+					}
+				}
 			}
 		}
-		pco8_last = s;
-		pco8_last2 = s2;
-		mli8_last = bmli[s];
+		pco_last = s;
+		pco_last2 = s2;
+		mli_last = bmli[s];
 	}
+	return 0;
+}
+
+int CGenCP1::FailPcoApartStep() {
+	if (FailPcoApartStep2(7, pco5_last, mli5_last, pco5_last2)) return 1;
+	if (FailPcoApartStep2(0, pco8_last, mli8_last, pco8_last2)) return 1;
 	return 0;
 }
 

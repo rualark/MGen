@@ -78,6 +78,7 @@ protected:
 	inline int FailRhythm3();
 	inline int FailRhythm5();
 	inline int FailPcoApart();
+	inline int FailPcoApartStep2(int iv, int & pco_last, int & mli_last, int & pco_last2);
 	inline int FailPcoApartStep();
 	inline int FailVIntervals();
 	inline void SaveCP();
