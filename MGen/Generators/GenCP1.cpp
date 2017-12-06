@@ -1061,8 +1061,8 @@ int CGenCP1::FailPcoSus() {
 
 int CGenCP1::FailPco() {
 	// Perfect consonance
-	if (tivl[s2] == iPco) {
-		if (apcc[0][s2] == 11 && apcc[1][s2] == 11) FLAG2(324, s);
+	if (sus[ls] && tivl[sus[ls]] == iPco) {
+		if (apcc[0][sus[ls]] == 11 && apcc[1][sus[ls]] == 11) FLAG2(324, sus[ls]);
 	}
 	if (tivl[s] == iPco) {
 		// Prohibit long downbeat octave except last measure
