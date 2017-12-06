@@ -2948,6 +2948,15 @@ int CGenCP1::EvalHarm() {
 				apc[0][s] == 0 && apc[1][s] == 0 &&
 				s > 0 && apc[0][s - 1] == 4) FLAG2(48, s);
 			if (minor_cur) {
+				// Prohibit VI<->VI# containing progression
+				if (chm[i] % 2 && chm[i - 1] % 2 && chm_alter[i] != chm_alter[i - 1]) {
+					FLAG2(377, s);
+				}
+				// Prohibit VII<->VII# containing progression
+				if (chm[i] && chm[i] % 2 == 0 && chm[i - 1] && chm[i - 1] % 2 == 0 && 
+					chm_alter[i] != chm_alter[i - 1]) {
+					FLAG2(378, s);
+				}
 				// Prohibit DTIII#5 augmented chord
 				if (chm[i] == 2 && chm_alter[i]) {
 					FLAG2(375, s);
