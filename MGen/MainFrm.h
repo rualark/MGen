@@ -187,6 +187,8 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg LRESULT OnGenFinish(WPARAM wParam, LPARAM lParam);
 
+	void ExportAdaptedMidi();
+
 	afx_msg void OnUpdateButtonGen(CCmdUI *pCmdUI);
 	afx_msg void OnClose();
 	afx_msg void OnUpdateComboMidiout(CCmdUI *pCmdUI);

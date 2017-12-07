@@ -774,14 +774,12 @@ void CMainFrame::OnButtonAlgo()
 }
 
 
-void CMainFrame::OnCheckOutputwnd()
-{
+void CMainFrame::OnCheckOutputwnd() {
 	if (m_wndOutput.IsVisible()) m_wndOutput.ShowPane(FALSE, FALSE, FALSE);
 	else m_wndOutput.ShowPane(TRUE, FALSE, TRUE);
 }
 
-LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
-{
+LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam) {
 	if (wParam == 0) {
 		if (m_state_play == 0) ::KillTimer(m_hWnd, TIMER1);
 		GetActiveView()->Invalidate();
@@ -809,10 +807,13 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 			"Instruments = " + pGen->m_algo_insts + " # Original instruments of current algorithm saved");
 		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		//WriteLog(1, dir + "\\config.pl");
+		// Export adapted MIDI if not playing
+		if (m_state_play == 0 && pGen->t_sent > 0) ExportAdaptedMidi();
 		// Start playback after shuffle
 		if (pGen->shuffle) {
 			if (autoplay && m_state_play == 0 && pGen->t_sent > 0) OnButtonPlay();
 		}
+		// Exit program
 		if (CGLib::m_testing) {
 			SetTimer(TIMER4, 300, NULL);
 		}
@@ -824,8 +825,29 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI)
-{
+void CMainFrame::ExportAdaptedMidi() {
+	return;
+	long long time_start = CGLib::time();
+	if (pGen->m_pspeed != pGen->adapt_pspeed) pGen->Adapt(0, pGen->t_generated - 1);
+	pGen->StopMIDI();
+	pGen->m_pspeed = m_pspeed;
+	// If generation finished set last run
+	pGen->midi_last_run = 1;
+	pGen->amidi_export = 1;
+	pGen->midifile_buf.clear();
+	pGen->midifile_buf.resize(MAX_VOICE);
+	pGen->SendMIDI(pGen->midi_sent, pGen->t_sent);
+	pGen->ExportAdaptedMidi(m_dir, m_fname);
+	pGen->amidi_export = 0;
+	// Log
+	long long time_stop = CGLib::time();
+	CString est;
+	est.Format("Exported adapted midi file %s in %d ms", 
+		m_fname, time_stop - time_start);
+	WriteLog(0, est);
+}
+
+void CMainFrame::OnUpdateCheckOutputwnd(CCmdUI *pCmdUI) {
 	BOOL bEnable = m_wndOutput.IsVisible();
 	pCmdUI->Enable();
 	pCmdUI->SetCheck(bEnable);
