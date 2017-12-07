@@ -232,13 +232,17 @@ Set;Severity;Class;Group;Rule;Flag
 1;85;60;Cantus;Counterpoint;Close perfect consonances;contrary;0;;Contrary octaves are possible in cadence;;11;4;1;;;;;;
 1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;;152;1;;;;;;;
 1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;18;2;1;;;;;;
-1;376;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;last contrary;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to last interval in counterpoint;;;;;;;;;;
+1;376;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;last contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to last interval in counterpoint;;;;;;;;;;
 1;347;30;Cantus;Counterpoint;Perfect consonances < 4/4 apart;direct comp.;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Direct compound intervals.;;2;2;1;;;;;;
 1;374;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;asymmetric;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;;0;0;;;;;;;
 1;315;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;;13;11;1;;;;;;
 1;316;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;;51;11;1;;;;;;
 1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;stepwize;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;100;22;1;;;;;;
 1;250;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;;65;16;1;;;;249;;
+1;379;0;Cantus;Counterpoint;Virtual 4th;beat 1;0;;;;;;;;;;;;
+1;380;0;Cantus;Counterpoint;Virtual 4th;beat 3;0;;;;;;;;;;;;
+1;381;0;Cantus;Counterpoint;Virtual 4th;long;0;;;;;;;;;;;;
+1;382;0;Cantus;Counterpoint;Virtual 4th;repeat;0;;;;;;;;;;;;
 1;208;0;Cantus;Counterpoint;Direct stepwize movement;5 cadence;1;Direct movement to interval with stepwize motion in higher voice;;;1;1;1;;;;;;
 1;209;40;Cantus;Counterpoint;Direct stepwize movement;8 cadence;1;Direct movement to interval with stepwize motion in higher voice;;;26;2;1;;;;;;
 1;210;40;Cantus;Counterpoint;Direct stepwize movement;5;0;Direct movement to interval with stepwize motion in higher voice;;;19;9;1;;;;;;
