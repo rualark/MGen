@@ -1482,7 +1482,7 @@ int CGenCP1::FailAdjacentTritone2(int ta, int t1, int t2, int tb) {
 	}
 	// Search measure for repeat
 	if (!found) {
-		int ms = bmli[s2];
+		ms = bmli[s2];
 		int mea_end, ls1, ls2;
 		int note_count = 0;
 		if (ms < mli.size() - 1) mea_end = mli[ms + 1] - 1;
@@ -2139,6 +2139,55 @@ int CGenCP1::FailVIntervals() {
 			}
 		}
 		else pico_count = 0;
+	}
+	return 0;
+}
+
+int CGenCP1::FailVirtual4th() {
+	CHECK_READY(DR_hli, DR_fli, DR_ivl);
+	// Only for upper cantus
+	if (!cantus_high) return 0;
+	// Only for species 2-5
+	if (species < 2) return 0;
+	int ls1, ls2, ls6;
+	for (int hs = 0; hs < hli.size(); ++hs) {
+		ls1 = bli[hli[hs]];
+		ls2 = bli[hli2[hs]];
+		int s6 = -1;
+		int s3 = -1;
+		int s6_dupl = 0;
+		// Loop inside harmony
+		for (ls = ls1; ls <= ls2; ++ls) {
+			s = fli[ls];
+			// Do not go out of measure
+			if (s < hli[hs]) s = hli[hs];
+			// Find lowest 6th interval
+			if (ivlc[s] == 5) {
+				if (s6 == -1) s6 = s;
+				else if (acc[0][s] < acc[0][s6]) s6 = s;
+				else if (acc[0][s] == acc[0][s6]) ++s6_dupl;
+			}
+			// Find 3rd interval
+			if (ivlc[s] == 2 && s3 == -1) s3 = s;
+		}
+		// Need to have both intervals
+		if (s6 == -1 || s3 == -1) continue;
+		// Chord 5th should be lowest harmonic note
+		if (hbcc[hs] < s6) continue;
+		// Correct interval (not tritone)
+		if ((acc[0][s3] - acc[0][s6]) % 12 != 5) continue;
+		ls6 = bli[s6];
+		// Beat 1
+		if (!beat[ls6]) FLAG2(379, s6);
+		// Downbeat
+		else if (beat[ls6] == 1) FLAG2(380, s6);
+		// Long
+		if ((ls6 == 0 || rlen[ls6] >= rlen[ls6 - 1]) &&
+			(ls6 == fli_size - 1 || rlen[ls6] >= rlen[ls6 + 1]) &&
+			rlen[ls6] >= 4) FLAG2(381, s6);
+		// Repeats
+		if (s6_dupl) 
+			FLAG2(382, s6);
 	}
 	return 0;
 }
@@ -3189,8 +3238,8 @@ int CGenCP1::FailHarm() {
 			if (chm.size() > 1 && (chm[chm.size() - 2] == 4 || chm[chm.size() - 2] == 6) &&
 				(chm[chm.size() - 1] != 4 && chm[chm.size() - 1] != 6)) FLAG2(322, hli[chm.size() - 1]);
 		}
+		if (ls2 && hli2.size()) hli2[hli2.size() - 1] = fli2[ls2];
 	}
-	if (ls2 && hli2.size()) hli2[hli2.size() - 1] = fli2[ls2];
 	GetBhli();
 	// Check penultimate harmony not D / DVII
 	if (ep2 == c_len && hli.size() > 1) {
@@ -3217,6 +3266,7 @@ int CGenCP1::FailHarm() {
 	GetHarmBass();
 	if (EvalHarm()) return 1;
 	if (FailTonicCP()) return 1;
+	if (FailVirtual4th()) return 1;
 	return 0;
 }
 

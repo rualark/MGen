@@ -81,6 +81,7 @@ protected:
 	inline int FailPcoApartStep2(int iv, int & pco_last, int & mli_last, int & pco_last2);
 	inline int FailPcoApartStep();
 	inline int FailVIntervals();
+	inline int FailVirtual4th();
 	inline void SaveCP();
 	inline void ShowBestRejectedCP();
 	inline void SaveCPIfRp();

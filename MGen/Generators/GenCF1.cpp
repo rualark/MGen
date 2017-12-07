@@ -596,7 +596,7 @@ void CGenCF1::LoadHarmNotation() {
 	ifstream fs;
 	int cur_nid = -1;
 	fs.open(fname);
-	CString st, st2;
+	CString st;
 	char pch[2550];
 	int pos = 0;
 	// Load header
@@ -2386,7 +2386,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 				// Consecutive
 				if (found == 1) FLAG2(32, s0);
 				// Compound framed
-				else if (found == 2) FLAG2(373, s0);
+				else if (found == 2) FLAG2(373, s0); //-V547
 			}
 		}
 		// Check if resolution is correct
@@ -2397,7 +2397,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 			else FLAG2(2, s0);
 		}
 		// Flag resolution for tritone with intermediate note, framed
-		else if (found == 2) {
+		else if (found == 2) { //-V547
 			if (res1*res2 == 0) FLAG2(372, s0);
 			else FLAG2(371, s0);
 		}
