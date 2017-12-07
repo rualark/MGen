@@ -2173,7 +2173,7 @@ int CGenCP1::FailVirtual4th() {
 		// Need to have both intervals
 		if (s6 == -1 || s3 == -1) continue;
 		// Chord 5th should be lowest harmonic note
-		if (hbcc[hs] < s6) continue;
+		if (hbcc[hs] < acc[0][s6]) continue;
 		// Correct interval (not tritone)
 		if ((acc[0][s3] - acc[0][s6]) % 12 != 5) continue;
 		ls6 = bli[s6];
@@ -2991,6 +2991,10 @@ int CGenCP1::EvalHarm() {
 				chm[i] == 0 && chm[i - 1] == 4 && 
 				apc[0][s] == 0 && apc[1][s] == 0 &&
 				s > 0 && apc[0][s - 1] == 4) FLAG2(48, s);
+			// Prohibit 64 chord
+			if ((hbc[i] % 7 - chm[i] + 7) % 7 == 4) {
+				FLAG2(383, s);
+			}
 			if (minor_cur) {
 				// Prohibit VI<->VI# containing progression
 				if (chm[i] % 2 && chm[i - 1] % 2 && chm_alter[i] != chm_alter[i - 1]) {
@@ -3165,12 +3169,15 @@ int CGenCP1::FailHarm() {
 			if (ls == ls1 && sus[ls1]) s9 = fli2[ls];
 			else s9 = fli[ls];
 			// Do not process non-harmonic notes if they are not consonant ending of first sus
+			// Sus ending 4th is also not processed
 			// For first suspended note do not check msh
 			if (ls == ls1 && sus[ls]) {
 				if (tivl[s9] < 0) continue;
 			}
 			// For all other notes, check msh and iHarm4
-			else if (msh[ls] <= 0 || tivl[s9] == iHarm4) continue;
+			else {
+				if (msh[ls] <= 0) continue;
+			}
 			s = fli[ls];
 			// Pitch class
 			n = ac[cpv][s9] % 7;
@@ -3225,7 +3232,8 @@ int CGenCP1::FailHarm() {
 				else chm[hs] = r;
 			}
 			else {
-				if (chn[5]) chm[hs] = (r + 5) % 7;
+				if (chn[3]) chm[hs] = (r + 3) % 7;
+				else if (chn[5]) chm[hs] = (r + 5) % 7;
 				else chm[hs] = r;
 			}
 			// Detect altered chord

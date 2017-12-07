@@ -646,8 +646,8 @@ protected:
 	vector<int> nstat3; // [c]
 	vector<vector<int>> hm; // [ls][] Available harmonic meanings for each note
 	//vector<vector<int>> hm2; // [ls][] Required harmonic meanings for each note
-	vector <int> chm, chmp; // [ls] Current harmonic meaning and its position in hm
-	vector <int> chm_alter; // [ls] Type of harmonic meaning
+	vector <int> chm, chmp; // [ls/hs] Current harmonic meaning and its position in hm
+	vector <int> chm_alter; // [ls/hs] Type of harmonic meaning
 	float hdif;
 	int cantus_id = 0;
 	CString key_eval; // Results of key evaluation
