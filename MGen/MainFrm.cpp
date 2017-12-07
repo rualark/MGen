@@ -747,6 +747,11 @@ void CMainFrame::OnButtonGen()
 		pGen->StopMIDI();
 		pGen->StartMIDI(GetMidiI(), 0);
 		pGen->gen_start_time = CGLib::time();
+		// Initialize autosave document name
+		m_fname = CTime::GetCurrentTime().Format("%Y-%m-%d-auto %H-%M-%S");
+		m_dir = "autosaves\\" + AlgFolder[m_algo] + "\\" + m_fname;
+		pGen->as_fname = m_fname;
+		pGen->as_dir = m_dir;
 		// Start generation
 		m_state_gen = 1;
 		m_state_play = 0;
@@ -785,30 +790,7 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam) {
 		GetActiveView()->Invalidate();
 		WriteLog(0, "Generation finished");
 		m_state_gen = 2;
-		// Save results
-		CString fname = CTime::GetCurrentTime().Format("%Y-%m-%d-auto %H-%M-%S");
-		CString dir = "autosaves\\" + AlgFolder[m_algo] + "\\" + fname;
-		CreateDirectory("autosaves", NULL);
-		CreateDirectory("autosaves\\" + AlgFolder[m_algo], NULL);
-		pGen->SaveResults(dir, fname);
-		pGen->SaveMidi(dir, fname);
-		pGen->SaveLy(dir, fname);
-		m_dir = dir;
-		m_fname = fname;
-		GetActiveDocument()->SetTitle(fname);
-		// Copy config
-		CGLib::copy_file("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl", dir + "\\" + fname + ".pl");
-		// Append config name
-		CGLib::AppendLineToFile(dir + "\\" + fname + ".pl",
-			"\n# This config was copied from file " + AlgFolder[m_algo] + "\\" + m_config + ".pl\n");
-		CGLib::AppendLineToFile(dir + "\\" + fname + ".pl",
-			"# Originally autosaved at " + dir + "\n");
-		CGLib::AppendLineToFile(dir + "\\" + fname + ".pl",
-			"Instruments = " + pGen->m_algo_insts + " # Original instruments of current algorithm saved");
-		//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
-		//WriteLog(1, dir + "\\config.pl");
-		// Export adapted MIDI if not playing
-		if (m_state_play == 0 && pGen->t_sent > 0) ExportAdaptedMidi();
+		GetActiveDocument()->SetTitle(m_fname);
 		// Start playback after shuffle
 		if (pGen->shuffle) {
 			if (autoplay && m_state_play == 0 && pGen->t_sent > 0) OnButtonPlay();
@@ -1241,6 +1223,26 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	pGen->InitRandom();
 	pGen->Generate();
 	pGen->time_stopped = CGLib::time();
+
+	// Save results
+	CreateDirectory("autosaves", NULL);
+	CreateDirectory("autosaves\\" + pGen->m_algo_folder, NULL);
+	pGen->SaveResults(pGen->as_dir, pGen->as_fname);
+	pGen->SaveMidi(pGen->as_dir, pGen->as_fname);
+	pGen->SaveLy(pGen->as_dir, pGen->as_fname);
+	// Copy config
+	CGLib::copy_file("configs\\" + pGen->m_algo_folder + "\\" + pGen->m_config + ".pl", pGen->as_dir + "\\" + pGen->as_fname + ".pl");
+	// Append config name
+	CGLib::AppendLineToFile(pGen->as_dir + "\\" + pGen->as_fname + ".pl",
+		"\n# This config was copied from file " + pGen->m_algo_folder + "\\" + pGen->m_config + ".pl\n");
+	CGLib::AppendLineToFile(pGen->as_dir + "\\" + pGen->as_fname + ".pl",
+		"# Originally autosaved at " + pGen->as_dir + "\n");
+	CGLib::AppendLineToFile(pGen->as_dir + "\\" + pGen->as_fname + ".pl",
+		"Instruments = " + pGen->m_algo_insts + " # Original instruments of current algorithm saved");
+	//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
+	//WriteLog(1, dir + "\\config.pl");
+	// Export adapted MIDI if not playing
+	//if (m_state_play == 0 && pGen->t_sent > 0) ExportAdaptedMidi();
 
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 

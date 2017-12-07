@@ -42,6 +42,8 @@ public:
 	CString m_algo_folder; // Current algorithm folder
 	CString m_algo_insts; // Instruments of current algorithm from algorithms.txt
 	CString m_config;
+	CString as_fname; // Directory of autosave document
+	CString as_dir; // Directory of autosave document
 	CString save_format_version; // Version of save format loaded
 
 	// Configuration parameters
