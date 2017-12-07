@@ -529,9 +529,17 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 	SendMIDI(midi_sent, t_sent);
 	if (!midifile_buf.size()) return;
 
+	int tracks_cnt;
+	// Get maximum used track
+	for (int ch = MAX_VOICE - 1; ch >= 0; --ch) {
+		if (midifile_buf[ch].size()) {
+			tracks_cnt = ch + 1;
+			break;
+		}
+	}
 	// Save to file
 	MidiFile midifile;
-	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
+	midifile.addTracks(tracks_cnt + 1);    // Add another two tracks to the MIDI file
 	float tps = 200;                // ticks per second
 	float spq = 0.5;              // Seconds per quarter note
 	int tpq = tps / spq;          // ticks per quarter note
@@ -548,7 +556,7 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 	for (int ch = 0; ch < MAX_VOICE; ++ch) {
 		if (!midifile_buf[ch].size()) continue;
 		// Convert channel to midi file channel and track number
-		track = ch;
+		track = ch + 1;
 		channel = ch;
 		// Send instrument name
 		//string st = InstGName[instr[ch]];
