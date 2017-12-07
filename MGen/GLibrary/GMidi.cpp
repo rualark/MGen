@@ -519,7 +519,17 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 }
 
 void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
+	long long time_start = CGLib::time();
+	// If generation finished set last run
+	midi_last_run = 1;
+	StopMIDI();
+	amidi_export = 1;
+	midifile_buf.clear();
+	midifile_buf.resize(MAX_VOICE);
+	SendMIDI(midi_sent, t_sent);
 	if (!midifile_buf.size()) return;
+
+	// Save to file
 	MidiFile midifile;
 	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
 	float tps = 200;                // ticks per second
@@ -564,6 +574,14 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 	}
 	midifile.sortTracks();         // ensure tick times are in correct order
 	midifile.write(dir + "\\" + fname + ".midi");
+
+	amidi_export = 0;
+	// Log
+	long long time_stop = CGLib::time();
+	CString est;
+	est.Format("Exported adapted midi file %s in %d ms",
+		as_fname, time_stop - time_start);
+	WriteLog(0, est);
 }
 
 void CGMidi::SaveMidi(CString dir, CString fname) {
@@ -1646,8 +1664,10 @@ void CGMidi::SendMIDI(int step1, int step2)
 		WriteLog(4, est);
 	}
 	int i;
-	if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
-		WriteLog(0, "SendMIDI mutex timed out: will try later");
+	if (!amidi_export) {
+		if (!mutex_output.try_lock_for(chrono::milliseconds(3000))) {
+			WriteLog(0, "SendMIDI mutex timed out: will try later");
+		}
 	}
 	int step21 = 0; // Voice-dependent first step
 	int step22 = 0; // Voice-independent last step
@@ -1807,7 +1827,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 	midi_sent = step22;
 	midi_sent_t = midi_sent_t2;
 	midi_sent_msg = midi_sent_msg2;
-	mutex_output.unlock();
+	if (!amidi_export) {
+		mutex_output.unlock();
+	}
 }
 
 // First cc sent by this function is with i = step1 - 2, time = stime[i + 1] = stime[step1-1]
