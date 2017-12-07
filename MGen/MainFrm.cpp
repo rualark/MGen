@@ -826,7 +826,6 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam) {
 }
 
 void CMainFrame::ExportAdaptedMidi() {
-	return;
 	long long time_start = CGLib::time();
 	if (pGen->m_pspeed != pGen->adapt_pspeed) pGen->Adapt(0, pGen->t_generated - 1);
 	pGen->StopMIDI();
