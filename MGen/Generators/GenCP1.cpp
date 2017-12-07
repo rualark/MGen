@@ -1039,8 +1039,8 @@ int CGenCP1::FailDis() {
 			}
 			// Check if discord is longer than neighboring consonance
 			if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) FLAG2(223, s);
-			else if (ls < fli_size - 2 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis)
-				FLAG2(223, s);
+			//else if (ls < fli_size - 2 && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis)
+				//FLAG2(223, s);
 		}
 	}
 	return 0;
