@@ -10,8 +10,7 @@
 #define new DEBUG_NEW 
 #endif
 
-CGMidi::CGMidi()
-{
+CGMidi::CGMidi() {
 	mo = 0;
 	//BuildKeyMatrix();
 }
@@ -517,6 +516,54 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 			" autotest\\ly\\" + m_algo_folder + "-" + m_config + ".ly";
 		Run("autotest\\LilyPond\\usr\\bin\\lilypond.exe", par, 0);
 	}
+}
+
+void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
+	if (!midifile_buf.size()) return;
+	MidiFile midifile;
+	midifile.addTracks(v_cnt);    // Add another two tracks to the MIDI file
+	float tps = 200;                // ticks per second
+	float spq = 0.5;              // Seconds per quarter note
+	int tpq = tps / spq;          // ticks per quarter note
+	midifile.setTicksPerQuarterNote(tpq);
+	int track = 0;
+	int channel = 0;
+	int tick = 0;
+	int type, data1, data2;
+	// Add some expression track (track 0) messages:
+	string st = fname;
+	midifile.addTrackName(track, 0, st);
+	// Save tempo
+	midifile.addTempo(track, 0, 60 / spq);
+	for (int ch = 0; ch < MAX_VOICE; ++ch) {
+		if (!midifile_buf[ch].size()) continue;
+		// Convert channel to midi file channel and track number
+		track = ch;
+		channel = ch;
+		// Send instrument name
+		//string st = InstGName[instr[ch]];
+		//midifile.addTrackName(track, 0, st);
+		midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
+		for (int i = 0; i < midifile_buf[ch].size(); i++) {
+			tick = midifile_buf[ch][i].timestamp / 1000.0 / spq * tpq;
+			type = Pm_MessageStatus(midifile_buf[ch][i].message) & 0xF0;
+			data1 = Pm_MessageData1(midifile_buf[ch][i].message);
+			data2 = Pm_MessageData2(midifile_buf[ch][i].message);
+			if (type == MIDI_NOTEON) {
+				if (data2) {
+					midifile.addNoteOn(track, tick, channel, data1, data2);
+				}
+				else {
+					midifile.addNoteOff(track, tick, channel, data1, 0);
+				}
+			}
+			if (type == MIDI_CC) {
+				midifile.addController(track, tick, channel, data1, data2);
+			}
+		}
+	}
+	midifile.sortTracks();         // ensure tick times are in correct order
+	midifile.write(dir + "\\" + fname + ".midi");
 }
 
 void CGMidi::SaveMidi(CString dir, CString fname) {
@@ -1610,7 +1657,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 		step22 = i;
 		if (i == 0) time = stime[i] * 100 / m_pspeed;
 		else time = etime[i - 1] * 100 / m_pspeed;
-		if ((long long)time + midi_start_time - timestamp_current > MAX_MIDI_BUF_MSEC) break;
+		if (!amidi_export)
+			if ((long long)time + midi_start_time - timestamp_current > MAX_MIDI_BUF_MSEC) break;
 	}
 	// If we cut notes, this is not last run
 	if (step22 < step2) midi_last_run = 0;
@@ -1738,7 +1786,12 @@ void CGMidi::SendMIDI(int step1, int step2)
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
 	// Send
 	for (int i = 0; i < midi_buf.size(); i++) {
-		mo->QueueEvent(midi_buf[i]);
+		if (amidi_export) {
+			midifile_buf[Pm_MessageStatus(midi_buf[i].message) & 0xF].push_back(midi_buf[i]);
+		}
+		else {
+			mo->QueueEvent(midi_buf[i]);
+		}
 	}
 	// Count time
 	long long time_stop = CGLib::time();

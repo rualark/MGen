@@ -198,6 +198,7 @@ public:
 	CString DetectLyClef(int vmin, int vmax);
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
 	void SaveLy(CString dir, CString fname);
+	void ExportAdaptedMidi(CString dir, CString fname);
 	virtual void Generate() = 0;
 
 	// Midi files
@@ -239,6 +240,8 @@ public:
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
 
 	// Midi files
+	vector<vector<PmEvent>> midifile_buf;
+	int amidi_export = 0; // Exporting adapted midi
 	int midifile_loaded = 0; // If MIDI was loaded from file
 	int midifile_type = 1; // Type of MIDI file loaded
 
