@@ -2179,7 +2179,7 @@ int CGenCP1::FailVirtual4th() {
 		ls6 = bli[s6];
 		// Beat 1
 		if (!beat[ls6]) FLAG2(379, s6);
-		// Downbeat
+		// Beat 3
 		else if (beat[ls6] == 1) FLAG2(380, s6);
 		// Long
 		if ((ls6 == 0 || rlen[ls6] >= rlen[ls6 - 1]) &&
