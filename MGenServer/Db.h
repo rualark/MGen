@@ -15,6 +15,7 @@ public:
 	int GetInt(CString fname);
 	float GetFloat(CString fname);
 	void GetFields();
+	CString Escape(CString st);
 	void WriteLog(CString st);
 
 	CString m_driver;

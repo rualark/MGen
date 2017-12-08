@@ -108,3 +108,10 @@ void CDb::GetFields() {
 		field.push_back(fieldinfo.m_strName);
 	}
 }
+
+CString CDb::Escape(CString st) {
+	st.Replace("\"", "\\\"");
+	st.Replace("'", "\\'");
+	st.Replace("\\", "\\\\");
+	return st;
+}
