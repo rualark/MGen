@@ -560,6 +560,11 @@ void CGenCA2::Generate() {
 	int s_len2 = s_len;
 	if (error) return;
 	InitCP();
+	if (midi_file == "") {
+		WriteLog(5, "Midi file not specified in configuration file");
+		error = 7;
+	}
+	if (error) return;
 	SetStatusText(8, "MIDI file: " + fname_from_path(midi_file));
 	LoadCP(midi_file);
 	//cantus_incom.clear();

@@ -4139,6 +4139,7 @@ int CGenCF1::InitGen() {
 	if (method == mUndefined) {
 		WriteLog(5, "Error: method not specified in algorithm configuration file");
 		error = 2;
+		return error;
 	}
 	// Check harmonic meaning loaded
 	LoadHarmVar();
