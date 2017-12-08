@@ -150,6 +150,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	BOOL bNameValid;
 
+	CGLib::log_buffer.resize(LOG_TABS);
+	CGLib::log_buffer_size.resize(LOG_TABS);
+	CGLib::warn_log_buffer.resize(LOG_TABS);
+	CGLib::logs_sent.resize(LOG_TABS);
+
 	CreateDirectory("log", NULL);
 	m_wndRibbonBar.Create(this);
 	m_wndRibbonBar.LoadFromResource(IDR_RIBBON);
@@ -357,7 +362,6 @@ void CMainFrame::ShowLog(int log, CString st)
 {
 	// Add log to vector from this thread only
 	if (pGen && pGen->can_send_log) {
-		if (!pGen->logs.size()) pGen->logs.resize(LOG_TABS);
 		// Save log if not too much already
 		if (pGen->logs[log].size() < MAX_SAVED_LOGS) 
 			pGen->logs[log].push_back(st);
@@ -1184,7 +1188,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 					int sent = 0;
 					while (!CGLib::log_buffer[log].empty()) {
 						ShowLog(log, CGLib::log_buffer[log].front());
-						CGLib::log_buffer[log].pop();
+						CGLib::log_buffer[log].pop_front();
 						--CGLib::log_buffer_size[log];
 						++sent;
 						if (sent >= LOG_MAX_SEND) break;

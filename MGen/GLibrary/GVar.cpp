@@ -716,31 +716,40 @@ void CGVar::SaveResults(CString dir, CString fname)
 	fs << st;
 	fs.close();
 	// Save logs
-	if (logs.size()) {
+	if (mutex_log.try_lock_for(chrono::milliseconds(500))) {
 		fs.open(dir + "\\debug.log");
 		for (int i = 0; i < logs[0].size(); i++) fs << logs[0][i] << "\n";
+		for (int i = 0; i < log_buffer[0].size(); i++) fs << log_buffer[0][i] << "\n";
 		fs.close();
 		fs.open(dir + "\\warning.log");
 		for (int i = 0; i < logs[1].size(); i++) fs << logs[1][i] << "\n";
+		for (int i = 0; i < log_buffer[1].size(); i++) fs << log_buffer[1][i] << "\n";
 		fs.close();
 		fs.open(dir + "\\perf.log");
 		for (int i = 0; i < logs[2].size(); i++) fs << logs[2][i] << "\n";
+		for (int i = 0; i < log_buffer[2].size(); i++) fs << log_buffer[2][i] << "\n";
 		fs.close();
 		fs.open(dir + "\\algorithm.log");
 		for (int i = 0; i < logs[3].size(); i++) fs << logs[3][i] << "\n";
+		for (int i = 0; i < log_buffer[3].size(); i++) fs << log_buffer[3][i] << "\n";
 		fs.close();
 		fs.open(dir + "\\midi.log");
 		for (int i = 0; i < logs[4].size(); i++) fs << logs[4][i] << "\n";
+		for (int i = 0; i < log_buffer[4].size(); i++) fs << log_buffer[4][i] << "\n";
 		fs.close();
 		fs.open(dir + "\\confirm.log");
 		for (int i = 0; i < logs[6].size(); i++) fs << logs[6][i] << "\n";
+		for (int i = 0; i < log_buffer[6].size(); i++) fs << log_buffer[6][i] << "\n";
 		fs.close();
 		fs.open(dir + "\\sasemu.log");
 		for (int i = 0; i < logs[7].size(); i++) fs << logs[7][i] << "\n";
+		for (int i = 0; i < log_buffer[7].size(); i++) fs << log_buffer[7][i] << "\n";
 		fs.close();
 		fs.open(dir + "\\corack.log");
 		for (int i = 0; i < logs[8].size(); i++) fs << logs[8][i] << "\n";
+		for (int i = 0; i < log_buffer[8].size(); i++) fs << log_buffer[8][i] << "\n";
 		fs.close();
+		mutex_log.unlock();
 	}
 	// Count time
 	long long time_stop = CGLib::time();

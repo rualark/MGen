@@ -289,9 +289,10 @@ void FinishJob(int res, CString est) {
 }
 
 int RunJobCA2() {
+	CString j_basefile = CGLib::bname_from_path(j_file);
 	CString fname = share + j_folder + j_file;
-	CString fname_pl = share + j_folder + CGLib::bname_from_path(j_file) + ".pl";
-	CString fname_pl2 = "configs\\GenCA2\\" + CGLib::bname_from_path(j_file) + ".pl";
+	CString fname_pl = share + j_folder + j_basefile + ".pl";
+	CString fname_pl2 = "configs\\GenCA2\\" + j_basefile + ".pl";
 	// Check input file exists
 	if (!CGLib::fileExists(fname)) {
 		CString est = "File not found: " + fname;
@@ -307,6 +308,8 @@ int RunJobCA2() {
 	}
 	// Copy config
 	CGLib::copy_file(fname_pl, fname_pl2);
+	// Delete log
+	DeleteFile("autotest\\exit.log");
 	// Run MGen
 	CString par;
 	par.Format("-test=%d %s", GetTimeout(j_type), fname_pl2);
@@ -314,6 +317,13 @@ int RunJobCA2() {
 	if (ret) {
 		CString est;
 		est.Format("Error during MGen run: %d", ret);
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
+	if (!CGLib::fileExists("autotest\\exit.log")) {
+		CString est;
+		est.Format("MGen process did not exit correctly - possible crash");
 		WriteLog(est);
 		FinishJob(1, est);
 		return 1;

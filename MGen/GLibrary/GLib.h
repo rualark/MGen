@@ -291,7 +291,7 @@ public:
 	static vector<long long> status_updates;
 	
 	// Log output
-	static vector<queue<CString>> log_buffer; // Logs buffer
+	static vector<deque<CString>> log_buffer; // Logs buffer
 	static vector<int> log_buffer_size; // Logs buffer size
 	static vector<int> warn_log_buffer; // =1 if Log buffer overflow
 	static vector<long long> logs_sent;

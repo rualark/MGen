@@ -27,7 +27,7 @@ UINT CGLib::WM_STATUS_MSG = 0;
 timed_mutex CGLib::mutex_log;
 vector<CString> CGLib::oinfo; // Strings of algorithm output status
 vector<int> CGLib::oinfo_changed; // If string changed
-vector<queue<CString>> CGLib::log_buffer;
+vector<deque<CString>> CGLib::log_buffer;
 vector<int> CGLib::warn_log_buffer;
 vector<int> CGLib::log_buffer_size;
 vector<long long> CGLib::status_updates;
@@ -49,6 +49,7 @@ vector<long long> CGLib::logs_sent;
 CGLib::CGLib()
 {
 	logs.clear();
+	logs.resize(LOG_TABS);
 	fill(begin(randrsl), end(randrsl), (ub4)0);
 	fill(begin(rmm), end(rmm), (ub4)0);
 }
@@ -825,18 +826,12 @@ void CGLib::WriteLog(int i, CString st)
 		if (!mutex_log.try_lock_for(chrono::milliseconds(2000))) {
 			return;
 		}
-		if (log_buffer.size() < 2) {
-			log_buffer.resize(LOG_TABS);
-			log_buffer_size.resize(LOG_TABS);
-			warn_log_buffer.resize(LOG_TABS);
-			logs_sent.resize(LOG_TABS);
-		}
 		++logs_sent[i];
 		if (log_buffer_size[i] >= MAX_LOG_BUFFER) {
 			if (!warn_log_buffer[i]) {
 				CString st2;
 				st2.Format("WARNING: MAXIMUM LOGS FREQUENCY %d in %d MS EXCEEDED FOR LONG TIME IN LOG: SOME LOG ENTRIES LOST. Please check your algorithm or increase MAX_LOG_BUFFER or LOG_MAX_SEND", LOG_MAX_SEND, LOG_TIMER);
-				log_buffer[i].push(st2);
+				log_buffer[i].push_back(st2);
 				++log_buffer_size[i];
 				warn_log_buffer[i] = 1;
 			}
@@ -844,7 +839,7 @@ void CGLib::WriteLog(int i, CString st)
 			mutex_log.unlock();
 			return;
 		}
-		log_buffer[i].push(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
+		log_buffer[i].push_back(CTime::GetCurrentTime().Format("%H:%M:%S") + " " + st);
 		++log_buffer_size[i];
 		mutex_log.unlock();
 	}
