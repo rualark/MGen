@@ -20,6 +20,7 @@ using namespace std;
 int nRetCode = 0;
 
 long j_id = 0;
+int j_timeout;
 int j_priority;
 CString j_type;
 CString j_folder;
@@ -28,13 +29,17 @@ CString share;
 int server_id = 0;
 CString db_driver, db_server, db_port, db_login, db_pass, db_name;
 
-vector <long long> tChild; // Timestamp of last restart
-vector <int> aChild; // If state process should be automatically restarted on crash
-vector <int> rChild; // Is state process running?
 vector <CString> nChild; // Child process name
-vector <CString> fChild; // Child process folder
-vector <CString> pChild; // Child process parameter string
+map <CString, long long> tChild; // Timestamp of last restart
+map <CString, int> aChild; // If state process should be automatically restarted on crash
+map <CString, int> rChild; // Is state process running?
+map <CString, CString> fChild; // Child process folder
+map <CString, CString> pChild; // Child process parameter string
+
 long long server_start_time = CGLib::time();
+
+map <CString, int> JobTimeout;
+map <CString, int> JobTimeout2;
 
 CDb db;
 
@@ -44,7 +49,9 @@ void WriteLog(CString st) {
 		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st + "\n");
 }
 
-void Run(CString fname, CString par, int delay) {
+// Start process, wait a little and check if process exited with error prematurely
+// Then report error
+int Run(CString fname, CString par, int delay) {
 	DWORD ecode;
 	SHELLEXECUTEINFO sei = { 0 };
 	sei.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -63,7 +70,36 @@ void Run(CString fname, CString par, int delay) {
 		CString est;
 		est.Format("Exit code %d: %s %s", ecode, fname, par);
 		WriteLog(est);
+		return ecode;
 	}
+	return 0;
+}
+
+// Start process, wait for some time. If process did not finish, this is an error
+int RunTimeout(CString fname, CString par, int delay) {
+	DWORD ecode;
+	SHELLEXECUTEINFO sei = { 0 };
+	sei.cbSize = sizeof(SHELLEXECUTEINFO);
+	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
+	sei.hwnd = NULL;
+	sei.lpVerb = NULL;
+	sei.lpFile = fname;
+	sei.lpParameters = par;
+	sei.lpDirectory = NULL;
+	sei.nShow = SW_SHOWNORMAL;
+	sei.hInstApp = NULL;
+	ShellExecuteEx(&sei);
+	if (WaitForSingleObject(sei.hProcess, delay) == WAIT_TIMEOUT) {
+		WriteLog(fname + " " + par + ": Timeout waiting for process\n");
+		return 100;
+	}
+	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
+		CString est;
+		est.Format("Exit code %d: %s %s", ecode, fname, par);
+		WriteLog(est);
+		return ecode;
+	}
+	return 0;
 }
 
 HANDLE GetProcessHandle(CString pname) {
@@ -82,14 +118,15 @@ HANDLE GetProcessHandle(CString pname) {
 	return NULL;
 }
 
-void RestartChild(int c) {
-	Run(fChild[c] + nChild[c], pChild[c], 200);
+void RestartChild(CString cn) {
+	if (Run(fChild[cn] + cn, pChild[cn], 200)) nRetCode = 7;
 }
 
 void CheckChildsPath() {
 	for (int c = 0; c < nChild.size(); ++c) {
-		if (!CGLib::fileExists(fChild[c] + nChild[c])) {
-			WriteLog("Not found program file: " + fChild[c] + nChild[c]);
+		CString cn = nChild[c];
+		if (!CGLib::fileExists(fChild[cn] + cn)) {
+			WriteLog("Not found program file: " + fChild[cn] + cn);
 			nRetCode = 3;
 			return;
 		}
@@ -98,17 +135,18 @@ void CheckChildsPath() {
 
 void CheckChilds() {
 	for (int c = 0; c < nChild.size(); ++c) {
-		HANDLE hProcess = GetProcessHandle(nChild[c]);
+		CString cn = nChild[c];
+		HANDLE hProcess = GetProcessHandle(cn);
 		if (hProcess == NULL) {
-			rChild[c] = 0;
-			if (aChild[c]) {
-				WriteLog("Restarting process " + nChild[c] + "...");
-				RestartChild(c);
-				tChild[c] = CGLib::time();
+			rChild[cn] = 0;
+			if (aChild[cn]) {
+				WriteLog("Restarting process " + cn + "...");
+				RestartChild(cn);
+				tChild[cn] = CGLib::time();
 			}
 		}
 		else {
-			rChild[c] = 1;
+			rChild[cn] = 1;
 			CloseHandle(hProcess);
 		}
 	}
@@ -121,7 +159,7 @@ void LoadConfig()
 	CString current_dir = string(buffer).c_str();
 	WriteLog("Started MGenServer in current dir: " + current_dir );
 
-	CString st, st2, st3;
+	CString st, st2, st3, cur_child;
 	ifstream fs;
 	CString fname = "server\\server.pl";
 	// Check file exists
@@ -162,19 +200,19 @@ void LoadConfig()
 			CGLib::parameter_found = 0;
 			if (st2 == "childprocess") {
 				nChild.push_back(st3);
-				aChild.resize(nChild.size());
-				rChild.resize(nChild.size());
-				fChild.resize(nChild.size());
-				pChild.resize(nChild.size());
-				tChild.resize(nChild.size());
-				tChild[nChild.size() - 1] = CGLib::time();
+				aChild[st3] = 0;
+				rChild[st3] = 0;
+				fChild[st3] = "";
+				pChild[st3] = "";
+				tChild[st3] = CGLib::time();
+				cur_child = st3;
 				++CGLib::parameter_found;
 			}
 			CGLib::CheckVar(&st2, &st3, "server_id", &server_id, 0, 1000000);
 			if (aChild.size()) {
-				CGLib::CheckVar(&st2, &st3, "childrestart", &aChild[aChild.size() - 1], 0, 1);
-				CGLib::LoadVar(&st2, &st3, "childpath", &fChild[fChild.size() - 1]);
-				CGLib::LoadVar(&st2, &st3, "childparams", &pChild[pChild.size() - 1]);
+				CGLib::CheckVar(&st2, &st3, "childrestart", &aChild[cur_child], 0, 1);
+				CGLib::LoadVar(&st2, &st3, "childpath", &fChild[cur_child]);
+				CGLib::LoadVar(&st2, &st3, "childparams", &pChild[cur_child]);
 			}
 			CGLib::LoadVar(&st2, &st3, "db_driver", &db_driver);
 			CGLib::LoadVar(&st2, &st3, "share", &share);
@@ -218,10 +256,10 @@ void SendStatus() {
 	long long timestamp = CGLib::time();
 	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'host','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
 		server_id, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
-		(timestamp - tChild[0]) / 1000,
-		(timestamp - tChild[1]) / 1000,
-		(timestamp - tChild[2]) / 1000,
-		(timestamp - tChild[3]) / 1000,
+		(timestamp - tChild["Reaper.exe"]) / 1000,
+		(timestamp - tChild["AutoHotkey.exe"]) / 1000,
+		(timestamp - tChild["MGen.exe"]) / 1000,
+		(timestamp - tChild["lilypond-windows.exe"]) / 1000,
 		j_id);
 	db.Query(q);
 }
@@ -242,6 +280,10 @@ int RunJobCA2() {
 		FinishJob(1, est);
 		return 1;
 	}
+	// Run MGen
+	CString par;
+	//par.Format("-job=%d %s", wait_sec, fname);
+	//int ret = Run(fChild[2] + nChild[2], par);
 	FinishJob(0, "Success");
 	return 0;
 }
@@ -265,8 +307,9 @@ void TakeJob() {
 	if (!db.rs.IsEOF()) {
 		// Load job
 		j_id = db.GetInt("j_id");
-		j_type = db.GetSt("j_type");
 		j_priority = db.GetInt("j_priority");
+		j_timeout = db.GetInt("j_timeout");
+		j_type = db.GetSt("j_type");
 		j_folder = db.GetSt("j_folder");
 		j_file = db.GetSt("j_file");
 		// Take job
@@ -332,6 +375,7 @@ int main() {
 	Init();
 	for (;;) {
 		CheckChilds();
+		if (nRetCode) return Pause();
 		SendStatus();
 		TakeJob();
 		SendStatus();
