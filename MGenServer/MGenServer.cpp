@@ -93,6 +93,7 @@ int RunTimeout(CString fname, CString par, int delay) {
 		WriteLog(fname + " " + par + ": Timeout waiting for process\n");
 		return 100;
 	}
+	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
 		CString est;
 		est.Format("Exit code %d: %s %s", ecode, fname, par);
@@ -312,8 +313,8 @@ int RunJobCA2() {
 	DeleteFile("autotest\\exit.log");
 	// Run MGen
 	CString par;
-	par.Format("-test=%d %s", GetTimeout(j_type), fname_pl2);
-	int ret = Run(fChild["MGen.exe"] + "MGen.exe", par, GetTimeout2(j_type));
+	par.Format("-job=%d %s", GetTimeout(j_type), fname_pl2);
+	int ret = RunTimeout(fChild["MGen.exe"] + "MGen.exe", par, GetTimeout2(j_type) * 1000);
 	if (ret) {
 		CString est;
 		est.Format("Error during MGen run: %d", ret);
@@ -352,6 +353,12 @@ int RunJobCA2() {
 		FinishJob(1, est);
 		return 1;
 	}
+	// Copy results
+	CGLib::copy_file(as_dir + "\\" + as_fname + ".ly", share + j_folder + j_basefile + ".ly");
+	CGLib::copy_file(as_dir + "\\" + as_fname + ".txt", share + j_folder + j_basefile + ".txt");
+	CGLib::copy_file(as_dir + "\\warning.log", share + j_folder + "warning.log");
+	CGLib::copy_file(as_dir + "\\debug.log", share + j_folder + "debug.log");
+	CGLib::copy_file(as_dir + "\\algorithm.log", share + j_folder + "algorithm.log");
 	FinishJob(0, "Success");
 	return 0;
 }
@@ -386,8 +393,8 @@ void TakeJob() {
 		db.Query(q);
 		db.Query("UNLOCK TABLES");
 		// Log
-		est.Format("Taking job #%ld: %s, %s (priority %d)", 
-			j_id, j_type, j_folder, j_priority);
+		est.Format("Taking job #%ld: %s, %s%s (priority %d)", 
+			j_id, j_type, j_folder, j_file, j_priority);
 		WriteLog(est);
 		// Update status
 		SendStatus();

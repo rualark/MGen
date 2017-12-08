@@ -1,0 +1,15 @@
+save_format_version = 1.9 # This is version of format used to save these files
+m_config = 1 # Name of config file used for generation
+m_algo_id = 112
+t_cnt = 100000 # Number of steps I had to generate
+v_cnt = 4 # Number of voices
+t_generated = 80 # Number of steps I generated
+t_sent = 80 # Number of steps I finished and sent (can be less than generated)
+t_send = 60 # Send window
+ng_min = 35 # Minimum generated note
+ng_max = 65 # Maximum generated note
+tg_min = 49.993496 # Minimum generated tempo
+tg_max = 102.461273 # Maximum generated tempo
+gen_start_time = 54 # Unix timestamp of generation start
+time_stopped = 64 # Unix timestamp of generation finish
+need_exit = 0

@@ -4096,14 +4096,14 @@ int CGenCF1::SendCantus() {
 			if (key_eval.IsEmpty()) {
 				// If SWA
 				st.Format("#%d (from %s)\nRule penalty: %.0f => %.0f\nDistance penalty: %d\nCantus: %s", 
-					cantus_id+1, midi_file, rpenalty_source, l_rpenalty_cur, 
+					cantus_id+1, bname_from_path(midi_file), rpenalty_source, l_rpenalty_cur,
 					dpenalty_cur, cantus_high ? "high" : "low");
 				st2.Format("Flags penalty: %s => %s\n%s", fpenalty_source, rpst, pmap);
 			}
 			else {
 				// If evaluating
 				st.Format("#%d (from %s)\nRule penalty: %.0f\nCantus: %s", 
-					cantus_id + 1, midi_file, l_rpenalty_cur, cantus_high ? "high" : "low");
+					cantus_id + 1, bname_from_path(midi_file), l_rpenalty_cur, cantus_high ? "high" : "low");
 				st2.Format("Flags penalty: %s\nKey selection: %s\n%s", rpst, key_eval, pmap);
 			}
 		}
