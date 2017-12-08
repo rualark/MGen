@@ -20,6 +20,9 @@ using namespace std;
 int nRetCode = 0;
 
 long j_id = 0;
+int j_priority;
+CString j_type;
+CString j_folder;
 int server_id = 0;
 CString db_driver, db_server, db_port, db_login, db_pass, db_name;
 
@@ -180,6 +183,7 @@ void LoadConfig()
 }
 
 int Pause() {
+	cout << "Press any key to continue... ";
 	_getch();
 	return nRetCode;
 }
@@ -204,6 +208,47 @@ void SendStatus() {
 	db.Query(q);
 }
 
+void TakeJob() {
+	CString q, est;
+	db.Query("LOCK TABLES job WRITE");
+	db.Fetch("SELECT * FROM job WHERE j_state=1 ORDER BY j_priority DESC, j_id LIMIT 1");
+	if (!db.rs.IsEOF()) {
+		// Load job
+		j_id = db.GetInt("j_id");
+		j_type = db.GetSt("j_type");
+		j_priority = db.GetInt("j_priority");
+		j_folder = db.GetSt("j_folder");
+		// Take job
+		q.Format("UPDATE job SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%d'",
+			server_id, j_id);
+		db.Query(q);
+		// Log
+		est.Format("Taking job #%ld: %s, %s (priority %d)", 
+			j_id, j_type, j_folder, j_priority);
+		WriteLog(est);
+	}
+	db.Query("UNLOCK TABLES");
+}
+
+void Init() {
+	// On start, reset all jobs that did not finish correctly
+	CString q;
+	q.Format("SELECT COUNT(*) as cnt FROM job WHERE s_id='%d' AND j_state=2", server_id);
+	db.Fetch(q);
+	if (!db.rs.IsEOF()) {
+		db.GetFields();
+		int cnt = db.GetInt("cnt");
+		if (cnt) {
+			CString est;
+			est.Format("Detected and cleared %d jobs that did not finish correctly on this server #%d",
+				cnt, server_id);
+			WriteLog(est);
+		}
+	}
+	q.Format("UPDATE job SET j_state=1 WHERE s_id='%d' AND j_state=2", server_id);
+	db.Query(q);
+}
+
 int main() {
   HMODULE hModule = ::GetModuleHandle(nullptr);
 
@@ -224,14 +269,15 @@ int main() {
 	LoadConfig();
 	if (Connect()) return Pause();
 	if (nRetCode) {
-		cout << "Press any key to continue... ";
 		return Pause();
 	}
+	Init();
 	for (;;) {
 		CheckChilds();
 		SendStatus();
+		TakeJob();
+		SendStatus();
 		Sleep(1000);
 	}
-	cout << "Press any key to continue... ";
 	return Pause();
 }
