@@ -791,6 +791,10 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam) {
 		WriteLog(0, "Generation finished");
 		m_state_gen = 2;
 		GetActiveDocument()->SetTitle(m_fname);
+		// Export last autosave name
+		DeleteFile("log\\autosave.txt");
+		CGLib::AppendLineToFile("log\\autosave.txt", m_dir + "\n");
+		CGLib::AppendLineToFile("log\\autosave.txt", m_fname + "\n");
 		// Start playback after shuffle
 		if (pGen->shuffle) {
 			if (autoplay && m_state_play == 0 && pGen->t_sent > 0) OnButtonPlay();
