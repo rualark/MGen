@@ -21,3 +21,9 @@ ChildProcess = MGen.exe
 
 ChildProcess = lilypond-windows.exe
 ChildPath = X:\Program Files (x86)\LilyPond\usr\bin\
+
+# Maximum time to send to process and timeout process in seconds
+Job = CA2;60;80 
+Job = CA2-cor;600;640 
+Job = Render;600;600
+Job = LY;600;600
