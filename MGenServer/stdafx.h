@@ -25,7 +25,8 @@
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>                     // MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
-#include <afxinet.h>
+
+#include <iostream>
 
 #include <cctype>
 #include <iomanip>
@@ -49,3 +50,8 @@ using namespace std;
 #include <chrono>
 using namespace std::chrono;
 #include "../MGen/dirent.h"
+#include <windows.h>
+#include <tlhelp32.h>
+
+
+// TODO: reference additional headers your program requires here
