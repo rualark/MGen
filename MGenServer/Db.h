@@ -10,6 +10,11 @@ public:
 
 	int Connect(CString driver, CString server, CString port, CString dbname, CString login, CString pass);
 	int Query(CString q);
+	int Fetch(CString q);
+	CString GetSt(CString fname);
+	int GetInt(CString fname);
+	float GetFloat(CString fname);
+	void GetFields();
 	void WriteLog(CString st);
 
 	CString m_driver;
@@ -20,5 +25,7 @@ public:
 	CString m_pass;
 
 	CDatabase db;
+	CRecordset rs;
+	vector <CString> field;
 };
 

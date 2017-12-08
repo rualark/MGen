@@ -39,6 +39,7 @@ int CDb::Connect(CString driver, CString server, CString port, CString dbname, C
 		pEX->Delete();
 		return 1;
 	}
+	rs.m_pDatabase = &db;
 	return 0;
 }
 
@@ -50,13 +51,60 @@ int CDb::Query(CString q) {
 		TCHAR szCause[255];
 		e->GetErrorMessage(szCause, 255);
 		WriteLog(szCause);
-	}
-	END_CATCH_ALL
+		return 1;
+	} 
+	END_CATCH_ALL;
 	return 0;
+}
+
+int CDb::Fetch(CString q) {
+	TRY {
+		if (rs.IsOpen()) rs.Close();
+		rs.Open(CRecordset::forwardOnly, q, CRecordset::readOnly);
+	}
+	CATCH(CDBException, e) {
+		WriteLog("Error executing query '" + q + "': " + e->m_strError);
+		return 1;
+	}
+	END_CATCH; 
+	return 0;
+}
+
+CString CDb::GetSt(CString fname) {
+	if (rs.IsEOF()) return "";
+	CString st;
+	TRY {
+		rs.GetFieldValue(fname, st);
+	}
+	CATCH(CDBException, e) {
+		WriteLog("Error parsing field '" + fname + "': " + e->m_strError);
+		return "";
+	}
+	END_CATCH;
+	return st;
+}
+
+int CDb::GetInt(CString fname) {
+	return atoi(GetSt(fname));
+}
+
+float CDb::GetFloat(CString fname) {
+	return atof(GetSt(fname));
 }
 
 void CDb::WriteLog(CString st) {
 	cout << st << "\n";
 	CGLib::AppendLineToFile("log\\server.log",
 		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st + "\n");
+}
+
+void CDb::GetFields() {
+	field.clear();
+	int nFields = rs.GetODBCFieldCount();
+	for (short x = 0; x < nFields; x++) {
+		CODBCFieldInfo fieldinfo;
+		short pos = x;
+		rs.GetODBCFieldInfo(pos, fieldinfo);
+		field.push_back(fieldinfo.m_strName);
+	}
 }
