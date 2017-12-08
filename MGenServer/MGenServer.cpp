@@ -23,6 +23,8 @@ long j_id = 0;
 int j_priority;
 CString j_type;
 CString j_folder;
+CString j_file;
+CString share;
 int server_id = 0;
 CString db_driver, db_server, db_port, db_login, db_pass, db_name;
 
@@ -81,7 +83,17 @@ HANDLE GetProcessHandle(CString pname) {
 }
 
 void RestartChild(int c) {
-	Run(fChild[c] + "\\" + nChild[c], pChild[c], 200);
+	Run(fChild[c] + nChild[c], pChild[c], 200);
+}
+
+void CheckChildsPath() {
+	for (int c = 0; c < nChild.size(); ++c) {
+		if (!CGLib::fileExists(fChild[c] + nChild[c])) {
+			WriteLog("Not found program file: " + fChild[c] + nChild[c]);
+			nRetCode = 3;
+			return;
+		}
+	}
 }
 
 void CheckChilds() {
@@ -165,6 +177,7 @@ void LoadConfig()
 				CGLib::LoadVar(&st2, &st3, "childparams", &pChild[pChild.size() - 1]);
 			}
 			CGLib::LoadVar(&st2, &st3, "db_driver", &db_driver);
+			CGLib::LoadVar(&st2, &st3, "share", &share);
 			CGLib::LoadVar(&st2, &st3, "db_server", &db_server);
 			CGLib::LoadVar(&st2, &st3, "db_port", &db_port);
 			CGLib::LoadVar(&st2, &st3, "db_login", &db_login);
@@ -180,6 +193,11 @@ void LoadConfig()
 	CString est;
 	est.Format("LoadConfig loaded %d lines from %s", i, fname);
 	WriteLog(est);
+	// Check config
+	if (!CGLib::dirExists(share)) {
+		WriteLog("Shared folder not found: " + share);
+		nRetCode = 6;
+	}
 }
 
 int Pause() {
@@ -208,6 +226,38 @@ void SendStatus() {
 	db.Query(q);
 }
 
+void FinishJob(int res, CString est) {
+	CString q;
+	q.Format("UPDATE job SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%d'",
+		res, db.Escape(est), j_id);
+	db.Query(q);
+}
+
+int RunJobCA2() {
+	CString fname = share + j_folder + j_file;
+	// Check input file exists
+	if (!CGLib::fileExists(fname)) {
+		CString est = "File not found: " + fname;
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
+	FinishJob(0, "Success");
+	return 0;
+}
+
+int RunJob() {
+	// Check that folder exists
+	if (!CGLib::dirExists(share + j_folder)) {
+		CString est = "Folder not found: " + share + j_folder;
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
+	if (j_type == "CA2") RunJobCA2();
+	return 0;
+}
+
 void TakeJob() {
 	CString q, est;
 	db.Query("LOCK TABLES job WRITE");
@@ -218,16 +268,23 @@ void TakeJob() {
 		j_type = db.GetSt("j_type");
 		j_priority = db.GetInt("j_priority");
 		j_folder = db.GetSt("j_folder");
+		j_file = db.GetSt("j_file");
 		// Take job
 		q.Format("UPDATE job SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%d'",
 			server_id, j_id);
 		db.Query(q);
+		db.Query("UNLOCK TABLES");
 		// Log
 		est.Format("Taking job #%ld: %s, %s (priority %d)", 
 			j_id, j_type, j_folder, j_priority);
 		WriteLog(est);
+		// Update status
+		SendStatus();
+		RunJob();
 	}
-	db.Query("UNLOCK TABLES");
+	else {
+		db.Query("UNLOCK TABLES");
+	}
 }
 
 void Init() {
@@ -267,6 +324,7 @@ int main() {
 	}
 
 	LoadConfig();
+	CheckChildsPath();
 	if (Connect()) return Pause();
 	if (nRetCode) {
 		return Pause();
