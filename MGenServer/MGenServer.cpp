@@ -152,6 +152,16 @@ void CheckChilds() {
 	}
 }
 
+int GetTimeout(CString jobName) {
+	if (JobTimeout.find(jobName) == JobTimeout.end()) return 600;
+	return JobTimeout[jobName];
+}
+
+int GetTimeout2(CString jobName) {
+	if (JobTimeout2.find(jobName) == JobTimeout2.end()) return 600;
+	return JobTimeout2[jobName];
+}
+
 void LoadConfig()
 {
 	TCHAR buffer[MAX_PATH];
@@ -206,6 +216,13 @@ void LoadConfig()
 				pChild[st3] = "";
 				tChild[st3] = CGLib::time();
 				cur_child = st3;
+				++CGLib::parameter_found;
+			}
+			if (st2 == "job") {
+				vector <CString> sv;
+				CGLib::Tokenize(st3, sv, ";");
+				JobTimeout[sv[0]] = atoi(sv[1]);
+				JobTimeout2[sv[0]] = atoi(sv[2]);
 				++CGLib::parameter_found;
 			}
 			CGLib::CheckVar(&st2, &st3, "server_id", &server_id, 0, 1000000);
@@ -273,6 +290,8 @@ void FinishJob(int res, CString est) {
 
 int RunJobCA2() {
 	CString fname = share + j_folder + j_file;
+	CString fname_pl = share + j_folder + CGLib::bname_from_path(j_file) + ".pl";
+	CString fname_pl2 = "configs\\GenCA2\\" + CGLib::bname_from_path(j_file) + ".pl";
 	// Check input file exists
 	if (!CGLib::fileExists(fname)) {
 		CString est = "File not found: " + fname;
@@ -280,10 +299,49 @@ int RunJobCA2() {
 		FinishJob(1, est);
 		return 1;
 	}
+	if (!CGLib::fileExists(fname_pl)) {
+		CString est = "File not found: " + fname_pl;
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
+	// Copy config
+	CGLib::copy_file(fname_pl, fname_pl2);
 	// Run MGen
 	CString par;
-	//par.Format("-job=%d %s", wait_sec, fname);
-	//int ret = Run(fChild[2] + nChild[2], par);
+	par.Format("-test=%d %s", GetTimeout(j_type), fname_pl2);
+	int ret = Run(fChild["MGen.exe"] + "MGen.exe", par, GetTimeout2(j_type));
+	if (ret) {
+		CString est;
+		est.Format("Error during MGen run: %d", ret);
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
+	// Get autosave
+	CString as_fname, as_dir;
+	if (!CGLib::fileExists("log\\autosave.txt")) {
+		CString est = "File not found: log\\autosave.txt";
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
+	vector <CString> sv;
+	CGLib::read_file_sv("log\\autosave.txt", sv);
+	if (sv.size() != 3) {
+		CString est = "Wrong row count in file: log\\autosave.txt";
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
+	as_dir = sv[0];
+	as_fname = sv[1];
+	if (!CGLib::fileExists(as_dir + "\\" + as_fname + ".ly")) {
+		CString est = "Autosave file not found: " + as_dir + "\\" + as_fname + ".ly";
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
 	FinishJob(0, "Success");
 	return 0;
 }
