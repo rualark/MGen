@@ -1,3 +1,12 @@
+Server_id = 1
+
+DB_Driver = MySQL ODBC 5.3 Unicode Driver
+DB_Server = 192.168.9.4
+DB_Port = 3306
+DB_Login = mgen
+DB_Pass = Congress1
+DB_Name = mgen
+
 ChildProcess = Reaper.exe
 ChildRestart = 1
 ChildPath = C:\Windows

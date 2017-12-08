@@ -147,8 +147,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Db.h" />
     <ClInclude Include="MGenServer.h" />
-    <ClInclude Include="Mysql.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -157,8 +157,8 @@
     <ClCompile Include="..\MGen\GLibrary\GLib.cpp" />
     <ClCompile Include="..\MGen\GLibrary\SmRnd.cpp" />
     <ClCompile Include="..\MGen\GLibrary\VSet.cpp" />
+    <ClCompile Include="Db.cpp" />
     <ClCompile Include="MGenServer.cpp" />
-    <ClCompile Include="Mysql.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

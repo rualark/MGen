@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "MGenServer.h"
+#include "Db.h"
 #include "../MGen/GLibrary/GLib.h"
 
 #ifdef _DEBUG
@@ -18,11 +19,25 @@ using namespace std;
 
 int nRetCode = 0;
 
+long j_id = 0;
+int server_id = 0;
+CString db_driver, db_server, db_port, db_login, db_pass, db_name;
+
+vector <long long> tChild; // Timestamp of last restart
 vector <int> aChild; // If state process should be automatically restarted on crash
 vector <int> rChild; // Is state process running?
 vector <CString> nChild; // Child process name
 vector <CString> fChild; // Child process folder
 vector <CString> pChild; // Child process parameter string
+long long server_start_time = CGLib::time();
+
+CDb db;
+
+void WriteLog(CString st) {
+	cout << st << "\n";
+	CGLib::AppendLineToFile("log\\server.log", 
+		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st + "\n");
+}
 
 void Run(CString fname, CString par, int delay) {
 	DWORD ecode;
@@ -40,7 +55,9 @@ void Run(CString fname, CString par, int delay) {
 	WaitForSingleObject(sei.hProcess, delay);
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
-		cout << "Exit code " << ecode << ": " << fname << " " << par << "\n";
+		CString est;
+		est.Format("Exit code %d: %s %s", ecode, fname, par);
+		WriteLog(est);
 	}
 }
 
@@ -50,7 +67,7 @@ HANDLE GetProcessHandle(CString pname) {
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	if (Process32First(snapshot, &entry) == TRUE)	{
 		while (Process32Next(snapshot, &entry) == TRUE)	{
-			if (stricmp(entry.szExeFile, "Reaper.exe") == 0)	{
+			if (stricmp(entry.szExeFile, pname) == 0)	{
 				return OpenProcess(PROCESS_ALL_ACCESS, FALSE, entry.th32ProcessID);
 				//WaitForSingleObject(hProcess, 100000);
 			}
@@ -70,11 +87,15 @@ void CheckChilds() {
 		if (hProcess == NULL) {
 			rChild[c] = 0;
 			if (aChild[c]) {
+				WriteLog("Restarting process " + nChild[c] + "...");
 				RestartChild(c);
+				tChild[c] = CGLib::time();
 			}
 		}
-		else rChild[c] = 1;
-		CloseHandle(hProcess);
+		else {
+			rChild[c] = 1;
+			CloseHandle(hProcess);
+		}
 	}
 }
 
@@ -83,14 +104,14 @@ void LoadConfig()
 	TCHAR buffer[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, buffer);
 	CString current_dir = string(buffer).c_str();
-	cout << "Current dir: " + current_dir + "\n";
+	WriteLog("Started MGenServer in current dir: " + current_dir );
 
 	CString st, st2, st3;
 	ifstream fs;
 	CString fname = "server\\server.pl";
 	// Check file exists
 	if (!CGLib::fileExists(fname)) {
-		cout << "LoadConfig cannot find file: " << fname << "\n";
+		WriteLog("LoadConfig cannot find file: " + fname);
 		nRetCode = 3;
 		return;
 	}
@@ -130,18 +151,57 @@ void LoadConfig()
 				rChild.resize(nChild.size());
 				fChild.resize(nChild.size());
 				pChild.resize(nChild.size());
+				tChild.resize(nChild.size());
+				tChild[nChild.size() - 1] = CGLib::time();
+				++CGLib::parameter_found;
 			}
-			CGLib::CheckVar(&st2, &st3, "childrestart", &aChild[aChild.size() - 1], 0, 1);
-			CGLib::LoadVar(&st2, &st3, "childpath", &fChild[fChild.size() - 1]);
-			CGLib::LoadVar(&st2, &st3, "childparams", &pChild[pChild.size() - 1]);
+			CGLib::CheckVar(&st2, &st3, "server_id", &server_id, 0, 1000000);
+			if (aChild.size()) {
+				CGLib::CheckVar(&st2, &st3, "childrestart", &aChild[aChild.size() - 1], 0, 1);
+				CGLib::LoadVar(&st2, &st3, "childpath", &fChild[fChild.size() - 1]);
+				CGLib::LoadVar(&st2, &st3, "childparams", &pChild[pChild.size() - 1]);
+			}
+			CGLib::LoadVar(&st2, &st3, "db_driver", &db_driver);
+			CGLib::LoadVar(&st2, &st3, "db_server", &db_server);
+			CGLib::LoadVar(&st2, &st3, "db_port", &db_port);
+			CGLib::LoadVar(&st2, &st3, "db_login", &db_login);
+			CGLib::LoadVar(&st2, &st3, "db_pass", &db_pass);
+			CGLib::LoadVar(&st2, &st3, "db_name", &db_name);
 			if (!CGLib::parameter_found) {
-				cout << "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname << "\n";
+				WriteLog("Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
 			}
 			if (nRetCode) break;
 		}
 	}
 	fs.close();
-	cout << "LoadConfig loaded " << i << " lines from " << fname << "\n";
+	CString est;
+	est.Format("LoadConfig loaded %d lines from %s", i, fname);
+	WriteLog(est);
+}
+
+int Pause() {
+	_getch();
+	return nRetCode;
+}
+
+int Connect() {
+	if (db.Connect(db_driver, db_server, db_port, db_name, db_login, db_pass)) {
+		nRetCode = 4;
+	}
+	return nRetCode;
+}
+
+void SendStatus() {
+	CString q;
+	long long timestamp = CGLib::time();
+	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'host','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
+		server_id, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
+		(timestamp - tChild[0]) / 1000,
+		(timestamp - tChild[1]) / 1000,
+		(timestamp - tChild[2]) / 1000,
+		(timestamp - tChild[3]) / 1000,
+		j_id);
+	db.Query(q);
 }
 
 int main() {
@@ -162,16 +222,16 @@ int main() {
 	}
 
 	LoadConfig();
+	if (Connect()) return Pause();
 	if (nRetCode) {
 		cout << "Press any key to continue... ";
-		_getch();
-		return nRetCode;
+		return Pause();
 	}
 	for (;;) {
 		CheckChilds();
+		SendStatus();
 		Sleep(1000);
 	}
 	cout << "Press any key to continue... ";
-	_getch();
-	return nRetCode;
+	return Pause();
 }
