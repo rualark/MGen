@@ -33,7 +33,7 @@
     <ClInclude Include="MGenServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mysql.h">
+    <ClInclude Include="Db.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClCompile Include="..\MGen\GLibrary\VSet.cpp">
       <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
-    <ClCompile Include="Mysql.cpp">
+    <ClCompile Include="Db.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
