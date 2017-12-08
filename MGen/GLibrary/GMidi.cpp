@@ -505,6 +505,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 	read_file_sv("configs\\ly\\footer.ly", sv);
 	write_file_sv(fs, sv);
 	fs.close();
+	/*
 	if (m_testing) {
 		CreateDirectory("autotest\\ly", NULL);
 		// This will rewrite file if exists (tested)
@@ -516,6 +517,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 			" autotest\\ly\\" + m_algo_folder + "-" + m_config + ".ly";
 		Run("autotest\\LilyPond\\usr\\bin\\lilypond.exe", par, 0);
 	}
+	*/
 }
 
 void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {

@@ -328,8 +328,12 @@ void CGVar::LoadConfig(CString fname, int load_includes) {
 	CString st2;
 	LoadConfigFile(fname, load_includes);
 	// Load autotest config
-	if (m_testing) {
-		CString fname2 = "autotest\\configs\\" + m_algo_folder + ".pl"; 
+	if (m_testing == 1) {
+		CString fname2 = "autotest\\configs\\" + m_algo_folder + ".pl";
+		if (fileExists(fname2)) LoadConfigFile(fname2, load_includes);
+	}
+	if (m_testing == 2) {
+		CString fname2 = "server\\configs\\" + m_algo_folder + ".pl";
 		if (fileExists(fname2)) LoadConfigFile(fname2, load_includes);
 	}
 	// Load instruments layout

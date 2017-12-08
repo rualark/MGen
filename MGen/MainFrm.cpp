@@ -273,6 +273,10 @@ void CMainFrame::ParseCommandLine() {
 			CGLib::m_testing = 1;
 			if (st2.GetLength() > 6) CGLib::m_test_sec = atoi(st2.Right(st2.GetLength() - 6));
 		}
+		if (st2.Find("-job") == 0) {
+			CGLib::m_testing = 2;
+			if (st2.GetLength() > 6) CGLib::m_test_sec = atoi(st2.Right(st2.GetLength() - 6));
+		}
 	}
 	st.Replace("\"", "");
 	CGLib::m_cline2 = st;

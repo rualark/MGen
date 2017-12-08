@@ -335,7 +335,7 @@ void CGenCA1::ConfirmExpect() {
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 					cantus_id + 1, x + 1, cpos[x] / 8 + 1, cpos[x] % 8 + 1, midi_file);
 				WriteLog(5, est);
-				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+				if (m_testing == 1) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
 			else if (debug_level > 0) {
 				CString est;
@@ -343,7 +343,7 @@ void CGenCA1::ConfirmExpect() {
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 					cantus_id + 1, x + 1, cpos[x] / 8 + 1, cpos[x] % 8 + 1, midi_file);
 				WriteLog(6, est); 
-				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+				if (m_testing == 1) AppendLineToFile("autotest\\expect.log", est + "\n");
 			}
 		}
 	}
@@ -358,7 +358,7 @@ void CGenCA1::ConfirmExpect() {
 						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 					WriteLog(5, est);
-					if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+					if (m_testing == 1) AppendLineToFile("autotest\\expect.log", est + "\n");
 				}
 			}
 		}
@@ -375,10 +375,10 @@ void CGenCA1::ConfirmExpect() {
 					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
 					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 				WriteLog(5, est);
-				if (m_testing) AppendLineToFile("autotest\\expect.log", est + "\n");
+				if (m_testing == 1) AppendLineToFile("autotest\\expect.log", est + "\n");
 				false_pos[fl] = 1;
 				// Collect global false positives statistics
-				//if (m_testing) AppendLineInFile("autotest\\global_false.txt", fl, " 0");
+				//if (m_testing == 1) AppendLineInFile("autotest\\global_false.txt", fl, " 0");
 			}
 		}
 	}
@@ -411,17 +411,17 @@ void CGenCA1::CorAck() {
 		est.Format("+ Correction acknowledged in %s: %s %s", 
 			midi_file, cor_ack_st[0], cor_ack_st[1]);
 		WriteLog(8, est);
-		if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
+		if (m_testing == 1) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 		return;
 	}
 	est.Format("- Correction not acknowledged in %s: %s %s", 
 		midi_file, cor_ack_st[0], cor_ack_st[1]);
 	WriteLog(5, est);
-	if (m_testing) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
+	if (m_testing == 1) AppendLineToFile("autotest\\cor-ack.log", est + "\n");
 }
 
 void CGenCA1::LogFlags() {
-	if (!m_testing) return;
+	if (m_testing != 1) return;
 	CString st, fst;
 	int fl;
 	st.Format("+ Finished analysis of %s #%d",

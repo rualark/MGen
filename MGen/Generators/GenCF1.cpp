@@ -4215,7 +4215,7 @@ void CGenCF1::LogPerf() {
 	st2 += "x86 ";
 #endif
 	WriteLog(2, st2);
-	if (m_testing) AppendLineToFile("autotest\\perf.log", st2 + "\n");
+	if (m_testing == 1) AppendLineToFile("autotest\\perf.log", st2 + "\n");
 }
 
 void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
@@ -4249,14 +4249,14 @@ void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 					ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 				WriteLog(7, est);
-				if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+				if (m_testing == 1) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 				continue;
 			}
 			est.Format("- Flag does not appear on second full evaluation: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
 				fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 				cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 			WriteLog(5, est);
-			if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+			if (m_testing == 1) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 		}
 	}
 	for (s = 0; s < ep2; ++s) {
@@ -4320,7 +4320,7 @@ void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 					ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 				WriteLog(7, est);
-				if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+				if (m_testing == 1) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 				continue;
 			}
 			error_st.Format("- SAS emulator at step %d assigned wrong flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
@@ -4334,7 +4334,7 @@ void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 						ep2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 					WriteLog(7, est);
-					if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+					if (m_testing == 1) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 					continue;
 				}
 				else {
@@ -4368,7 +4368,7 @@ void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 						ep2, fl2, fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 					WriteLog(7, est);
-					if (m_testing) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
+					if (m_testing == 1) AppendLineToFile("autotest\\sas-emu.log", est + "\n");
 					continue;
 				}
 			}
@@ -4376,7 +4376,7 @@ void CGenCF1::CheckSASEmulatorFlags(vector<int> &cc) {
 			error_st += " [" + vint2st(c_len, cc) + "]";
 			error_st += " {" + vint2st(nflags_full[s].size(), nflags_full[s]) + "}";
 			WriteLog(error_level, error_st);
-			if (m_testing) AppendLineToFile("autotest\\sas-emu.log", error_st + "\n");
+			if (m_testing == 1) AppendLineToFile("autotest\\sas-emu.log", error_st + "\n");
 		}
 	}
 }
