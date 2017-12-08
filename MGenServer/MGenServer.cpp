@@ -22,6 +22,7 @@ int nRetCode = 0;
 long j_id = 0;
 int j_timeout;
 int j_priority;
+CString client_host;
 CString j_type;
 CString j_folder;
 CString j_file;
@@ -272,8 +273,8 @@ int Connect() {
 void SendStatus() {
 	CString q;
 	long long timestamp = CGLib::time();
-	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'host','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
-		server_id, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
+	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
+		server_id, client_host, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
 		(timestamp - tChild["Reaper.exe"]) / 1000,
 		(timestamp - tChild["AutoHotkey.exe"]) / 1000,
 		(timestamp - tChild["MGen.exe"]) / 1000,
@@ -359,6 +360,27 @@ int RunJobCA2() {
 	CGLib::copy_file(as_dir + "\\warning.log", share + j_folder + "warning.log");
 	CGLib::copy_file(as_dir + "\\debug.log", share + j_folder + "debug.log");
 	CGLib::copy_file(as_dir + "\\algorithm.log", share + j_folder + "algorithm.log");
+	// Run lilypond
+	WriteLog("Starting lilypond engraver...");
+	par =
+		"--output " + share + j_folder +
+		" " + share + j_folder + j_basefile + ".ly";
+	ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe", 
+		par, GetTimeout2("LY") * 1000);
+	if (ret) {
+		CString est;
+		est.Format("Error during running lilypond-windows.exe: %d", ret);
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
+	if (!CGLib::fileExists(share + j_folder + j_basefile + ".pdf")) {
+		CString est;
+		est.Format("File not found: " + share + j_folder + j_basefile + ".pdf");
+		WriteLog(est);
+		FinishJob(1, est);
+		return 1;
+	}
 	FinishJob(0, "Success");
 	return 0;
 }
@@ -422,6 +444,11 @@ void Init() {
 	}
 	q.Format("UPDATE job SET j_state=1 WHERE s_id='%d' AND j_state=2", server_id);
 	db.Query(q);
+	// Get client hostname
+	db.Fetch("SELECT SUBSTRING_INDEX(host,':',1) as 'ip' from information_schema.processlist WHERE ID=connection_id()");
+	if (!db.rs.IsEOF()) {
+		client_host = db.GetSt("ip");
+	}
 }
 
 int main() {
