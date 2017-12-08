@@ -7,7 +7,6 @@
 #include "MGenTest.h"
 #include "../MGen/GLibrary/GLib.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 int is_debug = 1;

@@ -290,7 +290,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 			st3.Trim();
 			st2.MakeLower();
 			// Load general variables
-			int idata = atoi(st2);
+			int idata = atoi(st3);
 			float fdata = atof(st3);
 			parameter_found = 0;
 			CheckVar(&st2, &st3, "v_cnt", &v_cnt, 1, 10);

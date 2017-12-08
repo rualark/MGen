@@ -227,8 +227,6 @@ protected:
 	void isaac();
 	void randinit(int flag);
 	unsigned int rand2();
-	// Load
-	static int parameter_found;
 
 public:
 	CGLib();
@@ -265,6 +263,8 @@ public:
 	static void TestVSet();
 
 public:
+	// Load
+	static int parameter_found;
 	// Thread interface
 	static char* APP_VERSION;
 	static int debug_level;
