@@ -42,7 +42,7 @@ speakOff = {
                         X-ext Y-ext)) stencil)))
 
 \header {
-  subtitle = "GenCA2: 1 (2017-12-09 02:31)"
+  subtitle = "GenCA2: 1 (2017-12-09 11:38)"
 }
 
 \markup \wordwrap \bold {
@@ -70,7 +70,7 @@ _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { T }  }
 _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { S }  }
 ^\markup{ \tiny \with-color #(rgb-color 0.988 0.005 0.000) \char ##x2716  }
  \speakOff \revert NoteHead.style b,,1
-_\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { \char ##x00D0 VII }  }
+_\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { \char ##x00D0  }  }
 ^\markup{ \tiny \with-color #(rgb-color 0.592 0.269 0.000) \char ##x2716  }
  \speakOff \revert NoteHead.style e,1
 _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { \char ##x00D0 TIII }  }
@@ -270,7 +270,7 @@ _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { T }  }
 _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { T }  }
 ^\markup{ \tiny \with-color #(rgb-color 0.988 0.005 0.000) \char ##x2716  }
  \speakOff \revert NoteHead.style f,1
-_\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { S }  }
+_\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { SII }  }
 ^\markup{ \tiny \with-color #(rgb-color 0.294 0.468 0.000) \char ##x2716  }
  \speakOff \revert NoteHead.style c,1
 _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { T }  }

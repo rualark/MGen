@@ -19,7 +19,7 @@ using namespace std;
 
 int nRetCode = 0;
 
-long j_id = 0;
+int close_flag = 0;
 int j_timeout;
 int j_priority;
 CString client_host;
@@ -27,7 +27,6 @@ CString j_type;
 CString j_folder;
 CString j_file;
 CString share;
-int server_id = 0;
 CString db_driver, db_server, db_port, db_login, db_pass, db_name;
 
 vector <CString> nChild; // Child process name
@@ -45,9 +44,7 @@ map <CString, int> JobTimeout2;
 CDb db;
 
 void WriteLog(CString st) {
-	cout << st << "\n";
-	CGLib::AppendLineToFile("log\\server.log", 
-		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st + "\n");
+	db.WriteLog(st);
 }
 
 // Start process, wait a little and check if process exited with error prematurely
@@ -227,7 +224,7 @@ void LoadConfig()
 				JobTimeout2[sv[0]] = atoi(sv[2]);
 				++CGLib::parameter_found;
 			}
-			CGLib::CheckVar(&st2, &st3, "server_id", &server_id, 0, 1000000);
+			CGLib::CheckVar(&st2, &st3, "server_id", &CDb::server_id, 0, 1000000);
 			if (aChild.size()) {
 				CGLib::CheckVar(&st2, &st3, "childrestart", &aChild[cur_child], 0, 1);
 				CGLib::LoadVar(&st2, &st3, "childpath", &fChild[cur_child]);
@@ -257,9 +254,12 @@ void LoadConfig()
 	}
 }
 
-int Pause() {
-	cout << "Press any key to continue... ";
-	_getch();
+int PauseClose() {
+	CString est;
+	est.Format("Server is exiting with return code %d", nRetCode);
+	WriteLog(est);
+	//cout << "Press any key to continue... ";
+	//_getch();
 	return nRetCode;
 }
 
@@ -274,19 +274,19 @@ void SendStatus() {
 	CString q;
 	long long timestamp = CGLib::time();
 	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
-		server_id, client_host, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
+		CDb::server_id, client_host, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
 		(timestamp - tChild["Reaper.exe"]) / 1000,
 		(timestamp - tChild["AutoHotkey.exe"]) / 1000,
 		(timestamp - tChild["MGen.exe"]) / 1000,
 		(timestamp - tChild["lilypond-windows.exe"]) / 1000,
-		j_id);
+		CDb::j_id);
 	db.Query(q);
 }
 
 void FinishJob(int res, CString est) {
 	CString q;
 	q.Format("UPDATE job SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%d'",
-		res, db.Escape(est), j_id);
+		res, db.Escape(est), CDb::j_id);
 	db.Query(q);
 }
 
@@ -355,6 +355,7 @@ int RunJobCA2() {
 		return 1;
 	}
 	// Copy results
+	CGLib::copy_file(as_dir + "\\" + as_fname + ".midi", share + j_folder + j_basefile + ".midi");
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".ly", share + j_folder + j_basefile + ".ly");
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".txt", share + j_folder + j_basefile + ".txt");
 	CGLib::copy_file(as_dir + "\\warning.log", share + j_folder + "warning.log");
@@ -403,7 +404,7 @@ void TakeJob() {
 	db.Fetch("SELECT * FROM job WHERE j_state=1 ORDER BY j_priority DESC, j_id LIMIT 1");
 	if (!db.rs.IsEOF()) {
 		// Load job
-		j_id = db.GetInt("j_id");
+		CDb::j_id = db.GetInt("j_id");
 		j_priority = db.GetInt("j_priority");
 		j_timeout = db.GetInt("j_timeout");
 		j_type = db.GetSt("j_type");
@@ -411,12 +412,12 @@ void TakeJob() {
 		j_file = db.GetSt("j_file");
 		// Take job
 		q.Format("UPDATE job SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%d'",
-			server_id, j_id);
+			CDb::server_id, CDb::j_id);
 		db.Query(q);
 		db.Query("UNLOCK TABLES");
 		// Log
 		est.Format("Taking job #%ld: %s, %s%s (priority %d)", 
-			j_id, j_type, j_folder, j_file, j_priority);
+			CDb::j_id, j_type, j_folder, j_file, j_priority);
 		WriteLog(est);
 		// Update status
 		SendStatus();
@@ -430,7 +431,7 @@ void TakeJob() {
 void Init() {
 	// On start, reset all jobs that did not finish correctly
 	CString q;
-	q.Format("SELECT COUNT(*) as cnt FROM job WHERE s_id='%d' AND j_state=2", server_id);
+	q.Format("SELECT COUNT(*) as cnt FROM job WHERE s_id='%d' AND j_state=2", CDb::server_id);
 	db.Fetch(q);
 	if (!db.rs.IsEOF()) {
 		db.GetFields();
@@ -438,11 +439,11 @@ void Init() {
 		if (cnt) {
 			CString est;
 			est.Format("Detected and cleared %d jobs that did not finish correctly on this server #%d",
-				cnt, server_id);
+				cnt, CDb::server_id);
 			WriteLog(est);
 		}
 	}
-	q.Format("UPDATE job SET j_state=1 WHERE s_id='%d' AND j_state=2", server_id);
+	q.Format("UPDATE job SET j_state=1 WHERE s_id='%d' AND j_state=2", CDb::server_id);
 	db.Query(q);
 	// Get client hostname
 	db.Fetch("SELECT SUBSTRING_INDEX(host,':',1) as 'ip' from information_schema.processlist WHERE ID=connection_id()");
@@ -451,8 +452,20 @@ void Init() {
 	}
 }
 
+BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
+	if (dwCtrlType == CTRL_CLOSE_EVENT) {
+		WriteLog("User initiated server exit");
+		close_flag = 1;
+		while (close_flag != 2)
+			Sleep(1000);
+		//WriteLog("Exiting server");
+		return TRUE;
+	}
+	return FALSE;
+}
+
 int main() {
-  HMODULE hModule = ::GetModuleHandle(nullptr);
+	HMODULE hModule = ::GetModuleHandle(nullptr);
 
   if (hModule != nullptr) {
     // initialize MFC and print and error on failure
@@ -468,20 +481,25 @@ int main() {
 		return 2;
 	}
 
+	BOOL ret = SetConsoleCtrlHandler(ConsoleHandlerRoutine, TRUE);
 	LoadConfig();
 	CheckChildsPath();
-	if (Connect()) return Pause();
+	if (Connect()) return PauseClose();
 	if (nRetCode) {
-		return Pause();
+		return PauseClose();
 	}
 	Init();
 	for (;;) {
 		CheckChilds();
-		if (nRetCode) return Pause();
+		if (nRetCode) return PauseClose();
 		SendStatus();
+		if (close_flag == 1) {
+			close_flag = 2;
+			break;
+		}
 		TakeJob();
 		SendStatus();
 		Sleep(1000);
 	}
-	return Pause();
+	return PauseClose();
 }

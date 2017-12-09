@@ -7,6 +7,9 @@
 #define new DEBUG_NEW
 #endif
 
+int CDb::server_id = 0;
+long CDb::j_id = 0;
+
 CDb::CDb() {
 }
 
@@ -93,8 +96,14 @@ float CDb::GetFloat(CString fname) {
 }
 
 void CDb::WriteLog(CString st) {
+	if (db.IsOpen()) {
+		CString q;
+		q.Format("INSERT INTO j_log VALUES('','%d','%d',NOW(),'%s')",
+			server_id, j_id, Escape(st));
+		Query(q);
+	}
 	cout << st << "\n";
-	CGLib::AppendLineToFile("log\\server.log",
+	CGLib::AppendLineToFile("server\\server.log",
 		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st + "\n");
 }
 
