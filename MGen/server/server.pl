@@ -1,5 +1,6 @@
 Server_id = 1
 Share = server\share\
+ReaperBuf = C:\ReaperBuf\
 
 DB_Driver = MySQL ODBC 5.3 Unicode Driver
 DB_Server = 192.168.9.4
