@@ -19,4 +19,9 @@ reaper.Main_OnCommand(40006, 0);
 -- Remove all tempo markers
 count_tempo_markers = reaper.CountTempoTimeSigMarkers(0)
 for i=count_tempo_markers,0,-1 do reaper.DeleteTempoTimeSigMarker(0, i) end
+file = io.open("C:\\ReaperBuf\\finished.txt", "w")
+file:write("Finished")
+io.close(file)
+-- Stop playback (there is a bug that starts playback)
+reaper.Main_OnCommand(1016, 0);
 

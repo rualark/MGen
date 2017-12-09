@@ -1,7 +1,7 @@
 SetTitleMatchMode, RegEx
 
 Loop {
-  WinWait, MIDI File Import|Render to File|Finished in 0|Render Warning|Rendering to file\.\.\.
+  WinWait, MIDI File Import|Render to File|Finished in 0|Render Warning|Rendering to file\.\.\.|Render Error
 
   WinGetTitle, Title
   TimeString = %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec%

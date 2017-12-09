@@ -17,24 +17,30 @@ CWinApp theApp;
 
 using namespace std;
 
+// Global
+int close_flag = 0;
 int nRetCode = 0;
 CString est;
+CString client_host;
 
-int close_flag = 0;
+// Parameters
+CString reaperbuf;
+CString share;
+CString db_driver, db_server, db_port, db_login, db_pass, db_name;
+
+// Job
 int j_timeout;
 int j_timeout2;
 int j_engrave = 0;
 int j_render = 0;
 int j_priority;
 CString progress_fname;
-CString client_host;
 CString j_type;
 CString j_folder;
 CString j_file;
 CString j_progress;
-CString share;
-CString db_driver, db_server, db_port, db_login, db_pass, db_name;
 
+// Children
 vector <CString> nChild; // Child process name
 map <CString, long long> tChild; // Timestamp of last restart
 map <CString, int> aChild; // If state process should be automatically restarted on crash
@@ -42,8 +48,11 @@ map <CString, int> rChild; // Is state process running?
 map <CString, CString> fChild; // Child process folder
 map <CString, CString> pChild; // Child process parameter string
 
+// Time
+long long render_start = 0;
 long long server_start_time = CGLib::time();
 
+// Objects
 CDb db;
 
 void GetProgress(CString cn) {
@@ -262,6 +271,7 @@ void LoadConfig()
 				CGLib::LoadVar(&st2, &st3, "childpath", &fChild[cur_child]);
 				CGLib::LoadVar(&st2, &st3, "childparams", &pChild[cur_child]);
 			}
+			CGLib::LoadVar(&st2, &st3, "reaperbuf", &reaperbuf);
 			CGLib::LoadVar(&st2, &st3, "db_driver", &db_driver);
 			CGLib::LoadVar(&st2, &st3, "share", &share);
 			CGLib::LoadVar(&st2, &st3, "db_server", &db_server);
@@ -319,6 +329,7 @@ int SendMessageToWindow(CString wClass, short vk) {
 }
 
 int RunJobMGen() {
+	CString st, st2;
 	CString j_basefile = CGLib::bname_from_path(j_file);
 	CString fname = share + j_folder + j_file;
 	CString fname_pl = share + j_folder + j_basefile + ".pl";
@@ -368,9 +379,9 @@ int RunJobMGen() {
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".midi", share + j_folder + j_basefile + ".midi");
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".ly", share + j_folder + j_basefile + ".ly");
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".txt", share + j_folder + j_basefile + ".txt");
-	CGLib::copy_file(as_dir + "\\warning.log", share + j_folder + "warning.log");
-	CGLib::copy_file(as_dir + "\\debug.log", share + j_folder + "debug.log");
-	CGLib::copy_file(as_dir + "\\algorithm.log", share + j_folder + "algorithm.log");
+	CGLib::copy_file(as_dir + "\\log-warning.log", share + j_folder + "log-warning.log");
+	CGLib::copy_file(as_dir + "\\log-debug.log", share + j_folder + "log-debug.log");
+	CGLib::copy_file(as_dir + "\\log-algorithm.log", share + j_folder + "log-algorithm.log");
 	// Run lilypond
 	if (j_engrave) {
 		WriteLog("Starting lilypond engraver...");
@@ -398,9 +409,55 @@ int RunJobMGen() {
 		if (!rChild["AutoHotkey.exe"]) {
 			return FinishJob(1, "Cannot render because AutoHotkey.exe is not running");
 		}
+		// Clean folder
+		CreateDirectory(reaperbuf, NULL);
+		DeleteFile(reaperbuf + "progress.txt");
+		DeleteFile(reaperbuf + "input.mid");
+		DeleteFile(reaperbuf + "windows.log");
+		DeleteFile(reaperbuf + "finished.txt");
+		for (int i = 1; i < 100; ++i) {
+			st.Format("output-%03d.mp3", i);
+			DeleteFile(reaperbuf + st);
+		}
+		// Copy files
+		CGLib::copy_file(share + j_folder + j_basefile + ".midi", reaperbuf + "input.mid");
+		// Start render
 		WriteLog("Starting render...");
 		if (SendMessageToWindow("REAPERwnd", VK_F12)) {
 			return FinishJob(1, "Error sending message to Reaper window");
+		}
+		// Wait for finish
+		render_start = CGLib::time();
+		for (;;) {
+			Sleep(500);
+			// Check if progress exists
+			if (CGLib::fileExists(reaperbuf + "progress.txt")) {
+				vector <CString> vs;
+				CGLib::read_file_sv(reaperbuf + "progress.txt", sv);
+				if (sv.size()) SendProgress(sv[0]);
+			}
+			// Check if no progress for long time
+			else if (CGLib::time() - render_start > 10 * 1000) {
+				CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper.log");
+				return FinishJob(1, "Render showed no progress during 10 seconds");
+			}
+			// Check if reascript finished
+			if (CGLib::fileExists(reaperbuf + "finished.txt")) break;
+			// Check for timeout
+			if (CGLib::time() - render_start > j_render * 1000) {
+				est.Format("Render timed out with %d seconds. Please increase render timeout or decrease music length",
+					j_render);
+				CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper.log");
+				return FinishJob(1, est);
+			}
+		}
+		CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper.log");
+		CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + ".mp3");
+		for (int i = 2; i < 100; ++i) {
+			st.Format("%03d", i);
+			if (!CGLib::fileExists(reaperbuf + "output-" + st + ".mp3")) break;
+			CGLib::copy_file(reaperbuf + "output-" + st + ".mp3", 
+				share + j_folder + j_basefile + "-" + st + ".mp3");
 		}
 	}
 	return FinishJob(0, "Success");

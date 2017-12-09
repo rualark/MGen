@@ -179,14 +179,14 @@ BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".ly", path + "\\" + fname + ".ly");
 		if (CGLib::fileExists(mf->m_dir + "\\" + mf->m_fname + ".pdf"))
 			CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".pdf", path + "\\" + fname + ".pdf");
-		CGLib::copy_file(mf->m_dir + "\\debug.log", path + "\\debug.log");
-		CGLib::copy_file(mf->m_dir + "\\warning.log", path + "\\warning.log");
-		CGLib::copy_file(mf->m_dir + "\\perf.log", path + "\\perf.log");
-		CGLib::copy_file(mf->m_dir + "\\algorithm.log", path + "\\algorithm.log");
-		CGLib::copy_file(mf->m_dir + "\\midi.log", path + "\\midi.log");
-		CGLib::copy_file(mf->m_dir + "\\confirm.log", path + "\\confirm.log");
-		CGLib::copy_file(mf->m_dir + "\\sasemu.log", path + "\\sasemu.log");
-		CGLib::copy_file(mf->m_dir + "\\corack.log", path + "\\corack.log");
+		CGLib::copy_file(mf->m_dir + "\\log-debug.log", path + "\\debug.log");
+		CGLib::copy_file(mf->m_dir + "\\log-warning.log", path + "\\log-warning.log");
+		CGLib::copy_file(mf->m_dir + "\\log-perf.log", path + "\\log-perf.log");
+		CGLib::copy_file(mf->m_dir + "\\log-algorithm.log", path + "\\log-algorithm.log");
+		CGLib::copy_file(mf->m_dir + "\\log-midi.log", path + "\\log-midi.log");
+		CGLib::copy_file(mf->m_dir + "\\log-confirm.log", path + "\\log-confirm.log");
+		CGLib::copy_file(mf->m_dir + "\\log-sasemu.log", path + "\\log-sasemu.log");
+		CGLib::copy_file(mf->m_dir + "\\log-corack.log", path + "\\log-corack.log");
 		// Set new title
 		//mf->WriteLog(1, mf->m_dir);
 		//mf->WriteLog(1, mf->m_fname);

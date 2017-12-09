@@ -717,35 +717,35 @@ void CGVar::SaveResults(CString dir, CString fname)
 	fs.close();
 	// Save logs
 	if (mutex_log.try_lock_for(chrono::milliseconds(500))) {
-		fs.open(dir + "\\debug.log");
+		fs.open(dir + "\\log-debug.log");
 		for (int i = 0; i < logs[0].size(); i++) fs << logs[0][i] << "\n";
 		for (int i = 0; i < log_buffer[0].size(); i++) fs << log_buffer[0][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\warning.log");
+		fs.open(dir + "\\log-warning.log");
 		for (int i = 0; i < logs[1].size(); i++) fs << logs[1][i] << "\n";
 		for (int i = 0; i < log_buffer[1].size(); i++) fs << log_buffer[1][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\perf.log");
+		fs.open(dir + "\\log-perf.log");
 		for (int i = 0; i < logs[2].size(); i++) fs << logs[2][i] << "\n";
 		for (int i = 0; i < log_buffer[2].size(); i++) fs << log_buffer[2][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\algorithm.log");
+		fs.open(dir + "\\log-algorithm.log");
 		for (int i = 0; i < logs[3].size(); i++) fs << logs[3][i] << "\n";
 		for (int i = 0; i < log_buffer[3].size(); i++) fs << log_buffer[3][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\midi.log");
+		fs.open(dir + "\\log-midi.log");
 		for (int i = 0; i < logs[4].size(); i++) fs << logs[4][i] << "\n";
 		for (int i = 0; i < log_buffer[4].size(); i++) fs << log_buffer[4][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\confirm.log");
+		fs.open(dir + "\\log-confirm.log");
 		for (int i = 0; i < logs[6].size(); i++) fs << logs[6][i] << "\n";
 		for (int i = 0; i < log_buffer[6].size(); i++) fs << log_buffer[6][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\sasemu.log");
+		fs.open(dir + "\\log-sasemu.log");
 		for (int i = 0; i < logs[7].size(); i++) fs << logs[7][i] << "\n";
 		for (int i = 0; i < log_buffer[7].size(); i++) fs << log_buffer[7][i] << "\n";
 		fs.close();
-		fs.open(dir + "\\corack.log");
+		fs.open(dir + "\\log-corack.log");
 		for (int i = 0; i < logs[8].size(); i++) fs << logs[8][i] << "\n";
 		for (int i = 0; i < log_buffer[8].size(); i++) fs << log_buffer[8][i] << "\n";
 		fs.close();
@@ -1150,7 +1150,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	int pos, i;
 	char pch[2550];
 	// Load logs
-	path = dir + "\\algorithm.log";
+	path = dir + "\\log-algorithm.log";
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -1168,7 +1168,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	}
 	fs.close();
 	// Load logs
-	path = dir + "\\debug.log";
+	path = dir + "\\log-debug.log";
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
@@ -1186,25 +1186,7 @@ void CGVar::LoadResultLogs(CString dir, CString fname)
 	}
 	fs.close();
 	// Load logs
-	path = dir + "\\test.log";
-	if (!fileExists(path)) {
-		CString est;
-		est.Format("Cannot find file %s", path);
-		WriteLog(5, est);
-		return;
-	}
-	fs.open(path);
-	pos = 0;
-	i = 0;
-	while (fs.good()) {
-		fs.getline(pch, 2550);
-		st = pch;
-		if (!st.IsEmpty()) WriteLog(6, st);
-		if (++i > MAX_LOAD_LOG) break;
-	}
-	fs.close();
-	// Load logs
-	path = dir + "\\warning.log";
+	path = dir + "\\log-warning.log";
 	if (!fileExists(path)) {
 		CString est;
 		est.Format("Cannot find file %s", path);
