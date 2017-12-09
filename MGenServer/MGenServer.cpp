@@ -308,6 +308,7 @@ void FinishJob(int res, CString est) {
 	q.Format("UPDATE job SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
 		res, db.Escape(est), CDb::j_id);
 	db.Query(q);
+	WriteLog(est);
 }
 
 int RunJobMGen() {
@@ -318,7 +319,6 @@ int RunJobMGen() {
 	// Check input file exists
 	if (!CGLib::fileExists(fname_pl)) {
 		CString est = "File not found: " + fname_pl;
-		WriteLog(est);
 		FinishJob(1, est);
 		return 1;
 	}
@@ -335,14 +335,12 @@ int RunJobMGen() {
 	if (ret) {
 		CString est;
 		est.Format("Error during MGen run: %d", ret);
-		WriteLog(est);
 		FinishJob(1, est);
 		return 1;
 	}
 	if (!CGLib::fileExists("autotest\\exit.log")) {
 		CString est;
 		est.Format("MGen process did not exit correctly - possible crash");
-		WriteLog(est);
 		FinishJob(1, est);
 		return 1;
 	}
@@ -350,7 +348,6 @@ int RunJobMGen() {
 	CString as_fname, as_dir;
 	if (!CGLib::fileExists("log\\autosave.txt")) {
 		CString est = "File not found: log\\autosave.txt";
-		WriteLog(est);
 		FinishJob(1, est);
 		return 1;
 	}
@@ -358,7 +355,6 @@ int RunJobMGen() {
 	CGLib::read_file_sv("log\\autosave.txt", sv);
 	if (sv.size() != 3) {
 		CString est = "Wrong row count in file: log\\autosave.txt";
-		WriteLog(est);
 		FinishJob(1, est);
 		return 1;
 	}
@@ -366,7 +362,6 @@ int RunJobMGen() {
 	as_fname = sv[1];
 	if (!CGLib::fileExists(as_dir + "\\" + as_fname + ".ly")) {
 		CString est = "Autosave file not found: " + as_dir + "\\" + as_fname + ".ly";
-		WriteLog(est);
 		FinishJob(1, est);
 		return 1;
 	}
@@ -390,17 +385,23 @@ int RunJobMGen() {
 		if (ret) {
 			CString est;
 			est.Format("Error during running lilypond-windows.exe: %d", ret);
-			WriteLog(est);
 			FinishJob(1, est);
 			return 1;
 		}
 		if (!CGLib::fileExists(share + j_folder + j_basefile + ".pdf")) {
 			CString est;
 			est.Format("File not found: " + share + j_folder + j_basefile + ".pdf");
-			WriteLog(est);
 			FinishJob(1, est);
 			return 1;
 		}
+	}
+	// Run render
+	if (j_render) {
+		if (!rChild["Reaper.exe"] || !rChild["AutoHotkey.exe"]) {
+			FinishJob(1, "Cannot render because important childs are not running");
+			return 1;
+		}
+		WriteLog("Starting render...");
 	}
 	FinishJob(0, "Success");
 	return 0;
