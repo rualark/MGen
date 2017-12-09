@@ -18,6 +18,7 @@ CWinApp theApp;
 using namespace std;
 
 int nRetCode = 0;
+CString est;
 
 int close_flag = 0;
 int j_timeout;
@@ -94,7 +95,6 @@ int Run(CString fname, CString par, int delay) {
 	WaitForSingleObject(sei.hProcess, delay);
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
-		CString est;
 		est.Format("Exit code %d: %s %s", ecode, fname, par);
 		WriteLog(est);
 		return ecode;
@@ -182,7 +182,6 @@ int RunTimeout(CString path, CString par, int delay) {
 	}
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
-		CString est;
 		est.Format("Exit code %d: %s %s", ecode, path, par);
 		WriteLog(est);
 		return ecode;
@@ -277,7 +276,6 @@ void LoadConfig()
 		}
 	}
 	fs.close();
-	CString est;
 	est.Format("LoadConfig loaded %d lines from %s", i, fname);
 	WriteLog(est);
 	// Check config
@@ -288,7 +286,6 @@ void LoadConfig()
 }
 
 int PauseClose() {
-	CString est;
 	est.Format("Server is exiting with return code %d", nRetCode);
 	WriteLog(est);
 	//cout << "Press any key to continue... ";
@@ -303,12 +300,22 @@ int Connect() {
 	return nRetCode;
 }
 
-void FinishJob(int res, CString est) {
+int FinishJob(int res, CString st) {
 	CString q;
 	q.Format("UPDATE job SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
-		res, db.Escape(est), CDb::j_id);
+		res, db.Escape(st), CDb::j_id);
 	db.Query(q);
-	WriteLog(est);
+	WriteLog(st);
+	return res;
+}
+
+int SendMessageToWindow(CString wClass, short vk) {
+	HWND hWindow = FindWindow(wClass, NULL);
+	if (hWindow) {
+		PostMessage(hWindow, WM_KEYDOWN, VK_F12, 0);
+		return 0;
+	}
+	else return 1;
 }
 
 int RunJobMGen() {
@@ -318,9 +325,8 @@ int RunJobMGen() {
 	CString fname_pl2 = "configs\\Gen" + j_type + "\\" + j_basefile + ".pl";
 	// Check input file exists
 	if (!CGLib::fileExists(fname_pl)) {
-		CString est = "File not found: " + fname_pl;
-		FinishJob(1, est);
-		return 1;
+		est = "File not found: " + fname_pl;
+		return FinishJob(1, est);
 	}
 	// Copy config
 	CGLib::copy_file(fname_pl, fname_pl2);
@@ -333,37 +339,30 @@ int RunJobMGen() {
 	tChild["MGen.exe"] = CGLib::time();
 	int ret = RunTimeout(fChild["MGen.exe"] + "MGen.exe", par, j_timeout2 * 1000);
 	if (ret) {
-		CString est;
 		est.Format("Error during MGen run: %d", ret);
-		FinishJob(1, est);
-		return 1;
+		return FinishJob(1, est);
 	}
 	if (!CGLib::fileExists("autotest\\exit.log")) {
-		CString est;
 		est.Format("MGen process did not exit correctly - possible crash");
-		FinishJob(1, est);
-		return 1;
+		return FinishJob(1, est);
 	}
 	// Get autosave
 	CString as_fname, as_dir;
 	if (!CGLib::fileExists("log\\autosave.txt")) {
-		CString est = "File not found: log\\autosave.txt";
-		FinishJob(1, est);
-		return 1;
+		est = "File not found: log\\autosave.txt";
+		return FinishJob(1, est);
 	}
 	vector <CString> sv;
 	CGLib::read_file_sv("log\\autosave.txt", sv);
 	if (sv.size() != 3) {
-		CString est = "Wrong row count in file: log\\autosave.txt";
-		FinishJob(1, est);
-		return 1;
+		est = "Wrong row count in file: log\\autosave.txt";
+		return FinishJob(1, est);
 	}
 	as_dir = sv[0];
 	as_fname = sv[1];
 	if (!CGLib::fileExists(as_dir + "\\" + as_fname + ".ly")) {
-		CString est = "Autosave file not found: " + as_dir + "\\" + as_fname + ".ly";
-		FinishJob(1, est);
-		return 1;
+		est = "Autosave file not found: " + as_dir + "\\" + as_fname + ".ly";
+		return FinishJob(1, est);
 	}
 	// Copy results
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".midi", share + j_folder + j_basefile + ".midi");
@@ -383,37 +382,36 @@ int RunJobMGen() {
 		ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe",
 			par, j_engrave * 1000);
 		if (ret) {
-			CString est;
 			est.Format("Error during running lilypond-windows.exe: %d", ret);
-			FinishJob(1, est);
-			return 1;
+			return FinishJob(1, est);
 		}
 		if (!CGLib::fileExists(share + j_folder + j_basefile + ".pdf")) {
-			CString est;
 			est.Format("File not found: " + share + j_folder + j_basefile + ".pdf");
-			FinishJob(1, est);
-			return 1;
+			return FinishJob(1, est);
 		}
 	}
 	// Run render
 	if (j_render) {
-		if (!rChild["Reaper.exe"] || !rChild["AutoHotkey.exe"]) {
-			FinishJob(1, "Cannot render because important childs are not running");
-			return 1;
+		if (!rChild["Reaper.exe"]) {
+			return FinishJob(1, "Cannot render because Reaper.exe is not running");
+		}
+		if (!rChild["AutoHotkey.exe"]) {
+			return FinishJob(1, "Cannot render because AutoHotkey.exe is not running");
 		}
 		WriteLog("Starting render...");
+		if (SendMessageToWindow("REAPERwnd", VK_F12)) {
+			return FinishJob(1, "Error sending message to Reaper window");
+		}
 	}
-	FinishJob(0, "Success");
-	return 0;
+	return FinishJob(0, "Success");
 }
 
 int RunJob() {
 	// Check that folder exists
 	if (!CGLib::dirExists(share + j_folder)) {
-		CString est = "Folder not found: " + share + j_folder;
+		est = "Folder not found: " + share + j_folder;
 		WriteLog(est);
-		FinishJob(1, est);
-		return 1;
+		return FinishJob(1, est);
 	}
 	RunJobMGen();
 	CDb::j_id = 0;
@@ -465,7 +463,6 @@ void Init() {
 		db.GetFields();
 		int cnt = db.GetInt("cnt");
 		if (cnt) {
-			CString est;
 			est.Format("Detected and cleared %d jobs that did not finish correctly on this server #%d",
 				cnt, CDb::server_id);
 			WriteLog(est);
