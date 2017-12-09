@@ -96,10 +96,10 @@ void SendStatus() {
 	long long timestamp = CGLib::time();
 	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
 		CDb::server_id, client_host, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
-		(timestamp - tChild["Reaper.exe"]) / 1000,
-		(timestamp - tChild["AutoHotkey.exe"]) / 1000,
-		(timestamp - tChild["MGen.exe"]) / 1000,
-		(timestamp - tChild["lilypond-windows.exe"]) / 1000,
+		rChild["Reaper.exe"] ? (timestamp - tChild["Reaper.exe"]) / 1000 : -1,
+		rChild["AutoHotkey.exe"] ? (timestamp - tChild["AutoHotkey.exe"]) / 1000 : -1,
+		rChild["MGen.exe"] ? (timestamp - tChild["MGen.exe"]) / 1000 : -1,
+		rChild["lilypond-windows.exe"] ? (timestamp - tChild["lilypond-windows.exe"]) / 1000 : -1,
 		CDb::j_id);
 	db.Query(q);
 }
@@ -295,6 +295,7 @@ int RunJobMGen() {
 	// Run MGen
 	CString par;
 	par.Format("-job=%d %s", j_timeout, fname_pl2);
+	tChild["MGen.exe"] = CGLib::time();
 	int ret = RunTimeout(fChild["MGen.exe"] + "MGen.exe", par, j_timeout2 * 1000);
 	if (ret) {
 		CString est;
@@ -346,7 +347,8 @@ int RunJobMGen() {
 	par =
 		"--output " + share + j_folder +
 		" " + share + j_folder + j_basefile + ".ly";
-	ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe", 
+	tChild["lilypond-windows.exe"] = CGLib::time();
+	ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe",
 		par, 600 * 1000);
 	if (ret) {
 		CString est;
