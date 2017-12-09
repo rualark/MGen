@@ -22,6 +22,8 @@ int nRetCode = 0;
 int close_flag = 0;
 int j_timeout;
 int j_timeout2;
+int j_engrave = 0;
+int j_render = 0;
 int j_priority;
 CString progress_fname;
 CString client_host;
@@ -43,8 +45,35 @@ long long server_start_time = CGLib::time();
 
 CDb db;
 
+void GetProgress(CString cn) {
+	vector <CString> sv;
+	j_progress = "";
+	if (cn == "lilypond-windows.exe" && CGLib::fileExists(progress_fname)) {
+		CGLib::read_file_sv(progress_fname, sv);
+		if (sv.size()) {
+			int i = sv.size() - 1;
+			// Protect from empty string
+			if (sv[i].IsEmpty()) i = max(0, i - 1);
+			j_progress.Format("[%d] %s", sv.size(), sv[i]);
+		}
+		else j_progress = "";
+	}
+}
+
+void SendProgress(CString st) {
+	j_progress = st;
+	CString q;
+	long long timestamp = CGLib::time();
+	q.Format("UPDATE job SET j_progress='%s' WHERE j_id='%ld'",
+		db.Escape(j_progress), CDb::j_id);
+	db.Query(q);
+}
+
 void WriteLog(CString st) {
 	db.WriteLog(st);
+	if (db.db.IsOpen() && CDb::j_id) {
+		SendProgress(st);
+	}
 }
 
 // Start process, wait a little and check if process exited with error prematurely
@@ -125,29 +154,6 @@ void CheckChilds(int restart) {
 	}
 }
 
-void GetProgress(CString cn) {
-	vector <CString> sv;
-	j_progress = "";
-	if (cn == "lilypond-windows.exe" && CGLib::fileExists(progress_fname)) {
-		CGLib::read_file_sv(progress_fname, sv);
-		if (sv.size()) {
-			int i = sv.size() - 1;
-			// Protect from empty string
-			if (sv[i].IsEmpty()) i = max(0, i - 1);
-			j_progress.Format("[%d] %s", sv.size(), sv[i]);
-		}
-		else j_progress = "";
-	}
-}
-
-void SendProgress() {
-	CString q;
-	long long timestamp = CGLib::time();
-	q.Format("UPDATE job SET j_progress='%s' WHERE j_id='%ld'",
-		db.Escape(j_progress), CDb::j_id);
-	db.Query(q);
-}
-
 // Start process, wait for some time. If process did not finish, this is an error
 int RunTimeout(CString path, CString par, int delay) {
 	CString fname = CGLib::fname_from_path(path);
@@ -167,10 +173,10 @@ int RunTimeout(CString path, CString par, int delay) {
 	while (WaitForSingleObject(sei.hProcess, 500) == WAIT_TIMEOUT) {
 		CheckChilds(0);
 		GetProgress(fname);
-		SendProgress();
+		SendProgress(j_progress);
 		SendStatus();
 		if (CGLib::time() - start_timestamp > delay) {
-			WriteLog(path + " " + par + ": Timeout waiting for process\n");
+			WriteLog(path + " " + par + ": Timeout waiting for process");
 			return 100;
 		}
 	}
@@ -320,6 +326,7 @@ int RunJobMGen() {
 	CGLib::copy_file(fname_pl, fname_pl2);
 	// Delete log
 	DeleteFile("autotest\\exit.log");
+	SendProgress("Running MGen");
 	// Run MGen
 	CString par;
 	par.Format("-job=%d %s", j_timeout, fname_pl2);
@@ -371,27 +378,29 @@ int RunJobMGen() {
 	CGLib::copy_file(as_dir + "\\debug.log", share + j_folder + "debug.log");
 	CGLib::copy_file(as_dir + "\\algorithm.log", share + j_folder + "algorithm.log");
 	// Run lilypond
-	WriteLog("Starting lilypond engraver...");
-	par =
-		"-dgui " +
-		share + j_folder + j_basefile + ".ly";
-	tChild["lilypond-windows.exe"] = CGLib::time();
-	progress_fname = share + j_folder + j_basefile + ".log";
-	ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe",
-		par, 600 * 1000);
-	if (ret) {
-		CString est;
-		est.Format("Error during running lilypond-windows.exe: %d", ret);
-		WriteLog(est);
-		FinishJob(1, est);
-		return 1;
-	}
-	if (!CGLib::fileExists(share + j_folder + j_basefile + ".pdf")) {
-		CString est;
-		est.Format("File not found: " + share + j_folder + j_basefile + ".pdf");
-		WriteLog(est);
-		FinishJob(1, est);
-		return 1;
+	if (j_engrave) {
+		WriteLog("Starting lilypond engraver...");
+		par =
+			"-dgui " +
+			share + j_folder + j_basefile + ".ly";
+		tChild["lilypond-windows.exe"] = CGLib::time();
+		progress_fname = share + j_folder + j_basefile + ".log";
+		ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe",
+			par, j_engrave * 1000);
+		if (ret) {
+			CString est;
+			est.Format("Error during running lilypond-windows.exe: %d", ret);
+			WriteLog(est);
+			FinishJob(1, est);
+			return 1;
+		}
+		if (!CGLib::fileExists(share + j_folder + j_basefile + ".pdf")) {
+			CString est;
+			est.Format("File not found: " + share + j_folder + j_basefile + ".pdf");
+			WriteLog(est);
+			FinishJob(1, est);
+			return 1;
+		}
 	}
 	FinishJob(0, "Success");
 	return 0;
@@ -405,8 +414,7 @@ int RunJob() {
 		FinishJob(1, est);
 		return 1;
 	}
-	if (j_type == "Reaper") {}
-	else RunJobMGen();
+	RunJobMGen();
 	CDb::j_id = 0;
 	return 0;
 }
@@ -421,6 +429,8 @@ void TakeJob() {
 		j_priority = db.GetInt("j_priority");
 		j_timeout = db.GetInt("j_timeout");
 		j_timeout2 = db.GetInt("j_timeout2");
+		j_engrave = db.GetInt("j_engrave");
+		j_render = db.GetInt("j_render");
 		j_type = db.GetSt("j_type");
 		j_folder = db.GetSt("j_folder");
 		j_file = db.GetSt("j_file");
