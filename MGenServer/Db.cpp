@@ -119,8 +119,10 @@ void CDb::GetFields() {
 }
 
 CString CDb::Escape(CString st) {
-	st.Replace("\"", "\\\"");
-	st.Replace("'", "\\'");
-	st.Replace("\\", "\\\\");
-	return st;
+	CString st2 = st;
+	st2.Replace("\\", "\\\\");
+	st2.Replace("\"", "\\\"");
+	st2.Replace("'", "\\'");
+	//if (st2 != st) WriteLog("Hello");
+	return st2;
 }
