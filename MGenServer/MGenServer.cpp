@@ -21,6 +21,7 @@ int nRetCode = 0;
 
 int close_flag = 0;
 int j_timeout;
+int j_timeout2;
 int j_priority;
 CString client_host;
 CString j_type;
@@ -37,9 +38,6 @@ map <CString, CString> fChild; // Child process folder
 map <CString, CString> pChild; // Child process parameter string
 
 long long server_start_time = CGLib::time();
-
-map <CString, int> JobTimeout;
-map <CString, int> JobTimeout2;
 
 CDb db;
 
@@ -73,6 +71,58 @@ int Run(CString fname, CString par, int delay) {
 	return 0;
 }
 
+void RestartChild(CString cn) {
+	if (Run(fChild[cn] + cn, pChild[cn], 200)) nRetCode = 7;
+}
+
+HANDLE GetProcessHandle(CString pname) {
+	PROCESSENTRY32 entry;
+	entry.dwSize = sizeof(PROCESSENTRY32);
+	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+	if (Process32First(snapshot, &entry) == TRUE) {
+		while (Process32Next(snapshot, &entry) == TRUE) {
+			if (stricmp(entry.szExeFile, pname) == 0) {
+				return OpenProcess(PROCESS_ALL_ACCESS, FALSE, entry.th32ProcessID);
+				//WaitForSingleObject(hProcess, 100000);
+			}
+		}
+	}
+	CloseHandle(snapshot);
+	return NULL;
+}
+
+void SendStatus() {
+	CString q;
+	long long timestamp = CGLib::time();
+	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
+		CDb::server_id, client_host, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
+		(timestamp - tChild["Reaper.exe"]) / 1000,
+		(timestamp - tChild["AutoHotkey.exe"]) / 1000,
+		(timestamp - tChild["MGen.exe"]) / 1000,
+		(timestamp - tChild["lilypond-windows.exe"]) / 1000,
+		CDb::j_id);
+	db.Query(q);
+}
+
+void CheckChilds(int restart) {
+	for (int c = 0; c < nChild.size(); ++c) {
+		CString cn = nChild[c];
+		HANDLE hProcess = GetProcessHandle(cn);
+		if (hProcess == NULL) {
+			rChild[cn] = 0;
+			if (restart && aChild[cn]) {
+				WriteLog("Restarting process " + cn + "...");
+				RestartChild(cn);
+				tChild[cn] = CGLib::time();
+			}
+		}
+		else {
+			rChild[cn] = 1;
+			CloseHandle(hProcess);
+		}
+	}
+}
+
 // Start process, wait for some time. If process did not finish, this is an error
 int RunTimeout(CString fname, CString par, int delay) {
 	DWORD ecode;
@@ -87,9 +137,14 @@ int RunTimeout(CString fname, CString par, int delay) {
 	sei.nShow = SW_SHOWNORMAL;
 	sei.hInstApp = NULL;
 	ShellExecuteEx(&sei);
-	if (WaitForSingleObject(sei.hProcess, delay) == WAIT_TIMEOUT) {
-		WriteLog(fname + " " + par + ": Timeout waiting for process\n");
-		return 100;
+	long long start_timestamp = CGLib::time();
+	while (WaitForSingleObject(sei.hProcess, 500) == WAIT_TIMEOUT) {
+		CheckChilds(0);
+		SendStatus();
+		if (CGLib::time() - start_timestamp > delay) {
+			WriteLog(fname + " " + par + ": Timeout waiting for process\n");
+			return 100;
+		}
 	}
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
@@ -101,26 +156,6 @@ int RunTimeout(CString fname, CString par, int delay) {
 	return 0;
 }
 
-HANDLE GetProcessHandle(CString pname) {
-	PROCESSENTRY32 entry;
-	entry.dwSize = sizeof(PROCESSENTRY32);
-	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
-	if (Process32First(snapshot, &entry) == TRUE)	{
-		while (Process32Next(snapshot, &entry) == TRUE)	{
-			if (stricmp(entry.szExeFile, pname) == 0)	{
-				return OpenProcess(PROCESS_ALL_ACCESS, FALSE, entry.th32ProcessID);
-				//WaitForSingleObject(hProcess, 100000);
-			}
-		}
-	}
-	CloseHandle(snapshot);
-	return NULL;
-}
-
-void RestartChild(CString cn) {
-	if (Run(fChild[cn] + cn, pChild[cn], 200)) nRetCode = 7;
-}
-
 void CheckChildsPath() {
 	for (int c = 0; c < nChild.size(); ++c) {
 		CString cn = nChild[c];
@@ -130,35 +165,6 @@ void CheckChildsPath() {
 			return;
 		}
 	}
-}
-
-void CheckChilds() {
-	for (int c = 0; c < nChild.size(); ++c) {
-		CString cn = nChild[c];
-		HANDLE hProcess = GetProcessHandle(cn);
-		if (hProcess == NULL) {
-			rChild[cn] = 0;
-			if (aChild[cn]) {
-				WriteLog("Restarting process " + cn + "...");
-				RestartChild(cn);
-				tChild[cn] = CGLib::time();
-			}
-		}
-		else {
-			rChild[cn] = 1;
-			CloseHandle(hProcess);
-		}
-	}
-}
-
-int GetTimeout(CString jobName) {
-	if (JobTimeout.find(jobName) == JobTimeout.end()) return 600;
-	return JobTimeout[jobName];
-}
-
-int GetTimeout2(CString jobName) {
-	if (JobTimeout2.find(jobName) == JobTimeout2.end()) return 600;
-	return JobTimeout2[jobName];
 }
 
 void LoadConfig()
@@ -217,13 +223,6 @@ void LoadConfig()
 				cur_child = st3;
 				++CGLib::parameter_found;
 			}
-			if (st2 == "job") {
-				vector <CString> sv;
-				CGLib::Tokenize(st3, sv, ";");
-				JobTimeout[sv[0]] = atoi(sv[1]);
-				JobTimeout2[sv[0]] = atoi(sv[2]);
-				++CGLib::parameter_found;
-			}
 			CGLib::CheckVar(&st2, &st3, "server_id", &CDb::server_id, 0, 1000000);
 			if (aChild.size()) {
 				CGLib::CheckVar(&st2, &st3, "childrestart", &aChild[cur_child], 0, 1);
@@ -270,19 +269,6 @@ int Connect() {
 	return nRetCode;
 }
 
-void SendStatus() {
-	CString q;
-	long long timestamp = CGLib::time();
-	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
-		CDb::server_id, client_host, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
-		(timestamp - tChild["Reaper.exe"]) / 1000,
-		(timestamp - tChild["AutoHotkey.exe"]) / 1000,
-		(timestamp - tChild["MGen.exe"]) / 1000,
-		(timestamp - tChild["lilypond-windows.exe"]) / 1000,
-		CDb::j_id);
-	db.Query(q);
-}
-
 void FinishJob(int res, CString est) {
 	CString q;
 	q.Format("UPDATE job SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%d'",
@@ -290,18 +276,12 @@ void FinishJob(int res, CString est) {
 	db.Query(q);
 }
 
-int RunJobCA2() {
+int RunJobMGen() {
 	CString j_basefile = CGLib::bname_from_path(j_file);
 	CString fname = share + j_folder + j_file;
 	CString fname_pl = share + j_folder + j_basefile + ".pl";
-	CString fname_pl2 = "configs\\GenCA2\\" + j_basefile + ".pl";
+	CString fname_pl2 = "configs\\Gen" + j_type + "\\" + j_basefile + ".pl";
 	// Check input file exists
-	if (!CGLib::fileExists(fname)) {
-		CString est = "File not found: " + fname;
-		WriteLog(est);
-		FinishJob(1, est);
-		return 1;
-	}
 	if (!CGLib::fileExists(fname_pl)) {
 		CString est = "File not found: " + fname_pl;
 		WriteLog(est);
@@ -314,8 +294,8 @@ int RunJobCA2() {
 	DeleteFile("autotest\\exit.log");
 	// Run MGen
 	CString par;
-	par.Format("-job=%d %s", GetTimeout(j_type), fname_pl2);
-	int ret = RunTimeout(fChild["MGen.exe"] + "MGen.exe", par, GetTimeout2(j_type) * 1000);
+	par.Format("-job=%d %s", j_timeout, fname_pl2);
+	int ret = RunTimeout(fChild["MGen.exe"] + "MGen.exe", par, j_timeout2 * 1000);
 	if (ret) {
 		CString est;
 		est.Format("Error during MGen run: %d", ret);
@@ -367,7 +347,7 @@ int RunJobCA2() {
 		"--output " + share + j_folder +
 		" " + share + j_folder + j_basefile + ".ly";
 	ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe", 
-		par, GetTimeout2("LY") * 1000);
+		par, 600 * 1000);
 	if (ret) {
 		CString est;
 		est.Format("Error during running lilypond-windows.exe: %d", ret);
@@ -394,7 +374,9 @@ int RunJob() {
 		FinishJob(1, est);
 		return 1;
 	}
-	if (j_type == "CA2") RunJobCA2();
+	if (j_type == "Reaper") {}
+	else RunJobMGen();
+	CDb::j_id = 0;
 	return 0;
 }
 
@@ -407,9 +389,13 @@ void TakeJob() {
 		CDb::j_id = db.GetInt("j_id");
 		j_priority = db.GetInt("j_priority");
 		j_timeout = db.GetInt("j_timeout");
+		j_timeout2 = db.GetInt("j_timeout2");
 		j_type = db.GetSt("j_type");
 		j_folder = db.GetSt("j_folder");
 		j_file = db.GetSt("j_file");
+		// Load defaults
+		if (!j_timeout) j_timeout = 600;
+		if (!j_timeout2) j_timeout2 = 640;
 		// Take job
 		q.Format("UPDATE job SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%d'",
 			CDb::server_id, CDb::j_id);
@@ -457,7 +443,7 @@ BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 		WriteLog("User initiated server exit");
 		close_flag = 1;
 		while (close_flag != 2)
-			Sleep(1000);
+			Sleep(100);
 		//WriteLog("Exiting server");
 		return TRUE;
 	}
@@ -490,7 +476,7 @@ int main() {
 	}
 	Init();
 	for (;;) {
-		CheckChilds();
+		CheckChilds(1);
 		if (nRetCode) return PauseClose();
 		SendStatus();
 		if (close_flag == 1) {
