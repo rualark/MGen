@@ -131,6 +131,10 @@ HANDLE GetProcessHandle(CString pname) {
 	return NULL;
 }
 
+void SaveScreenshot() {
+	Run("server\\nircmd.exe", "savescreenshot " + share + "screen.png", 0);
+}
+
 void SendStatus() {
 	CString q;
 	long long timestamp = CGLib::time();
@@ -183,6 +187,7 @@ int RunTimeout(CString path, CString par, int delay) {
 		CheckChilds(0);
 		GetProgress(fname);
 		SendProgress(j_progress);
+		SaveScreenshot();
 		SendStatus();
 		if (CGLib::time() - start_timestamp > delay) {
 			WriteLog(path + " " + par + ": Timeout waiting for process");
@@ -503,6 +508,7 @@ void TakeJob() {
 			CDb::j_id, j_type, j_folder, j_file, j_priority);
 		WriteLog(est);
 		// Update status
+		SaveScreenshot();
 		SendStatus();
 		RunJob();
 	}
@@ -574,6 +580,7 @@ int main() {
 	for (;;) {
 		CheckChilds(1);
 		if (nRetCode) return PauseClose();
+		SaveScreenshot();
 		SendStatus();
 		if (close_flag == 1) {
 			close_flag = 2;
