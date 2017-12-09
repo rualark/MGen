@@ -28,5 +28,8 @@ public:
 	CDatabase db;
 	CRecordset rs;
 	vector <CString> field;
+
+	static int server_id;
+	static long j_id;
 };
 
