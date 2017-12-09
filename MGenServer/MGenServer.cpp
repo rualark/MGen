@@ -23,10 +23,12 @@ int close_flag = 0;
 int j_timeout;
 int j_timeout2;
 int j_priority;
+CString progress_fname;
 CString client_host;
 CString j_type;
 CString j_folder;
 CString j_file;
+CString j_progress;
 CString share;
 CString db_driver, db_server, db_port, db_login, db_pass, db_name;
 
@@ -123,15 +125,39 @@ void CheckChilds(int restart) {
 	}
 }
 
+void GetProgress(CString cn) {
+	vector <CString> sv;
+	j_progress = "";
+	if (cn == "lilypond-windows.exe" && CGLib::fileExists(progress_fname)) {
+		CGLib::read_file_sv(progress_fname, sv);
+		if (sv.size()) {
+			int i = sv.size() - 1;
+			// Protect from empty string
+			if (sv[i].IsEmpty()) i = max(0, i - 1);
+			j_progress.Format("[%d] %s", sv.size(), sv[i]);
+		}
+		else j_progress = "";
+	}
+}
+
+void SendProgress() {
+	CString q;
+	long long timestamp = CGLib::time();
+	q.Format("UPDATE job SET j_progress='%s' WHERE j_id='%ld'",
+		db.Escape(j_progress), CDb::j_id);
+	db.Query(q);
+}
+
 // Start process, wait for some time. If process did not finish, this is an error
-int RunTimeout(CString fname, CString par, int delay) {
+int RunTimeout(CString path, CString par, int delay) {
+	CString fname = CGLib::fname_from_path(path);
 	DWORD ecode;
 	SHELLEXECUTEINFO sei = { 0 };
 	sei.cbSize = sizeof(SHELLEXECUTEINFO);
 	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
 	sei.hwnd = NULL;
 	sei.lpVerb = NULL;
-	sei.lpFile = fname;
+	sei.lpFile = path;
 	sei.lpParameters = par;
 	sei.lpDirectory = NULL;
 	sei.nShow = SW_SHOWNORMAL;
@@ -140,16 +166,18 @@ int RunTimeout(CString fname, CString par, int delay) {
 	long long start_timestamp = CGLib::time();
 	while (WaitForSingleObject(sei.hProcess, 500) == WAIT_TIMEOUT) {
 		CheckChilds(0);
+		GetProgress(fname);
+		SendProgress();
 		SendStatus();
 		if (CGLib::time() - start_timestamp > delay) {
-			WriteLog(fname + " " + par + ": Timeout waiting for process\n");
+			WriteLog(path + " " + par + ": Timeout waiting for process\n");
 			return 100;
 		}
 	}
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
 		CString est;
-		est.Format("Exit code %d: %s %s", ecode, fname, par);
+		est.Format("Exit code %d: %s %s", ecode, path, par);
 		WriteLog(est);
 		return ecode;
 	}
@@ -271,7 +299,7 @@ int Connect() {
 
 void FinishJob(int res, CString est) {
 	CString q;
-	q.Format("UPDATE job SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%d'",
+	q.Format("UPDATE job SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
 		res, db.Escape(est), CDb::j_id);
 	db.Query(q);
 }
@@ -345,9 +373,10 @@ int RunJobMGen() {
 	// Run lilypond
 	WriteLog("Starting lilypond engraver...");
 	par =
-		"--output " + share + j_folder +
-		" " + share + j_folder + j_basefile + ".ly";
+		"-dgui " +
+		share + j_folder + j_basefile + ".ly";
 	tChild["lilypond-windows.exe"] = CGLib::time();
+	progress_fname = share + j_folder + j_basefile + ".log";
 	ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe",
 		par, 600 * 1000);
 	if (ret) {
@@ -399,7 +428,7 @@ void TakeJob() {
 		if (!j_timeout) j_timeout = 600;
 		if (!j_timeout2) j_timeout2 = 640;
 		// Take job
-		q.Format("UPDATE job SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%d'",
+		q.Format("UPDATE job SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%ld'",
 			CDb::server_id, CDb::j_id);
 		db.Query(q);
 		db.Query("UNLOCK TABLES");
