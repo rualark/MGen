@@ -478,10 +478,15 @@ int RunJob() {
 		WriteLog(est);
 		return FinishJob(1, est);
 	}
-	if (!CGLib::dirExists(share + j_folder)) {
-		est = "Folder not found: " + share + j_folder;
-		WriteLog(est);
-		return FinishJob(1, est);
+	// Create job folder
+	vector <CString> sv;
+	CString path;
+	CGLib::Tokenize(j_folder, sv, "\\");
+	for (int i = 0; i < sv.size(); ++i) {
+		if (sv[i].IsEmpty()) break;
+		if (!path.IsEmpty()) path += "\\";
+		path += sv[i];
+		CreateDirectory(share + path, NULL);
 	}
 	RunJobMGen();
 	CDb::j_id = 0;
