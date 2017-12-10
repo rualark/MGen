@@ -36,8 +36,9 @@ int j_render = 0;
 int j_priority;
 CString progress_fname;
 CString j_type;
+CString f_folder;
 CString j_folder;
-CString j_file;
+CString f_name;
 CString j_progress;
 
 // Children
@@ -335,17 +336,19 @@ int SendMessageToWindow(CString wClass, short vk) {
 
 int RunJobMGen() {
 	CString st, st2;
-	CString j_basefile = CGLib::bname_from_path(j_file);
-	CString fname = share + j_folder + j_file;
-	CString fname_pl = share + j_folder + j_basefile + ".pl";
+	CString j_basefile = CGLib::bname_from_path(f_name);
+	CString fname = share + f_folder + f_name;
+	CString fname2 = "server\\midi\\" + f_name;
+	CString fname_pl = share + f_folder + j_basefile + ".pl";
 	CString fname_pl2 = "configs\\Gen" + j_type + "\\" + j_basefile + ".pl";
 	// Check input file exists
 	if (!CGLib::fileExists(fname_pl)) {
 		est = "File not found: " + fname_pl;
 		return FinishJob(1, est);
 	}
-	// Copy config
+	// Copy config and midi file
 	CGLib::copy_file(fname_pl, fname_pl2);
+	CGLib::copy_file(fname, fname2);
 	// Delete log
 	DeleteFile("autotest\\exit.log");
 	SendProgress("Running MGen");
@@ -470,6 +473,11 @@ int RunJobMGen() {
 
 int RunJob() {
 	// Check that folder exists
+	if (!CGLib::dirExists(share + f_folder)) {
+		est = "Folder not found: " + share + f_folder;
+		WriteLog(est);
+		return FinishJob(1, est);
+	}
 	if (!CGLib::dirExists(share + j_folder)) {
 		est = "Folder not found: " + share + j_folder;
 		WriteLog(est);
@@ -495,8 +503,9 @@ void TakeJob() {
 		j_engrave = db.GetInt("j_engrave");
 		j_render = db.GetInt("j_render");
 		j_type = db.GetSt("j_type");
-		j_folder = db.GetSt("f_folder");
-		j_file = db.GetSt("f_name");
+		f_folder = db.GetSt("f_folder");
+		j_folder = db.GetSt("j_folder");
+		f_name = db.GetSt("f_name");
 		// Load defaults
 		if (!j_timeout) j_timeout = 600;
 		if (!j_timeout2) j_timeout2 = 640;
@@ -507,7 +516,7 @@ void TakeJob() {
 		db.Query("UNLOCK TABLES");
 		// Log
 		est.Format("Taking job #%ld: %s, %s%s (priority %d)", 
-			CDb::j_id, j_type, j_folder, j_file, j_priority);
+			CDb::j_id, j_type, j_folder, f_name, j_priority);
 		WriteLog(est);
 		// Update status
 		SaveScreenshot();

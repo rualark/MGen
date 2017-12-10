@@ -24,4 +24,8 @@ file:write("Finished")
 io.close(file)
 -- Stop playback (there is a bug that starts playback)
 reaper.Main_OnCommand(1016, 0);
+-- Stop playback (there is a bug that starts playback)
+reaper.Main_OnCommand(1016, 0);
+-- Stop playback (there is a bug that starts playback)
+reaper.Main_OnCommand(1016, 0);
 
