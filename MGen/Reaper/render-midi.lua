@@ -1,3 +1,5 @@
+-- Stop playback (there is a bug that starts playback)
+reaper.Main_OnCommand(1016, 0);
 -- Go to start of project
 reaper.Main_OnCommand(40042, 0);
 -- Deselect all tracks
@@ -22,10 +24,6 @@ for i=count_tempo_markers,0,-1 do reaper.DeleteTempoTimeSigMarker(0, i) end
 file = io.open("C:\\ReaperBuf\\finished.txt", "w")
 file:write("Finished")
 io.close(file)
--- Stop playback (there is a bug that starts playback)
-reaper.Main_OnCommand(1016, 0);
--- Stop playback (there is a bug that starts playback)
-reaper.Main_OnCommand(1016, 0);
 -- Stop playback (there is a bug that starts playback)
 reaper.Main_OnCommand(1016, 0);
 
