@@ -8,4 +8,4 @@ include "include/CA2.pl"
 
 # This config was created from default config file configs\GenCA2.pl
 # Created at 2017-12-07 00-21-18
-Midi_file = server\share\one\1.mid
+Midi_file = server\midi\1.mid
