@@ -98,7 +98,7 @@ float CDb::GetFloat(CString fname) {
 void CDb::WriteLog(CString st) {
 	if (db.IsOpen()) {
 		CString q;
-		q.Format("INSERT INTO j_log VALUES('','%d','%d',NOW(),'%s')",
+		q.Format("INSERT INTO j_logs VALUES('','%d','%d',NOW(),'%s')",
 			server_id, j_id, Escape(st));
 		Query(q);
 	}

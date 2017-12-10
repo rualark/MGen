@@ -74,7 +74,7 @@ void SendProgress(CString st) {
 	j_progress = st;
 	CString q;
 	long long timestamp = CGLib::time();
-	q.Format("UPDATE job SET j_progress='%s' WHERE j_id='%ld'",
+	q.Format("UPDATE jobs SET j_progress='%s' WHERE j_id='%ld'",
 		db.Escape(j_progress), CDb::j_id);
 	db.Query(q);
 }
@@ -317,7 +317,7 @@ int Connect() {
 
 int FinishJob(int res, CString st) {
 	CString q;
-	q.Format("UPDATE job SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
+	q.Format("UPDATE jobs SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
 		res, db.Escape(st), CDb::j_id);
 	db.Query(q);
 	WriteLog(st);
@@ -482,9 +482,11 @@ int RunJob() {
 
 void TakeJob() {
 	CString q, est;
-	db.Query("LOCK TABLES job WRITE");
-	db.Fetch("SELECT * FROM job WHERE j_state=1 ORDER BY j_priority DESC, j_id LIMIT 1");
-	if (!db.rs.IsEOF()) {
+	db.Query("LOCK TABLES jobs WRITE, files WRITE, j_logs WRITE, s_status WRITE, users WRITE");
+	int err = db.Fetch("SELECT * FROM jobs "
+		"LEFT JOIN files USING (f_id) "
+		"WHERE j_state=1 ORDER BY j_priority DESC, j_id LIMIT 1");
+	if (!err && !db.rs.IsEOF()) {
 		// Load job
 		CDb::j_id = db.GetInt("j_id");
 		j_priority = db.GetInt("j_priority");
@@ -493,13 +495,13 @@ void TakeJob() {
 		j_engrave = db.GetInt("j_engrave");
 		j_render = db.GetInt("j_render");
 		j_type = db.GetSt("j_type");
-		j_folder = db.GetSt("j_folder");
-		j_file = db.GetSt("j_file");
+		j_folder = db.GetSt("f_folder");
+		j_file = db.GetSt("f_name");
 		// Load defaults
 		if (!j_timeout) j_timeout = 600;
 		if (!j_timeout2) j_timeout2 = 640;
 		// Take job
-		q.Format("UPDATE job SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%ld'",
+		q.Format("UPDATE jobs SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%ld'",
 			CDb::server_id, CDb::j_id);
 		db.Query(q);
 		db.Query("UNLOCK TABLES");
@@ -520,7 +522,7 @@ void TakeJob() {
 void Init() {
 	// On start, reset all jobs that did not finish correctly
 	CString q;
-	q.Format("SELECT COUNT(*) as cnt FROM job WHERE s_id='%d' AND j_state=2", CDb::server_id);
+	q.Format("SELECT COUNT(*) as cnt FROM jobs WHERE s_id='%d' AND j_state=2", CDb::server_id);
 	db.Fetch(q);
 	if (!db.rs.IsEOF()) {
 		db.GetFields();
@@ -531,7 +533,7 @@ void Init() {
 			WriteLog(est);
 		}
 	}
-	q.Format("UPDATE job SET j_state=1 WHERE s_id='%d' AND j_state=2", CDb::server_id);
+	q.Format("UPDATE jobs SET j_state=1 WHERE s_id='%d' AND j_state=2", CDb::server_id);
 	db.Query(q);
 	// Get client hostname
 	db.Fetch("SELECT SUBSTRING_INDEX(host,':',1) as 'ip' from information_schema.processlist WHERE ID=connection_id()");
