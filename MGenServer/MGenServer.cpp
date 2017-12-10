@@ -339,7 +339,7 @@ int RunJobMGen() {
 	CString j_basefile = CGLib::bname_from_path(f_name);
 	CString fname = share + f_folder + f_name;
 	CString fname2 = "server\\midi\\" + f_name;
-	CString fname_pl = share + f_folder + j_basefile + ".pl";
+	CString fname_pl = share + j_folder + j_basefile + ".pl";
 	CString fname_pl2 = "configs\\Gen" + j_type + "\\" + j_basefile + ".pl";
 	// Check input file exists
 	if (!CGLib::fileExists(fname_pl)) {
@@ -478,7 +478,14 @@ int RunJob() {
 		WriteLog(est);
 		return FinishJob(1, est);
 	}
+	// Check that folder exists
+	if (!CGLib::dirExists(share + j_folder)) {
+		est = "Folder not found: " + share + j_folder;
+		WriteLog(est);
+		return FinishJob(1, est);
+	}
 	// Create job folder
+	/*
 	vector <CString> sv;
 	CString path;
 	CGLib::Tokenize(j_folder, sv, "\\");
@@ -488,6 +495,7 @@ int RunJob() {
 		path += sv[i];
 		CreateDirectory(share + path, NULL);
 	}
+	*/
 	RunJobMGen();
 	CDb::j_id = 0;
 	return 0;
