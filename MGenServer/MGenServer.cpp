@@ -504,7 +504,9 @@ void TakeJob() {
 		j_render = db.GetInt("j_render");
 		j_type = db.GetSt("j_type");
 		f_folder = db.GetSt("f_folder");
+		f_folder.Replace("/", "\\");
 		j_folder = db.GetSt("j_folder");
+		j_folder.Replace("/", "\\");
 		f_name = db.GetSt("f_name");
 		// Load defaults
 		if (!j_timeout) j_timeout = 600;
