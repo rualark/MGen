@@ -133,7 +133,9 @@ HANDLE GetProcessHandle(CString pname) {
 }
 
 void SaveScreenshot() {
-	Run("server\\nircmd.exe", "savescreenshot " + share + "screen.png", 0);
+	CString st;
+	st.Format("screen%d.png", db.server_id);
+	Run("server\\nircmd.exe", "savescreenshot " + share + st, 0);
 }
 
 void SendStatus() {
