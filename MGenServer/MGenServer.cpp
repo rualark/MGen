@@ -320,7 +320,7 @@ int Connect() {
 
 int FinishJob(int res, CString st) {
 	CString q;
-	q.Format("UPDATE jobs SET j_duration=NOW() - j_started, j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
+	q.Format("UPDATE jobs SET j_duration=TIMESTAMPDIFF(SECOND, j_started, NOW()), j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
 		res, db.Escape(st), CDb::j_id);
 	db.Query(q);
 	WriteLog(st);
