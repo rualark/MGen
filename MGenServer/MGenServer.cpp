@@ -352,12 +352,14 @@ int RunJobMGen() {
 	CGLib::copy_file(fname_pl, fname_pl2);
 	CGLib::copy_file(fname, fname2);
 	// Delete log
+	DeleteFile("log\\autosave.txt");
 	DeleteFile("autotest\\exit.log");
 	SendProgress("Running MGen");
 	// Run MGen
 	CString par;
 	par.Format("-job=%d %s", j_timeout, fname_pl2);
 	tChild["MGen.exe"] = CGLib::time();
+	//WriteLog("Starting MGen.exe " + par);
 	int ret = RunTimeout(fChild["MGen.exe"] + "MGen.exe", par, j_timeout2 * 1000);
 	if (ret) {
 		est.Format("Error during MGen run: %d", ret);
