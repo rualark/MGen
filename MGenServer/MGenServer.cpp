@@ -510,7 +510,7 @@ void TakeJob() {
 	db.Query("LOCK TABLES jobs WRITE, files WRITE, j_logs WRITE, s_status WRITE, users WRITE");
 	int err = db.Fetch("SELECT * FROM jobs "
 		"LEFT JOIN files USING (f_id) "
-		"WHERE j_state=1 ORDER BY j_priority DESC, j_id LIMIT 1");
+		"WHERE j_state=1 AND j_deleted=0 ORDER BY j_priority, j_id LIMIT 1");
 	if (!err && !db.rs.IsEOF()) {
 		// Load job
 		CDb::j_id = db.GetInt("j_id");
