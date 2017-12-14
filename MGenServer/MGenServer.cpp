@@ -76,6 +76,7 @@ void GetProgress(CString cn) {
 }
 
 void SendProgress(CString st) {
+	if (st == "") return;
 	j_progress = st;
 	CString q;
 	long long timestamp = CGLib::time();
@@ -495,7 +496,9 @@ int RunJobMGen() {
 				share + j_folder + j_basefile + "-" + st + ".mp3");
 		}
 	}
-	return FinishJob(0, "Success");
+	est.Format("Success in %d seconds", 
+		(CGLib::time() - time_job0) / 1000);
+	return FinishJob(0, est);
 }
 
 int RunJob() {
