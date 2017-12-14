@@ -41,6 +41,8 @@ CString j_folder;
 CString f_name;
 CString j_progress;
 
+int can_render = 1;
+
 // Children
 vector <CString> nChild; // Child process name
 map <CString, long long> tChild; // Timestamp of last restart
@@ -154,6 +156,10 @@ void SendStatus() {
 void CheckChilds(int restart) {
 	for (int c = 0; c < nChild.size(); ++c) {
 		CString cn = nChild[c];
+		if (!can_render) {
+			if (cn == "Reaper.exe") continue;
+			if (cn == "AutoHotkey.exe") continue;
+		}
 		HANDLE hProcess = GetProcessHandle(cn);
 		if (hProcess == NULL) {
 			rChild[cn] = 0;
@@ -210,9 +216,15 @@ void CheckChildsPath() {
 	for (int c = 0; c < nChild.size(); ++c) {
 		CString cn = nChild[c];
 		if (!CGLib::fileExists(fChild[cn] + cn)) {
-			WriteLog("Not found program file: " + fChild[cn] + cn);
-			nRetCode = 3;
-			return;
+			if (cn == "Reaper.exe" || cn == "AutoHotkey.exe") {
+				can_render = 0;
+				WriteLog("Cannot render, because file not found: " + fChild[cn] + cn);
+			}
+			else {
+				WriteLog("Not found program file: " + fChild[cn] + cn);
+				nRetCode = 3;
+				return;
+			}
 		}
 	}
 }
@@ -508,9 +520,17 @@ int RunJob() {
 void TakeJob() {
 	CString q, est;
 	db.Query("LOCK TABLES jobs WRITE, files WRITE, j_logs WRITE, s_status WRITE, users WRITE");
-	int err = db.Fetch("SELECT * FROM jobs "
-		"LEFT JOIN files USING (f_id) "
-		"WHERE j_state=1 AND j_deleted=0 ORDER BY j_priority, j_id LIMIT 1");
+	int err;
+	if (can_render) {
+		err = db.Fetch("SELECT * FROM jobs "
+			"LEFT JOIN files USING (f_id) "
+			"WHERE j_state=1 AND j_deleted=0 ORDER BY j_priority, j_id LIMIT 1");
+	}
+	else {
+		err = db.Fetch("SELECT * FROM jobs "
+			"LEFT JOIN files USING (f_id) "
+			"WHERE j_state=1 AND j_deleted=0 AND j_class<2 ORDER BY j_priority, j_id LIMIT 1");
+	}
 	if (!err && !db.rs.IsEOF()) {
 		// Load job
 		CDb::j_id = db.GetInt("j_id");

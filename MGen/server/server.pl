@@ -11,7 +11,7 @@ DB_Name = mgen
 
 ChildProcess = Reaper.exe
 ChildRestart = 1
-ChildPath = C:\Windows\
+ChildPath = C:\Windows\x
 
 ChildProcess = AutoHotkey.exe
 ChildRestart = 1
