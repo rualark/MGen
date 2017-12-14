@@ -353,6 +353,7 @@ int SendMessageToWindow(CString wClass, short vk) {
 }
 
 int RunJobMGen() {
+	long long time_job0 = CGLib::time();
 	CString st, st2;
 	CString j_basefile = CGLib::bname_from_path(f_name);
 	CString fname = share + f_folder + f_name;
@@ -411,9 +412,12 @@ int RunJobMGen() {
 	CGLib::copy_file(as_dir + "\\log-warning.log", share + j_folder + "log-warning.log");
 	CGLib::copy_file(as_dir + "\\log-debug.log", share + j_folder + "log-debug.log");
 	CGLib::copy_file(as_dir + "\\log-algorithm.log", share + j_folder + "log-algorithm.log");
+	long long time_job1 = CGLib::time();
 	// Run lilypond
 	if (j_engrave) {
-		WriteLog("Starting lilypond engraver...");
+		est.Format("Starting lilypond engraver after %d seconds...", 
+			(CGLib::time() - time_job0) / 1000);
+		WriteLog(est);
 		par =
 			"-dgui " +
 			share + j_folder + j_basefile + ".ly";
@@ -451,7 +455,9 @@ int RunJobMGen() {
 		// Copy files
 		CGLib::copy_file(share + j_folder + j_basefile + ".midi", reaperbuf + "input.mid");
 		// Start render
-		WriteLog("Starting render...");
+		est.Format("Starting render after %d seconds...",
+			(CGLib::time() - time_job0) / 1000);
+		WriteLog(est);
 		if (SendMessageToWindow("REAPERwnd", VK_F12)) {
 			return FinishJob(1, "Error sending message to Reaper window");
 		}
