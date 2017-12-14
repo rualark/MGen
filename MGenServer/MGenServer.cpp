@@ -42,7 +42,8 @@ CString f_name;
 CString j_progress;
 
 int can_render = 1;
-int screenshot_id = 1;
+int screenshot_id = 0;
+int max_screenshot = 10;
 
 // Children
 vector <CString> nChild; // Child process name
@@ -137,8 +138,7 @@ HANDLE GetProcessHandle(CString pname) {
 
 void SaveScreenshot() {
 	// Rotate screenshot id
-	if (screenshot_id == 1) screenshot_id = 2;
-	else screenshot_id = 1;
+	screenshot_id = (screenshot_id + 1) % max_screenshot;
 	CString st;
 	st.Format("screen%d-%d.png", db.server_id, screenshot_id);
 	Run("server\\nircmd.exe", "savescreenshot " + share + st, 0);
@@ -153,7 +153,7 @@ void SendStatus() {
 		rChild["AutoHotkey.exe"] ? (timestamp - tChild["AutoHotkey.exe"]) / 1000 : -1,
 		rChild["MGen.exe"] ? (timestamp - tChild["MGen.exe"]) / 1000 : -1,
 		rChild["lilypond-windows.exe"] ? (timestamp - tChild["lilypond-windows.exe"]) / 1000 : -1,
-		CDb::j_id, screenshot_id);
+		CDb::j_id, (screenshot_id + max_screenshot - 1) % max_screenshot);
 	db.Query(q);
 }
 
