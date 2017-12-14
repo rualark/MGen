@@ -42,6 +42,7 @@ CString f_name;
 CString j_progress;
 
 int can_render = 1;
+int screenshot_id = 1;
 
 // Children
 vector <CString> nChild; // Child process name
@@ -135,21 +136,24 @@ HANDLE GetProcessHandle(CString pname) {
 }
 
 void SaveScreenshot() {
+	// Rotate screenshot id
+	if (screenshot_id == 1) screenshot_id = 2;
+	else screenshot_id = 1;
 	CString st;
-	st.Format("screen%d.png", db.server_id);
+	st.Format("screen%d-%d.png", db.server_id, screenshot_id);
 	Run("server\\nircmd.exe", "savescreenshot " + share + st, 0);
 }
 
 void SendStatus() {
 	CString q;
 	long long timestamp = CGLib::time();
-	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%ld')",
+	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%ld','%d')",
 		CDb::server_id, client_host, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
 		rChild["Reaper.exe"] ? (timestamp - tChild["Reaper.exe"]) / 1000 : -1,
 		rChild["AutoHotkey.exe"] ? (timestamp - tChild["AutoHotkey.exe"]) / 1000 : -1,
 		rChild["MGen.exe"] ? (timestamp - tChild["MGen.exe"]) / 1000 : -1,
 		rChild["lilypond-windows.exe"] ? (timestamp - tChild["lilypond-windows.exe"]) / 1000 : -1,
-		CDb::j_id);
+		CDb::j_id, screenshot_id);
 	db.Query(q);
 }
 
@@ -361,6 +365,7 @@ int RunJobMGen() {
 		return FinishJob(1, est);
 	}
 	// Copy config and midi file
+	CreateDirectory("server\\midi", NULL);
 	CGLib::copy_file(fname_pl, fname_pl2);
 	CGLib::copy_file(fname, fname2);
 	// Delete log
