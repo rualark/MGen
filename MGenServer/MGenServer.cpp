@@ -27,6 +27,7 @@ CString client_host;
 CString reaperbuf;
 CString share;
 CString db_driver, db_server, db_port, db_login, db_pass, db_name;
+int daw_wait = 200;
 
 // Job
 int j_timeout;
@@ -160,6 +161,7 @@ void SendStatus() {
 }
 
 void CheckChilds(int restart) {
+	int need_wait = 0;
 	for (int c = 0; c < nChild.size(); ++c) {
 		CString cn = nChild[c];
 		if (!can_render) {
@@ -173,11 +175,22 @@ void CheckChilds(int restart) {
 				WriteLog("Restarting process " + cn + "...");
 				RestartChild(cn);
 				tChild[cn] = CGLib::time();
+				if (cn == "Reaper.exe") need_wait = 1;
 			}
 		}
 		else {
 			rChild[cn] = 1;
 			CloseHandle(hProcess);
+		}
+	}
+	if (need_wait) {
+		est.Format("Waiting for %d seconds for virtual instruments to load",
+			daw_wait);
+		WriteLog(est);
+		for (int i = 0; i < daw_wait; ++i) {
+			SaveScreenshot();
+			SendStatus();
+			Sleep(1000);
 		}
 	}
 }
@@ -299,6 +312,7 @@ void LoadConfig()
 			}
 			CGLib::LoadVar(&st2, &st3, "reaperbuf", &reaperbuf);
 			CGLib::LoadVar(&st2, &st3, "db_driver", &db_driver);
+			CGLib::CheckVar(&st2, &st3, "daw_wait", &daw_wait, 0 , 6000);
 			CGLib::LoadVar(&st2, &st3, "share", &share);
 			CGLib::LoadVar(&st2, &st3, "db_server", &db_server);
 			CGLib::LoadVar(&st2, &st3, "db_port", &db_port);
