@@ -26,7 +26,9 @@ High priotiry issues: https://github.com/rualark/MGen/issues?utf8=%E2%9C%93&q=is
 
 # Project plan:
 
-![MGen project plan](http://i.imgur.com/mo0K2rR.png "MGen project plan")
+![MGen project plan](https://i.imgur.com/VQZMe4v.png "MGen project plan")
+
+Old project plan: http://i.imgur.com/mo0K2rR.png
 
 Asana: https://app.asana.com/0/418409938035504/list
 
