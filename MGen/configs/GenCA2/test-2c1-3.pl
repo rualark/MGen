@@ -12,5 +12,5 @@ midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
 show_correct_hatch = 1 # Set to 1 to mark corrected notes with hatch
 
-Midi_file = server\midi\known-cp1.mid
+Midi_file = server\midi\test-2c1-3.mid
 corrections = 1 # Enable correcting scores
