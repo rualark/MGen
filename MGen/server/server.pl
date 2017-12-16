@@ -11,7 +11,7 @@ DB_Name = mgen
 
 ChildProcess = Reaper.exe
 ChildRestart = 1
-ChildPath = C:\Windows\x
+ChildPath = C:\Windows\
 
 ChildProcess = AutoHotkey.exe
 ChildRestart = 1
@@ -22,3 +22,7 @@ ChildProcess = MGen.exe
 
 ChildProcess = lilypond-windows.exe
 ChildPath = X:\Program Files (x86)\LilyPond\usr\bin\
+
+ChildProcess = RestartOnCrash.exe
+ChildRestart = 1
+ChildPath = server\roc\

@@ -7,4 +7,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 
 Midi_file = server\midi\known-cp1.mid
-Instruments = 
+Instruments = Violin,Piano
