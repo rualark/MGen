@@ -6,5 +6,5 @@ adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 
-Midi_file = server\midi\known-cp1.mid
-Instruments = Violin,Piano
+Midi_file = server\midi\cloud.mid
+Instruments = Violin,Trumpet,Horn,Trombone,Tuba,Piano

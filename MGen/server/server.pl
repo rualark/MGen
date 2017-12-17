@@ -18,7 +18,7 @@ ChildPath = C:\Windows\
 ChildProcess = AutoHotkey.exe
 ChildRestart = 1
 ChildPath = C:\Program Files\AutoHotkey\
-ChildParams = Reaper\reaper-mgen.ahk
+ChildParams = server\mgen.ahk
 
 ChildProcess = MGen.exe
 
