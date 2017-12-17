@@ -1,5 +1,9 @@
 -- Stop playback (there is a bug that starts playback)
 reaper.Main_OnCommand(1016, 0);
+-- Select all items
+reaper.Main_OnCommand(40182, 0);
+-- Remove items
+reaper.Main_OnCommand(40006, 0);
 -- Go to start of project
 reaper.Main_OnCommand(40042, 0);
 -- Deselect all tracks
