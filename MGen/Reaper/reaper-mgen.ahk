@@ -1,32 +1,57 @@
 SetTitleMatchMode, RegEx
 
-Loop {
-  WinWait, MIDI File Import|Render to File|Finished in 0|Render Warning|Rendering to file\.\.\.|Render Error
-
-  WinGetTitle, Title
+Log(fname, st) {
   TimeString = %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec%
+  FileAppend, %TimeString% %st%`n, %fname%
+}
+
+FileOverWrite(fname, st) {
+  TimeString = %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec%
+  file := FileOpen(fname, "w")
+  if IsObject(file) {
+    file.Write(TimeString . " " . st . "`n")
+    file.Close()
+  }
+}
+
+Loop {
+  Sleep, 500
    
   IfWinExist, Rendering to file\.\.\.
   {
     ControlGetText, Progress, Estimated Remaining, Rendering to file\.\.\.
-    ;MsgBox, Progress Is: %Progress%
-    file := FileOpen("C:\ReaperBuf\progress.txt", "w")
-    if IsObject(file) {
-      file.Write(TimeString . " " . Progress . "`n")
-      file.Close()
-    }
-    ;FileAppend, %TimeString% %Progress%`n, C:\ReaperBuf\progress.txt
-    sleep, 500
+    FileOverwrite("C:\ReaperBuf\progress.txt", Progress)
+    Continue
   }
-  Else
+
+  IfWinExist, MIDI File Import
   {
-    WinActivate
-    sleep, 50
-    Send , {Enter}
-    WinWaitClose
-    FileAppend, %TimeString% %Title%`n, C:\ReaperBuf\windows.log
+    WinGetTitle, Title
+    ControlClick, OK, %Title%,,,, NA
+    Log("C:\ReaperBuf\windows.log", Title)
   }
-   
-  ;WinMinimize, TeamViewer
-  ;WinActivate, XBMC
+
+  IfWinExist, Render Warning
+  {
+    WinGetTitle, Title
+    ControlClick, Overwrite, %Title%,,,, NA
+    Log("C:\ReaperBuf\windows.log", Title)
+    Continue
+  }
+  
+  IfWinExist, Finished in 0
+  {
+    WinGetTitle, Title
+    ControlClick, Close, %Title%,,,, NA
+    Log("C:\ReaperBuf\windows.log", Title)
+    Continue
+  }
+  
+  IfWinExist, Render to File
+  {
+    WinGetTitle, Title
+    ControlClick, Button16, %Title%,,,, NA
+    Log("C:\ReaperBuf\windows.log", Title)
+  }
+
 }
