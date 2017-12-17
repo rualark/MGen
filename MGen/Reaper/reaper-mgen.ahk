@@ -44,13 +44,13 @@ Loop {
     FileGetTime, myTime, server\status.txt
     var1 = %A_Now%
     EnvSub, var1, %myTime%, Seconds
-    If var1 > 10
+    If var1 > 30
     {
       Sleep, 5000
       FileGetTime, myTime, server\status.txt
       var1 = %A_Now%
       EnvSub, var1, %myTime%, Seconds
-      If var1 > 10
+      If var1 > 30
       {
         RestartServer()
       }
