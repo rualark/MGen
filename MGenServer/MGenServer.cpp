@@ -167,14 +167,14 @@ void SaveScreenshot() {
 void SendStatus() {
 	CString q;
 	long long timestamp = CGLib::time();
-	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%lld','%ld','%d')",
+	q.Format("REPLACE INTO s_status VALUES('%d',NOW(),'%s','%ld','%lld','%lld','%lld','%lld','%lld','%ld','%d')",
 		CDb::server_id, client_host, GetTickCount() / 1000, (timestamp - server_start_time) / 1000,
 		rChild["Reaper.exe"] ? (timestamp - tChild["Reaper.exe"]) / 1000 : -1,
 		rChild["AutoHotkey.exe"] ? (timestamp - tChild["AutoHotkey.exe"]) / 1000 : -1,
 		rChild["MGen.exe"] ? (timestamp - tChild["MGen.exe"]) / 1000 : -1,
 		rChild["lilypond-windows.exe"] ? (timestamp - tChild["lilypond-windows.exe"]) / 1000 : -1,
-		rChild["RestartOnCrash.exe"] ? (timestamp - tChild["RestartOnCrash.exe"]) / 1000 : -1,
 		CDb::j_id, (screenshot_id + max_screenshot - 1) % max_screenshot);
+	CGLib::OverwriteFile("server\\status.txt", q);
 	db.Query(q);
 }
 

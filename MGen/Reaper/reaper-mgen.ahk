@@ -14,9 +14,56 @@ FileOverWrite(fname, st) {
   }
 }
 
+ProcessExists(Name){
+	Process,Exist,%Name%
+	return Errorlevel
+}
+
+RestartServer() {
+  Process, Close, MGenServer.exe
+  Process, WaitClose, MGenServer.exe, 20
+  if ErrorLevel ; The PID still exists.
+    MsgBox The process MGenServer did not close within 20 seconds.
+  Run, MGenServer.exe
+}
+
 Loop {
   Sleep, 500
    
+  If !ProcessExists("MGenServer.exe")
+  {
+    Sleep, 5000
+    If !ProcessExists("MGenServer.exe")
+    {
+      RestartServer()
+    }
+  }
+  
+  IfExist, server\status.txt
+  {
+    FileGetTime, myTime, server\status.txt
+    var1 = %A_Now%
+    EnvSub, var1, %myTime%, Seconds
+    If var1 > 10
+    {
+      Sleep, 5000
+      FileGetTime, myTime, server\status.txt
+      var1 = %A_Now%
+      EnvSub, var1, %myTime%, Seconds
+      If var1 > 10
+      {
+        RestartServer()
+      }
+    }
+  }
+  else {
+    Sleep, 5000
+    IfNotExist, server\status.txt
+    {
+      RestartServer()
+    }
+  }
+  
   IfWinExist, Rendering to file\.\.\.
   {
     ControlGetText, Progress, Estimated Remaining, Rendering to file\.\.\.

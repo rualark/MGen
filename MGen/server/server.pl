@@ -24,7 +24,3 @@ ChildProcess = MGen.exe
 
 ChildProcess = lilypond-windows.exe
 ChildPath = X:\Program Files (x86)\LilyPond\usr\bin\
-
-ChildProcess = RestartOnCrash.exe
-ChildRestart = 1
-ChildPath = server\roc\

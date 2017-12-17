@@ -445,6 +445,14 @@ void CGLib::AppendLineToFile(CString fname, CString st)
 	outfile.close();
 }
 
+void CGLib::OverwriteFile(CString fname, CString st)
+{
+	ofstream outfile;
+	outfile.open(fname);
+	outfile << st;
+	outfile.close();
+}
+
 // Appends line number 'line' in file with st
 void CGLib::AppendLineInFile(CString fname, int line, CString st) {
 	// Load file
