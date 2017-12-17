@@ -24,6 +24,13 @@ Loop {
     Continue
   }
 
+  IfWinExist, ODBC Data Source Configuration
+  {
+    WinGetTitle, Title
+    ControlClick, OK, %Title%,,,, NA
+    Log("C:\ReaperBuf\windows.log", Title)
+  }
+
   IfWinExist, MIDI File Import
   {
     WinGetTitle, Title

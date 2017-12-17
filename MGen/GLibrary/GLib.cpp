@@ -810,8 +810,8 @@ void CGLib::EscalateLog(CString st) {
 		sei.hInstApp = NULL;
 		ShellExecuteEx(&sei);
 		WaitForSingleObject(sei.hProcess, 1000);
-		exitcode = 10;
 	}
+	exitcode = 10;
 }
 
 void CGLib::WriteLog(int i, CString st)

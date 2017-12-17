@@ -399,14 +399,6 @@ int RunJobMGen() {
 	tChild["MGen.exe"] = CGLib::time();
 	//WriteLog("Starting MGen.exe " + par);
 	int ret = RunTimeout(fChild["MGen.exe"] + "MGen.exe", par, j_timeout2 * 1000);
-	if (ret) {
-		est.Format("Error during MGen run: %d", ret);
-		return FinishJob(1, est);
-	}
-	if (!CGLib::fileExists("autotest\\exit.log")) {
-		est.Format("MGen process did not exit correctly - possible crash");
-		return FinishJob(1, est);
-	}
 	// Get autosave
 	CString as_fname, as_dir;
 	if (!CGLib::fileExists("log\\autosave.txt")) {
@@ -426,12 +418,20 @@ int RunJobMGen() {
 		return FinishJob(1, est);
 	}
 	// Copy results
-	CGLib::copy_file(as_dir + "\\" + as_fname + ".midi", share + j_folder + j_basefile + ".midi");
-	CGLib::copy_file(as_dir + "\\" + as_fname + ".ly", share + j_folder + j_basefile + ".ly");
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".txt", share + j_folder + j_basefile + ".txt");
 	CGLib::copy_file(as_dir + "\\log-warning.log", share + j_folder + "log-warning.log");
 	CGLib::copy_file(as_dir + "\\log-debug.log", share + j_folder + "log-debug.log");
 	CGLib::copy_file(as_dir + "\\log-algorithm.log", share + j_folder + "log-algorithm.log");
+	CGLib::copy_file(as_dir + "\\" + as_fname + ".midi", share + j_folder + j_basefile + ".midi");
+	CGLib::copy_file(as_dir + "\\" + as_fname + ".ly", share + j_folder + j_basefile + ".ly");
+	if (ret) {
+		est.Format("Error during MGen run: %d", ret);
+		return FinishJob(1, est);
+	}
+	if (!CGLib::fileExists("autotest\\exit.log")) {
+		est.Format("MGen process did not exit correctly - possible crash");
+		return FinishJob(1, est);
+	}
 	long long time_job1 = CGLib::time();
 	// Run lilypond
 	if (j_engrave) {
@@ -604,6 +604,7 @@ void TakeJob() {
 		SaveScreenshot();
 		SendStatus();
 		RunJob();
+		SendStatus();
 	}
 	else {
 		db.Query("UNLOCK TABLES");
@@ -680,7 +681,6 @@ int main() {
 			break;
 		}
 		TakeJob();
-		SendStatus();
 		Sleep(1000);
 	}
 	return PauseClose();
