@@ -22,6 +22,7 @@ int close_flag = 0;
 int nRetCode = 0;
 CString est;
 CString client_host;
+vector<CString> errorMessages;
 
 // Parameters
 CString reaperbuf;
@@ -61,6 +62,21 @@ long long server_start_time = CGLib::time();
 
 // Objects
 CDb db;
+
+void InitErrorMessages() {
+	errorMessages.resize(1000);
+	errorMessages[0] = "OK";
+	errorMessages[10] = "MGen detected critical errors during run";
+	errorMessages[11] = "MGen generator freeze on exit - possible error in generator";
+	errorMessages[100] = "GetExitCodeProcess error (for MGen.exe)";
+	errorMessages[101] = "MGen process did not exit correctly - possible crash";
+	errorMessages[102] = "GetExitCodeProcess error";
+}
+
+CString GetErrorMessage(int e) {
+	if (e < errorMessages.size()) return errorMessages[e];
+	else return "";
+}
 
 void GetProgress(CString cn) {
 	vector <CString> sv;
@@ -425,7 +441,7 @@ int RunJobMGen() {
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".midi", share + j_folder + j_basefile + ".midi");
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".ly", share + j_folder + j_basefile + ".ly");
 	if (ret) {
-		est.Format("Error during MGen run: %d", ret);
+		est.Format("Error during MGen run: %d - %s", ret, GetErrorMessage(ret));
 		return FinishJob(1, est);
 	}
 	if (!CGLib::fileExists("autotest\\exit.log")) {
@@ -663,6 +679,7 @@ int main() {
 		return 2;
 	}
 
+	InitErrorMessages();
 	BOOL ret = SetConsoleCtrlHandler(ConsoleHandlerRoutine, TRUE);
 	LoadConfig();
 	CheckChildsPath();

@@ -14,4 +14,4 @@ midifile_export_comments = 0 # Set to export comments (violations) to midifile l
 show_correct_hatch = 1 # Set to 1 to mark corrected notes with hatch
 
 Midi_file = server\midi\test-pco.mid
-Instruments = Trumpet,Trombone
+Instruments = Trumpet,Trombone2
