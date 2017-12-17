@@ -509,6 +509,14 @@ int RunJobMGen() {
 			}
 		}
 		CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper.log");
+		// No output file
+		if (!CGLib::fileExists(reaperbuf + "output-001.mp3")) {
+			return FinishJob(1, "Output file output-001.mp3 does not exist");
+		}
+		// Zero length file
+		if (CGLib::FileSize(reaperbuf + "output-001.mp3") <= 0) {
+			return FinishJob(1, "Output file output-001.mp3 is too small");
+		}
 		CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + ".mp3");
 		for (int i = 2; i < 100; ++i) {
 			st.Format("%03d", i);
