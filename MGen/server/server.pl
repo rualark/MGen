@@ -1,7 +1,7 @@
 Server_id = 1
 Share = server\share\
 ReaperBuf = C:\ReaperBuf\
-daw_wait = 450 # How many second to wait after starting DAW to allow virtual instruments to load
+daw_wait = 200 # How many second to wait after starting DAW to allow virtual instruments to load
 
 DB_Driver = MySQL ODBC 5.3 Unicode Driver
 DB_Server = 192.168.9.4

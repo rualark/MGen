@@ -1,11 +1,11 @@
 # 0 - Sposobin notation (strict)
 Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
-Minor natural  ;t ;sII   ;DTIII   ;s  ;d ;tsVI   ;dVII
+Minor natural  ;t ;sII   ;dtIII   ;s  ;d ;tsVI   ;dVII
 Minor altered  ;t ;sII   ;DTIII   ;S  ;D ;tsVI   ;DVII
 # 1 - Sposobin notation (adapted)
 Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
-Minor natural  ;t ;sIIb5 ;DTIII   ;s  ;d ;tsVI   ;dVII
-Minor altered  ;t ;sII   ;DTIII#5 ;S  ;D ;tsVIb5 ;DVII
+Minor natural  ;t ;b5sII ;dtIII   ;s  ;d ;tsVI   ;dVII
+Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;DVII
 # 2 - Sposobin notation (local harmonic meaning)
 Major          ;T ;sII   ;dtIII   ;S  ;D ;tsVI   ;dVIIb5
 Minor natural  ;t ;sIIb5 ;DTIII   ;s  ;d ;TSVI   ;DVII

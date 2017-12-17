@@ -490,9 +490,9 @@ int RunJobMGen() {
 				if (sv.size()) SendProgress(sv[0]);
 			}
 			// Check if no progress for long time
-			else if (CGLib::time() - render_start > 10 * 1000) {
+			else if (CGLib::time() - render_start > 30 * 1000) {
 				CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper.log");
-				return FinishJob(1, "Render showed no progress during 10 seconds");
+				return FinishJob(1, "Render showed no progress during 30 seconds");
 			}
 			// Check if reascript finished
 			if (CGLib::fileExists(reaperbuf + "finished.txt")) break;
