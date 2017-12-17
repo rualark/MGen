@@ -7,5 +7,5 @@
 include "include/CA2.pl"
 
 # This config was created from default config file configs\GenCA2.pl
-# Created at 2017-12-07 00-21-18
-Midi_file = server\share\two\the_two.mid
+# Created at 2017-12-17 20:52:02
+Midi_file = midi\GenMP1\test-multiinstrument.mid

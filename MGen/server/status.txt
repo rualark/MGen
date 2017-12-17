@@ -1,0 +1,1 @@
+REPLACE INTO s_status VALUES('1',NOW(),'DESKTOP-B4563MD','349088','80','80','80','-1','-1','80','0','7')
