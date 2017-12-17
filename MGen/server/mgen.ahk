@@ -1,4 +1,6 @@
 SetTitleMatchMode, RegEx
+; Maximum time to allow status.txt not being updated before restarting MGenServer
+status_timeout = 30
 
 Log(fname, st) {
   TimeString = %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%:%A_Sec%
@@ -44,13 +46,13 @@ Loop {
     FileGetTime, myTime, server\status.txt
     var1 = %A_Now%
     EnvSub, var1, %myTime%, Seconds
-    If var1 > 30
+    If var1 > %status_timeout%
     {
       Sleep, 5000
       FileGetTime, myTime, server\status.txt
       var1 = %A_Now%
       EnvSub, var1, %myTime%, Seconds
-      If var1 > 30
+      If var1 > %status_timeout%
       {
         RestartServer()
       }
