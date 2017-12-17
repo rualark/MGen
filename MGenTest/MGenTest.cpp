@@ -42,9 +42,9 @@ void InitErrorMessages() {
 	errorMessages[0] = "OK";
 	errorMessages[10] = "MGen detected critical errors during run";
 	errorMessages[11] = "MGen generator freeze on exit - possible error in generator";
-	errorMessages[100] = "GetExitCodeProcess error in MGenTest (for MGen.exe)";
+	errorMessages[100] = "GetExitCodeProcess error (for MGen.exe)";
 	errorMessages[101] = "MGen process did not exit correctly - possible crash";
-	errorMessages[102] = "GetExitCodeProcess error in MGenTest";
+	errorMessages[102] = "GetExitCodeProcess error";
 }
 
 CString GetErrorMessage(int e) {
