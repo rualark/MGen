@@ -536,6 +536,9 @@ int RunJobMGen() {
 		}
 		CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + ".mp3");
 		for (int i = 2; i < 100; ++i) {
+			CheckChilds(1);
+			SaveScreenshot();
+			SendStatus();
 			st.Format("%03d", i);
 			if (!CGLib::fileExists(reaperbuf + "output-" + st + ".mp3")) break;
 			CGLib::copy_file(reaperbuf + "output-" + st + ".mp3", 
