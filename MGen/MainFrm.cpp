@@ -287,6 +287,7 @@ void CMainFrame::ParseCommandLine() {
 	CGLib::m_cline2 = st;
 	if (CGLib::m_cline2 != "") LoadFile(CGLib::m_cline2);
 	//AfxMessageBox(st);
+	if (!CGLib::m_testing) ShowWindow(SW_SHOWMAXIMIZED);
 }
 
 void CMainFrame::LoadFile(CString abs_path) {
@@ -391,7 +392,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 
 	cs.style = WS_OVERLAPPED | WS_CAPTION | FWS_ADDTOTITLE
-		 | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_MAXIMIZE | WS_SYSMENU;
+		 | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU;
 
 	return TRUE;
 }

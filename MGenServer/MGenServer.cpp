@@ -28,6 +28,7 @@ CString reaperbuf;
 CString share;
 CString db_driver, db_server, db_port, db_login, db_pass, db_name;
 int daw_wait = 200;
+int run_minimized = 0;
 
 // Job
 int j_timeout;
@@ -105,7 +106,8 @@ int Run(CString fname, CString par, int delay) {
 	sei.lpFile = fname;
 	sei.lpParameters = par;
 	sei.lpDirectory = NULL;
-	sei.nShow = SW_SHOWNORMAL;
+	if (run_minimized) sei.nShow = SW_SHOWMINNOACTIVE;
+	else sei.nShow = SW_SHOWNORMAL;
 	sei.hInstApp = NULL;
 	ShellExecuteEx(&sei);
 	WaitForSingleObject(sei.hProcess, delay);
@@ -207,7 +209,8 @@ int RunTimeout(CString path, CString par, int delay) {
 	sei.lpFile = path;
 	sei.lpParameters = par;
 	sei.lpDirectory = NULL;
-	sei.nShow = SW_SHOWNORMAL;
+	if (run_minimized) sei.nShow = SW_SHOWMINNOACTIVE;
+	else sei.nShow = SW_SHOWNORMAL;
 	sei.hInstApp = NULL;
 	ShellExecuteEx(&sei);
 	long long start_timestamp = CGLib::time();
@@ -312,7 +315,8 @@ void LoadConfig()
 			}
 			CGLib::LoadVar(&st2, &st3, "reaperbuf", &reaperbuf);
 			CGLib::LoadVar(&st2, &st3, "db_driver", &db_driver);
-			CGLib::CheckVar(&st2, &st3, "daw_wait", &daw_wait, 0 , 6000);
+			CGLib::CheckVar(&st2, &st3, "daw_wait", &daw_wait, 0, 6000);
+			CGLib::CheckVar(&st2, &st3, "run_minimized", &run_minimized, 0, 1);
 			CGLib::LoadVar(&st2, &st3, "share", &share);
 			CGLib::LoadVar(&st2, &st3, "db_server", &db_server);
 			CGLib::LoadVar(&st2, &st3, "db_port", &db_port);
@@ -375,7 +379,7 @@ int RunJobMGen() {
 	CString fname = share + f_folder + f_name;
 	CString fname2 = "server\\midi\\" + f_name;
 	CString fname_pl = share + j_folder + j_basefile + ".pl";
-	CString fname_pl2 = "configs\\Gen" + j_type + "\\" + j_basefile + ".pl";
+	CString fname_pl2 = "configs\\Gen" + j_type + "\\sv_" + j_basefile + ".pl";
 	// Check input file exists
 	if (!CGLib::fileExists(fname_pl)) {
 		est = "File not found: " + fname_pl;
