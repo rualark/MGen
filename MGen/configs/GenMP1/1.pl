@@ -7,4 +7,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 Midi_file = server\midi\1.mid
 Some text here
-Instruments = Piano
+Instruments = Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
