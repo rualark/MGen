@@ -500,9 +500,10 @@ int RunJobMGen() {
 		// Wait for finish
 		render_start = CGLib::time();
 		for (;;) {
+			CheckChilds(1);
 			SaveScreenshot();
 			SendStatus();
-			Sleep(500);
+			Sleep(1000);
 			// Check if progress exists
 			if (CGLib::fileExists(reaperbuf + "progress.txt")) {
 				vector <CString> vs;

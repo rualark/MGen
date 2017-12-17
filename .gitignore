@@ -262,3 +262,5 @@ ModelManifest.xml
 /mysql-connector-c++-noinstall-1.1.9-win32
 /MGen/server/share
 /MGen/server/midi
+/MGen/server/status.txt
+/MGen/log
