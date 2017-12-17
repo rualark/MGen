@@ -102,9 +102,10 @@ void CDb::WriteLog(CString st) {
 			server_id, j_id, Escape(st));
 		Query(q);
 	}
+	st = CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st;
 	cout << st << "\n";
 	CGLib::AppendLineToFile("server\\server.log",
-		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st + "\n");
+		st + "\n");
 }
 
 void CDb::GetFields() {
