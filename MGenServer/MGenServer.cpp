@@ -30,6 +30,7 @@ CString share;
 CString db_driver, db_server, db_port, db_login, db_pass, db_name;
 int daw_wait = 200;
 int run_minimized = 0;
+int screenshots_enabled = 0;
 
 // Job
 int j_timeout;
@@ -159,10 +160,12 @@ HANDLE GetProcessHandle(CString pname) {
 
 void SaveScreenshot() {
 	// Rotate screenshot id
-	screenshot_id = (screenshot_id + 1) % max_screenshot;
-	CString st;
-	st.Format("screen%d-%d.png", db.server_id, screenshot_id);
-	Run("server\\nircmd.exe", "savescreenshot " + share + st, 0);
+	if (screenshots_enabled) {
+		screenshot_id = (screenshot_id + 1) % max_screenshot;
+		CString st;
+		st.Format("screen%d-%d.png", db.server_id, screenshot_id);
+		Run("server\\nircmd.exe", "savescreenshot " + share + st, 0);
+	}
 }
 
 void SendStatus() {
@@ -334,6 +337,7 @@ void LoadConfig()
 			CGLib::LoadVar(&st2, &st3, "db_driver", &db_driver);
 			CGLib::CheckVar(&st2, &st3, "daw_wait", &daw_wait, 0, 6000);
 			CGLib::CheckVar(&st2, &st3, "run_minimized", &run_minimized, 0, 1);
+			CGLib::CheckVar(&st2, &st3, "screenshots_enabled", &screenshots_enabled, 0, 1);
 			CGLib::LoadVar(&st2, &st3, "share", &share);
 			CGLib::LoadVar(&st2, &st3, "db_server", &db_server);
 			CGLib::LoadVar(&st2, &st3, "db_port", &db_port);
@@ -373,7 +377,7 @@ int Connect() {
 
 int FinishJob(int res, CString st) {
 	CString q;
-	q.Format("UPDATE jobs SET j_duration=TIMESTAMPDIFF(SECOND, j_started, NOW()), j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
+	q.Format("UPDATE jobs SET j_updated=NOW(), j_duration=TIMESTAMPDIFF(SECOND, j_started, NOW()), j_state=3, j_result='%d', j_progress='%s' WHERE j_id='%ld'",
 		res, db.Escape(st), CDb::j_id);
 	db.Query(q);
 	WriteLog(st);
@@ -616,7 +620,7 @@ void TakeJob() {
 		if (!j_timeout) j_timeout = 600;
 		if (!j_timeout2) j_timeout2 = 640;
 		// Take job
-		q.Format("UPDATE jobs SET j_started=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%ld'",
+		q.Format("UPDATE jobs SET j_started=NOW(), j_updated=NOW(), s_id='%d', j_state=2, j_progress='Job assigned' WHERE j_id='%ld'",
 			CDb::server_id, CDb::j_id);
 		db.Query(q);
 		db.Query("UNLOCK TABLES");
@@ -649,7 +653,7 @@ void Init() {
 			WriteLog(est);
 		}
 	}
-	q.Format("UPDATE jobs SET j_state=1 WHERE s_id='%d' AND j_state=2", CDb::server_id);
+	q.Format("UPDATE jobs SET j_updated=NOW(), j_state=1 WHERE s_id='%d' AND j_state=2", CDb::server_id);
 	db.Query(q);
 	// Get client hostname
 	db.Fetch("SELECT SUBSTRING_INDEX(host,':',1) as 'ip' from information_schema.processlist WHERE ID=connection_id()");
