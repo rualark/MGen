@@ -3,6 +3,7 @@ Share = server\share\
 ReaperBuf = C:\ReaperBuf\
 daw_wait = 200 # How many second to wait after starting DAW to allow virtual instruments to load
 run_minimized = 1 # Run all processes minimized to avoid user interruption
+screenshots_enabled = 0 # Enable or disable making screenshots and sending to server
 
 DB_Driver = MySQL ODBC 5.3 Unicode Driver
 DB_Server = 192.168.9.4
