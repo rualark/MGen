@@ -43,6 +43,7 @@ CString f_folder;
 CString j_folder;
 CString f_name;
 CString j_progress;
+int f_stems = 0;
 
 int can_render = 1;
 int screenshot_id = 0;
@@ -535,14 +536,16 @@ int RunJobMGen() {
 			return FinishJob(1, "Output file output-001.mp3 is too small");
 		}
 		CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + ".mp3");
-		for (int i = 2; i < 100; ++i) {
-			CheckChilds(1);
-			SaveScreenshot();
-			SendStatus();
-			st.Format("%03d", i);
-			if (!CGLib::fileExists(reaperbuf + "output-" + st + ".mp3")) break;
-			CGLib::copy_file(reaperbuf + "output-" + st + ".mp3", 
-				share + j_folder + j_basefile + "-" + st + ".mp3");
+		if (f_stems) {
+			for (int i = 2; i < 100; ++i) {
+				CheckChilds(1);
+				SaveScreenshot();
+				SendStatus();
+				st.Format("%03d", i);
+				if (!CGLib::fileExists(reaperbuf + "output-" + st + ".mp3")) break;
+				CGLib::copy_file(reaperbuf + "output-" + st + ".mp3",
+					share + j_folder + j_basefile + "-" + st + ".mp3");
+			}
 		}
 	}
 	est.Format("Success in %d seconds", 
@@ -598,6 +601,7 @@ void TakeJob() {
 		// Load job
 		CDb::j_id = db.GetInt("j_id");
 		j_priority = db.GetInt("j_priority");
+		f_stems = db.GetInt("f_stems");
 		j_timeout = db.GetInt("j_timeout");
 		j_timeout2 = db.GetInt("j_timeout2");
 		j_engrave = db.GetInt("j_engrave");
