@@ -252,6 +252,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 {
 	CString st, st2, st3, iname;
 	ifstream fs;
+	int instr_id = -1;
 	m_current_config = fname;
 	// Check file exists
 	if (!fileExists(fname)) {
@@ -308,6 +309,40 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 			LoadVar(&st2, &st3, "instruments", &m_config_insts);
 			//LoadVarInstr(&st2, &st3, "instruments", instr);
 			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose, 0);
+			// Load instrument layout overrides
+			LoadInstrumentLayoutLine(st2, st3);
+			// Load instrument id
+			if (st2 == "instrument") {
+				++parameter_found;
+				instr_id = -1;
+				int pos2 = st3.Find("/");
+				// Check if it is first symbol
+				if (pos2 > -1) {
+					CString st4 = st3.Left(pos2);
+					CString st5 = st3.Mid(pos2 + 1);
+					for (int i = 0; i < InstCName.size(); ++i) {
+						if (st4 == InstGName[i] && st5 == InstCName[i]) {
+							instr_id = i;
+							break;
+						}
+					}
+				}
+				else {
+					for (int i = 0; i < InstCName.size(); ++i) {
+						if (st3 == InstGName[i]) {
+							instr_id = i;
+							break;
+						}
+					}
+				}
+				if (instr_id == -1) {
+					WriteLog(5, "Cannot find instrument " + st3);
+				}
+			}
+			// Load instrument overrides
+			if (instr_id > -1) {
+				LoadInstrumentLine(st2, st3, instr_id);
+			}
 			// Load algorithm-specific variables if we are not loading saved results
 			if (!m_loading) {
 				LoadConfigLine(&st2, &st3, idata, fdata);
@@ -326,6 +361,20 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 
 void CGVar::LoadConfig(CString fname, int load_includes) {
 	CString st2;
+	// Load instruments layout
+	if (instr_layout.IsEmpty()) instr_layout = "Default";
+	LoadInstrumentLayout();
+	// Load instruments
+	LoadInstruments();
+	// Load configs again, overwriting instrument parameters
+	LoadConfigFiles(fname, load_includes);
+	// After loading global mapping of voices to instruments, load algorithm-specific mapping
+	st2 = "instruments";
+	LoadVarInstr(&st2, &m_algo_insts, "instruments", instr);
+	LoadVarInstr(&st2, &m_config_insts, "instruments", instr);
+}
+
+void CGVar::LoadConfigFiles(CString fname, int load_includes) {
 	LoadConfigFile(fname, load_includes);
 	// Load autotest config
 	if (m_testing == 1) {
@@ -336,15 +385,6 @@ void CGVar::LoadConfig(CString fname, int load_includes) {
 		CString fname2 = "server\\configs\\" + m_algo_folder + ".pl";
 		if (fileExists(fname2)) LoadConfigFile(fname2, load_includes);
 	}
-	// Load instruments layout
-	if (instr_layout.IsEmpty()) instr_layout = "Default";
-	LoadInstrumentLayout();
-	// Load instruments
-	LoadInstruments();
-	// After loading global mapping of voices to instruments, load algorithm-specific mapping
-	st2 = "instruments";
-	LoadVarInstr(&st2, &m_algo_insts, "instruments", instr);
-	LoadVarInstr(&st2, &m_config_insts, "instruments", instr);
 }
 
 void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
@@ -453,8 +493,7 @@ void CGVar::LoadInstrumentLayout()
 			st3.Trim();
 			st2.MakeLower();
 			parameter_found = 0;
-			CheckVar(&st2, &st3, "rnd_tempo", &rnd_tempo);
-			CheckVar(&st2, &st3, "rnd_tempo_step", &rnd_tempo_step);
+			LoadInstrumentLayoutLine(st2, st3);
 			if (!parameter_found) {
 				WriteLog(5, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
 			}
@@ -470,6 +509,11 @@ void CGVar::LoadInstrumentLayout()
 	CString est;
 	est.Format("LoadInstrumentLayout loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
 	WriteLog(0, est);
+}
+
+void CGVar::LoadInstrumentLayoutLine(CString &st2, CString &st3) {
+	CheckVar(&st2, &st3, "rnd_tempo", &rnd_tempo);
+	CheckVar(&st2, &st3, "rnd_tempo_step", &rnd_tempo_step);
 }
 
 void CGVar::LoadInstruments()
@@ -521,83 +565,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 			st2.MakeLower();
 			// Initialize loading
 			parameter_found = 0;
-			LoadVar(&st2, &st3, "library", &instr_lib[i]);
-			CheckVar(&st2, &st3, "ks1", &ks1[i]);
-			LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
-			LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
-			CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
-			CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
-			CheckVar(&st2, &st3, "poly", &instr_poly[i]);
-			CheckVar(&st2, &st3, "type", &instr_type[i]);
-			CheckVar(&st2, &st3, "channel", &instr_channel[i]);
-			CheckRange(&st2, &st3, "vib_bell_top", &vib_bell_top1[i], &vib_bell_top2[i]);
-			CheckRange(&st2, &st3, "vibf_bell_top", &vibf_bell_top1[i], &vibf_bell_top2[i]);
-			CheckRange(&st2, &st3, "vib_bell", &vib_bell1[i], &vib_bell2[i]);
-			CheckRange(&st2, &st3, "vibf_bell", &vibf_bell1[i], &vibf_bell2[i]);
-			CheckRange(&st2, &st3, "vib_bell_dur", &vib_bell_mindur[i], &vib_bell_dur[i]);
-			CheckVar(&st2, &st3, "vib_bell_freq", &vib_bell_freq[i]);
-			CheckVar(&st2, &st3, "vib_bell_exp", &vib_bell_exp[i]);
-			CheckVar(&st2, &st3, "vibf_bell_exp", &vibf_bell_exp[i]);
-			CheckVar(&st2, &st3, "rnd_vel", &rnd_vel[i]);
-			CheckVar(&st2, &st3, "rnd_vel_repeat", &rnd_vel_repeat[i]);
-			CheckVar(&st2, &st3, "rnd_dyn", &rnd_dyn[i]);
-			CheckVar(&st2, &st3, "rnd_vib", &rnd_vib[i]);
-			CheckVar(&st2, &st3, "rnd_vibf", &rnd_vibf[i]);
-			CheckVar(&st2, &st3, "splitpo_pent_minint", &splitpo_pent_minint[i]);
-			CheckVar(&st2, &st3, "cc_vib", &CC_vib[i]);
-			CheckVar(&st2, &st3, "cc_vibf", &CC_vibf[i]);
-			CheckVar(&st2, &st3, "cc_steps", &CC_steps[i]);
-			CheckVar(&st2, &st3, "cc_dynamics", &CC_dyn[i]);
-			CheckVar(&st2, &st3, "cc_ma", &CC_ma[i], 3);
-			CheckVar(&st2, &st3, "cc_retrigger", &CC_retrigger[i]);
-			CheckVar(&st2, &st3, "retrigger_freq", &retrigger_freq[i]);
-			CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
-			CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
-			CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
-			LoadVectorPar(&st2, &st3, "legato_ahead", legato_ahead[i]);
-			LoadVectorPar(&st2, &st3, "ahead_chrom", ahead_chrom[i]);
-			CheckVar(&st2, &st3, "leg_pdur", &leg_pdur[i]);
-			CheckVar(&st2, &st3, "leg_cdur", &leg_cdur[i]);
-			CheckVar(&st2, &st3, "legato_ahead_exp", &legato_ahead_exp[i]);
-			CheckVar(&st2, &st3, "splitpo_freq", &splitpo_freq[i]);
-			CheckVar(&st2, &st3, "splitpo_mindur", &splitpo_mindur[i]);
-			CheckVar(&st2, &st3, "gliss_mindur", &gliss_mindur[i]);
-			CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
-			CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
-			CheckVar(&st2, &st3, "lengroup2", &lengroup2[i]);
-			CheckVar(&st2, &st3, "lengroup3", &lengroup3[i]);
-			CheckVar(&st2, &st3, "lengroup4", &lengroup4[i]);
-			CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
-			CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
-			CheckRange(&st2, &st3, "rand_pos", &rand_start[i], &rand_end[i]);
-			CheckRange(&st2, &st3, "rand_pos_max", &rand_start_max[i], &rand_end_max[i]);
-			CheckVar(&st2, &st3, "retrigger_min_len", &retrigger_min_len[i]);
-			CheckVar(&st2, &st3, "retrigger_rand_end", &retrigger_rand_end[i]);
-			CheckVar(&st2, &st3, "retrigger_rand_max", &retrigger_rand_max[i]);
-			CheckVar(&st2, &st3, "vel_harsh", &vel_harsh[i]);
-			CheckVar(&st2, &st3, "vel_immediate", &vel_immediate[i]);
-			CheckVar(&st2, &st3, "vel_normal", &vel_normal[i]);
-			CheckVar(&st2, &st3, "vel_gliss", &vel_gliss[i]);
-			CheckVar(&st2, &st3, "vel_normal_minlen", &vel_normal_minlen[i]);
-			CheckVar(&st2, &st3, "gliss_minlen", &gliss_minlen[i]);
-			CheckVar(&st2, &st3, "bell_mindur", &bell_mindur[i]);
-			CheckVar(&st2, &st3, "gliss_freq", &gliss_freq[i]);
-			CheckVar(&st2, &st3, "max_ahead_note", &max_ahead_note[i]);
-			CheckRange(&st2, &st3, "bell_mul", &bell_start_mul[i], &bell_end_mul[i]);
-			CheckRange(&st2, &st3, "bell_len", &bell_start_len[i], &bell_end_len[i]);
-			CheckRange(&st2, &st3, "bell_vel", &bell_start_vel[i], &bell_end_vel[i]);
-			CheckVar(&st2, &st3, "rbell_freq", &rbell_freq[i]);
-			CheckRange(&st2, &st3, "rbell_pos", &rbell_pos1[i], &rbell_pos2[i]);
-			CheckRange(&st2, &st3, "rbell_dur", &rbell_mindur[i], &rbell_dur[i]);
-			CheckRange(&st2, &st3, "rbell_mul", &rbell_mul[i], &rbell_mul2[i]);
-			CheckVar(&st2, &st3, "end_sfl_dur", &end_sfl_dur[i]);
-			CheckVar(&st2, &st3, "end_sfl_freq", &end_sfl_freq[i]);
-			CheckVar(&st2, &st3, "end_pbd_dur", &end_pbd_dur[i]);
-			CheckVar(&st2, &st3, "end_pbd_freq", &end_pbd_freq[i]);
-			CheckVar(&st2, &st3, "end_vib2_dur", &end_vib2_dur[i]);
-			CheckVar(&st2, &st3, "end_vib2_freq", &end_vib2_freq[i]);
-			CheckVar(&st2, &st3, "end_vib_dur", &end_vib_dur[i]);
-			CheckVar(&st2, &st3, "end_vib_freq", &end_vib_freq[i]);
+			LoadInstrumentLine(st2, st3, i);
 			if (!parameter_found) {
 				WriteLog(5, "Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
 			}
@@ -610,6 +578,86 @@ void CGVar::LoadInstrument(int i, CString fname)
 	CString est;
 	est.Format("LoadInstruments loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
 	WriteLog(0, est);
+}
+
+void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
+	LoadVar(&st2, &st3, "library", &instr_lib[i]);
+	CheckVar(&st2, &st3, "ks1", &ks1[i]);
+	LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
+	LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
+	CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
+	CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
+	CheckVar(&st2, &st3, "poly", &instr_poly[i]);
+	CheckVar(&st2, &st3, "type", &instr_type[i]);
+	CheckVar(&st2, &st3, "channel", &instr_channel[i]);
+	CheckRange(&st2, &st3, "vib_bell_top", &vib_bell_top1[i], &vib_bell_top2[i]);
+	CheckRange(&st2, &st3, "vibf_bell_top", &vibf_bell_top1[i], &vibf_bell_top2[i]);
+	CheckRange(&st2, &st3, "vib_bell", &vib_bell1[i], &vib_bell2[i]);
+	CheckRange(&st2, &st3, "vibf_bell", &vibf_bell1[i], &vibf_bell2[i]);
+	CheckRange(&st2, &st3, "vib_bell_dur", &vib_bell_mindur[i], &vib_bell_dur[i]);
+	CheckVar(&st2, &st3, "vib_bell_freq", &vib_bell_freq[i]);
+	CheckVar(&st2, &st3, "vib_bell_exp", &vib_bell_exp[i]);
+	CheckVar(&st2, &st3, "vibf_bell_exp", &vibf_bell_exp[i]);
+	CheckVar(&st2, &st3, "rnd_vel", &rnd_vel[i]);
+	CheckVar(&st2, &st3, "rnd_vel_repeat", &rnd_vel_repeat[i]);
+	CheckVar(&st2, &st3, "rnd_dyn", &rnd_dyn[i]);
+	CheckVar(&st2, &st3, "rnd_vib", &rnd_vib[i]);
+	CheckVar(&st2, &st3, "rnd_vibf", &rnd_vibf[i]);
+	CheckVar(&st2, &st3, "splitpo_pent_minint", &splitpo_pent_minint[i]);
+	CheckVar(&st2, &st3, "cc_vib", &CC_vib[i]);
+	CheckVar(&st2, &st3, "cc_vibf", &CC_vibf[i]);
+	CheckVar(&st2, &st3, "cc_steps", &CC_steps[i]);
+	CheckVar(&st2, &st3, "cc_dynamics", &CC_dyn[i]);
+	CheckVar(&st2, &st3, "cc_ma", &CC_ma[i], 3);
+	CheckVar(&st2, &st3, "cc_retrigger", &CC_retrigger[i]);
+	CheckVar(&st2, &st3, "retrigger_freq", &retrigger_freq[i]);
+	CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
+	CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
+	CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
+	LoadVectorPar(&st2, &st3, "legato_ahead", legato_ahead[i]);
+	LoadVectorPar(&st2, &st3, "ahead_chrom", ahead_chrom[i]);
+	CheckVar(&st2, &st3, "leg_pdur", &leg_pdur[i]);
+	CheckVar(&st2, &st3, "leg_cdur", &leg_cdur[i]);
+	CheckVar(&st2, &st3, "legato_ahead_exp", &legato_ahead_exp[i]);
+	CheckVar(&st2, &st3, "splitpo_freq", &splitpo_freq[i]);
+	CheckVar(&st2, &st3, "splitpo_mindur", &splitpo_mindur[i]);
+	CheckVar(&st2, &st3, "gliss_mindur", &gliss_mindur[i]);
+	CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
+	CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
+	CheckVar(&st2, &st3, "lengroup2", &lengroup2[i]);
+	CheckVar(&st2, &st3, "lengroup3", &lengroup3[i]);
+	CheckVar(&st2, &st3, "lengroup4", &lengroup4[i]);
+	CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
+	CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
+	CheckRange(&st2, &st3, "rand_pos", &rand_start[i], &rand_end[i]);
+	CheckRange(&st2, &st3, "rand_pos_max", &rand_start_max[i], &rand_end_max[i]);
+	CheckVar(&st2, &st3, "retrigger_min_len", &retrigger_min_len[i]);
+	CheckVar(&st2, &st3, "retrigger_rand_end", &retrigger_rand_end[i]);
+	CheckVar(&st2, &st3, "retrigger_rand_max", &retrigger_rand_max[i]);
+	CheckVar(&st2, &st3, "vel_harsh", &vel_harsh[i]);
+	CheckVar(&st2, &st3, "vel_immediate", &vel_immediate[i]);
+	CheckVar(&st2, &st3, "vel_normal", &vel_normal[i]);
+	CheckVar(&st2, &st3, "vel_gliss", &vel_gliss[i]);
+	CheckVar(&st2, &st3, "vel_normal_minlen", &vel_normal_minlen[i]);
+	CheckVar(&st2, &st3, "gliss_minlen", &gliss_minlen[i]);
+	CheckVar(&st2, &st3, "bell_mindur", &bell_mindur[i]);
+	CheckVar(&st2, &st3, "gliss_freq", &gliss_freq[i]);
+	CheckVar(&st2, &st3, "max_ahead_note", &max_ahead_note[i]);
+	CheckRange(&st2, &st3, "bell_mul", &bell_start_mul[i], &bell_end_mul[i]);
+	CheckRange(&st2, &st3, "bell_len", &bell_start_len[i], &bell_end_len[i]);
+	CheckRange(&st2, &st3, "bell_vel", &bell_start_vel[i], &bell_end_vel[i]);
+	CheckVar(&st2, &st3, "rbell_freq", &rbell_freq[i]);
+	CheckRange(&st2, &st3, "rbell_pos", &rbell_pos1[i], &rbell_pos2[i]);
+	CheckRange(&st2, &st3, "rbell_dur", &rbell_mindur[i], &rbell_dur[i]);
+	CheckRange(&st2, &st3, "rbell_mul", &rbell_mul[i], &rbell_mul2[i]);
+	CheckVar(&st2, &st3, "end_sfl_dur", &end_sfl_dur[i]);
+	CheckVar(&st2, &st3, "end_sfl_freq", &end_sfl_freq[i]);
+	CheckVar(&st2, &st3, "end_pbd_dur", &end_pbd_dur[i]);
+	CheckVar(&st2, &st3, "end_pbd_freq", &end_pbd_freq[i]);
+	CheckVar(&st2, &st3, "end_vib2_dur", &end_vib2_dur[i]);
+	CheckVar(&st2, &st3, "end_vib2_freq", &end_vib2_freq[i]);
+	CheckVar(&st2, &st3, "end_vib_dur", &end_vib_dur[i]);
+	CheckVar(&st2, &st3, "end_vib_freq", &end_vib_freq[i]);
 }
 
 void CGVar::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {

@@ -23,8 +23,11 @@ public:
 	void AddMelody(int step1, int step2, int v, CString info, CString info2 = "");
 	void LoadInstruments(); // Load instruments config
 	void LoadInstrument(int i, CString fname);
+	void LoadInstrumentLine(CString st2, CString st3, int i);
 	void LoadConfig(CString fname, int load_includes = 1);
+	void LoadConfigFiles(CString fname, int load_includes);
 	void LoadInstrumentLayout();
+	void LoadInstrumentLayoutLine(CString & st2, CString & st3);
 	void SaveResults(CString dir, CString fname);
 	void ExportVectorsCSV(CString dir, CString fname);
 	void LoadResults(CString dir, CString fname);
