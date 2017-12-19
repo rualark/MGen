@@ -24,8 +24,8 @@ ProcessExists(Name){
 RestartServer() {
   Process, Close, MGenServer.exe
   Process, WaitClose, MGenServer.exe, 20
-  if ErrorLevel ; The PID still exists.
-    MsgBox The process MGenServer did not close within 20 seconds.
+  if ErrorLevel 
+    return
   Run, MGenServer.exe
 }
 
