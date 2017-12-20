@@ -406,26 +406,16 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 			for (int i = 0; i < InstGName.size(); i++) {
 				if (InstGName[i] == st) {
 					++found;
-					if (instr_used[i] < instr_poly[i]) {
-						++instr_used[i];
-						Dest[ii] = i;
-						break;
-					}
+					++instr_used[i];
+					Dest[ii] = i;
+					break;
 				}
-				if (i == InstGName.size() - 1) {
-					if (!found) {
-						CString est;
-						est.Format("Cannot find any instrument named %s (%d) in layout %s. Mapped to default instrument %s/%s (%d)", 
-							st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size()-1);
-						WriteLog(5, est);
-					}
-					else {
-						CString est;
-						est.Format("Cannot map instrument named %s (%d) in layout %s. Probably too many voices for this instrument type.  Mapped to default instrument %s/%s (%d)", 
-							st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size() - 1);
-						WriteLog(5, est);
-					}
-				}
+			}
+			if (!found) {
+				CString est;
+				est.Format("Cannot find any instrument named %s (%d) in layout %s. Mapped to default instrument %s/%s (%d)",
+					st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size() - 1);
+				WriteLog(5, est);
 			}
 		}
 	}

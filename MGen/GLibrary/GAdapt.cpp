@@ -663,17 +663,6 @@ void CGAdapt::Adapt(int step1, int step2)
 			tempo[i] += tr;
 		}
 	}
-	for (int v = 0; v < v_cnt; v++) {
-		// Instrument id
-		int ii = instr[v]; 
-		// Check if sending multiple voices to monophonic instrument
-		if ((isent[ii] > instr_poly[ii]) && (!warning_poly[ii])) {
-			CString est;
-			est.Format("Warning: sending %d voices to instrument %s [%d] with polyphony = %d", isent[ii], InstGName[ii], ii, instr_poly[ii]);
-			WriteLog(5, est);
-			warning_poly[ii]++;
-		}
-	}
 	// Count time
 	if (debug_level > 1) {
 		long long time_stop = CGLib::time();
