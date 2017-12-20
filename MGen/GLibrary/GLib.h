@@ -4,6 +4,8 @@
 
 #define MGR_VERSION "1.9" // Version of MGR file format (should change only when format changes)
 #define MAX_VOICE 200
+// Maximum number of solo instruments of the same group
+#define MAX_STAGE 50
 #define MAX_INSTR 100
 #define MAX_GRAPH 3
 // Number of status lines

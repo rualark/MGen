@@ -240,7 +240,7 @@ public:
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
 
 	// Midi files
-	vector<vector<PmEvent>> midifile_buf;
+	vector<vector<vector<PmEvent>>> midifile_buf;
 	int amidi_export = 0; // Exporting adapted midi
 	int midifile_loaded = 0; // If MIDI was loaded from file
 	int midifile_type = 1; // Type of MIDI file loaded
@@ -271,6 +271,7 @@ protected:
 	vector <PmEvent> midi_buf_next; // Buffer for next SendMIDI run
 	long long midi_buf_lim = 0; // After this timestamp information goes to midi_buf_next
 	int midi_channel = 0;
+	int midi_stage = 0;
 	int midi_voice = 0;
 
 	// Cantus

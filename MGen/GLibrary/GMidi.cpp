@@ -527,60 +527,90 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 	StopMIDI();
 	amidi_export = 1;
 	midifile_buf.clear();
-	midifile_buf.resize(MAX_VOICE);
+	midifile_buf.resize(MAX_STAGE);
+	for (int i = 0; i < MAX_STAGE; ++i) {
+		midifile_buf[i].resize(MAX_VOICE);
+	}
 	SendMIDI(midi_sent, t_sent);
-	if (!midifile_buf.size()) return;
-
-	int tracks_cnt;
+	// Get maximum stage
+	int stage_max = vmax(v_stage) + 1;
+	vector <int> stracks_cnt;
+	stracks_cnt.resize(MAX_STAGE);
+	int tracks_cnt = 0;
 	// Get maximum used track
-	for (int ch = MAX_VOICE - 1; ch >= 0; --ch) {
-		if (midifile_buf[ch].size()) {
-			tracks_cnt = ch + 1;
-			break;
+	for (int sta = 0; sta < stage_max; ++sta) {
+		for (int ch = MAX_VOICE - 1; ch >= 0; --ch) {
+			if (midifile_buf[sta][ch].size()) {
+				if (!stracks_cnt[sta]) stracks_cnt[sta] = ch + 1;
+				++tracks_cnt;
+			}
 		}
 	}
+	if (!tracks_cnt) return;
 	// Save to file
 	MidiFile midifile;
-	midifile.addTracks(tracks_cnt + 1);    // Add another two tracks to the MIDI file
+	vector <MidiFile> smidifile;
+	smidifile.resize(stage_max);
 	float tps = 200;                // ticks per second
 	float spq = 0.5;              // Seconds per quarter note
 	int tpq = tps / spq;          // ticks per quarter note
-	midifile.setTicksPerQuarterNote(tpq);
 	int track = 0;
+	int strack = 0; // stage track
 	int channel = 0;
 	int tick = 0;
 	int type, data1, data2;
+	CString st2;
 	// Add some expression track (track 0) messages:
 	string st = fname;
+	for (int sta = 0; sta < stage_max; ++sta) {
+		smidifile[sta].setTicksPerQuarterNote(tpq);
+		smidifile[sta].addTracks(stracks_cnt[sta] + 1);
+		smidifile[sta].addTrackName(track, 0, st);
+		smidifile[sta].addTempo(track, 0, 60 / spq);
+	}
+	midifile.addTracks(tracks_cnt + 1);
+	midifile.setTicksPerQuarterNote(tpq);
 	midifile.addTrackName(track, 0, st);
-	// Save tempo
 	midifile.addTempo(track, 0, 60 / spq);
-	for (int ch = 0; ch < MAX_VOICE; ++ch) {
-		if (!midifile_buf[ch].size()) continue;
-		// Convert channel to midi file channel and track number
-		track = ch + 1;
-		channel = ch;
-		// Send instrument name
-		//string st = InstGName[instr[ch]];
-		//midifile.addTrackName(track, 0, st);
-		midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
-		for (int i = 0; i < midifile_buf[ch].size(); i++) {
-			tick = midifile_buf[ch][i].timestamp / 1000.0 / spq * tpq;
-			type = Pm_MessageStatus(midifile_buf[ch][i].message) & 0xF0;
-			data1 = Pm_MessageData1(midifile_buf[ch][i].message);
-			data2 = Pm_MessageData2(midifile_buf[ch][i].message);
-			if (type == MIDI_NOTEON) {
-				if (data2) {
-					midifile.addNoteOn(track, tick, channel, data1, data2);
+	track = -1;
+	for (int sta = 0; sta < stage_max; ++sta) {
+		for (int ch = 0; ch < MAX_VOICE; ++ch) {
+			if (!midifile_buf[sta][ch].size()) continue;
+			// Convert channel to midi file channel and track number
+			strack = ch + 1;
+			++track;
+			channel = ch;
+			// Send instrument name
+			//string st = InstGName[instr[ch]];
+			//midifile.addTrackName(track, 0, st);
+			midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
+			smidifile[sta].addPatchChange(strack, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
+			for (int i = 0; i < midifile_buf[sta][ch].size(); i++) {
+				tick = midifile_buf[sta][ch][i].timestamp / 1000.0 / spq * tpq;
+				type = Pm_MessageStatus(midifile_buf[sta][ch][i].message) & 0xF0;
+				data1 = Pm_MessageData1(midifile_buf[sta][ch][i].message);
+				data2 = Pm_MessageData2(midifile_buf[sta][ch][i].message);
+				if (type == MIDI_NOTEON) {
+					if (data2) {
+						midifile.addNoteOn(track, tick, channel, data1, data2);
+						smidifile[sta].addNoteOn(strack, tick, channel, data1, data2);
+					}
+					else {
+						midifile.addNoteOff(track, tick, channel, data1, 0);
+						smidifile[sta].addNoteOff(strack, tick, channel, data1, 0);
+					}
 				}
-				else {
-					midifile.addNoteOff(track, tick, channel, data1, 0);
+				if (type == MIDI_CC) {
+					midifile.addController(track, tick, channel, data1, data2);
+					smidifile[sta].addController(strack, tick, channel, data1, data2);
 				}
-			}
-			if (type == MIDI_CC) {
-				midifile.addController(track, tick, channel, data1, data2);
 			}
 		}
+	}
+	for (int sta = 0; sta < stage_max; ++sta) {
+		smidifile[sta].sortTracks();         // ensure tick times are in correct order
+		st2.Format(dir + "\\" + fname + "_%d.midi", sta);
+		smidifile[sta].write(st2);
 	}
 	midifile.sortTracks();         // ensure tick times are in correct order
 	midifile.write(dir + "\\" + fname + ".midi");
@@ -1570,7 +1600,12 @@ void CGMidi::AddMidiEvent(long long timestamp, int mm_type, int data1, int data2
 			}
 		}
 		else {
-			midi_buf.push_back(event);
+			if (amidi_export) {
+				midifile_buf[midi_stage][mm_type & 0xF].push_back(event);
+			}
+			else {
+				midi_buf.push_back(event);
+			}
 			// Save maximum message and its time
 			if (real_timestamp > midi_sent_t2) {
 				midi_sent_t2 = real_timestamp;
@@ -1722,6 +1757,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		int ncount = 0;
 		int ii = instr[v];
 		midi_channel = instr_channel[ii];
+		midi_stage = v_stage[v];
 		midi_voice = v;
 		// Move to note start
 		if (coff[step1][v] > 0) {
@@ -1816,12 +1852,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
 	// Send
 	for (int i = 0; i < midi_buf.size(); i++) {
-		if (amidi_export) {
-			midifile_buf[Pm_MessageStatus(midi_buf[i].message) & 0xF].push_back(midi_buf[i]);
-		}
-		else {
-			mo->QueueEvent(midi_buf[i]);
-		}
+		mo->QueueEvent(midi_buf[i]);
 	}
 	// Count time
 	long long time_stop = CGLib::time();
