@@ -23,6 +23,8 @@ int nRetCode = 0;
 CString est;
 CString client_host;
 vector<CString> errorMessages;
+long long time_job0;
+CString j_basefile;
 
 // Parameters
 CString reaperbuf;
@@ -45,6 +47,7 @@ CString j_folder;
 CString f_name;
 CString j_progress;
 int f_stems = 0;
+int j_stages = 0;
 
 int can_render = 1;
 int screenshot_id = 0;
@@ -393,10 +396,116 @@ int SendMessageToWindow(CString wClass, short vk) {
 	else return 1;
 }
 
+int RunRenderStage(int sta) {
+	vector <CString> sv;
+	CString st;
+	CString sta2;
+	sta2.Format("%d", sta);
+	if (!rChild["Reaper.exe"]) {
+		return FinishJob(1, "Cannot render because Reaper.exe is not running");
+	}
+	if (!rChild["AutoHotkey.exe"]) {
+		return FinishJob(1, "Cannot render because AutoHotkey.exe is not running");
+	}
+	// Clean folder
+	CreateDirectory(reaperbuf, NULL);
+	DeleteFile(reaperbuf + "progress.txt");
+	DeleteFile(reaperbuf + "input.mid");
+	DeleteFile(reaperbuf + "windows.log");
+	DeleteFile(reaperbuf + "finished.txt");
+	for (int i = 1; i < 100; ++i) {
+		st.Format("output-%03d.mp3", i);
+		DeleteFile(reaperbuf + st);
+	}
+	// Copy files
+	CGLib::copy_file(share + j_folder + j_basefile + "_" + sta2 + ".midi", reaperbuf + "input.mid");
+	// Start render
+	est.Format("Starting render stage #" + sta2 + " after %d seconds...",
+		(CGLib::time() - time_job0) / 1000);
+	WriteLog(est);
+	if (SendMessageToWindow("REAPERwnd", VK_F12)) {
+		return FinishJob(1, "Error sending message to Reaper window");
+	}
+	// Wait for finish
+	render_start = CGLib::time();
+	for (;;) {
+		CheckChilds(1);
+		SaveScreenshot();
+		SendStatus();
+		Sleep(1000);
+		// Check if progress exists
+		if (CGLib::fileExists(reaperbuf + "progress.txt")) {
+			vector <CString> vs;
+			CGLib::read_file_sv(reaperbuf + "progress.txt", sv);
+			if (sv.size()) {
+				st.Format("Stage %d/%d: ", sta, j_stages);
+				SendProgress(st + sv[0]);
+			}
+		}
+		// Check if no progress for long time
+		else if (CGLib::time() - render_start > 30 * 1000) {
+			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper_" + sta2 + ".log");
+			return FinishJob(1, "Render showed no progress during 30 seconds");
+		}
+		// Check if reascript finished
+		if (CGLib::fileExists(reaperbuf + "finished.txt")) break;
+		// Check for timeout
+		if (CGLib::time() - render_start > j_render * 1000) {
+			est.Format("Render timed out with %d seconds. Please increase render timeout or decrease music length",
+				j_render);
+			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper_" + sta2 + ".log");
+			return FinishJob(1, est);
+		}
+	}
+	CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper_" + sta2 + ".log");
+	// No output file
+	if (!CGLib::fileExists(reaperbuf + "output-001.mp3")) {
+		return FinishJob(1, "Output file output-001.mp3 does not exist");
+	}
+	// Zero length file
+	if (CGLib::FileSize(reaperbuf + "output-001.mp3") <= 0) {
+		return FinishJob(1, "Output file output-001.mp3 is too small");
+	}
+	if (sta) {
+		//CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + "_" + sta2 + ".mp3");
+	}
+	else {
+		CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + ".mp3");
+	}
+	if (f_stems) {
+		for (int i = 2; i < 100; ++i) {
+			CheckChilds(1);
+			SaveScreenshot();
+			SendStatus();
+			st.Format("%03d", i);
+			if (!CGLib::fileExists(reaperbuf + "output-" + st + ".mp3")) break;
+			CGLib::copy_file(reaperbuf + "output-" + st + ".mp3",
+				share + j_folder + j_basefile + "-" + st + "_" + sta2 + ".mp3");
+		}
+	}
+	DeleteFile(reaperbuf + "stage.mp3");
+	rename(reaperbuf + "output-001.mp3", reaperbuf + "stage.mp3");
+	return 0;
+}
+
+int RunRender() {
+	vector <CString> sv;
+	CString st, sta2;
+	if (!j_render) return 0;
+
+	DeleteFile(reaperbuf + "stage.mp3");
+	for (int sta = j_stages - 1; sta >= 0; --sta) {
+		if (RunRenderStage(sta)) return 1;
+	}
+
+	return 0;
+}
+
 int RunJobMGen() {
-	long long time_job0 = CGLib::time();
-	CString st, st2;
-	CString j_basefile = CGLib::bname_from_path(f_name);
+	j_stages = 0;
+	time_job0 = CGLib::time();
+	j_basefile = CGLib::bname_from_path(f_name);
+	CString st, st2, sta2;
 	CString fname = share + f_folder + f_name;
 	CString fname2 = "server\\midi\\" + f_name;
 	CString fname_pl = share + j_folder + j_basefile + ".pl";
@@ -443,8 +552,17 @@ int RunJobMGen() {
 	CGLib::copy_file(as_dir + "\\log-warning.log", share + j_folder + "log-warning.log");
 	CGLib::copy_file(as_dir + "\\log-debug.log", share + j_folder + "log-debug.log");
 	CGLib::copy_file(as_dir + "\\log-algorithm.log", share + j_folder + "log-algorithm.log");
-	CGLib::copy_file(as_dir + "\\" + as_fname + ".midi", share + j_folder + j_basefile + ".midi");
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".ly", share + j_folder + j_basefile + ".ly");
+	// Get j_stages
+	j_stages = 0;
+	for (int sta = 0; sta < MAX_STAGE; ++sta) {
+		sta2.Format("%d", sta);
+		if (!CGLib::fileExists(as_dir + "\\" + as_fname + "_" + sta2 + ".midi"))
+			break;
+		j_stages = sta + 1;
+		CGLib::copy_file(as_dir + "\\" + as_fname + "_" + sta2 + ".midi", 
+			share + j_folder + j_basefile + "_" + sta2 + ".midi");
+	}
 	if (ret) {
 		est.Format("Error during MGen run: %d - %s", ret, GetErrorMessage(ret));
 		return FinishJob(1, est);
@@ -475,83 +593,7 @@ int RunJobMGen() {
 			return FinishJob(1, est);
 		}
 	}
-	// Run render
-	if (j_render) {
-		if (!rChild["Reaper.exe"]) {
-			return FinishJob(1, "Cannot render because Reaper.exe is not running");
-		}
-		if (!rChild["AutoHotkey.exe"]) {
-			return FinishJob(1, "Cannot render because AutoHotkey.exe is not running");
-		}
-		// Clean folder
-		CreateDirectory(reaperbuf, NULL);
-		DeleteFile(reaperbuf + "progress.txt");
-		DeleteFile(reaperbuf + "input.mid");
-		DeleteFile(reaperbuf + "windows.log");
-		DeleteFile(reaperbuf + "finished.txt");
-		for (int i = 1; i < 100; ++i) {
-			st.Format("output-%03d.mp3", i);
-			DeleteFile(reaperbuf + st);
-		}
-		// Copy files
-		CGLib::copy_file(share + j_folder + j_basefile + ".midi", reaperbuf + "input.mid");
-		// Start render
-		est.Format("Starting render after %d seconds...",
-			(CGLib::time() - time_job0) / 1000);
-		WriteLog(est);
-		if (SendMessageToWindow("REAPERwnd", VK_F12)) {
-			return FinishJob(1, "Error sending message to Reaper window");
-		}
-		// Wait for finish
-		render_start = CGLib::time();
-		for (;;) {
-			CheckChilds(1);
-			SaveScreenshot();
-			SendStatus();
-			Sleep(1000);
-			// Check if progress exists
-			if (CGLib::fileExists(reaperbuf + "progress.txt")) {
-				vector <CString> vs;
-				CGLib::read_file_sv(reaperbuf + "progress.txt", sv);
-				if (sv.size()) SendProgress(sv[0]);
-			}
-			// Check if no progress for long time
-			else if (CGLib::time() - render_start > 30 * 1000) {
-				CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper.log");
-				return FinishJob(1, "Render showed no progress during 30 seconds");
-			}
-			// Check if reascript finished
-			if (CGLib::fileExists(reaperbuf + "finished.txt")) break;
-			// Check for timeout
-			if (CGLib::time() - render_start > j_render * 1000) {
-				est.Format("Render timed out with %d seconds. Please increase render timeout or decrease music length",
-					j_render);
-				CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper.log");
-				return FinishJob(1, est);
-			}
-		}
-		CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper.log");
-		// No output file
-		if (!CGLib::fileExists(reaperbuf + "output-001.mp3")) {
-			return FinishJob(1, "Output file output-001.mp3 does not exist");
-		}
-		// Zero length file
-		if (CGLib::FileSize(reaperbuf + "output-001.mp3") <= 0) {
-			return FinishJob(1, "Output file output-001.mp3 is too small");
-		}
-		CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + ".mp3");
-		if (f_stems) {
-			for (int i = 2; i < 100; ++i) {
-				CheckChilds(1);
-				SaveScreenshot();
-				SendStatus();
-				st.Format("%03d", i);
-				if (!CGLib::fileExists(reaperbuf + "output-" + st + ".mp3")) break;
-				CGLib::copy_file(reaperbuf + "output-" + st + ".mp3",
-					share + j_folder + j_basefile + "-" + st + ".mp3");
-			}
-		}
-	}
+	if (RunRender()) return 1;
 	est.Format("Success in %d seconds", 
 		(CGLib::time() - time_job0) / 1000);
 	return FinishJob(0, est);
