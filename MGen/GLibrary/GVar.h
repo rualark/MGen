@@ -153,6 +153,7 @@ public:
 	vector<int> instr_tmax;
 	vector<CString> instr_lib;
 	vector<int> instr_poly; // Maximum number of simultaneous voices
+	vector<int> v_stage; // Stage for each voice
 	vector<int> splitpo_freq; // Frequency of split portamento in percent
 	vector<int> splitpo_mindur; // Minimum legato duration to use split portamento
 	vector<int> gliss_mindur; // Minimum legato duration to use gliss

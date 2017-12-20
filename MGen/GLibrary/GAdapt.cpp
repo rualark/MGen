@@ -548,10 +548,17 @@ void CGAdapt::Adapt(int step1, int step2)
 	// Save current play speed
 	adapt_pspeed = m_pspeed;
 	vector<int> isent(MAX_INSTR);
+	// Detect voice stages
+	if (!v_stage.size()) {
+		v_stage.resize(MAX_VOICE);
+		for (int v = 0; v < v_cnt; v++) {
+			int ii = instr[v]; // Instrument id
+			if (instr_poly[ii] < 2) v_stage[v] = isent[ii];
+			isent[ii]++;
+		}
+	}
 	for (int v = 0; v < v_cnt; v++) {
 		int ii = instr[v]; // Instrument id
-		// Check if sending multiple voices to monophonic instrument
-		isent[ii]++;
 		int ncount = 0;
 		// Move to note start
 		if (coff[step1][v] > 0) step1 = step1 - coff[step1][v];
