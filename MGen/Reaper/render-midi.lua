@@ -10,8 +10,11 @@ reaper.Main_OnCommand(40042, 0);
 reaper.Main_OnCommand(40297, 0);
 -- Select track 1
 reaper.Main_OnCommand(40939, 0);
--- reaper.SetTrackSelected(reaper.GetTrack(0, 0), 1);
-
+reaper.InsertMedia("C:\\ReaperBuf\\stage.mp3", 0);
+-- Go to start of project
+reaper.Main_OnCommand(40042, 0);
+-- Select track 2
+reaper.Main_OnCommand(40940, 0);
 reaper.InsertMedia("C:\\ReaperBuf\\input.mid", 0);
 -- Select all tracks
 reaper.Main_OnCommand(40296, 0);
