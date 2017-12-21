@@ -1062,6 +1062,7 @@ int CGenCP1::FailPcoSus() {
 int CGenCP1::FailPco() {
 	// Perfect consonance
 	if (sus[ls] && tivl[sus[ls]] == iPco) {
+		// Prohibit leading tone octave on suspension
 		if (apcc[0][sus[ls]] == 11 && apcc[1][sus[ls]] == 11) FLAG2(324, sus[ls]);
 	}
 	if (tivl[s] == iPco) {
@@ -1072,7 +1073,15 @@ int CGenCP1::FailPco() {
 			else FLAG2(326, s);
 		}
 		// Prohibit leading tone octave
-		if (apcc[0][s] == 11 && apcc[1][s] == 11) FLAG2(324, s);
+		if (apcc[0][s] == 11 && apcc[1][s] == 11) {
+			// Downbeat
+			if (!beat[ls]) FLAG2(324, s);
+			// Leaps
+			else if (s > 0 && aleap[cpv][s - 1]) FLAG2(324, s);
+			else if (ls < fli_size - 1 && aleap[cpv][fli2[ls]]) FLAG2(324, s);
+			// Suspension resolution
+			else if (mshb[ls] > 0) FLAG2(324, s);
+		}
 		// Do not prohibit parallel first - first (this is for sus notes, which starts are parallel)
 		// because they are detected as pco apart now
 			// Prohibit parallel last - first
