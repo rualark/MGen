@@ -33,9 +33,11 @@ vector<CString> lyConfigs;
 CString pname;
 
 // Default time to start aborting generation
-int wait_sec = 60;
+int wait_sec_default = 60;
+int wait_sec = wait_sec_default;
 // Default time to consider generation timeout
-int wait_sec2 = 120;
+int wait_sec2_default = 120;
+int wait_sec2 = wait_sec2_default;
 
 void InitErrorMessages() {
 	errorMessages.resize(1000);
@@ -226,6 +228,8 @@ void LoadConfig() {
 		if (st.GetLength()) {
 			CGLib::Tokenize(st, ast, ";");
 			pname = ast[0];
+			wait_sec = wait_sec_default;
+			wait_sec2 = wait_sec2_default;
 			if (ast.size() > 1 && atoi(ast[1]) > 0) wait_sec = atoi(ast[1]);
 			if (ast.size() > 2 && atoi(ast[2]) > 0) wait_sec2 = atoi(ast[2]);
 			ClearBuffer();
