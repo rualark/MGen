@@ -1245,50 +1245,52 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 
-	// Show updates frequency
-	CString st, st2;
-	long long total;
-	if (CGLib::status_updates.size() == STATUS_LINES) {
-		total = 0;
-		for (int i = 0; i < STATUS_LINES; ++i) {
-			total += CGLib::status_updates[i];
-			st.Format("\n%lld per second (%lld in %lld seconds) ",
-				CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
-				CGLib::status_updates[i], (pGen->time_stopped - pGen->gen_start_time) / 1000);
-			st2 += st;
+	if (CGLib::can_send_log) {
+		// Show updates frequency
+		CString st, st2;
+		long long total;
+		if (CGLib::status_updates.size() == STATUS_LINES) {
+			total = 0;
+			for (int i = 0; i < STATUS_LINES; ++i) {
+				total += CGLib::status_updates[i];
+				st.Format("\n%lld per second (%lld in %lld seconds) ",
+					CGLib::status_updates[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
+					CGLib::status_updates[i], (pGen->time_stopped - pGen->gen_start_time) / 1000);
+				st2 += st;
+			}
+			st.Format("Status updates: %lld per second (%lld in %lld seconds). Detailed: ",
+				total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
+				total, (pGen->time_stopped - pGen->gen_start_time) / 1000);
+			st2 = st + st2;
+			CGLib::WriteLog(2, st2);
+			if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1) > WARN_STATUS_FREQ) {
+				st.Format("Algorithm status update is %lld per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
+					total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1), WARN_STATUS_FREQ);
+				CGLib::WriteLog(1, st);
+			}
 		}
-		st.Format("Status updates: %lld per second (%lld in %lld seconds). Detailed: ",
-			total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
-			total, (pGen->time_stopped - pGen->gen_start_time) / 1000);
-		st2 = st + st2;
-		CGLib::WriteLog(2, st2);
-		if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1) > WARN_STATUS_FREQ) {
-			st.Format("Algorithm status update is %lld per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
-				total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1), WARN_STATUS_FREQ);
-			CGLib::WriteLog(1, st);
-		}
-	}
 
-	// Show logs frequency
-	if (CGLib::logs_sent.size() == LOG_TABS) {
-		st2.Empty();
-		total = 0;
-		for (int i = 0; i < LOG_TABS; ++i) {
-			total += CGLib::logs_sent[i];
-			st.Format("\n%lld per second (%lld in %lld seconds) ",
-				CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
-				CGLib::logs_sent[i], (pGen->time_stopped - pGen->gen_start_time) / 1000);
-			st2 += st;
-		}
-		st.Format("Logs sent: %lld per second (%lld in %lld seconds). Detailed: ",
-			total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
-			total, (pGen->time_stopped - pGen->gen_start_time) / 1000);
-		st2 = st + st2;
-		CGLib::WriteLog(2, st2);
-		if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time) > WARN_LOG_FREQ) {
-			st.Format("Algorithm sends %lld logs per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
-				total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1), WARN_LOG_FREQ);
-			CGLib::WriteLog(1, st);
+		// Show logs frequency
+		if (CGLib::logs_sent.size() == LOG_TABS) {
+			st2.Empty();
+			total = 0;
+			for (int i = 0; i < LOG_TABS; ++i) {
+				total += CGLib::logs_sent[i];
+				st.Format("\n%lld per second (%lld in %lld seconds) ",
+					CGLib::logs_sent[i] * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
+					CGLib::logs_sent[i], (pGen->time_stopped - pGen->gen_start_time) / 1000);
+				st2 += st;
+			}
+			st.Format("Logs sent: %lld per second (%lld in %lld seconds). Detailed: ",
+				total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1),
+				total, (pGen->time_stopped - pGen->gen_start_time) / 1000);
+			st2 = st + st2;
+			CGLib::WriteLog(2, st2);
+			if (pGen->time_stopped - pGen->gen_start_time > 1000 && total * 1000 / (pGen->time_stopped - pGen->gen_start_time) > WARN_LOG_FREQ) {
+				st.Format("Algorithm sends %lld logs per second (above recommended %d). This can decrease speed of your algorithm. Please check algorithm.",
+					total * 1000 / (pGen->time_stopped - pGen->gen_start_time + 1), WARN_LOG_FREQ);
+				CGLib::WriteLog(1, st);
+			}
 		}
 	}
 
@@ -1304,7 +1306,7 @@ void CMainFrame::OnClose()
 	if (m_state_gen == 1) {
 		OnButtonGen();
 		// If cannot stop generator, report error
-		if (WaitForSingleObject(m_GenThread->m_hThread, 10000) == WAIT_TIMEOUT)
+		if (WaitForSingleObject(m_GenThread->m_hThread, 100000) == WAIT_TIMEOUT)
 			CGLib::exitcode = 11;
 		delete pGen;
 		pGen = 0;
