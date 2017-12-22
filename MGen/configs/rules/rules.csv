@@ -269,7 +269,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;295;100;Cantus;Counterpoint;Suspension insertion;long leap;0;;Leap is longer than M6;;2;2;1;;;;;;
 1;359;100;Cantus;Counterpoint;Dissonance;first;0;;First note in counterpoint voice is downbeat;;17;12;1;;;;;;
 1;83;100;Cantus;Counterpoint;Dissonance;downbeat;0;;;;188;5;;;;;169;;
-1;223;60;Cantus;Counterpoint;Dissonance;longer;0;;Dissonance is longer than neighbouring consonance;;11;4;1;;;;;;
+1;223;60;Cantus;Counterpoint;Dissonance;< longer;0;;Dissonance is longer than previous consonance;;11;4;1;;;;;;
+1;384;0;Cantus;Counterpoint;Dissonance;longer >;0;;Dissonance is longer than next consonance;;;;;;;;;;
 1;224;100;Cantus;Counterpoint;Dissonance;interbar;0;;Dissonance starts and ends suspension/anticipation;;8;4;1;;;;;;
 1;331;0;Cantus;Counterpoint;Dissonance;4th cons;1;;Prohibit 4th upbeat not lowest consonance;;0;0;1;;;;;;
 1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;;;749;3;;;;;;;
