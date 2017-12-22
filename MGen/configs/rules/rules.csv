@@ -149,7 +149,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;68;70;Melody;Range;Skipped notes;>1;-1;;;;20;10;1;;;;;;
 1;69;100;Melody;Range;Skipped notes;>1 joined;0;;;;70;24;1;;;;;;
 1;38;0;Melody;Range;Range;voice <m6;0;;Range below m6 is acceptable for cantus up to 10 notes;;162;3;;;;;;;
-1;304;70;Melody;Range;Range;cp voice >M13;0;;;;1;1;;;;;;;
+1;304;70;Melody;Range;Range;cp voice >M12;0;;;;1;1;;;;;;;
 1;37;70;Melody;Range;Range;cf >M9;0;;;;27;1;;;;;;;
 1;7;70;Melody;Range;Range;sum >22th;0;;;;1;1;;;;;;;
 1;11;70;Melody;Range;Range;int >15va;0;;Maximum burst interval is 16th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);;124;2;;;;1;;;

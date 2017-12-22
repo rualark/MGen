@@ -1060,10 +1060,12 @@ int CGenCP1::FailPcoSus() {
 }
 
 int CGenCP1::FailPco() {
-	// Perfect consonance
+	// Suspension to pco
 	if (sus[ls] && tivl[sus[ls]] == iPco) {
 		// Prohibit leading tone octave on suspension
 		if (apcc[0][sus[ls]] == 11 && apcc[1][sus[ls]] == 11) FLAG2(324, sus[ls]);
+		// Prohibit parallel pco on suspension
+		if (ivl[sus[ls]] == ivl[fli2[ls - 1]]) FLAG2(84, sus[ls]);
 	}
 	if (tivl[s] == iPco) {
 		// Prohibit long downbeat octave except last measure
