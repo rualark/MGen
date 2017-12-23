@@ -213,6 +213,7 @@ void CheckChilds(int restart) {
 			daw_wait);
 		WriteLog(est);
 		for (int i = 0; i < daw_wait; ++i) {
+			CheckChilds(0);
 			SaveScreenshot();
 			SendStatus();
 			Sleep(1000);
@@ -402,10 +403,10 @@ int RunRenderStage(int sta) {
 	CString sta2;
 	sta2.Format("%d", sta);
 	if (!rChild["Reaper.exe"]) {
-		return FinishJob(1, "Cannot render because Reaper.exe is not running");
+		return FinishJob(1, "Cannot render because DAW is not running");
 	}
 	if (!rChild["AutoHotkey.exe"]) {
-		return FinishJob(1, "Cannot render because AutoHotkey.exe is not running");
+		return FinishJob(1, "Cannot render because ahk is not running");
 	}
 	// Clean folder
 	CreateDirectory(reaperbuf, NULL);
@@ -424,7 +425,7 @@ int RunRenderStage(int sta) {
 		(CGLib::time() - time_job0) / 1000);
 	WriteLog(est);
 	if (SendMessageToWindow("REAPERwnd", VK_F12)) {
-		return FinishJob(1, "Error sending message to Reaper window");
+		return FinishJob(1, "Error sending message to DAW window");
 	}
 	// Wait for finish
 	render_start = CGLib::time();
@@ -443,7 +444,7 @@ int RunRenderStage(int sta) {
 		}
 		// Check if no progress for long time
 		else if (CGLib::time() - render_start > 30 * 1000) {
-			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper_" + sta2 + ".log");
+			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-daw_" + sta2 + ".log");
 			return FinishJob(1, "Render showed no progress during 30 seconds");
 		}
 		// Check if reascript finished
@@ -452,11 +453,11 @@ int RunRenderStage(int sta) {
 		if (CGLib::time() - render_start > j_render * 1000) {
 			est.Format("Render timed out with %d seconds. Please increase render timeout or decrease music length",
 				j_render);
-			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper_" + sta2 + ".log");
+			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-daw_" + sta2 + ".log");
 			return FinishJob(1, est);
 		}
 	}
-	CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-reaper_" + sta2 + ".log");
+	CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-daw_" + sta2 + ".log");
 	// No output file
 	if (!CGLib::fileExists(reaperbuf + "output-001.mp3")) {
 		return FinishJob(1, "Output file output-001.mp3 does not exist");
@@ -571,7 +572,7 @@ int RunJobMGen() {
 	long long time_job1 = CGLib::time();
 	// Run lilypond
 	if (j_engrave) {
-		est.Format("Starting lilypond engraver after %lld seconds...", 
+		est.Format("Starting engraver after %lld seconds...", 
 			(CGLib::time() - time_job0) / 1000);
 		WriteLog(est);
 		par =
