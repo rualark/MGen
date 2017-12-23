@@ -204,6 +204,7 @@ public:
 	// Midi files
 	void SaveMidi(CString dir, CString fname);
 	void LoadMidi(CString path);
+	void MergeSmallOverlaps(int step1, int step2);
 
 	void LoadCantus(CString path);
 	void LoadCP(CString path);

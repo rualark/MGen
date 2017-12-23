@@ -970,8 +970,37 @@ void CGMidi::LoadMidi(CString path)
 			FillPause(vlast_step[v]+1, len2, v);
 		}
 	}
+	//MergeSmallOverlaps(0, last_step);
+	// Check length of notes is correct
+	FixLen(0, last_step);
+	// Set additional variables
+	CountOff(0, last_step);
+	//CountTime(0, last_step);
+	UpdateNoteMinMax(0, last_step);
+	//UpdateTempoMinMax(0, last_step);
+	// Send last
+	t_generated = last_step + 1;
+	if (tnames != "") {
+		CString est;
+		est.Format("MIDI file track names: %s", tnames);
+		WriteLog(0, est);
+	}
+	if (inames != "") {
+		CString est;
+		est.Format("MIDI file instrument names: %s", inames);
+		WriteLog(0, est);
+	}
+	// Count time
+	long long time_stop = CGLib::time();
+	CString est;
+	est.Format("LoadMidi successfully loaded %d steps (in %lld ms)", 
+		t_generated, time_stop - time_start);
+	WriteLog(0, est);
+}
+
+void CGMidi::MergeSmallOverlaps(int step1, int step2) {
 	// Merge small overlaps
-	for (int i = 0; i <= last_step; ++i) {
+	for (int i = step1; i <= step2; ++i) {
 		// Cycle through steps to ensure that moved note is checked later
 		for (int v = 0; v < v_cnt; ++v) if (instr_poly[instr[v]] > 1) {
 			// Look for note start
@@ -1016,31 +1045,6 @@ void CGMidi::LoadMidi(CString path)
 			}
 		}
 	}
-	// Check length of notes is correct
-	FixLen(0, last_step);
-	// Set additional variables
-	CountOff(0, last_step);
-	//CountTime(0, last_step);
-	UpdateNoteMinMax(0, last_step);
-	//UpdateTempoMinMax(0, last_step);
-	// Send last
-	t_generated = last_step + 1;
-	if (tnames != "") {
-		CString est;
-		est.Format("MIDI file track names: %s", tnames);
-		WriteLog(0, est);
-	}
-	if (inames != "") {
-		CString est;
-		est.Format("MIDI file instrument names: %s", inames);
-		WriteLog(0, est);
-	}
-	// Count time
-	long long time_stop = CGLib::time();
-	CString est;
-	est.Format("LoadMidi successfully loaded %d steps (in %lld ms)", 
-		t_generated, time_stop - time_start);
-	WriteLog(0, est);
 }
 
 void CGMidi::LoadCantus(CString path)
