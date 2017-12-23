@@ -1781,7 +1781,7 @@ int CGenCP1::FailRhythm2() {
 	if (c_len - fli[fli_size - 1] < npm) {
 		FLAG2(267, fli[fli_size - 1]);
 	}
-	for (ls = 0; ls < fli_size; ++ls) {
+	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s = fli[ls];
 		// Whole inside
 		if (!beat[ls] && llen[ls] == npm) FLAG2(236, s);
@@ -1795,7 +1795,7 @@ int CGenCP1::FailRhythm4() {
 	if (c_len - fli[fli_size - 1] < npm) {
 		FLAG2(267, fli[fli_size - 1]);
 	}
-	for (ls = 0; ls < fli_size; ++ls) {
+	for (ls = 0; ls < fli_size - 1; ++ls) {
 		s = fli[ls];
 		// Whole inside
 		if (!beat[ls] && llen[ls] == npm) FLAG2(236, s);
