@@ -10,4 +10,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 # Created at 2017-12-23 14:07:48
 Midi_file = midi\GenMP1\c193-em35b-fixed.mid
 
-Instruments = Piano
+Instruments = Trumpet,Piano,Piano,Violin,Horn,Trombone,Tuba
