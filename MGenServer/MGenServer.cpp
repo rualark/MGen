@@ -18,7 +18,7 @@ CWinApp theApp;
 using namespace std;
 
 // Global
-int close_flag = 0;
+volatile int close_flag = 0;
 int nRetCode = 0;
 CString est;
 CString client_host;
@@ -324,8 +324,8 @@ void LoadConfig()
 				nChild.push_back(st3);
 				aChild[st3] = 0;
 				rChild[st3] = 0;
-				fChild[st3] = "";
-				pChild[st3] = "";
+				fChild[st3].Empty();
+				pChild[st3].Empty();
 				tChild[st3] = CGLib::time();
 				cur_child = st3;
 				++CGLib::parameter_found;
@@ -435,7 +435,6 @@ int RunRenderStage(int sta) {
 		Sleep(1000);
 		// Check if progress exists
 		if (CGLib::fileExists(reaperbuf + "progress.txt")) {
-			vector <CString> vs;
 			CGLib::read_file_sv(reaperbuf + "progress.txt", sv);
 			if (sv.size()) {
 				st.Format("Stage %d/%d: ", sta, j_stages);
@@ -489,8 +488,6 @@ int RunRenderStage(int sta) {
 }
 
 int RunRender() {
-	vector <CString> sv;
-	CString st, sta2;
 	if (!j_render) return 0;
 
 	DeleteFile(reaperbuf + "stage.mp3");
@@ -505,7 +502,7 @@ int RunJobMGen() {
 	j_stages = 0;
 	time_job0 = CGLib::time();
 	j_basefile = CGLib::bname_from_path(f_name);
-	CString st, st2, sta2;
+	CString sta2;
 	CString fname = share + f_folder + f_name;
 	CString fname2 = "server\\midi\\" + f_name;
 	CString fname_pl = share + j_folder + j_basefile + ".pl";
@@ -574,7 +571,7 @@ int RunJobMGen() {
 	long long time_job1 = CGLib::time();
 	// Run lilypond
 	if (j_engrave) {
-		est.Format("Starting lilypond engraver after %d seconds...", 
+		est.Format("Starting lilypond engraver after %lld seconds...", 
 			(CGLib::time() - time_job0) / 1000);
 		WriteLog(est);
 		par =
@@ -594,7 +591,7 @@ int RunJobMGen() {
 		}
 	}
 	if (RunRender()) return 1;
-	est.Format("Success in %d seconds", 
+	est.Format("Success in %lld seconds", 
 		(CGLib::time() - time_job0) / 1000);
 	return FinishJob(0, est);
 }

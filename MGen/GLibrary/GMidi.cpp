@@ -619,7 +619,7 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 	// Log
 	long long time_stop = CGLib::time();
 	CString est;
-	est.Format("Exported adapted midi file %s in %d ms",
+	est.Format("Exported adapted midi file %s in %lld ms",
 		as_fname, time_stop - time_start);
 	WriteLog(0, est);
 }
