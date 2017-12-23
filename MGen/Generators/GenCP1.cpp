@@ -1781,6 +1781,11 @@ int CGenCP1::FailRhythm2() {
 	if (c_len - fli[fli_size - 1] < npm) {
 		FLAG2(267, fli[fli_size - 1]);
 	}
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		// Whole inside
+		if (!beat[ls] && llen[ls] == npm) FLAG2(236, s);
+	}
 	return 0;
 }
 
@@ -1789,6 +1794,11 @@ int CGenCP1::FailRhythm4() {
 	// Last measure not whole
 	if (c_len - fli[fli_size - 1] < npm) {
 		FLAG2(267, fli[fli_size - 1]);
+	}
+	for (ls = 0; ls < fli_size; ++ls) {
+		s = fli[ls];
+		// Whole inside
+		if (!beat[ls] && llen[ls] == npm) FLAG2(236, s);
 	}
 	return 0;
 }
