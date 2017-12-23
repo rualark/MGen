@@ -2054,7 +2054,7 @@ void CGMidi::AddNoteOn(long long timestamp, int data1, int data2)
 			st.Format("Blocked note %d/%d time %lld in voice %d instrument %d out of range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], 
 				instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
-			WriteLog(5, st);
+			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;
 		}
 		return;
@@ -2088,7 +2088,7 @@ void CGMidi::AddNoteOff(long long timestamp, int data1, int data2)
 			st.Format("Blocked note %d/%d time %lld in voice %d instrument %d out of range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], 
 				instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
-			WriteLog(5, st);
+			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;
 		}
 		return;

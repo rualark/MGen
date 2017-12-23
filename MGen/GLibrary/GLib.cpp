@@ -828,6 +828,7 @@ void CGLib::WriteLog(int i, CString st)
 	if (can_send_log) {
 		// Check error log
 		if (i == 5) {
+			st = "! " + st;
 			EscalateLog(st);
 			i = 1;
 		}
