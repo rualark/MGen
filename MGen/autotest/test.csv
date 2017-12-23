@@ -56,6 +56,7 @@ configs\GenCA2\test-sus.pl
 configs\GenCA2\test-pco.pl
 configs\GenCA2\test-lt.pl
 configs\GenCA2\test-4th.pl
+configs\GenCA2\test-cp4.pl
 configs\GenCA2\test-tritone.pl
 configs\GenCA2\test-harm.pl
 configs\GenCA2\test-multiharm.pl
