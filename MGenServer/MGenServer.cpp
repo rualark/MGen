@@ -7,6 +7,7 @@
 #include "MGenServer.h"
 #include "Db.h"
 #include "../MGen/GLibrary/GLib.h"
+#include "EnumWindows.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -185,7 +186,29 @@ void SendStatus() {
 	db.Query(q);
 }
 
-void CheckChilds(int restart) {
+void KillProcessByName(const char *filename) {
+	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, NULL);
+	PROCESSENTRY32 pEntry;
+	pEntry.dwSize = sizeof(pEntry);
+	BOOL hRes = Process32First(hSnapShot, &pEntry);
+	while (hRes)
+	{
+		if (strcmp(pEntry.szExeFile, filename) == 0)
+		{
+			HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, 0,
+				(DWORD)pEntry.th32ProcessID);
+			if (hProcess != NULL)
+			{
+				TerminateProcess(hProcess, 9);
+				CloseHandle(hProcess);
+			}
+		}
+		hRes = Process32Next(hSnapShot, &pEntry);
+	}
+	CloseHandle(hSnapShot);
+}
+
+void CheckChildren(int restart) {
 	int need_wait = 0;
 	for (int c = 0; c < nChild.size(); ++c) {
 		CString cn = nChild[c];
@@ -213,7 +236,7 @@ void CheckChilds(int restart) {
 			daw_wait);
 		WriteLog(est);
 		for (int i = 0; i < daw_wait; ++i) {
-			CheckChilds(0);
+			CheckChildren(0);
 			SaveScreenshot();
 			SendStatus();
 			Sleep(1000);
@@ -239,7 +262,7 @@ int RunTimeout(CString path, CString par, int delay) {
 	ShellExecuteEx(&sei);
 	long long start_timestamp = CGLib::time();
 	while (WaitForSingleObject(sei.hProcess, 500) == WAIT_TIMEOUT) {
-		CheckChilds(0);
+		CheckChildren(0);
 		GetProgress(fname);
 		SendProgress(j_progress);
 		SaveScreenshot();
@@ -258,7 +281,7 @@ int RunTimeout(CString path, CString par, int delay) {
 	return 0;
 }
 
-void CheckChildsPath() {
+void CheckChildrenPath() {
 	for (int c = 0; c < nChild.size(); ++c) {
 		CString cn = nChild[c];
 		if (!CGLib::fileExists(fChild[cn] + cn)) {
@@ -388,7 +411,7 @@ int FinishJob(int res, CString st) {
 	return res;
 }
 
-int SendMessageToWindow(CString wClass, short vk) {
+int SendKeyToWindowClass(CString wClass, short vk) {
 	HWND hWindow = FindWindow(wClass, NULL);
 	if (hWindow) {
 		PostMessage(hWindow, WM_KEYDOWN, VK_F12, 0);
@@ -424,13 +447,13 @@ int RunRenderStage(int sta) {
 	est.Format("Starting render stage #" + sta2 + " after %d seconds...",
 		(CGLib::time() - time_job0) / 1000);
 	WriteLog(est);
-	if (SendMessageToWindow("REAPERwnd", VK_F12)) {
+	if (SendKeyToWindowClass("REAPERwnd", VK_F12)) {
 		return FinishJob(1, "Error sending message to DAW window");
 	}
 	// Wait for finish
 	render_start = CGLib::time();
 	for (;;) {
-		CheckChilds(1);
+		CheckChildren(1);
 		SaveScreenshot();
 		SendStatus();
 		Sleep(1000);
@@ -474,7 +497,7 @@ int RunRenderStage(int sta) {
 	}
 	if (f_stems) {
 		for (int i = 2; i < 100; ++i) {
-			CheckChilds(1);
+			CheckChildren(1);
 			SaveScreenshot();
 			SendStatus();
 			st.Format("%03d", i);
@@ -714,6 +737,28 @@ BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 	return FALSE;
 }
 
+void CleanChildren() {
+	KillProcessByName("MGen.exe");
+	KillProcessByName("lilypond-windows.exe");
+	// Send reaper stop render
+	Run(fChild["AutoHotkey.exe"] + "AutoHotkey.exe", "server\\mgen-kill.ahk", 800);
+	/*
+	HWND hWindow = FindWindow("REAPERwnd", NULL);
+	PostMessage(hWindow, WM_KEYDOWN, VK_ESCAPE, 0);
+	if (hWindow) {
+		CEnumWindows ahwndChildWindows(hWindow);
+		for (int nWindow = 0; nWindow < ahwndChildWindows.Count(); nWindow++) {
+			HWND hWnd = ahwndChildWindows.Window(nWindow);
+			char pch[1000];
+			GetWindowText(hWnd, pch, 1000);
+			CString st = pch;
+			WriteLog(st);
+			PostMessage(hWnd, WM_KEYDOWN, VK_ESCAPE, 0);
+		}
+	}
+	*/
+}
+
 int main() {
 	HMODULE hModule = ::GetModuleHandle(nullptr);
 
@@ -734,14 +779,15 @@ int main() {
 	InitErrorMessages();
 	BOOL ret = SetConsoleCtrlHandler(ConsoleHandlerRoutine, TRUE);
 	LoadConfig();
-	CheckChildsPath();
+	CheckChildrenPath();
 	if (Connect()) return PauseClose();
 	if (nRetCode) {
 		return PauseClose();
 	}
+	CleanChildren();
 	Init();
 	for (;;) {
-		CheckChilds(1);
+		CheckChildren(1);
 		if (nRetCode) return PauseClose();
 		SaveScreenshot();
 		SendStatus();
