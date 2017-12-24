@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Db.h" />
+    <ClInclude Include="EnumWindows.h" />
     <ClInclude Include="MGenServer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="..\MGen\GLibrary\SmRnd.cpp" />
     <ClCompile Include="..\MGen\GLibrary\VSet.cpp" />
     <ClCompile Include="Db.cpp" />
+    <ClCompile Include="EnumWindows.cpp" />
     <ClCompile Include="MGenServer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
