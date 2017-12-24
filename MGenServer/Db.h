@@ -16,7 +16,7 @@ public:
 	float GetFloat(CString fname);
 	void GetFields();
 	CString Escape(CString st);
-	void WriteLog(CString st);
+	void WriteLog(CString st, int no_db = 0);
 
 	CString m_driver;
 	CString m_server;
