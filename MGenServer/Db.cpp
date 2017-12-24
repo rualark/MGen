@@ -38,8 +38,9 @@ int CDb::Connect(CString driver, CString server, CString port, CString dbname, C
 		}
 	}
 	catch (CDBException* pEX) {
-		WriteLog("Cannot open database: " + connSt + ": " + pEX->m_strError);
+		WriteLog("Cannot open database: " + connSt + ": " + pEX->m_strError, 1);
 		pEX->Delete();
+		abort();
 		return 1;
 	}
 	rs.m_pDatabase = &db;
@@ -53,7 +54,8 @@ int CDb::Query(CString q) {
 	CATCH_ALL(e) {
 		TCHAR szCause[255];
 		e->GetErrorMessage(szCause, 255);
-		WriteLog(szCause);
+		WriteLog(szCause, 1);
+		abort();
 		return 1;
 	} 
 	END_CATCH_ALL;
@@ -66,7 +68,8 @@ int CDb::Fetch(CString q) {
 		rs.Open(CRecordset::forwardOnly, q, CRecordset::readOnly);
 	}
 	CATCH(CDBException, e) {
-		WriteLog("Error executing query '" + q + "': " + e->m_strError);
+		WriteLog("Error executing query '" + q + "': " + e->m_strError, 1);
+		abort();
 		return 1;
 	}
 	END_CATCH; 
@@ -80,7 +83,8 @@ CString CDb::GetSt(CString fname) {
 		rs.GetFieldValue(fname, st);
 	}
 	CATCH(CDBException, e) {
-		WriteLog("Error parsing field '" + fname + "': " + e->m_strError);
+		WriteLog("Error parsing field '" + fname + "': " + e->m_strError, 1);
+		abort();
 		return "";
 	}
 	END_CATCH;
@@ -95,8 +99,8 @@ float CDb::GetFloat(CString fname) {
 	return atof(GetSt(fname));
 }
 
-void CDb::WriteLog(CString st) {
-	if (db.IsOpen()) {
+void CDb::WriteLog(CString st, int no_db) {
+	if (db.IsOpen() && !no_db) {
 		CString q;
 		q.Format("INSERT INTO j_logs VALUES('','%d','%d',NOW(),'%s')",
 			server_id, j_id, Escape(st));
