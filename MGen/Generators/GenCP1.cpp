@@ -3029,11 +3029,11 @@ int CGenCP1::EvalHarm() {
 					FLAG2(378, s);
 				}
 				// Prohibit DTIII#5 augmented chord
-				if (chm[i] == 2 && chm_alter[i]) {
+				if (chm[i] == 2 && chm_alter[i] == 1) {
 					FLAG2(375, s);
 				}
 				// Prohibit dVII (GBD) in root position after S (DF#A) in root position
-				if (chm[i] == 6 && chm[i - 1] == 3 && chm_alter[i]<1 && chm_alter[i - 1]) {
+				if (chm[i] == 6 && chm[i - 1] == 3 && chm_alter[i]<1 && chm_alter[i - 1] == 1) {
 					if (ls > 0 && apc[0][s] == 6 && apc[0][fli[ls - 1]] == 3) FLAG2(308, s);
 				}
 				// Prohibit DTIII (CEG) in root position after dVII (GBD) in root position
