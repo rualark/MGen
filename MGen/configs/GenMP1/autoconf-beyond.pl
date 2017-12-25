@@ -9,4 +9,3 @@ midifile_in_mul = 8 # How much you want to decrease minimum step length
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-21 18-40-11
 Midi_file = midi\beyond.mid
-Instruments = Piano,Piano,Trombone,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano,Piano
