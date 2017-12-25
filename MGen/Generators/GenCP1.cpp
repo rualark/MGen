@@ -3020,12 +3020,12 @@ int CGenCP1::EvalHarm() {
 			}
 			if (minor_cur) {
 				// Prohibit VI<->VI# containing progression
-				if (chm[i] % 2 && chm[i - 1] % 2 && chm_alter[i] != chm_alter[i - 1]) {
+				if (chm[i] % 2 && chm[i - 1] % 2 && chm_alter[i] * chm_alter[i - 1] == -1) {
 					FLAG2(377, s);
 				}
 				// Prohibit VII<->VII# containing progression
 				if (chm[i] && chm[i] % 2 == 0 && chm[i - 1] && chm[i - 1] % 2 == 0 && 
-					chm_alter[i] != chm_alter[i - 1]) {
+					chm_alter[i] * chm_alter[i - 1] == -1) {
 					FLAG2(378, s);
 				}
 				// Prohibit DTIII#5 augmented chord
@@ -3033,11 +3033,11 @@ int CGenCP1::EvalHarm() {
 					FLAG2(375, s);
 				}
 				// Prohibit dVII (GBD) in root position after S (DF#A) in root position
-				if (chm[i] == 6 && chm[i - 1] == 3 && !chm_alter[i] && chm_alter[i - 1]) {
+				if (chm[i] == 6 && chm[i - 1] == 3 && chm_alter[i]<1 && chm_alter[i - 1]) {
 					if (ls > 0 && apc[0][s] == 6 && apc[0][fli[ls - 1]] == 3) FLAG2(308, s);
 				}
 				// Prohibit DTIII (CEG) in root position after dVII (GBD) in root position
-				if (chm[i] == 2 && chm[i - 1] == 6 && !chm_alter[i] && !chm_alter[i - 1]) {
+				if (chm[i] == 2 && chm[i - 1] == 6 && chm_alter[i]<1 && chm_alter[i - 1]<1) {
 					if (ls > 0 && apc[0][s] == 2 && apc[0][fli[ls - 1]] == 6) FLAG2(309, s);
 				}
 			}
@@ -3120,7 +3120,7 @@ void CGenCP1::RemoveHarmDuplicate() {
 	// Harmonies should match
 	if (chm[chm_id] != chm[chm_id - 1]) return;
 	// Alterations should match
-	if (chm_alter[chm_id] != chm_alter[chm_id - 1]) return;
+	if (chm_alter[chm_id] * chm_alter[chm_id - 1] == -1) return;
 	// Remove duplicate
 	hli.resize(chm_id);
 	hli2.resize(chm_id);
@@ -3261,6 +3261,8 @@ int CGenCP1::FailHarm() {
 			}
 			// Detect altered chord
 			if (minor_cur && (cchn[11] || cchn[9])) chm_alter[hs] = 1;
+			// Detect unaltered chord
+			if (minor_cur && (cchn[10] || cchn[8])) chm_alter[hs] = -1;
 		}
 		RemoveHarmDuplicate();
 		// If penultimate measure

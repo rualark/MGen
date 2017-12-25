@@ -1245,7 +1245,8 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc, vector<int> &pcc) {
 	chmp.resize(fli_size, 0);
 	for (int i = 0; i < fli_size; ++i) {
 		chm[i] = hm[i][0];
-		if (pcc[fli[i]] == 9 || pcc[fli[i]] == 11) chm_alter[i] = 1;
+		if (minor_cur && (pcc[fli[i]] == 9 || pcc[fli[i]] == 11)) chm_alter[i] = 1;
+		if (minor_cur && (pcc[fli[i]] == 8 || pcc[fli[i]] == 10)) chm_alter[i] = -1;
 	}
 	int hp = 0;
 	int finished = 0;
@@ -4006,7 +4007,7 @@ void CGenCF1::LogPmap() {
 
 CString CGenCF1::GetHarmName(int pitch, int alter) {
 	if (minor_cur) {
-		if (alter) return HarmName_ma[pitch];
+		if (alter == 1) return HarmName_ma[pitch];
 		else return HarmName_m[pitch];
 	}
 	else return HarmName[pitch];
