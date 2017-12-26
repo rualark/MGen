@@ -19,7 +19,7 @@ CGenCF1::CGenCF1()
 	cpv = 0;
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_RULES);
-	harmonic_rule.resize(MAX_RULES);
+	rule_viz.resize(MAX_RULES);
 	false_positives_ignore.resize(MAX_RULES);
 	false_positives_global.resize(MAX_RULES);
 	sas_emulator_max_delay.resize(MAX_RULES);
@@ -201,7 +201,7 @@ void CGenCF1::LoadRules(CString fname)
 			//if (m_testing && flag == -1) flag = 1;
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
-			harmonic_rule[rid] = atoi(ast[10]);
+			rule_viz[rid] = atoi(ast[10]);
 			false_positives_global[rid] = atoi(ast[13]);
 			false_positives_ignore[rid] = atoi(ast[14]);
 			sas_emulator_max_delay[rid] = atoi(ast[15]);
@@ -3717,7 +3717,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {
 			}
 			// Set note color if this is maximum flag severity
 			if (severity[fl] > current_severity && severity[fl] >= show_min_severity
-				&& !harmonic_rule[fl]) {
+				&& rule_viz[fl] < vHarm) {
 				current_severity = severity[fl];
 				color[pos + i][v] = flag_color[severity[fl]];
 			}
@@ -3837,7 +3837,7 @@ void CGenCF1::SendHarmColor(int pos, int v) {
 	int fl;
 	for (int f = 0; f < f_cnt; ++f) {
 		fl = anflags[cpv][s][f];
-		if (harmonic_rule[fl] && !accept[fl]) {
+		if (rule_viz[fl] == vHarm && !accept[fl]) {
 			if (severity[fl] > max_severity) max_severity = severity[fl];
 		}
 	}

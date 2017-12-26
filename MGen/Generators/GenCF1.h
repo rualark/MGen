@@ -141,6 +141,13 @@ const CString TaskNames[] = {
 #define hSub 1
 #define hDom 2
 
+// Rule visualization
+#define vDefault 0
+#define vInterval 1
+#define vHarm 2
+#define vLine 3
+#define vBracket 4
+
 // Interval types
 #define iDis   -2 // Dissonance
 #define iHarm4 -1 // Harmonic 4th
@@ -691,7 +698,7 @@ protected:
 	vector<vector<int>> enflags2; // [r_id][s] Expected note flags
 	vector<int> enflags3; // [r_id] Expected flags
 	int enflags_count = 0; // Number of expected flags for melody
-	vector<int> harmonic_rule; // [r_id] If this rule violation should be marked with harmony color, not note color, even if its group is not Harmony
+	vector<int> rule_viz; // [r_id] If this rule violation should be marked with harmony color, not note color, even if its group is not Harmony
 	vector<int> false_positives_ignore; // [r_id] Ignore false positives for these flags
 	vector<int> false_positives_global; // [r_id] Always check false positives for these flags
 	vector<int> sas_emulator_max_delay; // [r_id] Specify rule identiefiers, which should not be tested for delay in SAS emulator
