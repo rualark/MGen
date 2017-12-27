@@ -221,34 +221,18 @@ void CGMidi::GetLySev(ofstream &fs, int pos, CString &ev, int le, int i, int v) 
 }
 
 void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v, int phase) {
-	// Show open brackets
-	for (int x = 0; x < ly_fa.size(); ++x) {
-		int fl = ly_fa[x];
-		if (rule_viz[fl] == vBracket) {
-			if (phase == 6) {
-				fs << " \\override HorizontalBracket.color=#(rgb-color "
-					<< GetLyColor(flag_color[severity[fl]]) << ") ";
-			}
-			if (phase == 8) {
-				fs << " \\startGroup ";
-			}
-		}
-	}
 	// Show worst flag
 	for (int x = 0; x < vtype_sev.size(); ++x) {
 		int sev = vtype_sev[x];
 		if (sev && x == vLine) {
 			if (phase == 1) {
-				fs << " \\override Glissando.color=#(rgb-color "
-					<< GetLyColor(flag_color[sev]) << ") ";
+				fs << " \\override Glissando.color=#(rgb-color " 
+					<< GetLyColor(flag_color[sev]) 
+					<< ") \\override Glissando.thickness = #'2 ";
 			}
-			if (phase == 10) fs << " \\glissando ";
+			if (phase == 10)
+				fs << " \\glissando ";
 		}
-	}
-	// Close bracket
-	for (int x = 0; x < bracket[i][v]; ++x) {
-		if (phase == 7)
-			fs << " \\stopGroup ";
 	}
 }
 
@@ -278,20 +262,11 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 			}
 			if (lining[i][v] == HatchStyleLightUpwardDiagonal) fs << " \\circle ";
 		}
-		if (lc == la.size() - 1) {
-			SendLyViz(fs, pos, ev, le, i, v, 6);
-		}
 		fs << ev + GetLyLen(la[lc]);
 		if (lc < la.size() - 1 && ev != "r") fs << "~";
 		fs << "\n";
 		mv = v;
 		if (vm_cnt > 1) mv = (v / 2) * 2 + !(v % 2);
-		if (lc == 0) {
-			SendLyViz(fs, pos, ev, le, i, v, 7);
-		}
-		if (lc == la.size() - 1) {
-			SendLyViz(fs, pos, ev, le, i, v, 8);
-		}
 		if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 			CString st = mark[i][v];
 			st.Replace("\n", "");
@@ -330,7 +305,6 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 				fs << "}\n";
 			}
 		}
-		SendLyViz(fs, pos, ev, le, i, v, 9);
 		if (!lc && ev != 'r' && ly_flag_style == 2) {
 			if (vtype_sev[vDefault]) SendLyFlagColor(fs, flag_color[vtype_sev[vDefault]]);
 		}

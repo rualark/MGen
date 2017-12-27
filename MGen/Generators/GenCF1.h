@@ -92,8 +92,6 @@
 // Flag and set interval
 #define FLAG2_INT(id, i, in) do { FLAG2(id, i); aint[i] = in; } while (0)
 #define FLAG2_INT2(id, i, in, i2) do { FLAG2(id, i); aint[i] = in; aint[i2] = in; } while (0)
-// Flag and set stop bracket
-#define FLAG2_BRC(id, i, i2) do { FLAG2(id, i); if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { if (severity[id] >= show_min_severity) ++brck[i2]; } } while (0)
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
@@ -283,8 +281,6 @@ protected:
 	inline void InterpolateNgraph(int v, int step0, int step);
 	void SendNgraph(int pos, int i, int v, int x);
 	void SendGraph(int pos, int i, int v, int x);
-	void SendBrck(int pos, int i, int v, int x);
-	void SendIvl(int pos, int i, int v, int x);
 	void SendLyrics(int pos, int v, int av, int x);
 	void SendComment(int pos, int v, int av, int x, int i);
 	void TransposeCantusBack();
@@ -585,8 +581,7 @@ protected:
 	vector<float> fpenalty; // [r_id] Additional penalty for flags
 	vector<int>  flags; // [r_id] Flags for whole cantus
 	vector<vector<vector<int>>> anflags; // [v][s][] Note flags
-	vector<int> aint; // [s] Interval between voices
-	vector<int> brck; // [s] Stop brackets
+	vector<int> aint; // [v][s][] Note flags
 	vector<int> br_cc; // [s] Cantus chromatic (best rejected)
 	vector<int>  br_f; // [r_id] Flags for whole cantus (best rejected)
 	vector<long>  ssf; // [r_id] SWA stuck flags
