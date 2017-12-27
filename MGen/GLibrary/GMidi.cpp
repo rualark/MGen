@@ -343,7 +343,7 @@ void CGMidi::SendLyFlagColor(ofstream &fs, DWORD col) {
 	if (!col || col == color_noflag) return;
 	fs << "^\\markup{ \\tiny \\with-color #(rgb-color ";
 	fs << GetLyColor(col);
-	fs << ") \\char ##x2716  }\n";
+	fs << ") \\char ##x2605  }\n";
 }
 
 void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {

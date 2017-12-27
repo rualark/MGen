@@ -9,8 +9,8 @@
     \column {
       \char ##x2461
       \bold 4:3
-      \raise #0.3 \tiny \with-color #(rgb-color 0.000 0.767 0.000) \char ##x2716
-      \raise #0.3 \tiny \with-color #(rgb-color 0.867 0.0 0.000) \char ##x2716
+      \raise #0.3 \tiny \with-color #(rgb-color 0.000 0.767 0.000) \char ##x2605
+      \raise #0.3 \tiny \with-color #(rgb-color 0.867 0.0 0.000) \char ##x2605
       \raise #0.9 \circle \note #"1" #1
       \raise #0.9 \musicglyph #"noteheads.s2xcircle"
       \raise #0.9 \musicglyph #"noteheads.s0harmonic"
