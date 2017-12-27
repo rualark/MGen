@@ -356,7 +356,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;230;60;Cantus;Rhythm;1/8 note;first measure;0;;;;11;3;1;;;;;;
 1;231;60;Cantus;Rhythm;1/8 note;isolated;0;;Separated 1/8 on upbeat without previous 1/8;;4;3;1;;;;;;
 1;232;60;Cantus;Rhythm;1/8 note;1/8 syncope;0;;;;3;3;1;;;;;;
-1;88;60;Cantus;Rhythm;1/8 note;leap;0;;Leap from or to 1/8;;32;15;1;;;;;;
+1;88;60;Cantus;Rhythm;1/8 note;leap;0;;Leap from or to 1/8;2;32;15;1;;;;;;
 1;238;0;Cantus;Rhythm;1/2 after 1/4 or 1/8 in measure;penultimate;1;;Last or next to last measure;;19;6;1;;;;;;
 1;239;0;Cantus;Rhythm;1/2 after 1/4 or 1/8 in measure;slur forward;1;;;;65;18;1;;;;;;
 1;278;0;Cantus;Rhythm;1/2 after 1/4 or 1/8 in measure;slur back;1;;;;6;1;1;;;;;;
