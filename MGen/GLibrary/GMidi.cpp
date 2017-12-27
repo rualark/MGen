@@ -228,7 +228,7 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			if (phase == 1) {
 				fs << " \\override Glissando.color=#(rgb-color " 
 					<< GetLyColor(flag_color[sev]) 
-					<< ") \\override Glissando.thickness = #'2 ";
+					<< ") ";
 			}
 			if (phase == 10)
 				fs << " \\glissando ";
