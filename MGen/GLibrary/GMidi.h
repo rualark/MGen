@@ -202,8 +202,10 @@ public:
 	void SendLyEvent(ofstream & fs, int pos, CString ev, int le, int i, int v);
 	CString GetLyColor(DWORD col);
 	CString GetLyMarkColor(DWORD col);
+	CString GetLyMarkColor2(DWORD col);
 	void SendLyNoteColor(ofstream & fs, DWORD col);
-	void SendLyFlagColor(ofstream & fs, DWORD col);
+	CString GetIntName(int iv);
+	void SendLyFlagColor(ofstream & fs, int i, int v);
 	void SaveLyComments(CString & com_st, int i, int v, int nnum, int pos);
 	CString DetectLyClef(int vmin, int vmax);
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);

@@ -2070,18 +2070,19 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 					// Last contrary
 					if (ep2 == c_len && ls == fli_size - 1 && 
 						(acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) < 0) 
-						FLAG2(376, s);
+						FLAG2_INT2(376, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 					// Other anticipation
-					else FLAG2(315, s);
+					else FLAG2_INT2(315, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 				}
 				// Downbeat
 				else if (fli[ls] == s && acc[cfv][s] != acc[cfv][s - 1]) {
 					// Last contrary
 					if (ep2 == c_len && ls == fli_size - 1 &&
 						(acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) < 0) 
-						FLAG2(376, s);
+						FLAG2_INT2(376, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 					// Other downbeat
-					else FLAG2(316, s);
+					else 
+						FLAG2_INT2(316, s, civl[s]? (civlc[s]?civlc[s]:12) :0, pco_last);
 				}
 				// Many notes in between
 				else if (ls - ls_1 > 4) {}
@@ -2089,19 +2090,19 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 				else if (civl[s] != civl[pco_last]) {
 					// Direct compound
 					if ((acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) > 0) {
-						FLAG2(347, s);
+						FLAG2_INT2(347, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 					}
 					// Contrary compound
-					else FLAG2(248, s);
+					else FLAG2_INT2(248, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 				}
 				// Stepwize
 				else if ((!sus[ls_1] && (!pco_last || asmooth[cpv][pco_last - 1]) &&
 					(pco_last2 + 1 >= ep2 || asmooth[cpv][pco_last2])) ||
 					(!sus[ls] && (!s || asmooth[cpv][s - 1]) &&
 					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
-					FLAG2(249, s);
+					FLAG2_INT2(249, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 				// Asymmetric
-				else if (beat[ls_1] != beat[ls]) FLAG2(374, s);
+				else if (beat[ls_1] != beat[ls]) FLAG2_INT2(374, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 				// Other
 				else {
 					if (iv == 7) {
@@ -2109,12 +2110,12 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 						if (bmli[sus[ls_1]] == bmli[s] && sus[ls_1] &&
 							ivlc[sus[ls_1]] == 5 && ivlc[s] == 4 &&
 							abs(ac[cpv][s] - ac[cpv][pco_last]) < 2)
-							FLAG2(330, s);
+							FLAG2_INT2(330, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 						// Other
-						else FLAG2(250, s);
+						else FLAG2_INT2(250, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 					}
 					else {
-						FLAG2(250, s);
+						FLAG2_INT2(250, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, pco_last);
 					}
 				}
 			}

@@ -217,7 +217,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		vib[i].resize(vsize);
 		vibf[i].resize(vsize);
 		artic[i].resize(vsize);
-		interval[i].resize(vsize);
+		interval[i].resize(vsize, -1);
 		lining[i].resize(vsize);
 		lengroup[i].resize(vsize);
 		lyrics[i].resize(vsize);

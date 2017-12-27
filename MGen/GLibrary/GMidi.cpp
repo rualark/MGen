@@ -209,7 +209,7 @@ void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 }
 
 void CGMidi::GetLySev(ofstream &fs, int pos, CString &ev, int le, int i, int v) {
-	fill(vtype_sev.begin(), vtype_sev.end(), 0);
+	fill(vtype_sev.begin(), vtype_sev.end(), -1);
 	if (!ly_fa.size()) return;
 	if (!rule_viz.size()) return;
 	if (!severity.size()) return;
@@ -224,7 +224,7 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 	// Show worst flag
 	for (int x = 0; x < vtype_sev.size(); ++x) {
 		int sev = vtype_sev[x];
-		if (sev && x == vLine) {
+		if (sev > -1 && x == vLine) {
 			if (phase == 1) {
 				fs << " \\override Glissando.color=#(rgb-color " 
 					<< GetLyColor(flag_color[sev]) 
@@ -246,7 +246,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	GetLySev(fs, pos, ev, le, i, v);
 	SendLyViz(fs, pos, ev, le, i, v, 1);
 	if (ev != 'r' && ly_flag_style == 1) {
-		if (vtype_sev[vDefault]) SendLyNoteColor(fs, flag_color[vtype_sev[vDefault]]);
+		if (vtype_sev[vDefault] > -1) SendLyNoteColor(fs, flag_color[vtype_sev[vDefault]]);
 	}
 	for (int lc = 0; lc < la.size(); ++lc) {
 		if (show_lining && ev != "r") {
@@ -306,7 +306,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 			}
 		}
 		if (!lc && ev != 'r' && ly_flag_style == 2) {
-			if (vtype_sev[vDefault]) SendLyFlagColor(fs, flag_color[vtype_sev[vDefault]]);
+			SendLyFlagColor(fs, i, v);
 		}
 		if (i > -1) i += la[lc] / midifile_out_mul[i];
 		SendLyViz(fs, pos, ev, le, i, v, 10);
@@ -328,8 +328,19 @@ CString CGMidi::GetLyMarkColor(DWORD col) {
 	CString st;
 	if (GetGreen(col) == GetRed(col) && GetRed(col) == GetBlue(col)) return "1 1 1";
 	st.Format("%.3f %.3f %.3f",
+		Lighten(GetRed(col), 4) / 255.0,
+		Lighten(GetGreen(col) * 1.5, 4) / 255.0,
+		Lighten(GetBlue(col), 4) / 255.0);
+	return st;
+}
+
+CString CGMidi::GetLyMarkColor2(DWORD col) {
+	if (col == color_noflag) return "1 1 1";
+	CString st;
+	if (GetGreen(col) == GetRed(col) && GetRed(col) == GetBlue(col)) return "1 1 1";
+	st.Format("%.3f %.3f %.3f",
 		Lighten(GetRed(col), 4) / 255.0, 
-		Lighten(GetGreen(col) * 1.5, 4) / 255.0, 
+		Lighten(GetGreen(col), 4) / 255.0, 
 		Lighten(GetBlue(col), 4) / 255.0);
 	return st;
 }
@@ -339,11 +350,43 @@ void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
 	fs << "\n    \\override Stem.color = #(rgb-color " << GetLyColor(col) << ") ";
 }
 
-void CGMidi::SendLyFlagColor(ofstream &fs, DWORD col) {
-	if (!col || col == color_noflag) return;
-	fs << "^\\markup{ \\tiny \\with-color #(rgb-color ";
-	fs << GetLyColor(col);
-	fs << ") \\char ##x2605  }\n";
+CString CGMidi::GetIntName(int iv) {
+	if (iv == 1) return "m2";
+	else if (iv == 2) return "M2";
+	else if (iv == 3) return "m3";
+	else if (iv == 4) return "M3";
+	else if (iv == 5) return "4";
+	else if (iv == 6) return "t";
+	else if (iv == 7) return "5";
+	else if (iv == 8) return "m6";
+	else if (iv == 9) return "M6";
+	else if (iv == 10) return "m7";
+	else if (iv == 11) return "M7";
+	else if (iv == 12) return "8";
+	return "";
+}
+
+void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
+	if (interval[i][v] > -1) {
+		CString st = GetIntName(interval[i][v]);
+		fs << "^\\markup{ ";
+		fs << "\\teeny ";
+		if (vtype_sev[vDefault] > -1) {
+			DWORD col = flag_color[vtype_sev[vDefault]];
+			if (col && col != color_noflag)
+				fs << " \\on-color #(rgb-color " << GetLyMarkColor2(col) << ") ";
+		}
+		fs << " \\pad-markup #0.4 " << st << " ";
+		fs << "}\n";
+	}
+	else {
+		if (vtype_sev[vDefault] == -1) return;
+		DWORD col = flag_color[vtype_sev[vDefault]];
+		if (!col || col == color_noflag) return;
+		fs << "^\\markup{ \\tiny \\with-color #(rgb-color ";
+		fs << GetLyColor(col);
+		fs << ") \\char ##x2605  }\n";
+	}
 }
 
 void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {

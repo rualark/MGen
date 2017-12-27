@@ -1053,7 +1053,7 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 		fill(flags.begin(), flags.end(), 0);
 		fill(fpenalty.begin(), fpenalty.end(), 0.0);
 	}
-	fill(aint.begin(), aint.end(), 0);
+	fill(aint.begin(), aint.end(), -1);
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
 		anflags[cpv][i].clear();
