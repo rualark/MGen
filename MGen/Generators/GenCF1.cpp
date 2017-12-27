@@ -1053,6 +1053,7 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 		fill(flags.begin(), flags.end(), 0);
 		fill(fpenalty.begin(), fpenalty.end(), 0.0);
 	}
+	fill(aint.begin(), aint.end(), 0);
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
 		anflags[cpv][i].clear();
@@ -2466,6 +2467,7 @@ void CGenCF1::ScanInit() {
 			anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
 		}
 		src_rpenalty_step.resize(c_len);
+		aint.resize(c_len);
 		uli.resize(c_len);
 		fli.resize(c_len);
 		fli2.resize(c_len);
@@ -3717,7 +3719,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {
 			}
 			// Set note color if this is maximum flag severity
 			if (severity[fl] > current_severity && severity[fl] >= show_min_severity
-				&& rule_viz[fl] < vHarm) {
+				&& !rule_viz[fl]) {
 				current_severity = severity[fl];
 				color[pos + i][v] = flag_color[severity[fl]];
 			}

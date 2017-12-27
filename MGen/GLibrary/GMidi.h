@@ -30,6 +30,13 @@
 #define MIDI_BUF_PROTECT 500 // Number of ms to postpone playback on start
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
+// Rule visualization
+#define vDefault 0
+#define vHarm 1
+#define vLine 2
+#define vBracket 3
+#define MAX_VIZ 4
+
 // Bass instruments
 const int bass_program[] = { 45, 33, 70, 58, 34, 35, 36, 37, 38 };
 
@@ -189,6 +196,9 @@ public:
 	void SplitLyNote5(int pos, vector<int>& la);
 	void SplitLyNoteMeasure(int pos, int le, vector<int>& la);
 	void SplitLyNote(int pos, int le, vector<int>& la);
+	void GetLySev(ofstream & fs, int pos, CString & ev, int le, int i, int v);
+	void SendLyViz(ofstream & fs, int pos, CString & ev, int le, int i, int v, int phase);
+	void SendLyViz(ofstream & fs, int pos, CString & ev, int le, int i, int v);
 	void SendLyEvent(ofstream & fs, int pos, CString ev, int le, int i, int v);
 	CString GetLyColor(DWORD col);
 	CString GetLyMarkColor(DWORD col);
@@ -239,6 +249,11 @@ public:
 	// Lilypond
 	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
+	vector<int> ly_fa;
+	vector<int> rule_viz; // [r_id] If this rule violation should be marked with harmony color, not note color, even if its group is not Harmony
+	vector<int> vtype_sev; // Worst severity for each vizualization types
+	vector <int> severity; // Get severity by flag id
+	vector<DWORD>  flag_color; // Flag colors
 
 	// Midi files
 	vector<vector<vector<PmEvent>>> midifile_buf;

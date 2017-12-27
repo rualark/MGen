@@ -89,6 +89,9 @@
 #define FLAG3(id, i) do { ASSERT_RULE(id); if (!accept[id]) { last_flag=id; return 1; } } while (0)
 // Simply flag
 #define FLAG4(id, i) do { ASSERT_RULE(id); flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)
+// Flag and set interval
+#define FLAG2_INT(id, i, in) do { FLAG2(id, i); aint[i] = in; } while (0)
+#define FLAG2_INT2(id, i, in, i2) do { FLAG2(id, i); aint[i] = in; aint[i2] = in; } while (0)
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
@@ -140,13 +143,6 @@ const CString TaskNames[] = {
 #define hTon 0
 #define hSub 1
 #define hDom 2
-
-// Rule visualization
-#define vDefault 0
-#define vInterval 1
-#define vHarm 2
-#define vLine 3
-#define vBracket 4
 
 // Interval types
 #define iDis   -2 // Dissonance
@@ -321,7 +317,6 @@ protected:
 	
 	// Rules
 	vector <int> accept; // Each 1 allows showing canti with specific properties
-	vector <int> severity; // Get severity by flag id
 	vector <vector<int>> accepts; // Each 1 allows showing canti with specific properties
 	int rule_set = 0; // id of current rule set
 	int cf_rule_set = 0; // id of current rule set for cantus
@@ -564,7 +559,6 @@ protected:
 	int seed_cycle, reseed_count;
 	long cantus_ignored = 0; // How many canti ignored and not sent
 	long cantus_sent = 0; // How many cantus have been sent
-	vector<DWORD>  flag_color; // Flag colors
 	int step = 0; // Global step
 	long long accepted = 0; // Number of accepted canti
 	int flags_need2 = 0; // Number of second level flags set
@@ -587,6 +581,7 @@ protected:
 	vector<float> fpenalty; // [r_id] Additional penalty for flags
 	vector<int>  flags; // [r_id] Flags for whole cantus
 	vector<vector<vector<int>>> anflags; // [v][s][] Note flags
+	vector<int> aint; // [v][s][] Note flags
 	vector<int> br_cc; // [s] Cantus chromatic (best rejected)
 	vector<int>  br_f; // [r_id] Flags for whole cantus (best rejected)
 	vector<long>  ssf; // [r_id] SWA stuck flags
@@ -698,7 +693,6 @@ protected:
 	vector<vector<int>> enflags2; // [r_id][s] Expected note flags
 	vector<int> enflags3; // [r_id] Expected flags
 	int enflags_count = 0; // Number of expected flags for melody
-	vector<int> rule_viz; // [r_id] If this rule violation should be marked with harmony color, not note color, even if its group is not Harmony
 	vector<int> false_positives_ignore; // [r_id] Ignore false positives for these flags
 	vector<int> false_positives_global; // [r_id] Always check false positives for these flags
 	vector<int> sas_emulator_max_delay; // [r_id] Specify rule identiefiers, which should not be tested for delay in SAS emulator

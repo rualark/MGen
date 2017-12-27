@@ -11,6 +11,7 @@
 #endif
 
 CGMidi::CGMidi() {
+	vtype_sev.resize(MAX_VIZ);
 	mo = 0;
 	//BuildKeyMatrix();
 }
@@ -207,6 +208,36 @@ void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 	}
 }
 
+void CGMidi::GetLySev(ofstream &fs, int pos, CString &ev, int le, int i, int v) {
+	fill(vtype_sev.begin(), vtype_sev.end(), 0);
+	if (!ly_fa.size()) return;
+	if (!rule_viz.size()) return;
+	if (!severity.size()) return;
+	// Find worst flag
+	for (int x = 0; x < ly_fa.size(); ++x) {
+		int fl = ly_fa[x];
+		if (rule_viz[fl] == vLine) {
+			vtype_sev[vLine] = max(vtype_sev[vLine], severity[fl]);
+		}
+	}
+}
+
+void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v, int phase) {
+	// Show worst flag
+	for (int x = 0; x < vtype_sev.size(); ++x) {
+		int sev = vtype_sev[x];
+		if (sev && x == vLine) {
+			if (phase == 1) {
+				fs << " \\override Glissando.color=#(rgb-color " 
+					<< GetLyColor(flag_color[sev]) 
+					<< ") \\override Glissando.thickness = #'2 ";
+			}
+			if (phase == 10)
+				fs << " \\glissando ";
+		}
+	}
+}
+
 // Send note or pause
 void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v) {
 	int mv;
@@ -216,6 +247,8 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	SplitLyNoteMeasure(pos, le, la);
 	if (ev != 'r' && ly_flag_style == 1) SendLyNoteColor(fs, color[i][v]);
 	for (int lc = 0; lc < la.size(); ++lc) {
+		GetLySev(fs, pos, ev, le, i, v);
+		SendLyViz(fs, pos, ev, le, i, v, 1);
 		if (show_lining && ev != "r") {
 			if (la[lc] == 8) {
 				if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOff \\override NoteHead.style = #'xcircle ";
@@ -274,6 +307,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		}
 		if (!lc && ev != 'r' && ly_flag_style == 2) SendLyFlagColor(fs, color[i][v]);
 		if (i > -1) i += la[lc] / midifile_out_mul[i];
+		SendLyViz(fs, pos, ev, le, i, v, 10);
 	}
 }
 
@@ -313,6 +347,7 @@ void CGMidi::SendLyFlagColor(ofstream &fs, DWORD col) {
 void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 	CString st, com, note_st;
 	int pos1, pos2, found;
+	ly_fa.clear();
 	if (comment[i][v].size()) {
 		note_st = "\\markup \\wordwrap \\bold {\n  ";
 		// Show voice number if more than 1 voice
@@ -333,6 +368,7 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 			pos1 = com.Find('[');
 			pos2 = com.Find(']');
 			if (pos1 != -1 && pos2 != -1) {
+				ly_fa.push_back(atoi(com.Mid(pos1 + 1, pos2 - pos1 - 1)));
 				com = com.Left(pos1 - 1) + com.Right(com.GetLength() - pos2 - 1);
 			}
 			// Send note number with first comment
@@ -433,8 +469,8 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				}
 			}
 			else {
-				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 				SaveLyComments(comm_st, i, v, nnum, pos);
+				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 			}
 			if (pause_accum && (i == step2 - 1 || !pause[i + 1][v])) {
 				SendLyEvent(fs, pause_pos, "r", pause_accum, pause_i, v);
