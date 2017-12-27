@@ -3685,6 +3685,10 @@ void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
 	}
 }
 
+void CGenCF1::SendIvl(int pos, int i, int v, int x) {
+	interval[pos + i][v] = aint[x];
+}
+
 void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {
 	CString st, com;
 	int current_severity = -1;
@@ -4047,6 +4051,7 @@ int CGenCF1::SendCantus() {
 			SendNgraph(pos, i, v, s);
 			SendGraph(pos, i, v, s);
 			SendComment(pos, v, cpv, s, i);
+			SendIvl(pos, i, v, s);
 		}
 		pos += cc_len[s];
 	}
