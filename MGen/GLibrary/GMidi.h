@@ -254,6 +254,7 @@ public:
 	vector<int> vtype_sev; // Worst severity for each vizualization types
 	vector <int> severity; // Get severity by flag id
 	vector<DWORD>  flag_color; // Flag colors
+	int ly_openbrck = 0; // Number of open brackets so far
 
 	// Midi files
 	vector<vector<vector<PmEvent>>> midifile_buf;

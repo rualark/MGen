@@ -180,6 +180,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	vib.resize(size);
 	vibf.resize(size);
 	artic.resize(size);
+	bracket.resize(size);
 	interval.resize(size);
 	lining.resize(size);
 	mel_id.resize(size);
@@ -217,6 +218,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		vib[i].resize(vsize);
 		vibf[i].resize(vsize);
 		artic[i].resize(vsize);
+		bracket[i].resize(vsize);
 		interval[i].resize(vsize);
 		lining[i].resize(vsize);
 		lengroup[i].resize(vsize);

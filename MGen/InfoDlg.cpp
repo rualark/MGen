@@ -160,6 +160,10 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note velocity: %d\n", pGen->vel[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("Bracket closing: %d\n", pGen->bracket[i][mv]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("Interval: %d\n", pGen->interval[i][mv]);
+		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Lyrics from MIDI file: %s\n", pGen->lyrics[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 

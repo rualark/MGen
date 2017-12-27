@@ -1054,6 +1054,7 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 		fill(fpenalty.begin(), fpenalty.end(), 0.0);
 	}
 	fill(aint.begin(), aint.end(), 0);
+	fill(brck.begin(), brck.end(), 0);
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
 		anflags[cpv][i].clear();
@@ -2468,6 +2469,7 @@ void CGenCF1::ScanInit() {
 		}
 		src_rpenalty_step.resize(c_len);
 		aint.resize(c_len);
+		brck.resize(c_len);
 		uli.resize(c_len);
 		fli.resize(c_len);
 		fli2.resize(c_len);
@@ -3313,44 +3315,44 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
 		if (pcc[s] == 11) {
-			if (pcc[s_1] == 10) FLAG2(153, s_1);
-			if (pcc[s_1] == 8) FLAG2(154, s_1);
-			if (pcc[s_1] == 3) FLAG2(157, s_1);
+			if (pcc[s_1] == 10) FLAG2_BRC(153, s_1, s);
+			if (pcc[s_1] == 8) FLAG2_BRC(154, s_1, s);
+			if (pcc[s_1] == 3) FLAG2_BRC(157, s_1, s);
 			if (ls > 1) {
 				s_2 = fli[ls - 2];
-				if (pcc[s_2] == 10) FLAG2(159, s_2);
-				if (pcc[s_2] == 8) FLAG2(160, s_2);
-				if (pcc[s_2] == 3) FLAG2(163, s_2);
+				if (pcc[s_2] == 10) FLAG2_BRC(159, s_2, s);
+				if (pcc[s_2] == 8) FLAG2_BRC(160, s_2, s);
+				if (pcc[s_2] == 3) FLAG2_BRC(163, s_2, s);
 			}
 			if (ls < fli_size - 1) {
 				s1 = fli[ls + 1];
-				if (pcc[s1] == 10) FLAG2(153, s1);
-				if (pcc[s1] == 8) FLAG2(154, s1);
-				if (pcc[s1] == 3) FLAG2(156, s1);
+				if (pcc[s1] == 10) FLAG2_BRC(153, s, s1);
+				if (pcc[s1] == 8) FLAG2_BRC(154, s, s1);
+				if (pcc[s1] == 3) FLAG2_BRC(156, s, s1);
 				if (ls < fli_size - 2) {
 					s2 = fli[ls + 2];
-					if (pcc[s2] == 10) FLAG2(159, s2);
-					if (pcc[s2] == 8) FLAG2(160, s2);
-					if (pcc[s2] == 3) FLAG2(162, s2);
+					if (pcc[s2] == 10) FLAG2_BRC(159, s, s2);
+					if (pcc[s2] == 8) FLAG2_BRC(160, s, s2);
+					if (pcc[s2] == 3) FLAG2_BRC(162, s, s2);
 				}
 			}
 		}
 		if (pcc[s] == 9) {
-			if (pcc[s_1] == 8) FLAG2(152, s_1);
-			if (pcc[s_1] == 3) FLAG2(155, s_1);
+			if (pcc[s_1] == 8) FLAG2_BRC(152, s_1, s);
+			if (pcc[s_1] == 3) FLAG2_BRC(155, s_1, s);
 			if (ls > 1) {
 				s_2 = fli[ls - 2];
-				if (pcc[s_2] == 8) FLAG2(158, s_2);
-				if (pcc[s_2] == 3) FLAG2(161, s_2);
+				if (pcc[s_2] == 8) FLAG2_BRC(158, s_2, s);
+				if (pcc[s_2] == 3) FLAG2_BRC(161, s_2, s);
 			}
 			if (ls < fli_size - 1) {
 				s1 = fli[ls + 1];
-				if (pcc[s1] == 8) FLAG2(152, s1);
-				if (pcc[s1] == 3) FLAG2(155, s1);
+				if (pcc[s1] == 8) FLAG2_BRC(152, s, s1);
+				if (pcc[s1] == 3) FLAG2_BRC(155, s, s1);
 				if (ls < fli_size - 2) {
 					s2 = fli[ls + 2];
-					if (pcc[s2] == 8) FLAG2(158, s2);
-					if (pcc[s2] == 3) FLAG2(161, s2);
+					if (pcc[s2] == 8) FLAG2_BRC(158, s, s2);
+					if (pcc[s2] == 3) FLAG2_BRC(161, s, s2);
 				}
 			}
 		}
@@ -3677,6 +3679,14 @@ void CGenCF1::SendGraph(int pos, int i, int v, int x) {
 	graph[pos + i][v][0] = tweight[bli[x]];
 	graph[pos + i][v][1] = g_leaps[bli[x]];
 	graph[pos + i][v][2] = g_leaped[bli[x]];
+}
+
+void CGenCF1::SendBrck(int pos, int i, int v, int x) {
+	bracket[pos + i][v] = brck[x];
+}
+
+void CGenCF1::SendIvl(int pos, int i, int v, int x) {
+	interval[pos + i][v] = aint[x];
 }
 
 void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
@@ -4047,6 +4057,8 @@ int CGenCF1::SendCantus() {
 			SendNgraph(pos, i, v, s);
 			SendGraph(pos, i, v, s);
 			SendComment(pos, v, cpv, s, i);
+			SendBrck(pos, i, v, s);
+			SendIvl(pos, i, v, s);
 		}
 		pos += cc_len[s];
 	}
@@ -4686,7 +4698,7 @@ check:
 				if (dpenalty_cur > dpenalty_min) goto skip;
 			}
 		}
-		else dpenalty_cur = 0;		
+		else dpenalty_cur = 0;
 		ClearFlags(0, ep2);
 		if (FailNoteRepeat(m_cc, 0, ep2 - 1)) goto skip;
 		GetMelodyInterval(m_cc, 0, ep2, nmin, nmax);
