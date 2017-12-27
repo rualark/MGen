@@ -351,14 +351,13 @@ void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
 }
 
 CString CGMidi::GetIntName(int iv) {
-	iv = iv % 12;
 	if (iv == 0) return "0";
 	else if (iv == 1) return "m2";
 	else if (iv == 2) return "M2";
 	else if (iv == 3) return "m3";
 	else if (iv == 4) return "M3";
 	else if (iv == 5) return "4";
-	else if (iv == 6) return "t";
+	else if (iv == 6) return "tr";
 	else if (iv == 7) return "5";
 	else if (iv == 8) return "m6";
 	else if (iv == 9) return "M6";
