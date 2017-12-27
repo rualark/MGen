@@ -351,7 +351,9 @@ void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
 }
 
 CString CGMidi::GetIntName(int iv) {
-	if (iv == 1) return "m2";
+	iv = iv % 12;
+	if (iv == 0) return "0";
+	else if (iv == 1) return "m2";
 	else if (iv == 2) return "M2";
 	else if (iv == 3) return "m3";
 	else if (iv == 4) return "M3";
@@ -362,8 +364,7 @@ CString CGMidi::GetIntName(int iv) {
 	else if (iv == 9) return "M6";
 	else if (iv == 10) return "m7";
 	else if (iv == 11) return "M7";
-	else if (iv == 12) return "8";
-	return "";
+	else return "8";
 }
 
 void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
