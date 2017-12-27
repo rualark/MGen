@@ -216,9 +216,7 @@ void CGMidi::GetLySev(ofstream &fs, int pos, CString &ev, int le, int i, int v) 
 	// Find worst flag
 	for (int x = 0; x < ly_fa.size(); ++x) {
 		int fl = ly_fa[x];
-		if (rule_viz[fl] == vLine) {
-			vtype_sev[vLine] = max(vtype_sev[vLine], severity[fl]);
-		}
+		vtype_sev[rule_viz[fl]] = max(vtype_sev[rule_viz[fl]], severity[fl]);
 	}
 }
 
@@ -245,10 +243,12 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	vector<int> la;
 	SplitLyNote(pos, le, la);
 	SplitLyNoteMeasure(pos, le, la);
-	if (ev != 'r' && ly_flag_style == 1) SendLyNoteColor(fs, color[i][v]);
+	GetLySev(fs, pos, ev, le, i, v);
+	SendLyViz(fs, pos, ev, le, i, v, 1);
+	if (ev != 'r' && ly_flag_style == 1) {
+		if (vtype_sev[vDefault]) SendLyNoteColor(fs, flag_color[vtype_sev[vDefault]]);
+	}
 	for (int lc = 0; lc < la.size(); ++lc) {
-		GetLySev(fs, pos, ev, le, i, v);
-		SendLyViz(fs, pos, ev, le, i, v, 1);
 		if (show_lining && ev != "r") {
 			if (la[lc] == 8) {
 				if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOff \\override NoteHead.style = #'xcircle ";
@@ -305,7 +305,9 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 				fs << "}\n";
 			}
 		}
-		if (!lc && ev != 'r' && ly_flag_style == 2) SendLyFlagColor(fs, color[i][v]);
+		if (!lc && ev != 'r' && ly_flag_style == 2) {
+			if (vtype_sev[vDefault]) SendLyFlagColor(fs, flag_color[vtype_sev[vDefault]]);
+		}
 		if (i > -1) i += la[lc] / midifile_out_mul[i];
 		SendLyViz(fs, pos, ev, le, i, v, 10);
 	}
