@@ -34,7 +34,7 @@
 #define vDefault 0
 #define vHarm 1
 #define vLine 2
-#define vBracket 3
+#define vLines 3
 #define MAX_VIZ 4
 
 // Bass instruments
@@ -206,6 +206,7 @@ public:
 	void SendLyNoteColor(ofstream & fs, DWORD col);
 	CString GetIntName(int iv);
 	void SendLyFlagColor(ofstream & fs, int i, int v);
+	void ParseLyComments(int i, int v, int foreign);
 	void SaveLyComments(CString & com_st, int i, int v, int nnum, int pos);
 	CString DetectLyClef(int vmin, int vmax);
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);

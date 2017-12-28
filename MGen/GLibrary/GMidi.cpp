@@ -389,10 +389,30 @@ void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
 	}
 }
 
+void CGMidi::ParseLyComments(int i, int v, int foreign) {
+	CString st, com, note_st;
+	int pos1, pos2, fl;
+	ly_fa.clear();
+	if (comment[i][v].size()) {
+		for (int c = 0; c < comment[i][v].size(); ++c) {
+			com = comment[i][v][c];
+			// Do not show hidden rules
+			if (com[0] == '$') continue;
+			// Remove technical information
+			pos1 = com.Find('[');
+			pos2 = com.Find(']');
+			if (pos1 != -1 && pos2 != -1) {
+				fl = atoi(com.Mid(pos1 + 1, pos2 - pos1 - 1));
+				if (foreign && rule_viz[fl] != vLines) continue;
+				ly_fa.push_back(fl);
+			}
+		}
+	}
+}
+
 void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 	CString st, com, note_st;
 	int pos1, pos2, found;
-	ly_fa.clear();
 	if (comment[i][v].size()) {
 		note_st = "\\markup \\wordwrap \\bold {\n  ";
 		// Show voice number if more than 1 voice
@@ -413,7 +433,6 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 			pos1 = com.Find('[');
 			pos2 = com.Find(']');
 			if (pos1 != -1 && pos2 != -1) {
-				ly_fa.push_back(atoi(com.Mid(pos1 + 1, pos2 - pos1 - 1)));
 				com = com.Left(pos1 - 1) + com.Right(com.GetLength() - pos2 - 1);
 			}
 			// Send note number with first comment
@@ -514,6 +533,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				}
 			}
 			else {
+				ParseLyComments(i, v, 0);
 				SaveLyComments(comm_st, i, v, nnum, pos);
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 			}
