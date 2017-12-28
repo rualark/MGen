@@ -217,6 +217,8 @@ void CGMidi::GetLySev(ofstream &fs, int pos, CString &ev, int le, int i, int v) 
 	for (int x = 0; x < ly_fa.size(); ++x) {
 		int fl = ly_fa[x];
 		vtype_sev[rule_viz[fl]] = max(vtype_sev[rule_viz[fl]], severity[fl]);
+		if (rule_viz[fl] == vLines)
+			vtype_sev[vLine] = max(vtype_sev[vLine], severity[fl]);
 	}
 }
 
@@ -535,6 +537,12 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 			else {
 				ParseLyComments(i, v, 0);
 				SaveLyComments(comm_st, i, v, nnum, pos);
+				// If no flags, parse second voice
+				if (!ly_fa.size() && v_cnt > 1) {
+					int v2 = (v / 2) * 2 + !(v % 2);
+					int i2 = abs(i + len[i][v] - poff[i + len[i][v]][v2]);
+					ParseLyComments(i2, v2, 1);
+				}
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 			}
 			if (pause_accum && (i == step2 - 1 || !pause[i + 1][v])) {

@@ -1061,10 +1061,10 @@ int CGenCP1::FailPcoSus() {
 	if (tivl[s] == iPco) {
 		// Do not need to prohibit parallel, because one of note is slurred from previous step
 		// Prohibit combinatory
-		if (civlc[s] == civlc[s - 1]) FLAG2(85, s);
+		if (civlc[s] == civlc[s - 1]) FLAG2_INT2(85, s-1, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 		// Prohibit different
 		else if (tivl[s - 1] == iPco)
-			FLAG2(86, s);
+			FLAG2_INT2(86, s - 1, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 	}
 	return 0;
 }
@@ -1077,7 +1077,7 @@ int CGenCP1::FailPco() {
 			FLAG2_INT(324, sus[ls], civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
 		// Prohibit parallel pco on suspension
 		if (ivl[sus[ls]] == ivl[fli2[ls - 1]]) 
-			FLAG2_INT(84, sus[ls], civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
+			FLAG2_INT2(316, sus[ls-1]?sus[ls-1]:fli[ls-1], civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, sus[ls]);
 	}
 	if (tivl[s] == iPco) {
 		// Prohibit long downbeat octave except last measure
@@ -1100,36 +1100,48 @@ int CGenCP1::FailPco() {
 		// Do not prohibit parallel first - first (this is for sus notes, which starts are parallel)
 		// because they are detected as pco apart now
 			// Prohibit parallel last - first
-		if (ivl[s] == ivl[fli2[ls - 1]]) FLAG2_INT(84, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
+		if (ivl[s] == ivl[fli2[ls - 1]]) 
+			FLAG2_INT2(84, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+				civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 		else {
 			// Prohibit contrary movement
 			if (bmli[s] - 1 == bmli[fli2[ls - 1]] && civlc[s] == civlc[fli2[ls - 1]]) 
-				FLAG2_INT(85, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
+				FLAG2_INT2(85, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+					civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 				// Prohibit different
-			else if (tivl[fli2[ls - 1]] == iPco) FLAG2_INT(86, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
+			else if (tivl[fli2[ls - 1]] == iPco) 
+				FLAG2_INT(86, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 			// All other cases if previous interval is not pco
 			// Direct movement to pco
 			if (motion[fli2[ls - 1]] == mDirect) {
 				// Stepwize
 				if (abs(acc[1][s] - acc[1][s - 1]) < 3) {
 					if (s2 == c_len - 1 && cfli[cfli.size()-1] == s) {
-						if (civlc[s] == 0) FLAG2_INT(209, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
-						else FLAG2_INT(208, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
+						if (civlc[s] == 0) FLAG2_INT2(209, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+							civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
+						else FLAG2_INT2(208, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+							civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 					}
 					else if (ls < fli_size - 1 || ep2 == c_len) {
-						if (civlc[s] == 0) FLAG2_INT(211, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
-						else FLAG2_INT(210, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
+						if (civlc[s] == 0) FLAG2_INT2(211, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+							civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
+						else FLAG2_INT2(210, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+							civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 					}
 				}
 				// Non-stepwize
 				else {
 					if (s2 == c_len - 1 && cfli[cfli.size() - 1] == s) {
-						if (civlc[s] == 0) FLAG2_INT(213, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
-						else FLAG2_INT(212, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
+						if (civlc[s] == 0) FLAG2_INT2(213, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+							civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
+						else FLAG2_INT2(212, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+							civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 					}
 					else if (ls < fli_size - 1 || ep2 == c_len) {
-						if (civlc[s] == 0) FLAG2_INT(215, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
-						else FLAG2_INT(214, s, civl[s] ? (civlc[s] ? civlc[s] : 12) : 0);
+						if (civlc[s] == 0) FLAG2_INT2(215, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+							civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
+						else FLAG2_INT2(214, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], 
+							civl[s] ? (civlc[s] ? civlc[s] : 12) : 0, s);
 					}
 				}
 			}
