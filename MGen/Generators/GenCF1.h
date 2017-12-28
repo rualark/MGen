@@ -90,9 +90,22 @@
 // Simply flag
 #define FLAG4(id, i) do { ASSERT_RULE(id); flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)
 // Flag and set interval
-#define FLAG2_INT(id, i, in) do { FLAG2(id, i); if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { if (severity[id] >= show_min_severity) aint[i] = in; } } while (0)
-#define FLAG2_INT2(id, i, in, i2) do { FLAG2(id, i); if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { if (severity[id] >= show_min_severity) { aint[i] = in; aint[i2] = in; } } } while (0)
-#define FLAG2_INT3(id, i, in, i2, in2) do { FLAG2(id, i); if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { if (severity[id] >= show_min_severity) { aint[i] = in; aint[i2] = in2; } } } while (0)
+#define FLAG2_INT(id, i) do { \
+  FLAG2(id, i); \
+  if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { \
+    if (severity[id] >= show_min_severity) aint[i] = civl[i] ? (civlc[i] ? civlc[i] : 12) : 0; \
+  } \
+} while (0)
+
+#define FLAG2_INT2(id, i, i2) do { \
+  FLAG2(id, i); \
+  if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { \
+    if (severity[id] >= show_min_severity) { \
+      aint[i] = civl[i] ? (civlc[i] ? civlc[i] : 12) : 0; \
+      aint[i2] = civl[i2] ? (civlc[i2] ? civlc[i2] : 12) : 0; \
+    } \
+  } \
+} while (0)
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
 #define MAX_PENALTY 10000000.0
