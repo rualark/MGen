@@ -3844,7 +3844,7 @@ void CGenCF1::SendHarmColor(int pos, int v) {
 	int fl;
 	for (int f = 0; f < f_cnt; ++f) {
 		fl = anflags[cpv][s][f];
-		if (rule_viz[fl] == vHarm && !accept[fl]) {
+		if (rule_viz[fl] == vHarm && !accept[fl] && severity[fl] >= show_min_severity) {
 			if (severity[fl] > max_severity) max_severity = severity[fl];
 		}
 	}

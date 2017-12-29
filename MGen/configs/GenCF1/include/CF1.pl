@@ -56,7 +56,7 @@ show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xl
 show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
 show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show chord type (6 or 64)
 show_hatch = 0 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
-show_min_severity = 0 # Minimum severity to highlight note
+show_min_severity = 60 # Minimum severity to highlight note
 harm_notation = 1 # Harmonic notation (see configs/harm/harm-notation.csv for details)
 
 # Lilypond parameters
