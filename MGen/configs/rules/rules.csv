@@ -292,7 +292,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;91;60;Cantus;Counterpoint;Unison;downbeat inside;0;;Downbeat unison is allowed only as first or last interval of counterpoint;;5;2;1;;;;;;
 1;275;60;Cantus;Counterpoint;Unison;2nd -> unis;0;;Major or minor 2nd resolves to unison;;10;2;1;;;;;;
 1;277;60;Cantus;Counterpoint;Unison;near 2m;0;;Unison is near minor second dyad in same measure;;1;1;1;;;;;;
-1;47;30;Cantus;Counterpoint;Penultimate measure;no leading tone;0;;no leading tone is allowed if last bass notes are G-C;;100;5;;;;;;;
+1;47;30;Cantus;Counterpoint;Penultimate measure;no leading tone;0;;no leading tone is allowed if last bass notes are V-I;;100;5;;;;;;;
 1;75;30;Cantus;Counterpoint;Penultimate measure;no V or II;0;;No V or II note;;35;20;1;;;;;;
 1;317;30;Cantus;Counterpoint;Penultimate measure;unaltered VII;0;;Unaltered VII minor note in penultimate measure;;19;4;1;;;;;;
 1;318;30;Cantus;Counterpoint;Penultimate measure;isolated LT;0;;There is a harmony between leading tone and tonic note in penultimate measure;1;24;11;1;;;;;;
