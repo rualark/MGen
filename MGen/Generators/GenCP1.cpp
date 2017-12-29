@@ -2864,7 +2864,7 @@ void CGenCP1::GetNoteTypes() {
 			}
 		}
 		// Build isus
-		isus[ls] = isus[ls];
+		isus[ls] = sus[ls] ? sus[ls] : fli[ls];
 	}
 }
 
