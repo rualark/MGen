@@ -18,6 +18,7 @@ transpose_back = 0 # Should be set to 1 for CF1 generation algorithm only
 # Analysis
 random_key = 0 # Select any of possible keys regardless of last note
 show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
+confirm_mode = 1 # 0 - do not confirm expected flags; 1 - confirm global/local; 2 - confirm mistakes
 
 # Correction
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.

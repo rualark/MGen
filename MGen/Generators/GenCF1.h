@@ -410,6 +410,7 @@ protected:
 	int stag_notes2 = 3; // Maximum allowed stag_notes2 (same notes) during stag_note_steps2
 	int stag_note_steps2 = 10;
 	int random_key = 0; // Allow CF1 to select random key and CA1 to select any of possible keys regardless of last note
+	int confirm_mode = 1; // 0 - do not confirm expected flags; 1 - confirm global / local; 2 - confirm mistakes
 	int min_tempo = 110;
 	int max_tempo = 120;
 	int rpenalty_accepted = 0; // Maximum accepted rule penalty for RandomSWA

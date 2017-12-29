@@ -347,38 +347,54 @@ void CGenCA1::ConfirmExpect() {
 			}
 		}
 	}
-	// Do not check local false positives if disabled
-	for (int fl = 0; fl < MAX_RULES; ++fl) {
-		if (!enflags3[fl] || false_positives_ignore[fl]) continue;
+	if (confirm_mode == 1) {
+		// Do not check local false positives if disabled
+		for (int fl = 0; fl < MAX_RULES; ++fl) {
+			if (!enflags3[fl] || false_positives_ignore[fl]) continue;
+			for (s = 0; s < c_len; ++s) {
+				for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
+					if (!enflags2[fl][s]) {
+						CString est;
+						est.Format("Local false positive flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+							fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+							cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+						WriteLog(5, est);
+						if (m_testing == 1) AppendLineToFile("autotest\\expect.log", est + "\n");
+					}
+				}
+			}
+		}
+		// Check global false positives
 		for (s = 0; s < c_len; ++s) {
-			for (int f = 0; f < anflags[cpv][s].size(); ++f) if (fl == anflags[cpv][s][f]) {
-				if (!enflags2[fl][s]) {
+			for (int f = 0; f < anflags[cpv][s].size(); ++f) {
+				fl = anflags[cpv][s][f];
+				if (!enflags2[fl][s] && false_positives_global[fl]) {
 					CString est;
-					est.Format("Local false positive flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
-						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
+					est.Format("Global false positive flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 					WriteLog(5, est);
 					if (m_testing == 1) AppendLineToFile("autotest\\expect.log", est + "\n");
+					// Collect global false positives statistics
+					//if (m_testing == 1) AppendLineInFile("autotest\\global_false.txt", fl, " 0");
 				}
 			}
 		}
 	}
-	// Check global false positives
-	vector<int> false_pos;
-	false_pos.resize(MAX_RULES);
-	for (s = 0; s < c_len; ++s) {
-		for (int f = 0; f < anflags[cpv][s].size(); ++f) {
-			fl = anflags[cpv][s][f];
-			if (!enflags2[fl][s] && false_positives_global[fl]) {
-				CString est;
-				est.Format("Global false positive flag: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
-					fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl], 
-					cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
-				WriteLog(5, est);
-				if (m_testing == 1) AppendLineToFile("autotest\\expect.log", est + "\n");
-				false_pos[fl] = 1;
-				// Collect global false positives statistics
-				//if (m_testing == 1) AppendLineInFile("autotest\\global_false.txt", fl, " 0");
+	if (confirm_mode == 2) {
+		for (s = 0; s < c_len; ++s) {
+			for (int f = 0; f < anflags[cpv][s].size(); ++f) {
+				fl = anflags[cpv][s][f];
+				// Do not check ignored or accepted flags
+				if (false_positives_ignore[fl] || accept[fl]) continue;
+				if (!enflags2[fl][s]) {
+					CString est;
+					est.Format("False positive mistake: [%d] %s %s (%s) at %d:%d (beat %d:%d) %s",
+						fl, accept[fl] ? "+" : "-", RuleName[rule_set][fl], SubRuleName[rule_set][fl],
+						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
+					WriteLog(1, est);
+					if (m_testing == 1) AppendLineToFile("autotest\\mistakes.log", est + "\n");
+				}
 			}
 		}
 	}
@@ -495,8 +511,10 @@ void CGenCA1::Generate() {
 		GetSourceRange(cantus[i]);
 		ScanCantus(tEval, 0, &(cantus[i]));
 		LogFlags();
-		ParseExpect();
-		ConfirmExpect();
+		if (confirm_mode) {
+			ParseExpect();
+			ConfirmExpect();
+		}
 		EmulateSAS();
 		key_eval.Empty();
 		// Check if cantus was shown
