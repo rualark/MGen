@@ -8,20 +8,22 @@
 #define MAX_DATA_READY 30
 #define MAX_DATA_READY_PERSIST 20
 
-#define DR_Config				1
-#define DR_ConfigTest		2
-#define DR_Rules				3
-#define DR_RuleSet			4
-#define DR_RuleParam		5
-#define DR_RuleSetParam 6
-#define DR_cc_old				7
-#define DR_rpenalty_cur 8
-#define DR_hv						9
-#define DR_hsp					10
-#define DR_fstat				11
-#define DR_fcor					12
-#define DR_fblock				13
+// Persistent
+#define DP_Config				1
+#define DP_ConfigTest		2
+#define DP_Rules				3
+#define DP_RuleSet			4
+#define DP_RuleParam		5
+#define DP_RuleSetParam 6
+#define DP_cc_old				7
+#define DP_rpenalty_cur 8
+#define DP_hv						9
+#define DP_hsp					10
+#define DP_fstat				11
+#define DP_fcor					12
+#define DP_fblock				13
 
+// Non-persistent
 #define DR_c						1
 #define DR_fli					2
 #define DR_macc					3
@@ -80,7 +82,7 @@
 // This variant skips flags inside SWA window when evaluating not full cp (performance increase)
 //#define SWA_OPTIMIZER(i) || (task == tCor && method == mSWA && i >= swa1 && i < swa2 && ep2 < c_len)
 // This variant always skips flags inside SWA window (more performance increase
-#define SWA_OPTIMIZER(i) || (task == tCor && method == mSWA && i >= swa1 && i < swa2)
+#define SWA_OPTIMIZER(i) || (task == tCor && method == mSWA && (i) >= swa1 && (i) < swa2)
 
 // Report violation
 #define FLAG(id, i) do { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)

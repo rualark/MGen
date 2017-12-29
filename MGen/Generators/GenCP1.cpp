@@ -1071,13 +1071,16 @@ int CGenCP1::FailPcoSus() {
 
 int CGenCP1::FailPco() {
 	// Suspension to pco
-	if (sus[ls] && tivl[sus[ls]] == iPco) {
-		// Prohibit leading tone octave on suspension
-		if (apcc[0][sus[ls]] == 11 && apcc[1][sus[ls]] == 11) 
-			FLAG2_INT(324, sus[ls]);
-		// Prohibit parallel pco on suspension
-		if (ivl[sus[ls]] == ivl[fli2[ls - 1]]) 
-			FLAG2_INT2(316, sus[ls-1]?sus[ls-1]:fli[ls-1], sus[ls]);
+	if (sus[ls] && tivl[sus[ls]] == iPco && !retrigger[sus[ls]]) {
+		// Do not check last note in scan window, because retrigger has not been set
+		if (ep2 >= c_len || ls < fli_size - 1) {
+			// Prohibit leading tone octave on suspension
+			if (apcc[0][sus[ls]] == 11 && apcc[1][sus[ls]] == 11)
+				FLAG2_INT(324, sus[ls]);
+			// Prohibit parallel pco on suspension
+			if (ivl[sus[ls]] == ivl[fli2[ls - 1]])
+				FLAG2_INT2(316, sus[ls], sus[ls - 1] ? sus[ls - 1] : fli[ls - 1]);
+		}
 	}
 	if (tivl[s] == iPco) {
 		// Prohibit long downbeat octave except last measure
@@ -1986,7 +1989,7 @@ int CGenCP1::FailRhythm5() {
 				if (ls2 < fli_size - 1 && aleap[cpv][s2]) 
 					FLAG2(88, s2);
 				else if (ls2 > 0 && aleap[cpv][s2 - 1])
-					FLAG2(88, fli[bli[s2 - 1]]);
+					FLAG2(88, sus[bli[s2-1]]? sus[bli[s2 - 1]]:fli[bli[s2 - 1]]);
 			}
 			else {
 				// 1/8 syncope
@@ -2151,6 +2154,7 @@ int CGenCP1::FailPcoApartStep() {
 
 int CGenCP1::FailVIntervals() {
 	CHECK_READY(DR_fli, DR_ivl, DR_msh);
+	CHECK_READY(DR_retrigger);
 	CHECK_READY_PERSIST(DR_mli);
 	CHECK_READY(DR_motion, DR_culm_ls, DR_sus);
 	// Number of sequential parallel imperfect consonances
@@ -2326,7 +2330,7 @@ void CGenCP1::SaveCP() {
 }
 
 void CGenCP1::SaveCPIfRp() {
-	CHECK_READY(DR_rpenalty_cur);
+	CHECK_READY(DP_rpenalty_cur);
 	// Is penalty not greater than minimum of all previous?
 	if (rpenalty_cur <= rpenalty_min) {
 		// If rpenalty 0, we can skip_flags (if allowed)

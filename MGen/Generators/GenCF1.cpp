@@ -59,7 +59,7 @@ CGenCF1::~CGenCF1()
 
 // Load variants of possible harmonic meaning
 void CGenCF1::LoadHarmVar() {
-	SET_READY_PERSIST(DR_hv);
+	SET_READY_PERSIST(DP_hv);
 	hv.resize(7);
 	if (cantus_high) {
 		// Create harmonic meaning variants for higher cantus
@@ -83,7 +83,7 @@ void CGenCF1::LoadHarmVar() {
 // Load harmonic sequence penalties
 void CGenCF1::LoadHSP(CString fname)
 {
-	SET_READY_PERSIST(DR_hsp);
+	SET_READY_PERSIST(DP_hsp);
 	CString st, est;
 	vector<CString> ast;
 	int i = 0;
@@ -134,7 +134,7 @@ void CGenCF1::LoadHSP(CString fname)
 // Load rules
 void CGenCF1::LoadRules(CString fname)
 {
-	SET_READY_PERSIST(DR_Rules);
+	SET_READY_PERSIST(DP_Rules);
 	CString st, est, rule, subrule;
 	vector<CString> ast, ast2;
 	int i = 0;
@@ -308,7 +308,7 @@ int CGenCF1::GetRuleParam(int rset, int rid, int type, int id) {
 
 // Parse rules
 void CGenCF1::ParseRules() {
-	SET_READY_PERSIST(DR_RuleParam);
+	SET_READY_PERSIST(DP_RuleParam);
 	for (int rset = 0; rset < accepts.size(); ++rset) if (accepts[rset].size()) {
 		RuleParam[rset].resize(MAX_RULES);
 		for (int rid = 0; rid < MAX_RULES; ++rid) {
@@ -321,8 +321,8 @@ void CGenCF1::ParseRules() {
 
 // Set parsed parameters of current ruleset
 void CGenCF1::SetRuleParams() {
-	CHECK_READY_PERSIST(DR_RuleParam);
-	SET_READY_PERSIST(DR_RuleSetParam);
+	CHECK_READY_PERSIST(DP_RuleParam);
+	SET_READY_PERSIST(DP_RuleSetParam);
 	lclimax_notes = GetRuleParam(rule_set, 32, rsSubComment, 0);
 	lclimax_mea = GetRuleParam(rule_set, 32, rsSubComment, 1);
 	lclimax_mea2 = GetRuleParam(rule_set, 325, rsComment, 0);
@@ -477,8 +477,8 @@ void CGenCF1::ProcessSpecies() {
 }
 
 void CGenCF1::CheckConfig() {
-	CHECK_READY_PERSIST(DR_Config, DR_RuleSet);
-	SET_READY_PERSIST(DR_ConfigTest);
+	CHECK_READY_PERSIST(DP_Config, DP_RuleSet);
+	SET_READY_PERSIST(DP_ConfigTest);
 	// GenCP1
 	if (m_algo_id == 121) {
 		ProcessSpecies();
@@ -552,8 +552,8 @@ void CGenCF1::CheckConfig() {
 
 // Select rules
 int CGenCF1::SelectRuleSet(int rs) {
-	CHECK_READY_PERSIST(DR_Rules);
-	SET_READY_PERSIST(DR_RuleSet);
+	CHECK_READY_PERSIST(DP_Rules);
+	SET_READY_PERSIST(DP_RuleSet);
 	rule_set = rs;
 	if (!accepts[rule_set].size()) {
 		CString est;
@@ -640,7 +640,7 @@ void CGenCF1::LoadHarmNotation() {
 }
 
 void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) {
-	SET_READY_PERSIST(DR_Config);
+	SET_READY_PERSIST(DP_Config);
 	CheckVar(sN, sV, "reduce_between", &reduce_between, 0, 100);
 	CheckVar(sN, sV, "ly_msh", &ly_msh, 0, 1); 
 	CheckVar(sN, sV, "harm_notation", &harm_notation, 0, 5);
@@ -1208,7 +1208,7 @@ int CGenCF1::EvalMelodyHarm(int hp, int &last_flag, int &max_p) {
 
 int CGenCF1::FailMelodyHarm(vector<int> &pc, vector<int> &pcc) {
 	CHECK_READY(DR_fli, DR_pc);
-	CHECK_READY_PERSIST(DR_hv, DR_hsp);
+	CHECK_READY_PERSIST(DP_hv, DP_hsp);
 	int h;
 	int first_tonic = 0;
 	// Build hm vector
@@ -2620,7 +2620,7 @@ void CGenCF1::ApplySourceRange() {
 }
 
 void CGenCF1::SingleCantusInit() {
-	SET_READY_PERSIST(DR_cc_old);
+	SET_READY_PERSIST(DP_cc_old);
 	// Copy cantus
 	m_cc = *scantus;
 	// Get diatonic steps from chromatic
@@ -2782,7 +2782,7 @@ void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
 	int x, x2;
 	// First algorithm is needed when you correct existing melody with SAS or ASWA
 	if (task == tCor) {
-		CHECK_READY(DR_cc_old);
+		CHECK_READY(DP_cc_old);
 		int finished;
 		// Fill notes starting with source melody, gradually moving apart
 		for (int i = step1; i < step2; ++i) {
@@ -2889,13 +2889,13 @@ void CGenCF1::MultiCantusInit(vector<int> &c, vector<int> &cc) {
 // Calculate flag statistics
 void CGenCF1::CalcFlagStat() {
 	if (calculate_stat || calculate_correlation) {
-		SET_READY_PERSIST(DR_fstat);
+		SET_READY_PERSIST(DP_fstat);
 		for (int i = 0; i < max_flags; ++i) if (!accept[i]) {
 			if (flags[i]) {
 				++fstat[i];
 				// Calculate correlation
 				if (calculate_correlation) {
-					SET_READY_PERSIST(DR_fcor);
+					SET_READY_PERSIST(DP_fcor);
 					for (int z = 0; z < max_flags; ++z) {
 						if (flags[z]) ++fcor[i][z];
 					}
@@ -2908,7 +2908,7 @@ void CGenCF1::CalcFlagStat() {
 // Calculate flag blocking
 int CGenCF1::FailFlagBlock() {
 	if (calculate_blocking) {
-		SET_READY_PERSIST(DR_fblock);
+		SET_READY_PERSIST(DP_fblock);
 		int flags_found = 0;
 		int flags_found2 = 0;
 		int flags_conflict = 0;
@@ -3081,7 +3081,7 @@ void CGenCF1::TestBestRpenalty() {
 }
 
 void CGenCF1::CalcRpenalty(vector<int> &cc) {
-	SET_READY(DR_rpenalty_cur);
+	SET_READY(DP_rpenalty_cur);
 	// Calculate out of range penalty
 	int real_range = nmax - nmin;
 	if (!accept[37] && real_range > max_interval) {
@@ -3460,7 +3460,7 @@ void CGenCF1::ReseedCantus()
 void CGenCF1::WriteFlagCor() {
 	// Write flag correlation
 	if (calculate_correlation) {
-		CHECK_READY_PERSIST(DR_fcor);
+		CHECK_READY_PERSIST(DP_fcor);
 		DeleteFile("cf1-cor.csv");
 		CString st, st2, st3;
 		st3 = "Flag; Total; ";
@@ -3485,8 +3485,8 @@ void CGenCF1::ShowFlagStat() {
 	CString st, st2;
 	int lines = 0;
 	// Show flag statistics
-	if (calculate_stat && data_ready_persist[DR_fstat]) {
-		//CHECK_READY_PERSIST(DR_fstat);
+	if (calculate_stat && data_ready_persist[DP_fstat]) {
+		//CHECK_READY_PERSIST(DP_fstat);
 		for (int d = 1; d < max_flags; ++d) {
 			if (lines > 100) break;
 			int flagc = 0;
@@ -3576,8 +3576,8 @@ CString CGenCF1::GetStuck() {
 void CGenCF1::ShowFlagBlock() {
 	CString st, st2;
 	// Show blocking statistics
-	if (calculate_blocking && method == mScan && data_ready_persist[DR_fblock]) {
-		//CHECK_READY_PERSIST(DR_fblock);
+	if (calculate_blocking && method == mScan && data_ready_persist[DP_fblock]) {
+		//CHECK_READY_PERSIST(DP_fblock);
 		for (int w = 0; w < wcount; ++w) {
 			int lines = 0;
 			CString est;
@@ -4640,7 +4640,7 @@ void CGenCF1::SaveCantus() {
 }
 
 void CGenCF1::SaveCantusIfRp() {
-	CHECK_READY(DR_rpenalty_cur);
+	CHECK_READY(DP_rpenalty_cur);
 	// Is penalty not greater than minimum of all previous?
 	if (rpenalty_cur <= rpenalty_min) {
 		// If rpenalty 0, we can skip_flags (if allowed)
@@ -4759,7 +4759,7 @@ check:
 		SaveBestRejected(m_cc);
 		if (task == tCor && method == mSWA) {
 			if (skip_flags) {
-				SET_READY(DR_rpenalty_cur);
+				SET_READY(DP_rpenalty_cur);
 				rpenalty_cur = 0;
 				if (ep2 < smap[swa2 - 1] + 1) {
 					NextWindow(m_cc);
