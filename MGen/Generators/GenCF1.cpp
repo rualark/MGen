@@ -1335,7 +1335,7 @@ int CGenCF1::FailMelodyHarm(vector<int> &pc, vector<int> &pcc) {
 }
 
 void CGenCF1::CalcCcIncrement() {
-	SET_READY_PERSIST(DR_cc_incr);
+	SET_READY_PERSIST(DP_cc_incr);
 	int pos;
 	for (int i = 0; i < 127; ++i) {
 		pos = (i + 13 - tonic_cur) % 12;
@@ -2782,7 +2782,7 @@ void CGenCF1::CalculateCcOrder(vector <int> &cc_old, int step1, int step2) {
 	int x, x2;
 	// First algorithm is needed when you correct existing melody with SAS or ASWA
 	if (task == tCor) {
-		CHECK_READY(DP_cc_old);
+		CHECK_READY_PERSIST(DP_cc_old);
 		int finished;
 		// Fill notes starting with source melody, gradually moving apart
 		for (int i = step1; i < step2; ++i) {
@@ -3081,7 +3081,7 @@ void CGenCF1::TestBestRpenalty() {
 }
 
 void CGenCF1::CalcRpenalty(vector<int> &cc) {
-	SET_READY(DP_rpenalty_cur);
+	SET_READY(DR_rpenalty_cur);
 	// Calculate out of range penalty
 	int real_range = nmax - nmin;
 	if (!accept[37] && real_range > max_interval) {
@@ -4642,7 +4642,7 @@ void CGenCF1::SaveCantus() {
 }
 
 void CGenCF1::SaveCantusIfRp() {
-	CHECK_READY(DP_rpenalty_cur);
+	CHECK_READY(DR_rpenalty_cur);
 	// Is penalty not greater than minimum of all previous?
 	if (rpenalty_cur <= rpenalty_min) {
 		// If rpenalty 0, we can skip_flags (if allowed)
@@ -4761,7 +4761,7 @@ check:
 		SaveBestRejected(m_cc);
 		if (task == tCor && method == mSWA) {
 			if (skip_flags) {
-				SET_READY(DP_rpenalty_cur);
+				SET_READY(DR_rpenalty_cur);
 				rpenalty_cur = 0;
 				if (ep2 < smap[swa2 - 1] + 1) {
 					NextWindow(m_cc);

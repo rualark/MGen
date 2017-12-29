@@ -663,7 +663,7 @@ int CGenCP1::FailAlteredInt2(int i, int c1, int c2, int flag) {
 
 // Fail vertical altered intervals
 int CGenCP1::FailAlteredInt() {
-	CHECK_READY(DR_pc);
+	CHECK_READY(DR_pc, DR_ivl);
 	for (int i = 0; i < ep2; ++i) {
 		if (FailAlteredInt2(i, 9, 8, 170)) return 1;
 		if (FailAlteredInt2(i, 11, 10, 171)) return 1;
@@ -675,8 +675,10 @@ int CGenCP1::FailAlteredInt() {
 }
 
 int CGenCP1::FailCrossInt2(int i, int i_1, int c1, int c2, int flag) {
-	if ((apcc[cfv][i_1] == c1 && apcc[cpv][i] == c2) || (apcc[cfv][i_1] == c2 && apcc[cpv][i] == c1)) FLAG2(flag, fli[bli[i]]);
-	else if ((apcc[cpv][i_1] == c1 && apcc[cfv][i] == c2) || (apcc[cpv][i_1] == c2 && apcc[cfv][i] == c1)) FLAG2(flag, fli[bli[i_1]]);
+	if ((apcc[cfv][i_1] == c1 && apcc[cpv][i] == c2) || (apcc[cfv][i_1] == c2 && apcc[cpv][i] == c1)) 
+		FLAG2(flag, fli[bli[i]]);
+	else if ((apcc[cpv][i_1] == c1 && apcc[cfv][i] == c2) || (apcc[cpv][i_1] == c2 && apcc[cfv][i] == c1)) 
+		FLAG2(flag, fli[bli[i_1]]);
 	return 0;
 }
 
@@ -819,7 +821,7 @@ int CGenCP1::FailSusResolution(int s3) {
 }
 
 int CGenCP1::FailSus1() {
-	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY_PERSIST(DP_mli);
 	CHECK_READY(DR_fli, DR_ivl, DR_sus);
 	CHECK_READY(DR_leap, DR_beat);
 	int last_cf;
@@ -1441,7 +1443,7 @@ void CGenCP1::SavePattern(int pattern) {
 }
 
 int CGenCP1::DetectPatterns() {
-	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY_PERSIST(DP_mli);
 	CHECK_READY(DR_beat, DR_ivl);
 	CHECK_READY(DR_fli, DR_leap, DR_c);
 	SET_READY(DR_pat);
@@ -1458,8 +1460,7 @@ int CGenCP1::DetectPatterns() {
 }
 
 void CGenCP1::GetBasicMsh() {
-	CHECK_READY_PERSIST(DR_c);
-	CHECK_READY(DR_fli, DR_leap);
+	CHECK_READY(DR_c, DR_fli, DR_leap);
 	SET_READY(DR_mshb);
 	// First note is always downbeat
 	mshb[0] = pDownbeat;
@@ -1779,7 +1780,7 @@ void CGenCP1::ApplyFixedPat() {
 
 int CGenCP1::FailRhythm() {
 	CHECK_READY(DR_fli, DR_beat, DR_sus);
-	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY_PERSIST(DP_mli);
 	CHECK_READY(DR_leap);
 	if (species == 2) {
 		if (FailRhythm2()) return 1;
@@ -2052,6 +2053,7 @@ int CGenCP1::FailRhythm5() {
 
 int CGenCP1::FailPcoApart() {
 	CHECK_READY(DR_fli, DR_ivl, DR_beat);
+	CHECK_READY(DR_sus);
 	CHECK_READY(DR_msh);
 	// Step index of last perfect consonance
 	pco5_last = -1000;
@@ -2158,7 +2160,7 @@ int CGenCP1::FailPcoApartStep() {
 int CGenCP1::FailVIntervals() {
 	CHECK_READY(DR_fli, DR_ivl, DR_msh);
 	CHECK_READY(DR_retrigger);
-	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY_PERSIST(DP_mli);
 	CHECK_READY(DR_motion, DR_culm_ls, DR_sus);
 	// Number of sequential parallel imperfect consonances
 	int pico_count = 0;
@@ -2333,7 +2335,7 @@ void CGenCP1::SaveCP() {
 }
 
 void CGenCP1::SaveCPIfRp() {
-	CHECK_READY(DP_rpenalty_cur);
+	CHECK_READY(DR_rpenalty_cur);
 	// Is penalty not greater than minimum of all previous?
 	if (rpenalty_cur <= rpenalty_min) {
 		// If rpenalty 0, we can skip_flags (if allowed)
@@ -2351,7 +2353,7 @@ void CGenCP1::SaveCPIfRp() {
 
 // Detect many slurs
 int CGenCP1::FailSlurs() {
-	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY_PERSIST(DP_mli);
 	CHECK_READY(DR_fli);
 	// For species 5 there are separate rules (FailRhythm5)
 	if (species == 5) return 0;
@@ -2748,7 +2750,7 @@ void CGenCP1::SWACP(int i, int dp) {
 }
 
 int CGenCP1::FailFirstIntervals() {
-	CHECK_READY(DR_fli, DR_pc);
+	CHECK_READY(DR_fli, DR_pc, DR_ivl);
 	if (apc[0][0] == 0) {
 		if (apc[1][0] == 0) FLAG2_INT(268, 0);
 		else if (apc[1][0] == 4) FLAG2_INT(269, 0);
@@ -2764,8 +2766,8 @@ int CGenCP1::FailFirstIntervals() {
 }
 
 int CGenCP1::FailLastIntervals() {
-	CHECK_READY_PERSIST(DR_mli);
-	CHECK_READY(DR_fli, DR_pc);
+	CHECK_READY_PERSIST(DP_mli);
+	CHECK_READY(DR_fli, DR_pc, DR_ivl);
 	int fs;
 	// Do not check if melody is short yet
 	if (fli_size < 3) return 0;
@@ -2888,7 +2890,7 @@ void CGenCP1::CreateULinks() {
 }
 
 void CGenCP1::GetMeasures() {
-	SET_READY_PERSIST(DR_mli);
+	SET_READY_PERSIST(DP_mli);
 	mli.clear();
 	if (fn) mli.push_back(0);
 	for (int i = 0; i < c_len; ++i) {
@@ -2969,7 +2971,7 @@ void CGenCP1::EmulateSASCP() {
 
 // Get links to cantus notes
 void CGenCP1::GetCfli() {
-	SET_READY_PERSIST(DR_cfli);
+	SET_READY_PERSIST(DP_cfli);
 	cfli.clear();
 	int last_note = -1;
 	for (s = 0; s < c_len; ++s) {
@@ -3159,7 +3161,7 @@ void CGenCP1::RemoveHarmDuplicate() {
 
 int CGenCP1::FailHarm() {
 	CHECK_READY(DR_fli, DR_c, DR_pc);
-	CHECK_READY_PERSIST(DR_mli);
+	CHECK_READY_PERSIST(DP_mli);
 	SET_READY(DR_hli);
 	int ls1, ls2 = 0;
 	int s9, hs;

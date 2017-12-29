@@ -16,12 +16,14 @@
 #define DP_RuleParam		5
 #define DP_RuleSetParam 6
 #define DP_cc_old				7
-#define DP_rpenalty_cur 8
+#define DP_cc_incr			8
 #define DP_hv						9
 #define DP_hsp					10
 #define DP_fstat				11
 #define DP_fcor					12
 #define DP_fblock				13
+#define DP_mli					14
+#define DP_cfli					15
 
 // Non-persistent
 #define DR_c						1
@@ -29,7 +31,6 @@
 #define DR_macc					3
 #define DR_pc						4
 #define DR_nmin					5
-#define DR_cc_incr			6
 #define DR_cc_order			7
 #define DR_leap					8
 #define DR_slur					9
@@ -38,13 +39,12 @@
 #define DR_sus					12
 #define DR_motion				13
 #define DR_beat					14
-#define DR_mli					15
-#define DR_cfli					16
+#define DR_rpenalty_cur 15
 #define DR_msh					17
 #define DR_uli					18
 #define DR_pat					19
-#define DR_mshb				20
-#define DR_mshf				21
+#define DR_mshb				  20
+#define DR_mshf				  21
 #define DR_retrigger    22
 #define DR_hbc			    23
 #define DR_hli			    24
