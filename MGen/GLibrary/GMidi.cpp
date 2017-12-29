@@ -540,8 +540,10 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				// If no flags, parse second voice
 				if (!ly_fa.size() && v_cnt > 1) {
 					int v2 = (v / 2) * 2 + !(v % 2);
-					int i2 = abs(i + len[i][v] - poff[i + len[i][v]][v2]);
-					ParseLyComments(i2, v2, 1);
+					if (v2 < v_cnt) {
+						int i2 = abs(i + len[i][v] - poff[i + len[i][v]][v2]);
+						ParseLyComments(i2, v2, 1);
+					}
 				}
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 			}
