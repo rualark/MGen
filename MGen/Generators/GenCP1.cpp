@@ -245,6 +245,7 @@ void CGenCP1::ScanCPInit() {
 	motion.resize(c_len);
 	beat.resize(c_len);
 	sus.resize(c_len);
+	isus.resize(c_len);
 	ep2 = c_len;
 	voice_high = cpv;
 	max_interval = max_interval_cp;
@@ -1006,12 +1007,12 @@ int CGenCP1::FailUnison() {
 	if (!civl[s]) {
 		// 2nd -> unison
 		if (s > 0 && ivl[s - 1] == 1) 
-			FLAG2_INT2(275, s, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1]);
+			FLAG2_INT2(275, s, isus[ls - 1]);
 		// Unison near m2 in same measure
 		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1 && bmli[s] == bmli[fli[ls + 1]]) 
 			FLAG2_INT2(277, s, fli[ls + 1]);
 		else if (s > 0 && civl[s - 1] == 1 && bmli[s] == bmli[s - 1]) 
-			FLAG2_INT2(275, s, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1]);
+			FLAG2_INT2(275, s, isus[ls - 1]);
 		// Inside downbeat without suspension
 		if (!beat[ls] && ls > 0 && ls < fli_size - 1 && !sus[ls]) 
 			FLAG2_INT(91, s);
@@ -1079,7 +1080,7 @@ int CGenCP1::FailPco() {
 				FLAG2_INT(324, sus[ls]);
 			// Prohibit parallel pco on suspension
 			if (ivl[sus[ls]] == ivl[fli2[ls - 1]])
-				FLAG2_INT2(316, sus[ls], sus[ls - 1] ? sus[ls - 1] : fli[ls - 1]);
+				FLAG2_INT2(316, sus[ls], isus[ls - 1]);
 		}
 	}
 	if (tivl[s] == iPco) {
@@ -1104,37 +1105,37 @@ int CGenCP1::FailPco() {
 		// because they are detected as pco apart now
 			// Prohibit parallel last - first
 		if (ivl[s] == ivl[fli2[ls - 1]]) 
-			FLAG2_INT2(84, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
+			FLAG2_INT2(84, isus[ls - 1], s);
 		else {
 			// Prohibit contrary movement
 			if (bmli[s] - 1 == bmli[fli2[ls - 1]] && civlc[s] == civlc[fli2[ls - 1]]) 
-				FLAG2_INT2(85, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
+				FLAG2_INT2(85, isus[ls - 1], s);
 				// Prohibit different
 			else if (tivl[fli2[ls - 1]] == iPco) 
-				FLAG2_INT2(86, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
+				FLAG2_INT2(86, isus[ls - 1], s);
 			// All other cases if previous interval is not pco
 			// Direct movement to pco
 			if (motion[fli2[ls - 1]] == mDirect) {
 				// Stepwize
 				if (abs(acc[1][s] - acc[1][s - 1]) < 3) {
 					if (s2 == c_len - 1 && cfli[cfli.size()-1] == s) {
-						if (civlc[s] == 0) FLAG2_INT2(209, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
-						else FLAG2_INT2(208, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
+						if (civlc[s] == 0) FLAG2_INT2(209, isus[ls - 1], s);
+						else FLAG2_INT2(208, isus[ls - 1], s);
 					}
 					else if (ls < fli_size - 1 || ep2 == c_len) {
-						if (civlc[s] == 0) FLAG2_INT2(211, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
-						else FLAG2_INT2(210, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
+						if (civlc[s] == 0) FLAG2_INT2(211, isus[ls - 1], s);
+						else FLAG2_INT2(210, isus[ls - 1], s);
 					}
 				}
 				// Non-stepwize
 				else {
 					if (s2 == c_len - 1 && cfli[cfli.size() - 1] == s) {
-						if (civlc[s] == 0) FLAG2_INT2(213, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
-						else FLAG2_INT2(212, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
+						if (civlc[s] == 0) FLAG2_INT2(213, isus[ls - 1], s);
+						else FLAG2_INT2(212, isus[ls - 1], s);
 					}
 					else if (ls < fli_size - 1 || ep2 == c_len) {
-						if (civlc[s] == 0) FLAG2_INT2(215, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
-						else FLAG2_INT2(214, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1], s);
+						if (civlc[s] == 0) FLAG2_INT2(215, isus[ls - 1], s);
+						else FLAG2_INT2(214, isus[ls - 1], s);
 					}
 				}
 			}
@@ -1989,7 +1990,7 @@ int CGenCP1::FailRhythm5() {
 				if (ls2 < fli_size - 1 && aleap[cpv][s2]) 
 					FLAG2(88, s2);
 				else if (ls2 > 0 && aleap[cpv][s2 - 1])
-					FLAG2(88, sus[bli[s2-1]]? sus[bli[s2 - 1]]:fli[bli[s2 - 1]]);
+					FLAG2(88, isus[bli[s2-1]]);
 			}
 			else {
 				// 1/8 syncope
@@ -2177,10 +2178,10 @@ int CGenCP1::FailVIntervals() {
 			++pm_pico;
 			// Two same ico transitions means three intervals already
 			if (pico_count == ico_chain-1) {
-				FLAG2_INT2(89, s, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1]);
+				FLAG2_INT2(89, s, isus[ls - 1]);
 			}
 			else if (pico_count >= ico_chain2) {
-				FLAG2_INT2(96, s, sus[ls - 1] ? sus[ls - 1] : fli[ls - 1]);
+				FLAG2_INT2(96, s, isus[ls - 1]);
 			}
 		}
 		else pico_count = 0;
@@ -2858,6 +2859,8 @@ void CGenCP1::GetNoteTypes() {
 				}
 			}
 		}
+		// Build isus
+		isus[ls] = isus[ls];
 	}
 }
 

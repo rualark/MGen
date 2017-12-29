@@ -810,6 +810,7 @@ protected:
 	vector<int> motion; // [s] Melody motion type
 	vector<int> beat; // [ls] Beat type for each fli2: 0 = downbeat, 1 = beat 3
 	vector<int> sus; // [ls] Note suspension flag (when above zero, links to first cantus-changing step)
+	vector<int> isus; // [ls] Points to sus position or note start if there is not sus
 	vector<int> mli; // [ms] Forward links to first steps of each measure
 	vector<int> bmli; // [s] Backward links to measures from steps
 	vector<int> cfli; // [cfs] Forward links to each cf note
