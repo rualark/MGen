@@ -313,6 +313,7 @@ void CGenCA1::ParseExpect() {
 }
 
 void CGenCA1::ConfirmExpect() {
+	CString st;
 	int found, fl;
 	int max_x = enflags.size();
 	if (!enflags_count) return;
@@ -394,6 +395,17 @@ void CGenCA1::ConfirmExpect() {
 						cantus_id + 1, s + 1, cpos[s] / 8 + 1, cpos[s] % 8 + 1, midi_file);
 					WriteLog(1, est);
 					if (m_testing == 1) AppendLineToFile("autotest\\mistakes.log", est + "\n");
+				}
+				else {
+					// Confirm in note comment
+					for (int v = 0; v < av_cnt; ++v) {
+						for (int x = 0; x < comment[cpos[s]][v].size(); ++x) {
+							st.Format("[%d/", fl);
+							if (comment[cpos[s]][v][x].Find(st) != -1) {
+								if (comment[cpos[s]][v][x][0] == '-') comment[cpos[s]][v][x].SetAt(0, '>');
+							}
+						}
+					}
 				}
 			}
 		}
