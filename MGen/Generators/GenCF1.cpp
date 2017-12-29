@@ -3705,6 +3705,8 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {
 			if (accept[fl] == -1 && !show_ignored_flags) continue;
 			// Send comments and color only if rule is not ignored
 			if (accept[fl] == 1 && !show_allowed_flags) continue;
+			// Do not send if ignored
+			if (severity[fl] < show_min_severity) continue;
 			if (!i) {
 				if (!accept[fl]) st = "- ";
 				else if (accept[fl] == -1) st = "$ ";

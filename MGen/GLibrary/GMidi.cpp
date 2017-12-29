@@ -216,6 +216,7 @@ void CGMidi::GetLySev(ofstream &fs, int pos, CString &ev, int le, int i, int v) 
 	// Find worst flag
 	for (int x = 0; x < ly_fa.size(); ++x) {
 		int fl = ly_fa[x];
+		//if (severity[fl] < show_min_severity) continue;
 		vtype_sev[rule_viz[fl]] = max(vtype_sev[rule_viz[fl]], severity[fl]);
 		if (rule_viz[fl] == vLines)
 			vtype_sev[vLine] = max(vtype_sev[vLine], severity[fl]);
