@@ -241,6 +241,7 @@ void CGenCP1::ScanCPInit() {
 	ivlc.resize(c_len);
 	civl.resize(c_len);
 	civlc.resize(c_len);
+	civlc2.resize(c_len);
 	tivl.resize(c_len);
 	motion.resize(c_len);
 	beat.resize(c_len);
@@ -704,6 +705,7 @@ void CGenCP1::GetVIntervals() {
 		ivlc[i] = ivl[i] % 7;
 		civl[i] = acc[1][i] - acc[0][i];
 		civlc[i] = civl[i] % 12;
+		civlc2[i] = civl[i] ? (civlc[i] ? civlc[i] : 12) : 0;
 		//if (civlc[i] == 1 || civlc[i] == 2 || civlc[i] == 5 || civlc[i] == 6 || civlc[i] == 10 || civlc[i] == 11) tivl[i] = iDis;
 		if (civlc[i] == 3 || civlc[i] == 4 || civlc[i] == 8 || civlc[i] == 9) tivl[i] = iIco;
 		else if (civlc[i] == 7 || civlc[i] == 0) tivl[i] = iPco;

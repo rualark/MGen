@@ -95,7 +95,7 @@
 #define FLAG2_INT(id, i) do { \
   FLAG2(id, (i)); \
   if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { \
-    if (severity[id] >= show_min_severity) aint[i] = civl[i] ? (civlc[i] ? civlc[i] : 12) : 0; \
+    if (severity[id] >= show_min_severity) aint[i] = civlc2[i]; \
   } \
 } while (0)
 
@@ -103,8 +103,8 @@
   FLAG2(id, (i)); \
   if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { \
     if (severity[id] >= show_min_severity) { \
-      aint[i] = civl[i] ? (civlc[i] ? civlc[i] : 12) : 0; \
-      aint[i2] = civl[i2] ? (civlc[i2] ? civlc[i2] : 12) : 0; \
+      aint[i] = civlc2[i]; \
+      aint[i2] = civlc2[i2]; \
     } \
   } \
 } while (0)
@@ -806,6 +806,7 @@ protected:
 	vector<int> civl; // [s] Chromatic interval between voices
 	vector<int> ivlc; // [s] Diatonic interval between voices (class)
 	vector<int> civlc; // [s] Chromatic interval between voices (class)
+	vector<int> civlc2; // [s] Shows lilypond optimized civlc (0 for unisone, 12 for octave)
 	vector<int> tivl; // [s] Type of interval between voices
 	vector<int> motion; // [s] Melody motion type
 	vector<int> beat; // [ls] Beat type for each fli2: 0 = downbeat, 1 = beat 3
