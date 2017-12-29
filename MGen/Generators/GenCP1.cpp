@@ -788,7 +788,7 @@ int CGenCP1::FailSusResolution(int s3) {
 		// Mark resolution as obligatory harmonic in basic msh
 		if (tivl[s3] > 0) mshb[bli[s3]] = pSusRes;
 		// Resolution to discord
-		if (tivl[s3] < 0) FLAG2_INT2(220, s3, sus[ls]);
+		if (tivl[s3] < 0) FLAG2_INT2(220, sus[ls], s3);
 			// Resolution by leap
 		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2_INT2(221, s3, sus[ls]);
 		else {
