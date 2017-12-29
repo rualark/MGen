@@ -82,22 +82,27 @@ BOOL CInfoDlg::OnInitDialog()
 			}
 			int prev_note = -1;
 			int nnum = 0;
+			int nstart = 0;
 			for (int x = m1; x <= m2; ++x) {
 				// When pause, reset previous note because notes can be the same left and right from the pause
 				if (pGen->pause[x][mv]) prev_note = -1;
-				if (pGen->coff[x][mv] || pGen->pause[x][mv]) continue;
-				++nnum;
+				if (pGen->pause[x][mv]) continue;
+				if (!pGen->coff[x][mv]) {
+					++nnum;
+					nstart = x;
+				}
 				prev_note = pGen->note[x][mv];
 				if (pGen->comment[x][mv].size()) {
 					// CGLib::GetNoteName(pGen->note[x][mv])
-					st.Format("NOTE %d at %d:%d - %s\n", 
+					st.Format("NOTE %d at %d:%d - %s", 
 						nnum, x / 8 + 1, x % 8 + 1, NoteName[pGen->note[x][mv] % 12]);
 					eff = 0;
-					if (x == i) {
+					if (nstart == i) {
 						m_scrollLine = m_info.GetLineCount();
 						eff = CFE_BOLD;
 					}
-					m_info.AddText(st, RGB(0, 0, 0), eff);
+					if (nstart != x) st += " (slur)";
+					m_info.AddText(st + "\n", RGB(0, 0, 0), eff);
 					for (int c = 0; c < pGen->comment[x][mv].size(); ++c) {
 						m_info.AddText(pGen->comment[x][mv][c]+"\n", 
 							RGB(CGLib::GetRed(pGen->ccolor[x][mv][c]), 

@@ -207,7 +207,7 @@ public:
 	CString GetIntName(int iv);
 	void SendLyFlagColor(ofstream & fs, int i, int v);
 	void ParseLyComments(int i, int v, int foreign);
-	void SaveLyComments(CString & com_st, int i, int v, int nnum, int pos);
+	void SaveLyComments(int i, int v, int pos);
 	CString DetectLyClef(int vmin, int vmax);
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
 	void SaveLy(CString dir, CString fname);
@@ -252,11 +252,14 @@ public:
 	// Lilypond
 	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
-	vector<int> ly_fa;
+	vector<int> ly_fa; // Flags array
+	vector<int> ly_fa2; // Flags array for whole note
 	vector<int> rule_viz; // [r_id] If this rule violation should be marked with harmony color, not note color, even if its group is not Harmony
 	vector<int> vtype_sev; // Worst severity for each vizualization types
 	vector <int> severity; // Get severity by flag id
 	vector<DWORD>  flag_color; // Flag colors
+	int ly_nnum; // Note number
+	CString ly_com_st;
 
 	// Midi files
 	vector<vector<vector<PmEvent>>> midifile_buf;

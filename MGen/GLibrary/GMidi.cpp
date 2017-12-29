@@ -243,14 +243,25 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	int mv;
 	// Length array
 	vector<int> la;
+	ly_fa2.clear();
 	SplitLyNote(pos, le, la);
 	SplitLyNoteMeasure(pos, le, la);
-	GetLySev(fs, pos, ev, le, i, v);
-	SendLyViz(fs, pos, ev, le, i, v, 1);
-	if (ev != 'r' && ly_flag_style == 1) {
-		if (vtype_sev[vDefault] > -1) SendLyNoteColor(fs, flag_color[vtype_sev[vDefault]]);
-	}
 	for (int lc = 0; lc < la.size(); ++lc) {
+		ParseLyComments(i, v, 0);
+		SaveLyComments(i, v, pos);
+		// If no flags, parse second voice
+		if (!ly_fa.size() && v_cnt > 1) {
+			int v2 = (v / 2) * 2 + !(v % 2);
+			if (v2 < v_cnt) {
+				int i2 = abs(i + len[i][v] - poff[i + len[i][v]][v2]);
+				ParseLyComments(i2, v2, 1);
+			}
+		}
+		GetLySev(fs, pos, ev, le, i, v);
+		SendLyViz(fs, pos, ev, le, i, v, 1);
+		if (ev != 'r' && ly_flag_style == 1) {
+			if (vtype_sev[vDefault] > -1) SendLyNoteColor(fs, flag_color[vtype_sev[vDefault]]);
+		}
 		if (show_lining && ev != "r") {
 			if (la[lc] == 8) {
 				if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOff \\override NoteHead.style = #'xcircle ";
@@ -307,12 +318,15 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 				fs << "}\n";
 			}
 		}
-		if (!lc && ev != 'r' && ly_flag_style == 2) {
+		if (ev != 'r' && ly_flag_style == 2) {
 			SendLyFlagColor(fs, i, v);
 		}
-		if (i > -1) i += la[lc] / midifile_out_mul[i];
-		SendLyViz(fs, pos, ev, le, i, v, 10);
+		if (i > -1) {
+			i += la[lc] / midifile_out_mul[i];
+			pos += la[lc];
+		}
 	}
+	SendLyViz(fs, pos, ev, le, i, v, 10);
 }
 
 CString CGMidi::GetLyColor(DWORD col) {
@@ -394,7 +408,7 @@ void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
 void CGMidi::ParseLyComments(int i, int v, int foreign) {
 	CString st, com, note_st;
 	int pos1, pos2, fl;
-	ly_fa.clear();
+	ly_fa = ly_fa2;
 	if (comment[i][v].size()) {
 		for (int c = 0; c < comment[i][v].size(); ++c) {
 			com = comment[i][v][c];
@@ -407,12 +421,16 @@ void CGMidi::ParseLyComments(int i, int v, int foreign) {
 				fl = atoi(com.Mid(pos1 + 1, pos2 - pos1 - 1));
 				if (foreign && rule_viz[fl] != vLines) continue;
 				ly_fa.push_back(fl);
+				// Push lines to note-persistent array
+				if (rule_viz[fl] == vLine || rule_viz[fl] == vLines) {
+					ly_fa2.push_back(fl);
+				}
 			}
 		}
 	}
 }
 
-void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
+void CGMidi::SaveLyComments(int i, int v, int pos) {
 	CString st, com, note_st;
 	int pos1, pos2, found;
 	if (comment[i][v].size()) {
@@ -422,8 +440,10 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 			st.Format("\\char ##x246%d ", v);
 			note_st += st;
 		} 
-		st.Format("NOTE %d at %d:%d - %s\n",
-			nnum, pos / 8 + 1, pos % 8 + 1, GetLyNoteVisual(i, v));
+		st.Format("NOTE %d at %d:%d - %s",
+			ly_nnum, pos / 8 + 1, pos % 8 + 1, GetLyNoteVisual(i, v));
+		if (coff[i][v]) 
+			st += " (slur)";
 		// NoteName[note[i][v] % 12]
 		note_st += st + "\n}\n";
 		found = 0;
@@ -440,13 +460,13 @@ void CGMidi::SaveLyComments(CString &com_st, int i, int v, int nnum, int pos) {
 			// Send note number with first comment
 			if (!found) {
 				found = 1;
-				com_st += note_st;
+				ly_com_st += note_st;
 			}
-			com_st += "\\markup \\wordwrap \\with-color #(rgb-color " +
+			ly_com_st += "\\markup \\wordwrap \\with-color #(rgb-color " +
 				GetLyColor(ccolor[i][v][c]) + ") {\n  ";
 			com.Replace("#", "\"#\"");
-			com_st += com + "\n";
-			com_st += "\n}\n";
+			ly_com_st += com + "\n";
+			ly_com_st += "\n}\n";
 		}
 	}
 }
@@ -472,8 +492,9 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	vector<CString> sv;
-	CString comm_st, clef, key, key_visual;
-	int pos, pos2, le, le2, nnum, pause_accum, pause_pos, pause_i;
+	CString clef, key, key_visual;
+	int pos, pos2, le, le2, pause_accum, pause_pos, pause_i;
+	ly_com_st.Empty();
 	float mul;
 	// Voice melody min pitch
 	vector<int> vm_min;
@@ -520,11 +541,11 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		read_file_sv("configs\\ly\\staff.ly", sv);
 		write_file_sv(fs, sv);
 		fs << "  { ";
-		nnum = 0;
+		ly_nnum = 0;
 		pause_accum = 0;
 		pause_pos = -1;
 		for (int i = step1; i < step2; i++) {
-			++nnum;
+			++ly_nnum;
 			pos = mul * (i - step1);
 			le = mul * len[i][v];
 			if (pause[i][v]) {
@@ -535,16 +556,6 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				}
 			}
 			else {
-				ParseLyComments(i, v, 0);
-				SaveLyComments(comm_st, i, v, nnum, pos);
-				// If no flags, parse second voice
-				if (!ly_fa.size() && v_cnt > 1) {
-					int v2 = (v / 2) * 2 + !(v % 2);
-					if (v2 < v_cnt) {
-						int i2 = abs(i + len[i][v] - poff[i + len[i][v]][v2]);
-						ParseLyComments(i2, v2, 1);
-					}
-				}
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 			}
 			if (pause_accum && (i == step2 - 1 || !pause[i + 1][v])) {
@@ -563,7 +574,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		fs << "}\n";
 	}
 	fs << ">>\n";
-	fs << comm_st;
+	fs << ly_com_st;
 	// Second info
 	//st2.Replace("\n", "\n}\n\\markup \\wordwrap \\italic {\n  ");
 	//st2.Replace("#", "\"#\"");
