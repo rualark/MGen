@@ -545,7 +545,6 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		pause_accum = 0;
 		pause_pos = -1;
 		for (int i = step1; i < step2; i++) {
-			++ly_nnum;
 			pos = mul * (i - step1);
 			le = mul * len[i][v];
 			if (pause[i][v]) {
@@ -556,6 +555,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 				}
 			}
 			else {
+				++ly_nnum;
 				SendLyEvent(fs, pos, GetLyNote(i, v), le, i, v);
 			}
 			if (pause_accum && (i == step2 - 1 || !pause[i + 1][v])) {
