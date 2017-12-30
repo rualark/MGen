@@ -88,12 +88,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;186;100;Melody;Leaps;Leap down size;>8th;0;;;2;5;4;1;;;;;;
 1;3;60;Melody;Leaps;Many leaps within 9 notes;>6 leaps;0;;;;11;0;;;;1;311;;
 1;25;60;Melody;Leaps;Many leaps within 9 notes;>22 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;;26;0;;;;1;312;;
-1;311;0;Melody;Leaps;Many leaps within 9 notes;>5 leaps;0;;{sp3,5};;6;0;;;;1;;;
-1;312;0;Melody;Leaps;Many leaps within 9 notes;>18 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp3,5};;16;0;;;;1;;;
+1;311;0;Melody;Leaps;Many leaps within 9 notes;>5 leaps;0;;{sp3,5};;6;0;;1;;1;;;
+1;312;0;Melody;Leaps;Many leaps within 9 notes;>18 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp3,5};;16;0;;1;;1;;;
 1;202;60;Melody;Leaps;Many leaps within 15 notes;>8 leaps;0;;;;6;0;;;;1;313;;
 1;203;60;Melody;Leaps;Many leaps within 15 notes;>32 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;;9;0;;;;1;314;;
-1;313;0;Melody;Leaps;Many leaps within 15 notes;>7 leaps;0;;{sp3,5};;3;0;;;;1;;;
-1;314;0;Melody;Leaps;Many leaps within 15 notes;>26 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp3,5};;13;0;;;;1;;;
+1;313;0;Melody;Leaps;Many leaps within 15 notes;>7 leaps;0;;{sp3,5};;3;0;;1;;1;;;
+1;314;0;Melody;Leaps;Many leaps within 15 notes;>26 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp3,5};;13;0;;1;;1;;;
 1;70;60;Melody;Leaps;Consecutive leaps, 1x3rd ignored;3;0;;;2;38;0;;;;1;;;
 1;71;100;Melody;Leaps;Consecutive leaps, 1x3rd ignored;>3;0;;;2;10;1;;;;1;70;;
 1;27;100;Melody;Leaps;Consecutive unidirectional leaps;Sum >6th;0;;;2;61;1;;;;;;;
@@ -169,7 +169,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;329;30;Cantus;Harmony;Multiple harmonies in measure;sus 5/6 stepw;1;;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure;1;34;1;;;;;;;
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;1;134;9;;;;;;;
 1;40;70;Cantus;Harmony;Multiple harmonies in measure;>2;0;;More than 2 harmonies;1;36;2;;;;;;;
-1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;15;0;;;;;;;
+1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;15;0;;1;;;;;
 1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;;1;1;1;;;;;;17,20,23,48,57,77,92,99
 1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;3;2;1;;;;;;
 1;309;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;2;1;1;;;;;;

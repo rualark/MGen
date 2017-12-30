@@ -3554,6 +3554,7 @@ check:
 		SaveBestRejected(acc[cpv]);
 		if (task == tCor && method == mSWA) {
 			if (skip_flags) {
+				SET_READY(DR_rpenalty_cur);
 				if (ep2 < smap[swa2 - 1] + 1) {
 					NextWindow(acc[cpv]);
 					goto check;
