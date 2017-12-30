@@ -1084,7 +1084,7 @@ int CGenCP1::FailPco() {
 				FLAG2_INT(324, sus[ls]);
 			// Prohibit parallel pco on suspension
 			if (ivl[sus[ls]] == ivl[fli2[ls - 1]])
-				FLAG2_INT2(316, sus[ls], isus[ls - 1]);
+				FLAG2_INT2(385, sus[ls], isus[ls - 1]);
 		}
 	}
 	if (tivl[s] == iPco) {
