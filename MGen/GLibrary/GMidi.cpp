@@ -535,7 +535,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
 		//if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
 		fs << "\\new Staff {\n";
-		st.Format("  \\set Staff.instrumentName = #\"%d\"\n", v + 1); //InstGName[instr[v]]
+		st.Format("  \\set Staff.instrumentName = \\markup { \\char ##x246%d }\n", v); //InstGName[instr[v]]
 		fs << st;
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
