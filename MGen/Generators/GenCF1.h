@@ -488,6 +488,7 @@ protected:
 	int fis_g_max2 = 3; // Minimum distance from F# to G (+1 to allow)
 	int dev_late2 = 3; // Maximum note count to consider non-late leap compensation deviation to 2nd
 	int dev_late3 = 3; // Maximum note count to consider non-late leap compensation deviation to 3rd
+	int dev2_maxlen = 1; // Maximum >5th 2nd deviation length in number of 1/4
 	int late_require = 0; // Allow not-last scan window to have no needed tags, but no blocked tags 
 	int approx_steps = 4; // Maximum number of steps to approximate corrections in one iteration
 	vector <vector <int>> hv; //  [pc][] Variants of note harmonic meaning

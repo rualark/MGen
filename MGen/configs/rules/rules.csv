@@ -3,13 +3,14 @@ Set;Severity;Class;Group;Rule;Flag
 1;42;0;Melody;Compensated leap;Compensation deviation to 2nd;3rd;-1;Compensation can be deviated one note above last note;;2;195;0;;;999;;;;
 1;43;0;Melody;Compensated leap;Compensation deviation to 2nd;4th;-1;Compensation can be deviated one note above last note;;2;80;0;;;999;;;;
 1;44;40;Melody;Compensated leap;Compensation deviation to 2nd;5th;-1;Compensation can be deviated one note above last note;;2;66;0;;;999;;;;
-1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;1;Compensation can be deviated one note above last note;Only immediate;2;8;0;;;999;;;;
-1;191;60;Melody;Compensated leap;Compensation deviation to 2nd;late >3;0;Compensation can be deviated one note above last note;Deviation after compensation note X;2;0;0;;;;;;;
+1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;1;Compensation can be deviated one note above last note;;2;8;0;;;999;;;;
+1;191;60;Melody;Compensated leap;Compensation deviation to 2nd;late >3;0;Compensation can be deviated one note above last note;Deviation after compensation note X (1 for >5th);2;0;0;;;;;;;
+1;386;100;Melody;Compensated leap;Compensation deviation to 2nd;>5th long;0;Compensation can be deviated one note above last note;Deviation longer than 1/4 note;;;;;;;;;;
 1;120;0;Melody;Compensated leap;Compensation deviation to 3rd;3rd;-1;;;2;85;0;;;999;;;;
 1;121;0;Melody;Compensated leap;Compensation deviation to 3rd;4th;-1;;;2;52;0;;;999;;;;
 1;122;60;Melody;Compensated leap;Compensation deviation to 3rd;5th;-1;;;2;13;0;;;999;;;;
-1;123;60;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;Only immediate. Possible in species 3,5;2;0;0;;;999;;;;
-1;192;60;Melody;Compensated leap;Compensation deviation to 3rd;late >3;0;;Deviation after compensation note X;2;0;0;;;;;;;
+1;123;60;Melody;Compensated leap;Compensation deviation to 3rd;>5th;0;;Possible in species 3,5 when immediate with short notes;2;0;0;;;999;;;;
+1;192;60;Melody;Compensated leap;Compensation deviation to 3rd;late >3;0;;Deviation after compensation note X (2 for >5th);2;0;0;;;;;;;
 1;53;0;Melody;Compensated leap;Compensation after 3rd;3rd;-1;;;2;46;0;;;;;;;
 1;54;10;Melody;Compensated leap;Compensation after 3rd;4th;-1;;;2;26;0;;;;;;;
 1;55;40;Melody;Compensated leap;Compensation after 3rd;5th;-1;;;2;41;0;;;;;;;
@@ -239,7 +240,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;249;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;stepwize;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;135;29;1;;;;;;
 1;315;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;;14;12;1;;;;;;
 1;316;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;;52;16;1;;;;;;
-1;385;30;Cantus;Counterpoint;Perfect consonances < 4/4 apart;sus;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;;67;17;1;;;;249;;
+1;385;30;Cantus;Counterpoint;Perfect consonances < 4/4 apart;sus;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;;;;;;;;;;
 1;250;60;Cantus;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;;67;17;1;;;;249;;
 1;379;0;Cantus;Counterpoint;Virtual 4th;beat 1;0;;;;21;4;;;;;;;
 1;380;0;Cantus;Counterpoint;Virtual 4th;beat 3;0;;;;8;4;;;;;;;

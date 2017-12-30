@@ -413,6 +413,7 @@ void CGenCF1::SetRuleParams() {
 
 	dev_late2 = GetRuleParam(rule_set, 191, rsSubName, 0);
 	dev_late3 = GetRuleParam(rule_set, 192, rsSubName, 0);
+	dev2_maxlen = GetRuleParam(rule_set, 386, rsSubComment, 0);
 	early_culm = GetRuleParam(rule_set, 78, rsSubName, 0);
 	early_culm2 = GetRuleParam(rule_set, 79, rsSubName, 0);
 	early_culm3 = GetRuleParam(rule_set, 193, rsSubName, 0);
@@ -1843,6 +1844,9 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 		// If deviating, start deviation state and calculate maximum deviation
 		if (tc[x] > t2) {
 			cur_deviation = tc[x] - t2;
+			// Detect long deviation for >5th 2nd
+			if (cur_deviation == 1 && x == 0 && leap_size > 4 && 
+				rlen[fleap_end + 1] > dev2_maxlen * 2 && !accept[386]) break;
 			// Detect late deviation
 			if (cur_deviation == 1 && x >= dl2 && !accept[191]) break;
 			if (cur_deviation == 2 && x >= dl3 && !accept[192]) break;
