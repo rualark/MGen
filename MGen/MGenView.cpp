@@ -163,6 +163,18 @@ void CMGenView::OnDraw(CDC* pDC)
   USES_CONVERSION;
 	CString st;
 
+	// Show debug information
+	/*
+	CRect ClientRect2;
+	ClientRect2 = ClientRect;
+	pDC->DPtoLP(&ClientRect2);
+	st.Format("cb %d,%d,%d,%d lb %d,%d,%d,%d cr %d,%d,%d,%d",
+		ClipBox.left, ClipBox.top, ClipBox.right, ClipBox.bottom,
+		ClientRect2.left, ClientRect2.top, ClientRect2.right, ClientRect2.bottom,
+		ClientRect.left, ClientRect.top, ClientRect.right, ClientRect.bottom);
+	mf->WriteLog(0, "Draw positions: " + st);
+	*/
+
 	if (mf->m_state_gen == 0) st = "Generation: not started";
 	if (mf->m_state_gen == 1) st = "Generation: started";
 	if (mf->m_state_gen == 2) st = "Generation: finished";
@@ -186,15 +198,20 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			for (int i = 0; i < max_progress; ++i) {
 				if (pGen->progress[i] % 2)
-					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 1, cr_black);
+					g.FillRectangle(&brush_black, 800 + i, ClientRect.top + Y_HEADER - Y_TIMELINE - 1, 1, 1);
+				//dc->SetPixel(800 + i - ClientRect2.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 1, cr_black);
 				if (pGen->progress[i] / 2 % 2)
-					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 2, cr_black);
+					g.FillRectangle(&brush_black, 800 + i, ClientRect.top + Y_HEADER - Y_TIMELINE - 2, 1, 1);
+				//dc->SetPixel(800 + i - ClientRect2.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 2, cr_black);
 				if (pGen->progress[i] / 4 % 2)
-					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 3, cr_black);
+					g.FillRectangle(&brush_black, 800 + i, ClientRect.top + Y_HEADER - Y_TIMELINE - 3, 1, 1);
+				//dc->SetPixel(800 + i - ClientRect2.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 3, cr_black);
 				if (pGen->progress[i] / 8 % 2)
-					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 4, cr_black);
+					g.FillRectangle(&brush_black, 800 + i, ClientRect.top + Y_HEADER - Y_TIMELINE - 4, 1, 1);
+				//dc->SetPixel(800 + i - ClientRect2.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 4, cr_black);
 				if (pGen->progress[i] / 16 % 2)
-					dc->SetPixel(800 + i - ClipBox.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 5, cr_black);
+					g.FillRectangle(&brush_black, 800 + i, ClientRect.top + Y_HEADER - Y_TIMELINE - 5, 1, 1);
+				//dc->SetPixel(800 + i - ClientRect2.left, ClientRect.top + Y_HEADER - Y_TIMELINE - 5, cr_black);
 			}
 		}
 		// Check if non-adapted music is sent
