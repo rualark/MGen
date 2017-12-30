@@ -141,6 +141,10 @@ void CMGenDoc::Dump(CDumpContext& dc) const
 BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 {
 	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
+	if (mf->m_state_gen == 1) {
+		AfxMessageBox("Please stop generation before saving results");
+		return FALSE;
+	}
 	TCHAR buffer[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, buffer);
 	//string::size_type pos = string(buffer).find_last_of("\\/");
