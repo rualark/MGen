@@ -5,7 +5,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;44;40;Melody;Compensated leap;Compensation deviation to 2nd;5th;-1;Compensation can be deviated one note above last note;;2;66;0;;;999;;;;
 1;45;60;Melody;Compensated leap;Compensation deviation to 2nd;>5th;1;Compensation can be deviated one note above last note;;2;8;0;;;999;;;;
 1;191;60;Melody;Compensated leap;Compensation deviation to 2nd;late >3;0;Compensation can be deviated one note above last note;Deviation after compensation note X (1 for >5th);2;0;0;;;;;;;
-1;386;100;Melody;Compensated leap;Compensation deviation to 2nd;>5th long;0;Compensation can be deviated one note above last note;Deviation longer than 1/4 note;;;;;;;;;;
+1;386;100;Melody;Compensated leap;Compensation deviation to 2nd;>5th long;0;Compensation can be deviated one note above last note;Deviation longer than 1/4 note;;0;;;;;;;;
 1;120;0;Melody;Compensated leap;Compensation deviation to 3rd;3rd;-1;;;2;85;0;;;999;;;;
 1;121;0;Melody;Compensated leap;Compensation deviation to 3rd;4th;-1;;;2;52;0;;;999;;;;
 1;122;60;Melody;Compensated leap;Compensation deviation to 3rd;5th;-1;;;2;13;0;;;999;;;;
