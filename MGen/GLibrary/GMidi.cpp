@@ -374,7 +374,7 @@ CString CGMidi::GetIntName(int iv) {
 	else if (iv == 3) return "m3";
 	else if (iv == 4) return "M3";
 	else if (iv == 5) return "4";
-	else if (iv == 6) return "tr";
+	else if (iv == 6) return "tri";
 	else if (iv == 7) return "5";
 	else if (iv == 8) return "m6";
 	else if (iv == 9) return "M6";
@@ -624,7 +624,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 		}
 	}
 	fs << "\\header {tagline = \"This file was created by MGen ";
-	fs << APP_VERSION << " and engraved by LilyPond\"}\n";
+	fs << APP_VERSION << "\"}\n";
 	read_file_sv("configs\\ly\\footer.ly", sv);
 	write_file_sv(fs, sv);
 	fs.close();
