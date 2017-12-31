@@ -1845,7 +1845,7 @@ void CGenCF1::CountFill(vector<int> &c, int tail_len, vector<int> &nstat2, vecto
 		if (tc[x] > t2) {
 			cur_deviation = tc[x] - t2;
 			// Detect long deviation for >5th 2nd
-			if (cur_deviation == 1 && x == 0 && leap_size > 4 && 
+			if (cur_deviation == 1 && x == 0 && leap_size > 4 && fleap_end < fli_size - 1 && 
 				rlen[fleap_end + 1] > dev2_maxlen * 2 && !accept[386]) break;
 			// Detect late deviation
 			if (cur_deviation == 1 && x >= dl2 && !accept[191]) break;
