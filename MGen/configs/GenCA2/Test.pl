@@ -38,4 +38,4 @@ Midi_file = "midi\temp\temp.mid"
 #Midi_file = "midi\GenCA2\test-multiharm.mid" # Path and file name of imported midi file
 #Midi_file = "midi\GenCA2\test-4th.mid" # Path and file name of imported midi file
 
-Instruments=Piano,Alto
+Instruments=Tenor,Alto
