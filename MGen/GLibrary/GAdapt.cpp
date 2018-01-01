@@ -190,20 +190,18 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 	}
 }
 
-void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei)
-{
+void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Randomly make some notes non-legato if they have enough length
 	if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > nonlegato_minlen[ii]) &&
 		(randbw(0, 100) < nonlegato_freq[ii] * pow(abs(note[i][v] - note[pi][v]), 0.3))) {
-		detime[pei][v] = -min(300, (etime[pei] - stime[pi]) * 100 / m_pspeed / 3);
-		dstime[i][v] = 0;
+		detime[pei][v] = -min(nonlegato_maxgap[ii], (etime[pei] - stime[pi]) * 100 / m_pspeed / 3);
+		dstime[i][v] = -all_ahead[ii];
 		artic[i][v] = ARTIC_NONLEGATO;
 		if (comment_adapt) adapt_comment[i][v] += "Random nonlegato. ";
 	}
 }
 
-void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei)
-{
+void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Advance start for legato (not longer than previous note length)
 	if ((i > 0) && (pi < i) && (legato_ahead[ii][0] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
 		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= max_ahead_note[ii])) {
@@ -215,10 +213,30 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 			adapt_comment[i - 1][v] += "Ahead end. ";
 		}
 		// Add glissando if note is long
-		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-		if ((ndur > gliss_minlen[ii]) && (randbw(0, 100) < gliss_freq[ii])) {
-			vel[i][v] = vel_gliss[ii];
-			if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
+		if (gliss_freq[ii]) {
+			float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+			if ((ndur > gliss_minlen[ii]) && (randbw(0, 100) < gliss_freq[ii])) {
+				vel[i][v] = vel_gliss[ii];
+				if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
+			}
+		}
+	}
+}
+
+void CGAdapt::AdaptAllAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	// Advance start for legato (not longer than previous note length)
+	if (i > 0 && pi < i && all_ahead[ii] > 0 &&
+		detime[i - 1][v] >= 0) {
+		dstime[i][v] = -min(all_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+			detime[i - 1][v] - dstime[pi][v] - 1);
+		if (comment_adapt) {
+			adapt_comment[i][v] += "Ahead start. ";
+		}
+		if (!pause[pi][v]) {
+			detime[i - 1][v] = 0.9 * dstime[i][v];
+			if (comment_adapt) {
+				adapt_comment[i - 1][v] += "Ahead end. ";
+			}
 		}
 	}
 }
@@ -515,7 +533,7 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 			// Prevent velocity randomization of short nonlegato notes, because they sound bad at low velocity with Friedlander
 			if ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] < vel_normal_minlen[ii]) ok = 0;
 		}
-		if (instr_type[ii] == 2) {
+		if (instr_type[ii] == 2 || instr_type[ii] == 3) {
 			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 			if (i && !pause[i - 1][v] && note[i - 1][v] != note[i][v]) ok = 0;
 		}
@@ -613,6 +631,14 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptFlexAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptNoteEndStep(v, x, i, ii, ei, pi, pei, ncount);
+				}
+				if (instr_type[ii] == 3) {
+					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
+					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
+					AdaptVibBell(v, x, i, ii, ei, pi, pei);
+					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
+					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
+					vel[i][v] = randbw(1, 126);
 				}
 			} // !pause
 			if (noff[i][v] == 0) break;

@@ -22,6 +22,7 @@ splitpo_pent_minint = 3 # Minimum allowed interval in semitones for split portam
 # Nonlegato adaptor
 nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonlegato
+nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Retrigger adaptor
 retrigger_min_len = 600 # Minimum next note length in ms to use retrigger

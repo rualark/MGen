@@ -34,6 +34,7 @@ max_ahead_note = 12 # Maximum chromatic interval having ahead property
 # Nonlegato adaptor
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
+nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Transition types
 vel_harsh = 118 # Velocity equal or above this value triggers harsh sustain

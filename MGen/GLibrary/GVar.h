@@ -189,6 +189,8 @@ public:
 	vector<int> max_slur_count;
 	vector<int> max_slur_interval;
 	vector<int> slur_ks;
+	vector<int> all_ahead;
+	vector<int> nonlegato_maxgap;
 	vector<vector<int>> legato_ahead;
 	vector<vector<int>> ahead_chrom;
 	vector<float> legato_ahead_exp; // Exponent to interpolate note movement ahead from note velocity

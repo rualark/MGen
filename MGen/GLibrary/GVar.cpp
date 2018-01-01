@@ -50,8 +50,10 @@ CGVar::CGVar()
 	max_slur_count.resize(MAX_INSTR);
 	max_slur_interval.resize(MAX_INSTR);
 	slur_ks.resize(MAX_INSTR);
-	legato_ahead = vector<vector<int>>(MAX_INSTR, vector<int>(10));;
-	ahead_chrom = vector<vector<int>>(MAX_INSTR, vector<int>(16));;
+	nonlegato_maxgap.resize(MAX_INSTR);
+	all_ahead.resize(MAX_INSTR);
+	legato_ahead = vector<vector<int>>(MAX_INSTR, vector<int>(10));
+	ahead_chrom = vector<vector<int>>(MAX_INSTR, vector<int>(16));
 	legato_ahead_exp.resize(MAX_INSTR);
 	leg_pdur.resize(MAX_INSTR);
 	leg_cdur.resize(MAX_INSTR);
@@ -606,6 +608,8 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
 	CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
 	CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
+	CheckVar(&st2, &st3, "nonlegato_maxgap", &nonlegato_maxgap[i]);
+	CheckVar(&st2, &st3, "all_ahead", &all_ahead[i]);
 	LoadVectorPar(&st2, &st3, "legato_ahead", legato_ahead[i]);
 	LoadVectorPar(&st2, &st3, "ahead_chrom", ahead_chrom[i]);
 	CheckVar(&st2, &st3, "leg_pdur", &leg_pdur[i]);
