@@ -464,9 +464,10 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 				ly_com_st += note_st;
 			}
 			ly_com_st += "\\markup \\wordwrap \\with-color #(rgb-color " +
-				GetLyColor(ccolor[i][v][c]) + ") {\n  ";
-			com.Replace("#", "\"#\"");
-			ly_com_st += com + "\n";
+				GetLyColor(ccolor[i][v][c]) + ") {\n  \"";
+			com.Replace("\"", "\\\"");
+			com.Replace(" ", "\" \"");
+			ly_com_st += com + "\"\n";
 			ly_com_st += "\n}\n";
 		}
 	}
