@@ -345,9 +345,9 @@ CString CGMidi::GetLyMarkColor(DWORD col) {
 	CString st;
 	if (GetGreen(col) == GetRed(col) && GetRed(col) == GetBlue(col)) return "1 1 1";
 	st.Format("%.3f %.3f %.3f",
-		Lighten(GetRed(col), 4) / 255.0,
-		Lighten(GetGreen(col) * 1.5, 4) / 255.0,
-		Lighten(GetBlue(col), 4) / 255.0);
+		Lighten(GetRed(col), 2) / 255.0,
+		Lighten(GetGreen(col) * 1.5, 2) / 255.0,
+		Lighten(GetBlue(col), 2) / 255.0);
 	return st;
 }
 
@@ -356,9 +356,9 @@ CString CGMidi::GetLyMarkColor2(DWORD col) {
 	CString st;
 	if (GetGreen(col) == GetRed(col) && GetRed(col) == GetBlue(col)) return "1 1 1";
 	st.Format("%.3f %.3f %.3f",
-		Lighten(GetRed(col), 4) / 255.0, 
-		Lighten(GetGreen(col), 4) / 255.0, 
-		Lighten(GetBlue(col), 4) / 255.0);
+		Lighten(GetRed(col), 2) / 255.0, 
+		Lighten(GetGreen(col), 2) / 255.0, 
+		Lighten(GetBlue(col), 2) / 255.0);
 	return st;
 }
 
