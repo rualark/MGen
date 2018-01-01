@@ -4,7 +4,7 @@ Trumpet  | SM Trumpet               | 2    |
 Horn     | SM Horn                  | 3    |
 Trombone | SM Trombone              | 4    |
 Tuba     | SM Tuba                  | 5    |
-Choir    | Voxos 2 Legato Sections  | 6    |
+Alto     | SI VoR Soprano           | 6    |
 Piano    | Default                  | 0    | # Default instrument for unmapped instruments
 
 # CHAN is MIDI channel to send this instrument to
