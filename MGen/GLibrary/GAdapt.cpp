@@ -638,7 +638,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptVibBell(v, x, i, ii, ei, pi, pei);
 					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
-					vel[i][v] = randbw(1, 126);
+					//vel[i][v] = randbw(1, 126);
 				}
 			} // !pause
 			if (noff[i][v] == 0) break;

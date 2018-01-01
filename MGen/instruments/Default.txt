@@ -1,11 +1,14 @@
-#GROUP   | CONFIG                   | CHAN | 
-Violin   | Friedlander              | 1    |
-Trumpet  | SM Trumpet               | 2    |
-Horn     | SM Horn                  | 3    |
-Trombone | SM Trombone              | 4    |
-Tuba     | SM Tuba                  | 5    |
-Alto     | SI VoR Soprano           | 6    |
-Piano    | Default                  | 0    | # Default instrument for unmapped instruments
+#GROUP   | CONFIG                | CHAN | 
+Violin   | Friedlander           | 1    |
+Trumpet  | SM Trumpet            | 2    |
+Horn     | SM Horn               | 3    |
+Trombone | SM Trombone           | 4    |
+Tuba     | SM Tuba               | 5    |
+Soprano  | SI VoR Soprano        | 6    |
+Alto     | SI VoR Alto           | 7    |
+Tenor    | SI VoR Tenor          | 8    |
+Bass     | SI VoR Bass           | 9    |
+Piano    | Default               | 0    | # Default instrument for unmapped instruments
 
 # CHAN is MIDI channel to send this instrument to
 # Last instrument in layout must be default instrument, which will get all unmapped instruments

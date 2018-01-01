@@ -1,3 +1,5 @@
+# Samplemodeling
+
 # Main
 Type = 2 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
