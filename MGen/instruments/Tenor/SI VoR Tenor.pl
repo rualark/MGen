@@ -35,7 +35,7 @@ vib_bell_top = 5-95 # Leftmost-rightmost maximum vibrato intensity in note (perc
 vib_bell_exp = 2 # Exponent to create non-linear bell shape
 vib_bell_freq = 100 # Frequency to apply vibrato bell when all conditions met
 vib_bell_dur = 600-1200 # Minimum note duration (ms) that can have a vibrato bell - that can have highest vibrato bell
-vib_bell = 50-95 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
+vib_bell = 50-126 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
 rnd_vib = 10 # Randomize vibrato intensity not greater than this percent
 
 # Randomization
