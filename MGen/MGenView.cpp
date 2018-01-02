@@ -415,10 +415,15 @@ void CMGenView::OnDraw(CDC* pDC)
 					if (!step_dyn2 || !mf->show_vel) {
 						if (mf->show_vel) alpha = 40 + (80 * pGen->dyn[i][v] / 127);
 						else alpha = 100;
-						if (mf->show_notecolors && pGen->color[i][v] != 0) {
-							if (CGLib::GetAlpha(pGen->color[i][v]) == 0) ncolor = CGLib::MakeColor(alpha, 
-								CGLib::GetRed(pGen->color[i][v]), CGLib::GetGreen(pGen->color[i][v]), CGLib::GetBlue(pGen->color[i][v]));
-							else ncolor = pGen->color[i][v];
+						if (mf->show_notecolors) {
+							if (pGen->color[i][v] != 0) {
+								if (CGLib::GetAlpha(pGen->color[i][v]) == 0) ncolor = CGLib::MakeColor(alpha,
+									CGLib::GetRed(pGen->color[i][v]), CGLib::GetGreen(pGen->color[i][v]), CGLib::GetBlue(pGen->color[i][v]));
+								else ncolor = pGen->color[i][v];
+							}
+							else {
+								ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+							}
 						}
 						else {
 							ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
