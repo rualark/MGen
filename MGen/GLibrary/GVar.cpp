@@ -44,6 +44,11 @@ CGVar::CGVar()
 	CC_vibf.resize(MAX_INSTR);
 	CC_steps.resize(MAX_INSTR);
 	CC_dyn.resize(MAX_INSTR);
+	CCToName.resize(MAX_INSTR);
+	KswToName.resize(MAX_INSTR);
+	NameToCC.resize(MAX_INSTR);
+	NameToKsw.resize(MAX_INSTR);
+	KswGroup.resize(MAX_INSTR);
 	CC_ma.resize(MAX_INSTR);
 	CC_retrigger.resize(MAX_INSTR);
 	retrigger_freq.resize(MAX_INSTR);
@@ -574,11 +579,75 @@ void CGVar::LoadInstrument(int i, CString fname)
 	WriteLog(0, est);
 }
 
+void CGVar::LoadCCName(CString *sName, CString *sValue, CString sSearch, int i) {
+	if (*sName != sSearch) return;
+	++parameter_found;
+	CString st = *sValue;
+	st.Trim();
+	int pos = st.Find(":");
+	if (pos < 1) {
+		WriteLog(5, "Cannot find colon in config line " + *sName + " = " + *sValue);
+		error = 100;
+		return;
+	}
+	CString st1 = st.Left(pos);
+	CString st2 = st.Mid(pos + 1);
+	st1.Trim();
+	st1.Trim("\"");
+	st2.Trim();
+	st2.Trim("\"");
+	//WriteLog(1, "Detected '" + st1 + "' -> '" + st2 + "'");
+	char cc_id = atoi(st1);
+	if (!cc_id && st1 != "0") {
+		WriteLog(5, "Wrong format for CC id in config line: " + *sName + " = " + *sValue);
+	}
+	CCToName[i][cc_id] = st2;
+	NameToCC[i][st2] = cc_id;
+}
+
+void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i) {
+	if (*sName != sSearch) return;
+	++parameter_found;
+	CString st3 = *sValue;
+	st3.Trim();
+	vector <CString> sa;
+	Tokenize(st3, sa, ",");
+	for (int x = 0; x < sa.size(); ++x) {
+		CString st = sa[x];
+		st.Trim();
+		st.Trim("\"");
+		int pos = st.Find(":");
+		if (pos < 1) {
+			WriteLog(5, "Cannot find colon in config line " + *sName + " = " + *sValue);
+			error = 100;
+			return;
+		}
+		CString st1 = st.Left(pos);
+		CString st2 = st.Mid(pos + 1);
+		st1.Trim();
+		st1.Trim("\"");
+		st2.Trim();
+		st2.Trim("\"");
+		//WriteLog(1, "Detected '" + st1 + "' -> '" + st2 + "'");
+		char note = GetNoteI(st1);
+		KswToName[i][note] = st2;
+		NameToKsw[i][st2] = note;
+	}
+}
+
+void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch, int i) {
+	if (*sName != sSearch) return;
+	++parameter_found;
+}
+
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	LoadVar(&st2, &st3, "library", &instr_lib[i]);
 	CheckVar(&st2, &st3, "ks1", &ks1[i]);
 	LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
 	LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
+	LoadCCName(&st2, &st3, "cc_name", i);
+	LoadKswGroup(&st2, &st3, "kswgroup", i);
+	LoadInitInstrument(&st2, &st3, "initinstrument", i);
 	CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
 	CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
 	CheckVar(&st2, &st3, "poly", &instr_poly[i]);

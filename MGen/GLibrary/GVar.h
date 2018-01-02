@@ -23,6 +23,9 @@ public:
 	void AddMelody(int step1, int step2, int v, CString info, CString info2 = "");
 	void LoadInstruments(); // Load instruments config
 	void LoadInstrument(int i, CString fname);
+	void LoadCCName(CString * sName, CString * sValue, CString sSearch, int i);
+	void LoadKswGroup(CString * sName, CString * sValue, CString sSearch, int i);
+	void LoadInitInstrument(CString * sName, CString * sValue, CString sSearch, int i);
 	void LoadInstrumentLine(CString st2, CString st3, int i);
 	void LoadConfig(CString fname, int load_includes = 1);
 	void LoadConfigFiles(CString fname, int load_includes);
@@ -193,6 +196,11 @@ public:
 	vector<int> nonlegato_maxgap;
 	vector<vector<int>> legato_ahead;
 	vector<vector<int>> ahead_chrom;
+	vector<vector<char>> KswGroup;
+	vector<map<char, CString>> CCToName;
+	vector<map<CString, char>> NameToCC;
+	vector<map<char, CString>> KswToName;
+	vector<map<CString, char>> NameToKsw;
 	vector<float> legato_ahead_exp; // Exponent to interpolate note movement ahead from note velocity
 	vector<float> leg_pdur; // Maximum percent of previous note duration, that legato transition can take
 	vector<float> leg_cdur; // Maximum percent of current note duration, that legato transition can take

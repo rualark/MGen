@@ -3,6 +3,28 @@ include "..\include\SI VoR.pl"
 # Main
 Library = Soundiron Voices of Rapture 1.0 - 2017-03-23 # For which library algorithm is optimized
 
+# Controls
+CC_Name = 74: "Attack"
+CC_Name = 78: "Offset"
+CC_Name = 76: "Release time"
+CC_Name = 90: "Release volume"
+CC_Name = 2: "Legato transition speed"
+CC_Name = 3: "Legato on"
+CC_Name = 4: "Chord auto-pan on"
+CC_Name = 5: "Release samples on"
+KswGroup = "D0: Ah p", "D#0: Ah f", "E0: Oo" # Syllable
+
+# Initial setup
+InitInstrument = "Ah p"
+InitInstrument = "Attack: 0"
+InitInstrument = "Offset: 0"
+InitInstrument = "Release time: 127"
+InitInstrument = "Release volume: 127"
+InitInstrument = "Legato transition speed: 0"
+InitInstrument = "Legato on: 127"
+InitInstrument = "Chord auto-pan on: 0"
+InitInstrument = "Release samples on: 127"
+
 # Instrument parameters
 n_min = B2 # Lowest note
 n_max = C5 # Highest note
