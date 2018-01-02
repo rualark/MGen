@@ -1901,6 +1901,28 @@ void CGMidi::SendMIDI(int step1, int step2)
 			for (map<char, char>::iterator it = CCInit[ii].begin(); it != CCInit[ii].end(); ++it) {
 				AddCC(midi_sent_t - midi_start_time, it->first, it->second);
 			}
+			// Send pan
+			if (instr_pan[ii].size()) {
+				int pan = 0;
+				if (midi_stage >= instr_pan[ii].size()) {
+					pan = instr_pan[ii][instr_pan[ii].size() - 1];
+				}
+				else {
+					pan = instr_pan[ii][midi_stage];
+				}
+				AddCC(midi_sent_t - midi_start_time, 10, pan);
+			}
+			// Send volume
+			if (instr_vol[ii].size()) {
+				int vol = 0;
+				if (midi_stage >= instr_vol[ii].size()) {
+					vol = instr_vol[ii][instr_vol[ii].size() - 1];
+				}
+				else {
+					vol = instr_vol[ii][midi_stage];
+				}
+				AddCC(midi_sent_t - midi_start_time, 7, vol);
+			}
 		}
 		// Move to note start
 		if (coff[step1][v] > 0) {
