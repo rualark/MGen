@@ -4064,7 +4064,7 @@ int CGenCF1::SendCantus() {
 		}
 		pos += cc_len[s];
 	}
-	MakeBellDyn(v, step, pos - 1, 40, 100, 20);
+	if (av_cnt == 1) MakeBellDyn(v, step, pos - 1, 40, 100, 20);
 	step = pos + SendPause(pos, v);
 	InterpolateNgraph(v, step000, step);
 	// Count additional variables
