@@ -1811,7 +1811,8 @@ void CGMidi::SendMIDI(int step1, int step2)
 	else midi_first_run = 0;
 	if (midi_first_run) LogInstruments();
 	// Set real time when playback started
-	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - (long long)(stime[step1] / m_pspeed * 100);
+	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - 
+		(long long)(stime[step1] / m_pspeed * 100);
 	// Set real time when playback started
 	if (!midi_sent_t) midi_sent_t = (long long)(stime[step1] / m_pspeed * 100) + midi_start_time - 100;
 	// Check if we have buf underrun
@@ -1890,6 +1891,17 @@ void CGMidi::SendMIDI(int step1, int step2)
 		midi_channel = instr_channel[ii];
 		midi_stage = v_stage[v];
 		midi_voice = v;
+		// Send initialization commands
+		if (midi_first_run) {
+			// Iterate keyswitches
+			for (map<char, char>::iterator it = KswInit[ii].begin(); it != KswInit[ii].end(); ++it) {
+				AddKs(midi_sent_t - midi_start_time, it->first);
+			}
+			// Iterate CC
+			for (map<char, char>::iterator it = CCInit[ii].begin(); it != CCInit[ii].end(); ++it) {
+				AddCC(midi_sent_t - midi_start_time, it->first, it->second);
+			}
+		}
 		// Move to note start
 		if (coff[step1][v] > 0) {
 			if (midi_first_run) step21 = step1 + noff[step1][v];
