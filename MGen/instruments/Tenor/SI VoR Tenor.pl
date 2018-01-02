@@ -21,9 +21,10 @@ InitInstrument = "Offset: 0"
 InitInstrument = "Release time: 127"
 InitInstrument = "Release volume: 127"
 InitInstrument = "Legato transition speed: 0"
-InitInstrument = "Legato on: 127"
+InitInstrument = "Legato on"
 InitInstrument = "Chord auto-pan on: 0"
-InitInstrument = "Release samples on: 127"
+InitInstrument = "Release samples on"
+InitInstrument = "Ah f"
 
 # Instrument parameters
 n_min = B2 # Lowest note
