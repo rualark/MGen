@@ -31,3 +31,5 @@ InitInstrument = "Legato transition speed: 0"
 InitInstrument = "Legato on"
 InitInstrument = "Chord auto-pan on: 0"
 InitInstrument = "Release samples on"
+Pan = 63
+Volume = 127
