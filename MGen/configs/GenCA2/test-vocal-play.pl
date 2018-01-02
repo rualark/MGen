@@ -8,4 +8,7 @@ corrections = 0 # Number of corrections to show. Set to 0 to disable corrections
 Instruments = Tenor,Alto
 
 Instrument = Tenor
-InitInstrument = "Oo"
+InitInstrument = "Ah f"
+
+Instrument = Alto
+InitInstrument = "Ah"

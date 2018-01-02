@@ -3,6 +3,12 @@ include "..\include\SI VoR.pl"
 # Main
 Library = Soundiron Voices of Rapture 1.0 - 2017-03-23 # For which library algorithm is optimized
 
+# Controls
+KswGroup = "C0: Ah", "C#0: Oo" # Syllable
+
+# Initial setup
+InitInstrument = "Ah"
+
 # Instrument parameters
 n_min = B3 # Lowest note
 n_max = D6 # Highest note
