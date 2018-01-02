@@ -16,7 +16,7 @@ all_ahead = 125 # Time in ms to stretch all notes (sustains and legato) back to 
 # Nonlegato adaptor
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
-nonlegato_maxgap = 500 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
+nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Bell adaptor
 bell_mindur = 700 # Minimum note duration (ms) that can have a bell
