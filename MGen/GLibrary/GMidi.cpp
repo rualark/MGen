@@ -1948,7 +1948,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
 				CheckDstime(i, v);
 				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) {
-					AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
+					if (!note_muted[i][v]) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
 					// Send slur
 					if (artic[i][v] == ARTIC_SLUR) {
 						AddTransitionKs(i, stimestamp, slur_ks[ii]);

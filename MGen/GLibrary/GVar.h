@@ -101,6 +101,7 @@ public:
 	vector <int> nfreq; // Note frequency
 	vector< vector <unsigned char> > pause; // 1 = pause, 0 = note
 	vector< vector <unsigned char> > note; // Note values (midi)
+	vector< vector <unsigned char> > note_muted; // Note values (midi)
 	vector< vector <unsigned short> > len; // Note length in timeslots
 	vector< vector <unsigned short> > coff; // Offset of current note start backward (0 = first timeslot of note)
 	vector< vector <unsigned short> > poff; // Offset of previous note start (backward)

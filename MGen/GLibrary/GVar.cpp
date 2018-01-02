@@ -171,6 +171,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	if (vsize == -1) vsize = v_cnt;
 	pause.resize(size);
 	note.resize(size);
+	note_muted.resize(size);
 	midifile_out_mul.resize(size, 1);
 	ngraph.resize(size, vector<vector<float> >(vsize, vector<float>(ngraph_size)));
 	graph.resize(size, vector<vector<float> >(vsize, vector<float>(graph_size)));
@@ -215,6 +216,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	for (int i = start; i < size; i++) {
 		pause[i].resize(vsize);
 		note[i].resize(vsize);
+		note_muted[i].resize(vsize);
 		ngraph[i].resize(vsize);
 		graph[i].resize(vsize);
 		len[i].resize(vsize);
@@ -1194,7 +1196,7 @@ void CGVar::ValidateVectors2(int step1, int step2) {
 	for (int i = step1; i <= step2; i++) {
 		for (int v = 0; v < v_cnt; v++) {
 			// Check vel is zero
-			if (!vel[i][v] && !pause[i][v] && m_algo_id != 112 && warning_valid < MAX_WARN_VALID) {
+			if (!vel[i][v] && !pause[i][v] && m_algo_id != 112 && m_algo_id != 121 && warning_valid < MAX_WARN_VALID) {
 				st.Format("Validation failed at step %d voice %d: velocity cannot be zero", i, v);
 				WriteLog(5, st);
 				warning_valid++;

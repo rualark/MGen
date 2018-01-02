@@ -31,5 +31,5 @@ InitInstrument = "Legato transition speed: 0"
 InitInstrument = "Legato on"
 InitInstrument = "Chord auto-pan on: 0"
 InitInstrument = "Release samples on"
-Pan = 63
-Volume = 127
+Pan = 63 # Separate panning for each stage with comma. 0 is left, 63 is center, 127 is right
+Volume = 127 # Separate volume for each stage with comma. 0 is minimum volume, 127 is maximum volume

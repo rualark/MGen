@@ -4055,6 +4055,7 @@ int CGenCF1::SendCantus() {
 		}
 		SendLyrics(pos, v, cpv, s);
 		for (int i = 0; i < cc_len[s]; ++i) {
+			if (av_cnt != 1) note_muted[pos + i][v] = 1; 
 			color[pos + i][v] = MakeColor(0, 100, 100, 100);
 			SendNotes(pos, i, v, cpv, s, m_cc);
 			SendNgraph(pos, i, v, s);
@@ -4064,7 +4065,7 @@ int CGenCF1::SendCantus() {
 		}
 		pos += cc_len[s];
 	}
-	if (av_cnt == 1) MakeBellDyn(v, step, pos - 1, 40, 100, 20);
+	MakeBellDyn(v, step, pos - 1, 40, 100, 20);
 	step = pos + SendPause(pos, v);
 	InterpolateNgraph(v, step000, step);
 	// Count additional variables
