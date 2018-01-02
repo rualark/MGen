@@ -193,6 +193,7 @@ public:
 	static void LoadVar(CString * sName, CString * sValue, char * sSearch, CString * Dest);
 	static void StringToVector(CString * sValue, CString stDelim, vector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
 	static void LoadVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest, int lmin = -1000000, int lmax = -1000000);
+	void PushVectorPar(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest, int lmin, int lmax);
 	static void Tokenize(const CString & s, vector<CString>& tokens, const CString & delim);
 	static void GetVint(const CString &st, vector<int> &res);
 	static int CheckInclude(CString st, CString fname, CString & iname);
@@ -310,7 +311,7 @@ protected:
 	// Time
 	static long long first_time;
 
-	int error = 0;
+	static int error;
 	template<typename T> void vpop_front(vector<T> &v, int count);
 	template<typename T> void vpush_front(vector<T> &v, T element, int count);
 	static void GetRealNote(int no, int key, int mi, int & no2, int & oct, int & alter);

@@ -32,6 +32,7 @@ public:
 	void LoadCCName(CString * sName, CString * sValue, CString sSearch, int i);
 	void LoadKswGroup(CString * sName, CString * sValue, CString sSearch, int i);
 	void LoadInitInstrument(CString * sName, CString * sValue, CString sSearch, int i);
+	void LoadStageVar(CString * sName, CString * sValue, CString sSearch, vector<char>& vpar);
 	void LoadInstrumentLine(CString st2, CString st3, int i);
 	void LoadConfig(CString fname, int load_includes = 1);
 	void LoadConfigFiles(CString fname, int load_includes);
@@ -161,6 +162,8 @@ public:
 	vector<int> instr_nmax;
 	vector<int> instr_tmin;
 	vector<int> instr_tmax;
+	vector<vector<int>> instr_pan; // [ii][stage] Instrument panning for each stage
+	vector<vector<int>> instr_vol; // [ii][stage] Instrument volume  for each stage
 	vector<CString> instr_lib;
 	vector<int> instr_poly; // Maximum number of simultaneous voices
 	vector<int> v_stage; // Stage for each voice

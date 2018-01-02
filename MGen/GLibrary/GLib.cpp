@@ -16,6 +16,7 @@ int CGLib::show_lining = 1;
 HWND CGLib::m_hWnd = 0;
 int CGLib::debug_level = 1;
 int CGLib::m_ci = 1;
+int CGLib::error = 0;
 int CGLib::m_testing = 0;
 int CGLib::m_test_sec = 5;
 CString CGLib::m_cline2 = "";
@@ -46,16 +47,15 @@ vector<long long> CGLib::logs_sent;
 	h ^= a >> 9;  c += h; a += b; \
 }
 
-CGLib::CGLib()
-{
+CGLib::CGLib() {
+	error = 0;
 	logs.clear();
 	logs.resize(LOG_TABS);
 	fill(begin(randrsl), end(randrsl), (ub4)0);
 	fill(begin(rmm), end(rmm), (ub4)0);
 }
 
-CGLib::~CGLib()
-{
+CGLib::~CGLib() {
 }
 
 int CGLib::FileHasHeader(CString fname, CString header) {
@@ -189,6 +189,10 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 			st = sValue->Tokenize(",", pos);
 			st.Trim();
 			if (st.IsEmpty()) break;
+			if (!atoi(st) && st != "0") {
+				WriteLog(5, "Wrong format of parameter value in config line: " + *sName + " = " + *sValue);
+				error = 101;
+			}
 			if (i >= Dest.size()) {
 				CString est;
 				est.Format("Cannot load more than %d values into vector named '%s'. String: '%s'.", Dest.size(), *sName, *sValue);
@@ -196,6 +200,27 @@ void CGLib::LoadVectorPar(CString * sName, CString * sValue, char* sSearch, vect
 				return;
 			}
 			Dest[i] = atoi(st);
+			CheckLimits(sName, &(Dest[i]), lmin, lmax);
+		}
+	}
+}
+
+void CGLib::PushVectorPar(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest, int lmin, int lmax)
+{
+	if (*sName == sSearch) {
+		++parameter_found;
+		int pos = 0;
+		CString st;
+		Dest.clear();
+		for (int i = 0; i<1000000; i++) {
+			st = sValue->Tokenize(",", pos);
+			st.Trim();
+			if (st.IsEmpty()) break;
+			if (!atoi(st) && st != "0") {
+				WriteLog(5, "Wrong format of parameter value in config line: " + *sName + " = " + *sValue);
+				error = 101;
+			}
+			Dest.push_back(atoi(st));
 			CheckLimits(sName, &(Dest[i]), lmin, lmax);
 		}
 	}

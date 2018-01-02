@@ -44,6 +44,8 @@ CGVar::CGVar()
 	CC_vibf.resize(MAX_INSTR);
 	CC_steps.resize(MAX_INSTR);
 	CC_dyn.resize(MAX_INSTR);
+	instr_pan.resize(MAX_INSTR);
+	instr_vol.resize(MAX_INSTR);
 	CCToName.resize(MAX_INSTR);
 	KswToName.resize(MAX_INSTR);
 	NameToCC.resize(MAX_INSTR);
@@ -546,6 +548,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 		x++;
 		fs.getline(pch, 2550);
 		st = pch;
+		st.Replace("\"", "");
 		// Remove comments
 		pos = st.Find("#");
 		// Check if it is first symbol
@@ -595,9 +598,7 @@ void CGVar::LoadCCName(CString *sName, CString *sValue, CString sSearch, int i) 
 	CString st1 = st.Left(pos);
 	CString st2 = st.Mid(pos + 1);
 	st1.Trim();
-	st1.Trim("\"");
 	st2.Trim();
-	st2.Trim("\"");
 	//WriteLog(1, "Detected '" + st1 + "' -> '" + st2 + "'");
 	char cc_id = atoi(st1);
 	if (!cc_id && st1 != "0") {
@@ -626,7 +627,6 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 	for (int x = 0; x < sa.size(); ++x) {
 		CString st = sa[x];
 		st.Trim();
-		st.Trim("\"");
 		int pos = st.Find(":");
 		if (pos < 1) {
 			WriteLog(5, "Cannot find colon in config line " + *sName + " = " + *sValue);
@@ -636,9 +636,7 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 		CString st1 = st.Left(pos);
 		CString st2 = st.Mid(pos + 1);
 		st1.Trim();
-		st1.Trim("\"");
 		st2.Trim();
-		st2.Trim("\"");
 		//WriteLog(1, "Detected '" + st1 + "' -> '" + st2 + "'");
 		char cnote = GetNoteI(st1);
 		if (NameToKsw[i].find(st2) != NameToKsw[i].end() && NameToKsw[i][st2] != cnote) {
@@ -661,7 +659,6 @@ void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch,
 	++parameter_found;
 	CString st = *sValue;
 	st.Trim();
-	st.Trim("\"");
 	st.MakeLower();
 	// Remove value for ksw velocity or CC value
 	int value = -1;
@@ -671,9 +668,7 @@ void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch,
 		CString st1 = st.Left(pos);
 		CString st2 = st.Mid(pos + 1);
 		st1.Trim();
-		st1.Trim("\"");
 		st2.Trim();
-		st2.Trim("\"");
 		st = st1;
 		value = atoi(st2);
 	}
@@ -704,11 +699,31 @@ void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch,
 	WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
 }
 
+void CGVar::LoadStageVar(CString *sName, CString *sValue, CString sSearch, vector<char> &vpar) {
+	if (*sName != sSearch) return;
+	++parameter_found;
+	vpar.clear();
+	vector <CString> sa;
+	Tokenize(*sValue, sa, ",");
+	for (int x = 0; x < sa.size(); ++x) {
+		CString st = sa[x];
+		st.Trim();
+		int val = atoi(st);
+		if (!val && st != "0") {
+			WriteLog(5, "Wrong format of parameter value in config line: " + *sName + " = " + *sValue);
+			error = 101;
+		}
+		vpar.push_back(val);
+	}
+}
+
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	LoadVar(&st2, &st3, "library", &instr_lib[i]);
 	CheckVar(&st2, &st3, "ks1", &ks1[i]);
 	LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
 	LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
+	PushVectorPar(&st2, &st3, "pan", instr_pan[i], 0, 127);
+	PushVectorPar(&st2, &st3, "volume", instr_vol[i], 0, 127);
 	LoadCCName(&st2, &st3, "cc_name", i);
 	LoadKswGroup(&st2, &st3, "kswgroup", i);
 	LoadInitInstrument(&st2, &st3, "initinstrument", i);
