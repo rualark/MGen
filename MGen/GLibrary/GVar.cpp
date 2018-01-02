@@ -49,6 +49,8 @@ CGVar::CGVar()
 	NameToCC.resize(MAX_INSTR);
 	NameToKsw.resize(MAX_INSTR);
 	KswGroup = vector<vector<char>>(MAX_INSTR, vector<char>(128));
+	KswInit.resize(MAX_INSTR);
+	CCInit.resize(MAX_INSTR);
 	CC_ma.resize(MAX_INSTR);
 	CC_retrigger.resize(MAX_INSTR);
 	retrigger_freq.resize(MAX_INSTR);
@@ -600,6 +602,15 @@ void CGVar::LoadCCName(CString *sName, CString *sValue, CString sSearch, int i) 
 	char cc_id = atoi(st1);
 	if (!cc_id && st1 != "0") {
 		WriteLog(5, "Wrong format for CC id in config line: " + *sName + " = " + *sValue);
+		error = 101;
+	}
+	if (NameToCC[i].find(st2) != NameToCC[i].end() && NameToCC[i][st2] != cc_id) {
+		WriteLog(5, "Duplicate CC name for different CC id in config line: " + *sName + " = " + *sValue);
+		error = 102;
+	}
+	if (NameToKsw[i].find(st2) != NameToKsw[i].end()) {
+		WriteLog(5, "You cannot use CC name same as KSW name in config line: " + *sName + " = " + *sValue);
+		error = 103;
 	}
 	CCToName[i][cc_id] = st2;
 	NameToCC[i][st2] = cc_id;
@@ -630,6 +641,14 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 		st2.Trim("\"");
 		//WriteLog(1, "Detected '" + st1 + "' -> '" + st2 + "'");
 		char cnote = GetNoteI(st1);
+		if (NameToKsw[i].find(st2) != NameToKsw[i].end() && NameToKsw[i][st2] != cnote) {
+			WriteLog(5, "Duplicate KSW name for different notes in config line: " + *sName + " = " + *sValue);
+			error = 102;
+		}
+		if (NameToCC[i].find(st2) != NameToCC[i].end()) {
+			WriteLog(5, "You cannot use KSW name same as CC name in config line: " + *sName + " = " + *sValue);
+			error = 103;
+		}
 		KswToName[i][cnote] = st2;
 		NameToKsw[i][st2] = cnote;
 		KswGroup[i][cnote] = ksw_group_count;
@@ -640,6 +659,49 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch, int i) {
 	if (*sName != sSearch) return;
 	++parameter_found;
+	CString st = *sValue;
+	st.Trim();
+	st.Trim("\"");
+	st.MakeLower();
+	// Remove value for ksw velocity or CC value
+	int value = -1;
+	// Get value if specified
+	int pos = st.Find(":");
+	if (pos > 0) {
+		CString st1 = st.Left(pos);
+		CString st2 = st.Mid(pos + 1);
+		st1.Trim();
+		st1.Trim("\"");
+		st2.Trim();
+		st2.Trim("\"");
+		st = st1;
+		value = atoi(st2);
+	}
+	if (NameToCC[i].find(st) != NameToCC[i].end()) {
+		// Default value if not specified
+		if (value == -1) value = 100;
+		int id = NameToCC[i][st];
+		//WriteLog(1, "Accepted InitInstrument for CC: " + *sName + " = " + *sValue);
+		CCInit[i][id] = value;
+		return;
+	}
+	if (NameToKsw[i].find(st) != NameToKsw[i].end()) {
+		// Default value if not specified
+		if (value == -1) value = 100;
+		int id = NameToKsw[i][st];
+		//WriteLog(1, "Accepted InitInstrument for KSW: " + *sName + " = " + *sValue);
+		// Clear whole group
+		int gr = KswGroup[i][id];
+		for (int x = 0; x < 128; ++x) {
+			if (KswGroup[i][x] == gr) {
+				KswInit[i].erase(x);
+			}
+		}
+		// Set one value
+		KswInit[i][id] = value;
+		return;
+	}
+	WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
 }
 
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {

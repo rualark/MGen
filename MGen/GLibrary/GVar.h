@@ -12,6 +12,12 @@
 // Maximum allowed note length. Must be at least two times lower than 65 535 for poff to work
 #define MAX_LEN 16384 
 
+struct CaseInsensitiveCompare {
+	bool operator() (const CString& lhs, const CString& rhs) const {
+		return lhs.CompareNoCase(rhs) < 0;
+	}
+};
+
 class CGVar :
 	public CGLib
 {
@@ -199,9 +205,11 @@ public:
 	int ksw_group_count = 1;
 	vector<vector<char>> KswGroup;
 	vector<map<char, CString>> CCToName;
-	vector<map<CString, char>> NameToCC;
+	vector<map<CString, char, CaseInsensitiveCompare>> NameToCC;
 	vector<map<char, CString>> KswToName;
-	vector<map<CString, char>> NameToKsw;
+	vector<map<CString, char, CaseInsensitiveCompare>> NameToKsw;
+	vector<map<char, char>> CCInit;
+	vector<map<char, char>> KswInit;
 	vector<float> legato_ahead_exp; // Exponent to interpolate note movement ahead from note velocity
 	vector<float> leg_pdur; // Maximum percent of previous note duration, that legato transition can take
 	vector<float> leg_cdur; // Maximum percent of current note duration, that legato transition can take
