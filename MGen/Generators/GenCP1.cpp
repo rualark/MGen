@@ -898,7 +898,9 @@ int CGenCP1::FailSus2() {
 		else {
 			// Species 2
 			if (species == 2) {
-				
+				if (bmli[sus[ls]] == mli.size() - 2 && ls < fli_size - 1 && 
+					apcc[cpv][sus[ls]] == 0 && apcc[cpv][fli[ls + 1]] == 11) FLAG2(387, s);
+					else FLAG2(388, s);
 			}
 			else {
 				FLAG2(225, s);
