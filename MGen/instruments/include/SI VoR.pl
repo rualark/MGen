@@ -1,6 +1,7 @@
 # Soundiron Voices of Rapture
 
 #Main
+Library = "Soundiron Voices of Rapture 1.0 - 2017-03-23" # For which library algorithm is optimized
 Type = 3 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
 
@@ -14,6 +15,7 @@ CC_Name = 2: "Legato transition speed"
 CC_Name = 3: "Legato on"
 CC_Name = 4: "Chord auto-pan on"
 CC_Name = 5: "Release samples on"
+CC_Name = 72: "Dynamics"
 CC_Name = 74: "Attack"
 CC_Name = 76: "Release time"
 CC_Name = 78: "Offset"

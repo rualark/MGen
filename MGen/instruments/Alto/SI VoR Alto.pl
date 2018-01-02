@@ -1,8 +1,5 @@
 include "..\include\SI VoR.pl"
 
-# Main
-Library = Soundiron Voices of Rapture 1.0 - 2017-03-23 # For which library algorithm is optimized
-
 # Controls
 KswGroup = "C0: Ah", "C#0: Mm", "D0: Oh", "D#0: Oo" # Syllable
 
