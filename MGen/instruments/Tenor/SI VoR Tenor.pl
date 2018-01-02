@@ -5,8 +5,6 @@ KswGroup = "C0: Ah p", "C#0: Ah f", "D0: Oo" # Syllable
 
 # Initial setup
 InitInstrument = "Ah f"
-Pan = 30
-Volume = 50
 
 # Instrument parameters
 n_min = B2 # Lowest note

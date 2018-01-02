@@ -9,8 +9,6 @@ Instruments = Tenor,Alto
 
 Instrument = Tenor
 InitInstrument = "Ah f"
-Pan = 63
-Volume = 127
 
 Instrument = Alto
 InitInstrument = "Ah"
