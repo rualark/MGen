@@ -196,6 +196,7 @@ public:
 	vector<int> nonlegato_maxgap;
 	vector<vector<int>> legato_ahead;
 	vector<vector<int>> ahead_chrom;
+	int ksw_group_count = 1;
 	vector<vector<char>> KswGroup;
 	vector<map<char, CString>> CCToName;
 	vector<map<CString, char>> NameToCC;

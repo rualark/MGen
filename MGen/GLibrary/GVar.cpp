@@ -48,7 +48,7 @@ CGVar::CGVar()
 	KswToName.resize(MAX_INSTR);
 	NameToCC.resize(MAX_INSTR);
 	NameToKsw.resize(MAX_INSTR);
-	KswGroup.resize(MAX_INSTR);
+	KswGroup = vector<vector<char>>(MAX_INSTR, vector<char>(128));
 	CC_ma.resize(MAX_INSTR);
 	CC_retrigger.resize(MAX_INSTR);
 	retrigger_freq.resize(MAX_INSTR);
@@ -629,10 +629,12 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 		st2.Trim();
 		st2.Trim("\"");
 		//WriteLog(1, "Detected '" + st1 + "' -> '" + st2 + "'");
-		char note = GetNoteI(st1);
-		KswToName[i][note] = st2;
-		NameToKsw[i][st2] = note;
+		char cnote = GetNoteI(st1);
+		KswToName[i][cnote] = st2;
+		NameToKsw[i][st2] = cnote;
+		KswGroup[i][cnote] = ksw_group_count;
 	}
+	++ksw_group_count;
 }
 
 void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch, int i) {
