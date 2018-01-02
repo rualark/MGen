@@ -3,7 +3,7 @@
 #Main
 Library = "Soundiron Voices of Rapture 1.0 - 2017-03-23" # For which library algorithm is optimized
 Type = 3 # Instrument type
-poly = 100 # Maximum number of simultaneous voices
+poly = 1 # Maximum number of simultaneous voices
 
 # Automation parameters
 CC_dynamics = 72

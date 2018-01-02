@@ -1,3 +1,6 @@
+# Currently problem with this library is that section is switched automatically
+# Best way to use it is to create 4 separate tracks for SATB
+
 # Main
 library = Voxos 2.0 Legato Sections # For which library algorithm is optimized
 Type = 3 # Instrument type
