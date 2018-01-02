@@ -896,8 +896,13 @@ int CGenCP1::FailSus2() {
 			}
 		}
 		else {
-			// Flag suspension
-			FLAG2(225, s);
+			// Species 2
+			if (species == 2) {
+				
+			}
+			else {
+				FLAG2(225, s);
+			}
 			// Suspension not in last measures
 			if (species < 4) {
 				if (bmli[s] < mli.size() - sus_last_measures) FLAG2(139, s);
