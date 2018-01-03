@@ -1770,7 +1770,7 @@ void CGMidi::AddTransitionKs(int i, long long stimestamp, int ks)
 
 void CGMidi::AddKs(long long stimestamp, int ks)
 {
-	AddKsOn(stimestamp, ks, 100);
+	AddKsOn(stimestamp, ks, 101);
 	AddKsOff(stimestamp + 1, ks, 0);
 }
 
