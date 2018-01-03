@@ -235,14 +235,14 @@ protected:
 	inline int FailLeap(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& nstat2, vector<int>& nstat3);
 	inline int FailLeapFill(vector<int>& c, int late_leap, int leap_prev, int child_leap);
 	inline int FailLeapMDC(vector<int>& leap, vector<int>& cc);
-	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline void PrepareTonicWeight();
 	inline float GetTonicWeight(int l_ls, vector<int>& cc, vector<int>& pc);
 	inline int FailTonic(vector<int> &cc, vector<int>& pc);
 	inline int FailLastNoteRes(vector<int>& pc);
 	inline int FailIntervals(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
 	inline void GetTritoneResolution(int ta, int t1, int t2, int tb, int & res1, int & res2, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
-	inline int FailTritones(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc);
+	inline int FailTritone(int ta, int t1, int t2, int tb, vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, vector<int>& leap);
+	inline int FailTritones(vector<int>& c, vector<int>& cc, vector<int>& pc, vector<int>& pcc, vector<int>& leap);
 	inline int FailGlobalFill(vector<int>& c, vector<int>& nstat2);
 	void ScanInit();
 	void ScanCantusInit();

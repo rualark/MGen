@@ -3520,7 +3520,7 @@ check:
 			if (FailTritones2()) goto skip;
 		}
 		else {
-			if (FailTritones(ac[cpv], acc[cpv], apc[cpv], apcc[cpv])) goto skip;
+			if (FailTritones(ac[cpv], acc[cpv], apc[cpv], apcc[cpv], aleap[cpv])) goto skip;
 		}
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps, max_leaped, max_leaps5, max_leaped5, max_leap_steps, 3, 25, 311, 312)) goto skip;
 		if (FailManyLeaps(ac[cpv], acc[cpv], aleap[cpv], asmooth[cpv], aslur[cpv], max_leaps2, max_leaped2, max_leaps6, max_leaped6, max_leap_steps2, 202, 203, 313, 314)) goto skip;
