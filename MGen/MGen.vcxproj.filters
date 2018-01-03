@@ -157,7 +157,7 @@
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
     <ClInclude Include="GLibrary\GIConf.h">
-      <Filter>Source Files\GLibrary</Filter>
+      <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
