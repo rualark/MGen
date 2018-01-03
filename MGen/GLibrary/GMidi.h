@@ -258,7 +258,7 @@ public:
 	vector<int> vtype_sev; // Worst severity for each vizualization types
 	vector <int> severity; // Get severity by flag id
 	vector<DWORD>  flag_color; // Flag colors
-	int ly_nnum; // Note number
+	int ly_nnum = 0; // Note number
 	CString ly_com_st;
 
 	// Midi files

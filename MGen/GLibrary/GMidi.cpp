@@ -407,7 +407,7 @@ void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
 }
 
 void CGMidi::ParseLyComments(int i, int v, int foreign) {
-	CString st, com, note_st;
+	CString com;
 	int pos1, pos2, fl;
 	ly_fa = ly_fa2;
 	if (comment[i][v].size()) {
@@ -965,7 +965,7 @@ void CGMidi::LoadMidi(CString path)
 					warning_loadmidi_align++;
 				}
 				// Find overlaps and distance
-				if (instr_poly[instr[v]] > 1) {
+				if (icf[instr[v]].poly > 1) {
 					for (int x = v1; x <= v2; ++x) {
 						// Overlap happens only in case when positions overlap
 						if (note[pos][x]) {
@@ -1129,7 +1129,7 @@ void CGMidi::MergeSmallOverlaps(int step1, int step2) {
 	// Merge small overlaps
 	for (int i = step1; i <= step2; ++i) {
 		// Cycle through steps to ensure that moved note is checked later
-		for (int v = 0; v < v_cnt; ++v) if (instr_poly[instr[v]] > 1) {
+		for (int v = 0; v < v_cnt; ++v) if (icf[instr[v]].poly > 1) {
 			// Look for note start
 			if (!coff[i][v] && !pause[i][v]) {
 				// Do not include dstime/detime in time calculation, because it can change result
@@ -1699,7 +1699,7 @@ void CGMidi::LogInstruments() {
 	}
 	st2 += ". Instrument channels: ";
 	for (int i = 0; i < InstGName.size(); i++) {
-		st.Format("%d ", instr_channel[i]);
+		st.Format("%d ", icf[i].channel);
 		st2 += st;
 	}
 	est.Format("%s", st2);
@@ -1768,14 +1768,12 @@ void CGMidi::AddTransitionKs(int i, long long stimestamp, int ks)
 		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), ks, 0);
 }
 
-void CGMidi::AddKs(long long stimestamp, int ks)
-{
+void CGMidi::AddKs(long long stimestamp, int ks) {
 	AddKsOn(stimestamp, ks, 101);
 	AddKsOff(stimestamp + 1, ks, 0);
 }
 
-void CGMidi::AddTransitionCC(int i, long long stimestamp, int CC, int value1, int value2)
-{
+void CGMidi::AddTransitionCC(int i, long long stimestamp, int CC, int value1, int value2) {
 	int v = midi_voice;
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
@@ -1888,41 +1886,22 @@ void CGMidi::SendMIDI(int step1, int step2)
 		int ei;
 		int ncount = 0;
 		int ii = instr[v];
-		midi_channel = instr_channel[ii];
+		midi_channel = icf[ii].channel;
 		midi_stage = v_stage[v];
 		midi_voice = v;
 		// Send initialization commands
 		if (midi_first_run) {
 			// Iterate keyswitches
-			for (map<char, char>::iterator it = KswInit[ii].begin(); it != KswInit[ii].end(); ++it) {
+			for (map<char, char>::iterator it = icf[ii].KswInit.begin(); it != icf[ii].KswInit.end(); ++it) {
 				AddKs(midi_sent_t - midi_start_time, it->first);
 			}
 			// Iterate CC
-			for (map<char, char>::iterator it = CCInit[ii].begin(); it != CCInit[ii].end(); ++it) {
+			for (map<char, char>::iterator it = icf[ii].CCInit.begin(); it != icf[ii].CCInit.end(); ++it) {
 				AddCC(midi_sent_t - midi_start_time, it->first, it->second);
 			}
 			// Send pan
-			if (instr_pan[ii].size()) {
-				int pan = 0;
-				if (midi_stage >= instr_pan[ii].size()) {
-					pan = instr_pan[ii][instr_pan[ii].size() - 1];
-				}
-				else {
-					pan = instr_pan[ii][midi_stage];
-				}
-				AddCC(midi_sent_t - midi_start_time, 10, pan);
-			}
-			// Send volume
-			if (instr_vol[ii].size()) {
-				int vol = 0;
-				if (midi_stage >= instr_vol[ii].size()) {
-					vol = instr_vol[ii][instr_vol[ii].size() - 1];
-				}
-				else {
-					vol = instr_vol[ii][midi_stage];
-				}
-				AddCC(midi_sent_t - midi_start_time, 7, vol);
-			}
+			AddCC(midi_sent_t - midi_start_time, 10, icf[ii].pan);
+			if (icf[ii].vol != -1) AddCC(midi_sent_t - midi_start_time, 7, icf[ii].vol);
 		}
 		// Move to note start
 		if (coff[step1][v] > 0) {
@@ -1951,36 +1930,36 @@ void CGMidi::SendMIDI(int step1, int step2)
 					if (!note_muted[i][v]) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
 					// Send slur
 					if (artic[i][v] == ARTIC_SLUR) {
-						AddTransitionKs(i, stimestamp, slur_ks[ii]);
+						AddTransitionKs(i, stimestamp, icf[ii].slur_ks);
 					}
 					// Send transition ks
-					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_CHROM)) {
-						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
-						AddTransitionKs(i, stimestamp, ks1[ii] + 0);
+					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_CHROM)) {
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 0);
 					}
-					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_MIX)) {
-						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
-						AddTransitionKs(i, stimestamp, ks1[ii] + 1);
+					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_MIX)) {
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 1);
 					}
-					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_ARAB)) {
-						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
-						AddTransitionKs(i, stimestamp, ks1[ii] + 3);
+					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_ARAB)) {
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 3);
 					}
-					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_SPLITPO_PENT)) {
-						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
-						AddTransitionKs(i, stimestamp, ks1[ii] + 4);
+					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_PENT)) {
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 4);
 					}
-					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_GLISS)) {
-						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
-						AddTransitionKs(i, stimestamp, ks1[ii] + 2);
+					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_GLISS)) {
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 2);
 					}
-					if ((instr_type[ii] == 2) && (artic[i][v] == ARTIC_GLISS2)) {
-						AddTransitionKs(i, stimestamp, ks1[ii] + 12);
-						AddTransitionKs(i, stimestamp, ks1[ii] + 5);
+					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_GLISS2)) {
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 5);
 					}
 					// Send rebow retrigger
-					if ((instr_type[ii] == 1) && (artic[i][v] == ARTIC_REBOW)) {
-						AddTransitionCC(i, stimestamp, CC_retrigger[ii], 100, 0);
+					if ((icf[ii].type == 1) && (artic[i][v] == ARTIC_REBOW)) {
+						AddTransitionCC(i, stimestamp, icf[ii].CC_retrigger, 100, 0);
 					}
 				}
 				// Note OFF if it is in window
@@ -1990,17 +1969,17 @@ void CGMidi::SendMIDI(int step1, int step2)
 					etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
 					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
 					// Send note ending ks
-					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_SFL)) {
-						AddKs(etimestamp - end_sfl_dur[ii], ks1[ii] + 11);
+					if ((icf[ii].type == 2) && (artic[ei][v] == ARTIC_END_SFL)) {
+						AddKs(etimestamp - icf[ii].end_sfl_dur, icf[ii].ks1 + 11);
 					}
-					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_PBD)) {
-						AddKs(etimestamp - end_pbd_dur[ii], ks1[ii] + 4);
+					if ((icf[ii].type == 2) && (artic[ei][v] == ARTIC_END_PBD)) {
+						AddKs(etimestamp - icf[ii].end_pbd_dur, icf[ii].ks1 + 4);
 					}
-					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_VIB2)) {
-						AddKs(etimestamp - end_vib2_dur[ii], ks1[ii] + 6);
+					if ((icf[ii].type == 2) && (artic[ei][v] == ARTIC_END_VIB2)) {
+						AddKs(etimestamp - icf[ii].end_vib2_dur, icf[ii].ks1 + 6);
 					}
-					if ((instr_type[ii] == 2) && (artic[ei][v] == ARTIC_END_VIB)) {
-						AddKs(etimestamp - end_vib_dur[ii], ks1[ii] + 5);
+					if ((icf[ii].type == 2) && (artic[ei][v] == ARTIC_END_VIB)) {
+						AddKs(etimestamp - icf[ii].end_vib_dur, icf[ii].ks1 + 5);
 					}
 				}
 			}
@@ -2009,9 +1988,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 			i += noff[i][v];
 		}
 		// Send CC
-		InterpolateCC(CC_dyn[ii], rnd_dyn[ii], step1, step22, dyn, ii, v);
-		InterpolateCC(CC_vib[ii], rnd_vib[ii], step1, step22, vib, ii, v);
-		InterpolateCC(CC_vibf[ii], rnd_vibf[ii], step1, step22, vibf, ii, v);
+		InterpolateCC(icf[ii].CC_dyn, icf[ii].rnd_dyn, step1, step22, dyn, ii, v);
+		InterpolateCC(icf[ii].CC_vib, icf[ii].rnd_vib, step1, step22, vib, ii, v);
+		InterpolateCC(icf[ii].CC_vibf, icf[ii].rnd_vibf, step1, step22, vibf, ii, v);
 	}
 	// Sort by timestamp before sending
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
@@ -2064,10 +2043,10 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 	int first_step = step1 - 2;
 	for (int i = step1 - 3; i >= 0; --i) {
 		// Get CC steps count
-		fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
+		fsteps = (float)(icf[ii].CC_steps) / 1000.0 * (etime[i] - stime[i]);
 		steps = max(1, fsteps);
 		pre_cc += steps;
-		if (pre_cc > CC_ma[ii]) {
+		if (pre_cc > icf[ii].CC_ma) {
 			first_step = i;
 			break;
 		}
@@ -2076,7 +2055,7 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 		if (i < 0) continue;
 		midi_current_step = i;
 		// Get CC steps count
-		fsteps = (float)CC_steps[ii] / 1000.0 * (etime[i] - stime[i]);
+		fsteps = (float)(icf[ii].CC_steps) / 1000.0 * (etime[i] - stime[i]);
 		// Check if need to skip note steps
 		//skip = 1.0 / max(0.0000001, fsteps);
 		//if (skip > 1 && i % skip && coff[i][v] && noff[i][v] != 1 && i != step1 - 2 && i != step2 - 2) continue;
@@ -2118,7 +2097,7 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 		}
 	}
 	cc_ma.resize(cc_lin.size());
-	int CC_ma2 = CC_ma[ii] / 2;
+	int CC_ma2 = icf[ii].CC_ma / 2;
 	// Move cc sending ma window to the left
 	first_cc = max(0, first_cc - CC_ma2 - 1);
 	last_cc = max(0, last_cc - CC_ma2 - 1);
@@ -2135,7 +2114,7 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 	}
 	// Extend moving average
 	for (int c = CC_ma2 + 1; c < cc_lin.size() - CC_ma2 - 1; ++c) {
-		cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + CC_ma2] - cc_lin[c  - CC_ma2 - 1]) / (float)CC_ma[ii];
+		cc_ma[c] = cc_ma[c - 1] + (cc_lin[c + CC_ma2] - cc_lin[c  - CC_ma2 - 1]) / (float)(icf[ii].CC_ma);
 	}
 	// Last moving averages
 	cc_ma[0] = cc_lin[0];
@@ -2209,12 +2188,12 @@ int CGMidi::GetPlayStep() {
 void CGMidi::AddNoteOn(long long timestamp, int data1, int data2)
 {
 	// Check if range valid
-	if ((data1 < instr_nmin[instr[midi_voice]]) || (data1 > instr_nmax[instr[midi_voice]])) {
+	if ((data1 < icf[instr[midi_voice]].nmin) || (data1 > icf[instr[midi_voice]].nmax)) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString st;
 			st.Format("Blocked note %d/%d time %lld in voice %d instrument %d out of range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], 
-				instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
+				icf[instr[midi_voice]].nmin, icf[instr[midi_voice]].nmax);
 			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;
 		}
@@ -2226,12 +2205,12 @@ void CGMidi::AddNoteOn(long long timestamp, int data1, int data2)
 void CGMidi::AddKsOn(long long timestamp, int data1, int data2)
 {
 	// Check if range valid
-	if ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]])) {
+	if ((data1 >= icf[instr[midi_voice]].nmin) && (data1 <= icf[instr[midi_voice]].nmax)) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString st;
 			st.Format("Blocked keyswitch %d/%d time %lld in voice %d instrument %d in note range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], 
-				instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
+				icf[instr[midi_voice]].nmin, icf[instr[midi_voice]].nmax);
 			WriteLog(5, st);
 			warning_note_wrong[midi_voice] ++;
 		}
@@ -2243,12 +2222,12 @@ void CGMidi::AddKsOn(long long timestamp, int data1, int data2)
 void CGMidi::AddNoteOff(long long timestamp, int data1, int data2)
 {
 	// Check if range valid
-	if ((data1 < instr_nmin[instr[midi_voice]]) || (data1 > instr_nmax[instr[midi_voice]])) {
+	if ((data1 < icf[instr[midi_voice]].nmin) || (data1 > icf[instr[midi_voice]].nmax)) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString st;
 			st.Format("Blocked note %d/%d time %lld in voice %d instrument %d out of range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], 
-				instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
+				icf[instr[midi_voice]].nmin, icf[instr[midi_voice]].nmax);
 			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;
 		}
@@ -2260,12 +2239,12 @@ void CGMidi::AddNoteOff(long long timestamp, int data1, int data2)
 void CGMidi::AddKsOff(long long timestamp, int data1, int data2)
 {
 	// Check if range valid
-	if ((data1 >= instr_nmin[instr[midi_voice]]) && (data1 <= instr_nmax[instr[midi_voice]])) {
+	if ((data1 >= icf[instr[midi_voice]].nmin) && (data1 <= icf[instr[midi_voice]].nmax)) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString st;
 			st.Format("Blocked keyswitch %d/%d time %lld in voice %d instrument %d in note range %d-%d",
 				data1, data2, timestamp, midi_voice, instr[midi_voice], 
-				instr_nmin[instr[midi_voice]], instr_nmax[instr[midi_voice]]);
+				icf[instr[midi_voice]].nmin, icf[instr[midi_voice]].nmax);
 			WriteLog(5, st);
 			warning_note_wrong[midi_voice] ++;
 		}

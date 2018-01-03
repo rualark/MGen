@@ -22,22 +22,22 @@ CGAdapt::~CGAdapt()
 void CGAdapt::CheckInstrumentRange(int v, int ii)
 {
 	// Check if notes are in instrument range
-	if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
-		if (ngv_min[v] < instr_nmin[ii]) {
-			play_transpose[v] = ceil((instr_nmin[ii] - ngv_min[v]) / 12.0) * 12;
+	if ((ngv_min[v] + play_transpose[v] < icf[ii].nmin) || (ngv_max[v] + play_transpose[v] > icf[ii].nmax)) {
+		if (ngv_min[v] < icf[ii].nmin) {
+			play_transpose[v] = ceil((icf[ii].nmin - ngv_min[v]) / 12.0) * 12;
 		}
-		if (ngv_max[v] > instr_nmax[ii]) {
-			int tr = -ceil((ngv_max[v] - instr_nmax[ii]) / 12.0) * 12;
+		if (ngv_max[v] > icf[ii].nmax) {
+			int tr = -ceil((ngv_max[v] - icf[ii].nmax) / 12.0) * 12;
 			if (tr != 0) play_transpose[v] = tr;
 		}
 		// Check if still have problem
 		CString st;
-		if ((ngv_min[v] + play_transpose[v] < instr_nmin[ii]) || (ngv_max[v] + play_transpose[v] > instr_nmax[ii])) {
+		if ((ngv_min[v] + play_transpose[v] < icf[ii].nmin) || (ngv_max[v] + play_transpose[v] > icf[ii].nmax)) {
 			if (!warning_note_range[v]) {
 				st.Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Cannot transpose automatically: range too wide.",
 					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
 					InstGName[ii], InstCName[ii], v,
-					GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]));
+					GetNoteName(icf[ii].nmin), GetNoteName(icf[ii].nmax));
 				warning_note_range[v] = 1;
 				WriteLog(1, st);
 			}
@@ -46,7 +46,7 @@ void CGAdapt::CheckInstrumentRange(int v, int ii)
 			st.Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
 				GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
 				InstGName[ii], InstCName[ii], v,
-				GetNoteName(instr_nmin[ii]), GetNoteName(instr_nmax[ii]), play_transpose[v]);
+				GetNoteName(icf[ii].nmin), GetNoteName(icf[ii].nmax), play_transpose[v]);
 			WriteLog(1, st);
 		}
 	}
@@ -56,11 +56,11 @@ void CGAdapt::CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pe
 {
 	// Check if note is too short
 	int ndur = (etime[ei] - stime[i]) * 100 / m_pspeed;
-	if (ndur < instr_tmin[ii]) {
+	if (ndur < icf[ii].tmin) {
 		CString st;
 		if (warning_note_short[v] < 4) {
 			st.Format("Recommended minimum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
-				InstGName[ii], InstCName[ii], instr_tmin[ii], v, i, ndur);
+				InstGName[ii], InstCName[ii], icf[ii].tmin, v, i, ndur);
 			warning_note_short[v] ++;
 			WriteLog(1, st);
 			if (comment_adapt) adapt_comment[i][v] += "Too short note. ";
@@ -72,11 +72,11 @@ void CGAdapt::CheckNoteBreath(int v, int x, int i, int ii, int ei, int pi, int p
 {
 	// Check if note is too long for this instrument
 	int ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-	if (instr_tmax[ii] && ndur > instr_tmax[ii]) {
+	if (icf[ii].tmax && ndur > icf[ii].tmax) {
 		CString st;
 		if (warning_note_long[v] < 4) {
 			st.Format("Recommended maximum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config. Some instruments may cut this note shorter.",
-				InstGName[ii], InstCName[ii], instr_tmax[ii], v, i, ndur);
+				InstGName[ii], InstCName[ii], icf[ii].tmax, v, i, ndur);
 			warning_note_long[v] ++;
 			WriteLog(1, st);
 			if (comment_adapt) adapt_comment[i][v] += "Too long note. ";
@@ -87,13 +87,13 @@ void CGAdapt::CheckNoteBreath(int v, int x, int i, int ii, int ei, int pi, int p
 void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Check lengroups
-	if ((i > 0) && (lengroup2[ii] + lengroup3[ii] + lengroup4[ii] > 0)) {
+	if ((i > 0) && (icf[ii].lengroup2 + icf[ii].lengroup3 + icf[ii].lengroup4 > 0)) {
 		if (lengroup[pi][v] < 2) {
 			// Start new lengroup if was no lengroup or lengroup ended
 			int r = randbw(0, 100);
-			if (r < lengroup2[ii]) lengroup[i][v] = 2;
-			else if (r < lengroup2[ii] + lengroup3[ii]) lengroup[i][v] = 3;
-			else if (r < lengroup2[ii] + lengroup3[ii] + lengroup4[ii]) lengroup[i][v] = 4;
+			if (r < icf[ii].lengroup2) lengroup[i][v] = 2;
+			else if (r < icf[ii].lengroup2 + icf[ii].lengroup3) lengroup[i][v] = 3;
+			else if (r < icf[ii].lengroup2 + icf[ii].lengroup3 + icf[ii].lengroup4) lengroup[i][v] = 4;
 			else lengroup[i][v] = 0;
 		}
 		else {
@@ -102,27 +102,27 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 		}
 		// Apply lengroups
 		if (lengroup[i][v] > 1) {
-			if (lengroup_edt1[ii] < 0) {
-				detime[ei][v] = -min(-lengroup_edt1[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
+			if (icf[ii].lengroup_edt1 < 0) {
+				detime[ei][v] = -min(-icf[ii].lengroup_edt1, (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
 				artic[i][v] = ARTIC_NONLEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 nonlegato. ";
 			}
 			else {
 				// Next line commented out, because it has no effect
 				//if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
-				detime[ei][v] = lengroup_edt1[ii];
+				detime[ei][v] = icf[ii].lengroup_edt1;
 				artic[i][v] = ARTIC_LEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 legato. ";
 			}
 		}
 		if (lengroup[i][v] == 1) {
-			if (lengroup_edt2[ii] < 0) {
-				detime[ei][v] = -min(-lengroup_edt2[ii], (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
+			if (icf[ii].lengroup_edt2 < 0) {
+				detime[ei][v] = -min(-icf[ii].lengroup_edt2, (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
 				artic[i][v] = ARTIC_NONLEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt2 nonlegato. ";
 			}
 			else {
-				detime[ei][v] = lengroup_edt2[ii];
+				detime[ei][v] = icf[ii].lengroup_edt2;
 				artic[i][v] = ARTIC_LEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt2 legato. ";
 			}
@@ -133,8 +133,8 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 void CGAdapt::AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Add slurs
-	if ((i > 0) && (max_slur_interval[ii] > 0) && (abs(note[pi][v] - note[i][v]) <= max_slur_interval[ii]) && (note[pi][v] != note[i][v]) &&
-		(slur_count <= max_slur_count[ii])) {
+	if ((i > 0) && (icf[ii].max_slur_interval > 0) && (abs(note[pi][v] - note[i][v]) <= icf[ii].max_slur_interval) && (note[pi][v] != note[i][v]) &&
+		(slur_count <= icf[ii].max_slur_count)) {
 		artic[i][v] = ARTIC_SLUR;
 		slur_count++;
 		if (comment_adapt) adapt_comment[i][v] += "Slur. ";
@@ -150,10 +150,10 @@ void CGAdapt::AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int p
 	if ((i > 0) && (pi < i) && (note[pi][v] == note[i][v])) {
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Replace retrigger with non-legato
-		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii]))
-			|| (ndur < retrigger_min_len[ii])) {
-			int max_shift = (etime[pei] - stime[pi]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
-			if (max_shift > retrigger_rand_max[ii]) max_shift = retrigger_rand_max[ii];
+		if (((icf[ii].retrigger_freq > 0) && (randbw(0, 100) > icf[ii].retrigger_freq))
+			|| (ndur < icf[ii].retrigger_min_len)) {
+			int max_shift = (etime[pei] - stime[pi]) * 100 / m_pspeed * (float)icf[ii].retrigger_rand_end / 100.0;
+			if (max_shift > icf[ii].retrigger_rand_max) max_shift = icf[ii].retrigger_rand_max;
 			detime[pei][v] = -randbw(0, max_shift);
 			artic[i][v] = ARTIC_NONLEGATO;
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
@@ -173,10 +173,10 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 	if ((i > 0) && (pi < i) && (note[pi][v] == note[i][v])) {
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Replace retrigger with non-legato
-		if (((retrigger_freq[ii] > 0) && (randbw(0, 100) > retrigger_freq[ii]))
-			|| (ndur < retrigger_min_len[ii])) {
-			int max_shift = (etime[pei] - stime[pi]) * 100 / m_pspeed * (float)retrigger_rand_end[ii] / 100.0;
-			if (max_shift > retrigger_rand_max[ii]) max_shift = retrigger_rand_max[ii];
+		if (((icf[ii].retrigger_freq > 0) && (randbw(0, 100) > icf[ii].retrigger_freq))
+			|| (ndur < icf[ii].retrigger_min_len)) {
+			int max_shift = (etime[pei] - stime[pi]) * 100 / m_pspeed * (float)icf[ii].retrigger_rand_end / 100.0;
+			if (max_shift > icf[ii].retrigger_rand_max) max_shift = icf[ii].retrigger_rand_max;
 			detime[pei][v] = -randbw(0, max_shift);
 			artic[i][v] = ARTIC_NONLEGATO;
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
@@ -192,10 +192,10 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 
 void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Randomly make some notes non-legato if they have enough length
-	if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > nonlegato_minlen[ii]) &&
-		(randbw(0, 100) < nonlegato_freq[ii] * pow(abs(note[i][v] - note[pi][v]), 0.3))) {
-		detime[pei][v] = -min(nonlegato_maxgap[ii], (etime[pei] - stime[pi]) * 100 / m_pspeed / 3);
-		dstime[i][v] = -all_ahead[ii];
+	if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > icf[ii].nonlegato_minlen) &&
+		(randbw(0, 100) < icf[ii].nonlegato_freq * pow(abs(note[i][v] - note[pi][v]), 0.3))) {
+		detime[pei][v] = -min(icf[ii].nonlegato_maxgap, (etime[pei] - stime[pi]) * 100 / m_pspeed / 3);
+		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = ARTIC_NONLEGATO;
 		if (comment_adapt) adapt_comment[i][v] += "Random nonlegato. ";
 	}
@@ -203,9 +203,9 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 
 void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Advance start for legato (not longer than previous note length)
-	if ((i > 0) && (pi < i) && (legato_ahead[ii][0] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
-		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= max_ahead_note[ii])) {
-		dstime[i][v] = -min(legato_ahead[ii][0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+	if ((i > 0) && (pi < i) && (icf[ii].legato_ahead[0] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
+		dstime[i][v] = -min(icf[ii].legato_ahead[0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		detime[i - 1][v] = 0.9 * dstime[i][v];
 		if (comment_adapt) {
@@ -213,10 +213,10 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 			adapt_comment[i - 1][v] += "Ahead end. ";
 		}
 		// Add glissando if note is long
-		if (gliss_freq[ii]) {
+		if (icf[ii].gliss_freq) {
 			float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-			if ((ndur > gliss_minlen[ii]) && (randbw(0, 100) < gliss_freq[ii])) {
-				vel[i][v] = vel_gliss[ii];
+			if ((ndur > icf[ii].gliss_minlen) && (randbw(0, 100) < icf[ii].gliss_freq)) {
+				vel[i][v] = icf[ii].vel_gliss;
 				if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
 			}
 		}
@@ -225,9 +225,9 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 
 void CGAdapt::AdaptAllAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Advance start for legato (not longer than previous note length)
-	if (i > 0 && pi < i && all_ahead[ii] > 0 &&
+	if (i > 0 && pi < i && icf[ii].all_ahead > 0 &&
 		detime[i - 1][v] >= 0) {
-		dstime[i][v] = -min(all_ahead[ii], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+		dstime[i][v] = -min(icf[ii].all_ahead, (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		if (comment_adapt) {
 			adapt_comment[i][v] += "Ahead start. ";
@@ -245,20 +245,20 @@ void CGAdapt::AdaptAllAheadStep(int v, int x, int i, int ii, int ei, int pi, int
 void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Advance start for legato (not longer than previous note length)
-	if ((i > 0) && (pi < i) && (legato_ahead[ii][0]) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
-		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= max_ahead_note[ii])) {
+	if ((i > 0) && (pi < i) && (icf[ii].legato_ahead[0]) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
 		// Get current note length
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Get previous note length
 		float pdur = (etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 		// Get maximum legato_ahead possible
 		float min_adur = 0;
-		float max_adur = min(ndur * leg_cdur[ii] / 100.0, pdur * leg_pdur[ii] / 100.0);
+		float max_adur = min(ndur * icf[ii].leg_cdur / 100.0, pdur * icf[ii].leg_pdur / 100.0);
 		// Set default ahead type to non-ks
-		int adur0 = legato_ahead[ii][0];
+		int adur0 = icf[ii].legato_ahead[0];
 		// Select articulation
-		if (max_adur > splitpo_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 13 &&
-			randbw(0, 100) < splitpo_freq[ii]) {
+		if (max_adur > icf[ii].splitpo_mindur && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 13 &&
+			randbw(0, 100) < icf[ii].splitpo_freq) {
 			// How many chromatic pitches per second
 			int iv = abs(note[i][v] - note[pi][v]);
 			float nspeed = iv / max_adur * 1000.0;
@@ -268,42 +268,42 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 			if (nspeed < 8) {
 				artic[i][v] = ARTIC_SPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
-				min_adur = (float)max(splitpo_mindur[ii], abs(note[i][v] - note[pi][v]) / 8 * 1000);
-				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][1];
-				if (iv < ahead_chrom[ii].size() && ahead_chrom[ii][iv]) adur0 = ahead_chrom[ii][iv];
+				min_adur = (float)max(icf[ii].splitpo_mindur, abs(note[i][v] - note[pi][v]) / 8 * 1000);
+				if (icf[ii].legato_ahead[1]) adur0 = icf[ii].legato_ahead[1];
+				if (iv < icf[ii].ahead_chrom.size() && icf[ii].ahead_chrom[iv]) adur0 = icf[ii].ahead_chrom[iv];
 				//CString st;
 				//st.Format("Added chromatic split portamento at step %d", i);
 				//WriteLog(0, st);
 			}
-			else if (abs(note[pi][v] - note[i][v]) > splitpo_pent_minint[ii]) {
+			else if (abs(note[pi][v] - note[i][v]) > icf[ii].splitpo_pent_minint) {
 				artic[i][v] = ARTIC_SPLITPO_PENT;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
-				min_adur = splitpo_mindur[ii];
-				if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][2];
+				min_adur = icf[ii].splitpo_mindur;
+				if (icf[ii].legato_ahead[1]) adur0 = icf[ii].legato_ahead[2];
 				//CString st;
 				//st.Format("Added pentatonic split portamento at step %d", i);
 				//WriteLog(0, st);
 			}
 		}
-		else if (max_adur > gliss_mindur[ii] && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 6 &&
-			randbw(0, 100) < gliss_freq[ii]/(100-splitpo_freq[ii]+0.001)*100) {
+		else if (max_adur > icf[ii].gliss_mindur && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 6 &&
+			randbw(0, 100) < icf[ii].gliss_freq/(100-icf[ii].splitpo_freq+0.001)*100) {
 			artic[i][v] = ARTIC_GLISS2;
 			if (comment_adapt) adapt_comment[i][v] += "Gliss2. ";
-			min_adur = gliss_mindur[ii];
-			if (legato_ahead[ii][1]) adur0 = legato_ahead[ii][3];
+			min_adur = icf[ii].gliss_mindur;
+			if (icf[ii].legato_ahead[1]) adur0 = icf[ii].legato_ahead[3];
 			//CString st;
 			//st.Format("Added gliss2 at step %d", i);
 			//WriteLog(0, st);
 		}
 		// Get minimum and maximum velocity possible
 		float min_vel = max(1, 127 -
-			pow(max_adur * pow(127, legato_ahead_exp[ii]) / adur0, 1 / legato_ahead_exp[ii]));
+			pow(max_adur * pow(127, icf[ii].legato_ahead_exp) / adur0, 1 / icf[ii].legato_ahead_exp));
 		float max_vel = max(1, 127 -
-			pow(min_adur * pow(127, legato_ahead_exp[ii]) / adur0, 1 / legato_ahead_exp[ii]));
+			pow(min_adur * pow(127, icf[ii].legato_ahead_exp) / adur0, 1 / icf[ii].legato_ahead_exp));
 		// Make random velocity inside allowed range
 		vel[i][v] = randbw(min_vel, max_vel);
 		// Get ahead duration
-		float adur = pow(128 - vel[i][v], legato_ahead_exp[ii]) * adur0 / pow(127, legato_ahead_exp[ii]);
+		float adur = pow(128 - vel[i][v], icf[ii].legato_ahead_exp) * adur0 / pow(127, icf[ii].legato_ahead_exp);
 		// Move notes
 		dstime[i][v] = -adur;
 		detime[i - 1][v] = 0.9 * dstime[i][v];
@@ -344,12 +344,12 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 	// If nonlegato and short note, avoid slow sustain articulations for Friedlander violin
 	if (artic[i][v] == ARTIC_NONLEGATO) {
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-		if (ndur < vel_normal_minlen[ii]) {
-			vel[i][v] = randbw(vel_immediate[ii], vel_immediate[ii] + 2);
+		if (ndur < icf[ii].vel_normal_minlen) {
+			vel[i][v] = randbw(icf[ii].vel_immediate, icf[ii].vel_immediate + 2);
 			if (comment_adapt) adapt_comment[i][v] += "Vel immediate. ";
 		}
-		//if (ndur < vel_normal_minlen[ii]) vel[i][v] = dyn[i][v] * (float)(127 - vel_immediate[ii]) / 127.0 + vel_immediate[ii];
-		//else vel[i][v] = dyn[i][v] * (float)(vel_immediate[ii] - 1) / 127.0;
+		//if (ndur < icf[ii].vel_normal_minlen) vel[i][v] = dyn[i][v] * (float)(127 - icf[ii].vel_immediate) / 127.0 + icf[ii].vel_immediate;
+		//else vel[i][v] = dyn[i][v] * (float)(icf[ii].vel_immediate - 1) / 127.0;
 	}
 }
 
@@ -357,8 +357,8 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 {
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	// Create bell if long length, not high velocity, after pause or first note
-	if ((ndur > bell_mindur[ii]) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
-		int pos = i + (float)(len[i][v]) * bell_start_len[ii] / 100.0;
+	if ((ndur > icf[ii].bell_mindur) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
+		int pos = i + (float)(len[i][v]) * icf[ii].bell_start_len / 100.0;
 		int ok = 1;
 		// Check if dynamics is even
 		if (pos - i > 1) for (int z = i + 1; z < pos; z++) {
@@ -369,17 +369,17 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		}
 		if (ok) {
 			for (int z = i; z < pos; z++) {
-				dyn[z][v] = dyn[z][v] * (bell_start_mul[ii] + (float)(z - i) / (pos - i) * (1.0 - bell_start_mul[ii]));
+				dyn[z][v] = dyn[z][v] * (icf[ii].bell_start_mul + (float)(z - i) / (pos - i) * (1.0 - icf[ii].bell_start_mul));
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Long bell start. ";
 			// Decrease starting velocity
-			if (bell_end_vel[ii]) vel[i][v] = randbw(dyn[i][v] * bell_end_vel[ii] / 100.0, dyn[i][v] * bell_start_vel[ii] / 100.0); //-V550
+			if (icf[ii].bell_end_vel) vel[i][v] = randbw(dyn[i][v] * icf[ii].bell_end_vel / 100.0, dyn[i][v] * icf[ii].bell_start_vel / 100.0); //-V550
 		}
 	}
 	int ni = i + noff[i][v];
 	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
-	if ((ndur > (float)bell_mindur[ii]/2) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
-		int pos = round(i + (float)(len[i][v]) * 2.0 * bell_start_len[ii] / 100.0);
+	if ((ndur > (float)icf[ii].bell_mindur/2) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
+		int pos = round(i + (float)(len[i][v]) * 2.0 * icf[ii].bell_start_len / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
 		// Check if dynamics is even
@@ -391,7 +391,7 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		}
 		if (ok) {
 			for (int z = pos; z < end; z++) {
-				dyn[z][v] = dyn[z][v] * (bell_end_mul[ii] + (float)(end - z - 1) / (end - pos) * (1.0 - bell_end_mul[ii]));
+				dyn[z][v] = dyn[z][v] * (icf[ii].bell_end_mul + (float)(end - z - 1) / (end - pos) * (1.0 - icf[ii].bell_end_mul));
 			}
 			if (comment_adapt) adapt_comment[i + len[i][v] - 1][v] += "Long bell end. ";
 		}
@@ -403,7 +403,7 @@ void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int 
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	int ni = i + noff[i][v];
 	// Create rbell if long length and no pauses
-	if ((ndur > rbell_mindur[ii]) && (len[i][v] > 2) &&	(randbw(0, 100) < rbell_freq[ii])) {
+	if ((ndur > icf[ii].rbell_mindur) && (len[i][v] > 2) &&	(randbw(0, 100) < icf[ii].rbell_freq)) {
 		int pos1 = i;
 		int pos2 = ei;
 		// Find even dynamics window
@@ -419,13 +419,13 @@ void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int 
 		}
 		// Check if window too small
 		float ndur2 = (etime[pos2] - stime[pos1]) * 100 / m_pspeed + detime[pos2][v] - dstime[pos1][v];
-		if (pos2 - pos1 < 2 || ndur2 < rbell_mindur[ii]) return;
+		if (pos2 - pos1 < 2 || ndur2 < icf[ii].rbell_mindur) return;
 		// Center position
-		int pos = pos1 + (pos2 - pos1) * randbw(rbell_pos1[ii], rbell_pos2[ii]) / 100.0;
+		int pos = pos1 + (pos2 - pos1) * randbw(icf[ii].rbell_pos1, icf[ii].rbell_pos2) / 100.0;
 		// Calculate multiplier
-		float mul0 = rbell_mul[ii] - (ndur2 - rbell_mindur[ii]) *
-			(rbell_mul[ii] - rbell_mul2[ii]) / (rbell_dur[ii] - rbell_mindur[ii] + 0.0001);
-		mul0 = max(min(mul0, rbell_mul[ii]), rbell_mul2[ii]);
+		float mul0 = icf[ii].rbell_mul - (ndur2 - icf[ii].rbell_mindur) *
+			(icf[ii].rbell_mul - icf[ii].rbell_mul2) / (icf[ii].rbell_dur - icf[ii].rbell_mindur + 0.0001);
+		mul0 = max(min(mul0, icf[ii].rbell_mul), icf[ii].rbell_mul2);
 		// Calculate random maximum
 		float mul = 1.0 - rand01() * (1.0 - mul0);
 		// Left part
@@ -447,13 +447,13 @@ void CGAdapt::AdaptVibBell(int v, int x, int i, int ii, int ei, int pi, int pei)
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	int ni = i + noff[i][v];
 	// Create rbell if long length and no pauses
-	if ((ndur > vib_bell_mindur[ii]) && (len[i][v] > 2) && (randbw(0, 100) < vib_bell_freq[ii])) {
+	if ((ndur > icf[ii].vib_bell_mindur) && (len[i][v] > 2) && (randbw(0, 100) < icf[ii].vib_bell_freq)) {
 		// Steps range
 		int pos1 = i;
 		int pos2 = ei + 1;
 		// Center positions
-		int pos = pos1 + (pos2 - pos1) * randbw(vib_bell_top1[ii], vib_bell_top2[ii]) / 100.0;
-		int posf = pos1 + (pos2 - pos1) * randbw(vibf_bell_top1[ii], vibf_bell_top2[ii]) / 100.0;
+		int pos = pos1 + (pos2 - pos1) * randbw(icf[ii].vib_bell_top1, icf[ii].vib_bell_top2) / 100.0;
+		int posf = pos1 + (pos2 - pos1) * randbw(icf[ii].vibf_bell_top1, icf[ii].vibf_bell_top2) / 100.0;
 		int ok = 1;
 		// Check if vib and vibf are zero
 		for (int z = i; z <= ei; z++) {
@@ -464,30 +464,30 @@ void CGAdapt::AdaptVibBell(int v, int x, int i, int ii, int ei, int pi, int pei)
 		}
 		if (ok) {
 			// Calculate allowed maximum
-			float vb0 = vib_bell1[ii] + (ndur - vib_bell_mindur[ii]) *
-				(vib_bell2[ii] - vib_bell1[ii]) / (vib_bell_dur[ii] - vib_bell_mindur[ii] + 0.0001);
-			vb0 = max(min(vb0, vib_bell2[ii]), vib_bell1[ii]);
-			float vbf0 = vibf_bell1[ii] + (ndur - vib_bell_mindur[ii]) *
-				(vibf_bell2[ii] - vibf_bell1[ii]) / (vib_bell_dur[ii] - vib_bell_mindur[ii] + 0.0001);
-			vbf0 = max(min(vbf0, vib_bell2[ii]), vib_bell1[ii]);
+			float vb0 = icf[ii].vib_bell1 + (ndur - icf[ii].vib_bell_mindur) *
+				(icf[ii].vib_bell2 - icf[ii].vib_bell1) / (icf[ii].vib_bell_dur - icf[ii].vib_bell_mindur + 0.0001);
+			vb0 = max(min(vb0, icf[ii].vib_bell2), icf[ii].vib_bell1);
+			float vbf0 = icf[ii].vibf_bell1 + (ndur - icf[ii].vib_bell_mindur) *
+				(icf[ii].vibf_bell2 - icf[ii].vibf_bell1) / (icf[ii].vib_bell_dur - icf[ii].vib_bell_mindur + 0.0001);
+			vbf0 = max(min(vbf0, icf[ii].vib_bell2), icf[ii].vib_bell1);
 			// Calculate random maximum
 			float vb = randbw(5, max(5, vb0));
 			float vbf = randbw(5, max(5, vbf0));
 			// Left part
 			for (int z = pos1; z < pos; z++) { 
-				vib[z][v] = vb * (float)pow(z - pos1, vib_bell_exp[ii]) / (float)pow(pos - pos1, vib_bell_exp[ii]);
+				vib[z][v] = vb * (float)pow(z - pos1, icf[ii].vib_bell_exp) / (float)pow(pos - pos1, icf[ii].vib_bell_exp);
 			}
 			// Right part
 			for (int z = pos; z < pos2; z++) {
-				vib[z][v] = vb * (float)pow(pos2 - z, vib_bell_exp[ii]) / (float)pow(pos2 - pos, vib_bell_exp[ii]);
+				vib[z][v] = vb * (float)pow(pos2 - z, icf[ii].vib_bell_exp) / (float)pow(pos2 - pos, icf[ii].vib_bell_exp);
 			}
 			// Left part speed
 			for (int z = pos1; z < posf; z++) {
-				vibf[z][v] = vbf * (float)pow(z - pos1, vibf_bell_exp[ii]) / (float)pow(posf - pos1, vibf_bell_exp[ii]);
+				vibf[z][v] = vbf * (float)pow(z - pos1, icf[ii].vibf_bell_exp) / (float)pow(posf - pos1, icf[ii].vibf_bell_exp);
 			}
 			// Right part speed
 			for (int z = posf; z < pos2; z++) {
-				vibf[z][v] = vbf * (float)pow(pos2 - z, vibf_bell_exp[ii]) / (float)pow(pos2 - posf, vibf_bell_exp[ii]);
+				vibf[z][v] = vbf * (float)pow(pos2 - z, icf[ii].vibf_bell_exp) / (float)pow(pos2 - posf, icf[ii].vibf_bell_exp);
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Vibrato bell. ";
 		}
@@ -502,19 +502,19 @@ void CGAdapt::AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int 
 	if (dyn[ei][v] > 40) return;
 	// Check if it is last note in current melody
 	if (x == ncount - 1 || pause[ni][v]) {
-		if (ndur > end_sfl_dur[ii] * 3 && randbw(0, 100) < end_sfl_freq[ii]) {
+		if (ndur > icf[ii].end_sfl_dur * 3 && randbw(0, 100) < icf[ii].end_sfl_freq) {
 			artic[ei][v] = ARTIC_END_SFL;
 			if (comment_adapt) adapt_comment[ei][v] += "Short fall ending. ";
 		}
-		else if (ndur > end_pbd_dur[ii] * 3 && randbw(0, 100) < end_pbd_freq[ii]) {
+		else if (ndur > icf[ii].end_pbd_dur * 3 && randbw(0, 100) < icf[ii].end_pbd_freq) {
 			artic[ei][v] = ARTIC_END_PBD;
 			if (comment_adapt) adapt_comment[ei][v] += "Pitchbend down ending. ";
 		}
-		else if (ndur > end_vib2_dur[ii] * 3 && randbw(0, 100) < end_vib2_freq[ii]) {
+		else if (ndur > icf[ii].end_vib2_dur * 3 && randbw(0, 100) < icf[ii].end_vib2_freq) {
 			artic[ei][v] = ARTIC_END_VIB2;
 			if (comment_adapt) adapt_comment[ei][v] += "Vibrato2 ending. ";
 		}
-		else if (ndur > end_vib_dur[ii] * 3 && randbw(0, 100) < end_vib_freq[ii]) {
+		else if (ndur > icf[ii].end_vib_dur * 3 && randbw(0, 100) < icf[ii].end_vib_freq) {
 			artic[ei][v] = ARTIC_END_VIB;
 			if (comment_adapt) adapt_comment[ei][v] += "Vibrato ending. ";
 		}
@@ -524,23 +524,23 @@ void CGAdapt::AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int 
 // Randomize note velocity
 void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
-	float rv = rnd_vel[ii];
+	float rv = icf[ii].rnd_vel;
 	int ok = 1;
-	if (rnd_vel[ii] > 0) {
-		if (instr_type[ii] == 1) {
+	if (icf[ii].rnd_vel > 0) {
+		if (icf[ii].type == 1) {
 			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 			if (i && !pause[i - 1][v] && note[i-1][v] != note[i][v]) ok = 0;
 			// Prevent velocity randomization of short nonlegato notes, because they sound bad at low velocity with Friedlander
-			if ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] < vel_normal_minlen[ii]) ok = 0;
+			if ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] < icf[ii].vel_normal_minlen) ok = 0;
 		}
-		if (instr_type[ii] == 2 || instr_type[ii] == 3) {
+		if (icf[ii].type == 2 || icf[ii].type == 3) {
 			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 			if (i && !pause[i - 1][v] && note[i - 1][v] != note[i][v]) ok = 0;
 		}
 		if (ok) {
 			// If note repeats, increase randomization range
-			if (i > 0 && note[i - 1][v] == note[i][v] && rnd_vel_repeat[ii]) 
-				rv = rnd_vel_repeat[ii];
+			if (i > 0 && note[i - 1][v] == note[i][v] && icf[ii].rnd_vel_repeat) 
+				rv = icf[ii].rnd_vel_repeat;
 			int max_shift = vel[i][v] * rv / 100.0;
 			vel[i][v] = randbw(max(1, vel[i][v] - max_shift), min(127, vel[i][v] + max_shift));
 		}
@@ -571,7 +571,7 @@ void CGAdapt::Adapt(int step1, int step2)
 		v_stage.resize(MAX_VOICE);
 		for (int v = 0; v < v_cnt; v++) {
 			int ii = instr[v]; // Instrument id
-			if (instr_poly[ii] < 2) v_stage[v] = isent[ii];
+			if (icf[ii].poly < 2) v_stage[v] = isent[ii];
 			isent[ii]++;
 		}
 	}
@@ -610,10 +610,10 @@ void CGAdapt::Adapt(int step1, int step2)
 			if (!pause[i][v]) {
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation
-				if (instr_type[ii] == 0) {
+				if (icf[ii].type == 0) {
 					AdaptLengroupStep(v, x, i, ii, ei, pi, pei);
 				}
-				if (instr_type[ii] == 1) {
+				if (icf[ii].type == 1) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
 					AdaptVibBell(v, x, i, ii, ei, pi, pei);
@@ -623,7 +623,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
-				if (instr_type[ii] == 2) {
+				if (icf[ii].type == 2) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
 					AdaptVibBell(v, x, i, ii, ei, pi, pei);
@@ -632,7 +632,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptFlexAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptNoteEndStep(v, x, i, ii, ei, pi, pei, ncount);
 				}
-				if (instr_type[ii] == 3) {
+				if (icf[ii].type == 3) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
 					AdaptVibBell(v, x, i, ii, ei, pi, pei);
@@ -651,15 +651,15 @@ void CGAdapt::Adapt(int step1, int step2)
 			pei = i - 1;
 			if (!pause[i][v]) {
 				// Randomize note starts
-				if (rand_start[ii] > 0) {
-					float max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * rand_start[ii] / 100;
-					if ((rand_start_max[ii] > 0) && (max_shift > rand_start_max[ii])) max_shift = rand_start_max[ii];
+				if (icf[ii].rand_start > 0) {
+					float max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * icf[ii].rand_start / 100;
+					if ((icf[ii].rand_start_max > 0) && (max_shift > icf[ii].rand_start_max)) max_shift = icf[ii].rand_start_max;
 					dstime[i][v] += (rand01() - 0.5) * max_shift;
 				}
 				// Randomize note ends
-				if (rand_end[ii] > 0) {
-					float max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * rand_end[ii] / 100;
-					if ((rand_end_max[ii] > 0) && (max_shift > rand_end_max[ii])) max_shift = rand_end_max[ii];
+				if (icf[ii].rand_end > 0) {
+					float max_shift = (etime[ei] - stime[i]) * 100 / m_pspeed * icf[ii].rand_end / 100;
+					if ((icf[ii].rand_end_max > 0) && (max_shift > icf[ii].rand_end_max)) max_shift = icf[ii].rand_end_max;
 					detime[ei][v] += (rand01() - 0.5) * max_shift;
 				}
 				AdaptRndVel(v, x, i, ii, ei, pi, pei);

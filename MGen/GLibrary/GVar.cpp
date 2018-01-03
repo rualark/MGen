@@ -11,108 +11,15 @@ CGVar::CGVar()
 	ngv_min.resize(MAX_VOICE);
 	ngv_max.resize(MAX_VOICE);
 	instr.resize(MAX_VOICE);
-	ks1.resize(MAX_VOICE);
-	instr_lib.resize(MAX_VOICE);
-	instr_type.resize(MAX_INSTR);
-	instr_used.resize(MAX_INSTR);
-	instr_channel.resize(MAX_INSTR);
-	instr_poly.resize(MAX_INSTR);
-	instr_nmin.resize(MAX_INSTR);
-	instr_nmax.resize(MAX_INSTR);
-	instr_tmin.resize(MAX_INSTR);
-	instr_tmax.resize(MAX_INSTR);
-	vib_bell_top1.resize(MAX_INSTR);
-	vib_bell_top2.resize(MAX_INSTR);
-	vibf_bell_top1.resize(MAX_INSTR);
-	vibf_bell_top2.resize(MAX_INSTR);
-	vib_bell_freq.resize(MAX_INSTR);
-	vib_bell_mindur.resize(MAX_INSTR);
-	vib_bell_dur.resize(MAX_INSTR);
-	vib_bell1.resize(MAX_INSTR);
-	vibf_bell1.resize(MAX_INSTR);
-	vib_bell2.resize(MAX_INSTR);
-	splitpo_pent_minint.resize(MAX_INSTR);
-	vibf_bell2.resize(MAX_INSTR);
-	vib_bell_exp.resize(MAX_INSTR);
-	vibf_bell_exp.resize(MAX_INSTR);
-	rnd_vel.resize(MAX_INSTR);
-	rnd_vel_repeat.resize(MAX_INSTR);
-	rnd_dyn.resize(MAX_INSTR);
-	rnd_vib.resize(MAX_INSTR);
-	rnd_vibf.resize(MAX_INSTR);
-	CC_vib.resize(MAX_INSTR);
-	CC_vibf.resize(MAX_INSTR);
-	CC_steps.resize(MAX_INSTR);
-	CC_dyn.resize(MAX_INSTR);
-	instr_pan.resize(MAX_INSTR);
-	instr_vol.resize(MAX_INSTR);
-	CCToName.resize(MAX_INSTR);
-	KswToName.resize(MAX_INSTR);
-	NameToCC.resize(MAX_INSTR);
-	NameToKsw.resize(MAX_INSTR);
-	KswGroup = vector<vector<char>>(MAX_INSTR, vector<char>(128));
-	KswInit.resize(MAX_INSTR);
-	CCInit.resize(MAX_INSTR);
-	CC_ma.resize(MAX_INSTR);
-	CC_retrigger.resize(MAX_INSTR);
-	retrigger_freq.resize(MAX_INSTR);
-	max_slur_count.resize(MAX_INSTR);
-	max_slur_interval.resize(MAX_INSTR);
-	slur_ks.resize(MAX_INSTR);
-	nonlegato_maxgap.resize(MAX_INSTR);
-	all_ahead.resize(MAX_INSTR);
-	legato_ahead = vector<vector<int>>(MAX_INSTR, vector<int>(10));
-	ahead_chrom = vector<vector<int>>(MAX_INSTR, vector<int>(16));
-	legato_ahead_exp.resize(MAX_INSTR);
-	leg_pdur.resize(MAX_INSTR);
-	leg_cdur.resize(MAX_INSTR);
-	splitpo_freq.resize(MAX_INSTR);
-	splitpo_mindur.resize(MAX_INSTR);
-	gliss_mindur.resize(MAX_INSTR);
-	nonlegato_freq.resize(MAX_INSTR);
-	nonlegato_minlen.resize(MAX_INSTR);
-	lengroup2.resize(MAX_INSTR);
-	lengroup3.resize(MAX_INSTR);
-	lengroup4.resize(MAX_INSTR);
-	lengroup_edt1.resize(MAX_INSTR);
-	lengroup_edt2.resize(MAX_INSTR);
-	rand_start.resize(MAX_INSTR);
-	rand_end.resize(MAX_INSTR);
-	retrigger_min_len.resize(MAX_INSTR);
-	retrigger_rand_end.resize(MAX_INSTR);
-	retrigger_rand_max.resize(MAX_INSTR);
-	vel_harsh.resize(MAX_INSTR);
-	vel_immediate.resize(MAX_INSTR);
-	vel_normal.resize(MAX_INSTR);
-	vel_gliss.resize(MAX_INSTR);
-	vel_normal_minlen.resize(MAX_INSTR);
-	gliss_minlen.resize(MAX_INSTR);
-	gliss_freq.resize(MAX_INSTR);
-	rand_start_max.resize(MAX_INSTR);
-	rand_end_max.resize(MAX_INSTR);
-	max_ahead_note.resize(MAX_INSTR);
-	bell_start_mul.resize(MAX_INSTR);
-	bell_end_mul.resize(MAX_INSTR);
-	bell_start_len.resize(MAX_INSTR);
-	bell_end_len.resize(MAX_INSTR);
-	bell_start_vel.resize(MAX_INSTR);
-	bell_end_vel.resize(MAX_INSTR);
-	bell_mindur.resize(MAX_INSTR);
-	rbell_pos1.resize(MAX_INSTR);
-	rbell_pos2.resize(MAX_INSTR);
-	rbell_freq.resize(MAX_INSTR);
-	rbell_mindur.resize(MAX_INSTR);
-	rbell_dur.resize(MAX_INSTR);
-	rbell_mul.resize(MAX_INSTR);
-	rbell_mul2.resize(MAX_INSTR);
-	end_sfl_dur.resize(MAX_INSTR);
-	end_sfl_freq.resize(MAX_INSTR);
-	end_pbd_dur.resize(MAX_INSTR);
-	end_pbd_freq.resize(MAX_INSTR);
-	end_vib2_dur.resize(MAX_INSTR);
-	end_vib2_freq.resize(MAX_INSTR);
-	end_vib_dur.resize(MAX_INSTR);
-	end_vib_freq.resize(MAX_INSTR);
+	v_stage.resize(MAX_VOICE);
+
+	icf.resize(MAX_INSTR);
+	for (int i = 0; i < MAX_INSTR; ++i) {
+		icf[i].KswGroup.resize(128);
+		icf[i].legato_ahead.resize(10);
+		icf[i].ahead_chrom.resize(16);
+	}
+
 	show_transpose.resize(MAX_VOICE);
 	track_name.resize(MAX_VOICE);
 	track_id.resize(MAX_VOICE);
@@ -415,13 +322,13 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 			// Set all instruments to default instrument
 			if (!ii) {
 				for (int i = 0; i < MAX_VOICE; i++) instr[i] = InstGName.size() - 1;
-				for (int i = 0; i < MAX_INSTR; i++) instr_used[i] = 0;
+				for (int i = 0; i < MAX_INSTR; i++) icf[i].used = 0;
 			}
 			// Load
 			for (int i = 0; i < InstGName.size(); i++) {
 				if (InstGName[i] == st) {
 					++found;
-					++instr_used[i];
+					++icf[i].used;
 					Dest[ii] = i;
 					break;
 				}
@@ -486,7 +393,7 @@ void CGVar::LoadInstrumentLayout()
 			InstCName.push_back(st2);
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			instr_channel[InstCName.size() - 1] = atoi(st2);
+			icf[InstCName.size() - 1].channel = atoi(st2);
 			// Set default mapping
 			instr[InstCName.size() - 1] = InstCName.size() - 1;
 		}
@@ -607,16 +514,16 @@ void CGVar::LoadCCName(CString *sName, CString *sValue, CString sSearch, int i) 
 		WriteLog(5, "Wrong format for CC id in config line: " + *sName + " = " + *sValue);
 		error = 101;
 	}
-	if (NameToCC[i].find(st2) != NameToCC[i].end() && NameToCC[i][st2] != cc_id) {
+	if (icf[i].NameToCC.find(st2) != icf[i].NameToCC.end() && icf[i].NameToCC[st2] != cc_id) {
 		WriteLog(5, "Duplicate CC name for different CC id in config line: " + *sName + " = " + *sValue);
 		error = 102;
 	}
-	if (NameToKsw[i].find(st2) != NameToKsw[i].end()) {
+	if (icf[i].NameToKsw.find(st2) != icf[i].NameToKsw.end()) {
 		WriteLog(5, "You cannot use CC name same as KSW name in config line: " + *sName + " = " + *sValue);
 		error = 103;
 	}
-	CCToName[i][cc_id] = st2;
-	NameToCC[i][st2] = cc_id;
+	icf[i].CCToName[cc_id] = st2;
+	icf[i].NameToCC[st2] = cc_id;
 }
 
 void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i) {
@@ -641,17 +548,17 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 		st2.Trim();
 		//WriteLog(1, "Detected '" + st1 + "' -> '" + st2 + "'");
 		char cnote = GetNoteI(st1);
-		if (NameToKsw[i].find(st2) != NameToKsw[i].end() && NameToKsw[i][st2] != cnote) {
+		if (icf[i].NameToKsw.find(st2) != icf[i].NameToKsw.end() && icf[i].NameToKsw[st2] != cnote) {
 			WriteLog(5, "Duplicate KSW name for different notes in config line: " + *sName + " = " + *sValue);
 			error = 102;
 		}
-		if (NameToCC[i].find(st2) != NameToCC[i].end()) {
+		if (icf[i].NameToCC.find(st2) != icf[i].NameToCC.end()) {
 			WriteLog(5, "You cannot use KSW name same as CC name in config line: " + *sName + " = " + *sValue);
 			error = 103;
 		}
-		KswToName[i][cnote] = st2;
-		NameToKsw[i][st2] = cnote;
-		KswGroup[i][cnote] = ksw_group_count;
+		icf[i].KswToName[cnote] = st2;
+		icf[i].NameToKsw[st2] = cnote;
+		icf[i].KswGroup[cnote] = ksw_group_count;
 	}
 	++ksw_group_count;
 }
@@ -674,28 +581,28 @@ void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch,
 		st = st1;
 		value = atoi(st2);
 	}
-	if (NameToCC[i].find(st) != NameToCC[i].end()) {
+	if (icf[i].NameToCC.find(st) != icf[i].NameToCC.end()) {
 		// Default value if not specified
 		if (value == -1) value = 100;
-		int id = NameToCC[i][st];
+		int id = icf[i].NameToCC[st];
 		//WriteLog(1, "Accepted InitInstrument for CC: " + *sName + " = " + *sValue);
-		CCInit[i][id] = value;
+		icf[i].CCInit[id] = value;
 		return;
 	}
-	if (NameToKsw[i].find(st) != NameToKsw[i].end()) {
+	if (icf[i].NameToKsw.find(st) != icf[i].NameToKsw.end()) {
 		// Default value if not specified
 		if (value == -1) value = 100;
-		int id = NameToKsw[i][st];
+		int id = icf[i].NameToKsw[st];
 		//WriteLog(1, "Accepted InitInstrument for KSW: " + *sName + " = " + *sValue);
 		// Clear whole group
-		int gr = KswGroup[i][id];
+		int gr = icf[i].KswGroup[id];
 		for (int x = 0; x < 128; ++x) {
-			if (KswGroup[i][x] == gr) {
-				KswInit[i].erase(x);
+			if (icf[i].KswGroup[x] == gr) {
+				icf[i].KswInit.erase(x);
 			}
 		}
 		// Set one value
-		KswInit[i][id] = value;
+		icf[i].KswInit[id] = value;
 		return;
 	}
 	WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
@@ -720,90 +627,90 @@ void CGVar::LoadStageVar(CString *sName, CString *sValue, CString sSearch, vecto
 }
 
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
-	LoadVar(&st2, &st3, "library", &instr_lib[i]);
-	CheckVar(&st2, &st3, "ks1", &ks1[i]);
-	LoadNote(&st2, &st3, "n_min", &instr_nmin[i]);
-	LoadNote(&st2, &st3, "n_max", &instr_nmax[i]);
-	PushVectorPar(&st2, &st3, "pan", instr_pan[i], 0, 127);
-	PushVectorPar(&st2, &st3, "volume", instr_vol[i], 0, 127);
+	LoadVar(&st2, &st3, "library", &icf[i].lib);
+	CheckVar(&st2, &st3, "pan", &icf[i].pan, 0, 127);
+	CheckVar(&st2, &st3, "volume", &icf[i].vol, 0, 127);
+	CheckVar(&st2, &st3, "ks1", &icf[i].ks1);
+	LoadNote(&st2, &st3, "n_min", &icf[i].nmin);
+	LoadNote(&st2, &st3, "n_max", &icf[i].nmax);
 	LoadCCName(&st2, &st3, "cc_name", i);
 	LoadKswGroup(&st2, &st3, "kswgroup", i);
 	LoadInitInstrument(&st2, &st3, "initinstrument", i);
-	CheckVar(&st2, &st3, "t_min", &instr_tmin[i]);
-	CheckVar(&st2, &st3, "t_max", &instr_tmax[i]);
-	CheckVar(&st2, &st3, "poly", &instr_poly[i]);
-	CheckVar(&st2, &st3, "type", &instr_type[i]);
-	CheckVar(&st2, &st3, "channel", &instr_channel[i]);
-	CheckRange(&st2, &st3, "vib_bell_top", &vib_bell_top1[i], &vib_bell_top2[i]);
-	CheckRange(&st2, &st3, "vibf_bell_top", &vibf_bell_top1[i], &vibf_bell_top2[i]);
-	CheckRange(&st2, &st3, "vib_bell", &vib_bell1[i], &vib_bell2[i]);
-	CheckRange(&st2, &st3, "vibf_bell", &vibf_bell1[i], &vibf_bell2[i]);
-	CheckRange(&st2, &st3, "vib_bell_dur", &vib_bell_mindur[i], &vib_bell_dur[i]);
-	CheckVar(&st2, &st3, "vib_bell_freq", &vib_bell_freq[i]);
-	CheckVar(&st2, &st3, "vib_bell_exp", &vib_bell_exp[i]);
-	CheckVar(&st2, &st3, "vibf_bell_exp", &vibf_bell_exp[i]);
-	CheckVar(&st2, &st3, "rnd_vel", &rnd_vel[i]);
-	CheckVar(&st2, &st3, "rnd_vel_repeat", &rnd_vel_repeat[i]);
-	CheckVar(&st2, &st3, "rnd_dyn", &rnd_dyn[i]);
-	CheckVar(&st2, &st3, "rnd_vib", &rnd_vib[i]);
-	CheckVar(&st2, &st3, "rnd_vibf", &rnd_vibf[i]);
-	CheckVar(&st2, &st3, "splitpo_pent_minint", &splitpo_pent_minint[i]);
-	CheckVar(&st2, &st3, "cc_vib", &CC_vib[i]);
-	CheckVar(&st2, &st3, "cc_vibf", &CC_vibf[i]);
-	CheckVar(&st2, &st3, "cc_steps", &CC_steps[i]);
-	CheckVar(&st2, &st3, "cc_dynamics", &CC_dyn[i]);
-	CheckVar(&st2, &st3, "cc_ma", &CC_ma[i], 3);
-	CheckVar(&st2, &st3, "cc_retrigger", &CC_retrigger[i]);
-	CheckVar(&st2, &st3, "retrigger_freq", &retrigger_freq[i]);
-	CheckVar(&st2, &st3, "max_slur_count", &max_slur_count[i]);
-	CheckVar(&st2, &st3, "max_slur_interval", &max_slur_interval[i]);
-	CheckVar(&st2, &st3, "slur_ks", &slur_ks[i]);
-	CheckVar(&st2, &st3, "nonlegato_maxgap", &nonlegato_maxgap[i]);
-	CheckVar(&st2, &st3, "all_ahead", &all_ahead[i]);
-	LoadVectorPar(&st2, &st3, "legato_ahead", legato_ahead[i]);
-	LoadVectorPar(&st2, &st3, "ahead_chrom", ahead_chrom[i]);
-	CheckVar(&st2, &st3, "leg_pdur", &leg_pdur[i]);
-	CheckVar(&st2, &st3, "leg_cdur", &leg_cdur[i]);
-	CheckVar(&st2, &st3, "legato_ahead_exp", &legato_ahead_exp[i]);
-	CheckVar(&st2, &st3, "splitpo_freq", &splitpo_freq[i]);
-	CheckVar(&st2, &st3, "splitpo_mindur", &splitpo_mindur[i]);
-	CheckVar(&st2, &st3, "gliss_mindur", &gliss_mindur[i]);
-	CheckVar(&st2, &st3, "nonlegato_minlen", &nonlegato_minlen[i]);
-	CheckVar(&st2, &st3, "nonlegato_freq", &nonlegato_freq[i]);
-	CheckVar(&st2, &st3, "lengroup2", &lengroup2[i]);
-	CheckVar(&st2, &st3, "lengroup3", &lengroup3[i]);
-	CheckVar(&st2, &st3, "lengroup4", &lengroup4[i]);
-	CheckVar(&st2, &st3, "lengroup_edt1", &lengroup_edt1[i]);
-	CheckVar(&st2, &st3, "lengroup_edt2", &lengroup_edt2[i]);
-	CheckRange(&st2, &st3, "rand_pos", &rand_start[i], &rand_end[i]);
-	CheckRange(&st2, &st3, "rand_pos_max", &rand_start_max[i], &rand_end_max[i]);
-	CheckVar(&st2, &st3, "retrigger_min_len", &retrigger_min_len[i]);
-	CheckVar(&st2, &st3, "retrigger_rand_end", &retrigger_rand_end[i]);
-	CheckVar(&st2, &st3, "retrigger_rand_max", &retrigger_rand_max[i]);
-	CheckVar(&st2, &st3, "vel_harsh", &vel_harsh[i]);
-	CheckVar(&st2, &st3, "vel_immediate", &vel_immediate[i]);
-	CheckVar(&st2, &st3, "vel_normal", &vel_normal[i]);
-	CheckVar(&st2, &st3, "vel_gliss", &vel_gliss[i]);
-	CheckVar(&st2, &st3, "vel_normal_minlen", &vel_normal_minlen[i]);
-	CheckVar(&st2, &st3, "gliss_minlen", &gliss_minlen[i]);
-	CheckVar(&st2, &st3, "bell_mindur", &bell_mindur[i]);
-	CheckVar(&st2, &st3, "gliss_freq", &gliss_freq[i]);
-	CheckVar(&st2, &st3, "max_ahead_note", &max_ahead_note[i]);
-	CheckRange(&st2, &st3, "bell_mul", &bell_start_mul[i], &bell_end_mul[i]);
-	CheckRange(&st2, &st3, "bell_len", &bell_start_len[i], &bell_end_len[i]);
-	CheckRange(&st2, &st3, "bell_vel", &bell_start_vel[i], &bell_end_vel[i]);
-	CheckVar(&st2, &st3, "rbell_freq", &rbell_freq[i]);
-	CheckRange(&st2, &st3, "rbell_pos", &rbell_pos1[i], &rbell_pos2[i]);
-	CheckRange(&st2, &st3, "rbell_dur", &rbell_mindur[i], &rbell_dur[i]);
-	CheckRange(&st2, &st3, "rbell_mul", &rbell_mul[i], &rbell_mul2[i]);
-	CheckVar(&st2, &st3, "end_sfl_dur", &end_sfl_dur[i]);
-	CheckVar(&st2, &st3, "end_sfl_freq", &end_sfl_freq[i]);
-	CheckVar(&st2, &st3, "end_pbd_dur", &end_pbd_dur[i]);
-	CheckVar(&st2, &st3, "end_pbd_freq", &end_pbd_freq[i]);
-	CheckVar(&st2, &st3, "end_vib2_dur", &end_vib2_dur[i]);
-	CheckVar(&st2, &st3, "end_vib2_freq", &end_vib2_freq[i]);
-	CheckVar(&st2, &st3, "end_vib_dur", &end_vib_dur[i]);
-	CheckVar(&st2, &st3, "end_vib_freq", &end_vib_freq[i]);
+	CheckVar(&st2, &st3, "t_min", &icf[i].tmin);
+	CheckVar(&st2, &st3, "t_max", &icf[i].tmax);
+	CheckVar(&st2, &st3, "poly", &icf[i].poly);
+	CheckVar(&st2, &st3, "type", &icf[i].type);
+	CheckVar(&st2, &st3, "channel", &icf[i].channel);
+	CheckRange(&st2, &st3, "vib_bell_top", &icf[i].vib_bell_top1, &icf[i].vib_bell_top2);
+	CheckRange(&st2, &st3, "vibf_bell_top", &icf[i].vibf_bell_top1, &icf[i].vibf_bell_top2);
+	CheckRange(&st2, &st3, "vib_bell", &icf[i].vib_bell1, &icf[i].vib_bell2);
+	CheckRange(&st2, &st3, "vibf_bell", &icf[i].vibf_bell1, &icf[i].vibf_bell2);
+	CheckRange(&st2, &st3, "vib_bell_dur", &icf[i].vib_bell_mindur, &icf[i].vib_bell_dur);
+	CheckVar(&st2, &st3, "vib_bell_freq", &icf[i].vib_bell_freq);
+	CheckVar(&st2, &st3, "vib_bell_exp", &icf[i].vib_bell_exp);
+	CheckVar(&st2, &st3, "vibf_bell_exp", &icf[i].vibf_bell_exp);
+	CheckVar(&st2, &st3, "rnd_vel", &icf[i].rnd_vel);
+	CheckVar(&st2, &st3, "rnd_vel_repeat", &icf[i].rnd_vel_repeat);
+	CheckVar(&st2, &st3, "rnd_dyn", &icf[i].rnd_dyn);
+	CheckVar(&st2, &st3, "rnd_vib", &icf[i].rnd_vib);
+	CheckVar(&st2, &st3, "rnd_vibf", &icf[i].rnd_vibf);
+	CheckVar(&st2, &st3, "splitpo_pent_minint", &icf[i].splitpo_pent_minint);
+	CheckVar(&st2, &st3, "cc_vib", &icf[i].CC_vib);
+	CheckVar(&st2, &st3, "cc_vibf", &icf[i].CC_vibf);
+	CheckVar(&st2, &st3, "cc_steps", &icf[i].CC_steps);
+	CheckVar(&st2, &st3, "cc_dynamics", &icf[i].CC_dyn);
+	CheckVar(&st2, &st3, "cc_ma", &icf[i].CC_ma, 3);
+	CheckVar(&st2, &st3, "cc_retrigger", &icf[i].CC_retrigger);
+	CheckVar(&st2, &st3, "retrigger_freq", &icf[i].retrigger_freq);
+	CheckVar(&st2, &st3, "max_slur_count", &icf[i].max_slur_count);
+	CheckVar(&st2, &st3, "max_slur_interval", &icf[i].max_slur_interval);
+	CheckVar(&st2, &st3, "slur_ks", &icf[i].slur_ks);
+	CheckVar(&st2, &st3, "nonlegato_maxgap", &icf[i].nonlegato_maxgap);
+	CheckVar(&st2, &st3, "all_ahead", &icf[i].all_ahead);
+	LoadVectorPar(&st2, &st3, "legato_ahead", icf[i].legato_ahead);
+	LoadVectorPar(&st2, &st3, "ahead_chrom", icf[i].ahead_chrom);
+	CheckVar(&st2, &st3, "leg_pdur", &icf[i].leg_pdur);
+	CheckVar(&st2, &st3, "leg_cdur", &icf[i].leg_cdur);
+	CheckVar(&st2, &st3, "legato_ahead_exp", &icf[i].legato_ahead_exp);
+	CheckVar(&st2, &st3, "splitpo_freq", &icf[i].splitpo_freq);
+	CheckVar(&st2, &st3, "splitpo_mindur", &icf[i].splitpo_mindur);
+	CheckVar(&st2, &st3, "gliss_mindur", &icf[i].gliss_mindur);
+	CheckVar(&st2, &st3, "nonlegato_minlen", &icf[i].nonlegato_minlen);
+	CheckVar(&st2, &st3, "nonlegato_freq", &icf[i].nonlegato_freq);
+	CheckVar(&st2, &st3, "lengroup2", &icf[i].lengroup2);
+	CheckVar(&st2, &st3, "lengroup3", &icf[i].lengroup3);
+	CheckVar(&st2, &st3, "lengroup4", &icf[i].lengroup4);
+	CheckVar(&st2, &st3, "lengroup_edt1", &icf[i].lengroup_edt1);
+	CheckVar(&st2, &st3, "lengroup_edt2", &icf[i].lengroup_edt2);
+	CheckRange(&st2, &st3, "rand_pos", &icf[i].rand_start, &icf[i].rand_end);
+	CheckRange(&st2, &st3, "rand_pos_max", &icf[i].rand_start_max, &icf[i].rand_end_max);
+	CheckVar(&st2, &st3, "retrigger_min_len", &icf[i].retrigger_min_len);
+	CheckVar(&st2, &st3, "retrigger_rand_end", &icf[i].retrigger_rand_end);
+	CheckVar(&st2, &st3, "retrigger_rand_max", &icf[i].retrigger_rand_max);
+	CheckVar(&st2, &st3, "vel_harsh", &icf[i].vel_harsh);
+	CheckVar(&st2, &st3, "vel_immediate", &icf[i].vel_immediate);
+	CheckVar(&st2, &st3, "vel_normal", &icf[i].vel_normal);
+	CheckVar(&st2, &st3, "vel_gliss", &icf[i].vel_gliss);
+	CheckVar(&st2, &st3, "vel_normal_minlen", &icf[i].vel_normal_minlen);
+	CheckVar(&st2, &st3, "gliss_minlen", &icf[i].gliss_minlen);
+	CheckVar(&st2, &st3, "bell_mindur", &icf[i].bell_mindur);
+	CheckVar(&st2, &st3, "gliss_freq", &icf[i].gliss_freq);
+	CheckVar(&st2, &st3, "max_ahead_note", &icf[i].max_ahead_note);
+	CheckRange(&st2, &st3, "bell_mul", &icf[i].bell_start_mul, &icf[i].bell_end_mul);
+	CheckRange(&st2, &st3, "bell_len", &icf[i].bell_start_len, &icf[i].bell_end_len);
+	CheckRange(&st2, &st3, "bell_vel", &icf[i].bell_start_vel, &icf[i].bell_end_vel);
+	CheckVar(&st2, &st3, "rbell_freq", &icf[i].rbell_freq);
+	CheckRange(&st2, &st3, "rbell_pos", &icf[i].rbell_pos1, &icf[i].rbell_pos2);
+	CheckRange(&st2, &st3, "rbell_dur", &icf[i].rbell_mindur, &icf[i].rbell_dur);
+	CheckRange(&st2, &st3, "rbell_mul", &icf[i].rbell_mul, &icf[i].rbell_mul2);
+	CheckVar(&st2, &st3, "end_sfl_dur", &icf[i].end_sfl_dur);
+	CheckVar(&st2, &st3, "end_sfl_freq", &icf[i].end_sfl_freq);
+	CheckVar(&st2, &st3, "end_pbd_dur", &icf[i].end_pbd_dur);
+	CheckVar(&st2, &st3, "end_pbd_freq", &icf[i].end_pbd_freq);
+	CheckVar(&st2, &st3, "end_vib2_dur", &icf[i].end_vib2_dur);
+	CheckVar(&st2, &st3, "end_vib2_freq", &icf[i].end_vib2_freq);
+	CheckVar(&st2, &st3, "end_vib_dur", &icf[i].end_vib_dur);
+	CheckVar(&st2, &st3, "end_vib_freq", &icf[i].end_vib_freq);
 }
 
 void CGVar::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {
