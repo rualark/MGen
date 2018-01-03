@@ -85,8 +85,10 @@ BOOL CInfoDlg::OnInitDialog()
 			int nstart = 0;
 			for (int x = m1; x <= m2; ++x) {
 				// When pause, reset previous note because notes can be the same left and right from the pause
-				if (pGen->pause[x][mv]) prev_note = -1;
-				if (pGen->pause[x][mv]) continue;
+				if (pGen->pause[x][mv]) {
+					prev_note = -1;
+					continue;
+				}
 				if (!pGen->coff[x][mv]) {
 					++nnum;
 					nstart = x;
@@ -184,9 +186,9 @@ BOOL CInfoDlg::OnInitDialog()
 
 		st.Format("Voice: %d (%s, channel %d, type %d)\n", mv,
 			pGen->InstGName[pGen->instr[mv]] + "/" + pGen->InstCName[pGen->instr[mv]],
-			pGen->instr_channel[pGen->instr[mv]], pGen->instr_type[pGen->instr[mv]]);
+			pGen->icf[pGen->instr[mv]].channel, pGen->icf[pGen->instr[mv]].type);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		st.Format("Instrument library: %s\n", pGen->instr_lib[pGen->instr[mv]]);
+		st.Format("Instrument library: %s\n", pGen->icf[pGen->instr[mv]].lib);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);

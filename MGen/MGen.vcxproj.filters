@@ -156,6 +156,9 @@
     <ClInclude Include="GLibrary\pvector.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
+    <ClInclude Include="GLibrary\GIConf.h">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
