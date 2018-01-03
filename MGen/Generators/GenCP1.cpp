@@ -1592,6 +1592,7 @@ int CGenCP1::FailAdjacentTritones() {
 // This function is for species 2-5
 int CGenCP1::FailTritones2() {
 	CHECK_READY(DR_pc, DR_c, DR_fli);
+	CHECK_READY(DR_leap);
 	// Find both tritone notes in measure (non-adjacent)
 	int mea_end, ls1, ls2, lpcc, cch, ccl, exceed, found, res1, res2, last_repeat;
 	for (ms = 0; ms < mli.size(); ++ms) {
@@ -1610,9 +1611,11 @@ int CGenCP1::FailTritones2() {
 		// Loop inside measure
 		for (ls = ls1; ls <= ls2; ++ls) {
 			lpcc = apcc[cpv][fli[ls]];
+			// Find first and last notes of major tritone
 			if (lpcc == 5) tfound[0].push_back(ls);
 			if (lpcc == 11) tfound2[0].push_back(ls);
 			if (minor_cur) {
+				// Find first and last notes of minor tritone
 				if (lpcc == 8) tfound[1].push_back(ls);
 				if (lpcc == 2) tfound2[1].push_back(ls);
 			}
@@ -1650,10 +1653,12 @@ int CGenCP1::FailTritones2() {
 					}
 					if (exceed) continue;
 					// Check framed 
-					if ((fleap_end == fli_size - 1 || (acc[cpv][fli[fleap_start + 1]] - acc[cpv][fli2[fleap_start]]) *
-						(acc[cpv][fli2[fleap_end + 1]] - acc[cpv][fli[fleap_end]]) < 0) &&
-						(fleap_start == 0 || (acc[cpv][fli[fleap_start + 1]] - acc[cpv][fli2[fleap_start]]) *
-						(acc[cpv][fli2[fleap_start]] - acc[cpv][fli[fleap_start - 1]]) < 0)) found = 1;
+					if ((fleap_end == fli_size - 1 || (acc[cpv][fli[fleap_end]] - acc[cpv][fli2[fleap_start]]) *
+						(acc[cpv][fli2[fleap_end + 1]] - acc[cpv][fli[fleap_end]]) < 0 || 
+						aleap[cpv][fli2[fleap_end]]) &&
+						(fleap_start == 0 || (acc[cpv][fli[fleap_end]] - acc[cpv][fli2[fleap_start]]) *
+						(acc[cpv][fli2[fleap_start]] - acc[cpv][fli[fleap_start - 1]]) < 0 || 
+							aleap[cpv][fli2[fleap_start - 1]])) found = 1;
 					if (!found) {
 						if (species == 5) {
 							// Is last note at least 1/2 and not shorter than previous?
