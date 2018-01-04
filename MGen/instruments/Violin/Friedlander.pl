@@ -61,7 +61,7 @@ KswGroup = "C#1: Vibrato style - Open string"
 KswGroup = "D1: Vibrato style - Gentle"
 KswGroup = "D#1: Vibrato style - Passionate"
 
-# Techniques
+# Techniques mapping to commands
 Technique = "con sord; Con sordino on"
 Technique = "ord; Con sordino off + Normal"
 Technique = "nat; Con sordino off + Normal"

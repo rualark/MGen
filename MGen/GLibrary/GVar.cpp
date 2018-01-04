@@ -563,12 +563,50 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 	++ksw_group_count;
 }
 
+MidiMsg CGVar::ParseMidiCommand(CString st, int i) {
+	st.Trim();
+	// Remove value for ksw velocity or CC value
+	int value = -1;
+	// Get value if specified
+	int pos = st.Find(":");
+	if (pos > 0) {
+		CString st1 = st.Left(pos);
+		CString st2 = st.Mid(pos + 1);
+		st1.Trim();
+		st2.Trim();
+		st = st1;
+		value = atoi(st2);
+	}
+	if (icf[i].NameToCC.find(st) != icf[i].NameToCC.end()) {
+		// Default value if not specified
+		if (value == -1) value = 100;
+		int id = icf[i].NameToCC[st];
+		//WriteLog(1, "Accepted InitCommand for CC: " + *sName + " = " + *sValue);
+		return Pm_Message(MIDI_CC, id, value);
+	}
+	if (icf[i].NameToKsw.find(st) != icf[i].NameToKsw.end()) {
+		// Default value if not specified
+		if (value == -1) value = 101;
+		int id = icf[i].NameToKsw[st];
+		//WriteLog(1, "Accepted InitCommand for KSW: " + *sName + " = " + *sValue);
+		// Clear whole group
+		int gr = icf[i].KswGroup[id];
+		for (int x = 0; x < 128; ++x) {
+			if (icf[i].KswGroup[x] == gr) {
+				icf[i].KswInit.erase(x);
+			}
+		}
+		// Set one value
+		return Pm_Message(MIDI_NOTEON, id, value);
+	}
+	return 0;
+}
+
 void CGVar::LoadInitCommand(CString *sName, CString *sValue, CString sSearch, int i) {
 	if (*sName != sSearch) return;
 	++parameter_found;
 	CString st = *sValue;
 	st.Trim();
-	st.MakeLower();
 	// Remove value for ksw velocity or CC value
 	int value = -1;
 	// Get value if specified
@@ -611,6 +649,24 @@ void CGVar::LoadInitCommand(CString *sName, CString *sValue, CString sSearch, in
 void CGVar::LoadTechnique(CString *sName, CString *sValue, CString sSearch, int i) {
 	if (*sName != sSearch) return;
 	++parameter_found;
+	CString st = *sValue;
+	st.Trim();
+	int pos = st.Find(";");
+	if (pos < 1) {
+		WriteLog(5, "Cannot find semicolon in config line " + *sName + " = " + *sValue);
+		error = 100;
+		return;
+	}
+	CString st1 = st.Left(pos);
+	CString st2 = st.Mid(pos + 1);
+	st1.Trim();
+	st2.Trim();
+	vector<CString> sa;
+	Tokenize(st2, sa, "+");
+	for (int x = 0; x < sa.size(); ++x) {
+		CString st = sa[x];
+		st.Trim();
+	}
 }
 
 void CGVar::LoadInitTechnique(CString *sName, CString *sValue, CString sSearch, int i) {
