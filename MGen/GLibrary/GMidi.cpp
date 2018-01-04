@@ -536,7 +536,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
 		//if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
 		fs << "\\new Staff {\n";
-		st.Format("  \\set Staff.instrumentName = \\markup { \\char ##x246%d }\n", v); //InstGName[instr[v]]
+		st.Format("  \\set Staff.instrumentName = \\markup { \\char ##x246%d }\n", v);
 		fs << st;
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
@@ -706,8 +706,8 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 			channel = ch;
 			// Send instrument name
 			CString st;
-			if (sta == 0) st = InstGName[instr[ch]];
-			else st.Format("%s %d", InstGName[instr[ch]], sta);
+			if (sta == 0) st = icf[instr[ch]].group;
+			else st.Format("%s %d", icf[instr[ch]].group, sta);
 			string st2 = st;
 			midifile.addTrackName(track, 0, st2);
 			midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
@@ -774,7 +774,7 @@ void CGMidi::SaveMidi(CString dir, CString fname) {
 		track = v + 1;
 		if (track_id[v]) track = track_id[v];
 		channel = v;
-		string st = InstGName[instr[v]];
+		string st = icf[instr[v]].group;
 		// Replace piano with other instrument, because otherways it generates two-stave track in Sibelius
 		if (st == "Piano") st = "Vibraphone";
 		midifile.addTrackName(track, 0, st);
@@ -1022,7 +1022,7 @@ void CGMidi::LoadMidi(CString path)
 						if (ov > ndur * MAX_OVERLAP_MONO || ov > ndur2 * MAX_OVERLAP_MONO) if (warning_loadmidi_overlap < MAX_WARN_MIDI_OVERLAP) {
 							CString st;
 							st.Format("Error: too long overlap (voice %d) %.0f ms at step %d (note lengths %.0f, %.0f ms) in monophonic instrument %s/%s. Probably sending polyphonic instrument to monophonic.",
-								v, ov, pos, ndur, ndur2, InstGName[instr[v]], InstCName[instr[v]]);
+								v, ov, pos, ndur, ndur2, icf[instr[v]].group, icf[instr[v]].name);
 							WriteLog(1, st);
 							++warning_loadmidi_overlap;
 						}

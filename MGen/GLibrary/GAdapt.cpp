@@ -36,7 +36,7 @@ void CGAdapt::CheckInstrumentRange(int v, int ii)
 			if (!warning_note_range[v]) {
 				st.Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Cannot transpose automatically: range too wide.",
 					GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
-					InstGName[ii], InstCName[ii], v,
+					icf[ii].group, icf[ii].name, v,
 					GetNoteName(icf[ii].nmin), GetNoteName(icf[ii].nmax));
 				warning_note_range[v] = 1;
 				WriteLog(1, st);
@@ -45,7 +45,7 @@ void CGAdapt::CheckInstrumentRange(int v, int ii)
 		else {
 			st.Format("Generated notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s). Transposed automatically to %d semitones. Consider changing instrument or generation range.",
 				GetNoteName(ngv_min[v]), GetNoteName(ngv_max[v]), 
-				InstGName[ii], InstCName[ii], v,
+				icf[ii].group, icf[ii].name, v,
 				GetNoteName(icf[ii].nmin), GetNoteName(icf[ii].nmax), play_transpose[v]);
 			WriteLog(1, st);
 		}
@@ -60,7 +60,7 @@ void CGAdapt::CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pe
 		CString st;
 		if (warning_note_short[v] < 4) {
 			st.Format("Recommended minimum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
-				InstGName[ii], InstCName[ii], icf[ii].tmin, v, i, ndur);
+				icf[ii].group, icf[ii].name, icf[ii].tmin, v, i, ndur);
 			warning_note_short[v] ++;
 			WriteLog(1, st);
 			if (comment_adapt) adapt_comment[i][v] += "Too short note. ";
@@ -76,7 +76,7 @@ void CGAdapt::CheckNoteBreath(int v, int x, int i, int ii, int ei, int pi, int p
 		CString st;
 		if (warning_note_long[v] < 4) {
 			st.Format("Recommended maximum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config. Some instruments may cut this note shorter.",
-				InstGName[ii], InstCName[ii], icf[ii].tmax, v, i, ndur);
+				icf[ii].group, icf[ii].name, icf[ii].tmax, v, i, ndur);
 			warning_note_long[v] ++;
 			WriteLog(1, st);
 			if (comment_adapt) adapt_comment[i][v] += "Too long note. ";

@@ -9,6 +9,8 @@ struct CaseInsensitiveCompare {
 };
 
 struct IConf {
+	CString name;
+	CString group;
 	int port = 0; // If this instrument can receive messages through MIDI port in real time
 	int track = 0; // Resulting track for this instrument
 	int channel = 0; // Resulting MIDI channel for this instrument (both for MIDI file export and playback to MIDI port)

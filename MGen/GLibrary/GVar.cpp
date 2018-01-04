@@ -443,9 +443,11 @@ void CGVar::LoadInstrumentLayout()
 			st2.Trim();
 			//if (find(begin(InstGName), end(InstGName), st2) != InstGName.end()) {
 			InstGName.push_back(st2);
+			icf[InstGName.size() - 1].group = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			InstCName.push_back(st2);
+			icf[InstCName.size() - 1].name = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			icf[InstCName.size() - 1].channel = atoi(st2);

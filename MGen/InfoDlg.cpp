@@ -185,7 +185,7 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText("\n", RGB(170, 0, 0), 0);
 
 		st.Format("Voice: %d (%s, channel %d, type %d)\n", mv,
-			pGen->InstGName[pGen->instr[mv]] + "/" + pGen->InstCName[pGen->instr[mv]],
+			pGen->icf[pGen->instr[mv]].group + "/" + pGen->icf[pGen->instr[mv]].name,
 			pGen->icf[pGen->instr[mv]].channel, pGen->icf[pGen->instr[mv]].type);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Instrument library: %s\n", pGen->icf[pGen->instr[mv]].lib);
