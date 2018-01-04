@@ -155,6 +155,7 @@ public:
 	vector<int> instr; // Instruments for each voice
 	vector<int> v_stage; // Stage for each voice
 	vector<IConf> icf;
+	int virt_instr_count = 0;
 
 	// Global config
 	int rnd_tempo = 6; // Randomize tempo not greater than this percent
@@ -179,6 +180,7 @@ protected:
 	void LoadVector(ifstream & fs, vector<unsigned char>& v);
 	// Load config
 	void LoadConfigFile(CString fname, int load_includes = 1);
+	short CreateVirtualInstrument(int instr_id, int child_id);
 	void LoadVarInstr(CString * sName, CString * sValue, char * sSearch, vector<int>& Dest);
 	virtual void LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) = 0;
 	// Helper functions for child generators

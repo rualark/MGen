@@ -14,4 +14,7 @@ Instrument = Alto
 InitCommand = "Ah"
 
 Instrument = Violin
-#InitCommand = "Ensemble on"
+InitTechnique = "tutti"
+
+Instrument = "Violin/Friedlander/1"
+InitTechnique = tremolo

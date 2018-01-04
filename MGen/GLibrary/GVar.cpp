@@ -175,6 +175,8 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 	CString st, st2, st3, iname;
 	ifstream fs;
 	int instr_id = -1;
+	int tr_id = -1;
+	int st_id = -1;
 	m_current_config = fname;
 	// Check file exists
 	if (!fileExists(fname)) {
@@ -237,19 +239,12 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 			if (st2 == "instrument") {
 				++parameter_found;
 				instr_id = -1;
-				int pos2 = st3.Find("/");
-				// Check if it is first symbol
-				if (pos2 > -1) {
-					CString st4 = st3.Left(pos2);
-					CString st5 = st3.Mid(pos2 + 1);
-					for (int i = 0; i < InstCName.size(); ++i) {
-						if (st4 == InstGName[i] && st5 == InstCName[i]) {
-							instr_id = i;
-							break;
-						}
-					}
-				}
-				else {
+				tr_id = -1;
+				st_id = -1;
+				vector<CString> sa;
+				Tokenize(st3, sa, "/");
+				// Load instrument group
+				if (sa.size() == 1) {
 					int found = 0;
 					for (int i = 0; i < InstCName.size(); ++i) {
 						if (st3 == InstGName[i]) {
@@ -257,11 +252,46 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 							++found;
 						}
 					}
-					if (found > 1) 
-						WriteLog(5, "Instrument group " + st3 + " is ambiguous. Please add instrument config after slash.");
+					if (found > 1)
+						WriteLog(5, "Instrument group " + st3 + " is ambiguous. Please add instrument config name after slash in file " + fname);
+				}
+				// Load instrument
+				else {
+					for (int i = 0; i < InstCName.size(); ++i) {
+						if (sa[0] == InstGName[i] && sa[1] == InstCName[i]) {
+							instr_id = i;
+							break;
+						}
+					}
+				}
+				if (instr_id != -1 && sa.size() > 2) {
+					tr_id = atoi(sa[2]);
+					// Find child
+					if (icf[instr_id].child.find(tr_id) != icf[instr_id].child.end()) {
+						instr_id = icf[instr_id].child[tr_id];
+					}
+					else {
+						instr_id = CreateVirtualInstrument(instr_id, tr_id);
+					}
+				}
+				if (instr_id != -1 && sa.size() == 4) {
+					st_id = atoi(sa[3]);
+					// Find child
+					if (icf[instr_id].child.find(st_id) != icf[instr_id].child.end()) {
+						instr_id = icf[instr_id].child[st_id];
+					}
+					else {
+						instr_id = CreateVirtualInstrument(instr_id, st_id);
+					}
 				}
 				if (instr_id == -1) {
 					WriteLog(5, "Cannot find instrument " + st3);
+				}
+				else {
+					// Check if instrument was overridden
+					if (icf[instr_id].child.size()) {
+						WriteLog(5, "After overriding instrument track or stage config, you cannot reconfigure whole instrument at line " + st + " in file " + fname);
+					}
 				}
 			}
 			// Load instrument overrides
@@ -282,6 +312,24 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 	CString est;
 	est.Format("LoadConfigFile loaded %d lines from %s", i, fname);
 	WriteLog(0, est);
+}
+
+short CGVar::CreateVirtualInstrument(int instr_id, int child_id) {
+	// Allocate new virtual instrument
+	++virt_instr_count;
+	int instr_id2 = MAX_INSTR - virt_instr_count;
+	// Check for limit
+	if (virt_instr_count + InstCName.size() >= MAX_INSTR) {
+		WriteLog(5, "Maximum instrument count exceeded when creating new virtual instrument. Please check config or increase MAX_INSTR in code.");
+		return -1;
+	}
+	// Copy instrument config
+	icf[instr_id2] = icf[instr_id];
+	// Save parent
+	icf[instr_id2].parent = instr_id;
+	// Save child
+	icf[instr_id].child[child_id] = instr_id2;
+	return instr_id2;
 }
 
 void CGVar::LoadConfig(CString fname, int load_includes) {
