@@ -658,7 +658,17 @@ void CGVar::SaveInitCommand(PmMessage msg, int i) {
 		int gr = icf[i].KswGroup[id];
 		auto it = icf[i].InitCommands.begin();
 		while (it != icf[i].InitCommands.end()) {
-			if (icf[i].KswGroup[Pm_MessageData1(*it)] == gr) {
+			if (Pm_MessageStatus(*it) == MIDI_NOTEON && icf[i].KswGroup[Pm_MessageData1(*it)] == gr) {
+				it = icf[i].InitCommands.erase(it);
+			}
+			else ++it;
+		}
+	}
+	if (Pm_MessageStatus(msg) == MIDI_CC) {
+		int id = Pm_MessageData1(msg);
+		auto it = icf[i].InitCommands.begin();
+		while (it != icf[i].InitCommands.end()) {
+			if (Pm_MessageStatus(*it) == MIDI_CC && Pm_MessageData1(*it) == id) {
 				it = icf[i].InitCommands.erase(it);
 			}
 			else ++it;
