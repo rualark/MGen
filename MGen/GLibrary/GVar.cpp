@@ -635,17 +635,25 @@ void CGVar::LoadTechnique(CString *sName, CString *sValue, CString sSearch, int 
 	st2.Trim();
 	vector<CString> sa;
 	Tokenize(st2, sa, "+");
-	// Initialize vector
-	if (icf[i].tech.find(st1) == icf[i].tech.end())
-		icf[i].tech[st1] = vector<PmMessage>();
-	else
-		icf[i].tech[st1].clear();
+	int id;
+	// Find tech
+	if (icf[i].NameToTech.find(st1) != icf[i].NameToTech.end()) {
+		id = icf[i].NameToTech[st];
+	}
+	else {
+		id = icf[i].tech.size();
+		icf[i].tech.resize(id + 1);
+		// Bind
+		icf[i].TechToName[id] = st1;
+		icf[i].NameToTech[st1] = id;
+	}
+	icf[i].tech[id].clear();
 	for (int x = 0; x < sa.size(); ++x) {
 		CString st = sa[x];
 		st.Trim();
 		PmMessage msg = ParseMidiCommand(st, i);
 		// Push value
-		icf[i].tech[st1].push_back(msg);
+		icf[i].tech[id].push_back(msg);
 	}
 }
 

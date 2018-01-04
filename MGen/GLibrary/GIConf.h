@@ -59,13 +59,15 @@ struct IConf {
 	int nonlegato_maxgap = 0;
 	vector<int> legato_ahead;
 	vector<int> ahead_chrom;
-	vector<char> KswGroup;
+	vector<short> KswGroup;
 	map<char, CString> CCToName;
 	map<CString, char, CaseInsensitiveCompare> NameToCC;
 	map<char, CString> KswToName;
 	map<CString, char, CaseInsensitiveCompare> NameToKsw;
-	map<CString, vector<PmMessage>, CaseInsensitiveCompare> tech;
-	list<PmMessage> InitCommands;
+	map<short, CString> TechToName;
+	map<CString, short, CaseInsensitiveCompare> NameToTech;
+	vector<list<PmMessage>> tech; // [tech][command]
+	list<PmMessage> InitCommands; // [command]
 	float legato_ahead_exp = 0; // Exponent to interpolate note movement ahead from note velocity
 	float leg_pdur = 0; // Maximum percent of previous note duration, that legato transition can take
 	float leg_cdur = 0; // Maximum percent of current note duration, that legato transition can take
