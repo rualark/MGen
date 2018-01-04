@@ -18,3 +18,9 @@ InitTechnique = "tutti"
 
 Instrument = "Violin/Friedlander/1"
 InitTechnique = trem
+
+Instrument = "Violin/Friedlander/2"
+InitTechnique = pizz
+
+Instrument = Violin
+InitTechnique = "tutti"

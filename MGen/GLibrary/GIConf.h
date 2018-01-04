@@ -62,6 +62,7 @@ struct IConf {
 	vector<int> legato_ahead;
 	vector<int> ahead_chrom;
 	vector<short> KswGroup;
+	short ksw_group_count = 1;
 	map<short, short> child;
 	short parent = -1;
 	map<char, CString> CCToName;

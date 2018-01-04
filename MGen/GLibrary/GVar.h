@@ -151,7 +151,6 @@ public:
 	vector<CString> InstCName; // Instrument configs
 	CString instr_layout; // Name of instruments/*.txt file to load instrument layout from
 	CString m_config_insts; // String with instrument mapping from config
-	int ksw_group_count = 1;
 	vector<int> instr; // Instruments for each voice
 	vector<int> v_stage; // Stage for each voice
 	vector<IConf> icf;

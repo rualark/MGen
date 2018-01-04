@@ -325,6 +325,8 @@ short CGVar::CreateVirtualInstrument(int instr_id, int child_id) {
 	}
 	// Copy instrument config
 	icf[instr_id2] = icf[instr_id];
+	// Remove childs after copying
+	icf[instr_id2].child.clear();
 	// Save parent
 	icf[instr_id2].parent = instr_id;
 	// Save child
@@ -615,9 +617,9 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 		}
 		icf[i].KswToName[cnote] = st2;
 		icf[i].NameToKsw[st2] = cnote;
-		icf[i].KswGroup[cnote] = ksw_group_count;
+		icf[i].KswGroup[cnote] = icf[i].ksw_group_count;
 	}
-	++ksw_group_count;
+	++icf[i].ksw_group_count;
 }
 
 PmMessage CGVar::ParseMidiCommand(CString st, int i) {
