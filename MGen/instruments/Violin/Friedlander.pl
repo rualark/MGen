@@ -70,12 +70,12 @@ Technique = "sul pont; Sul ponticello"
 Technique = "sul tast; Sul tasto"
 Technique = "solo; Ensemble on: 0"
 Technique = "tutti; Ensemble on"
-Technique = "stac; Staccato"
-Technique = "spic; Staccato"
-Technique = "martele; Staccato"
-Technique = "saltando; Staccato"
-Technique = "sautille; Staccato"
-Technique = "pizz; Pizzicato"
+Technique = "stac; Staccato" # TODO: not implemented yet
+Technique = "spic; Staccato" # TODO: not implemented yet
+Technique = "martele; Staccato" # TODO: not implemented yet
+Technique = "saltando; Staccato" # TODO: not implemented yet
+Technique = "sautille; Staccato" # TODO: not implemented yet
+Technique = "pizz; Pizzicato" # TODO: not implemented yet
 Technique = "trem; Tremolo"
 
 # Initial setup

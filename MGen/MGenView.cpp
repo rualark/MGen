@@ -391,7 +391,7 @@ void CMGenView::OnDraw(CDC* pDC)
 					ci_old = ci;
 					ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 					SolidBrush brush_v(ncolor);
-					st = pGen->InstGName[pGen->instr[v]];
+					st = pGen->icf[pGen->instr[v]].group;
 					CStringW wst(st);
 					g.DrawString(wst, -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
 				}
@@ -902,7 +902,7 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 			menu->CreatePopupMenu();
 			for (int i = mouse_voices.size() - 1; i >= 0; --i) {
 				int mv = mouse_voices[i];
-				st.Format("Voice %d (%s)", mv, pGen->InstGName[pGen->instr[mv]] + "/" + pGen->InstCName[pGen->instr[mv]]);
+				st.Format("Voice %d (%s)", mv, pGen->icf[pGen->instr[mv]].group + "/" + pGen->icf[pGen->instr[mv]].name);
 				menu->AppendMenu(MF_STRING, mv+1, st);
 			}
 			ClientToScreen(&point);
