@@ -64,9 +64,8 @@ struct IConf {
 	map<CString, char, CaseInsensitiveCompare> NameToCC;
 	map<char, CString> KswToName;
 	map<CString, char, CaseInsensitiveCompare> NameToKsw;
-	map<char, char> CCInit;
-	map<char, char> KswInit;
 	map<CString, vector<PmMessage>, CaseInsensitiveCompare> tech;
+	list<PmMessage> InitCommands;
 	float legato_ahead_exp = 0; // Exponent to interpolate note movement ahead from note velocity
 	float leg_pdur = 0; // Maximum percent of previous note duration, that legato transition can take
 	float leg_cdur = 0; // Maximum percent of current note duration, that legato transition can take

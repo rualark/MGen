@@ -589,14 +589,6 @@ PmMessage CGVar::ParseMidiCommand(CString st, int i) {
 		if (value == -1) value = 101;
 		int id = icf[i].NameToKsw[st];
 		//WriteLog(1, "Accepted InitCommand for KSW: " + *sName + " = " + *sValue);
-		// Clear whole group
-		int gr = icf[i].KswGroup[id];
-		for (int x = 0; x < 128; ++x) {
-			if (icf[i].KswGroup[x] == gr) {
-				icf[i].KswInit.erase(x);
-			}
-		}
-		// Set one value
 		return Pm_Message(MIDI_NOTEON, id, value);
 	}
 	return 0;
@@ -606,44 +598,24 @@ void CGVar::LoadInitCommand(CString *sName, CString *sValue, CString sSearch, in
 	if (*sName != sSearch) return;
 	++parameter_found;
 	CString st = *sValue;
-	st.Trim();
-	// Remove value for ksw velocity or CC value
-	int value = -1;
-	// Get value if specified
-	int pos = st.Find(":");
-	if (pos > 0) {
-		CString st1 = st.Left(pos);
-		CString st2 = st.Mid(pos + 1);
-		st1.Trim();
-		st2.Trim();
-		st = st1;
-		value = atoi(st2);
-	}
-	if (icf[i].NameToCC.find(st) != icf[i].NameToCC.end()) {
-		// Default value if not specified
-		if (value == -1) value = 100;
-		int id = icf[i].NameToCC[st];
-		//WriteLog(1, "Accepted InitCommand for CC: " + *sName + " = " + *sValue);
-		icf[i].CCInit[id] = value;
+	PmMessage msg = ParseMidiCommand(st, i);
+	if (!msg) {
+		WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
 		return;
 	}
-	if (icf[i].NameToKsw.find(st) != icf[i].NameToKsw.end()) {
-		// Default value if not specified
-		if (value == -1) value = 100;
-		int id = icf[i].NameToKsw[st];
-		//WriteLog(1, "Accepted InitCommand for KSW: " + *sName + " = " + *sValue);
-		// Clear whole group
+	// Clear whole group
+	if (Pm_MessageStatus(msg) == MIDI_NOTEON) {
+		int id = Pm_MessageData1(msg);
 		int gr = icf[i].KswGroup[id];
-		for (int x = 0; x < 128; ++x) {
-			if (icf[i].KswGroup[x] == gr) {
-				icf[i].KswInit.erase(x);
+		auto it = icf[i].InitCommands.begin();
+		while (it != icf[i].InitCommands.end()) {
+			if (icf[i].KswGroup[Pm_MessageData1(*it)] == gr) {
+				it = icf[i].InitCommands.erase(it);
 			}
+			else ++it;
 		}
-		// Set one value
-		icf[i].KswInit[id] = value;
-		return;
 	}
-	WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
+	icf[i].InitCommands.push_back(msg);
 }
 
 void CGVar::LoadTechnique(CString *sName, CString *sValue, CString sSearch, int i) {
@@ -680,6 +652,25 @@ void CGVar::LoadTechnique(CString *sName, CString *sValue, CString sSearch, int 
 void CGVar::LoadInitTechnique(CString *sName, CString *sValue, CString sSearch, int i) {
 	if (*sName != sSearch) return;
 	++parameter_found;
+	CString st = *sValue;
+	PmMessage msg = ParseMidiCommand(st, i);
+	if (!msg) {
+		WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
+		return;
+	}
+	// Clear whole group
+	if (Pm_MessageStatus(msg) == MIDI_NOTEON) {
+		int id = Pm_MessageData1(msg);
+		int gr = icf[i].KswGroup[id];
+		auto it = icf[i].InitCommands.begin();
+		while (it != icf[i].InitCommands.end()) {
+			if (icf[i].KswGroup[Pm_MessageData1(*it)] == gr) {
+				it = icf[i].InitCommands.erase(it);
+			}
+			else ++it;
+		}
+	}
+	icf[i].InitCommands.push_back(msg);
 }
 
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {

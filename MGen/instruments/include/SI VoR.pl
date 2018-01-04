@@ -23,13 +23,13 @@ CC_Name = 80: "Vibrato intensity"
 CC_Name = 90: "Release volume"
 
 # Initial setup
-InitInstrument = "Attack: 0"
-InitInstrument = "Offset: 0"
-InitInstrument = "Release time: 127"
-InitInstrument = "Release volume: 127"
-InitInstrument = "Legato transition speed: 0"
-InitInstrument = "Legato on"
-InitInstrument = "Chord auto-pan on: 0"
-InitInstrument = "Release samples on"
+InitCommand = "Attack: 0"
+InitCommand = "Offset: 0"
+InitCommand = "Release time: 127"
+InitCommand = "Release volume: 127"
+InitCommand = "Legato transition speed: 0"
+InitCommand = "Legato on"
+InitCommand = "Chord auto-pan on: 0"
+InitCommand = "Release samples on"
 Pan = 63 # Separate panning for each stage with comma. 0 is left, 63 is center, 127 is right
 Volume = 127 # Separate volume for each stage with comma. 0 is minimum volume, 127 is maximum volume

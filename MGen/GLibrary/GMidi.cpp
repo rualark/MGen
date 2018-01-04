@@ -1891,13 +1891,10 @@ void CGMidi::SendMIDI(int step1, int step2)
 		midi_voice = v;
 		// Send initialization commands
 		if (midi_first_run) {
-			// Iterate keyswitches
-			for (map<char, char>::iterator it = icf[ii].KswInit.begin(); it != icf[ii].KswInit.end(); ++it) {
-				AddKs(midi_sent_t - midi_start_time, it->first);
-			}
-			// Iterate CC
-			for (map<char, char>::iterator it = icf[ii].CCInit.begin(); it != icf[ii].CCInit.end(); ++it) {
-				AddCC(midi_sent_t - midi_start_time, it->first, it->second);
+			for (auto const& it : icf[ii].InitCommands) {
+				AddMidiEvent(midi_sent_t - midi_start_time, 
+					Pm_MessageStatus(it) + midi_channel, 
+					Pm_MessageData1(it), Pm_MessageData2(it));
 			}
 			// Send pan
 			AddCC(midi_sent_t - midi_start_time, 10, icf[ii].pan);
