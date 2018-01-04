@@ -1,16 +1,20 @@
-#GROUP   | CONFIG                | CHAN | 
-Violin   | Friedlander           | 1    |
-Trumpet  | SM Trumpet            | 2    |
-Horn     | SM Horn               | 3    |
-Trombone | SM Trombone           | 4    |
-Tuba     | SM Tuba               | 5    |
-Soprano  | SI VoR Soprano        | 6    |
-Alto     | SI VoR Alto           | 7    |
-Tenor    | SI VoR Tenor          | 8    |
-Bass     | SI VoR Bass           | 9    |
-Piano    | Default               | 0    | # Default instrument for unmapped instruments
+#GROUP   | CONFIG                | CHN | TRK | PRT |
+Violin   | Friedlander           | 1   | 1   | +   |
+Trumpet  | SM Trumpet            | 2   | 2   | +   |
+Horn     | SM Horn               | 3   | 3   | +   |
+Trombone | SM Trombone           | 4   | 4   | +   |
+Tuba     | SM Tuba               | 5   | 5   | +   |
+Soprano  | SI VoR Soprano        | 6   | 6   | +   |
+Alto     | SI VoR Alto           | 7   | 7   | +   |
+Tenor    | SI VoR Tenor          | 8   | 8   | +   |
+Bass     | SI VoR Bass           | 9   | 9   | +   |
+Piano    | Default               | 0   | 0   | +   |
 
-# CHAN is MIDI channel to send this instrument to
+# CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
+# TRK is MIDI track to send this instrument to (for adapted MIDI file export)
+# PRT shows if this instrument is connected to MIDI port and can receive MIDI messages in real time
+# If PRT is "-", this instrument can be used only for offline processing through adapted MIDI file export
+
 # Last instrument in layout must be default instrument, which will get all unmapped instruments
 
 # Randomization
