@@ -563,7 +563,7 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 	++ksw_group_count;
 }
 
-MidiMsg CGVar::ParseMidiCommand(CString st, int i) {
+PmMessage CGVar::ParseMidiCommand(CString st, int i) {
 	st.Trim();
 	// Remove value for ksw velocity or CC value
 	int value = -1;
@@ -663,9 +663,17 @@ void CGVar::LoadTechnique(CString *sName, CString *sValue, CString sSearch, int 
 	st2.Trim();
 	vector<CString> sa;
 	Tokenize(st2, sa, "+");
+	// Initialize vector
+	if (icf[i].tech.find(st1) == icf[i].tech.end())
+		icf[i].tech[st1] = vector<PmMessage>();
+	else
+		icf[i].tech[st1].clear();
 	for (int x = 0; x < sa.size(); ++x) {
 		CString st = sa[x];
 		st.Trim();
+		PmMessage msg = ParseMidiCommand(st, i);
+		// Push value
+		icf[i].tech[st1].push_back(msg);
 	}
 }
 

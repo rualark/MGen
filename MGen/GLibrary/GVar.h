@@ -25,7 +25,7 @@ public:
 	void LoadInstrument(int i, CString fname);
 	void LoadCCName(CString * sName, CString * sValue, CString sSearch, int i);
 	void LoadKswGroup(CString * sName, CString * sValue, CString sSearch, int i);
-	MidiMsg ParseMidiCommand(CString st, int i);
+	PmMessage ParseMidiCommand(CString st, int i);
 	void LoadInitCommand(CString * sName, CString * sValue, CString sSearch, int i);
 	void LoadTechnique(CString * sName, CString * sValue, CString sSearch, int i);
 	void LoadInitTechnique(CString * sName, CString * sValue, CString sSearch, int i);
