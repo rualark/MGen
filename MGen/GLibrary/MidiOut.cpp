@@ -68,7 +68,7 @@ int CMidiOut::StopMidi()
 	return 0;
 }
 
-int CMidiOut::QueueEvent(PmEvent event)
+int CMidiOut::QueueEvent(MidiEvent event)
 {
 	q.enqueue(event);
 	return 0;
@@ -80,7 +80,7 @@ UINT CMidiOut::MidiThread(LPVOID pParam)
 	CMidiOut* pMO = static_cast<CMidiOut*>(pParam);
 	// if Object is not valid  
 	if (pMO == NULL) return 1;
-	PmEvent event;
+	MidiEvent event;
 	mMessage message(3);
 	long long timestamp_current;
 	int wait_time, wait_time_left;
