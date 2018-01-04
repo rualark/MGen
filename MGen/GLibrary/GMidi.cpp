@@ -1709,14 +1709,19 @@ void CGMidi::LogInstruments() {
 void CGMidi::AddMidiEvent(long long timestamp, int mm_type, int data1, int data2)
 {
 	long long real_timestamp = timestamp + midi_start_time;
+	PmEvent event;
+	event.timestamp = real_timestamp;
+	event.message = Pm_Message(mm_type, data1, data2);
+	if (amidi_export) {
+		midifile_buf[midi_stage][mm_type & 0xF].push_back(event);
+		return;
+	}
 	// Check if event is in future
 	if (real_timestamp >= midi_sent_t) {
-		PmEvent event;
-		event.timestamp = real_timestamp;
-		event.message = Pm_Message(mm_type, data1, data2);
 		// If it is not the last SendMIDI, postpone future events
 		if ((!midi_last_run) && (real_timestamp > midi_buf_lim)) {
-			midi_buf_next.push_back(event);
+			if (!v_stage[midi_voice] && icf[instr[midi_voice]].port) 
+				midi_buf_next.push_back(event);
 			// Save maximum message and its time
 			if (real_timestamp > midi_sent_t3) {
 				midi_sent_t3 = real_timestamp;
@@ -1731,12 +1736,7 @@ void CGMidi::AddMidiEvent(long long timestamp, int mm_type, int data1, int data2
 			}
 		}
 		else {
-			if (amidi_export) {
-				midifile_buf[midi_stage][mm_type & 0xF].push_back(event);
-			}
-			else {
-				midi_buf.push_back(event);
-			}
+			if (!v_stage[midi_voice] && icf[instr[midi_voice]].port) midi_buf.push_back(event);
 			// Save maximum message and its time
 			if (real_timestamp > midi_sent_t2) {
 				midi_sent_t2 = real_timestamp;

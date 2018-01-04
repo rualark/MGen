@@ -1,5 +1,5 @@
 #GROUP   | CONFIG                | CHN | TRK | PRT |
-Violin   | Friedlander           | 1   | 1   | +   |
+Violin   | Friedlander           | 1   | 1   | -   |
 Trumpet  | SM Trumpet            | 2   | 2   | +   |
 Horn     | SM Horn               | 3   | 3   | +   |
 Trombone | SM Trombone           | 4   | 4   | +   |
