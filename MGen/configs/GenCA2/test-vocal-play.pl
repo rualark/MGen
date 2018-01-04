@@ -8,10 +8,10 @@ corrections = 0 # Number of corrections to show. Set to 0 to disable corrections
 Instruments = Violin,Horn
 
 Instrument = Tenor
-InitInstrument = "Ah f"
+InitCommand = "Ah f"
 
 Instrument = Alto
-InitInstrument = "Ah"
+InitCommand = "Ah"
 
 Instrument = Violin
-#InitInstrument = "Ensemble on"
+#InitCommand = "Ensemble on"
