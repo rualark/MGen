@@ -570,6 +570,13 @@ void CGAdapt::CalculateVoiceStages() {
 		itrack[track] = tracks_in_instr[ii].size();
 		if (icf[ii].poly < 2) v_stage[v] = voices_in_trackchan[trackchan] - 1;
 		// Calculate instrument config for voice
+		if (icf[ii].child.find(v_itrack[v]) != icf[ii].child.end()) {
+			ii = icf[ii].child[v_itrack[v]];
+			if (icf[ii].child.find(v_stage[v]) != icf[ii].child.end()) {
+				ii = icf[ii].child[v_stage[v]];
+			}
+			instr[v] = ii;
+		}
 	}
 	stages_calculated = 1;
 }
