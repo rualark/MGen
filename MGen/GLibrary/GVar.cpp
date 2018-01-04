@@ -594,15 +594,7 @@ PmMessage CGVar::ParseMidiCommand(CString st, int i) {
 	return 0;
 }
 
-void CGVar::LoadInitCommand(CString *sName, CString *sValue, CString sSearch, int i) {
-	if (*sName != sSearch) return;
-	++parameter_found;
-	CString st = *sValue;
-	PmMessage msg = ParseMidiCommand(st, i);
-	if (!msg) {
-		WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
-		return;
-	}
+void CGVar::SaveInitCommand(PmMessage msg, int i) {
 	// Clear whole group
 	if (Pm_MessageStatus(msg) == MIDI_NOTEON) {
 		int id = Pm_MessageData1(msg);
@@ -616,6 +608,18 @@ void CGVar::LoadInitCommand(CString *sName, CString *sValue, CString sSearch, in
 		}
 	}
 	icf[i].InitCommands.push_back(msg);
+}
+
+void CGVar::LoadInitCommand(CString *sName, CString *sValue, CString sSearch, int i) {
+	if (*sName != sSearch) return;
+	++parameter_found;
+	CString st = *sValue;
+	PmMessage msg = ParseMidiCommand(st, i);
+	if (!msg) {
+		WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
+		return;
+	}
+	SaveInitCommand(msg, i);
 }
 
 void CGVar::LoadTechnique(CString *sName, CString *sValue, CString sSearch, int i) {
@@ -661,24 +665,14 @@ void CGVar::LoadInitTechnique(CString *sName, CString *sValue, CString sSearch, 
 	if (*sName != sSearch) return;
 	++parameter_found;
 	CString st = *sValue;
-	PmMessage msg = ParseMidiCommand(st, i);
-	if (!msg) {
-		//WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
+	if (icf[i].NameToTech.find(st) == icf[i].NameToTech.end()) {
+		WriteLog(5, "Unknown name. Please first initialize technique name in instrument config: " + *sName + " = " + *sValue);
 		return;
 	}
-	// Clear whole group
-	if (Pm_MessageStatus(msg) == MIDI_NOTEON) {
-		int id = Pm_MessageData1(msg);
-		int gr = icf[i].KswGroup[id];
-		auto it = icf[i].InitCommands.begin();
-		while (it != icf[i].InitCommands.end()) {
-			if (icf[i].KswGroup[Pm_MessageData1(*it)] == gr) {
-				it = icf[i].InitCommands.erase(it);
-			}
-			else ++it;
-		}
+	int id = icf[i].NameToTech[st];
+	for (auto const& it : icf[i].tech[id]) {
+		SaveInitCommand(it, i);
 	}
-	icf[i].InitCommands.push_back(msg);
 }
 
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {

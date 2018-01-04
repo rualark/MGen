@@ -63,8 +63,8 @@ KswGroup = "D#1: Vibrato style - Passionate"
 
 # Techniques mapping to commands
 Technique = "con sord; Con sordino on"
-Technique = "ord; Con sordino off + Normal"
-Technique = "nat; Con sordino off + Normal"
+Technique = "ord; Con sordino off + Normal + Sustain"
+Technique = "nat; Con sordino off + Normal + Sustain"
 Technique = "senza sord; Con sordino off"
 Technique = "sul pont; Sul ponticello"
 Technique = "sul tast; Sul tasto"
@@ -103,10 +103,9 @@ InitCommand = "Portamento velocity threshold: 18"
 InitCommand = "Vibrato style - Progressive"
 InitCommand = "Reverb level: 0"
 InitCommand = "Round-robin on"
-InitCommand = "Sustain"
 InitCommand = "Legato"
 InitCommand = "Color off"
-InitTechnique = "ord."
+InitTechnique = "ord"
 InitTechnique = "solo"
 
 # Automation parameters

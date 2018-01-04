@@ -1895,6 +1895,10 @@ void CGMidi::SendMIDI(int step1, int step2)
 				AddMidiEvent(midi_sent_t - midi_start_time, 
 					Pm_MessageStatus(it) + midi_channel, 
 					Pm_MessageData1(it), Pm_MessageData2(it));
+				if (Pm_MessageStatus(it) == MIDI_NOTEON) {
+					AddKsOff(midi_sent_t - midi_start_time + 1,
+						Pm_MessageData1(it), 0);
+				}
 			}
 			// Send pan
 			AddCC(midi_sent_t - midi_start_time, 10, icf[ii].pan);
