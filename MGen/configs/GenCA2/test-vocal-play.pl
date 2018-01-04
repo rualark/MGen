@@ -17,4 +17,4 @@ Instrument = Violin
 InitTechnique = "tutti"
 
 Instrument = "Violin/Friedlander/1"
-InitTechnique = tremolo
+InitTechnique = trem
