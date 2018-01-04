@@ -1,57 +1,33 @@
+include "..\include\Embertone IS.pl"
+
 # Main
-library = Friedlander Violin 1.5 # For which library algorithm is optimized
-Type = 1 # Instrument type
+library = "Friedlander Violin 1.5" # For which library algorithm is optimized
 
 # Instrument parameters
 n_min = G3 # Lowest note
 n_max = F7 # Highest note
 t_min = 100 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
-poly = 1 # Maximum number of simultaneous voices
 #leap_t_min = 100 # Shortest note after leap in ms
 
 # Controls
-CC_Name = 1:  "Vibrato intensity"
-CC_Name = 11: "Dynamics"
-CC_Name = 14: "Vibrato speed"
-CC_Name = 50: "Reverb level"
-CC_Name = 53: "Round-robin on"
 CC_Name = 59: "Transition speed"
-CC_Name = 55: "Ensemble on"
-CC_Name = 56: "Ensemble combine transitions"
-CC_Name = 57: "Ensemble tightness"
-CC_Name = 58: "Ensemble randomize"
 CC_Name = 66: "Bow position"
 CC_Name = 67: "Slur"
 CC_Name = 80: "Portamento speed" # Used only when enabled Portamento CC mode on
 CC_Name = 87: "Rebow on"
-CC_Name = 54: "Responsiveness"
-CC_Name = 52: "Transition attenuation"
-CC_Name = 51: "Bow noise reduction"
-
-# Map ensemble controls if you plan to use Ensemble mode
-CC_Name = 3:  "Ensemble intonation"
-CC_Name = 4:  "Ensemble L"
-CC_Name = 5:  "Ensemble R"
 
 # These controls should be mapped manually
-CC_Name = 6:  "Transition speed lower"
-CC_Name = 8:  "Transition speed upper"
-CC_Name = 9:  "Solo intonation"
-CC_Name = 12: "Retrigger on"
-CC_Name = 13: "Shorts length control on"
-CC_Name = 15: "Release samples on"
-CC_Name = 16: "Portamento CC mode on"
-CC_Name = 17: "Portamento velocity threshold"
-CC_Name = 18: "Dynamic KSW threshold"
+CC_Name = 20: "Retrigger on" # All except Cello
+CC_Name = 16: "Portamento CC mode on" # All except Cello
 
-KswGroup = "G2: Sustain", "A2: Staccato", "A#2: Pizzicato", "B2: Tremolo" # Style
 KswGroup = "G#2: Slur while held"
 KswGroup = "E2: Ghost note"
 KswGroup = "F2: Color on", "F#2: Color off"
 KswGroup = "C3: Con sordino on", "C#3: Con sordino off"
 KswGroup = "D3: Normal", "D#3: Sul ponticello", "E3: Sul tasto" # Bow position
 KswGroup = "F3: Legato", "F#3: Poly"
+KswGroup = "G2: Sustain", "A2: Staccato", "A#2: Pizzicato", "B2: Tremolo" # Style
 
 # Seems that vibrato styles cannot be selected with CC or keyswitch (bug?)
 CC_Name = 2:  "Vibrato style"
@@ -91,8 +67,8 @@ InitCommand = "Transition speed: 127"
 InitCommand = "Transition attenuation: 0"
 InitCommand = "Bow noise reduction: 0"
 InitCommand = "Solo intonation: 2"
-InitCommand = "Retrigger on"
-InitCommand = "Rebow on"
+InitCommand = "Retrigger on" # default: 0
+InitCommand = "Rebow on" # default: 0
 InitCommand = "Responsiveness: 0"
 InitCommand = "Portamento speed: 11" # Use only when enabled Portamento CC mode on
 InitCommand = "Dynamic KSW threshold: 100"
@@ -101,7 +77,7 @@ InitCommand = "Release samples on"
 InitCommand = "Portamento CC mode on: 0"
 InitCommand = "Portamento velocity threshold: 18"
 InitCommand = "Vibrato style - Progressive"
-InitCommand = "Reverb level: 0"
+InitCommand = "Reverb level: 0" # default: enabled
 InitCommand = "Round-robin on"
 InitCommand = "Legato"
 InitCommand = "Color off"
