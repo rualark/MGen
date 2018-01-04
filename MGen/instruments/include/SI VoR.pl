@@ -1,5 +1,3 @@
-# Soundiron Voices of Rapture
-
 #Main
 Library = "Soundiron Voices of Rapture 1.0 - 2017-03-23" # For which library algorithm is optimized
 Type = 3 # Instrument type
