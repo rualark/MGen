@@ -250,12 +250,15 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 					}
 				}
 				else {
+					int found = 0;
 					for (int i = 0; i < InstCName.size(); ++i) {
 						if (st3 == InstGName[i]) {
 							instr_id = i;
-							break;
+							++found;
 						}
 					}
+					if (found > 1) 
+						WriteLog(5, "Instrument group " + st3 + " is ambiguous. Please add instrument config after slash.");
 				}
 				if (instr_id == -1) {
 					WriteLog(5, "Cannot find instrument " + st3);
