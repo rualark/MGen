@@ -547,6 +547,32 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 	}
 }
 
+void CGAdapt::CalculateVoiceStages() {
+	// Detect voice stages
+	if (stages_calculated) return;
+	vector<int> voices_in_instr(MAX_INSTR); // How many voices use each instrument
+	vector<int> voices_in_track(MAX_INSTR); // How many voices use each initial track
+	vector<map<int, int>> tracks_in_instr(MAX_INSTR); // How many tracks use each instrument
+	map<int, int> voices_in_trackchan; // How many voices use each resulting track/channel
+	v_stage.resize(MAX_VOICE);
+	for (int v = 0; v < v_cnt; v++) {
+		// Calculate parameters
+		int track = track_id[v];
+		int ii = instr[v];
+		int trackchan = icf[ii].track * 16 + icf[ii].channel;
+		// Calculate stats
+		++voices_in_instr[ii];
+		++voices_in_track[track];
+		tracks_in_instr[ii][track] = 1;
+		++voices_in_trackchan[trackchan];
+		// Record stats
+		v_itrack[v] = tracks_in_instr[ii].size();
+		itrack[track] = tracks_in_instr[ii].size();
+		if (icf[ii].poly < 2) v_stage[v] = voices_in_trackchan[trackchan] - 1;
+	}
+	stages_calculated = 1;
+}
+
 void CGAdapt::Adapt(int step1, int step2)
 {
 	if (step2 < 0) return;
@@ -565,16 +591,7 @@ void CGAdapt::Adapt(int step1, int step2)
 	int pei; // previous note ending step
 	// Save current play speed
 	adapt_pspeed = m_pspeed;
-	vector<int> isent(MAX_INSTR);
-	// Detect voice stages
-	if (!v_stage.size()) {
-		v_stage.resize(MAX_VOICE);
-		for (int v = 0; v < v_cnt; v++) {
-			int ii = instr[v]; // Instrument id
-			if (icf[ii].poly < 2) v_stage[v] = isent[ii];
-			isent[ii]++;
-		}
-	}
+	CalculateVoiceStages();
 	for (int v = 0; v < v_cnt; v++) {
 		int ii = instr[v]; // Instrument id
 		int ncount = 0;

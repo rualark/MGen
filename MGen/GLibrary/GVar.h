@@ -145,6 +145,8 @@ public:
 	vector<CString> track_name; // Track names from midi file for each voice
 	vector<int> track_id; // Track id from midi file for each voice
 	vector<int> track_vid; // Voice id inside track from midi file for each voice
+	vector<int> itrack; // Instrument local track number for each track
+	int stages_calculated = 0;
 
 	// Instruments
 	vector<CString> InstGName; // Instrument groups 
@@ -153,6 +155,7 @@ public:
 	CString m_config_insts; // String with instrument mapping from config
 	vector<int> instr; // Instruments for each voice
 	vector<int> v_stage; // Stage for each voice
+	vector<int> v_itrack; // Instrument local track number for each voice
 	vector<IConf> icf;
 	int virt_instr_count = 0;
 

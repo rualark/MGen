@@ -899,7 +899,7 @@ void CGMidi::LoadMidi(CString path)
 		// Save track id
 		track_id[v] = track;
 		track_vid[v] = 0;
-		// Convert voice instrument to track instrument
+		// Convert track instrument to voice instrument
 		instr[v] = instr2[track_id[v]-1];
 		for (int i = 0; i<midifile[track].size(); i++) {
 			if (need_exit) break;

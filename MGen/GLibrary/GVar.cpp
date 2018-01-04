@@ -12,6 +12,7 @@ CGVar::CGVar()
 	ngv_max.resize(MAX_VOICE);
 	instr.resize(MAX_VOICE);
 	v_stage.resize(MAX_VOICE);
+	v_itrack.resize(MAX_VOICE);
 
 	icf.resize(MAX_INSTR);
 	for (int i = 0; i < MAX_INSTR; ++i) {
@@ -24,6 +25,7 @@ CGVar::CGVar()
 	track_name.resize(MAX_VOICE);
 	track_id.resize(MAX_VOICE);
 	track_vid.resize(MAX_VOICE);
+	itrack.resize(MAX_VOICE);
 	// Set instrument
 	instr[0] = 5;
 	instr[1] = 6;
