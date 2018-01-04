@@ -663,7 +663,7 @@ void CGVar::LoadInitTechnique(CString *sName, CString *sValue, CString sSearch, 
 	CString st = *sValue;
 	PmMessage msg = ParseMidiCommand(st, i);
 	if (!msg) {
-		WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
+		//WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
 		return;
 	}
 	// Clear whole group
