@@ -397,6 +397,12 @@ void CGVar::LoadInstrumentLayout()
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			icf[InstCName.size() - 1].channel = atoi(st2);
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			icf[InstCName.size() - 1].track = atoi(st2);
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			if (st2 == "+") icf[InstCName.size() - 1].port = 1;
 			// Set default mapping
 			instr[InstCName.size() - 1] = InstCName.size() - 1;
 		}

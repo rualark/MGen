@@ -9,7 +9,9 @@ struct CaseInsensitiveCompare {
 };
 
 struct IConf {
-	int channel = 0;
+	int port = 0; // If this instrument can receive messages through MIDI port in real time
+	int track = 0; // Resulting track for this instrument
+	int channel = 0; // Resulting MIDI channel for this instrument (both for MIDI file export and playback to MIDI port)
 	int type = 0;
 	int ks1 = 0; // First keyswitch pitch
 	int used = 0; // For how many voices this instrument is already used
