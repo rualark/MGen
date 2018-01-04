@@ -238,9 +238,9 @@ public:
 	long long midi_sent_t = 0; // Timestamp of last event sent to midi in previous SendMIDI
 	long long midi_sent_t2 = 0; // Timestamp of last event sent to midi in current SendMIDI
 	long long midi_sent_t3 = 0; // Timestamp of last event postponed in current SendMIDI
-	MidiMsg midi_sent_msg = 0; // Last event sent to midi in previous SendMIDI
-	MidiMsg midi_sent_msg2 = 0; // Last event sent to midi in current SendMIDI
-	MidiMsg midi_sent_msg3 = 0; // Last event postponed in current SendMIDI
+	PmMessage midi_sent_msg = 0; // Last event sent to midi in previous SendMIDI
+	PmMessage midi_sent_msg2 = 0; // Last event sent to midi in current SendMIDI
+	PmMessage midi_sent_msg3 = 0; // Last event postponed in current SendMIDI
 	int midi_current_step = 0; // Current step processed by SendMIDI (for logs)
 	long long midi_start_time = 0; // Time when midi started to play
 	int midi_last_run = 0; // If current SendMIDI is last
@@ -261,7 +261,7 @@ public:
 	CString ly_com_st;
 
 	// Midi files
-	vector<vector<vector<MidiEvent>>> midifile_buf;
+	vector<vector<vector<PmEvent>>> midifile_buf;
 	int amidi_export = 0; // Exporting adapted midi
 	int midifile_loaded = 0; // If MIDI was loaded from file
 	int midifile_type = 1; // Type of MIDI file loaded
@@ -288,8 +288,8 @@ protected:
 	void LoadWav(CString fname);
 
 	// Information for current note in SendMIDI
-	vector <MidiEvent> midi_buf;
-	vector <MidiEvent> midi_buf_next; // Buffer for next SendMIDI run
+	vector <PmEvent> midi_buf;
+	vector <PmEvent> midi_buf_next; // Buffer for next SendMIDI run
 	long long midi_buf_lim = 0; // After this timestamp information goes to midi_buf_next
 	int midi_channel = 0;
 	int midi_stage = 0;

@@ -4,12 +4,12 @@
 #include "../readerwriterqueue/readerwriterqueue.h"
 #include "../readerwriterqueue/atomicops.h"
 
-typedef int32_t MidiMsg;
+typedef int32_t PmMessage;
 
 typedef struct {
-	MidiMsg      message;
+	PmMessage      message;
 	int    timestamp;
-} MidiEvent;
+} PmEvent;
 
 /**
 Pm_Message() encodes a short Midi message into a 32-bit word. If data1
@@ -46,7 +46,7 @@ public:
 
 	int StartMidi(int port);
 	int StopMidi();
-	int QueueEvent(MidiEvent event);
+	int QueueEvent(PmEvent event);
 
 	int need_exit = 0;
 	CString m_error;
@@ -54,7 +54,7 @@ public:
 
 protected:
 	static UINT MidiThread(LPVOID pParam);
-	BlockingReaderWriterQueue<MidiEvent> q;
+	BlockingReaderWriterQueue<PmEvent> q;
 	RtMidiOut *rmo;
 	CWinThread* m_MidiThread = 0;
 

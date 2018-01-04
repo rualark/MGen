@@ -1711,7 +1711,7 @@ void CGMidi::AddMidiEvent(long long timestamp, int mm_type, int data1, int data2
 	long long real_timestamp = timestamp + midi_start_time;
 	// Check if event is in future
 	if (real_timestamp >= midi_sent_t) {
-		MidiEvent event;
+		PmEvent event;
 		event.timestamp = real_timestamp;
 		event.message = Pm_Message(mm_type, data1, data2);
 		// If it is not the last SendMIDI, postpone future events
@@ -1864,9 +1864,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Decrease right limit to allow for legato ahead, random start and ks/cc transitions
 	if (!midi_last_run) midi_buf_lim -= MAX_AHEAD;
 	// Sort by timestamp before sending
-	qsort(midi_buf_next.data(), midi_buf_next.size(), sizeof(MidiEvent), PmEvent_comparator);
+	qsort(midi_buf_next.data(), midi_buf_next.size(), sizeof(PmEvent), PmEvent_comparator);
 	if (midi_buf_next.size() > 0) {
-		vector <MidiEvent> mbn = midi_buf_next; 
+		vector <PmEvent> mbn = midi_buf_next; 
 		midi_buf_next.clear();
 		// Set step to zero, because we do not know real steps of postponed notes
 		midi_current_step = 0;
@@ -1993,7 +1993,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		InterpolateCC(icf[ii].CC_vibf, icf[ii].rnd_vibf, step1, step22, vibf, ii, v);
 	}
 	// Sort by timestamp before sending
-	qsort(midi_buf.data(), midi_buf.size(), sizeof(MidiEvent), PmEvent_comparator);
+	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
 	// Send
 	for (int i = 0; i < midi_buf.size(); i++) {
 		mo->QueueEvent(midi_buf[i]);
@@ -2260,8 +2260,8 @@ void CGMidi::AddCC(long long timestamp, int data1, int data2)
 
 int CGMidi::PmEvent_comparator(const void * v1, const void * v2)
 {
-	const MidiEvent *p1 = (MidiEvent *)v1;
-	const MidiEvent *p2 = (MidiEvent *)v2;
+	const PmEvent *p1 = (PmEvent *)v1;
+	const PmEvent *p2 = (PmEvent *)v2;
 	//return (p2->timestamp - p1->timestamp);
 	if (p1->timestamp < p2->timestamp)
 		return -1;
