@@ -6,7 +6,7 @@
 #define MAX_VOICE 200
 // Maximum number of solo instruments of the same group
 #define MAX_STAGE 50
-#define MAX_INSTR 100
+#define MAX_INSTR 200
 #define MAX_GRAPH 3
 // Number of status lines
 #define STATUS_LINES 9

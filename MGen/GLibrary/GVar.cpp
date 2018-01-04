@@ -563,7 +563,7 @@ void CGVar::LoadKswGroup(CString *sName, CString *sValue, CString sSearch, int i
 	++ksw_group_count;
 }
 
-void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch, int i) {
+void CGVar::LoadInitCommand(CString *sName, CString *sValue, CString sSearch, int i) {
 	if (*sName != sSearch) return;
 	++parameter_found;
 	CString st = *sValue;
@@ -585,7 +585,7 @@ void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch,
 		// Default value if not specified
 		if (value == -1) value = 100;
 		int id = icf[i].NameToCC[st];
-		//WriteLog(1, "Accepted InitInstrument for CC: " + *sName + " = " + *sValue);
+		//WriteLog(1, "Accepted InitCommand for CC: " + *sName + " = " + *sValue);
 		icf[i].CCInit[id] = value;
 		return;
 	}
@@ -593,7 +593,7 @@ void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch,
 		// Default value if not specified
 		if (value == -1) value = 100;
 		int id = icf[i].NameToKsw[st];
-		//WriteLog(1, "Accepted InitInstrument for KSW: " + *sName + " = " + *sValue);
+		//WriteLog(1, "Accepted InitCommand for KSW: " + *sName + " = " + *sValue);
 		// Clear whole group
 		int gr = icf[i].KswGroup[id];
 		for (int x = 0; x < 128; ++x) {
@@ -608,22 +608,14 @@ void CGVar::LoadInitInstrument(CString *sName, CString *sValue, CString sSearch,
 	WriteLog(5, "Unknown name. Please first bind CC name or KSW name in instrument config: " + *sName + " = " + *sValue);
 }
 
-void CGVar::LoadStageVar(CString *sName, CString *sValue, CString sSearch, vector<char> &vpar) {
+void CGVar::LoadTechnique(CString *sName, CString *sValue, CString sSearch, int i) {
 	if (*sName != sSearch) return;
 	++parameter_found;
-	vpar.clear();
-	vector <CString> sa;
-	Tokenize(*sValue, sa, ",");
-	for (int x = 0; x < sa.size(); ++x) {
-		CString st = sa[x];
-		st.Trim();
-		int val = atoi(st);
-		if (!val && st != "0") {
-			WriteLog(5, "Wrong format of parameter value in config line: " + *sName + " = " + *sValue);
-			error = 101;
-		}
-		vpar.push_back(val);
-	}
+}
+
+void CGVar::LoadInitTechnique(CString *sName, CString *sValue, CString sSearch, int i) {
+	if (*sName != sSearch) return;
+	++parameter_found;
 }
 
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
@@ -635,7 +627,9 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	LoadNote(&st2, &st3, "n_max", &icf[i].nmax);
 	LoadCCName(&st2, &st3, "cc_name", i);
 	LoadKswGroup(&st2, &st3, "kswgroup", i);
-	LoadInitInstrument(&st2, &st3, "initinstrument", i);
+	LoadTechnique(&st2, &st3, "technique", i);
+	LoadInitCommand(&st2, &st3, "initcommand", i);
+	LoadInitTechnique(&st2, &st3, "inittechnique", i);
 	CheckVar(&st2, &st3, "t_min", &icf[i].tmin);
 	CheckVar(&st2, &st3, "t_max", &icf[i].tmax);
 	CheckVar(&st2, &st3, "poly", &icf[i].poly);

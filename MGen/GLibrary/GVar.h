@@ -25,8 +25,9 @@ public:
 	void LoadInstrument(int i, CString fname);
 	void LoadCCName(CString * sName, CString * sValue, CString sSearch, int i);
 	void LoadKswGroup(CString * sName, CString * sValue, CString sSearch, int i);
-	void LoadInitInstrument(CString * sName, CString * sValue, CString sSearch, int i);
-	void LoadStageVar(CString * sName, CString * sValue, CString sSearch, vector<char>& vpar);
+	void LoadInitCommand(CString * sName, CString * sValue, CString sSearch, int i);
+	void LoadTechnique(CString * sName, CString * sValue, CString sSearch, int i);
+	void LoadInitTechnique(CString * sName, CString * sValue, CString sSearch, int i);
 	void LoadInstrumentLine(CString st2, CString st3, int i);
 	void LoadConfig(CString fname, int load_includes = 1);
 	void LoadConfigFiles(CString fname, int load_includes);

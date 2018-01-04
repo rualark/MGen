@@ -8,7 +8,6 @@ struct CaseInsensitiveCompare {
 };
 
 struct IConf {
-	int overridden = 0;
 	int channel = 0;
 	int type = 0;
 	int ks1 = 0; // First keyswitch pitch
