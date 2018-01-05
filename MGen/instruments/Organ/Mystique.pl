@@ -10,7 +10,22 @@ t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dy
 poly = 100 # Maximum number of simultaneous voices
 #leap_t_min = 1 # Shortest note after leap
 #dying = 5 # Seconds to fade out at mf
-Volume = 100
+Volume = 80
+
+# Controls
+CC_Name = 2: "Filter cutoff" # Decreasing this value will decrease higher frequencies
+CC_Name = 3: "Filter resonance"
+CC_Name = 4: "Attack"
+CC_Name = 5: "Decay"
+CC_Name = 6: "Sustain"
+CC_Name = 8: "Release"
+
+# Initial setup
+InitCommand = "Filter cutoff: 127" # default 127
+InitCommand = "Attack: 7" # default 7
+InitCommand = "Decay: 0" # default 0
+InitCommand = "Sustain: 127" # default 127
+InitCommand = "Release: 21" # default 0
 
 # Lengroup adaptor
 lengroup2 = 30 # Percent of grouping notes into groups of 2
