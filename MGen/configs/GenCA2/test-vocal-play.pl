@@ -5,7 +5,7 @@ Midi_file = "midi\GenCA2\test-vocal-play.mid" # Path and file name of imported m
 
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 
-Instruments = Violin,Violin
+Instruments = Violin,Viola
 
 Instrument = Tenor
 InitCommand = "Ah f"
