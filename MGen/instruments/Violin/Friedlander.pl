@@ -77,11 +77,6 @@ InitCommand = "Legato"
 InitCommand = "Color off"
 InitTechnique = "ord"
 
-# Automation parameters
-CC_dynamics = 11
-CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
-CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
-
 # Retrigger adaptor
 CC_retrigger = 64 # This CC will be set before note retriger and reset soon after
 retrigger_freq = 50 # Percent to use CC retrigger instead of non-legato when repeating notes
@@ -92,7 +87,6 @@ retrigger_rand_end = 50 # Maximum percent of note length to move note end to the
 # Slur adaptor
 max_slur_count = 2 # Use slur for 2nd moves, but no longer than X moves
 max_slur_interval = 2 # in semitones
-slur_ks = 44 # Keyswitch to send to create slur
 
 # Legato adaptor
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
@@ -126,8 +120,6 @@ rbell_mul = 0.8-0.2 # Multiply dynamics by this parameter at bell center with mi
 rbell_pos = 20-80 # Leftmost-rightmost minimum reverse bell position inside window (percent of window duration)
 
 # Vibrato adaptor
-CC_vib = 1 # CC number for vibrato intensity
-CC_vibf = 14 # CC number for vibrato speed
 vib_bell_top = 10-90 # Leftmost-rightmost maximum vibrato intensity in note (percent of note duration)
 vibf_bell_top = 10-90 # Leftmost-rightmost maximum vibrato speed in note (percent of note duration)
 vib_bell_exp = 2 # Exponent to create non-linear bell shape
