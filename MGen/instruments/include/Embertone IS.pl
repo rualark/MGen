@@ -33,4 +33,6 @@ CC_Name = 15: "Release samples on"
 CC_Name = 17: "Portamento velocity threshold"
 CC_Name = 18: "Dynamic KSW threshold"
 
-KswGroup = "G2: Sustain", "A2: Staccato", "A#2: Pizzicato", "B2: Tremolo" # Style
+# Techniques mapping to commands
+Technique = "solo; Ensemble on: 0"
+Technique = "tutti; Ensemble on"

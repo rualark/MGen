@@ -9,16 +9,18 @@ CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 
 # Controls
-CC_Name = 2: "Legato transition speed"
-CC_Name = 3: "Legato on"
-CC_Name = 4: "Chord auto-pan on"
-CC_Name = 5: "Release samples on"
 CC_Name = 72: "Dynamics"
 CC_Name = 74: "Attack"
 CC_Name = 76: "Release time"
 CC_Name = 78: "Offset"
 CC_Name = 80: "Vibrato intensity"
 CC_Name = 90: "Release volume"
+
+# Controls to map manually
+CC_Name = 2: "Legato transition speed"
+CC_Name = 3: "Legato on"
+CC_Name = 4: "Chord auto-pan on"
+CC_Name = 5: "Release samples on"
 
 # Initial setup
 InitCommand = "Attack: 0"

@@ -14,7 +14,7 @@ t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dy
 CC_Name = 59: "Transition speed"
 CC_Name = 66: "Bow position"
 CC_Name = 67: "Slur"
-CC_Name = 80: "Portamento speed" # Used only when enabled Portamento CC mode on
+CC_Name = 80: "Portamento speed" # Used only when enabled Portamento CC mode on.
 CC_Name = 87: "Rebow on"
 
 # These controls should be mapped manually
@@ -44,8 +44,6 @@ Technique = "nat; Con sordino off + Normal + Sustain"
 Technique = "senza sord; Con sordino off"
 Technique = "sul pont; Sul ponticello"
 Technique = "sul tast; Sul tasto"
-Technique = "solo; Ensemble on: 0"
-Technique = "tutti; Ensemble on"
 Technique = "stac; Staccato" # TODO: not implemented yet
 Technique = "spic; Staccato" # TODO: not implemented yet
 Technique = "martele; Staccato" # TODO: not implemented yet
