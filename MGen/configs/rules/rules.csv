@@ -128,9 +128,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;2;0;Melody;CF/sp1 Tritone;Adjacent tritone;resolved;0;Melodic adjacent tritone;Search 4 quarters for resolution;2;9;2;1;;;;;;
 1;31;60;Melody;CF/sp1 Tritone;Adjacent tritone;unresolved;0;Melodic adjacent tritone;;2;30;3;;;;;2;;
 1;32;100;Melody;CF/sp1 Tritone;Adjacent tritone;on climax;0;Melodic adjacent tritone;Highest note in higher voice within 13 notes or 8 measures - which is smaller;2;18;5;1;;;;;;
-1;371;0;Melody;CF/sp1 Tritone;Compound tritone framed;resolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;19;2;;;;;;;
-1;372;60;Melody;CF/sp1 Tritone;Compound tritone framed;unresolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;31;2;;;;;371;;
-1;373;100;Melody;CF/sp1 Tritone;Compound tritone framed;on climax;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;;31;4;;;;;;;
+1;371;0;Melody;CF/sp1 Tritone;Compound tritone framed;resolved;0;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;;19;2;;;;;;;
+1;372;60;Melody;CF/sp1 Tritone;Compound tritone framed;unresolved;0;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;;31;2;;;;;371;;
+1;373;100;Melody;CF/sp1 Tritone;Compound tritone framed;on climax;0;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;;31;4;;;;;;;
 1;368;0;Melody;sp2-5 Tritone;Adjacent tritone;resolved;0;Melodic tritone within measure, framed by two melody direction changes;;;5;2;;;;;;;
 1;369;60;Melody;sp2-5 Tritone;Adjacent tritone;unresolved;0;Melodic tritone within measure, framed by two melody direction changes;;;7;1;;;;;368;;
 1;370;100;Melody;sp2-5 Tritone;Adjacent tritone;on climax;0;Melodic tritone within measure, framed by two melody direction changes;;;3;2;;;;;;;
@@ -250,8 +250,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;209;40;Cantus;Counterpoint;Direct stepwize movement;8 cadence;1;Direct movement to interval with stepwize motion in higher voice;;3;27;3;1;;;;;;
 1;210;40;Cantus;Counterpoint;Direct stepwize movement;5;0;Direct movement to interval with stepwize motion in higher voice;;3;19;9;1;;;;;;
 1;211;60;Cantus;Counterpoint;Direct stepwize movement;8;0;Direct movement to interval with stepwize motion in higher voice;;3;8;4;1;;;;;;
-1;212;0;Cantus;Counterpoint;Direct leaping movement;5 cadence;0;Direct movement to interval with leaping motion in higher voice;;3;4;1;1;;;;;;
-1;213;40;Cantus;Counterpoint;Direct leaping movement;8 cadence;0;Direct movement to interval with leaping motion in higher voice;;3;22;7;1;;;;;;
+1;212;0;Cantus;Counterpoint;Direct leaping movement;5 cadence;1;Direct movement to interval with leaping motion in higher voice;;3;4;1;1;;;;;;
+1;213;40;Cantus;Counterpoint;Direct leaping movement;8 cadence;1;Direct movement to interval with leaping motion in higher voice;;3;22;7;1;;;;;;
 1;214;40;Cantus;Counterpoint;Direct leaping movement;5;0;Direct movement to interval with leaping motion in higher voice;;3;17;6;1;;;;;;
 1;215;60;Cantus;Counterpoint;Direct leaping movement;8;0;Direct movement to interval with leaping motion in higher voice;;3;8;8;1;;;;;;
 1;216;60;Cantus;Counterpoint;Suspension resolution;9th -> 8va;0;;With higher cantus. Includes 16th and above;;1;1;1;;;;;;
