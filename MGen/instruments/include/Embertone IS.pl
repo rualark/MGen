@@ -43,3 +43,12 @@ InitCommand = "Bow noise reduction: 0"
 InitCommand = "Reverb level: 0" # default: enabled
 InitCommand = "Round-robin on"
 InitTechnique = "solo"
+
+# Automation parameters
+CC_dynamics = 11
+CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
+CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
+
+# Vibrato adaptor
+CC_vib = 1 # CC number for vibrato intensity
+CC_vibf = 14 # CC number for vibrato speed

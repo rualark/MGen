@@ -788,7 +788,6 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "retrigger_freq", &icf[i].retrigger_freq);
 	CheckVar(&st2, &st3, "max_slur_count", &icf[i].max_slur_count);
 	CheckVar(&st2, &st3, "max_slur_interval", &icf[i].max_slur_interval);
-	CheckVar(&st2, &st3, "slur_ks", &icf[i].slur_ks);
 	CheckVar(&st2, &st3, "nonlegato_maxgap", &icf[i].nonlegato_maxgap);
 	CheckVar(&st2, &st3, "all_ahead", &icf[i].all_ahead);
 	LoadVectorPar(&st2, &st3, "legato_ahead", icf[i].legato_ahead);

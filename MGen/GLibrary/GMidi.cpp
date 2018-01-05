@@ -1640,6 +1640,16 @@ void CGMidi::ProcessInter(int pos, int pos_old, std::vector<std::vector<std::pai
 
 void CGMidi::StartMIDI(int midi_device_i, int from)
 {
+	long long time_start = CGLib::time();
+	int a = 0;
+	for (int i = 0; i < 100000000; ++i) {
+		a += icf[0].KswGroup[i % icf[0].KswGroup.size()];
+		//a += icf[0].NameToKsw["Slur while held"];
+	}
+	long long time_stop = CGLib::time();
+	CString st;
+	st.Format("Map test %d in %lld ms", a, time_stop - time_start);
+	WriteLog(1, st);
 	if (midi_device_i == -1) return;
 	start_time();
 	// Clear old sent messages
@@ -1931,7 +1941,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 					if (!note_muted[i][v]) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
 					// Send slur
 					if (artic[i][v] == ARTIC_SLUR) {
-						AddTransitionKs(i, stimestamp, icf[ii].slur_ks);
+						AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Slur while held"]);
 					}
 					// Send transition ks
 					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_CHROM)) {
