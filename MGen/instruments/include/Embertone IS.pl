@@ -35,7 +35,7 @@ CC_Name = 18: "Dynamic KSW threshold"
 
 # Techniques mapping to commands
 Technique = "solo; Ensemble on: 0"
-Technique = "tutti; Ensemble on"
+Technique = "tutti; Ensemble on" # Tutti mode in Viola requires gliss_freq=0 due to bug in virtual instrument
 
 # Initial setup
 InitCommand = "Transition attenuation: 0"
