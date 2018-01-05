@@ -222,7 +222,7 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 				}
 			}
 		}
-		if (icf[ii].all_ahead > 0 && detime[i - 1][v] >= 0 && (pause[pi][v] || 
+		if (icf[ii].all_ahead > 0 && (pause[pi][v] || 
 			(artic[i][v] != ARTIC_SLUR && artic[i][v] != ARTIC_LEGATO))) {
 			dstime[i][v] = -min(icf[ii].all_ahead, (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 				detime[i - 1][v] - dstime[pi][v] - 1);
@@ -241,7 +241,7 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 
 void CGAdapt::AdaptAllAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Advance start for legato (not longer than previous note length)
-	if (i > 0 && pi < i && icf[ii].all_ahead > 0 &&	detime[i - 1][v] >= 0) {
+	if (i > 0 && pi < i && icf[ii].all_ahead > 0) {
 		dstime[i][v] = -min(icf[ii].all_ahead, (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		if (comment_adapt) {
@@ -657,6 +657,7 @@ void CGAdapt::Adapt(int step1, int step2)
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation
 				if (icf[ii].type == 0) {
+					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptLengroupStep(v, x, i, ii, ei, pi, pei);
 				}
 				if (icf[ii].type == 1) {

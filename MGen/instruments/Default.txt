@@ -11,7 +11,8 @@ Bass       | SI VoR Bass           | 9   | 9   | +   |
 Viola      | Fischer               | 10  | 10  | +   |
 Cello      | Blakus                | 11  | 11  | +   |
 Contrabass | Leonid                | 12  | 12  | +   |
-Piano      | Default               | 0   | 0   | +   |
+Organ      | Mystique              | 13  | 13  | +   |
+Piano      | Gentleman             | 0   | 0   | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
 # TRK is MIDI track to send this instrument to (for adapted MIDI file export)
