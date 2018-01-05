@@ -36,3 +36,10 @@ CC_Name = 18: "Dynamic KSW threshold"
 # Techniques mapping to commands
 Technique = "solo; Ensemble on: 0"
 Technique = "tutti; Ensemble on"
+
+# Initial setup
+InitCommand = "Transition attenuation: 0"
+InitCommand = "Bow noise reduction: 0"
+InitCommand = "Reverb level: 0" # default: enabled
+InitCommand = "Round-robin on"
+InitTechnique = "solo"
