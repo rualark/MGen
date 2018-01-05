@@ -363,6 +363,12 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 			vel[i][v] = randbw(icf[ii].vel_immediate, icf[ii].vel_immediate + 2);
 			if (comment_adapt) adapt_comment[i][v] += "Vel immediate. ";
 		}
+		// Limit harsh sustains
+		if (vel[i][v] >= icf[ii].vel_harsh && icf[ii].harsh_freq < 100) {
+			if (randbw(0, 100) >= icf[ii].harsh_freq) {
+				vel[i][v] = randbw(icf[ii].vel_immediate, icf[ii].vel_harsh - 1);
+			}
+		}
 		//if (ndur < icf[ii].vel_normal_minlen) vel[i][v] = dyn[i][v] * (float)(127 - icf[ii].vel_immediate) / 127.0 + icf[ii].vel_immediate;
 		//else vel[i][v] = dyn[i][v] * (float)(icf[ii].vel_immediate - 1) / 127.0;
 	}

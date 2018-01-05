@@ -92,6 +92,7 @@ struct IConf {
 	int retrigger_min_len = 0; // Minimum next note length in ms to use retrigger
 	int retrigger_rand_end = 0; // Maximum percent of note length to move note end to the left in case of nonlegato
 	int retrigger_rand_max = 0; // Maximum length in ms to move note end to the left in case of nonlegato retrigger
+	int harsh_freq = 0; // Frequency of harsh sustain articulation in percent of all possible situations
 	int vel_harsh = 0; // Velocity equal or above this value triggers harsh sustain
 	int vel_immediate = 0; // Velocity equal or above this value triggers immediate sustain
 	int vel_normal = 0; // Velocity equal or above this value triggers normal sustain

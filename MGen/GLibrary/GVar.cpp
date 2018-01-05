@@ -810,6 +810,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "retrigger_min_len", &icf[i].retrigger_min_len);
 	CheckVar(&st2, &st3, "retrigger_rand_end", &icf[i].retrigger_rand_end);
 	CheckVar(&st2, &st3, "retrigger_rand_max", &icf[i].retrigger_rand_max);
+	CheckVar(&st2, &st3, "harsh_freq", &icf[i].harsh_freq);
 	CheckVar(&st2, &st3, "vel_harsh", &icf[i].vel_harsh);
 	CheckVar(&st2, &st3, "vel_immediate", &icf[i].vel_immediate);
 	CheckVar(&st2, &st3, "vel_normal", &icf[i].vel_normal);

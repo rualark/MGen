@@ -56,11 +56,11 @@ Technique = "pizz; Pizzicato" # TODO: not implemented yet
 Technique = "trem; Tremolo"
 
 # Initial setup
-InitCommand = "Ensemble intonation: 8"
-InitCommand = "Ensemble L: 0"
-InitCommand = "Ensemble R: 127"
-InitCommand = "Ensemble tightness: 22"
-InitCommand = "Ensemble randomize: 36"
+InitCommand = "Ensemble intonation: 20" # default 8
+InitCommand = "Ensemble L: 40" # default 0
+InitCommand = "Ensemble R: 87" # default 127
+InitCommand = "Ensemble tightness: 65" # default 22
+InitCommand = "Ensemble randomize: 100" # default 36
 InitCommand = "Ensemble combine transitions"
 InitCommand = "Transition speed lower: 16"
 InitCommand = "Transition speed upper: 54"
@@ -91,6 +91,7 @@ max_slur_interval = 2 # in semitones
 # Legato adaptor
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
+all_ahead = 54 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Nonlegato adaptor
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
@@ -103,6 +104,7 @@ vel_immediate = 40 # Velocity equal or above this value triggers immediate susta
 vel_normal = 20 # Velocity equal or above this value triggers normal sustain
 vel_gliss = 30 # Velocity below this value triggers glissando transition
 vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
+harsh_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition

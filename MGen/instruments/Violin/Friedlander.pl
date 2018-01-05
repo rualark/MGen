@@ -50,14 +50,14 @@ Technique = "martele; Staccato" # TODO: not implemented yet
 Technique = "saltando; Staccato" # TODO: not implemented yet
 Technique = "sautille; Staccato" # TODO: not implemented yet
 Technique = "pizz; Pizzicato" # TODO: not implemented yet
-Technique = "trem; Tremolo"
+Technique = "trem; Tremolo" # TODO: not implemented yet
 
 # Initial setup
-InitCommand = "Ensemble intonation: 13" # default 13
-InitCommand = "Ensemble L: 10"
-InitCommand = "Ensemble R: 117"
-InitCommand = "Ensemble tightness: 18" # default 18
-InitCommand = "Ensemble randomize: 43" # default 43
+InitCommand = "Ensemble intonation: 20" # default 13
+InitCommand = "Ensemble L: 40" # default 10
+InitCommand = "Ensemble R: 87" # default 117
+InitCommand = "Ensemble tightness: 65" # default 18
+InitCommand = "Ensemble randomize: 100" # default 43
 InitCommand = "Ensemble combine transitions" # default 0
 InitCommand = "Transition speed lower: 16"
 InitCommand = "Transition speed upper: 90"

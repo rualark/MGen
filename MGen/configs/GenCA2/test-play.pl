@@ -5,10 +5,12 @@ Midi_file = "midi\GenCA2\test-play.mid" # Path and file name of imported midi fi
 
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 
-Instruments = Piano,Violin
+Instruments = Viola,Violin
 
 Instrument = Violin
-#InitTechnique = tutti
+InitTechnique = tutti
+gliss_freq = 10 # Frequency of gliss articulation in percent
 
 Instrument = Viola
-#InitTechnique = tutti
+InitTechnique = tutti
+gliss_freq = 0 # Frequency of gliss articulation in percent
