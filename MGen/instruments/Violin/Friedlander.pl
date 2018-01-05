@@ -53,19 +53,19 @@ Technique = "pizz; Pizzicato" # TODO: not implemented yet
 Technique = "trem; Tremolo"
 
 # Initial setup
-InitCommand = "Ensemble intonation: 13"
+InitCommand = "Ensemble intonation: 13" # default 13
 InitCommand = "Ensemble L: 10"
 InitCommand = "Ensemble R: 117"
-InitCommand = "Ensemble tightness: 18"
-InitCommand = "Ensemble randomize: 43"
-InitCommand = "Ensemble combine transitions: 0"
+InitCommand = "Ensemble tightness: 18" # default 18
+InitCommand = "Ensemble randomize: 43" # default 43
+InitCommand = "Ensemble combine transitions" # default 0
 InitCommand = "Transition speed lower: 16"
 InitCommand = "Transition speed upper: 90"
 InitCommand = "Transition speed: 127"
 InitCommand = "Solo intonation: 2"
 InitCommand = "Retrigger on" # default for Violin: 0
 InitCommand = "Rebow on" # default for Violin: 0
-InitCommand = "Responsiveness: 0"
+InitCommand = "Responsiveness: 0" # default for Violin: 0
 InitCommand = "Portamento speed: 11" # Use only when enabled Portamento CC mode on
 InitCommand = "Dynamic KSW threshold: 100"
 InitCommand = "Shorts length control on"
@@ -91,10 +91,11 @@ max_slur_interval = 2 # in semitones
 # Legato adaptor
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
+all_ahead = 54 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Nonlegato adaptor
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
-nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
+nonlegato_minlen = 600 # Minimum note length (in ms) allowed to convert to nonlegato
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Transition types

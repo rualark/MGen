@@ -3790,7 +3790,8 @@ void CGenCF1::SendNotes(int pos, int i, int v, int av, int x, vector<int> &cc) {
 	}
 	// Assign source tempo if exists
 	if (cc_tempo[x]) {
-		tempo[pos + i] = cc_tempo[x];
+		if (av_cnt != 1 && svoices == 1) tempo[pos + i] = cc_tempo[x] * 4;
+		else tempo[pos + i] = cc_tempo[x];
 	}
 	// Generate tempo if no source
 	else {

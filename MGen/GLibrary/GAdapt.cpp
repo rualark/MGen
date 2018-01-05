@@ -56,8 +56,8 @@ void CGAdapt::CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pe
 {
 	// Check if note is too short
 	int ndur = (etime[ei] - stime[i]) * 100 / m_pspeed;
-	if (ndur < icf[ii].tmin) {
-		CString st;
+	if (ndur < icf[ii].tmin && !note_muted[i][v]) {
+		CString st; 
 		if (warning_note_short[v] < 4) {
 			st.Format("Recommended minimum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
 				icf[ii].group, icf[ii].name, icf[ii].tmin, v, i, ndur);
@@ -203,21 +203,37 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 
 void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Advance start for legato (not longer than previous note length)
-	if ((i > 0) && (pi < i) && (icf[ii].legato_ahead[0] > 0) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
-		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
-		dstime[i][v] = -min(icf[ii].legato_ahead[0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
-			detime[i - 1][v] - dstime[pi][v] - 1);
-		detime[i - 1][v] = 0.9 * dstime[i][v];
-		if (comment_adapt) {
-			adapt_comment[i][v] += "Ahead start. ";
-			adapt_comment[i - 1][v] += "Ahead end. ";
+	if (i > 0 && pi < i) {
+		if (icf[ii].legato_ahead[0] > 0 && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+			(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
+			dstime[i][v] = -min(icf[ii].legato_ahead[0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+				detime[i - 1][v] - dstime[pi][v] - 1);
+			detime[i - 1][v] = 0.9 * dstime[i][v];
+			if (comment_adapt) {
+				adapt_comment[i][v] += "Ahead legato start. ";
+				adapt_comment[i - 1][v] += "Ahead legato end. ";
+			}
+			// Add glissando if note is long
+			if (icf[ii].gliss_freq) {
+				float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+				if ((ndur > icf[ii].gliss_minlen) && (randbw(0, 100) < icf[ii].gliss_freq)) {
+					vel[i][v] = icf[ii].vel_gliss;
+					if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
+				}
+			}
 		}
-		// Add glissando if note is long
-		if (icf[ii].gliss_freq) {
-			float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-			if ((ndur > icf[ii].gliss_minlen) && (randbw(0, 100) < icf[ii].gliss_freq)) {
-				vel[i][v] = icf[ii].vel_gliss;
-				if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
+		if (icf[ii].all_ahead > 0 && detime[i - 1][v] >= 0 && (pause[pi][v] || 
+			(artic[i][v] != ARTIC_SLUR && artic[i][v] != ARTIC_LEGATO))) {
+			dstime[i][v] = -min(icf[ii].all_ahead, (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
+				detime[i - 1][v] - dstime[pi][v] - 1);
+			if (comment_adapt) {
+				adapt_comment[i][v] += "Ahead start. ";
+			}
+			if (!pause[pi][v]) {
+				detime[i - 1][v] = 0.9 * dstime[i][v];
+				if (comment_adapt) {
+					adapt_comment[i - 1][v] += "Ahead end. ";
+				}
 			}
 		}
 	}
@@ -225,8 +241,7 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 
 void CGAdapt::AdaptAllAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Advance start for legato (not longer than previous note length)
-	if (i > 0 && pi < i && icf[ii].all_ahead > 0 &&
-		detime[i - 1][v] >= 0) {
+	if (i > 0 && pi < i && icf[ii].all_ahead > 0 &&	detime[i - 1][v] >= 0) {
 		dstime[i][v] = -min(icf[ii].all_ahead, (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 			detime[i - 1][v] - dstime[pi][v] - 1);
 		if (comment_adapt) {
