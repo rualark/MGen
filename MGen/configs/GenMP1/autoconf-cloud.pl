@@ -10,4 +10,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 # Created at 2017-08-07 23-31-49
 Midi_file = midi\cloud.mid
 
-Instruments = Violin,Soprano,Alto,Tenor,Bass
+Instruments = Trumpet,Violin,Viola,Cello,Contrabass

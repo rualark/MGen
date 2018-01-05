@@ -7,4 +7,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 
 Midi_file = server\midi\c193-em35b-fixed.mid
-Instruments = Trumpet,Piano,Violin,Violin,Horn,Trombone,Tuba
+Instruments = Trumpet,Piano,Violin,Horn,Viola,Cello,Contrabass

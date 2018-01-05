@@ -86,9 +86,9 @@ max_slur_count = 2 # Use slur for 2nd moves, but no longer than X moves
 max_slur_interval = 2 # in semitones
 
 # Legato adaptor
-legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
+legato_ahead = 215 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
-all_ahead = 54 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
+all_ahead = 104 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Nonlegato adaptor
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
@@ -106,7 +106,7 @@ vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or low
 harsh_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
-gliss_minlen = 1000 # Minimum note length that can have a gliss transition
+gliss_minlen = 1500 # Minimum note length that can have a gliss transition
 gliss_freq = 50 # Frequency of gliss articulation in percent
 
 # Bell adaptor
