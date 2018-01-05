@@ -24,7 +24,7 @@ CC_Name = 16: "Portamento CC mode on" # All except Cello
 KswGroup = "G#2: Slur while held"
 KswGroup = "E2: Ghost note"
 KswGroup = "F2: Color on", "F#2: Color off"
-KswGroup = "C3: Con sordino on", "C#3: Con sordino off"
+KswGroup = "C3: Con sordino", "C#3: Senza sordino"
 KswGroup = "D3: Normal", "D#3: Sul ponticello", "E3: Sul tasto" # Bow position
 KswGroup = "F3: Legato", "F#3: Poly"
 KswGroup = "G2: Sustain", "A2: Staccato", "A#2: Pizzicato", "B2: Tremolo" # Style
@@ -38,10 +38,10 @@ KswGroup = "D1: Vibrato style - Gentle"
 KswGroup = "D#1: Vibrato style - Passionate"
 
 # Techniques mapping to commands
-Technique = "con sord; Con sordino on"
-Technique = "ord; Con sordino off + Normal + Sustain"
-Technique = "nat; Con sordino off + Normal + Sustain"
-Technique = "senza sord; Con sordino off"
+Technique = "con sord; Con sordino"
+Technique = "ord; Senza sordino + Normal + Sustain"
+Technique = "nat; Senza sordino + Normal + Sustain"
+Technique = "senza sord; Senza sordino"
 Technique = "sul pont; Sul ponticello"
 Technique = "sul tast; Sul tasto"
 Technique = "stac; Staccato" # TODO: not implemented yet
@@ -104,6 +104,7 @@ vel_immediate = 84 # Velocity equal or above this value triggers immediate susta
 vel_normal = 50 # Velocity equal or above this value triggers normal sustain
 vel_gliss = 18 # Velocity below this value triggers glissando transition
 vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
+harsh_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition

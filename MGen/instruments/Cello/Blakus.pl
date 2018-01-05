@@ -85,7 +85,7 @@ max_slur_interval = 2 # in semitones
 # Legato adaptor
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
-all_ahead = 54 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
+all_ahead = 128 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Nonlegato adaptor
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
@@ -93,11 +93,12 @@ nonlegato_minlen = 600 # Minimum note length (in ms) allowed to convert to nonle
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Transition types
-vel_harsh = 118 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 84 # Velocity equal or above this value triggers immediate sustain
+vel_harsh = 90 # Velocity equal or above this value triggers harsh sustain
+vel_immediate = 60 # Velocity equal or above this value triggers immediate sustain
 vel_normal = 50 # Velocity equal or above this value triggers normal sustain
-vel_gliss = 18 # Velocity below this value triggers glissando transition
+vel_gliss = 8 # Velocity below this value triggers glissando transition
 vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
+harsh_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition
