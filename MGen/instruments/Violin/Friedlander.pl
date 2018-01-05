@@ -62,11 +62,9 @@ InitCommand = "Ensemble combine transitions: 0"
 InitCommand = "Transition speed lower: 16"
 InitCommand = "Transition speed upper: 90"
 InitCommand = "Transition speed: 127"
-InitCommand = "Transition attenuation: 0"
-InitCommand = "Bow noise reduction: 0"
 InitCommand = "Solo intonation: 2"
-InitCommand = "Retrigger on" # default: 0
-InitCommand = "Rebow on" # default: 0
+InitCommand = "Retrigger on" # default for Violin: 0
+InitCommand = "Rebow on" # default for Violin: 0
 InitCommand = "Responsiveness: 0"
 InitCommand = "Portamento speed: 11" # Use only when enabled Portamento CC mode on
 InitCommand = "Dynamic KSW threshold: 100"
@@ -75,12 +73,9 @@ InitCommand = "Release samples on"
 InitCommand = "Portamento CC mode on: 0"
 InitCommand = "Portamento velocity threshold: 18"
 InitCommand = "Vibrato style - Progressive"
-InitCommand = "Reverb level: 0" # default: enabled
-InitCommand = "Round-robin on"
 InitCommand = "Legato"
 InitCommand = "Color off"
 InitTechnique = "ord"
-InitTechnique = "solo"
 
 # Automation parameters
 CC_dynamics = 11

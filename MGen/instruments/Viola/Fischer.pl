@@ -57,4 +57,22 @@ Technique = "trem; Tremolo"
 
 # Initial setup
 InitCommand = "Ensemble intonation: 8"
+InitCommand = "Ensemble L: 0"
+InitCommand = "Ensemble R: 127"
+InitCommand = "Ensemble tightness: 22"
+InitCommand = "Ensemble randomize: 36"
+InitCommand = "Ensemble combine transitions"
+InitCommand = "Transition speed lower: 16"
+InitCommand = "Transition speed upper: 54"
+InitCommand = "Solo intonation: 0"
+InitCommand = "Retrigger on"
+InitCommand = "Responsiveness: 44"
+InitCommand = "Dynamic KSW threshold: 100"
+InitCommand = "Shorts length control on" # default 0
+InitCommand = "Release samples on" # default 0
+InitCommand = "Portamento CC mode on: 0"
+InitCommand = "Portamento velocity threshold: 30"
+InitCommand = "Vibrato style - Progressive"
 InitCommand = "Legato"
+InitCommand = "Color off"
+InitTechnique = "ord"
