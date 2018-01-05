@@ -28,7 +28,7 @@ KswGroup = "G#1: Ghost note"
 KswGroup = "A1: Color on", "A#1: Color off"
 KswGroup = "B1: Portamento"
 KswGroup = "C2: Sustain", "D2: Staccato", "D#2: Pizzicato", "E2: Tremolo" # Style
-KswGroup = "F2: Con sordino on", "F#2: Con sordino off"
+KswGroup = "F2: Con sordino", "F#2: Senza sordino"
 KswGroup = "G2: Normal", "G#2: Sul ponticello", "A2: Sul tasto" # Bow position
 KswGroup = "A#2: Legato", "B2: Poly"
 
@@ -41,10 +41,10 @@ KswGroup = "F#1: Vibrato style - Gentle"
 KswGroup = "G1: Vibrato style - Passionate"
 
 # Techniques mapping to commands
-Technique = "con sord; Con sordino on"
-Technique = "ord; Con sordino off + Normal + Sustain"
-Technique = "nat; Con sordino off + Normal + Sustain"
-Technique = "senza sord; Con sordino off"
+Technique = "con sord; Con sordino"
+Technique = "ord; Senza sordino + Normal + Sustain"
+Technique = "nat; Senza sordino + Normal + Sustain"
+Technique = "senza sord; Senza sordino"
 Technique = "sul pont; Sul ponticello"
 Technique = "sul tast; Sul tasto"
 Technique = "stac; Staccato" # TODO: not implemented yet
@@ -104,6 +104,8 @@ vel_immediate = 40 # Velocity equal or above this value triggers immediate susta
 vel_normal = 20 # Velocity equal or above this value triggers normal sustain
 vel_gliss = 30 # Velocity below this value triggers glissando transition
 vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
+
+# In Viola, harsh sustains are too harsh, so I disable them
 harsh_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor

@@ -601,8 +601,10 @@ int CGLib::GetNoteI(CString &st)
 	else {
 		int nid = -1;
 		int pos = st.GetLength()-1;
-		if (isdigit(st[1])) pos = 1;
+		while (pos > 0 && (isdigit(st[pos-1]) || st[pos-1] == '-')) --pos;
+		//if (isdigit(st[1])) pos = 1;
 		CString nname = st.Left(pos);
+		int noct = atoi(st.Mid(pos));
 		for (int i = 0; i < 12; i++) {
 			if (NoteName[i] == nname) {
 				nid = i;
@@ -613,11 +615,11 @@ int CGLib::GetNoteI(CString &st)
 				break;
 			}
 		}
-		if ((nid > -1) && (isdigit(st[pos]))) {
-			int i = nid + (atoi(st.Mid(pos, 1))+1) * 12;
+		if ((nid > -1) && (isdigit(st[st.GetLength() - 1]))) {
+			int i = nid + (noct + 1) * 12;
 			//CString est;
 			//est.Format("Converted note name %s to %d", st, i);
-			//WriteLog(0, est);
+			//WriteLog(1, est);
 			return i;
 		} else {
 			CString est;
