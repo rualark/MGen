@@ -51,6 +51,27 @@ Technique = "pizz; Pizzicato" # TODO: not implemented yet
 Technique = "trem; Tremolo"
 
 # Initial setup
+InitCommand = "Dynamic range: 19" # default 0
+InitCommand = "Bow change slur reverse: 0" # default 0
+InitCommand = "Ensemble intonation: 20" # default 10
+InitCommand = "Ensemble L: 40" # default 0
+InitCommand = "Ensemble R: 87" # default 127
+InitCommand = "Ensemble tightness: 65" # default 36
+InitCommand = "Ensemble randomize: 100" # default 32
+InitCommand = "Ensemble combine transitions"
+InitCommand = "Transition speed lower: 16"
+InitCommand = "Transition speed upper: 71"
+InitCommand = "Solo intonation: 0"
+InitCommand = "Responsiveness: 0"
+InitCommand = "Retrigger on" # default 100
+InitCommand = "Dynamic KSW threshold: 100"
+InitCommand = "Shorts length control on" # default 100
+InitCommand = "Release samples on" # default 100
+InitCommand = "Portamento CC mode on: 0"
+InitCommand = "Portamento velocity threshold: 23"
+InitCommand = "Legato"
+InitCommand = "Color off"
+InitTechnique = "ord"
 
 
 # Retrigger adaptor
@@ -75,14 +96,14 @@ nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonle
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Transition types
-vel_harsh = 101 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 40 # Velocity equal or above this value triggers immediate sustain
-vel_normal = 20 # Velocity equal or above this value triggers normal sustain
-vel_gliss = 30 # Velocity below this value triggers glissando transition
+vel_harsh = 65 # Velocity equal or above this value triggers harsh sustain
+vel_immediate = 33 # Velocity equal or above this value triggers immediate sustain
+vel_normal = 10 # Velocity equal or above this value triggers normal sustain
+vel_gliss = 23 # Velocity below this value triggers glissando transition
 vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
 
 # In Viola, harsh sustains are too harsh, so I disable them
-harsh_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition
