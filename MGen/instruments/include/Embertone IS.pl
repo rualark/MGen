@@ -35,12 +35,14 @@ CC_Name = 18: "Dynamic KSW threshold"
 
 # Techniques mapping to commands
 Technique = "solo; Ensemble on: 0"
-Technique = "tutti; Ensemble on" # Tutti mode in Viola requires gliss_freq=0 due to bug in virtual instrument
+Technique = "tutti; Ensemble on" # Tutti mode in Viola requires gliss_freq=0 due to bug in virtual instrument. In Violin and Cello, setting gliss_freq to 10 or 0 is recommended
 
 # Initial setup
+InitCommand = "Reverb level: 0" # default: enabled
+
+# Initial setup (can change)
 InitCommand = "Transition attenuation: 0"
 InitCommand = "Bow noise reduction: 0"
-InitCommand = "Reverb level: 0" # default: enabled
 InitCommand = "Round-robin on"
 InitTechnique = "solo"
 

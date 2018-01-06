@@ -205,7 +205,7 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 	// Advance start for legato (not longer than previous note length)
 	if (i > 0 && pi < i) {
 		if (icf[ii].legato_ahead[0] > 0 && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
-			(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
+			(!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
 			dstime[i][v] = -min(icf[ii].legato_ahead[0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 				detime[i - 1][v] - dstime[pi][v] - 1);
 			detime[i - 1][v] = 0.9 * dstime[i][v];
@@ -219,20 +219,6 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 				if ((ndur > icf[ii].gliss_minlen) && (randbw(0, 100) < icf[ii].gliss_freq)) {
 					vel[i][v] = icf[ii].vel_gliss;
 					if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
-				}
-			}
-		}
-		if (icf[ii].all_ahead > 0 && (pause[pi][v] || 
-			(artic[i][v] != ARTIC_SLUR && artic[i][v] != ARTIC_LEGATO))) {
-			dstime[i][v] = -min(icf[ii].all_ahead, (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
-				detime[i - 1][v] - dstime[pi][v] - 1);
-			if (comment_adapt) {
-				adapt_comment[i][v] += "Ahead start. ";
-			}
-			if (!pause[pi][v]) {
-				detime[i - 1][v] = 0.9 * dstime[i][v];
-				if (comment_adapt) {
-					adapt_comment[i - 1][v] += "Ahead end. ";
 				}
 			}
 		}
@@ -661,6 +647,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptLengroupStep(v, x, i, ii, ei, pi, pei);
 				}
 				if (icf[ii].type == 1) {
+					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
 					AdaptVibBell(v, x, i, ii, ei, pi, pei);
