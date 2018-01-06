@@ -9,4 +9,4 @@ cantus_id = 0
 cantus_high = 0
 species = 5
 
-Instruments = Tenor,Soprano
+Instruments = Horn,Trumpet
