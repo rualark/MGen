@@ -359,7 +359,7 @@ void CGVar::LoadConfigFiles(CString fname, int load_includes) {
 		if (fileExists(fname2)) LoadConfigFile(fname2, load_includes);
 	}
 	if (m_testing == 2) {
-		CString fname2 = "server\\configs\\" + m_algo_folder + ".pl";
+		CString fname2 = "configs\\server\\" + m_algo_folder + ".pl";
 		if (fileExists(fname2)) LoadConfigFile(fname2, load_includes);
 	}
 }
