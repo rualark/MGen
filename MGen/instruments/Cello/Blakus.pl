@@ -48,6 +48,7 @@ Technique = "spic; Staccato" # TODO: not implemented yet
 Technique = "martele; Staccato" # TODO: not implemented yet
 Technique = "saltando; Staccato" # TODO: not implemented yet
 Technique = "sautille; Staccato" # TODO: not implemented yet
+Technique = "arco; Sustain" # TODO: not implemented yet
 Technique = "pizz; Pizzicato" # TODO: not implemented yet
 Technique = "trem; Tremolo" # TODO: not implemented yet
 

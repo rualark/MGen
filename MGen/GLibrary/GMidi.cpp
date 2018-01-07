@@ -253,7 +253,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		// If no flags, parse second voice
 		if (!ly_fa.size() && v_cnt > 1) {
 			int v2 = (v / 2) * 2 + !(v % 2);
-			if (v2 < v_cnt) {
+			if (v2 < v_cnt && i + len[i][v] < poff.size()) {
 				int i2 = abs(i + len[i][v] - poff[i + len[i][v]][v2]);
 				ParseLyComments(i2, v2, 1);
 			}
