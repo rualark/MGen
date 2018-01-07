@@ -528,7 +528,7 @@ int RunJobMGen() {
 	j_basefile = CGLib::bname_from_path(f_name);
 	CString sta2;
 	CString fname = share + f_folder + f_name;
-	CString fname2 = "server\\midi\\" + f_name;
+	CString fname2 = "server\\cache\\" + f_name;
 	CString fname_pl = share + j_folder + j_basefile + ".pl";
 	CString fname_pl2 = "configs\\Gen" + j_type + "\\sv_" + j_basefile + ".pl";
 	// Check input file exists
@@ -537,7 +537,7 @@ int RunJobMGen() {
 		return FinishJob(1, est);
 	}
 	// Copy config and midi file
-	CreateDirectory("server\\midi", NULL);
+	CreateDirectory("server\\cache", NULL);
 	CGLib::copy_file(fname_pl, fname_pl2);
 	CGLib::copy_file(fname, fname2);
 	// Delete log
