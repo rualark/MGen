@@ -741,7 +741,7 @@ void CleanChildren() {
 	KillProcessByName("MGen.exe");
 	KillProcessByName("lilypond-windows.exe");
 	// Send reaper stop render
-	Run(fChild["AutoHotkey.exe"] + "AutoHotkey.exe", "server\\mgen-kill.ahk", 800);
+	Run(fChild["AutoHotkey.exe"] + "AutoHotkey.exe", "server\\scripts\\mgen-kill.ahk", 800);
 	/*
 	HWND hWindow = FindWindow("REAPERwnd", NULL);
 	PostMessage(hWindow, WM_KEYDOWN, VK_ESCAPE, 0);
