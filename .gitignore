@@ -260,8 +260,6 @@ ModelManifest.xml
 /MGen/autotest/ly
 /boost_1_65_1
 /mysql-connector-c++-noinstall-1.1.9-win32
-/MGen/server/share
-/MGen/server/midi
-/MGen/server/status.txt
+/MGen/server
+/MGen/share
 /MGen/log
-/MGen/server/Reaper
