@@ -22,3 +22,10 @@ lengroup_edt2 = -100 # delta to alter note ending time of last note in group (ms
 rand_pos = 8-8 # Randomize note starts-ends not greater than percent of note length 
 rand_pos_max = 70-70 # Maximum shift in ms (start-end)
 rnd_vel = 8 # Randomize note velocity not greater than this percent
+
+# Controls
+Volume_default = 80 # default 127 (direct CC volume, should not be changed by user)
+
+# Initial  setup
+Pan = 50 # default 50 (0 - left, 50 - center, 100 - right)
+Volume = 100 # default 100 (relative volume from 0 to 100)

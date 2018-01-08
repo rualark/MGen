@@ -6,6 +6,7 @@ Type = 1 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
 
 # Controls
+Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
 CC_Name = 1:  "Vibrato intensity"
 CC_Name = 11: "Dynamics"
 CC_Name = 14: "Vibrato speed"
@@ -45,6 +46,8 @@ InitCommand = "Transition attenuation: 0"
 InitCommand = "Bow noise reduction: 0"
 InitCommand = "Round-robin on"
 InitTechnique = "solo"
+Pan = 50 # default 50 (0 - left, 50 - center, 100 - right)
+Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Automation parameters
 CC_dynamics = 11

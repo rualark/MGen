@@ -62,6 +62,11 @@ InitCommand = "Portamento CC mode on: 0"
 InitCommand = "Portamento velocity threshold: 18"
 InitCommand = "Vibrato style - Progressive"
 InitCommand = "Color off"
+InitCommand = "Transition speed lower: 16"
+InitCommand = "Transition speed upper: 90"
+InitCommand = "Transition speed: 127"
+InitCommand = "Retrigger on" # default for Violin: 0
+InitCommand = "Legato"
 
 # Initial setup (can change)
 InitCommand = "Ensemble intonation: 20" # default 13
@@ -70,14 +75,9 @@ InitCommand = "Ensemble R: 87" # default 117
 InitCommand = "Ensemble tightness: 65" # default 18
 InitCommand = "Ensemble randomize: 100" # default 43
 InitCommand = "Ensemble combine transitions" # default 0
-InitCommand = "Transition speed lower: 16"
-InitCommand = "Transition speed upper: 90"
-InitCommand = "Transition speed: 127"
 InitCommand = "Solo intonation: 2"
-InitCommand = "Retrigger on" # default for Violin: 0
 InitCommand = "Rebow on" # default for Violin: 0
 InitCommand = "Release samples on"
-InitCommand = "Legato"
 InitTechnique = "ord"
 
 # Retrigger adaptor

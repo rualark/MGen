@@ -9,6 +9,7 @@ CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 
 # Controls
+Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
 CC_Name = 72: "Dynamics"
 CC_Name = 74: "Attack"
 CC_Name = 76: "Release time"
@@ -31,5 +32,6 @@ InitCommand = "Legato transition speed: 0"
 InitCommand = "Legato on"
 InitCommand = "Chord auto-pan on: 0"
 InitCommand = "Release samples on"
-Pan = 63 # Separate panning for each stage with comma. 0 is left, 63 is center, 127 is right
-Volume = 127 # Separate volume for each stage with comma. 0 is minimum volume, 127 is maximum volume
+Pan = 50 # default 50 (0 - left, 50 - center, 100 - right)
+Volume = 100 # default 100 (relative volume from 0 to 100)
+
