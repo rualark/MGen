@@ -384,8 +384,8 @@ CString CGMidi::GetIntName(int iv) {
 }
 
 void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
-	if (interval[i][v] > -1) {
-		CString st = GetIntName(interval[i][v]);
+	if (0) {
+		CString st = GetIntName(0);
 		fs << "^\\markup{ ";
 		fs << "\\teeny ";
 		if (vtype_sev[vDefault] > -1) {

@@ -110,7 +110,7 @@ public:
 	vector< vector <unsigned char> > vib; // Vibrato intensity
 	vector< vector <unsigned char> > vibf; // Vibrato frequency
 	vector< vector <unsigned char> > artic; // Velocity of midi notes
-	vector< vector <char> > interval; // [i][v] Velocity of midi notes
+	vector< vector <map<short, char>> > nlink; // [i][v] Link to other note for LY
 	vector< vector <vector<float>> > ngraph; // [s][v][] Graph using chromatic scale
 	vector< vector <vector<float>> > graph; // [s][v][] Graph using arbitrary scale
 	vector<CString> graph_name; // [] Graph name

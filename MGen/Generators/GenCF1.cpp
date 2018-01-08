@@ -3701,8 +3701,11 @@ void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
 	}
 }
 
-void CGenCF1::SendIvl(int pos, int i, int v, int x) {
-	if (svoices > 1) interval[pos + i][v] = civlc2[x];
+void CGenCF1::SendNlink(int pos, int i, int v, int av, int x) {
+	nlink[pos + i][v].clear();
+	for (int f = 0; f < anfl[av][x].size(); ++f) {
+		nlink[pos + i][v][anflags[av][x][f]] = anfl[av][x][f] - x;
+	}
 }
 
 void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {
@@ -4073,7 +4076,7 @@ int CGenCF1::SendCantus() {
 			SendNgraph(pos, i, v, s);
 			SendGraph(pos, i, v, s);
 			SendComment(pos, v, cpv, s, i);
-			SendIvl(pos, i, v, s);
+			SendNlink(pos, i, v, cpv, s);
 		}
 		pos += cc_len[s];
 	}

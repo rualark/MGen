@@ -545,7 +545,7 @@ int CGenCP1::SendCP() {
 					color[pos + i][v] = color_noflag;
 					SendMsh(pos, i, v, av, x);
 					SendGraph(pos, i, v, x);
-					SendIvl(pos, i, v, x);
+					SendNlink(pos, i, v, av, x);
 				}
 				SendNotes(pos, i, v, av, x, acc[av]);
 				SendNgraph(pos, i, v, x);
