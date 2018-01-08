@@ -168,7 +168,7 @@ void SaveScreenshot() {
 		screenshot_id = (screenshot_id + 1) % max_screenshot;
 		CString st;
 		st.Format("screen%d-%d.png", db.server_id, screenshot_id);
-		Run("server\\nircmd.exe", "savescreenshot " + share + st, 0);
+		Run("server\\scripts\\nircmd.exe", "savescreenshot " + share + st, 0);
 	}
 }
 
