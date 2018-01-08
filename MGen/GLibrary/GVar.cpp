@@ -750,8 +750,9 @@ void CGVar::LoadInitTechnique(CString *sName, CString *sValue, CString sSearch, 
 
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	LoadVar(&st2, &st3, "library", &icf[i].lib);
-	CheckVar(&st2, &st3, "pan", &icf[i].pan, 0, 127);
-	CheckVar(&st2, &st3, "volume", &icf[i].vol, 0, 127);
+	CheckVar(&st2, &st3, "pan", &icf[i].pan, 0, 100);
+	CheckVar(&st2, &st3, "volume", &icf[i].vol, 0, 100);
+	CheckVar(&st2, &st3, "volume_default", &icf[i].vol_default, 0, 127);
 	CheckVar(&st2, &st3, "ks1", &icf[i].ks1);
 	LoadNote(&st2, &st3, "n_min", &icf[i].nmin);
 	LoadNote(&st2, &st3, "n_max", &icf[i].nmax);

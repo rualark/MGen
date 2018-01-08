@@ -1901,8 +1901,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 				}
 			}
 			// Send pan
-			AddCC(midi_sent_t - midi_start_time, 10, icf[ii].pan);
-			if (icf[ii].vol != -1) AddCC(midi_sent_t - midi_start_time, 7, icf[ii].vol);
+			AddCC(midi_sent_t - midi_start_time, 10, (icf[ii].pan * 127) / 100);
+			if (icf[ii].vol != -1) 
+				AddCC(midi_sent_t - midi_start_time, 7, (icf[ii].vol * icf[ii].vol_default) / 100);
 		}
 		// Move to note start
 		if (coff[step1][v] > 0) {
