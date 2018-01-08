@@ -11,7 +11,6 @@
 #endif
 
 CGMidi::CGMidi() {
-	vtype_sev.resize(MAX_VIZ);
 	mo = 0;
 	//BuildKeyMatrix();
 }
@@ -241,10 +240,8 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 
 // Send note or pause
 void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v) {
-	int mv;
 	// Length array
 	vector<int> la;
-	ly_fa2.clear();
 	SplitLyNote(pos, le, la);
 	SplitLyNoteMeasure(pos, le, la);
 	for (int lc = 0; lc < la.size(); ++lc) {
@@ -279,8 +276,6 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		fs << ev + GetLyLen(la[lc]);
 		if (lc < la.size() - 1 && ev != "r") fs << "~";
 		fs << "\n";
-		mv = v;
-		if (vm_cnt > 1) mv = (v / 2) * 2 + !(v % 2);
 		if (midifile_export_marks && !mark[i][v].IsEmpty()) {
 			CString st = mark[i][v];
 			st.Replace("\n", "");
@@ -406,28 +401,12 @@ void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
 	}
 }
 
-void CGMidi::ParseLyComments(int i, int v, int foreign) {
+void CGMidi::ParseNLinks(int i, int v, int foreign) {
 	CString com;
-	int pos1, pos2, fl;
-	ly_fa = ly_fa2;
-	if (comment[i][v].size()) {
-		for (int c = 0; c < comment[i][v].size(); ++c) {
-			com = comment[i][v][c];
-			// Do not show hidden rules
-			if (com[0] == '$') continue;
-			// Remove technical information
-			pos1 = com.Find('[');
-			pos2 = com.Find(']');
-			if (pos1 != -1 && pos2 != -1) {
-				fl = atoi(com.Mid(pos1 + 1, pos2 - pos1 - 1));
-				if (foreign && rule_viz[fl] != vLines) continue;
-				ly_fa.push_back(fl);
-				// Push lines to note-persistent array
-				if (rule_viz[fl] == vLine || rule_viz[fl] == vLines) {
-					ly_fa2.push_back(fl);
-				}
-			}
-		}
+	for (auto const& it : nlink[i][v]) {
+		if (foreign && !rule_viz_v2[it.first]) continue;
+		lyi[i - ly_step1].nflags.push_back(it.first);
+		lyi[i - ly_step1].nfl.push_back(it.second);
 	}
 }
 
@@ -492,6 +471,71 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 	return LyClef[best_clef];
 }
 
+void CGMidi::InitLyI() {
+	if (ly_mel == -1) return;
+	if (vm_cnt > 1) ly_v2 = (ly_v / 2) * 2 + !(ly_v % 2);
+	lyi.clear();
+	lyi.resize(ly_step2 - ly_step1);
+	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
+		ly_s2 = ly_s - ly_step1;
+		// Init vectors
+		lyi[ly_s2].shs.resize(MAX_VIZ);
+		lyi[ly_s2].shf.resize(MAX_VIZ);
+		lyi[ly_s2].shc.resize(MAX_VIZ);
+		lyi[ly_s2].shse.resize(MAX_VIZ);
+		lyi[ly_s2].sht.resize(MAX_VIZ);
+		// Parse flags
+		ParseNLinks(ly_s, ly_v, 0);
+		if (!lyi[ly_s2].nflags.size() && v_cnt > 1) {
+			if (ly_v2 < v_cnt) {
+				ParseNLinks(ly_s, ly_v2, 1);
+			}
+		}
+	}
+	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
+		ly_s2 = ly_s - ly_step1;
+		// Parse shapes
+		for (int f = 0; f < lyi[ly_s2].nflags.size(); ++f) {
+			int fl = lyi[ly_s2].nflags[f];
+			int link = lyi[ly_s2].nfl[f];
+			int vtype = rule_viz[fl];
+			int sev = severity[fl];
+			// Get flag start/stop
+			int s1 = min(ly_s2, ly_s2 + link);
+			int s2 = max(ly_s2, ly_s2 + link);
+			// Check that flag overlaps
+			int overlap1 = -1;
+			int overlap2 = -1;
+			for (int x = ly_step2 - ly_step1 - 1; x > s1; --x) {
+				if (lyi[x].shf[vtype]) {
+					overlap2 = x;
+					break;
+				}
+			}
+			// Find overlap start
+			if (overlap2 > -1) {
+				for (int x = overlap2; x >= 0; --x) {
+					if (lyi[x].shs[vtype]) {
+						overlap1 = x;
+						break;
+					}
+				}
+			}
+			// Choose highest severity
+			if (overlap1 > -1) {
+				if (sev > lyi[overlap1].shse[vtype]) {
+					// Remove old shape
+					lyi[overlap1].shs[vtype] = 0;
+					lyi[overlap2].shf[vtype] = 0;
+				}
+				else {
+					// Skip shape
+					continue;
+				}
+			}
+		}
+	}
+}
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	vector<CString> sv;
 	CString clef, key, key_visual;
@@ -503,6 +547,8 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	// Voice melody max pitch
 	vector<int> vm_max;
 	// Calculate stats
+	ly_step1 = step1;
+	ly_step2 = step2;
 	GetLyRange(step1, step2, vm_min, vm_max);
 	vm_cnt = GetLyVcnt(step1, step2, vm_max);
 	mul = midifile_out_mul[step1];
@@ -530,6 +576,8 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	// Save notes
 	fs << "<<\n";
 	for (int v = v_cnt - 1; v >= 0; --v) {
+		ly_v = v;
+		InitLyI();
 		// Do not show voice if no notes inside
 		if (!vm_max[v]) continue;
 		// Select bass clef if melody goes mostly below middle C
@@ -599,6 +647,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 	if (!mel_info.size()) {
 		CString st;
 		st = "Whole piece";
+		ly_mel = -1;
 		SaveLySegment(fs, st, "", 0, t_generated);
 	}
 	else {
@@ -620,6 +669,7 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 			}
 			if (s >= t_generated - 1 && mel_id[t_generated - 1][0] > -1 && 
 				found && first_step == last_step)	last_step = t_generated - 1;
+			ly_mel = m;
 			if (found) SaveLySegment(fs, mel_info[m], mel_info2[m], first_step, last_step);
 			//if (m < mel_info.size() - 1) fs << "\\pageBreak\n";
 		}

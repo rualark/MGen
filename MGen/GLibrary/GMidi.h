@@ -29,13 +29,6 @@
 #define MIDI_BUF_PROTECT 500 // Number of ms to postpone playback on start
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
-// Rule visualization
-#define vDefault 0
-#define vHarm 1
-#define vLine 2
-#define vLines 3
-#define MAX_VIZ 4
-
 // Bass instruments
 const int bass_program[] = { 45, 33, 70, 58, 34, 35, 36, 37, 38 };
 
@@ -178,6 +171,32 @@ const CString LyOctave[] = {
 	"'''''''" // 11
 };
 
+// Rule visualization
+#define vDefault 0
+#define vHarm 1
+#define vInterval 2
+#define vSlur 3
+#define vPSlur 4
+#define vGlis 5
+#define vBracket 6
+#define vTrill 7
+#define vVolta 8
+#define vTS 9 // Text spanner
+#define vOttava 10
+#define vPedal 11
+#define vVBracket 12
+#define MAX_VIZ 13
+
+struct LY_Intermediate {
+	vector<int> shs; // [shape_type] If current step starts new shape
+	vector<int> shf; // [shape_type] If current step finishes new shape
+	vector<int> shc; // [shape_type] Color of starting shape
+	vector<int> shse; // [shape_type] Highest severity of starting shape
+	vector<CString> sht; // [shape_type] Starting shape text
+	vector<int> nflags; // [] Current flags
+	vector<int> nfl; // [] Current flags links
+};
+
 class CGMidi :
 	public CGAdapt
 {
@@ -197,7 +216,6 @@ public:
 	void SplitLyNote(int pos, int le, vector<int>& la);
 	void GetLySev(ofstream & fs, int pos, CString & ev, int le, int i, int v);
 	void SendLyViz(ofstream & fs, int pos, CString & ev, int le, int i, int v, int phase);
-	void SendLyViz(ofstream & fs, int pos, CString & ev, int le, int i, int v);
 	void SendLyEvent(ofstream & fs, int pos, CString ev, int le, int i, int v);
 	CString GetLyColor(DWORD col);
 	CString GetLyMarkColor(DWORD col);
@@ -205,9 +223,10 @@ public:
 	void SendLyNoteColor(ofstream & fs, DWORD col);
 	CString GetIntName(int iv);
 	void SendLyFlagColor(ofstream & fs, int i, int v);
-	void ParseLyComments(int i, int v, int foreign);
+	void ParseNLinks(int i, int v, int foreign);
 	void SaveLyComments(int i, int v, int pos);
 	CString DetectLyClef(int vmin, int vmax);
+	void InitLyI();
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
 	void SaveLy(CString dir, CString fname);
 	void ExportAdaptedMidi(CString dir, CString fname);
@@ -251,14 +270,20 @@ public:
 	// Lilypond
 	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
-	vector<int> ly_fa; // Flags array
-	vector<int> ly_fa2; // Flags array for whole note
-	vector<int> rule_viz; // [r_id] If this rule violation should be marked with harmony color, not note color, even if its group is not Harmony
-	vector<int> vtype_sev; // Worst severity for each vizualization types
+	vector<int> rule_viz; // [r_id] Rule visualization type
+	vector<int> rule_viz_v2; // [r_id] Rule visualization type for second voice
 	vector <int> severity; // Get severity by flag id
 	vector<DWORD>  flag_color; // Flag colors
 	int ly_nnum = 0; // Note number
+	int ly_step1 = 0;
+	int ly_step2 = 0;
 	CString ly_com_st;
+	vector<LY_Intermediate> lyi;
+	int ly_v = 0; // Current ly voice
+	int ly_v2 = 0; // Second voice for counterpoint analysis
+	int ly_s = 0; // Current ly step
+	int ly_s2 = 0; // Current ly step inside melody
+	int ly_mel = -1; // Currentn ly melody id
 
 	// Midi files
 	vector<vector<vector<PmEvent>>> midifile_buf;

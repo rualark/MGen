@@ -20,6 +20,7 @@ CGenCF1::CGenCF1()
 	//midifile_tpq_mul = 8;
 	accept.resize(MAX_RULES);
 	rule_viz.resize(MAX_RULES);
+	rule_viz_v2.resize(MAX_RULES);
 	false_positives_ignore.resize(MAX_RULES);
 	false_positives_global.resize(MAX_RULES);
 	sas_emulator_max_delay.resize(MAX_RULES);
