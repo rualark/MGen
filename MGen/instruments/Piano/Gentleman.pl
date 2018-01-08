@@ -27,5 +27,5 @@ rnd_vel = 8 # Randomize note velocity not greater than this percent
 Volume_default = 80 # default 127 (direct CC volume, should not be changed by user)
 
 # Initial  setup
-Pan = 50 # default 50 (0 - left, 50 - center, 100 - right)
+Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)

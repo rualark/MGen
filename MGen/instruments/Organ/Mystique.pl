@@ -27,7 +27,7 @@ InitCommand = "Attack: 7" # default 7
 InitCommand = "Decay: 0" # default 0
 InitCommand = "Sustain: 127" # default 127
 InitCommand = "Release: 21" # default 0
-Pan = 50 # default 50 (0 - left, 50 - center, 100 - right)
+Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Lengroup adaptor

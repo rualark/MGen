@@ -46,7 +46,7 @@ InitCommand = "Transition attenuation: 0"
 InitCommand = "Bow noise reduction: 0"
 InitCommand = "Round-robin on"
 InitTechnique = "solo"
-Pan = 50 # default 50 (0 - left, 50 - center, 100 - right)
+Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Automation parameters

@@ -1055,10 +1055,10 @@ void CGenCF1::ClearFlags(int step1, int step2) {
 		fill(flags.begin(), flags.end(), 0);
 		fill(fpenalty.begin(), fpenalty.end(), 0.0);
 	}
-	fill(aint.begin(), aint.end(), -1);
 	flags[0] = 1;
 	for (int i = step1; i < step2; ++i) {
 		anflags[cpv][i].clear();
+		anfl[cpv][i].clear();
 	}
 	rpenalty_cur = 0;
 }
@@ -2474,11 +2474,12 @@ void CGenCF1::ScanInit() {
 		if (task != tEval) scan_full = 0;
 		scan_start_time = time();
 		anflags.resize(av_cnt);
+		anfl.resize(av_cnt);
 		for (int i = 0; i < av_cnt; ++i) {
 			anflags[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
+			anfl[i].resize(c_len, vector<int>(MAX_RULES)); // Flags for each note
 		}
 		src_rpenalty_step.resize(c_len);
-		aint.resize(c_len);
 		uli.resize(c_len);
 		fli.resize(c_len);
 		fli2.resize(c_len);
@@ -2678,6 +2679,7 @@ void CGenCF1::SingleCantusInit() {
 	flags[0] = 1;
 	for (int i = 0; i < ep2; ++i) {
 		anflags[cpv][i].clear();
+		anfl[cpv][i].clear();
 	}
 	// Matrix scan
 	if (task != tEval) {
@@ -2772,6 +2774,7 @@ void CGenCF1::ResizeToWindow() {
 	decc.resize(ep2);
 	decc2.resize(ep2);
 	anflags[cpv].resize(ep2);
+	anfl[cpv].resize(ep2);
 }
 
 // Step2 must be exclusive
@@ -3164,6 +3167,7 @@ void CGenCF1::ShowBestRejected(vector<int> &cc) {
 				cc = br_cc;
 				flags = br_f;
 				anflags[cpv] = br_nf;
+				anfl[cpv] = br_nfl;
 				chm.clear();
 				chm.resize(c_len, -1);
 				SendCantus();
@@ -3302,6 +3306,7 @@ void CGenCF1::SaveBestRejected(vector<int> &cc) {
 			br_cc = cc;
 			br_f = flags;
 			br_nf = anflags[cpv];
+			br_nfl = anfl[cpv];
 			rpenalty_min = rpenalty_cur;
 			// Log
 			if (debug_level > 1) {
@@ -3697,7 +3702,7 @@ void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
 }
 
 void CGenCF1::SendIvl(int pos, int i, int v, int x) {
-	interval[pos + i][v] = aint[x];
+	if (svoices > 1) interval[pos + i][v] = civlc2[x];
 }
 
 void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {

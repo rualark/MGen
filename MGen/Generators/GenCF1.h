@@ -84,29 +84,51 @@
 // This variant always skips flags inside SWA window (more performance increase
 #define SWA_OPTIMIZER(i) || (task == tCor && method == mSWA && (i) >= swa1 && (i) < swa2)
 
-// Report violation
-#define FLAG(id, i) do { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) goto skip; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)
-#define FLAG2(id, i) do { ASSERT_RULE(id); if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) return 1; flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)
-// For harmony
-#define FLAG3(id, i) do { ASSERT_RULE(id); if (!accept[id]) { last_flag=id; return 1; } } while (0)
-// Simply flag
-#define FLAG4(id, i) do { ASSERT_RULE(id); flags[0] = 0; ++flags[id]; anflags[cpv][i].push_back(id); } while (0)
-// Flag and set interval
-#define FLAG2_INT(id, i) do { \
-  FLAG2(id, (i)); \
-  if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { \
-    if (severity[id] >= show_min_severity) aint[i] = civlc2[i]; \
-  } \
+// Report violation from main function
+#define FLAG(id, i) do {  \
+	ASSERT_RULE(id);  \
+	if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) goto skip;  \
+	flags[0] = 0;  \
+	++flags[id];  \
+	anflags[cpv][i].push_back(id);  \
+	anfl[cpv][i].push_back(i);  \
 } while (0)
 
-#define FLAG2_INT2(id, i, i2) do { \
-  FLAG2(id, (i)); \
-  if (!accept[id] || (show_allowed_flags && accept[id] == 1)) { \
-    if (severity[id] >= show_min_severity) { \
-      aint[i] = civlc2[i]; \
-      aint[i2] = civlc2[i2]; \
-    } \
-  } \
+// Report violation from child function
+#define FLAG2(id, i) do { \
+  ASSERT_RULE(id);  \
+  if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) return 1;  \
+	flags[0] = 0;  \
+	++flags[id];  \
+	anflags[cpv][i].push_back(id);  \
+	anfl[cpv][i].push_back(i);  \
+} while (0)
+
+// Report violation and save link
+#define FLAG2_LINK(id, i, i2) do { \
+  ASSERT_RULE(id);  \
+  if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) return 1;  \
+	flags[0] = 0;  \
+	++flags[id];  \
+	anflags[cpv][i].push_back(id);  \
+	anfl[cpv][i].push_back(i2);  \
+} while (0)
+
+// For harmony
+#define FLAG3(id, i) do {  \
+	ASSERT_RULE(id);  \
+	if (!accept[id]) {  \
+		last_flag=id;  \
+		return 1;  \
+	}  \
+} while (0)
+
+// Simply flag
+#define FLAG4(id, i) do {  \
+	ASSERT_RULE(id);  \
+	flags[0] = 0;  \
+	++flags[id];  \
+	anflags[cpv][i].push_back(id);  \
 } while (0)
 
 // This value has to be greater than any penalty. May need correction if step_penalty or pitch_penalty changes
@@ -600,12 +622,13 @@ protected:
 	vector<float> fpenalty; // [r_id] Additional penalty for flags
 	vector<int>  flags; // [r_id] Flags for whole cantus
 	vector<vector<vector<int>>> anflags; // [v][s][] Note flags
-	vector<int> aint; // [v][s][] Note flags
+	vector<vector<vector<int>>> anfl; // [v][s][] Note flags links
 	vector<int> br_cc; // [s] Cantus chromatic (best rejected)
 	vector<int>  br_f; // [r_id] Flags for whole cantus (best rejected)
 	vector<long>  ssf; // [r_id] SWA stuck flags
 	vector<int>  best_flags; // [r_id] best flags of saved cantus for swa
 	vector<vector<int>> br_nf; // [s][] Note flags (best rejected)
+	vector<vector<int>> br_nfl; // [s][] Note flags links (best rejected)
 	float rpenalty_cur = 0; // Rules penalty
 	float rpenalty_source = 0; // Source melody rpenalty
 	float rpenalty_min; // Minimum rules penalty for this scan

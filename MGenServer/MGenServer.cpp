@@ -104,7 +104,7 @@ void SendProgress(CString st) {
 	j_progress = st;
 	CString q;
 	long long timestamp = CGLib::time();
-	q.Format("UPDATE jobs SET j_progress='%s' WHERE j_id='%ld'",
+	q.Format("UPDATE jobs SET j_updated=NOW(), j_progress='%s' WHERE j_id='%ld'",
 		db.Escape(j_progress), CDb::j_id);
 	db.Query(q);
 }
@@ -461,7 +461,7 @@ int RunRenderStage(int sta) {
 		if (CGLib::fileExists(reaperbuf + "progress.txt")) {
 			CGLib::read_file_sv(reaperbuf + "progress.txt", sv);
 			if (sv.size()) {
-				st.Format("Stage %d/%d: ", sta, j_stages);
+				st.Format("Stage %d/%d: ", j_stages - sta, j_stages);
 				SendProgress(st + sv[0]);
 			}
 		}

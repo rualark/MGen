@@ -38,6 +38,7 @@ int CGenCP1::InitCP() {
 	aleap.resize(av_cnt);
 	aslur.resize(av_cnt);
 	anflags.resize(av_cnt);
+	anfl.resize(av_cnt);
 	return error;
 }
 
@@ -131,6 +132,7 @@ void CGenCP1::SingleCPInit() {
 	flags[0] = 1;
 	for (int i = 0; i < ep2; ++i) {
 		anflags[cpv][i].clear();
+		anfl[cpv][i].clear();
 	}
 	// Matrix scan
 	if (task != tEval) {
@@ -657,7 +659,7 @@ void CGenCP1::ReseedCP()
 
 int CGenCP1::FailAlteredInt2(int i, int c1, int c2, int flag) {
 	if ((apcc[0][i] == c1 && apcc[1][i] == c2) || (apcc[0][i] == c2 && apcc[1][i] == c1)) 
-		FLAG2_INT(flag, fli[bli[i]]);
+		FLAG2(flag, fli[bli[i]]);
 	return 0;
 }
 
@@ -793,28 +795,28 @@ int CGenCP1::FailSusResolution(int s3) {
 		// Mark resolution as obligatory harmonic in basic msh
 		if (tivl[s3] > 0) mshb[bli[s3]] = pSusRes;
 		// Resolution to discord
-		if (tivl[s3] < 0) FLAG2_INT2(220, sus[ls], s3);
+		if (tivl[s3] < 0) FLAG2_LINK(220, sus[ls], s3);
 			// Resolution by leap
-		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2_INT2(221, s3, sus[ls]);
+		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2_LINK(221, s3, sus[ls]);
 		else {
 			// Resolution up
 			if (acc[cpv][s3] > acc[cpv][s2]) {
 				// Allowed only for resolution of leading tone
-				if (apcc[cpv][s2] == 11) FLAG2_INT2(222, s3, sus[ls]);
-				else FLAG2_INT2(219, s3, sus[ls]);
+				if (apcc[cpv][s2] == 11) FLAG2_LINK(222, s3, sus[ls]);
+				else FLAG2_LINK(219, s3, sus[ls]);
 			}
 			// 9th to 8va
 			if (ivlc[s2] == 1 && ivlc[s3] == 0) {
 				if (ivl[s2] > 7) {
 					if (cantus_high) 
-						FLAG2_INT2(216, s3, sus[ls]);
+						FLAG2_LINK(216, s3, sus[ls]);
 				}
 				// 2nd to unison
-				else FLAG2_INT2(218, s3, sus[ls]);
+				else FLAG2_LINK(218, s3, sus[ls]);
 			}
 			// 7th to 8va
 			else if (cantus_high && ivlc[s2] == 6 && ivlc[s3] == 0) 
-				FLAG2_INT2(217, s3, sus[ls]);
+				FLAG2_LINK(217, s3, sus[ls]);
 		}
 	}
 	return 0;
@@ -831,7 +833,7 @@ int CGenCP1::FailSus1() {
 		// Flag suspension
 		FLAG2(225, s);
 		// Check if sus starts from discord
-		if (tivl[s] < 0) FLAG2_INT(224, s);
+		if (tivl[s] < 0) FLAG2(224, s);
 		last_cf = -1;
 		// Check all cantus note changes
 		for (s = sus[ls]; s <= s2; ++s) {
@@ -1008,7 +1010,7 @@ int CGenCP1::FailSus() {
 int CGenCP1::FailDisSus() {
 	// Discord
 	if (tivl[s] < 0) {
-		FLAG2_INT(83, s);
+		FLAG2(83, s);
 	}
 	return 0;
 }
@@ -1018,15 +1020,15 @@ int CGenCP1::FailUnison() {
 	if (!civl[s]) {
 		// 2nd -> unison
 		if (s > 0 && ivl[s - 1] == 1) 
-			FLAG2_INT2(275, s, isus[ls - 1]);
+			FLAG2_LINK(275, s, isus[ls - 1]);
 		// Unison near m2 in same measure
 		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1 && bmli[s] == bmli[fli[ls + 1]]) 
-			FLAG2_INT2(277, s, fli[ls + 1]);
+			FLAG2_LINK(277, s, fli[ls + 1]);
 		else if (s > 0 && civl[s - 1] == 1 && bmli[s] == bmli[s - 1]) 
-			FLAG2_INT2(275, s, isus[ls - 1]);
+			FLAG2_LINK(275, s, isus[ls - 1]);
 		// Inside downbeat without suspension
 		if (!beat[ls] && ls > 0 && ls < fli_size - 1 && !sus[ls]) 
-			FLAG2_INT(91, s);
+			FLAG2(91, s);
 	}
 	return 0;
 }
@@ -1037,7 +1039,7 @@ int CGenCP1::FailDis() {
 		// Do not flag discord if suspension, because anticipation will flag it
 		// Do not flag discord if last note, because it can become suspension
 		if (sus[ls] || ls == fli_size - 1) return 0;
-		if (msh[ls] == pLeap) FLAG2_INT(187, s);
+		if (msh[ls] == pLeap) FLAG2(187, s);
 			// pLastLT cannot be dissonance, because it is set only if it is not dissonance
 			// pSusStart does not have separate flag, because it is marked as interbar
 			// Here pSusStart will never fire flag, because pSusStart is set only if sus start is not a dissonance
@@ -1046,22 +1048,22 @@ int CGenCP1::FailDis() {
 			// Here pSusRes will never fire flag, because pSusRes is set only if sus resolution is harmonic
 		else if (msh[ls] == pSusRes) FLAG2(220, s);
 			// This is protection against wrong melodic shape value
-		else if (msh[ls] > 0) FLAG2_INT(83, s);
+		else if (msh[ls] > 0) FLAG2(83, s);
 		else {
 			// Stepwize
-			if (civl[s] == 1) FLAG2_INT(276, s);
+			if (civl[s] == 1) FLAG2(276, s);
 			else {
 				if (msh[ls] < -30) FLAG2(256, s);
 				else if (msh[ls] < -20) FLAG2(258, s);
 				else if (msh[ls] < -10) FLAG2(282, s);
-				else FLAG2_INT(169, s);
+				else FLAG2(169, s);
 			}
 			if (!sus[ls]) {
 				// Check if discord is longer than neighboring consonance
 				if (ls > 0 && llen[ls] > llen[ls - 1] && tivl[fli2[ls - 1]] != iDis) 
-					FLAG2_INT(223, s);
+					FLAG2(223, s);
 				if (ls < fli_size - 2 && beat[ls + 1] && llen[ls] > llen[ls + 1] && tivl[fli[ls + 1]] != iDis)
-					FLAG2_INT(384, s);
+					FLAG2(384, s);
 			}
 		}
 	}
@@ -1073,10 +1075,10 @@ int CGenCP1::FailPcoSus() {
 	if (tivl[s] == iPco) {
 		// Do not need to prohibit parallel, because one of note is slurred from previous step
 		// Prohibit combinatory
-		if (civlc[s] == civlc[s - 1]) FLAG2_INT2(85, s - 1, s);
+		if (civlc[s] == civlc[s - 1]) FLAG2_LINK(85, s - 1, s);
 		// Prohibit different
 		else if (tivl[s - 1] == iPco)
-			FLAG2_INT2(86, s - 1, s);
+			FLAG2_LINK(86, s - 1, s);
 	}
 	return 0;
 }
@@ -1088,65 +1090,65 @@ int CGenCP1::FailPco() {
 		if (ep2 >= c_len || ls < fli_size - 1) {
 			// Prohibit leading tone octave on suspension
 			if (apcc[0][sus[ls]] == 11 && apcc[1][sus[ls]] == 11)
-				FLAG2_INT(324, sus[ls]);
+				FLAG2(324, sus[ls]);
 			// Prohibit parallel pco on suspension
 			if (ivl[sus[ls]] == ivl[fli2[ls - 1]])
-				FLAG2_INT2(385, sus[ls], isus[ls - 1]);
+				FLAG2_LINK(385, sus[ls], isus[ls - 1]);
 		}
 	}
 	if (tivl[s] == iPco) {
 		// Prohibit long downbeat octave except last measure
 		if (!cantus_high && species == 5 && !beat[ls] && bmli[s] < mli.size() - 1 && 
 			acc[cpv][s] >= lclimax2[s] && rlen[ls] > 3 && ls > 0 && rlen[ls] >= rlen[ls - 1]) {
-			if (ivlc[s]) FLAG2_INT(325, s);
-			else FLAG2_INT(326, s);
+			if (ivlc[s]) FLAG2(325, s);
+			else FLAG2(326, s);
 		}
 		// Prohibit leading tone octave
 		if (apcc[0][s] == 11 && apcc[1][s] == 11) {
 			// Downbeat
-			if (!beat[ls]) FLAG2_INT(324, s);
+			if (!beat[ls]) FLAG2(324, s);
 			// Leaps
-			else if (s > 0 && aleap[cpv][s - 1]) FLAG2_INT(324, s);
+			else if (s > 0 && aleap[cpv][s - 1]) FLAG2(324, s);
 			else if (ls < fli_size - 1 && aleap[cpv][fli2[ls]]) 
-				FLAG2_INT(324, s);
+				FLAG2(324, s);
 			// Suspension resolution
-			else if (mshb[ls] > 0) FLAG2_INT(324, s);
+			else if (mshb[ls] > 0) FLAG2(324, s);
 		}
 		// Do not prohibit parallel first - first (this is for sus notes, which starts are parallel)
 		// because they are detected as pco apart now
 			// Prohibit parallel last - first
 		if (ivl[s] == ivl[fli2[ls - 1]]) 
-			FLAG2_INT2(84, isus[ls - 1], s);
+			FLAG2_LINK(84, isus[ls - 1], s);
 		else {
 			// Prohibit contrary movement
 			if (bmli[s] - 1 == bmli[fli2[ls - 1]] && civlc[s] == civlc[fli2[ls - 1]]) 
-				FLAG2_INT2(85, isus[ls - 1], s);
+				FLAG2_LINK(85, isus[ls - 1], s);
 				// Prohibit different
 			else if (tivl[fli2[ls - 1]] == iPco) 
-				FLAG2_INT2(86, isus[ls - 1], s);
+				FLAG2_LINK(86, isus[ls - 1], s);
 			// All other cases if previous interval is not pco
 			// Direct movement to pco
 			if (motion[fli2[ls - 1]] == mDirect) {
 				// Stepwize
 				if (abs(acc[1][s] - acc[1][s - 1]) < 3) {
 					if (s2 == c_len - 1 && cfli[cfli.size()-1] == s) {
-						if (civlc[s] == 0) FLAG2_INT2(209, isus[ls - 1], s);
-						else FLAG2_INT2(208, isus[ls - 1], s);
+						if (civlc[s] == 0) FLAG2_LINK(209, isus[ls - 1], s);
+						else FLAG2_LINK(208, isus[ls - 1], s);
 					}
 					else if (ls < fli_size - 1 || ep2 == c_len) {
-						if (civlc[s] == 0) FLAG2_INT2(211, isus[ls - 1], s);
-						else FLAG2_INT2(210, isus[ls - 1], s);
+						if (civlc[s] == 0) FLAG2_LINK(211, isus[ls - 1], s);
+						else FLAG2_LINK(210, isus[ls - 1], s);
 					}
 				}
 				// Non-stepwize
 				else {
 					if (s2 == c_len - 1 && cfli[cfli.size() - 1] == s) {
-						if (civlc[s] == 0) FLAG2_INT2(213, isus[ls - 1], s);
-						else FLAG2_INT2(212, isus[ls - 1], s);
+						if (civlc[s] == 0) FLAG2_LINK(213, isus[ls - 1], s);
+						else FLAG2_LINK(212, isus[ls - 1], s);
 					}
 					else if (ls < fli_size - 1 || ep2 == c_len) {
-						if (civlc[s] == 0) FLAG2_INT2(215, isus[ls - 1], s);
-						else FLAG2_INT2(214, isus[ls - 1], s);
+						if (civlc[s] == 0) FLAG2_LINK(215, isus[ls - 1], s);
+						else FLAG2_LINK(214, isus[ls - 1], s);
 					}
 				}
 			}
@@ -1156,14 +1158,14 @@ int CGenCP1::FailPco() {
 			if (beat[ls]) {
 				// Prohibit culmination
 				if (culm_ls == ls || (cfv == 1 && cf_culm_s == s)) 
-					FLAG2_INT(81, s);
+					FLAG2(81, s);
 			}
 			else {
 				// Prohibit downbeat culmination
 				if (culm_ls == ls || (cfv == 1 && cf_culm_s == s))
-					FLAG2_INT(82, s);
+					FLAG2(82, s);
 				// Prohibit downbeat
-				else FLAG2_INT(80, s);
+				else FLAG2(80, s);
 			}
 		}
 	}
@@ -2109,19 +2111,19 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 					// Last contrary
 					if (ep2 == c_len && ls == fli_size - 1 && 
 						(acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) < 0) 
-						FLAG2_INT2(376, s, pco_last);
+						FLAG2_LINK(376, s, pco_last);
 					// Other anticipation
-					else FLAG2_INT2(315, s, pco_last);
+					else FLAG2_LINK(315, s, pco_last);
 				}
 				// Downbeat
 				else if (fli[ls] == s && acc[cfv][s] != acc[cfv][s - 1]) {
 					// Last contrary
 					if (ep2 == c_len && ls == fli_size - 1 &&
 						(acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) < 0) 
-						FLAG2_INT2(376, s, pco_last);
+						FLAG2_LINK(376, s, pco_last);
 					// Other downbeat
 					else 
-						FLAG2_INT2(316, s, pco_last);
+						FLAG2_LINK(316, s, pco_last);
 				}
 				// Many notes in between
 				else if (ls - ls_1 > 4) {}
@@ -2129,19 +2131,19 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 				else if (civl[s] != civl[pco_last]) {
 					// Direct compound
 					if ((acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) > 0) {
-						FLAG2_INT2(347, s, pco_last);
+						FLAG2_LINK(347, s, pco_last);
 					}
 					// Contrary compound
-					else FLAG2_INT2(248, s, pco_last);
+					else FLAG2_LINK(248, s, pco_last);
 				}
 				// Stepwize
 				else if ((!sus[ls_1] && (!pco_last || asmooth[cpv][pco_last - 1]) &&
 					(pco_last2 + 1 >= ep2 || asmooth[cpv][pco_last2])) ||
 					(!sus[ls] && (!s || asmooth[cpv][s - 1]) &&
 					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
-					FLAG2_INT2(249, s, pco_last);
+					FLAG2_LINK(249, s, pco_last);
 				// Asymmetric
-				else if (beat[ls_1] != beat[ls]) FLAG2_INT2(374, s, pco_last);
+				else if (beat[ls_1] != beat[ls]) FLAG2_LINK(374, s, pco_last);
 				// Other
 				else {
 					if (iv == 7) {
@@ -2149,12 +2151,12 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 						if (bmli[sus[ls_1]] == bmli[s] && sus[ls_1] &&
 							ivlc[sus[ls_1]] == 5 && ivlc[s] == 4 &&
 							abs(ac[cpv][s] - ac[cpv][pco_last]) < 2)
-							FLAG2_INT2(330, s, pco_last);
+							FLAG2_LINK(330, s, pco_last);
 						// Other
-						else FLAG2_INT2(250, s, pco_last);
+						else FLAG2_LINK(250, s, pco_last);
 					}
 					else {
-						FLAG2_INT2(250, s, pco_last);
+						FLAG2_LINK(250, s, pco_last);
 					}
 				}
 			}
@@ -2182,8 +2184,8 @@ int CGenCP1::FailVIntervals() {
 	pm_pico = 0;
 	// Check first step
 	if (tivl[0] == iDis) {
-		if (fn) FLAG2_INT(359, 0);
-		else FLAG2_INT(83, 0);
+		if (fn) FLAG2(359, 0);
+		else FLAG2(83, 0);
 	}
 	for (ls = 1; ls < fli_size; ++ls) {
 		s = fli[ls];
@@ -2197,10 +2199,10 @@ int CGenCP1::FailVIntervals() {
 			++pm_pico;
 			// Two same ico transitions means three intervals already
 			if (pico_count == ico_chain-1) {
-				FLAG2_INT2(89, s, isus[ls - 1]);
+				FLAG2_LINK(89, s, isus[ls - 1]);
 			}
 			else if (pico_count >= ico_chain2) {
-				FLAG2_INT2(96, s, isus[ls - 1]);
+				FLAG2_LINK(96, s, isus[ls - 1]);
 			}
 		}
 		else pico_count = 0;
@@ -2767,16 +2769,16 @@ void CGenCP1::SWACP(int i, int dp) {
 int CGenCP1::FailFirstIntervals() {
 	CHECK_READY(DR_fli, DR_pc, DR_ivl);
 	if (apc[0][0] == 0) {
-		if (apc[1][0] == 0) FLAG2_INT(268, 0);
-		else if (apc[1][0] == 4) FLAG2_INT(269, 0);
-		else if (apc[1][0] == 2) FLAG2_INT(270, 0);
-		else FLAG2_INT(272, 0);
+		if (apc[1][0] == 0) FLAG2(268, 0);
+		else if (apc[1][0] == 4) FLAG2(269, 0);
+		else if (apc[1][0] == 2) FLAG2(270, 0);
+		else FLAG2(272, 0);
 	}
 	else if (apc[0][0] == 2) {
-		if (apc[1][0] == 0) FLAG2_INT(271, 0);
-		else FLAG2_INT(272, 0);
+		if (apc[1][0] == 0) FLAG2(271, 0);
+		else FLAG2(272, 0);
 	}
-	else FLAG2_INT(272, 0);
+	else FLAG2(272, 0);
 	return 0;
 }
 
@@ -2793,16 +2795,16 @@ int CGenCP1::FailLastIntervals() {
 		fs = max(mli[mli.size() - 1], fli[fli_size - 1]);
 		// Check last intervals
 		if (apc[0][c_len - 1] == 0) {
-			if (apc[1][c_len - 1] == 0) FLAG2_INT(354, fs);
-			else if (apc[1][c_len - 1] == 4) FLAG2_INT(355, fs);
-			else if (apc[1][c_len - 1] == 2) FLAG2_INT(356, fs);
-			else FLAG2_INT(358, fs);
+			if (apc[1][c_len - 1] == 0) FLAG2(354, fs);
+			else if (apc[1][c_len - 1] == 4) FLAG2(355, fs);
+			else if (apc[1][c_len - 1] == 2) FLAG2(356, fs);
+			else FLAG2(358, fs);
 		}
 		else if (apc[0][c_len - 1] == 2) {
-			if (apc[1][c_len - 1] == 0) FLAG2_INT(357, fs);
-			else FLAG2_INT(358, fs);
+			if (apc[1][c_len - 1] == 0) FLAG2(357, fs);
+			else FLAG2(358, fs);
 		}
-		else FLAG2_INT(358, fs);
+		else FLAG2(358, fs);
 		// Prohibit major second up before I (applicable to major and minor)
 		if (apcc[cpv][s] == 0 && apcc[cpv][s_1] == 10) FLAG2(74, s_1);
 		if (apcc[cpv][s] == 0 && apcc[cpv][s_2] == 10) FLAG2(74, s_2);
@@ -3833,6 +3835,7 @@ void CGenCP1::Generate() {
 		vector<int> cc_len_old = cc_len;
 		vector<float> cc_tempo_old = cc_tempo;
 		vector<vector<int>> anflags_old = anflags[cfv];
+		vector<vector<int>> anfl_old = anfl[cfv];
 		c_len = m_c.size() * npm - fn;
 		ac[cfv].clear();
 		acc[cfv].clear();
@@ -3841,8 +3844,10 @@ void CGenCP1::Generate() {
 		cc_len.clear();
 		cc_tempo.clear();
 		anflags[cfv].clear();
+		anfl[cfv].clear();
 		// Create empty arrays
 		anflags[cfv].resize(m_c.size()*npm);
+		anfl[cfv].resize(m_c.size()*npm);
 		int npm2;
 		for (int i = 0; i < m_c.size(); ++i) {
 			npm2 = npm;
@@ -3858,6 +3863,7 @@ void CGenCP1::Generate() {
 				if (!x) {
 					int y = i*npm + x;
 					anflags[cfv][y] = anflags_old[i];
+					anfl[cfv][y] = anfl_old[i];
 				}
 			}
 		}

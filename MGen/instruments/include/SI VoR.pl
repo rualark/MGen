@@ -32,6 +32,6 @@ InitCommand = "Legato transition speed: 0"
 InitCommand = "Legato on"
 InitCommand = "Chord auto-pan on: 0"
 InitCommand = "Release samples on"
-Pan = 50 # default 50 (0 - left, 50 - center, 100 - right)
+Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
