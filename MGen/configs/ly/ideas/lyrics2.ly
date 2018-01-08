@@ -226,7 +226,7 @@ _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { t }  }
   \time 4/4
   % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
   % \override Score.BarNumber.break-visibility = ##(#f #t #t)
-  \new Voice \with {
+  \new Voice = "melody" \with {
     \remove "Note_heads_engraver"
     \consists "Completion_heads_engraver"
     \remove "Rest_engraver"
@@ -253,7 +253,40 @@ _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { t }  }
     \repeat unfold 1 { \skip 1 }
   }    
 }
+  \new Lyrics {
+    \lyricmode {
+      I1 like8 \repeat unfold 6 { \skip 8 } my8 cat!1
+    }
+  }
+>>
 
+<<
+  \new Voice = "melody" \relative {
+    c''2 a f f e e
+  }
+  \new Lyrics \lyricmode {
+    c4. -- a -- f -- f -- e2. -- e
+  }
+>>
+
+<<
+  \new Staff {
+    \relative {
+      c''2 c2
+      d1
+    }
+  }
+  \new Lyrics {
+    \lyricmode {
+      I2 like4. my8 cat!1
+    }
+  }
+  \new Staff {
+    \relative {
+      c'8 c c c c c c c
+      c8 c c c c c c c
+    }
+  }
 >>
 \markup \wordwrap \bold {
   \char ##x2461 NOTE 1 at 1:3 - A
