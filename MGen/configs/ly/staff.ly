@@ -10,4 +10,5 @@
     \override Glissando.minimum-length = #5
     \override Glissando.springs-and-rods = #ly:spanner::set-spacing-rods
     \override Glissando.thickness = #'3
+    \override Slur.line-thickness = #2
   }

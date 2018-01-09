@@ -124,6 +124,43 @@ g)\startTextSpan a
 }
 
 
+\relative c {
+  \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
+   \override Score.VoltaBracket #'font-shape = #'bold 
+    \override Score.VoltaBracket #'edge-height = #'(0 . 0) 
+
+\clef "treble_8"
+  \stringNumberSpannerZ "59"
+  \textSpannerDown
+  a8\startTextSpan
+  b \startTrillSpan \stopTextSpan
+  \startGroup
+  c (  \stopTrillSpan \stopGroup \ottava #-1
+\set Score.repeatCommands = #`((volta ,#{ \markup " " #} )) 
+d 
+  
+  \(
+  \ottava #0
+  \sustainOn
+  e 
+  \sustainOff
+\glissando
+  \override NoteColumn.glissando-skip = ##t
+  f
+  
+\stringNumberSpannerZ "4"
+   \set Score.repeatCommands = #'((volta #f)) 
+
+g)\startTextSpan a
+  
+  d4\) 
+    \override NoteColumn.glissando-skip = ##f
+  g, 
+  
+  
+  e2\stopTextSpan
+}
+
 \relative c' { 
   \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
    \override Score.VoltaBracket #'font-shape = #'bold 
@@ -132,8 +169,8 @@ g)\startTextSpan a
    e4 e' e r \bar "||" 
    \set Score.repeatCommands = #'((volta #f)) 
    c d e 
-   \set Score.repeatCommands = #'((volta "Fine.")) 
-   e,4 e e r \bar "||" 
+   \set Score.repeatCommands = #'((volta "Fine asdf.")) 
+   e,4 
    \set Score.repeatCommands = #'((volta #f)) 
    c'4 c8 c c4 c8 c 
 } 
