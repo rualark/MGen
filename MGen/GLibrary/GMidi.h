@@ -218,7 +218,6 @@ public:
 	void SplitLyNote5(int pos, vector<int>& la);
 	void SplitLyNoteMeasure(int pos, int le, vector<int>& la);
 	void SplitLyNote(int pos, int le, vector<int>& la);
-	void GetLySev(ofstream & fs, int pos, CString & ev, int le, int i, int v);
 	void SendLyViz(ofstream & fs, int pos, CString & ev, int le, int i, int v, int phase);
 	void SendLyEvent(ofstream & fs, int pos, CString ev, int le, int i, int v);
 	CString GetLyColor(DWORD col);
@@ -234,6 +233,7 @@ public:
 	void ClearLyShape(int s1, int s2, int vtype);
 	void InitLyI();
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
+	void SendLyMistakes();
 	void SaveLy(CString dir, CString fname);
 	void ExportAdaptedMidi(CString dir, CString fname);
 	virtual void Generate() = 0;
@@ -288,6 +288,7 @@ public:
 	int rule_set = 0; // id of current rule set
 
 	// Lilypond
+	ofstream ly_fs;
 	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
 	int ly_nnum = 0; // Note number

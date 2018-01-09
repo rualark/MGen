@@ -240,10 +240,6 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		ly_s2 = ly_s - ly_step1;
 		SaveLyComments(i, v, pos);
 		SendLyViz(fs, pos, ev, le, i, v, 1);
-		if (ev != 'r' && ly_flag_style == 1) {
-			if (lyi[ly_s2].shs[vDefault]) 
-				SendLyNoteColor(fs, flag_color[lyi[ly_s2].shse[vDefault]]);
-		}
 		if (show_lining && ev != "r") {
 			if (la[lc] == 8) {
 				if (lining[i][v] == HatchStyleNarrowHorizontal) fs << " \\speakOff \\override NoteHead.style = #'xcircle ";
@@ -272,34 +268,6 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 					fs << "  \\staccatissimo ";
 				}
 			}
-		}
-		if (midifile_export_marks && !mark[i][ly_v2].IsEmpty()) {
-			// Search for conflicting harmonies
-			CString st = mark[i][ly_v2];
-			st.Replace("\n", "");
-			if (st != "PD" && st != "CA" && st != "DN") {
-				fs << "_\\markup{ ";
-				int found = 0;
-				// Replace dominant symbol
-				st.Replace("#", " \"#\" ");
-				if (st[0] == 'D') {
-					st = "\\concat { \\char ##x00D0 " + st.Right(st.GetLength() - 1) + " } ";
-				}
-				else if (st[0] == 'd') {
-					st = "\\concat { \\char ##x0111 " + st.Right(st.GetLength() - 1) + " } ";
-				}
-				else st = "\\concat { " + st + " } ";
-				st.Replace("6", " \\raise #0.7 6");
-				//if (found) st = ", " + st;
-				found = 1;
-				fs << "\\teeny \\on-color #(rgb-color ";
-				fs << GetLyMarkColor(mark_color[i][ly_v2]);
-				fs << ") \\pad-markup #0.4 " << st << " ";
-				fs << "}\n";
-			}
-		}
-		if (ev != 'r' && ly_flag_style == 2) {
-			SendLyFlagColor(fs, i, v);
 		}
 		if (i > -1) {
 			i += la[lc] / midifile_out_mul[i];
@@ -557,6 +525,7 @@ void CGMidi::InitLyI() {
 		}
 	}
 }
+
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
 	vector<CString> sv;
 	CString clef, key, key_visual;
@@ -643,6 +612,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		fs << "\n  }\n";
 		fs << "}\n";
 	}
+	SendLyMistakes();
 	fs << ">>\n";
 	fs << ly_com_st;
 	// Second info
@@ -651,24 +621,54 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	//fs << "\\markup \\wordwrap \\italic {\n  \\vspace #2\n  " << st2 << "\n}\n";
 }
 
+void CGMidi::SendLyMistakes() {
+	if (midifile_export_marks && !mark[i][ly_v2].IsEmpty()) {
+		// Search for conflicting harmonies
+		CString st = mark[i][ly_v2];
+		st.Replace("\n", "");
+		if (st != "PD" && st != "CA" && st != "DN") {
+			fs << "_\\markup{ ";
+			int found = 0;
+			// Replace dominant symbol
+			st.Replace("#", " \"#\" ");
+			if (st[0] == 'D') {
+				st = "\\concat { \\char ##x00D0 " + st.Right(st.GetLength() - 1) + " } ";
+			}
+			else if (st[0] == 'd') {
+				st = "\\concat { \\char ##x0111 " + st.Right(st.GetLength() - 1) + " } ";
+			}
+			else st = "\\concat { " + st + " } ";
+			st.Replace("6", " \\raise #0.7 6");
+			//if (found) st = ", " + st;
+			found = 1;
+			fs << "\\teeny \\on-color #(rgb-color ";
+			fs << GetLyMarkColor(mark_color[i][ly_v2]);
+			fs << ") \\pad-markup #0.4 " << st << " ";
+			fs << "}\n";
+		}
+	}
+	if (ev != 'r' && ly_flag_style == 2) {
+		SendLyFlagColor(fs, i, v);
+	}
+}
+
 void CGMidi::SaveLy(CString dir, CString fname) {
-	ofstream fs;
 	vector<CString> sv;
 	CString title;
 	title = m_algo_folder + ": " + m_config + " (" + 
 		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M") + ")";
-	fs.open(dir + "\\" + fname + ".ly");
+	ly_fs.open(dir + "\\" + fname + ".ly");
 	read_file_sv("configs\\ly\\header.ly", sv);
 	for (int i = 0; i < sv.size(); ++i) {
 		sv[i].Replace("$TITLE$", title);
-		fs << sv[i] << "\n";
+		ly_fs << sv[i] << "\n";
 	}
 
 	if (!mel_info.size()) {
 		CString st;
 		st = "Whole piece";
 		ly_mel = -1;
-		SaveLySegment(fs, st, "", 0, t_generated);
+		SaveLySegment(ly_fs, st, "", 0, t_generated);
 	}
 	else {
 		int first_step = 0;
@@ -690,28 +690,15 @@ void CGMidi::SaveLy(CString dir, CString fname) {
 			if (s >= t_generated - 1 && mel_id[t_generated - 1][0] > -1 && 
 				found && first_step == last_step)	last_step = t_generated - 1;
 			ly_mel = m;
-			if (found) SaveLySegment(fs, mel_info[m], mel_info2[m], first_step, last_step);
+			if (found) SaveLySegment(ly_fs, mel_info[m], mel_info2[m], first_step, last_step);
 			//if (m < mel_info.size() - 1) fs << "\\pageBreak\n";
 		}
 	}
-	fs << "\\header {tagline = \"This file was created by MGen ";
-	fs << APP_VERSION << "\"}\n";
+	ly_fs << "\\header {tagline = \"This file was created by MGen ";
+	ly_fs << APP_VERSION << "\"}\n";
 	read_file_sv("configs\\ly\\footer.ly", sv);
-	write_file_sv(fs, sv);
-	fs.close();
-	/*
-	if (m_testing) {
-		CreateDirectory("autotest\\ly", NULL);
-		// This will rewrite file if exists (tested)
-		copy_file(dir + "\\" + fname + ".ly", 
-			"autotest\\ly\\" + m_algo_folder + "-" + m_config + ".ly");
-		// Test run lilypond
-		CString par =
-			"-dgui --output autotest\\ly" 
-			" autotest\\ly\\" + m_algo_folder + "-" + m_config + ".ly";
-		Run("autotest\\LilyPond\\usr\\bin\\lilypond.exe", par, 0);
-	}
-	*/
+	write_file_sv(ly_fs, sv);
+	ly_fs.close();
 }
 
 void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
