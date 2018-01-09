@@ -139,15 +139,16 @@ g)\startTextSpan a
 \set Score.repeatCommands = #`((volta ,#{ \markup " " #} )) 
 d 
   
+  \sustainOn
   \(
   \ottava #0
-  \sustainOn
   e 
-  \sustainOff
+    \sustainOff
+
 \glissando
   \override NoteColumn.glissando-skip = ##t
   f
-  
+x  
 \stringNumberSpannerZ "4"
    \set Score.repeatCommands = #'((volta #f)) 
 
