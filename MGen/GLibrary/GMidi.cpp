@@ -245,7 +245,8 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 	SplitLyNote(pos, le, la);
 	SplitLyNoteMeasure(pos, le, la);
 	for (int lc = 0; lc < la.size(); ++lc) {
-		ParseLyComments(i, v, 0);
+		ly_s = i;
+		ly_s2 = ly_s - ly_step1;
 		SaveLyComments(i, v, pos);
 		// If no flags, parse second voice
 		if (!ly_fa.size() && v_cnt > 1) {
@@ -407,13 +408,17 @@ void CGMidi::ParseNLinks(int i, int v, int foreign) {
 		if (foreign && !rule_viz_v2[it.first]) continue;
 		lyi[i - ly_step1].nflags.push_back(it.first);
 		lyi[i - ly_step1].nfl.push_back(it.second);
+		lyi[i - ly_step1].nfn.push_back(ly_flags);
+		lyi[i - ly_step1].nff.push_back(foreign);
+		lyi[i - ly_step1].nfc.push_back(comment[i][v][it.first]);
+		++ly_flags;
 	}
 }
 
 void CGMidi::SaveLyComments(int i, int v, int pos) {
 	CString st, com, note_st;
 	int pos1, pos2, found;
-	if (comment[i][v].size()) {
+	if (lyi[ly_s2].nflags.size()) {
 		note_st = "\\markup \\wordwrap \\bold {\n  ";
 		// Show voice number if more than 1 voice
 		if (vm_cnt > 1) {
@@ -427,10 +432,16 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 		// NoteName[note[i][v] % 12]
 		note_st += st + "\n}\n";
 		found = 0;
-		for (int c = 0; c < comment[i][v].size(); ++c) {
-			com = comment[i][v][c];
-			// Do not show hidden rules
-			if (com[0] == '$') continue;
+		for (int c = 0; c < lyi[ly_s2].nflags.size(); ++c) {
+			int fl = lyi[ly_s2].nflags[c];
+			if (!accept[fl]) st = "- ";
+			else if (accept[fl] == -1) st = "$ ";
+			else st = "+ ";
+			com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+			if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
+			comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+			if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];
+			if (!SubRuleComment[rule_set][fl].IsEmpty()) com += " (" + SubRuleComment[rule_set][fl] + ")";
 			// Remove technical information
 			pos1 = com.Find('[');
 			pos2 = com.Find(']');
@@ -601,13 +612,12 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	// Save notes
 	fs << "<<\n";
 	for (int v = v_cnt - 1; v >= 0; --v) {
-		ly_v = v;
-		InitLyI();
 		// Do not show voice if no notes inside
 		if (!vm_max[v]) continue;
-		// Select bass clef if melody goes mostly below middle C
+		ly_v = v;
+		InitLyI();
+		// Select best clef
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
-		//if (60 - vm_min[v] > vm_max[v] - 60) clef = "bass";
 		fs << "\\new Staff {\n";
 		st.Format("  \\set Staff.instrumentName = \\markup { \\char ##x246%d }\n", v);
 		fs << st;

@@ -355,17 +355,11 @@ protected:
 	void FillCantusMap(vector<int>& c, vector<int>& smap, int step1, int step2, int value);
 	
 	// Rules
-	vector <int> accept; // Each 1 allows showing canti with specific properties
 	vector <vector<int>> accepts; // Each 1 allows showing canti with specific properties
-	int rule_set = 0; // id of current rule set
 	int cf_rule_set = 0; // id of current rule set for cantus
 	int cp_rule_set = 0; // id of current rule set for cpoint
-	vector<vector <CString>> RuleName; // Names of all rules
-	vector<vector <CString>> SubRuleName; // Names of all rules
 	vector<vector<vector<vector<int>>>> RuleParam; // Parsed rule parameters
-	vector <CString> RuleComment; // Comments for flag groups
 	vector <CString> RuleGroup; // Groups for flag groups
-	vector<vector <CString>> SubRuleComment; // Comments for flags
 	int max_flags = 82; // Maximum number of rules
 
 	// Parameters

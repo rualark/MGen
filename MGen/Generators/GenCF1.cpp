@@ -3708,17 +3708,14 @@ void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
 }
 
 void CGenCF1::SendNlink(int pos, int i, int v, int av, int x) {
-	nlink[pos + i][v].clear();
-	for (int f = 0; f < anfl[av][x].size(); ++f) {
-		nlink[pos + i][v][anflags[av][x][f]] = anfl[av][x][f] - x;
-	}
 }
 
 void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {
 	CString st, com;
 	int current_severity = -1;
 	// Clear
-	comment2[pos+i][v].Empty();
+	nlink[pos + i][v].clear();
+	comment2[pos + i][v].Empty();
 	comment[pos + i][v].clear();
 	ccolor[pos + i][v].clear();
 	if (anflags[av][x].size() > 0) for (int f = 0; f < anflags[av][x].size(); ++f) {
@@ -3747,6 +3744,7 @@ void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {
 				//com += ". ";
 				comment[pos][v].push_back(com);
 				ccolor[pos][v].push_back(flag_color[severity[fl]]);
+				nlink[pos][v][fl] = anfl[av][x][f] - x;
 			}
 			// Set note color if this is maximum flag severity
 			if (severity[fl] > current_severity && severity[fl] >= show_min_severity

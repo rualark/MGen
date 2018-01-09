@@ -195,6 +195,9 @@ struct LY_Intermediate {
 	vector<CString> sht; // [shape_type] Starting shape text
 	vector<int> nflags; // [] Current flags
 	vector<int> nfl; // [] Current flags links
+	vector<int> nfn; // Note flag number
+	vector<int> nff; // Note flag foreign
+	vector<CString> nfc; // Note flag comment
 };
 
 class CGMidi :
@@ -269,15 +272,23 @@ public:
 	int buf_underrun = 0; // Shows if current playback had an issue with buffer underrun
 	int midi_play_step = 0; // Current step being played by midi
 
-	// Lilypond
-	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
-	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
+	// Flags
+	vector <int> accept; // Each 1 allows showing canti with specific properties
 	vector<int> rule_viz; // [r_id] Rule visualization type
 	vector<int> rule_viz_v2; // [r_id] Rule visualization type for second voice
 	vector<int> rule_viz_int; // [r_id] Rule visualization with interval text
 	vector<CString> rule_viz_t; // [r_id] Rule visualization text
 	vector <int> severity; // Get severity by flag id
 	vector<DWORD>  flag_color; // Flag colors
+	vector<vector <CString>> RuleName; // Names of all rules
+	vector<vector <CString>> SubRuleName; // Names of all rules
+	vector <CString> RuleComment; // Comments for flag groups
+	vector<vector <CString>> SubRuleComment; // Comments for flags
+	int rule_set = 0; // id of current rule set
+
+	// Lilypond
+	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
+	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
 	int ly_nnum = 0; // Note number
 	int ly_step1 = 0;
 	int ly_step2 = 0;
@@ -288,6 +299,7 @@ public:
 	int ly_s = 0; // Current ly step
 	int ly_s2 = 0; // Current ly step inside melody
 	int ly_mel = -1; // Currentn ly melody id
+	int ly_flags = 0; // Number of flags in current melody
 
 	// Midi files
 	vector<vector<vector<PmEvent>>> midifile_buf;
