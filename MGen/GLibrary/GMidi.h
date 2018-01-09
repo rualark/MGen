@@ -175,23 +175,22 @@ const CString LyOctave[] = {
 #define vDefault 0
 #define vHarm 1
 #define vInterval 2
-#define vSlur 3
-#define vPSlur 4
-#define vGlis 5
-#define vBracket 6
-#define vTrill 7
-#define vVolta 8
-#define vTS 9 // Text spanner
-#define vOttava 10
-#define vPedal 11
-#define vVBracket 12
+#define vVBracket 3
+#define vVolta 4
+#define vSlur 5
+#define vPSlur 6
+#define vGlis 7
+#define vBracket 8
+#define vTrill 9
+#define vTS 10 // Text spanner
+#define vOttava 11
+#define vPedal 12
 #define MAX_VIZ 13
 
 struct LY_Intermediate {
 	vector<int> shs; // [shape_type] If current step starts new shape
 	vector<int> shsl; // [shape_type] Link to shape start position if current position is shape finish
 	vector<int> shf; // [shape_type] If current step finishes new shape
-	vector<int> shc; // [shape_type] Color of starting shape
 	vector<int> shse; // [shape_type] Highest severity of starting shape
 	vector<CString> sht; // [shape_type] Starting shape text
 	vector<int> nflags; // [] Current flags

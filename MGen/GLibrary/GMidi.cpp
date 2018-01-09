@@ -207,6 +207,15 @@ void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 }
 
 void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v, int phase) {
+	// Show flag finish
+	for (int x = 0; x < lyi[ly_s2].shf.size(); ++x) {
+		if (!lyi[ly_s2].shf[x]) continue;
+		int sev = lyi[ly_s2].shse[x];
+		if (x == vSlur) {
+			if (phase == 10)
+				fs << " ) ";
+		}
+	}
 	// Show flag start
 	for (int x = 0; x < lyi[ly_s2].shs.size(); ++x) {
 		if (!lyi[ly_s2].shs[x]) continue;
@@ -220,11 +229,15 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			if (phase == 10)
 				fs << " \\glissando ";
 		}
-	}
-	// Show flag finish
-	for (int x = 0; x < lyi[ly_s2].shf.size(); ++x) {
-		if (!lyi[ly_s2].shf[x]) continue;
-		int sev = lyi[ly_s2].shse[x];
+		if (x == vSlur) {
+			if (phase == 1) {
+				fs << " \\override Slur.color=#(rgb-color "
+					<< GetLyColor(flag_color[sev])
+					<< ") ";
+			}
+			if (phase == 10)
+				fs << " ( ";
+		}
 	}
 }
 
@@ -272,8 +285,8 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 			i += la[lc] / midifile_out_mul[i];
 			pos += la[lc];
 		}
+		SendLyViz(fs, pos, ev, le, i, v, 10);
 	}
-	SendLyViz(fs, pos, ev, le, i, v, 10);
 }
 
 CString CGMidi::GetLyColor(DWORD col) {
@@ -358,7 +371,6 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 			ly_nnum, pos / 8 + 1, pos % 8 + 1, GetLyNoteVisual(i, v));
 		if (coff[i][v]) 
 			st += " (slur)";
-		// NoteName[note[i][v] % 12]
 		note_st += st + "\n}\n";
 		found = 0;
 		for (int c = 0; c < lyi[ly_s2].nflags.size(); ++c) {
@@ -369,8 +381,6 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 			else if (accept[fl] == -1) st = "$ ";
 			else st = "+ ";
 			com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
-			if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
-			comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 			if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];
 			if (!SubRuleComment[rule_set][fl].IsEmpty()) com += " (" + SubRuleComment[rule_set][fl] + ")";
 			// Send note number with first comment
@@ -379,7 +389,7 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 				ly_com_st += note_st;
 			}
 			ly_com_st += "\\markup \\wordwrap \\with-color #(rgb-color " +
-				GetLyColor(ccolor[i][v][c]) + ") {\n  ";
+				GetLyColor(flag_color[severity[fl]]) + ") {\n  ";
 			com.Replace("\"", "\\\"");
 			com.Replace(" ", "\" \"");
 			st.Format("\\teeny \\raise #0.2 \\circle %d \"", lyi[ly_s2].nfn[c]);
@@ -415,12 +425,11 @@ void CGMidi::SetLyShape(int s1, int s2, int fl, int vtype) {
 	// Finish
 	lyi[s2].shf[vtype] = 1;
 	// Link to start
-	lyi[s2].shsl[vtype] = s1;
+	lyi[s2].shsl[vtype] = s1 - s2;
 	// Calculate maximum severity
-	if (lyi[s2].shse[vInterval] < severity[fl]) {
-		lyi[s2].shse[vtype] = severity[fl];
-		lyi[s2].shc[vInterval] = flag_color[severity[fl]];
-		lyi[s2].sht[vInterval] = rule_viz_t[fl];
+	if (lyi[s1].shse[vInterval] < severity[fl]) {
+		lyi[s1].shse[vtype] = severity[fl];
+		lyi[s1].sht[vInterval] = rule_viz_t[fl];
 	}
 }
 
@@ -428,9 +437,7 @@ void CGMidi::ClearLyShape(int s1, int s2, int vtype) {
 	lyi[s1].shs[vtype] = 0;
 	lyi[s2].shf[vtype] = 0;
 	// Calculate maximum severity
-	lyi[s2].shse[vtype] = -1;
-	// Get color of maximum severity
-	lyi[s2].shc[vInterval] = -1;
+	lyi[s1].shse[vtype] = -1;
 }
 
 void CGMidi::InitLyI() {
@@ -454,7 +461,6 @@ void CGMidi::InitLyI() {
 		lyi[ly_s2].shs.resize(MAX_VIZ);
 		lyi[ly_s2].shsl.resize(MAX_VIZ);
 		lyi[ly_s2].shf.resize(MAX_VIZ);
-		lyi[ly_s2].shc.resize(MAX_VIZ, -1);
 		lyi[ly_s2].shse.resize(MAX_VIZ, -1);
 		lyi[ly_s2].sht.resize(MAX_VIZ);
 		// Parse flags
@@ -467,6 +473,14 @@ void CGMidi::InitLyI() {
 	}
 	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
 		ly_s2 = ly_s - ly_step1;
+		// Find next note position
+		int next_note_step = ly_s;
+		for (int x = ly_s; x < ly_step2; ++x) {
+			if (note[x][ly_v] != note[ly_s][ly_v]) {
+				next_note_step = x;
+				break;
+			}
+		}
 		// Parse shapes
 		for (int f = 0; f < lyi[ly_s2].nflags.size(); ++f) {
 			int fl = lyi[ly_s2].nflags[f];
@@ -476,6 +490,8 @@ void CGMidi::InitLyI() {
 			// Get flag start/stop
 			int s1 = min(ly_s2, ly_s2 + link);
 			int s2 = max(ly_s2, ly_s2 + link);
+			// If shape cannot highlight single note, but flag does not contain link, then link to next note
+			if (vtype > vVolta && s1 == s2) s2 = next_note_step - ly_step1;
 			// Set interval
 			if (rule_viz_int[fl]) {
 				SetLyShape(s1, s2, fl, vInterval);
@@ -626,7 +642,7 @@ void CGMidi::SendLyMistakes() {
 	st.Format("  \\new Lyrics \\with { alignAboveContext = \"staff%d\" } {\n", ly_vhigh);
 	ly_ly_st += st;
 	ly_ly_st += "    \\lyricmode {\n";
-	ly_ly_st += "      \\set stanza = #\" Ref.\"\n";
+	ly_ly_st += "      \\set stanza = #\" Flags:\"\n";
 	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
 		ly_s2 = ly_s - ly_step1;
 		if (!lyi[ly_s2].nflags.size()) {
@@ -660,7 +676,7 @@ void CGMidi::SendLyHarm() {
 	st.Format("  \\new Lyrics \\with { alignBelowContext = \"staff%d\" } {\n", ly_vlow);
 	ly_ly_st += st;
 	ly_ly_st += "    \\lyricmode {\n";
-	ly_ly_st += "      \\set stanza = #\" Harm.\"\n";
+	ly_ly_st += "      \\set stanza = #\" Harmony:\"\n";
 	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
 		ly_s2 = ly_s - ly_step1;
 		CString st = mark[ly_s][ly_vlow];
@@ -697,13 +713,14 @@ void CGMidi::SendLyHarm() {
 void CGMidi::SendLyIntervals() {
 	CString st;
 	if (!ly_flags) return;
+	if (ly_vlow == ly_vhigh) return;
 	st.Format("  \\new Lyrics \\with { alignBelowContext = \"staff%d\" } {\n", ly_vlow);
 	ly_ly_st += st;
 	ly_ly_st += "    \\lyricmode {\n";
-	ly_ly_st += "      \\set stanza = #\" Int.\"\n";
+	ly_ly_st += "      \\set stanza = #\" Interval:\"\n";
 	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
 		ly_s2 = ly_s - ly_step1;
-		if (!lyi[ly_s2].shs[vInterval]) {
+		if (!lyi[ly_s2].shs[vInterval] && !lyi[ly_s2].shf[vInterval]) {
 			SendLySkips(ly_mul);
 			continue;
 		}
@@ -713,8 +730,8 @@ void CGMidi::SendLyIntervals() {
 		CString st = GetIntName(in);
 		ly_ly_st += "\\markup{ ";
 		ly_ly_st += "\\teeny ";
-		if (lyi[ly_s2].shs[vDefault]) {
-			DWORD col = lyi[ly_s2].shc[vInterval];
+		if (lyi[ly_s2].shs[vInterval]) {
+			DWORD col = flag_color[lyi[ly_s2].shse[vInterval]];
 			if (col && col != color_noflag)
 				ly_ly_st += " \\on-color #(rgb-color " + GetLyMarkColor2(col) + ") ";
 		}
