@@ -297,8 +297,8 @@ public:
 	int ly_nnum = 0; // Note number
 	int ly_step1 = 0;
 	int ly_step2 = 0;
-	int ly_vharm = 0; // Show harmony under this voice
-	int ly_vmist = 0; // Show mistakes above this voice
+	int ly_vlow = 0; // Show harmony under this voice
+	int ly_vhigh = 0; // Show mistakes above this voice
 	int ly_vm_cnt = 0; // Number of voices in segment to display
 	CString ly_com_st; // Comments
 	CString ly_ly_st; // Lyrics

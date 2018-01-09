@@ -439,12 +439,12 @@ void CGMidi::InitLyI() {
 	if (ly_vm_cnt > 1) ly_v2 = (ly_v / 2) * 2 + !(ly_v % 2);
 	ly_flags = 0;
 	if (m_algo_id == 111) {
-		ly_vmist = ly_v;
-		ly_vharm = ly_v;
+		ly_vhigh = ly_v;
+		ly_vlow = ly_v;
 	}
 	else {
-		ly_vmist = min(ly_vm_cnt - 1, (ly_v / 2) * 2 + 1);
-		ly_vharm = (ly_v / 2) * 2;
+		ly_vhigh = min(ly_vm_cnt - 1, (ly_v / 2) * 2 + 1);
+		ly_vlow = (ly_v / 2) * 2;
 	}
 	lyi.clear();
 	lyi.resize(ly_step2 - ly_step1);
@@ -623,7 +623,7 @@ void CGMidi::SendLySkips(int count) {
 void CGMidi::SendLyMistakes() {
 	CString st;
 	if (!ly_flags) return;
-	st.Format("  \\new Lyrics \\with { alignAboveContext = \"staff%d\" } {\n", ly_vmist);
+	st.Format("  \\new Lyrics \\with { alignAboveContext = \"staff%d\" } {\n", ly_vhigh);
 	ly_ly_st += st;
 	ly_ly_st += "    \\lyricmode {\n";
 	ly_ly_st += "      \\set stanza = #\" Ref.\"\n";
@@ -657,13 +657,13 @@ void CGMidi::SendLyMistakes() {
 void CGMidi::SendLyHarm() {
 	CString st;
 	if (!ly_flags) return;
-	st.Format("  \\new Lyrics \\with { alignBelowContext = \"staff%d\" } {\n", ly_vharm);
+	st.Format("  \\new Lyrics \\with { alignBelowContext = \"staff%d\" } {\n", ly_vlow);
 	ly_ly_st += st;
 	ly_ly_st += "    \\lyricmode {\n";
 	ly_ly_st += "      \\set stanza = #\" Harm.\"\n";
 	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
 		ly_s2 = ly_s - ly_step1;
-		CString st = mark[ly_s][ly_vharm];
+		CString st = mark[ly_s][ly_vlow];
 		st.Replace("\n", "");
 		if (!st.IsEmpty() && st != "PD" && st != "CA" && st != "DN") {
 			ly_ly_st += "  \\markup{ ";
@@ -681,7 +681,7 @@ void CGMidi::SendLyHarm() {
 			//if (found) st = ", " + st;
 			found = 1;
 			ly_ly_st += "\\teeny \\on-color #(rgb-color ";
-			ly_ly_st += GetLyMarkColor(mark_color[ly_s][ly_vharm]);
+			ly_ly_st += GetLyMarkColor(mark_color[ly_s][ly_vlow]);
 			ly_ly_st += ") \\pad-markup #0.4 " + st + " ";
 			ly_ly_st += "}8\n";
 			SendLySkips(ly_mul - 1);
@@ -692,51 +692,38 @@ void CGMidi::SendLyHarm() {
 	}
 	ly_ly_st += "    }\n";
 	ly_ly_st += "  }\n";
-	/*
-	if (midifile_export_marks && !mark[i][ly_v2].IsEmpty()) {
-		// Search for conflicting harmonies
-		CString st = mark[i][ly_v2];
-		st.Replace("\n", "");
-		if (st != "PD" && st != "CA" && st != "DN") {
-			fs << "_\\markup{ ";
-			int found = 0;
-			// Replace dominant symbol
-			st.Replace("#", " \"#\" ");
-			if (st[0] == 'D') {
-				st = "\\concat { \\char ##x00D0 " + st.Right(st.GetLength() - 1) + " } ";
-			}
-			else if (st[0] == 'd') {
-				st = "\\concat { \\char ##x0111 " + st.Right(st.GetLength() - 1) + " } ";
-			}
-			else st = "\\concat { " + st + " } ";
-			st.Replace("6", " \\raise #0.7 6");
-			//if (found) st = ", " + st;
-			found = 1;
-			fs << "\\teeny \\on-color #(rgb-color ";
-			fs << GetLyMarkColor(mark_color[i][ly_v2]);
-			fs << ") \\pad-markup #0.4 " << st << " ";
-			fs << "}\n";
-		}
-	}
-	if (ev != 'r' && ly_flag_style == 2) {
-		SendLyFlagColor(fs, i, v);
-	}
-	*/
 }
 
 void CGMidi::SendLyIntervals() {
-	/*
-	CString st = GetIntName(0);
-	fs << "^\\markup{ ";
-	fs << "\\teeny ";
-	if (lyi[ly_s2].shs[vDefault]) {
-		DWORD col = flag_color[vtype_sev[vDefault]];
-		if (col && col != color_noflag)
-			fs << " \\on-color #(rgb-color " << GetLyMarkColor2(col) << ") ";
+	CString st;
+	if (!ly_flags) return;
+	st.Format("  \\new Lyrics \\with { alignBelowContext = \"staff%d\" } {\n", ly_vlow);
+	ly_ly_st += st;
+	ly_ly_st += "    \\lyricmode {\n";
+	ly_ly_st += "      \\set stanza = #\" Int.\"\n";
+	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
+		ly_s2 = ly_s - ly_step1;
+		if (!lyi[ly_s2].shs[vInterval]) {
+			SendLySkips(ly_mul);
+			continue;
+		}
+		int in = note[ly_s][ly_vhigh] - note[ly_s][ly_vlow];
+		int in2 = in % 12;
+		in = in ? (in2 ? in2 : 12) : 0;
+		CString st = GetIntName(in);
+		ly_ly_st += "\\markup{ ";
+		ly_ly_st += "\\teeny ";
+		if (lyi[ly_s2].shs[vDefault]) {
+			DWORD col = lyi[ly_s2].shc[vInterval];
+			if (col && col != color_noflag)
+				ly_ly_st += " \\on-color #(rgb-color " + GetLyMarkColor2(col) + ") ";
+		}
+		ly_ly_st += " \\pad-markup #0.4 " + st + " ";
+		ly_ly_st += "}\n";
+		SendLySkips(ly_mul - 1);
 	}
-	fs << " \\pad-markup #0.4 " << st << " ";
-	fs << "}\n";
-	*/
+	ly_ly_st += "    }\n";
+	ly_ly_st += "  }\n";
 }
 
 void CGMidi::SaveLy(CString dir, CString fname) {
