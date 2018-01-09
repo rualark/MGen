@@ -56,7 +56,9 @@ rightBracket = {
     \set Score.timing=##f \key f \major
     f8( g4 a2 a8-- g4 f8 g4 f g f8[ e] f4 e2 f4 e2  
     \leftBracket 
-    g4. a8 bes2 a4 g a bes16[ a g8 a bes] c2 
+    g4. 
+    \rightBracket 
+    a8 bes2 a4 g a bes16[ a g8 a bes] c2 
     \bar""
     \break  
     bes8[ a] g4 bes a2 g8[ a bes c a] bes2 a4.\( bes8\) a4 g g8_-[ f16 g] a4 g f g2) 

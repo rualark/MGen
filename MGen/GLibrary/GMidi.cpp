@@ -210,12 +210,17 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 	// Show flag finish
 	for (int x = 0; x < lyi[ly_s2].shf.size(); ++x) {
 		if (!lyi[ly_s2].shf[x]) continue;
-		int sev = lyi[ly_s2].shse[x];
+		int sev = lyi[ly_s2 + lyi[ly_s2].shsl[x]].shse[x];
 		if (x == vSlur) {
 			if (phase == 10) fs << " ) ";
 		}
 		if (x == vPSlur) {
 			if (phase == 10) fs << " \\) ";
+		}
+		if (x == vVBracket) {
+			if (phase == 11) fs << " \\override BreathingSign.color = #(rgb-color "
+				<< GetLyColor(flag_color[sev])
+				<< ") \\rightBracket ";
 		}
 	}
 	// Show flag start
@@ -248,6 +253,12 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			}
 			if (phase == 10)
 				fs << " \\( ";
+		}
+		if (x == vVBracket) {
+			if (phase == 1) 
+				fs << " \\override BreathingSign.color = #(rgb-color "
+				<< GetLyColor(flag_color[sev])
+				<< ") \\leftBracket ";
 		}
 	}
 }
@@ -297,6 +308,8 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 			pos += la[lc];
 		}
 		SendLyViz(fs, pos, ev, le, i, v, 10);
+		SendLyViz(fs, pos, ev, le, i, v, 11);
+		SendLyViz(fs, pos, ev, le, i, v, 12);
 	}
 }
 
