@@ -180,9 +180,9 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
       ssent = ssent + 1
       ' Write strict rule
       If ws.Cells(1, 1).Font.Bold Then
-        oFile.WriteLine CStr(ws.Name) + ";0;0;;;Strict;;0;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;"
+        oFile.WriteLine CStr(ws.Name) + ";0;0;;;Strict;;0;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
       Else
-        oFile.WriteLine CStr(ws.Name) + ";0;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;"
+        oFile.WriteLine CStr(ws.Name) + ";0;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
       End If
       For Line = First_line To 1000
         rule = ws.Cells(Line, 3).Value

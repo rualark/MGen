@@ -209,7 +209,7 @@ public:
 	void BuildKeyMatrix();
 	~CGMidi();
 	void GetLyRange(int step1, int step2, vector<int>& vm_min, vector<int>& vm_max);
-	int GetLyVcnt(int step1, int step2, vector<int>& vm_max);
+	void GetLyVcnt(int step1, int step2, vector<int>& vm_max);
 	CString GetLyAlter(int alter);
 	CString GetLyAlterVisual(int alter);
 	CString GetLyNote(int i, int v);
@@ -225,7 +225,6 @@ public:
 	CString GetLyMarkColor2(DWORD col);
 	void SendLyNoteColor(ofstream & fs, DWORD col);
 	CString GetIntName(int iv);
-	void SendLyFlagColor(ofstream & fs, int i, int v);
 	void ParseNLinks(int i, int v, int foreign);
 	void SaveLyComments(int i, int v, int pos);
 	CString DetectLyClef(int vmin, int vmax);
@@ -233,6 +232,7 @@ public:
 	void ClearLyShape(int s1, int s2, int vtype);
 	void InitLyI();
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
+	void SendLySkips(int count);
 	void SendLyMistakes();
 	void SendLyHarm();
 	void SendLyIntervals();
@@ -297,7 +297,11 @@ public:
 	int ly_nnum = 0; // Note number
 	int ly_step1 = 0;
 	int ly_step2 = 0;
-	CString ly_com_st;
+	int ly_vharm = 0; // Show harmony under this voice
+	int ly_vmist = 0; // Show mistakes above this voice
+	int ly_vm_cnt = 0; // Number of voices in segment to display
+	CString ly_com_st; // Comments
+	CString ly_ly_st; // Lyrics
 	vector<LY_Intermediate> lyi;
 	int ly_v = 0; // Current ly voice
 	int ly_v2 = 0; // Second voice for counterpoint analysis
@@ -347,8 +351,5 @@ protected:
 	vector< vector <int> > cantus_len; // Cantus loaded from midi file
 	vector< vector <float> > cantus_tempo; // Cantus loaded from midi file
 	vector< vector <vector<int>>> cpoint; // Counterpoint loaded from midi file
-
-	// Lilypond
-	int vm_cnt = 1; // Number of voices in segment to display
 };
 

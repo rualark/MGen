@@ -83,12 +83,11 @@ void CGMidi::GetLyRange(int step1, int step2, vector<int> &vm_min, vector<int> &
 	}
 }
 
-int CGMidi::GetLyVcnt(int step1, int step2, vector<int> &vm_max) {
-	int vm_cnt = 0;
+void CGMidi::GetLyVcnt(int step1, int step2, vector<int> &vm_max) {
+	ly_vm_cnt = 0;
 	for (int v = v_cnt - 1; v >= 0; --v) {
-		if (vm_max[v]) ++vm_cnt;
+		if (vm_max[v]) ++ly_vm_cnt;
 	}
-	return vm_cnt;
 }
 
 CString CGMidi::GetLyAlter(int alter) {
@@ -332,14 +331,16 @@ CString CGMidi::GetIntName(int iv) {
 
 void CGMidi::ParseNLinks(int i, int v, int foreign) {
 	CString com;
+	int x = 0;
 	for (auto const& it : nlink[i][v]) {
 		if (foreign && !rule_viz_v2[it.first]) continue;
 		lyi[i - ly_step1].nflags.push_back(it.first);
 		lyi[i - ly_step1].nfl.push_back(it.second);
-		lyi[i - ly_step1].nfn.push_back(ly_flags);
+		lyi[i - ly_step1].nfn.push_back(ly_flags + 1);
 		lyi[i - ly_step1].nff.push_back(foreign);
-		lyi[i - ly_step1].nfc.push_back(comment[i][v][it.first]);
-		++ly_flags;
+		lyi[i - ly_step1].nfc.push_back(comment[i][v][x]);
+		if (!foreign) ++ly_flags;
+		++x;
 	}
 }
 
@@ -349,8 +350,8 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 	if (lyi[ly_s2].nflags.size()) {
 		note_st = "\\markup \\wordwrap \\bold {\n  ";
 		// Show voice number if more than 1 voice
-		if (vm_cnt > 1) {
-			st.Format("\\char ##x246%d ", v);
+		if (ly_vm_cnt > 1) {
+			st.Format("VOICE %d, ", v + 1);
 			note_st += st;
 		} 
 		st.Format("NOTE %d at %d:%d - %s",
@@ -367,8 +368,7 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 			if (!accept[fl]) st = "- ";
 			else if (accept[fl] == -1) st = "$ ";
 			else st = "+ ";
-			com.Format("%d %s", lyi[ly_s2].nfn[c], st);
-			com += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+			com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 			if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
 			comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 			if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];
@@ -379,9 +379,11 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 				ly_com_st += note_st;
 			}
 			ly_com_st += "\\markup \\wordwrap \\with-color #(rgb-color " +
-				GetLyColor(ccolor[i][v][c]) + ") {\n  \"";
+				GetLyColor(ccolor[i][v][c]) + ") {\n  ";
 			com.Replace("\"", "\\\"");
 			com.Replace(" ", "\" \"");
+			st.Format("\\teeny \\raise #0.2 \\circle %d \"", lyi[ly_s2].nfn[c]);
+			ly_com_st += st;
 			ly_com_st += com + "\"\n";
 			ly_com_st += "\n}\n";
 		}
@@ -433,7 +435,17 @@ void CGMidi::ClearLyShape(int s1, int s2, int vtype) {
 
 void CGMidi::InitLyI() {
 	if (ly_mel == -1) return;
-	if (vm_cnt > 1) ly_v2 = (ly_v / 2) * 2 + !(ly_v % 2);
+	ly_v2 = ly_v;
+	if (ly_vm_cnt > 1) ly_v2 = (ly_v / 2) * 2 + !(ly_v % 2);
+	ly_flags = 0;
+	if (m_algo_id == 111) {
+		ly_vmist = ly_v;
+		ly_vharm = ly_v;
+	}
+	else {
+		ly_vmist = min(ly_vm_cnt - 1, (ly_v / 2) * 2 + 1);
+		ly_vharm = (ly_v / 2) * 2;
+	}
 	lyi.clear();
 	lyi.resize(ly_step2 - ly_step1);
 	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
@@ -508,6 +520,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	CString clef, key, key_visual;
 	int pos, pos2, le, le2, pause_accum, pause_pos, pause_i;
 	ly_com_st.Empty();
+	ly_ly_st.Empty();
 	// Voice melody min pitch
 	vector<int> vm_min;
 	// Voice melody max pitch
@@ -516,9 +529,9 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	ly_step1 = step1;
 	ly_step2 = step2;
 	GetLyRange(step1, step2, vm_min, vm_max);
-	vm_cnt = GetLyVcnt(step1, step2, vm_max);
+	GetLyVcnt(step1, step2, vm_max);
 	ly_mul = midifile_out_mul[step1];
-	//if (vm_cnt == 1 && (m_algo_id == 121 || m_algo_id == 112)) mul = 8;
+	//if (ly_vm_cnt == 1 && (m_algo_id == 121 || m_algo_id == 112)) mul = 8;
 	// Key
 	if (minor[step1][0]) {
 		key = LyMinorKey[tonic[step1][0]];
@@ -548,8 +561,9 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		InitLyI();
 		// Select best clef
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
-		fs << "\\new Staff {\n";
-		st.Format("  \\set Staff.instrumentName = \\markup { \\char ##x246%d }\n", v);
+		st.Format("\\new Staff = \"staff%d\" {\n", ly_v);
+		fs << st;
+		st.Format("  \\set Staff.instrumentName = \"Voice %d\"\n", v + 1);
 		fs << st;
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
 		fs << " \\" << (minor[step1][0] ? "minor" : "major");
@@ -591,6 +605,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		SendLyHarm();
 		SendLyIntervals();
 	}
+	fs << ly_ly_st;
 	fs << ">>\n";
 	fs << ly_com_st;
 	// Second info
@@ -599,33 +614,84 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	//fs << "\\markup \\wordwrap \\italic {\n  \\vspace #2\n  " << st2 << "\n}\n";
 }
 
+void CGMidi::SendLySkips(int count) {
+	for (int x = 0; x < count; ++x) {
+		ly_ly_st += " \\skip 8 ";
+	}
+}
+
 void CGMidi::SendLyMistakes() {
-	ly_fs << "  \\new Lyrics {\n";
-	ly_fs << "    \\lyricmode {\n";
-	ly_fs << "      \\set stanza = #\"Mistakes:\"\n";
+	CString st;
+	if (!ly_flags) return;
+	st.Format("  \\new Lyrics \\with { alignAboveContext = \"staff%d\" } {\n", ly_vmist);
+	ly_ly_st += st;
+	ly_ly_st += "    \\lyricmode {\n";
+	ly_ly_st += "      \\set stanza = #\" Ref.\"\n";
 	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
 		ly_s2 = ly_s - ly_step1;
 		if (!lyi[ly_s2].nflags.size()) {
-			for (int x = 0; x < ly_mul; ++x) {
-				ly_fs << " \\skip 8 ";
-			}
+			SendLySkips(ly_mul);
 			continue;
 		}
-		ly_fs << "      \\markup{ \\teeny \\column {\n";
-		for (int f = 0; f < lyi[ly_s2].nflags.size(); ++f) {
+		ly_ly_st += "      \\markup{ \\teeny \\override #`(direction . ,UP) { \\dir-column {\n";
+		int max_mist = lyi[ly_s2].nflags.size() - 1;
+		// Do not show too many mistakes
+		if (max_mist > 5) {
+			max_mist = 4; 
+			ly_ly_st += "...\n";
+		}
+		for (int f = max_mist; f >= 0 ; --f) {
 			int fl = lyi[ly_s2].nflags[f];
-			ly_fs << "        \\with - color #(rgb - color 1 0 0) \\circle 123\n";
+			st.Format("        \\with-color #(rgb-color " +
+				GetLyColor(flag_color[severity[fl]]) + ") \\circle %d\n",
+				lyi[ly_s2].nfn[f]);
+			ly_ly_st += st;
 		}
-		ly_fs << "      } }8\n";
-		for (int x = 0; x < ly_mul-1; ++x) {
-			ly_fs << " \\skip 8 ";
-		}
+		ly_ly_st += "      } } }8\n";
+		SendLySkips(ly_mul - 1);
 	}
-	ly_fs << "    }\n";
-	ly_fs << "  }\n";
+	ly_ly_st += "    }\n";
+	ly_ly_st += "  }\n";
 }
 
 void CGMidi::SendLyHarm() {
+	CString st;
+	if (!ly_flags) return;
+	st.Format("  \\new Lyrics \\with { alignBelowContext = \"staff%d\" } {\n", ly_vharm);
+	ly_ly_st += st;
+	ly_ly_st += "    \\lyricmode {\n";
+	ly_ly_st += "      \\set stanza = #\" Harm.\"\n";
+	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
+		ly_s2 = ly_s - ly_step1;
+		CString st = mark[ly_s][ly_vharm];
+		st.Replace("\n", "");
+		if (!st.IsEmpty() && st != "PD" && st != "CA" && st != "DN") {
+			ly_ly_st += "  \\markup{ ";
+			int found = 0;
+			// Replace dominant symbol
+			st.Replace("#", " \"#\" ");
+			if (st[0] == 'D') {
+				st = "\\concat { \\char ##x00D0 " + st.Right(st.GetLength() - 1) + " } ";
+			}
+			else if (st[0] == 'd') {
+				st = "\\concat { \\char ##x0111 " + st.Right(st.GetLength() - 1) + " } ";
+			}
+			else st = "\\concat { " + st + " } ";
+			st.Replace("6", " \\raise #0.7 6");
+			//if (found) st = ", " + st;
+			found = 1;
+			ly_ly_st += "\\teeny \\on-color #(rgb-color ";
+			ly_ly_st += GetLyMarkColor(mark_color[ly_s][ly_vharm]);
+			ly_ly_st += ") \\pad-markup #0.4 " + st + " ";
+			ly_ly_st += "}8\n";
+			SendLySkips(ly_mul - 1);
+		}
+		else {
+			SendLySkips(ly_mul);
+		}
+	}
+	ly_ly_st += "    }\n";
+	ly_ly_st += "  }\n";
 	/*
 	if (midifile_export_marks && !mark[i][ly_v2].IsEmpty()) {
 		// Search for conflicting harmonies

@@ -12,7 +12,7 @@ random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatic
 s_len = 1 # Maximum number of measures to full scan. Higher values are slow to compute
 correct_inrange = 10 # Limit allowed range of corrected melody to range of source melody + specified number of chromatic steps. Set to high value to disable.
 optimize_dpenalty = 1 # Saves only melodies closest to source melody. Decreases memory usage. Setting this flag may make corrections farther from source melody. Resetting allows for closer results when corrections>1
-max_correct_ms = 200000 # Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
+max_correct_ms = 200 # Maximum time in milliseconds to correct using window-scan (set to 0 to scan up to the end)
 species = 0 # Do not override parameters in importing files
 
 # Analysis
