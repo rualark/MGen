@@ -212,8 +212,10 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		if (!lyi[ly_s2].shf[x]) continue;
 		int sev = lyi[ly_s2].shse[x];
 		if (x == vSlur) {
-			if (phase == 10)
-				fs << " ) ";
+			if (phase == 10) fs << " ) ";
+		}
+		if (x == vPSlur) {
+			if (phase == 10) fs << " \\) ";
 		}
 	}
 	// Show flag start
@@ -237,6 +239,15 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			}
 			if (phase == 10)
 				fs << " ( ";
+		}
+		if (x == vPSlur) {
+			if (phase == 1) {
+				fs << " \\override PhrasingSlur.color=#(rgb-color "
+					<< GetLyColor(flag_color[sev])
+					<< ") ";
+			}
+			if (phase == 10)
+				fs << " \\( ";
 		}
 	}
 }
@@ -427,7 +438,7 @@ void CGMidi::SetLyShape(int s1, int s2, int fl, int vtype) {
 	// Link to start
 	lyi[s2].shsl[vtype] = s1 - s2;
 	// Calculate maximum severity
-	if (lyi[s1].shse[vInterval] < severity[fl]) {
+	if (lyi[s1].shse[vInterval] <= severity[fl]) {
 		lyi[s1].shse[vtype] = severity[fl];
 		lyi[s1].sht[vInterval] = rule_viz_t[fl];
 	}
