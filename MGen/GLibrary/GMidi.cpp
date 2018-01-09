@@ -471,6 +471,26 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 	return LyClef[best_clef];
 }
 
+void CGMidi::SetLyShape(int s1, int s2, int fl, int vtype) {
+	lyi[s1].shs[vtype] = 1;
+	lyi[s2].shf[vtype] = 1;
+	// Calculate maximum severity
+	if (lyi[s2].shse[vInterval] < severity[fl]) {
+		lyi[s2].shse[vtype] = severity[fl];
+		lyi[s2].shc[vInterval] = flag_color[severity[fl]];
+		lyi[s2].sht[vInterval] = rule_viz_t[fl];
+	}
+}
+
+void CGMidi::ClearLyShape(int s1, int s2, int vtype) {
+	lyi[s1].shs[vtype] = 0;
+	lyi[s2].shf[vtype] = 0;
+	// Calculate maximum severity
+	lyi[s2].shse[vtype] = -1;
+	// Get color of maximum severity
+	lyi[s2].shc[vInterval] = -1;
+}
+
 void CGMidi::InitLyI() {
 	if (ly_mel == -1) return;
 	if (vm_cnt > 1) ly_v2 = (ly_v / 2) * 2 + !(ly_v % 2);
@@ -481,8 +501,8 @@ void CGMidi::InitLyI() {
 		// Init vectors
 		lyi[ly_s2].shs.resize(MAX_VIZ);
 		lyi[ly_s2].shf.resize(MAX_VIZ);
-		lyi[ly_s2].shc.resize(MAX_VIZ);
-		lyi[ly_s2].shse.resize(MAX_VIZ);
+		lyi[ly_s2].shc.resize(MAX_VIZ, -1);
+		lyi[ly_s2].shse.resize(MAX_VIZ, -1);
 		lyi[ly_s2].sht.resize(MAX_VIZ);
 		// Parse flags
 		ParseNLinks(ly_s, ly_v, 0);
@@ -503,36 +523,41 @@ void CGMidi::InitLyI() {
 			// Get flag start/stop
 			int s1 = min(ly_s2, ly_s2 + link);
 			int s2 = max(ly_s2, ly_s2 + link);
-			// Check that flag overlaps
-			int overlap1 = -1;
-			int overlap2 = -1;
-			for (int x = ly_step2 - ly_step1 - 1; x > s1; --x) {
-				if (lyi[x].shf[vtype]) {
-					overlap2 = x;
-					break;
-				}
+			// Set interval
+			if (rule_viz_int[fl]) {
+				SetLyShape(s1, s2, fl, vInterval);
 			}
-			// Find overlap start
-			if (overlap2 > -1) {
-				for (int x = overlap2; x >= 0; --x) {
-					if (lyi[x].shs[vtype]) {
-						overlap1 = x;
+			if (vtype > vInterval) {
+				// Check that flag overlaps
+				int overlap1 = -1;
+				int overlap2 = -1;
+				for (int x = ly_step2 - ly_step1 - 1; x > s1; --x) {
+					if (lyi[x].shf[vtype]) {
+						overlap2 = x;
 						break;
 					}
 				}
-			}
-			// Choose highest severity
-			if (overlap1 > -1) {
-				if (sev > lyi[overlap1].shse[vtype]) {
-					// Remove old shape
-					lyi[overlap1].shs[vtype] = 0;
-					lyi[overlap2].shf[vtype] = 0;
+				// Find overlap start
+				if (overlap2 > -1) {
+					for (int x = overlap2; x >= 0; --x) {
+						if (lyi[x].shs[vtype]) {
+							overlap1 = x;
+							break;
+						}
+					}
 				}
-				else {
-					// Skip shape
-					continue;
+				// Choose highest severity
+				if (overlap1 > -1) {
+					if (sev > lyi[overlap1].shse[vtype]) {
+						ClearLyShape(overlap1, overlap2, vtype);
+					}
+					else {
+						// Skip shape
+						continue;
+					}
 				}
 			}
+			SetLyShape(s1, s2, fl, vtype);
 		}
 	}
 }

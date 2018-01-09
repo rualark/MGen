@@ -226,6 +226,8 @@ public:
 	void ParseNLinks(int i, int v, int foreign);
 	void SaveLyComments(int i, int v, int pos);
 	CString DetectLyClef(int vmin, int vmax);
+	void SetLyShape(int s1, int s2, int fl, int vtype);
+	void ClearLyShape(int s1, int s2, int vtype);
 	void InitLyI();
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
 	void SaveLy(CString dir, CString fname);
