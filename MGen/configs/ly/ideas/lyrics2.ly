@@ -153,7 +153,7 @@ _\markup{ \teeny \on-color #(rgb-color 0.598 0.900 0.500) \pad-markup #0.4 \conc
 "#"1 (from test-ly-viz), Cantus: low, Species: 3, Rule penalty: 2300, Key: Am
 }
 <<
-\new Staff {
+\new Staff = "staff" {
   \set Staff.instrumentName = \markup { \char ##x2461 }
   \clef "treble^8" \key a \minor  \accidentalStyle modern-cautionary
   \time 4/4
@@ -253,9 +253,31 @@ _\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { t }  }
     \repeat unfold 1 { \skip 1 }
   }    
 }
+
+  \new Lyrics \with { alignAboveContext = "staff" } {
+    \lyricmode {
+\set stanza = #"Mistakes:"
+\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { t }  }1 
+\markup { \teeny
+  \column {
+    \with-color #(rgb-color 1 0 0) \circle 123
+    \with-color #(rgb-color 1 0 0) \circle 34
+    \with-color #(rgb-color 1 0 0) \circle 45
+  }
+}8 \repeat unfold 1 { \skip 8 } my8 cat!1
+    }
+  }
   \new Lyrics {
     \lyricmode {
-      I1 like8 \repeat unfold 6 { \skip 8 } my8 cat!1
+\set stanza = #"Intervals:"
+\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { t }  }1 
+like8 \skip 8 \skip 8 my8 cat!1
+    }
+  }
+  \new Lyrics {
+    \lyricmode {
+\set stanza = #"Harmony:"
+\markup{ \teeny \on-color #(rgb-color 1 1 1) \pad-markup #0.4 \concat { t }  }1 like8 \repeat unfold 6 { \skip 8 } my8 cat!1
     }
   }
 >>
