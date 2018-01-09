@@ -207,34 +207,25 @@ void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 	}
 }
 
-void CGMidi::GetLySev(ofstream &fs, int pos, CString &ev, int le, int i, int v) {
-	fill(vtype_sev.begin(), vtype_sev.end(), -1);
-	if (!ly_fa.size()) return;
-	if (!rule_viz.size()) return;
-	if (!severity.size()) return;
-	// Find worst flag
-	for (int x = 0; x < ly_fa.size(); ++x) {
-		int fl = ly_fa[x];
-		//if (severity[fl] < show_min_severity) continue;
-		vtype_sev[rule_viz[fl]] = max(vtype_sev[rule_viz[fl]], severity[fl]);
-		if (rule_viz[fl] == vLines)
-			vtype_sev[vLine] = max(vtype_sev[vLine], severity[fl]);
-	}
-}
-
 void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v, int phase) {
-	// Show worst flag
-	for (int x = 0; x < vtype_sev.size(); ++x) {
-		int sev = vtype_sev[x];
-		if (sev > -1 && x == vLine) {
+	// Show flag start
+	for (int x = 0; x < lyi[ly_s2].shs.size(); ++x) {
+		if (!lyi[ly_s2].shs[x]) continue;
+		int sev = lyi[ly_s2].shse[x];
+		if (x == vGlis) {
 			if (phase == 1) {
-				fs << " \\override Glissando.color=#(rgb-color " 
-					<< GetLyColor(flag_color[sev]) 
+				fs << " \\override Glissando.color=#(rgb-color "
+					<< GetLyColor(flag_color[sev])
 					<< ") ";
 			}
 			if (phase == 10)
 				fs << " \\glissando ";
 		}
+	}
+	// Show flag finish
+	for (int x = 0; x < lyi[ly_s2].shf.size(); ++x) {
+		if (!lyi[ly_s2].shf[x]) continue;
+		int sev = lyi[ly_s2].shse[x];
 	}
 }
 
@@ -248,18 +239,10 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 		ly_s = i;
 		ly_s2 = ly_s - ly_step1;
 		SaveLyComments(i, v, pos);
-		// If no flags, parse second voice
-		if (!ly_fa.size() && v_cnt > 1) {
-			int v2 = (v / 2) * 2 + !(v % 2);
-			if (v2 < v_cnt && i + len[i][v] < poff.size()) {
-				int i2 = abs(i + len[i][v] - poff[i + len[i][v]][v2]);
-				ParseLyComments(i2, v2, 1);
-			}
-		}
-		GetLySev(fs, pos, ev, le, i, v);
 		SendLyViz(fs, pos, ev, le, i, v, 1);
 		if (ev != 'r' && ly_flag_style == 1) {
-			if (vtype_sev[vDefault] > -1) SendLyNoteColor(fs, flag_color[vtype_sev[vDefault]]);
+			if (lyi[ly_s2].shs[vDefault]) 
+				SendLyNoteColor(fs, flag_color[lyi[ly_s2].shse[vDefault]]);
 		}
 		if (show_lining && ev != "r") {
 			if (la[lc] == 8) {
@@ -290,9 +273,9 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 				}
 			}
 		}
-		if (midifile_export_marks && !mark[i][mv].IsEmpty()) {
+		if (midifile_export_marks && !mark[i][ly_v2].IsEmpty()) {
 			// Search for conflicting harmonies
-			CString st = mark[i][mv];
+			CString st = mark[i][ly_v2];
 			st.Replace("\n", "");
 			if (st != "PD" && st != "CA" && st != "DN") {
 				fs << "_\\markup{ ";
@@ -310,7 +293,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 				//if (found) st = ", " + st;
 				found = 1;
 				fs << "\\teeny \\on-color #(rgb-color ";
-				fs << GetLyMarkColor(mark_color[i][mv]);
+				fs << GetLyMarkColor(mark_color[i][ly_v2]);
 				fs << ") \\pad-markup #0.4 " << st << " ";
 				fs << "}\n";
 			}
@@ -384,7 +367,7 @@ void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
 		CString st = GetIntName(0);
 		fs << "^\\markup{ ";
 		fs << "\\teeny ";
-		if (vtype_sev[vDefault] > -1) {
+		if (lyi[ly_s2].shs[vDefault]) {
 			DWORD col = flag_color[vtype_sev[vDefault]];
 			if (col && col != color_noflag)
 				fs << " \\on-color #(rgb-color " << GetLyMarkColor2(col) << ") ";
@@ -433,21 +416,18 @@ void CGMidi::SaveLyComments(int i, int v, int pos) {
 		note_st += st + "\n}\n";
 		found = 0;
 		for (int c = 0; c < lyi[ly_s2].nflags.size(); ++c) {
+			// Do not process foreign flags
+			if (lyi[ly_s2].nff[c]) break;
 			int fl = lyi[ly_s2].nflags[c];
 			if (!accept[fl]) st = "- ";
 			else if (accept[fl] == -1) st = "$ ";
 			else st = "+ ";
-			com = st + RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
+			com.Format("%d %s", lyi[ly_s2].nfn[c], st);
+			com += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 			if (!comment2[pos][v].IsEmpty()) comment2[pos][v] += ", ";
 			comment2[pos][v] += RuleName[rule_set][fl] + " (" + SubRuleName[rule_set][fl] + ")";
 			if (!RuleComment[fl].IsEmpty()) com += ". " + RuleComment[fl];
 			if (!SubRuleComment[rule_set][fl].IsEmpty()) com += " (" + SubRuleComment[rule_set][fl] + ")";
-			// Remove technical information
-			pos1 = com.Find('[');
-			pos2 = com.Find(']');
-			if (pos1 != -1 && pos2 != -1) {
-				com = com.Left(pos1 - 1) + com.Right(com.GetLength() - pos2 - 1);
-			}
 			// Send note number with first comment
 			if (!found) {
 				found = 1;
@@ -483,8 +463,12 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 }
 
 void CGMidi::SetLyShape(int s1, int s2, int fl, int vtype) {
+	// Start
 	lyi[s1].shs[vtype] = 1;
+	// Finish
 	lyi[s2].shf[vtype] = 1;
+	// Link to start
+	lyi[s2].shsl[vtype] = s1;
 	// Calculate maximum severity
 	if (lyi[s2].shse[vInterval] < severity[fl]) {
 		lyi[s2].shse[vtype] = severity[fl];
@@ -511,6 +495,7 @@ void CGMidi::InitLyI() {
 		ly_s2 = ly_s - ly_step1;
 		// Init vectors
 		lyi[ly_s2].shs.resize(MAX_VIZ);
+		lyi[ly_s2].shsl.resize(MAX_VIZ);
 		lyi[ly_s2].shf.resize(MAX_VIZ);
 		lyi[ly_s2].shc.resize(MAX_VIZ, -1);
 		lyi[ly_s2].shse.resize(MAX_VIZ, -1);
