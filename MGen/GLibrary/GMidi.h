@@ -234,6 +234,8 @@ public:
 	void InitLyI();
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
 	void SendLyMistakes();
+	void SendLyHarm();
+	void SendLyIntervals();
 	void SaveLy(CString dir, CString fname);
 	void ExportAdaptedMidi(CString dir, CString fname);
 	virtual void Generate() = 0;
@@ -289,6 +291,7 @@ public:
 
 	// Lilypond
 	ofstream ly_fs;
+	float ly_mul = 1; // midifile_mul
 	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
 	int ly_nnum = 0; // Note number

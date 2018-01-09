@@ -330,29 +330,6 @@ CString CGMidi::GetIntName(int iv) {
 	else return "8";
 }
 
-void CGMidi::SendLyFlagColor(ofstream &fs, int i, int v) {
-	if (0) {
-		CString st = GetIntName(0);
-		fs << "^\\markup{ ";
-		fs << "\\teeny ";
-		if (lyi[ly_s2].shs[vDefault]) {
-			DWORD col = flag_color[vtype_sev[vDefault]];
-			if (col && col != color_noflag)
-				fs << " \\on-color #(rgb-color " << GetLyMarkColor2(col) << ") ";
-		}
-		fs << " \\pad-markup #0.4 " << st << " ";
-		fs << "}\n";
-	}
-	else {
-		if (vtype_sev[vDefault] == -1) return;
-		DWORD col = flag_color[vtype_sev[vDefault]];
-		if (!col || col == color_noflag) return;
-		fs << "^\\markup{ \\tiny \\with-color #(rgb-color ";
-		fs << GetLyColor(col);
-		fs << ") \\char ##x2605  }\n";
-	}
-}
-
 void CGMidi::ParseNLinks(int i, int v, int foreign) {
 	CString com;
 	for (auto const& it : nlink[i][v]) {
@@ -531,7 +508,6 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	CString clef, key, key_visual;
 	int pos, pos2, le, le2, pause_accum, pause_pos, pause_i;
 	ly_com_st.Empty();
-	float mul;
 	// Voice melody min pitch
 	vector<int> vm_min;
 	// Voice melody max pitch
@@ -541,7 +517,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 	ly_step2 = step2;
 	GetLyRange(step1, step2, vm_min, vm_max);
 	vm_cnt = GetLyVcnt(step1, step2, vm_max);
-	mul = midifile_out_mul[step1];
+	ly_mul = midifile_out_mul[step1];
 	//if (vm_cnt == 1 && (m_algo_id == 121 || m_algo_id == 112)) mul = 8;
 	// Key
 	if (minor[step1][0]) {
@@ -584,8 +560,8 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		pause_accum = 0;
 		pause_pos = -1;
 		for (int i = step1; i < step2; i++) {
-			pos = mul * (i - step1);
-			le = mul * len[i][v];
+			pos = ly_mul * (i - step1);
+			le = ly_mul * len[i][v];
 			if (pause[i][v]) {
 				pause_accum += le;
 				if (pause_pos == -1) {
@@ -611,8 +587,10 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		}
 		fs << "\n  }\n";
 		fs << "}\n";
+		SendLyMistakes();
+		SendLyHarm();
+		SendLyIntervals();
 	}
-	SendLyMistakes();
 	fs << ">>\n";
 	fs << ly_com_st;
 	// Second info
@@ -622,6 +600,33 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 }
 
 void CGMidi::SendLyMistakes() {
+	ly_fs << "  \\new Lyrics {\n";
+	ly_fs << "    \\lyricmode {\n";
+	ly_fs << "      \\set stanza = #\"Mistakes:\"\n";
+	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
+		ly_s2 = ly_s - ly_step1;
+		if (!lyi[ly_s2].nflags.size()) {
+			for (int x = 0; x < ly_mul; ++x) {
+				ly_fs << " \\skip 8 ";
+			}
+			continue;
+		}
+		ly_fs << "      \\markup{ \\teeny \\column {\n";
+		for (int f = 0; f < lyi[ly_s2].nflags.size(); ++f) {
+			int fl = lyi[ly_s2].nflags[f];
+			ly_fs << "        \\with - color #(rgb - color 1 0 0) \\circle 123\n";
+		}
+		ly_fs << "      } }8\n";
+		for (int x = 0; x < ly_mul-1; ++x) {
+			ly_fs << " \\skip 8 ";
+		}
+	}
+	ly_fs << "    }\n";
+	ly_fs << "  }\n";
+}
+
+void CGMidi::SendLyHarm() {
+	/*
 	if (midifile_export_marks && !mark[i][ly_v2].IsEmpty()) {
 		// Search for conflicting harmonies
 		CString st = mark[i][ly_v2];
@@ -650,6 +655,22 @@ void CGMidi::SendLyMistakes() {
 	if (ev != 'r' && ly_flag_style == 2) {
 		SendLyFlagColor(fs, i, v);
 	}
+	*/
+}
+
+void CGMidi::SendLyIntervals() {
+	/*
+	CString st = GetIntName(0);
+	fs << "^\\markup{ ";
+	fs << "\\teeny ";
+	if (lyi[ly_s2].shs[vDefault]) {
+		DWORD col = flag_color[vtype_sev[vDefault]];
+		if (col && col != color_noflag)
+			fs << " \\on-color #(rgb-color " << GetLyMarkColor2(col) << ") ";
+	}
+	fs << " \\pad-markup #0.4 " << st << " ";
+	fs << "}\n";
+	*/
 }
 
 void CGMidi::SaveLy(CString dir, CString fname) {
