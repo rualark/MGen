@@ -272,6 +272,8 @@ public:
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
 	vector<int> rule_viz; // [r_id] Rule visualization type
 	vector<int> rule_viz_v2; // [r_id] Rule visualization type for second voice
+	vector<int> rule_viz_int; // [r_id] Rule visualization with interval text
+	vector<CString> rule_viz_t; // [r_id] Rule visualization text
 	vector <int> severity; // Get severity by flag id
 	vector<DWORD>  flag_color; // Flag colors
 	int ly_nnum = 0; // Note number

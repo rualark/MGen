@@ -21,6 +21,8 @@ CGenCF1::CGenCF1()
 	accept.resize(MAX_RULES);
 	rule_viz.resize(MAX_RULES);
 	rule_viz_v2.resize(MAX_RULES);
+	rule_viz_int.resize(MAX_RULES);
+	rule_viz_t.resize(MAX_RULES);
 	false_positives_ignore.resize(MAX_RULES);
 	false_positives_global.resize(MAX_RULES);
 	sas_emulator_max_delay.resize(MAX_RULES);
@@ -163,7 +165,7 @@ void CGenCF1::LoadRules(CString fname)
 		st.Trim();
 		if (st.Find(";") != -1) {
 			Tokenize(st, ast, ";");
-			if (ast.size() != 20) {
+			if (ast.size() != 23) {
 				est.Format("Wrong column count at line %d in rules file %s: '%s'", i, fname, st);
 				WriteLog(5, est);
 				error = 1;
@@ -203,20 +205,23 @@ void CGenCF1::LoadRules(CString fname)
 			accepts[set][rid] = flag;
 			severity[rid] = sev;
 			rule_viz[rid] = atoi(ast[10]);
-			false_positives_global[rid] = atoi(ast[13]);
-			false_positives_ignore[rid] = atoi(ast[14]);
-			sas_emulator_max_delay[rid] = atoi(ast[15]);
-			sas_emulator_move_ignore[rid] = atoi(ast[16]);
-			if (!ast[17].IsEmpty()) {
-				Tokenize(ast[17], ast2, ",");
+			rule_viz_int[rid] = atoi(ast[11]);
+			rule_viz_v2[rid] = atoi(ast[12]);
+			rule_viz_t[rid] = ast[13];
+			false_positives_global[rid] = atoi(ast[16]);
+			false_positives_ignore[rid] = atoi(ast[17]);
+			sas_emulator_max_delay[rid] = atoi(ast[18]);
+			sas_emulator_move_ignore[rid] = atoi(ast[19]);
+			if (!ast[20].IsEmpty()) {
+				Tokenize(ast[20], ast2, ",");
 				for (int x = 0; x < ast2.size(); ++x) {
 					int fl = atoi(ast2[x]);
 					if (fl) sas_emulator_replace[fl].push_back(rid);
 				}
 			}
-			sas_emulator_unstable[rid] = atoi(ast[18]);
-			if (!ast[19].IsEmpty()) {
-				Tokenize(ast[19], ast2, ",");
+			sas_emulator_unstable[rid] = atoi(ast[21]);
+			if (!ast[22].IsEmpty()) {
+				Tokenize(ast[22], ast2, ",");
 				for (int x = 0; x < ast2.size(); ++x) {
 					int fl = atoi(ast2[x]);
 					if (fl) flag_replace[fl].push_back(rid);

@@ -4,8 +4,9 @@ Public EventState As Boolean
 Public PageBreakState As Boolean
 
 Public sRows
-Public DCount
 Public max_id
+
+Public Const DCount As Integer = 13
 
 ' Arrays
 Dim Rules(1000)
@@ -23,7 +24,7 @@ Dim eGComment(1000)
 Dim eFlag(1000)
 Dim eGroup(1000)
 Dim eClass(1000)
-Dim eData(10, 1000)
+Dim eData(DCount, 1000)
 
 Sub OptimizeCode_Begin()
 
@@ -54,7 +55,6 @@ Application.DisplayAlerts = True
 End Sub
 
 Sub LoadData()
-  DCount = 10
   
   cID = 1
   cClass = 2
