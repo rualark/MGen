@@ -246,6 +246,11 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 				fs << " \\stopTextSpan\n";
 			}
 		}
+		if (x == vPedal) {
+			if (phase == 10) {
+				fs << " \\sustainOff\n";
+			}
+		}
 	}
 	// Show flag start
 	for (int x = 0; x < lyi[ly_s2].shs.size(); ++x) {
@@ -326,13 +331,23 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		}
 		if (x == vTS) {
 			if (phase == 1) {
-				fs << " \\myTS \"" 
-					+ lyi[ly_s2].sht[x] + "\" #(rgb-color " + 
+				fs << " \\myTS \""
+					+ lyi[ly_s2].sht[x] + "\" #(rgb-color " +
 					GetLyColor(flag_color[sev]) << ")\n";
 				fs << "\\textSpannerDown\n";
 			}
 			if (phase == 9) {
 				fs << "\\startTextSpan\n";
+			}
+		}
+		if (x == vPedal) {
+			if (phase == 1) {
+				fs << " \\override Staff.PianoPedalBracket.color = #(rgb-color " +
+					GetLyColor(flag_color[sev]) << ")\n";
+				fs << "\\textSpannerDown\n";
+			}
+			if (phase == 9) {
+				fs << "\\sustainOn\n";
 			}
 		}
 	}
@@ -613,6 +628,8 @@ void CGMidi::InitLyI() {
 				int overlap1 = -1;
 				int overlap2 = -1;
 				int overlap_limit = s1;
+				if (vtype == vPedal)
+					WriteLog(1, "Wow");
 				// For groups check for collision between borders
 				if (viz_type[vtype] == vtGroup || viz_type[vtype] == vtVolta)
 					overlap_limit = s1 - 1;
