@@ -187,6 +187,7 @@ const CString LyOctave[] = {
 #define vPedal 12
 #define MAX_VIZ 13
 
+// Visualisation types
 #define vtPoint 1 // Can link only to one note
 #define vtVBracket 2 // Cannot collide in same interval between notes
 #define vtVolta 3 // Can mark single note

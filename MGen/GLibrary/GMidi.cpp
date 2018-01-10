@@ -446,12 +446,12 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 void CGMidi::SetLyShape(int s1, int s2, int fl, int vtype) {
 	// Start
 	lyi[s1].shs[vtype] = 1;
-	// Finish
-	lyi[s2].shf[vtype] = 1;
-	// Link to start
-	lyi[s2].shsl[vtype] = s1 - s2;
-	// Calculate maximum severity
+	// Apply finish and properties only if my severity is greater
 	if (lyi[s1].shse[vInterval] <= severity[fl]) {
+		// Finish
+		lyi[s2].shf[vtype] = 1;
+		// Link to start
+		lyi[s2].shsl[vtype] = s1 - s2;
 		lyi[s1].shse[vtype] = severity[fl];
 		lyi[s1].sht[vInterval] = rule_viz_t[fl];
 	}
@@ -511,6 +511,7 @@ void CGMidi::InitLyI() {
 			int link = lyi[ly_s2].nfl[f];
 			int vtype = rule_viz[fl];
 			int sev = severity[fl];
+			int skip_shape = 0;
 			// Get flag start/stop
 			int s1 = min(ly_s2, ly_s2 + link);
 			int s2 = max(ly_s2, ly_s2 + link);
@@ -527,28 +528,19 @@ void CGMidi::InitLyI() {
 				for (int x = ly_step2 - ly_step1 - 1; x > s1; --x) {
 					if (lyi[x].shf[vtype]) {
 						overlap2 = x;
-						break;
-					}
-				}
-				// Find overlap start
-				if (overlap2 > -1) {
-					for (int x = overlap2; x >= 0; --x) {
-						if (lyi[x].shs[vtype]) {
-							overlap1 = x;
+						overlap1 = x + lyi[x].shsl[vtype];
+						// Choose highest severity
+						if (sev > lyi[overlap1].shse[vtype]) {
+							ClearLyShape(overlap1, overlap2, vtype);
+						}
+						else {
+							// Skip shape
+							skip_shape = 1;
 							break;
 						}
 					}
 				}
-				// Choose highest severity
-				if (overlap1 > -1) {
-					if (sev > lyi[overlap1].shse[vtype]) {
-						ClearLyShape(overlap1, overlap2, vtype);
-					}
-					else {
-						// Skip shape
-						continue;
-					}
-				}
+				if (skip_shape) continue;
 			}
 			SetLyShape(s1, s2, fl, vtype);
 		}
