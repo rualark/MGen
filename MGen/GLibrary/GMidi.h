@@ -187,6 +187,13 @@ const CString LyOctave[] = {
 #define vPedal 12
 #define MAX_VIZ 13
 
+#define vtPoint 1 // Can link only to one note
+#define vtVBracket 2 // Cannot collide in same interval between notes
+#define vtVolta 3 // Can mark single note
+#define vtConnector 4 // Cannot mark less than two notes
+
+const int viz_type[MAX_VIZ] = { 1, 1, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4 };
+
 struct LY_Intermediate {
 	vector<int> shs; // [shape_type] If current step starts new shape
 	vector<int> shsl; // [shape_type] Link to shape start position if current position is shape finish
