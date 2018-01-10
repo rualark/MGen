@@ -1,6 +1,7 @@
   \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
   \override Score.VoltaBracket #'font-shape = #'bold 
   \override Score.VoltaBracket.thickness = #3
+  \override Staff.OttavaBracket.thickness = #2
   \accidentalStyle modern-cautionary
   \time 4/4
   % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
