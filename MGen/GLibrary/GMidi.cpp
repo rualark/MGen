@@ -241,6 +241,11 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 				fs << " \\unset Staff.ottavation\n";
 			}
 		}
+		if (x == vTS) {
+			if (phase == 11) {
+				fs << " \\stopTextSpan\n";
+			}
+		}
 	}
 	// Show flag start
 	for (int x = 0; x < lyi[ly_s2].shs.size(); ++x) {
@@ -319,6 +324,17 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 					<< GetLyColor(flag_color[sev]) << ")\n";
 			}
 		}
+		if (x == vTS) {
+			if (phase == 1) {
+				fs << " \\myTS \"" 
+					+ lyi[ly_s2].sht[x] + "\" #(rgb-color " + 
+					GetLyColor(flag_color[sev]) << ")\n";
+				fs << "\\textSpannerDown\n";
+			}
+			if (phase == 9) {
+				fs << "\\startTextSpan\n";
+			}
+		}
 	}
 }
 
@@ -366,6 +382,7 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 			i += la[lc] / midifile_out_mul[i];
 			pos += la[lc];
 		}
+		SendLyViz(fs, pos, ev, le, i, v, 9);
 		SendLyViz(fs, pos, ev, le, i, v, 10);
 		SendLyViz(fs, pos, ev, le, i, v, 11);
 		SendLyViz(fs, pos, ev, le, i, v, 12);
