@@ -219,13 +219,13 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		}
 		if (x == vBracket) {
 			if (phase == 10) {
-				fs << " \\stopGroup ";
+				fs << " \\stopGroup\n ";
 			}
 		}
 		if (x == vVBracket) {
 			if (phase == 11) fs << " \\override BreathingSign.color = #(rgb-color "
 				<< GetLyColor(flag_color[sev])
-				<< ") \\rightBracket\n";
+				<< ")\n \\rightBracket\n";
 		}
 		if (x == vVolta) {
 			if (phase == 11)
@@ -234,6 +234,11 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		if (x == vTrill) {
 			if (phase == 10) {
 				fs << " \\stopTrillSpan\n";
+			}
+		}
+		if (x == vOttava) {
+			if (phase == 11) {
+				fs << " \\unset Staff.ottavation\n";
 			}
 		}
 	}
@@ -271,7 +276,7 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		if (x == vVBracket) {
 			if (phase == 1)
 				fs << " \\override BreathingSign.color = #(rgb-color "
-				<< GetLyColor(flag_color[sev]) << ") \\leftBracket\n";
+				<< GetLyColor(flag_color[sev]) << ")\n \\leftBracket\n";
 		}
 		if (x == vVolta) {
 			if (phase == 1)
@@ -304,6 +309,14 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			}
 			if (phase == 10) {
 				fs << " \\startTrillSpan\n";
+			}
+		}
+		if (x == vOttava) {
+			if (phase == 1) {
+				fs << " \\set Staff.ottavation = \\markup { \\teeny \""
+					+ lyi[ly_s2].sht[x] + "\" }\n ";
+				fs << " \\override Staff.OttavaBracket.color = #(rgb-color "
+					<< GetLyColor(flag_color[sev]) << ")\n";
 			}
 		}
 	}
@@ -662,7 +675,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		st.Format("  \\set Staff.instrumentName = \"Voice %d\"\n", v + 1);
 		fs << st;
 		fs << "  \\clef \"" << clef << "\" \\key " << key;
-		fs << " \\" << (minor[step1][0] ? "minor" : "major");
+		fs << " \\" << (minor[step1][0] ? "minor" : "major") << "\n";
 		read_file_sv("configs\\ly\\staff.ly", sv);
 		write_file_sv(fs, sv);
 		fs << "  { ";

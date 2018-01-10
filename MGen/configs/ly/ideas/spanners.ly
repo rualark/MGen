@@ -59,6 +59,8 @@ glissandoSkipOff = {
 
 
 \relative c {
+\override TrillSpanner.bound-details.left.text = \markup { \raise #0.6 \teeny "some text" }
+\override TrillSpanner.color = #red
   \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
    \override Score.VoltaBracket #'font-shape = #'bold 
 \clef "treble_8"
@@ -176,3 +178,18 @@ g)\startTextSpan a
    \set Score.repeatCommands = #'((volta #f)) 
    c'4 c8 c c4 c8 c 
 } 
+
+\relative c' { 
+  a
+  \startGroup
+b
+\stopGroup
+c
+  \startGroup
+
+d
+\stopGroup
+e
+f
+g
+}
