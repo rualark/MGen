@@ -1,5 +1,6 @@
   \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
   \override Score.VoltaBracket #'font-shape = #'bold 
+  \override Score.VoltaBracket.thickness = #3
   \accidentalStyle modern-cautionary
   \time 4/4
   % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
@@ -15,6 +16,9 @@
     \override Slur.line-thickness = #2
     \override PhrasingSlur.line-thickness = #2
     \phrasingSlurDown \phrasingSlurDashed
-    \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
-    \override Score.VoltaBracket #'font-shape = #'bold 
+    \consists "Horizontal_bracket_engraver"
+    \override HorizontalBracket.thickness=3
+    \override HorizontalBracket.#'bracket-flare = #'(0 . 0)
+    \override HorizontalBracket.#'edge-height = #'(0.5 . 0.5)
+    \override HorizontalBracket #'shorten-pair = #'(-0.3 . -0.3) 
   }

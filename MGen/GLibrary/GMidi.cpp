@@ -217,6 +217,11 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		if (x == vPSlur) {
 			if (phase == 10) fs << " \\) ";
 		}
+		if (x == vBracket) {
+			if (phase == 10) {
+				fs << " \\stopGroup ";
+			}
+		}
 		if (x == vVBracket) {
 			if (phase == 11) fs << " \\override BreathingSign.color = #(rgb-color "
 				<< GetLyColor(flag_color[sev])
@@ -270,6 +275,16 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 				<< GetLyColor(flag_color[sev])
 				<< ")\n \\set Score.repeatCommands = #'((volta \"" + 
 				lyi[ly_s2].sht[x] + "\"))\n";
+		}
+		if (x == vBracket) {
+			if (phase == 1) {
+				fs << " \\override HorizontalBracket.color=#(rgb-color "
+					<< GetLyColor(flag_color[sev]) << ")\n ";
+			}
+			if (phase == 10) {
+				fs << " -\\tweak #'stencil #(label \"" + lyi[ly_s2].sht[x] + "\" (rgb-color "
+					<< GetLyColor(flag_color[sev]) << "))\\startGroup\n";
+			}
 		}
 	}
 }
@@ -548,8 +563,11 @@ void CGMidi::InitLyI() {
 				int overlap1 = -1;
 				int overlap2 = -1;
 				int overlap_limit = s1;
+				// For groups check for collision between borders
+				if (viz_type[vtype] == vtGroup)
+					overlap_limit = s1 - 1;
 				// For vbrackets check for collision between notes
-				if (viz_type[vtype] == vtVBracket) 
+				if (viz_type[vtype] == vtVBracket)
 					overlap_limit = prev_note_step - ly_step1 - 1;
 				for (int x = ly_step2 - ly_step1 - 1; x > overlap_limit; --x) {
 					if (lyi[x].shf[vtype]) {

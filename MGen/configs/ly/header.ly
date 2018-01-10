@@ -71,6 +71,18 @@ rightBracket = {
   \breathe
 }
 
+#(define (label text color)
+  (lambda (grob)
+    (ly:stencil-aligned-to
+      (ly:stencil-combine-at-edge
+        (ly:stencil-aligned-to (ly:horizontal-bracket::print grob) X CENTER)
+        Y (ly:grob-property grob 'direction)
+        (ly:stencil-aligned-to (grob-interpret-markup grob (markup 
+                                                            #:with-color color
+                                                            (#:teeny text))) X CENTER)
+      0.2)
+     X LEFT)))
+
 \header {
   subtitle = "$TITLE$"
 }
