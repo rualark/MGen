@@ -21,4 +21,5 @@
     \override HorizontalBracket.#'bracket-flare = #'(0 . 0)
     \override HorizontalBracket.#'edge-height = #'(0.5 . 0.5)
     \override HorizontalBracket #'shorten-pair = #'(-0.3 . -0.3) 
+    \override TrillSpanner.bound-details.left.text = ##f
   }
