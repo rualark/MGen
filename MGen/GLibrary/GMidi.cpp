@@ -231,6 +231,11 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			if (phase == 11)
 				fs << " \\set Score.repeatCommands = #'((volta #f))\n";
 		}
+		if (x == vTrill) {
+			if (phase == 10) {
+				fs << " \\stopTrillSpan\n";
+			}
+		}
 	}
 	// Show flag start
 	for (int x = 0; x < lyi[ly_s2].shs.size(); ++x) {
@@ -266,8 +271,7 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		if (x == vVBracket) {
 			if (phase == 1)
 				fs << " \\override BreathingSign.color = #(rgb-color "
-				<< GetLyColor(flag_color[sev])
-				<< ") \\leftBracket\n";
+				<< GetLyColor(flag_color[sev]) << ") \\leftBracket\n";
 		}
 		if (x == vVolta) {
 			if (phase == 1)
@@ -284,6 +288,22 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			if (phase == 10) {
 				fs << " -\\tweak #'stencil #(label \"" + lyi[ly_s2].sht[x] + "\" (rgb-color "
 					<< GetLyColor(flag_color[sev]) << "))\\startGroup\n";
+			}
+		}
+		if (x == vTrill) {
+			if (phase == 1) {
+				fs << " \\override TrillSpanner.bound-details.left.text = ";
+				if (lyi[ly_s2].sht[x].IsEmpty()) {
+					fs << "#f\n ";
+				}
+				else {
+					fs << "\\markup{ \\raise #0.6 \\teeny \"" + lyi[ly_s2].sht[x] + "\" }\n ";
+				}
+				fs << " \\override TrillSpanner.color = #(rgb-color "
+					<< GetLyColor(flag_color[sev]) << ")\n";
+			}
+			if (phase == 10) {
+				fs << " \\startTrillSpan\n";
 			}
 		}
 	}

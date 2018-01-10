@@ -208,6 +208,7 @@ void CGenCF1::LoadRules(CString fname)
 			rule_viz_int[rid] = atoi(ast[11]);
 			rule_viz_v2[rid] = atoi(ast[12]);
 			rule_viz_t[rid] = ast[13];
+			//if (rule_viz_t[rid].IsEmpty) rule_viz_t[rid] = " ";
 			false_positives_global[rid] = atoi(ast[16]);
 			false_positives_ignore[rid] = atoi(ast[17]);
 			sas_emulator_max_delay[rid] = atoi(ast[18]);
