@@ -165,6 +165,7 @@ g)\startTextSpan a
 \relative c' { 
   \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
    \override Score.VoltaBracket #'font-shape = #'bold 
+   \override Score.VoltaBracket.color = #red
    d'4. c8 b a g f 
    \set Score.repeatCommands = #`((volta ,#{ \markup  "some text" #} )) 
    e4 e' e r \bar "||" 

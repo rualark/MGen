@@ -43,7 +43,7 @@ speakOff = {
 
 #(define-markup-command (left-bracket layout props) ()
 "Draw left hand bracket"
-(let* ((th 0.2) ;; todo: take from GROB
+(let* ((th 0.3) ;; todo: take from GROB
 	(width (* 2.5 th)) ;; todo: take from GROB
 	(ext '(-2.8 . 2.8))) ;; todo: take line-count into account
 	(ly:bracket Y ext th width)))
@@ -60,7 +60,7 @@ leftBracket = {
 
 #(define-markup-command (right-bracket layout props) ()
 "Draw right hand bracket"
-  (let* ((th .2);;todo: take from GROB
+  (let* ((th .3);;todo: take from GROB
           (width (* 2.5 th)) ;; todo: take from GROB
           (ext '(-2.8 . 2.8))) ;; todo: take line-count into account
         (ly:bracket Y ext th (- width))))

@@ -220,7 +220,11 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		if (x == vVBracket) {
 			if (phase == 11) fs << " \\override BreathingSign.color = #(rgb-color "
 				<< GetLyColor(flag_color[sev])
-				<< ") \\rightBracket ";
+				<< ") \\rightBracket\n";
+		}
+		if (x == vVolta) {
+			if (phase == 11)
+				fs << " \\set Score.repeatCommands = #'((volta #f))\n";
 		}
 	}
 	// Show flag start
@@ -231,16 +235,16 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			if (phase == 1) {
 				fs << " \\override Glissando.color=#(rgb-color "
 					<< GetLyColor(flag_color[sev])
-					<< ") ";
+					<< ")\n";
 			}
 			if (phase == 10)
-				fs << " \\glissando ";
+				fs << " \\glissando\n";
 		}
 		if (x == vSlur) {
 			if (phase == 1) {
 				fs << " \\override Slur.color=#(rgb-color "
 					<< GetLyColor(flag_color[sev])
-					<< ") ";
+					<< ")\n";
 			}
 			if (phase == 10)
 				fs << " ( ";
@@ -249,16 +253,23 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			if (phase == 1) {
 				fs << " \\override PhrasingSlur.color=#(rgb-color "
 					<< GetLyColor(flag_color[sev])
-					<< ") ";
+					<< ")\n";
 			}
 			if (phase == 10)
 				fs << " \\( ";
 		}
 		if (x == vVBracket) {
-			if (phase == 1) 
+			if (phase == 1)
 				fs << " \\override BreathingSign.color = #(rgb-color "
 				<< GetLyColor(flag_color[sev])
-				<< ") \\leftBracket ";
+				<< ") \\leftBracket\n";
+		}
+		if (x == vVolta) {
+			if (phase == 1)
+				fs << " \\override Score.VoltaBracket.color = #(rgb-color "
+				<< GetLyColor(flag_color[sev])
+				<< ")\n \\set Score.repeatCommands = #'((volta \"" + 
+				lyi[ly_s2].sht[x] + "\"))\n";
 		}
 	}
 }
@@ -447,13 +458,13 @@ void CGMidi::SetLyShape(int s1, int s2, int fl, int vtype) {
 	// Start
 	lyi[s1].shs[vtype] = 1;
 	// Apply finish and properties only if my severity is greater
-	if (lyi[s1].shse[vInterval] <= severity[fl]) {
+	if (lyi[s1].shse[vtype] <= severity[fl]) {
 		// Finish
 		lyi[s2].shf[vtype] = 1;
 		// Link to start
 		lyi[s2].shsl[vtype] = s1 - s2;
 		lyi[s1].shse[vtype] = severity[fl];
-		lyi[s1].sht[vInterval] = rule_viz_t[fl];
+		lyi[s1].sht[vtype] = rule_viz_t[fl];
 	}
 }
 

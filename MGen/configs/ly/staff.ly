@@ -1,3 +1,5 @@
+  \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
+  \override Score.VoltaBracket #'font-shape = #'bold 
   \accidentalStyle modern-cautionary
   \time 4/4
   % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
@@ -13,4 +15,6 @@
     \override Slur.line-thickness = #2
     \override PhrasingSlur.line-thickness = #2
     \phrasingSlurDown \phrasingSlurDashed
+    \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
+    \override Score.VoltaBracket #'font-shape = #'bold 
   }
