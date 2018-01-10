@@ -499,10 +499,21 @@ void CGMidi::InitLyI() {
 		ly_s2 = ly_s - ly_step1;
 		// Find next note position
 		int next_note_step = ly_s;
-		for (int x = ly_s; x < ly_step2; ++x) {
+		for (int x = ly_s + 1; x < ly_step2; ++x) {
 			if (note[x][ly_v] != note[ly_s][ly_v]) {
 				next_note_step = x;
 				break;
+			}
+		}
+		// Find previous note position
+		int prev_note_step = ly_s;
+		if (ly_s2 > 0) {
+			for (int x = ly_s - 1; x >= ly_step1; --x) {
+				if (note[x][ly_v] != note[ly_s - 1][ly_v]) {
+					prev_note_step = x + 1;
+					break;
+				}
+				if (x == ly_step1) prev_note_step = x;
 			}
 		}
 		// Parse shapes
@@ -525,9 +536,13 @@ void CGMidi::InitLyI() {
 				// Check that flag overlaps
 				int overlap1 = -1;
 				int overlap2 = -1;
-				for (int x = ly_step2 - ly_step1 - 1; x > s1; --x) {
+				int overlap_limit = s1;
+				// For vbrackets check for collision between notes
+				if (viz_type[vtype] == vtVBracket) 
+					overlap_limit = prev_note_step - ly_step1 - 1;
+				for (int x = ly_step2 - ly_step1 - 1; x > overlap_limit; --x) {
 					if (lyi[x].shf[vtype]) {
-						overlap2 = x;
+						overlap2 = x; 
 						overlap1 = x + lyi[x].shsl[vtype];
 						// Choose highest severity
 						if (sev > lyi[overlap1].shse[vtype]) {
