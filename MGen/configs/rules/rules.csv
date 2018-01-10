@@ -1,5 +1,4 @@
 Set;Severity;Class;Group;Rule;Flag
-1;11;70;Melody;Range;Range;int >15va;0;;Maximum burst interval is 16th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);4;;;rng;124;2;;;;1;;;
 1;0;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;
 1;42;0;Melody;Compensated leap;Compensation deviation to 2nd;3rd;-1;Compensation can be deviated one note above last note;;5;;;;195;0;;;999;;;;
 1;43;0;Melody;Compensated leap;Compensation deviation to 2nd;4th;-1;Compensation can be deviated one note above last note;;5;;;;80;0;;;999;;;;
@@ -135,9 +134,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;368;0;Melody;sp2-5 Tritone;Adjacent tritone;resolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;5;2;;;;;;;
 1;369;60;Melody;sp2-5 Tritone;Adjacent tritone;unresolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;7;1;;;;;368;;
 1;370;100;Melody;sp2-5 Tritone;Adjacent tritone;on climax;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;3;2;;;;;;;
-1;365;40;Melody;sp2-5 Tritone;Adjacent tritone framed;resolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;18;4;;;;;;;
-1;366;100;Melody;sp2-5 Tritone;Adjacent tritone framed;unresolved;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;15;4;;;;;365;;
-1;367;100;Melody;sp2-5 Tritone;Adjacent tritone framed;on climax;0;Melodic tritone within measure, framed by two melody direction changes;;;;;;6;4;;;;;;;
+1;365;40;Melody;sp2-5 Tritone;Adjacent tritone framed;resolved;0;Melodic tritone within measure, framed by two melody direction changes;;8;;;re;18;4;;;;;;;
+1;366;100;Melody;sp2-5 Tritone;Adjacent tritone framed;unresolved;0;Melodic tritone within measure, framed by two melody direction changes;;8;;;un;15;4;;;;;365;;
+1;367;100;Melody;sp2-5 Tritone;Adjacent tritone framed;on climax;0;Melodic tritone within measure, framed by two melody direction changes;;8;;;cli;6;4;;;;;;;
 1;360;40;Melody;sp2-5 Tritone;Adjacent tritone accented;resolved;0;Melodic tritone within measure, last note is long or repeated;;;;;;1;1;;;;;368;;
 1;361;100;Melody;sp2-5 Tritone;Adjacent tritone accented;unresolved;0;Melodic tritone within measure, last note is long or repeated;;;;;;6;2;1;;;;360,368,369;;
 1;362;100;Melody;sp2-5 Tritone;Adjacent tritone accented;on climax;0;Melodic tritone within measure, last note is long or repeated;;;;;;4;1;;;;;;;
