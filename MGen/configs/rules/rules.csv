@@ -230,9 +230,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;325;0;Cantus;Counterpoint;Perfect consonance culmination;db. long 5th;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat 5th 1/2 or longer;;1;;;0;0;1;;;;;;
 1;326;0;Cantus;Counterpoint;Perfect consonance culmination;db. long 8va;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat octave 1/2 or longer;;1;;;2;0;1;;;;;;
 1;330;0;Cantus;Counterpoint;Close perfect consonances;parallel sus 6-5;1;;Parallel 5th after sus from 5th to 6th;7;1;1;;4;3;1;;;;249;;
-1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;;10;1;1;;120;7;;;;;;;
-1;85;60;Cantus;Counterpoint;Close perfect consonances;contrary;0;;Contrary octaves are possible in cadence;10;1;1;;11;4;1;;;;;;
-1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;10;1;1;;160;1;;;;;;;
+1;84;60;Cantus;Counterpoint;Close perfect consonances;parallel;0;;;7;1;1;;120;7;;;;;;;
+1;85;60;Cantus;Counterpoint;Close perfect consonances;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;11;4;1;;;;;;
+1;86;60;Cantus;Counterpoint;Close perfect consonances;different;-1;;;7;1;1;;160;1;;;;;;;
 1;248;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;;1;;;25;4;1;;;;;;
 1;376;0;Cantus;Counterpoint;Perfect consonances < 4/4 apart;last contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to last interval in counterpoint;;1;;;7;4;;;;;;;
 1;347;30;Cantus;Counterpoint;Perfect consonances < 4/4 apart;direct comp.;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Direct compound intervals.;;1;;;2;2;1;;;;;;
@@ -276,7 +276,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;224;100;Cantus;Counterpoint;Dissonance;interbar;0;;Dissonance starts and ends suspension/anticipation;;1;;;8;4;1;;;;;;
 1;331;0;Cantus;Counterpoint;Dissonance;4th cons;1;;Prohibit 4th upbeat not lowest consonance;;1;;;0;0;1;;;;;;
 1;169;0;Cantus;Counterpoint;Dissonance upbeat;stepwize;-1;;;;1;;;767;3;;;;;;;
-1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;;1;;;133;8;;;;;276,169;;
+1;187;60;Cantus;Counterpoint;Dissonance upbeat;leap;0;;;10;1;;du;133;8;;;;;276,169;;
 1;276;60;Cantus;Counterpoint;Dissonance upbeat;m2;0;;Minor second;;1;;;5;3;1;;;;;;
 1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;1;More than X same imperfect consonances in a row;;;1;;;45;0;;;;;;;
 1;96;0;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;;1;;;14;0;;;;;;;

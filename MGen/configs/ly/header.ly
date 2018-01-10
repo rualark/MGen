@@ -83,6 +83,19 @@ rightBracket = {
       0.2)
      X LEFT)))
 
+myTS =
+#(define-music-function (parser location st color) (string? color?)
+  #{
+    \override TextSpanner.style = #'dashed-line
+      \override TextSpanner.dash-fraction = #0.3
+  \override TextSpanner.dash-period = #1
+    \override TextSpanner.font-size = #-3
+    \override TextSpanner.bound-details.left.stencil-align-dir-y = #CENTER
+    \override TextSpanner.bound-details.left.text = #st
+    \override TextSpanner.color = #color
+    \override TextSpanner.thickness = #2
+  #})
+
 \header {
   subtitle = "$TITLE$"
 }
