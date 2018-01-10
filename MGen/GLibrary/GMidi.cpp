@@ -597,7 +597,7 @@ void CGMidi::InitLyI() {
 				int overlap2 = -1;
 				int overlap_limit = s1;
 				// For groups check for collision between borders
-				if (viz_type[vtype] == vtGroup)
+				if (viz_type[vtype] == vtGroup || viz_type[vtype] == vtVolta)
 					overlap_limit = s1 - 1;
 				// For vbrackets check for collision between notes
 				if (viz_type[vtype] == vtVBracket)

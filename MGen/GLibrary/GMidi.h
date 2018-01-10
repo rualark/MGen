@@ -194,7 +194,7 @@ const CString LyOctave[] = {
 #define vtLink 4 // Cannot mark less than two notes
 #define vtGroup 5 // Cannot mark less than two notes, borders cannot overlap
 
-const int viz_type[MAX_VIZ] = { 1, 1, 1, 2, 3, 4, 4, 4, 5, 4, 4, 4, 4 };
+const int viz_type[MAX_VIZ] = { 1, 1, 1, 2, 3, 4, 4, 4, 5, 5, 4, 5, 4 };
 
 struct LY_Intermediate {
 	vector<int> shs; // [shape_type] If current step starts new shape
