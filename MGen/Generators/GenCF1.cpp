@@ -858,7 +858,7 @@ int CGenCF1::FailLocalRange(vector<int> &c, int notes, int mrange, int flag) {
 				fpenalty[flag] += severity[flag] + 1;
 			}
 			else {
-				FLAG2(flag, fli[ls]);
+				FLAG2L(flag, fli[ls], fli[ls_max2 - 1]);
 				fired = 1;
 			}
 		}
@@ -885,7 +885,7 @@ int CGenCF1::FailLocalPiCount(vector<int> &cc, int notes, int picount, int flag)
 		if (ls >= notes - 1) {
 			picount2 = 0;
 			for (i = nmin; i <= nmax; ++i) if (nstat[i]) ++picount2;
-			if (picount2 < picount) FLAG2(flag, fli[ls - notes + 1]);
+			if (picount2 < picount) FLAG2L(flag, fli[ls - notes + 1], fli[ls]);
 		}
 	}
 	return 0;
@@ -1032,7 +1032,7 @@ int CGenCF1::FailLocalMacc(int notes, float mrange, int flag) {
 				fpenalty[flag] += severity[flag] + 1;
 			}
 			else {
-				FLAG2(flag, fli[ls]);
+				FLAG2L(flag, fli[ls], fli[ls_max2 - 1]);
 				fired = 1;
 			}
 		}
@@ -1504,11 +1504,11 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 		// Get maximum leap_sum
 		if (leap_sum > pm_win_leaps) {
 			pm_win_leaps = leap_sum;
-			leap_sum_i = s;
+			leap_sum_i = ls;
 		}
 		if (leaped_sum > pm_win_leapnotes) {
 			pm_win_leapnotes = leaped_sum;
-			leap_sum_i = s;
+			leap_sum_i = ls;
 		}
 		// Record for graph
 		g_leaps[ls] = leap_sum;
@@ -1528,13 +1528,13 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 		}
 	}
 	if (pm_win_leaps > mleaps) 
-		FLAG2L(flag1, fli[bli[leap_sum_i]], fli[max(0, bli[leap_sum_i] - mleapsteps)]);
+		FLAG2L(flag1, fli[leap_sum_i + 1], fli[max(0, leap_sum_i - mleapsteps)]);
 	else if (pm_win_leaps > mleaps2) 
-		FLAG2L(flag3, fli[bli[leap_sum_i]], fli[max(0, bli[leap_sum_i] - mleapsteps)]);
+		FLAG2L(flag3, fli[leap_sum_i + 1], fli[max(0, leap_sum_i - mleapsteps)]);
 	if (pm_win_leapnotes > mleaped) 
-		FLAG2L(flag2, fli[bli[leap_sum_i]], fli[max(0, bli[leap_sum_i] - mleapsteps)]);
+		FLAG2L(flag2, fli[leap_sum_i + 1], fli[max(0, leap_sum_i - mleapsteps)]);
 	else if (pm_win_leapnotes > mleaped2) 
-		FLAG2L(flag4, fli[bli[leap_sum_i]], fli[max(0, bli[leap_sum_i] - mleapsteps)]);
+		FLAG2L(flag4, fli[leap_sum_i + 1], fli[max(0, leap_sum_i - mleapsteps)]);
 	return 0;
 }
 
@@ -1607,7 +1607,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 					fpenalty[flag1] += severity[flag1] + 1;
 				}
 				else {
-					FLAG2L(flag1, fli[ls], fli[ls - smooth_sum + 1]);
+					FLAG2L(flag1, fli[ls + 1], fli[ls - smooth_sum + 1]);
 					fired4 = 1;
 				}
 			}
@@ -1622,7 +1622,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 						fpenalty[flag2] += severity[flag2] + 1;
 					}
 					else {
-						FLAG2L(flag2, fli[ls], fli[ls - smooth_sum2 + 1]);
+						FLAG2L(flag2, fli[ls + 1], fli[ls - smooth_sum2 + 1]);
 						fired5 = 1;
 					}
 				}
@@ -1662,7 +1662,7 @@ int CGenCF1::FailStagnation(vector<int> &cc, vector<int> &nstat, int steps, int 
 		// Subtract old note
 		if (ls >= steps) --nstat[cc[fli[ls - steps]]];
 		// Check if too many repeating notes
-		if (nstat[cc[s]] > notes) FLAG2(flag, s);
+		if (nstat[cc[s]] > notes) FLAG2L(flag, s, fli[max(0, ls - steps)]);
 	}
 	return 0;
 }

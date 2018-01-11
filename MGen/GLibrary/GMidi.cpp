@@ -472,7 +472,12 @@ void CGMidi::ParseNLinks(int i, int i2, int v, int foreign) {
 	for (auto const& it : nlink[i][v]) {
 		if (foreign && !rule_viz_v2[it.first]) continue;
 		lyi[i2 - ly_step1].nflags.push_back(it.first);
-		lyi[i2 - ly_step1].nfl.push_back(it.second);
+		if (foreign) {
+			lyi[i2 - ly_step1].nfl.push_back(i + it.second - coff[i + it.second][v] - i2);
+		}
+		else {
+			lyi[i2 - ly_step1].nfl.push_back(it.second);
+		}
 		lyi[i2 - ly_step1].nfn.push_back(ly_flags + 1);
 		lyi[i2 - ly_step1].nff.push_back(foreign);
 		lyi[i2 - ly_step1].nfc.push_back(comment[i][v][x]);
@@ -619,17 +624,6 @@ void CGMidi::InitLyI() {
 				if (x == ly_step1) cur_note_step = x;
 			}
 		}
-		// Find current note position in second voice
-		int cur_note_step2 = ly_s;
-		if (ly_s2 > 0) {
-			for (int x = ly_s; x >= ly_step1; --x) {
-				if (note[x][ly_v2] != note[ly_s][ly_v2]) {
-					cur_note_step2 = x + 1;
-					break;
-				}
-				if (x == ly_step1) cur_note_step2 = x;
-			}
-		}
 		// Init vectors
 		lyi[ly_s2].shs.resize(MAX_VIZ);
 		lyi[ly_s2].shsl.resize(MAX_VIZ);
@@ -702,7 +696,7 @@ void CGMidi::InitLyI() {
 			int s2 = max(ly_s2, ly_s2 + link);
 			if (lyi[ly_s2].nff[f]) {
 				s1 = min(ly_s2, link_note_step - ly_step1);
-				s2 = min(ly_s2, link_note_step - ly_step1);
+				s2 = max(ly_s2, link_note_step - ly_step1);
 			}
 			// If shape cannot highlight single note, but flag does not contain link, then link to next note
 			if (vtype > vVolta && s1 == s2) s2 = next_note_step - ly_step1;
