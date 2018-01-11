@@ -1434,7 +1434,7 @@ int CGenCF1::FailOutstandingRepeat(vector<int> &c, vector<int> &cc, vector<int> 
 							}
 						}
 						if (!ok) {
-							FLAG2(flag, fli[ls]);
+							FLAG2L(flag, fli[ls], fli[ls + rlen - 1]);
 						}
 					}
 				}
@@ -1471,7 +1471,7 @@ int CGenCF1::FailLongRepeat(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 					}
 				}
 				if (!ok) {
-					FLAG2(flag, fli[ls]);
+					FLAG2L(flag, fli[ls], fli[ls + rlen - 1]);
 				}
 			}
 		}
@@ -1630,10 +1630,10 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 				// llen[ls] == llen[ls + 2]
 				// Same rhythm in first notes of repeat?
 				if (llen[ls - 1] == llen[ls + 1]) {
-					if (llen[ls - 1] == llen[ls]) FLAG2(9, fli[ls - 1]);
-					else FLAG2(320, fli[ls - 1]);
+					if (llen[ls - 1] == llen[ls]) FLAG2L(9, fli[ls - 1], fli[ls + 2]);
+					else FLAG2L(320, fli[ls - 1], fli[ls + 2]); 
 				}
-				else FLAG2(319, fli[ls - 1]);
+				else FLAG2L(319, fli[ls - 1], fli[ls + 2]);
 			}
 		}
 	}

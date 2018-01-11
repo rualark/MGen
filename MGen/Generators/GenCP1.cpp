@@ -2009,8 +2009,9 @@ int CGenCP1::FailRhythm5() {
 				// 1/8 on leap
 				if (ls2 < fli_size - 1 && aleap[cpv][s2]) 
 					FLAG2(88, s2);
-				else if (ls2 > 0 && aleap[cpv][s2 - 1])
-					FLAG2(88, isus[bli[s2-1]]);
+				else if (ls2 > 0 && aleap[cpv][s2 - 1]) {
+					if (llen[ls2 - 1] > 1) FLAG2(88, isus[bli[s2 - 1]]);
+				}
 			}
 			else {
 				// 1/8 syncope
@@ -2027,7 +2028,7 @@ int CGenCP1::FailRhythm5() {
 		if (full_measure) {
 			if (rid.size()) {
 				// Do not fire for first measure if measure starts with pause
-				if (rid.back() == rid_cur && (ms > 1 || !fn)) FLAG2(247, s2);
+				if (rid.back() == rid_cur && (ms > 1 || !fn)) FLAG2L(247, s2, mli[ms - 1]);
 			}
 			rid.push_back(rid_cur);
 		}
