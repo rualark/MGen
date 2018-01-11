@@ -27,6 +27,26 @@
   %% following tweak seems to have no effect
   e4-\tweak #'stencil #(label "b" red)\startGroup
   d4\stopGroup\stopGroup
+  f
+  \override Staff.PianoPedalBracket.color = #red
+  \override Staff.PianoPedalBracket.thickness = #2
+  \set Staff.pedalSustainStyle = #'mixed
+  \override Staff.SustainPedal #'stencil = 
+  #(lambda (grob) (grob-interpret-markup grob (markup 
+     #:with-color red
+     #:lower 0.4
+     (#:teeny "smt")))) 
+  e
+  
+   \sustainOn
+  d
+  c
+  b
+  \sustainOff
+  a
+  g
+  f
+  
 }
 
 

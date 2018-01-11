@@ -26,14 +26,16 @@ stringNumberSpanner =
   #})
 
 stringNumberSpannerZ =
-#(define-music-function (parser location StringNumber) (string?)
+#(define-music-function (parser location text color) (string? color?)
   #{
     \override TextSpanner.style = #'dashed-line
       \override TextSpanner.dash-fraction = #0.3
   \override TextSpanner.dash-period = #1
-    \override TextSpanner.font-size = #-5
+    \override TextSpanner.font-size = #-3
     \override TextSpanner.bound-details.left.stencil-align-dir-y = #CENTER
-    \override TextSpanner.bound-details.left.text = \markup { " " }
+    \override TextSpanner.bound-details.left.text = #text
+    \override TextSpanner.color = #color
+    \override TextSpanner.thickness = #2
   #})
 
 
@@ -78,7 +80,7 @@ d
   \override NoteColumn.glissando-skip = ##t
   f
   \stopTextSpan
-\stringNumberSpannerZ "4"
+\stringNumberSpannerZ "4" #red
    \set Score.repeatCommands = #'((volta #f)) 
 
 g)\startTextSpan a
@@ -98,7 +100,7 @@ g)\startTextSpan a
     \override Score.VoltaBracket #'edge-height = #'(0 . 0) 
 
 \clef "treble_8"
-  \stringNumberSpannerZ "59"
+  \stringNumberSpannerZ "59"  #red
   \textSpannerDown
   a8\startTextSpan
   b \startTrillSpan 
@@ -112,7 +114,7 @@ d
   \override NoteColumn.glissando-skip = ##t
   f
   \stopTextSpan
-\stringNumberSpannerZ "4"
+\stringNumberSpannerZ "4"  #red
    \set Score.repeatCommands = #'((volta #f)) 
 
 g)\startTextSpan a
@@ -132,7 +134,7 @@ g)\startTextSpan a
     \override Score.VoltaBracket #'edge-height = #'(0 . 0) 
 
 \clef "treble_8"
-  \stringNumberSpannerZ "59"
+  \stringNumberSpannerZ "59" #red
   \textSpannerDown
   a8\startTextSpan
   b \startTrillSpan \stopTextSpan
@@ -151,7 +153,7 @@ d
   \override NoteColumn.glissando-skip = ##t
   f
 x  
-\stringNumberSpannerZ "4"
+\stringNumberSpannerZ "4" #red
    \set Score.repeatCommands = #'((volta #f)) 
 
 g)\startTextSpan a

@@ -3,7 +3,7 @@
   \override Score.VoltaBracket.thickness = #3
   \override Staff.OttavaBracket.thickness = #2
   \override Staff.PianoPedalBracket.thickness = #2
-  \set Staff.pedalSustainStyle = #'bracket
+  \set Staff.pedalSustainStyle = #'mixed
   \accidentalStyle modern-cautionary
   \time 4/4
   % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
