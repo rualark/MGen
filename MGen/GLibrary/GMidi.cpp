@@ -226,6 +226,11 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 				fs << " \\stopGroup\n ";
 			}
 		}
+		if (x == vTS) {
+			if (phase == 10) {
+				fs << " \\stopTextSpan\n";
+			}
+		}
 		if (x == vVBracket) {
 			if (phase == 11) fs << " \\override BreathingSign.color = #(rgb-color "
 				<< GetLyColor(flag_color[sev])
@@ -243,11 +248,6 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		if (x == vOttava) {
 			if (phase == 11) {
 				fs << " \\unset Staff.ottavation\n";
-			}
-		}
-		if (x == vTS) {
-			if (phase == 11) {
-				fs << " \\stopTextSpan\n";
 			}
 		}
 		if (x == vPedal) {
@@ -619,6 +619,17 @@ void CGMidi::InitLyI() {
 				if (x == ly_step1) cur_note_step = x;
 			}
 		}
+		// Find current note position in second voice
+		int cur_note_step2 = ly_s;
+		if (ly_s2 > 0) {
+			for (int x = ly_s; x >= ly_step1; --x) {
+				if (note[x][ly_v2] != note[ly_s][ly_v2]) {
+					cur_note_step2 = x + 1;
+					break;
+				}
+				if (x == ly_step1) cur_note_step2 = x;
+			}
+		}
 		// Init vectors
 		lyi[ly_s2].shs.resize(MAX_VIZ);
 		lyi[ly_s2].shsl.resize(MAX_VIZ);
@@ -630,6 +641,20 @@ void CGMidi::InitLyI() {
 		if (!lyi[ly_s2].nflags.size() && v_cnt > 1) {
 			if (ly_v2 < v_cnt) {
 				ParseNLinks(ly_s, cur_note_step, ly_v2, 1);
+			}
+		}
+		else {
+			// Detect flags that are not at note start and not at cantus note start
+			for (int f = 0; f < lyi[ly_s2].nflags.size(); ++f) {
+				int link = lyi[ly_s2].nfl[f];
+				if ((!coff[ly_s][ly_v] || !coff[ly_s][ly_v2]) && 
+					(!coff[ly_s + link][ly_v] || !coff[ly_s + link][ly_v2])) continue;
+				int fl = lyi[ly_s2].nflags[f];
+				CString est;
+				est.Format("Detected flag at passive position %d/%d: [%d] %s %s (%s)",
+					ly_s, ly_s + link, fl, accept[fl] ? "+" : "-", 
+					RuleName[rule_set][fl], SubRuleName[rule_set][fl]);
+				WriteLog(5, est);
 			}
 		}
 	}

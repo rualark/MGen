@@ -1607,7 +1607,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 					fpenalty[flag1] += severity[flag1] + 1;
 				}
 				else {
-					FLAG2(flag1, s);
+					FLAG2L(flag1, fli[ls], fli[ls - smooth_sum + 1]);
 					fired4 = 1;
 				}
 			}
@@ -1622,7 +1622,7 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 						fpenalty[flag2] += severity[flag2] + 1;
 					}
 					else {
-						FLAG2(flag2, s);
+						FLAG2L(flag2, fli[ls], fli[ls - smooth_sum2 + 1]);
 						fired5 = 1;
 					}
 				}
@@ -1642,8 +1642,9 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 		}
 	}
 	if (max_leap_sum2 >= cse_leaps) {
-		if (max_leap_sum2 > cse_leaps2) FLAG2(71, fli[bli[leap_sum_s2]]);
-		else FLAG2(70, fli[bli[leap_sum_s2]]);
+		if (max_leap_sum2 > cse_leaps2) 
+			FLAG2L(71, fli[bli[leap_sum_s2] + 1], fli[max(0, bli[leap_sum_s2] - max_leap_sum2)]);
+		else FLAG2L(70, fli[bli[leap_sum_s2] + 1], fli[max(0, bli[leap_sum_s2] - max_leap_sum2)]);
 	}
 	return 0;
 }
@@ -2024,9 +2025,10 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 			leap_size = 4;
 			// If 6/8 goes before 2 thirds (tight)
 			if ((fleap_start > 0) && ((leap[leap_start] * (c[leap_start] - c[fli2[fleap_start - 1]]) == -5) ||
-				(leap[leap_start] * (c[leap_start] - c[fli2[fleap_start - 1]]) == -7))) FLAG2(28, fli[fleap_start]);
+				(leap[leap_start] * (c[leap_start] - c[fli2[fleap_start - 1]]) == -7))) 
+				FLAG2L(28, fli[fleap_start], fli[fleap_start + 2]);
 				// Else mark simple 2x3rds
-			else FLAG2(6, fli[fleap_start]);
+			else FLAG2L(6, fli[fleap_start], fli[fleap_start + 2]);
 		}
 	}			
 	leap_id = min(leap_size - 2, 3);
@@ -2034,7 +2036,8 @@ int CGenCF1::FailLeapMulti(int leap_next, int &arpeg, int &overflow, int &child_
 		// Next leap in same direction
 		if (leap_next > 0) {
 			// Flag if greater than two thirds
-			if (abs(c[fli2[fleap_end + 1]] - c[leap_start]) > 4) FLAG2(27, fli[bli[leap_end]]);
+			if (abs(c[fli2[fleap_end + 1]] - c[leap_start]) > 4) 
+				FLAG2L(27, fli[fleap_start], fli[bli[leap_end] + 1]);
 				// Allow if both thirds, without flags (will process next cycle)
 			else arpeg=1;
 		}
