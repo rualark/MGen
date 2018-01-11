@@ -795,28 +795,28 @@ int CGenCP1::FailSusResolution(int s3) {
 		// Mark resolution as obligatory harmonic in basic msh
 		if (tivl[s3] > 0) mshb[bli[s3]] = pSusRes;
 		// Resolution to discord
-		if (tivl[s3] < 0) FLAG2_LINK(220, sus[ls], s3);
+		if (tivl[s3] < 0) FLAG2L(220, sus[ls], s3);
 			// Resolution by leap
-		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2_LINK(221, s3, sus[ls]);
+		else if (abs(ac[cpv][s3] - ac[cpv][s2]) > 1) FLAG2L(221, s3, sus[ls]);
 		else {
 			// Resolution up
 			if (acc[cpv][s3] > acc[cpv][s2]) {
 				// Allowed only for resolution of leading tone
-				if (apcc[cpv][s2] == 11) FLAG2_LINK(222, s3, sus[ls]);
-				else FLAG2_LINK(219, s3, sus[ls]);
+				if (apcc[cpv][s2] == 11) FLAG2L(222, s3, sus[ls]);
+				else FLAG2L(219, s3, sus[ls]);
 			}
 			// 9th to 8va
 			if (ivlc[s2] == 1 && ivlc[s3] == 0) {
 				if (ivl[s2] > 7) {
 					if (cantus_high) 
-						FLAG2_LINK(216, s3, sus[ls]);
+						FLAG2L(216, s3, sus[ls]);
 				}
 				// 2nd to unison
-				else FLAG2_LINK(218, s3, sus[ls]);
+				else FLAG2L(218, s3, sus[ls]);
 			}
 			// 7th to 8va
 			else if (cantus_high && ivlc[s2] == 6 && ivlc[s3] == 0) 
-				FLAG2_LINK(217, s3, sus[ls]);
+				FLAG2L(217, s3, sus[ls]);
 		}
 	}
 	return 0;
@@ -1020,12 +1020,12 @@ int CGenCP1::FailUnison() {
 	if (!civl[s]) {
 		// 2nd -> unison
 		if (s > 0 && ivl[s - 1] == 1) 
-			FLAG2_LINK(275, s, isus[ls - 1]);
+			FLAG2L(275, s, isus[ls - 1]);
 		// Unison near m2 in same measure
 		if (ls < fli_size - 1 && civl[fli[ls + 1]] == 1 && bmli[s] == bmli[fli[ls + 1]]) 
-			FLAG2_LINK(277, s, fli[ls + 1]);
+			FLAG2L(277, s, fli[ls + 1]);
 		else if (s > 0 && civl[s - 1] == 1 && bmli[s] == bmli[s - 1]) 
-			FLAG2_LINK(275, s, isus[ls - 1]);
+			FLAG2L(275, s, isus[ls - 1]);
 		// Inside downbeat without suspension
 		if (!beat[ls] && ls > 0 && ls < fli_size - 1 && !sus[ls]) 
 			FLAG2(91, s);
@@ -1075,10 +1075,10 @@ int CGenCP1::FailPcoSus() {
 	if (tivl[s] == iPco) {
 		// Do not need to prohibit parallel, because one of note is slurred from previous step
 		// Prohibit combinatory
-		if (civlc[s] == civlc[s - 1]) FLAG2_LINK(85, s - 1, s);
+		if (civlc[s] == civlc[s - 1]) FLAG2L(85, s - 1, s);
 		// Prohibit different
 		else if (tivl[s - 1] == iPco)
-			FLAG2_LINK(86, s - 1, s);
+			FLAG2L(86, s - 1, s);
 	}
 	return 0;
 }
@@ -1093,7 +1093,7 @@ int CGenCP1::FailPco() {
 				FLAG2(324, sus[ls]);
 			// Prohibit parallel pco on suspension
 			if (ivl[sus[ls]] == ivl[fli2[ls - 1]])
-				FLAG2_LINK(385, sus[ls], isus[ls - 1]);
+				FLAG2L(385, sus[ls], isus[ls - 1]);
 		}
 	}
 	if (tivl[s] == iPco) {
@@ -1118,37 +1118,37 @@ int CGenCP1::FailPco() {
 		// because they are detected as pco apart now
 			// Prohibit parallel last - first
 		if (ivl[s] == ivl[fli2[ls - 1]]) 
-			FLAG2_LINK(84, isus[ls - 1], s);
+			FLAG2L(84, isus[ls - 1], s);
 		else {
 			// Prohibit contrary movement
 			if (bmli[s] - 1 == bmli[fli2[ls - 1]] && civlc[s] == civlc[fli2[ls - 1]]) 
-				FLAG2_LINK(85, isus[ls - 1], s);
+				FLAG2L(85, isus[ls - 1], s);
 				// Prohibit different
 			else if (tivl[fli2[ls - 1]] == iPco) 
-				FLAG2_LINK(86, isus[ls - 1], s);
+				FLAG2L(86, isus[ls - 1], s);
 			// All other cases if previous interval is not pco
 			// Direct movement to pco
 			if (motion[fli2[ls - 1]] == mDirect) {
 				// Stepwize
 				if (abs(acc[1][s] - acc[1][s - 1]) < 3) {
 					if (s2 == c_len - 1 && cfli[cfli.size()-1] == s) {
-						if (civlc[s] == 0) FLAG2_LINK(209, isus[ls - 1], s);
-						else FLAG2_LINK(208, isus[ls - 1], s);
+						if (civlc[s] == 0) FLAG2L(209, isus[ls - 1], s);
+						else FLAG2L(208, isus[ls - 1], s);
 					}
 					else if (ls < fli_size - 1 || ep2 == c_len) {
-						if (civlc[s] == 0) FLAG2_LINK(211, isus[ls - 1], s);
-						else FLAG2_LINK(210, isus[ls - 1], s);
+						if (civlc[s] == 0) FLAG2L(211, isus[ls - 1], s);
+						else FLAG2L(210, isus[ls - 1], s);
 					}
 				}
 				// Non-stepwize
 				else {
 					if (s2 == c_len - 1 && cfli[cfli.size() - 1] == s) {
-						if (civlc[s] == 0) FLAG2_LINK(213, isus[ls - 1], s);
-						else FLAG2_LINK(212, isus[ls - 1], s);
+						if (civlc[s] == 0) FLAG2L(213, isus[ls - 1], s);
+						else FLAG2L(212, isus[ls - 1], s);
 					}
 					else if (ls < fli_size - 1 || ep2 == c_len) {
-						if (civlc[s] == 0) FLAG2_LINK(215, isus[ls - 1], s);
-						else FLAG2_LINK(214, isus[ls - 1], s);
+						if (civlc[s] == 0) FLAG2L(215, isus[ls - 1], s);
+						else FLAG2L(214, isus[ls - 1], s);
 					}
 				}
 			}
@@ -2054,9 +2054,9 @@ int CGenCP1::FailRhythm5() {
 		// Many notes in measure
 		if (l_len.size() == 5) {
 			if (slur1) FLAG2(301, s);
-			else FLAG2_LINK(245, s, fli[bli[s + npm - 1]]);
+			else FLAG2L(245, s, fli[bli[s + npm - 1]]);
 		}
-		else if (l_len.size() > 5) FLAG2_LINK(246, s, fli[bli[s + npm - 1]]);
+		else if (l_len.size() > 5) FLAG2L(246, s, fli[bli[s + npm - 1]]);
 		// Suspensions
 		if (slur1 == 4 && l_len[0] == 2) FLAG2(241, s);
 		else if (slur1 == 4 && l_len[0] == 4) FLAG2(242, s);
@@ -2111,19 +2111,19 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 					// Last contrary
 					if (ep2 == c_len && ls == fli_size - 1 && 
 						(acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) < 0) 
-						FLAG2_LINK(376, s, pco_last);
+						FLAG2L(376, s, pco_last);
 					// Other anticipation
-					else FLAG2_LINK(315, s, pco_last);
+					else FLAG2L(315, s, pco_last);
 				}
 				// Downbeat
 				else if (fli[ls] == s && acc[cfv][s] != acc[cfv][s - 1]) {
 					// Last contrary
 					if (ep2 == c_len && ls == fli_size - 1 &&
 						(acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) < 0) 
-						FLAG2_LINK(376, s, pco_last);
+						FLAG2L(376, s, pco_last);
 					// Other downbeat
 					else 
-						FLAG2_LINK(316, s, pco_last);
+						FLAG2L(316, s, pco_last);
 				}
 				// Many notes in between
 				else if (ls - ls_1 > 4) {}
@@ -2131,19 +2131,19 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 				else if (civl[s] != civl[pco_last]) {
 					// Direct compound
 					if ((acc[0][s] - acc[0][pco_last]) * (acc[1][s] - acc[1][pco_last]) > 0) {
-						FLAG2_LINK(347, s, pco_last);
+						FLAG2L(347, s, pco_last);
 					}
 					// Contrary compound
-					else FLAG2_LINK(248, s, pco_last);
+					else FLAG2L(248, s, pco_last);
 				}
 				// Stepwize
 				else if ((!sus[ls_1] && (!pco_last || asmooth[cpv][pco_last - 1]) &&
 					(pco_last2 + 1 >= ep2 || asmooth[cpv][pco_last2])) ||
 					(!sus[ls] && (!s || asmooth[cpv][s - 1]) &&
 					(s2 + 1 >= ep2 || asmooth[cpv][s2])))
-					FLAG2_LINK(249, s, pco_last);
+					FLAG2L(249, s, pco_last);
 				// Asymmetric
-				else if (beat[ls_1] != beat[ls]) FLAG2_LINK(374, s, pco_last);
+				else if (beat[ls_1] != beat[ls]) FLAG2L(374, s, pco_last);
 				// Other
 				else {
 					if (iv == 7) {
@@ -2151,12 +2151,12 @@ int CGenCP1::FailPcoApartStep2(int iv, int &pco_last, int &mli_last, int &pco_la
 						if (bmli[sus[ls_1]] == bmli[s] && sus[ls_1] &&
 							ivlc[sus[ls_1]] == 5 && ivlc[s] == 4 &&
 							abs(ac[cpv][s] - ac[cpv][pco_last]) < 2)
-							FLAG2_LINK(330, s, pco_last);
+							FLAG2L(330, s, pco_last);
 						// Other
-						else FLAG2_LINK(250, s, pco_last);
+						else FLAG2L(250, s, pco_last);
 					}
 					else {
-						FLAG2_LINK(250, s, pco_last);
+						FLAG2L(250, s, pco_last);
 					}
 				}
 			}
@@ -2199,10 +2199,10 @@ int CGenCP1::FailVIntervals() {
 			++pm_pico;
 			// Two same ico transitions means three intervals already
 			if (pico_count == ico_chain-1) {
-				FLAG2_LINK(89, s, isus[ls - 1]);
+				FLAG2L(89, s, isus[ls - 1]);
 			}
 			else if (pico_count >= ico_chain2) {
-				FLAG2_LINK(96, s, isus[ls - 1]);
+				FLAG2L(96, s, isus[ls - 1]);
 			}
 		}
 		else pico_count = 0;

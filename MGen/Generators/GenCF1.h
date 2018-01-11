@@ -105,7 +105,7 @@
 } while (0)
 
 // Report violation and save link
-#define FLAG2_LINK(id, i, i2) do { \
+#define FLAG2L(id, i, i2) do { \
   ASSERT_RULE(id);  \
   if ((skip_flags SWA_OPTIMIZER(i)) && (accept[id] == 0)) return 1;  \
 	flags[0] = 0;  \
