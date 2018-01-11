@@ -153,7 +153,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;304;70;Melody;Range;Range;cp voice >M12;0;;;;;;;4;1;;;;;;;
 1;37;70;Melody;Range;Range;cf >M9;0;;;;;;;28;1;;;;;;;
 1;7;70;Melody;Range;Range;sum >22th;0;;;;;;;1;1;;;;;;;
-1;11;70;Melody;Range;Range;int >15va;0;;Maximum burst interval is 16th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);4;;;rng;124;2;;;;1;;;
+1;11;70;Melody;Range;Range;int >15va;0;;Maximum burst interval is 16th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);4;;;Wide;124;2;;;;1;;;
 1;351;0;Melody;Range;CF/sp1 Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;9;;;Stagnation;6;0;;;;;;;
 1;352;0;Melody;Range;CF/sp1 Constrained local range;7 notes <4th;0;;X consecutive notes have total range less than Y;9;;;Stagnation;9;1;;;;;;;
 1;353;0;Melody;Range;CF/sp1 Constrained local range;15 notes <m6;0;;X consecutive notes have total range less than Y;9;;;Stagnation;4;1;;;;;;;
@@ -278,8 +278,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;169;0;Cantus;Counterpoint;Harmonic dissonance upbeat;stepwize;-1;;;;1;;;767;3;;;;;;;
 1;187;60;Cantus;Counterpoint;Harmonic dissonance upbeat;leap;0;;;2;1;;du;133;8;;;;;276,169;;
 1;276;60;Cantus;Counterpoint;Harmonic dissonance upbeat;m2;0;;Minor second;;1;;;5;3;1;;;;;;
-1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;1;More than X same imperfect consonances in a row;;9;1;;parall;45;0;;;;;;;
-1;96;0;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;9;1;;parall;14;0;;;;;;;
+1;89;0;Cantus;Counterpoint;Parallel imperfect consonances;3;1;More than X same imperfect consonances in a row;;9;1;;Parallel;45;0;;;;;;;
+1;96;30;Cantus;Counterpoint;Parallel imperfect consonances;>3;0;More than X same imperfect consonances in a row;;9;1;;Parallel;14;0;;;;;;;
 1;268;0;Cantus;Counterpoint;First harmonic interval;I-I;-1;;;;;;;313;3;;;;;;;
 1;269;0;Cantus;Counterpoint;First harmonic interval;I-V;-1;;;;;;;48;6;1;;;;;;
 1;270;30;Cantus;Counterpoint;First harmonic interval;I-III;0;;;;;;;25;5;1;;;;;;
