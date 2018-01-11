@@ -628,8 +628,6 @@ void CGMidi::InitLyI() {
 				int overlap1 = -1;
 				int overlap2 = -1;
 				int overlap_limit = s1;
-				if (vtype == vPedal)
-					WriteLog(1, "Wow");
 				// For groups check for collision between borders
 				if (viz_type[vtype] == vtGroup || viz_type[vtype] == vtVolta)
 					overlap_limit = s1 - 1;
