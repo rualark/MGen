@@ -196,6 +196,9 @@ const CString LyOctave[] = {
 
 const int viz_type[MAX_VIZ] = { 1, 1, 1, 2, 3, 4, 4, 4, 5, 5, 4, 5, 5 };
 
+// For each visualisation, specify if empty string should be replaced with space
+const int viz_space[MAX_VIZ] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 };
+
 struct LY_Intermediate {
 	vector<int> shs; // [shape_type] If current step starts new shape
 	vector<int> shsl; // [shape_type] Link to shape start position if current position is shape finish
@@ -238,6 +241,7 @@ public:
 	CString DetectLyClef(int vmin, int vmax);
 	void SetLyShape(int s1, int s2, int fl, int vtype);
 	void ClearLyShape(int s1, int s2, int vtype);
+	void ExportLyI();
 	void InitLyI();
 	void SaveLySegment(ofstream & fs, CString st, CString st2, int step1, int step2);
 	void SendLySkips(int count);

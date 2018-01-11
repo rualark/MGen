@@ -564,6 +564,33 @@ void CGMidi::ClearLyShape(int s1, int s2, int vtype) {
 	lyi[s1].shse[vtype] = -1;
 }
 
+void CGMidi::ExportLyI() {
+	ofstream fs;
+	fs.open("log\\lyi-" + m_config + ".csv", ios_base::app);
+	fs << "Step[" << ly_mel << "];";
+	for (int x = 0; x < MAX_VIZ; ++x) {
+		fs << "shs[" << x << "];";
+		fs << "shf[" << x << "];";
+		fs << "shsl[" << x << "];";
+		fs << "shse[" << x << "];";
+		fs << "sht[" << x << "];";
+	}
+	fs << "\n";
+	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
+		ly_s2 = ly_s - ly_step1;
+		fs << ly_s2 << ";";
+		for (int x = 0; x < MAX_VIZ; ++x) {
+			fs << lyi[ly_s2].shs[x] << ";";
+			fs << lyi[ly_s2].shf[x] << ";";
+			fs << lyi[ly_s2].shsl[x] << ";";
+			fs << lyi[ly_s2].shse[x] << ";";
+			fs << lyi[ly_s2].sht[x] << ";";
+		}
+		fs << "\n";
+	}
+	fs << "\n";
+	fs.close();
+}
 void CGMidi::InitLyI() {
 	if (ly_mel == -1) return;
 	ly_v2 = ly_v;
@@ -735,6 +762,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		if (!vm_max[v]) continue;
 		ly_v = v;
 		InitLyI();
+		ExportLyI();
 		// Select best clef
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
 		st.Format("\\new Staff = \"staff%d\" {\n", ly_v);
@@ -906,7 +934,8 @@ void CGMidi::SendLyIntervals() {
 void CGMidi::SaveLy(CString dir, CString fname) {
 	vector<CString> sv;
 	CString title;
-	title = m_algo_folder + ": " + m_config + " (" + 
+	DeleteFile("log\\lyi-" + m_config + ".csv");
+	title = m_algo_folder + ": " + m_config + " (" +
 		CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M") + ")";
 	ly_fs.open(dir + "\\" + fname + ".ly");
 	read_file_sv("configs\\ly\\header.ly", sv);

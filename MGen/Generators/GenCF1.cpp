@@ -208,7 +208,7 @@ void CGenCF1::LoadRules(CString fname)
 			rule_viz_int[rid] = atoi(ast[11]);
 			rule_viz_v2[rid] = atoi(ast[12]);
 			rule_viz_t[rid] = ast[13];
-			//if (rule_viz_t[rid].IsEmpty) rule_viz_t[rid] = " ";
+			if (viz_space[rule_viz[rid]] && rule_viz_t[rid].IsEmpty()) rule_viz_t[rid] = " ";
 			false_positives_global[rid] = atoi(ast[16]);
 			false_positives_ignore[rid] = atoi(ast[17]);
 			sas_emulator_max_delay[rid] = atoi(ast[18]);
@@ -1527,10 +1527,14 @@ int CGenCF1::FailManyLeaps(vector<int> &c, vector<int> &cc, vector<int> &leap, v
 			if (!accept[flag4]) ++fpenalty[flag4];
 		}
 	}
-	if (pm_win_leaps > mleaps) FLAG2(flag1, fli[bli[leap_sum_i]]);
-	else if (pm_win_leaps > mleaps2) FLAG2(flag3, fli[bli[leap_sum_i]]);
-	if (pm_win_leapnotes > mleaped) FLAG2(flag2, fli[bli[leap_sum_i]]);
-	else if (pm_win_leapnotes > mleaped2) FLAG2(flag4, fli[bli[leap_sum_i]]);
+	if (pm_win_leaps > mleaps) 
+		FLAG2L(flag1, fli[bli[leap_sum_i]], fli[max(0, bli[leap_sum_i] - mleapsteps)]);
+	else if (pm_win_leaps > mleaps2) 
+		FLAG2L(flag3, fli[bli[leap_sum_i]], fli[max(0, bli[leap_sum_i] - mleapsteps)]);
+	if (pm_win_leapnotes > mleaped) 
+		FLAG2L(flag2, fli[bli[leap_sum_i]], fli[max(0, bli[leap_sum_i] - mleapsteps)]);
+	else if (pm_win_leapnotes > mleaped2) 
+		FLAG2L(flag4, fli[bli[leap_sum_i]], fli[max(0, bli[leap_sum_i] - mleapsteps)]);
 	return 0;
 }
 
