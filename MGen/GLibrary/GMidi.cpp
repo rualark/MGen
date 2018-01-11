@@ -344,6 +344,11 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 			if (phase == 1) {
 				fs << " \\override Staff.PianoPedalBracket.color = #(rgb-color " +
 					GetLyColor(flag_color[sev]) << ")\n";
+				fs << "  \\override Staff.SustainPedal #'stencil = \n" <<
+					"  #(lambda (grob) (grob-interpret-markup grob (markup \n" <<
+					"  #:with-color (rgb-color " + GetLyColor(flag_color[sev]) + ")\n" <<
+					"  #:lower 0.4\n" <<
+					"	 (#:teeny \"" + lyi[ly_s2].sht[x] + "\")))) \n";
 				fs << "\\textSpannerDown\n";
 			}
 			if (phase == 9) {
