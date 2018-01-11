@@ -95,8 +95,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;203;60;Melody;Leaps;Many leaps within 15 notes;>32 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;;;;;9;0;;;;1;314;;
 1;313;0;Melody;Leaps;Many leaps within 15 notes;>7 leaps;0;;{sp3,5};;;;;3;0;;1;;1;;;
 1;314;0;Melody;Leaps;Many leaps within 15 notes;>26 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp3,5};;;;;13;0;;1;;1;;;
-1;70;60;Melody;Leaps;Consecutive leaps, 1x3rd ignored;3;0;;;5;;;;38;0;;;;1;;;
-1;71;100;Melody;Leaps;Consecutive leaps, 1x3rd ignored;>3;0;;;5;;;;10;1;;;;1;70;;
+1;70;60;Melody;Leaps;Consecutive leaps, 1x3rd ignored;3;0;;;11;;;;38;0;;;;1;;;
+1;71;100;Melody;Leaps;Consecutive leaps, 1x3rd ignored;>3;0;;;11;;;;10;1;;;;1;70;;
 1;27;100;Melody;Leaps;Consecutive unidirectional leaps;Sum >6th;0;;;5;;;;61;1;;;;;;;
 1;28;0;Melody;Leaps;Two consecutive 3rds;after 6/8;-1;;;;;;;13;3;1;;;;;;
 1;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;;;;;;85;26;1;;;;;;

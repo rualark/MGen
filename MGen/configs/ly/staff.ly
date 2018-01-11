@@ -1,3 +1,5 @@
+  \override Score.VoltaBracketSpanner #'outside-staff-priority = 100
+  \override Score.VoltaBracketSpanner #'direction = -1
   \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
   \override Score.VoltaBracket #'font-shape = #'bold 
   \override Score.VoltaBracket.thickness = #3
