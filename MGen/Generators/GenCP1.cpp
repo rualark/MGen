@@ -2183,6 +2183,7 @@ int CGenCP1::FailVIntervals() {
 	// Number of sequential parallel imperfect consonances
 	int pico_count = 0;
 	pm_pico = 0;
+	int fired = 0;
 	// Check first step
 	if (tivl[0] == iDis) {
 		if (fn) FLAG2(359, 0);
@@ -2200,13 +2201,22 @@ int CGenCP1::FailVIntervals() {
 			++pm_pico;
 			// Two same ico transitions means three intervals already
 			if (pico_count == ico_chain-1) {
-				FLAG2L(89, s, isus[ls - 1]);
+				FLAG2L(89, s, isus[ls - 2]);
 			}
 			else if (pico_count >= ico_chain2) {
-				FLAG2L(96, s, isus[ls - 1]);
+				if (!fired) {
+					FLAG2L(96, s, isus[ls - 3]);
+					fired = 1;
+				}
+				else {
+					fpenalty[96] += severity[96] + 1;
+				}
 			}
 		}
-		else pico_count = 0;
+		else {
+			pico_count = 0;
+			fired = 0;
+		}
 	}
 	return 0;
 }
@@ -2459,6 +2469,9 @@ int CGenCP1::FailCPInterval() {
 	CHECK_READY(DR_fli);
 	int bsteps = 0;
 	int between;
+	int fired = 0;
+	int to_fire = 0;
+	int fire_start = 0;
 	pm_between_min = INT_MAX;
 	pm_between_max = 0;
 	for (ls = 0; ls < fli_size; ++ls) {
@@ -2468,18 +2481,28 @@ int CGenCP1::FailCPInterval() {
 		// Record
 		if (between > pm_between_max) pm_between_max = between;
 		if (between < pm_between_min) pm_between_min = between;
+		to_fire = 0;
 		if (between > max_between) {
 			++bsteps;
 			// Flag very far burst
-			if (acc[1][s] - acc[0][s] > burst_between) FLAG2(11, s);
-			if (bsteps > burst_steps) {
-				// Flag long burst only on first overrun
-				if (bsteps == burst_steps + 1) FLAG2(11, s);
-					// Next overruns are sent to fpenalty
-				else fpenalty[37] += bsteps - burst_steps;
-			}
+			if (acc[1][s] - acc[0][s] > burst_between || bsteps > burst_steps) to_fire = 1;
 		}
 		else bsteps = 0;
+		if (to_fire) {
+			if (!fired) fire_start = s;
+			fired = 1;
+			fpenalty[11] += severity[11] + 1;
+		}
+		if (fired) {
+			if (!to_fire) {
+				FLAG2L(11, fire_start, fli[ls - 1]);
+				fired = 0;
+			}
+			else if (ls == fli_size - 1) {
+				fired = 0;
+				FLAG2L(11, fire_start, fli[ls]);
+			}
+		}
 	}
 	return 0;
 }

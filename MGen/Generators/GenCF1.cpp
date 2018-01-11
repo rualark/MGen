@@ -2281,7 +2281,7 @@ int CGenCF1::FailTonic(vector<int> &cc, vector<int> &pc) {
 						fpenalty[196] += severity[196] + 1;
 					}
 					else {
-						FLAG2(196, s);
+						FLAG2L(196, s, fli[max(0, ls - tonic_window)]);
 						fired = 1;
 					}
 				}
