@@ -27,7 +27,9 @@ gliss = #(define-music-function (parser location shift pad) (pair? number?) #{
     \override Glissando.color=#(rgb-color 0.988 0.005 0.000)
   a2 \glissando
   \override NoteColumn.glissando-skip = ##t
-  c4 d e 
+\override NoteColumn.glissando-skip = ##f
+  c4 
+d e 
   \glissando
   c d e 
   \override NoteColumn.glissando-skip = ##f

@@ -233,7 +233,7 @@ public:
 	CString GetLyMarkColor2(DWORD col);
 	void SendLyNoteColor(ofstream & fs, DWORD col);
 	CString GetIntName(int iv);
-	void ParseNLinks(int i, int v, int foreign);
+	void ParseNLinks(int i, int i2, int v, int foreign);
 	void SaveLyComments(int i, int v, int pos);
 	CString DetectLyClef(int vmin, int vmax);
 	void SetLyShape(int s1, int s2, int fl, int vtype);
