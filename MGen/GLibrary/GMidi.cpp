@@ -214,6 +214,10 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 		if (x == vSlur) {
 			if (phase == 10) fs << " ) ";
 		}
+		if (x == vGlis) {
+			if (phase == 1) 
+				fs << " \\override NoteColumn.glissando-skip = ##f\n ";
+		}
 		if (x == vPSlur) {
 			if (phase == 10) fs << " \\) ";
 		}
@@ -263,7 +267,7 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 					<< ")\n";
 			}
 			if (phase == 10)
-				fs << " \\glissando\n";
+				fs << " \\glissando\n \\override NoteColumn.glissando-skip = ##t\n";
 		}
 		if (x == vSlur) {
 			if (phase == 1) {
