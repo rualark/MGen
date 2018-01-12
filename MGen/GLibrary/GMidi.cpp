@@ -667,7 +667,7 @@ void CGMidi::InitLyI() {
 		// Find next note position
 		int next_note_step = ly_s + noff[ly_s][ly_v];
 		// Find previous note position
-		int prev_note_step = ly_s - poff[ly_s][ly_v];
+		int prev_note_step = max(ly_step1, ly_s - poff[ly_s][ly_v]);
 		// Parse flags
 		for (int f = 0; f < lyi[ly_s2].nflags.size(); ++f) {
 			int fl = lyi[ly_s2].nflags[f];
@@ -675,7 +675,7 @@ void CGMidi::InitLyI() {
 			int vtype = rule_viz[fl];
 			int sev = severity[fl];
 			int skip_shape = 0;
-			int prev_link_note = ly_s + link - poff[ly_s + link][ly_v];
+			int prev_link_note = max(ly_step1, ly_s + link - poff[ly_s + link][ly_v]);
 			// Find link note position
 			int link_note_step = ly_s + link;
 			if (ly_s2 > 0) {
