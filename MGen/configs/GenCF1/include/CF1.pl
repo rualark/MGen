@@ -53,7 +53,7 @@ calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down g
 calculate_ssf = 0 # Enables SWA stuck flags statistics calculation algorithm.
 best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
 show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
-show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
+show_allowed_flags = 1 # Show even allowed flags (bold in rules.xlsm)
 show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show chord type (6 or 64)
 show_hatch = 0 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
 show_min_severity = 0 # Minimum severity to highlight note
@@ -61,7 +61,7 @@ harm_notation = 1 # Harmonic notation (see configs/harm/harm-notation.csv for de
 
 # Lilypond parameters
 ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note
-ly_msh = 1 # 0 - do not show mshape, 1 - show mshape
+ly_msh = 0 # 0 - do not show mshape, 1 - show mshape
 ly_dominant_letter = 0 # 0 - use normal D/d letters; 1 - use dashed D/d letters
 
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
