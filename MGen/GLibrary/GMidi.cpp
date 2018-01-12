@@ -321,7 +321,7 @@ void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v,
 				fs << " \\override TrillSpanner.color = #(rgb-color "
 					<< GetLyColor(flag_color[sev]) << ")\n";
 			}
-			if (phase == 10) {
+			if (phase == 9) {
 				fs << " \\startTrillSpan\n";
 			}
 		}
@@ -904,11 +904,14 @@ void CGMidi::SendLyHarm() {
 			int found = 0;
 			// Replace dominant symbol
 			st.Replace("#", " \"#\" ");
-			if (st[0] == 'D') {
-				st = "\\concat { \\char ##x00D0 " + st.Right(st.GetLength() - 1) + " } ";
-			}
-			else if (st[0] == 'd') {
-				st = "\\concat { \\char ##x0111 " + st.Right(st.GetLength() - 1) + " } ";
+			if (ly_dominant_letter) {
+				if (st[0] == 'D') {
+					st = "\\concat { \\char ##x00D0 " + st.Right(st.GetLength() - 1) + " } ";
+				}
+				else if (st[0] == 'd') {
+					st = "\\concat { \\char ##x0111 " + st.Right(st.GetLength() - 1) + " } ";
+				}
+				else st = "\\concat { " + st + " } ";
 			}
 			else st = "\\concat { " + st + " } ";
 			st.Replace("6", " \\raise #0.7 6");

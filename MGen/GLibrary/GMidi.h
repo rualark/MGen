@@ -308,6 +308,7 @@ public:
 	ofstream ly_fs;
 	float ly_mul = 1; // midifile_mul
 	int ly_flag_style = 1; // 0 - no flag visualisation, 1 - color note, 2 - x above note
+	int ly_dominant_letter = 0; // 0 - use normal D/d letters; 1 - use dashed D/d letters
 	int ly_msh = 1; // 0 - do not show msh, 1 - show msh
 	int ly_nnum = 0; // Note number
 	int ly_step1 = 0;
