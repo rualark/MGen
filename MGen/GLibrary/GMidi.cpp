@@ -613,9 +613,9 @@ void CGMidi::InitLyI() {
 		ly_vhigh = ly_v;
 		ly_vlow = ly_v;
 	}
-	else {
-		ly_vhigh = min(ly_vm_cnt - 1, (ly_v / 2) * 2 + 1);
-		ly_vlow = (ly_v / 2) * 2;
+	else { 
+		ly_vhigh = max(ly_v, ly_v2);
+		ly_vlow = min(ly_v, ly_v2);
 	}
 	lyi.clear();
 	lyi.resize(ly_step2 - ly_step1);
@@ -897,7 +897,7 @@ void CGMidi::SendLyHarm() {
 	ly_ly_st += "      \\set stanza = #\" Harmony:\"\n";
 	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
 		ly_s2 = ly_s - ly_step1;
-		CString st = mark[ly_s][ly_vlow];
+		CString st = mark[ly_s][ly_v2];
 		st.Replace("\n", "");
 		if (!st.IsEmpty() && st != "PD" && st != "CA" && st != "DN") {
 			ly_ly_st += "  \\markup{ ";
@@ -918,7 +918,7 @@ void CGMidi::SendLyHarm() {
 			//if (found) st = ", " + st;
 			found = 1;
 			ly_ly_st += "\\teeny \\on-color #(rgb-color ";
-			ly_ly_st += GetLyMarkColor(mark_color[ly_s][ly_vlow]);
+			ly_ly_st += GetLyMarkColor(mark_color[ly_s][ly_v2]);
 			ly_ly_st += ") \\pad-markup #0.4 " + st + " ";
 			ly_ly_st += "}8\n";
 			SendLySkips(ly_mul - 1);
