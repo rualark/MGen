@@ -572,7 +572,7 @@ void CGMidi::ClearLyShape(int s1, int s2, int vtype) {
 	// Calculate maximum severity
 	lyi[s1].shse[vtype] = -1;
 	// Remove link
-	lyi[lyi[s1].shfp[vtype]].nfs[lyi[s1].shflag[vtype]] = -1;
+	lyi[lyi[s1].shfp[vtype]].nfs[lyi[s1].shflag[vtype]] = 0;
 	lyi[s1].shflag[vtype] = -1;
 	lyi[s1].shfp[vtype] = -1;
 }
