@@ -1688,19 +1688,19 @@ int CGenCP1::FailTritones2() {
 					if (ep2 == c_len && !cantus_high) {
 						if ((acc[cpv][fli[fleap_start]] >= lclimax[fli[fleap_start]]) || 
 							(acc[cpv][fli[fleap_end]] >= lclimax[fli[fleap_end]])) {
-							if (found == 1) FLAG2(363, fli[fleap_start]);
-							else FLAG2(364, fli[fleap_start]);
+							if (found == 1) FLAG2L(363, fli[fleap_start], fli[fleap_end]);
+							else FLAG2L(364, fli[fleap_start], fli[fleap_end]);
 						}
 					}
 					// Flag resolution for framed tritone
 					if (found == 1) {
-						if (res1*res2 == 0) FLAG2(19, fli[fleap_start]);
-						else FLAG2(18, fli[fleap_start]);
+						if (res1*res2 == 0) FLAG2L(19, fli[fleap_start], fli[fleap_end]);
+						else FLAG2L(18, fli[fleap_start], fli[fleap_end]);
 					}
 					// Flag resolution for accented tritone
 					else {
-						if (res1*res2 == 0) FLAG2(343, fli[fleap_start]);
-						else FLAG2(342, fli[fleap_start]);
+						if (res1*res2 == 0) FLAG2L(343, fli[fleap_start], fli[fleap_end]);
+						else FLAG2L(342, fli[fleap_start], fli[fleap_end]);
 					}
 				}
 			}
