@@ -480,6 +480,7 @@ void CGMidi::ParseNLinks(int i, int i2, int v, int foreign) {
 		}
 		lyi[i2 - ly_step1].nfn.push_back(ly_flags + 1);
 		lyi[i2 - ly_step1].nff.push_back(foreign);
+		lyi[i2 - ly_step1].nfs.push_back(0);
 		lyi[i2 - ly_step1].nfc.push_back(comment[i][v][x]);
 		if (!foreign) ++ly_flags;
 		++x;
@@ -548,17 +549,20 @@ CString CGMidi::DetectLyClef(int vmin, int vmax) {
 	return LyClef[best_clef];
 }
 
-void CGMidi::SetLyShape(int s1, int s2, int fl, int vtype) {
-	// Start
-	lyi[s1].shs[vtype] = 1;
-	// Apply finish and properties only if my severity is greater
+void CGMidi::SetLyShape(int s1, int s2, int f, int fl, int vtype) {
 	if (lyi[s1].shse[vtype] <= severity[fl]) {
+		// Start
+		lyi[s1].shs[vtype] = 1;
 		// Finish
 		lyi[s2].shf[vtype] = 1;
 		// Link to start
 		lyi[s2].shsl[vtype] = s1 - s2;
 		lyi[s1].shse[vtype] = severity[fl];
 		lyi[s1].sht[vtype] = rule_viz_t[fl];
+		// Save flag shape (step depends if link is forward or backward)
+		lyi[ly_s2].nfs[f] = vtype;
+		lyi[s1].shflag[vtype] = f;
+		lyi[s1].shfp[vtype] = ly_s2;
 	}
 }
 
@@ -567,6 +571,10 @@ void CGMidi::ClearLyShape(int s1, int s2, int vtype) {
 	lyi[s2].shf[vtype] = 0;
 	// Calculate maximum severity
 	lyi[s1].shse[vtype] = -1;
+	// Remove link
+	lyi[lyi[s1].shfp[vtype]].nfs[lyi[s1].shflag[vtype]] = -1;
+	lyi[s1].shflag[vtype] = -1;
+	lyi[s1].shfp[vtype] = -1;
 }
 
 void CGMidi::ExportLyI() {
@@ -629,6 +637,8 @@ void CGMidi::InitLyI() {
 		lyi[ly_s2].shsl.resize(MAX_VIZ);
 		lyi[ly_s2].shf.resize(MAX_VIZ);
 		lyi[ly_s2].shse.resize(MAX_VIZ, -1);
+		lyi[ly_s2].shflag.resize(MAX_VIZ, -1);
+		lyi[ly_s2].shfp.resize(MAX_VIZ, -1);
 		lyi[ly_s2].sht.resize(MAX_VIZ);
 		// Parse flags
 		ParseNLinks(ly_s, ly_s, ly_v, 0);
@@ -702,7 +712,7 @@ void CGMidi::InitLyI() {
 			if (vtype > vVolta && s1 == s2) s2 = next_note_step - ly_step1;
 			// Set interval
 			if (rule_viz_int[fl]) {
-				SetLyShape(s1, s2, fl, vInterval);
+				SetLyShape(s1, s2, f, fl, vInterval);
 			}
 			if (vtype > vInterval) {
 				// Check that flag overlaps
@@ -732,7 +742,7 @@ void CGMidi::InitLyI() {
 				}
 				if (skip_shape) continue;
 			}
-			SetLyShape(s1, s2, fl, vtype);
+			SetLyShape(s1, s2, f, fl, vtype);
 		}
 	}
 }
@@ -866,8 +876,9 @@ void CGMidi::SendLyMistakes() {
 		for (int f = max_mist; f >= 0 ; --f) {
 			int fl = lyi[ly_s2].nflags[f];
 			st.Format("        \\with-color #(rgb-color " +
-				GetLyColor(flag_color[severity[fl]]) + ") \\circle %d\n",
-				lyi[ly_s2].nfn[f]);
+				GetLyColor(flag_color[severity[fl]]) + ") %s \\circle %d\n",
+				lyi[ly_s2].nfs[f]?"":"\\underline", lyi[ly_s2].nfn[f]);
+			// \override #'(offset . 5) \override #'(thickness . 2) 
 			ly_ly_st += st;
 		}
 		ly_ly_st += "      } } }8\n";

@@ -203,12 +203,15 @@ struct LY_Intermediate {
 	vector<int> shs; // [shape_type] If current step starts new shape
 	vector<int> shsl; // [shape_type] Link to shape start position if current position is shape finish
 	vector<int> shf; // [shape_type] If current step finishes new shape
+	vector<int> shflag; // [shape_type] Flag index in nflags
+	vector<int> shfp; // [shape_type] Flag position
 	vector<int> shse; // [shape_type] Highest severity of starting shape
 	vector<CString> sht; // [shape_type] Starting shape text
 	vector<int> nflags; // [] Current flags
 	vector<int> nfl; // [] Current flags links
 	vector<int> nfn; // Note flag number
 	vector<int> nff; // Note flag foreign
+	vector<int> nfs; // Note flag shape
 	vector<CString> nfc; // Note flag comment
 };
 
@@ -239,7 +242,7 @@ public:
 	void ParseNLinks(int i, int i2, int v, int foreign);
 	void SaveLyComments(int i, int v, int pos);
 	CString DetectLyClef(int vmin, int vmax);
-	void SetLyShape(int s1, int s2, int fl, int vtype);
+	void SetLyShape(int s1, int s2, int f, int fl, int vtype);
 	void ClearLyShape(int s1, int s2, int vtype);
 	void ExportLyI();
 	void InitLyI();
