@@ -709,7 +709,7 @@ void CGMidi::InitLyI() {
 				s2 = max(ly_s2, link_note_step - ly_step1);
 			}
 			// If shape cannot highlight single note, but flag does not contain link, then link to next note
-			if (vtype > vVolta && s1 == s2) s2 = next_note_step - ly_step1;
+			if (!viz_singlenote[vtype] && s1 == s2) s2 = next_note_step - ly_step1;
 			// Set interval
 			if (rule_viz_int[fl]) {
 				SetLyShape(s1, s2, f, fl, vInterval);
@@ -877,7 +877,7 @@ void CGMidi::SendLyMistakes() {
 			int fl = lyi[ly_s2].nflags[f];
 			st.Format("        \\with-color #(rgb-color " +
 				GetLyColor(flag_color[severity[fl]]) + ") %s \\circle %d\n",
-				lyi[ly_s2].nfs[f]?"":"\\underline", lyi[ly_s2].nfn[f]);
+				lyi[ly_s2].nfs[f]?"\\underline":"", lyi[ly_s2].nfn[f]);
 			// \override #'(offset . 5) \override #'(thickness . 2) 
 			ly_ly_st += st;
 		}

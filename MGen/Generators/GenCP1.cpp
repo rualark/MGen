@@ -545,7 +545,6 @@ int CGenCP1::SendCP() {
 					color[pos + i][v] = color_noflag;
 					SendMsh(pos, i, v, av, x);
 					SendGraph(pos, i, v, x);
-					SendNlink(pos, i, v, av, x);
 				}
 				SendNotes(pos, i, v, av, x, acc[av]);
 				SendNgraph(pos, i, v, x);
@@ -927,39 +926,40 @@ int CGenCP1::FailSus2() {
 					// If second part is 3/4 in species 5
 					if (npm == 8 && s2 - sus[ls] == 5) {
 						// If next note is 1/8
-						if (llen[ls + 1] == 1 && ls < fli_size - 2) FLAG2(291, fli[ls + 1]);
+						if (llen[ls + 1] == 1 && ls < fli_size - 2) FLAG2L(291, fli[ls + 1], sus[ls]);
 						if (FailSusResolution(fli[ls + 1])) return 1;
 						// Stop processing this sus
 						continue;
 					}
 					// If this step does not start new note
-					if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2(286, s2 + 1);
+					if (acc[cpv][s3] == acc[cpv][s3 - 1]) FLAG2L(286, s2 + 1, sus[ls]);
 					// Suspension of non-leading tone in species 2
 					if (species == 2) {
 						if (apcc[cpv][s3] != 11) FLAG2(299, s);
 					}
 					// If resolution note is too short
 					ls3 = bli[s3];
-					if (llen[ls3] < npm / 4 && ls3 < fli_size - 1) FLAG2(291, s3);
+					if (llen[ls3] < npm / 4 && ls3 < fli_size - 1) FLAG2L(291, s3, sus[ls]);
 					if (FailSusResolution(s3)) return 1;
 					// If there is one intermediate step
 					if (ls3 - ls == 2) {
 						// If leap is too long
-						if (abs(acc[cpv][fli[ls + 1]] - acc[cpv][s2]) > sus_insert_max_leap) FLAG2(295, fli[ls + 1]);
+						if (abs(acc[cpv][fli[ls + 1]] - acc[cpv][s2]) > sus_insert_max_leap) 
+							FLAG2L(295, fli[ls + 1], sus[ls]);
 						// If second movement is leap
-						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2(136, fli[ls + 1]);
-						else if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2(296, fli[ls + 1]);
+						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2L(136, fli[ls + 1], sus[ls]);
+						else if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2L(296, fli[ls + 1], sus[ls]);
 						else {
 							// Mark insertion as non-harmonic in basic msh if resolution is harmonic
 							if (tivl[s3] > 0) mshb[ls + 1] = pAux;
-							if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2(137, fli[ls + 1]);
-							else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2(138, fli[ls + 1]);
+							if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2L(137, fli[ls + 1], sus[ls]);
+							else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2L(138, fli[ls + 1], sus[ls]);
 						}
 					}
 					// If there are two intermediate steps - do nothing
 					// If there are more than two intermediate steps
 					else if (ls3 - ls > 3) {
-						FLAG2(292, s3);
+						FLAG2L(292, s3, sus[ls]);
 					}
 				}
 			}
@@ -1857,13 +1857,13 @@ int CGenCP1::FailRhythm3() {
 		if (beat[ls] == 3 && llen[ls] > 1) FLAG2(235, s);
 		// 1/2 after 1/4
 		if (ls > 0 && beat[ls] == 1 && llen[ls] > 1 && llen[ls - 1] == 1) {
-			if (bmli[s] >= mli.size() - 2) FLAG2(238, s);
+			if (bmli[s] >= mli.size() - 2) FLAG2L(238, s, mli[bmli[s]]);
 				// Flag slurred if sus or note is cut by scan window
-			else if (sus[ls] || (ls == fli_size - 1 && c_len > ep2)) FLAG2(239, s);
-			else FLAG2(240, s);
+			else if (sus[ls] || (ls == fli_size - 1 && c_len > ep2)) FLAG2L(239, s, mli[bmli[s]]);
+			else FLAG2L(240, s, mli[bmli[s]]);
 		}
 		// Non-uniform starting rhythm
-		if (ls > 0 && bmli[s] == 0 && llen[ls] != llen[ls - 1] && ls < fli_size - 1) FLAG2(254, s);
+		if (ls > 0 && bmli[s] == 0 && llen[ls] != llen[ls - 1] && ls < fli_size - 1) FLAG2L(254, s, 0);
 	}
 	return 0;
 }
@@ -2021,7 +2021,7 @@ int CGenCP1::FailRhythm5() {
 				//else if (l_len[lp] == 2 && pos == 6 && slur2) FLAG2(235, s2);
 			}
 			// Uneven starting rhythm
-			if (!ms && lp>0 && l_len[lp] != l_len[lp-1]) FLAG2(254, s2);
+			if (!ms && lp>0 && l_len[lp] != l_len[lp-1]) FLAG2L(254, s2, 0);
 			pos += l_len[lp];
 		}
 		// Check rhythm repeat
@@ -2042,15 +2042,15 @@ int CGenCP1::FailRhythm5() {
 		if (l_len[0] >= 8 && ms < mli.size() - 1 && ms) FLAG2(236, s);
 		// 1/2.
 		else if (l_len[0] == 6 && !slur1) FLAG2(233, s);
-		else if (l_len.size() > 1 && l_len[1] == 6) FLAG2(234, fli[l_ls[1]]);
-		else if (l_len.size() > 2 && l_len[2] == 6) FLAG2(234, fli[l_ls[2]]);
+		else if (l_len.size() > 1 && l_len[1] == 6) FLAG2(234, fli[l_ls[1]], fli[l_ls[0]]);
+		else if (l_len.size() > 2 && l_len[2] == 6) FLAG2(234, fli[l_ls[2]], fli[l_ls[0]]);
 		// 1/2 after 1/4 or 1/8 in measure
 		else if (full_measure && l_len[l_len.size() - 1] == 4 && l_len[0] != 4) {
 			s3 = fli[l_ls[l_ls.size() - 1]];
-			if (ms >= mli.size() - 2) FLAG2(238, s3);
-			else if (slur2 != 0) FLAG2(239, s3);
-			else if (slur1 != 0) FLAG2(278, s3);
-			else FLAG2(240, s3);
+			if (ms >= mli.size() - 2) FLAG2L(238, s3, s);
+			else if (slur2 != 0) FLAG2L(239, s3, s);
+			else if (slur1 != 0) FLAG2L(278, s3, s);
+			else FLAG2L(240, s3, s);
 		}
 		// Many notes in measure
 		if (l_len.size() == 5) {
@@ -2256,16 +2256,16 @@ int CGenCP1::FailVirtual4th() {
 		if ((acc[0][s3] - acc[0][s6]) % 12 != 5) continue;
 		ls6 = bli[s6];
 		// Beat 1
-		if (!beat[ls6]) FLAG2(379, s6);
+		if (!beat[ls6]) FLAG2L(379, s6, s3);
 		// Beat 3
-		else if (beat[ls6] == 1) FLAG2(380, s6);
+		else if (beat[ls6] == 1) FLAG2L(380, s6, s3);
 		// Long
 		if ((ls6 == 0 || rlen[ls6] >= rlen[ls6 - 1]) &&
 			(ls6 == fli_size - 1 || rlen[ls6] >= rlen[ls6 + 1]) &&
-			rlen[ls6] >= 4) FLAG2(381, s6);
+			rlen[ls6] >= 4) FLAG2L(381, s6, s3);
 		// Repeats
 		if (s6_dupl) 
-			FLAG2(382, s6);
+			FLAG2L(382, s6, s3);
 	}
 	return 0;
 }
@@ -2515,15 +2515,15 @@ int CGenCP1::FailOverlap() {
 	if (cantus_high) {
 		for (int i = fli[1]; i < ep2; ++i) {
 			if (acc[cpv][i] == acc[cpv][i - 1] || acc[cfv][i] == acc[cfv][i - 1]) continue;
-			if (acc[cpv][i] >= acc[cfv][i - 1]) FLAG2(24, i);
-			else if (acc[cfv][i] <= acc[cpv][i - 1]) FLAG2(24, i);
+			if (acc[cpv][i] >= acc[cfv][i - 1]) FLAG2L(24, i, fli[bli[i - 1]]);
+			else if (acc[cfv][i] <= acc[cpv][i - 1]) FLAG2L(24, i, fli[bli[i - 1]]);
 		}
 	}
 	else {
 		for (int i = fli[1]; i < ep2; ++i) {
 			if (acc[cpv][i] == acc[cpv][i - 1] || acc[cfv][i] == acc[cfv][i - 1]) continue;
-			if (acc[cpv][i] <= acc[cfv][i - 1]) FLAG2(24, i);
-			else if (acc[cfv][i] >= acc[cpv][i - 1]) FLAG2(24, i);
+			if (acc[cpv][i] <= acc[cfv][i - 1]) FLAG2L(24, i, fli[bli[i - 1]]);
+			else if (acc[cfv][i] >= acc[cpv][i - 1]) FLAG2L(24, i, fli[bli[i - 1]]);
 		}
 	}
 	return 0;

@@ -320,7 +320,6 @@ protected:
 	void SendNgraph(int pos, int i, int v, int x);
 	void SendGraph(int pos, int i, int v, int x);
 	void SendLyrics(int pos, int v, int av, int x);
-	void SendNlink(int pos, int i, int v, int av, int x);
 	void SendComment(int pos, int v, int av, int x, int i);
 	void TransposeCantusBack();
 	void SendNotes(int pos, int i, int v, int av, int x, vector<int>& cc);

@@ -2418,7 +2418,7 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 				// Consecutive
 				if (found == 1) FLAG2(32, s0);
 				// Compound framed
-				else if (found == 2) FLAG2(373, s0); //-V547
+				else if (found == 2) FLAG2L(373, fli[ls - 1], fli[ls + 1]); //-V547
 			}
 		}
 		// Check if resolution is correct
@@ -2430,8 +2430,8 @@ int CGenCF1::FailTritone(int ta, int t1, int t2, int tb, vector<int> &c, vector<
 		}
 		// Flag resolution for tritone with intermediate note, framed
 		else if (found == 2) { //-V547
-			if (res1*res2 == 0) FLAG2(372, s0);
-			else FLAG2(371, s0);
+			if (res1*res2 == 0) FLAG2L(372, fli[ls - 1], fli[ls + 1]);
+			else FLAG2L(371, fli[ls - 1], fli[ls + 1]);
 		}
 	}
 	return 0;
@@ -3721,9 +3721,6 @@ void CGenCF1::SendLyrics(int pos, int v, int av, int x) {
 	}
 }
 
-void CGenCF1::SendNlink(int pos, int i, int v, int av, int x) {
-}
-
 void CGenCF1::SendComment(int pos, int v, int av, int x, int i) {
 	CString st, com;
 	int current_severity = -1;
@@ -4094,7 +4091,6 @@ int CGenCF1::SendCantus() {
 			SendNgraph(pos, i, v, s);
 			SendGraph(pos, i, v, s);
 			SendComment(pos, v, cpv, s, i);
-			SendNlink(pos, i, v, cpv, s);
 		}
 		pos += cc_len[s];
 	}
