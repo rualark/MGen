@@ -655,7 +655,7 @@ void CGMidi::InitLyI() {
 					(!coff[ly_s + link][ly_v] || !coff[ly_s + link][ly_v2])) continue;
 				int fl = lyi[ly_s2].nflags[f];
 				CString est;
-				est.Format("Detected flag at passive position %d/%d: [%d] %s %s (%s)",
+				est.Format("Detected flag at hidden position %d/%d: [%d] %s %s (%s)",
 					ly_s, ly_s + link, fl, accept[fl] ? "+" : "-", 
 					RuleName[rule_set][fl], SubRuleName[rule_set][fl]);
 				WriteLog(5, est);

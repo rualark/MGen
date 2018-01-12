@@ -950,8 +950,8 @@ int CGenCP1::FailSus2() {
 						if (aleap[cpv][fli2[ls + 1]] > 0) FLAG2L(136, fli[ls + 1], sus[ls]);
 						else if (aleap[cpv][fli2[ls + 1]] < 0) FLAG2L(296, fli[ls + 1], sus[ls]);
 						else {
-							// Mark insertion as non-harmonic in basic msh if resolution is harmonic
-							if (tivl[s3] > 0) mshb[ls + 1] = pAux;
+							// Mark insertion as non-harmonic in basic msh if resolution is harmonic and sus ends with dissonance
+							if (tivl[s2] < 0 && tivl[s3] > 0) mshb[ls + 1] = pAux;
 							if (asmooth[cpv][fli2[ls + 1]] > 0) FLAG2L(137, fli[ls + 1], sus[ls]);
 							else if (asmooth[cpv][fli2[ls + 1]] < 0) FLAG2L(138, fli[ls + 1], sus[ls]);
 						}
