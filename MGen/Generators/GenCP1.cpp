@@ -2830,8 +2830,8 @@ int CGenCP1::FailLastIntervals() {
 		}
 		else FLAG2(358, fs);
 		// Prohibit major second up before I (applicable to major and minor)
-		if (apcc[cpv][s] == 0 && apcc[cpv][s_1] == 10) FLAG2(74, s_1);
-		if (apcc[cpv][s] == 0 && apcc[cpv][s_2] == 10) FLAG2(74, s_2);
+		if (apcc[cpv][s] == 0 && apcc[cpv][s_1] == 10) FLAG2L(74, s_1, s);
+		if (apcc[cpv][s] == 0 && apcc[cpv][s_2] == 10) FLAG2L(74, s_2, s);
 		// Scan 2nd to last measure
 		if (mli.size() > 1) {
 			int start = mli[mli.size() - 2];
@@ -3035,7 +3035,7 @@ int CGenCP1::FailGisTrail2() {
 		else {
 			if (apcc[0][s] == 10 || apcc[1][s] == 10) {
 				// Prohibit G note close to G#
-				if (gis_trail) FLAG2(200, s);
+				if (gis_trail) FLAG2L(200, s, fli[max(0, ls - gis_trail_max + gis_trail)]);
 			}
 		}
 		// Decrease if not zero

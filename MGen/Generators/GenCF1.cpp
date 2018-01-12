@@ -209,6 +209,11 @@ void CGenCF1::LoadRules(CString fname)
 			rule_viz_v2[rid] = atoi(ast[12]);
 			rule_viz_t[rid] = ast[13];
 			if (viz_space[rule_viz[rid]] && rule_viz_t[rid].IsEmpty()) rule_viz_t[rid] = " ";
+			rule_viz_t[rid].Replace("!rn!", RuleName[set][rid]);
+			rule_viz_t[rid].Replace("!srn!", SubRuleName[set][rid]);
+			rule_viz_t[rid].Replace("!rg!", RuleGroup[rid]);
+			rule_viz_t[rid].Replace("!rc!", RuleComment[rid]);
+			rule_viz_t[rid].Replace("!src!", SubRuleComment[set][rid]);
 			false_positives_global[rid] = atoi(ast[16]);
 			false_positives_ignore[rid] = atoi(ast[17]);
 			sas_emulator_max_delay[rid] = atoi(ast[18]);
@@ -1092,7 +1097,7 @@ int CGenCF1::FailGisTrail(vector<int> &pcc) {
 		else {
 			if (pcc[s] == 10) {
 				// Prohibit G note close to G#
-				if (gis_trail) FLAG2(200, s);
+				if (gis_trail) FLAG2L(200, s, fli[max(0, ls - gis_trail_max + gis_trail)]);
 			}
 		}
 		// Decrease if not zero
@@ -1126,7 +1131,7 @@ int CGenCF1::FailFisTrail(vector<int> &pcc) {
 			if (svoices > 1) {
 				for (int x = pos1; x < ls; ++x) {
 					if (apcc[0][fli[x]] == 10 || apcc[1][fli[x]] == 10) {
-						FLAG2(349, s);
+						FLAG2L(349, s, fli[x]);
 						break;
 					}
 				}
@@ -1134,7 +1139,7 @@ int CGenCF1::FailFisTrail(vector<int> &pcc) {
 			else {
 				for (int x = pos1; x < ls; ++x) {
 					if (pcc[fli[x]] == 10) {
-						FLAG2(349, s);
+						FLAG2L(349, s, fli[x]);
 						break;
 					}
 				}
@@ -1732,8 +1737,8 @@ int CGenCF1::FailLastNotes(vector<int> &pc, vector<int> &pcc) {
 		if (pc[s] != 0) FLAG2(50, s);
 		if (minor_cur) {
 			// Prohibit major second up before I
-			if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1);
-			if (pcc[s] == 0 && pcc[s_2] == 10) FLAG2(74, s_2);
+			if (pcc[s] == 0 && pcc[s_1] == 10) FLAG2(74, s_1, s);
+			if (pcc[s] == 0 && pcc[s_2] == 10) FLAG2(74, s_2, s);
 		}
 	}
 	// Wrong second to last note (last note never can be slurred)
@@ -3338,49 +3343,49 @@ int CGenCF1::FailMinor(vector<int> &pcc, vector<int> &cc) {
 		s = fli[ls];
 		s_1 = fli[ls - 1];
 		// Prohibit leap to VI#
-		if (pcc[s] == 9 && abs(cc[s] - cc[s_1]) > fis_leap) FLAG2(201, s_1);
+		if (pcc[s] == 9 && abs(cc[s] - cc[s_1]) > fis_leap) FLAG2L(201, s_1, s);
 		// Prohibit minor second up before VII - absorbed
 		// Prohibit augmented second up before VII - absorbed
 		// Prohibit unaltered VI or VII two steps from altered VI or VII
 		if (pcc[s] == 11) {
-			if (pcc[s_1] == 10) FLAG2(153, s_1);
-			if (pcc[s_1] == 8) FLAG2(154, s_1);
-			if (pcc[s_1] == 3) FLAG2(157, s_1);
+			if (pcc[s_1] == 10) FLAG2L(153, s_1, s);
+			if (pcc[s_1] == 8) FLAG2L(154, s_1, s);
+			if (pcc[s_1] == 3) FLAG2L(157, s_1, s);
 			if (ls > 1) {
 				s_2 = fli[ls - 2];
-				if (pcc[s_2] == 10) FLAG2(159, s_2);
-				if (pcc[s_2] == 8) FLAG2(160, s_2);
-				if (pcc[s_2] == 3) FLAG2(163, s_2);
+				if (pcc[s_2] == 10) FLAG2L(159, s_2, s);
+				if (pcc[s_2] == 8) FLAG2L(160, s_2, s);
+				if (pcc[s_2] == 3) FLAG2L(163, s_2, s);
 			}
 			if (ls < fli_size - 1) {
 				s1 = fli[ls + 1];
-				if (pcc[s1] == 10) FLAG2(153, s1);
-				if (pcc[s1] == 8) FLAG2(154, s1);
-				if (pcc[s1] == 3) FLAG2(156, s1);
+				if (pcc[s1] == 10) FLAG2L(153, s1, s);
+				if (pcc[s1] == 8) FLAG2L(154, s1, s);
+				if (pcc[s1] == 3) FLAG2L(156, s1, s);
 				if (ls < fli_size - 2) {
 					s2 = fli[ls + 2];
-					if (pcc[s2] == 10) FLAG2(159, s2);
-					if (pcc[s2] == 8) FLAG2(160, s2);
-					if (pcc[s2] == 3) FLAG2(162, s2);
+					if (pcc[s2] == 10) FLAG2L(159, s2, s);
+					if (pcc[s2] == 8) FLAG2L(160, s2, s);
+					if (pcc[s2] == 3) FLAG2L(162, s2, s);
 				}
 			}
 		}
 		if (pcc[s] == 9) {
-			if (pcc[s_1] == 8) FLAG2(152, s_1);
-			if (pcc[s_1] == 3) FLAG2(155, s_1);
+			if (pcc[s_1] == 8) FLAG2L(152, s_1, s);
+			if (pcc[s_1] == 3) FLAG2L(155, s_1, s);
 			if (ls > 1) {
 				s_2 = fli[ls - 2];
-				if (pcc[s_2] == 8) FLAG2(158, s_2);
-				if (pcc[s_2] == 3) FLAG2(161, s_2);
+				if (pcc[s_2] == 8) FLAG2L(158, s_2, s);
+				if (pcc[s_2] == 3) FLAG2L(161, s_2, s);
 			}
 			if (ls < fli_size - 1) {
 				s1 = fli[ls + 1];
-				if (pcc[s1] == 8) FLAG2(152, s1);
-				if (pcc[s1] == 3) FLAG2(155, s1);
+				if (pcc[s1] == 8) FLAG2L(152, s1, s);
+				if (pcc[s1] == 3) FLAG2L(155, s1, s);
 				if (ls < fli_size - 2) {
 					s2 = fli[ls + 2];
-					if (pcc[s2] == 8) FLAG2(158, s2);
-					if (pcc[s2] == 3) FLAG2(161, s2);
+					if (pcc[s2] == 8) FLAG2L(158, s2, s);
+					if (pcc[s2] == 3) FLAG2L(161, s2, s);
 				}
 			}
 		}
