@@ -2289,36 +2289,36 @@ void CGMidi::SendMIDI(int step1, int step2)
 				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) {
 					if (!note_muted[i][v]) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
 					// Send slur
-					if (artic[i][v] == ARTIC_SLUR) {
+					if (artic[i][v] == aSLUR) {
 						AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Slur while held"]);
 					}
 					// Send transition ks
-					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_CHROM)) {
+					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_CHROM)) {
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 0);
 					}
-					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_MIX)) {
+					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_MIX)) {
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 1);
 					}
-					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_ARAB)) {
+					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_ARAB)) {
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 3);
 					}
-					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_SPLITPO_PENT)) {
+					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_PENT)) {
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 4);
 					}
-					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_GLISS)) {
+					if ((icf[ii].type == 2) && (artic[i][v] == aGLISS)) {
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 2);
 					}
-					if ((icf[ii].type == 2) && (artic[i][v] == ARTIC_GLISS2)) {
+					if ((icf[ii].type == 2) && (artic[i][v] == aGLISS2)) {
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 5);
 					}
 					// Send rebow retrigger
-					if ((icf[ii].type == 1) && (artic[i][v] == ARTIC_REBOW)) {
+					if ((icf[ii].type == 1) && (artic[i][v] == aREBOW)) {
 						AddTransitionCC(i, stimestamp, icf[ii].CC_retrigger, 100, 0);
 					}
 				}
@@ -2329,16 +2329,16 @@ void CGMidi::SendMIDI(int step1, int step2)
 					etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
 					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
 					// Send note ending ks
-					if ((icf[ii].type == 2) && (artic[ei][v] == ARTIC_END_SFL)) {
+					if ((icf[ii].type == 2) && (artic[ei][v] == aEND_SFL)) {
 						AddKs(etimestamp - icf[ii].end_sfl_dur, icf[ii].ks1 + 11);
 					}
-					if ((icf[ii].type == 2) && (artic[ei][v] == ARTIC_END_PBD)) {
+					if ((icf[ii].type == 2) && (artic[ei][v] == aEND_PBD)) {
 						AddKs(etimestamp - icf[ii].end_pbd_dur, icf[ii].ks1 + 4);
 					}
-					if ((icf[ii].type == 2) && (artic[ei][v] == ARTIC_END_VIB2)) {
+					if ((icf[ii].type == 2) && (artic[ei][v] == aEND_VIB2)) {
 						AddKs(etimestamp - icf[ii].end_vib2_dur, icf[ii].ks1 + 6);
 					}
-					if ((icf[ii].type == 2) && (artic[ei][v] == ARTIC_END_VIB)) {
+					if ((icf[ii].type == 2) && (artic[ei][v] == aEND_VIB)) {
 						AddKs(etimestamp - icf[ii].end_vib_dur, icf[ii].ks1 + 5);
 					}
 				}

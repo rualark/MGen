@@ -76,23 +76,23 @@ const int note_base_m[][12] = {
 	{ -1, 0, 2, -1, 4, -1, 5, 7, -1, 9, -1, 11 }
 };
 
-#define ARTIC_LEGATO 0
-#define ARTIC_SLUR 1
-#define ARTIC_NONLEGATO 2
-#define ARTIC_EXACT 3
-#define ARTIC_STACCATO 4
-#define ARTIC_REBOW 5
-#define ARTIC_RETRIGGER 6
-#define ARTIC_SPLITPO_CHROM 7
-#define ARTIC_SPLITPO_MIX 8
-#define ARTIC_SPLITPO_ARAB 9
-#define ARTIC_SPLITPO_PENT 10
-#define ARTIC_GLISS 11
-#define ARTIC_GLISS2 12
-#define ARTIC_END_SFL 13
-#define ARTIC_END_PBD 14
-#define ARTIC_END_VIB2 15
-#define ARTIC_END_VIB 16
+#define aLEGATO 0
+#define aSLUR 1
+#define aNONLEGATO 2
+#define aEXACT 3
+#define aSTAC 4
+#define aREBOW 5
+#define aRETRIGGER 6
+#define aSPLITPO_CHROM 7
+#define aSPLITPO_MIX 8
+#define aSPLITPO_ARAB 9
+#define aSPLITPO_PENT 10
+#define aGLISS 11
+#define aGLISS2 12
+#define aEND_SFL 13
+#define aEND_PBD 14
+#define aEND_VIB2 15
+#define aEND_VIB 16
 
 const CString ArticName[] = {
 	"Legato", // 0

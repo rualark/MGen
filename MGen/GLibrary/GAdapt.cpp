@@ -104,26 +104,26 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 		if (lengroup[i][v] > 1) {
 			if (icf[ii].lengroup_edt1 < 0) {
 				detime[ei][v] = -min(-icf[ii].lengroup_edt1, (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
-				artic[i][v] = ARTIC_NONLEGATO;
+				artic[i][v] = aNONLEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 nonlegato. ";
 			}
 			else {
 				// Next line commented out, because it has no effect
 				//if ((i > 0) && (note[pi][v] == note[i][v])) detime[ei][v] = -10;
 				detime[ei][v] = icf[ii].lengroup_edt1;
-				artic[i][v] = ARTIC_LEGATO;
+				artic[i][v] = aLEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 legato. ";
 			}
 		}
 		if (lengroup[i][v] == 1) {
 			if (icf[ii].lengroup_edt2 < 0) {
 				detime[ei][v] = -min(-icf[ii].lengroup_edt2, (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
-				artic[i][v] = ARTIC_NONLEGATO;
+				artic[i][v] = aNONLEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt2 nonlegato. ";
 			}
 			else {
 				detime[ei][v] = icf[ii].lengroup_edt2;
-				artic[i][v] = ARTIC_LEGATO;
+				artic[i][v] = aLEGATO;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt2 legato. ";
 			}
 		}
@@ -135,7 +135,7 @@ void CGAdapt::AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei
 	// Add slurs
 	if ((i > 0) && (icf[ii].max_slur_interval > 0) && (abs(note[pi][v] - note[i][v]) <= icf[ii].max_slur_interval) && (note[pi][v] != note[i][v]) &&
 		(slur_count <= icf[ii].max_slur_count)) {
-		artic[i][v] = ARTIC_SLUR;
+		artic[i][v] = aSLUR;
 		slur_count++;
 		if (comment_adapt) adapt_comment[i][v] += "Slur. ";
 	}
@@ -155,12 +155,12 @@ void CGAdapt::AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int p
 			int max_shift = (etime[pei] - stime[pi]) * 100 / m_pspeed * (float)icf[ii].retrigger_rand_end / 100.0;
 			if (max_shift > icf[ii].retrigger_rand_max) max_shift = icf[ii].retrigger_rand_max;
 			detime[pei][v] = -randbw(0, max_shift);
-			artic[i][v] = ARTIC_NONLEGATO;
+			artic[i][v] = aNONLEGATO;
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
 		}
 		else {
 			if (comment_adapt) adapt_comment[i][v] += "Rebow retrigger. ";
-			artic[i][v] = ARTIC_REBOW;
+			artic[i][v] = aREBOW;
 			detime[pei][v] = -1;
 			dstime[i][v] = 0;
 		}
@@ -178,12 +178,12 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 			int max_shift = (etime[pei] - stime[pi]) * 100 / m_pspeed * (float)icf[ii].retrigger_rand_end / 100.0;
 			if (max_shift > icf[ii].retrigger_rand_max) max_shift = icf[ii].retrigger_rand_max;
 			detime[pei][v] = -randbw(0, max_shift);
-			artic[i][v] = ARTIC_NONLEGATO;
+			artic[i][v] = aNONLEGATO;
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
 		}
 		else {
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger. ";
-			artic[i][v] = ARTIC_RETRIGGER;
+			artic[i][v] = aRETRIGGER;
 			detime[pei][v] = -1;
 			dstime[i][v] = 0;
 		}
@@ -196,7 +196,7 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 		(randbw(0, 100) < icf[ii].nonlegato_freq * pow(abs(note[i][v] - note[pi][v]), 0.3))) {
 		detime[pei][v] = -min(icf[ii].nonlegato_maxgap, (etime[pei] - stime[pi]) * 100 / m_pspeed / 3);
 		dstime[i][v] = -icf[ii].all_ahead;
-		artic[i][v] = ARTIC_NONLEGATO;
+		artic[i][v] = aNONLEGATO;
 		if (comment_adapt) adapt_comment[i][v] += "Random nonlegato. ";
 	}
 }
@@ -204,7 +204,7 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Advance start for legato (not longer than previous note length)
 	if (i > 0 && pi < i) {
-		if (icf[ii].legato_ahead[0] > 0 && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+		if (icf[ii].legato_ahead[0] > 0 && (artic[i][v] == aSLUR || artic[i][v] == aLEGATO) &&
 			(!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
 			dstime[i][v] = -min(icf[ii].legato_ahead[0], (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
 				detime[i - 1][v] - dstime[pi][v] - 1);
@@ -246,7 +246,7 @@ void CGAdapt::AdaptAllAheadStep(int v, int x, int i, int ii, int ei, int pi, int
 void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Advance start for legato (not longer than previous note length)
-	if ((i > 0) && (pi < i) && (icf[ii].legato_ahead[0]) && (artic[i][v] == ARTIC_SLUR || artic[i][v] == ARTIC_LEGATO) &&
+	if ((i > 0) && (pi < i) && (icf[ii].legato_ahead[0]) && (artic[i][v] == aSLUR || artic[i][v] == aLEGATO) &&
 		(detime[i - 1][v] >= 0) && (!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
 		// Get current note length
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
@@ -267,7 +267,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 			//st.Format("nspeed %f, max_adur %f, step %d", nspeed, max_adur, i);
 			//WriteLog(1, st);
 			if (nspeed < 8) {
-				artic[i][v] = ARTIC_SPLITPO_CHROM;
+				artic[i][v] = aSPLITPO_CHROM;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento chromatic. ";
 				min_adur = (float)max(icf[ii].splitpo_mindur, abs(note[i][v] - note[pi][v]) / 8 * 1000);
 				if (icf[ii].legato_ahead[1]) adur0 = icf[ii].legato_ahead[1];
@@ -277,7 +277,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 				//WriteLog(0, st);
 			}
 			else if (abs(note[pi][v] - note[i][v]) > icf[ii].splitpo_pent_minint) {
-				artic[i][v] = ARTIC_SPLITPO_PENT;
+				artic[i][v] = aSPLITPO_PENT;
 				if (comment_adapt) adapt_comment[i][v] += "Split portamento pentatonic. ";
 				min_adur = icf[ii].splitpo_mindur;
 				if (icf[ii].legato_ahead[1]) adur0 = icf[ii].legato_ahead[2];
@@ -288,7 +288,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		}
 		else if (max_adur > icf[ii].gliss_mindur && abs(note[pi][v] - note[i][v]) > 1 && abs(note[pi][v] - note[i][v]) < 6 &&
 			randbw(0, 100) < icf[ii].gliss_freq/(100-icf[ii].splitpo_freq+0.001)*100) {
-			artic[i][v] = ARTIC_GLISS2;
+			artic[i][v] = aGLISS2;
 			if (comment_adapt) adapt_comment[i][v] += "Gliss2. ";
 			min_adur = icf[ii].gliss_mindur;
 			if (icf[ii].legato_ahead[1]) adur0 = icf[ii].legato_ahead[3];
@@ -343,7 +343,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
 void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// If nonlegato and short note, avoid slow sustain articulations for Friedlander violin
-	if (artic[i][v] == ARTIC_NONLEGATO) {
+	if (artic[i][v] == aNONLEGATO) {
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if (ndur < icf[ii].vel_normal_minlen) {
 			vel[i][v] = randbw(icf[ii].vel_immediate, icf[ii].vel_immediate + 2);
@@ -510,19 +510,19 @@ void CGAdapt::AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int 
 	// Check if it is last note in current melody
 	if (x == ncount - 1 || pause[ni][v]) {
 		if (ndur > icf[ii].end_sfl_dur * 3 && randbw(0, 100) < icf[ii].end_sfl_freq) {
-			artic[ei][v] = ARTIC_END_SFL;
+			artic[ei][v] = aEND_SFL;
 			if (comment_adapt) adapt_comment[ei][v] += "Short fall ending. ";
 		}
 		else if (ndur > icf[ii].end_pbd_dur * 3 && randbw(0, 100) < icf[ii].end_pbd_freq) {
-			artic[ei][v] = ARTIC_END_PBD;
+			artic[ei][v] = aEND_PBD;
 			if (comment_adapt) adapt_comment[ei][v] += "Pitchbend down ending. ";
 		}
 		else if (ndur > icf[ii].end_vib2_dur * 3 && randbw(0, 100) < icf[ii].end_vib2_freq) {
-			artic[ei][v] = ARTIC_END_VIB2;
+			artic[ei][v] = aEND_VIB2;
 			if (comment_adapt) adapt_comment[ei][v] += "Vibrato2 ending. ";
 		}
 		else if (ndur > icf[ii].end_vib_dur * 3 && randbw(0, 100) < icf[ii].end_vib_freq) {
-			artic[ei][v] = ARTIC_END_VIB;
+			artic[ei][v] = aEND_VIB;
 			if (comment_adapt) adapt_comment[ei][v] += "Vibrato ending. ";
 		}
 	}
@@ -636,7 +636,7 @@ void CGAdapt::Adapt(int step1, int step2)
 			pei = i - 1;
 			// Set nonlegato for separate notes
 			if ((i == 0) || (pause[pi][v])) {
-				artic[i][v] = ARTIC_NONLEGATO;
+				artic[i][v] = aNONLEGATO;
 				if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Separate note nonlegato. ";
 			}
 			if (!pause[i][v]) {
