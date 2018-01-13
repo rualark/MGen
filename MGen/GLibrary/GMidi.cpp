@@ -2292,6 +2292,15 @@ void CGMidi::SendMIDI(int step1, int step2)
 					if (artic[i][v] == aSLUR) {
 						AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Slur while held"]);
 					}
+					// Send staccato
+					if (icf[ii].type == 1) {
+						if (artic[i][v] == aSTAC) {
+							AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Staccato"]);
+						}
+						else {
+							AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Sustain"]);
+						}
+					}
 					// Send transition ks
 					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_CHROM)) {
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);

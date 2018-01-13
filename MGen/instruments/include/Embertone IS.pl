@@ -54,6 +54,9 @@ CC_dynamics = 11
 CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 
+# Staccato adaptor
+stac_maxlen = 200 # Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
+
 # Vibrato adaptor
 CC_vib = 1 # CC number for vibrato intensity
 CC_vibf = 14 # CC number for vibrato speed

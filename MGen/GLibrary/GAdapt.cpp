@@ -192,12 +192,23 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 
 void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Randomly make some notes non-legato if they have enough length
-	if ((i > 0) && ((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > icf[ii].nonlegato_minlen) &&
+	if ((i > 0) && 
+		((etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > icf[ii].nonlegato_minlen) &&
 		(randbw(0, 100) < icf[ii].nonlegato_freq * pow(abs(note[i][v] - note[pi][v]), 0.3))) {
 		detime[pei][v] = -min(icf[ii].nonlegato_maxgap, (etime[pei] - stime[pi]) * 100 / m_pspeed / 3);
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aNONLEGATO;
 		if (comment_adapt) adapt_comment[i][v] += "Random nonlegato. ";
+	}
+}
+
+void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	// Make short non-legato notes (on both sides) staccato
+	if (artic[i][v] != aLEGATO && 
+		(ei == t_generated -1 || pause[ei + 1][v] || artic[ei + 1][v] != aLEGATO) &&
+		(etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] <= icf[ii].stac_maxlen) {
+		artic[i][v] = aSTAC;
+		if (comment_adapt) adapt_comment[i][v] += "Staccato. ";
 	}
 }
 
@@ -654,6 +665,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptSlurStep(v, x, i, ii, ei, pi, pei);
 					AdaptRetriggerRebowStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
+					AdaptStaccatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
