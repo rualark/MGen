@@ -261,8 +261,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;219;60;Counterpoint;Counterpoint;Suspension resolution;up;0;;Suspension resolution up except for leading note (leading note stepwize resolution up allowed);12;1;;sus;25;5;1;;;;;;
 1;220;100;Counterpoint;Counterpoint;Suspension resolution;unresolved;0;;;12;1;;sus;15;11;1;;;;;;
 1;221;100;Counterpoint;Counterpoint;Suspension resolution;leap;0;;;12;1;;sus;15;7;1;;;;;;
-1;291;100;Counterpoint;Counterpoint;Suspension resolution;short;0;;If resolution note is shorter than 1/4;12;1;;sus;4;2;1;;;;;;
-1;286;60;Counterpoint;Counterpoint;Suspension resolution;shift;0;;Suspension is not resolved at the middle of next measure;12;1;;sus;15;14;1;;;;;;
+1;291;100;Counterpoint;Counterpoint;Suspension resolution;short;0;;If resolution note is shorter than 1/4;12;;;sus;4;2;1;;;;;;
+1;286;60;Counterpoint;Counterpoint;Suspension resolution;shift;0;;Suspension is not resolved at the middle of next measure;12;;;sus;15;14;1;;;;;;
 1;296;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap down;1;;Leap down from consonance insertion to resolution;12;;;sus;13;7;1;;;;;;
 1;136;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap up;1;;Leap up from consonance insertion to resolution;12;;;sus;7;2;1;;;;;;
 1;137;0;Counterpoint;Counterpoint;Suspension resolution insertion;down aux;1;;;12;;;sus;13;3;1;;;;;;
@@ -350,7 +350,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;235;60;Counterpoint;Rhythm;Rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;;;22;19;1;;;;;;
 1;236;60;Counterpoint;Rhythm;Rhythm;whole inside;0;;;;;;;27;12;1;;;;;;
 1;237;60;Counterpoint;Rhythm;Rhythm;uneven pause;0;;Starting pause in first measure does not equal length of next note;;;;;21;18;1;;;;;;
-1;254;60;Counterpoint;Rhythm;Rhythm;uneven start;0;;Starting measure contains notes of different length;11;;;Uneven;19;16;1;;;;;;
+1;254;60;Counterpoint;Rhythm;Rhythm;uneven start;0;;Starting measure contains notes/pauses of different length;11;;;Uneven;19;16;1;;;;;;
 1;197;60;Counterpoint;Rhythm;Rhythm;pause >1/2;0;;Starting pause is longer than 1/2 note;;;;;4;3;1;;;;;;
 1;247;60;Counterpoint;Rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures;3;;;;37;16;1;;;;;;
 1;226;60;Counterpoint;Rhythm;1/8 note;beat 1;0;;;;;;;11;7;1;;;;;;
