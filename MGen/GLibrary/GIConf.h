@@ -80,7 +80,8 @@ struct IConf {
 	float leg_cdur = 0; // Maximum percent of current note duration, that legato transition can take
 	float nonlegato_freq = 0;
 	int nonlegato_minlen = 0;
-	int stac_maxlen = 0;
+	int stac_maxlen = 0; // Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
+	int stac_dynamics = 0; // Percent of staccato dynamics compared to sustain notes
 	int lengroup2 = 0;
 	int lengroup3 = 0;
 	int lengroup4 = 0;

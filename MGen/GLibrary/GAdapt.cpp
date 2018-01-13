@@ -209,7 +209,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		(etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] <= icf[ii].stac_maxlen) {
 		dstime[pi][v] = -icf[ii].all_ahead;
 		artic[pi][v] = aSTAC;
-		vel[pi][v] = dyn[pi][v];
+		vel[pi][v] = dyn[pi][v] * icf[ii].stac_dynamics / 100;
 		// Next note cannot be legato/slur
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[pi][v] = aNONLEGATO;
@@ -222,6 +222,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		(etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] <= icf[ii].stac_maxlen) {
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aSTAC;
+		vel[i][v] = dyn[i][v] * icf[ii].stac_dynamics / 100;
 		if (comment_adapt) adapt_comment[i][v] += "Staccato. ";
 	}
 }
@@ -341,15 +342,16 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 	}
 }
 
-void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei)
-{
+void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Check if note overlapping occured
 	if (i > 0) {
 		// Local previous id
 		int lpi = pi; 
 		// Cycle through all notes backwards
 		while (lpi >= 0) {
-			if (note[lpi][v] == note[i][v]) {
+			if (note[lpi][v] == note[i][v] || 
+				(icf[ii].poly == 1 && (artic[i][v] == aSTAC || artic[i][v] == aNONLEGATO || 
+					artic[i][v] == aREBOW || artic[i][v] == aRETRIGGER))) {
 				int lpei = lpi + len[lpi][v] - 1;
 				if ((stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v] < 1) {
 					//dstime[i][v] = (etime[lpei] - stime[i]) + detime[lpei] + 1;
@@ -768,4 +770,3 @@ void CGAdapt::Adapt(int step1, int step2)
 	// Check adaptation results
 	ValidateVectors2(step1, step2);
 }
-

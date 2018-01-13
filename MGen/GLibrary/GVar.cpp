@@ -801,6 +801,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "gliss_mindur", &icf[i].gliss_mindur);
 	CheckVar(&st2, &st3, "nonlegato_minlen", &icf[i].nonlegato_minlen);
 	CheckVar(&st2, &st3, "stac_maxlen", &icf[i].stac_maxlen);
+	CheckVar(&st2, &st3, "stac_dynamics", &icf[i].stac_dynamics);
 	CheckVar(&st2, &st3, "nonlegato_freq", &icf[i].nonlegato_freq);
 	CheckVar(&st2, &st3, "lengroup2", &icf[i].lengroup2);
 	CheckVar(&st2, &st3, "lengroup3", &icf[i].lengroup3);

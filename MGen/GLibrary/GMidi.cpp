@@ -2295,10 +2295,10 @@ void CGMidi::SendMIDI(int step1, int step2)
 						}
 						// Send staccato
 						if (artic[i][v] == aSTAC) {
-							AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Staccato"]);
+							AddKs(stimestamp - 1, icf[ii].NameToKsw["Staccato"]);
 						}
 						else {
-							AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Sustain"]);
+							AddKs(stimestamp - 1, icf[ii].NameToKsw["Sustain"]);
 						}
 						// Send rebow retrigger
 						if ((icf[ii].type == 1) && (artic[i][v] == aREBOW)) {
