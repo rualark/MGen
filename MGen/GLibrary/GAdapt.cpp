@@ -204,9 +204,23 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 
 void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Make short non-legato notes (on both sides) staccato
-	if (artic[i][v] != aLEGATO && 
-		(ei == t_generated -1 || pause[ei + 1][v] || artic[ei + 1][v] != aLEGATO) &&
+	if (x && artic[pi][v] != aLEGATO && artic[pi][v] != aSLUR &&
+		artic[i][v] != aLEGATO && artic[i][v] != aSLUR &&
+		(etime[pei] - stime[pi]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] <= icf[ii].stac_maxlen) {
+		dstime[pi][v] = -icf[ii].all_ahead;
+		artic[pi][v] = aSTAC;
+		vel[pi][v] = dyn[pi][v];
+		// Next note cannot be legato/slur
+		dstime[i][v] = -icf[ii].all_ahead;
+		artic[pi][v] = aNONLEGATO;
+		vel[pi][v] = dyn[pi][v];
+		if (comment_adapt) adapt_comment[pi][v] += "Staccato. ";
+	}
+	// Same process for current note
+	if (artic[i][v] != aLEGATO && artic[i][v] != aSLUR &&
+		(ei == t_sent - 1 || pause[ei + 1][v]) &&
 		(etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] <= icf[ii].stac_maxlen) {
+		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aSTAC;
 		if (comment_adapt) adapt_comment[i][v] += "Staccato. ";
 	}

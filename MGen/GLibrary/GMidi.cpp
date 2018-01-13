@@ -2288,17 +2288,21 @@ void CGMidi::SendMIDI(int step1, int step2)
 				CheckDstime(i, v);
 				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) {
 					if (!note_muted[i][v]) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
-					// Send slur
-					if (artic[i][v] == aSLUR) {
-						AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Slur while held"]);
-					}
-					// Send staccato
 					if (icf[ii].type == 1) {
+						// Send slur
+						if (artic[i][v] == aSLUR) {
+							AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Slur while held"]);
+						}
+						// Send staccato
 						if (artic[i][v] == aSTAC) {
 							AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Staccato"]);
 						}
 						else {
 							AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Sustain"]);
+						}
+						// Send rebow retrigger
+						if ((icf[ii].type == 1) && (artic[i][v] == aREBOW)) {
+							AddTransitionCC(i, stimestamp, icf[ii].CC_retrigger, 100, 0);
 						}
 					}
 					// Send transition ks
@@ -2325,10 +2329,6 @@ void CGMidi::SendMIDI(int step1, int step2)
 					if ((icf[ii].type == 2) && (artic[i][v] == aGLISS2)) {
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
 						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 5);
-					}
-					// Send rebow retrigger
-					if ((icf[ii].type == 1) && (artic[i][v] == aREBOW)) {
-						AddTransitionCC(i, stimestamp, icf[ii].CC_retrigger, 100, 0);
 					}
 				}
 				// Note OFF if it is in window

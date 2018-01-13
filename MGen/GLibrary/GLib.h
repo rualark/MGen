@@ -76,10 +76,12 @@ const int note_base_m[][12] = {
 	{ -1, 0, 2, -1, 4, -1, 5, 7, -1, 9, -1, 11 }
 };
 
+// Embertone IS: Legato, Slur, Nonlegato, Stac, Rebow
+
 #define aLEGATO 0
 #define aSLUR 1
 #define aNONLEGATO 2
-#define aEXACT 3
+#define aEXACT 3 // Not used
 #define aSTAC 4
 #define aREBOW 5
 #define aRETRIGGER 6

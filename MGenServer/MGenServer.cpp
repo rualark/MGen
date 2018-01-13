@@ -657,12 +657,12 @@ void TakeJob() {
 	if (can_render) {
 		err = db.Fetch("SELECT * FROM jobs "
 			"LEFT JOIN files USING (f_id) "
-			"WHERE j_state=1 AND j_deleted=0 ORDER BY j_priority, j_id LIMIT 1");
+			"WHERE j_state=1 ORDER BY j_priority, j_id LIMIT 1");
 	}
 	else {
 		err = db.Fetch("SELECT * FROM jobs "
 			"LEFT JOIN files USING (f_id) "
-			"WHERE j_state=1 AND j_deleted=0 AND j_class<2 ORDER BY j_priority, j_id LIMIT 1");
+			"WHERE j_state=1 AND j_class<2 ORDER BY j_priority, j_id LIMIT 1");
 	}
 	if (!err && !db.rs.IsEOF()) {
 		// Load job
