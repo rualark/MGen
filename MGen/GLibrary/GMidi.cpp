@@ -207,6 +207,7 @@ void CGMidi::SplitLyNote(int pos, int le, vector<int> &la) {
 }
 
 void CGMidi::SendLyViz(ofstream &fs, int pos, CString &ev, int le, int i, int v, int phase) {
+	if (!lyi.size()) return;
 	// Show flag finish
 	for (int x = 0; x < lyi[ly_s2].shf.size(); ++x) {
 		if (!lyi[ly_s2].shf[x]) continue;
@@ -490,6 +491,7 @@ void CGMidi::ParseNLinks(int i, int i2, int v, int foreign) {
 void CGMidi::SaveLyComments(int i, int v, int pos) {
 	CString st, com, note_st;
 	int pos1, pos2, found;
+	if (!lyi.size()) return;
 	if (lyi[ly_s2].nflags.size()) {
 		note_st = "\\markup \\wordwrap \\bold {\n  ";
 		// Show voice number if more than 1 voice
@@ -731,6 +733,7 @@ void CGMidi::InitLyI() {
 			SetLyShape(s1, s2, f, fl, vtype);
 		}
 	}
+	ExportLyI();
 }
 
 void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int step2) {
@@ -777,7 +780,6 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		if (!vm_max[v]) continue;
 		ly_v = v;
 		InitLyI();
-		ExportLyI();
 		// Select best clef
 		clef = DetectLyClef(vm_min[v], vm_max[v]);
 		st.Format("\\new Staff = \"staff%d\" {\n", ly_v);
