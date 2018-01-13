@@ -5,7 +5,7 @@ Type = 0 # Instrument type
 # Instrument parameters
 n_min = 21 # Lowest note
 n_max = 108 # Highest note
-t_min = 20 # Shortest note in ms
+t_min = 10 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 100 # Maximum number of simultaneous voices
 #leap_t_min = 1 # Shortest note after leap
