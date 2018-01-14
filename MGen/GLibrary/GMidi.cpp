@@ -2288,7 +2288,13 @@ void CGMidi::SendMIDI(int step1, int step2)
 				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
 				CheckDstime(i, v);
 				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) {
-					if (!note_muted[i][v]) AddNoteOn(stimestamp, note[i][v] + play_transpose[v], vel[i][v]);
+					if (!note_muted[i][v]) {
+						// Replace note
+						int my_note;
+						if (icf[ii].replace_pitch > -1) my_note = icf[ii].replace_pitch;
+						else my_note = note[i][v] + play_transpose[v];
+						AddNoteOn(stimestamp, my_note, vel[i][v]);
+					}
 					if (icf[ii].type == 1) {
 						// Send slur
 						if (artic[i][v] == aSLUR) {

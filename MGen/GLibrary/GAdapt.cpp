@@ -670,10 +670,12 @@ void CGAdapt::Adapt(int step1, int step2)
 			if (!pause[i][v]) {
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation
+				// Piano
 				if (icf[ii].type == 0) {
 					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptLengroupStep(v, x, i, ii, ei, pi, pei);
 				}
+				// Embertone Intimate Strings
 				if (icf[ii].type == 1) {
 					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
@@ -686,6 +688,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
+				// Samplemodeling Brass
 				if (icf[ii].type == 2) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
@@ -695,6 +698,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptFlexAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptNoteEndStep(v, x, i, ii, ei, pi, pei, ncount);
 				}
+				// Soundiron Voices of Rapture
 				if (icf[ii].type == 3) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
@@ -703,6 +707,7 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					//vel[i][v] = randbw(1, 126);
 				}
+				// Samplemodeling Woodwinds
 				if (icf[ii].type == 4) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);

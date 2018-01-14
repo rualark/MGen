@@ -16,16 +16,24 @@ Cellos        | Blakus                | 11  | 11  | +   |
 Contrabass    | Leonid                | 12  | 12  | +   |
 Contrabasses  | Leonid                | 12  | 12  | +   |
 Organ         | Mystique              | 13  | 13  | +   |
-Piccolo       | SM Piccolo            | 14  | 14  | +   |
+Piccolo       | SM Piccolo            | 14  | 14  | -   |
 Flute         | SM Flute              | 15  | 15  | +   |
-Alto Flute    | SM Alto Flute         | 15  | 16  | -   |
-Bass Flute    | SM Bass Flute         | 15  | 17  | -   |
-Clarinet      | SM Clarinet           | 15  | 18  | -   |
-Bass Clarinet | SM Bass Clarinet      | 15  | 19  | -   |
-Oboe          | SM Oboe               | 15  | 20  | -   |
-English Horn  | SM English Horn       | 15  | 21  | -   |
-Bassoon       | SM Bassoon            | 15  | 22  | -   |
-Contrabassoon | SM Contrabassoon      | 15  | 23  | -   |
+Alto Flute    | SM Alto Flute         | 0   | 16  | -   |
+Bass Flute    | SM Bass Flute         | 0   | 17  | -   |
+Clarinet      | SM Clarinet           | 0   | 18  | -   |
+Bass Clarinet | SM Bass Clarinet      | 0   | 19  | -   |
+Oboe          | SM Oboe               | 0   | 20  | -   |
+English Horn  | SM English Horn       | 0   | 21  | -   |
+Bassoon       | SM Bassoon            | 0   | 22  | -   |
+Contrabassoon | SM Contrabassoon      | 0   | 23  | -   |
+Snare drum    | Hit - Snares on       | 0   | 24  | -   |
+Gran cassa    | Hard mallet           | 1   | 24  | -   |
+Tam tam       | Hard hit              | 3   | 24  | -   |
+Triangle      | Hit                   | 4   | 24  | -   |
+Timpani       | Dampened hits         | 0   | 25  | -   |
+Xylophone     | Xylophone             | 0   | 26  | -   |
+Glockenspiel  | Glockenspiel          | 0   | 27  | -   |
+Marimba       | Marimba               | 0   | 28  | -   |
 Piano         | Gentleman             | 0   | 0   | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)

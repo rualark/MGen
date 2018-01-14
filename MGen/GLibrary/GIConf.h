@@ -52,6 +52,7 @@ struct IConf {
 	float vibf_bell_exp = 0; // Exponent to create non - linear bell shape
 	float rnd_vib = 0; // Randomize vibrato intensity not greater than this percent
 	float rnd_vibf = 0; // Randomize vibrato speed not greater than this percent
+	int replace_pitch = -1; // Single note that should be sent instead of all other notes
 	int CC_steps = 0;
 	int CC_ma = 0;
 	int CC_dyn = 0;

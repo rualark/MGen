@@ -757,6 +757,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "ks1", &icf[i].ks1);
 	LoadNote(&st2, &st3, "n_min", &icf[i].nmin);
 	LoadNote(&st2, &st3, "n_max", &icf[i].nmax);
+	LoadNote(&st2, &st3, "replacepitch", &icf[i].replace_pitch);
 	LoadCCName(&st2, &st3, "cc_name", i);
 	LoadKswGroup(&st2, &st3, "kswgroup", i);
 	LoadTechnique(&st2, &st3, "technique", i);
