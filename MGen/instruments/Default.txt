@@ -16,6 +16,7 @@ Cellos       | Blakus                | 11  | 11  | +   |
 Contrabass   | Leonid                | 12  | 12  | +   |
 Contrabasses | Leonid                | 12  | 12  | +   |
 Organ        | Mystique              | 13  | 13  | +   |
+Flute        | SM Flute              | 14  | 14  | +   |
 Piano        | Gentleman             | 0   | 0   | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)

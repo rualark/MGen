@@ -2301,34 +2301,36 @@ void CGMidi::SendMIDI(int step1, int step2)
 							AddKs(stimestamp - 1, icf[ii].NameToKsw["Sustain"]);
 						}
 						// Send rebow retrigger
-						if ((icf[ii].type == 1) && (artic[i][v] == aREBOW)) {
+						if (artic[i][v] == aREBOW) {
 							AddTransitionCC(i, stimestamp, icf[ii].CC_retrigger, 100, 0);
 						}
 					}
 					// Send transition ks
-					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_CHROM)) {
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 0);
-					}
-					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_MIX)) {
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 1);
-					}
-					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_ARAB)) {
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 3);
-					}
-					if ((icf[ii].type == 2) && (artic[i][v] == aSPLITPO_PENT)) {
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 4);
-					}
-					if ((icf[ii].type == 2) && (artic[i][v] == aGLISS)) {
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 2);
-					}
-					if ((icf[ii].type == 2) && (artic[i][v] == aGLISS2)) {
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
-						AddTransitionKs(i, stimestamp, icf[ii].ks1 + 5);
+					if (icf[ii].type == 2) {
+						if (artic[i][v] == aSPLITPO_CHROM) {
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 0);
+						}
+						if (artic[i][v] == aSPLITPO_MIX) {
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 1);
+						}
+						if (artic[i][v] == aSPLITPO_ARAB) {
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 3);
+						}
+						if (artic[i][v] == aSPLITPO_PENT) {
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 4);
+						}
+						if (artic[i][v] == aGLISS) {
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 2);
+						}
+						if (artic[i][v] == aGLISS2) {
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
+							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 5);
+						}
 					}
 				}
 				// Note OFF if it is in window
@@ -2338,17 +2340,19 @@ void CGMidi::SendMIDI(int step1, int step2)
 					etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
 					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
 					// Send note ending ks
-					if ((icf[ii].type == 2) && (artic[ei][v] == aEND_SFL)) {
-						AddKs(etimestamp - icf[ii].end_sfl_dur, icf[ii].ks1 + 11);
-					}
-					if ((icf[ii].type == 2) && (artic[ei][v] == aEND_PBD)) {
-						AddKs(etimestamp - icf[ii].end_pbd_dur, icf[ii].ks1 + 4);
-					}
-					if ((icf[ii].type == 2) && (artic[ei][v] == aEND_VIB2)) {
-						AddKs(etimestamp - icf[ii].end_vib2_dur, icf[ii].ks1 + 6);
-					}
-					if ((icf[ii].type == 2) && (artic[ei][v] == aEND_VIB)) {
-						AddKs(etimestamp - icf[ii].end_vib_dur, icf[ii].ks1 + 5);
+					if (icf[ii].type == 2) {
+						if (artic[ei][v] == aEND_SFL) {
+							AddKs(etimestamp - icf[ii].end_sfl_dur, icf[ii].ks1 + 11);
+						}
+						if (artic[ei][v] == aEND_PBD) {
+							AddKs(etimestamp - icf[ii].end_pbd_dur, icf[ii].ks1 + 4);
+						}
+						if (artic[ei][v] == aEND_VIB2) {
+							AddKs(etimestamp - icf[ii].end_vib2_dur, icf[ii].ks1 + 6);
+						}
+						if (artic[ei][v] == aEND_VIB) {
+							AddKs(etimestamp - icf[ii].end_vib_dur, icf[ii].ks1 + 5);
+						}
 					}
 				}
 			}

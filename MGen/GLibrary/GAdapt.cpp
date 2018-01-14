@@ -367,23 +367,22 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	}
 }
 
-void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int pei)
-{
-	// If nonlegato and short note, avoid slow sustain articulations for Friedlander violin
-	if (artic[i][v] == aNONLEGATO) {
+void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	// If nonlegato and short note, avoid slow sustain articulations
+	if (artic[i][v] == aNONLEGATO || icf[ii].type == 4) {
 		float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if (ndur < icf[ii].vel_normal_minlen) {
 			vel[i][v] = randbw(icf[ii].vel_immediate, icf[ii].vel_immediate + 2);
 			if (comment_adapt) adapt_comment[i][v] += "Vel immediate. ";
 		}
+	}
+	if (artic[i][v] == aNONLEGATO) {
 		// Limit harsh sustains
 		if (vel[i][v] >= icf[ii].vel_harsh && icf[ii].harsh_freq < 100) {
 			if (randbw(0, 100) >= icf[ii].harsh_freq) {
 				vel[i][v] = randbw(icf[ii].vel_immediate, icf[ii].vel_harsh - 1);
 			}
 		}
-		//if (ndur < icf[ii].vel_normal_minlen) vel[i][v] = dyn[i][v] * (float)(127 - icf[ii].vel_immediate) / 127.0 + icf[ii].vel_immediate;
-		//else vel[i][v] = dyn[i][v] * (float)(icf[ii].vel_immediate - 1) / 127.0;
 	}
 }
 
@@ -567,7 +566,7 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 			// Prevent velocity randomization of short nonlegato notes, because they sound bad at low velocity with Friedlander
 			if ((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] < icf[ii].vel_normal_minlen) ok = 0;
 		}
-		if (icf[ii].type == 2 || icf[ii].type == 3) {
+		if (icf[ii].type == 2 || icf[ii].type == 3 || icf[ii].type == 4) {
 			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 			if (i && !pause[i - 1][v] && note[i - 1][v] != note[i][v]) ok = 0;
 		}
@@ -701,6 +700,15 @@ void CGAdapt::Adapt(int step1, int step2)
 					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					//vel[i][v] = randbw(1, 126);
+				}
+				if (icf[ii].type == 4) {
+					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
+					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
+					AdaptVibBell(v, x, i, ii, ei, pi, pei);
+					AdaptRetriggerNonlegatoStep(v, x, i, ii, ei, pi, pei);
+					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
+					//AdaptAheadStep(v, x, i, ii, ei, pi, pei);
+					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
 			} // !pause
 			if (noff[i][v] == 0) break;
