@@ -610,6 +610,8 @@ void CGAdapt::CalculateVoiceStages() {
 			}
 			instr[v] = ii;
 		}
+		// Set instrument for each exported track
+		t_instr[icf[ii].track] = ii;
 	}
 	stages_calculated = 1;
 }

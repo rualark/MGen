@@ -1021,9 +1021,9 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 	int tracks_cnt = 0;
 	// Get maximum used track
 	for (int sta = 0; sta < stage_max; ++sta) {
-		for (int ch = MAX_VOICE - 1; ch >= 0; --ch) {
-			if (midifile_buf[sta][ch].size()) {
-				if (!stracks_cnt[sta]) stracks_cnt[sta] = ch + 1;
+		for (int tr = MAX_VOICE - 1; tr >= 0; --tr) {
+			if (midifile_buf[sta][tr].size()) {
+				if (!stracks_cnt[sta]) stracks_cnt[sta] = tr + 1;
 				++tracks_cnt;
 			}
 		}
@@ -1056,25 +1056,25 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 	midifile.addTempo(track, 0, 60 / spq);
 	track = 0;
 	for (int sta = 0; sta < stage_max; ++sta) {
-		for (int ch = 0; ch < MAX_VOICE; ++ch) {
-			if (!midifile_buf[sta][ch].size()) continue;
-			// Convert channel to midi file channel and track number
-			strack = ch + 1;
+		for (int tr = 0; tr < MAX_VOICE; ++tr) {
+			if (!midifile_buf[sta][tr].size()) continue;
+			// Convert DAW track to midi file track number
+			strack = tr + 1;
 			++track;
-			channel = ch;
 			// Send instrument name
 			CString st;
-			if (sta == 0) st = icf[instr[ch]].group;
-			else st.Format("%s %d", icf[instr[ch]].group, sta);
+			if (sta == 0) st = icf[t_instr[tr]].group;
+			else st.Format("%s %d", icf[t_instr[tr]].group, sta);
 			string st2 = st;
 			midifile.addTrackName(track, 0, st2);
-			midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
-			smidifile[sta].addPatchChange(strack, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
-			for (int i = 0; i < midifile_buf[sta][ch].size(); i++) {
-				tick = midifile_buf[sta][ch][i].timestamp / 1000.0 / spq * tpq;
-				type = Pm_MessageStatus(midifile_buf[sta][ch][i].message) & 0xF0;
-				data1 = Pm_MessageData1(midifile_buf[sta][ch][i].message);
-				data2 = Pm_MessageData2(midifile_buf[sta][ch][i].message);
+			//midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
+			//smidifile[sta].addPatchChange(strack, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
+			for (int i = 0; i < midifile_buf[sta][tr].size(); i++) {
+				tick = midifile_buf[sta][tr][i].timestamp / 1000.0 / spq * tpq;
+				type = Pm_MessageStatus(midifile_buf[sta][tr][i].message) & 0xF0;
+				data1 = Pm_MessageData1(midifile_buf[sta][tr][i].message);
+				data2 = Pm_MessageData2(midifile_buf[sta][tr][i].message);
+				channel = Pm_MessageStatus(midifile_buf[sta][tr][i].message) & 0x0F;
 				if (type == MIDI_NOTEON) {
 					if (data2) {
 						midifile.addNoteOn(track, tick, channel, data1, data2);
@@ -2071,7 +2071,7 @@ void CGMidi::AddMidiEvent(long long timestamp, int mm_type, int data1, int data2
 	event.timestamp = real_timestamp;
 	event.message = Pm_Message(mm_type, data1, data2);
 	if (amidi_export) {
-		midifile_buf[midi_stage][mm_type & 0xF].push_back(event);
+		midifile_buf[midi_stage][midi_track].push_back(event);
 		return;
 	}
 	// Check if event is in future
@@ -2245,6 +2245,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		int ncount = 0;
 		int ii = instr[v];
 		midi_channel = icf[ii].channel;
+		midi_track = icf[ii].track;
 		midi_stage = v_stage[v];
 		midi_voice = v;
 		// Send initialization commands

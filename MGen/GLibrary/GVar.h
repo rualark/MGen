@@ -156,6 +156,7 @@ public:
 	vector<int> instr; // Instruments for each voice
 	vector<int> v_stage; // Stage for each voice
 	vector<int> v_itrack; // Instrument local track number for each voice
+	vector<int> t_instr; // Instrument for each track. This value can be overwritten by instruments sharing same track
 	vector<IConf> icf;
 	int virt_instr_count = 0;
 

@@ -13,6 +13,7 @@ CGVar::CGVar()
 	instr.resize(MAX_VOICE);
 	v_stage.resize(MAX_VOICE);
 	v_itrack.resize(MAX_VOICE);
+	t_instr.resize(MAX_VOICE);
 
 	icf.resize(MAX_INSTR);
 	for (int i = 0; i < MAX_INSTR; ++i) {
