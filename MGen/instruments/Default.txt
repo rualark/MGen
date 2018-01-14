@@ -17,6 +17,9 @@ Contrabass   | Leonid                | 12  | 12  | +   |
 Contrabasses | Leonid                | 12  | 12  | +   |
 Organ        | Mystique              | 13  | 13  | +   |
 Flute        | SM Flute              | 14  | 14  | +   |
+Piccolo      | SM Piccolo            | 15  | 15  | +   |
+Alto Flute   | SM Alto Flute         | 15  | 16  | -   |
+Bass Flute   | SM Bass Flute         | 15  | 17  | -   |
 Piano        | Gentleman             | 0   | 0   | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
