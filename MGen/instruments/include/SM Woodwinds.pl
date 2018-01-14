@@ -1,7 +1,7 @@
-# Samplemodeling Brass
+# Samplemodeling Woodwinds
 
 # Main
-Type = 2 # Instrument type
+Type = 4 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
 
 # Automation parameters
@@ -15,11 +15,6 @@ leg_pdur = 30 # Maximum percent of previous note duration, that legato transitio
 leg_cdur = 30 # Maximum percent of current note duration, that legato transition can take
 legato_ahead_exp = 6 # Exponent to interpolate note movement ahead from note velocity
 max_ahead_note = 64 # Maximum chromatic interval having ahead property
-gliss_freq = 40 # Frequency of gliss articulation in percent
-splitpo_freq = 20 # Frequency of split portamento in percent
-splitpo_mindur = 40 # Minimum legato duration to use split portamento
-gliss_mindur = 30 # Minimum legato duration to use gliss
-splitpo_pent_minint = 3 # Minimum allowed interval in semitones for split portamento pentatonic
 
 # Nonlegato adaptor
 nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
@@ -27,7 +22,8 @@ nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonle
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Retrigger adaptor
-retrigger_min_len = 600 # Minimum next note length in ms to use retrigger
+retrigger_freq = 50 # Percent to use non-legato when repeating notes
+retrigger_min_len = 300 # Minimum next note length in ms to use retrigger
 retrigger_rand_max = 300 # Maximum length in ms to move note end to the left in case of nonlegato retrigger
 retrigger_rand_end = 50 # Maximum percent of note length to move note end to the left in case of nonlegato retrigger
 
@@ -52,12 +48,12 @@ vib_bell_exp = 2 # Exponent to create non-linear bell shape
 vibf_bell_exp = 2 # Exponent to create non-linear bell shape
 vib_bell_freq = 100 # Frequency to apply vibrato bell when all conditions met
 vib_bell_dur = 600-1200 # Minimum note duration (ms) that can have a vibrato bell - that can have highest vibrato bell
-vib_bell = 30-60 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
+vib_bell = 30-90 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
 vibf_bell = 10-60 # Max vibrato frequency in vibrato bell (for minimum and highest duration)
 rnd_vib = 100 # Randomize vibrato intensity not greater than this percent
 rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 
 # Randomization
-rnd_vel = 8 # Randomize note velocity not greater than this percent
+rnd_vel = 20 # Randomize note velocity not greater than this percent
 rnd_vel_repeat = 70 # Randomize note velocity not greater than this percent for note retriggers
 rnd_dyn = 15 # Randomize step dynamics not greater than this percent

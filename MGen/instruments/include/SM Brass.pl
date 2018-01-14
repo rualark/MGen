@@ -27,6 +27,7 @@ nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonle
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Retrigger adaptor
+retrigger_freq = 50 # Percent to use non-legato when repeating notes
 retrigger_min_len = 600 # Minimum next note length in ms to use retrigger
 retrigger_rand_max = 300 # Maximum length in ms to move note end to the left in case of nonlegato retrigger
 retrigger_rand_end = 50 # Maximum percent of note length to move note end to the left in case of nonlegato retrigger

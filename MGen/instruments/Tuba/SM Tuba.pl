@@ -1,4 +1,4 @@
-include "..\include\SampleModeling.pl"
+include "..\include\SM Brass.pl"
 
 # Main
 library = Samplemodeling Tuba v3 # For which library algorithm is optimized
