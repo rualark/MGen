@@ -8,4 +8,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-08-05 14-07-52
-Midi_file = midi\known-cf-maj.mid
+Midi_file = midi\Cantus\known\known-cf-maj.mid

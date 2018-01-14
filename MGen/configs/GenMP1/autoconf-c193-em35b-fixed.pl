@@ -8,6 +8,6 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-12-23 14:07:48
-Midi_file = midi\GenMP1\c193-em35b-fixed.mid
+Midi_file = midi\Music\arkhipenko\c193-em35b-fixed.mid
 
 Instruments = Trumpet,Piano,Piano,Violin,Horn,Trombone,Tuba
