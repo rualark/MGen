@@ -16,8 +16,8 @@ Cellos       | Blakus                | 11  | 11  | +   |
 Contrabass   | Leonid                | 12  | 12  | +   |
 Contrabasses | Leonid                | 12  | 12  | +   |
 Organ        | Mystique              | 13  | 13  | +   |
-Flute        | SM Flute              | 14  | 14  | +   |
-Piccolo      | SM Piccolo            | 15  | 15  | +   |
+Piccolo      | SM Piccolo            | 14  | 14  | +   |
+Flute        | SM Flute              | 15  | 15  | +   |
 Alto Flute   | SM Alto Flute         | 15  | 16  | -   |
 Bass Flute   | SM Bass Flute         | 15  | 17  | -   |
 Piano        | Gentleman             | 0   | 0   | +   |
