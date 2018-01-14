@@ -4,21 +4,21 @@
 Type = 4 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
 
+# Transition types
+vel_harsh = 50 # Velocity equal or above this value triggers harsh sustain
+vel_immediate = 33 # Velocity equal or above this value triggers immediate sustain
+vel_normal = 10 # Velocity equal or above this value triggers normal sustain
+vel_normal_minlen = 400 # Minimum note length (ms) that can have a normal or lower sustain
+harsh_freq = 10 # Frequency of harsh sustain articulation in percent of all possible situations
+
 # Automation parameters
 CC_dynamics = 11
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 
-# Legato adaptor
-legato_ahead = 700 # Time in ms to stretch legato notes back to cope with legato delay
-leg_pdur = 30 # Maximum percent of previous note duration, that legato transition can take
-leg_cdur = 30 # Maximum percent of current note duration, that legato transition can take
-legato_ahead_exp = 6 # Exponent to interpolate note movement ahead from note velocity
-max_ahead_note = 64 # Maximum chromatic interval having ahead property
-
 # Nonlegato adaptor
-nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
-nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonlegato
+nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
+nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Retrigger adaptor
@@ -43,7 +43,7 @@ rbell_pos = 20-80 # Leftmost-rightmost minimum reverse bell position inside wind
 CC_vib = 1 # CC number for vibrato intensity
 CC_vibf = 19 # CC number for vibrato speed
 vib_bell_top = 40-90 # Leftmost-rightmost maximum vibrato intensity position in note (percent of note duration)
-vibf_bell_top = 30-90 # Leftmost-rightmost maximum vibrato speed in note (percent of note duration)
+vibf_bell_top = 20-60 # Leftmost-rightmost maximum vibrato speed in note (percent of note duration)
 vib_bell_exp = 2 # Exponent to create non-linear bell shape
 vibf_bell_exp = 2 # Exponent to create non-linear bell shape
 vib_bell_freq = 100 # Frequency to apply vibrato bell when all conditions met
