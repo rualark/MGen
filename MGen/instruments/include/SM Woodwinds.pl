@@ -4,13 +4,6 @@
 Type = 4 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
 
-# Transition types
-vel_harsh = 50 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 33 # Velocity equal or above this value triggers immediate sustain
-vel_normal = 10 # Velocity equal or above this value triggers normal sustain
-vel_normal_minlen = 400 # Minimum note length (ms) that can have a normal or lower sustain
-harsh_freq = 10 # Frequency of harsh sustain articulation in percent of all possible situations
-
 # Automation parameters
 CC_dynamics = 11
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
