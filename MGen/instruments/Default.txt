@@ -1,26 +1,32 @@
-#GROUP       | CONFIG                | CHN | TRK | PRT |
-Violin       | Friedlander           | 1   | 1   | +   |
-Violins      | Friedlander           | 1   | 1   | +   |
-Trumpet      | SM Trumpet            | 2   | 2   | +   |
-Horn         | SM Horn               | 3   | 3   | +   |
-Trombone     | SM Trombone           | 4   | 4   | +   |
-Tuba         | SM Tuba               | 5   | 5   | +   |
-Soprano      | SI VoR Soprano        | 6   | 6   | +   |
-Alto         | SI VoR Alto           | 7   | 7   | +   |
-Tenor        | SI VoR Tenor          | 8   | 8   | +   |
-Bass         | SI VoR Bass           | 9   | 9   | +   |
-Viola        | Fischer               | 10  | 10  | +   |
-Violas       | Fischer               | 10  | 10  | +   |
-Cello        | Blakus                | 11  | 11  | +   |
-Cellos       | Blakus                | 11  | 11  | +   |
-Contrabass   | Leonid                | 12  | 12  | +   |
-Contrabasses | Leonid                | 12  | 12  | +   |
-Organ        | Mystique              | 13  | 13  | +   |
-Piccolo      | SM Piccolo            | 14  | 14  | +   |
-Flute        | SM Flute              | 15  | 15  | +   |
-Alto Flute   | SM Alto Flute         | 15  | 16  | -   |
-Bass Flute   | SM Bass Flute         | 15  | 17  | -   |
-Piano        | Gentleman             | 0   | 0   | +   |
+#GROUP        | CONFIG                | CHN | TRK | PRT |
+Violin        | Friedlander           | 1   | 1   | +   |
+Violins       | Friedlander           | 1   | 1   | +   |
+Trumpet       | SM Trumpet            | 2   | 2   | +   |
+Horn          | SM Horn               | 3   | 3   | +   |
+Trombone      | SM Trombone           | 4   | 4   | +   |
+Tuba          | SM Tuba               | 5   | 5   | +   |
+Soprano       | SI VoR Soprano        | 6   | 6   | +   |
+Alto          | SI VoR Alto           | 7   | 7   | +   |
+Tenor         | SI VoR Tenor          | 8   | 8   | +   |
+Bass          | SI VoR Bass           | 9   | 9   | +   |
+Viola         | Fischer               | 10  | 10  | +   |
+Violas        | Fischer               | 10  | 10  | +   |
+Cello         | Blakus                | 11  | 11  | +   |
+Cellos        | Blakus                | 11  | 11  | +   |
+Contrabass    | Leonid                | 12  | 12  | +   |
+Contrabasses  | Leonid                | 12  | 12  | +   |
+Organ         | Mystique              | 13  | 13  | +   |
+Piccolo       | SM Piccolo            | 14  | 14  | +   |
+Flute         | SM Flute              | 15  | 15  | +   |
+Alto Flute    | SM Alto Flute         | 15  | 16  | -   |
+Bass Flute    | SM Bass Flute         | 15  | 17  | -   |
+Clarinet      | SM Clarinet           | 15  | 18  | -   |
+Bass Clarinet | SM Bass Clarinet      | 15  | 19  | -   |
+Oboe          | SM Oboe               | 15  | 20  | -   |
+English Horn  | SM English Horn       | 15  | 21  | -   |
+Bassoon       | SM Bassoon            | 15  | 22  | -   |
+Contrabassoon | SM Contrabassoon      | 15  | 23  | -   |
+Piano         | Gentleman             | 0   | 0   | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
 # TRK is MIDI track to send this instrument to (for adapted MIDI file export)
