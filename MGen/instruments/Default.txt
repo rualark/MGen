@@ -34,6 +34,7 @@ Timpani       | Dampened hits         | 0   | 25  | -   |
 Xylophone     | Xylophone             | 0   | 26  | -   |
 Glockenspiel  | Glockenspiel          | 0   | 27  | -   |
 Marimba       | Marimba               | 0   | 28  | -   |
+Harp          | Harp                  | 0   | 29  | -   |
 Piano         | Gentleman             | 0   | 0   | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
