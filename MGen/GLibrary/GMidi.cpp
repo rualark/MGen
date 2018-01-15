@@ -2566,7 +2566,7 @@ int CGMidi::GetPlayStep() {
 		int step1 = midi_play_step;
 		int step2 = midi_sent;
 		int cur_step = 0, currentElement;
-		long long searchElement = CGLib::time() - midi_start_time;
+		long long searchElement = CGLib::time() - midi_start_time - midi_prepause;
 		while (step1 <= step2) {
 			cur_step = (step1 + step2) / 2;
 			currentElement = stime[cur_step] * 100 / m_pspeed;
