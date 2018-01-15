@@ -8,15 +8,18 @@ struct CaseInsensitiveCompare {
 	}
 };
 
+// Instrument config
 struct IConf {
-	CString name;
-	CString group;
+	CString name; // config name
+	CString fname; // config file name
+	CString group; // group name
+	int default_instr = 0; // Link to default instrument id
 	int port = 0; // If this instrument can receive messages through MIDI port in real time
 	int track = 0; // Resulting track for this instrument
 	int channel = 0; // Resulting MIDI channel for this instrument (both for MIDI file export and playback to MIDI port)
 	int type = 0; 
 	int ks1 = 0; // First keyswitch pitch
-	int used = 0; // For how many voices this instrument is already used
+	//int used = 0; // For how many voices this instrument is already used
 	int nmin = 0;
 	int nmax = 0;
 	int tmin = 0;

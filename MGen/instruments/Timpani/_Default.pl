@@ -11,5 +11,3 @@ Volume_default = 65 # (direct CC volume, should not be changed by user)
 # Controls
 KswGroup = "C1: Long hits", "C#1: Dampened hits"
 
-# Initial setup
-InitCommand = "Long hits" 

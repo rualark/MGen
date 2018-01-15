@@ -15,13 +15,6 @@ CGVar::CGVar()
 	v_itrack.resize(MAX_VOICE);
 	t_instr.resize(MAX_VOICE);
 
-	icf.resize(MAX_INSTR);
-	for (int i = 0; i < MAX_INSTR; ++i) {
-		icf[i].KswGroup.resize(128);
-		icf[i].legato_ahead.resize(10);
-		icf[i].ahead_chrom.resize(16);
-	}
-
 	show_transpose.resize(MAX_VOICE);
 	track_name.resize(MAX_VOICE);
 	track_id.resize(MAX_VOICE);
@@ -45,6 +38,19 @@ void CGVar::InitVectors()
 		ngv_min[v] = 1000;
 		ngv_max[v] = 0;
 	}
+}
+
+void CGVar::AddIcf() {
+	if (icf.size() >= MAX_INSTR) {
+		CString est;
+		est.Format("Cannot create more instruments than MAX_INSTR (%d). Increase MAX_INSTR if needed", MAX_INSTR);
+		WriteLog(5, est);
+		return;
+	}
+	icf.resize(icf.size() + 1);
+	icf[icf.size() - 1].KswGroup.resize(128);
+	icf[icf.size() - 1].legato_ahead.resize(10);
+	icf[icf.size() - 1].ahead_chrom.resize(16);
 }
 
 // If info2 is empty, it is not overwritten
@@ -173,8 +179,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	mutex_output.unlock();
 }
 
-void CGVar::LoadConfigFile(CString fname, int load_includes)
-{
+void CGVar::LoadConfigFile(CString fname, int load_includes) {
 	CString st, st2, st3, iname;
 	ifstream fs;
 	int instr_id = -1;
@@ -249,8 +254,8 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 				// Load instrument group
 				if (sa.size() == 1) {
 					int found = 0;
-					for (int i = 0; i < InstCName.size(); ++i) {
-						if (st3 == InstGName[i]) {
+					for (int i = 0; i < icf.size(); ++i) {
+						if (st3 == icf[i].group) {
 							instr_id = i;
 							++found;
 						}
@@ -260,8 +265,8 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 				}
 				// Load instrument
 				else {
-					for (int i = 0; i < InstCName.size(); ++i) {
-						if (sa[0] == InstGName[i] && sa[1] == InstCName[i]) {
+					for (int i = 0; i < icf.size(); ++i) {
+						if (sa[0] == icf[i].group && sa[1] == icf[i].name) {
 							instr_id = i;
 							break;
 						}
@@ -320,12 +325,8 @@ void CGVar::LoadConfigFile(CString fname, int load_includes)
 short CGVar::CreateVirtualInstrument(int instr_id, int child_id) {
 	// Allocate new virtual instrument
 	++virt_instr_count;
-	int instr_id2 = MAX_INSTR - virt_instr_count;
-	// Check for limit
-	if (virt_instr_count + InstCName.size() >= MAX_INSTR) {
-		WriteLog(5, "Maximum instrument count exceeded when creating new virtual instrument. Please check config or increase MAX_INSTR in code.");
-		return -1;
-	}
+	AddIcf();
+	int instr_id2 = icf.size() - 1;
 	// Copy instrument config
 	icf[instr_id2] = icf[instr_id];
 	// Remove childs after copying
@@ -375,16 +376,10 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 			st.Trim();
 			if (st.IsEmpty()) break;
 			int found = 0;
-			// Set all instruments to default instrument
-			if (!ii) {
-				for (int i = 0; i < MAX_VOICE; i++) instr[i] = InstGName.size() - 1;
-				for (int i = 0; i < MAX_INSTR; i++) icf[i].used = 0;
-			}
 			// Load
-			for (int i = 0; i < InstGName.size(); i++) {
-				if (InstGName[i] == st) {
+			for (int i = 0; i < icf.size(); i++) {
+				if (icf[i].group == st) {
 					++found;
-					++icf[i].used;
 					Dest[ii] = i;
 					break;
 				}
@@ -392,7 +387,7 @@ void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vecto
 			if (!found) {
 				CString est;
 				est.Format("Cannot find any instrument named %s (%d) in layout %s. Mapped to default instrument %s/%s (%d)",
-					st, ii, instr_layout, InstGName.back(), InstCName.back(), InstGName.size() - 1);
+					st, ii, instr_layout, icf[0].group, icf[0].name, 0);
 				WriteLog(5, est);
 			}
 		}
@@ -416,10 +411,9 @@ void CGVar::LoadInstrumentLayout()
 	char pch[2550];
 	int pos = 0;
 	int x = 0;
-	// Clear instrument group names
-	InstGName.clear();
-	// Clear instrument config names
-	InstCName.clear();
+	int ii = 0;
+	// Clear instrument configs
+	icf.clear();
 	while (fs.good()) {
 		++x;
 		fs.getline(pch, 2550);
@@ -434,34 +428,32 @@ void CGVar::LoadInstrumentLayout()
 		st.Trim();
 		pos = 0;
 		if (st.Find("|") != -1) {
-			if (InstCName.size() >= MAX_INSTR) {
-				CString est;
-				est.Format("LoadInstrumentLayout found more instruments than MAX_INSTR (%d) in file: %s. Increase MAX_INSTR if needed", MAX_INSTR, fname);
-				WriteLog(5, est);
-				break;
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
+			for (int x = 0; x < icf.size(); ++x) {
+				if (icf[x].group == st2) {
+					WriteLog(5, "Instrument layout should contain unique instrument groups. Detected duplicate: " + st2);
+				}
 			}
+			AddIcf();
+			ii = icf.size() - 1;
+			icf[ii].group = st2;
+			icf[ii].default_instr = ii;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			if (find(begin(InstGName), end(InstGName), st2) != InstGName.end()) {
-				WriteLog(5, "Instrument layout should contain unique instrument groups. Detected duplicate: " + st2);
-			}
-			InstGName.push_back(st2);
-			icf[InstGName.size() - 1].group = st2;
+			icf[ii].name = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			InstCName.push_back(st2);
-			icf[InstCName.size() - 1].name = st2;
+			icf[ii].channel = atoi(st2);
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			icf[InstCName.size() - 1].channel = atoi(st2);
+			icf[ii].track = atoi(st2);
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			icf[InstCName.size() - 1].track = atoi(st2);
-			st2 = st.Tokenize("|", pos);
-			st2.Trim();
-			if (st2 == "+") icf[InstCName.size() - 1].port = 1;
+			if (st2 == "+") icf[ii].port = 1;
 			// Set default mapping
-			instr[InstCName.size() - 1] = InstCName.size() - 1;
+			instr[ii] = ii;
+			InstDefaultConfig[icf[ii].group] = icf[ii].name;
 		}
 		pos = st.Find("=");
 		if (pos != -1) {
@@ -477,10 +469,11 @@ void CGVar::LoadInstrumentLayout()
 			}
 		}
 	}
-	for (int i = InstGName.size(); i < MAX_VOICE; i++) instr[i] = InstGName.size() - 1;
+	// 
+	for (int i = 0; i < MAX_VOICE; i++) instr[i] = 0;
 	fs.close();
-	if (InstCName.size() == 0) {
-		WriteLog(5, "Error loading instrument layout from " + fname);
+	if (icf.size() == 0) {
+		WriteLog(5, "No instruments loaded from " + fname);
 	}
 	// Log
 	long long time_stop = CGLib::time();
@@ -494,15 +487,44 @@ void CGVar::LoadInstrumentLayoutLine(CString &st2, CString &st3) {
 	CheckVar(&st2, &st3, "rnd_tempo_step", &rnd_tempo_step);
 }
 
-void CGVar::LoadInstruments()
-{
-	if (InstCName.size() == 0) {
-		WriteLog(5, "No instruments loaded: layout empty");
-		return;
-	}
-	for (int i = 0; i < InstCName.size(); ++i) {
-		CString fname = "instruments\\" + InstGName[i] + "\\" + InstCName[i] + ".pl";
-		LoadInstrument(i, fname);
+void CGVar::LoadInstruments() {
+	CString fname, cname;
+	int found_default, ii2;
+	for (int ii = 0; ii < icf.size(); ++ii) if (icf[ii].default_instr == ii) {
+		CFileFind finder;
+		CString strWildcard = "instruments\\" + icf[ii].group + "\\*.*";
+		BOOL bWorking = finder.FindFile(strWildcard);
+		found_default = 0;
+		while (bWorking) {
+			bWorking = finder.FindNextFile();
+			if (finder.IsDots()) continue;
+			fname = finder.GetFileName();
+			if (fname[0] == '_') continue;
+			if (fname.Right(3) != ".pl") continue;
+			cname = fname.Left(fname.GetLength() - 3);
+			if (cname.Find(".") != -1) {
+				cname = cname.Mid(cname.Find(".") + 1);
+			}
+			// Is it default config?
+			if (icf[ii].name == cname) {
+				ii2 = ii;
+				found_default = 1;
+			}
+			else {
+				// If not, create copy of current config
+				AddIcf();
+				ii2 = icf.size() - 1;
+				icf[ii2] = icf[ii];
+			}
+			icf[ii2].name = cname;
+			icf[ii2].fname = fname;
+			WriteLog(1, "instruments\\" + icf[ii2].group + "\\" + icf[ii2].fname);
+			LoadInstrument(ii2, "instruments\\" + icf[ii2].group + "\\" + icf[ii2].fname);
+		}
+		finder.Close();
+		if (!found_default) {
+			WriteLog(5, "Not found file for default instrument config " + icf[ii].group + "/" + icf[ii].name);
+		}
 	}
 }
 

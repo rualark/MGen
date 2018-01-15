@@ -20,6 +20,7 @@ public:
 	~CGVar();
 
 	void InitVectors();
+	void AddIcf();
 	void AddMelody(int step1, int step2, int v, CString info, CString info2 = "");
 	void LoadInstruments(); // Load instruments config
 	void LoadInstrument(int i, CString fname);
@@ -149,14 +150,13 @@ public:
 	int stages_calculated = 0;
 
 	// Instruments
-	vector<CString> InstGName; // Instrument groups 
-	vector<CString> InstCName; // Instrument configs
+	map<CString, CString> InstDefaultConfig; // Instrument configs by name
 	CString instr_layout; // Name of instruments/*.txt file to load instrument layout from
 	CString m_config_insts; // String with instrument mapping from config
 	vector<int> instr; // Instruments for each voice
 	vector<int> v_stage; // Stage for each voice
 	vector<int> v_itrack; // Instrument local track number for each voice
-	vector<int> t_instr; // Instrument for each track. This value can be overwritten by instruments sharing same track
+	vector<int> t_instr; // Instrument for each result track. This value can be overwritten by instruments sharing same track
 	vector<IConf> icf;
 	int virt_instr_count = 0;
 

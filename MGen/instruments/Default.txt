@@ -1,4 +1,5 @@
-#GROUP        | CONFIG                | CHN | TRK | PRT |
+#GROUP        | DEFAULT CONFIG        | CHN | TRK | PRT |
+Piano         | Gentleman             | 0   | 0   | +   |
 Violin        | Friedlander           | 1   | 1   | +   |
 Violins       | Friedlander           | 1   | 1   | +   |
 Trumpet       | SM Trumpet            | 2   | 2   | +   |
@@ -35,14 +36,13 @@ Xylophone     | Xylophone             | 0   | 26  | -   |
 Glockenspiel  | Glockenspiel          | 0   | 27  | -   |
 Marimba       | Marimba               | 0   | 28  | -   |
 Harp          | Harp                  | 0   | 29  | -   |
-Piano         | Gentleman             | 0   | 0   | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
 # TRK is MIDI track to send this instrument to (for adapted MIDI file export)
 # PRT shows if this instrument is connected to MIDI port and can receive MIDI messages in real time
 # If PRT is "-", this instrument can be used only for offline processing through adapted MIDI file export
 
-# Last instrument in layout must be default instrument, which will get all unmapped instruments
+# First instrument in layout must be default instrument, which will get all unmapped instruments
 
 # Randomization
 rnd_tempo = 6 # Randomize tempo not greater than this percent

@@ -2056,7 +2056,7 @@ void CGMidi::LogInstruments() {
 		st2 += st;
 	}
 	st2 += ". Instrument channels: ";
-	for (int i = 0; i < InstGName.size(); i++) {
+	for (int i = 0; i < icf.size(); i++) {
 		st.Format("%d ", icf[i].channel);
 		st2 += st;
 	}
