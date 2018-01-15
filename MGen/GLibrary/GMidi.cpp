@@ -2248,7 +2248,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 		// Set step to zero, because we do not know real steps of postponed notes
 		midi_current_step = 0;
 		for (int i = 0; i < mbn.size(); ++i) {
-			AddMidiEvent(mbn[i].timestamp - midi_start_time, Pm_MessageStatus(mbn[i].message),
+			// Subtract prepause, because it is already added in buffer
+			AddMidiEvent(mbn[i].timestamp - midi_start_time - midi_prepause, 
+				Pm_MessageStatus(mbn[i].message),
 				Pm_MessageData1(mbn[i].message), Pm_MessageData2(mbn[i].message));
 		}
 		if (debug_level > 1) {
@@ -2270,18 +2272,18 @@ void CGMidi::SendMIDI(int step1, int step2)
 		// Send initialization commands
 		if (midi_first_run) {
 			for (auto const& it : icf[ii].InitCommands) {
-				AddMidiEvent(midi_sent_t - midi_start_time, 
+				AddMidiEvent(midi_sent_t - midi_start_time - midi_prepause, 
 					Pm_MessageStatus(it) + midi_channel, 
 					Pm_MessageData1(it), Pm_MessageData2(it));
 				if (Pm_MessageStatus(it) == MIDI_NOTEON) {
-					AddKsOff(midi_sent_t - midi_start_time + 1,
+					AddKsOff(midi_sent_t - midi_start_time - midi_prepause + 1,
 						Pm_MessageData1(it), 0);
 				}
 			}
 			// Send pan
-			AddCC(midi_sent_t - midi_start_time, 10, (icf[ii].pan * 127) / 100);
+			AddCC(midi_sent_t - midi_start_time - midi_prepause, 10, (icf[ii].pan * 127) / 100);
 			if (icf[ii].vol != -1) 
-				AddCC(midi_sent_t - midi_start_time, 7, (icf[ii].vol * icf[ii].vol_default) / 100);
+				AddCC(midi_sent_t - midi_start_time - midi_prepause, 7, (icf[ii].vol * icf[ii].vol_default) / 100);
 		}
 		// Move to note start
 		if (coff[step1][v] > 0) {
@@ -2306,7 +2308,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 				// Note ON if it is not blocked and was not yet sent
 				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
 				CheckDstime(i, v);
-				if ((stimestamp + midi_start_time >= midi_sent_t) && (i >= midi_sent)) {
+				if ((stimestamp + midi_start_time + midi_prepause >= midi_sent_t) && (i >= midi_sent)) {
 					if (!note_muted[i][v]) {
 						// Replace note
 						int my_note;
@@ -2400,12 +2402,12 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Count time
 	long long time_stop = CGLib::time();
 	CString st;
-	st.Format("MIDI write %d (%d postponed) events: steps %d/%d - %d/%d (%lld to %lld ms) [to future %lld to %lld ms] (in %lld ms) playback is at %lld ms. Limit %lld. Last postponed %lld. Step22 stopped increasing at %.0f ms. Start time: %lld, current time: %lld",
+	st.Format("MIDI write %d (%d postponed) events: steps %d/%d - %d/%d (%lld to %lld ms) [to future %lld to %lld ms] (in %lld ms) playback is at %lld ms. Limit %lld. Last postponed %lld. Step22 stopped increasing at %.0f ms. Start time: %lld, current time: %lld. Prepause %.0f ms",
 		midi_buf.size(), midi_buf_next.size(), step21, step1, step22, step2, 
 		midi_sent_t-midi_start_time, midi_sent_t2 - midi_start_time, 
 		midi_sent_t - timestamp_current, midi_sent_t2 - timestamp_current,
 		time_stop - time_start, timestamp_current - midi_start_time, midi_buf_lim - midi_start_time, 
-		midi_sent_t3 - midi_start_time,	time, midi_start_time, timestamp_current);
+		midi_sent_t3 - midi_start_time,	time, midi_start_time, timestamp_current, midi_prepause);
 	WriteLog(4, st);
 	// Save last sent position
 	midi_sent = step22;
@@ -2542,7 +2544,7 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 	// Send ma CC
 	for (int c = first_cc; c <= last_cc; c++) {
 		float t = cc_time[c];
-		if (t >= midi_sent_t - midi_start_time) {
+		if (t >= midi_sent_t - midi_start_time + midi_prepause) {
 			AddCC(t, CC, cc_ma[c]);
 		}
 	}

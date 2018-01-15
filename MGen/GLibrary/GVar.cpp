@@ -759,7 +759,7 @@ void CGVar::LoadTechnique(CString *sName, CString *sValue, CString sSearch, int 
 	int id;
 	// Find tech
 	if (icf[i].NameToTech.find(st1) != icf[i].NameToTech.end()) {
-		id = icf[i].NameToTech[st];
+		id = icf[i].NameToTech[st1];
 	}
 	else {
 		id = icf[i].tech.size();

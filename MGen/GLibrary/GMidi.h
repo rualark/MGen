@@ -23,7 +23,7 @@
 // Minimum counterpoint size in steps to allow loading
 #define MIN_CP_SIZE 5
 // Maximum number of init presteps
-#define INIT_PRESTEPS 5
+#define INIT_PRESTEPS 2
 // Length of init prestep in ms
 #define INIT_PRESTEP 30
 

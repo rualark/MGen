@@ -1,5 +1,6 @@
 #GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT |
 Keyboard/Piano                        | Gentleman             | 0   | 0   | +   |
+Strings/Violin                        | Arco                  | 1   | 1   | +   |
 Keyboard/Organ                        | Mystique              | 13  | 13  | +   |
 Woodwinds/Piccolo                     | SM Piccolo            | 14  | 14  | -   |
 Woodwinds/Flute                       | SM Flute              | 15  | 15  | +   |
@@ -28,7 +29,6 @@ Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   
 Unpitched percussion/Gran cassa       | Hard mallet           | 1   | 24  | -   |
 Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   |
 Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   |
-Strings/Violin                        | Sustain               | 1   | 1   | +   |
 Strings/Violins                       | Friedlander           | 1   | 1   | +   |
 Strings/Viola                         | Fischer               | 10  | 10  | +   |
 Strings/Violas                        | Fischer               | 10  | 10  | +   |
