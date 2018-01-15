@@ -1,3 +1,3 @@
-include "Manual.pl"
+include "Customizable.pl"
 
 ReplacePitch = "C#2" # Replace all notes in track with this pitch
