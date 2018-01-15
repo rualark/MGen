@@ -1,41 +1,41 @@
-#GROUP        | DEFAULT CONFIG        | CHN | TRK | PRT |
-Piano         | Gentleman             | 0   | 0   | +   |
-Violin        | Friedlander           | 1   | 1   | +   |
-Violins       | Friedlander           | 1   | 1   | +   |
-Trumpet       | SM Trumpet            | 2   | 2   | +   |
-Horn          | SM Horn               | 3   | 3   | +   |
-Trombone      | SM Trombone           | 4   | 4   | +   |
-Tuba          | SM Tuba               | 5   | 5   | +   |
-Soprano       | SI VoR Soprano        | 6   | 6   | +   |
-Alto          | SI VoR Alto           | 7   | 7   | +   |
-Tenor         | SI VoR Tenor          | 8   | 8   | +   |
-Bass          | SI VoR Bass           | 9   | 9   | +   |
-Viola         | Fischer               | 10  | 10  | +   |
-Violas        | Fischer               | 10  | 10  | +   |
-Cello         | Blakus                | 11  | 11  | +   |
-Cellos        | Blakus                | 11  | 11  | +   |
-Contrabass    | Leonid                | 12  | 12  | +   |
-Contrabasses  | Leonid                | 12  | 12  | +   |
-Organ         | Mystique              | 13  | 13  | +   |
-Piccolo       | SM Piccolo            | 14  | 14  | -   |
-Flute         | SM Flute              | 15  | 15  | +   |
-Alto Flute    | SM Alto Flute         | 0   | 16  | -   |
-Bass Flute    | SM Bass Flute         | 0   | 17  | -   |
-Clarinet      | SM Clarinet           | 0   | 18  | -   |
-Bass Clarinet | SM Bass Clarinet      | 0   | 19  | -   |
-Oboe          | SM Oboe               | 0   | 20  | -   |
-English Horn  | SM English Horn       | 0   | 21  | -   |
-Bassoon       | SM Bassoon            | 0   | 22  | -   |
-Contrabassoon | SM Contrabassoon      | 0   | 23  | -   |
-Snare drum    | Hit - Snares on       | 0   | 24  | -   |
-Gran cassa    | Hard mallet           | 1   | 24  | -   |
-Tam tam       | Hard hit              | 3   | 24  | -   |
-Triangle      | Hit                   | 4   | 24  | -   |
-Timpani       | Dampened hits         | 0   | 25  | -   |
-Xylophone     | Xylophone             | 0   | 26  | -   |
-Glockenspiel  | Glockenspiel          | 0   | 27  | -   |
-Marimba       | Marimba               | 0   | 28  | -   |
-Harp          | Harp                  | 0   | 29  | -   |
+#GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT |
+Keyboard/Piano                        | Gentleman             | 0   | 0   | +   |
+Keyboard/Organ                        | Mystique              | 13  | 13  | +   |
+Woodwinds/Piccolo                     | SM Piccolo            | 14  | 14  | -   |
+Woodwinds/Flute                       | SM Flute              | 15  | 15  | +   |
+Woodwinds/Alto Flute                  | SM Alto Flute         | 0   | 16  | -   |
+Woodwinds/Bass Flute                  | SM Bass Flute         | 0   | 17  | -   |
+Woodwinds/Clarinet                    | SM Clarinet           | 0   | 18  | -   |
+Woodwinds/Bass Clarinet               | SM Bass Clarinet      | 0   | 19  | -   |
+Woodwinds/Oboe                        | SM Oboe               | 0   | 20  | -   |
+Woodwinds/English Horn                | SM English Horn       | 0   | 21  | -   |
+Woodwinds/Bassoon                     | SM Bassoon            | 0   | 22  | -   |
+Woodwinds/Contrabassoon               | SM Contrabassoon      | 0   | 23  | -   |
+Brass/Trumpet                         | SM Trumpet            | 2   | 2   | +   |
+Brass/Horn                            | SM Horn               | 3   | 3   | +   |
+Brass/Trombone                        | SM Trombone           | 4   | 4   | +   |
+Brass/Tuba                            | SM Tuba               | 5   | 5   | +   |
+Vocal/Soprano                         | SI VoR Soprano        | 6   | 6   | +   |
+Vocal/Alto                            | SI VoR Alto           | 7   | 7   | +   |
+Vocal/Tenor                           | SI VoR Tenor          | 8   | 8   | +   |
+Vocal/Bass                            | SI VoR Bass           | 9   | 9   | +   |
+Unpitched percussion/Xylophone        | Xylophone             | 0   | 26  | -   |
+Unpitched percussion/Glockenspiel     | Glockenspiel          | 0   | 27  | -   |
+Unpitched percussion/Marimba          | Marimba               | 0   | 28  | -   |
+Unpitched percussion/Harp             | Harp                  | 0   | 29  | -   |
+Pitched percussion/Snare drum         | Hit - Snares on       | 0   | 24  | -   |
+Pitched percussion/Gran cassa         | Hard mallet           | 1   | 24  | -   |
+Pitched percussion/Tam tam            | Hard hit              | 3   | 24  | -   |
+Pitched percussion/Triangle           | Hit                   | 4   | 24  | -   |
+Pitched percussion/Timpani            | Dampened hits         | 0   | 25  | -   |
+Strings/Violin                        | Friedlander           | 1   | 1   | +   |
+Strings/Violins                       | Friedlander           | 1   | 1   | +   |
+Strings/Viola                         | Fischer               | 10  | 10  | +   |
+Strings/Violas                        | Fischer               | 10  | 10  | +   |
+Strings/Cello                         | Blakus                | 11  | 11  | +   |
+Strings/Cellos                        | Blakus                | 11  | 11  | +   |
+Strings/Contrabass                    | Leonid                | 12  | 12  | +   |
+Strings/Contrabasses                  | Leonid                | 12  | 12  | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
 # TRK is MIDI track to send this instrument to (for adapted MIDI file export)
