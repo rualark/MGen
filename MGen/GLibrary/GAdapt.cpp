@@ -105,6 +105,7 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 			if (icf[ii].lengroup_edt1 < 0) {
 				detime[ei][v] = -min(-icf[ii].lengroup_edt1, (etime[ei] - stime[i]) * 100 / m_pspeed / 3);
 				artic[i][v] = aNONLEGATO;
+				dstime[i][v] = -icf[ii].all_ahead;
 				if (comment_adapt) adapt_comment[i][v] += "Lengroup edt1 nonlegato. ";
 			}
 			else {
@@ -156,13 +157,14 @@ void CGAdapt::AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int p
 			if (max_shift > icf[ii].retrigger_rand_max) max_shift = icf[ii].retrigger_rand_max;
 			detime[pei][v] = -randbw(0, max_shift);
 			artic[i][v] = aNONLEGATO;
+			dstime[i][v] = -icf[ii].all_ahead;
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
 		}
 		else {
 			if (comment_adapt) adapt_comment[i][v] += "Rebow retrigger. ";
 			artic[i][v] = aREBOW;
 			detime[pei][v] = -1;
-			dstime[i][v] = 0;
+			dstime[i][v] = -icf[ii].all_ahead;
 		}
 	}
 }
@@ -179,13 +181,14 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 			if (max_shift > icf[ii].retrigger_rand_max) max_shift = icf[ii].retrigger_rand_max;
 			detime[pei][v] = -randbw(0, max_shift);
 			artic[i][v] = aNONLEGATO;
+			dstime[i][v] = -icf[ii].all_ahead;
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
 		}
 		else {
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger. ";
 			artic[i][v] = aRETRIGGER;
 			detime[pei][v] = -1;
-			dstime[i][v] = 0;
+			dstime[i][v] = -icf[ii].all_ahead;
 		}
 	}
 }
@@ -665,6 +668,7 @@ void CGAdapt::Adapt(int step1, int step2)
 			// Set nonlegato for separate notes
 			if ((i == 0) || (pause[pi][v])) {
 				artic[i][v] = aNONLEGATO;
+				dstime[i][v] = -icf[ii].all_ahead;
 				if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Separate note nonlegato. ";
 			}
 			if (!pause[i][v]) {
