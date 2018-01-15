@@ -1,4 +1,4 @@
-include "Manual.pl"
+include "Customizable.pl"
 
 ReplacePitch = "C3" # Replace all notes in track with this pitch
 

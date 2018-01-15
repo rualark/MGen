@@ -442,7 +442,9 @@ void CGVar::LoadInstrumentLayout()
 			}
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
-			//if (find(begin(InstGName), end(InstGName), st2) != InstGName.end()) {
+			if (find(begin(InstGName), end(InstGName), st2) != InstGName.end()) {
+				WriteLog(5, "Instrument layout should contain unique instrument groups. Detected duplicate: " + st2);
+			}
 			InstGName.push_back(st2);
 			icf[InstGName.size() - 1].group = st2;
 			st2 = st.Tokenize("|", pos);
