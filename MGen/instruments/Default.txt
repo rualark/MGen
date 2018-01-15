@@ -1,6 +1,5 @@
 #GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT |
 Keyboard/Piano                        | Gentleman             | 0   | 0   | +   |
-Strings/Violin                        | Arco                  | 1   | 1   | +   |
 Keyboard/Organ                        | Mystique              | 13  | 13  | +   |
 Woodwinds/Piccolo                     | SM Piccolo            | 14  | 14  | -   |
 Woodwinds/Flute                       | SM Flute              | 15  | 15  | +   |
@@ -29,13 +28,14 @@ Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   
 Unpitched percussion/Gran cassa       | Hard mallet           | 1   | 24  | -   |
 Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   |
 Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   |
-Strings/Violins                       | Friedlander           | 1   | 1   | +   |
-Strings/Viola                         | Fischer               | 10  | 10  | +   |
-Strings/Violas                        | Fischer               | 10  | 10  | +   |
-Strings/Cello                         | Blakus                | 11  | 11  | +   |
-Strings/Cellos                        | Blakus                | 11  | 11  | +   |
-Strings/Contrabass                    | Leonid                | 12  | 12  | +   |
-Strings/Contrabasses                  | Leonid                | 12  | 12  | +   |
+Strings/Violin                        | Arco                  | 1   | 1   | +   |
+Strings/Violins                       | Arco                  | 1   | 1   | +   |
+Strings/Viola                         | Arco                  | 10  | 10  | +   |
+Strings/Violas                        | Arco                  | 10  | 10  | +   |
+Strings/Cello                         | Arco                  | 11  | 11  | +   |
+Strings/Cellos                        | Arco                  | 11  | 11  | +   |
+Strings/Contrabass                    | Arco                  | 12  | 12  | +   |
+Strings/Contrabasses                  | Arco                  | 12  | 12  | +   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
 # TRK is MIDI track to send this instrument to (for adapted MIDI file export)
