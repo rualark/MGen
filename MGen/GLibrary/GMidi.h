@@ -22,6 +22,10 @@
 #define MIN_CANTUS_SIZE 5
 // Minimum counterpoint size in steps to allow loading
 #define MIN_CP_SIZE 5
+// Maximum number of init presteps
+#define INIT_PRESTEPS 5
+// Length of init prestep in ms
+#define INIT_PRESTEP 30
 
 // PortMIDI
 #define MIN_MIDI_BUF_MSEC 6000
@@ -273,6 +277,7 @@ public:
 	void StartMIDI(int midi_device_i, int from);
 	void LogInstruments();
 	void CheckDstime(int i, int v);
+	void GetMidiPrePause();
 	void SendMIDI(int step1, int step2);
 	void InterpolateCC(int CC, float rnd, int step1, int step2, vector<vector<unsigned char>>& dv, int ii, int v);
 	void StopMIDI();
@@ -286,6 +291,7 @@ public:
 	PmMessage midi_sent_msg = 0; // Last event sent to midi in previous SendMIDI
 	PmMessage midi_sent_msg2 = 0; // Last event sent to midi in current SendMIDI
 	PmMessage midi_sent_msg3 = 0; // Last event postponed in current SendMIDI
+	float midi_prepause = 0; // How long pause is needed before music
 	int midi_current_step = 0; // Current step processed by SendMIDI (for logs)
 	long long midi_start_time = 0; // Time when midi started to play
 	int midi_last_run = 0; // If current SendMIDI is last

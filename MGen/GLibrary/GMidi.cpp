@@ -2066,7 +2066,7 @@ void CGMidi::LogInstruments() {
 
 void CGMidi::AddMidiEvent(long long timestamp, int mm_type, int data1, int data2)
 {
-	long long real_timestamp = timestamp + midi_start_time;
+	long long real_timestamp = timestamp + midi_start_time + midi_prepause;
 	PmEvent event;
 	event.timestamp = real_timestamp;
 	event.message = Pm_Message(mm_type, data1, data2);
@@ -2153,6 +2153,22 @@ void CGMidi::CheckDstime(int i, int v)
 	}
 }
 
+void CGMidi::GetMidiPrePause() {
+	midi_prepause = 0;
+	long long stimestamp;
+  // Check first steps of each voice
+	for (int v = 0; v < v_cnt; ++v) {
+		for (int i = 0; i < t_sent; ++i) {
+			if (!pause[i][v]) {
+				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
+				midi_prepause = max(midi_prepause, -stimestamp);
+				break;
+			}
+		}
+	}
+	midi_prepause += INIT_PRESTEPS * INIT_PRESTEP;
+}
+
 void CGMidi::SendMIDI(int step1, int step2)
 {
 	if (step2 == step1) return;
@@ -2163,7 +2179,10 @@ void CGMidi::SendMIDI(int step1, int step2)
 	// Note end timestamp
 	long long etimestamp; 
 	// Check if this is first run
-	if ((step1 == 0) || (!midi_sent_t) || (!midi_start_time)) midi_first_run = 1;
+	if ((step1 == 0) || (!midi_sent_t) || (!midi_start_time)) {
+		midi_first_run = 1;
+		GetMidiPrePause();
+	}
 	else midi_first_run = 0;
 	if (midi_first_run) LogInstruments();
 	// Set real time when playback started
