@@ -212,8 +212,8 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		vel[pi][v] = dyn[pi][v] * icf[ii].stac_dynamics / 100;
 		// Next note cannot be legato/slur
 		dstime[i][v] = -icf[ii].all_ahead;
-		artic[pi][v] = aNONLEGATO;
-		vel[pi][v] = dyn[pi][v];
+		artic[i][v] = aNONLEGATO;
+		vel[i][v] = dyn[i][v];
 		if (comment_adapt) adapt_comment[pi][v] += "Staccato. ";
 	}
 	// Same process for current note
