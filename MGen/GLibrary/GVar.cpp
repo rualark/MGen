@@ -366,8 +366,7 @@ void CGVar::LoadConfigFiles(CString fname, int load_includes) {
 	}
 }
 
-void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
-{
+void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest) {
 	if (*sName == sSearch) {
 		int pos = 0, ii = 0;
 		CString st;
@@ -420,7 +419,7 @@ void CGVar::LoadInstrumentLayout()
 	}
 	ifstream fs;
 	fs.open(fname);
-	CString st, st2, st3;
+	CString st, st2, st3, iclass;
 	char pch[2550];
 	int pos = 0;
 	int x = 0;
@@ -443,6 +442,12 @@ void CGVar::LoadInstrumentLayout()
 		if (st.Find("|") != -1) {
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
+			// Get instrument class
+			if (st2.Find("/") != -1) {
+				iclass = st2.Left(st2.Find("/"));
+				st2 = st2.Mid(st2.Find("/") + 1);
+			}
+			else iclass = "";
 			for (int x = 0; x < icf.size(); ++x) {
 				if (icf[x].group == st2) {
 					WriteLog(5, "Instrument layout should contain unique instrument groups. Detected duplicate: " + st2);
@@ -450,6 +455,7 @@ void CGVar::LoadInstrumentLayout()
 			}
 			AddIcf();
 			ii = icf.size() - 1;
+			icf[ii].iclass = iclass;
 			icf[ii].group = st2;
 			icf[ii].default_instr = ii;
 			st2 = st.Tokenize("|", pos);
@@ -532,7 +538,6 @@ void CGVar::LoadInstruments() {
 			icf[ii2].name = cname;
 			icf[ii2].fname = fname;
 			icf[ii].configs_count++;
-			WriteLog(1, "instruments\\" + icf[ii2].group + "\\" + icf[ii2].fname);
 			LoadInstrument(ii2, "instruments\\" + icf[ii2].group + "\\" + icf[ii2].fname);
 		}
 		finder.Close();
