@@ -369,25 +369,38 @@ void CGVar::LoadConfigFiles(CString fname, int load_includes) {
 void CGVar::LoadVarInstr(CString * sName, CString * sValue, char* sSearch, vector<int> & Dest)
 {
 	if (*sName == sSearch) {
-		int pos = 0;
+		int pos = 0, ii = 0;
 		CString st;
-		for (int ii = 0; ii<MAX_VOICE; ii++) {
+		for (int v = 0; v<MAX_VOICE; v++) {
 			st = sValue->Tokenize(",", pos);
 			st.Trim();
 			if (st.IsEmpty()) break;
 			int found = 0;
-			// Load
-			for (int i = 0; i < icf.size(); i++) {
-				if (icf[i].group == st) {
-					++found;
-					Dest[ii] = i;
-					break;
+			if (st.Find("/") == -1) {
+				for (ii = 0; ii < icf.size(); ii++) {
+					if (icf[ii].group == st) {
+						++found;
+						Dest[v] = ii;
+						break;
+					}
+				}
+			}
+			// Load particular config
+			else {
+				CString gname = st.Left(st.Find("/"));
+				CString cname = st.Mid(st.Find("/") + 1);
+				for (ii = 0; ii < icf.size(); ii++) {
+					if (icf[ii].group == gname && icf[ii].name == cname) {
+						++found;
+						Dest[v] = ii;
+						break;
+					}
 				}
 			}
 			if (!found) {
 				CString est;
 				est.Format("Cannot find any instrument named %s (%d) in layout %s. Mapped to default instrument %s/%s (%d)",
-					st, ii, instr_layout, icf[0].group, icf[0].name, 0);
+					st, v, instr_layout, icf[0].group, icf[0].name, 0);
 				WriteLog(5, est);
 			}
 		}
@@ -518,6 +531,7 @@ void CGVar::LoadInstruments() {
 			}
 			icf[ii2].name = cname;
 			icf[ii2].fname = fname;
+			icf[ii].configs_count++;
 			WriteLog(1, "instruments\\" + icf[ii2].group + "\\" + icf[ii2].fname);
 			LoadInstrument(ii2, "instruments\\" + icf[ii2].group + "\\" + icf[ii2].fname);
 		}

@@ -14,6 +14,7 @@ struct IConf {
 	CString fname; // config file name
 	CString group; // group name
 	int default_instr = 0; // Link to default instrument id
+	int configs_count = 1; // Number of configs using this group (for default only)
 	int port = 0; // If this instrument can receive messages through MIDI port in real time
 	int track = 0; // Resulting track for this instrument
 	int channel = 0; // Resulting MIDI channel for this instrument (both for MIDI file export and playback to MIDI port)
