@@ -19,15 +19,15 @@ Vocal/Soprano                         | SI VoR Soprano        | 6   | 6   | +   
 Vocal/Alto                            | SI VoR Alto           | 7   | 7   | +   |
 Vocal/Tenor                           | SI VoR Tenor          | 8   | 8   | +   |
 Vocal/Bass                            | SI VoR Bass           | 9   | 9   | +   |
-Unpitched percussion/Xylophone        | Xylophone             | 0   | 26  | -   |
-Unpitched percussion/Glockenspiel     | Glockenspiel          | 0   | 27  | -   |
-Unpitched percussion/Marimba          | Marimba               | 0   | 28  | -   |
-Unpitched percussion/Harp             | Harp                  | 0   | 29  | -   |
-Pitched percussion/Snare drum         | Hit - Snares on       | 0   | 24  | -   |
-Pitched percussion/Gran cassa         | Hard mallet           | 1   | 24  | -   |
-Pitched percussion/Tam tam            | Hard hit              | 3   | 24  | -   |
-Pitched percussion/Triangle           | Hit                   | 4   | 24  | -   |
+Pitched percussion/Xylophone          | Xylophone             | 0   | 26  | -   |
+Pitched percussion/Glockenspiel       | Glockenspiel          | 0   | 27  | -   |
+Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   |
+Pitched percussion/Harp               | Harp                  | 0   | 29  | -   |
 Pitched percussion/Timpani            | Dampened hits         | 0   | 25  | -   |
+Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   |
+Unpitched percussion/Gran cassa       | Hard mallet           | 1   | 24  | -   |
+Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   |
+Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   |
 Strings/Violin                        | Friedlander           | 1   | 1   | +   |
 Strings/Violins                       | Friedlander           | 1   | 1   | +   |
 Strings/Viola                         | Fischer               | 10  | 10  | +   |
