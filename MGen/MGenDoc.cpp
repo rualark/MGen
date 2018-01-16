@@ -179,6 +179,7 @@ BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mgr", path + "\\" + fname + ".mgr");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mid", path + "\\" + fname + ".mid");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".txt", path + "\\" + fname + ".txt");
+		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".csv", path + "\\" + fname + ".csv");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".pl", path + "\\" + fname + ".pl");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".ly", path + "\\" + fname + ".ly");
 		if (CGLib::fileExists(mf->m_dir + "\\" + mf->m_fname + ".pdf"))
