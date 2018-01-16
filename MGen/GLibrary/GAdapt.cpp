@@ -11,7 +11,6 @@ CGAdapt::CGAdapt()
 	warning_note_wrong.resize(MAX_VOICE);
 	warning_note_short.resize(MAX_VOICE);
 	warning_note_long.resize(MAX_VOICE);
-	warning_poly.resize(MAX_INSTR);
 }
 
 
@@ -586,9 +585,9 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 void CGAdapt::CalculateVoiceStages() {
 	// Detect voice stages
 	if (stages_calculated) return;
-	vector<int> voices_in_instr(MAX_INSTR); // How many voices use each instrument
-	vector<int> voices_in_track(MAX_INSTR); // How many voices use each initial track
-	vector<map<int, int>> tracks_in_instr(MAX_INSTR); // How many tracks use each instrument
+	vector<int> voices_in_instr(icf.size()); // How many voices use each instrument
+	vector<int> voices_in_track(icf.size()); // How many voices use each initial track
+	vector<map<int, int>> tracks_in_instr(icf.size()); // How many tracks use each instrument
 	map<int, int> voices_in_trackchan; // How many voices use each resulting track/channel
 	v_stage.resize(MAX_VOICE);
 	for (int v = 0; v < v_cnt; v++) {

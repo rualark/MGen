@@ -1275,7 +1275,7 @@ void CGMidi::LoadMidi(CString path)
 					st.Format("%d", v);
 					tnames += " \n" + st + "=" + track_name[v];
 					// Map track name to instrument name
-					for (int i = 0; i < MAX_INSTR; i++) {
+					for (int i = 0; i < icf.size(); i++) {
 						// Exact match
 						//if (InstName[i] == track_name[v]) instr[v] = i;
 						// Search inside track name
