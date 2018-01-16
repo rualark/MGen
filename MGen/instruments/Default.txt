@@ -5,12 +5,12 @@ Woodwinds/Piccolo                     | Normal                | 14  | 14  | -   
 Woodwinds/Flute                       | Normal                | 15  | 15  | +   |
 Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   |
 Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   |
-Woodwinds/Clarinet                    | SM Clarinet           | 0   | 18  | -   |
-Woodwinds/Bass Clarinet               | SM Bass Clarinet      | 0   | 19  | -   |
-Woodwinds/Oboe                        | SM Oboe               | 0   | 20  | -   |
-Woodwinds/English Horn                | SM English Horn       | 0   | 21  | -   |
-Woodwinds/Bassoon                     | SM Bassoon            | 0   | 22  | -   |
-Woodwinds/Contrabassoon               | SM Contrabassoon      | 0   | 23  | -   |
+Woodwinds/Clarinet                    | Normal                | 0   | 18  | -   |
+Woodwinds/Bass Clarinet               | Normal                | 0   | 19  | -   |
+Woodwinds/Oboe                        | Normal                | 0   | 20  | -   |
+Woodwinds/English Horn                | Normal                | 0   | 21  | -   |
+Woodwinds/Bassoon                     | Normal                | 0   | 22  | -   |
+Woodwinds/Contrabassoon               | Normal                | 0   | 23  | -   |
 Brass/Trumpet                         | Normal                | 2   | 2   | +   |
 Brass/Horn                            | Normal                | 3   | 3   | +   |
 Brass/Trombone                        | Normal                | 4   | 4   | +   |
