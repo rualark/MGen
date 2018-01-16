@@ -3,6 +3,13 @@ include "..\include\SM Brass.pl"
 # Main
 library = Samplemodeling Trombone v3 # For which library algorithm is optimized
 
+# Techniques mapping to commands
+Technique = "straight mute; Mute: 25"
+Technique = "cup mute; Mute: 42"
+Technique = "bucket mute; Mute: 60"
+Technique = "harmon mute; Mute: 76"
+Technique = "harmon+stem mute; Mute: 104"
+
 # Instrument parameters
 n_min = E2 # Lowest note
 n_max = F5 # Highest note

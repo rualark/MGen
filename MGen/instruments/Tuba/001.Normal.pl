@@ -3,6 +3,9 @@ include "..\include\SM Brass.pl"
 # Main
 library = Samplemodeling Tuba v3 # For which library algorithm is optimized
 
+# Techniques mapping to commands
+Technique = "straight mute; Mute: 100"
+
 # Instrument parameters
 n_min = C1 # Lowest note
 n_max = F4 # Highest note

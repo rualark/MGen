@@ -3,6 +3,13 @@ include "..\include\SM Brass.pl"
 # Main
 library = "Samplemodeling Horn v3" # For which library algorithm is optimized
 
+# Techniques mapping to commands
+Technique = "brass stop; Mute: 25"
+Technique = "straight mute; Mute: 42"
+Technique = "bell res 1; Mute: 60"
+Technique = "bell res 2; Mute: 76"
+Technique = "bell res 3; Mute: 104"
+
 # Instrument parameters
 n_min = A1 # Lowest note
 n_max = G5 # Highest note
