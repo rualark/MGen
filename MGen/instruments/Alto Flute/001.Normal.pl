@@ -1,4 +1,4 @@
-include "..\Flute\SM Flute.pl"
+include "..\Flute\001.Normal.pl"
 
 # Main
 library = "Samplemodeling Alto Flute 2.8.0" # For which library algorithm is optimized
