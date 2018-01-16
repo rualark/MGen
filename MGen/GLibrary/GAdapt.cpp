@@ -589,6 +589,8 @@ void CGAdapt::CalculateVoiceStages() {
 	vector<int> voices_in_track(icf.size()); // How many voices use each initial track
 	vector<map<int, int>> tracks_in_instr(icf.size()); // How many tracks use each instrument
 	map<int, int> voices_in_trackchan; // How many voices use each resulting track/channel
+	map<int, int> stages_in_trackchan; // How many stages use each resulting track/channel
+	map<int, map<int, int>> tcs_instr; // instrument for each trackchan/stage
 	v_stage.resize(MAX_VOICE);
 	for (int v = 0; v < v_cnt; v++) {
 		// Calculate parameters
@@ -603,7 +605,28 @@ void CGAdapt::CalculateVoiceStages() {
 		// Record stats
 		v_itrack[v] = tracks_in_instr[ii].size();
 		itrack[track] = tracks_in_instr[ii].size();
-		if (icf[ii].poly < 2) v_stage[v] = voices_in_trackchan[trackchan] - 1;
+		// if instrument is solo or stage 0 is occupied with a different instrument
+		if (icf[ii].poly > 1) {
+			// Scan each stage for this trackchan
+			int found = -1;
+			for (auto const& it : tcs_instr[trackchan]) {
+				if (it.second == ii) {
+					found = it.first;
+				}
+			}
+			if (found > -1) {
+				// Use same stage if this poly instrument was already sent
+				v_stage[v] = found;
+			}
+			else {
+				// Create new stage for this trackchan and send voice there
+				v_stage[v] = tcs_instr[trackchan].size();
+			}
+		}
+		else {
+			// For solo instrument alwas create new stage
+			v_stage[v] = tcs_instr[trackchan].size();
+		}
 		// Calculate instrument config for voice
 		if (icf[ii].child.find(v_itrack[v]) != icf[ii].child.end()) {
 			ii = icf[ii].child[v_itrack[v]];
@@ -614,6 +637,7 @@ void CGAdapt::CalculateVoiceStages() {
 		}
 		// Set instrument for each exported track
 		t_instr[icf[ii].track] = ii;
+		tcs_instr[trackchan][v_stage[v]] = ii;
 	}
 	stages_calculated = 1;
 }
