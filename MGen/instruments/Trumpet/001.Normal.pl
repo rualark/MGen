@@ -3,6 +3,17 @@ include "..\include\SM Brass.pl"
 # Main
 library = Samplemodeling Trumpet v3 # For which library algorithm is optimized
 
+# Techniques mapping to commands
+Technique = "straight mute; Mute: 25"
+Technique = "cup mute; Mute: 42"
+Technique = "bucket mute; Mute: 60"
+Technique = "harmon mute; Mute: 76"
+Technique = "harmon+stem mute; Mute: 104"
+
+# Initial setup
+
+# Initial setup (can change)
+
 # Instrument parameters
 n_min = E3 # Lowest note
 n_max = G6 # Highest note

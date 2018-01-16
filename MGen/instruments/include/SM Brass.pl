@@ -4,6 +4,44 @@
 Type = 2 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
 
+# Controls
+Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
+CC_Name = 11: "Dynamics"
+CC_Name = 1:  "Vibrato intensity"
+CC_Name = 19: "Vibrato speed"
+CC_Name = 26: "Attack time"
+CC_Name = 27: "Release time"
+CC_Name = 20: "Attack modulation"
+CC_Name = 22: "Transition flutter"
+CC_Name = 21: "Growl"
+CC_Name = 23: "Flutter tongue"
+CC_Name = 100: "Mute"
+CC_Name = 24: "Dynamics to pitch"
+CC_Name = 28: "Random detune"
+CC_Name = 32: "Pitch fluctuation"
+CC_Name = 25: "Velocity to dynamics"
+CC_Name = 5: "Portamento time" # Only if selected for controlling portamento time. Usually velocity is used
+CC_Name = 91: "Harm. Group1 gain"
+CC_Name = 92: "Harm. Group2 gain"
+CC_Name = 93: "Harm. Group3 gain"
+CC_Name = 90: "Harm. Form. shift"
+CC_Name = 29: "Early reflections"
+CC_Name = 31: "Predelay"
+CC_Name = 14: "Distance"
+
+# Techniques mapping to commands
+Technique = "senza sord; Mute: 0"
+
+# Initial setup
+InitCommand = "Early reflections: 0"
+InitCommand = "Predelay: 0"
+InitCommand = "Distance: 0"
+InitCommand = "Harm. Group1 gain: 64"
+InitCommand = "Harm. Group2 gain: 64"
+InitCommand = "Harm. Group3 gain: 64"
+InitCommand = "Harm. Form. shift: 64"
+InitTechnique = "senza sord"
+
 # Automation parameters
 CC_dynamics = 11
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)

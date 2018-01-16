@@ -619,6 +619,11 @@ void CGAdapt::CalculateVoiceStages() {
 	stages_calculated = 1;
 }
 
+void CGAdapt::ExportVoiceStages() {
+	for (int v = 0; v < v_cnt; v++) {
+	}
+}
+
 void CGAdapt::Adapt(int step1, int step2)
 {
 	if (step2 < 0) return;
@@ -638,6 +643,7 @@ void CGAdapt::Adapt(int step1, int step2)
 	// Save current play speed
 	adapt_pspeed = m_pspeed;
 	CalculateVoiceStages();
+	ExportVoiceStages();
 	for (int v = 0; v < v_cnt; v++) {
 		int ii = instr[v]; // Instrument id
 		int ncount = 0;

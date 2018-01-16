@@ -11,10 +11,10 @@ Woodwinds/Oboe                        | SM Oboe               | 0   | 20  | -   
 Woodwinds/English Horn                | SM English Horn       | 0   | 21  | -   |
 Woodwinds/Bassoon                     | SM Bassoon            | 0   | 22  | -   |
 Woodwinds/Contrabassoon               | SM Contrabassoon      | 0   | 23  | -   |
-Brass/Trumpet                         | SM Trumpet            | 2   | 2   | +   |
-Brass/Horn                            | SM Horn               | 3   | 3   | +   |
-Brass/Trombone                        | SM Trombone           | 4   | 4   | +   |
-Brass/Tuba                            | SM Tuba               | 5   | 5   | +   |
+Brass/Trumpet                         | Normal                | 2   | 2   | +   |
+Brass/Horn                            | Normal                | 3   | 3   | +   |
+Brass/Trombone                        | Normal                | 4   | 4   | +   |
+Brass/Tuba                            | Normal                | 5   | 5   | +   |
 Vocal/Soprano                         | SI VoR Soprano        | 6   | 6   | +   |
 Vocal/Alto                            | SI VoR Alto           | 7   | 7   | +   |
 Vocal/Tenor                           | SI VoR Tenor          | 8   | 8   | +   |
