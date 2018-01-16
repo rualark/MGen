@@ -571,6 +571,7 @@ int RunJobMGen() {
 	}
 	// Copy results
 	CGLib::copy_file(as_dir + "\\" + as_fname + ".txt", share + j_folder + j_basefile + ".txt");
+	CGLib::copy_file(as_dir + "\\" + as_fname + ".csv", share + j_folder + j_basefile + ".csv");
 	CGLib::copy_file(as_dir + "\\log-warning.log", share + j_folder + "log-warning.log");
 	CGLib::copy_file(as_dir + "\\log-debug.log", share + j_folder + "log-debug.log");
 	CGLib::copy_file(as_dir + "\\log-algorithm.log", share + j_folder + "log-algorithm.log");

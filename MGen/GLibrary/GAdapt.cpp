@@ -619,8 +619,25 @@ void CGAdapt::CalculateVoiceStages() {
 }
 
 void CGAdapt::ExportVoiceStages() {
+	ofstream fs;
+	CreateDirectory(as_dir, NULL);
+	fs.open(as_dir + "\\" + as_fname + ".csv");
+	fs << "SRC;SRC track;Voice;IGroup;Instr;Stage;Track;Chan;Port;Poly;\n";
 	for (int v = 0; v < v_cnt; v++) {
+		int ii = instr[v];
+		fs << track_id[v] << ";";
+		fs << track_name[v] << ";";
+		fs << v << ";";
+		fs << icf[ii].group << ";";
+		fs << icf[ii].name << ";";
+		fs << v_stage[v] << ";";
+		fs << icf[ii].track << ";";
+		fs << icf[ii].channel << ";";
+		fs << icf[ii].port << ";";
+		fs << icf[ii].poly << ";";
+		fs << "\n";
 	}
+	fs.close();
 }
 
 void CGAdapt::Adapt(int step1, int step2)
