@@ -501,6 +501,7 @@ int RunRenderStage(int sta) {
 			SaveScreenshot();
 			SendStatus();
 			st.Format("%03d", i);
+			SendProgress("Copying file " + j_basefile + "-" + st + "_" + sta_st + ".mp3");
 			if (!CGLib::fileExists(reaperbuf + "output-" + st + ".mp3")) break;
 			CGLib::copy_file(reaperbuf + "output-" + st + ".mp3",
 				share + j_folder + j_basefile + "-" + st + "_" + sta_st + ".mp3");

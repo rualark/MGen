@@ -23,7 +23,7 @@ Pitched percussion/Xylophone          | Xylophone             | 0   | 26  | -   
 Pitched percussion/Glockenspiel       | Glockenspiel          | 0   | 27  | -   |
 Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   |
 Pitched percussion/Harp               | Harp                  | 0   | 29  | -   |
-Pitched percussion/Timpani            | Dampened hits         | 0   | 25  | -   |
+Pitched percussion/Timpani            | Long hits             | 0   | 25  | -   |
 Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   |
 Unpitched percussion/Gran cassa       | Hard mallet           | 1   | 24  | -   |
 Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   |
