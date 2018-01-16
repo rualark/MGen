@@ -652,6 +652,10 @@ void CGAdapt::Adapt(int step1, int step2)
 			// Clear adaptation comment
 			adapt_comment[i][v].Empty();
 		}
+		// Scale starting dynamics
+		for (int i = step1; i <= step2; i++) {
+			dyn[i][v] = min(127, (dyn[i][v] * icf[ii].vel_mul) / 100);
+		}
 		// Set vel to dyn
 		for (int i = step1; i <= step2; i++) {
 			vel[i][v] = dyn[i][v];

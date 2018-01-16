@@ -41,6 +41,7 @@ struct IConf {
 	int art_mindur = 0;
 	int art_minint = 0;
 	int art_maxint = 0;
+	int vel_mul = 100; // Multiply incoming velocity of all midi notes by this percent (100 - do not change)
 	int CC_vib = 0; // CC number for vibrato intensity
 	int CC_vibf = 0; // CC number for vibrato speed
 	float vib_bell_top1 = 0; // Leftmost - rightmost maximum vibrato intensity in note(percent of note duration)
