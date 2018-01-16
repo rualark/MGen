@@ -1,10 +1,10 @@
 #GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT |
 Keyboard/Piano                        | Gentleman             | 0   | 0   | +   |
 Keyboard/Organ                        | Mystique              | 13  | 13  | +   |
-Woodwinds/Piccolo                     | SM Piccolo            | 14  | 14  | -   |
-Woodwinds/Flute                       | SM Flute              | 15  | 15  | +   |
-Woodwinds/Alto Flute                  | SM Alto Flute         | 0   | 16  | -   |
-Woodwinds/Bass Flute                  | SM Bass Flute         | 0   | 17  | -   |
+Woodwinds/Piccolo                     | Normal                | 14  | 14  | -   |
+Woodwinds/Flute                       | Normal                | 15  | 15  | +   |
+Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   |
+Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   |
 Woodwinds/Clarinet                    | SM Clarinet           | 0   | 18  | -   |
 Woodwinds/Bass Clarinet               | SM Bass Clarinet      | 0   | 19  | -   |
 Woodwinds/Oboe                        | SM Oboe               | 0   | 20  | -   |

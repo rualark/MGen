@@ -4,6 +4,28 @@
 Type = 4 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
 
+# Controls
+Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
+CC_Name = 11: "Dynamics"
+CC_Name = 1:  "Vibrato intensity"
+CC_Name = 19: "Vibrato speed"
+CC_Name = 5: "Portamento time"
+CC_Name = 24: "Harmonic structure"
+CC_Name = 20: "Subharmonics" # Clarinet, Bass Clarinet, Oboe, English horn, Bassoon, Contrabassoon
+CC_Name = 27: "PipeSplit" # Piccolo, Flute, Alto flute, Bass flute
+CC_Name = 21: "Growl"
+CC_Name = 23: "Flutter tongue"
+CC_Name = 26: "Formant"
+CC_Name = 25: "Breath noise"
+CC_Name = 9: "Key noise"
+CC_Name = 28: "Alt. fingering" # Piccolo, Flute, Alto flute, Bass flute
+CC_Name = 8: "Dynamic pitch" # Clarinet, Bass Clarinet, Oboe, English horn, Bassoon, Contrabassoon 
+CC_Name = 64: "Overblow on"
+CC_Name = 31: "Microtuning on"
+
+# Initial setup
+InitCommand = "Flutter tongue: 0"
+
 # Automation parameters
 CC_dynamics = 11
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
