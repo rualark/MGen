@@ -28,6 +28,8 @@ Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   
 Unpitched percussion/Gran cassa       | Hard mallet           | 1   | 24  | -   |
 Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   |
 Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   |
+Unpitched percussion/Wood block       | Wood block Medium     | 5   | 24  | -   |
+Unpitched percussion/Temple block     | Temple block Medium   | 5   | 24  | -   |
 Strings/Violin                        | Arco                  | 1   | 1   | +   |
 Strings/Violins                       | Arco                  | 1   | 1   | +   |
 Strings/Viola                         | Arco                  | 10  | 10  | +   |
