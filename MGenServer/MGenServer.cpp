@@ -54,6 +54,8 @@ int can_render = 1;
 int screenshot_id = 0;
 int max_screenshot = 10;
 
+map <int, map<int, int>> st_used;
+
 // Children
 vector <CString> nChild; // Child process name
 map <CString, long long> tChild; // Timestamp of last restart
@@ -420,6 +422,20 @@ int SendKeyToWindowClass(CString wClass, short vk) {
 	else return 1;
 }
 
+void LoadVoices() {
+	vector <CString> sv, sa;
+	st_used.clear();
+	if (!CGLib::fileExists(share + j_folder + j_basefile + ".csv")) return;
+	CGLib::read_file_sv(share + j_folder + j_basefile + ".csv", sv);
+	for (int i = 1; i < sv.size(); ++i) {
+		sa.clear();
+		CGLib::Tokenize(sv[i], sa, ";");
+		if (sa.size() < 7) continue;
+		WriteLog(sa[5] + "/" + sa[6]);
+		st_used[atoi(sa[5])][atoi(sa[6])] = 1;
+	}
+}
+
 int RunRenderStage(int sta) {
 	vector <CString> sv;
 	CString st;
@@ -476,30 +492,37 @@ int RunRenderStage(int sta) {
 	}
 	CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-daw_" + sta_st + ".log");
 	// No output file
-	if (!CGLib::fileExists(reaperbuf + "output-master.mp3")) {
-		return FinishJob(1, "Output file output-master.mp3 does not exist");
+	if (!CGLib::fileExists(reaperbuf + "output-00-master.mp3")) {
+		return FinishJob(1, "Output file output-00-master.mp3 does not exist");
 	}
 	// Zero length file
-	if (CGLib::FileSize(reaperbuf + "output-master.mp3") <= 0) {
-		return FinishJob(1, "Output file output-master.mp3 is too small");
+	if (CGLib::FileSize(reaperbuf + "output-00-master.mp3") <= 0) {
+		return FinishJob(1, "Output file output-00-master.mp3 is too small");
 	}
 	if (sta) {
-		CGLib::copy_file(reaperbuf + "output-master.mp3", share + j_folder + j_basefile + "_" + sta_st + ".mp3");
+		if (f_stems) 
+			CGLib::copy_file(reaperbuf + "output-00-master.mp3", share + j_folder + j_basefile + "_" + sta_st + ".mp3");
 	}
 	else {
-		CGLib::copy_file(reaperbuf + "output-master.mp3", share + j_folder + j_basefile + ".mp3");
+		CGLib::copy_file(reaperbuf + "output-00-master.mp3", share + j_folder + j_basefile + ".mp3");
 	}
 	// Copy stems
 	if (f_stems) {
 		CFileFind finder;
+		int track;
 		BOOL bWorking = finder.FindFile(reaperbuf + "*.mp3");
 		CString fname, fname2;
 		while (bWorking) {
 			bWorking = finder.FindNextFile();
 			if (finder.IsDots()) continue;
 			fname = finder.GetFileName();
-			fname2 = fname.Left(fname.GetLength() - 3);
-			fname2 = fname2.Right(fname.GetLength() - 6);
+			fname2 = fname.Left(fname.GetLength() - 4);
+			fname2 = fname2.Right(fname2.GetLength() - 7);
+			if (fname2.Find("-") != -1) {
+				track = atoi(fname2.Left(fname2.Find("-"))) - 3;
+				if (!st_used[sta][track]) continue;
+				fname2 = fname2.Mid(fname2.Find("-") + 1);
+			}
 			// Master was already copied
 			if (fname2 == "master") continue;
 			fname2 = j_basefile + "-" + fname2 + "_" + sta_st + ".mp3";
@@ -507,19 +530,21 @@ int RunRenderStage(int sta) {
 			SaveScreenshot();
 			SendStatus();
 			SendProgress("Copying file " + fname2);
+			//WriteLog(finder.GetFilePath() + ": " + fname + " -> " + fname2);
 			CGLib::copy_file(finder.GetFilePath(),
 				share + j_folder + fname2);
 		}
 		finder.Close();
 	}
 	DeleteFile(reaperbuf + "stage.mp3");
-	rename(reaperbuf + "output-master.mp3", reaperbuf + "stage.mp3");
+	rename(reaperbuf + "output-00-master.mp3", reaperbuf + "stage.mp3");
 	return 0;
 }
 
 int RunRender() {
 	if (!j_render) return 0;
-
+	
+	LoadVoices();
 	CGLib::CleanFolder(share + j_folder + "*.mp3");
 	DeleteFile(reaperbuf + "stage.mp3");
 	for (int sta = j_stages - 1; sta >= 0; --sta) {
