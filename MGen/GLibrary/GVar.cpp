@@ -237,6 +237,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 			CheckVar(&st2, &st3, "midifile_export_comments", &midifile_export_comments, 0, 1);
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable, 0, 1);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt, 0, 1);
+			CheckVar(&st2, &st3, "mastervolume", &master_vol, 0, 100);
 			LoadVar(&st2, &st3, "instr_layout", &instr_layout);
 			LoadVar(&st2, &st3, "instruments", &m_config_insts);
 			//LoadVarInstr(&st2, &st3, "instruments", instr);
