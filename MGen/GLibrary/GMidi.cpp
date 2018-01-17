@@ -1394,7 +1394,7 @@ void CGMidi::LoadMidi(CString path)
 							// Clear step
 							len[z][v] = 0;
 							note[z][v] = 0;
-							pause[z][v] = 0;
+							pause[z][v] = 1;
 							dyn[z][v] = 0;
 							coff[z][v] = 0;
 						}
