@@ -241,6 +241,8 @@ public:
 	static int FileHasHeader(CString fname, CString header);
 	static __int64 FileSize(CString fname);
 
+
+	static void CleanFolder(CString Wildcard);
 	static float Lighten(float col, float coef) { return 255.0 - (255.0 - col) / coef; }
 	static DWORD GetRed(DWORD col) { return (col >> 16) & 0xff; }
 	static DWORD GetGreen(DWORD col) { return (col >> 8) & 0xff; }

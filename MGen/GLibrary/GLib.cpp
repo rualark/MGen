@@ -1113,3 +1113,14 @@ __int64 CGLib::FileSize(CString fname)
 	CloseHandle(hFile);
 	return size.QuadPart;
 }
+
+void CGLib::CleanFolder(CString Wildcard) {
+	CFileFind finder;
+	BOOL bWorking = finder.FindFile(Wildcard);
+	while (bWorking) {
+		bWorking = finder.FindNextFile();
+		if (finder.IsDots()) continue;
+		DeleteFile(finder.GetFilePath());
+	}
+	finder.Close();
+}

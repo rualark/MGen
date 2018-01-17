@@ -423,8 +423,9 @@ int SendKeyToWindowClass(CString wClass, short vk) {
 int RunRenderStage(int sta) {
 	vector <CString> sv;
 	CString st;
-	CString sta_st;
+	CString sta_st, sta_st2;
 	sta_st.Format("%d", sta);
+	sta_st2.Format("%d", j_stages - sta);
 	if (!rChild["Reaper.exe"]) {
 		return FinishJob(1, "Cannot render because DAW is not running");
 	}
@@ -433,18 +434,11 @@ int RunRenderStage(int sta) {
 	}
 	// Clean folder
 	CreateDirectory(reaperbuf, NULL);
-	DeleteFile(reaperbuf + "progress.txt");
-	DeleteFile(reaperbuf + "input.mid");
-	DeleteFile(reaperbuf + "windows.log");
-	DeleteFile(reaperbuf + "finished.txt");
-	for (int i = 1; i < 100; ++i) {
-		st.Format("output-%03d.mp3", i);
-		DeleteFile(reaperbuf + st);
-	}
+	CGLib::CleanFolder(reaperbuf + "*.*");
 	// Copy files
 	CGLib::copy_file(share + j_folder + j_basefile + "_" + sta_st + ".midi", reaperbuf + "input.mid");
 	// Start render
-	est.Format("Starting render stage #" + sta_st + " after %d seconds...",
+	est.Format("Starting render stage #" + sta_st2 + " after %d seconds...",
 		(CGLib::time() - time_job0) / 1000);
 	WriteLog(est);
 	if (SendKeyToWindowClass("REAPERwnd", VK_F12)) {
@@ -466,9 +460,9 @@ int RunRenderStage(int sta) {
 			}
 		}
 		// Check if no progress for long time
-		else if (CGLib::time() - render_start > 30 * 1000) {
+		else if (CGLib::time() - render_start > 300 * 1000) {
 			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-daw_" + sta_st + ".log");
-			return FinishJob(1, "Render showed no progress during 30 seconds");
+			return FinishJob(1, "Render showed no progress during 300 seconds");
 		}
 		// Check if reascript finished
 		if (CGLib::fileExists(reaperbuf + "finished.txt")) break;
@@ -482,39 +476,51 @@ int RunRenderStage(int sta) {
 	}
 	CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-daw_" + sta_st + ".log");
 	// No output file
-	if (!CGLib::fileExists(reaperbuf + "output-001.mp3")) {
-		return FinishJob(1, "Output file output-001.mp3 does not exist");
+	if (!CGLib::fileExists(reaperbuf + "output-master.mp3")) {
+		return FinishJob(1, "Output file output-master.mp3 does not exist");
 	}
 	// Zero length file
-	if (CGLib::FileSize(reaperbuf + "output-001.mp3") <= 0) {
-		return FinishJob(1, "Output file output-001.mp3 is too small");
+	if (CGLib::FileSize(reaperbuf + "output-master.mp3") <= 0) {
+		return FinishJob(1, "Output file output-master.mp3 is too small");
 	}
 	if (sta) {
-		CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + "_" + sta_st + ".mp3");
+		CGLib::copy_file(reaperbuf + "output-master.mp3", share + j_folder + j_basefile + "_" + sta_st + ".mp3");
 	}
 	else {
-		CGLib::copy_file(reaperbuf + "output-001.mp3", share + j_folder + j_basefile + ".mp3");
+		CGLib::copy_file(reaperbuf + "output-master.mp3", share + j_folder + j_basefile + ".mp3");
 	}
+	// Copy stems
 	if (f_stems) {
-		for (int i = 2; i < 100; ++i) {
+		CFileFind finder;
+		BOOL bWorking = finder.FindFile(reaperbuf + "*.mp3");
+		CString fname, fname2;
+		while (bWorking) {
+			bWorking = finder.FindNextFile();
+			if (finder.IsDots()) continue;
+			fname = finder.GetFileName();
+			fname2 = fname.Left(fname.GetLength() - 3);
+			fname2 = fname2.Right(fname.GetLength() - 6);
+			// Master was already copied
+			if (fname2 == "master") continue;
+			fname2 = j_basefile + "-" + fname2 + "_" + sta_st + ".mp3";
 			CheckChildren(1);
 			SaveScreenshot();
 			SendStatus();
-			st.Format("%03d", i);
-			SendProgress("Copying file " + j_basefile + "-" + st + "_" + sta_st + ".mp3");
-			if (!CGLib::fileExists(reaperbuf + "output-" + st + ".mp3")) break;
-			CGLib::copy_file(reaperbuf + "output-" + st + ".mp3",
-				share + j_folder + j_basefile + "-" + st + "_" + sta_st + ".mp3");
+			SendProgress("Copying file " + fname2);
+			CGLib::copy_file(finder.GetFilePath(),
+				share + j_folder + fname2);
 		}
+		finder.Close();
 	}
 	DeleteFile(reaperbuf + "stage.mp3");
-	rename(reaperbuf + "output-001.mp3", reaperbuf + "stage.mp3");
+	rename(reaperbuf + "output-master.mp3", reaperbuf + "stage.mp3");
 	return 0;
 }
 
 int RunRender() {
 	if (!j_render) return 0;
 
+	CGLib::CleanFolder(share + j_folder + "*.mp3");
 	DeleteFile(reaperbuf + "stage.mp3");
 	for (int sta = j_stages - 1; sta >= 0; --sta) {
 		if (RunRenderStage(sta)) return 1;
