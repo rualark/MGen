@@ -27,7 +27,7 @@ struct IConf {
 	int nmax = 0;
 	int tmin = 0;
 	int tmax = 0;
-	int pan = 63;
+	int pan = 50; // 50 is center
 	int vol = 100; // 0-100% of real cc value
 	int vol_default = 127; // Real CC value
 	CString lib = 0;

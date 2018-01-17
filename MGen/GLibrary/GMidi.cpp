@@ -1442,7 +1442,8 @@ void CGMidi::LoadMidi(CString path)
 	} // for track
 	if (need_exit) return;
 	// Add closing pauses
-	if (last_step + TAIL_STEPS + 1 >= t_allocated) ResizeVectors(max(last_step + TAIL_STEPS + 1, t_allocated * 2));
+	if (last_step + TAIL_STEPS + 1 >= t_allocated) 
+		ResizeVectors(max(last_step + TAIL_STEPS + 1, t_allocated * 2));
 	for (int z = last_step + 1; z <= last_step + TAIL_STEPS; ++z) {
 		if (!tempo[z]) tempo[z] = tempo[z - 1];
 	}

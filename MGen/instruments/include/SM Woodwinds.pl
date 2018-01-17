@@ -5,7 +5,7 @@ Type = 4 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
 
 # Controls
-Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
+Volume_default = 89 # default 127 (direct CC volume, should not be changed by user)
 CC_Name = 11: "Dynamics"
 CC_Name = 1:  "Vibrato intensity"
 CC_Name = 19: "Vibrato speed"
@@ -23,8 +23,14 @@ CC_Name = 8: "Dynamic pitch" # Clarinet, Bass Clarinet, Oboe, English horn, Bass
 CC_Name = 64: "Overblow on"
 CC_Name = 31: "Microtuning on"
 
+# Controls (need to map manually)
+CC_Name = 12: "Reverb mix"
+CC_Name = 7: "Volume"
+CC_Name = 10: "Pan"
+
 # Initial setup
 InitCommand = "Flutter tongue: 0"
+InitCommand = "Reverb mix: 0"
 
 # Automation parameters
 CC_dynamics = 11

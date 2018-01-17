@@ -431,7 +431,7 @@ void LoadVoices() {
 		sa.clear();
 		CGLib::Tokenize(sv[i], sa, ";");
 		if (sa.size() < 7) continue;
-		WriteLog(sa[5] + "/" + sa[6]);
+		//WriteLog(sa[5] + "/" + sa[6]);
 		st_used[atoi(sa[5])][atoi(sa[6])] = 1;
 	}
 }
