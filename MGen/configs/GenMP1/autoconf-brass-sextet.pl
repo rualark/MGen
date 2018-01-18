@@ -7,7 +7,7 @@ adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
-# Created at 2018-01-07 10:36:51
-Midi_file = midi\Music\brass-sextet.mid
+# Created at 2018-01-18 22:39:02
+Midi_file = midi\Music\QM\brass-sextet.mid
 
-Instruments = Trumpet,Trumpet,Horn,Horn,Trombone,Tuba
+Instruments = "Horn,Horn,Trumpet,Trumpet,Trombone,Tuba"
