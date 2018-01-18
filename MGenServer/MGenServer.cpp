@@ -450,7 +450,12 @@ int RunRenderStage(int sta) {
 	}
 	// Clean folder
 	CreateDirectory(reaperbuf, NULL);
-	CGLib::CleanFolder(reaperbuf + "*.*");
+	CGLib::CleanFolder(reaperbuf + "*.mp3");
+	DeleteFile(reaperbuf + "progress.txt");
+	DeleteFile(reaperbuf + "input.mid");
+	DeleteFile(reaperbuf + "windows.log"); 
+	DeleteFile(reaperbuf + "finished.txt");	
+	rename(reaperbuf + "stage.temp", reaperbuf + "stage.mp3");
 	// Copy files
 	CGLib::copy_file(share + j_folder + j_basefile + "_" + sta_st + ".midi", reaperbuf + "input.mid");
 	// Start render
@@ -476,9 +481,9 @@ int RunRenderStage(int sta) {
 			}
 		}
 		// Check if no progress for long time
-		else if (CGLib::time() - render_start > 300 * 1000) {
+		else if (CGLib::time() - render_start > 1000 * 1000) {
 			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-daw_" + sta_st + ".log");
-			return FinishJob(1, "Render showed no progress during 300 seconds");
+			return FinishJob(1, "Render showed no progress during 1000 seconds");
 		}
 		// Check if reascript finished
 		if (CGLib::fileExists(reaperbuf + "finished.txt")) break;
@@ -537,7 +542,7 @@ int RunRenderStage(int sta) {
 		finder.Close();
 	}
 	DeleteFile(reaperbuf + "stage.mp3");
-	rename(reaperbuf + "output-00-master.mp3", reaperbuf + "stage.mp3");
+	rename(reaperbuf + "output-00-master.mp3", reaperbuf + "stage.temp");
 	return 0;
 }
 
@@ -545,10 +550,48 @@ int RunRender() {
 	if (!j_render) return 0;
 	
 	LoadVoices();
-	CGLib::CleanFolder(share + j_folder + "*.mp3");
 	DeleteFile(reaperbuf + "stage.mp3");
 	for (int sta = j_stages - 1; sta >= 0; --sta) {
 		if (RunRenderStage(sta)) return 1;
+	}
+
+	// Create waveform graphic
+	if (CGLib::fileExists(share + j_folder + j_basefile + ".mp3")) {
+		SendProgress("Running waveform and information analysis");
+
+		CString par;
+		par.Format("-y -i %s -filter_complex showwavespic=s=1050x120 -frames:v 1 %s_2.png",
+			share + j_folder + j_basefile + ".mp3",
+			share + j_folder + j_basefile);
+		int ret = RunTimeout(fChild["ffmpeg.exe"] + "ffmpeg.exe",
+			par, 30000);
+		if (ret) {
+			est.Format("Error during running waveformer: %d", ret);
+		}
+		if (!CGLib::fileExists(share + j_folder + j_basefile + "_2.png")) {
+			est.Format("File not found: " + share + j_folder + j_basefile + "_2.png");
+		}
+
+		par.Format("-y -i %s -filter_complex showwavespic=s=8000x800 -frames:v 1 %s.png",
+			share + j_folder + j_basefile + ".mp3",
+			share + j_folder + j_basefile);
+		ret = RunTimeout(fChild["ffmpeg.exe"] + "ffmpeg.exe",
+			par, 30000);
+		if (ret) {
+			est.Format("Error during running waveformer: %d", ret);
+		}
+		if (!CGLib::fileExists(share + j_folder + j_basefile + ".png")) {
+			est.Format("File not found: " + share + j_folder + j_basefile + ".png");
+		}
+
+		par.Format("-y -i %s > %s.inf 2>&1",
+			share + j_folder + j_basefile + ".mp3",
+			share + j_folder + j_basefile);
+		ret = RunTimeout(fChild["ffmpeg.exe"] + "ffmpeg.exe",
+			par, 30000);
+		if (!CGLib::fileExists(share + j_folder + j_basefile + ".inf")) {
+			est.Format("File not found: " + share + j_folder + j_basefile + ".inf");
+		}
 	}
 
 	return 0;
@@ -568,6 +611,13 @@ int RunJobMGen() {
 		est = "File not found: " + fname_pl;
 		return FinishJob(1, est);
 	}
+	// Clean folder
+	CGLib::CleanFolder(share + j_folder + "*.mp3");
+	CGLib::CleanFolder(share + j_folder + "*.pdf");
+	CGLib::CleanFolder(share + j_folder + "*.ly");
+	CGLib::CleanFolder(share + j_folder + "*.inf");
+	CGLib::CleanFolder(share + j_folder + "*.csv");
+	CGLib::CleanFolder(share + j_folder + "*.midi");
 	// Copy config and midi file
 	CreateDirectory("server\\cache", NULL);
 	CGLib::copy_file(fname_pl, fname_pl2);
@@ -575,7 +625,7 @@ int RunJobMGen() {
 	// Delete log
 	DeleteFile("log\\autosave.txt");
 	DeleteFile("autotest\\exit.log");
-	SendProgress("Running MGen");
+	SendProgress("Running algorithm");
 	// Run MGen
 	CString par;
 	par.Format("-job=%d %s", j_timeout, fname_pl2);
@@ -618,11 +668,11 @@ int RunJobMGen() {
 			share + j_folder + j_basefile + "_" + sta2 + ".midi");
 	}
 	if (ret) {
-		est.Format("Error during MGen run: %d - %s", ret, GetErrorMessage(ret));
+		est.Format("Error during algorithm run: %d - %s", ret, GetErrorMessage(ret));
 		return FinishJob(1, est);
 	}
 	if (!CGLib::fileExists("autotest\\exit.log")) {
-		est.Format("MGen process did not exit correctly - possible crash");
+		est.Format("Algorithm process did not exit correctly - possible crash");
 		return FinishJob(1, est);
 	}
 	long long time_job1 = CGLib::time();
@@ -639,7 +689,7 @@ int RunJobMGen() {
 		ret = RunTimeout(fChild["lilypond-windows.exe"] + "lilypond-windows.exe",
 			par, j_engrave * 1000);
 		if (ret) {
-			est.Format("Error during running lilypond-windows.exe: %d", ret);
+			est.Format("Error during running engraver: %d", ret);
 			return FinishJob(1, est);
 		}
 		if (!CGLib::fileExists(share + j_folder + j_basefile + ".pdf")) {
