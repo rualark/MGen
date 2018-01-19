@@ -987,6 +987,8 @@ void CGVar::SaveResults(CString dir, CString fname)
 	fs << st;
 	st.Format("time_stopped = %lld # Unix timestamp of generation finish\n", time_stopped);
 	fs << st;
+	st.Format("duration = %.0f # Length of total playback in ms\n", etime[t_generated - 1]);
+	fs << st;
 	st.Format("need_exit = %d\n", need_exit);
 	fs << st;
 	fs.close();
