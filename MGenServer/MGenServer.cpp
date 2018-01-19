@@ -18,6 +18,8 @@ CWinApp theApp;
 
 using namespace std;
 
+CString ReaperTempFolder = "server\\Reaper\\";
+
 // Global
 volatile int close_flag = 0;
 int nRetCode = 0;
@@ -451,6 +453,8 @@ int RunRenderStage(int sta) {
 	// Clean folder
 	CreateDirectory(reaperbuf, NULL);
 	CGLib::CleanFolder(reaperbuf + "*.mp3");
+	CGLib::CleanFolder(reaperbuf + "*.reapeaks");
+	CGLib::CleanFolder(reaperbuf + "*.reaindex");
 	DeleteFile(reaperbuf + "progress.txt");
 	DeleteFile(reaperbuf + "input.mid");
 	DeleteFile(reaperbuf + "windows.log"); 
@@ -521,15 +525,16 @@ int RunRenderStage(int sta) {
 			bWorking = finder.FindNextFile();
 			if (finder.IsDots()) continue;
 			fname = finder.GetFileName();
+			// Do not copy stage and master
+			if (fname == "stage.mp3") continue;
+			if (fname == "output-00-master.mp3") continue;
 			fname2 = fname.Left(fname.GetLength() - 4);
 			fname2 = fname2.Right(fname2.GetLength() - 7);
 			if (fname2.Find("-") != -1) {
 				track = atoi(fname2.Left(fname2.Find("-"))) - 3;
 				if (!st_used[sta][track]) continue;
-				fname2 = fname2.Mid(fname2.Find("-") + 1);
+				//fname2 = fname2.Mid(fname2.Find("-") + 1);
 			}
-			// Master was already copied
-			if (fname2 == "master") continue;
 			fname2 = j_basefile + "-" + fname2 + "_" + sta_st + ".mp3";
 			CheckChildren(1);
 			SaveScreenshot();
@@ -550,10 +555,14 @@ int RunRender() {
 	if (!j_render) return 0;
 	
 	LoadVoices();
-	DeleteFile(reaperbuf + "stage.mp3");
+	DeleteFile(reaperbuf + "stage.temp");
 	for (int sta = j_stages - 1; sta >= 0; --sta) {
 		if (RunRenderStage(sta)) return 1;
 	}
+
+	// Clean temporary files
+	CGLib::CleanFolder(ReaperTempFolder + "*.wav");
+	CGLib::CleanFolder(ReaperTempFolder + "*.reapeaks");
 
 	// Create waveform graphic
 	if (CGLib::fileExists(share + j_folder + j_basefile + ".mp3")) {
@@ -617,6 +626,7 @@ int RunJobMGen() {
 	CGLib::CleanFolder(share + j_folder + "*.ly");
 	CGLib::CleanFolder(share + j_folder + "*.inf");
 	CGLib::CleanFolder(share + j_folder + "*.csv");
+	CGLib::CleanFolder(share + j_folder + "*.png");
 	CGLib::CleanFolder(share + j_folder + "*.midi");
 	// Copy config and midi file
 	CreateDirectory("server\\cache", NULL);

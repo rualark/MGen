@@ -5,4 +5,4 @@ Midi_file = "midi\Music\test\test-stac.mid" # Path and file name of imported mid
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 8 # How much you want to decrease minimum step length from 1/8
 
-Instruments = "Piano,Violin/Pizzicato"
+Instruments = "Flute"

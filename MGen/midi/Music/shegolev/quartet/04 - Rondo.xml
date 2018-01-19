@@ -4,7 +4,7 @@
   <identification>
     <encoding>
       <software>Finale for Windows</software>
-      <encoding-date>2018-01-07</encoding-date>
+      <encoding-date>2018-01-19</encoding-date>
       <supports attribute="new-system" element="print" type="yes" value="yes"/>
       <supports attribute="new-page" element="print" type="yes" value="yes"/>
       <supports element="accidental" type="yes"/>
