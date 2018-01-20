@@ -68,7 +68,8 @@ struct IConf {
 	int max_slur_count = 0;
 	int max_slur_interval = 0;
 	int all_ahead = 0;
-	int nonlegato_maxgap = 0;
+	int nonlegato_mingap = 0;
+	int nonlegato_maxgap = 1;
 	vector<int> legato_ahead;
 	vector<int> ahead_chrom;
 	vector<short> KswGroup;

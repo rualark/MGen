@@ -256,16 +256,9 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 void CGAdapt::AdaptAllAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Advance start for legato (not longer than previous note length)
 	if (i > 0 && pi < i && icf[ii].all_ahead > 0) {
-		dstime[i][v] = -min(icf[ii].all_ahead, (etime[i - 1] - stime[pi]) * 100 / m_pspeed +
-			detime[i - 1][v] - dstime[pi][v] - 1);
+		dstime[i][v] = -icf[ii].all_ahead;
 		if (comment_adapt) {
 			adapt_comment[i][v] += "Ahead start. ";
-		}
-		if (!pause[pi][v]) {
-			detime[i - 1][v] = 0.9 * dstime[i][v];
-			if (comment_adapt) {
-				adapt_comment[i - 1][v] += "Ahead end. ";
-			}
 		}
 	}
 }
@@ -352,13 +345,18 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 		// Cycle through all notes backwards
 		while (lpi >= 0) {
 			if (note[lpi][v] == note[i][v] || 
-				(icf[ii].poly == 1 && (artic[i][v] == aSTAC || artic[i][v] == aNONLEGATO || 
+				(!pause[lpi][v] && icf[ii].poly == 1 && (artic[i][v] == aSTAC || artic[i][v] == aNONLEGATO || 
 					artic[i][v] == aREBOW || artic[i][v] == aRETRIGGER))) {
 				int lpei = lpi + len[lpi][v] - 1;
-				if ((stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v] < 1) {
+				if ((stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v] < 
+					icf[ii].nonlegato_mingap) {
 					//dstime[i][v] = (etime[lpei] - stime[i]) + detime[lpei] + 1;
-					// Move ending of previous note to the left
-					detime[lpei][v] = (stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - 1;
+					// Move ending of previous note to the left but not further than previous note start
+					detime[lpei][v] = max(
+						// Push back
+						(stime[i] - etime[lpei]) * 100 / m_pspeed + dstime[i][v] - icf[ii].nonlegato_mingap,
+						// Maximum push
+						(stime[lpi] - etime[lpei]) * 100 / m_pspeed + dstime[lpei][v] + 1);
 					if (comment_adapt) adapt_comment[lpei][v] += "Ending overlap fixed. ";
 				}
 				break;
