@@ -6,7 +6,7 @@ library = "Friedlander Violin 1.5" # For which library algorithm is optimized
 # Instrument parameters
 n_min = G3 # Lowest note
 n_max = F7 # Highest note
-t_min = 10 # Shortest note in ms
+t_min = 12 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 #leap_t_min = 100 # Shortest note after leap in ms
 
@@ -94,12 +94,13 @@ max_slur_interval = 2 # in semitones
 # Legato adaptor
 legato_ahead = 165 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
-all_ahead = 54 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Nonlegato adaptor
+all_ahead = 54 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 600 # Minimum note length (in ms) allowed to convert to nonlegato
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
+nonlegato_mingap = 12 # Minimum distance between note ending and next note start to sound nonlegato
 
 # Transition types
 vel_harsh = 118 # Velocity equal or above this value triggers harsh sustain
