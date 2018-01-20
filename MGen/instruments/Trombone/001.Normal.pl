@@ -20,7 +20,7 @@ ks1 = 24 # First keyswitch position
 
 # Note ending adaptor
 end_sfl_dur = 140 # Duration of short fall ending
-end_sfl_freq = 10 # Frequency of short fall ending
+end_sfl_freq = 0 # Frequency of short fall ending
 end_pbd_dur = 600 # Duration of vibrato ending
 end_pbd_freq = 30 # Frequency of vibrato ending
 end_vib_dur = 510 # Duration of vibrato ending2
