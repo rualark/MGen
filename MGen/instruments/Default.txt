@@ -22,15 +22,14 @@ Vocal/Bass                            | SI VoR Bass           | 9   | 9   | +   
 Pitched percussion/Xylophone          | Hits                  | 0   | 26  | -   |
 Pitched percussion/Glockenspiel       | Glockenspiel          | 0   | 27  | -   |
 Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   |
-Pitched percussion/Harp               | Harp                  | 0   | 29  | -   |
 Pitched percussion/Timpani            | Long hits             | 0   | 25  | -   |
 Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   |
-Unpitched percussion/Gran cassa       | Hard mallet           | 1   | 24  | -   |
-Unpitched percussion/Concert cymbals  | Long hit              | 2   | 24  | -   |
+Unpitched percussion/Bass drum        | Hard mallet           | 1   | 24  | -   |
+Unpitched percussion/Cymbals          | Long hit              | 2   | 24  | -   |
 Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   |
 Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   |
-Unpitched percussion/Wood block       | Wood block Medium     | 5   | 24  | -   |
-Unpitched percussion/Temple block     | Temple block Medium   | 5   | 24  | -   |
+Unpitched percussion/Wood blocks      | Wood block Medium     | 5   | 24  | -   |
+Unpitched percussion/Temple blocks    | Temple block Medium   | 5   | 24  | -   |
 Strings/Violin                        | Arco                  | 1   | 1   | +   |
 Strings/Violins                       | Arco                  | 1   | 1   | +   |
 Strings/Viola                         | Arco                  | 10  | 10  | +   |
@@ -39,6 +38,7 @@ Strings/Cello                         | Arco                  | 11  | 11  | +   
 Strings/Cellos                        | Arco                  | 11  | 11  | +   |
 Strings/Contrabass                    | Arco                  | 12  | 12  | +   |
 Strings/Contrabasses                  | Arco                  | 12  | 12  | +   |
+Strings/Harp                          | Harp                  | 0   | 29  | -   |
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
 # TRK is MIDI track to send this instrument to (for adapted MIDI file export)
