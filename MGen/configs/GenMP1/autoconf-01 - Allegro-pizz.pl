@@ -10,7 +10,7 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 # Created at 2018-01-20 15:22:04
 Midi_file = midi\Music\shegolev\quartet\01 - Allegro-pizz.mid
 
-Instruments = "Piano,Piano,Piano,Violin"
+Instruments = "Piano,Violin,Piano,Piano"
 
 Instrument = Piano
 Volume = 30

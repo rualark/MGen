@@ -111,5 +111,5 @@ harsh_freq = 0 # Frequency of harsh sustain articulation in percent of all possi
 
 # Gliss adaptor
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition
-gliss_freq = 50 # Frequency of gliss articulation in percent
+gliss_freq = 0 # Frequency of gliss articulation in percent
 
