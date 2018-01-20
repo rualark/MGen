@@ -13,4 +13,4 @@ Midi_file = midi\Music\shegolev\quartet\01 - Allegro-pizz.mid
 Instruments = "Piano,Piano,Piano,Violin"
 
 Instrument = Piano
-Volume = 80
+Volume = 30
