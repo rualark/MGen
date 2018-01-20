@@ -386,9 +386,7 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 	}
 }
 
-void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
-{
-	return;
+void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount) {
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	// Create bell if long length, not high velocity, after pause or first note
 	if ((ndur > icf[ii].bell_mindur) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
