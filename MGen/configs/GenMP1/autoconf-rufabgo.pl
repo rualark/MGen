@@ -11,4 +11,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 Midi_file = midi\Music\arkhipenko\rufabgo.mid
 
 #Instruments = Piccolo,Flute,Alto Flute,Bass Flute
-Instruments = Oboe,Clarinet,English Horn,Bassoon
+#Instruments = Oboe,Clarinet,English Horn,Bassoon
