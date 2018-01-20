@@ -1,6 +1,6 @@
 #GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT |
-Keyboard/Piano                        | Gentleman             | 0   | 0   | +   |
-Keyboard/Organ                        | Mystique              | 13  | 13  | +   |
+Keyboard/Piano                        | Piano                 | 0   | 0   | +   |
+Keyboard/Organ                        | Organ                 | 13  | 13  | +   |
 Woodwinds/Piccolo                     | Normal                | 14  | 14  | -   |
 Woodwinds/Flute                       | Normal                | 15  | 15  | +   |
 Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   |
@@ -15,10 +15,10 @@ Brass/Trumpet                         | Normal                | 2   | 2   | +   
 Brass/Horn                            | Normal                | 3   | 3   | +   |
 Brass/Trombone                        | Normal                | 4   | 4   | +   |
 Brass/Tuba                            | Normal                | 5   | 5   | +   |
-Vocal/Soprano                         | SI VoR Soprano        | 6   | 6   | +   |
-Vocal/Alto                            | SI VoR Alto           | 7   | 7   | +   |
-Vocal/Tenor                           | SI VoR Tenor          | 8   | 8   | +   |
-Vocal/Bass                            | SI VoR Bass           | 9   | 9   | +   |
+Vocal/Soprano                         | Soprano               | 6   | 6   | +   |
+Vocal/Alto                            | Alto                  | 7   | 7   | +   |
+Vocal/Tenor                           | Tenor                 | 8   | 8   | +   |
+Vocal/Bass                            | Bass                  | 9   | 9   | +   |
 Pitched percussion/Xylophone          | Hits                  | 0   | 26  | -   |
 Pitched percussion/Glockenspiel       | Glockenspiel          | 0   | 27  | -   |
 Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   |

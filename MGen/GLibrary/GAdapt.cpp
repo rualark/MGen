@@ -388,6 +388,7 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 
 void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount)
 {
+	return;
 	float ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	// Create bell if long length, not high velocity, after pause or first note
 	if ((ndur > icf[ii].bell_mindur) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
@@ -662,8 +663,29 @@ void CGAdapt::ExportVoiceStages() {
 	fs.close();
 }
 
-void CGAdapt::Adapt(int step1, int step2)
-{
+void CGAdapt::SetPauseDyn(int v, int step1, int step2) {
+	int pos1 = -1;
+	int pos2 = -1;
+	int step11 = min(step2, max(1, step1));
+	for (int i = step11; i <= step2; i++) {
+		if (pos1 == -1) {
+			if (pause[i][v] && !dyn[i][v]) {
+				pos1 = i;
+			}
+		}
+		else {
+			if (dyn[i][v]) {
+				pos2 = i;
+				for (int x = pos1; x < pos2; ++x) {
+					dyn[x][v] = (dyn[pos1 - 1][v] * (pos2 - x) + dyn[pos2][v] * (x - pos1 + 1)) / (pos2 - pos1 + 1);
+				}
+				pos1 = -1;
+			}
+		}
+	}
+}
+
+void CGAdapt::Adapt(int step1, int step2) {
 	if (step2 < 0) return;
 	if (step1 > t_adapted) {
 		CString est;
@@ -700,6 +722,7 @@ void CGAdapt::Adapt(int step1, int step2)
 		for (int i = step1; i <= step2; i++) {
 			dyn[i][v] = min(127, (dyn[i][v] * icf[ii].vel_mul) / 100);
 		}
+		SetPauseDyn(v, step1, step2);
 		// Set vel to dyn
 		for (int i = step1; i <= step2; i++) {
 			vel[i][v] = dyn[i][v];
