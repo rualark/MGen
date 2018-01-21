@@ -101,6 +101,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 	tempo_src.resize(size);
 	stime.resize(size);
 	etime.resize(size);
+	smst.resize(size);
+	smet.resize(size);
 	dstime.resize(size);
 	detime.resize(size);
 	dyn.resize(size);
@@ -160,6 +162,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 		midi_delta[i].resize(vsize);
 		dstime[i].resize(vsize);
 		detime[i].resize(vsize);
+		smst[i].resize(vsize, -1);
+		smet[i].resize(vsize, -1);
 		color[i].resize(vsize);
 		mel_id[i].resize(vsize, -1);
 		mark[i].resize(vsize);

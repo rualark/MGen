@@ -1423,6 +1423,9 @@ void CGMidi::LoadMidi(CString path)
 					pause[pos + z][v] = 0;
 					coff[pos + z][v] = z;
 				}
+				// Set midi ticks
+				smst[pos][v] = mev->tick;
+				smet[pos + nlen - 1][v] = mev->tick + mev->getTickDuration();
 				// Set midi delta only to first step of note, because in in-note steps you can get different calculations for different tempo
 				midi_delta[pos][v] = delta;
 				// Set additional variables

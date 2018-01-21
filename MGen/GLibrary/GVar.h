@@ -142,6 +142,8 @@ public:
 	vector<float> tempo_src; // Source tempo before randomization
 	vector<float> stime; // Time of current step start in ms
 	vector<float> etime; // Time of current step ending in ms
+	vector< vector <DWORD> > smst; // Source midi start tick
+	vector< vector <DWORD> > smet; // Source midi end tick
 	vector< vector <float> > dstime; // Delta of current step start in ms for playback
 	vector< vector <float> > detime; // Delta of current step ending in ms for playback
 	vector<CString> track_name; // Track names from midi file for each voice

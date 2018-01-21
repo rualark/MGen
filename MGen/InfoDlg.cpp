@@ -183,7 +183,7 @@ BOOL CInfoDlg::OnInitDialog()
 			(pGen->etime[ms] - pGen->stime[ms]) * 100 / pGen->m_pspeed, pGen->etime[ms] / pGen->m_pspeed / 10);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		m_info.AddText("\n", RGB(170, 0, 0), 0);
-
+		 
 		st.Format("Voice: %d (%s, channel %d, type %d)\n", mv,
 			pGen->icf[pGen->instr[mv]].group + "/" + pGen->icf[pGen->instr[mv]].name,
 			pGen->icf[pGen->instr[mv]].channel, pGen->icf[pGen->instr[mv]].type);
@@ -193,7 +193,10 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		if (pGen->midifile_loaded) {
-			st.Format("From MIDI file: track %d \"%s\" local-voice %d, channel %d, delta %d ms (%.0f%% croche)\n", pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], pGen->midi_delta[ms][mv], (float)(pGen->midi_delta[ms][mv]) / 300.0*(float)(pGen->tempo[ms]));
+			st.Format("From MIDI file: track %d \"%s\" local-voice %d, channel %d, start tick %u, end tick %u, delta %d ms (%.0f%% croche)\n", 
+				pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], 
+				pGen->smst[i][mv], pGen->smet[ei][mv],
+				pGen->midi_delta[ms][mv], (float)(pGen->midi_delta[ms][mv]) / 300.0*(float)(pGen->tempo[ms]));
 			m_info.AddText(st, RGB(0, 0, 200), 0);
 		}
 		m_info.AddText("\n", RGB(0, 0, 0), 0);
