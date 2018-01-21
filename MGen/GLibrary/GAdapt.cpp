@@ -720,7 +720,6 @@ void CGAdapt::Adapt(int step1, int step2) {
 		for (int i = step1; i <= step2; i++) {
 			dyn[i][v] = min(127, (dyn[i][v] * icf[ii].vel_mul) / 100);
 		}
-		SetPauseDyn(v, step1, step2);
 		// Set vel to dyn
 		for (int i = step1; i <= step2; i++) {
 			vel[i][v] = dyn[i][v];
@@ -819,6 +818,7 @@ void CGAdapt::Adapt(int step1, int step2) {
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
 		} // for x
+		SetPauseDyn(v, step1, step2);
 	} // for v
 	CSmoothRandom sr;
 	float tr;
