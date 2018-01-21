@@ -29,6 +29,7 @@ protected:
 	void AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
+	void AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei);

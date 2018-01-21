@@ -133,7 +133,10 @@ void CGAdapt::AdaptLengroupStep(int v, int x, int i, int ii, int ei, int pi, int
 void CGAdapt::AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Add slurs
-	if ((i > 0) && (icf[ii].max_slur_interval > 0) && (abs(note[pi][v] - note[i][v]) <= icf[ii].max_slur_interval) && (note[pi][v] != note[i][v]) &&
+	if ((i > 0) && (icf[ii].max_slur_interval > 0) && 
+		(abs(note[pi][v] - note[i][v]) <= icf[ii].max_slur_interval) && 
+		(note[pi][v] != note[i][v]) &&
+		artic[i][v] == aLEGATO &&
 		(slur_count <= icf[ii].max_slur_count)) {
 		artic[i][v] = aSLUR;
 		slur_count++;
@@ -188,6 +191,25 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 			artic[i][v] = aRETRIGGER;
 			detime[pei][v] = -1;
 			dstime[i][v] = -icf[ii].all_ahead;
+		}
+	}
+}
+
+void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	// Set nonlegato for separate notes
+	// If previous step is not a note, then there is definitely no overlap
+	if (i == 0 || pause[pi][v] || smet[pei][v] < smst[i][v]) {
+		artic[i][v] = aNONLEGATO;
+		dstime[i][v] = -icf[ii].all_ahead;
+		if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Separate note nonlegato. ";
+	} 
+	// If note is not separate, convert it to legato in auto_legato mode
+	else {
+		// Convert legato to non-legato if notes are touching
+		if (!icf[ii].auto_legato && smet[pei][v] == smst[i][v]) {
+			artic[i][v] = aNONLEGATO;
+			dstime[i][v] = -icf[ii].all_ahead;
+			if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Touching note nonlegato. ";
 		}
 	}
 }
@@ -733,12 +755,7 @@ void CGAdapt::Adapt(int step1, int step2) {
 			ei = max(0, i + len[i][v] - 1);
 			pi = max(0, i - poff[i][v]);
 			pei = i - 1;
-			// Set nonlegato for separate notes
-			if ((i == 0) || (pause[pi][v])) {
-				artic[i][v] = aNONLEGATO;
-				dstime[i][v] = -icf[ii].all_ahead;
-				if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Separate note nonlegato. ";
-			}
+			AdaptAutoLegatoStep(v, x, i, ii, ei, pi, pei);
 			if (!pause[i][v]) {
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation

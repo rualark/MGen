@@ -841,6 +841,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "max_slur_interval", &icf[i].max_slur_interval);
 	CheckVar(&st2, &st3, "nonlegato_maxgap", &icf[i].nonlegato_maxgap);
 	CheckVar(&st2, &st3, "nonlegato_mingap", &icf[i].nonlegato_mingap);
+	CheckVar(&st2, &st3, "auto_legato", &icf[i].auto_legato);
 	CheckVar(&st2, &st3, "all_ahead", &icf[i].all_ahead);
 	LoadVectorPar(&st2, &st3, "legato_ahead", icf[i].legato_ahead);
 	LoadVectorPar(&st2, &st3, "ahead_chrom", icf[i].ahead_chrom);
