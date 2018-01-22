@@ -2129,9 +2129,9 @@ void CGMidi::AddTransitionKs(int i, long long stimestamp, int ks)
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
 	AddKsOn(stimestamp - min(MAX_TRANS_DELAY,
-		((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10), ks, 10);
+		((sstime[i][v] - sstime[pi][v]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10), ks, 10);
 	AddKsOff(stimestamp + min(MAX_TRANS_DELAY,
-		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), ks, 0);
+		((setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), ks, 0);
 }
 
 void CGMidi::AddKs(long long stimestamp, int ks) {
@@ -2144,9 +2144,9 @@ void CGMidi::AddTransitionCC(int i, long long stimestamp, int CC, int value1, in
 	int pi = i - poff[i][v];
 	int ei = i + len[i][v] - 1;
 	AddCC(stimestamp - min(MAX_TRANS_DELAY, 
-		((stime[i] - stime[pi]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10), CC, value1);
+		((sstime[i][v] - sstime[pi][v]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v]) / 10), CC, value1);
 	AddCC(stimestamp + min(MAX_TRANS_DELAY, 
-		((etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), CC, value2);
+		((setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v]) / 10), CC, value2);
 }
 
 // Check that dstime is not too low
@@ -2168,7 +2168,7 @@ void CGMidi::GetMidiPrePause() {
 	for (int v = 0; v < v_cnt; ++v) {
 		for (int i = 0; i < t_sent; ++i) {
 			if (!pause[i][v]) {
-				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
+				stimestamp = sstime[i][v] * 100 / m_pspeed + dstime[i][v];
 				midi_prepause = max(midi_prepause, -stimestamp);
 				break;
 			}
@@ -2193,7 +2193,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 	}
 	else midi_first_run = 0;
 	if (midi_first_run) LogInstruments();
-	// Set real time when playback started
+	// Set real time when playback started (approximate, because SStime can vary)
 	if (!midi_start_time) midi_start_time = timestamp_current + MIDI_BUF_PROTECT - 
 		(long long)(stime[step1] / m_pspeed * 100);
 	// Set real time when playback started
@@ -2232,7 +2232,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 	int step21 = 0; // Voice-dependent first step
 	int step22 = 0; // Voice-independent last step
 	float time = 0;
-	// Find last step not too far
+	// Find last step not too far (approximate, because SStime can vary)
 	for (i = step1; i <= step2; i++) {
 		step22 = i;
 		if (i == 0) time = stime[i] * 100 / m_pspeed;
@@ -2244,7 +2244,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 	if (step22 < step2) midi_last_run = 0;
 	// Send previous buffer if exists
 	midi_buf.clear();
-	// Calculate midi right limit
+	// Calculate midi right limit (approximate, because SStime can vary)
 	midi_buf_lim = midi_start_time + (long long)(stime[step22] * 100.0 / m_pspeed);
 	// Decrease right limit to allow for legato ahead, random start and ks/cc transitions
 	if (!midi_last_run) midi_buf_lim -= MAX_AHEAD;
@@ -2314,7 +2314,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 			ei = max(0, i + len[i][v] - 1);
 			if (!pause[i][v]) {
 				// Note ON if it is not blocked and was not yet sent
-				stimestamp = stime[i] * 100 / m_pspeed + dstime[i][v];
+				stimestamp = sstime[i][v] * 100 / m_pspeed + dstime[i][v];
 				CheckDstime(i, v);
 				if ((stimestamp + midi_start_time + midi_prepause >= midi_sent_t) && (i >= midi_sent)) {
 					if (!note_muted[i][v]) {
@@ -2373,7 +2373,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 				if (ei <= step22) {
 					// Note OFF
 					// ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-					etimestamp = etime[ei] * 100 / m_pspeed + detime[ei][v];
+					etimestamp = setime[ei][v] * 100 / m_pspeed + detime[ei][v];
 					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
 					// Send note ending ks
 					if (icf[ii].type == 2) {
