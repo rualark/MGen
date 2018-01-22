@@ -5,6 +5,6 @@ Midi_file = "midi\Music\test\test-run.mid" # Path and file name of imported midi
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 8 # How much you want to decrease minimum step length from 1/8
 
-Instruments = "Trumpet"
+Instruments = "Flute"
 
 #MasterVolume = 1

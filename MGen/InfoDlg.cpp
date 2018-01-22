@@ -196,7 +196,7 @@ BOOL CInfoDlg::OnInitDialog()
 			st.Format("From MIDI file: track %d \"%s\" local-voice %d, channel %d, start tick %u, end tick %u, start time %.03f s, end time %.03f s\n", 
 				pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], 
 				pGen->smst[i][mv], pGen->smet[ei][mv],
-				pGen->sstime[ms][mv] / 1000, pGen->setime[ms][mv] / 1000);
+				pGen->sstime[i][mv] / 1000, pGen->setime[ei][mv] / 1000);
 			m_info.AddText(st, RGB(0, 0, 200), 0);
 		}
 		m_info.AddText("\n", RGB(0, 0, 0), 0);
