@@ -1393,6 +1393,24 @@ void CGVar::ValidateVectors(int step1, int step2) {
 				WriteLog(5, st);
 				warning_valid++;
 			}
+			// Check sstime is not zero
+			if (!sstime[i][v] && i > 0 && warning_valid < MAX_WARN_VALID) {
+				st.Format("Validation failed at step %d voice %d: sstime can be zero only at first step", i, v);
+				WriteLog(5, st);
+				warning_valid++;
+			}
+			// Check setime is not zero
+			if (!setime[i][v] && i > 0 && warning_valid < MAX_WARN_VALID) {
+				st.Format("Validation failed at step %d voice %d: setime cannot be zero", i, v);
+				WriteLog(5, st);
+				warning_valid++;
+			}
+			// Check setime is greater than sstime
+			if (setime[i][v] <= sstime[i][v] && warning_valid < MAX_WARN_VALID) {
+				st.Format("Validation failed at step %d voice %d: setime must be greater than sstime", i);
+				WriteLog(5, st);
+				warning_valid++;
+			}
 		}
 		// Check tempo is not zero
 		if (!tempo[i] && warning_valid < MAX_WARN_VALID) {
@@ -1407,7 +1425,7 @@ void CGVar::ValidateVectors(int step1, int step2) {
 			warning_valid++;
 		}
 		// Check etime is not zero
-		if (!stime[i] && i > 0 && warning_valid < MAX_WARN_VALID) {
+		if (!etime[i] && i > 0 && warning_valid < MAX_WARN_VALID) {
 			st.Format("Validation failed at step %d: etime cannot be zero", i);
 			WriteLog(5, st);
 			warning_valid++;
