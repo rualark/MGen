@@ -713,6 +713,8 @@ void CGAdapt::Adapt(int step1, int step2) {
 			step1, step2, t_adapted);
 		WriteLog(5, est);
 	}
+	// Calculate source time where it was not set
+	CountSTime(step1, step2);
 	// Set new adapted limit
 	t_adapted = step2 + 1;
 	ValidateVectors(step1, step2);

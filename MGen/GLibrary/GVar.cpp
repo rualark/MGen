@@ -105,6 +105,8 @@ void CGVar::ResizeVectors(int size, int vsize)
 	smet.resize(size);
 	dstime.resize(size);
 	detime.resize(size);
+ 	sstime.resize(size);
+	setime.resize(size);
 	dyn.resize(size);
 	vel.resize(size);
 	vib.resize(size);
@@ -125,7 +127,6 @@ void CGVar::ResizeVectors(int size, int vsize)
 	nsr2.resize(size);
 	adapt_comment.resize(size);
 	midi_ch.resize(size);
-	midi_delta.resize(size);
 	color.resize(size);
 	int start = t_allocated;
 	// Start from zero if we are allocating first time
@@ -159,9 +160,10 @@ void CGVar::ResizeVectors(int size, int vsize)
 		nsr2[i].resize(vsize);
 		adapt_comment[i].resize(vsize);
 		midi_ch[i].resize(vsize);
-		midi_delta[i].resize(vsize);
 		dstime[i].resize(vsize);
 		detime[i].resize(vsize);
+		sstime[i].resize(vsize);
+		setime[i].resize(vsize);
 		smst[i].resize(vsize, -1);
 		smet[i].resize(vsize, -1);
 		color[i].resize(vsize);
@@ -1593,12 +1595,20 @@ void CGVar::FixLen(int step1, int step2)
 	}
 }
 
-void CGVar::CountTime(int step1, int step2)
-{
+void CGVar::CountTime(int step1, int step2) {
 	for (int i = step1; i <= step2; i++) {
 		if (i > 0) stime[i] = stime[i - 1] + 30000.0 / tempo[i - 1];
 		else stime[i] = 0;
 		etime[i] = stime[i] + 30000.0 / tempo[i];
+	}
+}
+
+void CGVar::CountSTime(int step1, int step2) {
+	for (int v = 0; v < v_cnt; v++) {
+		for (int i = step1; i <= step2; i++) {
+			if (!sstime[i][v]) sstime[i][v] = stime[i];
+			if (!setime[i][v]) setime[i][v] = etime[i];
+		}
 	}
 }
 

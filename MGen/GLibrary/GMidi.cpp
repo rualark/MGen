@@ -1302,8 +1302,8 @@ void CGMidi::LoadMidi(CString path)
 				// Allocate one more step for note overwrite checking
 				if (pos + nlen + 1 >= t_allocated) ResizeVectors(max(pos + nlen + 1, t_allocated * 2));
 				// Fill tempo
-				if (!tempo[pos + nlen - 1]) {
-					for (int z = last_step_tempo + 1; z < pos + nlen; ++z) {
+				if (!tempo[pos + nlen]) {
+					for (int z = last_step_tempo + 1; z < pos + nlen + 1; ++z) {
 						if (!tempo[z]) tempo[z] = tempo[z - 1];
 					}
 					// Count new time
@@ -1313,11 +1313,13 @@ void CGMidi::LoadMidi(CString path)
 				}
 				// Fallback
 				if (!tempo[pos]) tempo[pos] = 100;
-				int delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
+				float delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
+				float delta2 = (float)(mev->tick + mev->getTickDuration() - (pos + nlen)*tpc) / 
+					(float)tpc * 30000.0 / (float)tempo[pos + nlen];
 				// Check alignment
 				if (abs(delta) > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
 					CString st;
-					st.Format("Note moved %d ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d ticks) in file %s. Increasing midifile_in_mul will improve approximation.", 
+					st.Format("Note moved %.0f ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d ticks) in file %s. Increasing midifile_in_mul will improve approximation.", 
 						delta, track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
 					WriteLog(1, st);
 					warning_loadmidi_align++;
@@ -1427,7 +1429,9 @@ void CGMidi::LoadMidi(CString path)
 				smst[pos][v] = mev->tick;
 				smet[pos + nlen - 1][v] = mev->tick + mev->getTickDuration();
 				// Set midi delta only to first step of note, because in in-note steps you can get different calculations for different tempo
-				midi_delta[pos][v] = delta;
+				//midi_delta[pos][v] = delta;
+				sstime[pos][v] = stime[pos] + delta;
+				setime[pos + nlen - 1][v] = etime[pos + nlen - 1] + delta2;
 				// Set additional variables
 				CountOff(pos, pos + nlen - 1);
 				UpdateNoteMinMax(pos, pos + nlen - 1);
@@ -1495,7 +1499,7 @@ void CGMidi::MergeSmallOverlaps(int step1, int step2) {
 			// Look for note start
 			if (!coff[i][v] && !pause[i][v]) {
 				// Do not include dstime/detime in time calculation, because it can change result
-				// Do not use playback speed in time calculation, because all calculateion are relative in this algorithm
+				// Do not use playback speed in time calculation, because all calculations are relative in this algorithm
 				float nlen = etime[i + noff[i][v] - 1] - stime[i];
 				// Find other voices of same track having notes at same step
 				for (int v2 = 0; v2 <= v_cnt; ++v2) if (v != v2 && track_id[v] == track_id[v2] && !pause[i][v2]) {

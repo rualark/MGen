@@ -127,7 +127,6 @@ public:
 	vector<CString> mel_info2; // Information about melody
 	vector< vector <DWORD> > mark_color; // Mark color
 	vector< vector <unsigned char> > midi_ch; // Midi channel of each note
-	vector< vector <short> > midi_delta; // Midi file delta in ms
 	vector< DWORD > linecolor; // Shows color of bar line if not zero
 	vector< vector <char> > lengroup; // How many notes left until last in lengroup
 	vector< vector <CString> > lyrics; // Imported MIDI lyrics
@@ -146,6 +145,8 @@ public:
 	vector< vector <DWORD> > smet; // Source midi end tick
 	vector< vector <float> > dstime; // Delta of current step start in ms for playback
 	vector< vector <float> > detime; // Delta of current step ending in ms for playback
+	vector< vector <float> > sstime; // Time of current step start in ms (exact in source midi file)
+	vector< vector <float> > setime; // Time of current step end in ms (exact in source midi file)
 	vector<CString> track_name; // Track names from midi file for each voice
 	vector<int> track_id; // Track id from midi file for each voice
 	vector<int> track_vid; // Voice id inside track from midi file for each voice
@@ -193,6 +194,7 @@ protected:
 	void CountOff(int step1, int step2);
 	void FixLen(int step1, int step2);
 	void CountTime(int step1, int step2);
+	void CountSTime(int step1, int step2);
 	void CopyVoice(int v1, int v2, int step1, int step2, int interval);
 	void UpdateNoteMinMax(int step1, int step2, int final_run = 1);
 	void UpdateTempoMinMax(int step1, int step2);
