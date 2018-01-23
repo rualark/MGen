@@ -1374,6 +1374,11 @@ void CGMidi::LoadMidi(CString path)
 				else {
 					// Check if overwriting long overlap
 					if (!pause[pos][v] && noff[pos][v]) {
+						// Update previous note ending
+						if (pos) {
+							setime[pos - 1][v] = stime[pos] + delta;
+							smet[pos - 1][v] = mev->tick;
+						}
 						float ndur = etime[pos + nlen - 1] - stime[pos];
 						float ndur2 = etime[pos + noff[pos][v] - 1] - stime[pos - coff[pos][v]];
 						// Calculate overlap (abs is protection from bugs)

@@ -995,7 +995,7 @@ void CGVar::SaveResults(CString dir, CString fname)
 	fs << st;
 	st.Format("time_stopped = %lld # Unix timestamp of generation finish\n", time_stopped);
 	fs << st;
-	st.Format("duration = %.0f # Length of total playback in ms\n", etime[t_generated - 1]);
+	st.Format("duration = %.0f # Length of total playback in ms\n", etime[max(0, t_generated - 1)]);
 	fs << st;
 	st.Format("need_exit = %d\n", need_exit);
 	fs << st;
@@ -1054,7 +1054,7 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 	for (int v = 0; v < v_cnt; ++v) {
 		st.Format("%d", v);
 		fs << "Pause" + st + ";Note" + st + ";Len" + st + ";Dyn" + st +
-			";Coff" + st + ";Poff" + st + ";Noff" + st + ";Comment" + st + ";AComment" + st + ";Color" + st
+			";Coff" + st + ";Poff" + st + ";Noff" + st + ";STick" + st + ";ETick" + st + ";Comment" + st + ";AComment" + st + ";Color" + st
 			+ ";Lining" + st + ";Tonic" + st + ";Mode" + st + ";Dstime" + st + ";Detime" + st + ";Lengroup" + st + ";Articulation" + st +
 			";Vib" + st + ";Vibf" + st + ";";
 	}
@@ -1073,6 +1073,8 @@ void CGVar::ExportVectorsCSV(CString dir, CString fname)
 				fs << (int)coff[i][v] << ";";
 				fs << (int)poff[i][v] << ";";
 				fs << (int)noff[i][v] << ";";
+				fs << (int)smst[i][v] << ";";
+				fs << (int)smet[i][v] << ";";
 				st.Empty();
 				for (int x = 0; x < comment[i][v].size(); ++x) st += comment[i][v][x];
 				if (st.Left(1) == "\n") st = st.Right(st.GetLength() - 1);

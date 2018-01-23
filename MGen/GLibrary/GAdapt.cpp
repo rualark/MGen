@@ -757,8 +757,8 @@ void CGAdapt::Adapt(int step1, int step2) {
 			ei = max(0, i + len[i][v] - 1);
 			pi = max(0, i - poff[i][v]);
 			pei = i - 1;
-			AdaptAutoLegatoStep(v, x, i, ii, ei, pi, pei);
 			if (!pause[i][v]) {
+				AdaptAutoLegatoStep(v, x, i, ii, ei, pi, pei);
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation
 				// Piano
