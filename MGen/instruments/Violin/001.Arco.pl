@@ -44,14 +44,14 @@ Technique = "nat; Senza sordino + Normal + Sustain"
 Technique = "senza sord; Senza sordino"
 Technique = "sul pont; Sul ponticello"
 Technique = "sul tast; Sul tasto"
-Technique = "stac; Staccato" # TODO: not implemented yet
-Technique = "spic; Staccato" # TODO: not implemented yet
-Technique = "martele; Staccato" # TODO: not implemented yet
-Technique = "saltando; Staccato" # TODO: not implemented yet
-Technique = "sautille; Staccato" # TODO: not implemented yet
-Technique = "arco; Sustain" # TODO: not implemented yet
-Technique = "pizz; Pizzicato" # TODO: not implemented yet
-Technique = "trem; Tremolo" # TODO: not implemented yet
+Technique = "stac; Staccato"
+Technique = "spic; Staccato"
+Technique = "martele; Staccato"
+Technique = "saltando; Staccato"
+Technique = "sautille; Staccato"
+Technique = "arco; Sustain"
+Technique = "pizz; Pizzicato"
+Technique = "trem; Tremolo"
 
 # Initial setup
 InitCommand = "Responsiveness: 0" # default for Violin: 0
