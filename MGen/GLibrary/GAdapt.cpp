@@ -196,26 +196,34 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 }
 
 void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	// Process only legato transitions
+	if (artic[i][v] != aLEGATO) return;
 	float ndur = (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 	// Set nonlegato for separate notes
 	// If previous step is not a note, then there is definitely no overlap
 	if (i == 0 || pause[pi][v] || smet[pei][v] < smst[i][v]) {
 		artic[i][v] = aNONLEGATO;
 		dstime[i][v] = -icf[ii].all_ahead;
-		if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Separate note nonlegato. ";
+		if (comment_adapt) adapt_comment[i][v] += "Separate note nonlegato. ";
 	} 
 	else {
 		// Convert legato to non-legato if previous note is short
 		if (ndur <= icf[ii].legato_ahead[0] + 1) {
 			artic[i][v] = aNONLEGATO;
 			dstime[i][v] = -icf[ii].all_ahead;
-			if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Nonlegato because short. ";
+			if (comment_adapt) adapt_comment[i][v] += "Nonlegato because short. ";
+		}
+		// Convert legato to non-legato if previous note is not legato or non-legato
+		else if (artic[pi][v] == aSTAC || artic[pi][v] == aTREM) {
+			artic[i][v] = aNONLEGATO;
+			dstime[i][v] = -icf[ii].all_ahead;
+			if (comment_adapt) adapt_comment[i][v] += "Nonlegato after other articulation. ";
 		}
 		// Convert legato to non-legato if notes are touching
 		else if (!icf[ii].auto_legato && smet[pei][v] == smst[i][v]) {
 			artic[i][v] = aNONLEGATO;
 			dstime[i][v] = -icf[ii].all_ahead;
-			if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Touching note nonlegato. ";
+			if (comment_adapt) adapt_comment[i][v] += "Touching note nonlegato. ";
 		}
 		// If note is not separate, convert it to legato in auto_legato mode
 	}
@@ -223,7 +231,7 @@ void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, i
 
 void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Randomly make some notes non-legato if they have enough length
-	if ((i > 0) && 
+	if ((i > 0) && (artic[i][v] == aLEGATO || artic[i][v] == aSLUR) &&
 		((setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > icf[ii].nonlegato_minlen) &&
 		(randbw(0, 100) < icf[ii].nonlegato_freq * pow(abs(note[i][v] - note[pi][v]), 0.3))) {
 		detime[pei][v] = -min(icf[ii].nonlegato_maxgap, (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed / 3);
@@ -249,7 +257,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 	}
 	// Same process for current note
 	if (artic[i][v] != aLEGATO && artic[i][v] != aSLUR &&
-		(ei == t_sent - 1 || pause[ei + 1][v]) &&
+		(ei == t_generated - 1 || pause[ei + 1][v]) &&
 		(setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] <= icf[ii].stac_maxlen) {
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aSTAC;
@@ -375,7 +383,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 		while (lpi >= 0) {
 			if (note[lpi][v] == note[i][v] || 
 				(!pause[lpi][v] && icf[ii].poly == 1 && (artic[i][v] == aSTAC || artic[i][v] == aNONLEGATO || 
-					artic[i][v] == aREBOW || artic[i][v] == aRETRIGGER))) {
+					artic[i][v] == aREBOW || artic[i][v] == aRETRIGGER || artic[i][v] == aTREM))) {
 				int lpei = lpi + len[lpi][v] - 1;
 				if ((sstime[i][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v] <
 					icf[ii].nonlegato_mingap) {
@@ -582,6 +590,87 @@ void CGAdapt::AdaptNoteEndStep(int v, int x, int i, int ii, int ei, int pi, int 
 	}
 }
 
+void CGAdapt::ApplyTrem(int &started, int step1, int step2, int v, int ii) {
+	if (!started) return;
+	started = 0;
+	for (int i = step1; i <= step2; ++i) {
+		note[i][v] = note[step1][v];
+		pause[i][v] = 0;
+		len[i][v] = step2 - step1 + 1;
+		coff[i][v] = i - step1;
+		if (!dyn[i][v]) dyn[i][v] = dyn[i - 1][v];
+		dyn[i][v] = (dyn[i][v] * icf[ii].trem_dynamics) / 100;
+		midi_ch[i][v] = midi_ch[step1][v];
+	}
+	int step22 = step2;
+	if (step2 < t_generated - 1) {
+		step22 = step2 + 1;
+		if (step22 + noff[step22][v] < t_generated) {
+			step22 += noff[step22][v];
+		}
+	}
+	CountOff(step1, step22);
+	artic[step1][v] = aTREM;
+	if (comment_adapt) adapt_comment[step1][v] += "Tremolo. ";
+}
+
+void CGAdapt::AdaptTrem(int step1, int step2, int v, int ii) {
+	if (!icf[ii].trem_maxlen) return;
+	int i = step1;
+	int first_step = -1;
+	int pi = -1;
+	int pei = -1;
+	int pndur = -1;
+	int short_count = 0;
+	int started = 0;
+	for (int x = 0; x < INT_MAX; x++) {
+		if (need_exit) break;
+		int ei = max(0, i + len[i][v] - 1);
+		if (!pause[i][v]) {
+			int ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+			if (ndur < icf[ii].trem_maxlen) {
+				++short_count;
+				if (pi > -1) {
+					// Start to start time
+					int nss = (sstime[i][v] - sstime[pi][v]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v];
+					// Two short notes follow
+					if (nss < icf[ii].trem_maxlen && note[i][v] == note[pi][v] && ndur < pndur * 1.1 && ndur > pndur * 0.9) {
+						if (short_count > 2) {
+							started = 1;
+						}
+					}
+					else {
+						ApplyTrem(started, first_step, pei, v, ii);
+						short_count = 1;
+					}
+				}
+				else {
+					first_step = i;
+				}
+				pi = i;
+				pei = i;
+				pndur = ndur;
+			}
+			else {
+				ApplyTrem(started, first_step, pei, v, ii);
+				pi = -1;
+				short_count = 0;
+				first_step = -1;
+			}
+		}
+		else {
+			ApplyTrem(started, first_step, pei, v, ii);
+			pi = -1;
+			short_count = 0;
+			first_step = -1;
+		}
+		if (noff[i][v] == 0) break;
+		i += noff[i][v];
+		if (i >= step2) break;
+	}
+	ApplyTrem(started, first_step, pei, v, ii);
+}
+
 // Randomize note velocity
 void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
@@ -738,6 +827,7 @@ void CGAdapt::Adapt(int step1, int step2) {
 		int ncount = 0;
 		// Move to note start
 		if (coff[step1][v] > 0) step1 = step1 - coff[step1][v];
+		AdaptTrem(step1, step2, v, ii);
 		// Count notes
 		for (int i = step1; i <= step2; i++) {
 			if (i + len[i][v] > step2 + 1) break;

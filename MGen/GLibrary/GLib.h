@@ -95,6 +95,7 @@ const int note_base_m[][12] = {
 #define aEND_PBD 14
 #define aEND_VIB2 15
 #define aEND_VIB 16
+#define aTREM 17
 
 const CString ArticName[] = {
 	"Legato", // 0
@@ -113,7 +114,8 @@ const CString ArticName[] = {
 	"Short fall ending", // 13
 	"Pitchbend down ending", // 14
 	"Vibrato2 ending", // 15
-	"Vibrato ending" // 16
+	"Vibrato ending", // 16
+	"Tremolo" // 17
 };
 
 #define INSTR_PIANO 0

@@ -89,6 +89,10 @@ vibf_bell = 20-80 # Max vibrato frequency in vibrato bell (for minimum and highe
 rnd_vib = 10 # Randomize vibrato intensity not greater than this percent
 rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 
+# Tremolo adaptor
+trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
+trem_dynamics = 60 # Percent of tremolo dynamics compared to sustain notes
+
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
 rnd_dyn = 8 # Randomize step dynamics not greater than this percent
