@@ -196,6 +196,7 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 }
 
 void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	float ndur = (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 	// Set nonlegato for separate notes
 	// If previous step is not a note, then there is definitely no overlap
 	if (i == 0 || pause[pi][v] || smet[pei][v] < smst[i][v]) {
@@ -203,14 +204,20 @@ void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, i
 		dstime[i][v] = -icf[ii].all_ahead;
 		if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Separate note nonlegato. ";
 	} 
-	// If note is not separate, convert it to legato in auto_legato mode
 	else {
+		// Convert legato to non-legato if previous note is short
+		if (ndur <= icf[ii].legato_ahead[0] + 1) {
+			artic[i][v] = aNONLEGATO;
+			dstime[i][v] = -icf[ii].all_ahead;
+			if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Nonlegato because short. ";
+		}
 		// Convert legato to non-legato if notes are touching
-		if (!icf[ii].auto_legato && smet[pei][v] == smst[i][v]) {
+		else if (!icf[ii].auto_legato && smet[pei][v] == smst[i][v]) {
 			artic[i][v] = aNONLEGATO;
 			dstime[i][v] = -icf[ii].all_ahead;
 			if (comment_adapt && !pause[pi][v]) adapt_comment[i][v] += "Touching note nonlegato. ";
 		}
+		// If note is not separate, convert it to legato in auto_legato mode
 	}
 }
 
