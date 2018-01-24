@@ -846,6 +846,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "auto_legato", &icf[i].auto_legato);
 	CheckVar(&st2, &st3, "trem_maxlen", &icf[i].trem_maxlen);
 	CheckVar(&st2, &st3, "trem_dynamics", &icf[i].trem_dynamics);
+	CheckVar(&st2, &st3, "trem_min_repeats", &icf[i].trem_min_repeats);
 	CheckVar(&st2, &st3, "all_ahead", &icf[i].all_ahead);
 	LoadVectorPar(&st2, &st3, "legato_ahead", icf[i].legato_ahead);
 	LoadVectorPar(&st2, &st3, "ahead_chrom", icf[i].ahead_chrom);

@@ -635,7 +635,7 @@ void CGAdapt::AdaptTrem(int step1, int step2, int v, int ii) {
 					int nss = (sstime[i][v] - sstime[pi][v]) * 100 / m_pspeed + dstime[i][v] - dstime[pi][v];
 					// Two short notes follow
 					if (nss < icf[ii].trem_maxlen && note[i][v] == note[pi][v] && ndur < pndur * 1.1 && ndur > pndur * 0.9) {
-						if (short_count > 2) {
+						if (short_count >= icf[ii].trem_min_repeats) {
 							started = 1;
 						}
 					}
