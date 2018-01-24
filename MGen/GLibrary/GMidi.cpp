@@ -2141,7 +2141,7 @@ void CGMidi::AddTransitionKs(int i, long long stimestamp, int ks)
 
 void CGMidi::AddKs(long long stimestamp, int ks) {
 	AddKsOn(stimestamp, ks, 101);
-	AddKsOff(stimestamp + 1, ks, 0);
+	AddKsOff(stimestamp + 5, ks, 0);
 }
 
 void CGMidi::AddTransitionCC(int i, long long stimestamp, int CC, int value1, int value2) {
@@ -2357,13 +2357,13 @@ void CGMidi::SendMIDI(int step1, int step2)
 						}
 						// Send staccato
 						if (artic[i][v] == aSTAC) {
-							AddKs(stimestamp - 1, icf[ii].NameToKsw["Staccato"]);
+							AddKs(stimestamp - 3, icf[ii].NameToKsw["Staccato"]);
 						}
 						else if (artic[i][v] == aTREM) {
-							AddKs(stimestamp - 1, icf[ii].NameToKsw["Tremolo"]);
+							AddKs(stimestamp - 3, icf[ii].NameToKsw["Tremolo"]);
 						}
 						else {
-							AddKs(stimestamp - 1, icf[ii].NameToKsw["Sustain"]);
+							AddKs(stimestamp - 3, icf[ii].NameToKsw["Sustain"]);
 						}
 						// Send rebow retrigger
 						if (artic[i][v] == aREBOW) {
