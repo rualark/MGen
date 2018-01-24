@@ -1413,12 +1413,16 @@ void CGVar::ValidateVectors(int step1, int step2) {
 				WriteLog(5, st);
 				warning_valid++;
 			}
+			/*
+			// Do not check because sstime has meaning only for first step of note, setime has meaning only for last step of note
+			// Comparing sstime and setime of the same step does not mean anything
 			// Check setime is greater than sstime
 			if (setime[i][v] <= sstime[i][v] && warning_valid < MAX_WARN_VALID) {
-				st.Format("Validation failed at step %d voice %d: setime must be greater than sstime", i);
+				st.Format("Validation failed at step %d voice %d: setime must be greater than sstime", i, v);
 				WriteLog(5, st);
 				warning_valid++;
 			}
+			*/
 		}
 		// Check tempo is not zero
 		if (!tempo[i] && warning_valid < MAX_WARN_VALID) {
