@@ -150,7 +150,7 @@ void CGAdapt::AdaptSlurStep(int v, int x, int i, int ii, int ei, int pi, int pei
 void CGAdapt::AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Retrigger notes
-	if ((i > 0) && (pi < i) && (note[pi][v] == note[i][v])) {
+	if ((i > 0) && (pi < i) && (note[pi][v] == note[i][v]) && artic[i][v] == aLEGATO) {
 		float ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Replace retrigger with non-legato
 		if (((icf[ii].retrigger_freq > 0) && (randbw(0, 100) > icf[ii].retrigger_freq))
@@ -174,7 +174,7 @@ void CGAdapt::AdaptRetriggerRebowStep(int v, int x, int i, int ii, int ei, int p
 void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei)
 {
 	// Retrigger notes
-	if ((i > 0) && (pi < i) && (note[pi][v] == note[i][v])) {
+	if ((i > 0) && (pi < i) && (note[pi][v] == note[i][v]) && artic[i][v] == aLEGATO) {
 		float ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		// Replace retrigger with non-legato
 		if (((icf[ii].retrigger_freq > 0) && (randbw(0, 100) > icf[ii].retrigger_freq))
@@ -198,7 +198,6 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Process only legato transitions
 	if (artic[i][v] != aLEGATO) return;
-	float ndur = (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 	// Set nonlegato for separate notes
 	// If previous step is not a note, then there is definitely no overlap
 	if (i == 0 || pause[pi][v] || smet[pei][v] < smst[i][v]) {
@@ -207,6 +206,7 @@ void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, i
 		if (comment_adapt) adapt_comment[i][v] += "Separate note nonlegato. ";
 	} 
 	else {
+		float ndur = (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 		// Convert legato to non-legato if previous note is short
 		if (ndur <= icf[ii].legato_ahead[0] + 1) {
 			artic[i][v] = aNONLEGATO;
@@ -243,8 +243,8 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 
 void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Make short non-legato notes (on both sides) staccato
-	if (x && artic[pi][v] != aLEGATO && artic[pi][v] != aSLUR &&
-		artic[i][v] != aLEGATO && artic[i][v] != aSLUR &&
+	if (x && artic[pi][v] != aLEGATO && artic[pi][v] != aSLUR && artic[pi][v] != aTREM &&
+		artic[i][v] != aLEGATO && artic[i][v] != aSLUR && artic[i][v] != aTREM &&
 		(setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] <= icf[ii].stac_maxlen) {
 		dstime[pi][v] = -icf[ii].all_ahead;
 		artic[pi][v] = aSTAC;
@@ -256,7 +256,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		if (comment_adapt) adapt_comment[pi][v] += "Staccato. ";
 	}
 	// Same process for current note
-	if (artic[i][v] != aLEGATO && artic[i][v] != aSLUR &&
+	if (artic[i][v] != aLEGATO && artic[i][v] != aSLUR && artic[i][v] != aTREM &&
 		(ei == t_generated - 1 || pause[ei + 1][v]) &&
 		(setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] <= icf[ii].stac_maxlen) {
 		dstime[i][v] = -icf[ii].all_ahead;
@@ -642,13 +642,14 @@ void CGAdapt::AdaptTrem(int step1, int step2, int v, int ii) {
 					else {
 						ApplyTrem(started, first_step, pei, v, ii);
 						short_count = 1;
+						first_step = i;
 					}
 				}
 				else {
 					first_step = i;
 				}
 				pi = i;
-				pei = i;
+				pei = i + len[i][v] - 1;
 				pndur = ndur;
 			}
 			else {
@@ -657,12 +658,6 @@ void CGAdapt::AdaptTrem(int step1, int step2, int v, int ii) {
 				short_count = 0;
 				first_step = -1;
 			}
-		}
-		else {
-			ApplyTrem(started, first_step, pei, v, ii);
-			pi = -1;
-			short_count = 0;
-			first_step = -1;
 		}
 		if (noff[i][v] == 0) break;
 		i += noff[i][v];
