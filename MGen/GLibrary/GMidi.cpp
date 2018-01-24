@@ -2359,7 +2359,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 						if (artic[i][v] == aSTAC) {
 							AddKs(stimestamp - 1, icf[ii].NameToKsw["Staccato"]);
 						}
-						if (artic[i][v] == aTREM) {
+						else if (artic[i][v] == aTREM) {
 							AddKs(stimestamp - 1, icf[ii].NameToKsw["Tremolo"]);
 						}
 						else {
