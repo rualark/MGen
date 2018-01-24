@@ -367,6 +367,7 @@ protected:
 	vector <PmEvent> midi_buf_next; // Buffer for next SendMIDI run
 	long long midi_buf_lim = 0; // After this timestamp information goes to midi_buf_next
 	int midi_channel = 0;
+	int midi_channel_saved = 0;
 	int midi_track = 0;
 	int midi_stage = 0;
 	int midi_voice = 0;

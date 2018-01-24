@@ -793,6 +793,8 @@ void CGAdapt::SetPauseDyn(int v, int step1, int step2) {
 				pos1 = -1;
 			}
 		}
+		// Fill all pauses
+		if (i && !dyn[i][v]) dyn[i][v] = dyn[i - 1][v];
 	}
 }
 

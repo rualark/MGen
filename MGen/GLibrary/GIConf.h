@@ -44,6 +44,9 @@ struct IConf {
 	int trem_maxlen = 0;
 	int trem_dynamics = 100;
 	int trem_min_repeats = 3;
+	int trem_replace = -1;
+	int trem_transpose = 0;
+	int trem_chan = -1;
 	int vel_mul = 100; // Multiply incoming velocity of all midi notes by this percent (100 - do not change)
 	int CC_vib = 0; // CC number for vibrato intensity
 	int CC_vibf = 0; // CC number for vibrato speed

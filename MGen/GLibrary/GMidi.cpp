@@ -2279,9 +2279,11 @@ void CGMidi::SendMIDI(int step1, int step2)
 		int ncount = 0;
 		int ii = instr[v];
 		midi_channel = icf[ii].channel;
+		midi_channel_saved = midi_channel;
 		midi_track = icf[ii].track;
 		midi_stage = v_stage[v];
 		midi_voice = v;
+		midi_current_step = 0;
 		// Send initialization commands
 		if (midi_first_run) {
 			for (auto const& it : icf[ii].InitCommands) {
@@ -2297,6 +2299,16 @@ void CGMidi::SendMIDI(int step1, int step2)
 			AddCC(midi_sent_t - midi_start_time - midi_prepause, 10, (icf[ii].pan * 127) / 100);
 			// Send vol
 			AddCC(midi_sent_t - midi_start_time - midi_prepause, 7, (icf[ii].vol * icf[ii].vol_default * master_vol) / 10000);
+			if (icf[ii].trem_chan > -1) {
+				midi_channel = icf[ii].trem_chan;
+				// Send pan
+				AddCC(midi_sent_t - midi_start_time - midi_prepause, 10, 
+					(icf[ii].pan * 127) / 100);
+				// Send vol
+				AddCC(midi_sent_t - midi_start_time - midi_prepause, 7, 
+					(icf[ii].vol * icf[ii].vol_default * master_vol) / 10000);
+				midi_channel = midi_channel_saved;
+			}
 		}
 		// Move to note start
 		if (coff[step1][v] > 0) {
@@ -2318,15 +2330,24 @@ void CGMidi::SendMIDI(int step1, int step2)
 			midi_current_step = i;
 			ei = max(0, i + len[i][v] - 1);
 			if (!pause[i][v]) {
+				int my_note;
+				// Replace note
+				if (icf[ii].replace_pitch > -1) my_note = icf[ii].replace_pitch;
+				else my_note = note[i][v] + play_transpose[v];
+				if (artic[i][v] == aTREM) {
+					if (icf[ii].trem_replace > -1) {
+						my_note = icf[ii].trem_replace;
+					}
+					if (icf[ii].trem_transpose) {
+						my_note += icf[ii].trem_transpose;
+					}
+				}
 				// Note ON if it is not blocked and was not yet sent
+				if (artic[i][v] == aTREM && icf[ii].trem_chan > -1) midi_channel = icf[ii].trem_chan;
 				stimestamp = sstime[i][v] * 100 / m_pspeed + dstime[i][v];
 				CheckDstime(i, v);
 				if ((stimestamp + midi_start_time + midi_prepause >= midi_sent_t) && (i >= midi_sent)) {
 					if (!note_muted[i][v]) {
-						// Replace note
-						int my_note;
-						if (icf[ii].replace_pitch > -1) my_note = icf[ii].replace_pitch;
-						else my_note = note[i][v] + play_transpose[v];
 						AddNoteOn(stimestamp, my_note, vel[i][v]);
 					}
 					if (icf[ii].type == 1) {
@@ -2382,7 +2403,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 					// Note OFF
 					// ndur = (etime[ei] - stime[i]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 					etimestamp = setime[ei][v] * 100 / m_pspeed + detime[ei][v];
-					AddNoteOff(etimestamp, note[ei][v] + play_transpose[v], 0);
+					AddNoteOff(etimestamp, my_note, 0);
 					// Send note ending ks
 					if (icf[ii].type == 2) {
 						if (artic[ei][v] == aEND_SFL) {
@@ -2399,15 +2420,18 @@ void CGMidi::SendMIDI(int step1, int step2)
 						}
 					}
 				}
+				midi_channel = midi_channel_saved;
 			}
 			// Go to next note
 			if (noff[i][v] == 0) break;
 			i += noff[i][v];
 		}
 		// Send CC
+		if (icf[ii].trem_chan > -1) midi_channel = icf[ii].trem_chan;
 		InterpolateCC(icf[ii].CC_dyn, icf[ii].rnd_dyn, step1, step22, dyn, ii, v);
 		InterpolateCC(icf[ii].CC_vib, icf[ii].rnd_vib, step1, step22, vib, ii, v);
 		InterpolateCC(icf[ii].CC_vibf, icf[ii].rnd_vibf, step1, step22, vibf, ii, v);
+		midi_channel = midi_channel_saved;
 	}
 	// Sort by timestamp before sending
 	qsort(midi_buf.data(), midi_buf.size(), sizeof(PmEvent), PmEvent_comparator);
@@ -2609,8 +2633,8 @@ void CGMidi::AddNoteOn(long long timestamp, int data1, int data2)
 	if ((data1 < icf[instr[midi_voice]].nmin) || (data1 > icf[instr[midi_voice]].nmax)) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString st;
-			st.Format("Blocked note %d/%d time %lld in voice %d instrument %d out of range %d-%d",
-				data1, data2, timestamp, midi_voice, instr[midi_voice], 
+			st.Format("Blocked note %d/%d step %d time %lld in voice %d instrument %d out of range %d-%d",
+				data1, data2, midi_current_step, timestamp, midi_voice, instr[midi_voice], 
 				icf[instr[midi_voice]].nmin, icf[instr[midi_voice]].nmax);
 			WriteLog(1, st);
 			warning_note_wrong[midi_voice] ++;

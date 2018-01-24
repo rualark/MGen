@@ -808,6 +808,9 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	LoadNote(&st2, &st3, "n_min", &icf[i].nmin);
 	LoadNote(&st2, &st3, "n_max", &icf[i].nmax);
 	LoadNote(&st2, &st3, "replacepitch", &icf[i].replace_pitch);
+	LoadNote(&st2, &st3, "trem_replace", &icf[i].trem_replace);
+	CheckVar(&st2, &st3, "trem_transpose", &icf[i].trem_transpose, -127, 127);
+	CheckVar(&st2, &st3, "trem_chan", &icf[i].trem_chan, 0, 15);
 	LoadCCName(&st2, &st3, "cc_name", i);
 	LoadKswGroup(&st2, &st3, "kswgroup", i);
 	LoadTechnique(&st2, &st3, "technique", i);
