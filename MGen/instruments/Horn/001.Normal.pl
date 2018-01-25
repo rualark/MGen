@@ -42,3 +42,6 @@ legato_ahead = 80,640 # Time in ms to stretch legato notes back to cope with leg
 legato_ahead_exp = 2 # Exponent to interpolate note movement ahead from note velocity
 # Time in ms to stretch legato notes back for chromatic split portamento (for each pitch interval)
 ahead_chrom = 0,250,310,440,500,520,560,570,625,630,635,640,640
+
+# Nonlegato adaptor
+all_ahead = 60 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack

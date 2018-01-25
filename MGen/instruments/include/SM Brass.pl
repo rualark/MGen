@@ -60,9 +60,11 @@ gliss_mindur = 30 # Minimum legato duration to use gliss
 splitpo_pent_minint = 3 # Minimum allowed interval in semitones for split portamento pentatonic
 
 # Nonlegato adaptor
+all_ahead = 25 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonlegato
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
+nonlegato_mingap = 7 # Minimum distance between note ending and next note start to sound nonlegato
 
 # Retrigger adaptor
 retrigger_freq = 50 # Percent to use non-legato when repeating notes

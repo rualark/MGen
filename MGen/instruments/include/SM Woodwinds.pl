@@ -38,9 +38,12 @@ CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers
 CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 
 # Nonlegato adaptor
+all_ahead = 25 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
+nonlegato_mingap = 7 # Minimum distance between note ending and next note start to sound nonlegato
+# For SM woodwinds real minimum distance for non-legato sample is 31 ms, but ahead is same for all and legato
 
 # Retrigger adaptor
 retrigger_freq = 50 # Percent to use non-legato when repeating notes
