@@ -313,7 +313,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		float pdur = (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 		// Get maximum legato_ahead possible
 		float min_adur = 0;
-		float max_adur = min(ndur * icf[ii].leg_cdur / 100.0, pdur * icf[ii].leg_pdur / 100.0);
+		float max_adur = max(min(ndur * icf[ii].leg_cdur / 100.0, pdur * icf[ii].leg_pdur / 100.0) - icf[ii].all_ahead, 0);
 		// Set default ahead type to non-ks
 		int adur0 = icf[ii].legato_ahead[0];
 		// Select articulation
@@ -365,7 +365,7 @@ void CGAdapt::AdaptFlexAheadStep(int v, int x, int i, int ii, int ei, int pi, in
 		// Get ahead duration
 		float adur = pow(128 - vel[i][v], icf[ii].legato_ahead_exp) * adur0 / pow(127, icf[ii].legato_ahead_exp);
 		// Move notes
-		dstime[i][v] = -adur;
+		dstime[i][v] = - adur - icf[ii].all_ahead;
 		detime[i - 1][v] = 0.9 * dstime[i][v];
 		// Add comments
 		if (comment_adapt) {
