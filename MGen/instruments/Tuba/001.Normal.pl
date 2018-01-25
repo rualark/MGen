@@ -25,7 +25,9 @@ end_vib2_dur = 0 # Disable
 end_vib2_freq = 0 # Disable
 
 # Legato adaptor
-legato_ahead = 940,520 # Time in ms to stretch legato notes back to cope with legato delay [norm,chrom,penta,gliss]
-splitpo_freq = 90 # Frequency of split portamento in percent
-splitpo_pent_minint = 100 # Disable
+legato_ahead = 1540,520 # Time in ms to stretch legato notes back to cope with legato delay [norm,chrom,penta,gliss]
+splitpo_freq = 0 # Frequency of split portamento in percent
 gliss_freq = 0 # Disable
+
+# Nonlegato adaptor
+all_ahead = 60 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack

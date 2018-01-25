@@ -208,10 +208,11 @@ void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, i
 	else {
 		float ndur = (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 		// Convert legato to non-legato if previous note is short
-		if (ndur <= icf[ii].legato_ahead[0] + 1) {
+		// Do not check this for SM brass, because flex legato allows for any legato length
+		if (ndur <= icf[ii].legato_ahead[0] + 1 && icf[ii].type != 2) {
 			artic[i][v] = aNONLEGATO;
 			dstime[i][v] = -icf[ii].all_ahead;
-			if (comment_adapt) adapt_comment[i][v] += "Nonlegato because short. ";
+			if (comment_adapt) adapt_comment[i][v] += "Nonlegato after short. ";
 		}
 		// Convert legato to non-legato if previous note is not legato or non-legato
 		else if (artic[pi][v] == aSTAC || artic[pi][v] == aTREM) {

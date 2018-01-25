@@ -171,8 +171,8 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 
 		st.Format("Playback note start delta: %.3f s (with delta %.3f s)\nPlayback note ending delta: %.3f s (with delta %.3f s)\n",
-			pGen->dstime[i][mv] / 1000.0, pGen->stime[i] / pGen->m_pspeed / 10 + pGen->dstime[i][mv] / 1000.0,
-			pGen->detime[ei][mv] / 1000.0, pGen->etime[ei] / pGen->m_pspeed / 10 + pGen->detime[ei][mv] / 1000.0);
+			pGen->dstime[i][mv] / 1000.0, pGen->sstime[i][mv] / pGen->m_pspeed / 10 + pGen->dstime[i][mv] / 1000.0,
+			pGen->detime[ei][mv] / 1000.0, pGen->setime[ei][mv] / pGen->m_pspeed / 10 + pGen->detime[ei][mv] / 1000.0);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 
 		st.Format("Step: %d (beat %d:%d)", ms, ms / 8 + 1, ms % 8 + 1);

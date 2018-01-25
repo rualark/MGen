@@ -1379,6 +1379,7 @@ void CGMidi::LoadMidi(CString path)
 							setime[pos - 1][v] = stime[pos] + delta;
 							smet[pos - 1][v] = mev->tick;
 						}
+						// Using stime/etime here, because this check is approximate
 						float ndur = etime[pos + nlen - 1] - stime[pos];
 						float ndur2 = etime[pos + noff[pos][v] - 1] - stime[pos - coff[pos][v]];
 						// Calculate overlap (abs is protection from bugs)
