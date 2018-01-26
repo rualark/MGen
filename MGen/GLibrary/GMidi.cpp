@@ -823,6 +823,7 @@ void CGMidi::SaveLySegment(ofstream &fs, CString st, CString st2, int step1, int
 		fs << "\n  }\n";
 		fs << "}\n";
 		SendLyMistakes();
+		SendLyNoteNames();
 		SendLyHarm();
 		SendLyIntervals();
 	}
@@ -968,12 +969,12 @@ void CGMidi::SendLyNoteNames() {
 		CString st = GetLyNoteVisual(ly_s, ly_v);
 		ly_ly_st += "\\markup{ ";
 		ly_ly_st += "\\teeny ";
-		if (lyi[ly_s2].shs[vInterval] > 0) {
+		if (lyi[ly_s2].shs[vNoteName] > 0) {
 			DWORD col = flag_color[lyi[ly_s2].shse[vNoteName]];
 			if (col && col != color_noflag)
 				ly_ly_st += " \\on-color #(rgb-color " + GetLyMarkColor2(col) + ") ";
 		}
-		ly_ly_st += " \\pad-markup #0.4 " + st + " ";
+		ly_ly_st += " \\pad-markup #0.4 \\concat { " + st + " } ";
 		ly_ly_st += "}\n";
 		SendLySkips(ly_mul - 1);
 	}
