@@ -189,7 +189,8 @@ const CString LyOctave[] = {
 #define vTS 10 // Text spanner
 #define vOttava 11
 #define vPedal 12
-#define MAX_VIZ 13
+#define vNoteName 13
+#define MAX_VIZ 14
 
 // Visualisation types
 #define vtPoint 1 // Can link only to one note
@@ -198,13 +199,13 @@ const CString LyOctave[] = {
 #define vtLink 4 // Cannot mark less than two notes
 #define vtGroup 5 // Cannot mark less than two notes, borders cannot overlap
 
-const int viz_type[MAX_VIZ] = { 1, 1, 1, 2, 3, 4, 4, 4, 5, 5, 4, 5, 5 };
+const int viz_type[MAX_VIZ] = { 1, 1, 1, 2, 3, 4, 4, 4, 5, 5, 4, 5, 5, 3 };
 
 // For each visualisation, specify if empty string should be replaced with space
-const int viz_space[MAX_VIZ] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 };
+const int viz_space[MAX_VIZ] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 };
 
 // For each visualisation, specify if single note can be marked
-const int viz_singlenote[MAX_VIZ] = { 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0 };
+const int viz_singlenote[MAX_VIZ] = { 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1 };
 
 struct LY_Intermediate {
 	vector<int> shs; // [shape_type] If current step starts new shape
@@ -258,6 +259,7 @@ public:
 	void SendLyMistakes();
 	void SendLyHarm();
 	void SendLyIntervals();
+	void SendLyNoteNames();
 	void SaveLy(CString dir, CString fname);
 	void ExportAdaptedMidi(CString dir, CString fname);
 	virtual void Generate() = 0;

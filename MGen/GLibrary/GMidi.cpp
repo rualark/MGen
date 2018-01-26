@@ -952,6 +952,38 @@ void CGMidi::SendLyIntervals() {
 	ly_ly_st += "  }\n";
 }
 
+void CGMidi::SendLyNoteNames() {
+	CString st;
+	if (!ly_flags) return;
+	st.Format("  \\new Lyrics \\with { alignBelowContext = \"staff%d\" } {\n", ly_v);
+	ly_ly_st += st;
+	ly_ly_st += "    \\lyricmode {\n";
+	ly_ly_st += "      \\set stanza = #\" Note:\"\n";
+	for (ly_s = ly_step1; ly_s < ly_step2; ++ly_s) {
+		ly_s2 = ly_s - ly_step1;
+		if (!lyi[ly_s2].shs[vNoteName] && !lyi[ly_s2].shf[vNoteName]) {
+			SendLySkips(ly_mul);
+			continue;
+		}
+		int in = note[ly_s][ly_vhigh] - note[ly_s][ly_vlow];
+		int in2 = in % 12;
+		in = in ? (in2 ? in2 : 12) : 0;
+		CString st = GetIntName(in);
+		ly_ly_st += "\\markup{ ";
+		ly_ly_st += "\\teeny ";
+		if (lyi[ly_s2].shs[vInterval] > 0) {
+			DWORD col = flag_color[lyi[ly_s2].shse[vInterval]];
+			if (col && col != color_noflag)
+				ly_ly_st += " \\on-color #(rgb-color " + GetLyMarkColor2(col) + ") ";
+		}
+		ly_ly_st += " \\pad-markup #0.4 " + st + " ";
+		ly_ly_st += "}\n";
+		SendLySkips(ly_mul - 1);
+	}
+	ly_ly_st += "    }\n";
+	ly_ly_st += "  }\n";
+}
+
 void CGMidi::SaveLy(CString dir, CString fname) {
 	vector<CString> sv;
 	CString title;
