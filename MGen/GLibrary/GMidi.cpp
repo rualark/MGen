@@ -965,14 +965,11 @@ void CGMidi::SendLyNoteNames() {
 			SendLySkips(ly_mul);
 			continue;
 		}
-		int in = note[ly_s][ly_vhigh] - note[ly_s][ly_vlow];
-		int in2 = in % 12;
-		in = in ? (in2 ? in2 : 12) : 0;
-		CString st = GetIntName(in);
+		CString st = GetLyNoteVisual(ly_s, ly_v);
 		ly_ly_st += "\\markup{ ";
 		ly_ly_st += "\\teeny ";
 		if (lyi[ly_s2].shs[vInterval] > 0) {
-			DWORD col = flag_color[lyi[ly_s2].shse[vInterval]];
+			DWORD col = flag_color[lyi[ly_s2].shse[vNoteName]];
 			if (col && col != color_noflag)
 				ly_ly_st += " \\on-color #(rgb-color " + GetLyMarkColor2(col) + ") ";
 		}
