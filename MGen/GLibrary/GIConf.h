@@ -76,7 +76,7 @@ struct IConf {
 	int all_ahead = 0;
 	int nonlegato_mingap = 1;
 	int nonlegato_maxgap = 1;
-	int auto_legato = 0;
+	int auto_legato = 1;
 	vector<int> legato_ahead;
 	vector<int> ahead_chrom;
 	vector<short> KswGroup;
@@ -97,7 +97,8 @@ struct IConf {
 	float nonlegato_freq = 0;
 	int nonlegato_minlen = 0;
 	int stac_maxlen = 0; // Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
-	int stac_dynamics = 0; // Percent of staccato dynamics compared to sustain notes
+	int stac_dynamics = 100; // Percent of staccato dynamics compared to sustain notes
+	int stac_dyn_add = 0; 
 	int lengroup2 = 0;
 	int lengroup3 = 0;
 	int lengroup4 = 0;

@@ -54,9 +54,6 @@ CC_dynamics = 11
 CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 
-# Legato adaptor
-auto_legato = 0 # 1 = treat notes starting exactly at previous note ending as legato (and later nonlegato adaptor will convert some of them back to non-legato)
-
 # Staccato adaptor
 stac_maxlen = 400 # Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
 stac_dynamics = 50 # Percent of staccato dynamics compared to sustain notes

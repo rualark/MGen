@@ -249,7 +249,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		(setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] <= icf[ii].stac_maxlen) {
 		dstime[pi][v] = -icf[ii].all_ahead;
 		artic[pi][v] = aSTAC;
-		vel[pi][v] = dyn[pi][v] * icf[ii].stac_dynamics / 100;
+		vel[pi][v] = min(127, dyn[pi][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add);
 		// Next note cannot be legato/slur
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aNONLEGATO;
@@ -262,7 +262,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		(setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] <= icf[ii].stac_maxlen) {
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aSTAC;
-		vel[i][v] = dyn[i][v] * icf[ii].stac_dynamics / 100;
+		vel[i][v] = min(127, dyn[i][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add);
 		if (comment_adapt) adapt_comment[i][v] += "Staccato. ";
 	}
 }
