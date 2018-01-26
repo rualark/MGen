@@ -93,6 +93,10 @@ nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with no
 nonlegato_minlen = 600 # Minimum note length (in ms) allowed to convert to nonlegato
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
+# Staccato adaptor
+stac_dynamics = 50 # Percent of staccato dynamics compared to sustain notes
+stac_dyn_add = 30 # Add minimum dynamics after multiplying
+
 # Transition types
 vel_harsh = 90 # Velocity equal or above this value triggers harsh sustain
 vel_immediate = 60 # Velocity equal or above this value triggers immediate sustain
