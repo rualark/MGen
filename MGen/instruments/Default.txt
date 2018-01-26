@@ -1,7 +1,7 @@
-#GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT |
-Keyboard/Piano                        | Piano                 | 0   | 0   | +   |
-Keyboard/Organ                        | Organ                 | 13  | 13  | +   |
-Woodwinds/Piccolo                     | Normal                | 14  | 14  | -   |
+#GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT | Synonyms                         
+Keyboard/Piano                        | Piano                 | 0   | 0   | +   | Keyboard, Keys
+Keyboard/Organ                        | Organ                 | 13  | 13  | +   | Pipe organ
+Woodwinds/Piccolo                     | Normal                | 14  | 14  | -   | Piccolo flute
 Woodwinds/Flute                       | Normal                | 15  | 15  | +   |
 Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   |
 Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   |
@@ -12,7 +12,7 @@ Woodwinds/English Horn                | Normal                | 0   | 21  | -   
 Woodwinds/Bassoon                     | Normal                | 0   | 22  | -   |
 Woodwinds/Contrabassoon               | Normal                | 0   | 23  | -   |
 Brass/Trumpet                         | Normal                | 2   | 2   | +   |
-Brass/Horn                            | Normal                | 3   | 3   | +   |
+Brass/Horn                            | Normal                | 3   | 3   | +   | French horn
 Brass/Trombone                        | Normal                | 4   | 4   | +   |
 Brass/Tuba                            | Normal                | 5   | 5   | +   |
 Vocal/Soprano                         | Soprano               | 6   | 6   | +   |
@@ -20,22 +20,22 @@ Vocal/Alto                            | Alto                  | 7   | 7   | +   
 Vocal/Tenor                           | Tenor                 | 8   | 8   | +   |
 Vocal/Bass                            | Bass                  | 9   | 9   | +   |
 Pitched percussion/Xylophone          | Hits                  | 0   | 26  | -   |
-Pitched percussion/Glockenspiel       | Glockenspiel          | 0   | 27  | -   |
+Pitched percussion/Glockenspiel       | Glockenspiel          | 0   | 27  | -   | Campanelli, Bells, Concert bells, Orchestral bells
 Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   |
 Pitched percussion/Timpani            | Long hits             | 0   | 25  | -   |
 Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   |
-Unpitched percussion/Bass drum        | Hard mallet           | 1   | 24  | -   |
-Unpitched percussion/Cymbals          | Long hit              | 2   | 24  | -   |
-Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   |
+Unpitched percussion/Bass drum        | Hard mallet           | 1   | 24  | -   | Gran cassa
+Unpitched percussion/Cymbals          | Long hit              | 2   | 24  | -   | Concert cymbals
+Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   | Tam-tam
 Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   |
-Unpitched percussion/Wood blocks      | Wood block Medium     | 5   | 24  | -   |
-Unpitched percussion/Temple blocks    | Temple block Medium   | 5   | 24  | -   |
+Unpitched percussion/Wood blocks      | Wood block Medium     | 5   | 24  | -   | Wood block
+Unpitched percussion/Temple blocks    | Temple block Medium   | 5   | 24  | -   | Temple block
 Strings/Violin                        | Arco                  | 1   | 1   | +   |
 Strings/Violins                       | Arco                  | 1   | 1   | +   |
 Strings/Viola                         | Arco                  | 10  | 10  | +   |
 Strings/Violas                        | Arco                  | 10  | 10  | +   |
-Strings/Cello                         | Arco                  | 11  | 11  | +   |
-Strings/Cellos                        | Arco                  | 11  | 11  | +   |
+Strings/Cello                         | Arco                  | 11  | 11  | +   | Violoncello
+Strings/Cellos                        | Arco                  | 11  | 11  | +   | Violoncellos
 Strings/Contrabass                    | Arco                  | 12  | 12  | +   |
 Strings/Contrabasses                  | Arco                  | 12  | 12  | +   |
 Strings/Harp                          | Harp                  | 0   | 29  | -   |
