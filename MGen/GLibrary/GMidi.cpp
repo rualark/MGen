@@ -564,6 +564,7 @@ void CGMidi::SetLyShape(int s1, int s2, int f, int fl, int vtype) {
 			if (lyi[s2].shse[vtype] <= severity[fl]) {
 				lyi[s2].shse[vtype] = severity[fl];
 			}
+			if (vtype == vNoteName) ++ly_notenames;
 		}
 		lyi[s1].sht[vtype] = rule_viz_t[fl];
 		// Save flag shape (step depends if link is forward or backward)
@@ -616,6 +617,7 @@ void CGMidi::InitLyI() {
 	ly_v2 = ly_v;
 	if (ly_vm_cnt > 1) ly_v2 = (ly_v / 2) * 2 + !(ly_v % 2);
 	ly_flags = 0;
+	ly_notenames = 0;
 	if (m_algo_id == 111) {
 		ly_vhigh = ly_v;
 		ly_vlow = ly_v;
@@ -960,7 +962,7 @@ void CGMidi::SendLyIntervals() {
 
 void CGMidi::SendLyNoteNames() {
 	CString st;
-	if (!ly_flags) return;
+	if (!ly_notenames) return;
 	st.Format("  \\new Lyrics \\with { alignBelowContext = \"staff%d\" } {\n", ly_v);
 	ly_ly_st += st;
 	ly_ly_st += "    \\lyricmode {\n";

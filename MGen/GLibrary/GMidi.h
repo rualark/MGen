@@ -339,6 +339,7 @@ public:
 	int ly_s2 = 0; // Current ly step inside melody
 	int ly_mel = -1; // Currentn ly melody id
 	int ly_flags = 0; // Number of flags in current melody
+	int ly_notenames = 0; // Number of note names in current melody
 
 	// Midi files
 	vector<vector<vector<PmEvent>>> midifile_buf;
