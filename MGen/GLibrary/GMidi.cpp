@@ -560,6 +560,11 @@ void CGMidi::SetLyShape(int s1, int s2, int f, int fl, int vtype) {
 		// Link to start
 		lyi[s2].shsl[vtype] = s1 - s2;
 		lyi[s1].shse[vtype] = severity[fl];
+		if (vtype == vInterval || vtype == vNoteName) {
+			if (lyi[s2].shse[vtype] <= severity[fl]) {
+				lyi[s2].shse[vtype] = severity[fl];
+			}
+		}
 		lyi[s1].sht[vtype] = rule_viz_t[fl];
 		// Save flag shape (step depends if link is forward or backward)
 		lyi[ly_s2].nfs[f] = vtype;
@@ -702,7 +707,7 @@ void CGMidi::InitLyI() {
 			if (rule_viz_int[fl]) {
 				SetLyShape(s1, s2, f, fl, vInterval);
 			}
-			if (vtype > vInterval) {
+			if (!viz_can_overlap[vtype]) {
 				// Check that flag overlaps
 				int overlap1 = -1;
 				int overlap2 = -1;
@@ -940,7 +945,7 @@ void CGMidi::SendLyIntervals() {
 		CString st = GetIntName(in);
 		ly_ly_st += "\\markup{ ";
 		ly_ly_st += "\\teeny ";
-		if (lyi[ly_s2].shs[vInterval] > 0) {
+		if (lyi[ly_s2].shse[vInterval] > -1) {
 			DWORD col = flag_color[lyi[ly_s2].shse[vInterval]];
 			if (col && col != color_noflag)
 				ly_ly_st += " \\on-color #(rgb-color " + GetLyMarkColor2(col) + ") ";
@@ -969,7 +974,7 @@ void CGMidi::SendLyNoteNames() {
 		CString st = GetLyNoteVisual(ly_s, ly_v);
 		ly_ly_st += "\\markup{ ";
 		ly_ly_st += "\\teeny ";
-		if (lyi[ly_s2].shs[vNoteName] > 0) {
+		if (lyi[ly_s2].shse[vNoteName] > -1) {
 			DWORD col = flag_color[lyi[ly_s2].shse[vNoteName]];
 			if (col && col != color_noflag)
 				ly_ly_st += " \\on-color #(rgb-color " + GetLyMarkColor2(col) + ") ";
