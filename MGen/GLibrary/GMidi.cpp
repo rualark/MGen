@@ -1249,8 +1249,10 @@ void CGMidi::LoadMidi(CString path)
 
 	midifile_loaded = 1;
 	int last_step = 0;
+	// If there is no tempo in file, set default
+	tempo[0] = 120; 
+	int first_track = -1;
 	// Load tempo
-	tempo[0] = 120;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
@@ -1260,8 +1262,10 @@ void CGMidi::LoadMidi(CString path)
 				tempo[pos] = mev->getTempoBPM() * midifile_in_mul;
 				if (pos > last_step) last_step = pos;
 			}
+			if (mev->isNoteOn() && first_track == -1) first_track = track;
 		}
 	}
+	if (first_track == -1) first_track = 0;
 	// Fill tempo
 	for (int z = 1; z <= last_step; z++) {
 		if (tempo[z] == 0) tempo[z] = tempo[z - 1];
@@ -1274,9 +1278,9 @@ void CGMidi::LoadMidi(CString path)
 	int v2 = 0;
 	int v = 0;
 
-	for (int track = 1; track < midifile.getTrackCount(); track++) {
+	for (int track = first_track; track < midifile.getTrackCount(); track++) {
 		if (need_exit) break;
-		if (track > 1) {
+		if (track > first_track) {
 			// Get next free voice
 			v1 = v2 + 1;
 			// Voice interval = 1
@@ -1293,7 +1297,7 @@ void CGMidi::LoadMidi(CString path)
 			if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
 		}
 		// Save track id
-		track_id[v] = track;
+		track_id[v] = track - first_track + 1;
 		track_vid[v] = 0;
 		// Convert track instrument to voice instrument
 		instr[v] = instr2[track_id[v]-1];
@@ -1404,7 +1408,7 @@ void CGMidi::LoadMidi(CString path)
 							WriteLog(5, st);
 							break;
 						}
-						track_id[v] = track;
+						track_id[v] = track - first_track + 1;
 						track_vid[v] = v - v1;
 						track_name[v] = track_name[v1];
 					}
