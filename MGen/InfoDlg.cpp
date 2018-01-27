@@ -206,7 +206,7 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Previous offset : %d steps\nNext offset : %d steps\n",
 			pGen->poff[ms][mv], pGen->noff[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Dynamics: %d\n", pGen->dyn[ms][mv]);
+		st.Format("Dynamics: %d, velocity: %d\n", pGen->dyn[ms][mv], pGen->vel[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Vibrato intensity: %d\nVibrato speed: %d\n", pGen->vib[ms][mv], pGen->vibf[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);

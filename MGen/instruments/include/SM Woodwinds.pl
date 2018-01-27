@@ -80,5 +80,5 @@ rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 
 # Randomization
 rnd_vel = 20 # Randomize note velocity not greater than this percent
-rnd_vel_repeat = 70 # Randomize note velocity not greater than this percent for note retriggers
+rnd_vel_repeat = 50 # Randomize note velocity not greater than this percent for note retriggers
 rnd_dyn = 15 # Randomize step dynamics not greater than this percent
