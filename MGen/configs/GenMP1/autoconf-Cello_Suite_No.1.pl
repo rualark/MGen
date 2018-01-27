@@ -6,10 +6,10 @@
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 4 # How much you want to decrease minimum step length
 
-GrowNotes = 30 # How much to extend notes to the right to make MuseScore notes legato (in midi pulses)
+GrowNotes = 1
 
 # This config was created from default config file configs\GenMP1.pl
-# Created at 2018-01-27 16:38:59
-Midi_file = midi\Music\test\test-export-musescore.mid
+# Created at 2018-01-27 17:12:52
+Midi_file = midi\Music\Bach\Cello_Suite_No.1.mid
 
-Instruments = Violin
+Instruments = Cello

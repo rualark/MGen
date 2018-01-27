@@ -1329,7 +1329,8 @@ void CGMidi::LoadMidi(CString path)
 				int pos = round(mev->tick / (float)tpc);
 				int pitch = mev->getKeyNumber();
 				int myvel = mev->getVelocity();
-				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
+				int tick_dur = mev->getTickDuration() + grow_notes;
+				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 				// Check if note too long
 				if (nlen > MAX_LEN) {
 					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
@@ -1356,7 +1357,7 @@ void CGMidi::LoadMidi(CString path)
 				// Fallback
 				if (!tempo[pos]) tempo[pos] = 100;
 				float delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
-				float delta2 = (float)(mev->tick + mev->getTickDuration() - (pos + nlen)*tpc) / 
+				float delta2 = (float)(mev->tick + tick_dur - (pos + nlen)*tpc) /
 					(float)tpc * 30000.0 / (float)tempo[pos + nlen];
 				// Check alignment
 				if (abs(delta) > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
@@ -1475,7 +1476,7 @@ void CGMidi::LoadMidi(CString path)
 				}
 				// Set midi ticks
 				smst[pos][v] = mev->tick;
-				smet[pos + nlen - 1][v] = mev->tick + mev->getTickDuration();
+				smet[pos + nlen - 1][v] = mev->tick + tick_dur;
 				// Set midi delta only to first step of note, because in in-note steps you can get different calculations for different tempo
 				//midi_delta[pos][v] = delta;
 				sstime[pos][v] = stime[pos] + delta;
@@ -1692,8 +1693,9 @@ void CGMidi::LoadCantus(CString path)
 				}
 			}
 			if (mev->isNoteOn()) {
-				float nlen2 = mev->getTickDuration();
-				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
+				int tick_dur = mev->getTickDuration();
+				float nlen2 = tick_dur;
+				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 				// Check for pause
 				if (pos2 - last_tick > (float)tpc / 2) {
 					// Add cantus if it is long
@@ -1736,7 +1738,7 @@ void CGMidi::LoadCantus(CString path)
 						}
 						bad = 1;
 					}
-					int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
+					int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 					// Check if note too long
 					if (nlen > MAX_LEN) {
 						if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
@@ -1866,8 +1868,9 @@ void CGMidi::LoadCP(CString path)
 			float pos2 = mev->tick;
 			int pos = round(mev->tick / (float)tpc);
 			if (mev->isNoteOn()) {
-				float nlen2 = mev->getTickDuration();
-				int nlen = round((mev->tick + mev->getTickDuration()) / (float)tpc) - pos;
+				int tick_dur = mev->getTickDuration();
+				float nlen2 = tick_dur;
+				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 				// If new column and previous column had notes
 				ProcessInter(pos, pos_old, inter, hid, min_len, max_len);
 				// Check for pause
