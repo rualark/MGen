@@ -9,4 +9,5 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-26 21-17-57
 Midi_file = midi\Music\arkhipenko\trio.mid
-Instruments = Trumpet,Trumpet,Trumpet
+
+Instruments = "Flute/Normal,Violin/Arco,Cello"

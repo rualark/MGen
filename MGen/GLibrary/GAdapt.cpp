@@ -221,7 +221,8 @@ void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, i
 			if (comment_adapt) adapt_comment[i][v] += "Nonlegato after other articulation. ";
 		}
 		// Convert legato to non-legato if notes are touching
-		else if (!icf[ii].auto_legato && smet[pei][v] == smst[i][v]) {
+		// If instrument auto_legato is not set, then use global value. If set, use instrument value
+		else if ((icf[ii].auto_legato == 0 || (auto_legato == 0 && icf[ii].auto_legato == -1)) && smet[pei][v] == smst[i][v]) {
 			artic[i][v] = aNONLEGATO;
 			dstime[i][v] = -icf[ii].all_ahead;
 			if (comment_adapt) adapt_comment[i][v] += "Touching note nonlegato. ";
