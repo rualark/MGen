@@ -100,7 +100,6 @@ all_ahead = 54 # Time in ms to stretch sutain notes (not legato) back to cope wi
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 600 # Minimum note length (in ms) allowed to convert to nonlegato
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
-nonlegato_mingap = 12 # Minimum distance between note ending and next note start to sound nonlegato
 
 # Staccato adaptor
 stac_dynamics = 50 # Percent of staccato dynamics compared to sustain notes
