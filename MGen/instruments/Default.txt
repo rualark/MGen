@@ -20,7 +20,7 @@ Vocal/Alto                            | Alto                  | 7   | 7   | +   
 Vocal/Tenor                           | Tenor                 | 8   | 8   | +   |
 Vocal/Bass                            | Bass                  | 9   | 9   | +   |
 Pitched percussion/Xylophone          | Hits                  | 0   | 26  | -   |
-Pitched percussion/Glockenspiel       | Glockenspiel          | 0   | 27  | -   | Campanelli, Bells, Concert bells, Orchestral bells
+Pitched percussion/Glockenspiel       | Hits                  | 0   | 27  | -   | Campanelli, Bells, Concert bells, Orchestral bells
 Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   |
 Pitched percussion/Timpani            | Long hits             | 0   | 25  | -   |
 Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   |
