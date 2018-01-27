@@ -181,7 +181,7 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 			|| (ndur < icf[ii].retrigger_min_len)) {
 			int max_shift = (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed * (float)icf[ii].retrigger_rand_end / 100.0;
 			if (max_shift > icf[ii].retrigger_rand_max) max_shift = icf[ii].retrigger_rand_max;
-			detime[pei][v] = -randbw(0, max_shift);
+			detime[pei][v] = -icf[ii].all_ahead - randbw(0, max_shift);
 			artic[i][v] = aNONLEGATO;
 			dstime[i][v] = -icf[ii].all_ahead;
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger nonlegato. ";
@@ -189,7 +189,7 @@ void CGAdapt::AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, i
 		else {
 			if (comment_adapt) adapt_comment[i][v] += "Retrigger. ";
 			artic[i][v] = aRETRIGGER;
-			detime[pei][v] = -1;
+			detime[pei][v] = - icf[ii].all_ahead - 1;
 			dstime[i][v] = -icf[ii].all_ahead;
 		}
 	}
@@ -387,9 +387,8 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 				(!pause[lpi][v] && icf[ii].poly == 1 && (artic[i][v] == aSTAC || artic[i][v] == aNONLEGATO || 
 					artic[i][v] == aREBOW || artic[i][v] == aRETRIGGER || artic[i][v] == aTREM))) {
 				int lpei = lpi + len[lpi][v] - 1;
-				if ((sstime[i][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v] <
-					icf[ii].nonlegato_mingap) {
-					//dstime[i][v] = (etime[lpei] - stime[i]) + detime[lpei] + 1;
+				float gap = (sstime[i][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v];
+				if (gap <	icf[ii].nonlegato_mingap) {
 					// Move ending of previous note to the left but not further than previous note start
 					detime[lpei][v] = max(
 						// Push back
@@ -397,6 +396,15 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 						// Maximum push
 						(sstime[lpi][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[lpei][v] + 1);
 					if (comment_adapt) adapt_comment[lpei][v] += "Ending overlap fixed. ";
+				}
+				if (note[lpi][v] == note[i][v] && gap < icf[ii].retrigger_mingap) {
+					// Move ending of previous note to the left but not further than previous note start
+					detime[lpei][v] = max(
+						// Push back
+						(sstime[i][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[i][v] - icf[ii].retrigger_mingap,
+						// Maximum push
+						(sstime[lpi][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[lpei][v] + 1);
+					if (comment_adapt) adapt_comment[lpei][v] += "Retrigger overlap fixed. ";
 				}
 				break;
 			}

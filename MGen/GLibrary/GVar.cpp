@@ -848,6 +848,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "max_slur_interval", &icf[i].max_slur_interval);
 	CheckVar(&st2, &st3, "nonlegato_maxgap", &icf[i].nonlegato_maxgap);
 	CheckVar(&st2, &st3, "nonlegato_mingap", &icf[i].nonlegato_mingap);
+	CheckVar(&st2, &st3, "retrigger_mingap", &icf[i].retrigger_mingap);
 	CheckVar(&st2, &st3, "auto_legato", &icf[i].auto_legato);
 	CheckVar(&st2, &st3, "trem_maxlen", &icf[i].trem_maxlen);
 	CheckVar(&st2, &st3, "trem_dynamics", &icf[i].trem_dynamics);

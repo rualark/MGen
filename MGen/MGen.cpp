@@ -261,7 +261,7 @@ void CMGenApp::OnFileOpen()
 	TCHAR szFilters[] = _T("All supported formats (*.mgr;*.mid;*.midi)|*.mgr;*.mid;*.midi|MGen result files (*.mgr)|*.mgr|MIDI files (*.mid)|*.mid|MIDI files (*.midi)|*.midi||");
 
 	// Create an Open dialog; the default file name extension is ".my".
-	CFileDialog fileDlg(TRUE, "", path_old, // path_old
+	CFileDialog fileDlg(TRUE, "", "", // path_old
 		OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szFilters, mf, 0, false);
 	fileDlg.m_ofn.lpstrInitialDir = path_old;
 
