@@ -1250,6 +1250,7 @@ void CGMidi::LoadMidi(CString path)
 	midifile_loaded = 1;
 	int last_step = 0;
 	// Load tempo
+	tempo[0] = 120;
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
