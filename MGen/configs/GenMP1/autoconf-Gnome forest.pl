@@ -11,4 +11,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 Midi_file = midi\Music\arkhipenko\Gnome forest.mid
 
 AutoLegato = 1
-Instruments = "Violin,Oboe,Clarinet,Bass Clarinet,Flute"
+Instruments = "Violin,Oboe,Clarinet,Bass Clarinet,Trumpet"
