@@ -97,6 +97,10 @@ nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automat
 stac_dynamics = 50 # Percent of staccato dynamics compared to sustain notes
 stac_dyn_add = 30 # Add minimum dynamics after multiplying
 
+# Pizzicato adaptor
+pizz_dynamics = 60 # Percent of staccato dynamics compared to sustain notes
+pizz_dyn_add = 0 # Add minimum dynamics after multiplying
+
 # Transition types
 vel_harsh = 90 # Velocity equal or above this value triggers harsh sustain
 vel_immediate = 60 # Velocity equal or above this value triggers immediate sustain
