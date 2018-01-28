@@ -593,11 +593,10 @@ int RunRender() {
 			est.Format("File not found: " + share + j_folder + j_basefile + ".png");
 		}
 
-		par.Format("-y -i %s > %s.inf 2>&1",
+		par.Format("-show_format -of flat -i %s > %s.inf 2>&1",
 			share + j_folder + j_basefile + ".mp3",
 			share + j_folder + j_basefile);
-		ret = RunTimeout(fChild["ffmpeg.exe"] + "ffmpeg.exe",
-			par, 30000);
+		ret = RunTimeout(fChild["ffmpeg.exe"] + "ffprobe.exe", par, 30000);
 		if (!CGLib::fileExists(share + j_folder + j_basefile + ".inf")) {
 			est.Format("File not found: " + share + j_folder + j_basefile + ".inf");
 		}
