@@ -870,6 +870,8 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "stac_maxlen", &icf[i].stac_maxlen);
 	CheckVar(&st2, &st3, "stac_dynamics", &icf[i].stac_dynamics, 0, 200);
 	CheckVar(&st2, &st3, "stac_dyn_add", &icf[i].stac_dyn_add, 0, 127);
+	CheckVar(&st2, &st3, "pizz_dynamics", &icf[i].pizz_dynamics, 0, 200);
+	CheckVar(&st2, &st3, "pizz_dyn_add", &icf[i].pizz_dyn_add, 0, 127);
 	CheckVar(&st2, &st3, "vel_mul", &icf[i].vel_mul, 0, 1000);
 	CheckVar(&st2, &st3, "nonlegato_freq", &icf[i].nonlegato_freq);
 	CheckVar(&st2, &st3, "lengroup2", &icf[i].lengroup2);

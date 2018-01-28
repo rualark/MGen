@@ -2421,6 +2421,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 						if (artic[i][v] == aSTAC) {
 							AddKs(stimestamp - 3, icf[ii].NameToKsw["Staccato"]);
 						}
+						else if (artic[i][v] == aPIZZ) {
+							AddKs(stimestamp - 3, icf[ii].NameToKsw["Pizzicato"]);
+						}
 						else if (artic[i][v] == aTREM) {
 							AddKs(stimestamp - 3, icf[ii].NameToKsw["Tremolo"]);
 						}

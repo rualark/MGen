@@ -98,7 +98,9 @@ struct IConf {
 	int nonlegato_minlen = 0;
 	int stac_maxlen = 0; // Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
 	int stac_dynamics = 100; // Percent of staccato dynamics compared to sustain notes
-	int stac_dyn_add = 0; 
+	int stac_dyn_add = 0;
+	int pizz_dynamics = 100; // Percent of pizz dynamics compared to sustain notes
+	int pizz_dyn_add = 0;
 	int lengroup2 = 0;
 	int lengroup3 = 0;
 	int lengroup4 = 0;

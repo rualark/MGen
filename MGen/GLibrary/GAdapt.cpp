@@ -215,7 +215,7 @@ void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, i
 			if (comment_adapt) adapt_comment[i][v] += "Nonlegato after short. ";
 		}
 		// Convert legato to non-legato if previous note is not legato or non-legato
-		else if (artic[pi][v] == aSTAC || artic[pi][v] == aTREM) {
+		else if (artic[pi][v] == aSTAC || artic[pi][v] == aTREM || artic[pi][v] == aPIZZ) {
 			artic[i][v] = aNONLEGATO;
 			dstime[i][v] = -icf[ii].all_ahead;
 			if (comment_adapt) adapt_comment[i][v] += "Nonlegato after other articulation. ";
@@ -245,8 +245,8 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 
 void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Make short non-legato notes (on both sides) staccato
-	if (x && artic[pi][v] != aLEGATO && artic[pi][v] != aSLUR && artic[pi][v] != aTREM &&
-		artic[i][v] != aLEGATO && artic[i][v] != aSLUR && artic[i][v] != aTREM &&
+	if (x && artic[pi][v] != aLEGATO && artic[pi][v] != aSLUR && artic[pi][v] != aPIZZ &&
+		artic[i][v] != aLEGATO && artic[i][v] != aSLUR &&
 		(setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] <= icf[ii].stac_maxlen) {
 		dstime[pi][v] = -icf[ii].all_ahead;
 		artic[pi][v] = aSTAC;
@@ -258,13 +258,21 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		if (comment_adapt) adapt_comment[pi][v] += "Staccato. ";
 	}
 	// Same process for current note
-	if (artic[i][v] != aLEGATO && artic[i][v] != aSLUR && artic[i][v] != aTREM &&
+	if (artic[i][v] != aLEGATO && artic[i][v] != aSLUR && artic[i][v] != aPIZZ &&
 		(ei == t_generated - 1 || pause[ei + 1][v]) &&
 		(setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] <= icf[ii].stac_maxlen) {
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aSTAC;
 		vel[i][v] = min(127, dyn[i][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add);
 		if (comment_adapt) adapt_comment[i][v] += "Staccato. ";
+	}
+}
+
+void CGAdapt::AdaptPizzStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	// Change pizz dynamics
+	if (artic[i][v] == aPIZZ) {
+		vel[i][v] = min(127, dyn[i][v] * icf[ii].pizz_dynamics / 100 + icf[ii].pizz_dyn_add);
+		if (comment_adapt) adapt_comment[i][v] += "Pizz. ";
 	}
 }
 
@@ -384,7 +392,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 		// Cycle through all notes backwards
 		while (lpi >= 0) {
 			if (note[lpi][v] == note[i][v] || 
-				(!pause[lpi][v] && icf[ii].poly == 1 && (artic[i][v] == aSTAC || artic[i][v] == aNONLEGATO || 
+				(!pause[lpi][v] && icf[ii].poly == 1 && (artic[i][v] == aSTAC || artic[i][v] == aPIZZ || artic[i][v] == aNONLEGATO ||
 					artic[i][v] == aREBOW || artic[i][v] == aRETRIGGER || artic[i][v] == aTREM))) {
 				int lpei = lpi + len[lpi][v] - 1;
 				float gap = (sstime[i][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v];
@@ -437,7 +445,8 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei, int ncount) {
 	float ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	// Create bell if long length, not high velocity, after pause or first note
-	if ((ndur > icf[ii].bell_mindur) && (len[i][v] > 2) && (!i || pause[pi][v]) && vel[i][v] < 120) {
+	if (ndur > icf[ii].bell_mindur && len[i][v] > 2 && artic[i][v] != aSTAC && artic[i][v] != aPIZZ &&
+		(!i || pause[pi][v]) && vel[i][v] < 120) {
 		int pos = i + (float)(len[i][v]) * icf[ii].bell_start_len / 100.0;
 		int ok = 1;
 		// Check if dynamics is even
@@ -458,7 +467,8 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 	}
 	int ni = i + noff[i][v];
 	// Create bell if long length, not pause and not last note (because can be just end of adapt window)
-	if ((ndur > (float)icf[ii].bell_mindur/2) && (len[i][v] > 2) && (x == ncount - 1 || pause[ni][v])) {
+	if ((ndur > (float)icf[ii].bell_mindur/2) && len[i][v] > 2 && artic[i][v] != aSTAC && artic[i][v] != aPIZZ 
+		&& (x == ncount - 1 || pause[ni][v])) {
 		int pos = round(i + (float)(len[i][v]) * 2.0 * icf[ii].bell_start_len / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
@@ -483,7 +493,8 @@ void CGAdapt::AdaptReverseBell(int v, int x, int i, int ii, int ei, int pi, int 
 	float ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 	int ni = i + noff[i][v];
 	// Create rbell if long length and no pauses
-	if ((ndur > icf[ii].rbell_mindur) && (len[i][v] > 2) &&	(randbw(0, 100) < icf[ii].rbell_freq)) {
+	if ((ndur > icf[ii].rbell_mindur) && len[i][v] > 2 && artic[i][v] != aSTAC && artic[i][v] != aPIZZ &&	
+		(randbw(0, 100) < icf[ii].rbell_freq)) {
 		int pos1 = i;
 		int pos2 = ei;
 		// Find even dynamics window
@@ -695,8 +706,10 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 		}
 		if (ok) {
 			// If note repeats, increase randomization range
-			if (i > 0 && note[i - 1][v] == note[i][v] && icf[ii].rnd_vel_repeat) 
+			if (i > 0 && note[i - 1][v] == note[i][v] && icf[ii].rnd_vel_repeat) {
 				rv = icf[ii].rnd_vel_repeat;
+				if (comment_adapt) adapt_comment[i][v] += "Repeat note random vel. ";
+			}
 			int max_shift = vel[i][v] * rv / 100.0;
 			vel[i][v] = randbw(max(1, vel[i][v] - max_shift), min(127, vel[i][v] + max_shift));
 		}
@@ -881,6 +894,7 @@ void CGAdapt::Adapt(int step1, int step2) {
 					AdaptRetriggerRebowStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptStaccatoStep(v, x, i, ii, ei, pi, pei);
+					AdaptPizzStep(v, x, i, ii, ei, pi, pei);
 					AdaptAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
