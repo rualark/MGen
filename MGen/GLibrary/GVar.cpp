@@ -89,14 +89,10 @@ void CGVar::ResizeVectors(int size, int vsize)
 	note.resize(size);
 	note_muted.resize(size);
 	midifile_out_mul.resize(size, 1);
-	ngraph.resize(size, vector<vector<float> >(vsize, vector<float>(ngraph_size)));
-	graph.resize(size, vector<vector<float> >(vsize, vector<float>(graph_size)));
 	len.resize(size);
 	coff.resize(size);
 	poff.resize(size);
 	noff.resize(size);
-	tonic.resize(size);
-	minor.resize(size);
 	tempo.resize(size);
 	tempo_src.resize(size);
 	stime.resize(size);
@@ -112,22 +108,28 @@ void CGVar::ResizeVectors(int size, int vsize)
 	vib.resize(size);
 	vibf.resize(size);
 	artic.resize(size);
+	lengroup.resize(size);
+	adapt_comment.resize(size);
+	midi_ch.resize(size);
+
+	ngraph.resize(size, vector<vector<float> >(vsize, vector<float>(ngraph_size)));
+	graph.resize(size, vector<vector<float> >(vsize, vector<float>(graph_size)));
+	tonic.resize(size);
+	minor.resize(size);
 	nlink.resize(size);
 	lining.resize(size);
 	mel_id.resize(size);
 	mark.resize(size);
 	mark_color.resize(size);
 	linecolor.resize(size);
-	lengroup.resize(size);
 	lyrics.resize(size);
 	comment.resize(size);
 	ccolor.resize(size);
 	comment2.resize(size);
 	nsr1.resize(size);
 	nsr2.resize(size);
-	adapt_comment.resize(size);
-	midi_ch.resize(size);
 	color.resize(size);
+
 	int start = t_allocated;
 	// Start from zero if we are allocating first time
 	if (size == t_allocated) start = 0;
