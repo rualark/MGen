@@ -1359,14 +1359,17 @@ void CGMidi::LoadMidi(CString path)
 				float delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
 				float delta2 = (float)(mev->tick + tick_dur - (pos + nlen)*tpc) /
 					(float)tpc * 30000.0 / (float)tempo[pos + nlen];
+				/*
+				// This check is not needed because sstime corrects this if there is no crucial overwrite
 				// Check alignment
 				if (abs(delta) > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
 					CString st;
 					st.Format("Note moved %.0f ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d ticks) in file %s. Increasing midifile_in_mul will improve approximation.", 
 						delta, track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
-					WriteLog(1, st);
+					WriteLog(0, st);
 					warning_loadmidi_align++;
 				}
+				*/
 				// Find overlaps and distance
 				if (icf[instr[v]].poly > 1) {
 					for (int x = v1; x <= v2; ++x) {
@@ -1432,7 +1435,7 @@ void CGMidi::LoadMidi(CString path)
 							CString st;
 							st.Format("Error: too long overlap (voice %d) %.0f ms at step %d (note lengths %.0f, %.0f ms) in monophonic instrument %s/%s. Probably sending polyphonic instrument to monophonic.",
 								v, ov, pos, ndur, ndur2, icf[instr[v]].group, icf[instr[v]].name);
-							WriteLog(1, st);
+							WriteLog(0, st);
 							++warning_loadmidi_overlap;
 						}
 					}

@@ -61,7 +61,7 @@ void CGAdapt::CheckShortStep(int v, int x, int i, int ii, int ei, int pi, int pe
 			st.Format("Recommended minimum note length for %s/%s instrument is %d ms. In voice %d note length at step %d is %d ms. Try to change playback speed, instrument or algorithm config.",
 				icf[ii].group, icf[ii].name, icf[ii].tmin, v, i, ndur);
 			warning_note_short[v] ++;
-			WriteLog(1, st);
+			WriteLog(0, st);
 			if (comment_adapt) adapt_comment[i][v] += "Too short note. ";
 		}
 	}
