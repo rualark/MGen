@@ -4,7 +4,7 @@
 
 #define MGR_VERSION "1.9" // Version of MGR file format (should change only when format changes)
 // Maximum memory usage without warning in Megabytes
-#define MAX_MEMORY_WARN 3000
+#define MAX_MEMORY_WARN 8000
 #define MAX_VOICE 200
 // Maximum number of solo instruments of the same group
 #define MAX_STAGE 50
