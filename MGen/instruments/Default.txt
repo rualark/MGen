@@ -8,7 +8,7 @@ Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   
 Woodwinds/Clarinet                    | Normal                | 0   | 18  | -   |
 Woodwinds/Bass Clarinet               | Normal                | 0   | 19  | -   |
 Woodwinds/Oboe                        | Normal                | 0   | 20  | -   |
-Woodwinds/English Horn                | Normal                | 0   | 21  | -   |
+Woodwinds/English Horn                | Normal                | 0   | 21  | -   | E. Horn
 Woodwinds/Bassoon                     | Normal                | 0   | 22  | -   |
 Woodwinds/Contrabassoon               | Normal                | 0   | 23  | -   |
 Brass/Trumpet                         | Normal                | 2   | 2   | +   |
@@ -22,21 +22,21 @@ Vocal/Bass                            | Bass                  | 9   | 9   | +   
 Pitched percussion/Xylophone          | Hits                  | 0   | 26  | -   |
 Pitched percussion/Glockenspiel       | Hits                  | 0   | 27  | -   | Campanelli, Bells, Concert bells, Orchestral bells
 Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   |
-Pitched percussion/Timpani            | Long hits             | 0   | 25  | -   |
+Pitched percussion/Timpani            | Long hits             | 0   | 25  | -   | 
 Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   |
 Unpitched percussion/Bass drum        | Hard mallet           | 1   | 24  | -   | Gran cassa
 Unpitched percussion/Cymbals          | Long hit              | 2   | 24  | -   | Concert cymbals
 Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   | Tam-tam
-Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   |
+Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   | 
 Unpitched percussion/Wood blocks      | Wood block Medium     | 5   | 24  | -   | Wood block
 Unpitched percussion/Temple blocks    | Temple block Medium   | 5   | 24  | -   | Temple block
-Strings/Violin                        | Arco                  | 1   | 1   | +   |
-Strings/Violins                       | Arco                  | 1   | 1   | +   |
-Strings/Viola                         | Arco                  | 10  | 10  | +   |
-Strings/Violas                        | Arco                  | 10  | 10  | +   |
-Strings/Cello                         | Arco                  | 11  | 11  | +   | Violoncello
+Strings/Violin                        | Arco                  | 1   | 1   | +   | Vln
+Strings/Violins                       | Arco                  | 1   | 1   | +   | Vlns
+Strings/Viola                         | Arco                  | 10  | 10  | +   | Vla
+Strings/Violas                        | Arco                  | 10  | 10  | +   | Vlas
+Strings/Cello                         | Arco                  | 11  | 11  | +   | Violoncello, Vlle
 Strings/Cellos                        | Arco                  | 11  | 11  | +   | Violoncellos
-Strings/Contrabass                    | Arco                  | 12  | 12  | +   |
+Strings/Contrabass                    | Arco                  | 12  | 12  | +   | Cb.
 Strings/Contrabasses                  | Arco                  | 12  | 12  | +   |
 Strings/Harp                          | Harp                  | 0   | 29  | -   |
 

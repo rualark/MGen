@@ -1209,8 +1209,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	}
 }
 
-UINT CMainFrame::GenThread(LPVOID pParam)
-{
+UINT CMainFrame::GenThread(LPVOID pParam) {
 	CGMidi* pGen = (CGMidi*)pParam;
 
 	if (pGen == NULL) return 1;   // if Object is not valid  
@@ -1222,6 +1221,7 @@ UINT CMainFrame::GenThread(LPVOID pParam)
 	pGen->InitRandom();
 	pGen->Generate();
 	pGen->time_stopped = CGLib::time();
+	pGen->CheckMemoryUsage();
 
 	// Save results
 	CreateDirectory("autosaves", NULL);

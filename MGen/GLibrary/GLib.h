@@ -3,6 +3,8 @@
 #include "pvector.h"
 
 #define MGR_VERSION "1.9" // Version of MGR file format (should change only when format changes)
+// Maximum memory usage without warning in Megabytes
+#define MAX_MEMORY_WARN 3000
 #define MAX_VOICE 200
 // Maximum number of solo instruments of the same group
 #define MAX_STAGE 50
@@ -245,6 +247,7 @@ public:
 
 
 	static void CleanFolder(CString Wildcard);
+	static void CheckMemoryUsage();
 	static float Lighten(float col, float coef) { return 255.0 - (255.0 - col) / coef; }
 	static DWORD GetRed(DWORD col) { return (col >> 16) & 0xff; }
 	static DWORD GetGreen(DWORD col) { return (col >> 8) & 0xff; }
@@ -305,6 +308,7 @@ public:
 	static vector<deque<CString>> log_buffer; // Logs buffer
 	static vector<int> log_buffer_size; // Logs buffer size
 	static vector<int> warn_log_buffer; // =1 if Log buffer overflow
+	static int warn_memory_usage; // If you already got memory usage warning
 	static vector<long long> logs_sent;
 
 protected:

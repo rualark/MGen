@@ -30,6 +30,7 @@ vector<CString> CGLib::oinfo; // Strings of algorithm output status
 vector<int> CGLib::oinfo_changed; // If string changed
 vector<deque<CString>> CGLib::log_buffer;
 vector<int> CGLib::warn_log_buffer;
+int CGLib::warn_memory_usage = 0;
 vector<int> CGLib::log_buffer_size;
 vector<long long> CGLib::status_updates;
 vector<long long> CGLib::logs_sent;
@@ -1124,3 +1125,17 @@ void CGLib::CleanFolder(CString Wildcard) {
 	}
 	finder.Close();
 }
+
+void CGLib::CheckMemoryUsage() {
+	if (warn_memory_usage) return;
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	SIZE_T virtualMemUsedByMe = pmc.PrivateUsage / 1024 / 1024;
+	if (virtualMemUsedByMe > MAX_MEMORY_WARN) {
+		CString st;
+		st.Format("Memory usage is above limit %d Mb", (int)MAX_MEMORY_WARN);
+		WriteLog(5, st);
+		warn_memory_usage = 1;
+	}
+}
+
