@@ -45,3 +45,9 @@ ahead_chrom = 0,250,310,440,500,520,560,570,625,630,635,640,640
 
 # Nonlegato adaptor
 all_ahead = 60 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
+
+# Mute adaptor
+mute_predelay = 300 # Delay between mute keyswitch and note in ms
+mute_activate = "brass stop" # Choose mute that can be activated from MIDI file
+mute_deactivate = "senza sord" # Choose mute that can be activated from MIDI file
+
