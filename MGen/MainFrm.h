@@ -22,8 +22,6 @@
 #include "Generators/GenCP1.h"
 #include "Generators/GenRL1.h"
 
-// Maximum memory usage without warning in Megabytes
-#define MAX_MEMORY_WARN 1000
 #define MIN_HZOOM 1
 #define MAX_HZOOM 2000
 #define MIN_PSPEED 1
