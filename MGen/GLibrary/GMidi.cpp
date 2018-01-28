@@ -1332,6 +1332,16 @@ void CGMidi::LoadMidi(CString path)
 					}
 				}
 			}
+			if (mev->isPatchChange()) {
+				int patch = mev->data()[1];
+				if (patch == 59) mute_active = 1;
+				else if (patch == 45) pizz_active = 1;
+				else {
+					mute_active = 0;
+					pizz_active = 0;
+					trem_active = 0;
+				}
+			}
 			if (mev->isNoteOn()) {
 				int pos = round(mev->tick / (float)tpc);
 				int pitch = mev->getKeyNumber();
