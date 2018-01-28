@@ -872,6 +872,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "stac_dyn_add", &icf[i].stac_dyn_add, 0, 127);
 	CheckVar(&st2, &st3, "pizz_dynamics", &icf[i].pizz_dynamics, 0, 200);
 	CheckVar(&st2, &st3, "pizz_dyn_add", &icf[i].pizz_dyn_add, 0, 127);
+	CheckVar(&st2, &st3, "mute_predelay", &icf[i].pizz_dyn_add);
 	CheckVar(&st2, &st3, "vel_mul", &icf[i].vel_mul, 0, 1000);
 	CheckVar(&st2, &st3, "nonlegato_freq", &icf[i].nonlegato_freq);
 	CheckVar(&st2, &st3, "lengroup2", &icf[i].lengroup2);
@@ -909,6 +910,20 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "end_vib2_freq", &icf[i].end_vib2_freq);
 	CheckVar(&st2, &st3, "end_vib_dur", &icf[i].end_vib_dur);
 	CheckVar(&st2, &st3, "end_vib_freq", &icf[i].end_vib_freq);
+	if (st2 == "mute_activate") {
+		++parameter_found;
+		if (icf[i].NameToTech.find(st3) != icf[i].NameToTech.end()) {
+			icf[i].mute_activate = icf[i].NameToTech[st3];
+		}
+		else WriteLog(5, "Unknown technique specified for mute_selected: " + st3);
+	}
+	if (st2 == "mute_deactivate") {
+		++parameter_found;
+		if (icf[i].NameToTech.find(st3) != icf[i].NameToTech.end()) {
+			icf[i].mute_deactivate = icf[i].NameToTech[st3];
+		}
+		else WriteLog(5, "Unknown technique specified for mute_selected: " + st3);
+	}
 }
 
 void CGVar::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {

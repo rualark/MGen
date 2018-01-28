@@ -101,6 +101,9 @@ struct IConf {
 	int stac_dyn_add = 0;
 	int pizz_dynamics = 100; // Percent of pizz dynamics compared to sustain notes
 	int pizz_dyn_add = 0;
+	int mute_predelay = 300; // Delay between mute keyswitch and note in ms
+	int mute_activate = -1; // Technique that will be triggered with mute command from MIDI file
+	int mute_deactivate = -1; // Technique that will be triggered with open command from MIDI file
 	int lengroup2 = 0;
 	int lengroup3 = 0;
 	int lengroup4 = 0;

@@ -27,3 +27,9 @@ end_vib_dur = 510 # Duration of vibrato ending2
 end_vib_freq = 30 # Frequency of vibrato ending2
 end_vib2_dur = 266 # Duration of vibrato ending3
 end_vib2_freq = 10 # Duration of vibrato ending3
+
+# Mute adaptor
+mute_predelay = 300 # Delay between mute keyswitch and note in ms
+mute_activate = "harmon mute" # Choose mute that can be activated from MIDI file
+mute_deactivate = "senza sord" # Choose mute that can be activated from MIDI file
+

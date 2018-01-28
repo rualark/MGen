@@ -25,6 +25,11 @@ t_max = 10000 # Longest note without pauses in ms (0 = no limit). Decreases with
 legato_ahead = 700 # Time in ms to stretch legato notes back to cope with legato delay
 ks1 = 36 # First keyswitch position
 
+# Mute adaptor
+mute_predelay = 300 # Delay between mute keyswitch and note in ms
+mute_activate = "harmon mute" # Choose mute that can be activated from MIDI file
+mute_deactivate = "senza sord" # Choose mute that can be activated from MIDI file
+
 # Note ending adaptor
 end_sfl_dur = 140 # Duration of short fall ending
 end_sfl_freq = 0 # Frequency of short fall ending

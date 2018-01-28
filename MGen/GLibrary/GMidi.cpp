@@ -2447,11 +2447,29 @@ void CGMidi::SendMIDI(int step1, int step2)
 					}
 					// Send transition ks
 					if (icf[ii].type == 2) {
-						if (filter[i][v] & 1) {
-							AddCC(stimestamp - 3, icf[ii].NameToCC["Mute"], 25);
+						// Mute
+						if ((filter[i][v] & 1) && icf[ii].mute_activate > -1) {
+							for (auto const& it : icf[ii].tech[icf[ii].mute_activate]) {
+								AddMidiEvent(stimestamp - icf[ii].mute_predelay,
+									Pm_MessageStatus(it) + midi_channel,
+									Pm_MessageData1(it), Pm_MessageData2(it));
+								if (Pm_MessageStatus(it) == MIDI_NOTEON) {
+									AddKsOff(stimestamp - icf[ii].mute_predelay + 1,
+										Pm_MessageData1(it), 0);
+								}
+							}
 						}
-						else {
-							AddCC(stimestamp - 3, icf[ii].NameToCC["Mute"], 0);
+						// Open
+						if (!(filter[i][v] & 1) && icf[ii].mute_deactivate > -1) {
+							for (auto const& it : icf[ii].tech[icf[ii].mute_deactivate]) {
+								AddMidiEvent(stimestamp - icf[ii].mute_predelay,
+									Pm_MessageStatus(it) + midi_channel,
+									Pm_MessageData1(it), Pm_MessageData2(it));
+								if (Pm_MessageStatus(it) == MIDI_NOTEON) {
+									AddKsOff(stimestamp - icf[ii].mute_predelay + 1,
+										Pm_MessageData1(it), 0);
+								}
+							}
 						}
 						if (artic[i][v] == aSPLITPO_CHROM) {
 							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
