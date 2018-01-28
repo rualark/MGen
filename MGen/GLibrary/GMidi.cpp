@@ -10,6 +10,9 @@
 #define new DEBUG_NEW 
 #endif
 
+// Minimum pitch to be imported (all below are ignored or considered keyswitches)
+#define MIN_IMPORT_NOTE 8
+
 CGMidi::CGMidi() {
 	mo = 0;
 	//BuildKeyMatrix();
@@ -1280,6 +1283,10 @@ void CGMidi::LoadMidi(CString path)
 
 	for (int track = first_track; track < midifile.getTrackCount(); track++) {
 		if (need_exit) break;
+		int cc1_sent = 0;
+		int pizz_active = 0;
+		int mute_active = 0;
+		int trem_active = 0;
 		if (track > first_track) {
 			// Get next free voice
 			v1 = v2 + 1;
@@ -1331,167 +1338,173 @@ void CGMidi::LoadMidi(CString path)
 				int myvel = mev->getVelocity();
 				int tick_dur = mev->getTickDuration() + grow_notes;
 				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
-				// Check if note too long
-				if (nlen > MAX_LEN) {
-					if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
-						CString st;
-						st.Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
-						WriteLog(1, st);
-						warning_loadmidi_long++;
+				// Parse keyswitch
+				if (pitch < MIN_IMPORT_NOTE) {
+					if (pitch == 0) {
+						pizz_active = 0;
+						mute_active = 0;
+						trem_active = 0;
 					}
-					nlen = MAX_LEN;
+					if (pitch == 2) mute_active = 1;
+					if (pitch == 5) pizz_active = 1;
+					if (pitch == 7) trem_active = 1;
 				}
-				if (nlen < 1) nlen = 1;
-				// Allocate one more step for note overwrite checking
-				if (pos + nlen + 1 >= t_allocated) ResizeVectors(max(pos + nlen + 1, t_allocated * 2));
-				// Fill tempo
-				if (!tempo[pos + nlen]) {
-					for (int z = last_step_tempo + 1; z < pos + nlen + 1; ++z) {
-						if (!tempo[z]) tempo[z] = tempo[z - 1];
+				// Parse normal note
+				else {
+					// Check if note too long
+					if (nlen > MAX_LEN) {
+						if (warning_loadmidi_long < MAX_WARN_MIDI_LONG) {
+							CString st;
+							st.Format("Note too long and will be cut short at %d track %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Decrease midifile_in_mul can resolve this situation.", track, mev->tick, tpc, midifile_in_mul, pos, path);
+							WriteLog(1, st);
+							warning_loadmidi_long++;
+						}
+						nlen = MAX_LEN;
 					}
-					// Count new time
-					CountTime(last_step_tempo + 1, pos + nlen - 1);
-					// Set last step that has tempo
-					last_step_tempo = pos + nlen - 1;
-				}
-				// Fallback
-				if (!tempo[pos]) tempo[pos] = 100;
-				float delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
-				float delta2 = (float)(mev->tick + tick_dur - (pos + nlen)*tpc) /
-					(float)tpc * 30000.0 / (float)tempo[pos + nlen];
-				/*
-				// This check is not needed because sstime corrects this if there is no crucial overwrite
-				// Check alignment
-				if (abs(delta) > MAX_ALLOW_DELTA && (warning_loadmidi_align < MAX_WARN_MIDI_ALIGN)) {
-					CString st;
-					st.Format("Note moved %.0f ms to fit step grid at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step (deviation %d ticks) in file %s. Increasing midifile_in_mul will improve approximation.", 
-						delta, track, mev->tick, tpc, midifile_in_mul, pos, mev->tick - pos*tpc, path);
-					WriteLog(0, st);
-					warning_loadmidi_align++;
-				}
-				*/
-				// Find overlaps and distance
-				if (icf[instr[v]].poly > 1) {
-					for (int x = v1; x <= v2; ++x) {
-						// Overlap happens only in case when positions overlap
-						if (note[pos][x]) {
-							voverlap[x] = 1;
-							vdist[x] = 1000;
-							// Check if note too short
-							if (len[pos][x] < 2) {
-								if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
-									CString st;
-									st.Format("Note %s too short and gets same step with next note %s at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", GetNoteName(note[pos][x]), GetNoteName(pitch), track, mev->tick, tpc, midifile_in_mul, pos, path);
-									WriteLog(1, st);
-									warning_loadmidi_short++;
+					if (nlen < 1) nlen = 1;
+					// Allocate one more step for note overwrite checking
+					if (pos + nlen + 1 >= t_allocated) ResizeVectors(max(pos + nlen + 1, t_allocated * 2));
+					// Fill tempo
+					if (!tempo[pos + nlen]) {
+						for (int z = last_step_tempo + 1; z < pos + nlen + 1; ++z) {
+							if (!tempo[z]) tempo[z] = tempo[z - 1];
+						}
+						// Count new time
+						CountTime(last_step_tempo + 1, pos + nlen - 1);
+						// Set last step that has tempo
+						last_step_tempo = pos + nlen - 1;
+					}
+					// Fallback
+					if (!tempo[pos]) tempo[pos] = 100;
+					float delta = (float)(mev->tick - pos*tpc) / (float)tpc * 30000.0 / (float)tempo[pos];
+					float delta2 = (float)(mev->tick + tick_dur - (pos + nlen)*tpc) /
+						(float)tpc * 30000.0 / (float)tempo[pos + nlen];
+					// Find overlaps and distance
+					if (icf[instr[v]].poly > 1) {
+						for (int x = v1; x <= v2; ++x) {
+							// Overlap happens only in case when positions overlap
+							if (note[pos][x]) {
+								voverlap[x] = 1;
+								vdist[x] = 1000;
+								// Check if note too short
+								if (len[pos][x] < 2) {
+									if (warning_loadmidi_short < MAX_WARN_MIDI_SHORT) {
+										CString st;
+										st.Format("Note %s too short and gets same step with next note %s at %d track, %d tick with %d tpc (mul %.03f) approximated to %d step in file %s. Increasing midifile_in_mul will improve approximation.", GetNoteName(note[pos][x]), GetNoteName(pitch), track, mev->tick, tpc, midifile_in_mul, pos, path);
+										WriteLog(1, st);
+										warning_loadmidi_short++;
+									}
 								}
 							}
+							else {
+								voverlap[x] = 0;
+								vdist[x] = abs(vlast_pitch[x] - pitch);
+							}
 						}
-						else {
-							voverlap[x] = 0;
-							vdist[x] = abs(vlast_pitch[x] - pitch);
+						// Find best voice
+						int min_vdist = 1000;
+						for (int x = v1; x <= v2; ++x) {
+							if (vdist[x] < min_vdist) {
+								min_vdist = vdist[x];
+								v = x;
+							}
+						}
+						// If no voice without overlaps, create new
+						if (min_vdist == 1000) {
+							v2++;
+							v = v2;
+							// Copy instrument
+							instr[v] = instr[v1];
+							if (v >= MAX_VOICE) {
+								CString st;
+								st.Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
+								WriteLog(5, st);
+								break;
+							}
+							track_id[v] = track - first_track + 1;
+							track_vid[v] = v - v1;
+							track_name[v] = track_name[v1];
+						}
+					} // if (instr_poly[instr[v]] > 1)
+					else {
+						// Check if overwriting long overlap
+						if (!pause[pos][v] && noff[pos][v]) {
+							// Update previous note ending
+							if (pos) {
+								setime[pos - 1][v] = stime[pos] + delta;
+								smet[pos - 1][v] = mev->tick;
+							}
+							// Using stime/etime here, because this check is approximate
+							float ndur = etime[pos + nlen - 1] - stime[pos];
+							float ndur2 = etime[pos + noff[pos][v] - 1] - stime[pos - coff[pos][v]];
+							// Calculate overlap (abs is protection from bugs)
+							float ov = abs(etime[pos + noff[pos][v] - 1] - stime[pos]);
+							// Is overlap long?
+							if (ov > ndur * MAX_OVERLAP_MONO || ov > ndur2 * MAX_OVERLAP_MONO) if (warning_loadmidi_overlap < MAX_WARN_MIDI_OVERLAP) {
+								CString st;
+								st.Format("Error: too long overlap (voice %d) %.0f ms at step %d (note lengths %.0f, %.0f ms) in monophonic instrument %s/%s. Probably sending polyphonic instrument to monophonic.",
+									v, ov, pos, ndur, ndur2, icf[instr[v]].group, icf[instr[v]].name);
+								WriteLog(0, st);
+								++warning_loadmidi_overlap;
+							}
+						}
+						// Clear any garbage after this note (can build up due to overwriting a longer note)
+						if (len[pos + nlen][v]) {
+							// Safe right limit
+							for (int z = pos + nlen; z < len.size(); ++z) {
+								// Stop clearing if current step is free
+								if (!len[z][v]) break;
+								// Clear step
+								len[z][v] = 0;
+								note[z][v] = 0;
+								pause[z][v] = 1;
+								dyn[z][v] = 0;
+								coff[z][v] = 0;
+							}
 						}
 					}
-					// Find best voice
-					int min_vdist = 1000;
-					for (int x = v1; x <= v2; ++x) {
-						if (vdist[x] < min_vdist) {
-							min_vdist = vdist[x];
-							v = x;
+					// Resize vectors for new voice number
+					if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
+					// Search for last note
+					if ((pos > 0) && (note[pos - 1][v] == 0)) {
+						int last_pause = pos - 1;
+						for (int z = pos - 1; z >= 0; z--) {
+							if (note[z][v] != 0) break;
+							last_pause = z;
 						}
+						// Set previous pause
+						FillPause(last_pause, pos - last_pause - 1, v);
+						// Set additional variables
+						CountOff(last_pause, pos - 1);
 					}
-					// If no voice without overlaps, create new
-					if (min_vdist == 1000) {
-						v2++;
-						v = v2;
-						// Copy instrument
-						instr[v] = instr[v1];
-						if (v >= MAX_VOICE) {
-							CString st;
-							st.Format("Too many voices need to be created for loading file %s. Maximum number of voices %d. Increase MAX_VOICE", path, MAX_VOICE);
-							WriteLog(5, st);
-							break;
-						}
-						track_id[v] = track - first_track + 1;
-						track_vid[v] = v - v1;
-						track_name[v] = track_name[v1];
+					// Set note steps
+					for (int z = 0; z < nlen; z++) {
+						note[pos + z][v] = pitch;
+						len[pos + z][v] = nlen;
+						dyn[pos + z][v] = myvel;
+						midi_ch[pos + z][v] = chan;
+						pause[pos + z][v] = 0;
+						coff[pos + z][v] = z;
+						if (trem_active) artic[pos + z][v] = aTREM;
+						if (pizz_active) artic[pos + z][v] = aPIZZ;
+						if (mute_active) filter[pos + z][v] |= fMUTE;
 					}
-				} // if (instr_poly[instr[v]] > 1)
-				else {
-					// Check if overwriting long overlap
-					if (!pause[pos][v] && noff[pos][v]) {
-						// Update previous note ending
-						if (pos) {
-							setime[pos - 1][v] = stime[pos] + delta;
-							smet[pos - 1][v] = mev->tick;
-						}
-						// Using stime/etime here, because this check is approximate
-						float ndur = etime[pos + nlen - 1] - stime[pos];
-						float ndur2 = etime[pos + noff[pos][v] - 1] - stime[pos - coff[pos][v]];
-						// Calculate overlap (abs is protection from bugs)
-						float ov = abs(etime[pos + noff[pos][v] - 1] - stime[pos]);
-						// Is overlap long?
-						if (ov > ndur * MAX_OVERLAP_MONO || ov > ndur2 * MAX_OVERLAP_MONO) if (warning_loadmidi_overlap < MAX_WARN_MIDI_OVERLAP) {
-							CString st;
-							st.Format("Error: too long overlap (voice %d) %.0f ms at step %d (note lengths %.0f, %.0f ms) in monophonic instrument %s/%s. Probably sending polyphonic instrument to monophonic.",
-								v, ov, pos, ndur, ndur2, icf[instr[v]].group, icf[instr[v]].name);
-							WriteLog(0, st);
-							++warning_loadmidi_overlap;
-						}
-					}
-					// Clear any garbage after this note (can build up due to overwriting a longer note)
-					if (len[pos + nlen][v]) {
-						// Safe right limit
-						for (int z = pos + nlen; z < len.size(); ++z) {
-							// Stop clearing if current step is free
-							if (!len[z][v]) break;
-							// Clear step
-							len[z][v] = 0;
-							note[z][v] = 0;
-							pause[z][v] = 1;
-							dyn[z][v] = 0;
-							coff[z][v] = 0;
-						}
-					}
-				}
-				// Resize vectors for new voice number
-				if (v > v_cnt - 1) ResizeVectors(t_allocated, v + 1);
-				// Search for last note
-				if ((pos > 0) && (note[pos - 1][v] == 0)) {
-					int last_pause = pos - 1;
-					for (int z = pos - 1; z >= 0; z--) {
-						if (note[z][v] != 0) break;
-						last_pause = z;
-					}
-					// Set previous pause
-					FillPause(last_pause, pos - last_pause - 1, v);
+					// Set midi ticks
+					smst[pos][v] = mev->tick;
+					smet[pos + nlen - 1][v] = mev->tick + tick_dur;
+					// Set midi delta only to first step of note, because in in-note steps you can get different calculations for different tempo
+					//midi_delta[pos][v] = delta;
+					sstime[pos][v] = stime[pos] + delta;
+					setime[pos + nlen - 1][v] = etime[pos + nlen - 1] + delta2;
 					// Set additional variables
-					CountOff(last_pause, pos - 1);
+					CountOff(pos, pos + nlen - 1);
+					UpdateNoteMinMax(pos, pos + nlen - 1);
+					if (pos + nlen - 1 > last_step) last_step = pos + nlen - 1;
+					if (pos + nlen - 1 > vlast_step[v]) vlast_step[v] = pos + nlen - 1;
+					if (t_generated < pos) t_generated = pos;
+					// Save last pitch
+					vlast_pitch[v] = pitch;
 				}
-				// Set note steps
-				for (int z = 0; z < nlen; z++) {
-					note[pos + z][v] = pitch;
-					len[pos + z][v] = nlen;
-					dyn[pos + z][v] = myvel;
-					midi_ch[pos + z][v] = chan;
-					pause[pos + z][v] = 0;
-					coff[pos + z][v] = z;
-				}
-				// Set midi ticks
-				smst[pos][v] = mev->tick;
-				smet[pos + nlen - 1][v] = mev->tick + tick_dur;
-				// Set midi delta only to first step of note, because in in-note steps you can get different calculations for different tempo
-				//midi_delta[pos][v] = delta;
-				sstime[pos][v] = stime[pos] + delta;
-				setime[pos + nlen - 1][v] = etime[pos + nlen - 1] + delta2;
-				// Set additional variables
-				CountOff(pos, pos + nlen - 1);
-				UpdateNoteMinMax(pos, pos + nlen - 1);
-				if (pos + nlen - 1 > last_step) last_step = pos + nlen - 1;
-				if (pos + nlen - 1 > vlast_step[v]) vlast_step[v] = pos + nlen - 1;
-				if (t_generated < pos) t_generated = pos;
-				// Save last pitch
-				vlast_pitch[v] = pitch;
 			}
 		}
 		// If track is empty, create a single pause
@@ -2421,6 +2434,12 @@ void CGMidi::SendMIDI(int step1, int step2)
 					}
 					// Send transition ks
 					if (icf[ii].type == 2) {
+						if (filter[i][v] & 1) {
+							AddCC(stimestamp - 3, icf[ii].NameToCC["Mute"], 25);
+						}
+						else {
+							AddCC(stimestamp - 3, icf[ii].NameToCC["Mute"], 0);
+						}
 						if (artic[i][v] == aSPLITPO_CHROM) {
 							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 12);
 							AddTransitionKs(i, stimestamp, icf[ii].ks1 + 0);

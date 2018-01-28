@@ -108,6 +108,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 	vib.resize(size);
 	vibf.resize(size);
 	artic.resize(size);
+	filter.resize(size);
 	lengroup.resize(size);
 	adapt_comment.resize(size);
 	midi_ch.resize(size);
@@ -151,6 +152,7 @@ void CGVar::ResizeVectors(int size, int vsize)
 		vib[i].resize(vsize);
 		vibf[i].resize(vsize);
 		artic[i].resize(vsize);
+		filter[i].resize(vsize);
 		nlink[i].resize(vsize);
 		lining[i].resize(vsize);
 		lengroup[i].resize(vsize);

@@ -149,6 +149,8 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 170), 0);
 		st.Format("Articulation: %s\n", ArticName[pGen->artic[i][mv]]);
 		m_info.AddText(st, RGB(0, 0, 170), 0);
+		st.Format("Filter: %u\n", pGen->filter[i][mv]);
+		m_info.AddText(st, RGB(0, 0, 170), 0);
 		st.Format("Adapt comment(start) : %s\nAdapt comment(end) : %s\n",
 			pGen->adapt_comment[i][mv], pGen->adapt_comment[ei][mv]);
 		m_info.AddText(st, RGB(0, 0, 170), 0);

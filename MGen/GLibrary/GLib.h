@@ -78,6 +78,7 @@ const int note_base_m[][12] = {
 	{ -1, 0, 2, -1, 4, -1, 5, 7, -1, 9, -1, 11 }
 };
 
+// ARTICULATIONS
 // Embertone IS: Legato, Slur, Nonlegato, Stac, Rebow
 
 #define aLEGATO 0
@@ -98,6 +99,11 @@ const int note_base_m[][12] = {
 #define aEND_VIB2 15
 #define aEND_VIB 16
 #define aTREM 17
+#define aPIZZ 18
+
+// FILTERS
+
+#define fMUTE 1 // SM Brass
 
 const CString ArticName[] = {
 	"Legato", // 0
@@ -117,7 +123,8 @@ const CString ArticName[] = {
 	"Pitchbend down ending", // 14
 	"Vibrato2 ending", // 15
 	"Vibrato ending", // 16
-	"Tremolo" // 17
+	"Tremolo", // 17
+	"Pizz" // 18
 };
 
 #define INSTR_PIANO 0
