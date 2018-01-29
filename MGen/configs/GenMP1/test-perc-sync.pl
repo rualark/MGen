@@ -5,8 +5,8 @@ Midi_file = "midi\Music\test\test-perc-sync.mid" # Path and file name of importe
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 8 # How much you want to decrease minimum step length from 1/8
 
-AutoLegato = 0
-Instruments = "Piano,Bass"
+AutoLegato = 1
+Instruments = "Piano,Cello"
 
-Instrument = "Viola/Arco"
-#stac_maxlen = 1000
+Instrument = "Cello/Arco"
+stac_maxlen = 1000

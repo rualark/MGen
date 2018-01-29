@@ -867,9 +867,15 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "splitpo_mindur", &icf[i].splitpo_mindur);
 	CheckVar(&st2, &st3, "gliss_mindur", &icf[i].gliss_mindur);
 	CheckVar(&st2, &st3, "nonlegato_minlen", &icf[i].nonlegato_minlen);
+	CheckVar(&st2, &st3, "stac_auto", &icf[i].stac_auto, 0, 1);
+	CheckVar(&st2, &st3, "stac_ahead", &icf[i].stac_ahead);
 	CheckVar(&st2, &st3, "stac_maxlen", &icf[i].stac_maxlen);
 	CheckVar(&st2, &st3, "stac_dynamics", &icf[i].stac_dynamics, 0, 200);
 	CheckVar(&st2, &st3, "stac_dyn_add", &icf[i].stac_dyn_add, 0, 127);
+	CheckVar(&st2, &st3, "pizz_import", &icf[i].pizz_import, 0, 1);
+	CheckVar(&st2, &st3, "pizz_ahead", &icf[i].pizz_ahead);
+	CheckVar(&st2, &st3, "mute_import", &icf[i].mute_import, 0, 1);
+	CheckVar(&st2, &st3, "trem_import", &icf[i].trem_import, 0, 1);
 	CheckVar(&st2, &st3, "pizz_dynamics", &icf[i].pizz_dynamics, 0, 200);
 	CheckVar(&st2, &st3, "pizz_dyn_add", &icf[i].pizz_dyn_add, 0, 127);
 	CheckVar(&st2, &st3, "mute_predelay", &icf[i].pizz_dyn_add);

@@ -11,7 +11,7 @@
 #endif
 
 // Minimum pitch to be imported (all below are ignored or considered keyswitches)
-#define MIN_IMPORT_NOTE 8
+#define MIN_IMPORT_NOTE 10
 
 CGMidi::CGMidi() {
 	mo = 0;
@@ -1495,9 +1495,9 @@ void CGMidi::LoadMidi(CString path)
 						midi_ch[pos + z][v] = chan;
 						pause[pos + z][v] = 0;
 						coff[pos + z][v] = z;
-						if (trem_active) artic[pos + z][v] = aTREM;
-						if (pizz_active) artic[pos + z][v] = aPIZZ;
-						if (mute_active) filter[pos + z][v] |= fMUTE;
+						if (trem_active && icf[instr[v]].trem_import) artic[pos + z][v] = aTREM;
+						if (pizz_active && icf[instr[v]].pizz_import) artic[pos + z][v] = aPIZZ;
+						if (mute_active && icf[instr[v]].mute_import) filter[pos + z][v] |= fMUTE;
 					}
 					// Set midi ticks
 					smst[pos][v] = mev->tick;

@@ -244,11 +244,13 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 }
 
 void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	if (!icf[ii].stac_auto) return;
 	// Make short non-legato notes (on both sides) staccato
 	if (x && artic[pi][v] != aLEGATO && artic[pi][v] != aSLUR && artic[pi][v] != aPIZZ &&
 		artic[i][v] != aLEGATO && artic[i][v] != aSLUR &&
 		(setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] <= icf[ii].stac_maxlen) {
-		dstime[pi][v] = -icf[ii].all_ahead;
+		if (icf[ii].stac_ahead > -1) dstime[pi][v] = -icf[ii].stac_ahead;
+		else dstime[pi][v] = -icf[ii].all_ahead;
 		artic[pi][v] = aSTAC;
 		vel[pi][v] = min(127, dyn[pi][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add);
 		// Next note cannot be legato/slur
@@ -261,7 +263,8 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 	if (artic[i][v] != aLEGATO && artic[i][v] != aSLUR && artic[i][v] != aPIZZ &&
 		(ei == t_generated - 1 || pause[ei + 1][v]) &&
 		(setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] <= icf[ii].stac_maxlen) {
-		dstime[i][v] = -icf[ii].all_ahead;
+		if (icf[ii].stac_ahead > -1) dstime[i][v] = -icf[ii].stac_ahead;
+		else dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aSTAC;
 		vel[i][v] = min(127, dyn[i][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add);
 		if (comment_adapt) adapt_comment[i][v] += "Staccato. ";
@@ -272,6 +275,9 @@ void CGAdapt::AdaptPizzStep(int v, int x, int i, int ii, int ei, int pi, int pei
 	// Change pizz dynamics
 	if (artic[i][v] == aPIZZ) {
 		vel[i][v] = min(127, dyn[i][v] * icf[ii].pizz_dynamics / 100 + icf[ii].pizz_dyn_add);
+		if (icf[ii].pizz_ahead > -1) {
+			dstime[i][v] = -icf[ii].pizz_ahead;
+		}
 		if (comment_adapt) adapt_comment[i][v] += "Pizz. ";
 	}
 }

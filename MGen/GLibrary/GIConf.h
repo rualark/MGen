@@ -96,11 +96,17 @@ struct IConf {
 	float leg_cdur = 0; // Maximum percent of current note duration, that legato transition can take
 	float nonlegato_freq = 0;
 	int nonlegato_minlen = 0;
+	int stac_auto = 1;
+	int stac_ahead = -1;
 	int stac_maxlen = 0; // Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
 	int stac_dynamics = 100; // Percent of staccato dynamics compared to sustain notes
 	int stac_dyn_add = 0;
 	int pizz_dynamics = 100; // Percent of pizz dynamics compared to sustain notes
 	int pizz_dyn_add = 0;
+	int pizz_ahead = -1;  // Time in ms to stretch pizz notes back to cope with slow attack
+	int pizz_import = 1; // Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
+	int mute_import = 1; // Set to 0 to ignore mutes in source MIDI file and play as normal notes
+	int trem_import = 1; // Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
 	int mute_predelay = 300; // Delay between mute keyswitch and note in ms
 	int mute_activate = -1; // Technique that will be triggered with mute command from MIDI file
 	int mute_deactivate = -1; // Technique that will be triggered with open command from MIDI file
