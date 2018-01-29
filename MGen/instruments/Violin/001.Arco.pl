@@ -106,6 +106,7 @@ stac_auto = 1 # Set to 0 to disable automatic staccato articulations
 stac_ahead = -1 # Time in ms to stretch stac notes back to cope with slow attack. -1 falls back to all_ahead
 stac_dynamics = 50 # Percent of staccato dynamics compared to sustain notes
 stac_dyn_add = 0 # Add minimum dynamics after multiplying
+spic_import = 1 # Allow to import spiccato technique from midi file into staccato articulation
 
 # Pizzicato adaptor
 pizz_import = 1 # Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
