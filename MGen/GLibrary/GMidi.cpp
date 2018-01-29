@@ -1283,7 +1283,7 @@ void CGMidi::LoadMidi(CString path)
 
 	for (int track = first_track; track < midifile.getTrackCount(); track++) {
 		if (need_exit) break;
-		int cc1_sent = 0;
+		int last_cc1_step = -1;
 		int pizz_active = 0;
 		int mute_active = 0;
 		int trem_active = 0;
@@ -1342,11 +1342,33 @@ void CGMidi::LoadMidi(CString path)
 					trem_active = 0;
 				}
 			}
+			if (mev->isController()) {
+				int pos = round(mev->tick / (float)tpc);
+				int cc = mev->data()[1];
+				int val = mev->data()[2];
+				if (pos + 1 >= t_allocated) ResizeVectors(max(pos + 1, t_allocated * 2));
+				if (cc == 1) {
+					// Fill cc1
+					if (last_cc1_step > -1) {
+						for (int z = last_cc1_step + 1; z < pos; ++z) {
+							dyn[z][v] = dyn[z - 1][v];
+						}
+					}
+					dyn[pos][v] = val;
+					last_cc1_step = pos;
+				}
+				if (cc == 64) {
+					if (val > 63) {
+						filter[pos][v] |= fPEDAL;
+					}
+				}
+			}
 			if (mev->isNoteOn()) {
 				int pos = round(mev->tick / (float)tpc);
 				int pitch = mev->getKeyNumber();
 				int myvel = mev->getVelocity();
-				int tick_dur = mev->getTickDuration() + grow_notes;
+				int tick_dur = mev->getTickDuration();
+				if (grow_notes > -1) tick_dur += grow_notes;
 				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 				// Parse keyswitch
 				if (pitch < MIN_IMPORT_NOTE) {
@@ -1468,7 +1490,7 @@ void CGMidi::LoadMidi(CString path)
 								len[z][v] = 0;
 								note[z][v] = 0;
 								pause[z][v] = 1;
-								dyn[z][v] = 0;
+								vel[z][v] = 0;
 								coff[z][v] = 0;
 							}
 						}
@@ -1491,7 +1513,7 @@ void CGMidi::LoadMidi(CString path)
 					for (int z = 0; z < nlen; z++) {
 						note[pos + z][v] = pitch;
 						len[pos + z][v] = nlen;
-						dyn[pos + z][v] = myvel;
+						vel[pos + z][v] = myvel;
 						midi_ch[pos + z][v] = chan;
 						pause[pos + z][v] = 0;
 						coff[pos + z][v] = z;
@@ -1520,6 +1542,13 @@ void CGMidi::LoadMidi(CString path)
 		// If track is empty, create a single pause
 		if (!note[0][v] && !pause[0][v] && !len[0][v]) {
 			FillPause(0, 1, v);
+		}
+		// Fill cc1
+		if (last_cc1_step > -1) {
+			for (int z = last_cc1_step + 1; z <= last_step; ++z) {
+				dyn[z][v] = dyn[z - 1][v];
+			}
+			last_cc1_step = last_step;
 		}
 	} // for track
 	if (need_exit) return;

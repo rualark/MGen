@@ -252,6 +252,14 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 			CheckVar(&st2, &st3, "mastervolume", &master_vol, 0, 100);
 			LoadVar(&st2, &st3, "instr_layout", &instr_layout);
 			LoadVar(&st2, &st3, "instruments", &m_config_insts);
+			// Load midi file type
+			if (st2 == "midifiletype") {
+				++parameter_found;
+				midi_file_type = st3;
+				if (midi_file_type == "Sibelius") grow_notes = 0;
+				if (midi_file_type == "Finale") grow_notes = 0;
+				if (midi_file_type == "MuseScore") grow_notes = 2;
+			}
 			//LoadVarInstr(&st2, &st3, "instruments", instr);
 			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose, 0);
 			// Load instrument layout overrides

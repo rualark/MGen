@@ -104,6 +104,7 @@ const int note_base_m[][12] = {
 // FILTERS
 
 #define fMUTE 1 // SM Brass
+#define fPEDAL 2 // Piano
 
 const CString ArticName[] = {
 	"Legato", // 0
