@@ -821,6 +821,8 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "ks1", &icf[i].ks1);
 	LoadNote(&st2, &st3, "n_min", &icf[i].nmin);
 	LoadNote(&st2, &st3, "n_max", &icf[i].nmax);
+	LoadNote(&st2, &st3, "import_min", &icf[i].import_min);
+	LoadNote(&st2, &st3, "import_max", &icf[i].import_max);
 	LoadNote(&st2, &st3, "replacepitch", &icf[i].replace_pitch);
 	LoadNote(&st2, &st3, "trem_replace", &icf[i].trem_replace);
 	CheckVar(&st2, &st3, "trem_transpose", &icf[i].trem_transpose, -127, 127);

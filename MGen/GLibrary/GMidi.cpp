@@ -10,9 +10,6 @@
 #define new DEBUG_NEW 
 #endif
 
-// Minimum pitch to be imported (all below are ignored or considered keyswitches)
-#define MIN_IMPORT_NOTE 12
-
 CGMidi::CGMidi() {
 	mo = 0;
 	//BuildKeyMatrix();
@@ -1372,7 +1369,7 @@ void CGMidi::LoadMidi(CString path)
 				if (grow_notes > -1) tick_dur += grow_notes;
 				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 				// Parse keyswitch
-				if (pitch < MIN_IMPORT_NOTE) {
+				if (pitch < icf[instr[v]].import_min || pitch > icf[instr[v]].import_max) {
 					if (pitch == 0) {
 						pizz_active = 0;
 						mute_active = 0;

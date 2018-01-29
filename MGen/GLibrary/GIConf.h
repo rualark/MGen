@@ -24,9 +24,11 @@ struct IConf {
 	int ks1 = 0; // First keyswitch pitch
 	//int used = 0; // For how many voices this instrument is already used
 	int nmin = 0;
-	int nmax = 0;
+	int nmax = 127;
 	int tmin = 0;
 	int tmax = 0;
+	int import_min = 12; // Do not import notes below this one
+	int import_max = 127; // Do not import notes above this one
 	int pan = 50; // 50 is center
 	int vol = 100; // 0-100% of real cc value
 	int vol_default = 127; // Real CC value
