@@ -11,7 +11,7 @@
 #endif
 
 // Minimum pitch to be imported (all below are ignored or considered keyswitches)
-#define MIN_IMPORT_NOTE 10
+#define MIN_IMPORT_NOTE 12
 
 CGMidi::CGMidi() {
 	mo = 0;
@@ -1287,6 +1287,7 @@ void CGMidi::LoadMidi(CString path)
 		int pizz_active = 0;
 		int mute_active = 0;
 		int trem_active = 0;
+		int spic_active = 0;
 		if (track > first_track) {
 			// Get next free voice
 			v1 = v2 + 1;
@@ -1376,10 +1377,12 @@ void CGMidi::LoadMidi(CString path)
 						pizz_active = 0;
 						mute_active = 0;
 						trem_active = 0;
+						spic_active = 0;
 					}
 					if (pitch == 2) mute_active = 1;
 					if (pitch == 5) pizz_active = 1;
 					if (pitch == 7) trem_active = 1;
+					if (pitch == 9) spic_active = 1;
 				}
 				// Parse normal note
 				else {
@@ -1519,6 +1522,7 @@ void CGMidi::LoadMidi(CString path)
 						coff[pos + z][v] = z;
 						if (trem_active && icf[instr[v]].trem_import) artic[pos + z][v] = aTREM;
 						if (pizz_active && icf[instr[v]].pizz_import) artic[pos + z][v] = aPIZZ;
+						if (spic_active && icf[instr[v]].spic_import) artic[pos + z][v] = aSTAC;
 						if (mute_active && icf[instr[v]].mute_import) filter[pos + z][v] |= fMUTE;
 					}
 					// Set midi ticks
@@ -1549,6 +1553,10 @@ void CGMidi::LoadMidi(CString path)
 				dyn[z][v] = dyn[z - 1][v];
 			}
 			last_cc1_step = last_step;
+			// Overwrite with vel
+			for (int z = 0; z <= last_step; ++z) {
+				if (artic[z][v] == aPIZZ) dyn[z][v] = vel[z][v];
+			}
 		}
 	} // for track
 	if (need_exit) return;
