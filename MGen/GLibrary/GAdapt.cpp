@@ -810,12 +810,12 @@ void CGAdapt::SetPauseDyn(int v, int step1, int step2) {
 	int step11 = min(step2, max(1, step1));
 	for (int i = step11; i <= step2; i++) {
 		if (pos1 == -1) {
-			if (pause[i][v] && !dyn[i][v]) {
+			if (pause[i][v]) {
 				pos1 = i;
 			}
 		}
 		else {
-			if (dyn[i][v]) {
+			if (!pause[i][v]) {
 				pos2 = i;
 				for (int x = pos1; x < pos2; ++x) {
 					dyn[x][v] = (dyn[pos1 - 1][v] * (pos2 - x) + dyn[pos2][v] * (x - pos1 + 1)) / (pos2 - pos1 + 1);
@@ -824,7 +824,7 @@ void CGAdapt::SetPauseDyn(int v, int step1, int step2) {
 			}
 		}
 		// Fill all pauses
-		if (i && !dyn[i][v]) dyn[i][v] = dyn[i - 1][v];
+		if (i && pause[i][v]) dyn[i][v] = dyn[i - 1][v];
 	}
 }
 
