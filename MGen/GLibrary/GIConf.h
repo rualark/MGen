@@ -112,6 +112,11 @@ struct IConf {
 	int mute_predelay = 300; // Delay between mute keyswitch and note in ms
 	int mute_activate = -1; // Technique that will be triggered with mute command from MIDI file
 	int mute_deactivate = -1; // Technique that will be triggered with open command from MIDI file
+	int spic_import = 1; // Set to 0 to ignore spiccato in source MIDI file and play as normal notes. Set to 1 to import as staccato
+	int stac_import = 1; // Set to 0 to ignore staccato in source MIDI file and play as normal notes. Set to 1 to import as staccato
+	int marc_import = 0; // Set to 0 to ignore marcato in source MIDI file and play as normal notes. Set to 1 to import as staccato
+	int tasto_import = 1; // Set to 0 to ignore sul tasto in source MIDI file and play as normal notes
+	int bow_lock = 0; // 0 - do not lock bow, 1 - always sul tasto, 2 - always sul ponticello
 	int lengroup2 = 0;
 	int lengroup3 = 0;
 	int lengroup4 = 0;

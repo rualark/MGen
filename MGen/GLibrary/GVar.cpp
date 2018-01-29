@@ -827,6 +827,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	LoadNote(&st2, &st3, "trem_replace", &icf[i].trem_replace);
 	CheckVar(&st2, &st3, "trem_transpose", &icf[i].trem_transpose, -127, 127);
 	CheckVar(&st2, &st3, "trem_chan", &icf[i].trem_chan, 0, 15);
+	CheckVar(&st2, &st3, "bow_lock", &icf[i].bow_lock, 0, 2);
 	LoadCCName(&st2, &st3, "cc_name", i);
 	LoadKswGroup(&st2, &st3, "kswgroup", i);
 	LoadTechnique(&st2, &st3, "technique", i);
@@ -886,6 +887,10 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "pizz_ahead", &icf[i].pizz_ahead);
 	CheckVar(&st2, &st3, "mute_import", &icf[i].mute_import, 0, 1);
 	CheckVar(&st2, &st3, "trem_import", &icf[i].trem_import, 0, 1);
+	CheckVar(&st2, &st3, "spic_import", &icf[i].spic_import, 0, 1);
+	CheckVar(&st2, &st3, "stac_import", &icf[i].stac_import, 0, 1);
+	CheckVar(&st2, &st3, "marc_import", &icf[i].marc_import, 0, 1);
+	CheckVar(&st2, &st3, "tasto_import", &icf[i].tasto_import, 0, 1);
 	CheckVar(&st2, &st3, "pizz_dynamics", &icf[i].pizz_dynamics, 0, 200);
 	CheckVar(&st2, &st3, "pizz_dyn_add", &icf[i].pizz_dyn_add, 0, 127);
 	CheckVar(&st2, &st3, "mute_predelay", &icf[i].pizz_dyn_add);

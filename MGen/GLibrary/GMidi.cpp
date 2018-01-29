@@ -1281,10 +1281,13 @@ void CGMidi::LoadMidi(CString path)
 	for (int track = first_track; track < midifile.getTrackCount(); track++) {
 		if (need_exit) break;
 		int last_cc1_step = -1;
-		int pizz_active = 0;
 		int mute_active = 0;
+		int marc_active = 0;
+		int pizz_active = 0;
 		int trem_active = 0;
 		int spic_active = 0;
+		int stac_active = 0;
+		int tasto_active = 0;
 		if (track > first_track) {
 			// Get next free voice
 			v1 = v2 + 1;
@@ -1336,8 +1339,12 @@ void CGMidi::LoadMidi(CString path)
 				else if (patch == 45) pizz_active = 1;
 				else {
 					mute_active = 0;
+					marc_active = 0;
 					pizz_active = 0;
 					trem_active = 0;
+					spic_active = 0;
+					stac_active = 0;
+					tasto_active = 0;
 				}
 			}
 			if (mev->isController()) {
@@ -1349,10 +1356,10 @@ void CGMidi::LoadMidi(CString path)
 					// Fill cc1
 					if (last_cc1_step > -1) {
 						for (int z = last_cc1_step + 1; z < pos; ++z) {
-							dyn[z][v] = dyn[z - 1][v];
+							//dyn[z][v] = dyn[z - 1][v];
 						}
 					}
-					dyn[pos][v] = val;
+					//dyn[pos][v] = val;
 					last_cc1_step = pos;
 				}
 				if (cc == 64) {
@@ -1371,15 +1378,21 @@ void CGMidi::LoadMidi(CString path)
 				// Parse keyswitch
 				if (pitch < icf[instr[v]].import_min || pitch > icf[instr[v]].import_max) {
 					if (pitch == 0) {
-						pizz_active = 0;
 						mute_active = 0;
+						marc_active = 0;
+						pizz_active = 0;
 						trem_active = 0;
 						spic_active = 0;
+						stac_active = 0;
+						tasto_active = 0;
 					}
 					if (pitch == 2) mute_active = 1;
+					if (pitch == 3) marc_active = 1;
 					if (pitch == 5) pizz_active = 1;
 					if (pitch == 7) trem_active = 1;
 					if (pitch == 9) spic_active = 1;
+					if (pitch == 10) stac_active = 1;
+					if (pitch == 11) tasto_active = 1;
 				}
 				// Parse normal note
 				else {
@@ -1490,7 +1503,7 @@ void CGMidi::LoadMidi(CString path)
 								len[z][v] = 0;
 								note[z][v] = 0;
 								pause[z][v] = 1;
-								vel[z][v] = 0;
+								dyn[z][v] = 0;
 								coff[z][v] = 0;
 							}
 						}
@@ -1513,14 +1526,20 @@ void CGMidi::LoadMidi(CString path)
 					for (int z = 0; z < nlen; z++) {
 						note[pos + z][v] = pitch;
 						len[pos + z][v] = nlen;
-						vel[pos + z][v] = myvel;
+						dyn[pos + z][v] = myvel;
 						midi_ch[pos + z][v] = chan;
 						pause[pos + z][v] = 0;
 						coff[pos + z][v] = z;
 						if (trem_active && icf[instr[v]].trem_import) artic[pos + z][v] = aTREM;
 						if (pizz_active && icf[instr[v]].pizz_import) artic[pos + z][v] = aPIZZ;
 						if (spic_active && icf[instr[v]].spic_import) artic[pos + z][v] = aSTAC;
+						if (stac_active && icf[instr[v]].stac_import) artic[pos + z][v] = aSTAC;
+						if (marc_active && icf[instr[v]].marc_import) artic[pos + z][v] = aSTAC;
 						if (mute_active && icf[instr[v]].mute_import) filter[pos + z][v] |= fMUTE;
+						if (tasto_active && icf[instr[v]].tasto_import) filter[pos + z][v] |= fTASTO;
+						// Lock bow
+						if (icf[instr[v]].bow_lock == 1) filter[pos + z][v] |= fTASTO;
+						if (icf[instr[v]].bow_lock == 2) filter[pos + z][v] |= fPONT;
 					}
 					// Set midi ticks
 					smst[pos][v] = mev->tick;
@@ -1547,13 +1566,13 @@ void CGMidi::LoadMidi(CString path)
 		// Fill cc1
 		if (last_cc1_step > -1) {
 			for (int z = last_cc1_step + 1; z <= last_step; ++z) {
-				dyn[z][v] = dyn[z - 1][v];
+				//dyn[z][v] = dyn[z - 1][v];
 			}
 			last_cc1_step = last_step;
-			// Overwrite with vel
-			for (int z = 0; z <= last_step; ++z) {
-				if (artic[z][v] == aPIZZ) dyn[z][v] = vel[z][v];
-			}
+		} 
+		// Overwrite with vel
+		for (int z = 0; z <= last_step; ++z) {
+			//if (artic[z][v] == aPIZZ || !dyn[z][v]) dyn[z][v] = vel[z][v];
 		}
 	} // for track
 	if (need_exit) return;
@@ -2457,6 +2476,19 @@ void CGMidi::SendMIDI(int step1, int step2)
 						AddNoteOn(stimestamp, my_note, vel[i][v]);
 					}
 					if (icf[ii].type == 1) {
+						// Send bow
+						if (filter[i][v] & fTASTO) {
+							if (icf[ii].NameToKsw.find("Sul tasto") != icf[ii].NameToKsw.end())
+								AddKs(stimestamp - 3, icf[ii].NameToKsw["Sul tasto"]);
+							if (icf[ii].NameToKsw.find("Harmonics") != icf[ii].NameToKsw.end())
+								AddKs(stimestamp - 3, icf[ii].NameToKsw["Harmonics"]);
+						}
+						else if (filter[i][v] & fPONT) {
+							AddKs(stimestamp - 3, icf[ii].NameToKsw["Sul ponticello"]);
+						}
+						else {
+							AddKs(stimestamp - 3, icf[ii].NameToKsw["Normal"]);
+						}
 						// Send slur
 						if (artic[i][v] == aSLUR) {
 							AddTransitionKs(i, stimestamp, icf[ii].NameToKsw["Slur while held"]);
@@ -2482,7 +2514,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 					// Send transition ks
 					if (icf[ii].type == 2) {
 						// Mute
-						if ((filter[i][v] & 1) && icf[ii].mute_activate > -1) {
+						if ((filter[i][v] & fMUTE) && icf[ii].mute_activate > -1) {
 							for (auto const& it : icf[ii].tech[icf[ii].mute_activate]) {
 								AddMidiEvent(stimestamp - icf[ii].mute_predelay,
 									Pm_MessageStatus(it) + midi_channel,
@@ -2494,7 +2526,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 							}
 						}
 						// Open
-						if (!(filter[i][v] & 1) && icf[ii].mute_deactivate > -1) {
+						if (!(filter[i][v] & fMUTE) && icf[ii].mute_deactivate > -1) {
 							for (auto const& it : icf[ii].tech[icf[ii].mute_deactivate]) {
 								AddMidiEvent(stimestamp - icf[ii].mute_predelay,
 									Pm_MessageStatus(it) + midi_channel,

@@ -10,4 +10,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 # Created at 2018-01-29 00:22:23
 Midi_file = midi\Music\test\test-export-finale3.mid
 
-Instruments = "Flute,Piano,Violin,Harp,Trumpet,Timpani,Bass drum"
+Instruments = "Flute,Trumpet,Timpani,Bass drum,Harp,Piano,Violin"
