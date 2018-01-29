@@ -33,6 +33,7 @@ gliss_freq = 0 # Disable
 all_ahead = 60 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Mute adaptor
+mute_import = 1 # Set to 0 to ignore mutes in source MIDI file and play as normal notes
 mute_predelay = 300 # Delay between mute keyswitch and note in ms
 mute_activate = "straight mute" # Choose mute that can be activated from MIDI file
 mute_deactivate = "senza sord" # Choose mute that can be activated from MIDI file

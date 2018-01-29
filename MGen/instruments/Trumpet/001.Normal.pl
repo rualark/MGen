@@ -26,6 +26,7 @@ legato_ahead = 700 # Time in ms to stretch legato notes back to cope with legato
 ks1 = 36 # First keyswitch position
 
 # Mute adaptor
+mute_import = 1 # Set to 0 to ignore mutes in source MIDI file and play as normal notes
 mute_predelay = 300 # Delay between mute keyswitch and note in ms
 mute_activate = "harmon mute" # Choose mute that can be activated from MIDI file
 mute_deactivate = "senza sord" # Choose mute that can be activated from MIDI file

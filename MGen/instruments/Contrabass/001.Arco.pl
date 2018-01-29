@@ -87,7 +87,7 @@ max_slur_count = 2 # Use slur for 2nd moves, but no longer than X moves
 max_slur_interval = 2 # in semitones
 
 # Legato adaptor
-legato_ahead = 215 # Time in ms to stretch legato notes back to cope with legato delay
+legato_ahead = 235 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
 all_ahead = 104 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
@@ -97,10 +97,14 @@ nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonle
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Staccato adaptor
+stac_auto = 1 # Set to 0 to disable automatic staccato articulations
+stac_ahead = -1 # Time in ms to stretch stac notes back to cope with slow attack. -1 falls back to all_ahead
 stac_dynamics = 50 # Percent of staccato dynamics compared to sustain notes
 stac_dyn_add = 30 # Add minimum dynamics after multiplying
 
 # Pizzicato adaptor
+pizz_import = 1 # Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
+pizz_ahead = 54 # Time in ms to stretch pizz notes back to cope with slow attack. -1 falls back to all_ahead
 pizz_dynamics = 60 # Percent of staccato dynamics compared to sustain notes
 pizz_dyn_add = 0 # Add minimum dynamics after multiplying
 
@@ -117,4 +121,7 @@ harsh_freq = 100 # Frequency of harsh sustain articulation in percent of all pos
 # Gliss adaptor
 gliss_minlen = 1500 # Minimum note length that can have a gliss transition
 gliss_freq = 0 # Frequency of gliss articulation in percent
+
+# Tremolo adaptor
+trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
 
