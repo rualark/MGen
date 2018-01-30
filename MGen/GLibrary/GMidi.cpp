@@ -2762,12 +2762,16 @@ void CGMidi::InterpolateCC(int CC, float rnd, int step1, int step2, vector< vect
 		if (cc_ma[c] > 127) cc_ma[c] = 127;
 	}
 	// Send starting CC
-	if (step1 == 0) AddCC(midi_sent_t - midi_start_time - midi_prepause, 
-		CC, cc_ma[0]);
+	int is_first_cc = 1;
 	// Send ma CC
 	for (int c = first_cc; c <= last_cc; c++) {
 		float t = cc_time[c];
 		if (t >= midi_sent_t - midi_start_time + midi_prepause) {
+			if (is_first_cc) {
+				if (midi_first_run) AddCC(midi_sent_t - midi_start_time - midi_prepause,
+					CC, cc_ma[c]);
+				is_first_cc = 0;
+			}
 			AddCC(t, CC, cc_ma[c]);
 		}
 	}
