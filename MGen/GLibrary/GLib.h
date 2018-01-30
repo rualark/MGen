@@ -105,8 +105,9 @@ const int note_base_m[][12] = {
 
 #define fMUTE 1 // SM Brass
 #define fPEDAL 2 // Piano
-#define fTASTO 3 // Sul tasto for Embertone IS
-#define fPONT 4 // Sul tasto for Embertone IS
+#define fUNPEDAL 3 // Piano
+#define fTASTO 4 // Sul tasto for Embertone IS
+#define fPONT 5 // Sul tasto for Embertone IS
 
 const CString ArticName[] = {
 	"Legato", // 0

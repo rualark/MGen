@@ -1366,6 +1366,9 @@ void CGMidi::LoadMidi(CString path)
 					if (val > 63) {
 						SetBit(filter[pos][v], fPEDAL);
 					}
+					else {
+						SetBit(filter[pos][v], fUNPEDAL);
+					}
 				}
 			}
 			if (mev->isNoteOn()) {
@@ -2614,6 +2617,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 		InterpolateCC(icf[ii].CC_dyn, icf[ii].rnd_dyn, step1, step22, dyn, ii, v);
 		InterpolateCC(icf[ii].CC_vib, icf[ii].rnd_vib, step1, step22, vib, ii, v);
 		InterpolateCC(icf[ii].CC_vibf, icf[ii].rnd_vibf, step1, step22, vibf, ii, v);
+		SendPedalCC(step1, step22, ii, v);
 		midi_channel = midi_channel_saved;
 	}
 	// Sort by timestamp before sending
@@ -2638,6 +2642,19 @@ void CGMidi::SendMIDI(int step1, int step2)
 	midi_sent_msg = midi_sent_msg2;
 	if (!amidi_export) {
 		mutex_output.unlock();
+	}
+}
+
+void CGMidi::SendPedalCC(int step1, int step2, int ii, int v) {
+	for (int i = step1; i < step2; i++) {
+		if (GetBit(filter[i][v], fPEDAL)) {
+			long long stimestamp = sstime[i][v] * 100 / m_pspeed + dstime[i][v];
+			AddCC(stimestamp, 64, 127);
+		}
+		if (GetBit(filter[i][v], fUNPEDAL)) {
+			long long stimestamp = sstime[i][v] * 100 / m_pspeed + dstime[i][v];
+			AddCC(stimestamp, 64, 0);
+		}
 	}
 }
 

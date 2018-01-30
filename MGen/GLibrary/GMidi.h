@@ -284,6 +284,7 @@ public:
 	void CheckDstime(int i, int v);
 	void GetMidiPrePause();
 	void SendMIDI(int step1, int step2);
+	void SendPedalCC(int step1, int step2, int ii, int v);
 	void InterpolateCC(int CC, float rnd, int step1, int step2, vector<vector<unsigned char>>& dv, int ii, int v);
 	void StopMIDI();
 	int GetPlayStep();
