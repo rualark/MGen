@@ -2319,6 +2319,7 @@ void CGMidi::GetMidiPrePause() {
 				break;
 			}
 		}
+		midi_prepause = max(midi_prepause, icf[instr[v]].mute_predelay);
 	}
 	midi_prepause += INIT_PRESTEPS * INIT_PRESTEP;
 }
