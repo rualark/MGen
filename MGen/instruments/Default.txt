@@ -30,13 +30,13 @@ Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   
 Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   | 
 Unpitched percussion/Wood blocks      | Wood block Medium     | 5   | 24  | -   | Wood block
 Unpitched percussion/Temple blocks    | Temple block Medium   | 5   | 24  | -   | Temple block
-Strings/Violin                        | Arco                  | 1   | 1   | +   | Vln
+Strings/Violin                        | Arco                  | 1   | 1   | +   | Vln, Violon
 Strings/Violins                       | Arco                  | 1   | 1   | +   | Vlns
 Strings/Viola                         | Arco                  | 10  | 10  | +   | Vla
 Strings/Violas                        | Arco                  | 10  | 10  | +   | Vlas
-Strings/Cello                         | Arco                  | 11  | 11  | +   | Violoncello, Vlle
+Strings/Cello                         | Arco                  | 11  | 11  | +   | Violoncello, Vlle, Violoncelle
 Strings/Cellos                        | Arco                  | 11  | 11  | +   | Violoncellos
-Strings/Contrabass                    | Arco                  | 12  | 12  | +   | Cb.
+Strings/Contrabass                    | Arco                  | 12  | 12  | +   | Cb., Contrebasse
 Strings/Contrabasses                  | Arco                  | 12  | 12  | +   |
 Strings/Harp                          | Harp                  | 0   | 29  | -   |
 

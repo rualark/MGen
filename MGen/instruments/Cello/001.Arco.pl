@@ -98,6 +98,13 @@ stac_auto = 1 # Set to 0 to disable automatic staccato articulations
 stac_ahead = 54 # Time in ms to stretch stac notes back to cope with slow attack
 stac_dynamics = 50 # Percent of staccato dynamics compared to sustain notes
 stac_dyn_add = 30 # Add minimum dynamics after multiplying
+spic_import = 1 # Allow to import spiccato technique from midi file into staccato articulation
+stac_import = 1 # Set to 0 to ignore staccato in source MIDI file and play as normal notes. Set to 1 to import as staccato
+marc_import = 0 # Set to 0 to ignore marcato in source MIDI file and play as normal notes. Set to 1 to import as staccato
+
+# Sul tasto adaptor
+tasto_import = 1 # Set to 0 to ignore sul tasto in source MIDI file and play as normal notes
+bow_lock = 0 # 0 - do not lock bow, 1 - always sul tasto, 2 - always sul ponticello
 
 # Pizzicato adaptor
 pizz_import = 1 # Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
