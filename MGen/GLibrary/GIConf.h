@@ -117,6 +117,7 @@ struct IConf {
 	int marc_import = 0; // Set to 0 to ignore marcato in source MIDI file and play as normal notes. Set to 1 to import as staccato
 	int tasto_import = 1; // Set to 0 to ignore sul tasto in source MIDI file and play as normal notes
 	int bow_lock = 0; // 0 - do not lock bow, 1 - always sul tasto, 2 - always sul ponticello
+	int mute_lock = 0; // 0 - do not lock mute, 1 - always selected mute (mute_activate)
 	int lengroup2 = 0;
 	int lengroup3 = 0;
 	int lengroup4 = 0;

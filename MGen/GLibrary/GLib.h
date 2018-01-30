@@ -105,8 +105,8 @@ const int note_base_m[][12] = {
 
 #define fMUTE 1 // SM Brass
 #define fPEDAL 2 // Piano
-#define fTASTO 4 // Sul tasto for Embertone IS
-#define fPONT 8 // Sul tasto for Embertone IS
+#define fTASTO 3 // Sul tasto for Embertone IS
+#define fPONT 4 // Sul tasto for Embertone IS
 
 const CString ArticName[] = {
 	"Legato", // 0
@@ -258,6 +258,9 @@ public:
 
 	static void CleanFolder(CString Wildcard);
 	static void CheckMemoryUsage();
+	static void SetBit(unsigned char & ch, int bit);
+	static void ClearBit(unsigned char & ch, int bit);
+	static int GetBit(unsigned char ch, int bit);
 	static float Lighten(float col, float coef) { return 255.0 - (255.0 - col) / coef; }
 	static DWORD GetRed(DWORD col) { return (col >> 16) & 0xff; }
 	static DWORD GetGreen(DWORD col) { return (col >> 8) & 0xff; }

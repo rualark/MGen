@@ -1139,3 +1139,14 @@ void CGLib::CheckMemoryUsage() {
 	}
 }
 
+void CGLib::SetBit(unsigned char &ch, int bit) {
+	ch |= 1UL << bit;
+}
+
+void CGLib::ClearBit(unsigned char &ch, int bit) {
+	ch &= ~(1UL << bit);
+}
+
+int CGLib::GetBit(unsigned char ch, int bit) {
+	return (ch >> bit) & 1U;
+}

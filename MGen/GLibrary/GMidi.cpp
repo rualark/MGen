@@ -1364,7 +1364,7 @@ void CGMidi::LoadMidi(CString path)
 				}
 				if (cc == 64) {
 					if (val > 63) {
-						filter[pos][v] |= fPEDAL;
+						SetBit(filter[pos][v], fPEDAL);
 					}
 				}
 			}
@@ -1535,11 +1535,19 @@ void CGMidi::LoadMidi(CString path)
 						if (spic_active && icf[instr[v]].spic_import) artic[pos + z][v] = aSTAC;
 						if (stac_active && icf[instr[v]].stac_import) artic[pos + z][v] = aSTAC;
 						if (marc_active && icf[instr[v]].marc_import) artic[pos + z][v] = aSTAC;
-						if (mute_active && icf[instr[v]].mute_import) filter[pos + z][v] |= fMUTE;
-						if (tasto_active && icf[instr[v]].tasto_import) filter[pos + z][v] |= fTASTO;
+						if (mute_active && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
+						if (tasto_active && icf[instr[v]].tasto_import) SetBit(filter[pos + z][v], fTASTO);
+						// Lock mute
+						if (icf[instr[v]].mute_lock) SetBit(filter[pos + z][v], fMUTE);
 						// Lock bow
-						if (icf[instr[v]].bow_lock == 1) filter[pos + z][v] |= fTASTO;
-						if (icf[instr[v]].bow_lock == 2) filter[pos + z][v] |= fPONT;
+						if (icf[instr[v]].bow_lock == 1) {
+							SetBit(filter[pos + z][v], fTASTO);
+							ClearBit(filter[pos + z][v], fPONT);
+						}
+						if (icf[instr[v]].bow_lock == 2) {
+							SetBit(filter[pos + z][v], fPONT);
+							ClearBit(filter[pos + z][v], fTASTO);
+						}
 					}
 					// Set midi ticks
 					smst[pos][v] = mev->tick;
@@ -2477,13 +2485,13 @@ void CGMidi::SendMIDI(int step1, int step2)
 					}
 					if (icf[ii].type == 1) {
 						// Send bow
-						if (filter[i][v] & fTASTO) {
+						if (GetBit(filter[i][v], fTASTO)) {
 							if (icf[ii].NameToKsw.find("Sul tasto") != icf[ii].NameToKsw.end())
 								AddKs(stimestamp - 3, icf[ii].NameToKsw["Sul tasto"]);
 							if (icf[ii].NameToKsw.find("Harmonics") != icf[ii].NameToKsw.end())
 								AddKs(stimestamp - 3, icf[ii].NameToKsw["Harmonics"]);
 						}
-						else if (filter[i][v] & fPONT) {
+						else if (GetBit(filter[i][v], fPONT)) {
 							AddKs(stimestamp - 3, icf[ii].NameToKsw["Sul ponticello"]);
 						}
 						else {
@@ -2514,7 +2522,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 					// Send transition ks
 					if (icf[ii].type == 2) {
 						// Mute
-						if ((filter[i][v] & fMUTE) && icf[ii].mute_activate > -1) {
+						if (GetBit(filter[i][v], fMUTE) && icf[ii].mute_activate > -1) {
 							for (auto const& it : icf[ii].tech[icf[ii].mute_activate]) {
 								AddMidiEvent(stimestamp - icf[ii].mute_predelay,
 									Pm_MessageStatus(it) + midi_channel,
@@ -2526,7 +2534,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 							}
 						}
 						// Open
-						if (!(filter[i][v] & fMUTE) && icf[ii].mute_deactivate > -1) {
+						if (!GetBit(filter[i][v], fMUTE) && icf[ii].mute_deactivate > -1) {
 							for (auto const& it : icf[ii].tech[icf[ii].mute_deactivate]) {
 								AddMidiEvent(stimestamp - icf[ii].mute_predelay,
 									Pm_MessageStatus(it) + midi_channel,
