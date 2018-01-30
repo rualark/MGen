@@ -1377,7 +1377,7 @@ void CGMidi::LoadMidi(CString path)
 				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 				// Parse keyswitch
 				if (pitch < icf[instr[v]].import_min || pitch > icf[instr[v]].import_max) {
-					if (pitch == 0) {
+					if (pitch < 12) {
 						mute_active = 0;
 						marc_active = 0;
 						pizz_active = 0;
@@ -1531,7 +1531,8 @@ void CGMidi::LoadMidi(CString path)
 						pause[pos + z][v] = 0;
 						coff[pos + z][v] = z;
 						if (trem_active && icf[instr[v]].trem_import) artic[pos + z][v] = aTREM;
-						if (pizz_active && icf[instr[v]].pizz_import) artic[pos + z][v] = aPIZZ;
+						if (pizz_active && icf[instr[v]].pizz_import) 
+							artic[pos + z][v] = aPIZZ;
 						if (spic_active && icf[instr[v]].spic_import) artic[pos + z][v] = aSTAC;
 						if (stac_active && icf[instr[v]].stac_import) artic[pos + z][v] = aSTAC;
 						if (marc_active && icf[instr[v]].marc_import) artic[pos + z][v] = aSTAC;
