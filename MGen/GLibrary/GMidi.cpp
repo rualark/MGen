@@ -1356,10 +1356,10 @@ void CGMidi::LoadMidi(CString path)
 					// Fill cc1
 					if (last_cc1_step > -1) {
 						for (int z = last_cc1_step + 1; z < pos; ++z) {
-							//dyn[z][v] = dyn[z - 1][v];
+							dyn[z][v1] = dyn[z - 1][v1];
 						}
 					}
-					//dyn[pos][v] = val;
+					dyn[pos][v1] = val;
 					last_cc1_step = pos;
 				}
 				if (cc == 64) {
@@ -1503,7 +1503,7 @@ void CGMidi::LoadMidi(CString path)
 								len[z][v] = 0;
 								note[z][v] = 0;
 								pause[z][v] = 1;
-								dyn[z][v] = 0;
+								vel[z][v] = 0;
 								coff[z][v] = 0;
 							}
 						}
@@ -1526,7 +1526,7 @@ void CGMidi::LoadMidi(CString path)
 					for (int z = 0; z < nlen; z++) {
 						note[pos + z][v] = pitch;
 						len[pos + z][v] = nlen;
-						dyn[pos + z][v] = myvel;
+						vel[pos + z][v] = myvel;
 						midi_ch[pos + z][v] = chan;
 						pause[pos + z][v] = 0;
 						coff[pos + z][v] = z;
@@ -1571,16 +1571,24 @@ void CGMidi::LoadMidi(CString path)
 		if (!note[0][v] && !pause[0][v] && !len[0][v]) {
 			FillPause(0, 1, v);
 		}
-		// Fill cc1
+		// Fill cc1 in first voice
 		if (last_cc1_step > -1) {
 			for (int z = last_cc1_step + 1; z <= last_step; ++z) {
-				//dyn[z][v] = dyn[z - 1][v];
+				dyn[z][v1] = dyn[z - 1][v1];
 			}
 			last_cc1_step = last_step;
 		} 
-		// Overwrite with vel
-		for (int z = 0; z <= last_step; ++z) {
-			//if (artic[z][v] == aPIZZ || !dyn[z][v]) dyn[z][v] = vel[z][v];
+		// Copy cc1 to all voices of current track
+		for (int v = v1 + 1; v <= v2; ++v) {
+			for (int z = 0; z <= last_step; ++z) {
+				dyn[z][v] = dyn[z][v1];
+			}
+		}
+		// Overwrite dynamics with vel where dynamics does not make sense
+		for (int v = v1; v <= v2; ++v) {
+			for (int z = 0; z <= last_step; ++z) {
+				if (artic[z][v] == aPIZZ || !dyn[z][v]) dyn[z][v] = vel[z][v];
+			}
 		}
 	} // for track
 	if (need_exit) return;

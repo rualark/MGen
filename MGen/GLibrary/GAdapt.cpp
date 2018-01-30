@@ -252,11 +252,11 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		if (icf[ii].stac_ahead > -1) dstime[pi][v] = -icf[ii].stac_ahead;
 		else dstime[pi][v] = -icf[ii].all_ahead;
 		artic[pi][v] = aSTAC;
-		vel[pi][v] = min(127, dyn[pi][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add);
+		vel[pi][v] = max(1, min(127, dyn[pi][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add));
 		// Next note cannot be legato/slur
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aNONLEGATO;
-		vel[i][v] = dyn[i][v];
+		vel[i][v] = max(1, dyn[i][v]);
 		if (comment_adapt) adapt_comment[pi][v] += "Staccato. ";
 	}
 	// Same process for current note
@@ -266,7 +266,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		if (icf[ii].stac_ahead > -1) dstime[i][v] = -icf[ii].stac_ahead;
 		else dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aSTAC;
-		vel[i][v] = min(127, dyn[i][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add);
+		vel[i][v] = max(1, min(127, dyn[i][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add));
 		if (comment_adapt) adapt_comment[i][v] += "Staccato. ";
 	}
 }
@@ -274,7 +274,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 void CGAdapt::AdaptPizzStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Change pizz dynamics
 	if (artic[i][v] == aPIZZ) {
-		vel[i][v] = min(127, dyn[i][v] * icf[ii].pizz_dynamics / 100 + icf[ii].pizz_dyn_add);
+		vel[i][v] = max(1, min(127, dyn[i][v] * icf[ii].pizz_dynamics / 100 + icf[ii].pizz_dyn_add));
 		if (icf[ii].pizz_ahead > -1) {
 			dstime[i][v] = -icf[ii].pizz_ahead;
 		}
@@ -468,7 +468,8 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Long bell start. ";
 			// Decrease starting velocity
-			if (icf[ii].bell_end_vel) vel[i][v] = randbw(dyn[i][v] * icf[ii].bell_end_vel / 100.0, dyn[i][v] * icf[ii].bell_start_vel / 100.0); //-V550
+			if (icf[ii].bell_end_vel) vel[i][v] = max(1, 
+				randbw(dyn[i][v] * icf[ii].bell_end_vel / 100.0, dyn[i][v] * icf[ii].bell_start_vel / 100.0)); //-V550
 		}
 	}
 	int ni = i + noff[i][v];
@@ -870,7 +871,7 @@ void CGAdapt::Adapt(int step1, int step2) {
 		}
 		// Set vel to dyn
 		for (int i = step1; i <= step2; i++) {
-			vel[i][v] = dyn[i][v];
+			vel[i][v] = max(1, dyn[i][v]);
 		}
 		CheckInstrumentRange(v, ii);
 		if (!adapt_enable) continue;

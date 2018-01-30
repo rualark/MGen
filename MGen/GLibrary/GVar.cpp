@@ -1344,7 +1344,7 @@ void CGVar::ValidateVectors2(int step1, int step2) {
 			// Check vel is zero
 			if (!vel[i][v] && !pause[i][v] && m_algo_id != 112 && m_algo_id != 121 && warning_valid < MAX_WARN_VALID) {
 				st.Format("Validation failed at step %d voice %d: velocity cannot be zero", i, v);
-				WriteLog(5, st);
+				WriteLog(1, st);
 				warning_valid++;
 			}
 			// Check vel is above 127
