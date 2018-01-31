@@ -944,8 +944,9 @@ void CGAdapt::Adapt(int step1, int step2) {
 			pi = max(0, i - poff[i][v]);
 			pei = i - 1;
 			if (!pause[i][v]) {
-				// Randomize note starts
-				if (icf[ii].rand_start > 0) {
+				// Randomize note starts for piano and non-legato solo instruments
+				if (icf[ii].rand_start > 0 && (icf[ii].type == 0 || artic[i][v] == aNONLEGATO || artic[i][v] == aSTAC ||
+					artic[i][v] == aPIZZ || artic[i][v] == aTREM)) {
 					float max_shift = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed * icf[ii].rand_start / 100;
 					if ((icf[ii].rand_start_max > 0) && (max_shift > icf[ii].rand_start_max)) max_shift = icf[ii].rand_start_max;
 					dstime[i][v] += (rand01() - 0.5) * max_shift;
