@@ -10,7 +10,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 # Created at 2018-01-31 17:23:50
 Midi_file = midi\Music\Shegolev\Tico Tico_inames.mid
 
-Instruments = Violin
-
-Instrument = "Violin/Arco"
-InitCommand = "Transition speed upper: 16"
+Instruments = "Violin/Arco,Violin,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass/Arco,Piano,Piano"
