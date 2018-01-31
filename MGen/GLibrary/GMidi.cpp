@@ -1376,7 +1376,7 @@ void CGMidi::LoadMidi(CString path)
 				int pitch = mev->getKeyNumber();
 				int myvel = mev->getVelocity();
 				int tick_dur = mev->getTickDuration();
-				if (grow_notes > -1) tick_dur += grow_notes;
+				//if (grow_notes > -1) tick_dur += grow_notes;
 				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 				// Parse keyswitch
 				if (pitch < icf[instr[v]].import_min || pitch > icf[instr[v]].import_max) {
