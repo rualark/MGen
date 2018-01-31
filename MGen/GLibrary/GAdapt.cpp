@@ -283,11 +283,14 @@ void CGAdapt::AdaptPizzStep(int v, int x, int i, int ii, int ei, int pi, int pei
 }
 
 void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
+	float max_shift = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed * icf[ii].rand_start / 100;
+	if ((icf[ii].rand_start_max > 0) && (max_shift > icf[ii].rand_start_max)) max_shift = icf[ii].rand_start_max;
+	int rand_ahead = max(1, icf[ii].legato_ahead[0] - (rand01() - 0.5) * max_shift);
 	// Advance start for legato (not longer than previous note length)
 	if (i > 0 && pi < i) {
 		if (icf[ii].legato_ahead[0] > 0 && (artic[i][v] == aSLUR || artic[i][v] == aLEGATO) &&
 			(!pause[pi][v]) && (abs(note[i][v] - note[i - 1][v]) <= icf[ii].max_ahead_note)) {
-			dstime[i][v] = -min(icf[ii].legato_ahead[0], (setime[i - 1][v] - sstime[pi][v]) * 100 / m_pspeed +
+			dstime[i][v] = -min(rand_ahead, (setime[i - 1][v] - sstime[pi][v]) * 100 / m_pspeed +
 				detime[i - 1][v] - dstime[pi][v] - 1);
 			detime[i - 1][v] = 0.9 * dstime[i][v];
 			if (comment_adapt) {
