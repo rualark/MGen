@@ -97,4 +97,6 @@ trem_dynamics = 60 # Percent of tremolo dynamics compared to sustain notes
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
 rnd_dyn = 8 # Randomize step dynamics not greater than this percent
+rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
+rand_pos_max = 70-0 # Maximum shift in ms (start-end)
 
