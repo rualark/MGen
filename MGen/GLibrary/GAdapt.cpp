@@ -414,6 +414,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 						(sstime[lpi][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[lpei][v] + 1);
 					if (comment_adapt) adapt_comment[lpei][v] += "Ending overlap fixed. ";
 				}
+				gap = (sstime[i][v] - setime[lpei][v]) * 100 / m_pspeed + dstime[i][v] - detime[lpei][v];
 				if (note[lpi][v] == note[i][v] && gap < icf[ii].retrigger_mingap) {
 					// Move ending of previous note to the left but not further than previous note start
 					detime[lpei][v] = max(

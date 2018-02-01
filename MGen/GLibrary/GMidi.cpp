@@ -900,6 +900,7 @@ void CGMidi::SendLyHarm() {
 			int found = 0;
 			// Replace dominant symbol
 			st.Replace("#", " \"#\" ");
+			st.Replace("b", " \\flat ");
 			if (ly_dominant_letter) {
 				if (st[0] == 'D') {
 					st = "\\concat { \\char ##x00D0 " + st.Right(st.GetLength() - 1) + " } ";
@@ -1376,7 +1377,7 @@ void CGMidi::LoadMidi(CString path)
 				int pitch = mev->getKeyNumber();
 				int myvel = mev->getVelocity();
 				int tick_dur = mev->getTickDuration();
-				//if (grow_notes > -1) tick_dur += grow_notes;
+				if (grow_notes > -1) tick_dur += grow_notes;
 				int nlen = round((mev->tick + tick_dur) / (float)tpc) - pos;
 				// Parse keyswitch
 				if (pitch < icf[instr[v]].import_min || pitch > icf[instr[v]].import_max) {

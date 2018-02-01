@@ -59,7 +59,7 @@ nonlegato_mingap = 13 # Minimum distance between note ending and next note start
 
 # Staccato adaptor
 stac_maxlen = 400 # Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
-stac_dynamics = 50 # Percent of staccato dynamics compared to sustain notes
+stac_dynamics = 30 # Percent of staccato dynamics compared to sustain notes
 
 # Vibrato adaptor
 CC_vib = 1 # CC number for vibrato intensity
