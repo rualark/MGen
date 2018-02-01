@@ -6,6 +6,7 @@
 #define MAX_WARN_MIDI_SHORT 5
 #define MAX_WARN_MIDI_LONG 5
 #define MAX_WARN_MIDI_AHEAD 5
+#define MAX_WARN_UNISON_MUTE 5
 // Maximum delta from midi file position in ms without warning
 #define MAX_ALLOW_DELTA 30
 // Maximum delay (ms) between transition and keyswitch
@@ -270,6 +271,7 @@ public:
 	// Midi files
 	void SaveMidi(CString dir, CString fname);
 	void LoadMidi(CString path);
+	void UnisonMute(int step1, int step2);
 	void MergeSmallOverlaps(int step1, int step2);
 
 	void LoadCantus(CString path);
@@ -355,6 +357,7 @@ protected:
 	int warning_loadmidi_long = 0;
 	int warning_ahead = 0;
 	int warning_loadmidi_overlap = 0;
+	int warning_unison_mute = 0;
 
 	// PortMIDI internal
 	void AddMidiEvent(long long timestamp, int mm_type, int data1, int data2);

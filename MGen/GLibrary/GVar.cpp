@@ -247,6 +247,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 			CheckVar(&st2, &st3, "midifile_export_comments", &midifile_export_comments, 0, 1);
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable, 0, 1);
 			CheckVar(&st2, &st3, "autolegato", &auto_legato, 0, 1);
+			CheckVar(&st2, &st3, "unison_mute", &unison_mute, 0, 1);
 			CheckVar(&st2, &st3, "grownotes", &grow_notes);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt, 0, 1);
 			CheckVar(&st2, &st3, "mastervolume", &master_vol, 0, 100);

@@ -1618,6 +1618,7 @@ void CGMidi::LoadMidi(CString path)
 	CountOff(0, last_step);
 	//CountTime(0, last_step);
 	UpdateNoteMinMax(0, last_step);
+	UnisonMute(0, last_step);
 	//UpdateTempoMinMax(0, last_step);
 	// Send last
 	t_generated = last_step + 1;
@@ -1637,6 +1638,32 @@ void CGMidi::LoadMidi(CString path)
 	est.Format("LoadMidi successfully loaded %d steps (in %lld ms)", 
 		t_generated, time_stop - time_start);
 	WriteLog(0, est);
+}
+
+void CGMidi::UnisonMute(int step1, int step2) {
+	for (int v = 0; v < v_cnt; v++) {
+		for (int v2 = v+1; v2 < v_cnt; v2++) {
+			if (icf[instr[v]].group != icf[instr[v2]].group) continue;
+			if (icf[instr[v]].name != icf[instr[v2]].name) continue;
+			for (int i = step1; i <= step2; ++i) {
+				if (coff[i][v]) continue;
+				if (coff[i][v2]) continue;
+				if (note_muted[i][v]) continue;
+				if (pause[i][v]) continue;
+				if (pause[i][v2]) continue;
+				if (note[i][v] != note[i][v]) continue;
+				if (len[i][v] != len[i][v]) continue;
+				note_muted[i][v2] = 1;
+				if (warning_unison_mute < MAX_WARN_UNISON_MUTE) {
+					++warning_unison_mute;
+					CString est;
+					est.Format("Muted note at step %d voice %d because it is unison with voice %d",
+						i, v, v2);
+					WriteLog(0, est);
+				}
+			}
+		}
+	}
 }
 
 void CGMidi::MergeSmallOverlaps(int step1, int step2) {

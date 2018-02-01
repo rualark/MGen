@@ -67,6 +67,7 @@ public:
 	int sleep_ms = 0;
 	int adapt_enable = 1;
 	int auto_legato = -1;
+	int unison_mute = 1; // Mute unisons in same instruments
 	CString midi_file_type;
 	int grow_notes = -1;
 	int master_vol = 100; // Master volume for all tracks. 0 - automatic, 100 - maximum
