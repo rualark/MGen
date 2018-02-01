@@ -526,12 +526,14 @@ int CGenCP1::SendCP() {
 								GetRealNoteName(hbcc[chm_id] % 12, tonic_cur, minor_cur);
 						}
 						else {
+							/*
 							if ((hbc[chm_id] % 7 - chm[chm_id] + 7) % 7 == 2) {
 								mark[pos][v] += "6";
 							}
 							else {
 								mark[pos][v] += "64";
 							}
+							*/
 						}
 					}
 					SendHarmColorCP(pos, v, chm_id);
