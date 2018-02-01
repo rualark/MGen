@@ -169,6 +169,8 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note velocity: %d\n", pGen->vel[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
+		st.Format("Note muted: %s\n", pGen->note_muted[i][mv]?"Yes":"No");
+		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Lyrics from MIDI file: %s\n", pGen->lyrics[i][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 
