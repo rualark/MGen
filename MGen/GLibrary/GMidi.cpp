@@ -1362,7 +1362,7 @@ void CGMidi::LoadMidi(CString path)
 					dyn[pos][v1] = val;
 					last_cc1_step = pos;
 				}
-				if (cc == 64) {
+				if (cc == 64 && icf[instr[v]].pedal_import) {
 					if (val > 63) {
 						SetBit(filter[pos][v], fPEDAL);
 					}

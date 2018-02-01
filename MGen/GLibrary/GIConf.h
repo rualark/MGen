@@ -79,6 +79,7 @@ struct IConf {
 	int nonlegato_mingap = 1;
 	int nonlegato_maxgap = 1;
 	int auto_legato = -1;
+	int pedal_import = 1; 
 	vector<int> legato_ahead;
 	vector<int> ahead_chrom;
 	vector<short> KswGroup;

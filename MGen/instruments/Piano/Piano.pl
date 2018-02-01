@@ -29,3 +29,6 @@ Volume_default = 80 # default 127 (direct CC volume, should not be changed by us
 # Initial  setup
 Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
+
+# Pedal adaptor
+Pedal_import = 1 # 0 - do not import pedal; 1 - import CC64 pedal from source midi file

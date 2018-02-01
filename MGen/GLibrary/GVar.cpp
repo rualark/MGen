@@ -866,6 +866,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "nonlegato_mingap", &icf[i].nonlegato_mingap);
 	CheckVar(&st2, &st3, "retrigger_mingap", &icf[i].retrigger_mingap);
 	CheckVar(&st2, &st3, "auto_legato", &icf[i].auto_legato);
+	CheckVar(&st2, &st3, "pedal_import", &icf[i].pedal_import);
 	CheckVar(&st2, &st3, "trem_maxlen", &icf[i].trem_maxlen);
 	CheckVar(&st2, &st3, "trem_dynamics", &icf[i].trem_dynamics);
 	CheckVar(&st2, &st3, "trem_min_repeats", &icf[i].trem_min_repeats);
