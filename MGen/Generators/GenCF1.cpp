@@ -1649,8 +1649,8 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 	}
 	if (max_leap_sum2 >= cse_leaps) {
 		if (max_leap_sum2 > cse_leaps2) 
-			FLAG2L(71, fli[bli[leap_sum_s2] + 1], fli[max(0, bli[leap_sum_s2] - max_leap_sum2)]);
-		else FLAG2L(70, fli[bli[leap_sum_s2] + 1], fli[max(0, bli[leap_sum_s2] - max_leap_sum2)]);
+			FLAG2L(71, fli[bli[leap_sum_s2] + 1], fli[max(0, bli[leap_sum_s2] - max_leap_sum2 + 1)]);
+		else FLAG2L(70, fli[bli[leap_sum_s2] + 1], fli[max(0, bli[leap_sum_s2] - max_leap_sum2 + 1)]);
 	}
 	return 0;
 }
