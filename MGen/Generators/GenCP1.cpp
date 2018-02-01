@@ -2201,11 +2201,21 @@ int CGenCP1::FailVIntervals() {
 			++pm_pico;
 			// Two same ico transitions means three intervals already
 			if (pico_count == ico_chain-1) {
-				FLAG2L(89, s, isus[ls - 2]);
+				if (civlc[s] == 3 || civlc[s] == 4) {
+					FLAG2L(89, s, isus[ls - 2]);
+				}
+				else {
+					FLAG2L(389, s, isus[ls - 2]);
+				}
 			}
 			else if (pico_count >= ico_chain2) {
 				if (!fired) {
-					FLAG2L(96, s, isus[ls - 3]);
+					if (civlc[s] == 3 || civlc[s] == 4) {
+						FLAG2L(96, s, isus[ls - 3]);
+					}
+					else {
+						FLAG2L(390, s, isus[ls - 3]);
+					}
 					fired = 1;
 				}
 				else {
