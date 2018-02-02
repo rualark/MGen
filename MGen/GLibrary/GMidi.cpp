@@ -1696,8 +1696,8 @@ void CGMidi::UnisonMute(int step1, int step2) {
 				if (note_muted[i][v]) continue;
 				if (pause[i][v]) continue;
 				if (pause[i][v2]) continue;
-				if (note[i][v] != note[i][v]) continue;
-				if (len[i][v] != len[i][v]) continue;
+				if (note[i][v] != note[i][v2]) continue;
+				if (len[i][v] != len[i][v2]) continue;
 				note_muted[i][v2] = 1;
 				if (warning_unison_mute < MAX_WARN_UNISON_MUTE) {
 					++warning_unison_mute;

@@ -2030,7 +2030,7 @@ int CGenCP1::FailRhythm5() {
 		if (full_measure) {
 			if (rid.size()) {
 				// Do not fire for first measure if measure starts with pause
-				if (rid.back() == rid_cur && (ms > 1 || !fn)) FLAG2L(247, s2, mli[ms - 1]);
+				if (rid.back() == rid_cur && (ms > 1 || !fn)) FLAG2L(247, fli[bli[mli[ms] - 1]], mli[ms - 1]);
 			}
 			rid.push_back(rid_cur);
 		}
