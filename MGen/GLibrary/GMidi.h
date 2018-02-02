@@ -232,7 +232,7 @@ class CGMidi :
 {
 public:
 	CGMidi();
-	void BuildKeyMatrix();
+	void TestKeyMatrix();
 	~CGMidi();
 	void GetLyRange(int step1, int step2, vector<int>& vm_min, vector<int>& vm_max);
 	void GetLyVcnt(int step1, int step2, vector<int>& vm_max);
@@ -250,6 +250,7 @@ public:
 	CString GetLyMarkColor(DWORD col);
 	CString GetLyMarkColor2(DWORD col);
 	void SendLyNoteColor(ofstream & fs, DWORD col);
+	CString GetRealIntName(int s, int v1, int v2);
 	CString GetIntName(int iv);
 	void ParseNLinks(int i, int i2, int v, int foreign);
 	void SaveLyComments(int i, int v, int pos);

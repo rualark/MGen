@@ -12,11 +12,11 @@
 
 CGMidi::CGMidi() {
 	mo = 0;
-	//BuildKeyMatrix();
+	//TestKeyMatrix();
 }
 
 // One-time function
-void CGMidi::BuildKeyMatrix() {
+void CGMidi::TestKeyMatrix() {
 	CString st, st2;
 	vector<int> v;
 	for (int k = 0; k < 12; ++k) {
@@ -451,8 +451,54 @@ void CGMidi::SendLyNoteColor(ofstream &fs, DWORD col) {
 	fs << "\n    \\override Stem.color = #(rgb-color " << GetLyColor(col) << ") ";
 }
 
+CString CGMidi::GetRealIntName(int s, int v1, int v2) {
+	// Exact interval
+	int in = abs(note[s][v2] - note[s][v1]);
+	in = in ? ((in % 12) ? (in % 12) : 12) : 0;
+	// Interval between base notes
+	int no, oct, alter;
+	int no2, oct2, alter2;
+	GetRealNote(note[s][v1], tonic[s][v1], minor[s][v1], no, oct, alter);
+	GetRealNote(note[s][v2], tonic[s][v2], minor[s][v2], no2, oct2, alter2);
+	int fno = no + oct * 12;
+	int fno2 = no2 + oct2 * 12;
+	int bin = abs(fno - fno2);
+	bin = bin ? ((bin % 12) ? (bin % 12) : 12) : 0;
+	// Diatonic interval
+	int din = abs(CC_C(note[s][v1], tonic[s][v1], minor[s][v1]) - 
+		CC_C(note[s][v2], tonic[s][v2], minor[s][v2]));
+	din = din ? ((din % 12) ? (din % 12) : 12) : 0;
+	// Base diatonic interval
+	int bdin = abs(CC_C(fno, tonic[s][v1], minor[s][v1]) -
+		CC_C(fno2, tonic[s][v2], minor[s][v2]));
+	bdin = bdin ? ((bdin % 12) ? (bdin % 12) : 12) : 0;
+	// Build string
+	// Diatonic did not change
+	if (din == bdin || in == 6) {
+		if (in == 0) return "1";
+		else if (in == 1) return "m2";
+		else if (in == 2) return "M2";
+		else if (in == 3) return "m3";
+		else if (in == 4) return "M3";
+		else if (in == 5) return "4";
+		else if (in == 6) return "tri";
+		else if (in == 7) return "5";
+		else if (in == 8) return "m6";
+		else if (in == 9) return "M6";
+		else if (in == 10) return "m7";
+		else if (in == 11) return "M7";
+		else return "8";
+	}
+	// Diatonic changed
+	CString st;
+	st.Format("%d", bdin + 1);
+	if (din < bdin) st = "\\char ##x00B0 " + st;
+	else st = "+" + st;
+	return st;
+}
+
 CString CGMidi::GetIntName(int iv) {
-	if (iv == 0) return "0";
+	if (iv == 0) return "1";
 	else if (iv == 1) return "m2";
 	else if (iv == 2) return "M2";
 	else if (iv == 3) return "m3";
@@ -942,10 +988,11 @@ void CGMidi::SendLyIntervals() {
 			SendLySkips(ly_mul);
 			continue;
 		}
-		int in = note[ly_s][ly_vhigh] - note[ly_s][ly_vlow];
-		int in2 = in % 12;
-		in = in ? (in2 ? in2 : 12) : 0;
-		CString st = GetIntName(in);
+		//int in = note[ly_s][ly_vhigh] - note[ly_s][ly_vlow];
+		//int in2 = in % 12;
+		//in = in ? (in2 ? in2 : 12) : 0;
+		//CString st = GetIntName(in);
+		CString st = GetRealIntName(ly_s, ly_vhigh, ly_vlow);
 		ly_ly_st += "\\markup{ ";
 		ly_ly_st += "\\teeny ";
 		if (lyi[ly_s2].shse[vInterval] > -1) {
@@ -953,8 +1000,8 @@ void CGMidi::SendLyIntervals() {
 			if (col && col != color_noflag)
 				ly_ly_st += " \\on-color #(rgb-color " + GetLyMarkColor2(col) + ") ";
 		}
-		ly_ly_st += " \\pad-markup #0.4 " + st + " ";
-		ly_ly_st += "}\n";
+		ly_ly_st += " \\pad-markup #0.4 \\concat { " + st + " ";
+		ly_ly_st += "} }\n";
 		SendLySkips(ly_mul - 1);
 	}
 	ly_ly_st += "    }\n";

@@ -1006,7 +1006,6 @@ void CGLib::GetRealNote(int no, int key, int mi, int &no2, int &oct, int &alter)
 			if (no2 > no % 12 + 6) --oct;
 			if (no2 < no % 12 - 6) ++oct;
 			alter = no % 12 - no2;
-			no2 = no2;
 		}
 		// If not, build needed note from next lower note
 		else {
@@ -1014,7 +1013,6 @@ void CGLib::GetRealNote(int no, int key, int mi, int &no2, int &oct, int &alter)
 			if (no2 > no % 12 + 6) --oct;
 			if (no2 < no % 12 - 6) ++oct;
 			alter = no % 12 - no2;
-			no2 = no2;
 		}
 	}
 	else {
@@ -1023,14 +1021,12 @@ void CGLib::GetRealNote(int no, int key, int mi, int &no2, int &oct, int &alter)
 			if (no2 > no % 12 + 6) --oct;
 			if (no2 < no % 12 - 6) ++oct;
 			alter = no % 12 - no2;
-			no2 = no2;
 		}
 		else {
 			no2 = note_base[key][(no + 11) % 12];
 			if (no2 > no % 12 + 6) --oct;
 			if (no2 < no % 12 - 6) ++oct;
 			alter = no % 12 - no2;
-			no2 = no2;
 		}
 	}
 	if (alter > 2) alter -= 12;
