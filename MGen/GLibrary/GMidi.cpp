@@ -465,13 +465,10 @@ CString CGMidi::GetRealIntName(int s, int v1, int v2) {
 	int bin = abs(fno - fno2);
 	bin = bin ? ((bin % 12) ? (bin % 12) : 12) : 0;
 	// Diatonic interval
-	int din = abs(CC_C(note[s][v1], tonic[s][v1], minor[s][v1]) - 
-		CC_C(note[s][v2], tonic[s][v2], minor[s][v2]));
-	din = din ? ((din % 12) ? (din % 12) : 12) : 0;
+	int din = CC_C(abs(note[s][v1] - note[s][v2]), 0, 0);
 	// Base diatonic interval
-	int bdin = abs(CC_C(fno, tonic[s][v1], minor[s][v1]) -
-		CC_C(fno2, tonic[s][v2], minor[s][v2]));
-	bdin = bdin ? ((bdin % 12) ? (bdin % 12) : 12) : 0;
+	int bdin = CC_C(abs(fno - fno2), 0, 0);
+	int bdin2 = bdin ? ((bdin % 7) ? (bdin % 7) : 7) : 0;
 	// Build string
 	// Diatonic did not change
 	if (din == bdin || in == 6) {
@@ -491,7 +488,7 @@ CString CGMidi::GetRealIntName(int s, int v1, int v2) {
 	}
 	// Diatonic changed
 	CString st;
-	st.Format("%d", bdin + 1);
+	st.Format("%d", bdin2 + 1);
 	if (din < bdin) st = "\\char ##x00B0 " + st;
 	else st = "+" + st;
 	return st;
