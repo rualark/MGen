@@ -470,8 +470,8 @@ CString CGMidi::GetRealIntName(int s, int v1, int v2) {
 	int bdin = CC_C(abs(fno - fno2), 0, 0);
 	int bdin2 = bdin ? ((bdin % 7) ? (bdin % 7) : 7) : 0;
 	// Build string
-	// Diatonic did not change
-	if (din == bdin || in == 6) {
+	// Diatonic did not change or triton / triton base
+	if (din == bdin || in == 6 || bin == 6) {
 		if (in == 0) return "1";
 		else if (in == 1) return "m2";
 		else if (in == 2) return "M2";
