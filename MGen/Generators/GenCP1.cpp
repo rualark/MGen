@@ -1917,6 +1917,7 @@ int CGenCP1::FailRhythm5() {
 		}
 		// Build note lengths
 		full_measure = 0;
+		int has_croche = 0;
 		for (ls2 = ls; ls2 < fli_size; ++ls2) {
 			if (!ms && fn) pos = fn + max(0, fli[ls2] - s);
 			else pos = max(0, fli[ls2] - s);
@@ -1936,6 +1937,7 @@ int CGenCP1::FailRhythm5() {
 			s2 = fli[ls2];
 			l_len.push_back(llen[ls2]);
 			l_ls.push_back(ls2);
+			if (llen[ls2] == 1) has_croche = 1;
 			// Stop if out of measure
 			if (mstart + fli2[ls2] - s + 1 >= npm) {
 				full_measure = 1;
@@ -2028,7 +2030,8 @@ int CGenCP1::FailRhythm5() {
 		}
 		// Check rhythm repeat
 		if (full_measure) {
-			if (rid.size()) {
+			// Check only if no croches or less than 4 notes
+			if (rid.size() && (!has_croche || l_len.size() <4)) {
 				// Do not fire for first measure if measure starts with pause
 				if (rid.back() == rid_cur && (ms > 1 || !fn)) FLAG2L(247, fli[bli[mli[ms] - 1]], mli[ms - 1]);
 			}

@@ -354,7 +354,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;237;60;Counterpoint;Rhythm;Rhythm;uneven pause;0;;Starting pause in first measure does not equal length of next note;;;;;21;18;1;;;;;;
 1;254;60;Counterpoint;Rhythm;Rhythm;uneven start;0;;Starting measure contains notes/pauses of different length;11;;;Rhythm;19;16;1;;;;;;
 1;197;60;Counterpoint;Rhythm;Rhythm;pause >1/2;0;;Starting pause is longer than 1/2 note;;;;;4;3;1;;;;;;
-1;247;60;Counterpoint;Rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures;11;;;Rhythm repeat;37;16;1;;;;;;
+1;247;60;Counterpoint;Rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures if there are no croches or less than 4 notes in measure;11;;;Rhythm repeat;37;16;1;;;;;;
 1;226;60;Counterpoint;Rhythm;1/8 note;beat 1;0;;;;;;;11;7;1;;;;;;
 1;227;0;Counterpoint;Rhythm;1/8 note;beat 2;1;;;;;;;44;5;1;;;;;;
 1;228;60;Counterpoint;Rhythm;1/8 note;beat 3;0;;;;;;;17;8;1;;;;;;
