@@ -490,8 +490,8 @@ CString CGMidi::GetRealIntName(int s, int v1, int v2) {
 	// Diatonic changed
 	CString st;
 	st.Format("%d", bdin2 + 1);
-	if (din < bdin) st = "\\char ##x00B0 " + st;
-	else st = "+" + st;
+	if (din < bdin) st = "dim" + st;
+	else st = "aug" + st;
 	return st;
 }
 

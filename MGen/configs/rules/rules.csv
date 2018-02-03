@@ -154,12 +154,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;37;70;Melody;Range;Range;cf >M9;0;;;;;;;28;1;;;;;;;
 1;7;70;Melody;Range;Range;sum >22th;0;;;;;;;1;1;;;;;;;
 1;11;70;Melody;Range;Range;int >16th;0;;Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);4;;;!srn!;124;2;;;;1;;;
-1;351;0;Melody;Range;CF/sp1 Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;9;;;!srn!;6;0;;;;;;;
-1;352;0;Melody;Range;CF/sp1 Constrained local range;7 notes <4th;0;;X consecutive notes have total range less than Y;9;;;!srn!;9;1;;;;;;;
-1;353;0;Melody;Range;CF/sp1 Constrained local range;15 notes <m6;0;;X consecutive notes have total range less than Y;9;;;!srn!;4;1;;;;;;;
-1;300;0;Melody;Range;Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;9;;;Stagnation;8;0;;;;;;;
-1;98;0;Melody;Range;Constrained local range;8 notes <4th;0;;X consecutive notes have total range less than Y;9;;;!srn!;21;0;;1;;;;;
-1;198;0;Melody;Range;Constrained local range;17 notes <m6;0;;X consecutive notes have total range less than Y;9;;;!srn!;8;0;;1;;;;;
+1;351;60;Melody;Range;CF/sp1 Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;9;;;Stagnation;6;0;;;;;;;
+1;352;0;Melody;Range;CF/sp1 Constrained local range;7 notes <4th;0;;X consecutive notes have total range less than Y;9;;;Stagnation;9;1;;;;;;;
+1;353;0;Melody;Range;CF/sp1 Constrained local range;15 notes <m6;0;;X consecutive notes have total range less than Y;9;;;Stagnation;4;1;;;;;;;
+1;300;60;Melody;Range;Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;9;;;Stagnation;8;0;;;;;;;
+1;98;60;Melody;Range;Constrained local range;8 notes <4th;0;;X consecutive notes have total range less than Y;9;;;Stagnation;21;0;;1;;;;;
+1;198;0;Melody;Range;Constrained local range;17 notes <m6;0;;X consecutive notes have total range less than Y;9;;;Stagnation;8;0;;1;;;;;
 1;15;0;Melody;Range;No melody development;10 notes <16;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;99;2;;1;;1;;;
 1;16;0;Melody;Range;No melody development;13 notes <20;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;46;1;;1;;;;;
 1;17;20;Cantus;Harmony;Repeating letters in a row;>3;0;;;1;;;;40;1;;1;;;;;17,20,23,48,57,77,92,99
@@ -235,12 +235,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;86;60;Counterpoint;Counterpoint;Adjacent perfect consonances;different;-1;;;7;1;1;;160;1;;;;;;;
 1;248;0;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;7;1;1;;25;4;1;;;;;;
 1;376;0;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;last contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to last interval in counterpoint;7;1;1;;7;4;;;;;;;
-1;347;30;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;direct comp.;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Direct compound intervals.;7;1;1;;2;2;1;;;;;;
+1;347;60;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;direct comp.;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Direct compound intervals.;7;1;1;;2;2;1;;;;;;
 1;374;0;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;asymmetric;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;7;1;1;;20;7;;;;;;;
 1;249;0;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;stepwize;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;;7;1;1;;135;29;1;;;;;;
 1;315;60;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;7;1;1;;14;12;1;;;;;;
-1;316;60;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;7;1;1;;52;16;1;;;;;;
-1;385;30;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;sus;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;7;1;1;;;;;;;;;;
+1;316;100;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;7;1;1;;52;16;1;;;;;;
+1;385;60;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;sus;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;7;1;1;;;;;;;;;;
 1;250;60;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;7;1;1;;67;17;1;;;;249;;
 1;379;0;Counterpoint;Counterpoint;Virtual 4th;beat 1;0;;;12;;;sounds 6/4;21;4;;;;;;;
 1;380;0;Counterpoint;Counterpoint;Virtual 4th;beat 3;0;;;12;;;sounds 6/4;8;4;;;;;;;
