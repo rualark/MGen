@@ -394,16 +394,17 @@ void CGMidi::SendLyEvent(ofstream &fs, int pos, CString ev, int le, int i, int v
 			CString st = mark[i][v];
 			st.Replace("\n", "");
 			if (st == "PD" || st == "CA" || st == "DN") {
-				if (!ly_msh) continue;
-				if (GetGreen(mark_color[i][v]) == GetRed(mark_color[i][v])) {
-					fs << " \\staccato ";
-				}
-				else {
-					fs << "  \\staccatissimo ";
+				if (ly_msh) {
+					if (GetGreen(mark_color[i][v]) == GetRed(mark_color[i][v])) {
+						fs << " \\staccato ";
+					}
+					else {
+						fs << "  \\staccatissimo ";
+					}
 				}
 			}
 		}
-		if (i > -1) {
+		if (i > -1) { 
 			i += la[lc] / midifile_out_mul[i];
 			pos += la[lc];
 		}
