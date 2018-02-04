@@ -2,6 +2,23 @@
 Library = Native Instruments Gentleman # For which library algorithm is optimized
 Type = 0 # Instrument type
 
+# These controls should be mapped manually
+CC_Name = 2: "Color"
+CC_Name = 3: "Dynamic range"
+CC_Name = 4: "Resonances volume"
+CC_Name = 5: "Low keys volume"
+CC_Name = 6: "Overtones level"
+CC_Name = 8: "Stereo image width"
+
+# Initial setup
+InitCommand = "Color: 45"
+InitCommand = "Dynamic range: 0"
+InitCommand = "Resonances volume: 80"
+InitCommand = "Low keys volume: 63"
+InitCommand = "Low keys volume: 63"
+InitCommand = "Overtones level: 90"
+InitCommand = "Stereo image width: 63"
+
 # Instrument parameters
 n_min = 21 # Lowest note
 n_max = 108 # Highest note
