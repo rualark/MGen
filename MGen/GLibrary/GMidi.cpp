@@ -2552,6 +2552,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 				int my_note;
 				// Replace note
 				if (icf[ii].replace_pitch > -1) my_note = icf[ii].replace_pitch;
+				else if (icf[ii].map_pitch.find(note[i][v]) != icf[ii].map_pitch.end()) {
+					my_note = icf[ii].map_pitch[note[i][v]];
+				}
 				else my_note = note[i][v] + play_transpose[v];
 				if (artic[i][v] == aTREM) {
 					if (icf[ii].trem_replace > -1) {
@@ -2559,6 +2562,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 					}
 					if (icf[ii].trem_transpose) {
 						my_note += icf[ii].trem_transpose;
+					}
+					if (icf[ii].map_tremolo.find(note[i][v]) != icf[ii].map_tremolo.end()) {
+						my_note = icf[ii].map_tremolo[note[i][v]];
 					}
 				}
 				// Note ON if it is not blocked and was not yet sent

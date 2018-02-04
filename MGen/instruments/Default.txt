@@ -1,11 +1,11 @@
 #GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT | Synonyms                         
 Keyboard/Piano                        | Soft                  | 0   | 0   | +   | Keyboard, Keys, Klavier, fortepiano
 Keyboard/Organ                        | Organ                 | 13  | 13  | +   | Pipe organ
-Woodwinds/Piccolo                     | Normal                | 14  | 14  | -   | Pic., Piccolo flute, Flute piccolo, Petite flute, Pikkoloflote, kleine flote, ottavino, flauto piccolo, pikkolo, malaia fleita, fleita pikkolo, flautin, ottavino
+Woodwinds/Piccolo                     | Normal                | 0   | 14  | -   | Pic., Piccolo flute, Flute piccolo, Petite flute, Pikkoloflote, kleine flote, ottavino, flauto piccolo, pikkolo, malaia fleita, fleita pikkolo, flautin, ottavino
 Woodwinds/Flute                       | Normal                | 15  | 15  | +   | Fleita, Flauto, Fl., Grande flute, Flute traversiere, Flote, Querflote, Flauta
 Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   |
 Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   |
-Woodwinds/Clarinet                    | Normal                | 14  | 18  | +   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
+Woodwinds/Clarinet                    | Normal                | 0   | 18  | -   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
 Woodwinds/Bass Clarinet               | Normal                | 0   | 19  | -   | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo
 Woodwinds/Oboe                        | Normal                | 0   | 20  | -   | Hautbois, Hoboy, French hoboy, Goboi
 Woodwinds/English Horn                | Normal                | 0   | 21  | -   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles
@@ -30,6 +30,9 @@ Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   
 Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   | triangle concerto
 Unpitched percussion/Wood blocks      | Wood block Medium     | 5   | 24  | -   | Wood block
 Unpitched percussion/Temple blocks    | Temple block Medium   | 5   | 24  | -   | Temple block
+Unpitched percussion/Bongo            | High                  | 6   | 24  | -   | 
+Unpitched percussion/Conga            | Low                   | 6   | 24  | -   | 
+Unpitched percussion/Jazz drum set    | Map                   | 14  | 30  | +   | Jazz drum kit, Jazz drums
 Strings/Violin                        | Arco                  | 1   | 1   | +   | Vln, Violon, Violine, Geige, violino, skripka, 
 Strings/Violins                       | Arco                  | 1   | 1   | +   | Vlns
 Strings/Viola                         | Arco                  | 10  | 10  | +   | Vla, Viole, Bratsche

@@ -68,6 +68,8 @@ struct IConf {
 	float rnd_vib = 0; // Randomize vibrato intensity not greater than this percent
 	float rnd_vibf = 0; // Randomize vibrato speed not greater than this percent
 	int replace_pitch = -1; // Single note that should be sent instead of all other notes
+	map<int, int> map_pitch; // Map pitches to other pitches
+	map<int, int> map_tremolo; // Map pitches to other pitches
 	int CC_steps = 0;
 	int CC_ma = 0;
 	int CC_dyn = 0;

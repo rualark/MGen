@@ -720,7 +720,7 @@ PmMessage CGVar::ParseMidiCommand(CString st, int i) {
 		//WriteLog(1, "Accepted InitCommand for KSW: " + *sName + " = " + *sValue);
 		return Pm_Message(MIDI_NOTEON, id, value);
 	}
-	return 0;
+return 0;
 }
 
 void CGVar::SaveInitCommand(PmMessage msg, int i) {
@@ -814,6 +814,28 @@ void CGVar::LoadInitTechnique(CString *sName, CString *sValue, CString sSearch, 
 	}
 }
 
+void CGVar::LoadMapPitch(CString *sName, CString *sValue, CString sSearch, int i) {
+	if (*sName != sSearch) return;
+	++parameter_found;
+	CString st = *sValue;
+	vector<CString> sa;
+	Tokenize(st, sa, ",");
+	if (sa.size() != 2 && sa.size() != 3) {
+		WriteLog(5, "Wrong format in instrument config: " + *sName + " = " + *sValue);
+		return;
+	}
+	sa[0].Trim();
+	sa[1].Trim();
+	int n1 = GetNoteI(sa[0]);
+	int n2 = GetNoteI(sa[1]);
+	if (sa.size() == 3) {
+		sa[2].Trim();
+		int n3 = GetNoteI(sa[2]);
+		icf[i].map_tremolo[n1] = n3;
+	}
+	icf[i].map_pitch[n1] = n2;
+}
+
 void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	LoadVar(&st2, &st3, "library", &icf[i].lib);
 	CheckVar(&st2, &st3, "pan", &icf[i].pan, 0, 100);
@@ -834,6 +856,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	LoadTechnique(&st2, &st3, "technique", i);
 	LoadInitCommand(&st2, &st3, "initcommand", i);
 	LoadInitTechnique(&st2, &st3, "inittechnique", i);
+	LoadMapPitch(&st2, &st3, "mappitch", i);
 	CheckVar(&st2, &st3, "t_min", &icf[i].tmin);
 	CheckVar(&st2, &st3, "t_max", &icf[i].tmax);
 	CheckVar(&st2, &st3, "poly", &icf[i].poly);
