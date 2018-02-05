@@ -11,9 +11,19 @@ Woodwinds/Oboe                        | Normal                | 0   | 20  | -   
 Woodwinds/English Horn                | Normal                | 0   | 21  | -   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles
 Woodwinds/Bassoon                     | Normal                | 0   | 22  | -   | Basson, Fagott, Fagotto, Fagot, Fagote
 Woodwinds/Contrabassoon               | Normal                | 0   | 23  | -   | double bassoon, Kontrafagott, contrafagotto, contrebasson
+Woodwinds/Soprano sax                 | Normal                | 0   | 41  | -   | 
+Woodwinds/Alto sax                    | Normal                | 0   | 42  | -   | 
+Woodwinds/Baritone sax                | Normal                | 0   | 43  | -   | 
+Woodwinds/Tenor sax                   | Normal                | 0   | 44  | -   | 
 Brass/Trumpet                         | Normal                | 2   | 2   | +   | trompette, Trompete, tromba, clarino, truba, trompeta
+Brass/Cornet                          | Normal                | 14  | 35  | +   | 
+Brass/Flugelhorn                      | Normal                | 14  | 36  | -   | 
+Brass/German trumpet                  | Normal                | 14  | 37  | -   | 
+Brass/Piccolo trumpet                 | Normal                | 14  | 38  | -   | 
 Brass/Horn                            | Normal                | 3   | 3   | +   | French horn, Waldhorn, Ventilhorn, Trompa, Corno, Cor, Corni, Gorn, rog, rozhok, Valtorna, F. horn, corno frances, cuerno
 Brass/Trombone                        | Normal                | 4   | 4   | +   | Posaune, trombono, trombon, 
+Brass/Valve trombone                  | Normal                | 4   | 39  | -   | 
+Brass/Bass trombone                   | Normal                | 4   | 40  | -   | 
 Brass/Tuba                            | Normal                | 5   | 5   | +   |
 Vocal/Soprano                         | Soprano               | 6   | 6   | +   | Sopran
 Vocal/Alto                            | Alto                  | 7   | 7   | +   | contralto, Alt, 
@@ -23,6 +33,10 @@ Pitched percussion/Xylophone          | Hits                  | 0   | 26  | -   
 Pitched percussion/Glockenspiel       | Hits                  | 0   | 27  | -   | Campanelli, Bells, Concert bells, Orchestral bells
 Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   |
 Pitched percussion/Timpani            | Long hits             | 0   | 25  | -   | Kettle drums, Pauken, Timps
+Pitched percussion/Celesta            | Hits                  | 0   | 31  | -   | 
+Pitched percussion/Crotales           | Hits                  | 0   | 32  | -   | 
+Pitched percussion/Tubular bells      | Hits                  | 0   | 33  | -   | 
+Pitched percussion/Vibraphone         | Staccato pedal up     | 0   | 34  | -   | 
 Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   | caisse claire, Leinentrommel, tamburo rullante, tamburo militare, rullante, frantsuzskii baraban, tambor afinable
 Unpitched percussion/Bass drum        | Hard mallet           | 1   | 24  | -   | Gran cassa, grosse caisse, Grosse Trommel, cassa, grancassa, bolshoi baraban, bombo
 Unpitched percussion/Cymbals          | Long hit              | 2   | 24  | -   | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
@@ -32,7 +46,23 @@ Unpitched percussion/Wood blocks      | Wood block Medium     | 5   | 24  | -   
 Unpitched percussion/Temple blocks    | Temple block Medium   | 5   | 24  | -   | Temple block
 Unpitched percussion/Bongo            | High                  | 6   | 24  | -   | 
 Unpitched percussion/Conga            | Low                   | 6   | 24  | -   | 
-Unpitched percussion/Jazz drum set    | Map                   | 14  | 30  | +   | Jazz drum kit, Jazz drums
+Unpitched percussion/Military drum    | Hits                  | 7   | 24  | -   | 
+Unpitched percussion/Field drum       | Hits                  | 7   | 24  | -   | 
+Unpitched percussion/Snare ensemble   | Hit - Snares on       | 8   | 24  | -   | 
+Unpitched percussion/Timbales         | High                  | 9   | 24  | -   | 
+Unpitched percussion/Tom toms         | Low-mid               | 10  | 24  | -   | 
+Unpitched percussion/Rototom          | Low                   | 10  | 24  | -   | 
+Unpitched percussion/Tambourine       | Hits                  | 11  | 24  | -   | 
+Unpitched percussion/Beatring         | Hits                  | 11  | 24  | -   | 
+Unpitched percussion/Claves           | Hits                  | 12  | 24  | -   | 
+Unpitched percussion/Whip             | Hits                  | 12  | 24  | -   | 
+Unpitched percussion/Shaker           | Hits                  | 12  | 24  | -   | 
+Unpitched percussion/Castanets        | Hits                  | 12  | 24  | -   | 
+Unpitched percussion/Sleighbells      | Hits                  | 12  | 24  | -   | 
+Unpitched percussion/Thai gong        | A                     | 13  | 24  | -   | 
+Unpitched percussion/Brake            | Low                   | 15  | 24  | -   | 
+Unpitched percussion/Pan              | Hits                  | 15  | 24  | -   | 
+Unpitched percussion/Jazz drum set    | Map                   | 14  | 30  | -   | Jazz drum kit, Jazz drums
 Strings/Violin                        | Arco                  | 1   | 1   | +   | Vln, Violon, Violine, Geige, violino, skripka, 
 Strings/Violins                       | Arco                  | 1   | 1   | +   | Vlns
 Strings/Viola                         | Arco                  | 10  | 10  | +   | Vla, Viole, Bratsche

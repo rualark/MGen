@@ -11,7 +11,7 @@ CC_Name = 1:  "Vibrato intensity"
 CC_Name = 19: "Vibrato speed"
 CC_Name = 5: "Portamento time"
 CC_Name = 24: "Harmonic structure"
-CC_Name = 20: "Subharmonics" # Clarinet, Bass Clarinet, Oboe, English horn, Bassoon, Contrabassoon
+CC_Name = 20: "Subharmonics" # Clarinet, Bass Clarinet, Oboe, English horn, Bassoon, Contrabassoon, Sax
 CC_Name = 27: "PipeSplit" # Piccolo, Flute, Alto flute, Bass flute
 CC_Name = 21: "Growl"
 CC_Name = 23: "Flutter tongue"
@@ -25,12 +25,14 @@ CC_Name = 31: "Microtuning on"
 
 # Controls (need to map manually)
 CC_Name = 12: "Reverb mix"
+CC_Name = 13: "Legato mode" # 0 - Gliss; 1 - Expr
 CC_Name = 7: "Volume"
 CC_Name = 10: "Pan"
 
 # Initial setup
 InitCommand = "Flutter tongue: 0"
 InitCommand = "Reverb mix: 0"
+InitCommand = "Legato mode: 127"
 
 # Automation parameters
 CC_dynamics = 11
