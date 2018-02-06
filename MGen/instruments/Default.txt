@@ -50,18 +50,18 @@ Unpitched percussion/Military drum    | Hits                  | 7   | 24  | -   
 Unpitched percussion/Field drum       | Hits                  | 7   | 24  | -   | 
 Unpitched percussion/Snare ensemble   | Hit - Snares on       | 8   | 24  | -   | 
 Unpitched percussion/Timbales         | High                  | 9   | 24  | -   | 
-Unpitched percussion/Tom toms         | Low-mid               | 10  | 24  | -   | 
-Unpitched percussion/Rototom          | Low                   | 10  | 24  | -   | 
+Unpitched percussion/Tom toms         | Low-mid               | 10  | 24  | -   | Tom-tom, tom-toms
+Unpitched percussion/Rototom          | Low                   | 10  | 24  | -   | Roto-tom, roto-toms
 Unpitched percussion/Tambourine       | Hits                  | 11  | 24  | -   | 
 Unpitched percussion/Beatring         | Hits                  | 11  | 24  | -   | 
 Unpitched percussion/Claves           | Hits                  | 12  | 24  | -   | 
 Unpitched percussion/Whip             | Hits                  | 12  | 24  | -   | 
 Unpitched percussion/Shaker           | Hits                  | 12  | 24  | -   | 
 Unpitched percussion/Castanets        | Hits                  | 12  | 24  | -   | 
-Unpitched percussion/Sleighbells      | Hits                  | 12  | 24  | -   | 
+Unpitched percussion/Sleighbells      | Hits                  | 12  | 24  | -   | Sleigh bell
 Unpitched percussion/Thai gong        | A                     | 13  | 24  | -   | 
 Unpitched percussion/Brake            | Low                   | 15  | 24  | -   | 
-Unpitched percussion/Pan              | Hits                  | 15  | 24  | -   | 
+Unpitched percussion/Pan              | Hits                  | 15  | 24  | -   | Anvil
 Unpitched percussion/Jazz drum set    | Map                   | 14  | 30  | -   | Jazz drum kit, Jazz drums
 Strings/Violin                        | Arco                  | 1   | 1   | +   | Vln, Violon, Violine, Geige, violino, skripka, 
 Strings/Violins                       | Arco                  | 1   | 1   | +   | Vlns
