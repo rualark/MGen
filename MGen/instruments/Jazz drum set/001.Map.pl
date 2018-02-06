@@ -1,7 +1,5 @@
 include "All sounds.pl"
 
-n_min = 0 # Lowest note
-n_max = 127 # Highest note
 
 MapPitch = "C2, C1" # Kick
 MapPitch = "D2, D#1, F#1" # Snare
