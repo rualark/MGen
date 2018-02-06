@@ -29,6 +29,10 @@ CC_Name = 13: "Legato mode" # 0 - Gliss; 1 - Expr
 CC_Name = 7: "Volume"
 CC_Name = 10: "Pan"
 
+# Techniques mapping to commands
+Technique = "flutter; Flutter tongue: 100"
+Technique = "ord; Flutter tongue: 0"
+
 # Initial setup
 InitCommand = "Flutter tongue: 0"
 InitCommand = "Reverb mix: 0"
@@ -86,3 +90,11 @@ rnd_vel_repeat = 50 # Randomize note velocity not greater than this percent for 
 rnd_dyn = 15 # Randomize step dynamics not greater than this percent
 rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
 rand_pos_max = 70-0 # Maximum shift in ms (start-end)
+
+# Flutter tongue adaptor
+trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
+trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
+trem_dynamics = 100 # Percent of tremolo dynamics compared to sustain notes
+trem_activate = "flutter" # Choose tremolo technique that can be activated from MIDI file
+trem_deactivate = "ord" # Choose tremolo technique that can be activated from MIDI file
+

@@ -31,6 +31,8 @@ CC_Name = 14: "Distance"
 
 # Techniques mapping to commands
 Technique = "senza sord; Mute: 0"
+Technique = "flutter; Flutter tongue: 100"
+Technique = "ord; Flutter tongue: 0"
 
 # Initial setup
 InitCommand = "Early reflections: 0"
@@ -104,3 +106,10 @@ rnd_vel_repeat = 30 # Randomize note velocity not greater than this percent for 
 rnd_dyn = 15 # Randomize step dynamics not greater than this percent
 rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
 rand_pos_max = 70-0 # Maximum shift in ms (start-end)
+
+# Flutter tongue adaptor
+trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
+trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
+trem_dynamics = 100 # Percent of tremolo dynamics compared to sustain notes
+trem_activate = "flutter" # Choose tremolo technique that can be activated from MIDI file
+trem_deactivate = "ord" # Choose tremolo technique that can be activated from MIDI file
