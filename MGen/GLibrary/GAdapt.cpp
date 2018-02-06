@@ -753,20 +753,24 @@ void CGAdapt::CalculateVoiceStages() {
 		itrack[track] = tracks_in_instr[ii].size();
 		// if instrument is solo or stage 0 is occupied with a different instrument
 		if (icf[ii].poly > 1) {
-			// Scan each stage for this trackchan
-			int found = -1;
-			for (auto const& it : tcs_instr[trackchan]) {
-				if (it.second == ii) {
-					found = it.first;
-				}
-			}
-			if (found > -1) {
-				// Use same stage if this poly instrument was already sent
-				v_stage[v] = found;
-			}
+			// Assign single-stage instrument
+			if (icf[ii].single_stage) v_stage[v] = 0;
 			else {
-				// Create new stage for this trackchan and send voice there
-				v_stage[v] = tcs_instr[trackchan].size();
+				// Scan each stage for this trackchan
+				int found = -1;
+				for (auto const& it : tcs_instr[trackchan]) {
+					if (it.second == ii) {
+						found = it.first;
+					}
+				}
+				if (found > -1) {
+					// Use same stage if this poly instrument was already sent
+					v_stage[v] = found;
+				}
+				else {
+					// Create new stage for this trackchan and send voice there
+					v_stage[v] = tcs_instr[trackchan].size();
+				}
 			}
 		}
 		else {

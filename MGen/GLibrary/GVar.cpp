@@ -860,6 +860,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "t_min", &icf[i].tmin);
 	CheckVar(&st2, &st3, "t_max", &icf[i].tmax);
 	CheckVar(&st2, &st3, "poly", &icf[i].poly);
+	CheckVar(&st2, &st3, "single_stage", &icf[i].single_stage, 0, 1);
 	CheckVar(&st2, &st3, "type", &icf[i].type);
 	CheckVar(&st2, &st3, "channel", &icf[i].channel);
 	CheckRange(&st2, &st3, "vib_bell_top", &icf[i].vib_bell_top1, &icf[i].vib_bell_top2);

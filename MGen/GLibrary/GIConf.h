@@ -70,6 +70,7 @@ struct IConf {
 	int replace_pitch = -1; // Single note that should be sent instead of all other notes
 	map<int, int> map_pitch; // Map pitches to other pitches
 	map<int, int> map_tremolo; // Map pitches to other pitches
+	int single_stage = 0; // This instrument will go to stage 0
 	int CC_steps = 0;
 	int CC_ma = 0;
 	int CC_dyn = 0;
