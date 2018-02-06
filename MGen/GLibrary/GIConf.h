@@ -49,6 +49,8 @@ struct IConf {
 	int trem_replace = -1;
 	int trem_transpose = 0;
 	int trem_chan = -1;
+	int trem_activate = -1; // Technique that will be triggered with trem command from MIDI file
+	int trem_deactivate = -1; // Technique that will be triggered with trem command from MIDI file
 	int vel_mul = 100; // Multiply incoming velocity of all midi notes by this percent (100 - do not change)
 	int CC_vib = 0; // CC number for vibrato intensity
 	int CC_vibf = 0; // CC number for vibrato speed

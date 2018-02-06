@@ -2612,6 +2612,32 @@ void CGMidi::SendMIDI(int step1, int step2)
 						}
 					}
 					// Send transition ks
+					if (icf[ii].type == 2 || icf[ii].type == 4) {
+						// Frullato
+						if (artic[i][v] == aTREM && icf[ii].trem_activate > -1) {
+							for (auto const& it : icf[ii].tech[icf[ii].trem_activate]) {
+								AddMidiEvent(stimestamp - 3,
+									Pm_MessageStatus(it) + midi_channel,
+									Pm_MessageData1(it), Pm_MessageData2(it));
+								if (Pm_MessageStatus(it) == MIDI_NOTEON) {
+									AddKsOff(stimestamp + 3,
+										Pm_MessageData1(it), 0);
+								}
+							}
+						}
+						// Open
+						if (artic[i][v] != aTREM && icf[ii].trem_deactivate > -1) {
+							for (auto const& it : icf[ii].tech[icf[ii].trem_deactivate]) {
+								AddMidiEvent(stimestamp - 3,
+									Pm_MessageStatus(it) + midi_channel,
+									Pm_MessageData1(it), Pm_MessageData2(it));
+								if (Pm_MessageStatus(it) == MIDI_NOTEON) {
+									AddKsOff(stimestamp + 3,
+										Pm_MessageData1(it), 0);
+								}
+							}
+						}
+					}
 					if (icf[ii].type == 2) {
 						// Mute
 						if (GetBit(filter[i][v], fMUTE) && icf[ii].mute_activate > -1) {

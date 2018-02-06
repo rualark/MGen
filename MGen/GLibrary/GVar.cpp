@@ -972,6 +972,20 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 		}
 		else WriteLog(5, "Unknown technique specified for mute_selected: " + st3);
 	}
+	if (st2 == "trem_activate") {
+		++parameter_found;
+		if (icf[i].NameToTech.find(st3) != icf[i].NameToTech.end()) {
+			icf[i].trem_activate = icf[i].NameToTech[st3];
+		}
+		else WriteLog(5, "Unknown technique specified for trem_selected: " + st3);
+	}
+	if (st2 == "trem_deactivate") {
+		++parameter_found;
+		if (icf[i].NameToTech.find(st3) != icf[i].NameToTech.end()) {
+			icf[i].trem_deactivate = icf[i].NameToTech[st3];
+		}
+		else WriteLog(5, "Unknown technique specified for trem_selected: " + st3);
+	}
 }
 
 void CGVar::SaveVector2C(ofstream & fs, vector< vector<unsigned char> > &v2D, int i) {

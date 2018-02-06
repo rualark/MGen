@@ -485,9 +485,9 @@ int RunRenderStage(int sta) {
 			}
 		}
 		// Check if no progress for long time
-		else if (CGLib::time() - render_start > 1000 * 1000) {
+		else if (CGLib::time() - render_start > 3000 * 1000) {
 			CGLib::copy_file(reaperbuf + "windows.log", share + j_folder + "log-daw_" + sta_st + ".log");
-			return FinishJob(1, "Render showed no progress during 1000 seconds");
+			return FinishJob(1, "Render showed no progress during 3000 seconds");
 		}
 		// Check if reascript finished
 		if (CGLib::fileExists(reaperbuf + "finished.txt")) break;
