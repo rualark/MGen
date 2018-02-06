@@ -2933,8 +2933,8 @@ void CGMidi::AddKsOn(long long timestamp, int data1, int data2)
 	if ((data1 >= icf[instr[midi_voice]].nmin) && (data1 <= icf[instr[midi_voice]].nmax)) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString st;
-			st.Format("Blocked keyswitch %d/%d time %lld in voice %d instrument %d in note range %d-%d",
-				data1, data2, timestamp, midi_voice, instr[midi_voice], 
+			st.Format("Blocked keyswitch %d/%d time %lld in voice %d instrument %d %s in note range %d-%d",
+				data1, data2, timestamp, midi_voice, instr[midi_voice], icf[instr[midi_voice]].group, 
 				icf[instr[midi_voice]].nmin, icf[instr[midi_voice]].nmax);
 			WriteLog(5, st);
 			warning_note_wrong[midi_voice] ++;
@@ -2967,8 +2967,8 @@ void CGMidi::AddKsOff(long long timestamp, int data1, int data2)
 	if ((data1 >= icf[instr[midi_voice]].nmin) && (data1 <= icf[instr[midi_voice]].nmax)) {
 		if (warning_note_wrong[midi_voice] < 4) {
 			CString st;
-			st.Format("Blocked keyswitch %d/%d time %lld in voice %d instrument %d in note range %d-%d",
-				data1, data2, timestamp, midi_voice, instr[midi_voice], 
+			st.Format("Blocked keyswitch %d/%d time %lld in voice %d instrument %d %s in note range %d-%d",
+				data1, data2, timestamp, midi_voice, instr[midi_voice], icf[instr[midi_voice]].group,
 				icf[instr[midi_voice]].nmin, icf[instr[midi_voice]].nmax);
 			WriteLog(5, st);
 			warning_note_wrong[midi_voice] ++;

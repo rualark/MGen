@@ -18,8 +18,9 @@ CGAdapt::~CGAdapt()
 {
 }
 
-void CGAdapt::CheckInstrumentRange(int v, int ii)
-{
+void CGAdapt::CheckInstrumentRange(int v, int ii) {
+	// Do not check for instruments with replaces or mapping
+	if (icf[ii].replace_pitch > -1 || icf[ii].map_pitch.size()) return;
 	// Check if notes are in instrument range
 	if ((ngv_min[v] + play_transpose[v] < icf[ii].nmin) || (ngv_max[v] + play_transpose[v] > icf[ii].nmax)) {
 		if (ngv_min[v] < icf[ii].nmin) {

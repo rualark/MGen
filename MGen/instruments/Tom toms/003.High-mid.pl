@@ -1,8 +1,6 @@
 include "All sounds.pl"
 
 ReplacePitch = "G6" # Replace all notes in track with this pitch
-n_min = 0 # Lowest note
-n_max = 127 # Highest note
 
 # Tremolo adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
