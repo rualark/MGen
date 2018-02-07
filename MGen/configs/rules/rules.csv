@@ -76,6 +76,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;149;0;Melody;Turns around leap;Far/no + next turns around leap;4th;0;;;5;;;;7;3;1;;;;133;;
 1;150;100;Melody;Turns around leap;Far/no + next turns around leap;5th;0;;;5;;;;13;7;1;;;;134;;
 1;151;100;Melody;Turns around leap;Far/no + next turns around leap;>5th;0;;;5;;;;2;1;1;;;;135;;
+1;398;0;Melody;Turns around leap;Far/no + far/no turns around leap;3rd;1;;;5;;;;;;;;;;132,148;;
+1;399;0;Melody;Turns around leap;Far/no + far/no turns around leap;4th;0;;;5;;;;;;;;;;133,149;;
+1;400;100;Melody;Turns around leap;Far/no + far/no turns around leap;5th;0;;;5;;;;;;;;;;134,150;;
+1;401;100;Melody;Turns around leap;Far/no + far/no turns around leap;>5th;0;;;5;;;;;;;;;;135,151;;
 1;8;0;Melody;Turns around leap;Leap back;<=6th;-1;;;5;;;;482;1;;;;;;;
 1;22;30;Melody;Turns around leap;Leap back;>6th;-1;;;5;;;;24;12;1;;;;;;
 1;58;0;Melody;Turns around leap;Leap back;overflow;-1;;;5;;;;170;33;1;;;;;;

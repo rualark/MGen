@@ -2218,9 +2218,11 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &cc) {
 		// Next + next
 	else if (mdc1 == 1 && mdc2 == 1) FLAG2(63 + leap_id, fli[fleap_start]);
 	// Next + far
-	else if (mdc1 == 1 && mdc2 == 2) FLAG2(391 + leap_id, fli[fleap_start]);
+	else if (mdc1 == 1 && mdc2 >= 2) FLAG2(391 + leap_id, fli[fleap_start]);
 	// Far + next
-	else if (mdc1 == 2 && mdc2 == 1) FLAG2(148 + leap_id, fli[fleap_start]);
+	else if (mdc1 >= 2 && mdc2 == 1) FLAG2(148 + leap_id, fli[fleap_start]);
+	// Far + far
+	else if (mdc1 >= 2 && mdc2 >= 2) FLAG2(398 + leap_id, fli[fleap_start]);
 	return 0;
 }
 
