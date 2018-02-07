@@ -64,13 +64,13 @@ Unpitched percussion/Brake            | Low                   | 15  | 24  | -   
 Unpitched percussion/Pan              | Hits                  | 15  | 24  | -   | Anvil
 Unpitched percussion/Jazz drum set    | Map                   | 14  | 30  | -   | Jazz drum kit, Jazz drums
 Strings/Violin                        | Arco                  | 1   | 1   | +   | Vln, Violon, Violine, Geige, violino, skripka, 
-Strings/Violins                       | Arco                  | 1   | 1   | +   | Vlns
+Strings/Violins section               | Arco                  | 1   | 1   | +   | Violins, Vlns
 Strings/Viola                         | Arco                  | 10  | 10  | +   | Vla, Viole, Bratsche
-Strings/Violas                        | Arco                  | 10  | 10  | +   | Vlas
+Strings/Violas section                | Arco                  | 10  | 10  | +   | Violas, Vlas
 Strings/Cello                         | Arco                  | 11  | 11  | +   | Violoncello, Vlle, Violoncelle, violoncelle, violonchel, violonchelo, violoncelo
-Strings/Cellos                        | Arco                  | 11  | 11  | +   | Violoncellos
+Strings/Cellos section                | Arco                  | 11  | 11  | +   | Cellos, Violoncellos
 Strings/Contrabass                    | Arco                  | 12  | 12  | +   | Contrebasse, Double bass, String bass, Kontrabass, contrabasso, kontrabas, contrabajo
-Strings/Contrabasses                  | Arco                  | 12  | 12  | +   | 
+Strings/Contrabasses section          | Arco                  | 12  | 12  | +   | Contrabasses
 Strings/Harp                          | Harp                  | 0   | 29  | -   | harpe, Harfe, arpa, arfa, 
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
