@@ -5,7 +5,7 @@ poly = 100 # Maximum number of simultaneous voices
 single_stage = 1 # Collapse all tracks for this instrument into a single stage
 
 # Instrument parameters
-n_min = "C6" # Lowest note
-n_max = "A6" # Highest note
+n_min = "C4" # Lowest note
+n_max = "A4" # Highest note
 Volume_default = 50 # (direct CC volume, should not be changed by user)
 
