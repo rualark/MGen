@@ -1,4 +1,4 @@
 include "All sounds.pl"
 
-ReplacePitch = "G6" # Replace all notes in track with this pitch
+ReplacePitch = "G4" # Replace all notes in track with this pitch
 
