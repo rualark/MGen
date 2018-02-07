@@ -307,6 +307,7 @@ public:
 	int midi_first_run = 0; // If current SendMIDI is first
 	int buf_underrun = 0; // Shows if current playback had an issue with buffer underrun
 	int midi_play_step = 0; // Current step being played by midi
+	vector<short> last_cc;
 
 	// Flags
 	vector <int> accept; // Each 1 allows showing canti with specific properties

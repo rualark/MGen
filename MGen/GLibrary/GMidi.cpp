@@ -12,6 +12,7 @@
 
 CGMidi::CGMidi() {
 	mo = 0;
+	last_cc.resize(128);
 	//TestKeyMatrix();
 }
 
@@ -2493,6 +2494,9 @@ void CGMidi::SendMIDI(int step1, int step2)
 		}
 	}
 	for (int v = 0; v < v_cnt; v++) {
+		// Clear last cc
+		last_cc.clear();
+		last_cc.resize(128, -1);
 		// Initialize voice
 		int ei;
 		int ncount = 0;
@@ -3004,8 +3008,9 @@ void CGMidi::AddKsOff(long long timestamp, int data1, int data2)
 	AddMidiEvent(timestamp, MIDI_NOTEOFF + midi_channel, data1, data2);
 }
 
-void CGMidi::AddCC(long long timestamp, int data1, int data2)
-{
+void CGMidi::AddCC(long long timestamp, int data1, int data2) {
+	if (last_cc[data1] == data2) return;
+	last_cc[data1] = data2;
 	AddMidiEvent(timestamp, MIDI_CC + midi_channel, data1, data2);
 }
 
