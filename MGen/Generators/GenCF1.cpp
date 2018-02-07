@@ -2205,20 +2205,22 @@ int CGenCF1::FailLeapMDC(vector<int> &leap, vector<int> &cc) {
 	}
 	// Do not flag last 3rd in SAS, because it can be later converted to 5th
 	if (fleap_end == fli_size - 1 && ep2 < c_len && !leap_id) return 0;
-	// Close + 1far
+	// Close + next
 	if (!mdc1 && mdc2 == 1) FLAG2(128 + leap_id, fli[fleap_start]);
-		// Close + 2far
+		// Close + far
 	else if (!mdc1 && mdc2 == 2) FLAG2(140 + leap_id, fli[fleap_start]);
 		// Close + no
 	else if (!mdc1 && mdc2 == 3) FLAG2(108 + leap_id, fli[fleap_start]);
 		// Far + close
 	else if (mdc1 == 1 && !mdc2) FLAG2(59 + leap_id, fli[fleap_start]);
-		// No + close
+		// Far + close
 	else if (mdc1 == 2 && !mdc2) FLAG2(132 + leap_id, fli[fleap_start]);
-		// Far + far1
+		// Next + next
 	else if (mdc1 == 1 && mdc2 == 1) FLAG2(63 + leap_id, fli[fleap_start]);
-	// No close
-	else if (mdc1*mdc2 != 0) FLAG2(148 + leap_id, fli[fleap_start]);
+	// Next + far
+	else if (mdc1 == 1 && mdc2 == 2) FLAG2(391 + leap_id, fli[fleap_start]);
+	// Far + next
+	else if (mdc1 == 2 && mdc2 == 1) FLAG2(148 + leap_id, fli[fleap_start]);
 	return 0;
 }
 
