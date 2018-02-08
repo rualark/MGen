@@ -3587,10 +3587,15 @@ check:
 			if (FailLocalRange(ac[cpv], notes_lrange12, min_lrange12, 353)) goto skip;
 			if (FailLocalRange(ac[cpv], notes_lrange13, min_lrange13, 351)) goto skip;
 		}
-		else {
+		else if (npm == 2) {
 			if (FailLocalRange(ac[cpv], notes_lrange, min_lrange, 98)) goto skip;
 			if (FailLocalRange(ac[cpv], notes_lrange2, min_lrange2, 198)) goto skip;
 			if (FailLocalRange(ac[cpv], notes_lrange3, min_lrange3, 300)) goto skip;
+		}
+		else {
+			if (FailLocalRange(ac[cpv], notes_lrange0, min_lrange0, 396)) goto skip;
+			if (FailLocalRange(ac[cpv], notes_lrange02, min_lrange02, 397)) goto skip;
+			if (FailLocalRange(ac[cpv], notes_lrange03, min_lrange03, 395)) goto skip;
 		}
 		if (FailAlteredInt()) goto skip;
 		if (FailCrossInt()) goto skip;

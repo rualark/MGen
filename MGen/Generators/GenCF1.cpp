@@ -404,6 +404,13 @@ void CGenCF1::SetRuleParams() {
 	notes_picount3 = GetRuleParam(rule_set, 346, rsSubName, 0);
 	min_picount3 = GetRuleParam(rule_set, 346, rsSubName, 1);
 
+	notes_lrange0 = GetRuleParam(rule_set, 396, rsSubName, 0);
+	min_lrange0 = abs(GetRuleParam(rule_set, 396, rsSubName, 1)) - 1;
+	notes_lrange02 = GetRuleParam(rule_set, 397, rsSubName, 0);
+	min_lrange02 = abs(GetRuleParam(rule_set, 397, rsSubName, 1)) - 1;
+	notes_lrange03 = GetRuleParam(rule_set, 395, rsSubName, 0);
+	min_lrange03 = abs(GetRuleParam(rule_set, 395, rsSubName, 1)) - 1;
+
 	notes_lrange = GetRuleParam(rule_set, 98, rsSubName, 0);
 	min_lrange = abs(GetRuleParam(rule_set, 98, rsSubName, 1)) - 1;
 	notes_lrange2 = GetRuleParam(rule_set, 198, rsSubName, 0);

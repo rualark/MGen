@@ -444,6 +444,14 @@ protected:
 	int notes_lrange3 = 5; // Maximum number of consecutive notes having low range
 	int min_lrange3 = 3; // Minimum allowed local range of notes_lrange consecutive notes
 
+  // For sp3/5
+	int notes_lrange0 = 6; // Maximum number of consecutive notes having low range
+	int min_lrange0 = 5; // Minimum allowed local range of notes_lrange consecutive notes
+	int notes_lrange02 = 13; // Maximum number of consecutive notes having low range
+	int min_lrange02 = 8; // Minimum allowed local range of notes_lrange consecutive notes
+	int notes_lrange03 = 5; // Maximum number of consecutive notes having low range
+	int min_lrange03 = 3; // Minimum allowed local range of notes_lrange consecutive notes
+
 	// For CF/sp1:
 	int notes_lrange1 = 6; // Maximum number of consecutive notes having low range
 	int min_lrange1 = 5; // Minimum allowed local range of notes_lrange consecutive notes
