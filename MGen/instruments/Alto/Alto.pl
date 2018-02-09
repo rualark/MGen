@@ -22,7 +22,7 @@ nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonle
 nonlegato_maxgap = 500 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
 # Bell adaptor
-bell_mindur = 700 # Minimum note duration (ms) that can have a bell
+bell_mindur = 700-200 # Minimum note duration (ms) that can have a bell
 bell_mul = 0.2-0.2 # Multiply dynamics by this parameter at bell start-end
 bell_len = 30-30 # Percent of notelength to use for slope at bell start-end
 
