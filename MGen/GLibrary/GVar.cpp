@@ -940,7 +940,7 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "vel_gliss", &icf[i].vel_gliss);
 	CheckVar(&st2, &st3, "vel_normal_minlen", &icf[i].vel_normal_minlen);
 	CheckVar(&st2, &st3, "gliss_minlen", &icf[i].gliss_minlen);
-	CheckVar(&st2, &st3, "bell_mindur", &icf[i].bell_mindur);
+	CheckRange(&st2, &st3, "bell_mindur", &icf[i].bell_mindur, &icf[i].bell_mindur2);
 	CheckVar(&st2, &st3, "gliss_freq", &icf[i].gliss_freq);
 	CheckVar(&st2, &st3, "max_ahead_note", &icf[i].max_ahead_note);
 	CheckRange(&st2, &st3, "bell_mul", &icf[i].bell_start_mul, &icf[i].bell_end_mul);

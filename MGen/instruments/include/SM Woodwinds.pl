@@ -59,7 +59,7 @@ retrigger_rand_end = 40 # Maximum percent of note length to move note end to the
 retrigger_mingap = 30 # Minimum gap between notes to create during retrigger
 
 # Bell adaptor
-bell_mindur = 800 # Minimum note duration (ms) that can have a bell
+bell_mindur = 800-300 # Minimum note duration (ms) that can have a bell
 bell_mul = 0.2-0.2 # Multiply dynamics by this parameter at bell start-end
 bell_len = 30-30 # Percent of notelength to use for slope at bell start-end
 bell_vel = 80-120 # Set belled note velocity to random between these percents of starting dynamics
