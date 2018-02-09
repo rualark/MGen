@@ -1573,7 +1573,7 @@ void CGenCF1::GetLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 }
 
 // Check if too many leaps
-int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur, int l_max_smooth, int l_max_smooth_direct, int flag1, int flag2) {
+int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, vector<int> &smooth, vector<int> &slur, int l_max_smooth, int l_max_smooth_direct, int flag1, int flag2, int first_run) {
 	CHECK_READY(DR_leap, DR_c, DR_fli);
 	// Clear variables
 	int leap_sum2 = 0;
@@ -1641,20 +1641,45 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 				}
 			}
 			else if (smooth[s] || leap[s]) smooth_sum2 = 0;
-			// Check if two notes repeat with same length
-			if ((ls > 0) && (cc[s] == cc[fli2[ls + 2]]) && (cc[fli2[ls - 1]] == cc[fli2[ls + 1]]) &&
+			// Check if two notes repeat
+			if (first_run && ls > 0 && (cc[s] == cc[fli2[ls + 2]]) && 
+				(cc[fli2[ls - 1]] == cc[fli2[ls + 1]]) &&
 				(ep2 == c_len || ls + 2 < fli_size - 1)) {
-				// llen[ls] == llen[ls + 2]
-				// Same rhythm in first notes of repeat?
-				if (llen[ls - 1] == llen[ls + 1]) {
-					if (llen[ls - 1] == llen[ls]) FLAG2L(9, fli[ls - 1], fli[ls + 2]);
-					else FLAG2L(320, fli[ls - 1], fli[ls + 2]); 
+				if (svoices == 1 || species == 1 || species == 4) {
+					FLAG2L(402, fli[ls - 1], fli[ls + 2]);
 				}
-				else FLAG2L(319, fli[ls - 1], fli[ls + 2]);
+				else if (species == 2 || species == 3) {
+					if (bmli[fli[ls - 1]] == bmli[fli[ls + 2]]) 
+						FLAG2L(403, fli[ls - 1], fli[ls + 2]);
+					else
+						FLAG2L(404, fli[ls - 1], fli[ls + 2]);
+				}
+				else if (species == 5) {
+					if (bmli[fli[ls - 1]] == bmli[fli[ls + 2]]) {
+						// Same rhythm in first notes of repeat?
+						if (llen[ls - 1] == llen[ls + 1]) {
+							if (llen[ls - 1] == llen[ls]) {
+								FLAG2L(405, fli[ls - 1], fli[ls + 2]);
+							}
+							else FLAG2L(406, fli[ls - 1], fli[ls + 2]);
+						}
+						else FLAG2L(407, fli[ls - 1], fli[ls + 2]);
+					}
+					else {
+						// Same rhythm in first notes of repeat?
+						if (llen[ls - 1] == llen[ls + 1]) {
+							if (llen[ls - 1] == llen[ls]) {
+								FLAG2L(9, fli[ls - 1], fli[ls + 2]);
+							}
+							else FLAG2L(320, fli[ls - 1], fli[ls + 2]);
+						}
+						else FLAG2L(319, fli[ls - 1], fli[ls + 2]);
+					}
+				}
 			}
 		}
 	}
-	if (max_leap_sum2 >= cse_leaps) {
+	if (first_run && max_leap_sum2 >= cse_leaps) {
 		if (max_leap_sum2 > cse_leaps2) 
 			FLAG2L(71, fli[bli[leap_sum_s2] + 1], fli[max(0, bli[leap_sum_s2] - max_leap_sum2 + 1)]);
 		else FLAG2L(70, fli[bli[leap_sum_s2] + 1], fli[max(0, bli[leap_sum_s2] - max_leap_sum2 + 1)]);
@@ -4780,10 +4805,10 @@ check:
 		if (FailTritones(m_c, m_cc, m_pc, m_pcc, m_leap)) goto skip;
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps, max_leaped, max_leaps, max_leaped, max_leap_steps, 3, 25, 3, 25)) goto skip;
 		if (FailManyLeaps(m_c, m_cc, m_leap, m_smooth, m_slur, max_leaps2, max_leaped2, max_leaps2, max_leaped2, max_leap_steps2, 202, 203, 202, 203)) goto skip;
-		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur, max_smooth2, max_smooth_direct2, 302, 303)) goto skip;
+		if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur, max_smooth2, max_smooth_direct2, 302, 303, 1)) goto skip;
 		// Run green tests only if orange did not fire
 		//if (skip_flags || (!flags[302] && flags[303])) {
-			if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur, max_smooth, max_smooth_direct, 4, 5)) goto skip;
+			if (FailLeapSmooth(m_c, m_cc, m_leap, m_smooth, m_slur, max_smooth, max_smooth_direct, 4, 5, 0)) goto skip;
 		//}
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps2, repeat_notes2, 76)) goto skip;
 		if (FailOutstandingRepeat(m_c, m_cc, m_leap, repeat_steps3, repeat_notes3, 36)) goto skip;

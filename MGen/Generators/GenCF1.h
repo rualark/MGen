@@ -242,7 +242,7 @@ protected:
 	inline int FailLongRepeat(vector<int>& c, vector<int>& cc, vector<int>& leap, int scan_len, int rlen, int fid);
 	inline int FailManyLeaps(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int mleaps, int mleaped, int mleaps2, int mleaped2, int mleapsteps, int flag1, int flag2, int flag3, int flag4);
 	inline void GetLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur);
-	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int l_max_smooth, int l_max_smooth_direct, int flag1, int flag2);
+	inline int FailLeapSmooth(vector<int>& c, vector<int>& cc, vector<int>& leap, vector<int>& smooth, vector<int>& slur, int l_max_smooth, int l_max_smooth_direct, int flag1, int flag2, int first_run);
 	inline int FailStagnation(vector<int>& cc, vector<int>& nstat, int steps, int notes, int flag);
 	inline int FailMultiCulm(vector<int>& cc, vector<int>& slur);
 	inline int FailFirstNotes(vector<int>& pc);

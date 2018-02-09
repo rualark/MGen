@@ -437,7 +437,7 @@ void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int p
 	// If nonlegato and short note, avoid slow sustain articulations
 	if (artic[i][v] == aNONLEGATO || icf[ii].type == 4) {
 		float ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-		if (ndur < icf[ii].vel_normal_minlen) {
+		if (ndur < icf[ii].vel_normal_minlen && vel[i][v] < icf[ii].vel_immediate) {
 			vel[i][v] = randbw(icf[ii].vel_immediate, icf[ii].vel_immediate + 2);
 			if (comment_adapt) adapt_comment[i][v] += "Vel immediate. ";
 		}
