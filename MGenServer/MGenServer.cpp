@@ -476,6 +476,10 @@ int RunRenderStage(int sta) {
 		SaveScreenshot();
 		SendStatus();
 		Sleep(1000);
+		// Check if Reaper or AutoHotkey restarted
+		if (tChild["Reaper.exe"] > render_start || tChild["AutoHotkey.exe"] > render_start) {
+			return FinishJob(1, "Child restarted during render. Please restart task");
+		}
 		// Check if progress exists
 		if (CGLib::fileExists(reaperbuf + "progress.txt")) {
 			CGLib::read_file_sv(reaperbuf + "progress.txt", sv);
