@@ -1646,13 +1646,36 @@ int CGenCF1::FailLeapSmooth(vector<int> &c, vector<int> &cc, vector<int> &leap, 
 				(cc[fli2[ls - 1]] == cc[fli2[ls + 1]]) &&
 				(ep2 == c_len || ls + 2 < fli_size - 1)) {
 				if (svoices == 1 || species == 1 || species == 4) {
-					FLAG2L(402, fli[ls - 1], fli[ls + 2]);
+					// Same rhythm in first notes of repeat?
+					if (llen[ls - 1] == llen[ls + 1]) {
+						if (llen[ls - 1] == llen[ls]) {
+							FLAG2L(402, fli[ls - 1], fli[ls + 2]);
+						}
+						else FLAG2L(403, fli[ls - 1], fli[ls + 2]);
+					}
+					else FLAG2L(404, fli[ls - 1], fli[ls + 2]);
 				}
 				else if (species == 2 || species == 3) {
-					if (bmli[fli[ls - 1]] == bmli[fli[ls + 2]]) 
-						FLAG2L(403, fli[ls - 1], fli[ls + 2]);
-					else
-						FLAG2L(404, fli[ls - 1], fli[ls + 2]);
+					if (bmli[fli[ls - 1]] == bmli[fli[ls + 2]]) {
+						// Same rhythm in first notes of repeat?
+						if (llen[ls - 1] == llen[ls + 1]) {
+							if (llen[ls - 1] == llen[ls]) {
+								FLAG2L(411, fli[ls - 1], fli[ls + 2]);
+							}
+							else FLAG2L(412, fli[ls - 1], fli[ls + 2]);
+						}
+						else FLAG2L(413, fli[ls - 1], fli[ls + 2]);
+					}
+					else {
+						// Same rhythm in first notes of repeat?
+						if (llen[ls - 1] == llen[ls + 1]) {
+							if (llen[ls - 1] == llen[ls]) {
+								FLAG2L(408, fli[ls - 1], fli[ls + 2]);
+							}
+							else FLAG2L(409, fli[ls - 1], fli[ls + 2]);
+						}
+						else FLAG2L(410, fli[ls - 1], fli[ls + 2]);
+					}
 				}
 				else if (species == 5) {
 					if (bmli[fli[ls - 1]] == bmli[fli[ls + 2]]) {

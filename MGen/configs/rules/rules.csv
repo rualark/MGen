@@ -113,8 +113,14 @@ Set;Severity;Class;Group;Rule;Flag
 1;302;60;Melody;Stepwise;Stepwise motion;>14 any direction;0;;Stepwise motion more than X notes in any direction;10;;;Long stepwise;14;0;;;;;;;
 1;303;60;Melody;Stepwise;Stepwise motion;>7 one direction;0;;Stepwise motion more than X notes in one direction;10;;;Long stepwise;6;0;;;;;;;
 1;402;100;Melody;Repeats;CF/sp1,4 Adjacent repeat 2 notes;uniform;0;;Length of first three notes is the same;3;;;;;;;;;;;;
-1;403;60;Melody;Repeats;sp2,3 Adjacent repeat 2 notes;uniform IC;0;;Length of first three notes is the same. Repeat inside cantus note;3;;;;;;;;;;;;
-1;404;0;Melody;Repeats;sp2,3 Adjacent repeat 2 notes;uniform;0;;Length of first three notes is the same;3;;;;;;;;;;;;
+1;403;0;Melody;Repeats;CF/sp1,4 Adjacent repeat 2 notes;same rhythm;0;;Length of first and third notes is the same;3;;;;;;;;;;;;
+1;404;0;Melody;Repeats;CF/sp1,4 Adjacent repeat 2 notes;any rhythm;1;;;3;;;;;;;;;;;;
+1;408;0;Melody;Repeats;sp2,3 Adjacent repeat 2 notes;uniform;0;;Length of first three notes is the same;3;;;;;;;;;;;;
+1;409;0;Melody;Repeats;sp2,3 Adjacent repeat 2 notes;same rhythm;0;;Length of first and third notes is the same;3;;;;;;;;;;;;
+1;410;0;Melody;Repeats;sp2,3 Adjacent repeat 2 notes;any rhythm;1;;;3;;;;;;;;999;;;;
+1;411;60;Melody;Repeats;sp2,3 Adjacent repeat 2 notes IC;uniform;0;;Length of first three notes is the same;3;;;;;;;;;;;;
+1;412;60;Melody;Repeats;sp2,3 Adjacent repeat 2 notes IC;same rhythm;0;;Length of first and third notes is the same;3;;;;;;;;;;;;
+1;413;0;Melody;Repeats;sp2,3 Adjacent repeat 2 notes IC;any rhythm;0;;;3;;;;;;;;999;;;;
 1;9;60;Melody;Repeats;sp5 Adjacent repeat 2 notes;uniform;0;;Length of first three notes is the same;3;;;;130;45;1;;999;;;;
 1;320;0;Melody;Repeats;sp5 Adjacent repeat 2 notes;same rhythm;0;;Length of first and third notes is the same;3;;;;10;4;1;;;;;;
 1;319;0;Melody;Repeats;sp5 Adjacent repeat 2 notes;any rhythm;1;;;3;;;;32;13;1;;;;;;
