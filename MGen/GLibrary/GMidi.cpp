@@ -1299,10 +1299,16 @@ void CGMidi::LoadMidi(CString path)
 	// If there is no tempo in file, set default
 	tempo[0] = 120; 
 	int first_track = -1;
+	vector<int> track_firstchan;
+	track_firstchan.resize(midifile.getTrackCount(), -1);
 	// Load tempo
 	for (int track = 0; track < midifile.getTrackCount(); track++) {
 		for (int i = 0; i < midifile[track].size(); i++) {
 			MidiEvent* mev = &midifile[track][i];
+			if (mev->isNoteOn() || mev->isController()) {
+				if (track_firstchan[track] == -1)
+					track_firstchan[track] = mev->getChannel();
+			}
 			if (mev->isTempo()) {
 				int pos = round(mev->tick / (float)tpc);
 				if (pos >= t_allocated) ResizeVectors(max(t_allocated * 2, pos + 1));
