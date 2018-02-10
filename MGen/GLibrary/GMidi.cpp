@@ -1366,6 +1366,12 @@ void CGMidi::LoadMidi(CString path)
 			if (need_exit) break;
 			MidiEvent* mev = &midifile[track][i];
 			int chan = mev->getChannel();
+			// Get program changes
+			if (mev->isPatchChange()) {
+				if (track_name[v] == "") {
+					track_name[v] = midi_iname[mev->data()[1]];
+				}
+			}
 			// Get track names
 			if (mev->isMetaMessage()) {
 				if (mev->getMetaType() == 0x03) {
