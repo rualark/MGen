@@ -256,10 +256,18 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 			// Load midi file type
 			if (st2 == "midifiletype") {
 				++parameter_found;
-				midi_file_type = st3;
-				if (midi_file_type == "Sibelius") grow_notes = 0;
-				if (midi_file_type == "Finale") grow_notes = 0;
-				if (midi_file_type == "MuseScore") grow_notes = 2;
+				if (st3 == "Sibelius") {
+					midi_file_type = 10;
+					grow_notes = 0;
+				}
+				if (st3 == "Finale") {
+					midi_file_type = 11;
+					grow_notes = 0;
+				}
+				if (st3 == "MuseScore") {
+					midi_file_type = 12;
+					grow_notes = 2;
+				}
 			}
 			//LoadVarInstr(&st2, &st3, "instruments", instr);
 			LoadVectorPar(&st2, &st3, "show_transpose", show_transpose, 0);

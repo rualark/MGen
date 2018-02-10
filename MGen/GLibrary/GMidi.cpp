@@ -1331,16 +1331,31 @@ void CGMidi::LoadMidi(CString path)
 	int v2 = 0;
 	int v = 0;
 
+	vector<int> mute_active;
+	vector<int> marc_active;
+	vector<int> pizz_active;
+	vector<int> trem_active;
+	vector<int> spic_active;
+	vector<int> stac_active;
+	vector<int> tasto_active;
+	mute_active.resize(16);
+	marc_active.resize(16);
+	pizz_active.resize(16);
+	trem_active.resize(16);
+	spic_active.resize(16);
+	stac_active.resize(16);
+	tasto_active.resize(16);
+
 	for (int track = first_track; track < midifile.getTrackCount(); track++) {
 		if (need_exit) break;
 		int last_cc1_step = -1;
-		int mute_active = 0;
-		int marc_active = 0;
-		int pizz_active = 0;
-		int trem_active = 0;
-		int spic_active = 0;
-		int stac_active = 0;
-		int tasto_active = 0;
+		vfill(mute_active, 0);
+		vfill(marc_active, 0);
+		vfill(pizz_active, 0);
+		vfill(trem_active, 0);
+		vfill(spic_active, 0);
+		vfill(stac_active, 0);
+		vfill(tasto_active, 0);
 		if (track > first_track) {
 			// Get next free voice
 			v1 = v2 + 1;
@@ -1366,12 +1381,6 @@ void CGMidi::LoadMidi(CString path)
 			if (need_exit) break;
 			MidiEvent* mev = &midifile[track][i];
 			int chan = mev->getChannel();
-			// Get program changes
-			if (mev->isPatchChange()) {
-				if (track_name[v] == "") {
-					track_name[v] = midi_iname[mev->data()[1]];
-				}
-			}
 			// Get track names
 			if (mev->isMetaMessage()) {
 				if (mev->getMetaType() == 0x03) {
@@ -1393,17 +1402,22 @@ void CGMidi::LoadMidi(CString path)
 				}
 			}
 			if (mev->isPatchChange()) {
+				// Get program changes for MuseScore files
+				if (track_name[v] == "") {
+					track_name[v] = midi_iname[mev->data()[1]];
+				}
+				// Get program changes for Sibelius files
 				int patch = mev->data()[1];
-				if (patch == 59) mute_active = 1;
-				else if (patch == 45) pizz_active = 1;
+				if (patch == 59) mute_active[chan] = 1;
+				else if (patch == 45) pizz_active[chan] = 1;
 				else {
-					mute_active = 0;
-					marc_active = 0;
-					pizz_active = 0;
-					trem_active = 0;
-					spic_active = 0;
-					stac_active = 0;
-					tasto_active = 0;
+					mute_active[chan] = 0;
+					marc_active[chan] = 0;
+					pizz_active[chan] = 0;
+					trem_active[chan] = 0;
+					spic_active[chan] = 0;
+					stac_active[chan] = 0;
+					tasto_active[chan] = 0;
 				}
 			}
 			if (mev->isController()) {
@@ -1440,21 +1454,21 @@ void CGMidi::LoadMidi(CString path)
 				// Parse keyswitch
 				if (pitch < icf[instr[v]].import_min || pitch > icf[instr[v]].import_max) {
 					if (pitch < 12) {
-						mute_active = 0;
-						marc_active = 0;
-						pizz_active = 0;
-						trem_active = 0;
-						spic_active = 0;
-						stac_active = 0;
-						tasto_active = 0;
+						vfill(mute_active, 0);
+						vfill(marc_active, 0);
+						vfill(pizz_active, 0);
+						vfill(trem_active, 0);
+						vfill(spic_active, 0);
+						vfill(stac_active, 0);
+						vfill(tasto_active, 0);
 					}
-					if (pitch == 2) mute_active = 1;
-					if (pitch == 3) marc_active = 1;
-					if (pitch == 5) pizz_active = 1;
-					if (pitch == 7) trem_active = 1;
-					if (pitch == 9) spic_active = 1;
-					if (pitch == 10) stac_active = 1;
-					if (pitch == 11) tasto_active = 1;
+					if (pitch == 2) vfill(mute_active, 1);
+					if (pitch == 3) vfill(marc_active, 1);
+					if (pitch == 5) vfill(pizz_active, 1);
+					if (pitch == 7) vfill(trem_active, 1);
+					if (pitch == 9) vfill(spic_active, 1);
+					if (pitch == 10) vfill(stac_active, 1);
+					if (pitch == 11) vfill(tasto_active, 1);
 				}
 				// Parse normal note
 				else {
@@ -1592,14 +1606,22 @@ void CGMidi::LoadMidi(CString path)
 						midi_ch[pos + z][v] = chan;
 						pause[pos + z][v] = 0;
 						coff[pos + z][v] = z;
-						if (trem_active && icf[instr[v]].trem_import) artic[pos + z][v] = aTREM;
-						if (pizz_active && icf[instr[v]].pizz_import) 
+						if (trem_active[chan] && icf[instr[v]].trem_import) artic[pos + z][v] = aTREM;
+						if (pizz_active[chan] && icf[instr[v]].pizz_import)
 							artic[pos + z][v] = aPIZZ;
-						if (spic_active && icf[instr[v]].spic_import) artic[pos + z][v] = aSTAC;
-						if (stac_active && icf[instr[v]].stac_import) artic[pos + z][v] = aSTAC;
-						if (marc_active && icf[instr[v]].marc_import) artic[pos + z][v] = aSTAC;
-						if (mute_active && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
-						if (tasto_active && icf[instr[v]].tasto_import) SetBit(filter[pos + z][v], fTASTO);
+						if (spic_active[chan] && icf[instr[v]].spic_import) artic[pos + z][v] = aSTAC;
+						if (stac_active[chan] && icf[instr[v]].stac_import) artic[pos + z][v] = aSTAC;
+						if (marc_active[chan] && icf[instr[v]].marc_import) artic[pos + z][v] = aSTAC;
+						if (mute_active[chan] && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
+						if (tasto_active[chan] && icf[instr[v]].tasto_import) SetBit(filter[pos + z][v], fTASTO);
+						// Load MuseScore articulations
+						if (midi_file_type == 112) {
+							int dchan = (chan - track_firstchan[track] + 16) % 16;
+							if (dchan == 1 && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
+							if (dchan == 1 && icf[instr[v]].pizz_import) 
+								artic[pos + z][v] = aPIZZ;
+							if (dchan == 2 && icf[instr[v]].trem_import) artic[pos + z][v] = aTREM;
+						}
 						// Lock mute
 						if (icf[instr[v]].mute_lock) SetBit(filter[pos + z][v], fMUTE);
 						// Lock bow

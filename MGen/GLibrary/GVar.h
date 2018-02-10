@@ -69,7 +69,7 @@ public:
 	int adapt_enable = 1;
 	int auto_legato = -1;
 	int unison_mute = 1; // Mute unisons in same instruments
-	CString midi_file_type;
+	int midi_file_type; // 0 - not specified, 10 - Sibelius, 11 - Finale, 12 - MuseScore
 	int grow_notes = -1;
 	int master_vol = 100; // Master volume for all tracks. 0 - automatic, 100 - maximum
 	int comment_adapt = 1; // If you want to have each adaptation decision commented
