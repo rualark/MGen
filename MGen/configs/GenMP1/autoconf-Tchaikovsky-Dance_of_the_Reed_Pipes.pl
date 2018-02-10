@@ -4,8 +4,10 @@
 # Default configs are not accessible from MGen GUI, you will need to change it outside of the program
 
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
-midifile_in_mul = 4 # How much you want to decrease minimum step length
+midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-10 14:20:16
 Midi_file = midi\Music\Tchaikovsky\Tchaikovsky-Dance_of_the_Reed_Pipes.mid
+
+Instruments = "Flute/Normal,Flute/Normal,Flute/Normal,Oboe/Normal,Oboe/Normal,English Horn/Normal,Clarinet/Normal,Clarinet/Normal,Clarinet/Normal,Bassoon/Normal,Bassoon/Normal,Horn/Normal,Horn/Normal,Horn/Normal,Horn/Normal,Trumpet/Normal,Trombone/Normal,Trombone/Normal,Tuba/Normal,Timpani/Long hits,Cymbals/Long hit,Violin/Arco,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass"
