@@ -42,8 +42,8 @@ Unpitched percussion/Bass drum        | Hard mallet           | 1   | 24  | -   
 Unpitched percussion/Cymbals          | Long hit              | 2   | 24  | -   | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
 Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   | Tam-tam
 Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   | triangle concerto
-Unpitched percussion/Wood blocks      | Wood block Medium     | 5   | 24  | -   | Wood block
-Unpitched percussion/Temple blocks    | Temple block Medium   | 5   | 24  | -   | Temple block
+Unpitched percussion/Wood blocks      | Medium                | 5   | 24  | -   | Wood block
+Unpitched percussion/Temple blocks    | Medium                | 5   | 24  | -   | Temple block
 Unpitched percussion/Bongo            | High                  | 6   | 24  | -   | 
 Unpitched percussion/Conga            | Low                   | 6   | 24  | -   | 
 Unpitched percussion/Military drum    | Hits                  | 7   | 24  | -   | 
