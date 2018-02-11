@@ -6,6 +6,8 @@
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 16 # How much you want to decrease minimum step length
 
+MidiFileType = MuseScore
+
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-10 14:20:16
 Midi_file = midi\Music\Tchaikovsky\Tchaikovsky-Dance_of_the_Reed_Pipes.mid

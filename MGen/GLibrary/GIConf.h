@@ -8,6 +8,12 @@ struct CaseInsensitiveCompare {
 	}
 };
 
+#define itPerc 0
+#define itEIS 1
+#define itSMB 2
+#define itSIVOR 3
+#define itSMW 4
+
 // Instrument config
 struct IConf {
 	CString name; // config name

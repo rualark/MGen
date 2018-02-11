@@ -2613,7 +2613,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 					if (!note_muted[i][v]) {
 						AddNoteOn(stimestamp, my_note, vel[i][v]);
 					}
-					if (icf[ii].type == 1) {
+					if (icf[ii].type == itEIS) {
 						// Send bow
 						if (GetBit(filter[i][v], fTASTO)) {
 							if (icf[ii].NameToKsw.find("Sul tasto") != icf[ii].NameToKsw.end())
@@ -2650,7 +2650,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 						}
 					}
 					// Send transition ks
-					if (icf[ii].type == 2 || icf[ii].type == 4) {
+					if (icf[ii].type == itSMB || icf[ii].type == itSMW) {
 						// Frullato
 						if (artic[i][v] == aTREM && icf[ii].trem_activate > -1) {
 							for (auto const& it : icf[ii].tech[icf[ii].trem_activate]) {
@@ -2676,7 +2676,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 							}
 						}
 					}
-					if (icf[ii].type == 2) {
+					if (icf[ii].type == itSMB) {
 						// Mute
 						if (GetBit(filter[i][v], fMUTE) && icf[ii].mute_activate > -1) {
 							for (auto const& it : icf[ii].tech[icf[ii].mute_activate]) {
@@ -2734,7 +2734,7 @@ void CGMidi::SendMIDI(int step1, int step2)
 					etimestamp = setime[ei][v] * 100 / m_pspeed + detime[ei][v];
 					AddNoteOff(etimestamp, my_note, 0);
 					// Send note ending ks
-					if (icf[ii].type == 2) {
+					if (icf[ii].type == itSMB) {
 						if (artic[ei][v] == aEND_SFL) {
 							AddKs(etimestamp - icf[ii].end_sfl_dur, icf[ii].ks1 + 11);
 						}

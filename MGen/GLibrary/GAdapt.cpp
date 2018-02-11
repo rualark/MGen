@@ -210,7 +210,7 @@ void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, i
 		float ndur = (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v];
 		// Convert legato to non-legato if previous note is short
 		// Do not check this for SM brass, because flex legato allows for any legato length
-		if (ndur <= icf[ii].legato_ahead[0] + 1 && icf[ii].type != 2) {
+		if (ndur <= icf[ii].legato_ahead[0] + 1 && icf[ii].type != itSMB) {
 			artic[i][v] = aNONLEGATO;
 			dstime[i][v] = -icf[ii].all_ahead;
 			if (comment_adapt) adapt_comment[i][v] += "Nonlegato after short. ";
@@ -299,12 +299,11 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 				adapt_comment[i - 1][v] += "Ahead legato end. ";
 			}
 			// Add glissando if note is long
-			if (icf[ii].gliss_freq) {
-				float ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
-				if ((ndur > icf[ii].gliss_minlen) && (randbw(0, 100) < icf[ii].gliss_freq)) {
+			float ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
+			if (icf[ii].gliss_freq && ndur > icf[ii].gliss_minlen && 
+				randbw(0, 100) < icf[ii].gliss_freq) {
 					vel[i][v] = icf[ii].vel_gliss;
 					if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
-				}
 			}
 		}
 	}
@@ -435,7 +434,7 @@ void CGAdapt::FixOverlap(int v, int x, int i, int ii, int ei, int pi, int pei) {
 
 void CGAdapt::AdaptAttackStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// If nonlegato and short note, avoid slow sustain articulations
-	if (artic[i][v] == aNONLEGATO || icf[ii].type == 4) {
+	if (artic[i][v] == aNONLEGATO || icf[ii].type == itSMW) {
 		float ndur = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v];
 		if (ndur < icf[ii].vel_normal_minlen && vel[i][v] < icf[ii].vel_immediate) {
 			vel[i][v] = randbw(icf[ii].vel_immediate, icf[ii].vel_immediate + 2);
@@ -706,13 +705,13 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 	float rv = icf[ii].rnd_vel;
 	int ok = 1;
 	if (icf[ii].rnd_vel > 0) {
-		if (icf[ii].type == 1) {
+		if (icf[ii].type == itEIS) {
 			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 			if (i && !pause[i - 1][v] && note[i-1][v] != note[i][v]) ok = 0;
 			// Prevent velocity randomization of short nonlegato notes, because they sound bad at low velocity with Friedlander
 			if ((setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] < icf[ii].vel_normal_minlen) ok = 0;
 		}
-		if (icf[ii].type == 2 || icf[ii].type == 3 || icf[ii].type == 4) {
+		if (icf[ii].type == itSMB || icf[ii].type == itSIVOR || icf[ii].type == itSMW) {
 			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
 			if (i && !pause[i - 1][v] && note[i - 1][v] != note[i][v]) ok = 0;
 		}
@@ -896,12 +895,12 @@ void CGAdapt::Adapt(int step1, int step2) {
 				CheckShortStep(v, x, i, ii, ei, pi, pei);
 				// Instrument-specific adaptation
 				// Piano
-				if (icf[ii].type == 0) {
+				if (icf[ii].type == itPerc) {
 					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptLengroupStep(v, x, i, ii, ei, pi, pei);
 				}
 				// Embertone Intimate Strings
-				if (icf[ii].type == 1) {
+				if (icf[ii].type == itEIS) {
 					AdaptAllAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
@@ -915,7 +914,7 @@ void CGAdapt::Adapt(int step1, int step2) {
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
 				// Samplemodeling Brass
-				if (icf[ii].type == 2) {
+				if (icf[ii].type == itSMB) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
 					AdaptVibBell(v, x, i, ii, ei, pi, pei);
@@ -925,7 +924,7 @@ void CGAdapt::Adapt(int step1, int step2) {
 					AdaptNoteEndStep(v, x, i, ii, ei, pi, pei, ncount);
 				}
 				// Soundiron Voices of Rapture
-				if (icf[ii].type == 3) {
+				if (icf[ii].type == itSIVOR) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
 					AdaptVibBell(v, x, i, ii, ei, pi, pei);
@@ -934,13 +933,13 @@ void CGAdapt::Adapt(int step1, int step2) {
 					//vel[i][v] = randbw(1, 126);
 				}
 				// Samplemodeling Woodwinds
-				if (icf[ii].type == 4) {
+				if (icf[ii].type == itSMW) {
 					AdaptLongBell(v, x, i, ii, ei, pi, pei, ncount);
 					AdaptReverseBell(v, x, i, ii, ei, pi, pei);
 					AdaptVibBell(v, x, i, ii, ei, pi, pei);
 					AdaptRetriggerNonlegatoStep(v, x, i, ii, ei, pi, pei);
 					AdaptNonlegatoStep(v, x, i, ii, ei, pi, pei);
-					//AdaptAheadStep(v, x, i, ii, ei, pi, pei);
+					AdaptAheadStep(v, x, i, ii, ei, pi, pei);
 					AdaptAttackStep(v, x, i, ii, ei, pi, pei);
 				}
 			} // !pause
@@ -954,7 +953,7 @@ void CGAdapt::Adapt(int step1, int step2) {
 			pei = i - 1;
 			if (!pause[i][v]) {
 				// Randomize note starts for piano and non-legato solo instruments
-				if (icf[ii].rand_start > 0 && (icf[ii].type == 0 || artic[i][v] == aNONLEGATO || artic[i][v] == aSTAC ||
+				if (icf[ii].rand_start > 0 && (icf[ii].type == itPerc || artic[i][v] == aNONLEGATO || artic[i][v] == aSTAC ||
 					artic[i][v] == aPIZZ || artic[i][v] == aTREM)) {
 					float max_shift = (setime[ei][v] - sstime[i][v]) * 100 / m_pspeed * icf[ii].rand_start / 100;
 					if ((icf[ii].rand_start_max > 0) && (max_shift > icf[ii].rand_start_max)) max_shift = icf[ii].rand_start_max;
