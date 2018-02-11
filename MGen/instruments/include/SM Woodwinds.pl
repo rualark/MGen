@@ -43,6 +43,9 @@ CC_dynamics = 11
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 
+# Legato adaptor
+gliss_freq = 0 # Disable
+
 # Nonlegato adaptor
 all_ahead = 25 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
