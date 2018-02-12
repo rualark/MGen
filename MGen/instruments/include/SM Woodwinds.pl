@@ -44,7 +44,11 @@ CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers
 CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 
 # Legato adaptor
+legato_ahead = 25 # Time in ms to stretch legato notes back to cope with legato delay
+max_ahead_note = 64 # Maximum chromatic interval having ahead property
 gliss_freq = 0 # Disable
+legato_long_minlen = 300 # Minimum note duration that can have long legato transition from previous note
+vel_legato_long = 64 # Long legato transition goes from vel_gliss to this value
 
 # Nonlegato adaptor
 all_ahead = 25 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack

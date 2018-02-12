@@ -247,6 +247,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 			CheckVar(&st2, &st3, "midifile_export_comments", &midifile_export_comments, 0, 1);
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable, 0, 1);
 			CheckVar(&st2, &st3, "autolegato", &auto_legato, 0, 1);
+			CheckVar(&st2, &st3, "autononlegato", &auto_nonlegato, 0, 1);
 			CheckVar(&st2, &st3, "unison_mute", &unison_mute, 0, 1);
 			CheckVar(&st2, &st3, "grownotes", &grow_notes);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt, 0, 1);
@@ -871,6 +872,8 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "single_stage", &icf[i].single_stage, 0, 1);
 	CheckVar(&st2, &st3, "type", &icf[i].type);
 	CheckVar(&st2, &st3, "channel", &icf[i].channel);
+	CheckVar(&st2, &st3, "legato_long_minlen", &icf[i].legato_long_minlen);
+	CheckVar(&st2, &st3, "vel_legato_long", &icf[i].vel_legato_long);
 	CheckRange(&st2, &st3, "vib_bell_top", &icf[i].vib_bell_top1, &icf[i].vib_bell_top2);
 	CheckRange(&st2, &st3, "vibf_bell_top", &icf[i].vibf_bell_top1, &icf[i].vibf_bell_top2);
 	CheckRange(&st2, &st3, "vib_bell", &icf[i].vib_bell1, &icf[i].vib_bell2);

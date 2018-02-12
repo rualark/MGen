@@ -150,6 +150,8 @@ struct IConf {
 	int vel_normal = 0; // Velocity equal or above this value triggers normal sustain
 	int vel_gliss = 0; // Velocity below this value triggers glissando transition
 	int vel_normal_minlen = 0; // Minimum note length that can have a normal or lower sustain
+	int legato_long_minlen = 300; // Minimum note duration that can have long legato transition from previous note
+	int vel_legato_long = 64; // Long legato transition goes from vel_gliss to this value
 	int bell_mindur = 0; // Minimum note duration (ms) that can have a starting bell
 	int bell_mindur2 = 0; // Minimum note duration (ms) that can have a ending bell
 	int gliss_minlen = 0; // Minimum note length that can have a gliss transition

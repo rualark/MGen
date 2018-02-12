@@ -234,7 +234,7 @@ void CGAdapt::AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, i
 
 void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Randomly make some notes non-legato if they have enough length
-	if ((i > 0) && (artic[i][v] == aLEGATO || artic[i][v] == aSLUR) &&
+	if (auto_nonlegato && (i > 0) && (artic[i][v] == aLEGATO || artic[i][v] == aSLUR) &&
 		((setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed + detime[pei][v] - dstime[pi][v] > icf[ii].nonlegato_minlen) &&
 		(randbw(0, 100) < icf[ii].nonlegato_freq * pow(abs(note[i][v] - note[pi][v]), 0.3))) {
 		detime[pei][v] = -min(icf[ii].nonlegato_maxgap, (setime[pei][v] - sstime[pi][v]) * 100 / m_pspeed / 3);
@@ -304,6 +304,14 @@ void CGAdapt::AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pe
 				randbw(0, 100) < icf[ii].gliss_freq) {
 					vel[i][v] = icf[ii].vel_gliss;
 					if (comment_adapt) adapt_comment[i][v] += "Gliss. ";
+			}
+			else {
+				if (ndur > icf[ii].legato_long_minlen) {
+					vel[i][v] = randbw(icf[ii].vel_gliss + 1, icf[ii].vel_legato_long);
+				}
+				else {
+					vel[i][v] = randbw(icf[ii].vel_legato_long + 1, 127);
+				}
 			}
 		}
 	}
@@ -706,7 +714,7 @@ void CGAdapt::AdaptRndVel(int v, int x, int i, int ii, int ei, int pi, int pei)
 	int ok = 1;
 	if (icf[ii].rnd_vel > 0) {
 		if (icf[ii].type == itEIS) {
-			// Prevent velocity randomization of flexible legato transitions, because this can shift tempo
+			// Prevent velocity randomization of legato transitions, because this can create gliss
 			if (i && !pause[i - 1][v] && note[i-1][v] != note[i][v]) ok = 0;
 			// Prevent velocity randomization of short nonlegato notes, because they sound bad at low velocity with Friedlander
 			if ((setime[ei][v] - sstime[i][v]) * 100 / m_pspeed + detime[ei][v] - dstime[i][v] < icf[ii].vel_normal_minlen) ok = 0;
