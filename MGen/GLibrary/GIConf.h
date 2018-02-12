@@ -158,6 +158,7 @@ struct IConf {
 	int gliss_freq = 0; // Frequency of gliss articulation in percent
 	int rand_start_max = 0; // Maximum shift in ms
 	int rand_end_max = 0; // Maximum shift in ms
+	int fix_transpose = 1000; // 1000 - do not fix transpose. Other value - transpose fixed
 	int max_ahead_note = 0; // Maximum chromatic interval having ahead property
 	float bell_start_mul = 0; // Multiply dynamics by this parameter at bell start
 	float bell_end_mul = 0; // Multiply dynamics by this parameter at bell end

@@ -23,10 +23,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;105;10;Melody;Compensated leap;Compensated to 3rd;4th;0;;;5;;;;0;0;;;;;;;
 1;106;40;Melody;Compensated leap;Compensated to 3rd;5th;0;;;5;;;;0;0;;;;;;;
 1;107;60;Melody;Compensated leap;Compensated to 3rd;>5th;0;;;5;;;;0;0;;;;;;;
-1;144;0;Melody;Compensated leap;C4P last 4 measures, 8 notes;3rd;-1;Compensated to 4th, precompensated within 5 notes;;5;;;;0;0;;;;;;;
-1;145;0;Melody;Compensated leap;C4P last 4 measures, 8 notes;4th;-1;Compensated to 4th, precompensated within 5 notes;;5;;;;48;0;;;;;;;
-1;146;40;Melody;Compensated leap;C4P last 4 measures, 8 notes;5th;-1;Compensated to 4th, precompensated within 5 notes;;5;;;;33;0;;;;;;;
-1;147;100;Melody;Compensated leap;C4P last 4 measures, 8 notes;>5th;-1;Compensated to 4th, precompensated within 5 notes;;5;;;;14;0;;;;;;;
+1;144;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;3rd;-1;Compensated to 5th, precompensated within 5 notes;;5;;;;0;0;;;;;;;
+1;145;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;4th;-1;Compensated to 5th, precompensated within 5 notes;;5;;;;48;0;;;;;;;
+1;146;40;Melody;Compensated leap;C5P last 4 measures, 8 notes;5th;-1;Compensated to 5th, precompensated within 5 notes;;5;;;;33;0;;;;;;;
+1;147;100;Melody;Compensated leap;C5P last 4 measures, 8 notes;>5th;-1;Compensated to 5th, precompensated within 5 notes;;5;;;;14;0;;;;;;;
 1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;;5;;;;149;0;;;;;144,120,42;;
 1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;-1;;;5;;;;22;0;;;;;145,121,43;;
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated;5th;0;;;5;;;;16;0;;;;;146,122,44;;
@@ -297,7 +297,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;223;60;Counterpoint;Counterpoint;Harmonic dissonance;< longer;0;;Dissonance is longer than previous consonance;;1;;;13;6;1;;;;;;
 1;384;0;Counterpoint;Counterpoint;Harmonic dissonance;longer >;0;;Dissonance is longer than next consonance;;1;;;7;1;;;;;;;
 1;224;100;Counterpoint;Counterpoint;Harmonic dissonance;interbar;0;;Dissonance starts and ends suspension/anticipation;;1;;;8;4;1;;;;;;
-1;331;0;Counterpoint;Counterpoint;Harmonic dissonance;4th cons;1;;Prohibit 4th upbeat not lowest consonance;;1;;;0;0;1;;;;;;
+1;331;60;Counterpoint;Counterpoint;Harmonic dissonance;4th cons;0;;Prohibit 4th upbeat not lowest consonance;;1;;;0;0;1;;;;;;
 1;169;0;Counterpoint;Counterpoint;Harmonic dissonance upbeat;stepwize;-1;;;;1;;;767;3;;;;;;;
 1;187;60;Counterpoint;Counterpoint;Harmonic dissonance upbeat;leap;0;;;2;1;;;133;8;;;;;276,169;;
 1;276;60;Counterpoint;Counterpoint;Harmonic dissonance upbeat;m2;0;;Minor second;;1;;;5;3;1;;;;;;

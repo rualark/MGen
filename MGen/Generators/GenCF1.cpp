@@ -354,6 +354,7 @@ void CGenCF1::SetRuleParams() {
 	thirds_ignored = GetRuleParam(rule_set, 70, rsName, 0);
 	c4p_last_meas = GetRuleParam(rule_set, 144, rsName, 1);
 	fill_pre3_notes = GetRuleParam(rule_set, 100, rsComment, 0);
+	fill_pre4_int = GetRuleParam(rule_set, 144, rsComment, 0);
 	fill_pre4_notes = GetRuleParam(rule_set, 144, rsComment, 1);
 	c4p_last_notes = GetRuleParam(rule_set, 144, rsName, 2);
 	pre_last_leaps = GetRuleParam(rule_set, 204, rsName, 0);

@@ -19,8 +19,22 @@ CGAdapt::~CGAdapt()
 }
 
 void CGAdapt::CheckInstrumentRange(int v, int ii) {
+	CString st;
 	// Do not check for instruments with replaces or mapping
 	if (icf[ii].replace_pitch > -1 || icf[ii].map_pitch.size()) return;
+	// Fix transpose
+	if (icf[ii].fix_transpose != 1000) {
+		play_transpose[v] = icf[ii].fix_transpose;
+		if ((ngv_min[v] + play_transpose[v] < icf[ii].nmin) || (ngv_max[v] + play_transpose[v] > icf[ii].nmax)) {
+			st.Format("Notes transposed by %s semitones in config. Resulting notes range (%s - %s) is outside instrument %s/%s (voice %d) range (%s - %s).",
+				play_transpose[v], GetNoteName(ngv_min[v] + play_transpose[v]), GetNoteName(ngv_max[v] + play_transpose[v]),
+				icf[ii].group, icf[ii].name, v,
+				GetNoteName(icf[ii].nmin), GetNoteName(icf[ii].nmax));
+			warning_note_range[v] = 1;
+			WriteLog(1, st);
+		}
+		return;
+	}
 	// Check if notes are in instrument range
 	if ((ngv_min[v] + play_transpose[v] < icf[ii].nmin) || (ngv_max[v] + play_transpose[v] > icf[ii].nmax)) {
 		if (ngv_min[v] < icf[ii].nmin) {
