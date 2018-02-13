@@ -23,10 +23,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;105;10;Melody;Compensated leap;Compensated to 3rd;4th;0;;;5;;;;0;0;;;;;;;
 1;106;40;Melody;Compensated leap;Compensated to 3rd;5th;0;;;5;;;;0;0;;;;;;;
 1;107;60;Melody;Compensated leap;Compensated to 3rd;>5th;0;;;5;;;;0;0;;;;;;;
-1;144;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;3rd;-1;Compensated to 5th, precompensated within 5 notes;;5;;;;0;0;;;;;;;
-1;145;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;4th;-1;Compensated to 5th, precompensated within 5 notes;;5;;;;48;0;;;;;;;
-1;146;40;Melody;Compensated leap;C5P last 4 measures, 8 notes;5th;-1;Compensated to 5th, precompensated within 5 notes;;5;;;;33;0;;;;;;;
-1;147;100;Melody;Compensated leap;C5P last 4 measures, 8 notes;>5th;-1;Compensated to 5th, precompensated within 5 notes;;5;;;;14;0;;;;;;;
+1;144;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;3rd;-1;Compensated to 5th, precompensated within 6 notes;;5;;;;0;0;;;;;;;
+1;145;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;4th;-1;Compensated to 5th, precompensated within 6 notes;;5;;;;48;0;;;;;;;
+1;146;40;Melody;Compensated leap;C5P last 4 measures, 8 notes;5th;-1;Compensated to 5th, precompensated within 6 notes;;5;;;;33;0;;;;;;;
+1;147;100;Melody;Compensated leap;C5P last 4 measures, 8 notes;>5th;-1;Compensated to 5th, precompensated within 6 notes;;5;;;;14;0;;;;;;;
 1;112;0;Melody;Uncompensated leap;Uncompensated: precompensated;3rd;-1;;;5;;;;149;0;;;;;144,120,42;;
 1;113;0;Melody;Uncompensated leap;Uncompensated: precompensated;4th;-1;;;5;;;;22;0;;;;;145,121,43;;
 1;114;60;Melody;Uncompensated leap;Uncompensated: precompensated;5th;0;;;5;;;;16;0;;;;;146,122,44;;
