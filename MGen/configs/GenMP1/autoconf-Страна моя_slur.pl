@@ -13,7 +13,6 @@ AutoNonLegato = 0 # Enables automatic random replacement of legato transitions w
 unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same instruments
 
 MidiFileType = "Finale"
-Instruments = "Horn/Normal,Piano/Hard"
-
 Instrument = Piano/Hard
-Volume = 75
+Volume = 65
+Instruments = "Cello,Piano/Hard"

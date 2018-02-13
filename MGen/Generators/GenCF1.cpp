@@ -354,7 +354,7 @@ void CGenCF1::SetRuleParams() {
 	thirds_ignored = GetRuleParam(rule_set, 70, rsName, 0);
 	c4p_last_meas = GetRuleParam(rule_set, 144, rsName, 1);
 	fill_pre3_notes = GetRuleParam(rule_set, 100, rsComment, 0);
-	fill_pre4_int = GetRuleParam(rule_set, 144, rsComment, 0);
+	fill_pre4_int = GetRuleParam(rule_set, 144, rsComment, 0) - 1;
 	fill_pre4_notes = GetRuleParam(rule_set, 144, rsComment, 1);
 	c4p_last_notes = GetRuleParam(rule_set, 144, rsName, 2);
 	pre_last_leaps = GetRuleParam(rule_set, 204, rsName, 0);
@@ -2173,11 +2173,11 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 			fill_from, deviates, dev_count, leap_prev, fill_end);
 		if (skips > allowed_skips) filled = 0;
 		else if (fill_to > 3) filled = 0;
-		else if (fill_to == 3 && (!fill_to_pre || late_leap > c4p_last_notes2 + 1 || !accept[144 + leap_id])) filled = 0;
+		else if (fill_to >= 3 && fill_to <= fill_pre4_int && (!fill_to_pre || late_leap > c4p_last_notes2 + 1 || !accept[144 + leap_id])) filled = 0;
 		else if (fill_to == 2 && (fill_to_pre || !fleap_start) && !accept[100 + leap_id]) filled = 0;
 		else if (fill_to == 2 && !fill_to_pre && fleap_start && !accept[104 + leap_id]) filled = 0;
 		else if (fill_from > 3) filled = 0;
-		else if (fill_from == 3 && (!fill_from_pre || late_leap > c4p_last_notes2 + 1 || !accept[144 + leap_id])) filled = 0;
+		else if (fill_from >= 3 && fill_from <= fill_pre4_int && (!fill_from_pre || late_leap > c4p_last_notes2 + 1 || !accept[144 + leap_id])) filled = 0;
 		else if (fill_from == 2 && !accept[53 + leap_id]) filled = 0;
 		else if (deviates > 2) filled = 0;
 		else if (deviates == 1 && !accept[42 + leap_id]) filled = 0;
@@ -2216,9 +2216,9 @@ int CGenCF1::FailLeapFill(vector<int> &c, int late_leap, int leap_prev, int chil
 		// This means that compensation errors are not shown if uncompensated (successfully or not)
 		else {
 			// Flag late uncompensated precompensated leap
-			if (fill_to == 3 && late_leap <= c4p_last_notes2 + 1)
+			if (fill_to >= 3 && fill_to <= fill_pre4_int && late_leap <= c4p_last_notes2 + 1)
 				FLAG2(144 + leap_id, fli[fleap_start]);
-			else if (fill_from == 3 && late_leap <= c4p_last_notes2 + 1)
+			else if (fill_from >= 3 && fill_from <= fill_pre4_int && late_leap <= c4p_last_notes2 + 1)
 				FLAG2(144 + leap_id, fli[fleap_start]);
 			// Flag prepared unfinished fill if it is not blocking 
 			else if (fill_to == 2 && (fill_to_pre || !fleap_start)) FLAG2(100 + leap_id, fli[fleap_start]);
