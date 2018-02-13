@@ -3541,7 +3541,8 @@ check:
 		//CreateULinks();
 		if (minor_cur) {
 			if (FailMinor(apcc[cpv], acc[cpv])) goto skip;
-			if (FailGisTrail2()) goto skip;
+			//if (FailGisTrail2()) goto skip;
+			if (FailGisTrail(apcc[cpv])) goto skip;
 			if (FailFisTrail(apcc[cpv])) goto skip;
 		}
 		//if (acc[cpv][1] == 105 && acc[cpv][2] == 98)
