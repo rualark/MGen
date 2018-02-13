@@ -3410,7 +3410,7 @@ void CGenCP1::GetHarmBass() {
 		de2 = (de1 + 2) % 7;
 		de3 = (de1 + 4) % 7;
 		// Loop inside harmony
-		for (ls = bli[hli[hs]]; ls <= bli[hli2[hs]]; ++ls) {
+		for (ls = bli[hli[hs]]; ls <= bli[hli2[hs]]; ++ls) if (msh[ls] > 0) {
 			s = fli[ls];
 			nt = ac[cpv][s] % 7;
 			// Do not process notes that are not harmonic
