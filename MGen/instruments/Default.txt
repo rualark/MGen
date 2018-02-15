@@ -5,7 +5,7 @@ Woodwinds/Piccolo                     | Normal                | 0   | 14  | -   
 Woodwinds/Flute                       | Normal                | 15  | 15  | +   | Fleita, Flauto, Fl., Grande flute, Flute traversiere, Flote, Querflote, Flauta
 Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   |
 Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   |
-Woodwinds/Clarinet                    | Normal                | 0   | 18  | -   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
+Woodwinds/Clarinet                    | Normal                | 14  | 18  | +   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
 Woodwinds/Bass Clarinet               | Normal                | 0   | 19  | -   | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo
 Woodwinds/Oboe                        | Normal                | 0   | 20  | -   | Hautbois, Hoboy, French hoboy, Goboi
 Woodwinds/English Horn                | Normal                | 0   | 21  | -   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles
@@ -16,10 +16,10 @@ Woodwinds/Alto sax                    | Normal                | 0   | 42  | -   
 Woodwinds/Baritone sax                | Normal                | 0   | 43  | -   | 
 Woodwinds/Tenor sax                   | Normal                | 0   | 44  | -   | 
 Brass/Trumpet                         | Normal                | 2   | 2   | +   | trompette, Trompete, tromba, clarino, truba, trompeta
-Brass/Cornet                          | Normal                | 14  | 35  | +   | 
-Brass/Flugelhorn                      | Normal                | 14  | 36  | -   | 
-Brass/German trumpet                  | Normal                | 14  | 37  | -   | 
-Brass/Piccolo trumpet                 | Normal                | 14  | 38  | -   | 
+Brass/Cornet                          | Normal                | 0   | 35  | -   | 
+Brass/Flugelhorn                      | Normal                | 0   | 36  | -   | 
+Brass/German trumpet                  | Normal                | 0   | 37  | -   | 
+Brass/Piccolo trumpet                 | Normal                | 0   | 38  | -   | 
 Brass/Horn                            | Normal                | 3   | 3   | +   | French horn, Waldhorn, Ventilhorn, Trompa, Corno, Cor, Corni, Gorn, rog, rozhok, Valtorna, F. horn, corno frances, cuerno
 Brass/Trombone                        | Normal                | 4   | 4   | +   | Posaune, trombono, trombon, 
 Brass/Valve trombone                  | Normal                | 4   | 39  | -   | 
