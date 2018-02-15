@@ -481,16 +481,16 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		(!i || pause[pi][v]) && vel[i][v] < 120) {
 		int pos = i + (float)(len[i][v]) * icf[ii].bell_start_len / 100.0;
 		int ok = 1;
-		// Check if dynamics is even
+		// Check if dynamics does not decrease
 		if (pos - i > 1) for (int z = i + 1; z < pos; z++) {
-			if (dyn[z][v] != dyn[z - 1][v]) {
+			if (dyn[z][v] < dyn[i][v]) {
 				ok = 0;
 				break;
 			}
 		}
 		if (ok) {
 			for (int z = i; z < pos; z++) {
-				dyn[z][v] = dyn[z][v] * (icf[ii].bell_start_mul + (float)(z - i) / (pos - i) * (1.0 - icf[ii].bell_start_mul));
+				dyn[z][v] = dyn[pos - 1][v] * (icf[ii].bell_start_mul + (float)(z - i) / (pos - i) * (1.0 - icf[ii].bell_start_mul));
 			}
 			if (comment_adapt) adapt_comment[i][v] += "Long bell start. ";
 			// Decrease starting velocity
@@ -505,16 +505,16 @@ void CGAdapt::AdaptLongBell(int v, int x, int i, int ii, int ei, int pi, int pei
 		int pos = round(i + (float)(len[i][v]) * 2.0 * icf[ii].bell_start_len / 100.0);
 		int ok = 1;
 		int end = i + len[i][v];
-		// Check if dynamics is even
+		// Check if dynamics does not increase
 		if (end - pos > 1) for (int z = pos; z < end; z++) {
-			if (dyn[z][v] != dyn[z - 1][v]) {
+			if (dyn[z - 1][v] < dyn[end - 1][v]) {
 				ok = 0;
 				break;
 			}
 		}
 		if (ok) {
 			for (int z = pos; z < end; z++) {
-				dyn[z][v] = dyn[z][v] * (icf[ii].bell_end_mul + (float)(end - z - 1) / (end - pos) * (1.0 - icf[ii].bell_end_mul));
+				dyn[z][v] = dyn[pos][v] * (icf[ii].bell_end_mul + (float)(end - z - 1) / (end - pos) * (1.0 - icf[ii].bell_end_mul));
 			}
 			if (comment_adapt) adapt_comment[i + len[i][v] - 1][v] += "Long bell end. ";
 		}
