@@ -2407,6 +2407,8 @@ void CGenCF1::GetTritoneResolution(int ta, int t1, int t2, int tb, int &res1, in
 		ta2 = tb;
 		tb2 = ta;
 	}
+	// Outer resolution is not a resolution
+	if (cc[fli[fleap_end]] > cc[fli[fleap_start]] && ta2 < pcc[fli[fleap_start]]) return;
 	// Get resolution window
 	int rwin = 1;
 	if (svoices > 1) rwin = max(1, (npm * tritone_res_quart) / 4);
