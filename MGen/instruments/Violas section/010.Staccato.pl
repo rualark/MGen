@@ -3,4 +3,4 @@ include "001.Arco.pl"
 Type = 0 # Instrument type
 poly = 100
 InitTechnique = "stac"
-vel_mul = 50 # Multiply incoming velocity of all midi notes by this percent (100 - do not change)
+vel_range = 0-60 # Output range of velocity in percent

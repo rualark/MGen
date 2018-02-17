@@ -11,3 +11,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 Midi_file = midi\Music\Shegolev\Tico Tico_inames.mid
 
 Instruments = "Violin/Arco,Violin,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass/Arco,Piano,Piano"
+Instruments = "Soprano sax,Alto sax,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass/Arco,Piano,Piano"

@@ -307,7 +307,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;390;30;Counterpoint;Counterpoint;Parallel imperfect consonances;>3 x 6ths;0;More than X same imperfect consonances in a row;;9;1;;Parallel 6ths;;;;;;;;;
 1;268;0;Counterpoint;Counterpoint;First harmonic interval;I-I;-1;;;2;1;;;313;3;;;;;;;
 1;269;0;Counterpoint;Counterpoint;First harmonic interval;I-V;-1;;;2;1;;;48;6;1;;;;;;
-1;270;30;Counterpoint;Counterpoint;First harmonic interval;I-III;0;;;2;1;;;25;5;1;;;;;;
+1;270;30;Counterpoint;Counterpoint;First harmonic interval;I-III;1;;;2;1;;;25;5;1;;;;;;
 1;271;40;Counterpoint;Counterpoint;First harmonic interval;III-I;0;;;2;1;;;11;2;1;;;;;;
 1;272;100;Counterpoint;Counterpoint;First harmonic interval;Other;0;;;2;1;;;42;14;1;;;;;;
 1;354;0;Counterpoint;Counterpoint;Last harmonic interval;I-I;-1;;;2;1;;;356;1;;;;;;;
