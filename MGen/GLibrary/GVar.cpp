@@ -879,6 +879,8 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckRange(&st2, &st3, "vib_bell", &icf[i].vib_bell1, &icf[i].vib_bell2);
 	CheckRange(&st2, &st3, "vibf_bell", &icf[i].vibf_bell1, &icf[i].vibf_bell2);
 	CheckRange(&st2, &st3, "vib_bell_dur", &icf[i].vib_bell_mindur, &icf[i].vib_bell_dur);
+	CheckRange(&st2, &st3, "dyn_range", &icf[i].dyn_range1, &icf[i].dyn_range2);
+	CheckRange(&st2, &st3, "vel_range", &icf[i].vel_range1, &icf[i].vel_range2);
 	CheckVar(&st2, &st3, "vib_bell_freq", &icf[i].vib_bell_freq);
 	CheckVar(&st2, &st3, "vib_bell_exp", &icf[i].vib_bell_exp);
 	CheckVar(&st2, &st3, "vibf_bell_exp", &icf[i].vibf_bell_exp);
@@ -933,7 +935,6 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckVar(&st2, &st3, "pizz_dynamics", &icf[i].pizz_dynamics, 0, 200);
 	CheckVar(&st2, &st3, "pizz_dyn_add", &icf[i].pizz_dyn_add, 0, 127);
 	CheckVar(&st2, &st3, "mute_predelay", &icf[i].pizz_dyn_add);
-	CheckVar(&st2, &st3, "vel_mul", &icf[i].vel_mul, 0, 1000);
 	CheckVar(&st2, &st3, "nonlegato_freq", &icf[i].nonlegato_freq);
 	CheckVar(&st2, &st3, "lengroup2", &icf[i].lengroup2);
 	CheckVar(&st2, &st3, "lengroup3", &icf[i].lengroup3);

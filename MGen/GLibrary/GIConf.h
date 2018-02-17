@@ -57,7 +57,10 @@ struct IConf {
 	int trem_chan = -1;
 	int trem_activate = -1; // Technique that will be triggered with trem command from MIDI file
 	int trem_deactivate = -1; // Technique that will be triggered with trem command from MIDI file
-	int vel_mul = 100; // Multiply incoming velocity of all midi notes by this percent (100 - do not change)
+	int dyn_range1 = 0; // Minimum allowed dynamics value in percent
+	int dyn_range2 = 100; // Maximum allowed dynamics value in percent
+	int vel_range1 = 0; // Minimum allowed velocity value in percent
+	int vel_range2 = 100; // Maximum allowed velocity value in percent
 	int CC_vib = 0; // CC number for vibrato intensity
 	int CC_vibf = 0; // CC number for vibrato speed
 	float vib_bell_top1 = 0; // Leftmost - rightmost maximum vibrato intensity in note(percent of note duration)
