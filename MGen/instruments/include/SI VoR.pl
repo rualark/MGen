@@ -38,3 +38,6 @@ Volume = 100 # default 100 (relative volume from 0 to 100)
 # Randomization
 rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
 rand_pos_max = 70-0 # Maximum shift in ms (start-end)
+
+# Nonlegato adaptor
+nonlegato_mingap = 100 # Minimum gap between notes (in ms) introduced by automatic nonlegato 
