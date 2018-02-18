@@ -11,3 +11,5 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 Midi_file = midi\Music\Arkhipenko\You go to my head.mid
 
 Instruments = "Tenor sax/Normal,Piano/Soft,Contrabass/Pizzicato,Jazz drum set/Map"
+
+"Piano/Soft": Volume = 80
