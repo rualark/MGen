@@ -281,29 +281,33 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 			// Load instrument layout overrides
 			LoadInstrumentLayoutLine(st2, st3);
 			// Load instrument id
-			if (st2 == "instrument") {
+			if (st2.Find(":") > 0) {
 				++parameter_found;
 				instr_id = -1;
 				tr_id = -1;
 				st_id = -1;
+				CString ipath = st2.Left(st2.Find(":"));
+				ipath.Replace("\"", "");
+				ipath.Trim();
 				vector<CString> sa;
-				Tokenize(st3, sa, "/");
+				Tokenize(ipath, sa, "/");
 				// Load instrument group
 				if (sa.size() == 1) {
 					int found = 0;
 					for (int i = 0; i < icf.size(); ++i) {
-						if (st3 == icf[i].group) {
+						if (!ipath.CompareNoCase(icf[i].group)) {
 							instr_id = i;
 							++found;
 						}
 					}
 					if (found > 1)
-						WriteLog(5, "Instrument group " + st3 + " is ambiguous. Please add instrument config name after slash in file " + fname);
+						WriteLog(5, "Instrument group " + ipath + 
+							" is ambiguous. Please add instrument config name after slash in file " + fname);
 				}
 				// Load instrument
 				else {
 					for (int i = 0; i < icf.size(); ++i) {
-						if (sa[0] == icf[i].group && sa[1] == icf[i].name) {
+						if (!sa[0].CompareNoCase(icf[i].group) && !sa[1].CompareNoCase(icf[i].name)) {
 							instr_id = i;
 							break;
 						}
@@ -330,7 +334,7 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 					}
 				}
 				if (instr_id == -1) {
-					WriteLog(5, "Cannot find instrument " + st3);
+					WriteLog(5, "Cannot find instrument " + ipath);
 				}
 				else {
 					// Check if instrument was overridden
@@ -338,10 +342,12 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 						WriteLog(5, "After overriding instrument track or stage config, you cannot reconfigure whole instrument at line " + st + " in file " + fname);
 					}
 				}
-			}
-			// Load instrument overrides
-			if (instr_id > -1) {
-				LoadInstrumentLine(st2, st3, instr_id);
+				// Load instrument overrides
+				if (instr_id > -1) {
+					CString st4 = st2.Mid(st2.Find(":") + 1);
+					st4.Trim();
+					LoadInstrumentLine(st4, st3, instr_id);
+				}
 			}
 			// Load algorithm-specific variables if we are not loading saved results
 			if (!m_loading) {
