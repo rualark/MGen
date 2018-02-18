@@ -1391,7 +1391,7 @@ void CGMidi::LoadMidi(CString path)
 			int chan = mev->getChannel();
 			// Get track names
 			if (mev->isMetaMessage()) {
-				if (mev->getMetaType() == 0x03) {
+				if (mev->getMetaType() == 0x03 && track_name[v].IsEmpty()) {
 					track_name[v].Empty();
 					for (int x = 0; x < mev->size(); x++) {
 						track_name[v] += mev->data()[x];
