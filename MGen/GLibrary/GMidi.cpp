@@ -1409,8 +1409,7 @@ void CGMidi::LoadMidi(CString path)
 				// Get program changes for Sibelius files
 				int patch = mev->data()[1];
 				if (patch == 59) mute_active[chan] = 1;
-				else if (patch == 45) 
-					pizz_active[chan] = 1;
+				else if (patch == 45) pizz_active[chan] = 1;
 				else {
 					mute_active[chan] = 0;
 					marc_active[chan] = 0;
@@ -1616,7 +1615,7 @@ void CGMidi::LoadMidi(CString path)
 						if (mute_active[chan] && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
 						if (tasto_active[chan] && icf[instr[v]].tasto_import) SetBit(filter[pos + z][v], fTASTO);
 						// Load MuseScore articulations
-						if (midi_file_type == 112) {
+						if (midi_file_type == 12) {
 							int dchan = (chan - track_firstchan[track] + 16) % 16;
 							if (dchan == 1 && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
 							if (dchan == 1 && icf[instr[v]].pizz_import) {
@@ -1725,6 +1724,8 @@ void CGMidi::LoadMidi(CString path)
 
 void CGMidi::UnisonMute(int step1, int step2) {
 	for (int v = 0; v < v_cnt; v++) {
+		// Do not check if instrument does not support unison muting
+		if (!icf[instr[v]].unis_mute) continue;
 		for (int v2 = v+1; v2 < v_cnt; v2++) {
 			if (icf[instr[v]].group != icf[instr[v2]].group) continue;
 			if (icf[instr[v]].name != icf[instr[v2]].name) continue;
@@ -1737,6 +1738,10 @@ void CGMidi::UnisonMute(int step1, int step2) {
 				if (note[i][v] != note[i][v2]) continue;
 				if (len[i][v] != len[i][v2]) continue;
 				note_muted[i][v2] = 1;
+				// Increase dynamics of staying note
+				for (int x = i; x < i + len[i][v]; ++x) {
+					dyn[x][v] = min(127, dyn[x][v] * icf[instr[v]].unis_dyn_mul);
+				}
 				if (warning_unison_mute < MAX_WARN_UNISON_MUTE) {
 					++warning_unison_mute;
 					CString est;

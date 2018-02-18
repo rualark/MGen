@@ -12,3 +12,6 @@ Midi_file = midi\Music\Tchaikovsky\Nutcracker_Suite_II._March.mid
 
 MidiFileType = "MuseScore"
 Instruments = "Flute,Flute,Flute,Oboe,Clarinet,Clarinet,Bassoon,Tenor sax,Horn/Normal,Bass trombone/Normal,Cymbals,Violin/Arco,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass/Arco"
+
+Instrument = "Clarinet"
+unison_dyn_mul = 1.2

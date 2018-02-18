@@ -5,7 +5,7 @@ Woodwinds/Piccolo                     | Normal                | 0   | 14  | -   
 Woodwinds/Flute                       | Normal                | 15  | 15  | +   | fl   | Fleita, Flauto, Fl., Grande flute, Flute traversiere, Flote, Querflote, Flauta
 Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   | afl  |
 Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   | bfl  |
-Woodwinds/Clarinet                    | Normal                | 0   | 18  | -   | cl   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
+Woodwinds/Clarinet                    | Normal                | 14  | 18  | +   | cl   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
 Woodwinds/Bass Clarinet               | Normal                | 0   | 19  | -   | bcl  | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo
 Woodwinds/Oboe                        | Normal                | 0   | 20  | -   | ob   | Hautbois, Hoboy, French hoboy, Goboi
 Woodwinds/English Horn                | Normal                | 0   | 21  | -   | eh   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles
@@ -14,7 +14,7 @@ Woodwinds/Contrabassoon               | Normal                | 0   | 23  | -   
 Woodwinds/Soprano sax                 | Normal                | 0   | 41  | -   | ssx  | 
 Woodwinds/Alto sax                    | Normal                | 0   | 42  | -   | asx  |
 Woodwinds/Baritone sax                | Normal                | 0   | 43  | -   | bsx  |
-Woodwinds/Tenor sax                   | Normal                | 14  | 44  | +   | tsx  |
+Woodwinds/Tenor sax                   | Normal                | 14  | 44  | -   | tsx  |
 Brass/Trumpet                         | Normal                | 2   | 2   | +   | tpt  | trompette, Trompete, tromba, clarino, truba, trompeta
 Brass/Cornet                          | Normal                | 0   | 35  | -   | crt  | 
 Brass/Flugelhorn                      | Normal                | 0   | 36  | -   | fgh  | 

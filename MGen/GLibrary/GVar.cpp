@@ -248,12 +248,18 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 			CheckVar(&st2, &st3, "adapt_enable", &adapt_enable, 0, 1);
 			CheckVar(&st2, &st3, "autolegato", &auto_legato, 0, 1);
 			CheckVar(&st2, &st3, "autononlegato", &auto_nonlegato, 0, 1);
-			CheckVar(&st2, &st3, "unison_mute", &unison_mute, 0, 1);
 			CheckVar(&st2, &st3, "grownotes", &grow_notes);
 			CheckVar(&st2, &st3, "comment_adapt", &comment_adapt, 0, 1);
 			CheckVar(&st2, &st3, "mastervolume", &master_vol, 0, 100);
 			LoadVar(&st2, &st3, "instr_layout", &instr_layout);
 			LoadVar(&st2, &st3, "instruments", &m_config_insts);
+			if (st2 == "unison_mute") {
+				++parameter_found;
+				int val = atoi(st3);
+				for (int ii = 0; ii < icf.size(); ++ii) {
+					icf[ii].unis_mute = val;
+				}
+			}
 			// Load midi file type
 			if (st2 == "midifiletype") {
 				++parameter_found;
@@ -881,6 +887,8 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckRange(&st2, &st3, "vib_bell_dur", &icf[i].vib_bell_mindur, &icf[i].vib_bell_dur);
 	CheckRange(&st2, &st3, "dyn_range", &icf[i].dyn_range1, &icf[i].dyn_range2);
 	CheckRange(&st2, &st3, "vel_range", &icf[i].vel_range1, &icf[i].vel_range2);
+	CheckVar(&st2, &st3, "unison_mute", &icf[i].unis_mute, 0, 1);
+	CheckVar(&st2, &st3, "unison_dyn_mul", &icf[i].unis_dyn_mul, 0);
 	CheckVar(&st2, &st3, "vib_bell_freq", &icf[i].vib_bell_freq);
 	CheckVar(&st2, &st3, "vib_bell_exp", &icf[i].vib_bell_exp);
 	CheckVar(&st2, &st3, "vibf_bell_exp", &icf[i].vibf_bell_exp);

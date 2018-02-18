@@ -20,6 +20,8 @@ struct IConf {
 	CString fname; // config file name
 	CString group; // group name
 	CString iclass; // class name
+	int unis_mute = 1; // 0 - do not mute unisons; 1 - mute unisons in voices with same instruments
+	float unis_dyn_mul = 1.2; // Multiply dynamics of staying unison note by this value
 	int legato_disable = 0; // Set to 1 to disable legato adaptor
 	int default_instr = 0; // Link to default instrument id
 	int configs_count = 1; // Number of configs using this group (for default only)

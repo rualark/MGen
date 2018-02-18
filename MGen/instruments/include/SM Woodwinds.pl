@@ -105,3 +105,5 @@ trem_dynamics = 100 # Percent of tremolo dynamics compared to sustain notes
 trem_activate = "flutter" # Choose tremolo technique that can be activated from MIDI file
 trem_deactivate = "ord" # Choose tremolo technique that can be activated from MIDI file
 
+# Unison adaptor
+unison_dyn_mul = 1.3 # Multiply dynamics of staying unison note by this value
