@@ -2,15 +2,15 @@
 Keyboard/Piano                        | Hard                  | 0   | 0   | +   | pf   | Keyboard, Keys, Klavier, fortepiano
 Keyboard/Organ                        | Organ                 | 13  | 13  | +   | org  | Pipe organ
 Woodwinds/Piccolo                     | Normal                | 0   | 14  | -   | pic  | Pic., Piccolo flute, Flute piccolo, Petite flute, Pikkoloflote, kleine flote, ottavino, flauto piccolo, pikkolo, malaia fleita, fleita pikkolo, flautin, ottavino, ottavini
-Woodwinds/Flute                       | Normal                | 15  | 15  | +   | fl   | Fleita, Flauto, Fl., Grande flute, Flute traversiere, Flote, Querflote, Flauta
+Woodwinds/Flute                       | Normal                | 15  | 15  | +   | fl   | Fleita, Flauto, Fl., Grande flute, Flute traversiere, Flote, Querflote, Flauta, Flauti
 Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   | afl  |
 Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   | bfl  |
 Woodwinds/Clarinet                    | Normal                | 14  | 18  | +   | cl   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
-Woodwinds/Bass Clarinet               | Normal                | 0   | 19  | -   | bcl  | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo
+Woodwinds/Bass Clarinet               | Normal                | 0   | 19  | -   | bcl  | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo, Clarinetti bassi
 Woodwinds/Oboe                        | Normal                | 0   | 20  | -   | ob   | Hautbois, Hoboy, French hoboy, Goboi, oboi
 Woodwinds/English Horn                | Normal                | 0   | 21  | -   | eh   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles
 Woodwinds/Bassoon                     | Normal                | 0   | 22  | -   | bn   | Basson, Fagott, Fagotto, Fagot, Fagote
-Woodwinds/Contrabassoon               | Normal                | 0   | 23  | -   | cbn  | double bassoon, Kontrafagott, contrafagotto, contrebasson
+Woodwinds/Contrabassoon               | Normal                | 0   | 23  | -   | cbn  | double bassoon, Kontrafagott, contrafagotto, contrebasson, Controfagotti
 Woodwinds/Soprano sax                 | Normal                | 0   | 41  | -   | ssx  | 
 Woodwinds/Alto sax                    | Normal                | 0   | 42  | -   | asx  |
 Woodwinds/Baritone sax                | Normal                | 0   | 43  | -   | bsx  |
@@ -23,8 +23,8 @@ Brass/Piccolo trumpet                 | Normal                | 0   | 38  | -   
 Brass/Horn                            | Normal                | 3   | 3   | +   | hn   | French horn, Waldhorn, Ventilhorn, Trompa, Corno, Cor, Corni, Gorn, rog, rozhok, Valtorna, F. horn, corno frances, cuerno
 Brass/Trombone                        | Normal                | 4   | 4   | +   | tbn  | Posaune, trombono, trombon, 
 Brass/Valve trombone                  | Normal                | 4   | 39  | -   | vtbn |
-Brass/Bass trombone                   | Normal                | 4   | 40  | -   | btbn | tube
-Brass/Tuba                            | Normal                | 5   | 5   | +   | tba  |
+Brass/Bass trombone                   | Normal                | 4   | 40  | -   | btbn | 
+Brass/Tuba                            | Normal                | 5   | 5   | +   | tba  | tube
 Vocal/Soprano                         | Soprano               | 6   | 6   | +   | sop  | Sopran
 Vocal/Alto                            | Alto                  | 7   | 7   | +   | alt  | contralto, Alt, 
 Vocal/Tenor                           | Tenor                 | 8   | 8   | +   | ten  | taille, tenore
@@ -64,13 +64,13 @@ Unpitched percussion/Brake            | Low                   | 15  | 24  | -   
 Unpitched percussion/Pan              | Hits                  | 15  | 24  | -   | anv  | Anvil
 Unpitched percussion/Jazz drum set    | Map                   | 14  | 30  | -   | jdk  | Jazz drum kit, Jazz drums
 Strings/Violin                        | Arco                  | 1   | 1   | +   | vn   | Vln, Violon, Violine, Geige, violino, skripka, 
-Strings/Violins section               | Arco                  | 1   | 1   | +   | vns  | Violins, Vlns
+Strings/Violins section               | Arco                  | 1   | 1   | +   | vns  | Violins, Vlns, Violini
 Strings/Viola                         | Arco                  | 10  | 10  | +   | va   | Vla, Viole, Bratsche
 Strings/Violas section                | Arco                  | 10  | 10  | +   | vas  | Violas, Vlas
 Strings/Cello                         | Arco                  | 11  | 11  | +   | vc   | Violoncello, Vlle, Violoncelle, violoncelle, violonchel, violonchelo, violoncelo
-Strings/Cellos section                | Arco                  | 11  | 11  | +   | vcs  | Cellos, Violoncellos
-Strings/Contrabass                    | Arco                  | 12  | 12  | +   | db   | Contrebasse, Double bass, String bass, Kontrabass, contrabasso, kontrabas, contrabajo
-Strings/Contrabasses section          | Arco                  | 12  | 12  | +   | dbs  | Contrabasses
+Strings/Cellos section                | Arco                  | 11  | 11  | +   | vcs  | Cellos, Violoncellos, Violoncelli
+Strings/Contrabass                    | Arco                  | 12  | 12  | +   | db   | Contrebasse, Double bass, String bass, Kontrabass, contrabasso, kontrabas, contrabajo, Contrabbasso
+Strings/Contrabasses section          | Arco                  | 12  | 12  | +   | dbs  | Contrabasses, Contrabbassi
 Strings/Harp                          | Harp                  | 0   | 29  | -   | hp   | harpe, Harfe, arpa, arfa, 
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
