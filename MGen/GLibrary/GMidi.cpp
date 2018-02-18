@@ -1284,8 +1284,8 @@ void CGMidi::LoadMidi(CString path)
 	}
 
 	midifile.absoluteTicks();
-	int tpq = midifile.getTicksPerQuarterNote();
-	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul; // ticks per croche
+	in_ppq = midifile.getTicksPerQuarterNote();
+	int tpc = (float)in_ppq / (float)2 / (float)midifile_in_mul; // ticks per croche
 	vector<int> vlast_step(MAX_VOICE);
 	vector<int> vlast_pitch(MAX_VOICE);
 	vector<int> voverlap(MAX_VOICE);
@@ -1294,6 +1294,13 @@ void CGMidi::LoadMidi(CString path)
 	// Convert track instrument ids to voice instrument ids
 	vector<int> instr2 = instr;
 
+	// Autolegato with gaps, if grownotes was not set
+	if (midi_file_type == mftFIN && grow_notes == 0 && auto_legato == 1) {
+		grow_notes = in_ppq * 0.09;
+	}
+	if (midi_file_type == mftMUS && grow_notes == 0 && auto_legato == 1) {
+		grow_notes = in_ppq * 0.09;
+	}
 	midifile_loaded = 1;
 	int last_step = 0;
 	// If there is no tempo in file, set default
@@ -1615,7 +1622,7 @@ void CGMidi::LoadMidi(CString path)
 						if (mute_active[chan] && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
 						if (tasto_active[chan] && icf[instr[v]].tasto_import) SetBit(filter[pos + z][v], fTASTO);
 						// Load MuseScore articulations
-						if (midi_file_type == 12) {
+						if (midi_file_type == mftMUS) {
 							int dchan = (chan - track_firstchan[track] + 16) % 16;
 							if (dchan == 1 && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
 							if (dchan == 1 && icf[instr[v]].pizz_import) {
@@ -1831,9 +1838,9 @@ void CGMidi::LoadCantus(CString path)
 
 	midifile.absoluteTicks();
 
-	int tpq = midifile.getTicksPerQuarterNote();
+	in_ppq = midifile.getTicksPerQuarterNote();
 	// ticks per croche
-	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul;
+	int tpc = (float)in_ppq / (float)2 / (float)midifile_in_mul;
 
 	vector <float> tempo2;
 	long tempo_count = 0;
@@ -2036,9 +2043,9 @@ void CGMidi::LoadCP(CString path)
 
 	midifile.absoluteTicks();
 
-	int tpq = midifile.getTicksPerQuarterNote();
+	in_ppq = midifile.getTicksPerQuarterNote();
 	// ticks per croche
-	int tpc = (float)tpq / (float)2 / (float)midifile_in_mul;
+	int tpc = (float)in_ppq / (float)2 / (float)midifile_in_mul;
 
 	vector <float> tempo2;
 	long tempo_count = 0;

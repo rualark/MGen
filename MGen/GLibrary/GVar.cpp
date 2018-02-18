@@ -264,15 +264,15 @@ void CGVar::LoadConfigFile(CString fname, int load_includes) {
 			if (st2 == "midifiletype") {
 				++parameter_found;
 				if (st3 == "Sibelius") {
-					midi_file_type = 10;
+					midi_file_type = mftSIB;
 					grow_notes = 0;
 				}
 				if (st3 == "Finale") {
-					midi_file_type = 11;
+					midi_file_type = mftFIN;
 					grow_notes = 0;
 				}
 				if (st3 == "MuseScore") {
-					midi_file_type = 12;
+					midi_file_type = mftMUS;
 					grow_notes = 2;
 				}
 			}

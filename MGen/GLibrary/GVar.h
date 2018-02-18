@@ -12,6 +12,11 @@
 // Maximum allowed note length. Must be at least two times lower than 65 535 for poff to work
 #define MAX_LEN 16384 
 
+#define mftSIB 10
+#define mftFIN 11
+#define mftMUS 12
+
+
 class CGVar :
 	public CGLib
 {

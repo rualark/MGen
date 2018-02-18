@@ -303,6 +303,7 @@ public:
 	float midi_prepause = 0; // How long pause is needed before music
 	int midi_current_step = 0; // Current step processed by SendMIDI (for logs)
 	long long midi_start_time = 0; // Time when midi started to play
+	int in_ppq = 1; // PPQ in input midi file
 	int midi_last_run = 0; // If current SendMIDI is last
 	int midi_first_run = 0; // If current SendMIDI is first
 	int buf_underrun = 0; // Shows if current playback had an issue with buffer underrun
