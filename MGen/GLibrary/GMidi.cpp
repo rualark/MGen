@@ -1131,12 +1131,12 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 	for (int sta = 0; sta < stage_max; ++sta) {
 		smidifile[sta].setTicksPerQuarterNote(tpq);
 		smidifile[sta].addTracks(stracks_cnt[sta] + 1);
-		smidifile[sta].addTrackName(track, 0, st);
+		smidifile[sta].addTrackName(0, 0, st);
 		smidifile[sta].addTempo(track, 0, 60 / spq);
 	}
 	midifile.addTracks(tracks_cnt + 1);
 	midifile.setTicksPerQuarterNote(tpq);
-	midifile.addTrackName(track, 0, st);
+	midifile.addTrackName(0, 0, st);
 	midifile.addTempo(track, 0, 60 / spq);
 	track = 0;
 	for (int sta = 0; sta < stage_max; ++sta) {
@@ -1151,6 +1151,7 @@ void CGMidi::ExportAdaptedMidi(CString dir, CString fname) {
 			else st.Format("%s %d", icf[t_instr[tr]].group, sta);
 			string st2 = st;
 			midifile.addTrackName(track, 0, st2);
+			smidifile[sta].addTrackName(strack, 0, st2);
 			//midifile.addPatchChange(track, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
 			//smidifile[sta].addPatchChange(strack, 0, channel, 0); // 0=piano, 40=violin, 70=bassoon
 			for (int i = 0; i < midifile_buf[sta][tr].size(); i++) {
