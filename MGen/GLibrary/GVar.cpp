@@ -628,7 +628,7 @@ void CGVar::LoadInstrument(int i, CString fname)
 	long long time_stop = CGLib::time();
 	CString est;
 	est.Format("LoadInstruments loaded %d lines from " + fname + " in %d ms", x, time_stop - time_start);
-	WriteLog(0, est);
+	//WriteLog(0, est);
 }
 
 void CGVar::LoadCCName(CString *sName, CString *sValue, CString sSearch, int i) {

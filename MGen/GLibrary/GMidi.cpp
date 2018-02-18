@@ -1409,7 +1409,8 @@ void CGMidi::LoadMidi(CString path)
 				// Get program changes for Sibelius files
 				int patch = mev->data()[1];
 				if (patch == 59) mute_active[chan] = 1;
-				else if (patch == 45) pizz_active[chan] = 1;
+				else if (patch == 45) 
+					pizz_active[chan] = 1;
 				else {
 					mute_active[chan] = 0;
 					marc_active[chan] = 0;
@@ -1618,8 +1619,9 @@ void CGMidi::LoadMidi(CString path)
 						if (midi_file_type == 112) {
 							int dchan = (chan - track_firstchan[track] + 16) % 16;
 							if (dchan == 1 && icf[instr[v]].mute_import) SetBit(filter[pos + z][v], fMUTE);
-							if (dchan == 1 && icf[instr[v]].pizz_import) 
+							if (dchan == 1 && icf[instr[v]].pizz_import) {
 								artic[pos + z][v] = aPIZZ;
+							}
 							if (dchan == 2 && icf[instr[v]].trem_import) artic[pos + z][v] = aTREM;
 						}
 						// Lock mute
