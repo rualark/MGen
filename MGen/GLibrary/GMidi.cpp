@@ -1553,7 +1553,7 @@ void CGMidi::LoadMidi(CString path)
 							// Update previous note ending
 							if (pos) {
 								setime[pos - 1][v] = stime[pos] + delta;
-								smet[pos - 1][v] = mev->tick;
+								smet[pos - 1][v] = smet[pos - 1 + noff[pos - 1][v] - 1][v];
 							}
 							// Using stime/etime here, because this check is approximate
 							float ndur = etime[pos + nlen - 1] - stime[pos];
