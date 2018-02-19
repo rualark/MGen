@@ -895,6 +895,12 @@ void CGAdapt::Adapt(int step1, int step2) {
 			// Clear adaptation comment
 			adapt_comment[i][v].Empty();
 		}
+		// Scale dynamics 
+		for (int i = step1; i <= step2; i++) {
+			dyn[i][v] = max(0, min(127,
+				dyn[i][v] * (icf[ii].dyn_range2 - icf[ii].dyn_range1) / 100.0 +
+				icf[ii].dyn_range1 * 127.0 / 100.0));
+		}
 		// Set vel to dyn
 		for (int i = step1; i <= step2; i++) {
 			vel[i][v] = max(1, dyn[i][v]);
@@ -991,15 +997,6 @@ void CGAdapt::Adapt(int step1, int step2) {
 			i += noff[i][v];
 		} // for x
 		SetPauseDyn(v, step1, step2);
-		// Scale dynamics and velocity
-		for (int i = step1; i <= step2; i++) {
-			dyn[i][v] = max(0, min(127, 
-				dyn[i][v] * (icf[ii].dyn_range2 - icf[ii].dyn_range1) / 100.0 +
-				icf[ii].dyn_range1 * 127.0 / 100.0));
-			vel[i][v] = max(0, min(127, 127.0 / 100.0 * 
-				vel[i][v] * (icf[ii].vel_range2 - icf[ii].vel_range1) / 100.0 +
-				icf[ii].vel_range1 * 127.0 / 100.0));
-		}
 	} // for v
 	CSmoothRandom sr;
 	float tr;

@@ -20,8 +20,8 @@ InitCommand = "Overtones level: 90"
 InitCommand = "Stereo image width: 63"
 
 # Instrument parameters
-n_min = 21 # Lowest note
-n_max = 108 # Highest note
+n_min = "A0" # Lowest note
+n_max = "C8" # Highest note
 t_min = 10 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 100 # Maximum number of simultaneous voices

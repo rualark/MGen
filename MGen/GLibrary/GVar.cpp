@@ -892,7 +892,6 @@ void CGVar::LoadInstrumentLine(CString st2, CString st3, int i) {
 	CheckRange(&st2, &st3, "vibf_bell", &icf[i].vibf_bell1, &icf[i].vibf_bell2);
 	CheckRange(&st2, &st3, "vib_bell_dur", &icf[i].vib_bell_mindur, &icf[i].vib_bell_dur);
 	CheckRange(&st2, &st3, "dyn_range", &icf[i].dyn_range1, &icf[i].dyn_range2);
-	CheckRange(&st2, &st3, "vel_range", &icf[i].vel_range1, &icf[i].vel_range2);
 	CheckVar(&st2, &st3, "unison_mute", &icf[i].unis_mute, 0, 1);
 	CheckVar(&st2, &st3, "unison_dyn_mul", &icf[i].unis_dyn_mul, 0);
 	CheckVar(&st2, &st3, "vib_bell_freq", &icf[i].vib_bell_freq);

@@ -8,5 +8,4 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length from 1/
 AutoLegato = 1
 Instruments = "Piano,Violin"
 
-Instrument = "Violin/Arco"
-dyn_range = 80-100
+"Violin/Arco": dyn_range = 80-100
