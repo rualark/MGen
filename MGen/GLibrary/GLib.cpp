@@ -311,8 +311,8 @@ void CGLib::CheckRange(CString * sName, CString * sValue, char* sSearch, int * v
 			st.Trim();
 			st2.Trim();
 			// Load values
-			*vmin = atoi(st);
-			*vmax = atoi(st2);
+			*vmin = min(atoi(st), atoi(st2));
+			*vmax = max(atoi(st), atoi(st2));
 			CheckLimits(sName, vmin, lmin, lmax);
 			CheckLimits(sName, vmax, lmin, lmax);
 		}
