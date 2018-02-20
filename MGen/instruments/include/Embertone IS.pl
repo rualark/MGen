@@ -91,7 +91,7 @@ rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 # Tremolo adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
 trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
-trem_dynamics = 60 # Percent of tremolo dynamics compared to sustain notes
+trem_dyn_range = 0-60 # Percent of tremolo dynamics compared to sustain notes
 
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
