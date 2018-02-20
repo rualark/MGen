@@ -52,7 +52,8 @@ struct IConf {
 	int art_minint = 0;
 	int art_maxint = 0;
 	int trem_maxlen = 0;
-	int trem_dynamics = 100;
+	int trem_dyn_range1 = 0;
+	int trem_dyn_range2 = 100;
 	int trem_min_repeats = 3;
 	int trem_replace = -1;
 	int trem_transpose = 0;
@@ -116,10 +117,10 @@ struct IConf {
 	int stac_auto = 1;
 	int stac_ahead = -1;
 	int stac_maxlen = 0; // Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
-	int stac_dynamics = 100; // Percent of staccato dynamics compared to sustain notes
-	int stac_dyn_add = 0;
-	int pizz_dynamics = 100; // Percent of pizz dynamics compared to sustain notes
-	int pizz_dyn_add = 0;
+	int stac_dyn_range1 = 0;
+	int stac_dyn_range2 = 100;
+	int pizz_dyn_range1 = 0;
+	int pizz_dyn_range2 = 100;
 	int pizz_ahead = -1;  // Time in ms to stretch pizz notes back to cope with slow attack
 	int pizz_import = 1; // Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
 	int mute_import = 1; // Set to 0 to ignore mutes in source MIDI file and play as normal notes

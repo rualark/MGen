@@ -31,6 +31,7 @@ protected:
 	void AdaptRetriggerNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptAutoLegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
+	inline int GetDrange(int src, int range1, int range2);
 	void AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptPizzStep(int v, int x, int i, int ii, int ei, int pi, int pei);
 	void AdaptAheadStep(int v, int x, int i, int ii, int ei, int pi, int pei);

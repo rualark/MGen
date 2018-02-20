@@ -258,6 +258,10 @@ void CGAdapt::AdaptNonlegatoStep(int v, int x, int i, int ii, int ei, int pi, in
 	}
 }
 
+int CGAdapt::GetDrange(int src, int range1, int range2) {
+	return src * (range2 - range1) / 100.0 + range1 * 127.0 / 100.0;
+}
+
 void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	if (!icf[ii].stac_auto) return;
 	// Make short non-legato notes (on both sides) staccato
@@ -267,7 +271,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		if (icf[ii].stac_ahead > -1) dstime[pi][v] = -icf[ii].stac_ahead;
 		else dstime[pi][v] = -icf[ii].all_ahead;
 		artic[pi][v] = aSTAC;
-		vel[pi][v] = max(1, min(127, dyn[pi][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add));
+		vel[pi][v] = GetDrange(dyn[pi][v], icf[ii].stac_dyn_range1, icf[ii].stac_dyn_range2);
 		// Next note cannot be legato/slur
 		dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aNONLEGATO;
@@ -281,7 +285,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 		if (icf[ii].stac_ahead > -1) dstime[i][v] = -icf[ii].stac_ahead;
 		else dstime[i][v] = -icf[ii].all_ahead;
 		artic[i][v] = aSTAC;
-		vel[i][v] = max(1, min(127, dyn[i][v] * icf[ii].stac_dynamics / 100 + icf[ii].stac_dyn_add));
+		vel[i][v] = GetDrange(dyn[i][v], icf[ii].stac_dyn_range1, icf[ii].stac_dyn_range2);
 		if (comment_adapt) adapt_comment[i][v] += "Staccato. ";
 	}
 }
@@ -289,7 +293,7 @@ void CGAdapt::AdaptStaccatoStep(int v, int x, int i, int ii, int ei, int pi, int
 void CGAdapt::AdaptPizzStep(int v, int x, int i, int ii, int ei, int pi, int pei) {
 	// Change pizz dynamics
 	if (artic[i][v] == aPIZZ) {
-		vel[i][v] = max(1, min(127, dyn[i][v] * icf[ii].pizz_dynamics / 100 + icf[ii].pizz_dyn_add));
+		vel[i][v] = GetDrange(dyn[i][v], icf[ii].pizz_dyn_range1, icf[ii].pizz_dyn_range2);
 		if (icf[ii].pizz_ahead > -1) {
 			dstime[i][v] = -icf[ii].pizz_ahead;
 		}
@@ -654,7 +658,7 @@ void CGAdapt::ApplyTrem(int &started, int step1, int step2, int v, int ii) {
 		len[i][v] = step2 - step1 + 1;
 		coff[i][v] = i - step1;
 		if (!dyn[i][v]) dyn[i][v] = dyn[i - 1][v];
-		dyn[i][v] = (dyn[i][v] * icf[ii].trem_dynamics) / 100;
+		dyn[i][v] = GetDrange(dyn[i][v], icf[ii].trem_dyn_range1, icf[ii].trem_dyn_range2);
 		midi_ch[i][v] = midi_ch[step1][v];
 	}
 	int step22 = step2;

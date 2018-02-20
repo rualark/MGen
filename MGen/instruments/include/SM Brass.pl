@@ -110,6 +110,6 @@ rand_pos_max = 70-0 # Maximum shift in ms (start-end)
 # Flutter tongue adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
 trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
-trem_dynamics = 100 # Percent of tremolo dynamics compared to sustain notes
+trem_dyn_range = 0-100 # Percent of tremolo dynamics compared to sustain notes
 trem_activate = "flutter" # Choose tremolo technique that can be activated from MIDI file
 trem_deactivate = "ord" # Choose tremolo technique that can be activated from MIDI file

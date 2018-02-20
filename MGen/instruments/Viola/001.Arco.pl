@@ -102,8 +102,7 @@ nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automat
 # Staccato adaptor
 stac_auto = 1 # Set to 0 to disable automatic staccato articulations
 stac_ahead = -1 # Time in ms to stretch stac notes back to cope with slow attack. -1 falls back to all_ahead
-stac_dynamics = 40 # Percent of staccato dynamics compared to sustain notes
-stac_dyn_add = 15 # Add minimum dynamics after multiplying
+stac_dyn_range = 15-55 # Percent of staccato dynamics compared to sustain notes
 spic_import = 1 # Allow to import spiccato technique from midi file into staccato articulation
 stac_import = 1 # Set to 0 to ignore staccato in source MIDI file and play as normal notes. Set to 1 to import as staccato
 marc_import = 0 # Set to 0 to ignore marcato in source MIDI file and play as normal notes. Set to 1 to import as staccato
@@ -115,8 +114,7 @@ bow_lock = 0 # 0 - do not lock bow, 1 - always sul tasto, 2 - always sul pontice
 # Pizzicato adaptor
 pizz_import = 1 # Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
 pizz_ahead = -1 # Time in ms to stretch pizz notes back to cope with slow attack. -1 falls back to all_ahead
-pizz_dynamics = 60 # Percent of staccato dynamics compared to sustain notes
-pizz_dyn_add = 0 # Add minimum dynamics after multiplying
+pizz_dyn_range = 0-60 # Percent of pizz dynamics compared to sustain notes
 
 # Tremolo adaptor
 trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
