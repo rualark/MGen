@@ -183,8 +183,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;395;100;Melody;Range;sp3,5 Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;9;;;Stagnation;;;;;;;;;
 1;396;0;Melody;Range;sp3,5 Constrained local range;9 notes <4th;0;;X consecutive notes have total range less than Y;9;;;Stagnation;;;;;;;;;
 1;397;0;Melody;Range;sp3,5 Constrained local range;19 notes <m6;0;;X consecutive notes have total range less than Y;9;;;Stagnation;;;;;;;;;
-1;15;0;Melody;Range;No melody development;12 notes <15;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;99;2;;1;;1;;;
-1;16;0;Melody;Range;No melody development;15 notes <19;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;46;1;;1;;;;;
+1;15;0;Melody;Range;No melody development;12 notes <12;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;99;2;;1;;1;;;
+1;16;0;Melody;Range;No melody development;15 notes <15;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;46;1;;1;;;;;
 1;17;20;Cantus;Harmony;Repeating letters in a row;>3;0;;;1;;;;40;1;;1;;;;;17,20,23,48,57,77,92,99
 1;20;20;Cantus;Harmony;Missing letters in a row;>4;0;;;1;;;;118;1;;1;;;;;17,20,23,48,57,77,92,99
 1;194;0;Cantus;Harmony;Accented bad progression;leap >4th;-1;Only for cantus;;1;;;;0;0;;;;;;;
@@ -284,7 +284,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;219;60;Counterpoint;Counterpoint;Suspension resolution;up;0;;Suspension resolution up except for leading note (leading note stepwize resolution up allowed);12;1;;sus;25;5;1;;;;;;
 1;220;100;Counterpoint;Counterpoint;Suspension resolution;unresolved;0;;;12;1;;sus;15;11;1;;;;;;
 1;221;100;Counterpoint;Counterpoint;Suspension resolution;leap;0;;;12;1;;sus;15;7;1;;;;;;
-1;291;100;Counterpoint;Counterpoint;Suspension resolution;short;0;;If resolution note is shorter than 1/4;12;;;sus;4;2;1;;;;;;
+1;291;0;Counterpoint;Counterpoint;Suspension resolution;short;0;;If resolution note is shorter than 1/4;12;;;sus;4;2;1;;;;;;
 1;286;60;Counterpoint;Counterpoint;Suspension resolution;shift;0;;Suspension is not resolved at the middle of next measure;12;;;sus;15;14;1;;;;;;
 1;296;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap down;1;;Leap down from consonance insertion to resolution;12;;;sus;13;7;1;;;;;;
 1;136;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap up;1;;Leap up from consonance insertion to resolution;12;;;sus;7;2;1;;;;;;
