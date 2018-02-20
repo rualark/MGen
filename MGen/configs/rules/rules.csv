@@ -168,7 +168,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;364;0;Melody;sp2-5 Tritone;Compound tritone accented;on climax;0;Tritone within measure with intermediate notes, last note is long or repeated;;13;;;tri;1;1;;;;;;;
 1;67;0;Melody;Range;Skipped notes;1;-1;;;;;;;176;44;1;;;;;;
 1;68;0;Melody;Range;Skipped notes;>1;-1;;;;;;;19;10;1;;;;;;
-1;69;100;Melody;Range;Skipped notes;>1 joined;0;;;;;;;70;24;1;;;;;;
+1;69;0;Melody;Range;Skipped notes;>1 joined;0;;;;;;;70;24;1;;;;;;
 1;38;0;Melody;Range;Range;voice <m6;0;;Range below m6 is acceptable for cantus up to 10 notes;;;;;167;3;;;;;;;
 1;304;70;Melody;Range;Range;cp voice >M12;0;;;;;;;4;1;;;;;;;
 1;37;70;Melody;Range;Range;cf >M9;0;;;;;;;28;1;;;;;;;
@@ -222,7 +222,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;349;60;Counterpoint;Minor;VII near VI#;4 notes before;0;;X notes before VI#;8;;;VII near VI#;44;1;;;;;;;
 1;350;60;Counterpoint;Minor;VII near VI#;4 notes after;0;;X notes after VI#;8;;;VII near VI#;35;0;;;;;;;
 1;199;60;Counterpoint;Minor;VI# without VII#;within 2 notes;0;;;;;;;56;2;;;;;;;
-1;201;60;Counterpoint;Minor;Leap to VI#;>4th;0;;;5;;;;7;2;;;;;;;
+1;201;0;Counterpoint;Minor;Leap to VI#;>4th;0;;;5;;;;7;2;;;;;;;
 1;152;30;Counterpoint;Minor;Altered neighbour;VI<->VI#;0;;Chromatic;8;;;!srn!;1;1;1;;;;;;
 1;153;30;Counterpoint;Minor;Altered neighbour;VII<->VII#;0;;Chromatic;8;;;!srn!;3;2;1;;;;;;
 1;154;30;Counterpoint;Minor;Altered neighbour;VI<->VII#;0;;Augmented / diminished;8;;;!srn!;15;3;1;;;;;;
