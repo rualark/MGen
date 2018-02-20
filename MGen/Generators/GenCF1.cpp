@@ -177,6 +177,7 @@ void CGenCF1::LoadRules(CString fname)
 			rule = ast[5];
 			subrule = ast[6];
 			flag = atoi(ast[7]);
+			if (sev < prohibit_min_severity && flag == 0) flag = 1;
 			// Find rule id
 			if (rid >= max_flags) {
 				max_flags = rid + 1;
@@ -679,6 +680,7 @@ void CGenCF1::LoadConfigLine(CString* sN, CString* sV, int idata, float fdata) {
 	CheckVar(sN, sV, "emulate_sas", &emulate_sas, 0, 1);
 	CheckVar(sN, sV, "max_correct_ms", &max_correct_ms, 0);
 	CheckVar(sN, sV, "animate", &animate, 0);
+	CheckVar(sN, sV, "prohibit_min_severity", &prohibit_min_severity, 0, 101);
 	CheckVar(sN, sV, "animate_delay", &animate_delay, 0);
 	CheckVar(sN, sV, "cantus_high", &cantus_high, 0, 1);
 	CheckVar(sN, sV, "rpenalty_accepted", &rpenalty_accepted, 0);

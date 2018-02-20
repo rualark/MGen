@@ -763,6 +763,7 @@ protected:
 	int cambiata_max_leap4 = 5; // Maximum allowed leap from fourth note in cambiata
 	int show_correct_hatch = 1; // Set to 1 to mark corrected notes with hatch
 	int show_min_severity = 0; // Minimum severity to highlight note
+	int prohibit_min_severity = 0; // Minimum severity to prohibit (below are marked as allowed)
 	int harm_notation = 1; // 1 - wordwide harmonic notation(I, II...), 2 - Sposobin harmonic notation(T, SII...)
 	int show_hatch = 1; // 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
 	int npm = 1; // Number of notes per measure
