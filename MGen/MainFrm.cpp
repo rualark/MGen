@@ -990,7 +990,7 @@ void CMainFrame::LoadSettings()
 			if (st2 == "playback_speed") {
 				CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_PSPEED));
 				pRibbonSpin->SetEditText(st3);
-				m_pspeed = atoi(st3);
+				if (!CGLib::m_testing) m_pspeed = atoi(st3);
 			}
 			if (st2 == "horizontal_zoom") {
 				CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_ZOOM));
