@@ -631,6 +631,26 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 				}
 			}
+			// Show dynamics
+			if (mf->show_vel) {
+				float scale = (ClientRect.bottom - ClientRect.top - Y_HEADER - Y_FOOTER) / 127.0 / 4.0;
+				for (int v = 0; v < pGen->v_cnt; v++) {
+					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+					Pen pen(ncolor, 1);
+					//pen.SetDashStyle(graph_dash[n]);
+					for (int i = step1t; i < step2t; i++)
+						if (i > 0 && (pGen->dyn[i][v] > -1 && pGen->dyn[i - 1][v] > -1)) {
+							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
+								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->dyn[i][v] * scale),
+								X_FIELD + (i - 1) * nwidth + nwidth / 2,
+								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->dyn[i - 1][v] * scale));
+							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
+								(int)(y_start - scale * 127 * (3 - v % 4)),
+								X_FIELD + (i - 1) * nwidth + nwidth / 2,
+								(int)(y_start - scale * 127 * (3 - v % 4)));
+						}
+				}
+			}
 			// Show tempo
 			if (mf->show_tempo) {
 				for (int i = step1t; i < step2t; i++) if (i > 0) {
