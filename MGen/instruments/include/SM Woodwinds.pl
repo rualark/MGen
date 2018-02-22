@@ -25,7 +25,7 @@ CC_Name = 31: "Microtuning on"
 
 # Controls (need to map manually)
 CC_Name = 12: "Reverb mix"
-CC_Name = 13: "Legato mode" # 0 - Gliss; 1 - Expr
+CC_Name = 13: "Legato mode" # 0 - Gliss; 127 - Expr
 CC_Name = 7: "Volume"
 CC_Name = 10: "Pan"
 
