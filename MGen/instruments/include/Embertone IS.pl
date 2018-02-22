@@ -42,9 +42,9 @@ Technique = "tutti; Ensemble on" # Tutti mode in Viola requires gliss_freq=0 due
 InitCommand = "Reverb level: 0" # default: enabled
 
 # Initial setup (can change)
-InitCommand = "Transition attenuation: 0"
-InitCommand = "Bow noise reduction: 0"
-InitCommand = "Round-robin on"
+Transition attenuation = 0
+Bow noise reduction = 0
+Round-robin on = 127
 InitTechnique = "solo"
 Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)

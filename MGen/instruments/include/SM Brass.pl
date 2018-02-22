@@ -35,13 +35,13 @@ Technique = "flutter; Flutter tongue: 100"
 Technique = "ord; Flutter tongue: 0"
 
 # Initial setup
-InitCommand = "Early reflections: 0"
-InitCommand = "Predelay: 0"
-InitCommand = "Distance: 0"
-InitCommand = "Harm. Group1 gain: 64"
-InitCommand = "Harm. Group2 gain: 64"
-InitCommand = "Harm. Group3 gain: 64"
-InitCommand = "Harm. Form. shift: 64"
+Early reflections = 0
+Predelay = 0
+Distance = 0
+Harm. Group1 gain = 64
+Harm. Group2 gain = 64
+Harm. Group3 gain = 64
+Harm. Form. shift = 64
 InitTechnique = "senza sord"
 
 # Automation parameters

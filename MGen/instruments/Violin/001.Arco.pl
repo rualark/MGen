@@ -69,15 +69,15 @@ InitCommand = "Retrigger on" # default for Violin: 0
 InitCommand = "Legato"
 
 # Initial setup (can change)
-InitCommand = "Ensemble intonation: 20" # default 13
-InitCommand = "Ensemble L: 40" # default 10
-InitCommand = "Ensemble R: 87" # default 117
-InitCommand = "Ensemble tightness: 18" # default 18, alternative 65
-InitCommand = "Ensemble randomize: 43" # default 43, alternative 100
-InitCommand = "Ensemble combine transitions" # default 0
-InitCommand = "Solo intonation: 2"
-InitCommand = "Rebow on" # default for Violin: 0
-InitCommand = "Release samples on"
+Ensemble intonation = 20 # default 13
+Ensemble L = 40 # default 10
+Ensemble R = 87 # default 117
+Ensemble tightness = 18 # default 18, alternative 65
+Ensemble randomize = 43 # default 43, alternative 100
+Ensemble combine transitions = 127 # default 0
+Solo intonation = 2
+Rebow on = 127 # default for Violin: 0
+Release samples on = 127
 InitTechnique = "ord"
 
 # Retrigger adaptor

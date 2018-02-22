@@ -34,9 +34,12 @@ Technique = "flutter; Flutter tongue: 100"
 Technique = "ord; Flutter tongue: 0"
 
 # Initial setup
-InitCommand = "Flutter tongue: 0"
-InitCommand = "Reverb mix: 0"
-InitCommand = "Legato mode: 127"
+Flutter tongue = 0
+Harmonic structure = 64
+Breath noise = 64
+Key noise = 50
+Reverb mix = 0
+Legato mode = 127
 
 # Automation parameters
 CC_dynamics = 11
