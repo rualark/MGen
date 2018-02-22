@@ -30,7 +30,7 @@ KswGroup = "B1: Portamento"
 KswGroup = "C2: Sustain", "D2: Staccato", "D#2: Pizzicato", "E2: Tremolo" # Style
 KswGroup = "F2: Con sordino", "F#2: Senza sordino"
 KswGroup = "G2: Normal", "G#2: Sul ponticello", "A2: Sul tasto" # Bow position
-KswGroup = "A#2: Legato", "B2: Poly"
+KswGroup = "A#2: Legato", "B2: Polyphonic"
 
 # Seems that vibrato styles cannot be selected with CC or keyswitch (bug?)
 CC_Name = 2:  "Vibrato style"

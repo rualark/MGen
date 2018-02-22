@@ -26,7 +26,7 @@ KswGroup = "E2: Ghost note"
 KswGroup = "F2: Color on", "F#2: Color off"
 KswGroup = "C3: Con sordino", "C#3: Senza sordino"
 KswGroup = "D3: Normal", "D#3: Sul ponticello", "E3: Sul tasto" # Bow position
-KswGroup = "F3: Legato", "F#3: Poly"
+KswGroup = "F3: Legato", "F#3: Polyphonic"
 KswGroup = "G2: Sustain", "A2: Staccato", "A#2: Pizzicato", "B2: Tremolo" # Style
 
 # Seems that vibrato styles cannot be selected with CC or keyswitch (bug?)

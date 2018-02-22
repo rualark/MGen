@@ -25,7 +25,7 @@ CC_Name = 80: "Portamento speed" # Used only when enabled Portamento CC mode on.
 KswGroup = "C#1: Slur while held"
 KswGroup = "B1: Ghost note"
 KswGroup = "F1: Normal", "F#1: Con sordino", "G1: Sul ponticello", "G#1: Sul ponticello con sordino"
-KswGroup = "A1: Legato", "A#1: Poly"
+KswGroup = "A1: Legato", "A#1: Polyphonic"
 KswGroup = "C1: Sustain", "D1: Staccato", "D#1: Pizzicato", "E1: Tremolo" # Style
 
 # Seems that vibrato styles cannot be selected with CC or keyswitch (bug?)

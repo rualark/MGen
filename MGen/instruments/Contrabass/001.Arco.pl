@@ -33,7 +33,7 @@ KswGroup = "E0: Portamento"
 KswGroup = "G#0: Sustain", "G0: Staccato", "F#0: Pizzicato", "F0: Tremolo" # Style
 KswGroup = "D0: Con sordino", "D#0: Senza sordino"
 KswGroup = "B-1: Normal", "C0: Sul ponticello", "C#0: Harmonics" # Bow position
-KswGroup = "A#0: Legato", "B0: Poly"
+KswGroup = "A#0: Legato", "B0: Polyphonic"
 
 # Techniques mapping to commands
 Technique = "con sord; Con sordino"
