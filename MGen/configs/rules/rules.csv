@@ -209,10 +209,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;57;0;Cantus;Harmony;Harmonic penalty;2;-1;;;1;;;;517;1;;;;;;;17,20,23,48,57,77,92,99
 1;92;0;Cantus;Harmony;Harmonic penalty;2x2;-1;;;1;;;;102;1;;;;;;;17,20,23,48,57,77,92,99
 1;23;20;Cantus;Harmony;Harmonic penalty;3x2;0;;;1;;;;19;1;;;;;;;17,20,23,48,57,77,92,99
-1;418;30;Cantus;Harmony;Harmonic repeat;inversion;0;;;1;;;;151;4;;;;;;;17,20,23,48,57,77,92,99
-1;419;70;Cantus;Harmony;Harmonic repeat;2 x inversion;0;;;1;;;;5;1;1;;;;;;
-1;99;30;Cantus;Harmony;Harmonic repeat;full;0;;;1;;;;151;4;;;;;;;17,20,23,48,57,77,92,99
-1;321;70;Cantus;Harmony;Harmonic repeat;2 x full;0;;;1;;;;5;1;1;;;;;;
+1;418;0;Cantus;Harmony;Harmonic repeat;inversion;0;;Chord is repeated, but inversion is changed;;;;;;;;;;;;;
+1;99;30;Cantus;Harmony;Harmonic repeat;full;0;;Chord is repeated with same inversion;1;;;;151;4;;;;;;;17,20,23,48,57,77,92,99
+1;321;70;Cantus;Harmony;Harmonic repeat;2 x repeats;0;;;1;;;;5;1;1;;;;;;
 1;49;0;Cantus;Border;First note not tonic;V high;1;CF;;;;;;5;1;1;;;;;;
 1;90;60;Cantus;Border;First note not tonic;III high;0;CF;;;;;;3;1;1;;;;;;
 1;33;100;Cantus;Border;First note not tonic;Other;0;CF;;;;;;50;5;1;;;;;;
