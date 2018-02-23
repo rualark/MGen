@@ -1,8 +1,8 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 112 # Id of the currently selected algorithm
-Config = test-harm # Name of configuration file for selected algorithm
+Algorithm = 2001 # Id of the currently selected algorithm
+Config = autoconf-Tico Tico_inames # Name of configuration file for selected algorithm
 MIDI_OUT = loopMIDI Port 1 # Name of MIDI device used for playing notes
 Horizontal_zoom = 100 # Zoom of the piano roll. Can be from 1 to 2000
 playback_speed = 100 # Playback speed in percent
