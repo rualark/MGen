@@ -65,6 +65,8 @@ CC_vib = 1 # CC number for vibrato intensity
 CC_vibf = 14 # CC number for vibrato speed
 
 # Bell adaptor
+bell_maxdur = 1000-500
+bell_dur = 200-500
 bell_mindur = 700-200 # Minimum note duration (ms) that can have a bell
 # Setting bell_mul = 0.2-0.2 creates slow smooth nice bells for slow music
 bell_mul = 0.8-0.2 # Multiply dynamics by this parameter at bell start-end
