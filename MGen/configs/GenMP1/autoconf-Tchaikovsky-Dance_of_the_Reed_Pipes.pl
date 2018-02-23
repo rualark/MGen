@@ -12,7 +12,5 @@ MidiFileType = MuseScore
 # Created at 2018-02-10 14:20:16
 Midi_file = midi\Music\Tchaikovsky\Tchaikovsky-Dance_of_the_Reed_Pipes.mid
 
-Instruments = "Flute/Normal,Flute/Normal,Flute/Normal,Oboe/Normal,Oboe/Normal,English Horn/Normal,Clarinet/Normal,Clarinet/Normal,Clarinet/Normal,Bassoon/Normal,Bassoon/Normal,Horn/Normal,Horn/Normal,Horn/Normal,Horn/Normal,Trumpet/Normal,Trombone/Normal,Trombone/Normal,Tuba/Normal,Timpani/Long hits,Cymbals/Long hit,Violin/Arco,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass"
-
 Instruments = "Flute/Normal,Flute/Normal,Flute/Normal,Oboe/Normal,Oboe/Normal,English Horn/Normal,Clarinet/Normal,Clarinet/Normal,Clarinet/Normal,Bassoon/Normal,Bassoon/Normal,Horn/Normal,Horn/Normal,Horn/Normal,Horn/Normal,Trumpet/Normal,Trombone/Normal,Trombone/Normal,Tuba/Normal,Timpani/Long hits,Cymbals/Long hit,Violins section/Arco,Violins section/Arco,Violas section/Arco,Cellos section/Arco,Contrabasses section/Arco"
 
