@@ -120,14 +120,13 @@ pizz_dyn_range = 0-60 # Percent of pizz dynamics compared to sustain notes
 trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
 
 # Transition types
-vel_harsh = 101 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 40 # Velocity equal or above this value triggers immediate sustain
-vel_normal = 20 # Velocity equal or above this value triggers normal sustain
-vel_gliss = 30 # Velocity below this value triggers glissando transition
-vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
+harsh_acc_vel = 101 # Velocity equal or above this value triggers harsh sustain
+slow_acc_vel = 40 # Velocity equal or above this value triggers normal sustain
+gliss_leg_vel = 30 # Velocity below this value triggers glissando transition
+slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
 
 # In Viola, harsh sustains are too harsh, so I disable them
-harsh_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_acc_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition

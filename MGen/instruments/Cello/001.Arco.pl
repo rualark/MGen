@@ -111,12 +111,11 @@ pizz_ahead = 54 # Time in ms to stretch pizz notes back to cope with slow attack
 pizz_dyn_range = 0-60 # Percent of pizz dynamics compared to sustain notes
 
 # Transition types
-vel_harsh = 90 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 60 # Velocity equal or above this value triggers immediate sustain
-vel_normal = 50 # Velocity equal or above this value triggers normal sustain
-vel_gliss = 8 # Velocity below this value triggers glissando transition
-vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
-harsh_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_acc_vel = 90 # Velocity equal or above this value triggers harsh sustain
+slow_acc_vel = 60 # Velocity equal or above this value triggers normal sustain
+gliss_leg_vel = 8 # Velocity below this value triggers glissando transition
+slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
+harsh_acc_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition

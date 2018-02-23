@@ -11,9 +11,8 @@ t_max = 8000 # Longest note without pauses in ms (0 = no limit). Decreases with 
 #leap_t_min = 100 # Shortest note after leap in ms
 
 # Transition types
-vel_harsh = 50 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 1 # Velocity equal or above this value triggers immediate sustain
-vel_normal = 1 # Velocity equal or above this value triggers normal sustain
-vel_normal_minlen = 400 # Minimum note length (ms) that can have a normal or lower sustain
-harsh_freq = 10 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_acc_vel = 50 # Velocity equal or above this value triggers harsh sustain
+harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
+slow_acc_vel = 48 # Velocity equal or above this value triggers normal sustain
+slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
 

@@ -114,16 +114,15 @@ pizz_ahead = 54 # Time in ms to stretch pizz notes back to cope with slow attack
 pizz_dyn_range = 0-60 # Percent of pizz dynamics compared to sustain notes
 
 # Transition types
-vel_harsh = 65 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 33 # Velocity equal or above this value triggers immediate sustain
-vel_normal = 10 # Velocity equal or above this value triggers normal sustain
-vel_gliss = 23 # Velocity below this value triggers glissando transition
-vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
+harsh_acc_vel = 65 # Velocity equal or above this value triggers harsh sustain
+slow_acc_vel = 33 # Velocity equal or above this value triggers normal sustain
+slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
 
 # In Viola, harsh sustains are too harsh, so I disable them
-harsh_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
+gliss_leg_vel = 23 # Velocity below this value triggers glissando transition
 gliss_minlen = 1500 # Minimum note length that can have a gliss transition
 gliss_freq = 0 # Frequency of gliss articulation in percent
 

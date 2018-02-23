@@ -121,15 +121,14 @@ pizz_dyn_range = 0-60 # Percent of pizz dynamics compared to sustain notes
 # Tremolo adaptor
 trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
 
-# Transition types
-vel_harsh = 118 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 84 # Velocity equal or above this value triggers immediate sustain
-vel_normal = 50 # Velocity equal or above this value triggers normal sustain
-vel_gliss = 18 # Velocity below this value triggers glissando transition
-vel_normal_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
-harsh_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
+# Accent velocity
+acc_range = 0-127 # Map dynamics to specified accent range
+slow_acc_vel = 50 # Velocity below this value triggers slow attack sustain
+slow_acc_minlen = 800 # Minimum note length (ms) that can have a slow attack sustain
+harsh_acc_vel = 118 # Velocity equal or above this value triggers harsh attack sustain
+harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
+gliss_leg_vel = 18 # Velocity below this value triggers glissando transition
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition
 gliss_freq = 0 # Frequency of gliss articulation in percent
-

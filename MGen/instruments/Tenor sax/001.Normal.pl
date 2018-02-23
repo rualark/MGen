@@ -14,8 +14,7 @@ Breath noise = 64
 Key noise = 64
 
 # Transition types
-vel_harsh = 50 # Velocity equal or above this value triggers harsh sustain
-vel_immediate = 46 # Velocity equal or above this value triggers immediate sustain
-vel_normal = 40 # Velocity equal or above this value triggers normal sustain
-vel_normal_minlen = 1000 # Minimum note length (ms) that can have a normal or lower sustain
-harsh_freq = 10 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_acc_vel = 50 # Velocity equal or above this value triggers harsh sustain
+harsh_acc_freq = 10 # Frequency of harsh sustain articulation in percent of all possible situations
+slow_acc_vel = 46 # Velocity equal or above this value triggers normal sustain
+slow_acc_minlen = 1000 # Minimum note length (ms) that can have a normal or lower sustain
