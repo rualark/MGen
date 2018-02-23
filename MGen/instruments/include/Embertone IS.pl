@@ -55,6 +55,7 @@ CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 
 # Nonlegato adaptor
+acc_range = 0-127 # Map dynamics to specified accent range
 nonlegato_mingap = 13 # Minimum distance between note ending and next note start to sound nonlegato
 
 # Staccato adaptor

@@ -62,6 +62,7 @@ gliss_mindur = 30 # Minimum legato duration to use gliss
 splitpo_pent_minint = 3 # Minimum allowed interval in semitones for split portamento pentatonic
 
 # Nonlegato adaptor
+acc_range = 0-127 # Map dynamics to specified accent range
 all_ahead = 25 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 nonlegato_freq = 13 # Frequency (in percent) when legato can be replaced with non-legato by moving note end to the left
 nonlegato_minlen = 200 # Minimum note length (in ms) allowed to convert to nonlegato
