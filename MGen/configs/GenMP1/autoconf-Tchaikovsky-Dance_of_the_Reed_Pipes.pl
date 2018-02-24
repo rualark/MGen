@@ -14,3 +14,6 @@ Midi_file = midi\Music\Tchaikovsky\Tchaikovsky-Dance_of_the_Reed_Pipes.mid
 
 Instruments = "Flute/Normal,Flute/Normal,Flute/Normal,Oboe/Normal,Oboe/Normal,English Horn/Normal,Clarinet/Normal,Clarinet/Normal,Clarinet/Normal,Bassoon/Normal,Bassoon/Normal,Horn/Normal,Horn/Normal,Horn/Normal,Horn/Normal,Trumpet/Normal,Trombone/Normal,Trombone/Normal,Tuba/Normal,Timpani/Long hits,Cymbals/Long hit,Violins section/Arco,Violins section/Arco,Violas section/Arco,Cellos section/Arco,Contrabasses section/Arco"
 
+AutoLegato = 0 # Enables auto legato for all instruments, converting touching notes into legato transitions (can be overridden for particular instruments). Usually can be used if you do not use slurs in your score and want all adjacent notes to be legato
+AutoNonLegato = 0 # Enables automatic random replacement of legato transitions with nonlegato (frequency is controlled by nonlegato_freq in each instrument). Usually is used with AutoLegato.
+unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same instruments

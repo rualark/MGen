@@ -73,7 +73,7 @@ nonlegato_mingap = 7 # Minimum distance between note ending and next note start 
 retrigger_freq = 50 # Percent to use non-legato when repeating notes
 retrigger_min_len = 600 # Minimum next note length in ms to use retrigger
 retrigger_rand_max = 300 # Maximum length in ms to move note end to the left in case of nonlegato retrigger
-retrigger_rand_end = 50 # Maximum percent of note length to move note end to the left in case of nonlegato retrigger
+retrigger_rand_end = 70 # Maximum percent of note length to move note end to the left in case of nonlegato retrigger
 
 # Bell adaptor
 bell_mindur = 800-300 # Minimum note duration (ms) that can have a bell
