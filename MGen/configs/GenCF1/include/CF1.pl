@@ -58,6 +58,7 @@ show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show ch
 show_hatch = 0 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
 show_min_severity = 0 # Minimum severity to highlight note
 harm_notation = 1 # Harmonic notation (see configs/harm/harm-notation.csv for details)
+tempo_bell = 1.3 # Increase tempo in the middle of cantus / counterpoint. 0 - preserve source tempo
 
 # Lilypond parameters
 ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note
