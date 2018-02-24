@@ -4,10 +4,12 @@
 # Default configs are not accessible from MGen GUI, you will need to change it outside of the program
 
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
-midifile_in_mul = 4 # How much you want to decrease minimum step length
+midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
-# Created at 2018-01-07 20:11:07
-Midi_file = midi\Music\shegolev\quartet\02 - 03 - Andante + Scherzo.mid
+# Created at 2018-02-24 16:54:26
+Midi_file = midi\Music\test\test-midi-send-bug.mid
 
-Instruments = Violin,Viola,Cello,Contrabass
+Instruments = "Clarinet,Piano/Soft,Piano,Piano"
+
+"Piano/Soft": Volume = 80
