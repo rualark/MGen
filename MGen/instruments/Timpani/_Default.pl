@@ -18,5 +18,5 @@ CC_steps = 1 # Number of CC steps in one note step (please use only odd numbers)
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
 trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
 trem_dyn_range = 0-100 # Percent of tremolo dynamics compared to sustain notes
-trem_chan = 1 # Send tremolo notes to separate channel specified
+trem_chan = 2 # Send tremolo notes to separate channel specified
 

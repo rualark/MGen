@@ -1,77 +1,77 @@
 #GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT | Abbr | Synonyms                         
-Keyboard/Piano                        | Hard                  | 0   | 0   | +   | pf   | Keyboard, Keys, Klavier, fortepiano
-Keyboard/Organ                        | Organ                 | 13  | 13  | +   | org  | Pipe organ
-Woodwinds/Piccolo                     | Normal                | 0   | 14  | -   | pic  | Pic., Piccolo flute, Flute piccolo, Petite flute, Pikkoloflote, kleine flote, ottavino, flauto piccolo, pikkolo, malaia fleita, fleita pikkolo, flautin, ottavino, ottavini
-Woodwinds/Flute                       | Normal                | 15  | 15  | +   | fl   | Fleita, Flauto, Fl., Grande flute, Flute traversiere, Flote, Querflote, Flauta, Flauti
-Woodwinds/Alto Flute                  | Normal                | 0   | 16  | -   | afl  |
-Woodwinds/Bass Flute                  | Normal                | 0   | 17  | -   | bfl  |
-Woodwinds/Clarinet                    | Normal                | 14  | 18  | +   | cl   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
-Woodwinds/Bass Clarinet               | Normal                | 0   | 19  | -   | bcl  | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo, Clarinetti bassi
-Woodwinds/Oboe                        | Normal                | 0   | 20  | -   | ob   | Hautbois, Hoboy, French hoboy, Goboi, oboi
-Woodwinds/English Horn                | Normal                | 0   | 21  | -   | eh   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles
-Woodwinds/Bassoon                     | Normal                | 0   | 22  | -   | bn   | Basson, Fagott, Fagotto, Fagot, Fagote
-Woodwinds/Contrabassoon               | Normal                | 0   | 23  | -   | cbn  | double bassoon, Kontrafagott, contrafagotto, contrebasson, Controfagotti
-Woodwinds/Soprano sax                 | Normal                | 0   | 41  | -   | ssx  | 
-Woodwinds/Alto sax                    | Normal                | 0   | 42  | -   | asx  |
-Woodwinds/Baritone sax                | Normal                | 0   | 43  | -   | bsx  |
-Woodwinds/Tenor sax                   | Normal                | 14  | 44  | -   | tsx  |
-Brass/Trumpet                         | Normal                | 2   | 2   | +   | tpt  | trompette, Trompete, tromba, clarino, truba, trompeta, trombe
-Brass/Cornet                          | Normal                | 0   | 35  | -   | crt  | 
-Brass/Flugelhorn                      | Normal                | 0   | 36  | -   | fgh  | 
-Brass/German trumpet                  | Normal                | 0   | 37  | -   | gtp  |
-Brass/Piccolo trumpet                 | Normal                | 0   | 38  | -   | ptp  | trombe piccole
-Brass/Horn                            | Normal                | 3   | 3   | +   | hn   | French horn, Waldhorn, Ventilhorn, Trompa, Corno, Cor, Corni, Gorn, rog, rozhok, Valtorna, F. horn, corno frances, cuerno
-Brass/Trombone                        | Normal                | 4   | 4   | +   | tbn  | Posaune, trombono, trombon, 
-Brass/Valve trombone                  | Normal                | 4   | 39  | -   | vtbn |
-Brass/Bass trombone                   | Normal                | 4   | 40  | -   | btbn | 
-Brass/Tuba                            | Normal                | 5   | 5   | +   | tba  | tube
-Vocal/Soprano                         | Soprano               | 6   | 6   | +   | sop  | Sopran
-Vocal/Alto                            | Alto                  | 7   | 7   | +   | alt  | contralto, Alt, 
-Vocal/Tenor                           | Tenor                 | 8   | 8   | +   | ten  | taille, tenore
-Vocal/Bass                            | Bass                  | 9   | 9   | +   | bas  | basse, basso, bas, bajo
-Pitched percussion/Xylophone          | Hits                  | 0   | 26  | -   | xyl  | Xylophon, xilofono, ksilofon, xilofon, xilofono
-Pitched percussion/Glockenspiel       | Hits                  | 0   | 27  | -   | gl   | Campanelli, Bells, Concert bells, Orchestral bells
-Pitched percussion/Marimba            | Marimba               | 0   | 28  | -   | mar  |
-Pitched percussion/Timpani            | Long hits             | 0   | 25  | -   | tim  | Kettle drums, Pauken, Timps
-Pitched percussion/Celesta            | Hits                  | 0   | 31  | -   | cel  | 
-Pitched percussion/Crotales           | Hits                  | 0   | 32  | -   | crt  |
-Pitched percussion/Tubular bells      | Hits                  | 0   | 33  | -   | tbl  |
-Pitched percussion/Vibraphone         | Staccato pedal up     | 0   | 34  | -   | vib  |
-Unpitched percussion/Snare drum       | Hit - Snares on       | 0   | 24  | -   | sdr  | caisse claire, Leinentrommel, tamburo rullante, tamburo militare, rullante, frantsuzskii baraban, tambor afinable
-Unpitched percussion/Bass drum        | Hard mallet           | 1   | 24  | -   | bdr  | Gran cassa, grosse caisse, Grosse Trommel, cassa, grancassa, bolshoi baraban, bombo
-Unpitched percussion/Cymbals          | Long hit              | 2   | 24  | -   | cym  | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
-Unpitched percussion/Tam tam          | Hard hit              | 3   | 24  | -   | tam  | Tam-tam
-Unpitched percussion/Triangle         | Hit                   | 4   | 24  | -   | tri  | triangle concerto
-Unpitched percussion/Wood blocks      | Medium                | 5   | 24  | -   | wbl  | Wood block
-Unpitched percussion/Temple blocks    | Medium                | 5   | 24  | -   | tbl  | Temple block
-Unpitched percussion/Bongo            | High                  | 6   | 24  | -   | bng  |
-Unpitched percussion/Conga            | Low                   | 6   | 24  | -   | cng  |
-Unpitched percussion/Military drum    | Hits                  | 7   | 24  | -   | mdr  |
-Unpitched percussion/Field drum       | Hits                  | 7   | 24  | -   | fdr  |
-Unpitched percussion/Snare ensemble   | Hit - Snares on       | 8   | 24  | -   | sne  |
-Unpitched percussion/Timbales         | High                  | 9   | 24  | -   | tim  |
-Unpitched percussion/Tom toms         | Low-mid               | 10  | 24  | -   | tom  | Tom-tom, tom-toms
-Unpitched percussion/Rototom          | Low                   | 10  | 24  | -   | rtm  | Roto-tom, roto-toms
-Unpitched percussion/Tambourine       | Hits                  | 11  | 24  | -   | tbr  | tamburino
-Unpitched percussion/Beatring         | Hits                  | 11  | 24  | -   | btr  |
-Unpitched percussion/Claves           | Hits                  | 12  | 24  | -   | clv  |
-Unpitched percussion/Whip             | Hits                  | 12  | 24  | -   | whp  |
-Unpitched percussion/Shaker           | Hits                  | 12  | 24  | -   | shk  |
-Unpitched percussion/Castanets        | Hits                  | 12  | 24  | -   | cst  |
-Unpitched percussion/Sleighbells      | Hits                  | 12  | 24  | -   | slb  | Sleigh bell
-Unpitched percussion/Thai gong        | A                     | 13  | 24  | -   | tha  |
-Unpitched percussion/Brake            | Low                   | 15  | 24  | -   | brk  |
-Unpitched percussion/Pan              | Hits                  | 15  | 24  | -   | anv  | Anvil
-Unpitched percussion/Jazz drum set    | Map                   | 14  | 30  | -   | jdk  | Jazz drum kit, Jazz drums
-Strings/Violin                        | Arco                  | 1   | 1   | +   | vn   | Vln, Violon, Violine, Geige, violino, skripka, 
-Strings/Violins section               | Arco                  | 1   | 1   | +   | vns  | Violins, Vlns, Violini
-Strings/Viola                         | Arco                  | 10  | 10  | +   | va   | Vla, Viole, Bratsche
-Strings/Violas section                | Arco                  | 10  | 10  | +   | vas  | Violas, Vlas
-Strings/Cello                         | Arco                  | 11  | 11  | +   | vc   | Violoncello, Vlle, Violoncelle, violoncelle, violonchel, violonchelo, violoncelo
-Strings/Cellos section                | Arco                  | 11  | 11  | +   | vcs  | Cellos, Violoncellos, Violoncelli
-Strings/Contrabass                    | Arco                  | 12  | 12  | +   | db   | Contrebasse, Double bass, String bass, Kontrabass, contrabasso, kontrabas, contrabajo, Contrabbasso
-Strings/Contrabasses section          | Arco                  | 12  | 12  | +   | dbs  | Contrabasses, Contrabbassi
-Strings/Harp                          | Harp                  | 0   | 29  | -   | hp   | harpe, Harfe, arpa, arfa, 
+Keyboard/Piano                        | Hard                  | 1   | 0   | +   | pf   | Keyboard, Keys, Klavier, fortepiano
+Keyboard/Organ                        | Organ                 | 14  | 13  | +   | org  | Pipe organ
+Woodwinds/Piccolo                     | Normal                | 1   | 14  | -   | pic  | Pic., Piccolo flute, Flute piccolo, Petite flute, Pikkoloflote, kleine flote, ottavino, flauto piccolo, pikkolo, malaia fleita, fleita pikkolo, flautin, ottavino, ottavini
+Woodwinds/Flute                       | Normal                | 16  | 15  | +   | fl   | Fleita, Flauto, Fl., Grande flute, Flute traversiere, Flote, Querflote, Flauta, Flauti
+Woodwinds/Alto Flute                  | Normal                | 1   | 16  | -   | afl  |
+Woodwinds/Bass Flute                  | Normal                | 1   | 17  | -   | bfl  |
+Woodwinds/Clarinet                    | Normal                | 15  | 18  | +   | cl   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
+Woodwinds/Bass Clarinet               | Normal                | 1   | 19  | -   | bcl  | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo, Clarinetti bassi
+Woodwinds/Oboe                        | Normal                | 1   | 20  | -   | ob   | Hautbois, Hoboy, French hoboy, Goboi, oboi
+Woodwinds/English Horn                | Normal                | 1   | 21  | -   | eh   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles
+Woodwinds/Bassoon                     | Normal                | 1   | 22  | -   | bn   | Basson, Fagott, Fagotto, Fagot, Fagote
+Woodwinds/Contrabassoon               | Normal                | 1   | 23  | -   | cbn  | double bassoon, Kontrafagott, contrafagotto, contrebasson, Controfagotti
+Woodwinds/Soprano sax                 | Normal                | 1   | 41  | -   | ssx  | 
+Woodwinds/Alto sax                    | Normal                | 1   | 42  | -   | asx  |
+Woodwinds/Baritone sax                | Normal                | 1   | 43  | -   | bsx  |
+Woodwinds/Tenor sax                   | Normal                | 15  | 44  | -   | tsx  |
+Brass/Trumpet                         | Normal                | 3   | 2   | +   | tpt  | trompette, Trompete, tromba, clarino, truba, trompeta, trombe
+Brass/Cornet                          | Normal                | 1   | 35  | -   | crt  | 
+Brass/Flugelhorn                      | Normal                | 1   | 36  | -   | fgh  | 
+Brass/German trumpet                  | Normal                | 1   | 37  | -   | gtp  |
+Brass/Piccolo trumpet                 | Normal                | 1   | 38  | -   | ptp  | trombe piccole
+Brass/Horn                            | Normal                | 4   | 3   | +   | hn   | French horn, Waldhorn, Ventilhorn, Trompa, Corno, Cor, Corni, Gorn, rog, rozhok, Valtorna, F. horn, corno frances, cuerno
+Brass/Trombone                        | Normal                | 5   | 4   | +   | tbn  | Posaune, trombono, trombon, 
+Brass/Valve trombone                  | Normal                | 5   | 39  | -   | vtbn |
+Brass/Bass trombone                   | Normal                | 5   | 40  | -   | btbn | 
+Brass/Tuba                            | Normal                | 6   | 5   | +   | tba  | tube
+Vocal/Soprano                         | Soprano               | 7   | 6   | +   | sop  | Sopran
+Vocal/Alto                            | Alto                  | 8   | 7   | +   | alt  | contralto, Alt, 
+Vocal/Tenor                           | Tenor                 | 9   | 8   | +   | ten  | taille, tenore
+Vocal/Bass                            | Bass                  | 10  | 9   | +   | bas  | basse, basso, bas, bajo
+Pitched percussion/Xylophone          | Hits                  | 1   | 26  | -   | xyl  | Xylophon, xilofono, ksilofon, xilofon, xilofono
+Pitched percussion/Glockenspiel       | Hits                  | 1   | 27  | -   | gl   | Campanelli, Bells, Concert bells, Orchestral bells
+Pitched percussion/Marimba            | Marimba               | 1   | 28  | -   | mar  |
+Pitched percussion/Timpani            | Long hits             | 1   | 25  | -   | tim  | Kettle drums, Pauken, Timps
+Pitched percussion/Celesta            | Hits                  | 1   | 31  | -   | cel  | 
+Pitched percussion/Crotales           | Hits                  | 1   | 32  | -   | crt  |
+Pitched percussion/Tubular bells      | Hits                  | 1   | 33  | -   | tbl  |
+Pitched percussion/Vibraphone         | Staccato pedal up     | 1   | 34  | -   | vib  |
+Unpitched percussion/Snare drum       | Hit - Snares on       | 1   | 24  | -   | sdr  | caisse claire, Leinentrommel, tamburo rullante, tamburo militare, rullante, frantsuzskii baraban, tambor afinable
+Unpitched percussion/Bass drum        | Hard mallet           | 2   | 24  | -   | bdr  | Gran cassa, grosse caisse, Grosse Trommel, cassa, grancassa, bolshoi baraban, bombo
+Unpitched percussion/Cymbals          | Long hit              | 3   | 24  | -   | cym  | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
+Unpitched percussion/Tam tam          | Hard hit              | 4   | 24  | -   | tam  | Tam-tam
+Unpitched percussion/Triangle         | Hit                   | 5   | 24  | -   | tri  | triangle concerto
+Unpitched percussion/Wood blocks      | Medium                | 6   | 24  | -   | wbl  | Wood block
+Unpitched percussion/Temple blocks    | Medium                | 6   | 24  | -   | tbl  | Temple block
+Unpitched percussion/Bongo            | High                  | 7   | 24  | -   | bng  |
+Unpitched percussion/Conga            | Low                   | 7   | 24  | -   | cng  |
+Unpitched percussion/Military drum    | Hits                  | 8   | 24  | -   | mdr  |
+Unpitched percussion/Field drum       | Hits                  | 8   | 24  | -   | fdr  |
+Unpitched percussion/Snare ensemble   | Hit - Snares on       | 9   | 24  | -   | sne  |
+Unpitched percussion/Timbales         | High                  | 10  | 24  | -   | tim  |
+Unpitched percussion/Tom toms         | Low-mid               | 11  | 24  | -   | tom  | Tom-tom, tom-toms
+Unpitched percussion/Rototom          | Low                   | 11  | 24  | -   | rtm  | Roto-tom, roto-toms
+Unpitched percussion/Tambourine       | Hits                  | 12  | 24  | -   | tbr  | tamburino
+Unpitched percussion/Beatring         | Hits                  | 12  | 24  | -   | btr  |
+Unpitched percussion/Claves           | Hits                  | 13  | 24  | -   | clv  |
+Unpitched percussion/Whip             | Hits                  | 13  | 24  | -   | whp  |
+Unpitched percussion/Shaker           | Hits                  | 13  | 24  | -   | shk  |
+Unpitched percussion/Castanets        | Hits                  | 13  | 24  | -   | cst  |
+Unpitched percussion/Sleighbells      | Hits                  | 13  | 24  | -   | slb  | Sleigh bell
+Unpitched percussion/Thai gong        | A                     | 14  | 24  | -   | tha  |
+Unpitched percussion/Brake            | Low                   | 16  | 24  | -   | brk  |
+Unpitched percussion/Pan              | Hits                  | 16  | 24  | -   | anv  | Anvil
+Unpitched percussion/Jazz drum set    | Map                   | 15  | 30  | -   | jdk  | Jazz drum kit, Jazz drums
+Strings/Violin                        | Arco                  | 2   | 1   | +   | vn   | Vln, Violon, Violine, Geige, violino, skripka, 
+Strings/Violins section               | Arco                  | 2   | 1   | +   | vns  | Violins, Vlns, Violini
+Strings/Viola                         | Arco                  | 11  | 10  | +   | va   | Vla, Viole, Bratsche
+Strings/Violas section                | Arco                  | 11  | 10  | +   | vas  | Violas, Vlas
+Strings/Cello                         | Arco                  | 12  | 11  | +   | vc   | Violoncello, Vlle, Violoncelle, violoncelle, violonchel, violonchelo, violoncelo
+Strings/Cellos section                | Arco                  | 12  | 11  | +   | vcs  | Cellos, Violoncellos, Violoncelli
+Strings/Contrabass                    | Arco                  | 13  | 12  | +   | db   | Contrebasse, Double bass, String bass, Kontrabass, contrabasso, kontrabas, contrabajo, Contrabbasso
+Strings/Contrabasses section          | Arco                  | 13  | 12  | +   | dbs  | Contrabasses, Contrabbassi
+Strings/Harp                          | Harp                  | 1   | 29  | -   | hp   | harpe, Harfe, arpa, arfa, 
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
 # TRK is MIDI track to send this instrument to (for adapted MIDI file export)
