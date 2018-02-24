@@ -10,9 +10,9 @@ t_min = 20 # Shortest note in ms
 t_max = 8000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
 #leap_t_min = 100 # Shortest note after leap in ms
 
-# Transition types
+# Accent types
+acc_range = 0-127 # Map dynamics to specified accent range
 harsh_acc_vel = 50 # Velocity equal or above this value triggers harsh sustain
 harsh_acc_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
-#gliss_leg_vel = 33 # Velocity below this value triggers glissando transition
-slow_acc_vel = 38 # Velocity equal or above this value triggers normal sustain
+slow_acc_vel = 10 # Velocity equal or below this value triggers slow sustain
 slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain

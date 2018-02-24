@@ -125,8 +125,8 @@ trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in 
 acc_range = 0-127 # Map dynamics to specified accent range
 slow_acc_vel = 50 # Velocity below this value triggers slow attack sustain
 slow_acc_minlen = 800 # Minimum note length (ms) that can have a slow attack sustain
-harsh_acc_vel = 118 # Velocity equal or above this value triggers harsh attack sustain
-harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_acc_vel = 84 # Velocity equal or above this value triggers harsh attack sustain
+harsh_acc_freq = 50 # Frequency of harsh sustain articulation in percent of all possible situations
 
 # Gliss adaptor
 gliss_leg_vel = 18 # Velocity below this value triggers glissando transition

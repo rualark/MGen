@@ -110,14 +110,14 @@ pizz_import = 1 # Set to 0 to ignore pizzicato in source MIDI file and play as n
 pizz_ahead = 54 # Time in ms to stretch pizz notes back to cope with slow attack. -1 falls back to all_ahead
 pizz_dyn_range = 0-60 # Percent of pizz dynamics compared to sustain notes
 
-# Transition types
-harsh_acc_vel = 90 # Velocity equal or above this value triggers harsh sustain
-slow_acc_vel = 60 # Velocity equal or above this value triggers normal sustain
-gliss_leg_vel = 8 # Velocity below this value triggers glissando transition
-slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
+# Accent types
+harsh_acc_vel = 84 # Velocity equal or above this value triggers harsh sustain
 harsh_acc_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
+slow_acc_vel = 50 # Velocity equal or below this value triggers slow sustain
+slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
 
 # Gliss adaptor
+gliss_leg_vel = 8 # Velocity below this value triggers glissando transition
 gliss_minlen = 1000 # Minimum note length that can have a gliss transition
 gliss_freq = 0 # Frequency of gliss articulation in percent
 
