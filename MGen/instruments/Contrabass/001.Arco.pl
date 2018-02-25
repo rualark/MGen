@@ -114,8 +114,9 @@ pizz_ahead = 54 # Time in ms to stretch pizz notes back to cope with slow attack
 pizz_dyn_range = 0-60 # Percent of pizz dynamics compared to sustain notes
 
 # Accent types
+acc_range = 0-64 # Map dynamics to specified accent range
 harsh_acc_vel = 65 # Velocity equal or above this value triggers harsh sustain
-harsh_acc_freq = 0 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 slow_acc_vel = 33 # Velocity equal or below this value triggers slow sustain
 slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
 

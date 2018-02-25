@@ -42,8 +42,8 @@ end_vib_dur = 445 # Duration of vibrato ending
 end_vib_freq = 20 # Frequency of vibrato ending
 
 # Accent types
-acc_range = 0-127 # Map dynamics to specified accent range
+acc_range = 0-80 # Map dynamics to specified accent range
 harsh_acc_vel = 70 # Velocity equal or above this value triggers harsh sustain
-harsh_acc_freq = 50 # Frequency of harsh sustain articulation in percent of all possible situations
+harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 slow_acc_vel = 40 # Velocity equal or below this value triggers slow sustain
 slow_acc_minlen = 600 # Minimum note length (ms) that can have a normal or lower sustain
