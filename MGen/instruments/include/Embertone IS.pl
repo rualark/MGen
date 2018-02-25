@@ -42,10 +42,8 @@ Technique = "tutti; Ensemble on" # Tutti mode in Viola requires gliss_freq=0 due
 InitCommand = "Reverb level: 0" # default: enabled
 
 # Initial setup (can change)
-Transition attenuation = 0
 Bow noise reduction = 0
 Round-robin on = 127
-Ensemble on = 0
 Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
@@ -55,11 +53,7 @@ CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
 
 # Nonlegato adaptor
-acc_range = 0-127 # Map dynamics to specified accent range
 nonlegato_mingap = 13 # Minimum distance between note ending and next note start to sound nonlegato
-
-# Staccato adaptor
-stac_maxlen = 400 # Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
 
 # Vibrato adaptor
 CC_vib = 1 # CC number for vibrato intensity
@@ -88,11 +82,6 @@ vib_bell = 30-90 # Maximum vibrato intensity in vibrato bell (for minimum and hi
 vibf_bell = 20-80 # Max vibrato frequency in vibrato bell (for minimum and highest duration)
 rnd_vib = 10 # Randomize vibrato intensity not greater than this percent
 rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
-
-# Tremolo adaptor
-trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
-trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
-trem_dyn_range = 0-60 # Percent of tremolo dynamics compared to sustain notes
 
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
