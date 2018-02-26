@@ -25,6 +25,7 @@ n_max = "C8" # Highest note
 t_min = 10 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 100 # Maximum number of simultaneous voices
+dyn_range = 0-100 # Dynamic range
 #leap_t_min = 1 # Shortest note after leap
 #dying = 5 # Seconds to fade out at mf
 
