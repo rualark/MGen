@@ -17,4 +17,4 @@ unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same 
 Instruments = "Violin"
 MidiFileType = "Sibelius"
 
-"Violin/Arco/1": Transition attenuation = 127
+"Violin/Arco/1": trem_lock = 1
