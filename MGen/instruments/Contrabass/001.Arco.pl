@@ -1,5 +1,8 @@
 include "_Default.pl"
 
+# Initial setup (can change)
+Transition attenuation = 0
+
 # Retrigger adaptor
 CC_retrigger = 64 # This CC will be set before note retriger and reset soon after
 retrigger_freq = 50 # Percent to use CC retrigger instead of non-legato when repeating notes
