@@ -12,5 +12,7 @@ Midi_file = midi\Music\Shegolev\Tico Tico_inames.mid
 
 Instruments = "Violin/Arco,Violin,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass/Arco,Piano,Piano"
 
-"Viola/Arco/4": reverb_mix = 30
-"Cello/Arco/5": reverb_mix = 40
+#"Viola/Arco/4": reverb_mix = 30
+#"Cello/Arco/5": reverb_mix = 40
+
+toload_time = 10
