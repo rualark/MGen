@@ -39,6 +39,6 @@ include "include/CA2.pl"
 #Midi_file = "midi\Counterpoint\test\test-4th.mid" # Path and file name of imported midi file
 Midi_file = "midi\Counterpoint\test\test-play2.mid" # Path and file name of imported midi file
 
-Instruments=Tenor,Alto
+Instruments=Piano,Flute
 
-corrections = 1
+corrections = 0
