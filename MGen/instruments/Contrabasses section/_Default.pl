@@ -1,4 +1,5 @@
 Ensemble on = 127
+Volume_default = 127
 
 # Initial setup (can change)
 Ensemble intonation = 20 # default 13

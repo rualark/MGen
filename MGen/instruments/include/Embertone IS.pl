@@ -6,7 +6,7 @@ Type = 1 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
 
 # Controls
-Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
+Volume_default = 117 # default 127 (direct CC volume, should not be changed by user)
 CC_Name = 1:  "Vibrato intensity"
 CC_Name = 11: "Dynamics"
 CC_Name = 14: "Vibrato speed"
