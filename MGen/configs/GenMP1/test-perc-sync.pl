@@ -6,5 +6,5 @@ adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 16 # How much you want to decrease minimum step length from 1/8
 
 AutoLegato = 1
-Instruments = "Snare drum,Violin"
+Instruments = "Snare drum,Organ"
 
