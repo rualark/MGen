@@ -10,3 +10,7 @@ AutoLegato = 0
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-03-04 11:28:39
 Midi_file = midi\Music\Holst\Holst-Planets.mid
+
+MidiFileType = "MuseScore"
+Instruments = "Piccolo,Piccolo,Flute,Flute,Flute,Flute,Alto Flute,Oboe,Oboe,Oboe,English Horn,Bassoon,Clarinet,Clarinet,Clarinet,Clarinet,Clarinet,Clarinet,Bass Clarinet,Bassoon,Bassoon,Bassoon,Contrabassoon,Horn,Horn,Horn,Horn,Horn,Horn,Trumpet,Trumpet,Trumpet,Trumpet,Trombone,Trombone,Bass trombone,Horn,Tuba,Timpani,Timpani,Snare ensemble,Cymbals,Bass drum,Tam tam,Tambourine,Triangle,Glockenspiel,Xylophone,Tubular bells,Celesta,Celesta,Harp,Harp,Harp,Harp,Organ,Organ,Soprano,Soprano,Violin,Cello,Violins section,Violins section,Violas section,Cellos section,Contrabasses section"
+toload_time = "20"
