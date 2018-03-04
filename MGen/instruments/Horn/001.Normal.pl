@@ -14,7 +14,7 @@ Technique = "bell res 3; Mute: 104"
 n_min = A1 # Lowest note
 n_max = G5 # Highest note
 t_min = 20 # Shortest note in ms
-t_max = 9000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
+t_max = 12000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
 #leap_t_min = 100 # Shortest note after leap in ms
 ks1 = 12 # First keyswitch position
 

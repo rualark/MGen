@@ -7,7 +7,7 @@ library = "Samplemodeling Saxophones 2.8.0" # For which library algorithm is opt
 n_min = "F#3" # Lowest note
 n_max = "A6" # Highest note
 t_min = 20 # Shortest note in ms
-t_max = 8000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
+t_max = 12000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
 #leap_t_min = 100 # Shortest note after leap in ms
 
 Breath noise = 64

@@ -10,7 +10,7 @@ Technique = "straight mute; Mute: 100"
 n_min = C1 # Lowest note
 n_max = F4 # Highest note
 t_min = 20 # Shortest note in ms
-t_max = 10000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
+t_max = 12000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
 #leap_t_min = 100 # Shortest note after leap in ms
 ks1 = 0 # First keyswitch position
 

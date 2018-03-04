@@ -11,7 +11,7 @@ library = Samplemodeling Trumpet v3 # For which library algorithm is optimized
 n_min = E3 # Lowest note
 n_max = G6 # Highest note
 t_min = 20 # Shortest note in ms
-t_max = 10000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
+t_max = 12000 # Longest note without pauses in ms (0 = no limit). Decreases with dynamics
 #leap_t_min = 100 # Shortest note after leap in ms
 
 # Legato adaptor
