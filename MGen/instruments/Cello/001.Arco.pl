@@ -52,4 +52,5 @@ gliss_freq = 0 # Frequency of gliss articulation in percent
 # Tremolo adaptor
 trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
+trem_dyn_range = 0-60 # Percent of tremolo dynamics compared to sustain notes
 
