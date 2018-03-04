@@ -27,7 +27,7 @@ nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automat
 stac_auto = 1 # Set to 0 to disable automatic staccato articulations
 stac_maxlen = 400 # Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
 stac_ahead = -1 # Time in ms to stretch stac notes back to cope with slow attack. -1 falls back to all_ahead
-stac_dyn_range = 30-80 # Percent of staccato dynamics compared to sustain notes
+stac_dyn_range = 30-80 # (1-100) Percent of staccato dynamics compared to sustain notes
 spic_import = 1 # Allow to import spiccato technique from midi file into staccato articulation
 stac_import = 1 # Set to 0 to ignore staccato in source MIDI file and play as normal notes. Set to 1 to import as staccato
 marc_import = 0 # Set to 0 to ignore marcato in source MIDI file and play as normal notes. Set to 1 to import as staccato
@@ -35,10 +35,10 @@ marc_import = 0 # Set to 0 to ignore marcato in source MIDI file and play as nor
 # Pizzicato adaptor
 pizz_import = 1 # Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
 pizz_ahead = 54 # Time in ms to stretch pizz notes back to cope with slow attack. -1 falls back to all_ahead
-pizz_dyn_range = 1-60 # Percent of pizz dynamics compared to sustain notes
+pizz_dyn_range = 1-60 # (1-100) Percent of pizz dynamics compared to sustain notes
 
 # Accent types
-acc_range = 0-64 # Map dynamics to specified accent range
+acc_range = 1-64 # (1-127) Map dynamics to specified accent range
 harsh_acc_vel = 65 # Velocity equal or above this value triggers harsh sustain
 harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 slow_acc_vel = 33 # Velocity equal or below this value triggers slow sustain
@@ -52,5 +52,5 @@ gliss_freq = 0 # Frequency of gliss articulation in percent
 # Tremolo adaptor
 trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
-trem_dyn_range = 0-100 # Percent of tremolo dynamics compared to sustain notes
+trem_dyn_range = 0-100 # (0-100) Percent of tremolo dynamics compared to sustain notes
 

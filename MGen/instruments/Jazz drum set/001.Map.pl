@@ -18,4 +18,4 @@ MapPitch = "C3, C#3, D#3" # Hi tom
 # Tremolo adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
 trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
-trem_dyn_range = 0-100 # Percent of tremolo dynamics compared to sustain notes
+trem_dyn_range = 0-100 # (0-100) Percent of tremolo dynamics compared to sustain notes

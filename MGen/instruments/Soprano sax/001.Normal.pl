@@ -14,7 +14,7 @@ Breath noise = 64
 Key noise = 64
 
 # Accent types
-acc_range = 0-49 # Map dynamics to specified accent range
+acc_range = 1-49 # (1-127) Map dynamics to specified accent range
 harsh_acc_vel = 50 # Velocity equal or above this value triggers harsh sustain
 harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 slow_acc_vel = 20 # Velocity equal or below this value triggers slow sustain

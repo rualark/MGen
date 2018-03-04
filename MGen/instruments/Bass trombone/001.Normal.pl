@@ -35,7 +35,7 @@ mute_activate = "harmon mute" # Choose mute that can be activated from MIDI file
 mute_deactivate = "senza sord" # Choose mute that can be activated from MIDI file
 
 # Accent types
-acc_range = 0-127 # Map dynamics to specified accent range
+acc_range = 1-127 # (1-127) Map dynamics to specified accent range
 harsh_acc_vel = 100 # Velocity equal or above this value triggers harsh sustain
 harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 slow_acc_vel = 40 # Velocity equal or below this value triggers slow sustain
