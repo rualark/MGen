@@ -14,4 +14,4 @@ Midi_file = midi\Music\Holst\Holst-Mars.mid
 MidiFileType = "MuseScore"
 Instruments = "Piccolo,Flute,Oboe,English Horn,Bassoon,Clarinet,Bass Clarinet,Bassoon,Contrabassoon,Horn,Horn,Trumpet,Trumpet,Trombone,Bass trombone,Horn,Tuba,Timpani,Timpani,Snare ensemble,Cymbals american,Bass drum,Tam tam,Harp,Harp,Harp,Harp,Organ,Organ,Violins section,Violins section,Violas section,Cellos section,Contrabasses section"
 reverb_mix = "30"
-toload_time = "60"
+#toload_time = "60"
