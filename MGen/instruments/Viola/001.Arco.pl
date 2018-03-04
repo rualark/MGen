@@ -40,7 +40,7 @@ pizz_dyn_range = 1-60 # Percent of pizz dynamics compared to sustain notes
 # Tremolo adaptor
 trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
-trem_dyn_range = 0-60 # Percent of tremolo dynamics compared to sustain notes
+trem_dyn_range = 0-80 # Percent of tremolo dynamics compared to sustain notes
 
 # Accent types
 acc_range = 0-100 # Map dynamics to specified accent range

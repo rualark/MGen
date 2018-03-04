@@ -10,4 +10,4 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 # Created at 2018-01-23 22:58:10
 Midi_file = midi\Music\test\test-trem.mid
 
-Instruments = Violin
+Instruments = Contrabass
