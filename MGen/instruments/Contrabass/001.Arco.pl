@@ -25,6 +25,7 @@ nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automat
 
 # Staccato adaptor
 stac_auto = 1 # Set to 0 to disable automatic staccato articulations
+stac_maxlen = 400 # Maximum note length (ms) to be converted to staccato in case of non-legato on both sides
 stac_ahead = -1 # Time in ms to stretch stac notes back to cope with slow attack. -1 falls back to all_ahead
 stac_dyn_range = 30-80 # Percent of staccato dynamics compared to sustain notes
 spic_import = 1 # Allow to import spiccato technique from midi file into staccato articulation
