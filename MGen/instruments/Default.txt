@@ -39,7 +39,8 @@ Pitched percussion/Tubular bells      | Hits                  | 1   | 33  | -   
 Pitched percussion/Vibraphone         | Staccato pedal up     | 1   | 34  | -   | vib  |
 Unpitched percussion/Snare drum       | Hit - Snares on       | 1   | 24  | -   | sdr  | caisse claire, Leinentrommel, tamburo rullante, tamburo militare, rullante, frantsuzskii baraban, tambor afinable
 Unpitched percussion/Bass drum        | Hard mallet           | 2   | 24  | -   | bdr  | Gran cassa, grosse caisse, Grosse Trommel, cassa, grancassa, bolshoi baraban, bombo
-Unpitched percussion/Cymbals          | Long hit              | 3   | 24  | -   | cym  | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
+Unpitched percussion/Cymbals american | Long hit              | 3   | 24  | -   | cym  | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
+Unpitched percussion/Cymbals viennese | Long hit              | 3   | 24  | -   | cyv  | 
 Unpitched percussion/Tam tam          | Hard Long hit         | 4   | 24  | -   | tam  | Tam-tam
 Unpitched percussion/Wind gong        | Hard Long hit         | 4   | 24  | -   | wgo  | 
 Unpitched percussion/Triangle         | Hit                   | 5   | 24  | -   | tri  | triangle concerto
