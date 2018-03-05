@@ -285,6 +285,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;216;100;Counterpoint;Counterpoint;Suspension resolution;9th -> 8va;0;;With higher cantus. Includes 16th and above;12;1;;sus;1;1;1;;;;;;
 1;217;100;Counterpoint;Counterpoint;Suspension resolution;7th -> 8va;0;;In higher cantus. Includes 14th and above;12;1;;sus;5;3;1;;;;;;
 1;218;60;Counterpoint;Counterpoint;Suspension resolution;2nd -> unison;0;;Does not include 9th and above;12;1;;sus;1;1;1;;;;;;
+1;419;0;Counterpoint;Counterpoint;Suspension resolution;to beat 2;1;;Allows resolution to beat 2;;;;;;;;;;;;;
+1;420;0;Counterpoint;Counterpoint;Suspension resolution;to beat 4;1;;Allows resolution to beat 4;;;;;;;;;;;;;
 1;222;0;Counterpoint;Counterpoint;Suspension resolution;up leading;1;;Resolution suspending leading note up;12;1;;sus;6;4;1;;;;;;
 1;219;60;Counterpoint;Counterpoint;Suspension resolution;up;0;;Suspension resolution up except for leading note (leading note stepwize resolution up allowed);12;1;;sus;25;5;1;;;;;;
 1;220;100;Counterpoint;Counterpoint;Suspension resolution;unresolved;0;;;12;1;;sus;15;11;1;;;;;;
@@ -293,8 +295,6 @@ Set;Severity;Class;Group;Rule;Flag
 1;286;60;Counterpoint;Counterpoint;Suspension resolution;shift;0;;Suspension is not resolved at the middle of next measure;12;;;sus;15;14;1;;;;;;
 1;296;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap down;1;;Leap down from consonance insertion to resolution;12;;;sus;13;7;1;;;;;;
 1;136;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap up;1;;Leap up from consonance insertion to resolution;12;;;sus;7;2;1;;;;;;
-1;137;0;Counterpoint;Counterpoint;Suspension resolution insertion;down aux;1;;;12;;;sus;13;3;1;;;;;;
-1;138;0;Counterpoint;Counterpoint;Suspension resolution insertion;up aux;1;;;12;;;sus;9;4;1;;;;;;
 1;292;60;Counterpoint;Counterpoint;Suspension resolution insertion;chatty;0;;There are more than 2 inserted notes between suspension and resolution;12;;;sus;1;1;1;;;;;;
 1;295;100;Counterpoint;Counterpoint;Suspension resolution insertion;long leap;0;;Leap is longer than M6;12;;;sus;2;2;1;;;;;;
 1;359;100;Counterpoint;Counterpoint;Harmonic dissonance;first;0;;First note in counterpoint voice is downbeat;;1;;;17;12;1;;;;;;
@@ -332,7 +332,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;335;30;Counterpoint;Counterpoint;Penultimate measure;not D/DVII;0;;Penultimate harmony is not D / DVII;1;;;;138;1;;;;;;;
 1;387;0;Counterpoint;Counterpoint;sp2 suspension;I -> LT penultim.;1;;;;;;;;;;;;;;;
 1;388;60;Counterpoint;Counterpoint;sp2 suspension;other;0;;;;;;;;;;;;;;;
-1;225;0;Counterpoint;Counterpoint;Slurs;suspension;1;;;;;;;409;2;;;;;;;
+1;225;0;Counterpoint;Counterpoint;Slurs;suspension;1;;{sp3,4,5};;;;;409;2;;;;;;;
 1;30;100;Counterpoint;Counterpoint;Slurs;cantus;0;;;;;;;0;0;1;;;;;;
 1;93;0;Counterpoint;Counterpoint;Slurs within 10 notes;1;0;For counterpoint species 1-3;;;;;;38;0;;;;1;;;
 1;94;40;Counterpoint;Counterpoint;Slurs within 10 notes;2;0;For counterpoint species 1-3;;;;;;4;0;;;;1;93;;
