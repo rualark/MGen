@@ -109,7 +109,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;314;0;Melody;Leaps;Many leaps within 15 notes;>26 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on {sp1-4};10;;;Many leaps;13;0;;1;;1;;;
 1;70;60;Melody;Leaps;Consecutive leaps, 1x3rd ignored;3;0;;;10;;;Consecutive leaps;38;0;;;;1;;;
 1;71;100;Melody;Leaps;Consecutive leaps, 1x3rd ignored;>3;0;;;10;;;Consecutive leaps;10;1;;;;1;70;;
-1;27;100;Melody;Leaps;Consecutive unidirectional leaps;Sum >6th;0;;;10;;;Leaps;61;1;;;;;;;
+1;27;100;Melody;Leaps;Consecutive unidirectional leaps;Sum >5th;0;;;10;;;Leaps;61;1;;;;;;;
 1;28;0;Melody;Leaps;Two consecutive 3rds;after 6/8;-1;;;10;;;2 x 3rds;13;3;1;;;;;;
 1;6;60;Melody;Leaps;Two consecutive 3rds;plain;0;;;10;;;2 x 3rds;85;26;1;;;;;;
 1;4;0;Melody;Stepwise;CF Stepwise motion;>7 any direction;0;;Stepwise motion more than X notes in any direction in cantus;10;;;Long stepwise;22;0;;1;999;;;;
