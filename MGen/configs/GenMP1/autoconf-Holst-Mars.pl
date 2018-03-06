@@ -11,7 +11,29 @@ AutoLegato = 0
 # Created at 2018-03-04 14:10:34
 Midi_file = midi\Music\Holst\Holst-Mars.mid
 
+"Harp/Harp/24": Volume = "84"
+"Harp/Harp/25": Volume = "84"
+"Harp/Harp/26": Volume = "84"
+"Harp/Harp/27": Volume = "84"
+"Clarinet/Normal/6": Volume = "90"
+"Horn/Normal/10": Volume = "90"
+"Contrabassoon/Normal/9": Volume = "80"
+"Bassoon/Normal/8": Volume = "90"
+"Horn/Normal/11": Volume = "90"
+"English Horn/Normal/4": Volume = "90"
+"Flute/Normal/2": Volume = "90"
+"Bassoon/Normal/5": Volume = "90"
+"Horn/Normal/16": Volume = "90"
 MidiFileType = "MuseScore"
-Instruments = "Piccolo,Flute,Oboe,English Horn,Bassoon,Clarinet,Bass Clarinet,Bassoon,Contrabassoon,Horn,Horn,Trumpet,Trumpet,Trombone,Bass trombone,Horn,Tuba,Timpani,Timpani,Snare ensemble,Cymbals american,Bass drum,Tam tam,Harp,Harp,Harp,Harp,Organ,Organ,Violins section,Violins section,Violas section,Cellos section,Contrabasses section"
 reverb_mix = "30"
-#toload_time = "60"
+
+# Fix cymbals tremolo
+# Fix timpani trills
+# Fix timpani trills volume
+# Fix instrument ranges
+# More ranges fixes
+# Fixed growing polyphonic instrument notes, but tam-tam tremolo is short now due to samples limitations
+# Migrated to CinePerc gong
+
+Instruments = "Piccolo,Flute,Oboe,English Horn,Bassoon,Clarinet,Bass Clarinet,Bassoon,Contrabassoon,Horn,Horn,Trumpet,Trumpet,Trombone,Bass trombone,Horn,Tuba,Timpani,Timpani,Snare ensemble,Cymbals american,Bass drum,Gong,Harp,Harp,Harp,Harp,Organ,Organ,Violins section,Violins section,Violas section,Cellos section,Contrabasses section"
+toload_time = "50"
