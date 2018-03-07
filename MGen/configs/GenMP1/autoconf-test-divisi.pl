@@ -4,12 +4,15 @@
 # Default configs are not accessible from MGen GUI, you will need to change it outside of the program
 
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
-midifile_in_mul = 4 # How much you want to decrease minimum step length
+midifile_in_mul = 16 # How much you want to decrease minimum step length
+AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
-# Created at 2018-01-07 10:56:08
-Midi_file = midi\Music\shegolev\quartet\01 - Allegro.mid
+# Created at 2018-03-07 20:44:43
+Midi_file = midi\Music\test\test-divisi.mid
 
-AutoLegato = 0
-Instruments = "Violin,Violin,Viola,Cello"
+Instruments = Violin
+
+#"Violin/Arco/1": divisi_auto = 0
+"Violin/Arco/1": reverb_mix = 0
 
