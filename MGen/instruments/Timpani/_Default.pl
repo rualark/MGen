@@ -21,3 +21,4 @@ trem_dyn_range = 0-100 # (0-100) Percent of tremolo dynamics compared to sustain
 trem_chan = 2 # Send tremolo notes to separate channel specified
 trem_maxint = 12 # Maximum interval between notes of a trill in semitones to be considered a tremolo
 trem_maxint = 127 # Maximum interval between notes of a trill in semitones to be considered a tremolo
+trem_end = 2 # 0 - normal ending, 1 - cutoff (need hit), 2 - ending hit

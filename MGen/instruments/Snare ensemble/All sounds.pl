@@ -7,6 +7,9 @@ poly = 100 # Maximum number of simultaneous voices
 n_min = "D2" # Lowest note
 n_max = "D#5" # Highest note
 Volume_default = 50 # (direct CC volume, should not be changed by user)
+CC_dynamics = 1
+CC_ma = 3 # Number of CC steps to moving average (please use only odd numbers)
+CC_steps = 1 # Number of CC steps in one note step (please use only odd numbers)
 
 # Controls
 KswGroup = "C2: Snares on", "C#2: Snares off"
@@ -20,3 +23,4 @@ trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
 trem_dyn_range = 0-100 # (0-100) Percent of tremolo dynamics compared to sustain notes
 trem_replace = "F4" # Replace tremolo notes with this note
 trem_maxint = 127 # Maximum interval between notes of a trill in semitones to be considered a tremolo
+trem_end = 1 # 0 - normal ending, 1 - cutoff (need hit), 2 - ending hit
