@@ -6,11 +6,9 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 AutoLegato = 0 # Enables auto legato for all instruments, converting touching notes into legato transitions (can be overridden for particular instruments). Usually can be used if you do not use slurs in your score and want all adjacent notes to be legato
 AutoNonLegato = 0 # Enables automatic random replacement of legato transitions with nonlegato (frequency is controlled by nonlegato_freq in each instrument). Usually is used with AutoLegato.
 unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same instruments
+reverb_mix = 30 # Control reverb mix from 0 to 100% (0% is totally dry, 100% is totally wet)
 
-Midi_file = "server\cache\test-soundcheck.mid"
-MidiFileType = "Sibelius"
-# New job = "99"
-Instruments = "Bass Flute/Normal"
-# Example result = "Acc40"
-"Bass Flute/Normal/1": acc_range = "40-40"
-"Bass Flute/Normal/1": harsh_acc_freq = "100"
+Midi_file = "server\cache\01-Allegro-arpeg.mid"
+Instruments = "Violin,Violin,Viola,Cello"
+MidiFileType = "Finale"
+toload_time = "0"
