@@ -28,6 +28,7 @@
 
 #include "afxdb.h"
 
+#include <atlimage.h>
 #include <iostream>
 
 #include <cctype>

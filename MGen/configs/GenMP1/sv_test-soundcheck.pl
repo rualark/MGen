@@ -9,7 +9,7 @@ unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same 
 
 Midi_file = "server\cache\test-soundcheck.mid"
 MidiFileType = "Sibelius"
-# New job = "17"
-Instruments = "Piano/Hardest"
-# Example result = "Dyn0"
-"Piano/Hardest/1": dyn_range = "0-0"
+# New job = "283"
+Instruments = "Alto sax/Flutter tongue"
+# Example result = "Pan100"
+"Alto sax/Flutter tongue/1": pan = "100"
