@@ -9,7 +9,6 @@ unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same 
 
 Midi_file = "server\cache\test-soundcheck.mid"
 MidiFileType = "Sibelius"
-# New job = "1269"
-Instruments = "Brake/All sounds"
-# Example result = "Pan0"
-"Brake/All sounds/1": pan = "0"
+# New job = "1271"
+Instruments = "Pan/Hits"
+# Example result = "__Default"
