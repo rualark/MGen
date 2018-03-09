@@ -383,6 +383,8 @@ void CMGenView::OnDraw(CDC* pDC)
 			int alpha;
 			int step_dyn = mf->m_step_dyn;
 			int ci_old = -1;
+			int pos = 0;
+			RectF layoutRect(0, 0, 1000, 500);
 			for (int v = 0; v < pGen->v_cnt; v++) {
 				int ci = v;
 				if (pGen->midifile_loaded && pGen->track_id[v] > 0) ci = pGen->track_id[v] - 1;
@@ -393,7 +395,9 @@ void CMGenView::OnDraw(CDC* pDC)
 					SolidBrush brush_v(ncolor);
 					st = pGen->icf[pGen->instr[v]].group;
 					CStringW wst(st);
-					g.DrawString(wst, -1, &font, PointF(1150 + 100 * ci, 0), &brush_v);
+					g.MeasureString(wst, st.GetLength(), &font, layoutRect, &sizeRect);
+					g.DrawString(wst, -1, &font, PointF(1150 + pos, 0), &brush_v);
+					pos += sizeRect.Width;
 				}
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
@@ -874,7 +878,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 			st += st2;
 		}
 		if (mouse_note > -1) {
-			st2.Format("Note %s (%d). ", CGLib::GetNoteName(mouse_note), mouse_note);
+			st2.Format("Note %s (%d). ", CGLib::GetNoteName(mouse_note), mouse_note); 
 			st += st2;
 		}
 		if (mouse_voice > -1 && mouse_step > -1) {
