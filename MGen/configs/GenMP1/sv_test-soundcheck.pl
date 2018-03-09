@@ -9,8 +9,7 @@ unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same 
 
 Midi_file = "server\cache\test-soundcheck.mid"
 MidiFileType = "Sibelius"
-# New job = "1499"
-Instruments = "Violins section/Sul ponticello"
-# Example result = "Acc20"
-"Violins section/Sul ponticello/1": acc_range = "20-20"
-"Violins section/Sul ponticello/1": harsh_acc_freq = "100"
+# New job = "2"
+Instruments = "Piano/Hard"
+# Example result = "Dyn0"
+"Piano/Hard/1": dyn_range = "0-0"

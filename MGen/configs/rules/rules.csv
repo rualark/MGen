@@ -287,7 +287,6 @@ Set;Severity;Class;Group;Rule;Flag
 1;218;60;Counterpoint;Counterpoint;Suspension resolution;2nd -> unison;0;;Does not include 9th and above;12;1;;sus;1;1;1;;;;;;
 1;419;0;Counterpoint;Counterpoint;Suspension resolution;to beat 2;1;;Allows resolution to beat 2;;;;;;;;;;;;;
 1;420;0;Counterpoint;Counterpoint;Suspension resolution;to beat 4;1;;Allows resolution to beat 4;;;;;;;;;;;;;
-1;222;0;Counterpoint;Counterpoint;Suspension resolution;up leading;1;;Resolution suspending leading note up;12;1;;sus;6;4;1;;;;;;
 1;219;60;Counterpoint;Counterpoint;Suspension resolution;up;0;;Suspension resolution up except for leading note (leading note stepwize resolution up allowed);12;1;;sus;25;5;1;;;;;;
 1;220;100;Counterpoint;Counterpoint;Suspension resolution;unresolved;0;;;12;1;;sus;15;11;1;;;;;;
 1;221;100;Counterpoint;Counterpoint;Suspension resolution;leap;0;;;12;1;;sus;15;7;1;;;;;;
