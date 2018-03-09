@@ -11,4 +11,6 @@ reverb_mix = 30 # Control reverb mix from 0 to 100% (0% is totally dry, 100% is 
 Midi_file = "server\cache\01-Allegro-arpeg.mid"
 Instruments = "Violin,Violin,Viola,Cello"
 MidiFileType = "Finale"
-toload_time = "0"
+toload_time = "10"
+
+"Violinn/Arco/1": Volume = 10
