@@ -50,7 +50,7 @@ protected: // create from serialization only
 
 // Attributes
 public:
-	CGMidi* pGen = 0;
+	CGTemplate* pGen = 0;
 	int midi_device_i=-1; // Index of selected MIDI device
 	CString midi_device_s; // Name of selected MIDI device
 	int view_single_track = 1; // If all tracks are shown in one

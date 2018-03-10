@@ -8,7 +8,7 @@
 #include "InfoDlg.h"
 #include "afxdialogex.h"
 #include "MainFrm.h"
-#include "GLibrary/GMidi.h"
+#include "GLibrary/GTemplate.h"
 #include "MGenView.h"
 
 #ifdef _DEBUG
@@ -48,7 +48,7 @@ BOOL CInfoDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
-	CGMidi *pGen = mf->pGen;
+	CGTemplate *pGen = mf->pGen;
 	if (pGen != 0) {
 		if (!pGen->mutex_output.try_lock_for(chrono::milliseconds(3000))) {
 			mf->WriteLog(5, "InfoDlg output mutex timed out: showing nothing");

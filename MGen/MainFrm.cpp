@@ -1210,7 +1210,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 }
 
 UINT CMainFrame::GenThread(LPVOID pParam) {
-	CGMidi* pGen = (CGMidi*)pParam;
+	CGTemplate* pGen = (CGTemplate*)pParam;
 
 	if (pGen == NULL) return 1;   // if Object is not valid  
 

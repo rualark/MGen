@@ -129,9 +129,6 @@
     <ClInclude Include="GLibrary\GLib.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
-    <ClInclude Include="GLibrary\GMidi.h">
-      <Filter>Header Files\GLibrary</Filter>
-    </ClInclude>
     <ClInclude Include="GLibrary\GVar.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
@@ -157,6 +154,21 @@
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
     <ClInclude Include="GLibrary\GIConf.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\GTemplate.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\Ly.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\MFIn.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\MFOut.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\MPort.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
   </ItemGroup>
@@ -224,9 +236,6 @@
     <ClCompile Include="GLibrary\GLib.cpp">
       <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
-    <ClCompile Include="GLibrary\GMidi.cpp">
-      <Filter>Source Files\GLibrary</Filter>
-    </ClCompile>
     <ClCompile Include="GLibrary\GVar.cpp">
       <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
@@ -267,6 +276,21 @@
       <Filter>Source Files\Generators</Filter>
     </ClCompile>
     <ClCompile Include="GLibrary\pvector.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\GTemplate.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\Ly.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\MFIn.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\MFOut.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\MPort.cpp">
       <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
   </ItemGroup>

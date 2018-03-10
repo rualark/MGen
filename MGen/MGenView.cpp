@@ -98,7 +98,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	long long time_stop4;
 	long long time_stop5;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
-	CGMidi *pGen = mf->pGen;
+	CGTemplate *pGen = mf->pGen;
 	//mf->WriteLog(2, "OnDraw start");
   //CMGenDoc* pDoc = GetDocument();
 	//ASSERT_VALID(pDoc);
@@ -811,7 +811,7 @@ void CMGenView::OnInitialUpdate()
 void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
-	CGMidi *pGen = mf->pGen;
+	CGTemplate *pGen = mf->pGen;
 	mf->mx = point.x;
 	mf->my = point.y;
 	if ((pGen != 0) && (nwidth > 0) && (nheight > 0)) if (pGen->t_generated > 0) {
@@ -919,7 +919,7 @@ void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
 	CString st;
 	int result;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
-	CGMidi *pGen = mf->pGen;
+	CGTemplate *pGen = mf->pGen;
 	if ((mouse_step > -1) && (mouse_voice > -1)) {
 		if (mouse_voices.size() > 1) {
 			CMenu *menu = new CMenu;
