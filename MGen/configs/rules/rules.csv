@@ -411,7 +411,6 @@ Set;Severity;Class;Group;Rule;Flag
 1;274;60;Counterpoint;Rhythm;Suspension rhythm;start >1/2;0;;Suspension start should not be longer;;;;;6;6;1;;;;;;
 1;332;60;Counterpoint;Rhythm;Suspension rhythm;end >3/4;0;;Suspension finish should not be longer;;;;;14;13;1;;;;;;
 1;139;0;Counterpoint;Rhythm;Suspension;not last 3;0;;Suspension before N last measures {sp2,3};;;;;11;9;1;;;;;;
-1;299;0;Counterpoint;Rhythm;Suspension;not leading;0;;Suspension of not leading tone {sp2};;;;;8;6;1;;;;;;
 1;341;0;Counterpoint;Rhythm;Suspension;each 3 meas.;0;;At least one suspension is needed each X measures {sp5};;;;;39;0;;1;;;;1;
 1;301;0;Counterpoint;Rhythm;Many notes in measure;5 after sus;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;;;22;3;1;;;;;;
 1;245;0;Counterpoint;Rhythm;Many notes in measure;5;0;;;11;;;!srn! notes;31;10;1;;;;;;
