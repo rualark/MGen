@@ -30,7 +30,7 @@ Vocal/Alto                            | Alto                  | 8   | 18  | +   
 Vocal/Tenor                           | Tenor                 | 9   | 19  | +   | ten  | taille, tenore
 Vocal/Bass                            | Bass                  | 10  | 20  | +   | bas  | basse, basso, bas, bajo
 Pitched percussion/Timpani            | Long hits             | 1   | 35  | -   | tim  | Kettle drums, Pauken, Timps
-Pitched percussion/Xylophone          | Hits                  | 1   | 36  | -   | xyl  | Xylophon, xilofono, ksilofon, xilofon, xilofono
+Pitched percussion/Xylophone          | Hits                  | 1   | 36  | -   | xyl  | Xylophon, xilofono, ksilofon, xilofon, xilofono, Silofono
 Pitched percussion/Glockenspiel       | Hits                  | 1   | 37  | -   | gl   | Campanelli, Bells, Concert bells, Orchestral bells
 Pitched percussion/Marimba            | Marimba               | 1   | 38  | -   | mar  |
 Pitched percussion/Celesta            | Hits                  | 1   | 39  | -   | cel  | 
@@ -71,7 +71,7 @@ Strings/Violas section                | Arco                  | 11  | 3   | +   
 Strings/Cello                         | Arco                  | 12  | 4   | +   | vc   | Violoncello, Vlle, Violoncelle, violoncelle, violonchel, violonchelo, violoncelo
 Strings/Cellos section                | Arco                  | 12  | 4   | +   | vcs  | Cellos, Violoncellos, Violoncelli
 Strings/Contrabass                    | Arco                  | 13  | 5   | +   | db   | Contrebasse, Double bass, String bass, Kontrabass, contrabasso, kontrabas, contrabajo, Contrabbasso
-Strings/Contrabasses section          | Arco                  | 13  | 5   | +   | dbs  | Contrabasses, Contrabbassi
+Strings/Contrabasses section          | Arco                  | 13  | 5   | +   | dbs  | Contrabasses, Contrabbassi, Contrabassi
 Strings/Harp                          | Harp                  | 1   | 6   | -   | hp   | harpe, Harfe, arpa, arfa, 
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)
