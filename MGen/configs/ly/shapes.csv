@@ -3,13 +3,13 @@ Phase;Task;Shape;Script
 1;Start;Glis;\override Glissando.color=#(rgb-color $COLOR$)
 1;Start;Slur;\override Slur.color=#(rgb-color $COLOR$)
 1;Start;Pslur;\override PhrasingSlur.color=#(rgb-color $COLOR$)
-1;Start;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$)\n \leftBracket
+1;Start;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$)$n$ \leftBracket
 1;Start;Volta;"\override Score.VoltaBracket.color = #(rgb-color $COLOR$) \set Score.repeatCommands = #'((volta ""$TEXT$""))"
 1;Start;Bracket;\override HorizontalBracket.color=#(rgb-color $COLOR$)
-1;Start;Trill;"\override TrillSpanner.bound-details.left.text = \markup{ \raise #0.6 \teeny ""$TEXT$"" } \override TrillSpanner.color = #(rgb-color $COLOR$)"
+1;Start;Trill;\override TrillSpanner.bound-details.left.text = $TEXT2$ \override TrillSpanner.color = #(rgb-color $COLOR$)
 1;Start;Ottava;"\set Staff.ottavation = \markup { \teeny ""$TEXT$"" } \override Staff.OttavaBracket.color = #(rgb-color $COLOR$)"
 1;Start;TS;"\myTS ""$TEXT$"" #(rgb-color $COLOR$) \textSpannerDown"
-1;Start;Pedal;"\override Staff.PianoPedalBracket.color = #(rgb-color $COLOR$) \override Staff.SustainPedal #'stencil = #(lambda (grob) (grob-interpret-markup grob (markup #:with-color (rgb-color $COLOR$) #:lower 0.4 (#:teeny ""$TEXT$"")))) \textSpannerDown"
+1;Start;Pedal;"\override Staff.PianoPedalBracket.color = #(rgb-color $COLOR$)$n$ \override Staff.SustainPedal #'stencil =$n$ #(lambda (grob) (grob-interpret-markup grob (markup$n$ #:with-color (rgb-color $COLOR$)$n$ #:lower 0.4$n$ (#:teeny ""$TEXT$""))))$n$ \textSpannerDown"
 9;Start;Trill;\startTrillSpan
 9;Start;TS;\startTextSpan
 9;Start;Pedal;\sustainOn
@@ -20,7 +20,7 @@ Phase;Task;Shape;Script
 10;Finish;TS;\stopTextSpan
 10;Finish;Trill;\stopTrillSpan
 10;Finish;Pedal;\sustainOff
-10;Start;Glis;\glissando\n \override NoteColumn.glissando-skip = ##t
+10;Start;Glis;\glissando$n$ \override NoteColumn.glissando-skip = ##t
 10;Start;Slur;(
 10;Start;PSlur;\(
 11;Finish;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$) \rightBracket
