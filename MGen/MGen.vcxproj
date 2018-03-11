@@ -211,6 +211,7 @@
     <ClInclude Include="Generators\GenMP1.h" />
     <ClInclude Include="Generators\GenRL1.h" />
     <ClInclude Include="Generators\GenRS1.h" />
+    <ClInclude Include="GLibrary\Conf.h" />
     <ClInclude Include="GLibrary\GAdapt.h" />
     <ClInclude Include="GLibrary\GIConf.h" />
     <ClInclude Include="GLibrary\GLib.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="Generators\GenMP1.cpp" />
     <ClCompile Include="Generators\GenRL1.cpp" />
     <ClCompile Include="Generators\GenRS1.cpp" />
+    <ClCompile Include="GLibrary\Conf.cpp" />
     <ClCompile Include="GLibrary\GAdapt.cpp" />
     <ClCompile Include="GLibrary\GLib.cpp" />
     <ClCompile Include="GLibrary\GTemplate.cpp" />

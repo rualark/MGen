@@ -171,6 +171,9 @@
     <ClInclude Include="GLibrary\MPort.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
+    <ClInclude Include="GLibrary\Conf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -292,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="GLibrary\MPort.cpp">
       <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\Conf.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
