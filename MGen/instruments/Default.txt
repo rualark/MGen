@@ -8,7 +8,7 @@ Woodwinds/Bass Flute                  | Normal                | 1   | 24  | -   
 Woodwinds/Clarinet                    | Normal                | 15  | 25  | +   | cl   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
 Woodwinds/Bass Clarinet               | Normal                | 1   | 26  | -   | bcl  | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo, Clarinetti bassi
 Woodwinds/Oboe                        | Normal                | 1   | 27  | -   | ob   | Hautbois, Hoboy, French hoboy, Goboi, oboi
-Woodwinds/English Horn                | Normal                | 1   | 28  | -   | eh   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles
+Woodwinds/English Horn                | Normal                | 1   | 28  | -   | eh   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles, corno inglele
 Woodwinds/Bassoon                     | Normal                | 1   | 29  | -   | bn   | Basson, Fagott, Fagotto, Fagot, Fagote
 Woodwinds/Contrabassoon               | Normal                | 1   | 30  | -   | cbn  | double bassoon, Kontrafagott, contrafagotto, contrebasson, Controfagotti
 Woodwinds/Soprano sax                 | Normal                | 1   | 31  | -   | ssx  | 
@@ -44,7 +44,7 @@ Unpitched percussion/Military drum    | Hits                  | 8   | 46  | -   
 Unpitched percussion/Field drum       | Hits                  | 8   | 46  | -   | fdr  |
 Unpitched percussion/Cymbals american | Long hit              | 3   | 47  | -   | cym  | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
 Unpitched percussion/Cymbals viennese | Long hit              | 3   | 47  | -   | cyv  | 
-Unpitched percussion/Triangle         | Hit                   | 5   | 48  | -   | tri  | triangle concerto
+Unpitched percussion/Triangle         | Hit                   | 5   | 48  | -   | tri  | triangle concerto, triangolo
 Unpitched percussion/Gong             | Small gong            | 1   | 49  | -   | gng  | 
 Unpitched percussion/Thai gong        | A                     | 14  | 50  | -   | tha  |
 Unpitched percussion/Tom toms         | Low-mid               | 11  | 51  | -   | tom  | Tom-tom, tom-toms
