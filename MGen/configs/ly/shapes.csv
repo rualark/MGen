@@ -20,9 +20,9 @@ Phase;Task;Shape;Script
 10;Finish;TS;\stopTextSpan
 10;Finish;Trill;\stopTrillSpan
 10;Finish;Pedal;\sustainOff
-10;Start;Glis;\glissando$n$ \override NoteColumn.glissando-skip = ##t
 10;Start;Slur;(
 10;Start;PSlur;\(
+10;Start;Glis;\glissando$n$ \override NoteColumn.glissando-skip = ##t
 11;Finish;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$) \rightBracket
 11;Finish;Volta;\set Score.repeatCommands = #'((volta #f))
 11;Finish;Ottava;\unset Staff.ottavation
