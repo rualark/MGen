@@ -8,3 +8,5 @@ confirm_mode = 2 # 0 - do not confirm expected flags; 1 - confirm global/local; 
 
 AutoLegato = 1
 AutoNonLegato = 1
+
+#"Horn/Normal/1": Volume = 150
