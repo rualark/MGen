@@ -1479,7 +1479,10 @@ void CMainFrame::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 void CMainFrame::OnUpdateButtonOpenmidi(CCmdUI *pCmdUI) {
-	pCmdUI->Enable(m_fname != "");
+	if (m_state_gen == 2 && pGen && m_fname != "" && pGen->midi_saved) {
+		pCmdUI->Enable(1);
+	}
+	else pCmdUI->Enable(0);
 }
 
 void CMainFrame::OnButtonOpenmidi() {
@@ -1675,7 +1678,10 @@ void CMainFrame::OnButtonFolder() {
 }
 
 void CMainFrame::OnUpdateButtonLy(CCmdUI *pCmdUI) {
-	pCmdUI->Enable(!m_fname.IsEmpty());
+	if (m_state_gen == 2 && pGen && m_fname != "" && pGen->ly_saved) {
+		pCmdUI->Enable(1);
+	}
+	else pCmdUI->Enable(0);
 }
 
 void CMainFrame::OnButtonLy() {
