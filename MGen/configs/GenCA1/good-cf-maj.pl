@@ -20,4 +20,4 @@ Midi_file = midi\Melody\good\good-cf-maj.mid # Path and file name of imported mi
 #Midi_file = midi\Melody\test\test-lrange.mid
 #Midi_file = "midi\Melody\result\result\2017-07-22-auto 18-42-47.mid"
 
-corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
