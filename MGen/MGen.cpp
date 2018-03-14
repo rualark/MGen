@@ -75,6 +75,16 @@ CMGenApp theApp;
 
 BOOL CMGenApp::InitInstance()
 {
+	DeleteFile("log\\1.cpf");
+	DeleteFile("log\\2.cpf");
+	DeleteFile("log\\3.cpf");
+	DeleteFile("log\\4.cpf");
+	DeleteFile("log\\5.cpf");
+	DeleteFile("log\\6.cpf");
+	DeleteFile("log\\7.cpf");
+	DeleteFile("log\\8.cpf");
+	DeleteFile("log\\9.cpf");
+	CGLib::AppendLineToFile("log\\1.cpf", "X");
 	// InitCommonControlsEx() is required on Windows XP if an application
 	// manifest specifies use of ComCtl32.dll version 6 or later to enable
 	// visual styles.  Otherwise, any window creation will fail.
@@ -86,6 +96,7 @@ BOOL CMGenApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinAppEx::InitInstance();
+	CGLib::AppendLineToFile("log\\2.cpf", "X");
 
 
 	// Initialize OLE libraries
@@ -98,6 +109,7 @@ BOOL CMGenApp::InitInstance()
 	AfxEnableControlContainer();
 
 	EnableTaskbarInteraction(FALSE);
+	CGLib::AppendLineToFile("log\\3.cpf", "X");
 
 	// AfxInitRichEdit2() is required to use RichEdit control	
 	// AfxInitRichEdit2();
@@ -119,6 +131,7 @@ BOOL CMGenApp::InitInstance()
 
 	InitKeyboardManager();
 
+	CGLib::AppendLineToFile("log\\4.cpf", "X");
 	InitTooltipManager();
 	CMFCToolTipInfo ttParams;
 	ttParams.m_bVislManagerTheme = TRUE;
@@ -136,6 +149,7 @@ BOOL CMGenApp::InitInstance()
 	//if (!pDocTemplate)
 		//return FALSE;
 	AddDocTemplate(pDocTemplate);
+	CGLib::AppendLineToFile("log\\5.cpf", "X");
 
 
 	// Parse command line for standard shell commands, DDE, file open
@@ -147,14 +161,17 @@ BOOL CMGenApp::InitInstance()
 	//RegisterShellFileTypes(TRUE);
 
 
+	CGLib::AppendLineToFile("log\\6.cpf", "X");
 	// Dispatch commands specified on the command line.  Will return FALSE if
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
 
+	CGLib::AppendLineToFile("log\\7.cpf", "X");
 	// The one and only window has been initialized, so show and update it
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
+	CGLib::AppendLineToFile("log\\8.cpf", "X");
 	// call DragAcceptFiles only if there's a suffix
 	//  In an SDI app, this should occur after ProcessShellCommand
 	// Enable drag/drop open
