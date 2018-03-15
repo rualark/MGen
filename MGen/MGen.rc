@@ -724,6 +724,7 @@ BEGIN
     ID_BUTTON_SCONFIG       "Shows configuration that was used when music generation was running\nShow config used for this generation"
     ID_BUTTON_PDF           "Open resulting PDF score after processing Lilypond\nOpen PDF score"
     ID_SPIN_PSPEED          "Change playback speed to speed up or down music playback\nPlayback speed"
+    ID_SPIN_ZOOM            "Decrease horizontal zoom for more information to fit on display\nHorizontal zoom"
 END
 
 STRINGTABLE
