@@ -29,8 +29,8 @@ include "include/CA2.pl"
 #Midi_file = "midi\Counterpoint\test\test-cp4-slurs.mid" # Path and file name of imported midi file
 #Midi_file = "midi\Counterpoint\test\test-ly-rhythm.mid" # Path and file name of imported midi file
 #Midi_file = "midi\Counterpoint\test\test-ly-key.mid" # Path and file name of imported midi file
-#Midi_file = "midi\Counterpoint\test\test-ly-alter.mid" # Path and file name of imported midi file
-Midi_file = "midi\Counterpoint\test\test-ly-clef.mid" # Path and file name of imported midi file
+Midi_file = "midi\Counterpoint\test\test-ly-alter.mid" # Path and file name of imported midi file
+#Midi_file = "midi\Counterpoint\test\test-ly-clef.mid" # Path and file name of imported midi file
 #Midi_file = "midi\Counterpoint\test\test-repeat.mid" # Path and file name of imported midi file
 #Midi_file = "midi\Counterpoint\test\test-tritone.mid" # Path and file name of imported midi file
 #Midi_file = "midi\Counterpoint\test\test-gc.mid" # Path and file name of imported midi file
