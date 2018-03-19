@@ -44,7 +44,7 @@ trem_dyn_range = 0-80 # (0-100) Percent of tremolo dynamics compared to sustain 
 trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
 
 # Accent velocity
-acc_range = 1-127 # (1-127) Map dynamics to specified accent range
+acc_range = 1-100 # (1-127) Map dynamics to specified accent range
 slow_acc_vel = 50 # Velocity below this value triggers slow attack sustain
 slow_acc_minlen = 800 # Minimum note length (ms) that can have a slow attack sustain
 harsh_acc_vel = 84 # Velocity equal or above this value triggers harsh attack sustain
