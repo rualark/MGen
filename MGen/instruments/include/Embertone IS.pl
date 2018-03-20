@@ -87,7 +87,7 @@ rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 rnd_vel = 8 # Randomize note velocity not greater than this percent
 rnd_dyn = 8 # Randomize step dynamics not greater than this percent
 rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
-rand_pos_max = 70-0 # Maximum shift in ms (start-end)
+rand_pos_max = 0-0 # Maximum shift in ms (start-end)
 
 # Unison adaptor
 unison_dyn_mul = 1.3 # Multiply dynamics of staying unison note by this value
