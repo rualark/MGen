@@ -202,20 +202,20 @@ Set;Severity;Class;Group;Rule;Flag
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;1;;;;134;9;;;;;;;
 1;40;70;Cantus;Harmony;Multiple harmonies in measure;>2;0;;More than 2 harmonies;1;;;;36;2;;;;;;;
 1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;;;;15;0;;1;;;;;
-1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99
+1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;1;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99
 1;308;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;;;3;2;1;;;;;;
 1;309;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;;;2;1;1;;;;;;
 1;375;30;Cantus;Harmony;Prohibited progression;Augmented;0;;Augmented chord is prohibited;1;;;;39;0;;;;;;;
 1;377;30;Cantus;Harmony;Prohibited progression;VI<->VI#;0;;Chord with VI note near chord with VI# note;1;;;;5;0;;;;;;;
 1;378;30;Cantus;Harmony;Prohibited progression;VII<->VII#;0;;Chord with VII note near chord with VII# note;1;;;;10;0;;;;;;;
 1;383;30;Cantus;Harmony;Prohibited progression;64 chord;0;;;1;;;;176;0;;;;;;;
-1;77;0;Cantus;Harmony;Harmonic penalty;1;-1;;;1;;;;577;0;;;;;;;17,20,23,48,57,77,92,99
-1;57;0;Cantus;Harmony;Harmonic penalty;2;-1;;;1;;;;517;1;;;;;;;17,20,23,48,57,77,92,99
-1;92;0;Cantus;Harmony;Harmonic penalty;2x2;-1;;;1;;;;102;1;;;;;;;17,20,23,48,57,77,92,99
-1;23;20;Cantus;Harmony;Harmonic penalty;3x2;0;;;1;;;;19;1;;;;;;;17,20,23,48,57,77,92,99
+1;77;0;Cantus;Harmony;Harmonic progression;norm;-1;;;9;;;!srn!;577;0;;;;;;;17,20,23,48,57,77,92,99
+1;57;0;Cantus;Harmony;Harmonic progression;bad;-1;;;9;;;!srn!;517;1;;;;;;;17,20,23,48,57,77,92,99
+1;92;0;Cantus;Harmony;Harmonic progression;2 x bad;-1;;;9;;;!srn!;102;1;;;;;;;17,20,23,48,57,77,92,99
+1;23;20;Cantus;Harmony;Harmonic progression;3 x bad;0;;;9;;;!srn!;19;1;;;;;;;17,20,23,48,57,77,92,99
 1;418;0;Cantus;Harmony;Harmonic repeat;inversion;0;;Chord is repeated, but inversion is changed;1;;;;;;;;;;;;
 1;99;30;Cantus;Harmony;Harmonic repeat;full;0;;Chord is repeated with same inversion;1;;;;151;4;;;;;;;17,20,23,48,57,77,92,99
-1;321;70;Cantus;Harmony;Harmonic repeat;2 x repeats;0;;;1;;;;5;1;1;;;;;;
+1;321;70;Cantus;Harmony;Harmonic repeat;2 x repeats;0;;;9;;;!srn!;5;1;1;;;;;;
 1;49;0;Cantus;Border;First note not tonic;V high;1;CF;;;;;;5;1;1;;;;;;
 1;90;60;Cantus;Border;First note not tonic;III high;0;CF;;;;;;3;1;1;;;;;;
 1;33;100;Cantus;Border;First note not tonic;Other;0;CF;;;;;;50;5;1;;;;;;
