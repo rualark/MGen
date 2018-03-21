@@ -190,11 +190,11 @@ Set;Severity;Class;Group;Rule;Flag
 1;15;0;Melody;Range;No melody development;12 notes <12;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;99;2;;1;;1;;;
 1;16;0;Melody;Range;No melody development;15 notes <15;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;46;1;;1;;;;;
 1;17;20;Cantus;Harmony;Repeating letters in a row;>4 T;0;;;9;;;!srn! letters;40;1;;1;;;;;17,20,23,48,57,77,92,99
-1;428;20;Cantus;Harmony;Repeating letters in a row;>4 D;0;;;9;;;!srn! letters;;;;;;;;;
-1;429;20;Cantus;Harmony;Repeating letters in a row;>4 S;0;;;9;;;!srn! letters;;;;;;;;;
+1;428;20;Cantus;Harmony;Repeating letters in a row;>4 D;0;;;9;;;!srn! letters;;;;1;;;;;
+1;429;20;Cantus;Harmony;Repeating letters in a row;>4 S;0;;;9;;;!srn! letters;;;;1;;;;;
 1;20;20;Cantus;Harmony;Missing letters in a row;>5 without T;0;;;9;;;!srn! letter;118;1;;1;;;;;17,20,23,48,57,77,92,99
-1;430;20;Cantus;Harmony;Missing letters in a row;>5 without D;0;;;9;;;!srn! letter;;;;;;;;;
-1;431;20;Cantus;Harmony;Missing letters in a row;>6 without S;0;;;9;;;!srn! letter;;;;;;;;;
+1;430;20;Cantus;Harmony;Missing letters in a row;>5 without D;0;;;9;;;!srn! letter;;;;1;;;;;
+1;431;20;Cantus;Harmony;Missing letters in a row;>6 without S;0;;;9;;;!srn! letter;;;;1;;;;;
 1;194;0;Cantus;Harmony;Accented bad progression;leap >4th;-1;Only for cantus;;1;;;;0;0;;;;;;;
 1;195;0;Cantus;Harmony;Accented bad progression;culmination;-1;Only for cantus;;1;;;;0;0;;;;;;;
 1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate 2;1;;In penultimate measure;1;;;;86;11;;;;;;;
