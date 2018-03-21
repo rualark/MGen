@@ -54,15 +54,8 @@ Technique = "trem; Tremolo"
 # Initial setup
 InitCommand = "Dynamic range: 19" # default 0
 InitCommand = "Bow change slur reverse: 0" # default 0
-InitCommand = "Ensemble intonation: 20" # default 10
-InitCommand = "Ensemble L: 40" # default 0
-InitCommand = "Ensemble R: 87" # default 127
-InitCommand = "Ensemble tightness: 36" # default 36, alternative 65
-InitCommand = "Ensemble randomize: 32" # default 32, alternative 100
-InitCommand = "Ensemble combine transitions"
 InitCommand = "Transition speed lower: 16"
 InitCommand = "Transition speed upper: 16" # Default 71, but automatic legato speed is not supported yet because it decreases audio quality
-InitCommand = "Solo intonation: 0"
 InitCommand = "Responsiveness: 0"
 InitCommand = "Retrigger on" # default 100
 InitCommand = "Dynamic KSW threshold: 100"
@@ -74,6 +67,7 @@ InitCommand = "Legato"
 InitCommand = "Color off"
 InitTechnique = "ord"
 
+Solo intonation = 0
 all_ahead = 104 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Sul tasto adaptor

@@ -53,16 +53,9 @@ Technique = "pizz; Pizzicato" # TODO: not implemented yet
 Technique = "trem; Tremolo" # TODO: not implemented yet
 
 # Initial setup
-InitCommand = "Ensemble intonation: 20" # default 15
-InitCommand = "Ensemble L: 40" # default 0
-InitCommand = "Ensemble R: 87" # default 127
-InitCommand = "Ensemble tightness: 28" # default 28, alternative 65
-InitCommand = "Ensemble randomize: 41" # default 41, alternative 100
-InitCommand = "Ensemble combine transitions" # default 0
 InitCommand = "Transition speed lower: 16"
 InitCommand = "Transition speed upper: 16" # Default 49, but automatic legato speed is not supported yet because it decreases audio quality
 InitCommand = "Transition speed: 76"
-InitCommand = "Solo intonation: 2"
 InitCommand = "Responsiveness: 0" # default 0
 InitCommand = "Dynamic KSW threshold: 100"
 InitCommand = "Shorts length control on"
@@ -72,6 +65,7 @@ InitCommand = "Vibrato style - Progressive"
 InitCommand = "Legato"
 InitTechnique = "ord"
 
+Solo intonation = 2
 all_ahead = 128 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Sul tasto adaptor
