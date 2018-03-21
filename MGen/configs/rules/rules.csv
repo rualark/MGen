@@ -274,10 +274,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;316;100;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;7;1;1;;52;16;1;;;;;;
 1;385;60;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;sus;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;7;1;1;;;;;;;;;;
 1;250;60;Counterpoint;Counterpoint;Perfect consonances < 4/4 apart;other;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;7;1;1;;67;17;1;;;;249;;
-1;379;0;Counterpoint;Counterpoint;Virtual 4th;beat 1;0;;;12;;;sounds 6/4;21;4;;;;;;;
-1;380;0;Counterpoint;Counterpoint;Virtual 4th;beat 3;0;;;12;;;sounds 6/4;8;4;;;;;;;
-1;381;0;Counterpoint;Counterpoint;Virtual 4th;long;0;;;12;;;sounds 6/4;12;4;;;;;;;
-1;382;0;Counterpoint;Counterpoint;Virtual 4th;repeat;0;;;12;;;sounds 6/4;2;2;;;;;;;
+1;379;0;Counterpoint;Counterpoint;Virtual 4th;beat 1;-1;;;12;;;sounds 6/4;21;4;;;;;;;
+1;380;0;Counterpoint;Counterpoint;Virtual 4th;beat 3;-1;;;12;;;sounds 6/4;8;4;;;;;;;
+1;381;0;Counterpoint;Counterpoint;Virtual 4th;long;-1;;;12;;;sounds 6/4;12;4;;;;;;;
+1;382;0;Counterpoint;Counterpoint;Virtual 4th;repeat;-1;;;12;;;sounds 6/4;2;2;;;;;;;
 1;208;0;Counterpoint;Counterpoint;Direct stepwise movement to Pco;5 cadence;1;Direct movement to interval with stepwize motion in higher voice;;7;;1;;1;1;1;;;;;;
 1;209;0;Counterpoint;Counterpoint;Direct stepwise movement to Pco;8 cadence;1;Direct movement to interval with stepwize motion in higher voice;;7;;1;;27;3;1;;;;;;
 1;210;40;Counterpoint;Counterpoint;Direct stepwise movement to Pco;5;0;Direct movement to interval with stepwize motion in higher voice;;7;;1;;19;9;1;;;;;;
