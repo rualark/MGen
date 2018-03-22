@@ -208,7 +208,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockPane(&m_wndOutput);
 
 	// set the visual manager and style based on persisted value
-	//OnApplicationLook(theApp.m_nAppLook);
+	OnApplicationLook(theApp.m_nAppLook);
 
 	LoadAlgo();
 
