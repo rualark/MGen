@@ -223,6 +223,7 @@
     <ClInclude Include="GLibrary\MidiOut.h" />
     <ClInclude Include="GLibrary\MPort.h" />
     <ClInclude Include="GLibrary\pvector.h" />
+    <ClInclude Include="GLibrary\SinRand.h" />
     <ClInclude Include="GLibrary\SmRnd.h" />
     <ClInclude Include="GLibrary\VSet.h" />
     <ClInclude Include="InfoDlg.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="GLibrary\MidiOut.cpp" />
     <ClCompile Include="GLibrary\MPort.cpp" />
     <ClCompile Include="GLibrary\pvector.cpp" />
+    <ClCompile Include="GLibrary\SinRand.cpp" />
     <ClCompile Include="GLibrary\SmRnd.cpp" />
     <ClCompile Include="GLibrary\VSet.cpp" />
     <ClCompile Include="InfoDlg.cpp" />

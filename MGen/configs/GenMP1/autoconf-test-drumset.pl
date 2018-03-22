@@ -11,3 +11,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 Midi_file = midi\Music\test\test-drumset.mid
 
 Instruments = "Jazz drum set"
+

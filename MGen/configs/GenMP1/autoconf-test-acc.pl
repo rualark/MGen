@@ -14,3 +14,5 @@ Midi_file = midi\Music\test\test-acc.mid
 Instruments = Violin
 
 MidiFileType = Sibelius
+
+rnd_tempo = 80
