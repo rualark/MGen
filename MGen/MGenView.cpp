@@ -153,6 +153,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Pen pen_red(Color(255 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_white(Color(255 /*A*/, 255 /*R*/, 255 /*G*/, 255 /*B*/), 1);
+	Pen pen_green(Color(255 /*A*/, 0 /*R*/, 255 /*G*/, 0 /*B*/), 1);
 	HatchStyle hatch;
 
 	Gdiplus::Font font(&FontFamily(L"Arial"), 10);
@@ -505,11 +506,20 @@ void CMGenView::OnDraw(CDC* pDC)
 					// Show dstime
 					if (mf->show_shift && pGen->dstime[i][v]) {
 						float twidth = pGen->etime[i] - pGen->stime[i];
-						g.DrawLine(&pen_black, X_FIELD + i * nwidth,
+						Pen *mypen;
+						if (pGen->artic[i][v] == aLEGATO || pGen->artic[i][v] == aSLUR) mypen = &pen_black;
+						else if (pGen->artic[i][v] == aPIZZ) mypen = &pen_green;
+						else if (pGen->artic[i][v] == aSTAC) mypen = &pen_ablue;
+						else mypen = &pen_red;
+						g.DrawLine(mypen, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							(int)(X_FIELD + i * nwidth + pGen->dstime[i][v] * nwidth / twidth),
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
-						g.DrawLine(&pen_red, X_FIELD + (ei + 1) * nwidth - cutend,
+						g.DrawLine(mypen, X_FIELD + i * nwidth,
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+							X_FIELD + i * nwidth,
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1);
+						g.DrawLine(&pen_adgray, X_FIELD + (ei + 1) * nwidth - cutend,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1,
 							(int)(X_FIELD + (ei + 1) * nwidth + pGen->detime[ei][v] * nwidth / twidth - cutend),
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1);
