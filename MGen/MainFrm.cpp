@@ -293,6 +293,7 @@ void CMainFrame::ParseCommandLine() {
 }
 
 void CMainFrame::LoadFile(CString abs_path) {
+	if (!CGLib::fileExists(abs_path)) return;
 	TCHAR buffer[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, buffer);
 	CString path_old = string(buffer).c_str();
