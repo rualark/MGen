@@ -194,7 +194,9 @@ BOOL CInfoDlg::OnInitDialog()
 			pGen->icf[pGen->instr[mv]].group + "/" + pGen->icf[pGen->instr[mv]].name,
 			pGen->icf[pGen->instr[mv]].channel, pGen->icf[pGen->instr[mv]].type);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		st.Format("Instrument library: %s\n", pGen->icf[pGen->instr[mv]].lib);
+		st.Format("Instrument library: %s (all ahead %d ms, legato ahead %d ms)\n", 
+			pGen->icf[pGen->instr[mv]].lib, pGen->icf[pGen->instr[mv]].all_ahead, 
+			pGen->icf[pGen->instr[mv]].legato_ahead[0]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
