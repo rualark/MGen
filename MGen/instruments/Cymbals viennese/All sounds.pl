@@ -17,3 +17,9 @@ trem_replace = "B4" # Replace tremolo notes with this note
 trem_maxint = 127 # Maximum interval between notes of a trill in semitones to be considered a tremolo
 trem_end = 0 # 0 - normal ending, 1 - cutoff (need hit), 2 - ending hit
 trem_len = 7000 # Tremolo maximum sample length in ms
+
+# Randomization
+rnd_vel = 8 # Randomize note velocity not greater than this percent
+rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
+rand_pos_max = 40-0 # Maximum shift in ms (start-end)
+

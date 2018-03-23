@@ -36,6 +36,7 @@ Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Randomization
+rnd_dyn = 8 # Randomize step dynamics not greater than this percent
 rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
 rand_pos_max = 70-0 # Maximum shift in ms (start-end)
 

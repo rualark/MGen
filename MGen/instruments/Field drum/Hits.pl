@@ -24,3 +24,9 @@ trem_dyn_range = 0-100 # (0-100) Percent of tremolo dynamics compared to sustain
 trem_replace = "F4" # Replace tremolo notes with this note
 trem_maxint = 127 # Maximum interval between notes of a trill in semitones to be considered a tremolo
 trem_end = 1 # 0 - normal ending, 1 - cutoff (need hit), 2 - ending hit
+
+# Randomization
+rnd_vel = 8 # Randomize note velocity not greater than this percent
+rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
+rand_pos_max = 40-0 # Maximum shift in ms (start-end)
+
