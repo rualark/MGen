@@ -328,8 +328,11 @@ void CMainFrame::LoadFile(CString abs_path) {
 			SetTimer(TIMER4, CGLib::m_test_sec * 1000, NULL);
 		}
 	}
-	else {
+	else if (ext == "mgr") {
 		LoadResults(abs_path);
+	}
+	else {
+		AfxMessageBox("Cannot open file with this extension: " + abs_path);
 	}
 }
 
