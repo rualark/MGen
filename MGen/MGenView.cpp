@@ -502,7 +502,7 @@ void CMGenView::OnDraw(CDC* pDC)
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
 					// Show dstime
-					if (mf->show_comments && pGen->dstime[i][v]) {
+					if (mf->show_shift && pGen->dstime[i][v]) {
 						float twidth = pGen->etime[i] - pGen->stime[i];
 						g.DrawLine(&pen_black, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,

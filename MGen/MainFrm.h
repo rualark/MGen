@@ -71,6 +71,7 @@ public:
 	int m_pspeed = 100; // Playback speed in percent
 	int show_marks = 1;
 	int show_comments = 1;
+	int show_shift = 1;
 	int show_lining = 1;
 	int show_lines = 1;
 	int show_progress = 1;
@@ -252,4 +253,6 @@ public:
 	afx_msg void OnUpdateCheckGraph3(CCmdUI *pCmdUI);
 	afx_msg void OnCheckProgress();
 	afx_msg void OnUpdateCheckProgress(CCmdUI *pCmdUI);
+	afx_msg void OnCheckShift();
+	afx_msg void OnUpdateCheckShift(CCmdUI *pCmdUI);
 };

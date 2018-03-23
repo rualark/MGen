@@ -135,6 +135,7 @@
 #define ID_CHECK3                       32846
 #define ID_CHECK_GRAPH1                 32846
 #define ID_CHECK4                       32847
+#define ID_CHECK_SHIFT                  32847
 #define ID_CHECK_GRAPH2                 32848
 #define ID_CHECK_GRAPH3                 32849
 #define ID_CHECK_PROGRESS               32850
@@ -144,7 +145,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32847
+#define _APS_NEXT_COMMAND_VALUE         32848
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

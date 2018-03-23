@@ -8,6 +8,7 @@ Horizontal_zoom = 100 # Zoom of the piano roll. Can be from 1 to 2000
 playback_speed = 100 # Playback speed in percent
 show_marks = 1 # Set to 1 to show note mark strings
 show_comments = 1 # Set to 1 to surround notes which have comments with rectangles
+show_shift = 1 # Set to 1 to show shift near note start and ending
 show_lining = 1 # Set to 1 to show note lining
 show_lines = 1 # Set to 1 to show line separators
 show_progress = 1 # Set to 1 to show note scan progress

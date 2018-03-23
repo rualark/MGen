@@ -120,6 +120,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_GRAPH3, &CMainFrame::OnUpdateCheckGraph3)
 	ON_COMMAND(ID_CHECK_PROGRESS, &CMainFrame::OnCheckProgress)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_PROGRESS, &CMainFrame::OnUpdateCheckProgress)
+	ON_COMMAND(ID_CHECK_SHIFT, &CMainFrame::OnCheckShift)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_SHIFT, &CMainFrame::OnUpdateCheckShift)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1001,6 +1003,7 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "step_dyn", &m_step_dyn);
 			CGLib::CheckVar(&st2, &st3, "show_marks", &show_marks);
 			CGLib::CheckVar(&st2, &st3, "show_comments", &show_comments);
+			CGLib::CheckVar(&st2, &st3, "show_shift", &show_shift);
 			CGLib::CheckVar(&st2, &st3, "show_lining", &show_lining);
 			CGLib::CheckVar(&st2, &st3, "show_lines", &show_lines);
 			CGLib::CheckVar(&st2, &st3, "show_progress", &show_progress);
@@ -1064,6 +1067,8 @@ void CMainFrame::SaveSettings()
 	st.Format("show_marks = %d # Set to 1 to show note mark strings\n", show_marks);
 	fs << st;
 	st.Format("show_comments = %d # Set to 1 to surround notes which have comments with rectangles\n", show_comments);
+	fs << st;
+	st.Format("show_shift = %d # Set to 1 to show shift near note start and ending\n", show_shift);
 	fs << st;
 	st.Format("show_lining = %d # Set to 1 to show note lining\n", show_lining);
 	fs << st;
@@ -1758,4 +1763,14 @@ void CMainFrame::OnCheckProgress() {
 
 void CMainFrame::OnUpdateCheckProgress(CCmdUI *pCmdUI) {
 	pCmdUI->SetCheck(show_progress);
+}
+
+void CMainFrame::OnCheckShift() {
+	show_shift = !show_shift;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckShift(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_shift);
 }
