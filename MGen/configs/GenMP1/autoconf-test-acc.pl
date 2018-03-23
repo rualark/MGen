@@ -11,7 +11,8 @@ AutoLegato = 1
 # Created at 2018-02-24 00:00:25
 Midi_file = midi\Music\test\test-acc.mid
 
-Instruments = Violin
+Instruments = Flute
+"Flute/Normal": rand_pos = 40-0
 
 MidiFileType = Sibelius
 
