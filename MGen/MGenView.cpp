@@ -298,7 +298,8 @@ void CMGenView::OnDraw(CDC* pDC)
 			int step1 = max(0, (ClipBox.left - X_FIELD) / nwidth - 1);
 			int step2_2 = min((ClipBox.right - X_FIELD) / nwidth + 1, 32000 / nwidth); // For horizontal bars
 			if (step2_2 < step1) step2_2 = step1;
-			int step2 = min(pGen->t_generated, step2_2); // For notes
+			float twidth = pGen->etime[step1] - pGen->stime[step1];
+			int step2 = min(pGen->t_generated, step2_2 + MAX_AHEAD / twidth); // For notes
 			int step2_3 = step2 / 8 * 8+8; // For vertical lines
 			// Show grid
 			RectF sizeRect;
