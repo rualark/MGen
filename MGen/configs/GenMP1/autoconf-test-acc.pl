@@ -5,7 +5,7 @@
 
 adapt_enable = 1 # 1 if you want to adapt voices to instruments
 midifile_in_mul = 16 # How much you want to decrease minimum step length
-AutoLegato = 0
+AutoLegato = 1
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-24 00:00:25
