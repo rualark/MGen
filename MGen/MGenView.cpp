@@ -150,6 +150,7 @@ void CMGenView::OnDraw(CDC* pDC)
 	Pen pen_dgray(Color(255 /*A*/, 220 /*R*/, 220 /*G*/, 220 /*B*/), 1);
 	Pen pen_ddgray(Color(255 /*A*/, 180 /*R*/, 180 /*G*/, 180 /*B*/), 1);
 	Pen pen_dddgray(Color(255 /*A*/, 120 /*R*/, 120 /*G*/, 120 /*B*/), 1);
+	Pen pen_red(Color(255 /*A*/, 255 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_black(Color(255 /*A*/, 0 /*R*/, 0 /*G*/, 0 /*B*/), 1);
 	Pen pen_white(Color(255 /*A*/, 255 /*R*/, 255 /*G*/, 255 /*B*/), 1);
 	HatchStyle hatch;
@@ -401,17 +402,18 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
 					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
+					int ei = i + pGen->len[i][v] - 1;
 					// Check if note steps have different dynamics
 					int step_dyn2 = 0;
 					int note_lining = pGen->lining[i][v];
 					if ((step_dyn) && (pGen->len[i][v] > 1)) {
-						for (int x = i + 1; x < i + pGen->len[i][v]; ++x) {
+						for (int x = i + 1; x <= ei; ++x) {
 							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
 							if (pGen->lining[x][v]) note_lining = pGen->lining[x][v];
 						}
 					}
 					else {
-						for (int x = i + 1; x < i + pGen->len[i][v]; ++x) {
+						for (int x = i + 1; x <= ei; ++x) {
 							if (pGen->lining[x][v]) note_lining = pGen->lining[x][v];
 						}
 					}
@@ -451,7 +453,7 @@ void CMGenView::OnDraw(CDC* pDC)
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
 						// Highlight selected note
-						if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
+						if ((mouse_step >= i) && (mouse_step <= ei) && (mouse_voice == v)) {
 							g.FillRectangle(&brush, X_FIELD + i * nwidth,
 								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 								pGen->len[i][v] * nwidth - cutend, nheight);
@@ -459,7 +461,7 @@ void CMGenView::OnDraw(CDC* pDC)
 					}
 					// Show with step dynamics
 					else {
-						for (int x = i; x < i + pGen->len[i][v]; x++) {
+						for (int x = i; x <= ei; x++) {
 							alpha = 40 + (80 * pGen->dyn[x][v] / 127);
 							if (mf->show_notecolors && pGen->color[x][v] != 0) {
 								if (CGLib::GetAlpha(pGen->color[x][v]) == 0)
@@ -481,13 +483,13 @@ void CMGenView::OnDraw(CDC* pDC)
 							}
 							HatchBrush brush(hatch, ncolor2, ncolor);
 							cutend = 0;
-							if ((x == i + pGen->len[i][v] - 1) && (i + pGen->noff[i][v] < pGen->t_generated) &&
+							if ((x == ei) && (i + pGen->noff[i][v] < pGen->t_generated) &&
 								(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) cutend = 1;
 							g.FillRectangle(&brush, X_FIELD + x * nwidth,
 								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 								nwidth - cutend, nheight);
 							// Highlight selected note
-							if ((mouse_step >= i) && (mouse_step < i + pGen->len[i][v]) && (mouse_voice == v)) {
+							if ((mouse_step >= i) && (mouse_step <= ei) && (mouse_voice == v)) {
 								g.FillRectangle(&brush, X_FIELD + x * nwidth,
 									y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 									nwidth - cutend, nheight);
@@ -499,6 +501,18 @@ void CMGenView::OnDraw(CDC* pDC)
 						g.DrawRectangle(&pen_agray, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
+					// Show dstime
+					if (mf->show_comments && pGen->dstime[i][v]) {
+						float twidth = pGen->etime[i] - pGen->stime[i];
+						g.DrawLine(&pen_black, X_FIELD + i * nwidth,
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+							(int)(X_FIELD + i * nwidth + pGen->dstime[i][v] * nwidth / twidth),
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
+						g.DrawLine(&pen_red, X_FIELD + (ei + 1) * nwidth - cutend,
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1,
+							(int)(X_FIELD + (ei + 1) * nwidth + pGen->detime[ei][v] * nwidth / twidth - cutend),
+							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1);
+					}
 					if (pGen->noff[i][v] == 0) break;
 					i = i + pGen->noff[i][v] - 1;
 					// Protect from infinite loop
