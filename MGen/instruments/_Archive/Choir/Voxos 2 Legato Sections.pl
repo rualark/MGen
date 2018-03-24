@@ -40,4 +40,5 @@ rbell_pos = 20-80 # Leftmost-rightmost minimum reverse bell position inside wind
 
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
-rnd_dyn = 8 # Randomize step dynamics not greater than this percent
+rnd_dyn = 10 # Randomize step dynamics not greater than this percent
+rnd_dyn_slow = 3 # Slow down random dynamics function by this value. Can be only integer: 1 and above

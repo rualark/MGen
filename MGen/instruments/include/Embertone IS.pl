@@ -82,12 +82,15 @@ vib_bell = 30-90 # Maximum vibrato intensity in vibrato bell (for minimum and hi
 vibf_bell = 20-80 # Max vibrato frequency in vibrato bell (for minimum and highest duration)
 rnd_vib = 10 # Randomize vibrato intensity not greater than this percent
 rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
+rnd_vib_slow = 2 # Slow down random vibrato function by this value. Can be only integer: 1 and above
+rnd_vibf_slow = 2 # Slow down random vibrato speed function by this value. Can be only integer: 1 and above
 
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
-rnd_dyn = 8 # Randomize step dynamics not greater than this percent
 rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
 rand_pos_max = 70-0 # Maximum shift in ms (start-end)
+rnd_dyn = 10 # Randomize step dynamics not greater than this percent
+rnd_dyn_slow = 3 # Slow down random dynamics function by this value. Can be only integer: 1 and above
 
 # Unison adaptor
 unison_dyn_mul = 1.3 # Multiply dynamics of staying unison note by this value
