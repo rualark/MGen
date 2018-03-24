@@ -189,12 +189,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;397;0;Melody;Range;sp3,5 Constrained local range;19 notes <m6;0;;X consecutive notes have total range less than Y;9;;;Stagnation;;;;;;;;;
 1;15;0;Melody;Range;No melody development;12 notes <12;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;99;2;;1;;1;;;
 1;16;0;Melody;Range;No melody development;15 notes <15;0;;Melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;46;1;;1;;;;;
-1;17;20;Cantus;Harmony;Repeating letters in a row;>4 T;0;;;9;;;!srn! letters;40;1;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;428;20;Cantus;Harmony;Repeating letters in a row;>4 D;0;;;9;;;!srn! letters;;;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;429;20;Cantus;Harmony;Repeating letters in a row;>4 S;0;;;9;;;!srn! letters;;;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;20;20;Cantus;Harmony;Missing letters in a row;>5 without T;0;;;9;;;!srn! letter;118;1;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;430;20;Cantus;Harmony;Missing letters in a row;>5 without D;0;;;9;;;!srn! letter;;;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;431;20;Cantus;Harmony;Missing letters in a row;>6 without S;0;;;9;;;!srn! letter;;;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;17;20;Cantus;Harmony;Repeating letters in a row;>4 T;0;;;9;;;Weak prog.;40;1;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;428;20;Cantus;Harmony;Repeating letters in a row;>4 D;0;;;9;;;Weak prog.;;;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;429;20;Cantus;Harmony;Repeating letters in a row;>4 S;0;;;9;;;Weak prog.;;;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;20;20;Cantus;Harmony;Missing letters in a row;>5 without T;0;;;9;;;No T;118;1;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;430;20;Cantus;Harmony;Missing letters in a row;>5 without D;0;;;9;;;No D;;;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;431;20;Cantus;Harmony;Missing letters in a row;>6 without S;0;;;9;;;No S;;;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;194;0;Cantus;Harmony;Accented bad progression;leap >4th;-1;Only for cantus;;1;;;;0;0;;;;;;;
 1;195;0;Cantus;Harmony;Accented bad progression;culmination;-1;Only for cantus;;1;;;;0;0;;;;;;;
 1;306;0;Cantus;Harmony;Multiple harmonies in measure;penultimate 2;1;;In penultimate measure;1;;;;86;11;;;;;;;
@@ -210,9 +210,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;377;30;Cantus;Harmony;Prohibited progression;VI<->VI#;0;;Chord with VI note near chord with VI# note;1;;;;5;0;;;;;;;
 1;378;30;Cantus;Harmony;Prohibited progression;VII<->VII#;0;;Chord with VII note near chord with VII# note;1;;;;10;0;;;;;;;
 1;77;0;Cantus;Harmony;Harmonic progression;norm;-1;;;9;;;!srn!;577;0;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;57;0;Cantus;Harmony;Harmonic progression;bad;-1;;;9;;;!srn!;517;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;92;0;Cantus;Harmony;Harmonic progression;2 x bad;-1;;;9;;;!srn!;102;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;23;20;Cantus;Harmony;Harmonic progression;3 x bad;0;;;9;;;!srn!;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;57;0;Cantus;Harmony;Harmonic progression;bad;-1;;;9;;;Weak prog.;517;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;92;0;Cantus;Harmony;Harmonic progression;2 x bad;-1;;;9;;;Weak prog.;102;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;23;20;Cantus;Harmony;Harmonic progression;3 x bad;0;;;9;;;Weak prog.;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;418;0;Cantus;Harmony;Harmonic repeat;inversion;0;;Chord is repeated, but inversion is changed;1;;;;;;;;;;;;
 1;99;30;Cantus;Harmony;Harmonic repeat;full;0;;Chord is repeated with same inversion;1;;;;151;4;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;321;70;Cantus;Harmony;Harmonic repeat;2 x repeats;0;;;9;;;!srn!;5;1;1;;;;;;
@@ -315,19 +315,19 @@ Set;Severity;Class;Group;Rule;Flag
 1;390;30;Counterpoint;Counterpoint;Parallel imperfect consonances;>3 x 6ths;0;More than X same imperfect consonances in a row;;9;1;;Parallel 6ths;;;;;;;;;
 1;268;0;Counterpoint;Counterpoint;First harmonic interval;I-I;-1;;;2;1;;;313;3;;;;;;;
 1;269;0;Counterpoint;Counterpoint;First harmonic interval;I-V;-1;;;2;1;;;48;6;1;;;;;;
-1;270;0;Counterpoint;Counterpoint;First harmonic interval;I-III;1;;;2;1;;;25;5;1;;;;;;
+1;270;0;Counterpoint;Counterpoint;First harmonic interval;I-III;0;;;2;1;;;25;5;1;;;;;;
 1;421;60;Counterpoint;Counterpoint;First harmonic interval;I-VI;0;;;;;;;;;;;;;;;
-1;271;60;Counterpoint;Counterpoint;First harmonic interval;III-I;0;;;2;1;;;11;2;1;;;;;;
-1;423;60;Counterpoint;Counterpoint;First harmonic interval;IV-I;0;;;;;;;;;;;;;;;
-1;425;60;Counterpoint;Counterpoint;First harmonic interval;VI-I;0;;;;;;;;;;;;;;;
+1;271;100;Counterpoint;Counterpoint;First harmonic interval;III-I;0;;;2;1;;;11;2;1;;;;;;
+1;423;100;Counterpoint;Counterpoint;First harmonic interval;IV-I;0;;;;;;;;;;;;;;;
+1;425;100;Counterpoint;Counterpoint;First harmonic interval;VI-I;0;;;;;;;;;;;;;;;
 1;272;100;Counterpoint;Counterpoint;First harmonic interval;Other;0;;;2;1;;;42;14;1;;;;;;
 1;354;0;Counterpoint;Counterpoint;Last harmonic interval;I-I;-1;;;2;1;;;356;1;;;;;;;
-1;355;0;Counterpoint;Counterpoint;Last harmonic interval;I-V;-1;;;2;1;;;24;7;;;;;;;
-1;356;0;Counterpoint;Counterpoint;Last harmonic interval;I-III;1;;;2;1;;;19;2;1;;;;;;
-1;422;60;Counterpoint;Counterpoint;Last harmonic interval;I-VI;0;;;;;;;;;;;;;;;
-1;357;60;Counterpoint;Counterpoint;Last harmonic interval;III-I;0;;;2;1;;;7;4;1;;;;;;
-1;424;60;Counterpoint;Counterpoint;Last harmonic interval;IV-I;0;;;;;;;;;;;;;;;
-1;426;60;Counterpoint;Counterpoint;Last harmonic interval;VI-I;0;;;;;;;;;;;;;;;
+1;355;60;Counterpoint;Counterpoint;Last harmonic interval;I-V;0;;;2;1;;;24;7;;;;;;;
+1;356;60;Counterpoint;Counterpoint;Last harmonic interval;I-III;0;;;2;1;;;19;2;1;;;;;;
+1;422;100;Counterpoint;Counterpoint;Last harmonic interval;I-VI;0;;;;;;;;;;;;;;;
+1;357;100;Counterpoint;Counterpoint;Last harmonic interval;III-I;0;;;2;1;;;7;4;1;;;;;;
+1;424;100;Counterpoint;Counterpoint;Last harmonic interval;IV-I;0;;;;;;;;;;;;;;;
+1;426;100;Counterpoint;Counterpoint;Last harmonic interval;VI-I;0;;;;;;;;;;;;;;;
 1;358;100;Counterpoint;Counterpoint;Last harmonic interval;Other;0;;;2;1;;;33;4;;;;;;;
 1;273;0;Counterpoint;Counterpoint;Start pause;missing;0;;No starting pause in couterpoint voice for species 2-5;;;;;44;8;1;;;;;;
 1;91;60;Counterpoint;Counterpoint;Unison;downbeat inside;0;;Downbeat unison is allowed only as first or last interval of counterpoint;2;1;;;5;2;1;;;;;;
