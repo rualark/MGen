@@ -5,6 +5,9 @@ unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same 
 
 Midi_file = midi\Music\test\test-soundcheck.mid
 MidiFileType = "Sibelius"
-Instruments = "Piano"
+Instruments = "Piano/Hard"
 # Example result = "Dyn0"
 "Violin/Arco/1": dyn_range = "0-0"
+"Piano/Hard": rand_pos = 1-70
+"Piano/Hard": rand_pos_max = 1000-1000
+reverb_mix = 0
