@@ -11,3 +11,4 @@ Instruments = "Piano/Hard"
 "Piano/Hard": rand_pos = 1-70
 "Piano/Hard": rand_pos_max = 1000-1000
 reverb_mix = 0
+rnd_tempo = 70
