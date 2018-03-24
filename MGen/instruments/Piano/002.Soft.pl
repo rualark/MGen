@@ -12,7 +12,7 @@ CC_Name = 8: "Stereo image width"
 
 # Initial setup
 InitCommand = "Color: 45"
-InitCommand = "Dynamic range: 0"
+InitCommand = "Dynamic range: 64"
 InitCommand = "Resonances volume: 80"
 InitCommand = "Low keys volume: 63"
 InitCommand = "Low keys volume: 63"
