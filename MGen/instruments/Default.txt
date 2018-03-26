@@ -45,7 +45,7 @@ Unpitched percussion/Field drum       | Hits                  | 8   | 46  | -   
 Unpitched percussion/Cymbals american | Long hit              | 3   | 47  | -   | cym  | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
 Unpitched percussion/Cymbals viennese | Long hit              | 3   | 47  | -   | cyv  | 
 Unpitched percussion/Triangle         | Hit                   | 5   | 48  | -   | tri  | triangle concerto, triangolo
-Unpitched percussion/Gong             | Small gong            | 1   | 49  | -   | gng  | 
+Unpitched percussion/Gong             | Small gong            | 1   | 49  | -   | gng  | Tam tam, Tam-tam
 Unpitched percussion/Thai gong        | A                     | 14  | 50  | -   | tha  |
 Unpitched percussion/Tom toms         | Low-mid               | 11  | 51  | -   | tom  | Tom-tom, tom-toms
 Unpitched percussion/Rototom          | Low                   | 11  | 51  | -   | rtm  | Roto-tom, roto-toms
