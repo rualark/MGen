@@ -238,6 +238,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;155;100;Counterpoint;Minor;Altered neighbour;VI#<->III;0;;Augmented / diminished;8;;;!srn!;2;1;1;;;;;;
 1;156;100;Counterpoint;Minor;Altered neighbour;VII#-III;0;;Augmented / diminished;8;;;!srn!;6;3;1;;;;;;
 1;157;100;Counterpoint;Minor;Altered neighbour;III-VII#;0;;Augmented / diminished;8;;;!srn!;3;1;1;;;;;;
+1;432;0;Counterpoint;Minor;Altered neighbour;III-VII#-I;1;;Augmented / diminished;;;;;;;;;;;157;;
 1;158;100;Counterpoint;Minor;Altered far neighbour;VI<->VI#;0;;;8;;;!srn!;7;3;1;;;;;;
 1;159;100;Counterpoint;Minor;Altered far neighbour;VII<->VII#;0;;;8;;;!srn!;3;1;1;;;;;;
 1;160;0;Counterpoint;Minor;Altered far neighbour;VI<->VII#;-1;;;8;;;!srn!;16;3;1;;;;;;
