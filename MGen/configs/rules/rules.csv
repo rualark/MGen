@@ -201,7 +201,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;329;0;Cantus;Harmony;Multiple harmonies in measure;sus 5/6 stepw;1;;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure;1;;;;34;1;;;;;;;
 1;307;30;Cantus;Harmony;Multiple harmonies in measure;inside;0;;In measures before penultimate;1;;;;134;9;;;;;;;
 1;40;70;Cantus;Harmony;Multiple harmonies in measure;>2;0;;More than 2 harmonies;1;;;;36;2;;;;;;;
-1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed.;1;;;;15;0;;1;;;;;
+1;310;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;15;0;;1;;;;;
 1;375;30;Cantus;Harmony;Prohibited chord;Augmented;0;;Augmented chord is prohibited;1;;;;39;0;;;;;;;
 1;383;30;Cantus;Harmony;Prohibited chord;64 chord;0;;;1;;;;176;0;;;;;;;
 1;48;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave before cadence in D-T progression;1;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
