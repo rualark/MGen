@@ -173,7 +173,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;67;0;Melody;Range;Skipped notes;1;-1;Skipped notes that do not appear within this voice;;;;;;176;44;1;;;;;;
 1;68;0;Melody;Range;Skipped notes;>1;-1;Skipped notes that do not appear within this voice;;;;;;19;10;1;;;;;;
 1;69;0;Melody;Range;Skipped notes;>1 joined;0;Skipped notes that do not appear within this voice;;;;;;70;24;1;;;;;;
-1;38;0;Melody;Range;Pitch range;voice <m6;0;;Voice range below m6 is acceptable for cantus up to 10 notes;;;;;167;3;;;;;;;
+1;38;0;Melody;Range;Pitch range;voice <m6;0;;Voice range below m6 is acceptable for cantus up to 10 notes;9;;;Stagnation;167;3;;;;;;;
 1;304;70;Melody;Range;Pitch range;cp voice >M12;0;;Counterpoint voice range;;;;;4;1;;;;;;;
 1;37;70;Melody;Range;Pitch range;cf >M9;0;;Cantus firmus voice range;;;;;28;1;;;;;;;
 1;7;70;Melody;Range;Pitch range;sum >22th;0;;Aggregate pitch range of both voices in this counterpoint;;;;;1;1;;;;;;;
