@@ -385,7 +385,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;328;60;Counterpoint;Nonchord tones;Double-neighbour tone;last note out;0;;Last note of DNT is out of current measure;;;;;5;0;;;;;;1;
 1;281;60;Counterpoint;Nonchord tones;Double-neighbour tone;cross-bar;0;;Two or more last notes of DNT are out of current measure;;;;;1;0;;;;;;1;
 1;260;60;Counterpoint;Nonchord tones;Double-neighbour tone;leap <=4th;0;;Allow leaps up to specified size;;;;;2;0;;;;;;1;
-1;97;40;Counterpoint;Nonchord tones;Double-neighbour tone;no exit;0;;There is no same-direction stepwize motion after 4th note;;;;;4;0;;;;;;;
+1;97;40;Counterpoint;Nonchord tones;Double-neighbour tone;no exit;1;;There is no same-direction stepwize motion after 4th note;;;;;4;0;;;;;;;
 1;282;0;Counterpoint;Nonchord tones;Passing downbeat dissonance;descending;1;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;2;1;;;48;1;;;;;;1;
 1;297;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;6;0;;;;;;1;
 1;298;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;16;1;;;;;;1;
