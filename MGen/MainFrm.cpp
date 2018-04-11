@@ -763,7 +763,7 @@ void CMainFrame::OnButtonGen()
 		pGen->StartMIDI(GetMidiI(), 0);
 		pGen->gen_start_time = CGLib::time();
 		// Initialize autosave document name
-		m_fname = CTime::GetCurrentTime().Format("%Y-%m-%d-auto %H-%M-%S");
+		m_fname = CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S_") + m_config;
 		m_dir = "autosaves\\" + AlgFolder[m_algo] + "\\" + m_fname;
 		// Export last autosave name
 		DeleteFile("log\\autosave.txt");
