@@ -397,6 +397,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;333;60;Counterpoint;Nonchord tones;Anticipation;start >1/2;0;;Anticipation start should not be longer;;;;;7;5;1;;;;;;
 1;334;60;Counterpoint;Nonchord tones;Anticipation;end >whole;0;;Anticipation ending should not be longer than whole;;;;;6;4;1;;;;;;
 1;289;0;Counterpoint;Nonchord tones;Anticipation;leap;1;;Leap to anticipation note;;;;;15;5;;;;;;;
+1;459;60;Counterpoint;Nonchord tones;Anticipation;unresolved;0;;Anticipation should resolve to consonance in next measure;;;;;;;;;;;;;
 1;262;0;Counterpoint;Nonchord tones;Appoggiatura;any;1;;Prohibit this rule to prevent detection of any appoggiatura;;;;;0;0;;;;;;;
 1;283;60;Counterpoint;Nonchord tones;Appoggiatura;stepwize;1;;Appoggiatura is prepared with stepwize motion ;;;;;0;0;;;;;;;
 1;284;60;Counterpoint;Nonchord tones;Appoggiatura;upbeat;1;;Appogiatura is on an upbeat note;;;;;0;0;;;;;;;
@@ -440,6 +441,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;251;60;Counterpoint;Rhythm;Suspension rhythm;1/4 + ?;0;Start (left) and end (right) of suspension note;;;;;;4;4;1;;;;;;
 1;139;0;Counterpoint;Rhythm;Suspension;not last 3;0;;Suspension before N last measures {sp2,3};;;;;11;9;1;;;;;;
 1;341;0;Counterpoint;Rhythm;Suspension;each 3 meas.;0;;At least one suspension is needed each X measures {sp5};;;;;39;0;;1;;;;1;
+1;458;100;Counterpoint;Rhythm;Suspension;start diss.;0;;Suspension starts with dissonance;;;;;;;;;;;;;
 1;301;0;Counterpoint;Rhythm;Many notes in measure;5 after sus;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;;;22;3;1;;;;;;
 1;245;0;Counterpoint;Rhythm;Many notes in measure;5;0;;;11;;;!srn! notes;31;10;1;;;;;;
 1;246;60;Counterpoint;Rhythm;Many notes in measure;>5;0;;;11;;;!srn! notes;7;2;1;;;;245,301;;
