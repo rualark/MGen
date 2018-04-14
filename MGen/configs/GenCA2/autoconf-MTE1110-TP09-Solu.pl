@@ -9,3 +9,7 @@ include "include/CA2.pl"
 # This config was created from default config file configs\GenCA2.pl
 # Created at 2018-04-07 23:35:42
 Midi_file = midi\Counterpoint\solution\MTE1110-TP09-Solu.mid
+
+show_min_severity = 49 # Minimum severity to highlight note
+species = 0 # Do not override parameters in importing files
+

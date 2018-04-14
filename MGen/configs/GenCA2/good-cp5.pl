@@ -10,3 +10,6 @@ AutoLegato = 1
 AutoNonLegato = 1
 
 #"Horn/Normal/1": Volume = 150
+
+show_min_severity = 49 # Minimum severity to highlight note
+species = 0 # Do not override parameters in importing files
