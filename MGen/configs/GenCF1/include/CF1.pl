@@ -64,6 +64,10 @@ tempo_bell = 1.3 # Increase tempo in the middle of cantus / counterpoint. 0 - pr
 ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note
 ly_msh = 0 # 0 - do not show mshape, 1 - show mshape
 ly_dominant_letter = 0 # 0 - use normal D/d letters; 1 - use dashed D/d letters
+ly_pagebreak = 0 # Page break after each analysis
+ly_subrules = 0 # Show subrule names in ly
+ly_comments = 0 # Show rule and subrule comments in ly
+ly_rule_colon = 0 # Show rule name after colon
 
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
