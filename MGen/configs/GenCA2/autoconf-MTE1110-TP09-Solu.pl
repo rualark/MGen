@@ -13,3 +13,4 @@ Midi_file = midi\Counterpoint\solution\MTE1110-TP09-Solu.mid
 show_min_severity = 49 # Minimum severity to highlight note
 species = 0 # Do not override parameters in importing files
 
+corrections = 0
