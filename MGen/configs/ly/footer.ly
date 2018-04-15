@@ -1,5 +1,5 @@
 \markup { 
-  \vspace #2
+  \vspace #5
   \bold Legend:
 } 
 
