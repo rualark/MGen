@@ -119,12 +119,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;184;100;Melody;Leaps;Descending leap;maj7;0;;;5;;;;3;1;1;;;;;;
 1;185;0;Melody;Leaps;Descending leap;8th;-1;;;5;;;;32;6;1;;;;;;
 1;186;100;Melody;Leaps;Descending leap;>8th;0;;;5;;;;5;4;1;;;;;;
-1;3;60;Melody;Leaps;Many leaps within 9 notes;>6 leaps;0;;;10;;;!srn!;11;0;;;;1;311;;
-1;25;60;Melody;Leaps;Many leaps within 9 notes;>22 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;10;;;Many leaps;26;0;;;;1;312;;
+1;3;60;Melody;Leaps;Many leaps within 9 notes;>8 leaps;0;;;10;;;!srn!;11;0;;;;1;311;;
+1;25;60;Melody;Leaps;Many leaps within 9 notes;>30 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;10;;;Many leaps;26;0;;;;1;312;;
 1;311;0;Melody;Leaps;Many leaps within 9 notes;>5 leaps;0;;;10;;;!srn!;6;0;;1;;1;;;
 1;312;0;Melody;Leaps;Many leaps within 9 notes;>18 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;10;;;Many leaps;16;0;;1;;1;;;
-1;202;60;Melody;Leaps;Many leaps within 15 notes;>8 leaps;0;;;10;;;!srn!;6;0;;;;1;313;;
-1;203;60;Melody;Leaps;Many leaps within 15 notes;>32 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;10;;;Many leaps;9;0;;;;1;314;;
+1;202;60;Melody;Leaps;Many leaps within 15 notes;>12 leaps;0;;;10;;;!srn!;6;0;;;;1;313;;
+1;203;60;Melody;Leaps;Many leaps within 15 notes;>42 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;10;;;Many leaps;9;0;;;;1;314;;
 1;313;0;Melody;Leaps;Many leaps within 15 notes;>7 leaps;0;;;10;;;!srn!;3;0;;1;;1;;;
 1;314;0;Melody;Leaps;Many leaps within 15 notes;>26 notes;0;;Total leaps length more than X notes:  3 is third, 4 is fourth and so on;10;;;Many leaps;13;0;;1;;1;;;
 1;70;60;Melody;Leaps;Consecutive leaps: 1x3rd ignored;3;0;There are more than X leaps. Several Y specified 3rd leaps are allowed and not counted. Not idiomatic for voice.;;10;;;Consecutive leaps;38;0;;;;1;;;
@@ -297,7 +297,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;82;0;Counterpoint;Counterpoint;Perfect consonance;db. culm.;-1;;Downbeat culmination;2;1;;;48;11;1;;;;80;;
 1;324;60;Counterpoint;Counterpoint;Perfect consonance;LT 8va;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;;;20;9;1;;;;;;
 1;325;0;Counterpoint;Counterpoint;Downbeat long 5th culmination;5th;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat 5th 1/2 or longer;2;1;;;0;0;1;;;;;;
-1;326;0;Counterpoint;Counterpoint;Downbeat long 8va culmination;8va;0;Local culmination in upper voice within X measures in sp5. Sounds empty except last measure;Downbeat octave 1/2 or longer;2;1;;;2;0;1;;;;;;
+1;326;0;Counterpoint;Counterpoint;Downbeat long 8va culmination;8va;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat octave 1/2 or longer;2;1;;;2;0;1;;;;;;
 1;84;60;Counterpoint;Counterpoint;Adjacent 5ths;parallel;0;;;7;1;1;;120;7;;;;;;;
 1;85;60;Counterpoint;Counterpoint;Adjacent 5ths;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;11;4;1;;;;;;
 1;86;0;Counterpoint;Counterpoint;Adjacent 5ths;different;-1;;Different adjacent perfect consonances;7;1;1;;160;1;;;;;;;
