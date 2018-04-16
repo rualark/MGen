@@ -52,8 +52,8 @@ calculate_blocking = 0 # Enables blocking flags calculation algorithm. Slows dow
 calculate_stat = 0 # Enables flag statistics calculation algorithm. Slows down generation.
 calculate_ssf = 0 # Enables SWA stuck flags statistics calculation algorithm.
 best_rejected = 0 # Show best rejected results if rejecting more than X ms. Requires blocking or stat to work. Set to 0 to disable. Slows down generation
-show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
-show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
+show_ignored_flags = 1 # Show even ignored flags (with strikethrough in rules.xlsm)
+show_allowed_flags = 1 # Show even allowed flags (bold in rules.xlsm)
 show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show chord type (6 or 64)
 show_hatch = 0 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
 show_min_severity = 0 # Minimum severity to highlight note
@@ -65,9 +65,9 @@ ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note
 ly_msh = 0 # 0 - do not show mshape, 1 - show mshape
 ly_dominant_letter = 0 # 0 - use normal D/d letters; 1 - use dashed D/d letters
 ly_pagebreak = 0 # Page break after each analysis
-ly_subrules = 0 # Show subrule names in ly
-ly_comments = 0 # Show rule and subrule comments in ly
-ly_rule_colon = 0 # Show rule name after colon
+ly_subrules = 1 # Show subrule names in ly
+ly_comments = 1 # Show rule and subrule comments in ly
+ly_rule_colon = 1 # Show rule name after colon
 
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
