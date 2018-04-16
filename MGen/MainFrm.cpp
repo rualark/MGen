@@ -671,7 +671,7 @@ void CMainFrame::LoadMidi(CString path)
 		}
 		// Create config name
 		CString time_str = CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S");
-		m_config = "autoconf-" + CGLib::bname_from_path(path);
+		m_config = CGLib::bname_from_path(path);
 		CString fname = "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl";
 		// Copy default config
 		CGLib::copy_file("configs\\" + AlgFolder[m_algo] + ".pl", fname);
