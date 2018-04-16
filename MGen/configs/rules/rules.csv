@@ -444,11 +444,11 @@ Set;Severity;Class;Group;Rule;Flag
 1;275;60;Counterpoint;Counterpoint;Unison;2nd -> unis;0;;Major or minor 2nd resolves to unison;8;1;;!srn!;10;2;1;;;;;;
 1;277;60;Counterpoint;Counterpoint;Unison;near 2m;0;;Unison is near minor 2nd interval in same measure;8;1;;unis <-> m2;1;1;1;;;;;;
 1;47;30;Counterpoint;Counterpoint;Penultimate measure;no leading tone;0;;no leading tone is allowed if last bass notes are V-I;;;;;100;5;;;;;;;
-1;75;30;Counterpoint;Counterpoint;Penultimate measure;no V or II;0;;No V or II note;;;;;35;20;1;;;;;;
+1;75;30;Counterpoint;Counterpoint;Penultimate measure;no V or II note;0;;No V or II note;;;;;35;20;1;;;;;;
 1;317;30;Counterpoint;Counterpoint;Penultimate measure;VII natural;0;;VII natural minor note in penultimate measure;;;;;19;4;1;;;;;;
 1;318;30;Counterpoint;Counterpoint;Penultimate measure;isolated LT;1;;There is another harmony between leading tone and tonic note in penultimate measure;;;;;24;11;1;;;;;;
-1;322;30;Counterpoint;Counterpoint;Penultimate measure;T/S after D;0;;Tonic or subdominant chord goes after dominant chord in penultimate measure;;;;;11;4;1;;;;;;
-1;335;30;Counterpoint;Counterpoint;Penultimate measure;not D/DVII;0;;Penultimate harmony is not D / DVII;1;;;;138;1;;;;;;;
+1;322;60;Counterpoint;Counterpoint;Penultimate measure;T/S after D;0;;Tonic or subdominant chord goes after dominant chord in penultimate measure;;;;;11;4;1;;;;;;
+1;335;60;Counterpoint;Counterpoint;Penultimate measure;not D/DVII;0;;Penultimate harmony is not D / DVII;1;;;;138;1;;;;;;;
 1;387;0;Counterpoint;Counterpoint;sp2 suspension;I -> LT penultim.;1;;Suspension of LT by I note in penultimate measure in sp2;;;;;;;;;;;;;
 1;388;60;Counterpoint;Counterpoint;sp2 suspension;not I -> LT pnu.;0;;Other suspension than LT by I note in penultimate measure in sp2;;;;;;;;;;;;;
 1;225;0;Counterpoint;Counterpoint;Slurs;suspension;1;;{sp3,4,5};;;;;409;2;;;;;;;
