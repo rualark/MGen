@@ -20,7 +20,7 @@ CWinApp theApp;
 
 using namespace std;
 
-#define MAX_FLAGS 500
+#define MAX_FLAGS 1000
 
 CString current_dir;
 ofstream logfile;
