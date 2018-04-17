@@ -64,10 +64,10 @@ configs\GenCA2\test-anticipation.pl
 configs\GenCA2\test-tonicroot.pl
 configs\GenCA2\test-tonic-seq.pl
 configs\GenCA2\test-vint.pl
-configs\GenMP1\autoconf-cloud.pl;5;60
-configs\GenMP1\autoconf-beyond.pl;5;60
-configs\GenMP1\autoconf-hamlet.pl;5;60
-configs\GenMP1\autoconf-Mountain blues.pl;5;60
-configs\GenMP1\autoconf-ny.pl;5;60
-configs\GenMP1\autoconf-trio.pl;5;60
-configs\GenMP1\autoconf-This way up.pl;5;60
+configs\GenMP1\cloud.pl;5;60
+configs\GenMP1\beyond.pl;5;60
+configs\GenMP1\hamlet.pl;5;60
+configs\GenMP1\Mountain blues.pl;5;60
+configs\GenMP1\ny.pl;5;60
+configs\GenMP1\trio.pl;5;60
+configs\GenMP1\This way up.pl;5;60
