@@ -16,6 +16,7 @@ Dim Idu2(1000)
 Dim Idn(1000)
 
 ' Export
+Dim eSpec(1000)
 Dim eSeverity(1000)
 Dim eRule(1000)
 Dim eSubRule(1000)
@@ -96,8 +97,9 @@ Sub LoadData()
       Rng1(L, cRule) = eRule(srow)
       Rng1(L, cSubRule) = eSubRule(srow)
       Rng3(L, 2) = eFlag(srow)
-      Rng3(L, 4) = eComment(srow)
-      Rng3(L, 3) = eGComment(srow)
+      Rng3(L, 3) = eSpec(srow)
+      Rng3(L, 5) = eComment(srow)
+      Rng3(L, 4) = eGComment(srow)
     End If
     ' Load data for csv export
     For d = 1 To DCount
@@ -181,12 +183,13 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
       ssent = ssent + 1
       ' Write strict rule
       If ws.Cells(1, 12).Font.Bold Then
-        oFile.WriteLine CStr(ws.Name) + ";0;0;;;Strict;;0;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
+        oFile.WriteLine CStr(ws.Name) + ";0;;0;;;Strict;;0;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
       Else
-        oFile.WriteLine CStr(ws.Name) + ";0;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
+        oFile.WriteLine CStr(ws.Name) + ";0;;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
       End If
       For Line = First_line To 1000
         rule = ws.Cells(Line, 3).Value
+        spec = ws.Cells(Line, 4).Value
         If rule = "" Then Exit For
         rule = Replace(rule, ";", ",")
         ' Get class and group
@@ -256,6 +259,7 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
             eRule(sRows) = rule
             eSubRule(sRows) = dst
             eSeverity(sRows) = sev
+            eSpec(sRows) = spec
             eFlag(sRows) = flag
             Ids(sRows) = rid
             eClass(sRows) = cst
@@ -285,7 +289,7 @@ NextDiv:
   For srow = 1 To sRows
     rid = Ids(srow)
     ' Write rules
-    st = "1;" + CStr(rid) + ";" + CStr(eSeverity(srow)) + ";" + CStr(eClass(srow)) + _
+    st = "1;" + CStr(rid) + ";" + CStr(eSpec(srow)) + ";" + CStr(eSeverity(srow)) + ";" + CStr(eClass(srow)) + _
       ";" + CStr(eGroup(srow)) + ";" + CStr(eRule(srow)) + _
       ";" + CStr(eSubRule(srow)) + ";" + CStr(eFlag(srow)) + ";" + _
       CStr(eGComment(srow)) + ";" + CStr(eComment(srow))
