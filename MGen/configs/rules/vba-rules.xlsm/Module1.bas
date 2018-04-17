@@ -129,7 +129,8 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
   If TestFiltered = 1 Then Exit Sub
   Call OptimizeCode_Begin
   ' First line to search eRule
-  First_line = 3
+  First_line = 2
+  First_col = 4
   ' Column number of first id and comment (zero-based)
   Id_column = 0
   Com_column = 0
@@ -169,17 +170,17 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
     ' Cycle through eRule
     If IsNumeric(ws.Name) Then
       ' Find IDs column
-      Set idc = ws.Range("E2:CC2").Find("IDs", LookIn:=xlValues, LookAt:=xlPart, MatchCase:=False)
+      Set idc = ws.Range("E1:CC1").Find("IDs", LookIn:=xlValues, LookAt:=xlPart, MatchCase:=False)
       Id_column = idc.Column - 1
       Erase Idu
       Erase Idn
       ' Find eComment column
-      Set comc = ws.Range("E2:CC2").Find("Comment", LookIn:=xlValues, LookAt:=xlPart, MatchCase:=False)
+      Set comc = ws.Range("E1:CC1").Find("Comment", LookIn:=xlValues, LookAt:=xlPart, MatchCase:=False)
       Com_column = comc.Column
       sRows = 0
       ssent = ssent + 1
       ' Write strict rule
-      If ws.Cells(1, 1).Font.Bold Then
+      If ws.Cells(1, 12).Font.Bold Then
         oFile.WriteLine CStr(ws.Name) + ";0;0;;;Strict;;0;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
       Else
         oFile.WriteLine CStr(ws.Name) + ";0;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
@@ -195,7 +196,7 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
         ' Cycle through eRule
         For div = 1 To max_subrules
           ' Get link to division
-          Set dc = ws.Cells(Line, 3 + div)
+          Set dc = ws.Cells(Line, First_col + div)
           dst = dc.Value
           col = dc.Interior.Color
           If dst = "" Then
