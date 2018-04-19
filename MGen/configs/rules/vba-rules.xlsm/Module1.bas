@@ -266,11 +266,11 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
             eGroup(sRows) = gst
           End If
           ' Highlight duplicate id
-          If Idu(rid) Then
-            ws.Cells(Line, Id_column + div).Font.Color = RGB(255, 0, 0)
-          Else
-            ws.Cells(Line, Id_column + div).Font.Color = RGB(0, 0, 0)
-          End If
+          'If Idu(rid) Then
+          '  ws.Cells(Line, Id_column + div).Font.Color = RGB(255, 0, 0)
+          'Else
+          '  ws.Cells(Line, Id_column + div).Font.Color = RGB(0, 0, 0)
+          'End If
           Idu(rid) = Idu(rid) + 1
           Idn(rid) = sRows
           If rid > max_id Then max_id = rid
