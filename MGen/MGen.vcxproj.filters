@@ -177,6 +177,9 @@
     <ClInclude Include="GLibrary\SinRand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GLibrary\CsvDb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -303,6 +306,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GLibrary\SinRand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\CsvDb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
