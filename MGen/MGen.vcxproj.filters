@@ -171,14 +171,14 @@
     <ClInclude Include="GLibrary\MPort.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
+    <ClInclude Include="GLibrary\CsvDb.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
     <ClInclude Include="GLibrary\Conf.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
     <ClInclude Include="GLibrary\SinRand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLibrary\CsvDb.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -302,14 +302,14 @@
     <ClCompile Include="GLibrary\MPort.cpp">
       <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
+    <ClCompile Include="GLibrary\CsvDb.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
     <ClCompile Include="GLibrary\Conf.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
     <ClCompile Include="GLibrary\SinRand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLibrary\CsvDb.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GLibrary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

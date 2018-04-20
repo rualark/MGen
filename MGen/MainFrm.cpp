@@ -23,6 +23,7 @@
 #include "MFIDialog.h"
 #include "MyVisualManagerOffice2007.h"
 #include "MsgDlg.h"
+#include "GLibrary\CsvDb.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -262,6 +263,18 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SetTimer(TIMER5, 0, NULL);
 
 	//CGLib::TestVSet();
+	CCsvDb cdb;
+	cdb.separator = ";";
+	vector <CString> hdr;
+	hdr.push_back("id");
+	hdr.push_back("time");
+	hdr.push_back("text");
+	cdb.Create("test.csv", hdr);
+	map <CString, CString> row;
+	row["id"] = "1";
+	row["time"].Format("%d", 1234);
+	row["text"] = "some text";
+	cdb.Insert(row);
 
 	return 0;
 }
