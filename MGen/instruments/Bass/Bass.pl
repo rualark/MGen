@@ -4,7 +4,7 @@ include "..\include\SI VoR.pl"
 KswGroup = "C0: Ah", "C#0: Oh", "D0: Oo" # Syllable
 
 # Initial setup
-InitCommand = "Ah"
+Ah = 101
 
 # Instrument parameters
 n_min = A1 # Lowest note

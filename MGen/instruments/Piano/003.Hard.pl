@@ -1,3 +1,3 @@
 include "002.Soft.pl"
 
-InitCommand = "Color: 80"
+Color = 80

@@ -12,7 +12,7 @@ Volume_default = 50 # (direct CC volume, should not be changed by user)
 KswGroup = "C3: Staccato pedal up sound", "C#3: Longer version of staccato"
 
 # Initial setup
-InitCommand = "Staccato pedal up sound" 
+Staccato pedal up sound = 101
 
 Pedal_import = 1 # 0 - do not import pedal; 1 - import CC64 pedal from source midi file
 

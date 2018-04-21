@@ -11,13 +11,13 @@ CC_Name = 6: "Overtones level"
 CC_Name = 8: "Stereo image width"
 
 # Initial setup
-InitCommand = "Color: 45"
-InitCommand = "Dynamic range: 64"
-InitCommand = "Resonances volume: 80"
-InitCommand = "Low keys volume: 63"
-InitCommand = "Low keys volume: 63"
-InitCommand = "Overtones level: 90"
-InitCommand = "Stereo image width: 63"
+Color = 45
+Dynamic range = 64
+Resonances volume = 80
+Low keys volume = 63
+Low keys volume = 63
+Overtones level = 90
+Stereo image width = 63
 
 # Instrument parameters
 n_min = "A0" # Lowest note

@@ -1,3 +1,3 @@
 include "_Default.pl"
 
-InitCommand = "Staccato pedal up sound" 
+Staccato pedal up sound = 101

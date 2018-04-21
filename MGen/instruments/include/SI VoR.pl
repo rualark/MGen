@@ -24,14 +24,14 @@ CC_Name = 4: "Chord auto-pan on"
 CC_Name = 5: "Release samples on"
 
 # Initial setup
-InitCommand = "Attack: 0"
-InitCommand = "Offset: 0"
-InitCommand = "Release time: 127"
-InitCommand = "Release volume: 127"
-InitCommand = "Legato transition speed: 0"
-InitCommand = "Legato on"
-InitCommand = "Chord auto-pan on: 0"
-InitCommand = "Release samples on"
+Attack = 0
+Offset = 0
+Release time = 127
+Release volume = 127
+Legato transition speed = 0
+Legato on = 101
+Chord auto-pan on = 0
+Release samples on = 101
 Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 

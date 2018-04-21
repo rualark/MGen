@@ -4,5 +4,5 @@ n_min = "C2" # Lowest note
 n_max = "B3" # Highest note
 
 # Initial setup
-InitCommand = "Dampened hits" 
+Dampened hits = 101
 

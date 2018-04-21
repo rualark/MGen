@@ -15,7 +15,7 @@ CC_steps = 1 # Number of CC steps in one note step (please use only odd numbers)
 KswGroup = "C2: Snares on", "C#2: Snares off"
 
 # Initial setup
-InitCommand = "Snares on" 
+Snares on = 101
 
 # Tremolo adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection

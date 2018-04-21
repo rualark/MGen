@@ -54,22 +54,22 @@ Technique = "pizz; Pizzicato"
 Technique = "trem; Tremolo"
 
 # Initial setup
-InitCommand = "Responsiveness: 0" # default for Violin: 0
-InitCommand = "Portamento speed: 11" # Use only when enabled Portamento CC mode on
-InitCommand = "Dynamic KSW threshold: 100"
-InitCommand = "Shorts length control on: 0"
-InitCommand = "Portamento CC mode on: 0"
-InitCommand = "Portamento velocity threshold: 18"
-InitCommand = "Vibrato style - Progressive"
-InitCommand = "Color off"
-InitCommand = "Transition speed lower: 16"
-InitCommand = "Transition speed upper: 16" # Default 90, but automatic legato speed is not supported yet because it decreases audio quality
-InitCommand = "Transition speed: 127"
-InitCommand = "Retrigger on" # default for Violin: 0
-InitCommand = "Legato"
+Responsiveness = 0 # default for Violin: 0
+Portamento speed = 11 # Use only when enabled Portamento CC mode on
+Dynamic KSW threshold = 100
+Shorts length control on = 0
+Portamento CC mode on = 0
+Portamento velocity threshold = 18
+Vibrato style - Progressive = 101
+Transition speed lower = 16
+Transition speed upper = 16 # Default 90, but automatic legato speed is not supported yet because it decreases audio quality
+Transition speed = 127
+Retrigger on = 101 # default for Violin: 0
+Legato = 101
 
 # Initial setup (can change)
 Ensemble on = 0
+Color off = 90
 Solo intonation = 2
 Rebow on = 127 # default for Violin: 0
 Release samples on = 127

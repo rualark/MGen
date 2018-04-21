@@ -57,18 +57,18 @@ Technique = "pizz; Pizzicato" # TODO: not implemented yet
 Technique = "trem; Tremolo"
 
 # Initial setup
-InitCommand = "Transition speed lower: 16"
-InitCommand = "Transition speed upper: 16" # Default 54, but automatic legato speed is not supported yet because it decreases audio quality
-InitCommand = "Retrigger on"
-InitCommand = "Responsiveness: 44"
-InitCommand = "Dynamic KSW threshold: 100"
-InitCommand = "Shorts length control on: 0" # default 0
-InitCommand = "Release samples on" # default 0
-InitCommand = "Portamento CC mode on: 0"
-InitCommand = "Portamento velocity threshold: 30"
-InitCommand = "Vibrato style - Progressive"
-InitCommand = "Legato"
-InitCommand = "Color off"
+Transition speed lower = 16
+Transition speed upper = 16 # Default 54, but automatic legato speed is not supported yet because it decreases audio quality
+Retrigger on = 101
+Responsiveness = 44
+Dynamic KSW threshold = 100
+Shorts length control on = 0 # default 0
+Release samples on = 101 # default 0
+Portamento CC mode on = 0
+Portamento velocity threshold = 30
+Vibrato style - Progressive = 101
+Legato = 101
+Color off = 101
 InitTechnique = "ord"
 
 Solo intonation = 0

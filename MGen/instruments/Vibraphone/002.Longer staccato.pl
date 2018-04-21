@@ -1,3 +1,3 @@
 include "_Default.pl"
 
-InitCommand = "Longer version of staccato" 
+Longer version of staccato = 101
