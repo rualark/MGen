@@ -263,6 +263,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SetTimer(TIMER5, 0, NULL);
 
 	//CGLib::TestVSet();
+	/*
 	CCsvDb cdb;
 	cdb.separator = ";";
 	vector <CString> hdr;
@@ -293,6 +294,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cdb2.filter["id"] = "1";
 	cdb2.Select();
 	cdb2.Delete();
+	*/
 
 	return 0;
 }
