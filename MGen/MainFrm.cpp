@@ -275,6 +275,24 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	row["time"].Format("%d", 1234);
 	row["text"] = "some text";
 	cdb.Insert(row);
+	row["id"] = "1";
+	row["time"].Format("%d", 2345);
+	row["text"] = "other text";
+	cdb.Insert(row);
+	row["id"] = "2";
+	row["time"].Format("%d", 3456);
+	row["text"] = "more text";
+	cdb.Insert(row);
+	row["id"] = "2";
+	row["time"].Format("%d", 4567);
+	row["text"] = "even more text";
+	cdb.Insert(row);
+
+	CCsvDb cdb2;
+	cdb2.Open("test.csv");
+	cdb2.filter["id"] = "1";
+	cdb2.Select();
+	cdb2.Delete();
 
 	return 0;
 }
