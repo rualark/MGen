@@ -1296,7 +1296,8 @@ UINT CMainFrame::GenThread(LPVOID pParam) {
 	CreateDirectory("autosaves\\" + pGen->m_algo_folder, NULL);
 	pGen->SaveResults(pGen->as_dir, pGen->as_fname);
 	pGen->SaveMidi(pGen->as_dir, pGen->as_fname);
-	pGen->SaveLy(pGen->as_dir, pGen->as_fname);
+	if (pGen->m_algo_id != 2001)
+		pGen->SaveLy(pGen->as_dir, pGen->as_fname);
 	// Copy config
 	CGLib::copy_file("configs\\" + pGen->m_algo_folder + "\\" + pGen->m_config + ".pl", pGen->as_dir + "\\" + pGen->as_fname + ".pl");
 	// Append config name
