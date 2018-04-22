@@ -69,7 +69,7 @@ BOOL CInfoDlg::OnInitDialog()
 		int ei = ms + pGen->noff[ms][mv] - 1;
 		
 		m_info.AddText("Melody:\n", RGB(0, 0, 0), CFE_BOLD);
-		if (pGen->mel_id[i][mv] > -1) {
+		if (pGen->mel_id.size() && pGen->mel_id[i][mv] > -1) {
 			int m1 = i;
 			int m2 = i;
 			// Find melody start
@@ -125,26 +125,32 @@ BOOL CInfoDlg::OnInitDialog()
 
 		st.Format("Note: %s (midi %d)\n", CGLib::GetNoteName(pGen->note[ms][mv]), pGen->note[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
-		st.Format("Key: %s%s\n", NoteName[pGen->tonic[i][mv]], pGen->minor[i][mv]?"m":"");
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-		if (pGen->nsr1[i][mv] > 0) {
+		if (pGen->tonic.size()) {
+			st.Format("Key: %s%s\n", NoteName[pGen->tonic[i][mv]], pGen->minor[i][mv] ? "m" : "");
+			m_info.AddText(st, RGB(0, 0, 0), 0);
+		}
+		if (pGen->nsr1.size() && pGen->nsr1[i][mv] > 0) {
 			st.Format("Note scan range: %d - %d\n", pGen->nsr1[i][mv], pGen->nsr2[i][mv]);
 			m_info.AddText(st, RGB(0, 0, 0), 0);
 		}
 
 		st2.Empty();
-		for (int n = 0; n < pGen->ngraph[i][mv].size(); ++n) {
-			if (pGen->ngraph[i][mv][n] > -1) {
-				st.Format("%.1f ", pGen->ngraph[i][mv][n]);
-				if (!st2.IsEmpty()) st2 += ", ";
-				st2 += st;
+		if (pGen->ngraph.size()) {
+			for (int n = 0; n < pGen->ngraph[i][mv].size(); ++n) {
+				if (pGen->ngraph[i][mv][n] > -1) {
+					st.Format("%.1f ", pGen->ngraph[i][mv][n]);
+					if (!st2.IsEmpty()) st2 += ", ";
+					st2 += st;
+				}
 			}
+			if (st2 != "") m_info.AddText("MeloCurve: " + st2 + "\n", RGB(0, 0, 0), 0);
 		}
-		if (st2 != "") m_info.AddText("MeloCurve: " + st2 + "\n", RGB(0, 0, 0), 0);
 
-		for (int n = 0; n < pGen->graph_name.size(); ++n) {
-			m_info.AddText(pGen->graph_name[n] + ": " + 
-				CGLib::HumanFloat(pGen->graph[i][mv][n]) + "\n", RGB(0, 0, 0), 0);
+		if (pGen->graph.size()) {
+			for (int n = 0; n < pGen->graph_name.size(); ++n) {
+				m_info.AddText(pGen->graph_name[n] + ": " +
+					CGLib::HumanFloat(pGen->graph[i][mv][n]) + "\n", RGB(0, 0, 0), 0);
+			}
 		}
 
 		st.Format("Lengroup: %d\n", pGen->lengroup[i][mv]);
@@ -163,10 +169,12 @@ BOOL CInfoDlg::OnInitDialog()
 				RGB(pGen->ccolor[i][mv][c].GetR(), pGen->ccolor[i][mv][c].GetG()/1.5, pGen->ccolor[i][mv][c].GetB()), 0);
 		}
 		*/
-		st.Format("Note mark: %s\n", pGen->mark[i][mv]);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Step mark: %s\n", pGen->mark[ms][mv]);
-		m_info.AddText(st, RGB(0, 0, 0), 0);
+		if (pGen->mark.size()) {
+			st.Format("Note mark: %s\n", pGen->mark[i][mv]);
+			m_info.AddText(st, RGB(0, 0, 0), 0);
+			st.Format("Step mark: %s\n", pGen->mark[ms][mv]);
+			m_info.AddText(st, RGB(0, 0, 0), 0);
+		}
 		st.Format("Note length: %d steps\n", pGen->len[ms][mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Note velocity: %d\n", pGen->vel[i][mv]);

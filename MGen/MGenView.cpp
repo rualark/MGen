@@ -370,7 +370,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			if (step1t > 0) step1t--;
 			if (step2t < pGen->t_generated - 1) step2t++;
 			// Show scan range
-			if (mf->show_nsr) {
+			if (mf->show_nsr && pGen->nsr1.size()) {
 				for (int v = 0; v < pGen->v_cnt; v++) {
 					ncolor = Color(15, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 					SolidBrush brush(ncolor);
@@ -408,16 +408,17 @@ void CMGenView::OnDraw(CDC* pDC)
 					int ei = i + pGen->len[i][v] - 1;
 					// Check if note steps have different dynamics
 					int step_dyn2 = 0;
-					int note_lining = pGen->lining[i][v];
+					int note_lining = 0;
+					if (pGen->lining.size()) note_lining = pGen->lining[i][v];
 					if ((step_dyn) && (pGen->len[i][v] > 1)) {
 						for (int x = i + 1; x <= ei; ++x) {
 							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
-							if (pGen->lining[x][v]) note_lining = pGen->lining[x][v];
+							if (pGen->lining.size() && pGen->lining[x][v]) note_lining = pGen->lining[x][v];
 						}
 					}
 					else {
 						for (int x = i + 1; x <= ei; ++x) {
-							if (pGen->lining[x][v]) note_lining = pGen->lining[x][v];
+							if (pGen->lining.size() && pGen->lining[x][v]) note_lining = pGen->lining[x][v];
 						}
 					}
 					// Show without step dynamics
@@ -476,7 +477,7 @@ void CMGenView::OnDraw(CDC* pDC)
 								ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 							}
 							// Show lining
-							if (mf->show_lining && pGen->lining[x][v]) {
+							if (mf->show_lining && pGen->lining.size() && pGen->lining[x][v]) {
 								hatch = static_cast<HatchStyle>(pGen->lining[x][v]);
 								ncolor2 = Color::Black;
 							}
@@ -500,7 +501,7 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 					}
 					// Show comment
-					if (mf->show_comments && pGen->comment[i][v].size())
+					if (mf->show_comments && pGen->comment.size() && pGen->comment[i][v].size())
 						g.DrawRectangle(&pen_agray, X_FIELD + i * nwidth,
 							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 							pGen->len[i][v] * nwidth - cutend, nheight);
@@ -533,7 +534,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			} // for v
 			// Show marks
 			CString mark;
-			if (mf->show_marks) for (int v = 0; v < pGen->v_cnt; v++) {
+			if (mf->show_marks && pGen->mark.size()) for (int v = 0; v < pGen->v_cnt; v++) {
 				int step1m = max(0, step1 - MARK_BACK);
 				for (int i = step1m; i < step2; i++) if (!pGen->mark[i][v].IsEmpty()) {
 					if (pGen->mark_color[i][v] != 0) {
@@ -590,7 +591,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 			}
 			// Show generated vertical lines
-			if (mf->show_lines) 
+			if (mf->show_lines && pGen->linecolor.size()) 
 				for (int i = step1; i < step2; i++) {
 					if (CGLib::GetAlpha(pGen->linecolor[i]) != 0) {
 						Pen pen_line(pGen->linecolor[i]);
@@ -600,7 +601,7 @@ void CMGenView::OnDraw(CDC* pDC)
 				}
 			mouse_voice_old = mouse_voice;
 			// Show note graph
-			if (mf->show_curve) {
+			if (mf->show_curve && pGen->ngraph.size()) {
 				for (int n = 0; n < pGen->ngraph_size; ++n) {
 					for (int v = 0; v < pGen->v_cnt; v++) {
 						ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
@@ -622,7 +623,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			int cur_empty2 = 0;
 			int max_empty2 = 0;
 			int best_pos2 = ng_min2;
-			for (int n = 0; n < pGen->graph_size; ++n) if (mf->show_graph[n]) {
+			for (int n = 0; n < pGen->graph_size; ++n) if (mf->show_graph[n] && pGen->graph.size()) {
 				// Find empty space
 				if (!max_empty) {
 					for (int i = ng_min2; i <= ng_max2; i++) {
@@ -908,7 +909,7 @@ void CMGenView::OnMouseMove(UINT nFlags, CPoint point)
 			st += st2;
 		}
 		if (mouse_voice > -1 && mouse_step > -1) {
-			for (int n = 0; n < pGen->graph_size; ++n) if (mf->show_graph[n]) {
+			for (int n = 0; n < pGen->graph_size; ++n) if (mf->show_graph[n] && pGen->graph.size()) {
 				st2.Format("%s: %s. ", pGen->graph_name[n], 
 					CGLib::HumanFloat(pGen->graph[mouse_step][mouse_voice][n]));
 				st += st2;
