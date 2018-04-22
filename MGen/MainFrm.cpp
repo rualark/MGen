@@ -1286,14 +1286,16 @@ UINT CMainFrame::GenThread(LPVOID pParam) {
 	fill(CGLib::status_updates.begin(), CGLib::status_updates.end(), (long long)0);
 	fill(CGLib::logs_sent.begin(), CGLib::logs_sent.end(), (long long)0);
 
+	CreateDirectory("autosaves", NULL);
+	CreateDirectory("autosaves\\" + pGen->m_algo_folder, NULL);
+	CreateDirectory(pGen->as_dir, NULL);
+
 	pGen->InitRandom();
 	pGen->Generate();
 	pGen->time_stopped = CGLib::time();
 	pGen->CheckMemoryUsage();
 
 	// Save results
-	CreateDirectory("autosaves", NULL);
-	CreateDirectory("autosaves\\" + pGen->m_algo_folder, NULL);
 	pGen->SaveResults(pGen->as_dir, pGen->as_fname);
 	pGen->SaveMidi(pGen->as_dir, pGen->as_fname);
 	if (pGen->m_algo_id != 2001)
