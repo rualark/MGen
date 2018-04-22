@@ -296,6 +296,22 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	cdb2.Delete();
 	*/
 
+	/*
+	// Test CsvDb performance. 200 queries with 2 conditions take 1 second on table with 1475 rows
+	for (int i = 0; i < 200; ++i) {
+		CString est;
+		int fl;
+		CCsvDb cdb;
+		map <CString, CString> row;
+		est = cdb.Open("db/expect.csv");
+		if (est != "") WriteLog(5, est);
+		cdb.filter["File"] = "midi\Counterpoint\test\test-sus.mid";
+		cdb.filter["Cid"] = "10";
+		est = cdb.Select();
+		if (est != "") WriteLog(5, est);
+	}
+	*/
+
 	return 0;
 }
 
