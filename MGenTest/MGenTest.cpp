@@ -285,6 +285,9 @@ void PushArtifacts() {
 		if (CGLib::fileExists("autotest\\fstat.csv"))
 			Run("appveyor", "PushArtifact autotest\\fstat.csv -Verbosity Normal -Type Auto -FileName fstat" +
 				suffix + ".csv", 1000);
+		if (CGLib::fileExists("db\\expect.csv"))
+			Run("appveyor", "PushArtifact db\\expect.csv -Verbosity Normal -Type Auto -FileName expect-db" +
+				suffix + ".csv", 1000);
 		if (CGLib::fileExists("autotest\\flags.log"))
 			Run("appveyor", "PushArtifact autotest\\flags.log -Verbosity Normal -Type Auto -FileName flags" +
 				suffix + ".log >> run.log 2>&1", 1000);
