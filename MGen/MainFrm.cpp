@@ -691,6 +691,7 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->m_algo_insts = AlgInsts[m_algo];
 		pGen->m_algo_folder = AlgFolder[m_algo];
 		pGen->m_algo_name = AlgName[m_algo];
+		pGen->ly_debugexpect = ly_debugexpect;
 		m_config = pGen->m_config;
 		// Load configs
 		//pGen->LoadInstruments();
@@ -807,6 +808,7 @@ void CMainFrame::OnButtonGen()
 		pGen->m_algo_name = AlgName[m_algo];
 		pGen->m_config = m_config;
 		pGen->m_pspeed = m_pspeed;
+		pGen->ly_debugexpect = ly_debugexpect;
 		// Initialize variables
 		//pGen->LoadInstruments();
 		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
@@ -1060,7 +1062,7 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "step_dyn", &m_step_dyn);
 			CGLib::CheckVar(&st2, &st3, "show_marks", &show_marks);
 			if (!CGLib::m_testing) 
-				CGLib::CheckVar(&st2, &st3, "show_marks", &show_marks);
+				CGLib::CheckVar(&st2, &st3, "ly_debugexpect", &ly_debugexpect);
 			CGLib::CheckVar(&st2, &st3, "show_comments", &show_comments);
 			CGLib::CheckVar(&st2, &st3, "show_shift", &show_shift);
 			CGLib::CheckVar(&st2, &st3, "show_lining", &show_lining);

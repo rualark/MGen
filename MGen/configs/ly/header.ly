@@ -97,5 +97,7 @@ myTS =
   #})
 
 \header {
-  subtitle = "$TITLE$"
+  title = "$TITLE$"
+  subtitle = "$SUBTITLE$"
+  dedication = "$DEDICATION$"
 }
