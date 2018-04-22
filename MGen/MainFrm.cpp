@@ -123,6 +123,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_PROGRESS, &CMainFrame::OnUpdateCheckProgress)
 	ON_COMMAND(ID_CHECK_SHIFT, &CMainFrame::OnCheckShift)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_SHIFT, &CMainFrame::OnUpdateCheckShift)
+	ON_COMMAND(ID_CHECK_DEBUGEXPECT, &CMainFrame::OnCheckDebugexpect)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_DEBUGEXPECT, &CMainFrame::OnUpdateCheckDebugexpect)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1057,6 +1059,8 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "view_timer", &m_view_timer, MIN_VIEW_TIMER, MAX_VIEW_TIMER);
 			CGLib::CheckVar(&st2, &st3, "step_dyn", &m_step_dyn);
 			CGLib::CheckVar(&st2, &st3, "show_marks", &show_marks);
+			if (!CGLib::m_testing) 
+				CGLib::CheckVar(&st2, &st3, "show_marks", &show_marks);
 			CGLib::CheckVar(&st2, &st3, "show_comments", &show_comments);
 			CGLib::CheckVar(&st2, &st3, "show_shift", &show_shift);
 			CGLib::CheckVar(&st2, &st3, "show_lining", &show_lining);
@@ -1130,6 +1134,8 @@ void CMainFrame::SaveSettings()
 	st.Format("show_lines = %d # Set to 1 to show line separators\n", show_lines);
 	fs << st;
 	st.Format("show_progress = %d # Set to 1 to show note scan progress\n", show_progress);
+	fs << st;
+	st.Format("ly_debugexpect = %d # Set to 1 to generate debug expect in lilypond files\n", ly_debugexpect);
 	fs << st;
 	st.Format("show_vel = %d # Set to 1 to show note velocity using alpha\n", show_vel);
 	fs << st;
@@ -1828,4 +1834,13 @@ void CMainFrame::OnCheckShift() {
 
 void CMainFrame::OnUpdateCheckShift(CCmdUI *pCmdUI) {
 	pCmdUI->SetCheck(show_shift);
+}
+
+void CMainFrame::OnCheckDebugexpect() {
+	ly_debugexpect = !ly_debugexpect;
+	SaveSettings();
+}
+
+void CMainFrame::OnUpdateCheckDebugexpect(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(ly_debugexpect);
 }

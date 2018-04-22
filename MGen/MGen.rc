@@ -719,9 +719,9 @@ BEGIN
     ID_CHECK_LINING         "Show lining over notes (dissonances, passing tones, corrected notes)"
     ID_CHECK_VEL            "Show dynamics curves and fill notes based on their dynamics"
     ID_CHECK_NCOLORS        "Shows rule violations for cantus firmus and counterpoint. Shows particular voice colors for MP1"
-    ID_CHECK2               "Show note start and note end playback shift"
     ID_BUTTON_LY            "Open Lilypond file with resulting score (F7)\nOpen Lilypond file"
     ID_BUTTON_FOLDER        "Open folder with resulting files\nOpen folder"
+    ID_CHECK_SHIFT          "Show note start and end shifts for playback"
 END
 
 STRINGTABLE
@@ -737,6 +737,11 @@ BEGIN
     ID_BUTTON_OPENMIDI      "Open MIDI file with resulting music (F8)\nOpen MIDI file"
     ID_OINFO                "Output information"
     ID_CHECK_MARKS          "Show text marks near notes"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CHECK_DEBUGEXPECT    "When generating PDF, show unconfirmed and unexpected flags"
 END
 
 #endif    // English (United States) resources

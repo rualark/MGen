@@ -88,7 +88,6 @@
 #define ID_BUTTON_SETTINGS_EDIT         32801
 #define ID_BUTTON_HZOOM_INC             32802
 #define ID_BUTTON_ECSV                  32803
-#define ID_BUTTON3                      32807
 #define ID_BUTTON_RELOADALGO            32807
 #define ID_BUTTON_SCONFIG               32808
 #define ID_BUTTON_RSETTINGS             32809
@@ -104,9 +103,7 @@
 #define ID_POPUP_CLEARALL               32818
 #define ID_CLEARALL                     32819
 #define ID_BUTTON_HZOOM_DEC             32820
-#define ID_BUTTON_EDIT_SETTINGS         32821
 #define ID_BUTTON_OPENMIDI              32821
-#define ID_BUTTON_ESETTINGS             32822
 #define ID_BUTTON_RELOAD_SETTINGS       32822
 #define ID_BUTTON_OPENCSV               32823
 #define ID_OINFO                        32824
@@ -126,26 +123,22 @@
 #define ID_OINFO8                       32840
 #define ID_OINFO9                       32841
 #define ID_BUTTON_SSTATUS2              32842
-#define ID_BUTTON_SHOW_STATUS           32843
-#define ID_CHECK2                       32843
 #define ID_CHECK_NSR                    32843
-#define ID_BUTTON2                      32844
 #define ID_BUTTON_LY                    32844
 #define ID_BUTTON_FOLDER                32845
-#define ID_CHECK3                       32846
 #define ID_CHECK_GRAPH1                 32846
-#define ID_CHECK4                       32847
 #define ID_CHECK_SHIFT                  32847
 #define ID_CHECK_GRAPH2                 32848
 #define ID_CHECK_GRAPH3                 32849
 #define ID_CHECK_PROGRESS               32850
+#define ID_CHECK_DEBUGEXPECT            32851
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32848
+#define _APS_NEXT_COMMAND_VALUE         32851
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

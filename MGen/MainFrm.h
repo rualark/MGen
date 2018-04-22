@@ -75,6 +75,7 @@ public:
 	int show_lining = 1;
 	int show_lines = 1;
 	int show_progress = 1;
+	int ly_debugexpect = 0;
 	int autoplay = 1;
 	int show_tempo = 1;
 	int show_vel = 1;
@@ -255,4 +256,6 @@ public:
 	afx_msg void OnUpdateCheckProgress(CCmdUI *pCmdUI);
 	afx_msg void OnCheckShift();
 	afx_msg void OnUpdateCheckShift(CCmdUI *pCmdUI);
+	afx_msg void OnCheckDebugexpect();
+	afx_msg void OnUpdateCheckDebugexpect(CCmdUI *pCmdUI);
 };
