@@ -258,4 +258,6 @@ public:
 	afx_msg void OnUpdateCheckShift(CCmdUI *pCmdUI);
 	afx_msg void OnCheckDebugexpect();
 	afx_msg void OnUpdateCheckDebugexpect(CCmdUI *pCmdUI);
+	afx_msg void OnButtonExpAccept();
+	afx_msg void OnUpdateButtonExpAccept(CCmdUI *pCmdUI);
 };

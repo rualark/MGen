@@ -125,6 +125,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_SHIFT, &CMainFrame::OnUpdateCheckShift)
 	ON_COMMAND(ID_CHECK_DEBUGEXPECT, &CMainFrame::OnCheckDebugexpect)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_DEBUGEXPECT, &CMainFrame::OnUpdateCheckDebugexpect)
+	ON_COMMAND(ID_BUTTON_EXP_ACCEPT, &CMainFrame::OnButtonExpAccept)
+	ON_UPDATE_COMMAND_UI(ID_BUTTON_EXP_ACCEPT, &CMainFrame::OnUpdateButtonExpAccept)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1848,4 +1850,43 @@ void CMainFrame::OnCheckDebugexpect() {
 
 void CMainFrame::OnUpdateCheckDebugexpect(CCmdUI *pCmdUI) {
 	pCmdUI->SetCheck(ly_debugexpect);
+}
+
+void CMainFrame::OnButtonExpAccept() {
+	CCsvDb cdb, cdb2;
+	CString est;
+	// Load corrected table
+	est = cdb.Open(m_dir + "\\edb-" + m_fname + ".csv");
+	if (est != "") {
+		WriteLog(5, est);
+		return;
+	}
+	est = cdb.Select();
+	if (est != "") {
+		WriteLog(5, est);
+		return;
+	}
+	// Copy to main table
+	est = cdb2.Open("db\\expect.csv");
+	if (est != "") {
+		WriteLog(5, est);
+		return;
+	}
+	cdb2.filter["File"] = pGen->midi_file;
+	est = cdb2.Delete();
+	if (est != "") {
+		WriteLog(5, est);
+		return;
+	}
+	est = cdb2.InsertMultiple(cdb.result);
+	if (est != "") {
+		WriteLog(5, est);
+		return;
+	}
+}
+
+void CMainFrame::OnUpdateButtonExpAccept(CCmdUI *pCmdUI) {
+	pCmdUI->Enable(m_state_gen == 2 && pGen && m_algo_id != 2001 &&
+		!m_fname.IsEmpty() && !pGen->midi_file.IsEmpty() && 
+		CGLib::fileExists(m_dir + "\\edb-" + m_fname + ".csv"));
 }

@@ -132,13 +132,14 @@
 #define ID_CHECK_GRAPH3                 32849
 #define ID_CHECK_PROGRESS               32850
 #define ID_CHECK_DEBUGEXPECT            32851
+#define ID_BUTTON_EXP_ACCEPT            32852
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32851
+#define _APS_NEXT_COMMAND_VALUE         32852
 #define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
