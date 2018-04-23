@@ -344,6 +344,18 @@ midi\Counterpoint\test\test-pco-apart.mid;15;22;249;Parallel 5ths: < 4/4 apart;s
 midi\Counterpoint\test\test-pco-apart.mid;15;24;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-pco-apart.mid;15;28;242;Suspension rhythm;1/2 + 1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-pco-apart.mid;15;36;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;0;9;;;5;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;0;423;First harmonic interval;IV-I;5;Low;Counterpoint;Low-high note;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;4;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;6;233;Rhythm;1/2. downbeat;5;Low;Rhythm;;Dotted half note on downbeat;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;12;320;;;5;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;22;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;22;233;Rhythm;1/2. downbeat;5;Low;Rhythm;;Dotted half note on downbeat;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;22;83;Harmonic dissonance;downbeat;5;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;28;319;;;5;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;38;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;42;213;Direct movement to 8va;leap cadence;5;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-repeat.mid;1;46;358;Last harmonic interval;Other;5;Low;Counterpoint;Low-high note;;0;100;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-pause.mid;0;0;273;Start pause;missing;2;Low;Counterpoint;;No starting pause in couterpoint voice for species 2-5;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-pause.mid;1;0;273;Start pause;missing;3;Low;Counterpoint;;No starting pause in couterpoint voice for species 2-5;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-pause.mid;1;9;249;Parallel 5ths: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
@@ -1477,16 +1489,3 @@ midi\Counterpoint\test\test-4th.mid;4;3;379;Virtual 4th;beat 1;3;High;Counterpoi
 midi\Counterpoint\test\test-4th.mid;4;8;19;Audible tritone: framed;unresolved;3;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-4th.mid;4;11;357;Last harmonic interval;III-I;3;High;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-4th.mid;4;6;86;Adjacent perfect consonances;different;3;High;Counterpoint;;Different adjacent perfect consonances;-1;0;1;0;2018-04-23 23:35 Global false positive
-midi\Counterpoint\test\test-repeat.mid;1;0;423;First harmonic interval;IV-I;5;Low;Counterpoint;Low-high note;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;4;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;6;233;Rhythm;1/2. downbeat;5;Low;Rhythm;;Dotted half note on downbeat;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;22;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;22;233;Rhythm;1/2. downbeat;5;Low;Rhythm;;Dotted half note on downbeat;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;22;83;Harmonic dissonance;downbeat;5;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;38;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;42;213;Direct movement to 8va;leap cadence;5;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;46;358;Last harmonic interval;Other;5;Low;Counterpoint;Low-high note;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-repeat.mid;1;0;402;Adjacent repeat 2 notes;uniform;5;Low;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;60;1;0;2018-04-23 23:37 Global false positive
-midi\Counterpoint\test\test-repeat.mid;1;12;403;Adjacent repeat 2 notes;same rhythm;5;Low;Repeats;Two adjacent notes are immediately repeated;Length of first and third notes is the same;0;0;1;0;2018-04-23 23:37 Global false positive
-midi\Counterpoint\test\test-repeat.mid;1;28;404;Adjacent repeat 2 notes;any rhythm;5;Low;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-23 23:37 Global false positive
-midi\Counterpoint\test\test-repeat.mid;1;34;84;Adjacent 5ths;parallel;5;Low;Counterpoint;;;0;60;1;0;2018-04-23 23:37 Global false positive
