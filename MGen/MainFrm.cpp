@@ -1853,36 +1853,11 @@ void CMainFrame::OnUpdateCheckDebugexpect(CCmdUI *pCmdUI) {
 }
 
 void CMainFrame::OnButtonExpAccept() {
-	CCsvDb cdb, cdb2;
-	CString est;
-	// Load corrected table
-	est = cdb.Open(m_dir + "\\edb-" + m_fname + ".csv");
-	if (est != "") {
-		WriteLog(5, est);
-		return;
-	}
-	est = cdb.Select();
-	if (est != "") {
-		WriteLog(5, est);
-		return;
-	}
-	// Copy to main table
-	est = cdb2.Open("db\\expect.csv");
-	if (est != "") {
-		WriteLog(5, est);
-		return;
-	}
-	cdb2.filter["File"] = pGen->midi_file;
-	est = cdb2.Delete();
-	if (est != "") {
-		WriteLog(5, est);
-		return;
-	}
-	est = cdb2.InsertMultiple(cdb.result);
-	if (est != "") {
-		WriteLog(5, est);
-		return;
-	}
+	CreateDirectory("db\\archive", NULL);
+	CGLib::copy_file("db\\expect.csv",
+		"db\\archive\\expect-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S") + ".csv");
+	CConf::ReplaceCsvDb(m_dir + "\\edb-" + m_fname + ".csv", "db\\expect.csv",
+		"File", pGen->midi_file);
 }
 
 void CMainFrame::OnUpdateButtonExpAccept(CCmdUI *pCmdUI) {
