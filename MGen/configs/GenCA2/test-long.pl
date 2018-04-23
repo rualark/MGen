@@ -5,4 +5,4 @@ Midi_file = "midi\Counterpoint\test\test-long.mid" # Path and file name of impor
 
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 
-cantus_id = 6
+cantus_id = 7
