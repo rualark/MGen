@@ -1,3 +1,4 @@
+sep=;
 File;Cid;Step;Rid;Rule;Subrule;Species;High;Group;Comment;Subcomment;Accept;Severity;GFP;IFP;Log
 midi\Melody\test\test-leaps.mid;1;0;38;Voice range;voice <m6;0;High;Range;;Only if voice is at least 8 notes and 4 measures long. Voice range below m6 is acceptable for cantus up to 10 notes;0;0;0;0;Imported from midi lyrics
 midi\Melody\test\test-leaps.mid;1;0;15;No melody development;12 notes <12;0;High;Range;;Averaged melody direction within X notes is less than Y deci-semitones;0;0;0;1;Imported from midi lyrics
@@ -367,136 +368,6 @@ midi\Counterpoint\test\test-alterint.mid;3;6;130;Close + 1skip turns around leap
 midi\Counterpoint\test\test-alterint.mid;3;6;215;Direct movement to 8va;leap;1;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-alterint.mid;3;7;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-alterint.mid;3;9;356;Last harmonic interval;I-III;1;Low;Counterpoint;Low-high note;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;0;0;339;Note is too long;sp4: >4/4;4;Low;Rhythm;Except last note;Usually >4/4;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;0;0;272;First harmonic interval;Other;4;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;0;0;359;Harmonic dissonance;first;4;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;0;3;339;Note is too long;sp4: >4/4;4;Low;Rhythm;Except last note;Usually >4/4;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;0;3;41;Note crosses many measures;>2;4;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;0;3;333;Anticipation;start >1/2;4;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;0;3;334;Anticipation;end >whole;4;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;0;8;267;Last note;not whole;4;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;0;332;Suspension rhythm;end >3/4;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;0;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;0;139;Suspension;not last 3;2;Low;Rhythm;;Suspension before N last measures {sp2,3};0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;0;388;sp2 suspension;not I -> LT pnu.;2;Low;Counterpoint;;Other suspension than LT by I note in penultimate measure in sp2;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;1;286;Suspension resolution;shift;2;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;4;334;Anticipation;end >whole;2;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;4;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;4;41;Note crosses many measures;>2;2;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;3;8;267;Last note;not whole;2;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;0;332;Suspension rhythm;end >3/4;3;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;0;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;0;139;Suspension;not last 3;3;Low;Rhythm;;Suspension before N last measures {sp2,3};0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;2;286;Suspension resolution;shift;3;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;8;334;Anticipation;end >whole;3;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;8;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;8;41;Note crosses many measures;>2;3;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;15;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;15;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;0;332;Suspension rhythm;end >3/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;4;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;4;286;Suspension resolution;shift;5;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;16;334;Anticipation;end >whole;5;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;16;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;16;340;Note is too long;sp5: >6/4;5;Low;Rhythm;Except last note;Usually >6/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;16;41;Note crosses many measures;>2;5;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;20;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;30;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;30;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;5;30;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;0;274;Suspension rhythm;start >1/2;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;0;332;Suspension rhythm;end >3/4;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;0;273;Start pause;missing;2;Low;Counterpoint;;No starting pause in couterpoint voice for species 2-5;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;0;67;Skipped notes;1;2;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;0;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;0;139;Suspension;not last 3;2;Low;Rhythm;;Suspension before N last measures {sp2,3};0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;0;388;sp2 suspension;not I -> LT pnu.;2;Low;Counterpoint;;Other suspension than LT by I note in penultimate measure in sp2;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;2;286;Suspension resolution;shift;2;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;2;215;Direct movement to 8va;leap;2;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;4;274;Suspension rhythm;start >1/2;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;4;332;Suspension rhythm;end >3/4;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;4;82;Perfect consonance;db. culm.;2;Low;Counterpoint;;Downbeat culmination;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;4;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;4;388;sp2 suspension;not I -> LT pnu.;2;Low;Counterpoint;;Other suspension than LT by I note in penultimate measure in sp2;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;4;41;Note crosses many measures;>2;2;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;4;26;Culmination;sync;2;Low;Repeats;;Synchronized culminations in both voices;-1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;9;267;Last note;not whole;2;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;0;332;Suspension rhythm;end >3/4;3;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;0;274;Suspension rhythm;start >1/2;3;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;0;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;0;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;0;139;Suspension;not last 3;3;Low;Rhythm;;Suspension before N last measures {sp2,3};0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;3;286;Suspension resolution;shift;3;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;8;334;Anticipation;end >whole;3;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;8;333;Anticipation;start >1/2;3;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;8;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;8;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;8;41;Note crosses many measures;>2;3;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;16;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;7;16;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;0;254;Rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;0;237;Rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;0;332;Suspension rhythm;end >3/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;0;274;Suspension rhythm;start >1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;0;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;0;340;Note is too long;sp5: >6/4;5;Low;Rhythm;Except last note;Usually >6/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;0;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;6;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;6;244;Suspension rhythm;1/2. + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;6;286;Suspension resolution;shift;5;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;16;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;16;334;Anticipation;end >whole;5;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;16;333;Anticipation;start >1/2;5;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;16;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;16;340;Note is too long;sp5: >6/4;5;Low;Rhythm;Except last note;Usually >6/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;16;41;Note crosses many measures;>2;5;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;22;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;22;244;Suspension rhythm;1/2. + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;32;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;32;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;8;32;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;9;0;272;First harmonic interval;Other;2;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;9;0;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;9;0;359;Harmonic dissonance;first;2;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;9;3;333;Anticipation;start >1/2;2;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;9;3;334;Anticipation;end >whole;2;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;9;3;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;9;3;41;Note crosses many measures;>2;2;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;9;8;267;Last note;not whole;2;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;0;272;First harmonic interval;Other;3;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;0;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;0;359;Harmonic dissonance;first;3;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;6;333;Anticipation;start >1/2;3;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;6;334;Anticipation;end >whole;3;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;6;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;6;41;Note crosses many measures;>2;3;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;17;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;17;252;Last note;01.апр;3;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;10;17;249;Parallel 5ths: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;0;272;First harmonic interval;Other;5;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;0;359;Harmonic dissonance;first;5;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;4;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;12;333;Anticipation;start >1/2;5;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;12;334;Anticipation;end >whole;5;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;12;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;12;340;Note is too long;sp5: >6/4;5;Low;Rhythm;Except last note;Usually >6/4;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;12;41;Note crosses many measures;>2;5;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;20;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;34;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;34;252;Last note;01.апр;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;11;34;249;Parallel 5ths: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;0;67;Skipped notes;1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;2;254;Rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;2;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;8;249;Parallel 5ths: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;10;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;10;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;16;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;16;384;Harmonic dissonance;longer >>;5;Low;Counterpoint;;Dissonance is longer than next consonance;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;12;16;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-cp3-rhythm.mid;0;0;273;Start pause;missing;3;Low;Counterpoint;;No starting pause in couterpoint voice for species 2-5;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-cp3-rhythm.mid;0;4;316;Parallel 5ths: < 4/4 apart;downbeat;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-cp3-rhythm.mid;0;14;249;Parallel 5ths: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
@@ -1473,3 +1344,133 @@ midi\Counterpoint\test\test-vint.mid;11;3;65;1skip + 1skip turns around leap;5th
 midi\Counterpoint\test\test-vint.mid;11;4;75;Penultimate measure;no V or II note;1;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-vint.mid;11;4;208;Direct movement to 5th;stepw. cadence;1;Low;Counterpoint;Direct movement to perfect consonance with stepwize motion in higher voice;;1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-vint.mid;11;5;355;Last harmonic interval;I-V;1;Low;Counterpoint;Low-high note;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;0;0;339;Note is too long;sp4: >4/4;4;Low;Rhythm;Except last note;Usually >4/4;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;0;0;272;First harmonic interval;Other;4;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;0;0;359;Harmonic dissonance;first;4;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;0;3;339;Note is too long;sp4: >4/4;4;Low;Rhythm;Except last note;Usually >4/4;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;0;3;41;Note crosses many measures;>2;4;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;0;3;333;Anticipation;start >1/2;4;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;0;8;267;Last note;not whole;4;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;0;5;334;Anticipation;end >whole;4;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;3;0;332;Suspension rhythm;end >3/4;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;3;0;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;3;0;139;Suspension;not last 3;2;Low;Rhythm;;Suspension before N last measures {sp2,3};0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;3;0;388;sp2 suspension;not I -> LT pnu.;2;Low;Counterpoint;;Other suspension than LT by I note in penultimate measure in sp2;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;3;1;286;Suspension resolution;shift;2;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;3;4;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;3;4;41;Note crosses many measures;>2;2;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;3;8;267;Last note;not whole;2;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;3;5;334;Anticipation;end >whole;2;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;4;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;0;332;Suspension rhythm;end >3/4;3;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;0;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;0;139;Suspension;not last 3;3;Low;Rhythm;;Suspension before N last measures {sp2,3};0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;2;286;Suspension resolution;shift;3;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;8;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;8;41;Note crosses many measures;>2;3;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;15;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;15;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;4;10;334;Anticipation;end >whole;3;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;5;0;332;Suspension rhythm;end >3/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;4;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;4;286;Suspension resolution;shift;5;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;16;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;16;340;Note is too long;sp5: >6/4;5;Low;Rhythm;Except last note;Usually >6/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;16;41;Note crosses many measures;>2;5;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;20;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;30;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;30;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;30;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;5;20;334;Anticipation;end >whole;5;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;6;0;274;Suspension rhythm;start >1/2;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;0;332;Suspension rhythm;end >3/4;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;0;273;Start pause;missing;2;Low;Counterpoint;;No starting pause in couterpoint voice for species 2-5;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;0;67;Skipped notes;1;2;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;0;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;0;139;Suspension;not last 3;2;Low;Rhythm;;Suspension before N last measures {sp2,3};0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;0;388;sp2 suspension;not I -> LT pnu.;2;Low;Counterpoint;;Other suspension than LT by I note in penultimate measure in sp2;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;2;286;Suspension resolution;shift;2;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;2;215;Direct movement to 8va;leap;2;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;4;274;Suspension rhythm;start >1/2;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;4;332;Suspension rhythm;end >3/4;2;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;4;82;Perfect consonance;db. culm.;2;Low;Counterpoint;;Downbeat culmination;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;4;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;4;388;sp2 suspension;not I -> LT pnu.;2;Low;Counterpoint;;Other suspension than LT by I note in penultimate measure in sp2;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;4;41;Note crosses many measures;>2;2;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;4;26;Culmination;sync;2;Low;Repeats;;Synchronized culminations in both voices;-1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;9;267;Last note;not whole;2;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;0;332;Suspension rhythm;end >3/4;3;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;0;274;Suspension rhythm;start >1/2;3;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;0;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;0;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;0;139;Suspension;not last 3;3;Low;Rhythm;;Suspension before N last measures {sp2,3};0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;3;286;Suspension resolution;shift;3;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;8;333;Anticipation;start >1/2;3;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;8;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;8;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;8;41;Note crosses many measures;>2;3;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;16;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;16;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;7;11;334;Anticipation;end >whole;3;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;8;0;254;Rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;0;237;Rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;0;332;Suspension rhythm;end >3/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;0;274;Suspension rhythm;start >1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;0;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;0;340;Note is too long;sp5: >6/4;5;Low;Rhythm;Except last note;Usually >6/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;0;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;6;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;6;244;Suspension rhythm;1/2. + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;6;286;Suspension resolution;shift;5;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;16;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;16;333;Anticipation;start >1/2;5;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;16;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;16;340;Note is too long;sp5: >6/4;5;Low;Rhythm;Except last note;Usually >6/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;16;41;Note crosses many measures;>2;5;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;22;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;22;244;Suspension rhythm;1/2. + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;32;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;32;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;32;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;8;22;334;Anticipation;end >whole;5;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;9;0;272;First harmonic interval;Other;2;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;9;0;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;9;0;359;Harmonic dissonance;first;2;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;9;3;333;Anticipation;start >1/2;2;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;9;3;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;9;3;41;Note crosses many measures;>2;2;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;9;8;267;Last note;not whole;2;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;9;5;334;Anticipation;end >whole;2;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;10;0;272;First harmonic interval;Other;3;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;0;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;0;359;Harmonic dissonance;first;3;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;6;333;Anticipation;start >1/2;3;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;6;338;Note is too long;sp3: >1/4;3;Low;Rhythm;Except last note;Usually >1/4 or >2/4;0;60;0;1;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;6;41;Note crosses many measures;>2;3;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;17;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;17;252;Last note;1/4;3;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;10;10;334;Anticipation;end >whole;3;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;10;17;488;Parallel 8ves: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;11;0;272;First harmonic interval;Other;5;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;0;359;Harmonic dissonance;first;5;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;4;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;12;333;Anticipation;start >1/2;5;Low;Nonchord tones;;Anticipation start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;12;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;12;340;Note is too long;sp5: >6/4;5;Low;Rhythm;Except last note;Usually >6/4;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;12;41;Note crosses many measures;>2;5;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;20;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;34;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;34;252;Last note;1/4;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;11;20;334;Anticipation;end >whole;5;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;11;34;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-23 21:01 Global false positive
+midi\Counterpoint\test\test-long.mid;12;0;67;Skipped notes;1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;12;2;254;Rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;12;2;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;12;10;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;12;10;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;12;16;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;12;16;384;Harmonic dissonance;longer >>;5;Low;Counterpoint;;Dissonance is longer than next consonance;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;12;16;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;12;8;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-23 21:01 Global false positive
