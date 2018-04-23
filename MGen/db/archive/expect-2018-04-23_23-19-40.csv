@@ -79,6 +79,75 @@ midi\Counterpoint\test\test-2c1.mid;1;0;69;Skipped notes;>1 joined;3;Low;Range;S
 midi\Counterpoint\test\test-2c1.mid;1;5;180;Ascending leap;>8th;3;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-2c1.mid;1;6;11;Interval between voices;int >16th;3;Low;Range;;Interval between counterpoint voices.  Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);0;70;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-2c1.mid;1;6;84;Adjacent 5ths;parallel;3;Low;Counterpoint;;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;0;269;First harmonic interval;I-V;1;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;2;168;False dim or aug relation;VII#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;3;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;3;168;False dim or aug relation;VII#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;3;58;Leap back;overflow;1;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;3;129;Close + 1skip turns around leap;4th;1;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;3;164;False chromatic relation;VI<->VI#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;4;164;False chromatic relation;VI<->VI#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;4;165;False chromatic relation;VII<->VII#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;4;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;5;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;5;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;5;167;False dim or aug relation;VI#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;5;165;False chromatic relation;VII<->VII#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;6;163;Dim or aug melodic interval: far;III-VII#;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;6;166;False dim or aug relation;VI<->VII#;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;6;129;Close + 1skip turns around leap;4th;1;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;6;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;7;154;Dim or aug melodic interval;VI<->VII#;1;Low;Minor;;Augmented / diminished;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;7;158;Chromatism: far;VI<->VI#;1;Low;Minor;These two notes are one note apart;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;7;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;7;168;False dim or aug relation;VII#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;8;402;Adjacent repeat 2 notes;uniform;1;Low;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;8;165;False chromatic relation;VII<->VII#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;8;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;8;164;False chromatic relation;VI<->VI#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;9;402;Adjacent repeat 2 notes;uniform;1;Low;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;9;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;9;167;False dim or aug relation;VI#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;9;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;9;165;False chromatic relation;VII<->VII#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;10;12;Culmination;multi high;1;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;10;167;False dim or aug relation;VI#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;10;166;False dim or aug relation;VI<->VII#;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;10;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;11;170;False chromatic relation: simult.;VI<->VI#;1;Low;Minor;If allowed, will be considered dissonance;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;11;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;11;166;False dim or aug relation;VI<->VII#;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;12;12;Culmination;multi high;1;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;12;181;Descending leap;m6;1;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;12;171;False chromatic relation: simult.;VII<->VII#;1;Low;Minor;If allowed, will be considered dissonance;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;12;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;13;161;Dim or aug melodic interval: far;VI#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;13;156;Dim or aug melodic interval;VII#-III;1;Low;Minor;;Augmented / diminished;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;13;47;Penultimate measure;no leading tone;1;Low;Counterpoint;;no leading tone is allowed if last bass notes are V-I;0;30;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;13;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;0;14;355;Last harmonic interval;I-V;1;Low;Counterpoint;Low-high note;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;2;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;2;2;164;False chromatic relation;VI<->VI#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;2;3;377;Prohibited progression;VI<->VI#;1;Low;Harmony;;Chord with VI note near chord with VI# note;0;30;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;2;3;75;Penultimate measure;no V or II note;1;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;2;3;24;Voices overlap;overlap;1;Low;Counterpoint;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;2;3;213;Direct movement to 8va;leap cadence;1;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;2;4;24;Voices overlap;overlap;1;Low;Counterpoint;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;0;268;First harmonic interval;I-I;1;Low;Counterpoint;Low-high note;;-1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;1;168;False dim or aug relation;VII#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;2;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;3;133;>1skip + close turns around leap;4th;1;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;3;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;4;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;4;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;5;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;6;6;;;1;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;6;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;6;130;Close + 1skip turns around leap;5th;1;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;6;215;Direct movement to 8va;leap;1;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;7;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-alterint.mid;3;9;356;Last harmonic interval;I-III;1;Low;Counterpoint;Low-high note;;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-cp3-rhythm.mid;0;0;273;Start pause;missing;3;Low;Counterpoint;;No starting pause in couterpoint voice for species 2-5;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-cp3-rhythm.mid;0;4;316;Parallel 5ths: < 4/4 apart;downbeat;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-cp3-rhythm.mid;0;14;249;Parallel 5ths: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
@@ -1414,73 +1483,3 @@ midi\Melody\test\test-tritone.mid;8;1;373;Compound tritone framed;on climax;0;Lo
 midi\Melody\test\test-tritone.mid;8;1;372;Compound tritone framed;unresolved;0;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;60;0;0;Imported from midi lyrics
 midi\Melody\test\test-tritone.mid;8;7;34;3rd to last note;leading tone;0;Low;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
 midi\Melody\test\test-tritone.mid;8;1;503;Consecutive unidir. leaps;2 x 3rds;0;Low;Leaps;;;0;60;1;0;2018-04-23 23:16 Global false positive
-midi\Counterpoint\test\test-alterint.mid;0;0;269;First harmonic interval;I-V;1;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;2;168;False dim or aug relation;VII#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;3;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;3;168;False dim or aug relation;VII#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;3;58;Leap back;overflow;1;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;3;129;Close + 1skip turns around leap;4th;1;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;3;164;False chromatic relation;VI<->VI#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;4;164;False chromatic relation;VI<->VI#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;4;165;False chromatic relation;VII<->VII#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;4;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;5;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;5;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;5;167;False dim or aug relation;VI#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;5;165;False chromatic relation;VII<->VII#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;6;163;Dim or aug melodic interval: far;III-VII#;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;6;166;False dim or aug relation;VI<->VII#;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;6;129;Close + 1skip turns around leap;4th;1;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;6;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;7;154;Dim or aug melodic interval;VI<->VII#;1;Low;Minor;;Augmented / diminished;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;7;158;Chromatism: far;VI<->VI#;1;Low;Minor;These two notes are one note apart;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;7;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;7;168;False dim or aug relation;VII#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;8;402;Adjacent repeat 2 notes;uniform;1;Low;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;8;165;False chromatic relation;VII<->VII#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;8;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;8;164;False chromatic relation;VI<->VI#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;9;402;Adjacent repeat 2 notes;uniform;1;Low;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;9;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;9;167;False dim or aug relation;VI#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;9;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;9;165;False chromatic relation;VII<->VII#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;10;12;Culmination;multi high;1;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;10;167;False dim or aug relation;VI#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;10;166;False dim or aug relation;VI<->VII#;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;10;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;11;170;False chromatic relation: simult.;VI<->VI#;1;Low;Minor;If allowed, will be considered dissonance;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;11;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;11;166;False dim or aug relation;VI<->VII#;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;12;12;Culmination;multi high;1;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;12;181;Descending leap;m6;1;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;12;171;False chromatic relation: simult.;VII<->VII#;1;Low;Minor;If allowed, will be considered dissonance;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;12;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;13;161;Dim or aug melodic interval: far;VI#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;13;156;Dim or aug melodic interval;VII#-III;1;Low;Minor;;Augmented / diminished;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;13;47;Penultimate measure;no leading tone;1;Low;Counterpoint;;no leading tone is allowed if last bass notes are V-I;0;30;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;13;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;0;14;355;Last harmonic interval;I-V;1;Low;Counterpoint;Low-high note;;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;2;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;2;2;164;False chromatic relation;VI<->VI#;1;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;2;3;377;Prohibited progression;VI<->VI#;1;Low;Harmony;;Chord with VI note near chord with VI# note;0;30;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;2;3;75;Penultimate measure;no V or II note;1;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;2;3;24;Voices overlap;overlap;1;Low;Counterpoint;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;2;3;213;Direct movement to 8va;leap cadence;1;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;2;4;24;Voices overlap;overlap;1;Low;Counterpoint;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;0;268;First harmonic interval;I-I;1;Low;Counterpoint;Low-high note;;-1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;1;168;False dim or aug relation;VII#<->III;1;Low;Minor;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;2;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;3;133;>1skip + close turns around leap;4th;1;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;3;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;4;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;4;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;5;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;6;83;Harmonic dissonance;downbeat;1;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;6;130;Close + 1skip turns around leap;5th;1;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;6;215;Direct movement to 8va;leap;1;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;7;200;VII natural note;10 after VII#;1;Low;Minor;;X notes after VII# note;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;9;356;Last harmonic interval;I-III;1;Low;Counterpoint;Low-high note;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-alterint.mid;3;6;503;Consecutive unidir. leaps;2 x 3rds;1;Low;Leaps;;;0;60;1;0;2018-04-23 23:19 Global false positive
-midi\Counterpoint\test\test-alterint.mid;3;7;481;Adjacent 8ves;parallel;1;Low;Counterpoint;;;0;60;1;0;2018-04-23 23:19 Global false positive
