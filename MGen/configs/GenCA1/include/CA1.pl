@@ -4,7 +4,7 @@ include "../../GenCF1/include/CF1.pl"
 method = window-scan # This method can be faster in some cases
 #method = swa # This method is best for analysis and corrections in most cases
 
-cantus_id = 0 # Start analysis from this cantus id
+cantus_id = 1 # Start analysis from this cantus id
 accept_reseed = 0 # After accepting first result reseed (if random_seed) and choose new range (if random_range)
 random_seed = 0 # Seed melody with random numbers. This ensures giving different results if generation is very slow.
 random_range = 0 # Limit scanning to one of possible fast-scan ranges (automatically enabled for RSWA)
