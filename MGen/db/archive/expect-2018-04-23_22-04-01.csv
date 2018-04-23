@@ -929,6 +929,167 @@ midi\Counterpoint\test\test-cp4.mid;0;8;58;Leap back;overflow;4;High;Turns aroun
 midi\Counterpoint\test\test-cp4.mid;0;8;176;Ascending leap;maj6;4;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-cp4.mid;0;10;305;Culmination;multi low;4;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-cp4.mid;0;10;248;Parallel 5ths: < 4/4 apart;upbeat contrary;4;High;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to upbeat;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;0;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;0;1;2;Adjacent tritone;resolved;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;Search 4 quarters for resolution;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;0;1;32;Adjacent tritone;on climax;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;Highest note in higher voice within 13 notes or 8 measures - which is smaller;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;0;3;75;Penultimate measure;no V or II note;1;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;2;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;2;1;31;Adjacent tritone;unresolved;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;2;1;32;Adjacent tritone;on climax;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;Highest note in higher voice within 13 notes or 8 measures - which is smaller;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;3;0;69;Skipped notes;>1 joined;1;Low;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;3;1;31;Adjacent tritone;unresolved;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;4;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;4;1;372;Compound tritone framed;unresolved;1;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;4;1;373;Compound tritone framed;on climax;1;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;4;1;503;Consecutive unidir. leaps;2 x 3rds;1;Low;Leaps;;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;5;1;371;Compound tritone framed;resolved;1;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;5;1;373;Compound tritone framed;on climax;1;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;5;1;503;Consecutive unidir. leaps;2 x 3rds;1;Low;Leaps;;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;6;0;269;First harmonic interval;I-V;5;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;6;10;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;6;12;365;Tritone: adjacent framed;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;40;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;6;12;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;7;0;269;First harmonic interval;I-V;5;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;7;12;365;Tritone: adjacent framed;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;40;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;8;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;8;12;365;Tritone: adjacent framed;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;40;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;8;12;367;Tritone: adjacent framed;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;9;0;269;First harmonic interval;I-V;5;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;9;0;69;Skipped notes;>1 joined;5;Low;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;9;10;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;9;12;366;Tritone: adjacent framed;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;9;12;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;9;16;318;Penultimate measure;isolated LT;5;Low;Counterpoint;;There is another harmony between leading tone and tonic note in penultimate measure;1;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;9;26;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;9;26;252;Last note;01.апр;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;10;0;269;First harmonic interval;I-V;5;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;10;10;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;10;12;365;Tritone: adjacent framed;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;40;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;10;12;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;10;20;405;;;5;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;10;26;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;10;26;252;Last note;01.апр;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;11;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;11;12;362;Tritone: adjacent accented;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, last note is long or repeated;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;11;12;361;Tritone: adjacent accented;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, last note is long or repeated;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;12;0;67;Skipped notes;1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;12;12;369;Tritone: adjacent;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;12;12;370;Tritone: adjacent;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;12;12;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;12;16;318;Penultimate measure;isolated LT;5;Low;Counterpoint;;There is another harmony between leading tone and tonic note in penultimate measure;1;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;12;18;322;Penultimate measure;T/S after D;5;Low;Counterpoint;;Tonic or subdominant chord goes after dominant chord in penultimate measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;13;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;13;12;368;Tritone: adjacent;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;13;12;370;Tritone: adjacent;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;13;16;318;Penultimate measure;isolated LT;5;Low;Counterpoint;;There is another harmony between leading tone and tonic note in penultimate measure;1;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;13;18;322;Penultimate measure;T/S after D;5;Low;Counterpoint;;Tonic or subdominant chord goes after dominant chord in penultimate measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;15;0;68;Skipped notes;>1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;15;8;361;Tritone: adjacent accented;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, last note is long or repeated;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;15;10;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;15;14;241;Suspension rhythm;1/2 + 1/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;15;16;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;15;20;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;15;22;490;Parallel 8ves: < 4/4 apart;downbeat;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;16;8;361;Tritone: adjacent accented;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, last note is long or repeated;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;16;10;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;16;10;19;Audible tritone: framed;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;16;14;241;Suspension rhythm;1/2 + 1/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;16;20;335;Penultimate measure;not D/DVII;5;Low;Counterpoint;;Penultimate harmony is not D / DVII;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;19;6;19;Audible tritone: framed;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;19;12;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;19;20;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;19;24;249;Parallel 5ths: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;19;28;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;0;67;Skipped notes;1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;4;241;Suspension rhythm;1/2 + 1/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;6;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;10;176;Ascending leap;maj6;5;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;12;28;;;5;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;14;19;Audible tritone: framed;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;18;214;Direct movement to 5th;leap;5;Low;Counterpoint;Direct movement to perfect consonance with stepwize motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;20;343;Audible tritone: accented;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, last note is long or repeated;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;20;316;Parallel 5ths: < 4/4 apart;downbeat;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;24;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;24;276;Harmonic dissonance upbeat;m2;5;Low;Counterpoint;;Minor second;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;24;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;28;175;Ascending leap;m6;5;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;28;24;Voices overlap;overlap;5;Low;Counterpoint;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;20;32;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;0;67;Skipped notes;1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;4;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;10;367;Tritone: adjacent framed;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;10;366;Tritone: adjacent framed;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;10;214;Direct movement to 5th;leap;5;Low;Counterpoint;Direct movement to perfect consonance with stepwize motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;12;343;Audible tritone: accented;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, last note is long or repeated;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;12;364;Audible tritone: accented;on climax;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, last note is long or repeated;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;12;82;Perfect consonance;db. culm.;5;Low;Counterpoint;;Downbeat culmination;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;16;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;16;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;21;24;181;Descending leap;m6;5;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;0;269;First harmonic interval;I-V;3;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;2;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;2;363;Audible tritone: framed;on climax;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;4;410;;;3;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;4;249;Parallel 5ths: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;5;409;;;3;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;10;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;10;363;Audible tritone: framed;on climax;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;22;10;12;Culmination;multi high;3;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;23;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;23;0;270;First harmonic interval;I-III;3;Low;Counterpoint;Low-high note;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;23;2;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;23;4;249;Parallel 5ths: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;23;8;408;;;3;Low;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;23;10;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;23;17;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;23;17;252;Last note;01.апр;3;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;0;359;Harmonic dissonance;first;5;High;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;0;272;First harmonic interval;Other;5;High;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;4;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;4;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;10;229;Eighth note(s);4th beat;5;High;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;10;88;Eighth note(s);leap;5;High;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;12;236;Rhythm;whole inside;5;High;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;20;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;20;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;20;88;Eighth note(s);leap;5;High;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;20;226;Eighth note(s);1st beat;5;High;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;20;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;25;22;223;Harmonic dissonance;<< longer;5;High;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;0;359;Harmonic dissonance;first;5;High;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;0;272;First harmonic interval;Other;5;High;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;4;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;4;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;8;319;;;5;High;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;10;229;Eighth note(s);4th beat;5;High;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;10;319;;;5;High;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;11;320;;;5;High;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;11;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;12;236;Rhythm;whole inside;5;High;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;12;319;;;5;High;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;20;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;20;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;20;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;20;226;Eighth note(s);1st beat;5;High;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;22;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;27;22;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;0;359;Harmonic dissonance;first;5;High;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;0;272;First harmonic interval;Other;5;High;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;4;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;4;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;8;319;;;5;High;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;10;229;Eighth note(s);4th beat;5;High;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;10;319;;;5;High;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;11;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;11;320;;;5;High;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;12;236;Rhythm;whole inside;5;High;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;12;319;;;5;High;;;;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;20;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;20;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;20;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;20;226;Eighth note(s);1st beat;5;High;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;22;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-tritone.mid;28;22;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-harm.mid;0;0;68;Skipped notes;>1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-harm.mid;0;2;6;;;1;Low;;;;0;0;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-harm.mid;0;2;57;Harmonic progression;bad;1;Low;Harmony;;See harmonic progressions with penalty 2;-1;0;0;0;Imported from midi lyrics
@@ -1313,165 +1474,3 @@ midi\Counterpoint\test\test-long.mid;12;16;223;Harmonic dissonance;<< longer;5;L
 midi\Counterpoint\test\test-long.mid;12;16;384;Harmonic dissonance;longer >>;5;Low;Counterpoint;;Dissonance is longer than next consonance;0;0;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;12;16;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;12;8;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-23 21:01 Global false positive
-midi\Counterpoint\test\test-tritone.mid;0;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;0;1;2;Adjacent tritone;resolved;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;Search 4 quarters for resolution;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;0;1;32;Adjacent tritone;on climax;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;Highest note in higher voice within 13 notes or 8 measures - which is smaller;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;0;3;75;Penultimate measure;no V or II note;1;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;2;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;2;1;31;Adjacent tritone;unresolved;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;2;1;32;Adjacent tritone;on climax;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;Highest note in higher voice within 13 notes or 8 measures - which is smaller;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;3;0;69;Skipped notes;>1 joined;1;Low;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;3;1;31;Adjacent tritone;unresolved;1;Low;CF/sp1 Tritone;Melodic adjacent tritone;;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;4;0;67;Skipped notes;1;1;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;4;1;372;Compound tritone framed;unresolved;1;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;4;1;373;Compound tritone framed;on climax;1;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;4;1;503;Consecutive unidir. leaps;2 x 3rds;1;Low;Leaps;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;5;1;371;Compound tritone framed;resolved;1;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;5;1;373;Compound tritone framed;on climax;1;Low;CF/sp1 Tritone;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;5;1;503;Consecutive unidir. leaps;2 x 3rds;1;Low;Leaps;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;6;0;269;First harmonic interval;I-V;5;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;6;10;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;6;12;365;Tritone: adjacent framed;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;40;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;6;12;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;7;0;269;First harmonic interval;I-V;5;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;7;12;365;Tritone: adjacent framed;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;40;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;7;10;505;Consecutive unidir. leaps;2 x >3rds;5;Low;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;8;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;8;12;365;Tritone: adjacent framed;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;40;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;8;12;367;Tritone: adjacent framed;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;9;0;269;First harmonic interval;I-V;5;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;9;0;69;Skipped notes;>1 joined;5;Low;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;9;10;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;9;12;366;Tritone: adjacent framed;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;9;12;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;9;16;318;Penultimate measure;isolated LT;5;Low;Counterpoint;;There is another harmony between leading tone and tonic note in penultimate measure;1;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;9;26;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;9;26;252;Last note;1/4;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;10;0;269;First harmonic interval;I-V;5;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;10;10;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;10;12;365;Tritone: adjacent framed;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;40;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;10;12;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;10;26;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;10;26;252;Last note;1/4;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;10;20;411;Adjacent repeat 2 notes IC;uniform;5;Low;Repeats;Two adjacent notes are immediately repeated inside one cantus note;Length of first three notes is the same;0;60;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;11;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;11;12;362;Tritone: adjacent accented;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, last note is long or repeated;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;11;12;361;Tritone: adjacent accented;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, last note is long or repeated;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;12;0;67;Skipped notes;1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;12;12;369;Tritone: adjacent;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;12;12;370;Tritone: adjacent;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;12;12;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;12;16;318;Penultimate measure;isolated LT;5;Low;Counterpoint;;There is another harmony between leading tone and tonic note in penultimate measure;1;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;12;18;322;Penultimate measure;T/S after D;5;Low;Counterpoint;;Tonic or subdominant chord goes after dominant chord in penultimate measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;13;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;13;12;368;Tritone: adjacent;resolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;13;12;370;Tritone: adjacent;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;13;16;318;Penultimate measure;isolated LT;5;Low;Counterpoint;;There is another harmony between leading tone and tonic note in penultimate measure;1;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;13;18;322;Penultimate measure;T/S after D;5;Low;Counterpoint;;Tonic or subdominant chord goes after dominant chord in penultimate measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;15;0;68;Skipped notes;>1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;15;8;361;Tritone: adjacent accented;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, last note is long or repeated;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;15;10;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;15;14;241;Suspension rhythm;1/2 + 1/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;15;16;58;Leap back;overflow;5;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;15;20;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;15;22;485;Parallel 8ves: < 4/4 apart;last contrary;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to last interval in counterpoint;1;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;16;8;361;Tritone: adjacent accented;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, last note is long or repeated;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;16;10;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;16;10;19;Audible tritone: framed;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;16;14;241;Suspension rhythm;1/2 + 1/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;16;20;335;Penultimate measure;not D/DVII;5;Low;Counterpoint;;Penultimate harmony is not D / DVII;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;19;6;19;Audible tritone: framed;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;19;12;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;19;20;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;19;24;249;Parallel 5ths: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;19;28;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;0;67;Skipped notes;1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;4;241;Suspension rhythm;1/2 + 1/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;6;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;10;176;Ascending leap;maj6;5;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;14;19;Audible tritone: framed;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;18;214;Direct movement to 5th;leap;5;Low;Counterpoint;Direct movement to perfect consonance with stepwize motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;20;343;Audible tritone: accented;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, last note is long or repeated;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;20;316;Parallel 5ths: < 4/4 apart;downbeat;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;24;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;24;276;Harmonic dissonance upbeat;m2;5;Low;Counterpoint;;Minor second;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;24;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;28;175;Ascending leap;m6;5;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;28;24;Voices overlap;overlap;5;Low;Counterpoint;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;32;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;20;12;503;Consecutive unidir. leaps;2 x 3rds;5;Low;Leaps;;;0;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;21;0;67;Skipped notes;1;5;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;4;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;10;367;Tritone: adjacent framed;on climax;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;10;366;Tritone: adjacent framed;unresolved;5;Low;sp2-5 Tritone;Melodic tritone within measure, framed by two melody direction changes;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;10;214;Direct movement to 5th;leap;5;Low;Counterpoint;Direct movement to perfect consonance with stepwize motion in higher voice;not cadence;0;40;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;12;343;Audible tritone: accented;unresolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, last note is long or repeated;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;12;364;Audible tritone: accented;on climax;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, last note is long or repeated;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;12;82;Perfect consonance;db. culm.;5;Low;Counterpoint;;Downbeat culmination;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;16;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;16;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;21;24;181;Descending leap;m6;5;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;22;0;269;First harmonic interval;I-V;3;Low;Counterpoint;Low-high note;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;22;2;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;22;2;363;Audible tritone: framed;on climax;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;22;4;249;Parallel 5ths: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;22;10;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;22;10;363;Audible tritone: framed;on climax;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;22;10;12;Culmination;multi high;3;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;22;4;404;Adjacent repeat 2 notes;any rhythm;3;Low;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;22;5;403;Adjacent repeat 2 notes;same rhythm;3;Low;Repeats;Two adjacent notes are immediately repeated;Length of first and third notes is the same;0;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;23;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;23;0;270;First harmonic interval;I-III;3;Low;Counterpoint;Low-high note;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;23;2;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;23;4;249;Parallel 5ths: < 4/4 apart;stepwize;3;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;23;10;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;23;17;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;23;17;252;Last note;1/4;3;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;23;8;402;Adjacent repeat 2 notes;uniform;3;Low;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;25;0;359;Harmonic dissonance;first;5;High;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;0;272;First harmonic interval;Other;5;High;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;4;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;4;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;10;229;Eighth note(s);4th beat;5;High;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;10;88;Eighth note(s);leap;5;High;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;12;236;Rhythm;whole inside;5;High;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;20;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;20;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;20;88;Eighth note(s);leap;5;High;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;20;226;Eighth note(s);1st beat;5;High;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;20;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;25;22;223;Harmonic dissonance;<< longer;5;High;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;0;359;Harmonic dissonance;first;5;High;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;0;272;First harmonic interval;Other;5;High;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;4;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;4;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;10;229;Eighth note(s);4th beat;5;High;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;11;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;12;236;Rhythm;whole inside;5;High;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;20;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;20;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;20;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;20;226;Eighth note(s);1st beat;5;High;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;22;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;22;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;27;8;404;Adjacent repeat 2 notes;any rhythm;5;High;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;27;10;404;Adjacent repeat 2 notes;any rhythm;5;High;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;27;11;403;Adjacent repeat 2 notes;same rhythm;5;High;Repeats;Two adjacent notes are immediately repeated;Length of first and third notes is the same;0;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;27;12;404;Adjacent repeat 2 notes;any rhythm;5;High;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;28;0;359;Harmonic dissonance;first;5;High;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;0;272;First harmonic interval;Other;5;High;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;4;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;4;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;10;229;Eighth note(s);4th beat;5;High;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;11;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;12;236;Rhythm;whole inside;5;High;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;20;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;20;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;20;245;Many notes in measure;5;5;High;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;20;226;Eighth note(s);1st beat;5;High;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;22;305;Culmination;multi low;5;High;Repeats;;Multiple culminations in lower voice;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;22;19;Audible tritone: framed;unresolved;5;High;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-tritone.mid;28;8;404;Adjacent repeat 2 notes;any rhythm;5;High;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;28;10;404;Adjacent repeat 2 notes;any rhythm;5;High;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;28;11;403;Adjacent repeat 2 notes;same rhythm;5;High;Repeats;Two adjacent notes are immediately repeated;Length of first and third notes is the same;0;0;1;0;2018-04-23 22:03 Global false positive
-midi\Counterpoint\test\test-tritone.mid;28;12;404;Adjacent repeat 2 notes;any rhythm;5;High;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-23 22:03 Global false positive
