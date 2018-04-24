@@ -742,6 +742,7 @@ END
 STRINGTABLE
 BEGIN
     ID_CHECK_DEBUGEXPECT    "When generating PDF, show unconfirmed and unexpected flags"
+    ID_BUTTON_EXP_ACCEPT    "Accept all unexpected and unconfirmed flags"
 END
 
 #endif    // English (United States) resources
