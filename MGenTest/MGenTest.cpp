@@ -199,6 +199,8 @@ void LoadConfig() {
 	if (!CGLib::fileExists(fname)) {
 		cout << "Not found file " << fname << "\n";
 	}
+	// Copy expect db
+	CGLib::copy_file("db\\expect.csv", "db\\expect-auto.csv");
 	// Clear expect.log
 	remove("autotest\\analysis.log");
 	remove("autotest\\flags.log");
@@ -287,6 +289,9 @@ void PushArtifacts() {
 				suffix + ".csv", 1000);
 		if (CGLib::fileExists("db\\expect.csv"))
 			Run("appveyor", "PushArtifact db\\expect.csv -Verbosity Normal -Type Auto -FileName expect-db" +
+				suffix + ".csv", 1000);
+		if (CGLib::fileExists("db\\expect-auto.csv"))
+			Run("appveyor", "PushArtifact db\\expect-auto.csv -Verbosity Normal -Type Auto -FileName expect-dba" +
 				suffix + ".csv", 1000);
 		if (CGLib::fileExists("autotest\\flags.log"))
 			Run("appveyor", "PushArtifact autotest\\flags.log -Verbosity Normal -Type Auto -FileName flags" +
