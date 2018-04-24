@@ -11,6 +11,49 @@ midi\Melody\test\test-repeat.mid;0;0;402;Adjacent repeat 2 notes;uniform;0;Low;R
 midi\Melody\test\test-repeat.mid;0;4;402;Adjacent repeat 2 notes;uniform;0;Low;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;0;0;Imported from midi lyrics
 midi\Melody\test\test-repeat.mid;0;9;402;Adjacent repeat 2 notes;uniform;0;Low;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;0;0;Imported from midi lyrics
 midi\Melody\test\test-repeat.mid;0;12;14;3rd to last note;I/III/V;0;Low;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;0;176;Ascending leap;maj6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;0;69;Skipped notes;>1 joined;0;Low;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;1;182;Descending leap;maj6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;1;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;2;181;Descending leap;m6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;3;175;Ascending leap;m6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;3;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;4;178;Ascending leap;maj7;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;5;184;Descending leap;maj7;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;5;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;5;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;6;183;Descending leap;m7;0;Low;Leaps;;;0;30;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;7;177;Ascending leap;m7;0;Low;Leaps;;;0;30;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;7;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;7;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;8;179;Ascending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;9;185;Descending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;9;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;9;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;10;185;Descending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;11;179;Ascending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;11;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;11;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;12;180;Ascending leap;>8th;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;13;186;Descending leap;>8th;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;13;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;13;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;14;186;Descending leap;>8th;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;14;14;3rd to last note;I/III/V;0;Low;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;15;180;Ascending leap;>8th;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;0;15;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;0;67;Skipped notes;1;0;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;0;69;Skipped notes;>1 joined;0;Low;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;2;348;Notes repeat;LT 8va leap;0;Low;Repeats;;Octave leap between leading tones;0;20;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;2;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;2;179;Ascending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;2;58;Leap back;overflow;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;3;182;Descending leap;maj6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;3;111;Close + >2skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;6;348;Notes repeat;LT 8va leap;0;Low;Repeats;;Octave leap between leading tones;0;20;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;6;135;>1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;0;60;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;6;34;3rd to last note;leading tone;0;Low;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leap-size.mid;1;6;185;Descending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-end.mid;0;3;19;Audible tritone: framed;unresolved;3;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-end.mid;0;6;52;Penultimate note resolution;VII not to I;3;Low;Border;;VII penultimate note resolves not to I note;0;0;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-end.mid;0;6;58;Leap back;overflow;3;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
@@ -1497,60 +1540,3 @@ midi\Counterpoint\test\test-pause.mid;3;12;228;Eighth note(s);3rd beat;5;Low;Rhy
 midi\Counterpoint\test\test-pause.mid;3;20;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-pause.mid;3;24;242;Suspension rhythm;1/2 + 1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-pause.mid;3;12;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;0;176;Ascending leap;maj6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;0;69;Skipped notes;>1 joined;0;Low;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;1;182;Descending leap;maj6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;1;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;2;181;Descending leap;m6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;3;175;Ascending leap;m6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;3;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;4;178;Ascending leap;maj7;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;5;184;Descending leap;maj7;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;5;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;5;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;6;183;Descending leap;m7;0;Low;Leaps;;;0;30;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;7;177;Ascending leap;m7;0;Low;Leaps;;;0;30;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;7;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;7;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;8;179;Ascending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;9;185;Descending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;9;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;9;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;10;185;Descending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;11;179;Ascending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;11;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;11;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;12;180;Ascending leap;>8th;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;13;186;Descending leap;>8th;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;13;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;13;131;Close + 1skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;14;186;Descending leap;>8th;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;14;14;3rd to last note;I/III/V;0;Low;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;15;180;Ascending leap;>8th;0;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;15;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;0;1;505;Consecutive unidir. leaps;2 x >3rds;0;Low;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;2;62;1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;3;505;Consecutive unidir. leaps;2 x >3rds;0;Low;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;4;62;1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;5;505;Consecutive unidir. leaps;2 x >3rds;0;Low;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;6;62;1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;7;505;Consecutive unidir. leaps;2 x >3rds;0;Low;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;8;62;1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;9;505;Consecutive unidir. leaps;2 x >3rds;0;Low;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;10;62;1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;11;505;Consecutive unidir. leaps;2 x >3rds;0;Low;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;12;62;1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;13;505;Consecutive unidir. leaps;2 x >3rds;0;Low;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;0;14;62;1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;100;1;0;2018-04-24 09:33 Global false positive
-midi\Melody\test\test-leap-size.mid;1;0;67;Skipped notes;1;0;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;0;69;Skipped notes;>1 joined;0;Low;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;2;348;Notes repeat;LT 8va leap;0;Low;Repeats;;Octave leap between leading tones;0;20;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;2;22;Leap back;>6th;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than 6th;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;2;179;Ascending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;2;58;Leap back;overflow;0;Low;Turns around leap;;After leap there is an immediate returning leap in the opposite direction. This returning leap is longer than initial leap;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;3;182;Descending leap;maj6;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;3;111;Close + >2skip turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;6;348;Notes repeat;LT 8va leap;0;Low;Repeats;;Octave leap between leading tones;0;20;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;6;135;>1skip + close turns around leap;>5th;0;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;0;60;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;6;34;3rd to last note;leading tone;0;Low;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leap-size.mid;1;6;185;Descending leap;8th;0;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
