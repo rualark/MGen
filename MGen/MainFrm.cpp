@@ -1298,8 +1298,12 @@ UINT CMainFrame::GenThread(LPVOID pParam) {
 	pGen->CheckMemoryUsage();
 
 	// Update expect
-	CConf::ReplaceCsvDb(pGen->as_dir + "\\edb-" + pGen->as_fname + ".csv", "db\\expect-auto.csv",
-		"File", pGen->midi_file);
+	if (CGLib::fileExists(pGen->as_dir + "\\edb-" + pGen->as_fname + ".csv") &&
+		CGLib::fileExists("db\\expect-auto.csv")) {
+		CConf::ReplaceCsvDb(pGen->as_dir + "\\edb-" + pGen->as_fname + ".csv", 
+			"db\\expect-auto.csv",
+			"File", pGen->midi_file);
+	}
 	// Save results
 	pGen->SaveResults(pGen->as_dir, pGen->as_fname);
 	pGen->SaveMidi(pGen->as_dir, pGen->as_fname);
