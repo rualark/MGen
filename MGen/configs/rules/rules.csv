@@ -1,5 +1,5 @@
 Set;Severity;Class;Group;Rule;Flag
-1;0;;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;
+1;0;;0;;;Strict;;1;Strict rule - make non-bold to show only results with other rules violated.  Global parameters: Local climax: Highest note in higher voice within 13 notes or 8 measures - which is smaller;;;;;;;;;;;;;;
 1;42;;0;Melody;Compensated leap;Compensation deviation to 2nd;3rd;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;199;0;;;999;;;;
 1;43;;0;Melody;Compensated leap;Compensation deviation to 2nd;4th;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;88;0;;;999;;;;
 1;44;;0;Melody;Compensated leap;Compensation deviation to 2nd;5th;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;76;0;;;999;;;;
@@ -204,7 +204,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;72;;60;Melody;Repeats;Notes repeat;5 in 7;0;;Repeat of X notes within Y notes;3;;;;25;0;;;;;;;
 1;73;;60;Melody;Repeats;Notes repeat;7 in 10;0;;Repeat of X notes within Y notes;3;;;;23;0;;;;;;;
 1;348;;20;Melody;Repeats;Notes repeat;LT 8va leap;0;;Octave leap between leading tones;5;;;;2;2;1;;;;;;
-1;196;;20;Melody;Repeats;Tonic note;>3 within 9;0;More than X tonic notes within Y adjacent notes;More than X tonic note equivalents within Y notes (except first and last tonic). At border without tonic - one more tonic is allowed.  Weights:  Leap >M3 to tonic adds 30%. Note length decrease two times decreases 30%. Downbeat adds 30%. Longer than previous adds 30%. Perfect consonance adds 20%.;9;;;Many tonics;7;0;;;;;;;
+1;196;;60;Melody;Repeats;Tonic note;>3 within 9;0;More than X tonic notes within Y adjacent notes;More than X tonic note equivalents within Y notes. Weights:  Leap >M3 to tonic is 130%. Note length decrease two times is 85%. Downbeat is 130%. Longer than previous is 130%. Perfect consonance is 120%. If  there is no local culmination higher around then 130%. First note is tonic 30%. Last note is tonic 30%. First tonic (if first note is not tonic) 50%. Last tonic (if last note is not tonic) 50%. ;9;;;Many tonics;7;0;;;;;;;
 1;10;;0;Melody;Repeats;Note stagnation;>3 in 7 notes;-1;Same note repeats more than X times within Y adjacent notes;;9;;;Stagnation;39;1;;1;;;;;
 1;39;;60;Melody;Repeats;Note stagnation;>4 in 9 notes;0;Same note repeats more than X times within Y adjacent notes;;9;;;Stagnation;21;0;;;;;;;
 1;344;;0;Melody;Repeats;Notes stagnation;5 notes <3 pi;0;;X consecutive notes use less than Y pitches;9;;;Stagnation;17;0;;;;;;;
@@ -212,7 +212,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;346;;0;Melody;Repeats;Notes stagnation;17 notes <6 pi;0;;X consecutive notes use less than Y pitches;9;;;Stagnation;3;0;;;;;;;
 1;2;;0;Melody;CF/sp1 Tritone;Adjacent tritone;resolved;0;Melodic adjacent tritone;Search 4 quarters for resolution;13;;;tri;8;2;1;;;;;;
 1;31;;60;Melody;CF/sp1 Tritone;Adjacent tritone;unresolved;0;Melodic adjacent tritone;;13;;;tri;29;3;;;;;2;;
-1;32;;0;Melody;CF/sp1 Tritone;Adjacent tritone;on climax;0;Melodic adjacent tritone;Highest note in higher voice within 13 notes or 8 measures - which is smaller;13;;;tri;17;5;1;;;;;;
+1;32;;0;Melody;CF/sp1 Tritone;Adjacent tritone;on climax;0;Melodic adjacent tritone;Local climax;13;;;tri;17;5;1;;;;;;
 1;371;;0;Melody;CF/sp1 Tritone;Compound tritone framed;resolved;0;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;13;;;tri;19;2;;;;;;;
 1;372;;60;Melody;CF/sp1 Tritone;Compound tritone framed;unresolved;0;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;13;;;tri;38;2;;;;;371;;
 1;373;;0;Melody;CF/sp1 Tritone;Compound tritone framed;on climax;0;Tritone within measure with one intermediate note, framed by two melody direction changes or leaps;;13;;;tri;33;4;;;;;;;
