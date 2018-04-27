@@ -4,3 +4,5 @@ include "include/CA2.pl"
 Midi_file = "midi\Counterpoint\test\test-cp5-rhythm.mid" # Path and file name of imported midi file
 
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+
+cantus_id = 9
