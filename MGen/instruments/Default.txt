@@ -84,3 +84,4 @@ Strings/Harp                          | Harp                  | 1   | 6   | -   
 # Randomization
 rnd_tempo = 6 # Randomize tempo not greater than this percent
 rnd_tempo_step = 1 # Maximum difference in tempo (percent) between adjacent steps while randomizing
+rnd_tempo_slow = 1 # Tempo randomization function slowness
