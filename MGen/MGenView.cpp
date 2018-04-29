@@ -670,7 +670,7 @@ void CMGenView::OnDraw(CDC* pDC)
 					Pen pen(ncolor, 1);
 					//pen.SetDashStyle(graph_dash[n]);
 					for (int i = step1t; i < step2t; i++)
-						if (i > 0 && (pGen->dyn[i][v] > -1 && pGen->dyn[i - 1][v] > -1)) {
+						if (i > 0 && (pGen->dyn[i][v] >= 0 && pGen->dyn[i - 1][v] >= 0)) {
 							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
 								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->dyn[i][v] * scale),
 								X_FIELD + (i - 1) * nwidth + nwidth / 2,
