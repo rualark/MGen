@@ -1,4 +1,4 @@
-#GROUP                                | DEFAULT CONFIG        | CHN | TRK | PRT | Abbr | Synonyms                         
+#CLASS/GROUP                          | DEFAULT CONFIG        | CHN | TRK | PRT | Abbr | Synonyms                         
 Keyboard/Piano                        | Hard                  | 1   | 0   | +   | pf   | Keyboard, Keys, Klavier, fortepiano
 Keyboard/Organ                        | Organ                 | 14  | 1   | +   | org  | Pipe organ
 Woodwinds/Piccolo                     | Normal                | 1   | 21  | -   | pic  | Pic., Piccolo flute, Flute piccolo, Petite flute, Pikkoloflote, kleine flote, ottavino, flauto piccolo, pikkolo, malaia fleita, fleita pikkolo, flautin, ottavino, ottavini

@@ -477,9 +477,8 @@ midi\Counterpoint\test\test-long.mid;4;8;338;Note is too long;sp3: >1/4;3;Low;Rh
 midi\Counterpoint\test\test-long.mid;4;8;41;Note crosses many measures;>2;3;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;4;10;334;Anticipation;end >whole;3;Low;Nonchord tones;;Anticipation ending should not be longer than whole;0;60;1;0;2018-04-23 21:01 Global false positive
 midi\Counterpoint\test\test-long.mid;4;15;235;Rhythm;1/4 syncope;3;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;4;17;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;2018-04-29 15:56 Global false positive
+midi\Counterpoint\test\test-long.mid;4;15;267;Last note;not whole;3;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;4;0;427;Suspension rhythm;end > start;3;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;2018-04-24 14:46 Global false positive
-midi\Counterpoint\test\test-long.mid;4;17;252;Last note;1/4;3;Low;Rhythm;;;0;60;1;0;2018-04-29 15:56 Global false positive
 midi\Counterpoint\test\test-long.mid;5;0;332;Suspension rhythm;end >3/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension finish should not be longer;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;5;4;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;5;4;286;Suspension resolution;shift;5;Low;Counterpoint;;Suspension is not resolved on allowed beat;0;60;1;0;Imported from midi lyrics
