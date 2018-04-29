@@ -9,15 +9,32 @@ CC_Name = 4: "Resonances volume"
 CC_Name = 5: "Low keys volume"
 CC_Name = 6: "Overtones level"
 CC_Name = 8: "Stereo image width"
+CC_Name = 12: "Space on"
+CC_Name = 13: "EQ on"
+CC_Name = 14: "Compressor on"
+CC_Name = 15: "Tonal depth on"
+CC_Name = 16: "Transients on"
+CC_Name = 17: "EQ Bass"
+CC_Name = 18: "EQ Body"
+CC_Name = 19: "EQ Air"
+CC_Name = 20: "Tonal depth amount"
 
 # Initial setup
 Color = 45
 Dynamic range = 64
 Resonances volume = 80
 Low keys volume = 63
-Low keys volume = 63
 Overtones level = 90
 Stereo image width = 63
+Space on = 0
+EQ on = 100
+Compressor on = 0
+Tonal depth on = 100
+Transients on = 0
+EQ Bass = 64
+EQ Body = 64
+EQ Air = 64
+Tonal depth amount = 89
 
 # Instrument parameters
 n_min = "A0" # Lowest note
