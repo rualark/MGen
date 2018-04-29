@@ -338,6 +338,11 @@ void CMainFrame::ParseCommandLine() {
 			if (st2.GetLength() > 5) CGLib::m_test_sec = atoi(st2.Right(st2.GetLength() - 5));
 		}
 	}
+	// Overwrite parameters
+	if (CGLib::m_testing) {
+		m_pspeed = 100;
+		ly_debugexpect = 0;
+	}
 	st.Replace("\"", "");
 	CGLib::m_cline2 = st;
 	if (CGLib::m_cline2 != "") LoadFile(CGLib::m_cline2);
