@@ -480,13 +480,13 @@ Set;Severity;Class;Group;Rule;Flag
 1;283;;60;Counterpoint;Nonchord tones;Appoggiatura;stepwize;1;;Appoggiatura is prepared with stepwize motion ;;;;;0;0;;;;;;;
 1;284;;60;Counterpoint;Nonchord tones;Appoggiatura;upbeat;1;;Appogiatura is on an upbeat note;;;;;0;0;;;;;;;
 1;285;;60;Counterpoint;Nonchord tones;Appoggiatura;forward;1;;Appogiatura is resolved in same direction as it was prepared;;;;;0;0;;;;;;;
+1;237;;60;Counterpoint;Rhythm;Starting rhythm;uneven pause;0;;Starting pause in first measure does not equal length of next note;;;;;21;18;1;;;;;;
+1;254;;60;Counterpoint;Rhythm;Starting rhythm;uneven start;0;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);11;;;Rhythm;18;14;1;;;;;;
+1;197;;60;Counterpoint;Rhythm;Starting rhythm;pause >1/2;0;;Starting pause is longer than 1/2 note;;;;;4;3;1;;;;;;
 1;233;;0;Counterpoint;Rhythm;Rhythm;1/2. downbeat;1;;Dotted half note on downbeat;;;;;23;4;1;;;;;;
 1;234;;60;Counterpoint;Rhythm;Rhythm;1/2. upbeat;0;;Dotted half note on upbeat;11;;;Rhythm;8;8;1;;;;;;
 1;235;;60;Counterpoint;Rhythm;Rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;;;22;19;1;;;;;;
 1;236;;60;Counterpoint;Rhythm;Rhythm;whole inside;0;;Downbeat whole note inside counterpoint - not first or last note;;;;;38;12;1;;;;;;
-1;237;;60;Counterpoint;Rhythm;Rhythm;uneven pause;0;;Starting pause in first measure does not equal length of next note;;;;;21;18;1;;;;;;
-1;254;;60;Counterpoint;Rhythm;Rhythm;uneven start;0;;Starting measure contains notes/pauses of different length;11;;;Rhythm;18;14;1;;;;;;
-1;197;;60;Counterpoint;Rhythm;Rhythm;pause >1/2;0;;Starting pause is longer than 1/2 note;;;;;4;3;1;;;;;;
 1;247;;60;Counterpoint;Rhythm;Rhythm;repeat;0;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;11;;;Rhythm repeat;48;16;1;;;;;;
 1;226;;60;Counterpoint;Rhythm;Eighth note(s);1st beat;0;;1/8 note on beat 1;;;;;12;7;1;;;;;;
 1;227;;0;Counterpoint;Rhythm;Eighth note(s);2nd beat;1;;1/8 note on beat 2;;;;;47;5;1;;;;;;
