@@ -1,8 +1,8 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 112 # Id of the currently selected algorithm
-Config = test-sus56 # Name of configuration file for selected algorithm
+Algorithm = 111 # Id of the currently selected algorithm
+Config = test-leaps # Name of configuration file for selected algorithm
 MIDI_OUT = loopMIDI Port 2 # Name of MIDI device used for playing notes
 Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 2000
 playback_speed = 100 # Playback speed in percent
