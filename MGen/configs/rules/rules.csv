@@ -182,7 +182,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;402;104;100;Melody;Repeats;Adjacent repeat 2 notes;uniform;0;Two adjacent notes are immediately repeated;Length of first three notes is the same;;;;;;;;;;;;;
 1;403;104;0;Melody;Repeats;Adjacent repeat 2 notes;same rhythm;0;Two adjacent notes are immediately repeated;Length of first and third notes is the same;;;;;;;;;;;;;
 1;404;104;0;Melody;Repeats;Adjacent repeat 2 notes;any rhythm;1;Two adjacent notes are immediately repeated;;;;;;;;;;;;;;
-1;402;23;0;Melody;Repeats;Adjacent repeat 2 notes;uniform;0;Two adjacent notes are immediately repeated;Length of first three notes is the same;;;;;;;;;;;;;
+1;402;23;60;Melody;Repeats;Adjacent repeat 2 notes;uniform;0;Two adjacent notes are immediately repeated;Length of first three notes is the same;;;;;;;;;;;;;
 1;403;23;0;Melody;Repeats;Adjacent repeat 2 notes;same rhythm;0;Two adjacent notes are immediately repeated;Length of first and third notes is the same;;;;;;;;;;;;;
 1;404;23;0;Melody;Repeats;Adjacent repeat 2 notes;any rhythm;1;Two adjacent notes are immediately repeated;;;;;;;;;;;;;;
 1;411;23;60;Melody;Repeats;Adjacent repeat 2 notes IC;uniform;0;Two adjacent notes are immediately repeated inside one cantus note;Length of first three notes is the same;;;;;;;;;;;;;
