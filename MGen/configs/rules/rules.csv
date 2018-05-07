@@ -347,10 +347,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;325;;0;Counterpoint;Counterpoint;Downbeat long 5th culmination;5th;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat 5th 1/2 or longer;2;1;;;0;0;1;;;;;;
 1;326;;0;Counterpoint;Counterpoint;Downbeat long 8va culmination;8va;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat octave 1/2 or longer;2;1;;;3;0;1;;;;;;
 1;86;;0;Counterpoint;Counterpoint;Adjacent perfect consonances;different;-1;;Different adjacent perfect consonances;7;1;1;;167;4;;;;;;;
-1;84;;60;Counterpoint;Counterpoint;Adjacent 5ths;parallel;0;;;7;1;1;;32;5;1;;;;;;
+1;84;;100;Counterpoint;Counterpoint;Adjacent 5ths;parallel;0;;;7;1;1;;32;5;1;;;;;;
 1;85;;60;Counterpoint;Counterpoint;Adjacent 5ths;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;0;0;1;;;;;;
 1;330;;0;Counterpoint;Counterpoint;Adjacent 5ths;parallel sus 6-5;1;;Parallel 5ths separated by sus with 6th interval;7;1;1;;5;3;1;;;;249;;
-1;481;;60;Counterpoint;Counterpoint;Adjacent 8ves;parallel;0;;;7;1;1;;65;37;1;;;;;;
+1;481;;100;Counterpoint;Counterpoint;Adjacent 8ves;parallel;0;;;7;1;1;;65;37;1;;;;;;
 1;482;;60;Counterpoint;Counterpoint;Adjacent 8ves;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;9;4;1;;;;;;
 1;248;;0;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to upbeat;7;1;1;;9;1;1;;;;;;
 1;376;;0;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;last contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to last interval in counterpoint;7;1;1;;0;0;1;;;;;;
