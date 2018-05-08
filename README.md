@@ -11,7 +11,7 @@ Code analysis: [![Codacy Badge](https://api.codacy.com/project/badge/Grade/73206
 [![BCH compliance](https://bettercodehub.com/edge/badge/rualark/MGen?branch=master)](https://bettercodehub.com/)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/13485/badge.svg)](https://scan.coverity.com/projects/rualark-mgen)
 
-Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI/MusicXML
+Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI
 
 Read about this project: https://www.donationcoder.com/forum/index.php?topic=43816.0
 
