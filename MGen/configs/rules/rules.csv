@@ -405,7 +405,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;331;;60;Counterpoint;Counterpoint;Harmonic dissonance;4th cons;0;;Prohibit 4th upbeat consonance even if not lowest ;2;1;;;0;0;1;;;;;;
 1;169;;0;Counterpoint;Counterpoint;Harmonic dissonance upbeat;stepwize;-1;;;2;1;;;904;3;;;;;;;
 1;187;;100;Counterpoint;Counterpoint;Harmonic dissonance upbeat;leap;0;;Leap from or to harmonic upbeat dissonance;2;1;;;195;8;;;;;276,169;;
-1;276;;100;Counterpoint;Counterpoint;Harmonic dissonance upbeat;m2;0;;Minor second;2;1;;;6;3;1;;;;;;
+1;276;;0;Counterpoint;Counterpoint;Harmonic dissonance upbeat;m2;-1;;Minor second;2;1;;;6;3;1;;;;;;
 1;89;;0;Counterpoint;Counterpoint;Parallel 3rds;3;-1;More than X same 3rds in a row;;9;1;;Parallel 3rds;27;0;;;;;;;
 1;96;;60;Counterpoint;Counterpoint;Parallel 3rds;> 3;0;More than X same 3rds in a row;;9;1;;Parallel 3rds;4;0;;;;;;;
 1;389;;0;Counterpoint;Counterpoint;Parallel 6ths;3;-1;More than X same 6ths in a row;;9;1;;Parallel 6ths;19;0;;;;;;;
