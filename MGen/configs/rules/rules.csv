@@ -306,7 +306,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;14;;0;Cantus;Border;3rd to last note;I/III/V;-1;Only for cantus firmus;;;;;;185;26;1;;;;;;
 1;34;;0;Cantus;Border;3rd to last note;leading tone;-1;Only for cantus firmus;;;;;;40;5;1;;;;;;
 1;51;;0;Cantus;Border;2nd to last note;not VII/II;-1;Only for cantus firmus;;;;;;17;2;1;;;;;;
-1;13;;0;Cantus;Border;2nd to last note;not V/VIII/II;-1;Only for cantus firmus;;;;;;55;10;1;;;;;;
+1;13;;0;Cantus;Border;2nd to last note;not V/VII/II;-1;Only for cantus firmus;;;;;;55;10;1;;;;;;
 1;52;;0;Cantus;Border;Penultimate note resolution;VII not to I;0;;VII penultimate note resolves not to I note;12;;;res;12;1;;;;;;;
 1;87;;0;Cantus;Border;Penultimate note resolution;IV not to III;0;;IV penultimate note resolves not to III note;12;;;res;48;1;;;;;;;
 1;50;;100;Cantus;Border;Last note;not tonic;0;Only for cantus firmus;;;;;;17;1;1;;;;;;
@@ -315,7 +315,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;349;;60;Counterpoint;Minor;VII natural note near VI# note;4 notes before;0;;X notes before VI#;8;;;VII near VI#;52;1;;;;;;;
 1;350;;60;Counterpoint;Minor;VII natural note near VI# note;4 notes after;0;;X notes after VI#;8;;;VII near VI#;43;0;;;;;;;
 1;199;;60;Counterpoint;Minor;VI# without close VII# note;within 2 notes;0;There is no VII# note before or after VI# note in close proximity;;;;;;65;2;;;;;;;
-1;201;;0;Counterpoint;Minor;Leap to VI# note;>4th;0;;Leap is longer than;5;;;;9;2;;;;;;;
+1;201;;0;Counterpoint;Minor;Note not stepwise ascending;VI#;0;Harmonic VI# note is not surrounded by stepwise diatonic ascending movement;;8;;;VI# not asc.;9;2;;;;;;;
+1;202;;0;Counterpoint;Minor;Note not stepwise descending;VII natural;0;Harmonic VII natural note is not surrounded by stepwise diatonic descending movement;;8;;;VII not desc.;;;;;;;;;
 1;152;;100;Counterpoint;Minor;Chromatism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;!srn!;1;1;1;;;;;;
 1;153;;100;Counterpoint;Minor;Chromatism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;!srn!;3;2;1;;;;;;
 1;158;;100;Counterpoint;Minor;Chromatism: far;VI<->VI#;0;These two notes are one note apart;;8;;;!srn!;7;3;1;;;;;;
@@ -466,9 +467,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;260;;60;Counterpoint;Nonchord tones;Double-neighbour tone;leap <=4th;0;;Allow leaps up to specified size;;;;;5;0;;;;;;1;
 1;3;;0;Counterpoint;Nonchord tones;Double-neighbour tone;leap in;0;;There is a leap before first note of double-neighbour tone group;;;;;0;0;;;;;;;
 1;97;;60;Counterpoint;Nonchord tones;Double-neighbour tone;leap out;0;;There is a leap before 1st note of double-neighbour tone group;;;;;3;0;;;;;;;
-1;282;1240;0;Counterpoint;Nonchord tones;Passing downbeat dissonance;descending;0;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;;;;;1;0;;;;;;1;
-1;297;1240;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;;;;;5;0;;;;;;1;
-1;298;1240;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;;;;;0;0;;;;;;;
+1;282;1240;0;Counterpoint;Nonchord tones;Passing downbeat dissonance;descending;0;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;;;;;;;;;;;;;
+1;297;1240;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;;;;;;;;;;;;;
+1;298;1240;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;;;;;;;;;;;;;
 1;282;35;0;Counterpoint;Nonchord tones;Passing downbeat dissonance;descending;1;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;2;1;;;50;1;;;;;;1;
 1;297;35;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;6;0;;;;;;1;
 1;298;35;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;18;1;;;;;;1;
