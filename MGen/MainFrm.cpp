@@ -1870,7 +1870,7 @@ void CMainFrame::OnButtonExpAccept() {
 		"db\\archive\\expect-" + CTime::GetCurrentTime().Format("%Y-%m-%d_%H-%M-%S") + ".csv");
 	CConf::ReplaceCsvDb(m_dir + "\\edb-" + m_fname + ".csv", "db\\expect.csv",
 		"File", pGen->midi_file);
-	WriteLog(1, "All expected flags accepted for " + pGen->midi_file);
+	WriteLog(1, "All expected flags accepted in expect.csv database for " + pGen->midi_file);
 }
 
 void CMainFrame::OnUpdateButtonExpAccept(CCmdUI *pCmdUI) {
