@@ -18,6 +18,24 @@ CC_Name = 17: "EQ Bass"
 CC_Name = 18: "EQ Body"
 CC_Name = 19: "EQ Air"
 CC_Name = 20: "Tonal depth amount"
+#Add NSaranov
+CC_Name = 23: "TRANS Attack_Sustain"
+CC_Name = 24: "OVERTONES_on"
+CC_Name = 25: "STEREO_IMAGE Swap_on"
+CC_Name = 26: "PEDAL Repedaling_on"
+CC_Name = 27: "PEDAL Halfpeadl_on"
+CC_Name = 28: "RELEASE SAMPLES_on"
+CC_Name = 29: "RELEASE SAMPLES Rel_Vol"
+CC_Name = 30: "NOISES Hammer_on"
+CC_Name = 31: "NOISES Hammer_Vol"
+CC_Name = 32: "NOISES Damper_on"
+CC_Name = 33: "NOISES Damper_Vol"
+CC_Name = 34: "NOISES Pedal_on"
+CC_Name = 35: "NOISES Pedal_Vol"
+CC_Name = 36: "NOISES String_on"
+CC_Name = 37: "NOISES String_Vol"
+CC_Name = 38: "TUNING Basic_Pitch"
+CC_Name = 39: "KEYS Silent_key_on"
 
 # Initial setup
 Color = 45
@@ -35,6 +53,24 @@ EQ Bass = 64
 EQ Body = 64
 EQ Air = 64
 Tonal depth amount = 89
+#Add NSaranov
+TRANS Attack_Sustain = 78
+OVERTONES_on = 100
+STEREO_IMAGE Swap_on = 100
+PEDAL Repedaling_on = 0
+PEDAL Halfpeadl_on = 0
+RELEASE SAMPLES_on = 100
+RELEASE SAMPLES Rel_Vol = 93
+NOISES Hammer_on = 100
+NOISES Hammer_Vol = 86
+NOISES Damper_on = 100
+NOISES Damper_Vol = 86
+NOISES Pedal_on = 100
+NOISES Pedal_Vol = 86
+NOISES String_on = 100
+NOISES String_Vol = 86
+TUNING Basic_Pitch = 64
+KEYS Silent_key_on = 0
 
 # Instrument parameters
 n_min = "A0" # Lowest note
