@@ -75,11 +75,11 @@ rightBracket = {
   (lambda (grob)
     (ly:stencil-aligned-to
       (ly:stencil-combine-at-edge
-        (ly:stencil-aligned-to (ly:horizontal-bracket::print grob) X CENTER)
+        (ly:stencil-aligned-to (ly:horizontal-bracket::print grob) X LEFT)
         Y (ly:grob-property grob 'direction)
         (ly:stencil-aligned-to (grob-interpret-markup grob (markup 
                                                             #:with-color color
-                                                            (#:teeny text))) X CENTER)
+                                                            (#:teeny text))) X LEFT)
       0.2)
      X LEFT)))
 
