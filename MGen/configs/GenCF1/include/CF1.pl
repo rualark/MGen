@@ -57,8 +57,8 @@ harm_notation = 1 # Harmonic notation (see configs/harm/harm-notation.csv for de
 tempo_bell = 1.3 # Increase tempo in the middle of cantus / counterpoint. 0 - preserve source tempo
 
 show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
-show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
-show_min_severity = 49 # Minimum severity to highlight note
+show_allowed_flags = 1 # Show even allowed flags (bold in rules.xlsm)
+show_min_severity = 0 # Minimum severity to highlight note
 
 # Lilypond parameters
 ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note

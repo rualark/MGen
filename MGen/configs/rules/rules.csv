@@ -383,8 +383,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;213;;0;Counterpoint;Counterpoint;Direct movement to 8va;leap cadence;1;;Direct movement to 8va with leaping motion in higher voice to last or penultimate measure;7;3;1;;23;8;1;;;;;;
 1;211;;40;Counterpoint;Counterpoint;Direct movement to 8va;stepwise;0;;Direct movement to 8va with stepwize motion in higher voice: not in cadence;7;3;1;;8;4;1;;;;;;
 1;215;;40;Counterpoint;Counterpoint;Direct movement to 8va;leap;0;;Direct movement to 8va with leaping motion in higher voice: not in cadence;7;3;1;;9;8;1;;;;;;
-1;216;;100;Counterpoint;Counterpoint;Suspension resolution;9th -> 8va;0;;With higher cantus. Includes 16th interval and above;12;1;;sus;1;1;1;;;;;;
-1;217;;100;Counterpoint;Counterpoint;Suspension resolution;7th -> 8va;0;;In higher cantus. Includes 14th interval and above;12;1;;sus;5;4;1;;;;;;
+1;216;;100;Counterpoint;Counterpoint;Suspension resolution;9th -> 8va;0;;In higher voice. Includes 16th interval and above;12;1;;sus;1;1;1;;;;;;
+1;217;;100;Counterpoint;Counterpoint;Suspension resolution;7th -> 8va;0;;In lower voice. Includes 14th interval and above;12;1;;sus;5;4;1;;;;;;
 1;218;;60;Counterpoint;Counterpoint;Suspension resolution;2nd -> unison;0;;Does not include 9th interval and above;12;1;;sus;1;1;1;;;;;;
 1;419;;0;Counterpoint;Counterpoint;Suspension resolution;to beat 2;1;;Allows resolution to beat 2;;;;;0;0;;;;;;;
 1;420;;0;Counterpoint;Counterpoint;Suspension resolution;to beat 4;1;;Allows resolution to beat 4;;;;;0;0;;;;;;;
