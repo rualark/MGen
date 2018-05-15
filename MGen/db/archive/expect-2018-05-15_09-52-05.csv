@@ -705,6 +705,288 @@ midi\Counterpoint\test\test-cp3-rhythm.mid;5;16;488;Parallel 8ves: < 4/4 apart;s
 midi\Counterpoint\test\test-cp3-rhythm.mid;5;22;481;Adjacent 8ves;parallel;3;Low;Counterpoint;;;0;60;1;0;2018-04-24 00:01 Global false positive
 midi\Counterpoint\test\test-cp3-rhythm.mid;5;7;433;Second inversion;real;3;Low;Harmony;;6/4 chord with 5th on beat 1/3 or repeating 5th;0;100;1;0;2018-04-25 00:51 Global false positive
 midi\Counterpoint\test\test-cp3-rhythm.mid;5;19;433;Second inversion;real;3;Low;Harmony;;6/4 chord with 5th on beat 1/3 or repeating 5th;0;100;1;0;2018-04-25 00:51 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;4;0;404;Adjacent repeat 2 notes;any rhythm;5;Low;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;4;4;242;Suspension rhythm;1/2 + 1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;4;4;219;Suspension resolution;up;5;Low;Counterpoint;;Suspension resolution up except for leading note (LT stepwize resolution up to tonic is allowed);0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;4;8;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;4;16;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;4;18;251;Suspension rhythm;1/4 + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;14;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;24;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;28;287;Anticipation;any;5;Low;Nonchord tones;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with next note longer and previous note longer or equal;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;28;290;Anticipation;inside;5;Low;Nonchord tones;;Anticipation inside counterpoint - not in cadence;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;28;293;Anticipation;next equal;5;Low;Nonchord tones;;Next note has equal length with anticipation note;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;32;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;32;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;32;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;32;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;38;226;Eighth note(s);1st beat;5;Low;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;38;246;Many notes in measure;>5;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;42;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;42;255;Many notes in measure;>2 x 1/8;5;Low;Rhythm;;More than two 1/8 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;43;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;46;245;Many notes in measure;5;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;50;249;Parallel 5ths: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;52;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;53;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;54;226;Eighth note(s);1st beat;5;Low;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;54;246;Many notes in measure;>5;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;56;227;Eighth note(s);2nd beat;5;Low;Rhythm;;1/8 note on beat 2;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;56;255;Many notes in measure;>2 x 1/8;5;Low;Rhythm;;More than two 1/8 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;57;18;Audible tritone: framed;resolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;0;1;0;2018-04-24 15:56 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;58;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;60;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;61;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;62;245;Many notes in measure;5;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;62;413;Adjacent repeat 2 notes IC;any rhythm;5;Low;Repeats;Two adjacent notes are immediately repeated inside one cantus note;;0;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;65;231;Eighth note(s);isolated;5;Low;Rhythm;;1/8 note without pairing 1/8;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;66;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;67;232;Eighth note(s);1/8 syncope;5;Low;Rhythm;;1/8 note slurred forward to next beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;69;232;Eighth note(s);1/8 syncope;5;Low;Rhythm;;1/8 note slurred forward to next beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;69;287;Anticipation;any;5;Low;Nonchord tones;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with next note longer and previous note longer or equal;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;69;290;Anticipation;inside;5;Low;Nonchord tones;;Anticipation inside counterpoint - not in cadence;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;70;315;Parallel 5ths: < 4/4 apart;anticipation;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;74;433;Second inversion;real;5;Low;Harmony;;6/4 chord with 5th on beat 1/3 or repeating 5th;0;100;1;0;2018-04-24 15:56 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;78;233;Rhythm;1/2. downbeat;5;Low;Rhythm;;Dotted half note on downbeat;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;182;Descending leap;maj6;5;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;417;sp5 1skip turns around leap;>5th;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;487;Parallel 8ves: < 4/4 apart;asymmetric;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;94;226;Eighth note(s);1st beat;5;Low;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;94;433;Second inversion;real;5;Low;Harmony;;6/4 chord with 5th on beat 1/3 or repeating 5th;0;100;1;0;2018-04-24 15:56 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;95;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;95;178;Ascending leap;maj7;5;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;95;417;sp5 1skip turns around leap;>5th;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;96;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;96;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;96;211;Direct movement to 8va;stepwise;5;Low;Counterpoint;;Direct movement to 8va with stepwize motion in higher voice: not in cadence;0;40;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;102;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;106;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;114;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;118;242;Suspension rhythm;1/2 + 1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;122;492;Parallel 8ves: < 4/4 apart;other;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;0;60;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;128;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;128;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;128;274;Suspension rhythm;start >1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;134;243;Suspension rhythm;? + 1/2.;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;134;244;Suspension rhythm;1/2. + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;146;433;Second inversion;real;5;Low;Harmony;;6/4 chord with 5th on beat 1/3 or repeating 5th;0;100;1;0;2018-04-24 15:56 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;150;241;Suspension rhythm;1/2 + 1/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;150;385;Parallel 5ths: < 4/4 apart;sus;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;156;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;162;238;1/2 after 1/4 or 1/8 in measure;penultimate;5;Low;Rhythm;;Last or next to last measure;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;162;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;60;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;162;487;Parallel 8ves: < 4/4 apart;asymmetric;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;172;252;Last note;1/4;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;5;172;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;2;187;Harmonic dissonance upbeat;leap;5;Low;Counterpoint;;Leap from or to harmonic upbeat dissonance;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;2;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;2;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;6;83;Harmonic dissonance;downbeat;5;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;6;245;Many notes in measure;5;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;10;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;12;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;12;255;Many notes in measure;>2 x 1/8;5;Low;Rhythm;;More than two 1/8 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;13;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;14;490;Parallel 8ves: < 4/4 apart;downbeat;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;18;458;Suspension;start diss.;5;Low;Rhythm;;Suspension starts with dissonance;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;18;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;18;427;Suspension rhythm;end > start;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;2018-04-24 15:56 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;6;22;243;Suspension rhythm;? + 1/2.;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;2;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;2;458;Suspension;start diss.;5;Low;Rhythm;;Suspension starts with dissonance;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;6;242;Suspension rhythm;1/2 + 1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;6;301;Many notes in measure;5 after sus;5;Low;Rhythm;;5 notes in measure only allowed if first note is a suspension from previous measure;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;6;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;10;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;12;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;12;255;Many notes in measure;>2 x 1/8;5;Low;Rhythm;;More than two 1/8 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;13;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;14;490;Parallel 8ves: < 4/4 apart;downbeat;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;18;458;Suspension;start diss.;5;Low;Rhythm;;Suspension starts with dissonance;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;18;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;18;427;Suspension rhythm;end > start;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;2018-04-24 15:56 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;7;22;243;Suspension rhythm;? + 1/2.;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;0;230;Eighth note(s);first measure;5;Low;Rhythm;;1/8 note in the first measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;0;232;Eighth note(s);1/8 syncope;5;Low;Rhythm;;1/8 note slurred forward to next beat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;19;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;23;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;27;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;27;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;60;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;27;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;35;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;37;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;38;253;Last note;1/8;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;8;38;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;0;272;First harmonic interval;Other;5;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;0;359;Harmonic dissonance;first;5;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;2;251;Suspension rhythm;1/4 + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;8;187;Harmonic dissonance upbeat;leap;5;Low;Counterpoint;;Leap from or to harmonic upbeat dissonance;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;8;278;1/2 after 1/4 or 1/8 in measure;slur back;5;Low;Rhythm;;First note in measure is slurred to previous measure;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;8;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;16;187;Harmonic dissonance upbeat;leap;5;Low;Counterpoint;;Leap from or to harmonic upbeat dissonance;0;100;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;16;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;20;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;24;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;24;324;Perfect consonance;LT 8va;5;Low;Counterpoint;;Leading tone harmonic octave for leaping notes and downbeat;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;28;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;32;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;9;32;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;0;230;Eighth note(s);first measure;5;Low;Rhythm;;1/8 note in the first measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;0;231;Eighth note(s);isolated;5;Low;Rhythm;;1/8 note without pairing 1/8;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;1;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;17;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;21;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;25;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;25;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;60;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;11;25;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;197;Starting rhythm;pause >1/2;5;Low;Rhythm;;Starting pause is longer than 1/2 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;233;Rhythm;1/2. downbeat;5;Low;Rhythm;;Dotted half note on downbeat;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;270;First harmonic interval;I-III;5;Low;Counterpoint;Low-high note;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;14;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;18;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;22;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;22;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;60;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;12;22;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;197;Starting rhythm;pause >1/2;5;Low;Rhythm;;Starting pause is longer than 1/2 note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;230;Eighth note(s);first measure;5;Low;Rhythm;;1/8 note in the first measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;231;Eighth note(s);isolated;5;Low;Rhythm;;1/8 note without pairing 1/8;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;270;First harmonic interval;I-III;5;Low;Counterpoint;Low-high note;;0;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;1;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;13;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;17;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;21;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;21;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;60;1;0;2018-04-24 00:04 Global false positive
+midi\Counterpoint\test\test-cp5-rhythm.mid;13;21;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
+midi\Melody\test\test-leaps.mid;1;0;38;Voice range;voice <m6;0;High;Range;;Only if voice is at least 8 notes and 4 measures long. Voice range below m6 is acceptable for cantus up to 10 notes;0;0;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;0;15;No melody development;12 notes <12;0;High;Range;;Averaged melody direction within X notes is less than Y deci-semitones;0;0;0;1;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;0;16;No melody development;15 notes <15;0;High;Range;;Averaged melody direction within X notes is less than Y deci-semitones;0;0;0;1;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;0;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;0;69;Skipped notes;>1 joined;0;High;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;1;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;2;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;2;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;3;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;4;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;4;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;5;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;6;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;6;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;7;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;8;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;8;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;9;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;10;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;10;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;11;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;12;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;12;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;13;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;13;10;Note stagnation;>3 in 7 notes;0;High;Repeats;Same note repeats more than X times within Y adjacent notes;;-1;0;0;1;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;14;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;14;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;15;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;16;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;16;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;17;51;2nd to last note;not VII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;1;18;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;2;0;38;Voice range;voice <m6;0;High;Range;;Only if voice is at least 8 notes and 4 measures long. Voice range below m6 is acceptable for cantus up to 10 notes;0;0;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;2;0;15;No melody development;12 notes <12;0;High;Range;;Averaged melody direction within X notes is less than Y deci-semitones;0;0;0;1;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;2;6;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;2;10;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;2;10;13;2nd to last note;not V/VIII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;0;37;Voice range;cf >M9;0;High;Range;;Cantus firmus voice range;0;70;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;0;178;Ascending leap;maj7;0;High;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;0;68;Skipped notes;>1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;0;69;Skipped notes;>1 joined;0;High;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;0;143;Close + 2skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;0;505;Consecutive unidir. leaps;2 x >3rds;0;High;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;24;1;180;Ascending leap;>8th;0;High;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;1;66;1skip + 1skip turns around leap;>5th;0;High;Turns around leap;There is one note going in the same direction before and after leap;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;1;505;Consecutive unidir. leaps;2 x >3rds;0;High;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;24;2;177;Ascending leap;m7;0;High;Leaps;;;0;30;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;2;135;>1skip + close turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;0;60;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;24;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;25;2;400;>1skip + >1skip turns around leap;5th;0;High;Turns around leap;There is more than one note going in the same direction before leap and more than one note going in the same direction after leap;;0;100;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;25;5;109;Close + >2skip turns around leap;4th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;25;9;13;2nd to last note;not V/VIII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;25;9;175;Ascending leap;m6;0;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;26;0;1;Uncompensated leap;start 3rd;0;High;Uncompensated leap;If no other uncompensated rules worked.;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;26;5;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;41;9;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;43;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;43;0;505;Consecutive unidir. leaps;2 x >3rds;0;High;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;43;1;32;Adjacent tritone;on climax;0;High;CF/sp1 Tritone;Melodic adjacent tritone;Local climax;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;43;8;34;3rd to last note;leading tone;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;43;9;13;2nd to last note;not V/VIII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;44;2;61;1skip + close turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;1;0;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;44;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;44;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;45;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;45;2;130;Close + 1skip turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;45;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;45;5;109;Close + >2skip turns around leap;4th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;45;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;46;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;46;2;142;Close + 2skip turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;0;60;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;46;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;46;6;182;Descending leap;maj6;0;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;46;6;143;Close + 2skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;46;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;47;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;47;2;110;Close + >2skip turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;47;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;47;7;185;Descending leap;8th;0;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;47;7;131;Close + 1skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;47;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;48;0;68;Skipped notes;>1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;48;2;393;1skip + >1skip turns around leap;5th;0;High;Turns around leap;There is one note going in the same direction before leap and more than one note going in the same direction after leap;;0;60;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;48;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;48;7;185;Descending leap;8th;0;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;48;7;131;Close + 1skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;48;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;49;0;68;Skipped notes;>1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;49;2;400;>1skip + >1skip turns around leap;5th;0;High;Turns around leap;There is more than one note going in the same direction before leap and more than one note going in the same direction after leap;;0;100;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;49;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;49;7;186;Descending leap;>8th;0;High;Leaps;;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;49;7;131;Close + 1skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;49;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;50;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;50;4;65;1skip + 1skip turns around leap;5th;0;High;Turns around leap;There is one note going in the same direction before and after leap;;0;60;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;50;4;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;50;8;13;2nd to last note;not V/VIII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;51;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;51;4;150;>1skip + 1skip turns around leap;5th;0;High;Turns around leap;There is more than one note going in the same direction before leap and one note going in the same direction after leap;;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;51;4;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;51;8;13;2nd to last note;not V/VIII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;52;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;52;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;53;0;90;First note not tonic;III high;0;High;Border;Only for cantus firmus;Note III in higher voice;0;60;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;53;5;134;>1skip + close turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;1;0;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;53;5;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;53;11;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;54;0;33;First note not tonic;Other;0;High;Border;Only for cantus firmus;Any note except I in lower voice. Any note except I, III, V in higher voice.;0;100;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;54;2;134;>1skip + close turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;1;0;0;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;54;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
+midi\Melody\test\test-leaps.mid;54;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;93;0;49;First note not tonic;V high;0;High;Border;Only for cantus firmus;Note V in higher voice;1;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;93;0;69;Skipped notes;>1 joined;0;High;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;93;1;109;Close + >2skip turns around leap;4th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;0;1;0;Imported from midi lyrics
+midi\Melody\test\test-leaps.mid;93;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
 midi\Melody\test\test-minor-alter.mid;0;0;67;Skipped notes;1;0;Low;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
 midi\Melody\test\test-minor-alter.mid;0;2;156;Dim or aug melodic interval;VII#-III;0;Low;Minor;;Augmented / diminished;0;100;1;0;Imported from midi lyrics
 midi\Melody\test\test-minor-alter.mid;0;2;129;Close + 1skip turns around leap;4th;0;Low;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
@@ -1389,273 +1671,3 @@ midi\Counterpoint\test\test-2c1.mid;1;5;180;Ascending leap;>8th;3;Low;Leaps;;;0;
 midi\Counterpoint\test\test-2c1.mid;1;5;62;1skip + close turns around leap;>5th;3;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;100;1;0;2018-04-24 09:32 Global false positive
 midi\Counterpoint\test\test-2c1.mid;1;6;11;Interval between voices;int >16th;3;Low;Range;;Interval between counterpoint voices.  Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);0;70;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-2c1.mid;1;6;481;Adjacent 8ves;parallel;3;Low;Counterpoint;;;0;100;1;0;2018-04-23 23:46 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;4;0;404;Adjacent repeat 2 notes;any rhythm;5;Low;Repeats;Two adjacent notes are immediately repeated;;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;4;4;242;Suspension rhythm;1/2 + 1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;4;4;219;Suspension resolution;up;5;Low;Counterpoint;;Suspension resolution up except for leading note (LT stepwize resolution up to tonic is allowed);0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;4;8;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;4;16;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;4;18;251;Suspension rhythm;1/4 + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;14;236;Rhythm;whole inside;5;Low;Rhythm;;Downbeat whole note inside counterpoint - not first or last note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;24;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;28;287;Anticipation;any;5;Low;Nonchord tones;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with next note longer and previous note longer or equal;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;28;290;Anticipation;inside;5;Low;Nonchord tones;;Anticipation inside counterpoint - not in cadence;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;28;293;Anticipation;next equal;5;Low;Nonchord tones;;Next note has equal length with anticipation note;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;32;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;32;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;32;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;32;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;38;226;Eighth note(s);1st beat;5;Low;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;38;246;Many notes in measure;>5;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;42;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;42;255;Many notes in measure;>2 x 1/8;5;Low;Rhythm;;More than two 1/8 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;43;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;46;245;Many notes in measure;5;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;50;249;Parallel 5ths: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;52;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;53;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;54;226;Eighth note(s);1st beat;5;Low;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;54;246;Many notes in measure;>5;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;56;227;Eighth note(s);2nd beat;5;Low;Rhythm;;1/8 note on beat 2;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;56;255;Many notes in measure;>2 x 1/8;5;Low;Rhythm;;More than two 1/8 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;57;18;Audible tritone: framed;resolved;5;Low;sp2-5 Tritone;Tritone within measure with intermediate notes, framed by two melody direction changes;;0;0;1;0;2018-04-24 15:56 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;58;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;60;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;62;245;Many notes in measure;5;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;62;413;Adjacent repeat 2 notes IC;any rhythm;5;Low;Repeats;Two adjacent notes are immediately repeated inside one cantus note;;0;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;65;231;Eighth note(s);isolated;5;Low;Rhythm;;1/8 note without pairing 1/8;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;66;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;67;232;Eighth note(s);1/8 syncope;5;Low;Rhythm;;1/8 note slurred forward to next beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;69;232;Eighth note(s);1/8 syncope;5;Low;Rhythm;;1/8 note slurred forward to next beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;69;287;Anticipation;any;5;Low;Nonchord tones;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with next note longer and previous note longer or equal;0;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;69;290;Anticipation;inside;5;Low;Nonchord tones;;Anticipation inside counterpoint - not in cadence;0;60;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;70;315;Parallel 5ths: < 4/4 apart;anticipation;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;74;433;Second inversion;real;5;Low;Harmony;;6/4 chord with 5th on beat 1/3 or repeating 5th;0;100;1;0;2018-04-24 15:56 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;78;233;Rhythm;1/2. downbeat;5;Low;Rhythm;;Dotted half note on downbeat;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;182;Descending leap;maj6;5;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;417;sp5 1skip turns around leap;>5th;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;88;487;Parallel 8ves: < 4/4 apart;asymmetric;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;94;226;Eighth note(s);1st beat;5;Low;Rhythm;;1/8 note on beat 1;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;94;433;Second inversion;real;5;Low;Harmony;;6/4 chord with 5th on beat 1/3 or repeating 5th;0;100;1;0;2018-04-24 15:56 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;95;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;95;178;Ascending leap;maj7;5;Low;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;95;417;sp5 1skip turns around leap;>5th;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;96;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;96;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;96;211;Direct movement to 8va;stepwise;5;Low;Counterpoint;;Direct movement to 8va with stepwize motion in higher voice: not in cadence;0;40;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;106;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;114;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;118;242;Suspension rhythm;1/2 + 1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;122;492;Parallel 8ves: < 4/4 apart;other;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;0;60;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;128;235;Rhythm;1/4 syncope;5;Low;Rhythm;;1/4 on beat 2 or 4 is slurred to next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;128;234;Rhythm;1/2. upbeat;5;Low;Rhythm;;Dotted half note on upbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;128;274;Suspension rhythm;start >1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;Suspension start should not be longer;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;134;243;Suspension rhythm;? + 1/2.;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;134;244;Suspension rhythm;1/2. + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;146;433;Second inversion;real;5;Low;Harmony;;6/4 chord with 5th on beat 1/3 or repeating 5th;0;100;1;0;2018-04-24 15:56 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;150;241;Suspension rhythm;1/2 + 1/4;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;150;385;Parallel 5ths: < 4/4 apart;sus;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;162;238;1/2 after 1/4 or 1/8 in measure;penultimate;5;Low;Rhythm;;Last or next to last measure;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;162;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;100;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;162;487;Parallel 8ves: < 4/4 apart;asymmetric;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;172;252;Last note;1/4;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;5;172;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;2;187;Harmonic dissonance upbeat;leap;5;Low;Counterpoint;;Leap from or to harmonic upbeat dissonance;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;2;240;1/2 after 1/4 or 1/8 in measure;inside;5;Low;Rhythm;;Before penultimate measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;2;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;6;83;Harmonic dissonance;downbeat;5;Low;Counterpoint;;;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;6;245;Many notes in measure;5;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;10;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;12;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;12;255;Many notes in measure;>2 x 1/8;5;Low;Rhythm;;More than two 1/8 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;13;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;14;490;Parallel 8ves: < 4/4 apart;downbeat;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;18;458;Suspension;start diss.;5;Low;Rhythm;;Suspension starts with dissonance;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;18;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;18;427;Suspension rhythm;end > start;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;2018-04-24 15:56 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;6;22;243;Suspension rhythm;? + 1/2.;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;2;239;1/2 after 1/4 or 1/8 in measure;slur forward;5;Low;Rhythm;;1/2 is slurred forward;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;2;458;Suspension;start diss.;5;Low;Rhythm;;Suspension starts with dissonance;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;6;242;Suspension rhythm;1/2 + 1/2;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;6;301;Many notes in measure;5 after sus;5;Low;Rhythm;;5 notes in measure only allowed if first note is a suspension from previous measure;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;6;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;10;228;Eighth note(s);3rd beat;5;Low;Rhythm;;1/8 note on beat 3;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;10;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;12;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;12;255;Many notes in measure;>2 x 1/8;5;Low;Rhythm;;More than two 1/8 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;13;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;14;490;Parallel 8ves: < 4/4 apart;downbeat;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;0;100;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;18;458;Suspension;start diss.;5;Low;Rhythm;;Suspension starts with dissonance;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;18;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;18;427;Suspension rhythm;end > start;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;2018-04-24 15:56 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;7;22;243;Suspension rhythm;? + 1/2.;5;Low;Rhythm;Start (left) and end (right) of suspension note;;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;0;230;Eighth note(s);first measure;5;Low;Rhythm;;1/8 note in the first measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;0;232;Eighth note(s);1/8 syncope;5;Low;Rhythm;;1/8 note slurred forward to next beat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;19;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;23;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;27;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;27;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;100;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;27;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;35;88;Eighth note(s);leap;5;Low;Rhythm;;Leap from or to 1/8 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;37;229;Eighth note(s);4th beat;5;Low;Rhythm;;1/8 note on beat 4;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;38;253;Last note;1/8;5;Low;Rhythm;;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;8;38;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;0;272;First harmonic interval;Other;5;Low;Counterpoint;Low-high note;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;0;359;Harmonic dissonance;first;5;Low;Counterpoint;;First note in counterpoint voice is dissonance;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;2;251;Suspension rhythm;1/4 + ?;5;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;8;187;Harmonic dissonance upbeat;leap;5;Low;Counterpoint;;Leap from or to harmonic upbeat dissonance;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;8;278;1/2 after 1/4 or 1/8 in measure;slur back;5;Low;Rhythm;;First note in measure is slurred to previous measure;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;8;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;16;187;Harmonic dissonance upbeat;leap;5;Low;Counterpoint;;Leap from or to harmonic upbeat dissonance;0;100;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;16;414;sp5 1skip turns around leap;3rd;5;Low;Turns around leap;1skip+close, close+1skip, 1skip+1skip {sp5};;1;0;0;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;20;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;24;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;24;324;Perfect consonance;LT 8va;5;Low;Counterpoint;;Leading tone harmonic octave for leaping notes and downbeat;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;28;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;32;267;Last note;not whole;5;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;9;32;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;0;230;Eighth note(s);first measure;5;Low;Rhythm;;1/8 note in the first measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;0;231;Eighth note(s);isolated;5;Low;Rhythm;;1/8 note without pairing 1/8;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;1;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;17;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;21;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;25;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;25;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;100;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;11;25;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;197;Starting rhythm;pause >1/2;5;Low;Rhythm;;Starting pause is longer than 1/2 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;233;Rhythm;1/2. downbeat;5;Low;Rhythm;;Dotted half note on downbeat;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;0;270;First harmonic interval;I-III;5;Low;Counterpoint;Low-high note;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;14;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;18;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;22;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;22;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;100;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;12;22;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;197;Starting rhythm;pause >1/2;5;Low;Rhythm;;Starting pause is longer than 1/2 note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;230;Eighth note(s);first measure;5;Low;Rhythm;;1/8 note in the first measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;231;Eighth note(s);isolated;5;Low;Rhythm;;1/8 note without pairing 1/8;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;237;Starting rhythm;uneven pause;5;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;254;Starting rhythm;uneven start;5;Low;Rhythm;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;0;270;First harmonic interval;I-III;5;Low;Counterpoint;Low-high note;;0;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;1;223;Harmonic dissonance;<< longer;5;Low;Counterpoint;;Dissonance is longer than previous consonance;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;13;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;17;247;Rhythm;repeat;5;Low;Rhythm;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;21;75;Penultimate measure;no V or II note;5;Low;Counterpoint;;No V or II note;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;21;481;Adjacent 8ves;parallel;5;Low;Counterpoint;;;0;100;1;0;2018-04-24 00:04 Global false positive
-midi\Counterpoint\test\test-cp5-rhythm.mid;13;21;488;Parallel 8ves: < 4/4 apart;stepwize;5;Low;Counterpoint;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;1;0;1;0;2018-04-24 00:04 Global false positive
-midi\Melody\test\test-leaps.mid;1;0;38;Voice range;voice <m6;0;High;Range;;Only if voice is at least 8 notes and 4 measures long. Voice range below m6 is acceptable for cantus up to 10 notes;0;0;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;0;15;No melody development;12 notes <12;0;High;Range;;Averaged melody direction within X notes is less than Y deci-semitones;0;0;0;1;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;0;16;No melody development;15 notes <15;0;High;Range;;Averaged melody direction within X notes is less than Y deci-semitones;0;0;0;1;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;0;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;0;69;Skipped notes;>1 joined;0;High;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;1;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;2;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;2;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;3;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;4;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;5;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;6;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;7;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;8;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;9;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;10;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;11;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;12;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;13;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;13;10;Note stagnation;>3 in 7 notes;0;High;Repeats;Same note repeats more than X times within Y adjacent notes;;-1;0;0;1;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;14;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;15;402;Adjacent repeat 2 notes;uniform;0;High;Repeats;Two adjacent notes are immediately repeated;Length of first three notes is the same;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;16;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;1;17;51;2nd to last note;not VII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;2;0;38;Voice range;voice <m6;0;High;Range;;Only if voice is at least 8 notes and 4 measures long. Voice range below m6 is acceptable for cantus up to 10 notes;0;0;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;2;0;15;No melody development;12 notes <12;0;High;Range;;Averaged melody direction within X notes is less than Y deci-semitones;0;0;0;1;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;2;6;12;Culmination;multi high;0;High;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;2;10;13;2nd to last note;not V/VII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;0;37;Voice range;cf >M9;0;High;Range;;Cantus firmus voice range;0;70;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;0;178;Ascending leap;maj7;0;High;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;0;68;Skipped notes;>1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;0;69;Skipped notes;>1 joined;0;High;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;0;143;Close + 2skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;0;505;Consecutive unidir. leaps;2 x >3rds;0;High;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;24;1;180;Ascending leap;>8th;0;High;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;1;66;1skip + 1skip turns around leap;>5th;0;High;Turns around leap;There is one note going in the same direction before and after leap;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;1;505;Consecutive unidir. leaps;2 x >3rds;0;High;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;24;2;177;Ascending leap;m7;0;High;Leaps;;;0;30;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;2;135;>1skip + close turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;0;60;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;24;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;25;2;400;>1skip + >1skip turns around leap;5th;0;High;Turns around leap;There is more than one note going in the same direction before leap and more than one note going in the same direction after leap;;0;100;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;25;5;109;Close + >2skip turns around leap;4th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;25;9;13;2nd to last note;not V/VII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;25;9;175;Ascending leap;m6;0;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;26;0;1;Uncompensated leap;start 3rd;0;High;Uncompensated leap;If no other uncompensated rules worked.;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;26;5;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;41;9;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;43;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;43;0;505;Consecutive unidir. leaps;2 x >3rds;0;High;Leaps;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;0;100;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;43;1;32;Adjacent tritone;on climax;0;High;CF/sp1 Tritone;Melodic adjacent tritone;Local climax;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;43;8;34;3rd to last note;leading tone;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;43;9;13;2nd to last note;not V/VII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;44;2;61;1skip + close turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;1;0;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;44;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;44;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;45;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;45;2;130;Close + 1skip turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;-1;0;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;45;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;45;5;109;Close + >2skip turns around leap;4th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;45;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;46;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;46;2;142;Close + 2skip turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;0;60;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;46;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;46;6;182;Descending leap;maj6;0;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;46;6;143;Close + 2skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;46;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;47;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;47;2;110;Close + >2skip turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;47;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;47;7;185;Descending leap;8th;0;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;47;7;131;Close + 1skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;47;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;48;0;68;Skipped notes;>1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;48;2;393;1skip + >1skip turns around leap;5th;0;High;Turns around leap;There is one note going in the same direction before leap and more than one note going in the same direction after leap;;0;60;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;48;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;48;7;185;Descending leap;8th;0;High;Leaps;;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;48;7;131;Close + 1skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;48;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;49;0;68;Skipped notes;>1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;49;2;400;>1skip + >1skip turns around leap;5th;0;High;Turns around leap;There is more than one note going in the same direction before leap and more than one note going in the same direction after leap;;0;100;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;49;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;49;7;186;Descending leap;>8th;0;High;Leaps;;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;49;7;131;Close + 1skip turns around leap;>5th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;0;35;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;49;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;50;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;50;4;65;1skip + 1skip turns around leap;5th;0;High;Turns around leap;There is one note going in the same direction before and after leap;;0;60;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;50;4;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;50;8;13;2nd to last note;not V/VII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;51;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;51;4;150;>1skip + 1skip turns around leap;5th;0;High;Turns around leap;There is more than one note going in the same direction before leap and one note going in the same direction after leap;;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;51;4;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;51;8;13;2nd to last note;not V/VII/II;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;52;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;52;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;53;0;90;First note not tonic;III high;0;High;Border;Only for cantus firmus;Note III in higher voice;0;60;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;53;5;134;>1skip + close turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;1;0;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;53;5;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;53;11;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;54;0;33;First note not tonic;Other;0;High;Border;Only for cantus firmus;Any note except I in lower voice. Any note except I, III, V in higher voice.;0;100;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;54;2;134;>1skip + close turns around leap;5th;0;High;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;1;0;0;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;54;2;503;Consecutive unidir. leaps;2 x 3rds;0;High;Leaps;;;0;60;1;0;2018-04-23 23:07 Global false positive
-midi\Melody\test\test-leaps.mid;54;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;93;0;49;First note not tonic;V high;0;High;Border;Only for cantus firmus;Note V in higher voice;1;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;93;0;69;Skipped notes;>1 joined;0;High;Range;Skipped notes that do not appear within this voice;;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;93;1;109;Close + >2skip turns around leap;4th;0;High;Turns around leap;There is immediate melody direction change before leap, but after leap melody direction changes after more than two notes, which go in the same direction as leap;;0;0;1;0;Imported from midi lyrics
-midi\Melody\test\test-leaps.mid;93;8;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
