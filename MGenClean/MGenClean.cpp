@@ -1,0 +1,446 @@
+// This is an independent project of an individual developer. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+// MGenClean.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include "MGenClean.h"
+#include "../MGenServer/Db.h"
+#include "../MGen/GLibrary/GLib.h"
+#include "../MGenServer/EnumWindows.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+#define MAX_TRACK 1000
+
+// The one and only application object
+CWinApp theApp;
+
+using namespace std;
+
+CString ReaperTempFolder = "server\\Reaper\\";
+
+// Global
+volatile int close_flag = 0;
+int nRetCode = 0;
+CString est;
+CString client_host;
+vector<CString> errorMessages;
+long long time_job0;
+CString j_basefile;
+
+// Parameters
+int clean_every_minutes = 1000;
+CString reaperbuf;
+CString share;
+CString db_driver, db_server, db_port, db_login, db_pass, db_name;
+int daw_wait = 200;
+int run_minimized = 0;
+int screenshots_enabled = 0;
+float rms_exp = 10;
+
+// Job
+int j_timeout;
+int j_timeout2;
+int j_engrave = 0;
+int j_render = 0;
+int j_priority;
+int j_autorestart = 0;
+CString progress_fname;
+CString j_type;
+CString f_folder;
+CString j_folder;
+CString f_name;
+CString j_progress;
+int f_stems = 0;
+int j_stages = 0;
+
+int can_render = 1;
+int screenshot_id = 0;
+int max_screenshot = 10;
+
+map <int, map<int, int>> st_used; // [stage][track]
+map <int, float> st_reverb; // [stage]
+map <int, CString> tr_name; // [track]
+map <int, vector<int>> dyn; // [track][time]
+
+// Children
+vector <CString> nChild; // Child process name
+map <CString, long long> tChild; // Timestamp of last restart
+map <CString, int> aChild; // If state process should be automatically restarted on crash
+map <CString, int> rChild; // Is state process running?
+map <CString, CString> fChild; // Child process folder
+map <CString, CString> pChild; // Child process parameter string
+
+// Time
+long long render_start = 0;
+long long server_start_time = CGLib::time();
+
+// Objects
+CDb db;
+
+void InitErrorMessages() {
+	errorMessages.resize(1000);
+	errorMessages[0] = "OK";
+}
+
+CString GetErrorMessage(int e) {
+	if (e < errorMessages.size()) return errorMessages[e];
+	else return "";
+}
+
+void WriteLog(CString st) {
+	//db.WriteLog(st);
+	st = CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st;
+	cout << st << "\n";
+	CGLib::AppendLineToFile("server\\MGenClean.log",
+		st + "\n");
+}
+
+// Start process, wait a little and check if process exited with error prematurely
+// Then report error
+int Run(CString fname, CString par, int delay) {
+	DWORD ecode;
+	SHELLEXECUTEINFO sei = { 0 };
+	sei.cbSize = sizeof(SHELLEXECUTEINFO);
+	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
+	sei.hwnd = NULL;
+	sei.lpVerb = NULL;
+	sei.lpFile = fname;
+	sei.lpParameters = par;
+	sei.lpDirectory = NULL;
+	if (run_minimized) sei.nShow = SW_SHOWMINNOACTIVE;
+	else sei.nShow = SW_SHOWNORMAL;
+	sei.hInstApp = NULL;
+	ShellExecuteEx(&sei);
+	WaitForSingleObject(sei.hProcess, delay);
+	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
+	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
+		est.Format("Exit code %d: %s %s", ecode, fname, par);
+		WriteLog(est);
+		return ecode;
+	}
+	return 0;
+}
+
+HANDLE GetProcessHandle(CString pname) {
+	PROCESSENTRY32 entry;
+	entry.dwSize = sizeof(PROCESSENTRY32);
+	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
+	if (Process32First(snapshot, &entry) == TRUE) {
+		while (Process32Next(snapshot, &entry) == TRUE) {
+			if (stricmp(entry.szExeFile, pname) == 0) {
+				return OpenProcess(PROCESS_ALL_ACCESS, FALSE, entry.th32ProcessID);
+				//WaitForSingleObject(hProcess, 100000);
+			}
+		}
+	}
+	CloseHandle(snapshot);
+	return NULL;
+}
+
+void KillProcessByName(const char *filename) {
+	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, NULL);
+	PROCESSENTRY32 pEntry;
+	pEntry.dwSize = sizeof(pEntry);
+	BOOL hRes = Process32First(hSnapShot, &pEntry);
+	while (hRes)
+	{
+		if (strcmp(pEntry.szExeFile, filename) == 0)
+		{
+			HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, 0,
+				(DWORD)pEntry.th32ProcessID);
+			if (hProcess != NULL)
+			{
+				TerminateProcess(hProcess, 9);
+				CloseHandle(hProcess);
+			}
+		}
+		hRes = Process32Next(hSnapShot, &pEntry);
+	}
+	CloseHandle(hSnapShot);
+}
+
+// Start process, wait for some time. If process did not finish, this is an error
+int RunTimeout(CString path, CString par, int delay) {
+	DWORD ecode;
+	SHELLEXECUTEINFO sei = { 0 };
+	sei.cbSize = sizeof(SHELLEXECUTEINFO);
+	sei.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_NO_UI;
+	sei.hwnd = NULL;
+	sei.lpVerb = NULL;
+	sei.lpFile = path;
+	sei.lpParameters = par;
+	sei.lpDirectory = NULL;
+	if (run_minimized) sei.nShow = SW_SHOWMINNOACTIVE;
+	else sei.nShow = SW_SHOWNORMAL;
+	sei.hInstApp = NULL;
+	ShellExecuteEx(&sei);
+	if (WaitForSingleObject(sei.hProcess, delay) == WAIT_TIMEOUT) {
+		cout << path + " " + par + ": Timeout waiting for process\n";
+		return 100;
+	}
+	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
+	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
+		cout << "Exit code " << ecode << ": " + path + " " + par + "\n";
+		return ecode;
+	}
+	return 0;
+}
+
+void LoadConfig()
+{
+	TCHAR buffer[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buffer);
+	CString current_dir = string(buffer).c_str();
+	WriteLog("Started MGenClean in current dir: " + current_dir);
+
+	CString st, st2, st3, cur_child;
+	ifstream fs;
+	CString fname = "server\\server.pl";
+	// Check file exists
+	if (!CGLib::fileExists(fname)) {
+		WriteLog("LoadConfig cannot find file: " + fname);
+		nRetCode = 3;
+		return;
+	}
+	fs.open(fname);
+	char pch[2550];
+	int pos = 0;
+	int i = 0;
+	while (fs.good()) {
+		i++;
+		// Get line
+		fs.getline(pch, 2550);
+		st = pch;
+		st.Replace("\"", "");
+		// Remove unneeded
+		pos = st.Find("#");
+		// Check if it is first symbol
+		if (pos == 0)	st = st.Left(pos);
+		pos = st.Find(" #");
+		// Check if it is after space
+		if (pos > -1)	st = st.Left(pos);
+		st.Trim();
+		pos = st.Find("=");
+		if (pos != -1) {
+			// Get variable name and value
+			st2 = st.Left(pos);
+			st3 = st.Mid(pos + 1);
+			st2.Trim();
+			st3.Trim();
+			st2.MakeLower();
+			// Load general variables
+			int idata = atoi(st2);
+			float fdata = atof(st3);
+			CGLib::parameter_found = 0;
+			if (st2 == "childprocess") {
+				nChild.push_back(st3);
+				aChild[st3] = 0;
+				rChild[st3] = 0;
+				fChild[st3].Empty();
+				pChild[st3].Empty();
+				tChild[st3] = CGLib::time();
+				cur_child = st3;
+				++CGLib::parameter_found;
+			}
+			CGLib::CheckVar(&st2, &st3, "server_id", &CDb::server_id, 0, 1000000);
+			if (aChild.size()) {
+				CGLib::CheckVar(&st2, &st3, "childrestart", &aChild[cur_child], 0, 1);
+				CGLib::LoadVar(&st2, &st3, "childpath", &fChild[cur_child]);
+				CGLib::LoadVar(&st2, &st3, "childparams", &pChild[cur_child]);
+			}
+			CGLib::CheckVar(&st2, &st3, "clean_every_minutes", &clean_every_minutes);
+			CGLib::LoadVar(&st2, &st3, "reaperbuf", &reaperbuf);
+			CGLib::LoadVar(&st2, &st3, "db_driver", &db_driver);
+			CGLib::CheckVar(&st2, &st3, "daw_wait", &daw_wait, 0, 6000);
+			CGLib::CheckVar(&st2, &st3, "run_minimized", &run_minimized, 0, 1);
+			CGLib::CheckVar(&st2, &st3, "screenshots_enabled", &screenshots_enabled, 0, 1);
+			CGLib::LoadVar(&st2, &st3, "share", &share);
+			CGLib::LoadVar(&st2, &st3, "db_server", &db_server);
+			CGLib::LoadVar(&st2, &st3, "db_port", &db_port);
+			CGLib::LoadVar(&st2, &st3, "db_login", &db_login);
+			CGLib::LoadVar(&st2, &st3, "db_pass", &db_pass);
+			CGLib::LoadVar(&st2, &st3, "db_name", &db_name);
+			if (!CGLib::parameter_found) {
+				WriteLog("Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+			}
+			if (nRetCode) break;
+		}
+	}
+	fs.close();
+	est.Format("LoadConfig loaded %d lines from %s", i, fname);
+	WriteLog(est);
+	// Check config
+	if (!CGLib::dirExists(share)) {
+		WriteLog("Shared folder not found: " + share);
+		nRetCode = 6;
+	}
+}
+
+int PauseClose() {
+	est.Format("MGenClean is exiting with return code %d", nRetCode);
+	WriteLog(est);
+	//cout << "Press any key to continue... ";
+	//_getch();
+	return nRetCode;
+}
+
+int Connect() {
+	if (db.Connect(db_driver, db_server, db_port, db_name, db_login, db_pass)) {
+		nRetCode = 4;
+	}
+	return nRetCode;
+}
+
+int SendKeyToWindowClass(CString wClass, short vk) {
+	HWND hWindow = FindWindow(wClass, NULL);
+	if (hWindow) {
+		PostMessage(hWindow, WM_KEYDOWN, VK_F12, 0);
+		return 0;
+	}
+	else return 1;
+}
+
+void Init() {
+	// Get client hostname
+	db.Fetch("SELECT SUBSTRING_INDEX(host,':',1) as 'ip' from information_schema.processlist WHERE ID=connection_id()");
+	if (!db.rs.IsEOF()) {
+		client_host = db.GetSt("ip");
+	}
+}
+
+BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
+	if (dwCtrlType == CTRL_CLOSE_EVENT) {
+		WriteLog("User initiated MGenClean exit");
+		close_flag = 1;
+		while (close_flag != 2)
+			Sleep(100);
+		//WriteLog("Exiting server");
+		return TRUE;
+	}
+	return FALSE;
+}
+
+void ProcessTask(path path_info) {
+	CString st, st2, st3, q;
+	int pos;
+	CString ext = path_info.extension().string().c_str();
+	CString pth = path_info.string().c_str();
+	CString fname = CGLib::fname_from_path(pth);
+	CString fnoext = CGLib::noext_from_path(pth);
+	vector<CString> sa;
+	CGLib::Tokenize(pth, sa, "\\");
+	if (sa.size() < 3) {
+		WriteLog("Cannot parse: " + pth);
+		return;
+	}
+	ext.MakeLower();
+	//cout << pth << "\n";
+	pos = fname.Find("-");
+	if (pos == -1) {
+		WriteLog("Cannot parse: " + pth);
+		return;
+	}
+	CString u_id = fname.Left(pos);
+	CString j_id = fname.Mid(pos + 1);
+	pos = sa[sa.size() - 2].Find("-");
+	if (pos == -1) {
+		WriteLog("Cannot parse: " + pth);
+		return;
+	}
+	CString month = sa[sa.size() - 2].Left(pos);
+	CString day = sa[sa.size() - 2].Mid(pos + 1);
+	CString year = sa[sa.size() - 3];
+	// Query
+	q.Format("SELECT TIMESTAMPDIFF(DAY, f_time, NOW()) AS f_passed, f_store FROM jobs LEFT JOIN files USING (f_id) WHERE j_id='%s'",
+		j_id);
+	db.Fetch(q);
+	// Database error
+	if (db.rs.IsEOF()) {
+		// Get passed time
+		q.Format("SELECT TIMESTAMPDIFF(DAY, '%s', NOW()) AS f_passed",
+			year + "-" + month + "-" + day);
+		db.Fetch(q);
+		if (db.rs.IsEOF()) {
+			WriteLog("Error accessing mysql server");
+		}
+		int f_passed = db.GetInt("f_passed");
+		/*
+		SYSTEMTIME syst;
+		GetSystemTime(&syst);
+		FILETIME ft_now;
+		SystemTimeToFileTime(&syst, &ft_now);
+		FILETIME ft = CGLib::fileTime(pth);
+		LONGLONG diffInTicks =
+			reinterpret_cast<LARGE_INTEGER*>(&ft_now).QuadPart -
+			reinterpret_cast<LARGE_INTEGER*>(&ft).QuadPart;
+		LONGLONG diffInMillis = diffInTicks / 10000;
+		*/
+		cout << "Task ID: " << j_id << " date [" << year << "-" << month << "-" << day << "]: passed " << f_passed << " not found in database\n";
+		if (f_passed > 30) {
+			Run("cmd.exe", "/c rmdir /s /q \"" + pth + "\"", 5000);
+			//CGLib::CleanFolder(pth + "\\*.*");
+			//RemoveDirectory(pth);
+			//abort();
+		}
+		return;
+	}
+	int f_passed = db.GetInt("f_passed");
+	int f_store = db.GetInt("f_store");
+	cout << "Task ID: " << j_id << " found in database\n";
+}
+
+void CleanFolders() {
+	cout << "Starting folders cleaning...\n";
+	CString pth = share + "jobs\\";
+	for (recursive_directory_iterator i(pth.GetBuffer()), end; i != end; ++i) {
+		if (i.depth() == 2 && is_directory(i->path())) {
+			i.disable_recursion_pending();
+			ProcessTask(i->path());
+			if (nRetCode) return;
+		}
+	}
+}
+
+int main() {
+	HMODULE hModule = ::GetModuleHandle(nullptr);
+
+  if (hModule != nullptr) {
+    // initialize MFC and print and error on failure
+    if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0)) {
+      // TODO: change error code to suit your needs
+      wprintf(L"Fatal Error: MFC initialization failed\n");
+			return 1;
+		}
+  }
+  else {
+    // TODO: change error code to suit your needs
+    wprintf(L"Fatal Error: GetModuleHandle failed\n");
+		return 2;
+	}
+
+	InitErrorMessages();
+	BOOL ret = SetConsoleCtrlHandler(ConsoleHandlerRoutine, TRUE);
+	LoadConfig();
+	if (nRetCode) {
+		return PauseClose();
+	}
+	if (Connect()) return PauseClose();
+	if (nRetCode) {
+		return PauseClose();
+	}
+	Init();
+	for (;;) {
+		CleanFolders();
+		if (nRetCode) return PauseClose();
+		if (close_flag == 1) {
+			close_flag = 2;
+			break;
+		}
+		Sleep(clean_every_minutes * 1000);
+	}
+	return PauseClose();
+}

@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MGenTest", "MGenTest\MGenTe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MGenServer", "MGenServer\MGenServer.vcxproj", "{16B1BF17-CE1B-446E-BF82-0DD23A46F5BA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MGenClean", "MGenClean\MGenClean.vcxproj", "{F08B26E2-B222-4FFB-BD47-BEC3B3674860}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -42,9 +44,20 @@ Global
 		{16B1BF17-CE1B-446E-BF82-0DD23A46F5BA}.Release|x64.Build.0 = Release|x64
 		{16B1BF17-CE1B-446E-BF82-0DD23A46F5BA}.Release|x86.ActiveCfg = Release|Win32
 		{16B1BF17-CE1B-446E-BF82-0DD23A46F5BA}.Release|x86.Build.0 = Release|Win32
+		{F08B26E2-B222-4FFB-BD47-BEC3B3674860}.Debug|x64.ActiveCfg = Debug|x64
+		{F08B26E2-B222-4FFB-BD47-BEC3B3674860}.Debug|x64.Build.0 = Debug|x64
+		{F08B26E2-B222-4FFB-BD47-BEC3B3674860}.Debug|x86.ActiveCfg = Debug|Win32
+		{F08B26E2-B222-4FFB-BD47-BEC3B3674860}.Debug|x86.Build.0 = Debug|Win32
+		{F08B26E2-B222-4FFB-BD47-BEC3B3674860}.Release|x64.ActiveCfg = Release|x64
+		{F08B26E2-B222-4FFB-BD47-BEC3B3674860}.Release|x64.Build.0 = Release|x64
+		{F08B26E2-B222-4FFB-BD47-BEC3B3674860}.Release|x86.ActiveCfg = Release|Win32
+		{F08B26E2-B222-4FFB-BD47-BEC3B3674860}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11310B49-DF42-48ED-A86A-145D375950B6}
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
