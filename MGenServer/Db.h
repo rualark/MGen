@@ -24,6 +24,7 @@ public:
 	CString m_dbname;
 	CString m_login;
 	CString m_pass;
+	CString log_fname;
 
 	CDatabase db;
 	CRecordset rs;

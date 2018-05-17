@@ -75,7 +75,7 @@ map <CString, CString> fChild; // Child process folder
 map <CString, CString> pChild; // Child process parameter string
 
 // Time
-long long render_start = 0;
+long long clean_start = 0;
 long long server_start_time = CGLib::time();
 
 // Objects
@@ -92,11 +92,16 @@ CString GetErrorMessage(int e) {
 }
 
 void WriteLog(CString st) {
-	//db.WriteLog(st);
+	db.WriteLog(st);
+	//st = CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st;
+	//cout << st << "\n";
+	//CGLib::AppendLineToFile("server\\MGenClean.log", st + "\n");
+}
+
+void WriteLogLocal(CString st) {
 	st = CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st;
 	cout << st << "\n";
-	CGLib::AppendLineToFile("server\\MGenClean.log",
-		st + "\n");
+	CGLib::AppendLineToFile("server\\MGenClean.log", st + "\n");
 }
 
 // Start process, wait a little and check if process exited with error prematurely
@@ -119,7 +124,7 @@ int Run(CString fname, CString par, int delay) {
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
 		est.Format("Exit code %d: %s %s", ecode, fname, par);
-		WriteLog(est);
+		WriteLogLocal(est);
 		return ecode;
 	}
 	return 0;
@@ -179,12 +184,15 @@ int RunTimeout(CString path, CString par, int delay) {
 	sei.hInstApp = NULL;
 	ShellExecuteEx(&sei);
 	if (WaitForSingleObject(sei.hProcess, delay) == WAIT_TIMEOUT) {
-		cout << path + " " + par + ": Timeout waiting for process\n";
+		WriteLogLocal(path + " " + par + ": Timeout waiting for process\n");
 		return 100;
 	}
 	if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 102;
 	if (ecode != 0 && ecode != STILL_ACTIVE) { // 259
-		cout << "Exit code " << ecode << ": " + path + " " + par + "\n";
+		CString est;
+		est.Format("Exit code %ld: %s %s", 
+			ecode, path, par);
+		WriteLogLocal(est);
 		return ecode;
 	}
 	return 0;
@@ -195,14 +203,14 @@ void LoadConfig()
 	TCHAR buffer[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, buffer);
 	CString current_dir = string(buffer).c_str();
-	WriteLog("Started MGenClean in current dir: " + current_dir);
+	WriteLogLocal("Started MGenClean in current dir: " + current_dir);
 
 	CString st, st2, st3, cur_child;
 	ifstream fs;
 	CString fname = "server\\server.pl";
 	// Check file exists
 	if (!CGLib::fileExists(fname)) {
-		WriteLog("LoadConfig cannot find file: " + fname);
+		WriteLogLocal("LoadConfig cannot find file: " + fname);
 		nRetCode = 3;
 		return;
 	}
@@ -265,24 +273,24 @@ void LoadConfig()
 			CGLib::LoadVar(&st2, &st3, "db_pass", &db_pass);
 			CGLib::LoadVar(&st2, &st3, "db_name", &db_name);
 			if (!CGLib::parameter_found) {
-				WriteLog("Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
+				WriteLogLocal("Unrecognized parameter '" + st2 + "' = '" + st3 + "' in file " + fname);
 			}
 			if (nRetCode) break;
 		}
 	}
 	fs.close();
 	est.Format("LoadConfig loaded %d lines from %s", i, fname);
-	WriteLog(est);
+	WriteLogLocal(est);
 	// Check config
 	if (!CGLib::dirExists(share)) {
-		WriteLog("Shared folder not found: " + share);
+		WriteLogLocal("Shared folder not found: " + share);
 		nRetCode = 6;
 	}
 }
 
 int PauseClose() {
 	est.Format("MGenClean is exiting with return code %d", nRetCode);
-	WriteLog(est);
+	cout << est << "\n";
 	//cout << "Press any key to continue... ";
 	//_getch();
 	return nRetCode;
@@ -305,6 +313,7 @@ int SendKeyToWindowClass(CString wClass, short vk) {
 }
 
 void Init() {
+	db.log_fname = "server\\MGenClean.log";
 	// Get client hostname
 	db.Fetch("SELECT SUBSTRING_INDEX(host,':',1) as 'ip' from information_schema.processlist WHERE ID=connection_id()");
 	if (!db.rs.IsEOF()) {
@@ -314,7 +323,7 @@ void Init() {
 
 BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 	if (dwCtrlType == CTRL_CLOSE_EVENT) {
-		WriteLog("User initiated MGenClean exit");
+		WriteLogLocal("User initiated MGenClean exit");
 		close_flag = 1;
 		while (close_flag != 2)
 			Sleep(100);
@@ -325,7 +334,7 @@ BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 }
 
 void ProcessTask(path path_info) {
-	CString st, st2, st3, q;
+	CString est, st, st2, st3, q;
 	int pos;
 	CString ext = path_info.extension().string().c_str();
 	CString pth = path_info.string().c_str();
@@ -334,75 +343,157 @@ void ProcessTask(path path_info) {
 	vector<CString> sa;
 	CGLib::Tokenize(pth, sa, "\\");
 	if (sa.size() < 3) {
-		WriteLog("Cannot parse: " + pth);
+		WriteLogLocal("Cannot parse: " + pth);
 		return;
 	}
 	ext.MakeLower();
 	//cout << pth << "\n";
 	pos = fname.Find("-");
 	if (pos == -1) {
-		WriteLog("Cannot parse: " + pth);
+		WriteLogLocal("Cannot parse: " + pth);
 		return;
 	}
 	CString u_id = fname.Left(pos);
-	CString j_id = fname.Mid(pos + 1);
+	CDb::j_id = atoi(fname.Mid(pos + 1));
 	pos = sa[sa.size() - 2].Find("-");
 	if (pos == -1) {
-		WriteLog("Cannot parse: " + pth);
+		WriteLogLocal("Cannot parse: " + pth);
 		return;
 	}
 	CString month = sa[sa.size() - 2].Left(pos);
 	CString day = sa[sa.size() - 2].Mid(pos + 1);
 	CString year = sa[sa.size() - 3];
+	// Pause to not overload mysql
+	Sleep(10);
 	// Query
-	q.Format("SELECT TIMESTAMPDIFF(DAY, f_time, NOW()) AS f_passed, f_store FROM jobs LEFT JOIN files USING (f_id) WHERE j_id='%s'",
-		j_id);
+	q.Format("SELECT j_size, TIMESTAMPDIFF(DAY, GREATEST(j_added, j_queued, j_finished), NOW()) AS j_passed, f_name, f_store, j_cleaned, files.f_id, j_class FROM jobs LEFT JOIN files USING (f_id) WHERE j_id='%ld'",
+		CDb::j_id);
 	db.Fetch(q);
 	// Database error
 	if (db.rs.IsEOF()) {
 		// Get passed time
-		q.Format("SELECT TIMESTAMPDIFF(DAY, '%s', NOW()) AS f_passed",
+		q.Format("SELECT TIMESTAMPDIFF(DAY, '%s', NOW()) AS j_passed",
 			year + "-" + month + "-" + day);
 		db.Fetch(q);
 		if (db.rs.IsEOF()) {
-			WriteLog("Error accessing mysql server");
+			WriteLogLocal("Error accessing mysql server");
 		}
-		int f_passed = db.GetInt("f_passed");
-		/*
-		SYSTEMTIME syst;
-		GetSystemTime(&syst);
-		FILETIME ft_now;
-		SystemTimeToFileTime(&syst, &ft_now);
-		FILETIME ft = CGLib::fileTime(pth);
-		LONGLONG diffInTicks =
-			reinterpret_cast<LARGE_INTEGER*>(&ft_now).QuadPart -
-			reinterpret_cast<LARGE_INTEGER*>(&ft).QuadPart;
-		LONGLONG diffInMillis = diffInTicks / 10000;
-		*/
-		cout << "Task ID: " << j_id << " date [" << year << "-" << month << "-" << day << "]: passed " << f_passed << " not found in database\n";
-		if (f_passed > 30) {
-			Run("cmd.exe", "/c rmdir /s /q \"" + pth + "\"", 5000);
+		int j_passed = db.GetInt("j_passed");
+		// Delete unknown files only after a month
+		if (j_passed > 30) {
+			est.Format("Task %ld [%s-%s-%s]: passed %d days not found in database, deleting",
+				CDb::j_id, year, month, day, j_passed);
+			WriteLogLocal(est);
+			//Run("cmd.exe", "/c rmdir /s /q \"" + pth + "\"", 5000);
+			CGLib::RmDir(pth + "\\");
 			//CGLib::CleanFolder(pth + "\\*.*");
 			//RemoveDirectory(pth);
 			//abort();
 		}
+		else {
+			est.Format("Task %ld [%s-%s-%s]: passed %d days not found in database",
+				CDb::j_id, year, month, day, j_passed);
+			//cout << est << "\n";
+		}
 		return;
 	}
-	int f_passed = db.GetInt("f_passed");
+	CString f_name = db.GetSt("f_name");
+	int f_id = db.GetInt("f_id");
+	int j_class = db.GetInt("j_class");
+	int j_passed = db.GetInt("j_passed");
 	int f_store = db.GetInt("f_store");
-	cout << "Task ID: " << j_id << " found in database\n";
+	int j_size = db.GetInt("j_size");
+	int j_cleaned = db.GetInt("j_cleaned");
+	if (!f_id) {
+		if (j_passed > 31) {
+			est.Format("Task %ld [%s-%s-%s]: passed %d days does not have file in database, deleted",
+				CDb::j_id, year, month, day, j_passed);
+			WriteLogLocal(est);
+			q.Format("DELETE FROM jobs WHERE j_id='%ld'", CDb::j_id);
+			db.Query(q);
+		}
+		else {
+			est.Format("Task %ld [%s-%s-%s]: passed %d days does not have file in database",
+				CDb::j_id, year, month, day, j_passed);
+			//cout << est << "\n";
+		}
+		return;
+	}
+	if (j_cleaned == 2) {
+		return;
+	}
+	// Collect size
+	if (!j_size) {
+		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%ld'",
+			CGLib::FolderSize(pth + "\\"), CDb::j_id);
+		db.Query(q);
+		cout << "Task " << CDb::j_id << ": collected size\n";
+	}
+	//cout << "Task ID: " << CDb::j_id << " f_id " << f_id << " found in database\n";
+	int need_clean = 0;
+	if (f_store == 366000) {
+		if (j_passed > 366) {
+			// Check if task is last successful of this class
+			q.Format("SELECT j_id FROM jobs WHERE f_id = %d AND j_id > %ld AND j_state = 3 AND j_result = 0 AND j_class = %d",
+				f_id, CDb::j_id, j_class);
+			db.Fetch(q);
+			if (!db.rs.IsEOF()) {
+				est.Format("Archived task %ld file %d: passed %d days, cleaned",
+					CDb::j_id, f_id, j_passed);
+				WriteLog(est);
+				need_clean = 2;
+			}
+			else {
+				if (!need_clean) {
+					est.Format("Task %ld file %d: passed %d days, cleaning stems",
+						CDb::j_id, f_id, j_passed);
+					WriteLog(est);
+					need_clean = 1;
+				}
+			}
+		}
+	}
+	else {
+		if (j_passed > f_store) {
+			need_clean = 2;
+			est.Format("Task %ld file %d: passed %d > %d days, cleaned",
+				CDb::j_id, f_id, j_passed, f_store);
+			WriteLog(est);
+		}
+	}
+	if (need_clean == 2) {
+		CGLib::RmDir(pth + "\\", ".pl");
+		q.Format("UPDATE jobs SET j_cleaned=2 WHERE j_id='%ld'", CDb::j_id);
+		db.Query(q);
+		// Collect size
+		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%ld'",
+			CGLib::FolderSize(pth + "\\"), CDb::j_id);
+		db.Query(q);
+	}
+	if (need_clean == 1) {
+		CGLib::CleanFolder(pth + "\\" + CGLib::bname_from_path(f_name) + "*_*.mp3");
+		q.Format("UPDATE jobs SET j_cleaned=1 WHERE j_id='%ld'", CDb::j_id);
+		db.Query(q);
+		// Collect size
+		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%ld'",
+			CGLib::FolderSize(pth + "\\"), CDb::j_id);
+		db.Query(q);
+	}
 }
 
 void CleanFolders() {
+	clean_start = CGLib::time();
 	cout << "Starting folders cleaning...\n";
 	CString pth = share + "jobs\\";
 	for (recursive_directory_iterator i(pth.GetBuffer()), end; i != end; ++i) {
 		if (i.depth() == 2 && is_directory(i->path())) {
 			i.disable_recursion_pending();
 			ProcessTask(i->path());
+			CDb::j_id = 0;
 			if (nRetCode) return;
 		}
 	}
+	cout << "Finished cleaning in " << (CGLib::time() - clean_start) / 1000 << " seconds. Waiting " << clean_every_minutes << " minutes...\n";
 }
 
 int main() {
@@ -433,14 +524,22 @@ int main() {
 		return PauseClose();
 	}
 	Init();
+	//cout << "Folder size: " << CGLib::FolderSize("share\\jobs\\2017\\") << "\n";
+	//return PauseClose();
 	for (;;) {
 		CleanFolders();
 		if (nRetCode) return PauseClose();
-		if (close_flag == 1) {
+		for (int i = 0; i < clean_every_minutes * 60; ++i) {
+			if (close_flag == 1) {
+				close_flag = 2;
+				break;
+			}
+			Sleep(1000);
+		}
+		if (close_flag) {
 			close_flag = 2;
 			break;
 		}
-		Sleep(clean_every_minutes * 1000);
 	}
 	return PauseClose();
 }
