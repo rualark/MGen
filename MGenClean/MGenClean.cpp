@@ -444,7 +444,7 @@ void ProcessTask(path path_info) {
 				need_clean = 2;
 			}
 			else {
-				if (!need_clean) {
+				if (!j_cleaned) {
 					est.Format("Task %ld file %d: passed %d days, cleaning stems",
 						CDb::j_id, f_id, j_passed);
 					WriteLog(est);
