@@ -245,7 +245,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;304;;70;Melody;Range;Voice range;cp voice >M12;0;;Counterpoint voice range;;;;;4;1;;;;;;;
 1;37;;70;Melody;Range;Voice range;cf >M9;0;;Cantus firmus voice range;;;;;28;1;;;;;;;
 1;7;;70;Melody;Range;Voice range;sum >22th;0;;Aggregate pitch range of both voices in this counterpoint;;;;;2;1;;;;;;;
-1;11;;70;Melody;Range;Interval between voices;int >16th;0;;Interval between counterpoint voices.  Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);4;;;!srn!;29;1;;;;1;;;
+1;11;;70;Melody;Range;Interval between voices;int >16th;0;;Interval between counterpoint voices.  Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);12;;;!srn!;29;1;;;;1;;;
 1;434;;100;Melody;Range;CF Constrained local range;5 notes <m3;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;2;0;;;;;;;
 1;435;;60;Melody;Range;CF Constrained local range;7 notes <4th;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;7;0;;;;;;;
 1;436;;60;Melody;Range;CF Constrained local range;11 notes <5th;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;3;0;;;;;;;
@@ -440,9 +440,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;388;;60;Counterpoint;Counterpoint;sp2 suspension;not I -> LT pnu.;0;;Other suspension than LT by I note in penultimate measure in sp2;;;;;14;4;;;;;;;
 1;225;;0;Counterpoint;Counterpoint;Slurs;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
 1;30;;100;Counterpoint;Counterpoint;Slurs;cantus;0;;Slurs are not possible in cantus. This rule is technical;;;;;0;0;1;;;;;;
-1;93;13;0;Counterpoint;Counterpoint;Many slurs within 10 notes;1;0;;;;;;;36;0;;;;1;;;
-1;94;13;40;Counterpoint;Counterpoint;Many slurs within 10 notes;2;0;;;;;;;6;0;;;;1;93;;
-1;95;13;60;Counterpoint;Counterpoint;Many slurs within 10 notes;>2;0;;;;;;;22;0;;;;1;93,94;;
+1;93;13;0;Counterpoint;Counterpoint;Many slurs within 10 notes;1;0;;;;;;;;;;;;;;;
+1;94;13;40;Counterpoint;Counterpoint;Many slurs within 10 notes;2;0;;;;;;;;;;;;;;;
+1;95;13;60;Counterpoint;Counterpoint;Many slurs within 10 notes;>2;0;;;;;;;;;;;;;;;
 1;93;2;0;Counterpoint;Counterpoint;Many slurs within 10 notes;1;-1;;;;;;;36;0;;;;1;;;
 1;94;2;40;Counterpoint;Counterpoint;Many slurs within 10 notes;2;0;;;;;;;6;0;;;;1;93;;
 1;95;2;60;Counterpoint;Counterpoint;Many slurs within 10 notes;>2;0;;;;;;;22;0;;;;1;93,94;;
@@ -470,9 +470,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;260;;60;Counterpoint;Nonchord tones;Double-neighbour tone;leap <=4th;0;;Allow leaps up to specified size;;;;;5;0;;;;;;1;
 1;3;;0;Counterpoint;Nonchord tones;Double-neighbour tone;leap in;0;;There is a leap before first note of double-neighbour tone group;;;;;0;0;;;;;;;
 1;97;;60;Counterpoint;Nonchord tones;Double-neighbour tone;leap out;0;;There is a leap before 1st note of double-neighbour tone group;;;;;3;0;;;;;;;
-1;282;1240;0;Counterpoint;Nonchord tones;Passing downbeat dissonance;descending;0;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;2;1;;;50;1;;;;;;1;
-1;297;1240;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;6;0;;;;;;1;
-1;298;1240;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;18;1;;;;;;1;
+1;282;1240;0;Counterpoint;Nonchord tones;Passing downbeat dissonance;descending;0;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;;;;;;;;;;;;;
+1;297;1240;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;;;;;;;;;;;;;
+1;298;1240;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;;;;;;;;;;;;;
 1;282;35;0;Counterpoint;Nonchord tones;Passing downbeat dissonance;descending;1;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;2;1;;;50;1;;;;;;1;
 1;297;35;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;6;0;;;;;;1;
 1;298;35;40;Counterpoint;Nonchord tones;Passing downbeat dissonance;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;18;1;;;;;;1;
