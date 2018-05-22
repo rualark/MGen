@@ -388,9 +388,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;218;;60;Counterpoint;Counterpoint;Suspension resolution;2nd -> unison;0;;Does not include 9th interval and above;12;1;;sus;1;1;1;;;;;;
 1;419;;0;Counterpoint;Counterpoint;Suspension resolution;to beat 2;1;;Allows resolution to beat 2;;;;;0;0;;;;;;;
 1;420;;0;Counterpoint;Counterpoint;Suspension resolution;to beat 4;1;;Allows resolution to beat 4;;;;;0;0;;;;;;;
-1;219;;60;Counterpoint;Counterpoint;Suspension resolution;up;0;;Suspension resolution up except for leading note (LT stepwize resolution up to tonic is allowed);12;1;;sus;24;4;1;;;;;;
-1;220;;100;Counterpoint;Counterpoint;Suspension resolution;unresolved;0;;;12;1;;sus;6;2;1;;;;;;
-1;221;;100;Counterpoint;Counterpoint;Suspension resolution;leap;0;;Suspension resolution by leap;12;1;;sus;16;7;1;;;;;;
+1;219;;60;Counterpoint;Counterpoint;Suspension resolution;up;0;;Suspension resolution up except for leading note (LT stepwize resolution up to tonic is allowed);12;2;;sus;24;4;1;;;;;;
+1;220;;100;Counterpoint;Counterpoint;Suspension resolution;unresolved;0;;;12;2;;sus;6;2;1;;;;;;
+1;221;;100;Counterpoint;Counterpoint;Suspension resolution;leap;0;;Suspension resolution by leap;12;2;;sus;16;7;1;;;;;;
 1;291;;0;Counterpoint;Counterpoint;Suspension resolution;short;0;;If resolution note is shorter than 1/4;12;;;sus;2;1;1;;;;;;
 1;286;;60;Counterpoint;Counterpoint;Suspension resolution;shift;0;;Suspension is not resolved on allowed beat;12;;;sus;7;7;1;;;;;;
 1;296;;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap down;1;;Leap down from consonance insertion to resolution;12;;;sus;0;0;1;;;;;;
