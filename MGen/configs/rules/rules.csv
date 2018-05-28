@@ -315,8 +315,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;349;;60;Counterpoint;Minor;VII natural note near VI# note;4 notes before;0;;X notes before VI#;8;;;VII near VI#;52;1;;;;;;;
 1;350;;60;Counterpoint;Minor;VII natural note near VI# note;4 notes after;0;;X notes after VI#;8;;;VII near VI#;43;0;;;;;;;
 1;199;;60;Counterpoint;Minor;VI# without close VII# note;within 2 notes;0;There is no VII# note before or after VI# note in close proximity;;;;;;65;2;;;;;;;
-1;201;;0;Counterpoint;Minor;Note not stepwise ascending;VI#;0;Harmonic VI# note is not surrounded by stepwise diatonic ascending movement;;8;;;VI# not asc.;9;2;;;;;;;
-1;202;;0;Counterpoint;Minor;Note not stepwise descending;VII natural;0;Harmonic VII natural note is not surrounded by stepwise diatonic descending movement;;8;;;VII not desc.;;;;;;;;;
+1;201;10;0;Counterpoint;Minor;Note not stepwise ascending;VI#;0;Harmonic VI# note is not surrounded by stepwise diatonic ascending movement;;8;;;VI# not asc.;9;2;;;;;;;
+1;202;10;0;Counterpoint;Minor;Note not stepwise descending;VII natural;0;Harmonic VII natural note is not surrounded by stepwise diatonic descending movement;;8;;;VII not desc.;;;;;;;;;
 1;152;;100;Counterpoint;Minor;Chromatism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;!srn!;1;1;1;;;;;;
 1;153;;100;Counterpoint;Minor;Chromatism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;!srn!;3;2;1;;;;;;
 1;158;;100;Counterpoint;Minor;Chromatism: far;VI<->VI#;0;These two notes are one note apart;;8;;;!srn!;7;3;1;;;;;;
