@@ -282,7 +282,7 @@ midi\Counterpoint\test\test-long.mid;6;4;82;Perfect consonance;db. culm.;2;Low;C
 midi\Counterpoint\test\test-long.mid;6;4;337;Note is too long;sp2: >4/4;2;Low;Rhythm;Except last note;Usually >2/4 or >4/4;0;60;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;6;4;388;sp2 suspension;not I -> LT pnu.;2;Low;Counterpoint;;Other suspension than LT by I note in penultimate measure in sp2;0;60;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;6;4;41;Note crosses many measures;>2;2;Low;Rhythm;;Note crosses more than two measures;0;60;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-long.mid;6;4;26;Culmination;sync;2;Low;Repeats;;Synchronized culminations in both voices;-1;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-long.mid;6;4;6;Culmination;sync;2;Low;Repeats;;Synchronized culminations in both voices;-1;0;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;6;9;267;Last note;not whole;2;Low;Rhythm;;;0;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-long.mid;6;4;427;Suspension rhythm;end > start;2;Low;Rhythm;Start (left) and end (right) of suspension note;;0;60;1;0;2018-04-24 14:46 Global false positive
 midi\Counterpoint\test\test-long.mid;7;0;237;Rhythm;uneven pause;3;Low;Rhythm;;Starting pause in first measure does not equal length of next note;0;60;1;0;Imported from midi lyrics
