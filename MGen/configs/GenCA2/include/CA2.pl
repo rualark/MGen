@@ -19,7 +19,7 @@ show_transpose = 0,0,36,36 # Semitones to transpose each voice (separated with c
 random_key = 0 # Select any of possible keys regardless of last note
 
 #Correction
-correct_range = 14 # Maximum interval allowed between each source and corrected note (chromatic)
+correct_range = 18 # Maximum interval allowed between each source and corrected note (chromatic)
 approximations = 500 # Maximum number of approximations to run if rpenalty decreases
 swa_steps = 100 # Size of Sliding Window Approximation algorithm window in steps
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus

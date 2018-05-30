@@ -444,7 +444,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;318;;30;Counterpoint;Counterpoint;Penultimate measure;isolated LT;1;;There is another harmony between leading tone and tonic note in penultimate measure;;;;;26;10;1;;;;;;
 1;322;;0;Counterpoint;Counterpoint;Penultimate measure;T/S after D;-1;;Any chord except V or VII(#) goes after V or VII(#) chord in penultimate measure. Disabled this rule, because it duplicates rule "penultimate harmony no D/DVII";;;;;15;4;1;;;;;;
 1;335;;60;Counterpoint;Counterpoint;Penultimate measure;not D/DVII;0;;Penultimate harmony is not D / DVII;1;;;;146;1;;;;;;;
-1;9;;30;Counterpoint;Counterpoint;Penultimate measure;8va / unis.;0;;Penultimate measure starts with 8va or unison;;;;;8;0;1;;;;;;
+1;9;;30;Counterpoint;Counterpoint;Penultimate measure;8va / unis.;0;;Penultimate measure starts with 8va or unison;;;;;;;;;;;;;
 1;387;;0;Counterpoint;Counterpoint;sp2 suspension;I -> LT penultim.;1;;Suspension of LT by I note in penultimate measure in sp2;;;;;8;0;1;;;;;;
 1;388;;60;Counterpoint;Counterpoint;sp2 suspension;not I -> LT pnu.;0;;Other suspension than LT by I note in penultimate measure in sp2;;;;;14;4;;;;;;;
 1;225;;0;Counterpoint;Counterpoint;Slurs;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
