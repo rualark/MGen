@@ -32,6 +32,7 @@ int CDb::Connect(CString driver, CString server, CString port, CString dbname, C
 		"Pwd=" + m_pass + ";";
 
 	try {
+		if (db.IsOpen()) db.Close();
 		if (!db.OpenEx(connSt)) {
 			WriteLog("Cannot open database: " + connSt);
 			return 1;

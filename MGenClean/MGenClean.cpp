@@ -527,6 +527,7 @@ int main() {
 	//cout << "Folder size: " << CGLib::FolderSize("share\\jobs\\2017\\") << "\n";
 	//return PauseClose();
 	for (;;) {
+		if (Connect()) return PauseClose();
 		CleanFolders();
 		if (nRetCode) return PauseClose();
 		for (int i = 0; i < clean_every_minutes * 60; ++i) {
