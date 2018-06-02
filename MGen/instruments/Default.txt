@@ -8,7 +8,7 @@ Woodwinds/Bass Flute                  | Normal                | 1   | 24  | -   
 Woodwinds/Clarinet                    | Normal                | 15  | 25  | +   | cl   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
 Woodwinds/Bass Clarinet               | Normal                | 1   | 26  | -   | bcl  | Clarinette basse, Bassklarinette, Clarinetto basso, Bass-klarnet, Clarinete bajo, Clarinetti bassi
 Woodwinds/Oboe                        | Normal                | 1   | 27  | -   | ob   | Hautbois, Hoboy, French hoboy, Goboi, oboi
-Woodwinds/English Horn                | Normal                | 1   | 28  | -   | eh   | E. Horn, Cor anglais, Englischhorn, Corno inglese, angliiskii rozhok, cuerno ingles, corno ingles, corno inglele
+Woodwinds/English Horn                | Normal                | 1   | 28  | -   | eh   | E. Horn, Cor anglais, Englischhorn, Corno inglese, anglijskij rozhok, cuerno ingles, corno ingles, corno inglele
 Woodwinds/Bassoon                     | Normal                | 1   | 29  | -   | bn   | Basson, Fagott, Fagotto, Fagot, Fagote
 Woodwinds/Contrabassoon               | Normal                | 1   | 30  | -   | cbn  | double bassoon, Kontrafagott, contrafagotto, contrebasson, Controfagotti
 Woodwinds/Soprano sax                 | Normal                | 1   | 31  | -   | ssx  | 
@@ -23,7 +23,7 @@ Brass/Piccolo trumpet                 | Normal                | 1   | 14  | -   
 Brass/Horn                            | Normal                | 4   | 8   | +   | hn   | French horn, Waldhorn, Ventilhorn, Trompa, Corno, Cor, Corni, Gorn, rog, rozhok, Valtorna, F. horn, corno frances, cuerno
 Brass/Trombone                        | Normal                | 5   | 9   | +   | tbn  | Posaune, trombono, trombon, 
 Brass/Valve trombone                  | Normal                | 5   | 15  | -   | vtbn |
-Brass/Bass trombone                   | Normal                | 5   | 16  | -   | btbn | 
+Brass/Bass trombone                   | Normal                | 5   | 16  | -   | btbn | Trombone basse
 Brass/Tuba                            | Normal                | 6   | 10  | +   | tba  | tube
 Vocal/Soprano                         | Soprano               | 7   | 17  | +   | sop  | Sopran
 Vocal/Alto                            | Alto                  | 8   | 18  | +   | alt  | contralto, Alt, 
@@ -31,18 +31,18 @@ Vocal/Tenor                           | Tenor                 | 9   | 19  | +   
 Vocal/Bass                            | Bass                  | 10  | 20  | +   | bas  | basse, basso, bas, bajo
 Pitched percussion/Timpani            | Long hits             | 1   | 35  | -   | tim  | Kettle drums, Pauken, Timps
 Pitched percussion/Xylophone          | Hits                  | 1   | 36  | -   | xyl  | Xylophon, xilofono, ksilofon, xilofon, xilofono, Silofono
-Pitched percussion/Glockenspiel       | Hits                  | 1   | 37  | -   | gl   | Campanelli, Bells, Concert bells, Orchestral bells
+Pitched percussion/Glockenspiel       | Hits                  | 1   | 37  | -   | gl   | Campanelli, Bells, Concert bells, Orchestral bells, Carillon, Carillion
 Pitched percussion/Marimba            | Marimba               | 1   | 38  | -   | mar  |
 Pitched percussion/Celesta            | Hits                  | 1   | 39  | -   | cel  | 
 Pitched percussion/Crotales           | Hits                  | 1   | 40  | -   | crt  |
-Pitched percussion/Tubular bells      | Hits                  | 1   | 41  | -   | tbl  |
+Pitched percussion/Tubular bells      | Hits                  | 1   | 41  | -   | tbl  | Cloches tubulaires
 Pitched percussion/Vibraphone         | Staccato pedal up     | 1   | 42  | -   | vib  |
 Unpitched percussion/Bass drum        | Hard mallet           | 2   | 43  | -   | bdr  | Gran cassa, grosse caisse, Grosse Trommel, cassa, grancassa, bolshoi baraban, bombo
 Unpitched percussion/Snare drum       | Hit - Snares on       | 1   | 44  | -   | sdr  | caisse claire, Leinentrommel, tamburo rullante, tamburo militare, rullante, frantsuzskii baraban, tambor afinable
 Unpitched percussion/Snare ensemble   | Hit - Snares on       | 9   | 45  | -   | sne  |
 Unpitched percussion/Military drum    | Hits                  | 8   | 46  | -   | mdr  |
 Unpitched percussion/Field drum       | Hits                  | 8   | 46  | -   | fdr  |
-Unpitched percussion/Cymbals american | Long hit              | 3   | 47  | -   | cym  | Concert cymbals, cymbales, Becken, piatti, tarelki, cimbalos
+Unpitched percussion/Cymbals american | Long hit              | 3   | 47  | -   | cym  | Concert cymbals, cymbales, cymbale, cymbal, Becken, piatti, tarelki, cimbalos
 Unpitched percussion/Cymbals viennese | Long hit              | 3   | 47  | -   | cyv  | 
 Unpitched percussion/Triangle         | Hit                   | 5   | 48  | -   | tri  | triangle concerto, triangolo
 Unpitched percussion/Gong             | Small gong            | 1   | 49  | -   | gng  | Tam tam, Tam-tam
@@ -58,7 +58,7 @@ Unpitched percussion/Whip             | Hits                  | 13  | 55  | -   
 Unpitched percussion/Shaker           | Hits                  | 13  | 55  | -   | shk  |
 Unpitched percussion/Castanets        | Hits                  | 13  | 55  | -   | cst  |
 Unpitched percussion/Sleighbells      | Hits                  | 13  | 55  | -   | slb  | Sleigh bell
-Unpitched percussion/Tambourine       | Hits                  | 12  | 56  | -   | tbr  | tamburino
+Unpitched percussion/Tambourine       | Hits                  | 12  | 56  | -   | tbr  | tamburino, tambourin
 Unpitched percussion/Beatring         | Hits                  | 12  | 56  | -   | btr  |
 Unpitched percussion/Timbales         | High                  | 10  | 57  | -   | tim  |
 Unpitched percussion/Bongo            | High                  | 7   | 58  | -   | bng  |
