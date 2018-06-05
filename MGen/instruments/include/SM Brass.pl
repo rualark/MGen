@@ -3,6 +3,7 @@
 # Main
 Type = 2 # Instrument type
 poly = 1 # Maximum number of simultaneous voices
+unison_dyn_mul = 1.02 # Unisons should not increase brass dynamics significantly, because brass dynamics is non-linear
 
 # Controls
 Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
