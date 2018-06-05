@@ -3,6 +3,12 @@ library = "True Strike Cinematic Orchestral Percussion" # For which library algo
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
 
+# Map CC
+CC_Name = 20: "Release"
+
+# Init instrument
+Release = 82
+
 # Instrument parameters
 n_min = "C4" # Lowest note
 n_max = "C8" # Highest note
