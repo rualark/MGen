@@ -1,0 +1,13 @@
+Windows Registry Editor Version 5.00
+
+; Reset and delete all saved folder customizations and settings.
+[-HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\BagMRU]
+[-HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags]
+
+; Turn off Vista auto folder type template discovery. 
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell]
+"FolderType"="NotSpecified"
+
+; Modify the storage space to 10000 for saving of up to 10000 folder settings.
+[HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell]
+"BagMRU Size"=dword:00002710
