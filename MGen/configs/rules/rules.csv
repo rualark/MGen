@@ -268,7 +268,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;445;;0;Melody;Range;sp2 Constrained local range;17 notes <m6;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;0;0;;;;;;;
 1;446;;100;Melody;Range;sp3 Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;9;;;Stagnation;3;0;;;;;;;
 1;447;;60;Melody;Range;sp3 Constrained local range;9 notes <4th;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;2;0;;;;;;;
-1;448;;60;Melody;Range;sp3 Constrained local range;14 notes <5th;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;1;0;;;;;;;
+1;448;;60;Melody;Range;sp3 Constrained local range;12 notes <5th;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;1;0;;;;;;;
 1;449;;0;Melody;Range;sp3 Constrained local range;19 notes <m6;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;0;0;;;;;;;
 1;450;;100;Melody;Range;sp4 Constrained local range;5 notes <m3;0;;X consecutive notes have total range less than Y;9;;;Stagnation;2;0;;;;;;;
 1;451;;60;Melody;Range;sp4 Constrained local range;7 notes <4th;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;1;0;;;;;;;
@@ -325,10 +325,10 @@ Set;Severity;Class;Group;Rule;Flag
 1;199;;60;Counterpoint;Minor;VI# without close VII# note;within 2 notes;0;There is no VII# note before or after VI# note in close proximity;;;;;;65;2;;;;;;;
 1;201;10;0;Counterpoint;Minor;Note not stepwise ascending;VI#;0;Harmonic VI# note is not surrounded by stepwise diatonic ascending movement;;8;;;VI# not asc.;9;2;;;;;;;
 1;202;10;0;Counterpoint;Minor;Note not stepwise descending;VII natural;0;Harmonic VII natural note is not surrounded by stepwise diatonic descending movement;;8;;;VII not desc.;;;;;;;;;
-1;152;;100;Counterpoint;Minor;Chromatism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;!srn!;1;1;1;;;;;;
-1;153;;100;Counterpoint;Minor;Chromatism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;!srn!;3;2;1;;;;;;
-1;158;;100;Counterpoint;Minor;Chromatism: far;VI<->VI#;0;These two notes are one note apart;;8;;;!srn!;7;3;1;;;;;;
-1;159;;100;Counterpoint;Minor;Chromatism: far;VII<->VII#;0;These two notes are one note apart;;8;;;!srn!;3;1;1;;;;;;
+1;152;;100;Counterpoint;Minor;Chromaticism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;!srn!;1;1;1;;;;;;
+1;153;;100;Counterpoint;Minor;Chromaticism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;!srn!;3;2;1;;;;;;
+1;158;;100;Counterpoint;Minor;Chromaticism: far;VI<->VI#;0;These two notes are one note apart;;8;;;!srn!;7;3;1;;;;;;
+1;159;;100;Counterpoint;Minor;Chromaticism: far;VII<->VII#;0;These two notes are one note apart;;8;;;!srn!;3;1;1;;;;;;
 1;164;;100;Counterpoint;Minor;False chromatic relation;VI<->VI#;0;These two notes are tightly close, but are in different voices;;10;;;!srn!;25;4;1;;;;;;
 1;165;;100;Counterpoint;Minor;False chromatic relation;VII<->VII#;0;These two notes are tightly close, but are in different voices;;10;;;!srn!;30;6;1;;;;;;
 1;170;;100;Counterpoint;Minor;False chromatic relation: simult.;VI<->VI#;0;If allowed, will be considered dissonance;;2;1;;;6;1;1;;;;;;
