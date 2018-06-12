@@ -17,6 +17,14 @@ midi\Counterpoint\test\test-end.mid;0;6;58;Leap back;overflow;3;Low;Turns around
 midi\Counterpoint\test\test-end.mid;0;6;175;Ascending leap;m6;3;Low;Leaps;;;-1;0;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-end.mid;1;6;47;Penultimate measure;no leading tone;3;Low;Counterpoint;;no leading tone is allowed if last bass notes are V-I;0;30;0;0;Imported from midi lyrics
 midi\Counterpoint\test\test-end.mid;1;6;87;Penultimate note resolution;IV not to III;3;Low;Border;;IV penultimate note resolves not to III note;0;0;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-fis-multivoice.mid;0;4;317;Penultimate measure;VII natural;5;Low;Counterpoint;;VII natural minor note in penultimate measure;0;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-fis-multivoice.mid;0;4;165;False chromatic relation;VII<->VII#;5;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-fis-multivoice.mid;0;8;171;False chromatic relation: simult.;VII<->VII#;5;Low;Minor;If allowed, will be considered dissonance;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-fis-multivoice.mid;0;8;318;Penultimate measure;isolated LT;5;Low;Counterpoint;;There is another harmony between leading tone and tonic note in penultimate measure;1;30;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-fis-multivoice.mid;0;8;165;False chromatic relation;VII<->VII#;5;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-fis-multivoice.mid;0;10;349;VII natural note near VI# note;4 notes before;5;Low;Minor;;X notes before VI#;0;60;0;0;Imported from midi lyrics
+midi\Counterpoint\test\test-fis-multivoice.mid;0;10;213;Direct movement to 8va;leap cadence;5;Low;Counterpoint;Direct movement to perfect consonance with leaping motion in higher voice;;1;0;1;0;Imported from midi lyrics
+midi\Counterpoint\test\test-fis-multivoice.mid;0;12;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
 midi\Melody\test\test-leap-fill.mid;0;0;67;Skipped notes;1;0;High;Range;Skipped notes that do not appear within this voice;;-1;0;1;0;Imported from midi lyrics
 midi\Melody\test\test-leap-fill.mid;0;2;124;Uncompensated leap;3rd;0;High;Uncompensated leap;If no other uncompensated rules worked.;;-1;0;0;0;Imported from midi lyrics
 midi\Melody\test\test-leap-fill.mid;0;6;14;3rd to last note;I/III/V;0;High;Border;Only for cantus firmus;;-1;0;1;0;Imported from midi lyrics
@@ -1656,10 +1664,3 @@ midi\Counterpoint\test\test-sus.mid;22;3;385;Parallel 5ths: < 4/4 apart;sus;2;Lo
 midi\Counterpoint\test\test-sus.mid;22;4;477;1skip + close TAL on MB;4th;2;Low;Turns around leap;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;0;60;1;0;2018-05-31 12:49 Global false positive
 midi\Counterpoint\test\test-sus.mid;22;6;324;Perfect consonance;LT 8va;2;Low;Counterpoint;;Leading tone harmonic octave for leaping notes and downbeat;0;60;1;0;Imported from midi lyrics
 midi\Counterpoint\test\test-sus.mid;22;6;481;Adjacent 8ves;parallel;2;Low;Counterpoint;;;0;100;1;0;2018-04-23 23:02 Global false positive
-midi\Counterpoint\test\test-fis-multivoice.mid;0;4;317;Penultimate measure;VII natural;5;Low;Counterpoint;;VII natural minor note in penultimate measure;0;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-fis-multivoice.mid;0;4;165;False chromatic relation;VII<->VII#;5;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-fis-multivoice.mid;0;8;171;False chromatic relation: simult.;VII<->VII#;5;Low;Minor;If allowed, will be considered dissonance;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-fis-multivoice.mid;0;8;318;Penultimate measure;isolated LT;5;Low;Counterpoint;;There is another harmony between leading tone and tonic note in penultimate measure;1;30;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-fis-multivoice.mid;0;8;165;False chromatic relation;VII<->VII#;5;Low;Minor;These two notes are tightly close, but are in different voices;;0;100;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-fis-multivoice.mid;0;10;213;Direct movement to 8va;leap cadence;5;Low;Counterpoint;;Direct movement to 8va with leaping motion in higher voice to last or penultimate measure;1;0;1;0;Imported from midi lyrics
-midi\Counterpoint\test\test-fis-multivoice.mid;0;12;12;Culmination;multi high;5;Low;Repeats;;Multiple culminations in higher voice;0;100;1;0;Imported from midi lyrics
