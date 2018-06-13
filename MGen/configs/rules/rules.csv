@@ -34,7 +34,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;147;;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;>5th;-1;Compensated to 5th, precompensated within 6 notes;;5;;;;40;0;;;;;;;
 1;112;;0;Melody;Uncompensated leap;Uncompensated precompensated;3rd;-1;;;5;;;;151;0;;;;;144,120,42;;
 1;113;;0;Melody;Uncompensated leap;Uncompensated precompensated;4th;-1;;;5;;;;19;0;;;;;145,121,43;;
-1;114;;60;Melody;Uncompensated leap;Uncompensated precompensated;5th;0;;;5;;;;8;0;;;;;146,122,44;;
+1;114;;50;Melody;Uncompensated leap;Uncompensated precompensated;5th;0;;;5;;;;8;0;;;;;146,122,44;;
 1;115;;100;Melody;Uncompensated leap;Uncompensated precompensated;>5th;0;;;5;;;;24;0;;;;;147,123,45;;
 1;204;;0;Melody;Uncompensated leap;Precompensated last 2 leaps;3rd;-1;Leap within last X notes in cantus/counterpoint;;5;;;;78;0;;;;;;;
 1;205;;0;Melody;Uncompensated leap;Precompensated last 2 leaps;4th;-1;Leap within last X notes in cantus/counterpoint;;5;;;;4;0;;;;;;;
@@ -52,7 +52,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;128;;0;Melody;Turns around leap;Close + 1skip turns around leap;3rd;-1;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;5;;;;126;0;;;;;;;
 1;129;;0;Melody;Turns around leap;Close + 1skip turns around leap;4th;-1;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;5;;;;55;9;;;;;;;
 1;130;;0;Melody;Turns around leap;Close + 1skip turns around leap;5th;-1;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;;5;;;;38;5;;;;;;;
-1;131;;35;Melody;Turns around leap;Close + 1skip turns around leap;>5th;0;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;5;;;;27;12;1;;;;;;
+1;131;;50;Melody;Turns around leap;Close + 1skip turns around leap;>5th;0;There is immediate melody direction change before leap, but after leap melody direction changes only after one note, which goes in the same direction as leap;Not good for 8va;5;;;;27;12;1;;;;;;
 1;140;;0;Melody;Turns around leap;Close + 2skip turns around leap;3rd;-1;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;5;;;;69;1;;;;;128,414;;
 1;141;;0;Melody;Turns around leap;Close + 2skip turns around leap;4th;-1;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;5;;;;29;1;;;;;129,415;;
 1;142;;50;Melody;Turns around leap;Close + 2skip turns around leap;5th;0;There is immediate melody direction change before leap, but after leap melody direction changes only after two notes, which go in the same direction as leap;;5;;;;13;3;1;;;;130,416;;
@@ -226,7 +226,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;71;;50;Melody;Repeats;Tonic note;4 within 12;0;More than X tonic notes within Y adjacent notes;X tonic note equivalents within Y notes. Less weight is assigned to a tonic note in species 3,5 if all conditions meet:  There is no leap above M3 to this tonic note. This tonic note is not a local culmination. This tonic note is not longer than previous note. This tonic note is not downbeat. Tonic note length is less than half note.;9;;;Many tonics;;;;;;;;;
 1;10;;0;Melody;Repeats;Note stagnation;>3 in 7 notes;-1;Same note repeats more than X times within Y adjacent notes;;9;;;Stagnation;39;1;;1;;;;;
 1;39;;50;Melody;Repeats;Note stagnation;>4 in 9 notes;0;Same note repeats more than X times within Y adjacent notes;;9;;;Stagnation;21;0;;;;;;;
-1;348;;20;Melody;Repeats;Note stagnation;LT 8va leap;0;Same note repeats more than X times within Y adjacent notes;Octave leap between leading tones;5;;;;2;2;1;;;;;;
+1;348;;50;Melody;Repeats;Note stagnation;LT 8va leap;0;Same note repeats more than X times within Y adjacent notes;Octave leap between leading tones;5;;;;2;2;1;;;;;;
 1;344;;0;Melody;Repeats;Notes stagnation;5 notes <3 pi;0;;X consecutive notes use less than Y pitches;9;;;Stagnation;17;0;;;;;;;
 1;345;;0;Melody;Repeats;Notes stagnation;7 notes <4 pi;0;;X consecutive notes use less than Y pitches;9;;;Stagnation;27;0;;;;;;;
 1;346;;0;Melody;Repeats;Notes stagnation;17 notes <6 pi;0;;X consecutive notes use less than Y pitches;9;;;Stagnation;3;0;;;;;;;
@@ -285,33 +285,33 @@ Set;Severity;Class;Group;Rule;Flag
 1;457;;0;Melody;Range;sp5 Constrained local range;19 notes <m6;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;6;0;;;;;;;
 1;15;;0;Melody;Range;No melody development;12 notes <12;0;;Averaged melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;36;2;;1;;1;;;
 1;16;;0;Melody;Range;No melody development;15 notes <15;0;;Averaged melody direction within X notes is less than Y deci-semitones;9;;;Stagnation;20;1;;1;;;;;
-1;17;;20;Cantus;Harmony;Repeating letters in a row;>4 T;0;More than X consecutive harmonies all have this letter;;9;;;Weak prog.;6;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;428;;20;Cantus;Harmony;Repeating letters in a row;>4 D;0;More than X consecutive harmonies all have this letter;;9;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;429;;20;Cantus;Harmony;Repeating letters in a row;>4 S;0;More than X consecutive harmonies all have this letter;;9;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;20;;20;Cantus;Harmony;Missing letters in a row;>5 without T;0;More than X consecutive harmonies do not have this letter;;9;;;No T;5;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;430;;20;Cantus;Harmony;Missing letters in a row;>5 without D;0;More than X consecutive harmonies do not have this letter;;9;;;No D;10;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;431;;20;Cantus;Harmony;Missing letters in a row;>6 without S;0;More than X consecutive harmonies do not have this letter;;9;;;No S;3;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;17;;0;Cantus;Harmony;Repeating letters in a row;>4 T;0;More than X consecutive harmonies all have this letter;;9;;;Weak prog.;6;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;428;;0;Cantus;Harmony;Repeating letters in a row;>4 D;0;More than X consecutive harmonies all have this letter;;9;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;429;;0;Cantus;Harmony;Repeating letters in a row;>4 S;0;More than X consecutive harmonies all have this letter;;9;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;20;;0;Cantus;Harmony;Missing letters in a row;>5 without T;0;More than X consecutive harmonies do not have this letter;;9;;;No T;5;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;430;;0;Cantus;Harmony;Missing letters in a row;>5 without D;0;More than X consecutive harmonies do not have this letter;;9;;;No D;10;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;431;;0;Cantus;Harmony;Missing letters in a row;>6 without S;0;More than X consecutive harmonies do not have this letter;;9;;;No S;3;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;194;;0;Cantus;Harmony;Accented bad progression;leap >4th;-1;Only for cantus firmus;;1;;;;0;0;;;;;;;
 1;195;;0;Cantus;Harmony;Accented bad progression;culmination;-1;Only for cantus firmus;;1;;;;0;0;;;;;;;
 1;306;;0;Cantus;Harmony;CP Multiple harmonies in measure;penultimate 2;1;Only for counterpoint;2 harmonies in penultimate measure;1;;;;92;11;;;;;;;
 1;329;;0;Cantus;Harmony;CP Multiple harmonies in measure;sus 5/6 stepw;1;Only for counterpoint;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure. Only for sp4 or sp5 (requires starting sus and half notes in sp5);1;;;;33;1;;;;;;;
 1;307;;50;Cantus;Harmony;CP Multiple harmonies in measure;inside;0;Only for counterpoint;In measures before penultimate;1;;;;184;9;;;;;;;
 1;40;;100;Cantus;Harmony;CP Multiple harmonies in measure;>2;0;Only for counterpoint;More than 2 harmonies in measure;1;;;;54;2;;;;;;;
-1;310;;20;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y consecutive harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;3;0;;1;;;;;
-1;375;;30;Cantus;Harmony;Augmented chord;augmented;0;;Augmented chord is prohibited;1;;;;11;0;1;;;;;;
-1;383;;30;Cantus;Harmony;Second inversion;audible;1;;6/4 chord with non-repeating 5th on beat 2 or 4;1;;;;20;0;1;;;;;;
+1;310;;0;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y consecutive harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;3;0;;1;;;;;
+1;375;;50;Cantus;Harmony;Augmented chord;augmented;0;;Augmented chord is prohibited;1;;;;11;0;1;;;;;;
+1;383;;50;Cantus;Harmony;Second inversion;audible;1;;6/4 chord with non-repeating 5th on beat 2 or 4;1;;;;20;0;1;;;;;;
 1;433;;100;Cantus;Harmony;Second inversion;real;0;;6/4 chord with 5th on beat 1/3 or repeating 5th;1;;;;172;0;1;;;;;;
-1;48;;30;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave in D-T progression before cadence;1;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;308;;30;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;;;2;1;1;;;;;;
-1;309;;30;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;;;2;1;1;;;;;;
-1;377;;30;Cantus;Harmony;Prohibited progression;VI<->VI#;0;;Chord with VI note near chord with VI# note;1;;;;6;1;;;;;;;
-1;378;;30;Cantus;Harmony;Prohibited progression;VII<->VII#;0;;Chord with VII note near chord with VII# note;1;;;;7;0;1;;;;;;
+1;48;;50;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave in D-T progression before cadence;1;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;308;;50;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;;;2;1;1;;;;;;
+1;309;;50;Cantus;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;;;2;1;1;;;;;;
+1;377;;50;Cantus;Harmony;Prohibited progression;VI<->VI#;0;;Chord with VI note near chord with VI# note;1;;;;6;1;;;;;;;
+1;378;;50;Cantus;Harmony;Prohibited progression;VII<->VII#;0;;Chord with VII note near chord with VII# note;1;;;;7;0;1;;;;;;
 1;77;;0;Cantus;Harmony;Harmonic progression;non-ideal;-1;;See harmonic progressions with penalty 1;9;;;!srn!;612;0;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;57;;0;Cantus;Harmony;Harmonic progression;bad;-1;;See harmonic progressions with penalty 2;9;;;Weak prog.;535;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;92;;0;Cantus;Harmony;Harmonic progression;2 x bad;-1;;Two consecutive harmonic progressions each with penalty 2;9;;;Weak prog.;103;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;23;;20;Cantus;Harmony;Harmonic progression;3 x bad;0;;Three consecutive harmonic progressions each with penalty 2;9;;;Weak prog.;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;23;;0;Cantus;Harmony;Harmonic progression;3 x bad;0;;Three consecutive harmonic progressions each with penalty 2;9;;;Weak prog.;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;418;;0;Cantus;Harmony;Harmonic repeat;inversion;0;;Chord is repeated, but inversion is changed;1;;;;130;3;;;;;;;
-1;99;;30;Cantus;Harmony;Harmonic repeat;full;0;;Chord is repeated with same inversion;1;;;;28;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;99;;50;Cantus;Harmony;Harmonic repeat;full;0;;Chord is repeated with same inversion;1;;;;28;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;321;;50;Cantus;Harmony;Harmonic repeat;2 x repeats;0;;Same chord is used 3 times consecutively;9;;;!srn!;7;1;1;;;;;;
 1;49;;0;Cantus;Border;First note not tonic;V high;1;Only for cantus firmus;Note V in higher voice;;;;;5;1;1;;;;;;
 1;90;;50;Cantus;Border;First note not tonic;III high;0;Only for cantus firmus;Note III in higher voice;;;;;5;1;1;;;;;;
@@ -338,7 +338,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;165;;100;Counterpoint;Minor;False chromatic relation;VII<->VII#;0;These two notes are tightly close, but are in different voices;;10;;;!srn!;30;6;1;;;;;;
 1;170;;100;Counterpoint;Minor;False chromatic relation: simult.;VI<->VI#;0;If allowed, will be considered dissonance;;2;1;;;6;1;1;;;;;;
 1;171;;100;Counterpoint;Minor;False chromatic relation: simult.;VII<->VII#;0;If allowed, will be considered dissonance;;2;1;;;8;2;1;;;;;;
-1;154;;60;Counterpoint;Minor;Dim or aug melodic interval;VI<->VII#;0;;Augmented / diminished;8;;;!srn!;15;3;1;;;;;;
+1;154;;50;Counterpoint;Minor;Dim or aug melodic interval;VI<->VII#;0;;Augmented / diminished;8;;;!srn!;15;3;1;;;;;;
 1;155;;100;Counterpoint;Minor;Dim or aug melodic interval;VI#<->III;0;;Augmented / diminished;8;;;!srn!;4;1;1;;;;;;
 1;156;;100;Counterpoint;Minor;Dim or aug melodic interval;VII#-III;0;;Augmented / diminished;8;;;!srn!;7;3;1;;;;;;
 1;157;;100;Counterpoint;Minor;Dim or aug melodic interval;III-VII#;0;;Augmented / diminished;8;;;!srn!;3;1;1;;;;;;
@@ -376,7 +376,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;347;35;50;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;direct comp.;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Direct compound intervals.;7;1;1;;0;0;1;;;;;;
 1;374;35;0;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;asymmetric;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;7;1;1;;4;3;1;;;;;;
 1;249;35;0;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;stepwize;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;7;1;1;;72;9;1;;;;;;
-1;315;;60;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;7;1;1;;4;2;1;;;;;;
+1;315;;50;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;7;1;1;;4;2;1;;;;;;
 1;316;;100;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;7;1;1;;19;5;1;;;;;;
 1;385;;50;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;sus;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;7;1;1;;22;2;1;;;;;;
 1;250;;50;Counterpoint;Counterpoint;Parallel 5ths: < 4/4 apart;other;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;7;1;1;;18;5;1;;;;249;;
@@ -385,7 +385,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;486;;50;Counterpoint;Counterpoint;Parallel 8ves: < 4/4 apart;direct comp.;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Direct compound intervals.;7;1;1;;2;2;1;;;;;;
 1;487;;0;Counterpoint;Counterpoint;Parallel 8ves: < 4/4 apart;asymmetric;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;First and second perfect consonances are placed on differrent beats;7;1;1;;20;6;1;;;;;;
 1;488;;50;Counterpoint;Counterpoint;Parallel 8ves: < 4/4 apart;stepwize;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;One of intervals is approached and left by stepwize movement ;7;1;1;;81;28;1;;;;;;
-1;489;;60;Counterpoint;Counterpoint;Parallel 8ves: < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;7;1;1;;7;7;1;;;;;;
+1;489;;50;Counterpoint;Counterpoint;Parallel 8ves: < 4/4 apart;anticipation;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is anticipation downbeat;7;1;1;;7;7;1;;;;;;
 1;490;;100;Counterpoint;Counterpoint;Parallel 8ves: < 4/4 apart;downbeat;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is downbeat;7;1;1;;42;12;1;;;;;;
 1;491;;50;Counterpoint;Counterpoint;Parallel 8ves: < 4/4 apart;sus;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Second interval is suspension second part;7;1;1;;4;2;1;;;;;;
 1;492;;50;Counterpoint;Counterpoint;Parallel 8ves: < 4/4 apart;other;0;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;If other rules in this row did not apply;7;1;1;;43;12;1;;;;488;;
@@ -410,7 +410,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;220;;100;Counterpoint;Counterpoint;Suspension resolution;unresolved;0;;;12;2;;sus;6;2;1;;;;;;
 1;221;;100;Counterpoint;Counterpoint;Suspension resolution;leap;0;;Suspension resolution by leap;12;2;;sus;16;7;1;;;;;;
 1;291;;0;Counterpoint;Counterpoint;Suspension resolution;short;0;;If resolution note is shorter than 1/4;12;;;sus;2;1;1;;;;;;
-1;286;;60;Counterpoint;Counterpoint;Suspension resolution;shift;0;;Suspension is not resolved on allowed beat;12;;;sus;7;7;1;;;;;;
+1;286;;50;Counterpoint;Counterpoint;Suspension resolution;shift;0;;Suspension is not resolved on allowed beat;12;;;sus;7;7;1;;;;;;
 1;296;;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap down;1;;Leap down from consonance insertion to resolution;12;;;sus;0;0;1;;;;;;
 1;136;;0;Counterpoint;Counterpoint;Suspension resolution insertion;cons. leap up;1;;Leap up from consonance insertion to resolution;12;;;sus;0;0;1;;;;;;
 1;292;;50;Counterpoint;Counterpoint;Suspension resolution insertion;chatty;0;;There are more than 2 inserted notes between suspension and resolution;12;;;sus;1;1;1;;;;;;
@@ -447,15 +447,15 @@ Set;Severity;Class;Group;Rule;Flag
 1;91;;50;Counterpoint;Counterpoint;Unison;downbeat inside;0;;Downbeat unison is not allowed inside counterpoint - only as first or last interval of counterpoint;2;1;;;6;2;1;;;;;;
 1;275;;50;Counterpoint;Counterpoint;Unison;2nd -> unis;0;;Major or minor 2nd resolves to unison;8;1;;!srn!;10;2;1;;;;;;
 1;277;;50;Counterpoint;Counterpoint;Unison;near 2m;0;;Unison is near minor 2nd interval in same measure;8;1;;unis <-> m2;1;1;1;;;;;;
-1;47;;30;Counterpoint;Counterpoint;Penultimate measure;no leading tone;0;;no leading tone is allowed if last bass notes are V-I;;;;;108;5;;;;;;;
-1;75;;30;Counterpoint;Counterpoint;Penultimate measure;no V or II note;0;;No V or II note;;;;;32;19;1;;;;;;
-1;317;;30;Counterpoint;Counterpoint;Penultimate measure;VII natural;0;;VII natural minor note in penultimate measure;;;;;21;4;1;;;;;;
-1;318;;30;Counterpoint;Counterpoint;Penultimate measure;isolated LT;1;;There is another harmony between leading tone and tonic note in penultimate measure;;;;;26;10;1;;;;;;
+1;47;;0;Counterpoint;Counterpoint;Penultimate measure;no leading tone;0;;no leading tone is allowed if last bass notes are V-I;;;;;108;5;;;;;;;
+1;75;;0;Counterpoint;Counterpoint;Penultimate measure;no V or II note;0;;No V or II note;;;;;32;19;1;;;;;;
+1;317;;0;Counterpoint;Counterpoint;Penultimate measure;VII natural;0;;VII natural minor note in penultimate measure;;;;;21;4;1;;;;;;
+1;318;;0;Counterpoint;Counterpoint;Penultimate measure;isolated LT;1;;There is another harmony between leading tone and tonic note in penultimate measure;;;;;26;10;1;;;;;;
 1;322;;0;Counterpoint;Counterpoint;Penultimate measure;T/S after D;-1;;Any chord except V or VII(#) goes after V or VII(#) chord in penultimate measure. Disabled this rule, because it duplicates rule "penultimate harmony no D/DVII";;;;;15;4;1;;;;;;
-1;335;;60;Counterpoint;Counterpoint;Penultimate measure;not D/DVII;0;;Penultimate harmony is not D / DVII;1;;;;146;1;;;;;;;
-1;9;;30;Counterpoint;Counterpoint;Penultimate measure;8va / unis.;0;;Penultimate measure starts with 8va or unison;;;;;;;;;;;;;
+1;335;;50;Counterpoint;Counterpoint;Penultimate measure;not D/DVII;0;;Penultimate harmony is not D / DVII;1;;;;146;1;;;;;;;
+1;9;;0;Counterpoint;Counterpoint;Penultimate measure;8va / unis.;0;;Penultimate measure starts with 8va or unison;;;;;;;;;;;;;
 1;387;;0;Counterpoint;Counterpoint;Suspension in sp2;I -> LT penultim.;1;;Suspension of LT by I note in penultimate measure in sp2;;;;;8;0;1;;;;;;
-1;388;;60;Counterpoint;Counterpoint;Suspension in sp2;not I -> LT pnu.;0;;Other suspension than LT by I note in penultimate measure in sp2;;;;;14;4;;;;;;;
+1;388;;50;Counterpoint;Counterpoint;Suspension in sp2;not I -> LT pnu.;0;;Other suspension than LT by I note in penultimate measure in sp2;;;;;14;4;;;;;;;
 1;458;;100;Counterpoint;Counterpoint;Sus. prepared by dissonance;start diss.;0;;Suspension starts with dissonance;;;;;23;6;;;;;;;
 1;225;;0;Counterpoint;Counterpoint;Slurs;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
 1;30;;100;Counterpoint;Counterpoint;Slurs;cantus;0;;Slurs are prohibited in cantus;;;;;0;0;1;;;;;;
@@ -499,15 +499,15 @@ Set;Severity;Class;Group;Rule;Flag
 1;294;;50;Counterpoint;Nonchord tones;Anticipation;prev shorter;0;;Previous note is shorter than anticipation note;;;;;1;1;1;;;;;;
 1;293;;0;Counterpoint;Nonchord tones;Anticipation;next equal;1;;Next note has equal length with anticipation note;;;;;7;5;1;;;;;;
 1;288;;50;Counterpoint;Nonchord tones;Anticipation;next shorter;0;;Next note is shorter than anticipation note;;;;;2;2;1;;;;;;
-1;290;;40;Counterpoint;Nonchord tones;Anticipation;inside;0;;Anticipation inside counterpoint - not in cadence;;;;;27;11;;;;;;;
+1;290;;50;Counterpoint;Nonchord tones;Anticipation;inside;0;;Anticipation inside counterpoint - not in cadence;;;;;27;11;;;;;;;
 1;333;;50;Counterpoint;Nonchord tones;Anticipation;start >1/2;0;;Anticipation start should not be longer;;;;;8;6;1;;;;;;
 1;334;;50;Counterpoint;Nonchord tones;Anticipation;end >whole;0;;Anticipation ending should not be longer than whole;;;;;11;9;1;;;;;;
 1;289;;0;Counterpoint;Nonchord tones;Anticipation;leap;1;;Leap to anticipation note;;;;;16;4;;;;;;;
 1;459;;50;Counterpoint;Nonchord tones;Anticipation;unresolved;0;;Anticipation should resolve to consonance in next measure;;;;;11;1;;;;;;;
 1;262;;0;Counterpoint;Nonchord tones;Appoggiatura;any;1;;Prohibit this rule to prevent detection of any appoggiatura;;;;;0;0;;;;;;;
-1;283;;60;Counterpoint;Nonchord tones;Appoggiatura;stepwize;1;;Appoggiatura is prepared with stepwize motion ;;;;;0;0;;;;;;;
-1;284;;60;Counterpoint;Nonchord tones;Appoggiatura;upbeat;1;;Appogiatura is on an upbeat note;;;;;0;0;;;;;;;
-1;285;;60;Counterpoint;Nonchord tones;Appoggiatura;forward;1;;Appogiatura is resolved in same direction as it was prepared;;;;;0;0;;;;;;;
+1;283;;50;Counterpoint;Nonchord tones;Appoggiatura;stepwize;1;;Appoggiatura is prepared with stepwize motion ;;;;;0;0;;;;;;;
+1;284;;50;Counterpoint;Nonchord tones;Appoggiatura;upbeat;1;;Appogiatura is on an upbeat note;;;;;0;0;;;;;;;
+1;285;;50;Counterpoint;Nonchord tones;Appoggiatura;forward;1;;Appogiatura is resolved in same direction as it was prepared;;;;;0;0;;;;;;;
 1;237;;50;Counterpoint;Rhythm;Beginning is non-standard;uneven pause;0;;Starting pause in first measure does not equal length of next note;;;;;21;18;1;;;;;;
 1;254;;50;Counterpoint;Rhythm;Beginning is non-standard;uneven start;0;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);11;;;Rhythm;18;14;1;;;;;;
 1;197;;50;Counterpoint;Rhythm;Beginning is non-standard;pause >1/2;0;;Starting pause is longer than 1/2 note;;;;;4;3;1;;;;;;
@@ -518,7 +518,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;234;;50;Counterpoint;Rhythm;Non-permitted rhythm;1/2. upbeat;0;;Dotted half note on upbeat;11;;;Rhythm;8;8;1;;;;;;
 1;235;;50;Counterpoint;Rhythm;Non-permitted rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;;;22;19;1;;;;;;
 1;236;;50;Counterpoint;Rhythm;Non-permitted rhythm;whole inside;0;;Downbeat whole note inside counterpoint - not first or last note;;;;;38;12;1;;;;;;
-1;226;;40;Counterpoint;Rhythm;Wrong usage of eighth notes;1st beat;0;;1/8 note on beat 1;;;;;12;7;1;;;;;;
+1;226;;50;Counterpoint;Rhythm;Wrong usage of eighth notes;1st beat;0;;1/8 note on beat 1;;;;;12;7;1;;;;;;
 1;227;;0;Counterpoint;Rhythm;Wrong usage of eighth notes;2nd beat;1;;1/8 note on beat 2;;;;;47;5;1;;;;;;
 1;228;;50;Counterpoint;Rhythm;Wrong usage of eighth notes;3rd beat;0;;1/8 note on beat 3;;;;;25;8;1;;;;;;
 1;229;;0;Counterpoint;Rhythm;Wrong usage of eighth notes;4th beat;1;;1/8 note on beat 4;;;;;57;9;1;;;;;;
