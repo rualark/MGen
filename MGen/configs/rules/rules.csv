@@ -493,10 +493,6 @@ Set;Severity;Class;Group;Rule;Flag
 1;334;;50;Harmony;Nonchord tones;Anticipation;end >whole;0;;Anticipation ending should not be longer than whole;;;;;11;9;1;;;;;;
 1;289;;0;Harmony;Nonchord tones;Anticipation;leap;1;;Leap to anticipation note;;;;;16;4;;;;;;;
 1;459;;50;Harmony;Nonchord tones;Anticipation;unresolved;0;;Anticipation should resolve to consonance in next measure;;;;;11;1;;;;;;;
-1;262;;0;Harmony;Nonchord tones;Appoggiatura;any;1;;Prohibit this rule to prevent detection of any appoggiatura;;;;;0;0;;;;;;;
-1;283;;50;Harmony;Nonchord tones;Appoggiatura;stepwize;1;;Appoggiatura is prepared with stepwize motion ;;;;;0;0;;;;;;;
-1;284;;50;Harmony;Nonchord tones;Appoggiatura;upbeat;1;;Appogiatura is on an upbeat note;;;;;0;0;;;;;;;
-1;285;;50;Harmony;Nonchord tones;Appoggiatura;forward;1;;Appogiatura is resolved in same direction as it was prepared;;;;;0;0;;;;;;;
 1;237;;50;Rhythm;Rhythm;Beginning is non-standard;uneven pause;0;;Starting pause in first measure does not equal length of next note;;;;;21;18;1;;;;;;
 1;254;;50;Rhythm;Rhythm;Beginning is non-standard;uneven start;0;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);11;;;Rhythm;18;14;1;;;;;;
 1;197;;50;Rhythm;Rhythm;Beginning is non-standard;pause >1/2;0;;Starting pause is longer than 1/2 note;;;;;4;3;1;;;;;;
@@ -543,9 +539,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;246;;100;Rhythm;Rhythm;Too many notes in one measure;>5;0;;;11;;;!srn! notes;13;2;1;;;;245,301;;
 1;225;;0;Rhythm;Ties;Tie;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
 1;30;;100;Rhythm;Ties;Tie;cantus;0;;Slurs are prohibited in cantus;;;;;0;0;1;;;;;;
-1;93;13;0;Rhythm;Ties;Tie: in 10 notes;1;0;;;;;;;24;0;1;;;;;;
-1;94;13;50;Rhythm;Ties;Tie: in 10 notes;2;0;;;;;;;5;5;1;;;;;;
-1;95;13;50;Rhythm;Ties;Tie: in 10 notes;>2;0;;;;;;;10;9;1;;;;;;
+1;93;13;0;Rhythm;Ties;Tie: in 10 notes;1;0;;;11;;;!srn! notes;36;10;1;;;;;;
+1;94;13;50;Rhythm;Ties;Tie: in 10 notes;2;0;;;11;;;!srn! notes;13;2;1;;;;245,301;;
+1;95;13;50;Rhythm;Ties;Tie: in 10 notes;>2;0;;;;;;;400;4;;;;;;;
 1;93;2;0;Rhythm;Ties;Tie: in 10 notes;1;-1;;;;;;;36;0;;;;1;;;
 1;94;2;50;Rhythm;Ties;Tie: in 10 notes;2;0;;;;;;;6;0;;;;1;93;;
 1;95;2;50;Rhythm;Ties;Tie: in 10 notes;>2;0;;;;;;;22;0;;;;1;93,94;;
