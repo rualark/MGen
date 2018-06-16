@@ -417,7 +417,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;296;;0;Harmony;Suspension;Suspension resolution ornament;cons. leap down;1;;Leap down from consonance insertion to resolution;12;;;sus;0;0;1;;;;;;
 1;136;;0;Harmony;Suspension;Suspension resolution ornament;cons. leap up;1;;Leap up from consonance insertion to resolution;12;;;sus;0;0;1;;;;;;
 1;292;;50;Harmony;Suspension;Suspension resolution ornament;chatty;0;;There are more than 2 notes in resolution ornament between suspension and resolution;12;;;sus;1;1;1;;;;;;
-1;295;;50;Harmony;Suspension;Suspension resolution ornament;long leap;0;;Leap from ornament to resolution is longer than M3;12;;;sus;0;0;1;;;;;;
+1;295;;50;Harmony;Suspension;Suspension resolution ornament;leap from;0;;Leap from suspension to resolution ornament is longer than M3;12;;;sus;0;0;1;;;;;;
 1;387;;0;Harmony;Suspension;Wrong usage of sus. in 2nd sp.;I -> LT penultim.;1;;Suspension of LT by I note in penultimate measure in sp2;;;;;8;0;1;;;;;;
 1;388;;50;Harmony;Suspension;Wrong usage of sus. in 2nd sp.;not I -> LT pnu.;0;;Other suspension than LT by I note in penultimate measure in sp2;;;;;14;4;;;;;;;
 1;458;;100;Harmony;Suspension;Sus. prepared by dissonance;start diss.;0;;Suspension starts with dissonance;;;;;23;6;;;;;;;
@@ -481,7 +481,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;260;;50;Harmony;Nonchord tones;Double-neighbour tone;leap 4th;0;;Allow leaps up to specified size;;;;;5;0;;;;;;1;
 1;3;;0;Harmony;Nonchord tones;Double-neighbour tone;leap in;0;;There is a leap before first note of double-neighbour tone group;;;;;0;0;;;;;;;
 1;97;;50;Harmony;Nonchord tones;Double-neighbour tone;leap out;0;;There is a leap before 1st note of double-neighbour tone group;;;;;3;0;;;;;;;
-1;282;1240;50;Harmony;Nonchord tones;Passing tone on downbeat;descending;0;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;2;1;;;6;0;;;;;;1;
+1;282;1240;50;Harmony;Nonchord tones;Passing tone on downbeat;descending;0;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;;;;;3;0;;;;;;;
 1;297;1240;50;Harmony;Nonchord tones;Passing tone on downbeat;direct;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;18;1;;;;;;1;
 1;298;1240;50;Harmony;Nonchord tones;Passing tone on downbeat;parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;;;;;52;14;;;;;225;;
 1;282;35;0;Harmony;Nonchord tones;Passing tone on downbeat;descending;1;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;2;1;;;50;1;;;;;;1;
@@ -542,7 +542,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;246;;100;Rhythm;Rhythm;Too many notes in one measure;>5;0;;;11;;;!srn! notes;13;2;1;;;;245,301;;
 1;225;;0;Rhythm;Ties;Tie;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
 1;30;;100;Rhythm;Ties;Tie;cantus;0;;Slurs are prohibited in cantus;;;;;0;0;1;;;;;;
-1;93;13;0;Rhythm;Ties;Note is repeated: in 10 notes;1;0;;;;;;;6;0;;;;1;93;;
+1;93;13;0;Rhythm;Ties;Note is repeated: in 10 notes;1;0;;;;;;;0;0;1;;;;;;
 1;94;13;50;Rhythm;Ties;Note is repeated: in 10 notes;2;0;;;;;;;22;0;;;;1;93,94;;
 1;95;13;50;Rhythm;Ties;Note is repeated: in 10 notes;>2;0;;;;;;;21;2;;;;1;;;
 1;93;2;0;Rhythm;Ties;Note is repeated: in 10 notes;1;-1;;;;;;;36;0;;;;1;;;
