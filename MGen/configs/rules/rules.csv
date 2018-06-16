@@ -456,8 +456,8 @@ Set;Severity;Class;Group;Rule;Flag
 1;223;;50;Harmony;Dissonance;Dissonance;:longer than previous chord tone;0;;Dissonance is longer than previous note;2;1;;;14;7;1;;;;;;
 1;384;;0;Harmony;Dissonance;Dissonance;:longer than next chord tone;0;;Dissonance is longer than next consonance;2;1;;;8;1;;;;;;;
 1;331;;50;Harmony;Dissonance;Dissonance;4th cons;0;;Prohibit 4th upbeat consonance even if not lowest ;2;1;;;0;0;1;;;;;;
-1;36;;100;Harmony;Dissonance;Dissonance approached by leap;leap;0;;Leap to harmonic upbeat dissonance;2;1;;;;;;;;;276,169;;
-1;187;;100;Harmony;Dissonance;Dissonance left by leap;leap;0;;Leap from harmonic upbeat dissonance;2;1;;;195;8;;;;;276,169;;
+1;36;;100;Harmony;Dissonance;Dissonance approached by leap;leap;0;;Leap to harmonic upbeat dissonance;2;1;;;;;;;;;276,169,384;;
+1;187;;100;Harmony;Dissonance;Dissonance left by leap;leap;0;;Leap from harmonic upbeat dissonance;2;1;;;195;8;;;;;276,169,384;;
 1;169;;0;Harmony;Dissonance;Dissonance on upbeat;stepwize;-1;;;2;1;;;904;3;;;;;;;
 1;276;;0;Harmony;Dissonance;Dissonance on upbeat;m2;-1;;Minor second;2;1;;;6;3;1;;;;;;
 1;24;;50;Harmony;Voice motion;Overlapping;overlap;0;;;10;;;overlap;54;9;1;;;;;;
@@ -478,7 +478,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;280;;0;Harmony;Nonchord tones;Double-neighbour tone;mixed rhythm;1;;Rhythm of DNT contains not only 1/4 notes;;;;;3;0;;;;;;1;
 1;328;;50;Harmony;Nonchord tones;Double-neighbour tone;last note out;0;;Last note of DNT is out of current measure;;;;;4;0;;;;;;1;
 1;281;;50;Harmony;Nonchord tones;Double-neighbour tone;cross-bar;0;;Two or more last notes of DNT are out of current measure;;;;;1;0;;;;;;1;
-1;260;;50;Harmony;Nonchord tones;Double-neighbour tone;leap <=4th;0;;Allow leaps up to specified size;;;;;5;0;;;;;;1;
+1;260;;50;Harmony;Nonchord tones;Double-neighbour tone;leap 4th;0;;Allow leaps up to specified size;;;;;5;0;;;;;;1;
 1;3;;0;Harmony;Nonchord tones;Double-neighbour tone;leap in;0;;There is a leap before first note of double-neighbour tone group;;;;;0;0;;;;;;;
 1;97;;50;Harmony;Nonchord tones;Double-neighbour tone;leap out;0;;There is a leap before 1st note of double-neighbour tone group;;;;;3;0;;;;;;;
 1;282;1240;50;Harmony;Nonchord tones;Passing tone on downbeat;descending;0;In upper voice only;Prohibit this rule to prevent detection of any descending passing downbeat dissonance;2;1;;;6;0;;;;;;1;
