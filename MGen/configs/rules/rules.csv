@@ -299,7 +299,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;40;;100;Cantus;Harmony;CP Multiple harmonies in measure;>2;0;Only for counterpoint;More than 2 harmonies in measure;1;;;;54;2;;;;;;;
 1;310;;0;Cantus;Harmony;Tonic chord;>2 within 9;0;;More than X tonic chords within Y consecutive harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;3;0;;1;;;;;
 1;375;;50;Cantus;Harmony;Augmented chord;augmented;0;;Augmented chord is prohibited;1;;;;11;0;1;;;;;;
-1;383;;50;Cantus;Harmony;Second inversion;audible;1;;6/4 chord with non-repeating 5th on beat 2 or 4;1;;;;20;0;1;;;;;;
+1;383;;50;Cantus;Harmony;Second inversion;audible;0;;6/4 chord with non-repeating 5th on beat 2 or 4;1;;;;20;0;1;;;;;;
 1;433;;100;Cantus;Harmony;Second inversion;real;0;;6/4 chord with 5th on beat 1/3 or repeating 5th;1;;;;172;0;1;;;;;;
 1;48;;50;Cantus;Harmony;Prohibited progression;early V-I;0;;Bass note going from V note to I octave in D-T progression before cadence;1;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;308;;50;Cantus;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;;;2;1;1;;;;;;
@@ -481,9 +481,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;97;;50;Harmony;Nonchord tones;Double-neighbour tone;:left by leap;0;;There is a leap after last note of double-neighbour tone;;;;;3;0;;;;;;;
 1;328;;50;Harmony;Nonchord tones;Double-neighbour tone between bars;one note out;0;;Last note of DNT is out of current measure;;;;;4;0;;;;;;1;
 1;281;;50;Harmony;Nonchord tones;Double-neighbour tone between bars;more notes out;0;;Two or more last notes of DNT are out of current measure;;;;;1;0;;;;;;1;
-1;282;24;50;Harmony;Nonchord tones;Passing tone on downbeat;contrary motion;0;In upper voice only;;;;;;3;0;;;;;;;
-1;297;24;50;Harmony;Nonchord tones;Passing tone on downbeat;:direct motion;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;18;1;;;;;;1;
-1;298;24;50;Harmony;Nonchord tones;Passing tone on downbeat;:parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;;;;;52;14;;;;;225;;
+1;282;24;50;Harmony;Nonchord tones;Passing tone on downbeat;contrary motion;0;In upper voice only;;;;;;;;;;;;;;
+1;297;24;50;Harmony;Nonchord tones;Passing tone on downbeat;:direct motion;0;In upper voice only;Dissonance is formed by direct movement of voices;;;;;;;;;;;;;
+1;298;24;50;Harmony;Nonchord tones;Passing tone on downbeat;:parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;;;;;;;;;;;;;
 1;282;35;0;Harmony;Nonchord tones;Passing tone on downbeat;contrary motion;1;In upper voice only;;2;1;;;50;1;;;;;;1;
 1;297;35;50;Harmony;Nonchord tones;Passing tone on downbeat;:direct motion;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;6;0;;;;;;1;
 1;298;35;50;Harmony;Nonchord tones;Passing tone on downbeat;:parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;18;1;;;;;;1;
@@ -542,9 +542,9 @@ Set;Severity;Class;Group;Rule;Flag
 1;246;;100;Rhythm;Rhythm;Too many notes in one measure;>5;0;;;11;;;!srn! notes;13;2;1;;;;245,301;;
 1;225;;0;Rhythm;Ties;Tie;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
 1;30;;100;Rhythm;Ties;Tie;cantus;0;;Slurs are prohibited in cantus;;;;;0;0;1;;;;;;
-1;93;13;0;Rhythm;Ties;Note is repeated: in 10 notes;1;0;;;;;;;0;0;1;;;;;;
-1;94;13;50;Rhythm;Ties;Note is repeated: in 10 notes;2;0;;;;;;;22;0;;;;1;93,94;;
-1;95;13;50;Rhythm;Ties;Note is repeated: in 10 notes;>2;0;;;;;;;21;2;;;;1;;;
+1;93;13;0;Rhythm;Ties;Note is repeated: in 10 notes;1;0;;;;;;;;;;;;;;;
+1;94;13;50;Rhythm;Ties;Note is repeated: in 10 notes;2;0;;;;;;;;;;;;;;;
+1;95;13;50;Rhythm;Ties;Note is repeated: in 10 notes;>2;0;;;;;;;;;;;;;;;
 1;93;2;0;Rhythm;Ties;Note is repeated: in 10 notes;1;-1;;;;;;;36;0;;;;1;;;
 1;94;2;50;Rhythm;Ties;Note is repeated: in 10 notes;2;0;;;;;;;6;0;;;;1;93;;
 1;95;2;50;Rhythm;Ties;Note is repeated: in 10 notes;>2;0;;;;;;;22;0;;;;1;93,94;;
