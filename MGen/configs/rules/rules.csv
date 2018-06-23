@@ -192,12 +192,12 @@ Set;Severity;Class;Group;Rule;Flag
 1;502;34;100;Melody;Leaps;Consecutive leaps;>3;0;1x3rd ignored;;10;;;Long stepwise;0;0;;1;;;;;
 1;501;5;50;Melody;Leaps;Consecutive leaps;4;0;1x3rd ignored;;10;;;Consecutive leaps;28;0;;;;1;;;
 1;502;5;100;Melody;Leaps;Consecutive leaps;>4;0;1x3rd ignored;;10;;;Consecutive leaps;8;0;;;;1;501;;
-1;503;1230;50;Melody;Leaps;Consecutive unidir. leaps;2 x 3rds;0;;;10;;;Long stepwise;15;0;;;;;;;
-1;504;1230;100;Melody;Leaps;Consecutive unidir. leaps;>2 x 3rds;0;;;;;;;;;;;;;;;
-1;505;1230;100;Melody;Leaps;Consecutive unidir. leaps;2 x >3rds;0;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;;;;;;;;;;;;;
-1;503;45;0;Melody;Leaps;Consecutive unidir. leaps;2 x 3rds;0;;;10;;;2 x 3rds;92;30;1;;;;;;
-1;504;45;100;Melody;Leaps;Consecutive unidir. leaps;>2 x 3rds;0;;;10;;;3 x 3rds;10;0;1;;;;503;;
-1;505;45;100;Melody;Leaps;Consecutive unidir. leaps;2 x >3rds;0;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;10;;;Unidir. leaps;64;34;1;;;;;;
+1;503;1230;50;Melody;Leaps;Consecutive unidirectional leaps;2 x 3rds;0;;;10;;;Long stepwise;15;0;;;;;;;
+1;504;1230;100;Melody;Leaps;Consecutive unidirectional leaps;>2 x 3rds;0;;;;;;;;;;;;;;;
+1;505;1230;100;Melody;Leaps;Consecutive unidirectional leaps;2 x >3rds;0;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;;;;;;;;;;;;;
+1;503;45;0;Melody;Leaps;Consecutive unidirectional leaps;2 x 3rds;0;;;10;;;2 x 3rds;92;30;1;;;;;;
+1;504;45;100;Melody;Leaps;Consecutive unidirectional leaps;>2 x 3rds;0;;;10;;;3 x 3rds;10;0;1;;;;503;;
+1;505;45;100;Melody;Leaps;Consecutive unidirectional leaps;2 x >3rds;0;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;10;;;Unidir. leaps;64;34;1;;;;;;
 1;4;0;0;Melody;Stepwise motion;Abuse of the stepwise motion;>7 in any direction;0;There are more than X notes going stepwize in the same direction in this cantus firmus;Stepwise motion more than X notes in any direction in cantus;10;;;Long stepwise;0;0;;1;999;;;;
 1;5;0;0;Melody;Stepwise motion;Abuse of the stepwise motion;>4 in one direction;0;There are more than X notes going stepwize in the same direction in this cantus firmus;Stepwise motion more than X notes in one direction in cantus;10;;;Long stepwise;0;0;;1;;;;;
 1;302;14;50;Melody;Stepwise motion;Abuse of the stepwise motion;>10 in any direction;0;;Stepwise motion more than X notes in any direction;;;;;;;;;;;;;

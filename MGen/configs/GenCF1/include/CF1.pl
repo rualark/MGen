@@ -58,7 +58,7 @@ harm_notation = 1 # Harmonic notation (see configs/harm/harm-notation.csv for de
 tempo_bell = 1.3 # Increase tempo in the middle of cantus / counterpoint. 0 - preserve source tempo
 
 show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
-show_allowed_flags = 1 # Show even allowed flags (bold in rules.xlsm)
+show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
 show_min_severity = 0 # Minimum severity to highlight note
 
 # Lilypond parameters
@@ -66,9 +66,11 @@ ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note
 ly_msh = 0 # 0 - do not show mshape, 1 - show mshape
 ly_dominant_letter = 0 # 0 - use normal D/d letters; 1 - use dashed D/d letters
 ly_pagebreak = 0 # Page break after each analysis
-ly_subrules = 1 # Show subrule names in ly
-ly_comments = 1 # Show rule and subrule comments in ly
-ly_rule_colon = 1 # Show rule name after colon
+
+# 0 - Show only rule name up to colon. Show only subrules starting with colon
+# 1 - Add subrules without colon
+# 2 - Add rule comments
+ly_rule_verbose = 0 
 
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
