@@ -20,7 +20,7 @@ show_transpose = 0,12 # Semitones to transpose each voice (separated with comma)
 confirm_mode = 1 # 0 - do not confirm expected flags; 1 - confirm global/local; 2 - confirm mistakes
 
 # Correction
-corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
+corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.
 pre_bad = 60 # How many notes to recalculate before rule violation
 post_bad = 120 # How many notes to recalculate after rule violation
 step_penalty = 3 # Penalty for adding one more changing step while correcting cantus
