@@ -11,13 +11,17 @@ del "%pth%.zip"
 
 rem COPY
 xcopy /y x64\Release\MGen.exe "%pth%\x64\"
-xcopy /y Release\*.exe "%pth%\"
+xcopy /y Release\MGen.exe "%pth%\"
+xcopy /y Release\MGenServer.exe "%pth%\server\"
+xcopy /y Release\MGenClean.exe "%pth%\server\"
+xcopy /y Release\MGenTest.exe "%pth%\server\"
 robocopy /e /mir "MGen\configs" "%pth%\configs" *
 robocopy /e /mir "MGen\instruments" "%pth%\instruments" *
 robocopy /e /mir "MGen\midi" "%pth%\midi" *
 robocopy /e /mir "MGen\autotest\configs" "%pth%\autotest\configs" *
 xcopy /y MGen\autotest\test.bat "%pth%\autotest\"
 xcopy /y MGen\autotest\test.csv "%pth%\autotest\"
+xcopy /y MGen\db\expect.csv "%pth%\db\"
 
 rem REMOVE UNNECESSARY
 rmdir /s /q "%pth%\midi\Music\private"
