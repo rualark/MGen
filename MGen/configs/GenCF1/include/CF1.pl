@@ -57,7 +57,7 @@ show_hatch = 0 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatc
 harm_notation = 1 # Harmonic notation (see configs/harm/harm-notation.csv for details)
 tempo_bell = 1.3 # Increase tempo in the middle of cantus / counterpoint. 0 - preserve source tempo
 
-show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
+show_ignored_flags = 1 # Show even ignored flags (with strikethrough in rules.xlsm)
 show_allowed_flags = 1 # Show even allowed flags (bold in rules.xlsm)
 show_min_severity = 0 # Minimum severity to highlight note
 
@@ -70,7 +70,7 @@ ly_pagebreak = 0 # Page break after each analysis
 # 0 - Show only rule name up to colon. Show only subrules starting with colon
 # 1 - Add subrules without colon
 # 2 - Add rule comments
-ly_rule_verbose = 0 
+ly_rule_verbose = 2 
 
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics

@@ -1,24 +1,24 @@
-# 0 - Sposobin notation (strict)
+# 0 - Russian notation (Sposobin)
 Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
 Minor natural  ;t ;sII   ;dtIII   ;s  ;d ;tsVI   ;dVII
 Minor altered  ;t ;sII   ;DTIII   ;S  ;D ;tsVI   ;DVII
-# 1 - Sposobin notation (adapted)
+# 1 - Russian notation (detailed)
 Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
 Minor natural  ;t ;b5sII ;dtIII   ;s  ;d ;tsVI   ;dVII
 Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;DVII
-# 2 - Sposobin notation (local harmonic meaning)
-Major          ;T ;sII   ;dtIII   ;S  ;D ;tsVI   ;dVIIb5
-Minor natural  ;t ;sIIb5 ;DTIII   ;s  ;d ;TSVI   ;DVII
-Minor altered  ;t ;sII   ;DTIII#5 ;S  ;D ;tsVIb5 ;dVIIb5
+# 2 - Russian notation (detailed MAJOR / minor)
+Major          ;T ;sII   ;dtIII   ;S  ;D ;tsVI   ;b5dVII
+Minor natural  ;t ;b5sII ;DTIII   ;s  ;d ;TSVI   ;DVII
+Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;b5dVII
 # 3 - International notation (Walter Piston)
 Major          ;I ;II    ;III     ;IV ;V ;VI     ;VII
 Minor natural  ;I ;II    ;III     ;IV ;V ;VI     ;VII
 Minor altered  ;I ;II    ;III     ;IV ;V ;VI     ;VII
-# 4 - International notation (local harmonic meaning)
+# 4 - International notation (MAJOR / minor)
 Major          ;I ;ii    ;iii     ;IV ;V ;vi     ;vii
 Minor natural  ;i ;ii    ;III     ;iv ;v ;VI     ;VII
 Minor altered  ;i ;ii    ;III     ;IV ;V ;vi     ;vii
-# 5 - International notation (full local harmonic meaning)
-Major          ;I ;ii    ;iii     ;IV ;V ;vi     ;viib5
-Minor natural  ;i ;iib5  ;III     ;iv ;v ;VI     ;VII
-Minor altered  ;i ;ii    ;III#5   ;IV ;V ;vib5   ;viib5
+# 5 - International notation (detailed MAJOR / minor)
+Major          ;I ;ii    ;iii     ;IV ;V ;vi     ;b5vii
+Minor natural  ;i ;b5ii  ;III     ;iv ;v ;VI     ;VII
+Minor altered  ;i ;ii    ;#5III   ;IV ;V ;b5vi   ;b5vii
