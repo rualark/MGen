@@ -356,7 +356,7 @@ Set;Severity;Class;Group;Rule;Flag
 1;310;;0;Harmony;Harmony;Too many tonic chords;>2 within 9 mea.;0;;More than X tonic chords within Y consecutive harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;3;0;;1;;;;;
 1;375;;50;Harmony;Harmony;Augmented chord;augmented;0;;Augmented chord is prohibited;1;;;;11;0;1;;;;;;
 1;383;;50;Harmony;Harmony;Six-four chord;:audible;0;;6/4 chord with non-repeating 5th on beat 2 or 4;1;;;;20;0;1;;;;;;
-1;196;;50;Harmony;Harmony;Six-four chord;:suggestive;0;;6/4 chord with repeating 5th on beat 2 or 4;;;;;;;;;;;;;
+1;196;;50;Harmony;Harmony;Six-four chord;:suggestive;0;;6/4 chord with repeating 5th on beat 2 or 4;1;;;;;;1;;;;;;
 1;433;;100;Harmony;Harmony;Six-four chord;real;0;;6/4 chord with 5th on beat 1/3 or repeating 5th;1;;;;172;0;1;;;;;;
 1;48;;50;Harmony;Harmony;Cadential progression;V-I;0;;Bass note going from V note to I octave in D-T progression before cadence;1;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;308;;50;Harmony;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;;;2;1;1;;;;;;
