@@ -64,7 +64,6 @@ show_min_severity = 49 # Minimum severity to highlight note
 # Lilypond parameters
 ly_flag_style = 2 # 0 - no flag visualisation, 1 - color note, 2 - x above note
 ly_msh = 0 # 0 - do not show mshape, 1 - show mshape
-ly_dominant_letter = 0 # 0 - use normal D/d letters; 1 - use dashed D/d letters
 ly_pagebreak = 0 # Page break after each analysis
 
 # 0 - Show only rule name up to colon. Show only subrules starting with colon
