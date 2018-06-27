@@ -77,13 +77,14 @@ vibf_bell_top = 10-90 # Leftmost-rightmost maximum vibrato speed in note (percen
 vib_bell_exp = 2 # Exponent to create non-linear bell shape
 vibf_bell_exp = 2 # Exponent to create non-linear bell shape
 vib_bell_freq = 100 # Frequency to apply vibrato bell when all conditions met
-vib_bell_dur = 600-1200 # Minimum note duration (ms) that can have a vibrato bell - that can have highest vibrato bell
-vib_bell = 30-90 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
+vib_bell_dur = 200-1200 # Minimum note duration (ms) that can have a vibrato bell - that can have highest vibrato bell
+vib_bell = 30-127 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
 vibf_bell = 20-80 # Max vibrato frequency in vibrato bell (for minimum and highest duration)
 rnd_vib = 10 # Randomize vibrato intensity not greater than this percent
 rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 rnd_vib_slow = 2 # Slow down random vibrato function by this value. Can be only integer: 1 and above
 rnd_vibf_slow = 2 # Slow down random vibrato speed function by this value. Can be only integer: 1 and above
+vib_dyn = 30-110 # Min-max dynamics. Below min dynamics there is no vibrato. Above max dynamics vibrato is max vibrato
 
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
