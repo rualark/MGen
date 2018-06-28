@@ -72,6 +72,8 @@ public:
 	int show_marks = 1;
 	int show_comments = 1;
 	int show_shift = 1;
+	int show_vib = 1;
+	int show_vibf = 1;
 	int show_lining = 1;
 	int show_lines = 1;
 	int show_progress = 1;
@@ -260,4 +262,8 @@ public:
 	afx_msg void OnUpdateCheckDebugexpect(CCmdUI *pCmdUI);
 	afx_msg void OnButtonExpAccept();
 	afx_msg void OnUpdateButtonExpAccept(CCmdUI *pCmdUI);
+	afx_msg void OnCheckVib();
+	afx_msg void OnUpdateCheckVib(CCmdUI *pCmdUI);
+	afx_msg void OnCheckVibf();
+	afx_msg void OnUpdateCheckVibf(CCmdUI *pCmdUI);
 };

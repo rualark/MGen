@@ -664,7 +664,7 @@ void CMGenView::OnDraw(CDC* pDC)
 			}
 			// Show dynamics
 			if (mf->show_vel) {
-				float scale = (ClientRect.bottom - ClientRect.top - Y_HEADER - Y_FOOTER) / 127.0 / 4.0;
+				float scale = (y_start - ClientRect.top - Y_HEADER) / 127.0 / 4.0;
 				for (int v = 0; v < pGen->v_cnt; v++) {
 					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
 					Pen pen(ncolor, 1);
@@ -675,6 +675,46 @@ void CMGenView::OnDraw(CDC* pDC)
 								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->dyn[i][v] * scale),
 								X_FIELD + (i - 1) * nwidth + nwidth / 2,
 								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->dyn[i - 1][v] * scale));
+							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
+								(int)(y_start - scale * 127 * (3 - v % 4)),
+								X_FIELD + (i - 1) * nwidth + nwidth / 2,
+								(int)(y_start - scale * 127 * (3 - v % 4)));
+						}
+				}
+			}
+			// Show vibrato
+			if (mf->show_vib) {
+				float scale = (y_start - ClientRect.top - Y_HEADER) / 127.0 / 4.0;
+				for (int v = 0; v < pGen->v_cnt; v++) {
+					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+					Pen pen(ncolor, 1);
+					pen.SetDashStyle(Gdiplus::DashStyleDash);
+					for (int i = step1t; i < step2t; i++)
+						if (i > 0 && (pGen->vib[i][v] >= 0 && pGen->vib[i - 1][v] >= 0)) {
+							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
+								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->vib[i][v] * scale),
+								X_FIELD + (i - 1) * nwidth + nwidth / 2,
+								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->vib[i - 1][v] * scale));
+							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
+								(int)(y_start - scale * 127 * (3 - v % 4)),
+								X_FIELD + (i - 1) * nwidth + nwidth / 2,
+								(int)(y_start - scale * 127 * (3 - v % 4)));
+						}
+				}
+			}
+			// Show vibrato frequency
+			if (mf->show_vibf) {
+				float scale = (y_start - ClientRect.top - Y_HEADER) / 127.0 / 4.0;
+				for (int v = 0; v < pGen->v_cnt; v++) {
+					ncolor = Color(100, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+					Pen pen(ncolor, 1);
+					pen.SetDashStyle(Gdiplus::DashStyleDash);
+					for (int i = step1t; i < step2t; i++)
+						if (i > 0 && (pGen->vibf[i][v] >= 0 && pGen->vibf[i - 1][v] >= 0)) {
+							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
+								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->vibf[i][v] * scale),
+								X_FIELD + (i - 1) * nwidth + nwidth / 2,
+								(int)(y_start - scale * 127 * (3 - v % 4) - pGen->vibf[i - 1][v] * scale));
 							g.DrawLine(&pen, X_FIELD + i * nwidth + nwidth / 2 - 1,
 								(int)(y_start - scale * 127 * (3 - v % 4)),
 								X_FIELD + (i - 1) * nwidth + nwidth / 2,

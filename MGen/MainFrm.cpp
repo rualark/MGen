@@ -127,6 +127,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_DEBUGEXPECT, &CMainFrame::OnUpdateCheckDebugexpect)
 	ON_COMMAND(ID_BUTTON_EXP_ACCEPT, &CMainFrame::OnButtonExpAccept)
 	ON_UPDATE_COMMAND_UI(ID_BUTTON_EXP_ACCEPT, &CMainFrame::OnUpdateButtonExpAccept)
+	ON_COMMAND(ID_CHECK_VIB, &CMainFrame::OnCheckVib)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_VIB, &CMainFrame::OnUpdateCheckVib)
+	ON_COMMAND(ID_CHECK_VIBF, &CMainFrame::OnCheckVibf)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_VIBF, &CMainFrame::OnUpdateCheckVibf)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -1072,6 +1076,8 @@ void CMainFrame::LoadSettings()
 				CGLib::CheckVar(&st2, &st3, "ly_debugexpect", &ly_debugexpect);
 			CGLib::CheckVar(&st2, &st3, "show_comments", &show_comments);
 			CGLib::CheckVar(&st2, &st3, "show_shift", &show_shift);
+			CGLib::CheckVar(&st2, &st3, "show_vib", &show_vib);
+			CGLib::CheckVar(&st2, &st3, "show_vibf", &show_vibf);
 			CGLib::CheckVar(&st2, &st3, "show_lining", &show_lining);
 			CGLib::CheckVar(&st2, &st3, "show_lines", &show_lines);
 			CGLib::CheckVar(&st2, &st3, "show_progress", &show_progress);
@@ -1136,7 +1142,9 @@ void CMainFrame::SaveSettings()
 	fs << st;
 	st.Format("show_comments = %d # Set to 1 to surround notes which have comments with rectangles\n", show_comments);
 	fs << st;
-	st.Format("show_shift = %d # Set to 1 to show shift near note start and ending\n", show_shift);
+	st.Format("show_vib = %d # Set to 1 to show vibrato\n", show_vib);
+	fs << st;
+	st.Format("show_vibf = %d # Set to 1 to show vibrato freq\n", show_vibf);
 	fs << st;
 	st.Format("show_lining = %d # Set to 1 to show note lining\n", show_lining);
 	fs << st;
@@ -1877,4 +1885,24 @@ void CMainFrame::OnUpdateButtonExpAccept(CCmdUI *pCmdUI) {
 	pCmdUI->Enable(m_state_gen == 2 && pGen && m_algo_id != 2001 &&
 		!m_fname.IsEmpty() && !pGen->midi_file.IsEmpty() && 
 		CGLib::fileExists(m_dir + "\\edb-" + m_fname + ".csv"));
+}
+
+void CMainFrame::OnCheckVib() {
+	show_vib = !show_vib;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckVib(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_vib);
+}
+
+void CMainFrame::OnCheckVibf() {
+	show_vibf = !show_vibf;
+	SaveSettings();
+	GetActiveView()->Invalidate();
+}
+
+void CMainFrame::OnUpdateCheckVibf(CCmdUI *pCmdUI) {
+	pCmdUI->SetCheck(show_vibf);
 }
