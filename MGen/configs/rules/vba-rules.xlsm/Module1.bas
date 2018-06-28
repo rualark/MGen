@@ -103,7 +103,7 @@ Sub LoadData()
     End If
     ' Load data for csv export
     For d = 1 To DCount
-      eData(d, srow) = Rng2(L, d)
+      eData(d, rid) = Rng2(L, d)
     Next d
     ' Check for duplicates
     If Idu2(rid) <> 0 Then
@@ -297,7 +297,7 @@ NextDiv:
       ";" + CStr(eSubRule(srow)) + ";" + CStr(eFlag(srow)) + ";" + _
       CStr(eGComment(srow)) + ";" + CStr(eComment(srow))
     For d = 1 To DCount
-      st = st + ";" + CStr(eData(d, srow))
+      st = st + ";" + CStr(eData(d, rid))
     Next d
     oFile.WriteLine st
     ' Write report
