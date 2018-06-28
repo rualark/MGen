@@ -1,4 +1,4 @@
-Set;Severity;Class;Group;Rule;Flag
+Set;Rid;Species;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;V2;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
 1;0;;0;;;Strict;;1;Strict rule - make non-bold to show only results with other rules violated.  Global parameters: Local climax: Highest note in higher voice within 13 notes or 8 measures - which is smaller;;;;;;;;;;;;;;
 1;49;;100;Cantus;Border;First note is not the tonic;V in upper CF;0;Only for cantus firmus;Note V in higher voice;;;;;5;1;1;;;;;;
 1;90;;100;Cantus;Border;First note is not the tonic;III in upper CF;0;Only for cantus firmus;Note III in higher voice;;;;;5;1;1;;;;;;
