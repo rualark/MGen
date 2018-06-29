@@ -1,8 +1,8 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 2001 # Id of the currently selected algorithm
-Config = test-stac # Name of configuration file for selected algorithm
+Algorithm = 112 # Id of the currently selected algorithm
+Config = 3voix-20180622-02-altbas # Name of configuration file for selected algorithm
 MIDI_OUT = loopMIDI Port 2 # Name of MIDI device used for playing notes
 Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 2000
 playback_speed = 100 # Playback speed in percent
@@ -13,7 +13,7 @@ show_vibf = 0 # Set to 1 to show vibrato freq
 show_lining = 1 # Set to 1 to show note lining
 show_lines = 1 # Set to 1 to show line separators
 show_progress = 1 # Set to 1 to show note scan progress
-ly_debugexpect = 1 # Set to 1 to generate debug expect in lilypond files
+ly_debugexpect = 0 # Set to 1 to generate debug expect in lilypond files
 show_vel = 0 # Set to 1 to show note velocity using alpha
 show_curve = 0 # Set to 1 to show melody curves (MeloCurve)
 show_nsr = 0 # Set to 1 to show note scan range
