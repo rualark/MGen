@@ -9,3 +9,6 @@ include "include/CA2.pl"
 # This config was created from default config file configs\GenCA2.pl
 # Created at 2018-04-08 11:27:28
 Midi_file = midi\Counterpoint\solution\MTE1110-TP07-Solu.mid
+
+corrections = 1
+max_correct_ms = 2000

@@ -564,6 +564,6 @@ Set;Rid;Species;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Vizt
 1;93;2;0;Rhythm;Ties;Note is repeated: in 10 notes;1;-1;;;;;;;36;0;;;;1;;;
 1;94;2;50;Rhythm;Ties;Note is repeated: in 10 notes;2;0;;;;;;;6;0;;;;1;93;;
 1;95;2;50;Rhythm;Ties;Note is repeated: in 10 notes;>2;0;;;;;;;22;0;;;;1;93,94;;
-1;188;4;0;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;1;1;;One syncopation is interrupted, resulting in two separate half notes;;;;;21;2;;;;1;;;
-1;189;4;0;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;2;1;;;;;;;15;0;;;;1;188;;
-1;190;4;50;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;>2;0;;;;;;;3;0;;;;1;188,189;;
+1;188;4;0;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;1;0;Except interruption of syncopation between penultimate and last measure;One syncopation is interrupted, resulting in two separate half notes;;;;;21;2;;;;1;;;
+1;189;4;50;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;2;0;Except interruption of syncopation between penultimate and last measure;;;;;;15;0;;;;1;188;;
+1;190;4;50;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;>2;0;Except interruption of syncopation between penultimate and last measure;;;;;;3;0;;;;1;188,189;;

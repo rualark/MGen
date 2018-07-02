@@ -40,4 +40,4 @@ t_cnt = 100000 # Maximum number of steps generated
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
 emulate_sas = 0 # 0 = disable emulator, 1 = Enables SAS algorithm emulator
-cor_ack = 1 # Acknowledge correction results by running both algorithms: SAS and ASWA
+cor_ack = 0 # Acknowledge correction results by running both algorithms: SAS and ASWA
