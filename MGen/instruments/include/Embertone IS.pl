@@ -81,7 +81,7 @@ vib_bell_rexp = 2 # Exponent to create non-linear bell shape (right)
 vibf_bell_rexp = 2 # Exponent to create non-linear bell shape (right)
 vib_bell_freq = 100 # Frequency to apply vibrato bell when all conditions met
 vib_dyn = 30-110 # Min-max dynamics. Below min dynamics there is no vibrato. Above max dynamics vibrato is max vibrato
-vib_bell = 30-127 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
+vib_bell = 30-127 # Maximum vibrato intensity in vibrato bell (for minimum and highest dynamics)
 vibf_bell = 20-50 # Max vibrato frequency in vibrato bell (for minimum and highest dynamics)
 rnd_vib = 10 # Randomize vibrato intensity not greater than this percent
 rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
@@ -97,7 +97,7 @@ vib_sbell_rexp = 0.25 # Exponent to create non-linear bell shape (right)
 vibf_sbell_rexp = 0.25 # Exponent to create non-linear bell shape (right)
 vib_sbell_freq = 100 # Frequency to apply vibrato bell when all conditions met
 vib_sdyn = 30-110 # Min-max dynamics. Below min dynamics there is no vibrato. Above max dynamics vibrato is max vibrato
-vib_sbell = 30-127 # Maximum vibrato intensity in vibrato bell (for minimum and highest duration)
+vib_sbell = 30-127 # Maximum vibrato intensity in vibrato bell (for minimum and highest dynamics)
 vibf_sbell = 30-60 # Max vibrato frequency in vibrato bell (for minimum and highest dynamics)
 
 # Randomization
