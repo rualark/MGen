@@ -101,6 +101,18 @@ rnd_vibf = 10 # Randomize vibrato speed not greater than this percent
 rnd_vib_slow = 2 # Slow down random vibrato function by this value. Can be only integer: 1 and above
 rnd_vibf_slow = 2 # Slow down random vibrato speed function by this value. Can be only integer: 1 and above
 
+# Vibrato adaptor - short notes
+vib_sbell_top = 0-0 # Leftmost-rightmost maximum vibrato intensity in note (percent of note duration)
+vibf_sbell_top = 0-0 # Leftmost-rightmost maximum vibrato speed in note (percent of note duration)
+vib_sbell_exp = 0.25 # Exponent to create non-linear bell shape (left)
+vibf_sbell_exp = 0.25 # Exponent to create non-linear bell shape (left)
+vib_sbell_rexp = 0.25 # Exponent to create non-linear bell shape (right)
+vibf_sbell_rexp = 0.25 # Exponent to create non-linear bell shape (right)
+vib_sbell_freq = 100 # Frequency to apply vibrato bell when all conditions met
+vib_sdyn = 30-110 # Min-max dynamics. Below min dynamics there is no vibrato. Above max dynamics vibrato is max vibrato
+vib_sbell = 0-0 # Maximum vibrato intensity in vibrato bell (for minimum and highest dynamics)
+vibf_sbell = 0-0 # Max vibrato frequency in vibrato bell (for minimum and highest dynamics)
+
 # Randomization
 rnd_vel = 20 # Randomize note velocity not greater than this percent
 rnd_vel_repeat = 50 # Randomize note velocity not greater than this percent for note retriggers
