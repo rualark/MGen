@@ -31,7 +31,7 @@ post_bad = 240 # How many notes to recalculate after rule violation
 animate = 100000 # Draw animation of preliminary result every X ms (0 to show each change, high to disable animation)
 animate_delay = 0 # Delay in ms after each animation step
 reduce_between = 50 # How many percent of notes have to be outsize max_between range to be moved closer. Set to 0 to disable reduction
-prohibit_min_severity = 10 # Rules with severity below this can be violated
+prohibit_min_severity = 0 # Rules with severity below this can be violated
 
 # Technical parameters
 midifile_out_mul = 1 # All notes length is multiplied by this number before exporting

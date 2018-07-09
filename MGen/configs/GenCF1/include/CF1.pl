@@ -69,7 +69,7 @@ ly_pagebreak = 0 # Page break after each analysis
 # 0 - Show only rule name up to colon. Show only subrules starting with colon
 # 1 - Add subrules without colon
 # 2 - Add rule comments
-ly_rule_verbose = 0 
+ly_rule_verbose = 2 
 
 midifile_export_marks = 1 # Set to export marks (harmony) to midifile lyrics
 midifile_export_comments = 0 # Set to export comments (violations) to midifile lyrics
