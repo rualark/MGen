@@ -203,6 +203,8 @@
   <ItemGroup>
     <ClInclude Include="AlgoDlg.h" />
     <ClInclude Include="EditParamsDlg.h" />
+    <ClInclude Include="Generators\CF1D.h" />
+    <ClInclude Include="Generators\CF1R.h" />
     <ClInclude Include="Generators\GenCA1.h" />
     <ClInclude Include="Generators\GenCA2.h" />
     <ClInclude Include="Generators\GenCF1.h" />
@@ -251,6 +253,8 @@
   <ItemGroup>
     <ClCompile Include="AlgoDlg.cpp" />
     <ClCompile Include="EditParamsDlg.cpp" />
+    <ClCompile Include="Generators\CF1D.cpp" />
+    <ClCompile Include="Generators\CF1R.cpp" />
     <ClCompile Include="Generators\GenCA1.cpp" />
     <ClCompile Include="Generators\GenCA2.cpp" />
     <ClCompile Include="Generators\GenCF1.cpp" />

@@ -180,6 +180,12 @@
     <ClInclude Include="GLibrary\SinRand.h">
       <Filter>Header Files\GLibrary</Filter>
     </ClInclude>
+    <ClInclude Include="Generators\CF1R.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\CF1D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MGen.cpp">
@@ -310,6 +316,12 @@
     </ClCompile>
     <ClCompile Include="GLibrary\SinRand.cpp">
       <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\CF1R.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\CF1D.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
