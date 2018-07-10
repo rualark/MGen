@@ -37,6 +37,12 @@
     <Filter Include="Header Files\GLibrary">
       <UniqueIdentifier>{9cb0a150-a7a7-4fac-8e56-232c54cf906b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\pugixml">
+      <UniqueIdentifier>{3367fad7-c98b-47f9-a2c2-26098b778144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\pugixml">
+      <UniqueIdentifier>{8b90587b-cb62-488e-8564-ceeb0cf9e67c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -190,7 +196,31 @@
       <Filter>Header Files\Generators</Filter>
     </ClInclude>
     <ClInclude Include="Generators\CF1M.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\CP2D.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\CP2Ly.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\CP2R.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\GenCA3.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="Generators\GenCP2.h">
+      <Filter>Header Files\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="GLibrary\XFIn.h">
+      <Filter>Header Files\GLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml\pugiconfig.hpp">
+      <Filter>Header Files\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml\pugixml.hpp">
+      <Filter>Header Files\pugixml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -333,7 +363,28 @@
       <Filter>Source Files\Generators</Filter>
     </ClCompile>
     <ClCompile Include="Generators\CF1M.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\CP2D.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\CP2Ly.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\CP2R.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenCA3.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="Generators\GenCP2.cpp">
+      <Filter>Source Files\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="GLibrary\XFIn.cpp">
+      <Filter>Source Files\GLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="pugixml\pugixml.cpp">
+      <Filter>Source Files\pugixml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

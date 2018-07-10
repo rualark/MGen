@@ -16,10 +16,12 @@
 #include "OutputWnd.h"
 #include "Generators/GenCF1.h"
 #include "Generators/GenCA2.h"
+#include "Generators/GenCA3.h"
 #include "Generators/GenRS1.h"
 #include "Generators/GenMP1.h"
 #include "Generators/GenCA1.h"
 #include "Generators/GenCP1.h"
+#include "Generators/GenCP2.h"
 #include "Generators/GenRL1.h"
 
 #define MIN_HZOOM 1

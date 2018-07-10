@@ -207,11 +207,16 @@
     <ClInclude Include="Generators\CF1Ly.h" />
     <ClInclude Include="Generators\CF1M.h" />
     <ClInclude Include="Generators\CF1R.h" />
+    <ClInclude Include="Generators\CP2D.h" />
+    <ClInclude Include="Generators\CP2Ly.h" />
+    <ClInclude Include="Generators\CP2R.h" />
     <ClInclude Include="Generators\GenCA1.h" />
     <ClInclude Include="Generators\GenCA2.h" />
+    <ClInclude Include="Generators\GenCA3.h" />
     <ClInclude Include="Generators\GenCF1.h" />
     <ClInclude Include="Generators\GenCF2.h" />
     <ClInclude Include="Generators\GenCP1.h" />
+    <ClInclude Include="Generators\GenCP2.h" />
     <ClInclude Include="Generators\GenMP1.h" />
     <ClInclude Include="Generators\GenRL1.h" />
     <ClInclude Include="Generators\GenRS1.h" />
@@ -231,6 +236,7 @@
     <ClInclude Include="GLibrary\SinRand.h" />
     <ClInclude Include="GLibrary\SmRnd.h" />
     <ClInclude Include="GLibrary\VSet.h" />
+    <ClInclude Include="GLibrary\XFIn.h" />
     <ClInclude Include="InfoDlg.h" />
     <ClInclude Include="InfoEditCtrl.h" />
     <ClInclude Include="MainFrm.h" />
@@ -246,6 +252,8 @@
     <ClInclude Include="MsgDlg.h" />
     <ClInclude Include="MyVisualManagerOffice2007.h" />
     <ClInclude Include="OutputWnd.h" />
+    <ClInclude Include="pugixml\pugiconfig.hpp" />
+    <ClInclude Include="pugixml\pugixml.hpp" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="rtmidi\RtMidi.h" />
     <ClInclude Include="stdafx.h" />
@@ -259,11 +267,16 @@
     <ClCompile Include="Generators\CF1Ly.cpp" />
     <ClCompile Include="Generators\CF1M.cpp" />
     <ClCompile Include="Generators\CF1R.cpp" />
+    <ClCompile Include="Generators\CP2D.cpp" />
+    <ClCompile Include="Generators\CP2Ly.cpp" />
+    <ClCompile Include="Generators\CP2R.cpp" />
     <ClCompile Include="Generators\GenCA1.cpp" />
     <ClCompile Include="Generators\GenCA2.cpp" />
+    <ClCompile Include="Generators\GenCA3.cpp" />
     <ClCompile Include="Generators\GenCF1.cpp" />
     <ClCompile Include="Generators\GenCF2.cpp" />
     <ClCompile Include="Generators\GenCP1.cpp" />
+    <ClCompile Include="Generators\GenCP2.cpp" />
     <ClCompile Include="Generators\GenMP1.cpp" />
     <ClCompile Include="Generators\GenRL1.cpp" />
     <ClCompile Include="Generators\GenRS1.cpp" />
@@ -282,6 +295,7 @@
     <ClCompile Include="GLibrary\SinRand.cpp" />
     <ClCompile Include="GLibrary\SmRnd.cpp" />
     <ClCompile Include="GLibrary\VSet.cpp" />
+    <ClCompile Include="GLibrary\XFIn.cpp" />
     <ClCompile Include="InfoDlg.cpp" />
     <ClCompile Include="InfoEditCtrl.cpp" />
     <ClCompile Include="MainFrm.cpp" />
@@ -297,6 +311,7 @@
     <ClCompile Include="MsgDlg.cpp" />
     <ClCompile Include="MyVisualManagerOffice2007.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
+    <ClCompile Include="pugixml\pugixml.cpp" />
     <ClCompile Include="rtmidi\RtMidi.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
