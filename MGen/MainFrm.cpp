@@ -1906,3 +1906,4 @@ void CMainFrame::OnCheckVibf() {
 void CMainFrame::OnUpdateCheckVibf(CCmdUI *pCmdUI) {
 	pCmdUI->SetCheck(show_vibf);
 }
+
