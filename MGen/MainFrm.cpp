@@ -1884,7 +1884,7 @@ void CMainFrame::OnButtonExpAccept() {
 }
 
 void CMainFrame::OnUpdateButtonExpAccept(CCmdUI *pCmdUI) {
-	pCmdUI->Enable(m_state_gen == 2 && pGen && m_algo_id != 2001 &&
+	pCmdUI->Enable(m_state_gen == 2 && pGen && (m_algo_id == 111 || m_algo_id == 112) &&
 		!m_fname.IsEmpty() && !pGen->midi_file.IsEmpty() && 
 		CGLib::fileExists(m_dir + "\\edb-" + m_fname + ".csv"));
 }
