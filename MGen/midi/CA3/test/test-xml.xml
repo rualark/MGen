@@ -704,21 +704,18 @@
      <tied type="stop" orientation="under" />
     </notations>
    </note>
-   <note color="#000000" default-x="62" default-y="37">
+   <note color="#000000" default-x="62" default-y="27">
     <pitch>
-     <step>A</step>
+     <step>F</step>
+     <alter>1</alter>
      <octave>5</octave>
     </pitch>
     <duration>256</duration>
-    <tie type="start" />
     <instrument id="P1-I1" />
     <voice>1</voice>
     <type>quarter</type>
     <stem>up</stem>
     <staff>1</staff>
-    <notations>
-     <tied type="start" orientation="over" />
-    </notations>
    </note>
    <note color="#000000" default-x="109" default-y="37">
     <pitch>
@@ -740,13 +737,9 @@
      <octave>5</octave>
     </pitch>
     <duration>256</duration>
-    <tie type="stop" />
     <instrument id="P1-I1" />
     <type>quarter</type>
     <staff>1</staff>
-    <notations>
-     <tied type="stop" orientation="over" />
-    </notations>
    </note>
    <backup>
     <duration>768</duration>
