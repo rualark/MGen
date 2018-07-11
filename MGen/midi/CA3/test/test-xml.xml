@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-07-10</encoding-date>
+   <encoding-date>2018-07-11</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -206,7 +206,7 @@
     <rest />
     <duration>1024</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>whole</type>
     <staff>2</staff>
    </note>
@@ -335,7 +335,7 @@
       <mf />
      </dynamics>
     </direction-type>
-    <voice>2</voice>
+    <voice>3</voice>
     <staff>2</staff>
    </direction>
    <note color="#000000" default-x="25">
@@ -345,7 +345,7 @@
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>whole</type>
     <staff>2</staff>
    </note>
@@ -509,7 +509,7 @@
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>whole</type>
     <staff>2</staff>
    </note>
@@ -630,7 +630,7 @@
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>whole</type>
     <staff>2</staff>
    </note>
@@ -670,7 +670,7 @@
     </pitch>
     <duration>768</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>whole</type>
     <dot />
     <time-modification>
@@ -704,10 +704,10 @@
      <tied type="stop" orientation="under" />
     </notations>
    </note>
-   <note color="#000000" default-x="62" default-y="5">
+   <note color="#000000" default-x="62" default-y="20">
     <pitch>
-     <step>G</step>
-     <octave>4</octave>
+     <step>D</step>
+     <octave>5</octave>
     </pitch>
     <duration>256</duration>
     <instrument id="P1-I1" />
@@ -716,16 +716,74 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="109" default-y="5">
+   <note color="#000000" default-x="109" default-y="37">
     <pitch>
-     <step>G</step>
-     <octave>4</octave>
+     <step>F</step>
+     <alter>1</alter>
+     <octave>5</octave>
     </pitch>
     <duration>256</duration>
     <instrument id="P1-I1" />
     <voice>1</voice>
     <type>quarter</type>
     <stem>up</stem>
+    <staff>1</staff>
+   </note>
+   <note color="#000000" default-x="109">
+    <chord />
+    <pitch>
+     <step>A</step>
+     <octave>5</octave>
+    </pitch>
+    <duration>256</duration>
+    <instrument id="P1-I1" />
+    <type>quarter</type>
+    <staff>1</staff>
+   </note>
+   <backup>
+    <duration>768</duration>
+   </backup>
+   <note default-x="15">
+    <rest />
+    <duration>256</duration>
+    <instrument id="P1-I1" />
+    <voice>2</voice>
+    <type>quarter</type>
+    <staff>1</staff>
+   </note>
+   <note color="#000000" default-x="62" default-y="-60">
+    <pitch>
+     <step>G</step>
+     <octave>4</octave>
+    </pitch>
+    <duration>256</duration>
+    <instrument id="P1-I1" />
+    <voice>2</voice>
+    <type>quarter</type>
+    <stem>down</stem>
+    <staff>1</staff>
+   </note>
+   <note color="#000000" default-x="109" default-y="-60">
+    <pitch>
+     <step>G</step>
+     <octave>4</octave>
+    </pitch>
+    <duration>256</duration>
+    <instrument id="P1-I1" />
+    <voice>2</voice>
+    <type>quarter</type>
+    <stem>down</stem>
+    <staff>1</staff>
+   </note>
+   <note color="#000000" default-x="109">
+    <chord />
+    <pitch>
+     <step>B</step>
+     <octave>4</octave>
+    </pitch>
+    <duration>256</duration>
+    <instrument id="P1-I1" />
+    <type>quarter</type>
     <staff>1</staff>
    </note>
    <backup>
@@ -738,7 +796,7 @@
     </pitch>
     <duration>768</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>whole</type>
     <dot />
     <time-modification>
@@ -785,7 +843,7 @@
     </pitch>
     <duration>768</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>half</type>
     <dot />
     <stem>up</stem>
@@ -818,7 +876,7 @@
     </pitch>
     <duration>768</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>half</type>
     <dot />
     <stem>up</stem>
@@ -846,7 +904,7 @@
     <rest />
     <duration>768</duration>
     <instrument id="P1-I1" />
-    <voice>2</voice>
+    <voice>3</voice>
     <type>whole</type>
     <staff>2</staff>
    </note>
