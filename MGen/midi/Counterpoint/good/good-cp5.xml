@@ -181,6 +181,16 @@
     <voice>1</voice>
     <staff>1</staff>
    </direction>
+   <direction>
+    <direction-type>
+     <metronome default-y="42" color="#000000" font-family="Opus Text Std" font-style="normal" font-size="11.9365" font-weight="normal">
+      <beat-unit>quarter</beat-unit>
+      <per-minute>100</per-minute>
+     </metronome>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note default-x="15">
     <rest />
     <duration>512</duration>
@@ -227,6 +237,23 @@
   <!--============== Part: P1, Measure: 3 ==============-->
   <measure number="3" width="164">
    <attributes />
+   <direction>
+    <direction-type>
+     <words default-y="42" relative-y="26" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="13.0217" font-weight="bold">Lento</words>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
+   <direction>
+    <direction-type>
+     <metronome default-y="42" color="#000000" font-family="Plantin MT Std" font-style="normal" font-size="13.0217" font-weight="bold">
+      <beat-unit>quarter</beat-unit>
+      <per-minute>60</per-minute>
+     </metronome>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note color="#000000" default-x="15" default-y="10">
     <pitch>
      <step>A</step>
@@ -299,6 +326,16 @@
   <!--============== Part: P1, Measure: 4 ==============-->
   <measure number="4" width="152">
    <attributes />
+   <direction>
+    <direction-type>
+     <metronome default-y="42" color="#000000" font-family="Opus Text Std" font-style="normal" font-size="11.9365" font-weight="normal">
+      <beat-unit>half</beat-unit>
+      <per-minute>100</per-minute>
+     </metronome>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note color="#000000" default-x="15" default-y="-5">
     <pitch>
      <step>E</step>
