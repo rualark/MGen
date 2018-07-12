@@ -90,26 +90,52 @@ void CMFIDialog::LoadTree()
 	CMainFrame* mf = (CMainFrame *)AfxGetMainWnd();
 	CString gname;
 	m_tree.DeleteAllItems();
-	for (int i = 0; i < mf->AlgMFIGCount; i++) {
-		gname = mf->AlgMFIGroups[i];
-		HTREEITEM gti = m_tree.InsertItem(gname, TVI_ROOT, TVI_LAST);
-		m_tree.SetItemState(gti, TVIS_BOLD, TVIS_BOLD);
-		// Font
-		LOGFONT logfont;
-		CFont *pFont = GetFont();
-		pFont->GetLogFont(&logfont);
-		logfont.lfItalic = TRUE;
-		//logfont.lfUnderline = TRUE;
-		for (int x = 0; x < mf->AlgCount; x++) if ((mf->AlgMFI[x]) && (CGLib::fileExists("configs\\" + mf->AlgFolder[x] + ".pl"))) {
-			if (mf->AlgGroup[x] == gname) {
-				HTREEITEM gti2 = m_tree.InsertItem(mf->AlgName[x], gti, TVI_LAST);
-				m_tree.SetItemData(gti2, x);
-				//if (mf->ParamCount[x] > 0) 
-				if (mf->m_algo == x) m_tree.SelectItem(gti2);
-				m_tree.Expand(gti2, TVM_EXPAND);
+	if (ext == "xml" || ext == "mxl") {
+		for (int i = 0; i < mf->AlgXFIGCount; i++) {
+			gname = mf->AlgXFIGroups[i];
+			HTREEITEM gti = m_tree.InsertItem(gname, TVI_ROOT, TVI_LAST);
+			m_tree.SetItemState(gti, TVIS_BOLD, TVIS_BOLD);
+			// Font
+			LOGFONT logfont;
+			CFont *pFont = GetFont();
+			pFont->GetLogFont(&logfont);
+			logfont.lfItalic = TRUE;
+			//logfont.lfUnderline = TRUE;
+			for (int x = 0; x < mf->AlgCount; x++) 
+				if ((mf->AlgXFI[x]) && (CGLib::fileExists("configs\\" + mf->AlgFolder[x] + ".pl"))) {
+				if (mf->AlgGroup[x] == gname) {
+					HTREEITEM gti2 = m_tree.InsertItem(mf->AlgName[x], gti, TVI_LAST);
+					m_tree.SetItemData(gti2, x);
+					//if (mf->ParamCount[x] > 0) 
+					if (mf->m_algo == x) m_tree.SelectItem(gti2);
+					m_tree.Expand(gti2, TVM_EXPAND);
+				}
 			}
+			m_tree.Expand(gti, TVM_EXPAND);
 		}
-		m_tree.Expand(gti, TVM_EXPAND);
+	}
+	else {
+		for (int i = 0; i < mf->AlgMFIGCount; i++) {
+			gname = mf->AlgMFIGroups[i];
+			HTREEITEM gti = m_tree.InsertItem(gname, TVI_ROOT, TVI_LAST);
+			m_tree.SetItemState(gti, TVIS_BOLD, TVIS_BOLD);
+			// Font
+			LOGFONT logfont;
+			CFont *pFont = GetFont();
+			pFont->GetLogFont(&logfont);
+			logfont.lfItalic = TRUE;
+			//logfont.lfUnderline = TRUE;
+			for (int x = 0; x < mf->AlgCount; x++) if ((mf->AlgMFI[x]) && (CGLib::fileExists("configs\\" + mf->AlgFolder[x] + ".pl"))) {
+				if (mf->AlgGroup[x] == gname) {
+					HTREEITEM gti2 = m_tree.InsertItem(mf->AlgName[x], gti, TVI_LAST);
+					m_tree.SetItemData(gti2, x);
+					//if (mf->ParamCount[x] > 0) 
+					if (mf->m_algo == x) m_tree.SelectItem(gti2);
+					m_tree.Expand(gti2, TVM_EXPAND);
+				}
+			}
+			m_tree.Expand(gti, TVM_EXPAND);
+		}
 	}
 }
 

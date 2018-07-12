@@ -178,6 +178,8 @@ BOOL CMGenDoc::DoSave(LPCTSTR lpszPathName, BOOL bReplace)
 		// Copy files
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mgr", path + "\\" + fname + ".mgr");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mid", path + "\\" + fname + ".mid");
+		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".xml", path + "\\" + fname + ".xml");
+		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".mxl", path + "\\" + fname + ".mxl");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".txt", path + "\\" + fname + ".txt");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".csv", path + "\\" + fname + ".csv");
 		CGLib::copy_file(mf->m_dir + "\\" + mf->m_fname + ".pl", path + "\\" + fname + ".pl");

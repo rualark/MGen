@@ -109,14 +109,17 @@ public:
 	CString AlgInsts[MAX_ALGO];
 	vector<CString> AlgGroups;
 	CString AlgMFIGroups[MAX_ALGO];
+	CString AlgXFIGroups[MAX_ALGO];
 	CString AlgComment[MAX_ALGO];
 	CString AlgFolder[MAX_ALGO];
 	int AlgMFI[MAX_ALGO]; // =1 if this algorithm supports Midi File Import
+	int AlgXFI[MAX_ALGO]; // =1 if this algorithm supports Xml File Import
 	int AlgID[MAX_ALGO];
 	int ParamCount[MAX_ALGO];
 	int AlgCount = 0;
 	int AlgGCount = 0;
 	int AlgMFIGCount = 0; // Number of groups which support Midi File Import
+	int AlgXFIGCount = 0; // Number of groups which support Xml File Import
 	vector< vector <CString> > ParamName; // 1 = pause, 0 = note
   // MIDI device names
 	CString MidiName[MAX_MIDI_DEVICES];

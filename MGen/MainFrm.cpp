@@ -142,6 +142,7 @@ CMainFrame::CMainFrame()
 	AlgGroups.resize(MAX_ALGO);
 	fill(begin(AlgID), end(AlgID), 0);
 	fill(begin(AlgMFI), end(AlgMFI), 0);
+	fill(begin(AlgXFI), end(AlgXFI), 0);
 	fill(begin(ParamCount), end(ParamCount), 0);
 	//HANDLE hThread = GetCurrentThread();
 	//SetThreadPriority(hThread, THREAD_PRIORITY_TIME_CRITICAL);
@@ -360,7 +361,7 @@ void CMainFrame::LoadFile(CString abs_path) {
 	GetCurrentDirectory(MAX_PATH, buffer);
 	CString path_old = string(buffer).c_str();
 	CString ext = CGLib::ext_from_path(abs_path);
-	if ((ext == "mid") || (ext == "midi")) {
+	if ((ext == "mid") || (ext == "midi") || ext == "xml" || ext == "mxl") {
 		// Convert absolute to relative
 		CString path, rel_path;
 		path = abs_path;
@@ -719,17 +720,18 @@ void CMainFrame::LoadResults(CString path) {
 	}
 }
 
-void CMainFrame::LoadMidi(CString path)
-{
+void CMainFrame::LoadMidi(CString path) {
+	CString ext = CGLib::ext_from_path(path);
 	if (m_state_gen == 1) {
-		AfxMessageBox("Please stop generation before opening midi file");
+		AfxMessageBox("Please stop generation before opening music file");
 		return;
 	}
 	CMFIDialog dlg;
+	dlg.ext = ext;
 	if (dlg.DoModal() == IDOK) {
 		// Check default config exists
 		if (!CGLib::fileExists("configs\\" + AlgFolder[m_algo] +".pl")) {
-			AfxMessageBox("Not found default configuration for loading MIDI file with this algorithm at configs\\" + AlgFolder[m_algo] + ".pl \nPlease create default configuration or use manual configuration.");
+			AfxMessageBox("Not found default configuration for loading music file with this algorithm at configs\\" + AlgFolder[m_algo] + ".pl \nPlease create default configuration or use manual configuration.");
 			return;
 		}
 		// Create config name
@@ -743,8 +745,8 @@ void CMainFrame::LoadMidi(CString path)
 			"\n# This config was created from default config file configs\\" + AlgFolder[m_algo] + ".pl\n");
 		CGLib::AppendLineToFile(fname,
 			"# Created at " + time_str + "\n");
-		CGLib::AppendLineToFile(fname,
-			"Midi_file = " + path + "\n");
+		if (ext == "xml" || ext == "mxl") CGLib::AppendLineToFile(fname, "MusicXML_file = " + path + "\n");
+		else CGLib::AppendLineToFile(fname,	"Midi_file = " + path + "\n");
 		// Load newly created config into table
 		LoadAlgo();
 		// Save settings
@@ -967,6 +969,9 @@ void CMainFrame::LoadAlgo()
 			AlgMFI[AlgCount] = atoi(st2);
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
+			AlgXFI[AlgCount] = atoi(st2);
+			st2 = st.Tokenize("|", pos);
+			st2.Trim();
 			AlgName[AlgCount] = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
@@ -981,6 +986,13 @@ void CMainFrame::LoadAlgo()
 				if (*pst != st2) {
 					AlgMFIGroups[AlgMFIGCount] = st2;
 					AlgMFIGCount++;
+				}
+			}
+			if (AlgXFI[AlgCount]) {
+				CString* pst = find(begin(AlgXFIGroups), end(AlgXFIGroups), st2);
+				if (*pst != st2) {
+					AlgXFIGroups[AlgXFIGCount] = st2;
+					AlgXFIGCount++;
 				}
 			}
 			// Load instruments

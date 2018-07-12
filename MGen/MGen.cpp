@@ -258,7 +258,7 @@ void CMGenApp::OnFileOpen()
 	CString path_old = string(buffer).c_str();
 	// szFilters is a text string that includes two file name filters:
 	// "*.my" for "MyType Files" and "*.*' for "All Files."
-	TCHAR szFilters[] = _T("All supported formats (*.mgr;*.mid;*.midi)|*.mgr;*.mid;*.midi|MGen result files (*.mgr)|*.mgr|MIDI files (*.mid)|*.mid|MIDI files (*.midi)|*.midi||");
+	TCHAR szFilters[] = _T("All supported formats (*.mgr;*.mid;*.midi;*.xml;*.mxl)|*.mgr;*.mid;*.midi;*.xml;*.mxl|MGen result files (*.mgr)|*.mgr|MIDI files (*.mid)|*.mid|MIDI files (*.midi)|*.midi|MusicXML files (*.xml)|*.xml|Compressed MusicXML files (*.mxl)|*.mxl||");
 
 	// Create an Open dialog; the default file name extension is ".my".
 	CFileDialog fileDlg(TRUE, "", "", // path_old

@@ -26,6 +26,7 @@ protected:
 public:
 	CTreeColorCtrl m_tree;
 	CEdit m_comment;
+	CString ext; // file extension
 	afx_msg void OnTvnSelchangedTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkTreeAlgo(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedOk();
