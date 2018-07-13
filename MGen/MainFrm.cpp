@@ -1156,6 +1156,8 @@ void CMainFrame::SaveSettings()
 	fs << st;
 	st.Format("show_comments = %d # Set to 1 to surround notes which have comments with rectangles\n", show_comments);
 	fs << st;
+	st.Format("show_shift = %d # Set to 1 to show note shifts\n", show_shift);
+	fs << st;
 	st.Format("show_vib = %d # Set to 1 to show vibrato\n", show_vib);
 	fs << st;
 	st.Format("show_vibf = %d # Set to 1 to show vibrato freq\n", show_vibf);
