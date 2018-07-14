@@ -184,15 +184,6 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
       Com_column = comc.Column
       sRows = 0
       ssent = ssent + 1
-      ' Write strict rule
-      myComment = ws.Cells(1, Strict_col).Comment.Text
-      myComment = Replace(myComment, vbCr, " ")
-      myComment = Replace(myComment, vbLf, " ")
-      If ws.Cells(1, Strict_col).Font.Bold Then
-        oFile.WriteLine CStr(ws.Name) + ";0;;0;;;Strict;;0;" + myComment + ";;;;;;;;;;;;;;"
-      Else
-        oFile.WriteLine CStr(ws.Name) + ";0;;0;;;Strict;;1;" + myComment + ";;;;;;;;;;;;;;"
-      End If
       For Line = First_line To 1000
         rule = ws.Cells(Line, 3).Value
         spec = ws.Cells(Line, 4).Value
