@@ -17,6 +17,7 @@ Dim Idn(1000)
 
 ' Export
 Dim eSpec(1000)
+Dim eVoices(1000)
 Dim eSeverity(1000)
 Dim eRule(1000)
 Dim eSubRule(1000)
@@ -98,8 +99,9 @@ Sub LoadData()
       Rng1(L, cSubRule) = eSubRule(srow)
       Rng3(L, 2) = eFlag(srow)
       Rng3(L, 3) = eSpec(srow)
-      Rng3(L, 5) = eComment(srow)
-      Rng3(L, 4) = eGComment(srow)
+      Rng3(L, 4) = eVoices(srow)
+      Rng3(L, 5) = eGComment(srow)
+      Rng3(L, 6) = eComment(srow)
     End If
     ' Load data for csv export
     For d = 1 To DCount
@@ -194,6 +196,7 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
       For Line = First_line To 1000
         rule = ws.Cells(Line, 3).Value
         spec = ws.Cells(Line, 4).Value
+        voices = ws.Cells(Line, 5).Value
         If rule = "" Then Exit For
         rule = Replace(rule, ";", ",")
         ' Get class and group
@@ -264,6 +267,7 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
             eSubRule(sRows) = dst
             eSeverity(sRows) = sev
             eSpec(sRows) = spec
+            eVoices(sRows) = voices
             eFlag(sRows) = flag
             Ids(sRows) = rid
             eClass(sRows) = cst
@@ -293,7 +297,7 @@ NextDiv:
   For srow = 1 To sRows
     rid = Ids(srow)
     ' Write rules
-    st = "1;" + CStr(rid) + ";" + CStr(eSpec(srow)) + ";" + CStr(eSeverity(srow)) + ";" + CStr(eClass(srow)) + _
+    st = "1;" + CStr(rid) + ";" + CStr(eSpec(srow)) + ";" + CStr(eVoices(srow)) + ";" + CStr(eSeverity(srow)) + ";" + CStr(eClass(srow)) + _
       ";" + CStr(eGroup(srow)) + ";" + CStr(eRule(srow)) + _
       ";" + CStr(eSubRule(srow)) + ";" + CStr(eFlag(srow)) + ";" + _
       CStr(eGComment(srow)) + ";" + CStr(eComment(srow))
