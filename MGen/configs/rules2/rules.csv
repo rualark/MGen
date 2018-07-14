@@ -1,4 +1,4 @@
-Set;Rid;Species;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;V2;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
+Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;V2;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
 1;49;;;100;Cantus;Border;First note is not the tonic;V in upper CF;0;Only for cantus firmus;Note V in higher voice;;;;;5;1;1;;;;;;
 1;90;;;100;Cantus;Border;First note is not the tonic;III in upper CF;0;Only for cantus firmus;Note III in higher voice;;;;;5;1;1;;;;;;
 1;33;;;100;Cantus;Border;First note is not the tonic;Other;0;Only for cantus firmus;Any note except I in lower voice. Any note except I, III, V in higher voice.;;;;;55;5;1;;;;;;
@@ -270,7 +270,7 @@ Set;Rid;Species;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Vizt
 1;361;2345;;100;Melody;Tritone;Tritone: adjacent accented;:unresolved;0;Melodic adjacent tritone, last note is long or repeated;;13;;;tri;8;3;1;;;;360,368,369;;
 1;362;2345;;0;Melody;Tritone;Tritone: adjacent accented;on climax;0;Melodic adjacent tritone, last note is long or repeated;;13;;;tri;4;1;;;;;;;
 1;18;2345;;0;Melody;Tritone;Audible tritone: framed;:resolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;13;;;tri;4;0;1;;;;;;
-1;19;2345;;50;Melody;Tritone;Audible tritone: framed;:unresolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;13;;;tri;33;21;1;;;;1800;;
+1;19;2345;;50;Melody;Tritone;Audible tritone: framed;:unresolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;13;;;tri;33;21;1;;;;18;;
 1;363;2345;;0;Melody;Tritone;Audible tritone: framed;on climax;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;13;;;tri;8;2;;;;;;;
 1;342;2345;;0;Melody;Tritone;Audible tritone: accented;:resolved;0;Tritone within measure with intermediate notes, last note is long or repeated;;13;;;tri;0;0;;;;;;;
 1;343;2345;;50;Melody;Tritone;Audible tritone: accented;:unresolved;0;Tritone within measure with intermediate notes, last note is long or repeated;;13;;;tri;7;2;1;;;;342;;
