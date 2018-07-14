@@ -378,11 +378,9 @@ Set;Rid;Species;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Vizt
 1;326;;0;Harmony;Perfect consonance;Culmination on 8ve / unison: long downbeat;culmination;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat octave 1/2 or longer;2;1;;;3;0;1;;;;;;
 1;86;;0;Harmony;Perfect consonance;Consecutive perfect consonances;different;-1;;Different adjacent perfect consonances;7;1;1;;167;4;;;;;;;
 1;84;;100;Harmony;Perfect consonance;Consecutive 5ths;parallel;0;;;7;1;1;;32;5;1;;;;;;
+1;85;;50;Harmony;Perfect consonance;Consecutive 5ths;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;0;0;1;;;;;;
 1;330;;50;Harmony;Perfect consonance;Consecutive 5ths;parallel sus 6-5;0;;Parallel 5ths separated by sus with 6th interval;7;1;1;;5;3;1;;;;249;;
-1;85;;50;Harmony;Perfect consonance;Consecutive 5ths;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;0;0;1;;;;;;
-1;85;;50;Harmony;Perfect consonance;Consecutive 5ths;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;0;0;1;;;;;;
 1;481;;100;Harmony;Perfect consonance;Consecutive 8ves or unisons;parallel;0;;;7;1;1;;65;37;1;;;;;;
-1;482;;50;Harmony;Perfect consonance;Consecutive 8ves or unisons;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;9;4;1;;;;;;
 1;482;;50;Harmony;Perfect consonance;Consecutive 8ves or unisons;contrary;0;;Contrary octaves are possible in cadence;7;1;1;;9;4;1;;;;;;
 1;248;1240;0;Harmony;Perfect consonance;Parallel 5ths: < 4/4 apart;upbeat contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to upbeat;7;1;1;;9;1;1;;;;;;
 1;376;1240;0;Harmony;Perfect consonance;Parallel 5ths: < 4/4 apart;last contrary;1;Two same non-close perfect consonances in neighboring measures less than 4 notes apart;Contrary movement to last interval in counterpoint;7;1;1;;0;0;1;;;;;;
