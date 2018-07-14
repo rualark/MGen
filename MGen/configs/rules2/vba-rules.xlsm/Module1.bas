@@ -103,7 +103,7 @@ Sub LoadData()
     End If
     ' Load data for csv export
     For d = 1 To DCount
-      eData(d, srow) = Rng2(L, d)
+      eData(d, rid) = Rng2(L, d)
     Next d
     ' Check for duplicates
     If Idu2(rid) <> 0 Then
@@ -132,7 +132,8 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
   Call OptimizeCode_Begin
   ' First line to search eRule
   First_line = 2
-  First_col = 4
+  First_col = 5
+  Strict_col = 13
   ' Column number of first id and comment (zero-based)
   Id_column = 0
   Com_column = 0
@@ -145,7 +146,7 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
   Dim oFile As Object
   Set oFile = fso.CreateTextFile(path + "\rules.csv")
   ' Write header
-  oFile.WriteLine "Set;Severity;Class;Group;Rule;Flag"
+  oFile.WriteLine "Set;Rid;Species;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;V2;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R"
   Sheets("Missing").UsedRange.ClearContents
   Sheets("Missing").Range("A1").Value = "Rid"
   'Sheets("Data").UsedRange.ClearContents
@@ -182,10 +183,13 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
       sRows = 0
       ssent = ssent + 1
       ' Write strict rule
-      If ws.Cells(1, 12).Font.Bold Then
-        oFile.WriteLine CStr(ws.Name) + ";0;;0;;;Strict;;0;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
+      myComment = ws.Cells(1, Strict_col).Comment.Text
+      myComment = Replace(myComment, vbCr, " ")
+      myComment = Replace(myComment, vbLf, " ")
+      If ws.Cells(1, Strict_col).Font.Bold Then
+        oFile.WriteLine CStr(ws.Name) + ";0;;0;;;Strict;;0;" + myComment + ";;;;;;;;;;;;;;"
       Else
-        oFile.WriteLine CStr(ws.Name) + ";0;;0;;;Strict;;1;This rule is set to 1 only when all other prohibited rules are not violated;;;;;;;;;;;;;;"
+        oFile.WriteLine CStr(ws.Name) + ";0;;0;;;Strict;;1;" + myComment + ";;;;;;;;;;;;;;"
       End If
       For Line = First_line To 1000
         rule = ws.Cells(Line, 3).Value
@@ -294,7 +298,7 @@ NextDiv:
       ";" + CStr(eSubRule(srow)) + ";" + CStr(eFlag(srow)) + ";" + _
       CStr(eGComment(srow)) + ";" + CStr(eComment(srow))
     For d = 1 To DCount
-      st = st + ";" + CStr(eData(d, srow))
+      st = st + ";" + CStr(eData(d, rid))
     Next d
     oFile.WriteLine st
     ' Write report
