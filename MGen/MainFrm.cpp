@@ -706,7 +706,6 @@ void CMainFrame::LoadResults(CString path) {
 		pGen->ly_debugexpect = ly_debugexpect;
 		m_config = pGen->m_config;
 		// Load configs
-		//pGen->LoadInstruments();
 		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		pGen->LoadConfig(dir + "\\" + fname + ".pl", 0);
 		// Load music
@@ -825,7 +824,6 @@ void CMainFrame::OnButtonGen()
 		pGen->m_pspeed = m_pspeed;
 		pGen->ly_debugexpect = ly_debugexpect;
 		// Initialize variables
-		//pGen->LoadInstruments();
 		pGen->LoadConfig("configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 		pGen->InitVectors();
 		// Initialize MIDI
