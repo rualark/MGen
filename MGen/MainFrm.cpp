@@ -700,7 +700,6 @@ void CMainFrame::LoadResults(CString path) {
 		if (pGen->save_format_version != MGR_VERSION) MessageBox("This file was created with a different file format " + pGen->save_format_version + "\nYou can get errors trying to load it. This application version " + CGLib::APP_VERSION + " works with file format version " + MGR_VERSION + ". Loading of older file formats is sometimes supported.", "Error");
 		m_algo_id = pGen->m_algo_id;
 		if (GetAlgoById(m_algo_id) > -1) m_algo = GetAlgoById(m_algo_id);
-		pGen->m_algo_insts = AlgInsts[m_algo];
 		pGen->m_algo_folder = AlgFolder[m_algo];
 		pGen->m_algo_name = AlgName[m_algo];
 		pGen->ly_debugexpect = ly_debugexpect;
@@ -817,7 +816,6 @@ void CMainFrame::OnButtonGen()
 		pGen->InitRandom();
 		pGen->WM_GEN_FINISH = WM_GEN_FINISH;
 		pGen->m_algo_id = m_algo_id;
-		pGen->m_algo_insts = AlgInsts[m_algo];
 		pGen->m_algo_folder = AlgFolder[m_algo];
 		pGen->m_algo_name = AlgName[m_algo];
 		pGen->m_config = m_config;
@@ -994,9 +992,6 @@ void CMainFrame::LoadAlgo()
 				}
 			}
 			// Load instruments
-			st2 = st.Tokenize("|", pos);
-			st2.Trim();
-			AlgInsts[AlgCount] = st2;
 			st2 = st.Tokenize("|", pos);
 			st2.Trim();
 			AlgComment[AlgCount] = st2;
@@ -1343,8 +1338,6 @@ UINT CMainFrame::GenThread(LPVOID pParam) {
 		"\n# This config was copied from file " + pGen->m_algo_folder + "\\" + pGen->m_config + ".pl\n");
 	CGLib::AppendLineToFile(pGen->as_dir + "\\" + pGen->as_fname + ".pl",
 		"# Originally autosaved at " + pGen->as_dir + "\n");
-	CGLib::AppendLineToFile(pGen->as_dir + "\\" + pGen->as_fname + ".pl",
-		"Instruments = " + pGen->m_algo_insts + " # Original instruments of current algorithm saved");
 	//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 	//WriteLog(1, dir + "\\config.pl");
 	// Export adapted MIDI if not playing

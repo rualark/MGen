@@ -1,13 +1,13 @@
-#ID  | Folder | MFI | XFI | Name                                | Group          | Instruments        | Comment
-101  | GenCF1 | 0   | 0   | Cantus firmus Generator             | Counterpoint   | Piano              | Cantus firmus generator. Evaluates all possible note combinations.
-111  | GenCA1 | 1   | 0   | Cantus firmus Analysis              | Counterpoint   | Piano,Piano        | Cantus firmus analysis. Load midi file and analyze.
-121  | GenCP1 | 0   | 0   | Counterpoint Generator              | Counterpoint   | Piano,Piano        | Counterpoint 2 voices, species 1-5
-122  | GenCP2 | 0   | 0   | Multivoice Counterpoint Generator   | Counterpoint   | Piano,Piano        | Counterpoint 1-8 voices, species 1-5
-112  | GenCA2 | 1   | 0   | Counterpoint Analysis               | Counterpoint   | Piano,Piano        | Counterpoint analysis. Load midi file and analyze.
-113  | GenCA3 | 0   | 1   | Multivoice Counterpoint Analysis    | Counterpoint   | Piano,Piano        | Counterpoint analysis. Load MusicXML file and analyze.
-1001 | GenRS1 | 0   | 0   | Random solo                         | Random         | Piano              | This is the most simple solo random generator algorithm
-1101 | GenRL1 | 0   | 0   | Random Line Distr                   | Random         | Piano    		| Solo random generator algo with linear distribution function (i.e. bigger numbers appear more often than smaller)
-2001 | GenMP1 | 1   | 0   | MIDI file viewer/player             | Viewer         |                    | Open and play MIDI file
+#ID  | Folder | MFI | XFI | Name                                | Group          | Comment
+101  | GenCF1 | 0   | 0   | Cantus firmus Generator             | Counterpoint   | Cantus firmus generator. Evaluates all possible note combinations.
+111  | GenCA1 | 1   | 0   | Cantus firmus Analysis              | Counterpoint   | Cantus firmus analysis. Load midi file and analyze.
+121  | GenCP1 | 0   | 0   | Counterpoint Generator              | Counterpoint   | Counterpoint 2 voices, species 1-5
+122  | GenCP2 | 0   | 0   | Multivoice Counterpoint Generator   | Counterpoint   | Counterpoint 1-8 voices, species 1-5
+112  | GenCA2 | 1   | 0   | Counterpoint Analysis               | Counterpoint   | Counterpoint analysis. Load midi file and analyze.
+113  | GenCA3 | 0   | 1   | Multivoice Counterpoint Analysis    | Counterpoint   | Counterpoint analysis. Load MusicXML file and analyze.
+1001 | GenRS1 | 0   | 0   | Random solo                         | Random         | This is the most simple solo random generator algorithm
+1101 | GenRL1 | 0   | 0   | Random Line Distr                   | Random         | Solo random generator algo with linear distribution function (i.e. bigger numbers appear more often than smaller)
+2001 | GenMP1 | 1   | 0   | MIDI file viewer/player             | Viewer         | Open and play MIDI file
 
 # This file contains all supported music generator algorithms
 # If you create new algorithm, you have to add it to this file
