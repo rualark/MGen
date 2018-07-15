@@ -27,9 +27,11 @@ High priotiry issues: https://github.com/rualark/MGen/issues?utf8=%E2%9C%93&q=is
 
 # Project plan:
 
-![MGen project plan](https://i.imgur.com/mVsHuJv.png "MGen project plan")
+![MGen project plan](https://i.imgur.com/iC9xqcZ.png "MGen project plan")
 
 Old project plans: 
+
+https://i.imgur.com/mVsHuJv.png
 
 https://i.imgur.com/VQZMe4v.png
 
