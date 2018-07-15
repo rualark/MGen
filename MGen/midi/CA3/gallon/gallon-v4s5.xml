@@ -1740,6 +1740,10 @@
     <voice>1</voice>
     <type>whole</type>
     <staff>1</staff>
+    <lyric default-y="-80" number="part3verse1" color="#000000">
+     <syllabic>single</syllabic>
+     <text>sp01</text>
+    </lyric>
    </note>
   </measure>
   <!--============== Part: P3, Measure: 14 ==============-->
