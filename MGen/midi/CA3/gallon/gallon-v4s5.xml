@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-07-12</encoding-date>
+   <encoding-date>2018-07-15</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -266,7 +266,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="117" default-y="10">
+   <note color="#000000" default-x="118" default-y="10">
     <pitch>
      <step>A</step>
      <octave>4</octave>
@@ -806,6 +806,14 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
+   <direction>
+    <direction-type>
+     <words default-x="77" default-y="38" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">multiline</words>
+     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">text</words>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note color="#000000" default-x="83">
     <pitch>
      <step>F</step>
@@ -885,7 +893,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="117">
+   <note color="#000000" default-x="118">
     <pitch>
      <step>F</step>
      <octave>4</octave>
@@ -1323,6 +1331,13 @@
     <type>half</type>
     <staff>1</staff>
    </note>
+   <direction>
+    <direction-type>
+     <words default-x="77" default-y="20" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">text at same,pos</words>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note color="#000000" default-x="83" default-y="10">
     <pitch>
      <step>A</step>
@@ -1338,6 +1353,10 @@
     <notations>
      <tied type="start" orientation="under" />
     </notations>
+    <lyric default-y="-80" number="part3verse1" color="#000000">
+     <syllabic>single</syllabic>
+     <text>ly,ric</text>
+    </lyric>
    </note>
   </measure>
   <!--============== Part: P3, Measure: 3 ==============-->
@@ -1411,7 +1430,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="117" default-y="-50">
+   <note color="#000000" default-x="118" default-y="-50">
     <pitch>
      <step>C</step>
      <octave>4</octave>
