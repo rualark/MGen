@@ -5,9 +5,9 @@ Minor altered  ;t ;sII   ;DTIII   ;S  ;D ;tsVI   ;DVII
 # 1 - Russian notation (detailed)
 Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
 Minor natural  ;t ;b5sII ;dtIII   ;s  ;d ;tsVI   ;dVII
-Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;DVII
+Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;b5DVII
 # 2 - Russian notation (detailed MAJOR / minor)
-Major          ;T ;sII   ;dtIII   ;S  ;D ;tsVI   ;b5dVII
+Major          ;T ;sII   ;dtIII   ;S  ;D ;tsVI   ;dVII
 Minor natural  ;t ;b5sII ;DTIII   ;s  ;d ;TSVI   ;DVII
 Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;b5dVII
 # 3 - International notation (Walter Piston)
