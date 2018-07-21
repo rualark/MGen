@@ -22,7 +22,7 @@ show_tempo = 1 # Set to 1 to show tempo
 show_graph0 = 0 # Set to 1 to show graph 0
 show_graph1 = 0 # Set to 1 to show graph 1
 show_graph2 = 0 # Set to 1 to show graph 2
-show_notecolors = 0 # Set to 1 to show note colors instead of instrument colors
+show_notecolors = 1 # Set to 1 to show note colors instead of instrument colors
 
 # The following settings cannot be changed in GUI. You can change them only in this file
 Autoplay = 0 # Set to 1 to start playback as soon as first notes are generated
