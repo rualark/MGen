@@ -442,7 +442,8 @@ void CMGenView::OnDraw(CDC* pDC)
 						// Show lining
 						if (mf->show_lining && note_lining) {
 							hatch = static_cast<HatchStyle>(note_lining);
-							ncolor2 = Color::Black;
+							ncolor2 = Color(127 - (127 - ncolor.GetAlpha()) / 6.0, ncolor.GetRed() / 6.0,
+								ncolor.GetGreen() / 6.0, ncolor.GetBlue() / 6.0);
 						}
 						else {
 							hatch = HatchStyleLightUpwardDiagonal;
@@ -479,7 +480,8 @@ void CMGenView::OnDraw(CDC* pDC)
 							// Show lining
 							if (mf->show_lining && pGen->lining.size() && pGen->lining[x][v]) {
 								hatch = static_cast<HatchStyle>(pGen->lining[x][v]);
-								ncolor2 = Color::Black;
+								ncolor2 = Color(127 - (127 - ncolor.GetAlpha()) / 6.0, ncolor.GetRed() / 6.0,
+									ncolor.GetGreen() / 6.0, ncolor.GetBlue() / 6.0);
 							}
 							else {
 								hatch = HatchStyleOutlinedDiamond;
