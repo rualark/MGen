@@ -10,7 +10,7 @@ show_min_severity = 0 # Minimum severity to highlight note
 # 0 - Show only rule name up to colon. Show only subrules starting with colon
 # 1 - Add subrules without colon
 # 2 - Add rule comments
-ly_rule_verbose = 2 
+ly_rule_verbose = 1
 
 # Rule parameters
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling (+2)
