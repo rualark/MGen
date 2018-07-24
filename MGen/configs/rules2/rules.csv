@@ -205,11 +205,11 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;503;45;;0;Melody;Leaps;Consecutive unidirectional leaps;2 x 3rds;0;;;10;;;2 x 3rds;92;30;1;;;;;;
 1;504;45;;100;Melody;Leaps;Consecutive unidirectional leaps;>2 x 3rds;0;;;10;;;3 x 3rds;10;0;1;;;;503;;
 1;505;45;;100;Melody;Leaps;Consecutive unidirectional leaps;2 x >3rds;0;;Two consecutive unidirectional leaps, while one of them is longer than 3rd;10;;;Unidir. leaps;64;34;1;;;;;;
-1;4;0;;0;Melody;Stepwise motion;Abuse of stepwise motion;>7 in any direction;0;There are more than X notes going stepwize in the same direction in this cantus firmus;Stepwise motion more than X notes in any direction in cantus;10;;;Long stepwise;0;0;;1;999;;;;
-1;5;0;;0;Melody;Stepwise motion;Abuse of stepwise motion;>4 in one direction;0;There are more than X notes going stepwize in the same direction in this cantus firmus;Stepwise motion more than X notes in one direction in cantus;10;;;Long stepwise;0;0;;1;;;;;
+1;302;0;;0;Melody;Stepwise motion;Abuse of stepwise motion;>7 in any direction;0;There are more than X notes going stepwize in the same direction in this cantus firmus;Stepwise motion more than X notes in any direction in cantus;10;;;Long stepwise;15;0;;;;;;;
 1;302;14;;50;Melody;Stepwise motion;Abuse of stepwise motion;>10 in any direction;0;;Stepwise motion more than X notes in any direction;10;;;Long stepwise;15;0;;;;;;;
 1;302;2;;50;Melody;Stepwise motion;Abuse of stepwise motion;>12 in any direction;0;;Stepwise motion more than X notes in any direction;10;;;Long stepwise;15;0;;;;;;;
 1;302;35;;50;Melody;Stepwise motion;Abuse of stepwise motion;>14 in any direction;0;;Stepwise motion more than X notes in any direction;10;;;Long stepwise;15;0;;;;;;;
+1;303;0;;0;Melody;Stepwise motion;Abuse of unidirectional stepwise motion;>4 in one direction;0;;Stepwise motion more than X notes in one direction in cantus;10;;;Long stepwise;6;0;;;;;;;
 1;303;14;;50;Melody;Stepwise motion;Abuse of unidirectional stepwise motion;>7 in one direction;0;;Stepwise motion more than X notes in one direction;10;;;Long stepwise;6;0;;;;;;;
 1;303;2;;50;Melody;Stepwise motion;Abuse of unidirectional stepwise motion;>7 in one direction;0;;Stepwise motion more than X notes in one direction;10;;;Long stepwise;6;0;;;;;;;
 1;303;35;;50;Melody;Stepwise motion;Abuse of unidirectional stepwise motion;>7 in one direction;0;;Stepwise motion more than X notes in one direction;10;;;Long stepwise;6;0;;;;;;;
