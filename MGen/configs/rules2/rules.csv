@@ -559,8 +559,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;251;;;100;Rhythm;Rhythm;Wrong suspension rhythm;1/4 + ?;0;Start (left) and end (right) of suspension note;;;;;;8;8;1;;;;;;
 1;139;;;0;Rhythm;Rhythm;Suspension;not last 3;-1;;Suspension before N last measures {sp2,3};;;;;17;11;1;;;;;;
 1;341;;;0;Rhythm;Rhythm;Suspension;each 3 meas.;0;;At least one suspension is needed each X measures {sp5};;;;;43;0;;1;;;;1;
-1;301;;;0;Rhythm;Rhythm;Too many notes in one measure;5 after sus.;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;;;22;3;1;;;;;;
-1;245;;;50;Rhythm;Rhythm;Too many notes in one measure;5 without sus.;0;;;11;;;!srn! notes;36;10;1;;;;;;
+1;301;;;0;Rhythm;Rhythm;Too many notes in one measure;5 notes after sus.;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;;;22;3;1;;;;;;
+1;245;;;50;Rhythm;Rhythm;Too many notes in one measure;5 notes without sus.;0;;;11;;;!srn!;36;10;1;;;;;;
 1;246;;;100;Rhythm;Rhythm;Too many notes in one measure;>5;0;;;11;;;!srn! notes;13;2;1;;;;245,301;;
 1;225;;;0;Rhythm;Ties;Tie;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
 1;30;;;100;Rhythm;Ties;Tie;cantus;0;;Slurs are prohibited in cantus;;;;;0;0;1;;;;;;
