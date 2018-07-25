@@ -1,11 +1,5 @@
 Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;V2;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
-1;49;;;100;Cantus;Border;First note is not the tonic;V in upper CF;0;Only for cantus firmus;Note V in higher voice;;;;;5;1;1;;;;;;
-1;90;;;100;Cantus;Border;First note is not the tonic;III in upper CF;0;Only for cantus firmus;Note III in higher voice;;;;;5;1;1;;;;;;
-1;33;;;100;Cantus;Border;First note is not the tonic;Other;0;Only for cantus firmus;Any note except I in lower voice. Any note except I, III, V in higher voice.;;;;;55;5;1;;;;;;
-1;14;;;0;Cantus;Border;3rd to last note;I/III/V;-1;Only for cantus firmus;;;;;;185;26;1;;;;;;
-1;34;;;0;Cantus;Border;3rd to last note;leading-tone;-1;Only for cantus firmus;;;;;;40;5;1;;;;;;
-1;51;;;0;Cantus;Border;2nd to last note;not VII/II;-1;Only for cantus firmus;;;;;;17;2;1;;;;;;
-1;13;;;0;Cantus;Border;2nd to last note;not V/VII/II;-1;Only for cantus firmus;;;;;;55;10;1;;;;;;
+1;33;;;100;Cantus;Border;First note is not the tonic;not tonic;0;Only for cantus firmus;;;;;;55;5;1;;;;;;
 1;50;;;100;Cantus;Border;Last note is not the tonic;not tonic;0;Only for cantus firmus;;;;;;17;1;1;;;;;;
 1;52;;;0;Cantus;Border;Resolution of the penultimate note;VII not to I;0;;VII penultimate note resolves not to I note;12;;;res;12;1;;;;;;;
 1;87;;;0;Cantus;Border;Resolution of the penultimate note;IV not to III;0;;IV penultimate note resolves not to III note;12;;;res;48;1;;;;;;;
@@ -562,8 +556,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;301;;;0;Rhythm;Rhythm;Too many notes in one measure;5 notes after sus.;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;;;22;3;1;;;;;;
 1;245;;;50;Rhythm;Rhythm;Too many notes in one measure;5 notes without sus.;0;;;11;;;!srn!;36;10;1;;;;;;
 1;246;;;100;Rhythm;Rhythm;Too many notes in one measure;>5;0;;;11;;;!srn! notes;13;2;1;;;;245,301;;
-1;225;;;0;Rhythm;Ties;Tie;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
-1;30;;;100;Rhythm;Ties;Tie;cantus;0;;Slurs are prohibited in cantus;;;;;0;0;1;;;;;;
+1;225;;;0;Rhythm;Ties;Note repeat;suspension;1;;{sp3,4,5};;;;;400;4;;;;;;;
+1;30;;;100;Rhythm;Ties;Note repeat;cantus;0;;Slurs are prohibited in cantus;;;;;0;0;1;;;;;;
 1;93;1;;0;Rhythm;Ties;Note is repeated: in 10 notes;1;0;;;;;;;36;0;;;;1;;;
 1;94;1;;50;Rhythm;Ties;Note is repeated: in 10 notes;2;0;;;;;;;6;0;;;;1;93;;
 1;95;1;;50;Rhythm;Ties;Note is repeated: in 10 notes;>2;0;;;;;;;22;0;;;;1;93,94;;
