@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-07-17</encoding-date>
+   <encoding-date>2018-07-25</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -147,7 +147,7 @@
    <print new-page="yes">
     <system-layout>
      <system-margins>
-      <left-margin>144</left-margin>
+      <left-margin>143</left-margin>
       <right-margin>0</right-margin>
      </system-margins>
      <top-system-distance>218</top-system-distance>
@@ -262,7 +262,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 4 ==============-->
-  <measure number="4" width="175">
+  <measure number="4" width="176">
    <note color="#000000" default-x="15" default-y="5">
     <pitch>
      <step>G</step>
@@ -277,7 +277,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="55" default-y="10">
+   <note color="#000000" default-x="56" default-y="10">
     <pitch>
      <step>A</step>
      <octave>4</octave>
@@ -289,7 +289,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="95" default-y="-55">
+   <note color="#000000" default-x="96" default-y="-55">
     <pitch>
      <step>B</step>
      <octave>4</octave>
@@ -301,7 +301,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="135" default-y="-50">
+   <note color="#000000" default-x="136" default-y="-50">
     <pitch>
      <step>C</step>
      <octave>5</octave>
@@ -732,7 +732,7 @@
    <print new-page="yes">
     <system-layout>
      <system-margins>
-      <left-margin>144</left-margin>
+      <left-margin>143</left-margin>
       <right-margin>0</right-margin>
      </system-margins>
     </system-layout>
@@ -870,7 +870,7 @@
    </note>
   </measure>
   <!--============== Part: P2, Measure: 4 ==============-->
-  <measure number="4" width="175">
+  <measure number="4" width="176">
    <note color="#000000" default-x="15" default-y="-5">
     <pitch>
      <step>E</step>
@@ -883,7 +883,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="95" default-y="5">
+   <note color="#000000" default-x="96" default-y="5">
     <pitch>
      <step>G</step>
      <alter>1</alter>
@@ -1244,7 +1244,7 @@
    <print new-page="yes">
     <system-layout>
      <system-margins>
-      <left-margin>144</left-margin>
+      <left-margin>143</left-margin>
       <right-margin>0</right-margin>
      </system-margins>
     </system-layout>
@@ -1385,7 +1385,7 @@
    </note>
   </measure>
   <!--============== Part: P3, Measure: 4 ==============-->
-  <measure number="4" width="175">
+  <measure number="4" width="176">
    <note color="#000000" default-x="15" default-y="-55">
     <pitch>
      <step>B</step>
@@ -1398,7 +1398,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="95" default-y="-50">
+   <note color="#000000" default-x="96" default-y="-50">
     <pitch>
      <step>C</step>
      <octave>4</octave>
@@ -1410,7 +1410,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="135" default-y="-55">
+   <note color="#000000" default-x="136" default-y="-55">
     <pitch>
      <step>B</step>
      <octave>3</octave>
@@ -1781,7 +1781,7 @@
    <print new-page="yes">
     <system-layout>
      <system-margins>
-      <left-margin>144</left-margin>
+      <left-margin>143</left-margin>
       <right-margin>0</right-margin>
      </system-margins>
     </system-layout>
@@ -1859,7 +1859,7 @@
    </note>
   </measure>
   <!--============== Part: P4, Measure: 4 ==============-->
-  <measure number="4" width="175">
+  <measure number="4" width="176">
    <note color="#000000" default-x="15">
     <pitch>
      <step>E</step>
