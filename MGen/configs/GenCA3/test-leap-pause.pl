@@ -8,4 +8,4 @@ include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-07-21 18:35:12
-MusicXML_file = midi\CA3\test\test-leap-pause.xml
+MusicXML_file = music\Counterpoint 3 voices\test\test-leap-pause.xml

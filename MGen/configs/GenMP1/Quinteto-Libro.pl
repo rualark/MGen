@@ -5,7 +5,7 @@
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-05-06 19:41:08
-Midi_file = midi\Music\private\Emili Gil\Quinteto-Libro.mid
+Midi_file = music\Music\private\Emili Gil\Quinteto-Libro.mid
 
 midifile_in_mul = 16 # How much you want to decrease minimum step length
 AutoLegato = 0 # Enables auto legato for all instruments, converting touching notes into legato transitions (can be overridden for particular instruments). Usually can be used if you do not use slurs in your score and want all adjacent notes to be legato

@@ -9,7 +9,7 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-03-13 18:14:50
-Midi_file = midi\Music\Shegolev\quartet\01 - Allegro-arpeg.mid
+Midi_file = music\Music\Shegolev\quartet\01 - Allegro-arpeg.mid
 
 Instruments = "Violin,Violin,Viola,Cello"
 toload_time = "0"

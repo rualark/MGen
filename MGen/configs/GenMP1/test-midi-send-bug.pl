@@ -8,7 +8,7 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-24 16:54:26
-Midi_file = midi\Music\test\test-midi-send-bug.mid
+Midi_file = music\Music\test\test-midi-send-bug.mid
 
 Instruments = "Clarinet,Piano/Soft,Piano,Piano"
 

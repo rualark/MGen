@@ -8,4 +8,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-21 18-39-32
-Midi_file = midi\Music\arkhipenko\beyond-t0.mid
+Midi_file = music\Music\arkhipenko\beyond-t0.mid

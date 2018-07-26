@@ -8,6 +8,6 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-29 01:13:45
-Midi_file = midi\Music\test\test-export.mid
+Midi_file = music\Music\test\test-export.mid
 
 Instruments = "Flute,Trumpet,Timpani,Bass drum,Harp,Piano,Violin"

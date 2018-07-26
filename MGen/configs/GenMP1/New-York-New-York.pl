@@ -9,7 +9,7 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-06-05 20:32:06
-Midi_file = midi\Music\private\Shegolev\New-York-New-York.mid
+Midi_file = music\Music\private\Shegolev\New-York-New-York.mid
 
 Instruments = "Tenor sax,Alto sax,Alto sax,Tenor sax,Tenor sax,Baritone sax,Trumpet,Trumpet,Trumpet,Trumpet,Trombone,Trombone,Trombone,Bass trombone,Violins section,Violins section,Violas section,Cellos section,Piano,Contrabasses section/Pizzicato,Jazz drum set"
 

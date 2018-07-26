@@ -8,6 +8,6 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-17 20:35:36
-Midi_file = midi\Music\QM\P_O_J_harp.mid
+Midi_file = music\Music\QM\P_O_J_harp.mid
 
 Instruments = Harp,Violin

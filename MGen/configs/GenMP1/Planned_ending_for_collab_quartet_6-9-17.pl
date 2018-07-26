@@ -8,7 +8,7 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-22 17:45:09
-Midi_file = midi\Music\Quinn Mason\Planned_ending_for_collab_quartet_6-9-17.mid
+Midi_file = music\Music\Quinn Mason\Planned_ending_for_collab_quartet_6-9-17.mid
 
 Instruments = "Violin,Violin,Viola,Cello"
 MidiFileType = "Sibelius"

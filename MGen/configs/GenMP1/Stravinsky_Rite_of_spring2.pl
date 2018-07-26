@@ -8,4 +8,4 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-28 13:00:19
-Midi_file = midi\Music\Stravinsky\Stravinsky_Rite_of_spring2.mid
+Midi_file = music\Music\Stravinsky\Stravinsky_Rite_of_spring2.mid

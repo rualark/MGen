@@ -9,7 +9,7 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-03-01 00:26:12
-Midi_file = midi\Music\Konstantin Shvelov\Gloria_Di_Sol_Concertino.mid
+Midi_file = music\Music\Konstantin Shvelov\Gloria_Di_Sol_Concertino.mid
 MidiFileType = "Sibelius"
 reverb_mix = "40"
 Instruments = "Organ,Violins section,Violins section,Violas section,Cellos section"

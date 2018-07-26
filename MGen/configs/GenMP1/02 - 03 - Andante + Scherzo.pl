@@ -8,6 +8,6 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-07 20:11:07
-Midi_file = midi\Music\shegolev\quartet\02 - 03 - Andante + Scherzo.mid
+Midi_file = music\Music\shegolev\quartet\02 - 03 - Andante + Scherzo.mid
 
 Instruments = Violin,Viola,Cello,Contrabass

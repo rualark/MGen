@@ -9,7 +9,7 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-06-05 20:33:45
-Midi_file = midi\Music\test\test-smb.mid
+Midi_file = music\Music\test\test-smb.mid
 
 Instruments = Trombone
 

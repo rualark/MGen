@@ -9,6 +9,6 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-06-03 19:50:52
-Midi_file = midi\Music\test\test-phrase.mid
+Midi_file = music\Music\test\test-phrase.mid
 
 Instruments = Celesta

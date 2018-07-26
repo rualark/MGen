@@ -9,6 +9,6 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-04-27 19:20:58
-Midi_file = midi\Music\test\test-tempo.mid
+Midi_file = music\Music\test\test-tempo.mid
 
 rnd_tempo = 100

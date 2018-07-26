@@ -8,4 +8,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-18 18:37:41
-Midi_file = midi\Music\test\test-export-sib.mid
+Midi_file = music\Music\test\test-export-sib.mid

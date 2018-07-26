@@ -8,7 +8,7 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-20 01:12:57
-Midi_file = midi\Music\test\test-dyn-musescore.mid
+Midi_file = music\Music\test\test-dyn-musescore.mid
 
 Instruments = Trumpet
 "Trumpet/Normal/1": dyn_range = 50-100

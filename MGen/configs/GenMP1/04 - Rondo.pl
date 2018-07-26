@@ -8,6 +8,6 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-28 22:40:26
-Midi_file = midi\Music\Shegolev\quartet\04 - Rondo.mid
+Midi_file = music\Music\Shegolev\quartet\04 - Rondo.mid
 
 Instruments = "Violin,Violin,Viola,Contrabass"

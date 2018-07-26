@@ -8,6 +8,6 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-08-07 23-31-49
-Midi_file = midi\Music\arkhipenko\cloud.mid
+Midi_file = music\Music\arkhipenko\cloud.mid
 
 Instruments = Trumpet,Violin,Viola,Cello,Contrabass

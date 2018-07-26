@@ -1,7 +1,7 @@
 include "include/CA1.pl"
 
 # Analysis
-Midi_file = midi\Melody\test\test-culm.mid
+Midi_file = music\Melody\test\test-culm.mid
 
 cantus_high = 1
 corrections = 1 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.

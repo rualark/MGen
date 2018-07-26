@@ -8,4 +8,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-04 18:12:43
-Midi_file = midi\Music\test\test-finale-drumset.mid
+Midi_file = music\Music\test\test-finale-drumset.mid

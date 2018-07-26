@@ -8,4 +8,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-18 18:45:36
-Midi_file = midi\Music\test\test-pitch-dynamics.mid
+Midi_file = music\Music\test\test-pitch-dynamics.mid

@@ -8,4 +8,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-16 22:48:30
-Midi_file = midi\Music\Shegolev\Страна моя с лигами.mid
+Midi_file = music\Music\Shegolev\Страна моя с лигами.mid

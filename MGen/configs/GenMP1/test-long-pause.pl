@@ -8,4 +8,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-05-03 23-04-30
-Midi_file = midi\Music\test\test-long-pause.mid
+Midi_file = music\Music\test\test-long-pause.mid

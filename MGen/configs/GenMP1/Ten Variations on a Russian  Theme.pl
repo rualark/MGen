@@ -9,6 +9,6 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-03-25 00:13:15
-Midi_file = midi\Music\Shegolev\Ten Variations on a Russian  Theme.mid
+Midi_file = music\Music\Shegolev\Ten Variations on a Russian  Theme.mid
 
 Instruments = Flute

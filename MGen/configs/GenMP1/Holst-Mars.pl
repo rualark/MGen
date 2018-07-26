@@ -9,7 +9,7 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-03-04 14:10:34
-Midi_file = midi\Music\Holst\Holst-Mars.mid
+Midi_file = music\Music\Holst\Holst-Mars.mid
 
 "Harp/Harp/24": Volume = "84"
 "Harp/Harp/25": Volume = "84"

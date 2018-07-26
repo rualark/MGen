@@ -8,7 +8,7 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-31 17:23:50
-Midi_file = midi\Music\Shegolev\Tico Tico_inames.mid
+Midi_file = music\Music\Shegolev\Tico Tico_inames.mid
 
 Instruments = "Violin/Arco,Violin,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass/Arco,Piano,Piano"
 

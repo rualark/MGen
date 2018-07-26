@@ -8,7 +8,7 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-17 02:48:27
-Midi_file = midi\Music\Quinn Mason\Little_Lady_Overture_-Excerpts.mid
+Midi_file = music\Music\Quinn Mason\Little_Lady_Overture_-Excerpts.mid
 
 MidiFileType = "Sibelius"
 Instruments = "Piccolo/Normal,Flute/Normal,Flute/Normal,Oboe/Normal,Oboe/Normal,Clarinet/Normal,Clarinet/Normal,Bassoon/Normal,Bassoon/Normal,Horn/Normal,Horn/Normal,Horn/Normal,German trumpet,German trumpet/Normal,Valve trombone/Normal,Trombone/Normal,Bass trombone/Normal,Tuba/Normal,Timpani/Long hits,Triangle/Hit,Cymbals/Long hit,Harp,Violins section/Arco,Violins section/Arco,Violas section/Arco,Cellos section/Arco,Contrabasses section/Arco"

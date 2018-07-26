@@ -9,7 +9,7 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-03-07 20:44:43
-Midi_file = midi\Music\test\test-divisi.mid
+Midi_file = music\Music\test\test-divisi.mid
 
 Instruments = Violin
 

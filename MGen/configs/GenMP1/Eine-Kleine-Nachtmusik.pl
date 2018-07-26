@@ -9,7 +9,7 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-06-26 02:29:53
-Midi_file = midi\Music\Mozart\Eine-Kleine-Nachtmusik.mid
+Midi_file = music\Music\Mozart\Eine-Kleine-Nachtmusik.mid
 
 MidiFileType = "Finale"
 Instruments = "Violins section,Violins section,Violas section,Cellos section,Contrabasses section"

@@ -8,5 +8,5 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-05-03 14-54-41
-Midi_file = midi\Music\test\poly-slur-test.mid
+Midi_file = music\Music\test\poly-slur-test.mid
 Instruments = Violin,Piano,Trumpet

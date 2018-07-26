@@ -8,6 +8,6 @@ include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-07-21 23:11:55
-MusicXML_file = midi\Melody\test\test-leaps.xml
+MusicXML_file = music\Melody\test\test-leaps.xml
 
 species = 0

@@ -8,7 +8,7 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-18 02:47:21
-Midi_file = midi\Music\Tchaikovsky\Nutcracker_Suite_II._March.mid
+Midi_file = music\Music\Tchaikovsky\Nutcracker_Suite_II._March.mid
 
 MidiFileType = "MuseScore"
 Instruments = "Flute,Flute,Flute,Oboe,Clarinet,Clarinet,Bassoon,Tenor sax,Horn/Normal,Bass trombone/Normal,Cymbals,Violin/Arco,Violin/Arco,Viola/Arco,Cello/Arco,Contrabass/Arco"

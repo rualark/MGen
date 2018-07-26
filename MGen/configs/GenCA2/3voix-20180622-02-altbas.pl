@@ -8,7 +8,7 @@ include "include/CA2.pl"
 
 # This config was created from default config file configs\GenCA2.pl
 # Created at 2018-06-29 16:41:46
-Midi_file = midi\Counterpoint\known\3voix-20180622-02-altbas.mid
+Midi_file = music\Counterpoint 2 voices\known\3voix-20180622-02-altbas.mid
 
 corrections = 1
 

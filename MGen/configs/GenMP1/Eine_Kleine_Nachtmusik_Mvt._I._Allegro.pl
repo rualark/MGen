@@ -8,6 +8,6 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-27 14:19:38
-Midi_file = midi\Music\Mozart\Eine_Kleine_Nachtmusik_Mvt._I._Allegro.mid
+Midi_file = music\Music\Mozart\Eine_Kleine_Nachtmusik_Mvt._I._Allegro.mid
 
 Instruments = "Violin/Arco,Violin/Arco,Viola/Arco,Cello"

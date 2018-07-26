@@ -3,7 +3,7 @@ AutoLegato = 0 # Enables auto legato for all instruments, converting touching no
 AutoNonLegato = 0 # Enables automatic random replacement of legato transitions with nonlegato (frequency is controlled by nonlegato_freq in each instrument). Usually is used with AutoLegato.
 unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same instruments
 
-Midi_file = midi\Music\test\test-soundcheck.mid
+Midi_file = music\Music\test\test-soundcheck.mid
 MidiFileType = "Sibelius"
 Instruments = "Flute"
 # Example result = "Dyn0"

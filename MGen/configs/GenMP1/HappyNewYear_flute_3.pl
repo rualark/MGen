@@ -8,7 +8,7 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-26 21:36:18
-Midi_file = midi\Music\Andrey Yanochkin\HappyNewYear_flute_3.mid
+Midi_file = music\Music\Andrey Yanochkin\HappyNewYear_flute_3.mid
 
 Instruments = "Tuba/Normal"
 

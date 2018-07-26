@@ -9,7 +9,7 @@ reverb_mix = 30 # Control reverb mix from 0 to 100% (0% is totally dry, 100% is 
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-27 23:40:46
-Midi_file = midi\Music\Konstantin Shvelov\Kopiya_gloria_di_sol_2_Double2.mid
+Midi_file = music\Music\Konstantin Shvelov\Kopiya_gloria_di_sol_2_Double2.mid
 
 Instruments = "Flute,Oboe,Clarinet,Trumpet,Horn,Trombone,Tuba,Violin,Violin,Viola,Cello,Contrabass"
 MidiFileType = "Sibelius"

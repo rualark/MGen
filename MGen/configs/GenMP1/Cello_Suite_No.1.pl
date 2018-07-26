@@ -10,6 +10,6 @@ GrowNotes = 1
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-27 17:12:52
-Midi_file = midi\Music\Bach\Cello_Suite_No.1.mid
+Midi_file = music\Music\Bach\Cello_Suite_No.1.mid
 
 Instruments = Cello

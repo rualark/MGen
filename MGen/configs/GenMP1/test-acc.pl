@@ -9,7 +9,7 @@ AutoLegato = 1
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-24 00:00:25
-Midi_file = midi\Music\test\test-acc.mid
+Midi_file = music\Music\test\test-acc.mid
 
 Instruments = Flute
 "Flute/Normal": rand_pos = 40-0

@@ -8,6 +8,6 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-31 01:59:23
-Midi_file = midi\Music\test\test-pedal.mid
+Midi_file = music\Music\test\test-pedal.mid
 
 Instruments = "Piano/Hardest"

@@ -8,6 +8,6 @@ include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-07-19 22:12:11
-MusicXML_file = midi\Melody\test\test-minor-alter.xml
+MusicXML_file = music\Melody\test\test-minor-alter.xml
 
 species = 0

@@ -1,6 +1,6 @@
 include "include/CA2.pl"
 
 # Analysis
-Midi_file = "midi\Counterpoint\known\known-cp5.mid" # Path and file name of imported midi file
+Midi_file = "music\Counterpoint 2 voices\known\known-cp5.mid" # Path and file name of imported midi file
 
 corrections = 0 # Number of corrections to show. Set to 0 to disable corrections. Does not work for swa.

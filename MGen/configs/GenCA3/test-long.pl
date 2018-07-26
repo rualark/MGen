@@ -8,4 +8,4 @@ include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-07-24 22:53:43
-MusicXML_file = midi\Counterpoint\test\test-long.xml
+MusicXML_file = music\Counterpoint 2 voices\test\test-long.xml

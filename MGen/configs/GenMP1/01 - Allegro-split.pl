@@ -8,6 +8,6 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-23 13:17:55
-Midi_file = midi\Music\shegolev\quartet\01 - Allegro-split.mid
+Midi_file = music\Music\shegolev\quartet\01 - Allegro-split.mid
 
 Instruments = "Piano,Piano,Piano,Violin"

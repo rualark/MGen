@@ -8,5 +8,5 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-30 11-47-38
-Midi_file = midi\Music\arkhipenko\Mountain blues.mid
+Midi_file = music\Music\arkhipenko\Mountain blues.mid
 Instruments = Tuba,Violin,Piano

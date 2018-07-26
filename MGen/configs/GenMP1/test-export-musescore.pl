@@ -11,6 +11,6 @@ MidiFileType = MuseScore
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-27 16:38:59
-Midi_file = midi\Music\test\test-export-musescore.mid
+Midi_file = music\Music\test\test-export-musescore.mid
 
 Instruments = Flute,Piano,Violin,Trumpet

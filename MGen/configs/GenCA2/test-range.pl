@@ -8,4 +8,4 @@ include "include/CA2.pl"
 
 # This config was created from default config file configs\GenCA2.pl
 # Created at 2018-04-09 18:34:51
-Midi_file = midi\Counterpoint\test\test-range.mid
+Midi_file = music\Counterpoint 2 voices\test\test-range.mid

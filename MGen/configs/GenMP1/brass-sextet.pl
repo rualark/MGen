@@ -8,6 +8,6 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-18 22:39:02
-Midi_file = midi\Music\QM\brass-sextet.mid
+Midi_file = music\Music\QM\brass-sextet.mid
 
 Instruments = "Horn,Horn,Trumpet,Trumpet,Trombone,Tuba"

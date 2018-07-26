@@ -10,7 +10,7 @@ unison_mute = 1 # 0 - do not mute unisons; 1 - mute unisons in voices with same 
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-18 13:37:09
-Midi_file = midi\Counterpoint\3 voices\MTE 1111 - Exemples de fleuri.mid
+Midi_file = music\Counterpoint 2 voices\3 voices\MTE 1111 - Exemples de fleuri.mid
 
 
 MidiFileType = "Finale"

@@ -1,7 +1,7 @@
 include "include/CP1.pl"
 
 # Analysis
-Midi_file = midi\Melody\good\good-cf-maj.mid # Path and file name of imported midi file
+Midi_file = music\Melody\good\good-cf-maj.mid # Path and file name of imported midi file
 
 method = swa
 

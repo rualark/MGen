@@ -8,4 +8,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-27 15:18:24
-Midi_file = midi\Music\Mozart\Mozart_-_Lacrimosa_from_the_Requiem_in_D_minor.mid
+Midi_file = music\Music\Mozart\Mozart_-_Lacrimosa_from_the_Requiem_in_D_minor.mid

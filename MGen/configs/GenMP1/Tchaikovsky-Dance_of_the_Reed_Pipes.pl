@@ -9,7 +9,7 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-10 14:20:16
-Midi_file = midi\Music\Tchaikovsky\Tchaikovsky-Dance_of_the_Reed_Pipes.mid
+Midi_file = music\Music\Tchaikovsky\Tchaikovsky-Dance_of_the_Reed_Pipes.mid
 
 MidiFileType = MuseScore
 
