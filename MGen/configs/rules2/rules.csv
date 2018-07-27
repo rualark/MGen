@@ -534,11 +534,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;239;;;0;Rhythm;Rhythm;Anapaest;tie forward;1;1/2 after 1/4 or 1/8 in measure;1/2 is slurred forward;11;;;Anapaest;71;18;1;;;;;;
 1;278;;;0;Rhythm;Rhythm;Anapaest;tie back;1;1/2 after 1/4 or 1/8 in measure;First note in measure is slurred to previous measure;11;;;Anapaest;6;1;1;;;;;;
 1;240;;;50;Rhythm;Rhythm;Anapaest;inside;0;1/2 after 1/4 or 1/8 in measure;Before penultimate measure;11;;;Anapaest;11;9;1;;;;239;;
-1;514;10;;50;Rhythm;Rhythm;Wrong note value for this species;wrong;0;Except last note;;;;;;;;;;;;;;
-1;514;2;;50;Rhythm;Rhythm;Wrong note value for this species;wrong;0;;;;;;;;;;;;;;;
-1;514;3;;50;Rhythm;Rhythm;Wrong note value for this species;wrong;0;;;;;;;;;;;;;;;
-1;514;4;;50;Rhythm;Rhythm;Wrong note value for this species;wrong;0;;;;;;;;;;;;;;;
-1;514;5;;50;Rhythm;Rhythm;Wrong note value for this species;wrong;0;Except last note;;;;;;;;;;;;;;
+1;514;;;50;Rhythm;Rhythm;Wrong note value for this species;value;0;Except last note;;;;;;;;;;;;;;
+1;515;;;50;Rhythm;Rhythm;Wrong note position for this species;position;0;;;;;;;;;;;;;;;
 1;41;;;0;Rhythm;Rhythm;Note lasts for too many measures;>2;-1;;Note crosses more than two measures;;;;;15;12;1;;;;;;
 1;267;;;0;Rhythm;Rhythm;Last note is not a whole;not whole;0;;;;;;;54;21;1;;;1;;;
 1;252;;;50;Rhythm;Rhythm;Last note is not a whole;1/4;0;;;;;;;29;8;1;;;1;;;
@@ -564,9 +561,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;93;2;;0;Rhythm;Ties;Note is repeated: in 10 notes;1;-1;;;;;;;36;0;;;;1;;;
 1;94;2;;50;Rhythm;Ties;Note is repeated: in 10 notes;2;0;;;;;;;6;0;;;;1;93;;
 1;95;2;;50;Rhythm;Ties;Note is repeated: in 10 notes;>2;0;;;;;;;22;0;;;;1;93,94;;
-1;93;3;;50;Rhythm;Ties;Note is repeated: in 10 notes;1;0;;;;;;;36;0;;;;1;;;
-1;94;3;;50;Rhythm;Ties;Note is repeated: in 10 notes;2;0;;;;;;;6;0;;;;1;93;;
-1;95;3;;50;Rhythm;Ties;Note is repeated: in 10 notes;>2;0;;;;;;;22;0;;;;1;93,94;;
 1;188;4;;0;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;1;0;Except interruption of syncopation between penultimate and last measure;One syncopation is interrupted, resulting in two separate half notes;;;;;21;2;;;;1;;;
 1;189;4;;50;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;2;0;Except interruption of syncopation between penultimate and last measure;;;;;;15;0;;;;1;188;;
 1;190;4;;50;Rhythm;Ties;Frequent interruption of syncopation: within 10 notes;>2;0;Except interruption of syncopation between penultimate and last measure;;;;;;3;0;;;;1;188,189;;
