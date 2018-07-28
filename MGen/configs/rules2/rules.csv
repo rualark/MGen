@@ -522,6 +522,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;234;;;50;Rhythm;Rhythm;Non-permitted rhythm;1/2. upbeat;0;;Dotted half note on upbeat;11;;;Rhythm;8;8;1;;;;;;
 1;235;;;50;Rhythm;Rhythm;Non-permitted rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;;;22;19;1;;;;;;
 1;236;;;50;Rhythm;Rhythm;Non-permitted rhythm;whole inside;0;;Downbeat whole note inside counterpoint - not first or last note;;;;;38;12;1;;;;;;
+1;517;;;50;Rhythm;Rhythm;Non-permitted rhythm;pause inside;0;;Pause inside counterpoint - not before first note;;;;;;;;;;;;;
 1;226;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;1st beat;0;;1/8 note on beat 1;;;;;12;7;1;;;;;;
 1;227;;;0;Rhythm;Rhythm;Wrong usage of eighth notes;2nd beat;1;;1/8 note on beat 2;;;;;47;5;1;;;;;;
 1;228;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;3rd beat;0;;1/8 note on beat 3;;;;;25;8;1;;;;;;
