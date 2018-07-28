@@ -7,7 +7,7 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-07-27</encoding-date>
+   <encoding-date>2018-07-28</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -154,7 +154,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 2 ==============-->
-  <measure number="2" width="176">
+  <measure number="2" width="177">
    <attributes />
    <direction>
     <direction-type>
@@ -187,7 +187,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="95" default-y="-50">
+   <note color="#000000" default-x="96" default-y="-50">
     <pitch>
      <step>C</step>
      <octave>5</octave>
@@ -231,7 +231,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 3 ==============-->
-  <measure number="3" width="176">
+  <measure number="3" width="177">
    <attributes />
    <note color="#000000" default-x="15" default-y="-45">
     <pitch>
@@ -257,7 +257,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="95" default-y="-35">
+   <note color="#000000" default-x="96" default-y="-35">
     <pitch>
      <step>F</step>
      <octave>5</octave>
@@ -297,7 +297,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 4 ==============-->
-  <measure number="4" width="176">
+  <measure number="4" width="177">
    <attributes />
    <note color="#000000" default-x="15" default-y="-25">
     <pitch>
@@ -323,7 +323,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="95" default-y="-35">
+   <note color="#000000" default-x="96" default-y="-35">
     <pitch>
      <step>F</step>
      <octave>5</octave>
@@ -363,41 +363,33 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 5 ==============-->
-  <measure number="5" width="179">
+  <measure number="5" width="177">
    <attributes />
-   <direction>
-    <direction-type>
-     <words default-x="9" default-y="20" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Wrong rhythm</words>
-    </direction-type>
-    <voice>1</voice>
-    <staff>1</staff>
-   </direction>
    <note color="#000000" default-x="15" default-y="-45">
     <pitch>
      <step>D</step>
      <octave>5</octave>
     </pitch>
-    <duration>384</duration>
+    <duration>256</duration>
     <instrument id="P1-I1" />
     <voice>1</voice>
     <type>quarter</type>
-    <dot />
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="69" default-y="-40">
+   <note color="#000000" default-x="55" default-y="-40">
     <pitch>
      <step>E</step>
      <octave>5</octave>
     </pitch>
-    <duration>128</duration>
+    <duration>256</duration>
     <instrument id="P1-I1" />
     <voice>1</voice>
-    <type>eighth</type>
+    <type>quarter</type>
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="98" default-y="-35">
+   <note color="#000000" default-x="96" default-y="-35">
     <pitch>
      <step>F</step>
      <octave>5</octave>
@@ -409,7 +401,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="139" default-y="-30">
+   <note color="#000000" default-x="136" default-y="-30">
     <pitch>
      <step>G</step>
      <octave>5</octave>
@@ -437,7 +429,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 6 ==============-->
-  <measure number="6" width="176">
+  <measure number="6" width="177">
    <attributes />
    <note color="#000000" default-x="15" default-y="-35">
     <pitch>
@@ -463,7 +455,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="95" default-y="-45">
+   <note color="#000000" default-x="96" default-y="-45">
     <pitch>
      <step>D</step>
      <octave>5</octave>
