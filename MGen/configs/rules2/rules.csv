@@ -334,10 +334,10 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;172;;;100;Harmony;Minor;Dim or aug harmonic interval;VI<->VII#;0;If allowed, will be considered dissonance;Non-harmonic allowed;2;1;;;0;0;1;;;;;;
 1;173;;;100;Harmony;Minor;Dim or aug harmonic interval;VI#<->III;0;If allowed, will be considered dissonance;Non-harmonic allowed;2;1;;;0;0;1;;;;;;
 1;174;;;100;Harmony;Minor;Dim or aug harmonic interval;VII#<->III;0;If allowed, will be considered dissonance;Non-harmonic allowed;2;1;;;0;0;1;;;;;;
-1;17;;;0;Harmony;Harmony;Repeating functions in a row;>4 T;0;More than X consecutive harmonies all have this letter;;9;;;Weak prog.;6;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;17;;;0;Harmony;Harmony;Repeating functions in a row;>4 T;0;More than X consecutive harmonies all have this letter;;1;;;Weak prog.;6;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;428;;;0;Harmony;Harmony;Repeating functions in a row;>4 D;0;More than X consecutive harmonies all have this letter;;1;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;429;;;0;Harmony;Harmony;Repeating functions in a row;>4 S;0;More than X consecutive harmonies all have this letter;;1;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;20;;;0;Harmony;Harmony;Missing functions in a row;>5 without T;0;More than X consecutive harmonies do not have this letter;;9;;;No T;5;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;20;;;0;Harmony;Harmony;Missing functions in a row;>5 without T;0;More than X consecutive harmonies do not have this letter;;1;;;No T;5;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;430;;;0;Harmony;Harmony;Missing functions in a row;>5 without D;0;More than X consecutive harmonies do not have this letter;;1;;;No D;10;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;431;;;0;Harmony;Harmony;Missing functions in a row;>6 without S;0;More than X consecutive harmonies do not have this letter;;1;;;No S;3;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;194;;;0;Harmony;Harmony;Accentuated bad progression;leap >4th;-1;Only for cantus firmus;;1;;;;0;0;;;;;;;
@@ -359,7 +359,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;77;;;0;Harmony;Harmony;Harmonic progression;non-ideal;-1;;See harmonic progressions with penalty 1;1;;;!srn!;612;0;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;57;;;0;Harmony;Harmony;Harmonic progression;bad;-1;;See harmonic progressions with penalty 2;1;;;Weak prog.;535;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;92;;;0;Harmony;Harmony;Harmonic progression;2 x bad;-1;;Two consecutive harmonic progressions each with penalty 2;1;;;Weak prog.;103;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;23;;;0;Harmony;Harmony;Harmonic progression;3 x bad;0;;Three consecutive harmonic progressions each with penalty 2;9;;;Weak prog.;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;23;;;0;Harmony;Harmony;Harmonic progression;3 x bad;0;;Three consecutive harmonic progressions each with penalty 2;1;;;Weak prog.;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;418;;;0;Harmony;Harmony;Repeated harmony;in changed position;0;;Chord is repeated, but inversion is changed;1;;;;130;3;;;;;;;
 1;99;;;50;Harmony;Harmony;Repeated harmony;:in same position;0;;Chord is repeated with same inversion;1;;;;28;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;321;;;50;Harmony;Harmony;Repeated harmony;:three times;0;;Same chord is used 3 times consecutively;1;;;!rn!;7;1;1;;;;;;
