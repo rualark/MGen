@@ -1,5 +1,6 @@
 rules_file = rules2\rules.csv # Specify which file contains all rules
 hsp_file = harm.csv # Harmonic sequence penalties
+vocal_ranges_file = vrange\vocal_ranges.csv # Specify file to load vocal ranges info from
 
 lclimax_notes = 13 # Local climax: Highest note in higher voice within 13 notes or 8 measures - which is smaller
 lclimax_mea = 8 # Local climax: Highest note in higher voice within 13 notes or 8 measures - which is smaller
@@ -23,3 +24,4 @@ show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show ch
 show_severity = 1 # =1 to show severity and flag id in square brackets in comments to notes (also when exporting to MIDI file)
 
 show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show chord type (6 or 64)
+

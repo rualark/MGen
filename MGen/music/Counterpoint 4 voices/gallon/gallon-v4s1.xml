@@ -7,7 +7,7 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-07-29</encoding-date>
+   <encoding-date>2018-07-30</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -150,7 +150,7 @@
    <print new-page="yes">
     <system-layout>
      <system-margins>
-      <left-margin>144</left-margin>
+      <left-margin>143</left-margin>
       <right-margin>0</right-margin>
      </system-margins>
      <top-system-distance>218</top-system-distance>
@@ -357,12 +357,6 @@
   </measure>
   <!--============== Part: P1, Measure: 12 ==============-->
   <measure number="12" width="139">
-   <attributes>
-    <key color="#000000">
-     <fifths>0</fifths>
-     <mode>major</mode>
-    </key>
-   </attributes>
    <note>
     <rest />
     <duration>1024</duration>
@@ -910,7 +904,7 @@
    <print new-page="yes">
     <system-layout>
      <system-margins>
-      <left-margin>144</left-margin>
+      <left-margin>143</left-margin>
       <right-margin>0</right-margin>
      </system-margins>
     </system-layout>
@@ -1112,12 +1106,6 @@
   </measure>
   <!--============== Part: P2, Measure: 12 ==============-->
   <measure number="12" width="139">
-   <attributes>
-    <key color="#000000">
-     <fifths>0</fifths>
-     <mode>major</mode>
-    </key>
-   </attributes>
    <note>
     <rest />
     <duration>1024</duration>
@@ -1652,7 +1640,7 @@
    <print new-page="yes">
     <system-layout>
      <system-margins>
-      <left-margin>144</left-margin>
+      <left-margin>143</left-margin>
       <right-margin>0</right-margin>
      </system-margins>
     </system-layout>
@@ -1861,12 +1849,6 @@
   </measure>
   <!--============== Part: P3, Measure: 12 ==============-->
   <measure number="12" width="139">
-   <attributes>
-    <key color="#000000">
-     <fifths>0</fifths>
-     <mode>major</mode>
-    </key>
-   </attributes>
    <note>
     <rest />
     <duration>1024</duration>
@@ -2399,7 +2381,7 @@
    <print new-page="yes">
     <system-layout>
      <system-margins>
-      <left-margin>144</left-margin>
+      <left-margin>143</left-margin>
       <right-margin>0</right-margin>
      </system-margins>
     </system-layout>
@@ -2606,12 +2588,6 @@
   </measure>
   <!--============== Part: P4, Measure: 12 ==============-->
   <measure number="12" width="139">
-   <attributes>
-    <key color="#000000">
-     <fifths>0</fifths>
-     <mode>major</mode>
-    </key>
-   </attributes>
    <note>
     <rest />
     <duration>1024</duration>

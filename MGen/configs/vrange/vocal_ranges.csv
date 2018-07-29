@@ -1,0 +1,5 @@
+id;name;min_cc;low_cc;high_cc;max_cc
+1;Bass;41;48;55;62
+2;Tenor;48;55;62;69
+3;Alto;53;60;67;74
+4;Soprano;60;67;74;81
