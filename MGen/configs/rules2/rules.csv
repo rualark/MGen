@@ -277,6 +277,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;304;;;50;Melody;Range;Vocal range: counterpoint part;:greater than M12;0;;Counterpoint voice range;;;;;4;1;;;;;;;
 1;7;;;0;Melody;Range;Vocal range: both parts;sum >22th;0;;Aggregate pitch range of both voices in this counterpoint;;;;;2;1;;;;;;;
 1;11;;;0;Melody;Range;Interval between parts;int >16th;0;;Interval between counterpoint voices.  Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);12;;;!srn!;29;1;;;;1;;;
+1;523;;;50;Melody;Range;Vocal range is above higher vocal range;above higher;0;;This vocal range should not be above higher vocal range;;;;;;;;;;;;;
+1;524;;;50;Melody;Range;Highest register conflicts with lowest register of other part;register conflict;0;;This vocal range should not be above higher vocal range;9;;;!srn!;;;;;;;;;
 1;434;0;;100;Melody;Range;Stagnation;5 notes <m3;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;2;0;;;;;;;
 1;435;0;;50;Melody;Range;Stagnation;7 notes <4th;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;7;0;;;;;;;
 1;436;0;;50;Melody;Range;Stagnation;11 notes <5th;0;;X consecutive notes have total pitch range less than Y;9;;;Stagnation;3;0;;;;;;;
@@ -311,7 +313,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;201;12350;;0;Melody;Melodic minor;Note not stepwise ascending;VI#;0;Harmonic VI# note is not surrounded by stepwise diatonic ascending movement;;8;;;VI# not asc.;9;2;;;;;;;
 1;202;12350;;0;Melody;Melodic minor;Note not stepwise descending;VII natural;0;Harmonic VII natural note is not surrounded by stepwise diatonic descending movement;;8;;;VII not desc.;;;;;;;;;
 1;521;;;100;Melody;Melodic minor;Note is not part of mode;wrong alteration;0;;Used alterations are not part of current mode (major I#, II# or VI# notes).;;;;;;;;;;;;;
-1;522;;;100;Melody;Melodic minor;Note is not part of mode;not melodic minor;0;;Melodic minor alterations are used: IV# or V#, but current mode cannot be melodic minor - for example, dorian.;;;;;;;;;;;;;
 1;152;;;100;Melody;Melodic minor;Chromaticism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;!srn!;1;1;1;;;;;;
 1;153;;;100;Melody;Melodic minor;Chromaticism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;!srn!;3;2;1;;;;;;
 1;158;;;100;Melody;Melodic minor;Chromaticism: far;VI<->VI#;0;These two notes are one note apart;;8;;;!srn!;7;3;1;;;;;;
