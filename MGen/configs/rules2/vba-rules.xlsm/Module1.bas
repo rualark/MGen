@@ -6,7 +6,7 @@ Public PageBreakState As Boolean
 Public sRows
 Public max_id
 
-Public Const DCount As Integer = 13
+Public Const DCount As Integer = 14
 
 ' Arrays
 Dim Rules(1000)
@@ -148,7 +148,7 @@ Attribute Compile.VB_ProcData.VB_Invoke_Func = "d\n14"
   Dim oFile As Object
   Set oFile = fso.CreateTextFile(path + "\rules.csv")
   ' Write header
-  oFile.WriteLine "Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;V2;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R"
+  oFile.WriteLine "Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R"
   Sheets("Missing").UsedRange.ClearContents
   Sheets("Missing").Range("A1").Value = "Rid"
   'Sheets("Data").UsedRange.ClearContents
