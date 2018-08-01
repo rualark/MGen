@@ -277,8 +277,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;304;;;50;Melody;Range;Vocal range: counterpoint part;:greater than M12;0;;Counterpoint voice range;;;;;;4;1;;;;;;;
 1;7;;;0;Melody;Range;Vocal range: both parts;sum >22th;0;;Aggregate pitch range of both voices in this counterpoint;;;;;;2;1;;;;;;;
 1;11;;;0;Melody;Range;Interval between parts;int >16th;0;;Interval between counterpoint voices.  Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);12;;;;!srn!;29;1;;;;1;;;
+1;522;;;50;Melody;Range;Out of vocal range;out of range;0;;Notes are too high or too low for vocal range specified for this voice;12;;;;vocal range;;;;;;;;;
 1;523;;;50;Melody;Range;Vocal range is above higher vocal range;above higher;0;;This vocal range should not be above higher vocal range;;;;;;;;;;;;;;
-1;524;;;50;Melody;Range;Highest register conflicts with lowest register of other part;register conflict;0;;This vocal range should not be above higher vocal range;9;;;;!srn!;;;;;;;;;
+1;524;;;50;Melody;Range;Highest register conflicts with lowest register of other part;register conflict;0;;This vocal range should not be above higher vocal range;12;;;;!srn!;;;;;;;;;
 1;434;0;;100;Melody;Range;Stagnation;5 notes <m3;0;;X consecutive notes have total pitch range less than Y;9;;;;Stagnation;2;0;;;;;;;
 1;435;0;;50;Melody;Range;Stagnation;7 notes <4th;0;;X consecutive notes have total pitch range less than Y;9;;;;Stagnation;7;0;;;;;;;
 1;436;0;;50;Melody;Range;Stagnation;11 notes <5th;0;;X consecutive notes have total pitch range less than Y;9;;;;Stagnation;3;0;;;;;;;
