@@ -80,30 +80,32 @@ BOOL CInfoDlg::OnInitDialog()
 			for (int x = i; x < pGen->t_generated; ++x) {
 				if (pGen->mel_id[x][mv] == pGen->mel_id[i][mv]) m2 = x;
 			}
-			int prev_note = -1;
 			int nnum = 0;
 			int nstart = 0;
 			for (int x = m1; x <= m2; ++x) {
-				// When pause, reset previous note because notes can be the same left and right from the pause
 				if (pGen->pause[x][mv]) {
-					prev_note = -1;
-					continue;
+					//continue;
 				}
 				if (!pGen->coff[x][mv]) {
 					++nnum;
 					nstart = x;
 				}
-				prev_note = pGen->note[x][mv];
 				if (pGen->comment[x][mv].size()) {
 					// CGLib::GetNoteName(pGen->note[x][mv])
-					st.Format("NOTE %d at %d:%d - %s", 
-						nnum, x / 8 + 1, x % 8 + 1, NoteName[pGen->note[x][mv] % 12]);
+					if (pGen->pause[x][mv]) {
+						st.Format("PAUSE %d at %d:%d",
+							nnum, x / 8 + 1, x % 8 + 1);
+					}
+					else {
+						st.Format("NOTE %d at %d:%d - %s",
+							nnum, x / 8 + 1, x % 8 + 1, NoteName[pGen->note[x][mv] % 12]);
+					}
 					eff = 0;
 					if (nstart == i) {
 						m_scrollLine = m_info.GetLineCount();
 						eff = CFE_BOLD;
 					}
-					if (nstart != x) st += " (slur)";
+					if (nstart != x) st += " (middle)";
 					m_info.AddText(st + "\n", RGB(0, 0, 0), eff);
 					for (int c = 0; c < pGen->comment[x][mv].size(); ++c) {
 						m_info.AddText(pGen->comment[x][mv][c]+"\n", 
