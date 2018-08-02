@@ -10,6 +10,12 @@ Phase;Task;Shape;Script
 1;Start;Ottava;"\set Staff.ottavation = \markup { \teeny ""$TEXT$"" } \override Staff.OttavaBracket.color = #(rgb-color $COLOR$)"
 1;Start;TS;"\myTS ""$TEXT$"" #(rgb-color $COLOR$) \textSpannerDown"
 1;Start;Pedal;"\override Staff.PianoPedalBracket.color = #(rgb-color $COLOR$)$n$ \override Staff.SustainPedal #'stencil =$n$ #(lambda (grob) (grob-interpret-markup grob (markup$n$ #:with-color (rgb-color $COLOR$)$n$ #:lower 0.4$n$ (#:teeny ""$TEXT$""))))$n$ \textSpannerDown"
+2;Start;Cross;\once \speakOn
+2;Start;Petrucci;\once \override NoteHead.style = #'petrucci
+2;Start;Circle;\circle
+2;Start;Notecolor;\once \override NoteHead.color = #(rgb-color $COLOR$)$n$\once \override Stem.color = #(rgb-color $COLOR$)
+8;Start;Stac;\staccato
+8;Start;Staco;\staccatissimo
 9;Start;Trill;\startTrillSpan
 9;Start;TS;\startTextSpan
 9;Start;Pedal;\sustainOn
