@@ -8,7 +8,6 @@
   \override Staff.PianoPedalBracket.thickness = #2
   \set Staff.pedalSustainStyle = #'mixed
   \accidentalStyle modern-cautionary
-  \time 4/4
   % \set Score.barNumberVisibility = #(every-nth-bar-number-visible 4)
   % \override Score.BarNumber.break-visibility = ##(#f #t #t)
   \new Voice \with {
