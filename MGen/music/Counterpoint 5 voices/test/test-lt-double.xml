@@ -199,8 +199,8 @@
   <measure number="2" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>G</step>
-     <octave>4</octave>
+     <step>C</step>
+     <octave>5</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -214,7 +214,7 @@
    <note color="#000000" default-x="15">
     <pitch>
      <step>F</step>
-     <octave>4</octave>
+     <octave>5</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -227,8 +227,8 @@
   <measure number="4" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>G</step>
-     <octave>4</octave>
+     <step>E</step>
+     <octave>5</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -241,8 +241,8 @@
   <measure number="5" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>A</step>
-     <octave>4</octave>
+     <step>D</step>
+     <octave>5</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -255,8 +255,8 @@
   <measure number="6" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>G</step>
-     <octave>4</octave>
+     <step>E</step>
+     <octave>5</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -280,8 +280,8 @@
   <measure number="8" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>C</step>
-     <octave>5</octave>
+     <step>G</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -295,7 +295,7 @@
    <note color="#000000" default-x="15">
     <pitch>
      <step>F</step>
-     <octave>5</octave>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -320,8 +320,8 @@
    </attributes>
    <note color="#000000" default-x="57">
     <pitch>
-     <step>E</step>
-     <octave>5</octave>
+     <step>G</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -334,8 +334,8 @@
   <measure number="11" width="99">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>D</step>
-     <octave>5</octave>
+     <step>A</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -348,8 +348,8 @@
   <measure number="12" width="99">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>E</step>
-     <octave>5</octave>
+     <step>G</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -662,7 +662,7 @@
   <measure number="2" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>E</step>
+     <step>G</step>
      <octave>4</octave>
     </pitch>
     <duration>1024</duration>
@@ -676,7 +676,7 @@
   <measure number="3" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>B</step>
+     <step>F</step>
      <octave>4</octave>
     </pitch>
     <duration>1024</duration>
@@ -690,8 +690,8 @@
   <measure number="4" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>C</step>
-     <octave>5</octave>
+     <step>G</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P2-I1" />
@@ -704,7 +704,7 @@
   <measure number="5" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>G</step>
+     <step>A</step>
      <octave>4</octave>
     </pitch>
     <duration>1024</duration>
@@ -718,8 +718,8 @@
   <measure number="6" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>C</step>
-     <octave>5</octave>
+     <step>G</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P2-I1" />
@@ -743,7 +743,7 @@
   <measure number="8" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>G</step>
+     <step>E</step>
      <octave>4</octave>
     </pitch>
     <duration>1024</duration>
@@ -757,7 +757,7 @@
   <measure number="9" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>F</step>
+     <step>B</step>
      <octave>4</octave>
     </pitch>
     <duration>1024</duration>
@@ -785,8 +785,8 @@
    </attributes>
    <note color="#000000" default-x="57">
     <pitch>
-     <step>G</step>
-     <octave>4</octave>
+     <step>C</step>
+     <octave>5</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P2-I1" />
@@ -799,7 +799,7 @@
   <measure number="11" width="99">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>A</step>
+     <step>G</step>
      <octave>4</octave>
     </pitch>
     <duration>1024</duration>
@@ -813,8 +813,8 @@
   <measure number="12" width="99">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>G</step>
-     <octave>4</octave>
+     <step>C</step>
+     <octave>5</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P2-I1" />
@@ -1144,8 +1144,11 @@
   </measure>
   <!--============== Part: P3, Measure: 2 ==============-->
   <measure number="2" width="97">
-   <note default-x="15">
-    <rest />
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>E</step>
+     <octave>4</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1155,8 +1158,11 @@
   </measure>
   <!--============== Part: P3, Measure: 3 ==============-->
   <measure number="3" width="97">
-   <note default-x="15">
-    <rest />
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>B</step>
+     <octave>4</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1166,8 +1172,11 @@
   </measure>
   <!--============== Part: P3, Measure: 4 ==============-->
   <measure number="4" width="97">
-   <note default-x="15">
-    <rest />
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>C</step>
+     <octave>5</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1177,8 +1186,11 @@
   </measure>
   <!--============== Part: P3, Measure: 5 ==============-->
   <measure number="5" width="97">
-   <note default-x="15">
-    <rest />
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>G</step>
+     <octave>4</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1188,8 +1200,11 @@
   </measure>
   <!--============== Part: P3, Measure: 6 ==============-->
   <measure number="6" width="97">
-   <note default-x="15">
-    <rest />
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>C</step>
+     <octave>5</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1210,11 +1225,8 @@
   </measure>
   <!--============== Part: P3, Measure: 8 ==============-->
   <measure number="8" width="97">
-   <note color="#000000" default-x="15">
-    <pitch>
-     <step>E</step>
-     <octave>4</octave>
-    </pitch>
+   <note default-x="15">
+    <rest />
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1224,11 +1236,8 @@
   </measure>
   <!--============== Part: P3, Measure: 9 ==============-->
   <measure number="9" width="97">
-   <note color="#000000" default-x="15">
-    <pitch>
-     <step>B</step>
-     <octave>4</octave>
-    </pitch>
+   <note default-x="15">
+    <rest />
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1252,11 +1261,8 @@
    <attributes>
     <staff-details number="1" print-object="yes" />
    </attributes>
-   <note color="#000000" default-x="57">
-    <pitch>
-     <step>C</step>
-     <octave>5</octave>
-    </pitch>
+   <note default-x="57">
+    <rest />
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1266,11 +1272,8 @@
   </measure>
   <!--============== Part: P3, Measure: 11 ==============-->
   <measure number="11" width="99">
-   <note color="#000000" default-x="15">
-    <pitch>
-     <step>G</step>
-     <octave>4</octave>
-    </pitch>
+   <note default-x="15">
+    <rest />
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1280,11 +1283,8 @@
   </measure>
   <!--============== Part: P3, Measure: 12 ==============-->
   <measure number="12" width="99">
-   <note color="#000000" default-x="15">
-    <pitch>
-     <step>C</step>
-     <octave>5</octave>
-    </pitch>
+   <note default-x="15">
+    <rest />
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
@@ -1648,10 +1648,10 @@
   </measure>
   <!--============== Part: P4, Measure: 3 ==============-->
   <measure number="3" width="97">
-   <note color="#FF0000" default-x="15">
+   <note color="#000000" default-x="15">
     <pitch>
-     <step>B</step>
-     <octave>3</octave>
+     <step>D</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P4-I1" />
@@ -1664,8 +1664,8 @@
   <measure number="4" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>A</step>
-     <octave>3</octave>
+     <step>E</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P4-I1" />
@@ -1676,10 +1676,10 @@
   </measure>
   <!--============== Part: P4, Measure: 5 ==============-->
   <measure number="5" width="97">
-   <note color="#FF0000" default-x="15">
+   <note color="#000000" default-x="15">
     <pitch>
-     <step>B</step>
-     <octave>3</octave>
+     <step>D</step>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P4-I1" />
@@ -1729,10 +1729,10 @@
   </measure>
   <!--============== Part: P4, Measure: 9 ==============-->
   <measure number="9" width="97">
-   <note color="#000000" default-x="15">
+   <note color="#FF0000" default-x="15">
     <pitch>
-     <step>D</step>
-     <octave>4</octave>
+     <step>B</step>
+     <octave>3</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P4-I1" />
@@ -1759,8 +1759,8 @@
    </attributes>
    <note color="#000000" default-x="57">
     <pitch>
-     <step>E</step>
-     <octave>4</octave>
+     <step>A</step>
+     <octave>3</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P4-I1" />
@@ -1771,10 +1771,10 @@
   </measure>
   <!--============== Part: P4, Measure: 11 ==============-->
   <measure number="11" width="99">
-   <note color="#000000" default-x="15">
+   <note color="#FF0000" default-x="15">
     <pitch>
-     <step>D</step>
-     <octave>4</octave>
+     <step>B</step>
+     <octave>3</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P4-I1" />
@@ -2151,10 +2151,10 @@
   </measure>
   <!--============== Part: P5, Measure: 3 ==============-->
   <measure number="3" width="97">
-   <note color="#000000" default-x="15">
+   <note color="#FF0000" default-x="15">
     <pitch>
-     <step>D</step>
-     <octave>3</octave>
+     <step>B</step>
+     <octave>2</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P5-I1" />
@@ -2167,8 +2167,8 @@
   <measure number="4" width="97">
    <note color="#000000" default-x="15">
     <pitch>
-     <step>E</step>
-     <octave>3</octave>
+     <step>A</step>
+     <octave>2</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P5-I1" />
@@ -2179,10 +2179,10 @@
   </measure>
   <!--============== Part: P5, Measure: 5 ==============-->
   <measure number="5" width="97">
-   <note color="#000000" default-x="15">
+   <note color="#FF0000" default-x="15">
     <pitch>
-     <step>D</step>
-     <octave>3</octave>
+     <step>B</step>
+     <octave>2</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P5-I1" />
@@ -2236,10 +2236,10 @@
   </measure>
   <!--============== Part: P5, Measure: 9 ==============-->
   <measure number="9" width="97">
-   <note color="#FF0000" default-x="15">
+   <note color="#000000" default-x="15">
     <pitch>
-     <step>B</step>
-     <octave>2</octave>
+     <step>D</step>
+     <octave>3</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P5-I1" />
@@ -2266,8 +2266,8 @@
    </attributes>
    <note color="#000000" default-x="57">
     <pitch>
-     <step>A</step>
-     <octave>2</octave>
+     <step>E</step>
+     <octave>3</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P5-I1" />
@@ -2278,10 +2278,10 @@
   </measure>
   <!--============== Part: P5, Measure: 11 ==============-->
   <measure number="11" width="99">
-   <note color="#FF0000" default-x="15">
+   <note color="#000000" default-x="15">
     <pitch>
-     <step>B</step>
-     <octave>2</octave>
+     <step>D</step>
+     <octave>3</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P5-I1" />
