@@ -19,6 +19,8 @@
     \override Glissando.springs-and-rods = #ly:spanner::set-spacing-rods
     \override Glissando.thickness = #'3
     \override Slur.line-thickness = #2
+    \slurDashed
+    \slurDashPattern #0.5 #0.75
     \override PhrasingSlur.line-thickness = #2
     \phrasingSlurDown \phrasingSlurDashed
     \consists "Horizontal_bracket_engraver"
