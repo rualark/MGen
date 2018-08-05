@@ -1,8 +1,8 @@
 Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
-1;33;;;100;Cantus;Border;First note is not the tonic;not tonic;0;Only for cantus firmus;;;;;;;55;5;1;;;;;;
-1;50;;;100;Cantus;Border;Last note is not the tonic;not tonic;0;Only for cantus firmus;;;;;;;17;1;1;;;;;;
-1;52;;;0;Cantus;Border;Resolution of the penultimate note;VII not to I;0;;VII penultimate note resolves not to I note;12;;;;res;12;1;;;;;;;
-1;87;;;0;Cantus;Border;Resolution of the penultimate note;IV not to III;0;;IV penultimate note resolves not to III note;12;;;;res;48;1;;;;;;;
+1;33;;;100;Melody;Border;First note is not the tonic;not tonic;0;Only for cantus firmus;;;;;;;55;5;1;;;;;;
+1;50;;;100;Melody;Border;Last note is not the tonic;not tonic;0;Only for cantus firmus;;;;;;;17;1;1;;;;;;
+1;52;;;0;Melody;Border;Resolution of the penultimate note;VII not to I;0;;VII penultimate note resolves not to I note;12;;;;res;12;1;;;;;;;
+1;87;;;0;Melody;Border;Resolution of the penultimate note;IV not to III;0;;IV penultimate note resolves not to III note;12;;;;res;48;1;;;;;;;
 1;42;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;3rd;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;199;0;;;999;;;;
 1;43;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;4th;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;88;0;;;999;;;;
 1;44;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;5th;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;76;0;;;999;;;;
@@ -238,8 +238,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;78;;;0;Melody;Melodic repeats;Melodic climax;early <3;-1;;Only for upper voice;;;;;;71;1;;;;1;;;
 1;21;;;0;Melody;Melodic repeats;Melodic climax;late 3;-1;;Only for upper voice;;;;;;198;1;;;;1;;;
 1;6;;;0;Melody;Melodic repeats;Melodic climax;sync;-1;;Synchronized culminations in both voices;;;;;;;;;;;1;;;
-1;305;;;0;Melody;Melodic repeats;Melodic climax is repeated;in lower part;0;;Multiple culminations in lower voice;;;;;;47;13;1;;;;;;
-1;12;;;100;Melody;Melodic repeats;Melodic climax is repeated;in upper part;0;;Multiple culminations in higher voice;;;;;;108;39;1;;;;21,78,79,193;;
+1;305;;;0;Melody;Melodic repeats;Melodic climax is repeated;in lower part;0;;Multiple culminations in lower voice;15;;;;;47;13;1;;;;;;
+1;12;;;100;Melody;Melodic repeats;Melodic climax is repeated;in upper part;0;;Multiple culminations in higher voice;15;;;;;108;39;1;;;;21,78,79,193;;
 1;70;;;50;Melody;Melodic repeats;Frequent return to the tonic;3 within 6;0;More than X tonic notes within Y adjacent notes;X tonic note equivalents within Y notes. Less weight is assigned to a tonic note in species 3,5 if all conditions meet:  There is no leap above M3 to this tonic note. This tonic note is not a local culmination. This tonic note is not longer than previous note. This tonic note is not downbeat. Tonic note length is less than half note.;9;;;;Many tonics;;;;;;;;;
 1;71;;;50;Melody;Melodic repeats;Frequent return to the tonic;4 within 12;0;More than X tonic notes within Y adjacent notes;X tonic note equivalents within Y notes. Less weight is assigned to a tonic note in species 3,5 if all conditions meet:  There is no leap above M3 to this tonic note. This tonic note is not a local culmination. This tonic note is not longer than previous note. This tonic note is not downbeat. Tonic note length is less than half note.;9;;;;Many tonics;;;;;;;;;
 1;348;;;50;Melody;Melodic repeats;Octave leap to the leading tone;LT 8ve leap;0;;Octave leap between leading tones;5;;;;;2;2;1;;;;;;
@@ -279,7 +279,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;11;;;0;Melody;Range;Interval between parts;int >16th;0;;Interval between counterpoint voices.  Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);12;;;;!srn!;29;1;;;;1;;;
 1;522;;;50;Melody;Range;Out of vocal range;out of range;0;;Notes are too high or too low for vocal range specified for this voice;12;;;;vocal range;;;;;;;;;
 1;523;;;50;Melody;Range;Vocal range is above higher vocal range;above higher;0;;This vocal range should not be above higher vocal range;;;;;;;;;;;;;;
-1;524;;;50;Melody;Range;Highest register conflicts with lowest register of other part;register conflict;0;;This vocal range should not be above higher vocal range;12;;;;!srn!;;;;;;;;;
+1;524;;;50;Melody;Range;Disbalance between vocal ranges;>7 quarters;0;;This vocal range should not be above higher vocal range;12;;;;!srn!;;;;;;;;;
+1;526;;;100;Melody;Range;Disbalance between vocal ranges;>12 quarters;0;;This vocal range should not be above higher vocal range;;;;;;;;;;;;;;
 1;434;0;;100;Melody;Range;Stagnation;5 notes <m3;0;;X consecutive notes have total pitch range less than Y;9;;;;Stagnation;2;0;;;;;;;
 1;435;0;;50;Melody;Range;Stagnation;7 notes <4th;0;;X consecutive notes have total pitch range less than Y;9;;;;Stagnation;7;0;;;;;;;
 1;436;0;;50;Melody;Range;Stagnation;11 notes <5th;0;;X consecutive notes have total pitch range less than Y;9;;;;Stagnation;3;0;;;;;;;
