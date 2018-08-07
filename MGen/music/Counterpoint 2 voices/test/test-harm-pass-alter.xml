@@ -7,7 +7,7 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-08-06</encoding-date>
+   <encoding-date>2018-08-07</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -648,12 +648,14 @@
    <note color="#000000" default-x="125" default-y="5">
     <pitch>
      <step>G</step>
+     <alter>1</alter>
      <octave>3</octave>
     </pitch>
     <duration>256</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
     <type>quarter</type>
+    <accidental>sharp</accidental>
     <stem>up</stem>
     <staff>1</staff>
    </note>
@@ -675,12 +677,14 @@
    <note color="#000000" default-x="51" default-y="5">
     <pitch>
      <step>G</step>
+     <alter>1</alter>
      <octave>3</octave>
     </pitch>
     <duration>256</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
     <type>quarter</type>
+    <accidental>sharp</accidental>
     <stem>up</stem>
     <staff>1</staff>
    </note>
@@ -701,6 +705,7 @@
    <note color="#000000" default-x="126" default-y="5">
     <pitch>
      <step>G</step>
+     <alter>1</alter>
      <octave>3</octave>
     </pitch>
     <duration>256</duration>
@@ -728,31 +733,35 @@
    <note color="#000000" default-x="52" default-y="5">
     <pitch>
      <step>G</step>
+     <alter>1</alter>
      <octave>3</octave>
     </pitch>
     <duration>256</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
     <type>quarter</type>
+    <accidental>sharp</accidental>
     <stem>up</stem>
     <staff>1</staff>
    </note>
    <note color="#000000" default-x="89">
     <pitch>
      <step>F</step>
+     <alter>1</alter>
      <octave>3</octave>
     </pitch>
     <duration>256</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
     <type>quarter</type>
-    <accidental>natural</accidental>
+    <accidental>sharp</accidental>
     <stem>up</stem>
     <staff>1</staff>
    </note>
    <note color="#000000" default-x="126" default-y="5">
     <pitch>
      <step>G</step>
+     <alter>1</alter>
      <octave>3</octave>
     </pitch>
     <duration>256</duration>
