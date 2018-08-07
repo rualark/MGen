@@ -238,8 +238,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;78;;;0;Melody;Melodic repeats;Melodic climax;early <3;-1;;Only for upper voice;;;;;;71;1;;;;1;;;
 1;21;;;0;Melody;Melodic repeats;Melodic climax;late 3;-1;;Only for upper voice;;;;;;198;1;;;;1;;;
 1;6;;;0;Melody;Melodic repeats;Melodic climax;sync;-1;;Synchronized culminations in both voices;;;;;;;;;;;1;;;
-1;305;;;0;Melody;Melodic repeats;Melodic climax is repeated;in lower part;0;;Multiple culminations in lower voice;15;;;;;47;13;1;;;;;;
-1;12;;;100;Melody;Melodic repeats;Melodic climax is repeated;in upper part;0;;Multiple culminations in higher voice;15;;;;;108;39;1;;;;21,78,79,193;;
+1;305;;;0;Melody;Melodic repeats;Melodic climax is repeated;in lower part;0;;Multiple culminations in lower voice;;;;;;47;13;1;;;;;;
+1;12;;;100;Melody;Melodic repeats;Melodic climax is repeated;in upper part;0;;Multiple culminations in higher voice;;;;;;108;39;1;;;;21,78,79,193;;
 1;70;;;50;Melody;Melodic repeats;Frequent return to the tonic;3 within 6;0;More than X tonic notes within Y adjacent notes;X tonic note equivalents within Y notes. Less weight is assigned to a tonic note in species 3,5 if all conditions meet:  There is no leap above M3 to this tonic note. This tonic note is not a local culmination. This tonic note is not longer than previous note. This tonic note is not downbeat. Tonic note length is less than half note.;9;;;;Many tonics;;;;;;;;;
 1;71;;;50;Melody;Melodic repeats;Frequent return to the tonic;4 within 12;0;More than X tonic notes within Y adjacent notes;X tonic note equivalents within Y notes. Less weight is assigned to a tonic note in species 3,5 if all conditions meet:  There is no leap above M3 to this tonic note. This tonic note is not a local culmination. This tonic note is not longer than previous note. This tonic note is not downbeat. Tonic note length is less than half note.;9;;;;Many tonics;;;;;;;;;
 1;348;;;50;Melody;Melodic repeats;Octave leap to the leading tone;LT 8ve leap;0;;Octave leap between leading tones;5;;;;;2;2;1;;;;;;
