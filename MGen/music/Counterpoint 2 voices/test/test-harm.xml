@@ -7,7 +7,7 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-08-08</encoding-date>
+   <encoding-date>2018-08-09</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -200,7 +200,7 @@
     <staff>2</staff>
     <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
-     <text>CF=low,Expect</text>
+     <text>CF=low,Expect sp1</text>
     </lyric>
    </note>
   </measure>

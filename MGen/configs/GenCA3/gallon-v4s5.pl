@@ -5,5 +5,3 @@ include "include/CA3.pl"
 MusicXML_file = music\Counterpoint 4 voices\gallon\gallon-v4s5.xml
 
 #Instruments = Piano,Violin,Viola/Sul ponticello
-
-species = 0555
