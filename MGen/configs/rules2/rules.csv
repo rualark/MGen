@@ -364,7 +364,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;77;;;0;Harmony;Harmony;Harmonic progression;non-ideal;-1;;See harmonic progressions with penalty 1;9;;;;!srn!;612;0;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;57;;;0;Harmony;Harmony;Harmonic progression;bad;-1;;See harmonic progressions with penalty 2;9;;;;Weak prog.;535;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;92;;;0;Harmony;Harmony;Harmonic progression;2 x bad;-1;;Two consecutive harmonic progressions each with penalty 2;9;;;;Weak prog.;103;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;23;;;0;Harmony;Harmony;Harmonic progression;3 x bad;0;;Three consecutive harmonic progressions each with penalty 2;9;;1;;Weak prog.;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;23;;;0;Harmony;Harmony;Harmonic progression;3 x bad;0;;Three consecutive harmonic progressions each with penalty 2;9;;4;;Weak prog.;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;418;;;0;Harmony;Harmony;Repeated harmony;in changed position;0;;Chord is repeated, but inversion is changed;1;;;;;130;3;;;;;;;
 1;99;;;50;Harmony;Harmony;Repeated harmony;:in same position;0;;Chord is repeated with same inversion;1;;;;;28;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;321;;;50;Harmony;Harmony;Repeated harmony;:three times;0;;Same chord is used 3 times consecutively;9;;;;!rn!;7;1;1;;;;;;
