@@ -317,8 +317,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;521;;;100;Melody;Melodic minor;Note is not part of the mode;wrong alteration;0;;Used alterations are not part of current mode (major I#, II# or VI# notes).;;;;;;;;;;;;;;
 1;152;;;100;Melody;Melodic minor;Chromaticism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;;!srn!;1;1;1;;;;;;
 1;153;;;100;Melody;Melodic minor;Chromaticism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;;!srn!;3;2;1;;;;;;
-1;158;;;100;Melody;Melodic minor;Chromaticism: far;VI<->VI#;0;These two notes are one note apart;;8;;;;!srn!;7;3;1;;;;;;
-1;159;;;100;Melody;Melodic minor;Chromaticism: far;VII<->VII#;0;These two notes are one note apart;;8;;;;!srn!;3;1;1;;;;;;
+1;158;;;50;Melody;Melodic minor;Chromaticism: far;VI<->VI#;0;These two notes are one note apart;;8;;;;!srn!;7;3;1;;;;;;
+1;159;;;50;Melody;Melodic minor;Chromaticism: far;VII<->VII#;0;These two notes are one note apart;;8;;;;!srn!;3;1;1;;;;;;
 1;154;;;50;Melody;Melodic minor;Dim or aug melodic interval;VI<->VII#;0;;Augmented / diminished;8;;;;!srn!;15;3;1;;;;;;
 1;155;;;100;Melody;Melodic minor;Dim or aug melodic interval;VI#<->III;0;;Augmented / diminished;8;;;;!srn!;4;1;1;;;;;;
 1;156;;;100;Melody;Melodic minor;Dim or aug melodic interval;VII#-III;0;;Augmented / diminished;8;;;;!srn!;7;3;1;;;;;;
