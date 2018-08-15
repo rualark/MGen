@@ -480,6 +480,13 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;169;;;0;Harmony;Dissonance;Dissonance on upbeat;stepwize;-1;;;2;1;;;;904;3;;;;;;;
 1;276;;;0;Harmony;Dissonance;Dissonance on upbeat;m2;-1;;Minor second;2;1;;;;6;3;1;;;;;;
 1;24;;;50;Harmony;Voice motion;Overlapping;overlap;0;;;10;;;;overlap;54;9;1;;;;;;
+1;541;;<3;50;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;;;;;;;;;;;;;;
+1;542;;<3;50;Harmony;Voice motion;Voice crossing is prohibited;last measure;0;;;;;;;;;;;;;;;;
+1;543;;<3;100;Harmony;Voice motion;Voice crossing is prohibited;any;0;;;;;;;;;;;;;;;;
+1;541;;>2;50;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;;;;;;;;;;;;;;
+1;542;;>2;50;Harmony;Voice motion;Voice crossing is prohibited;last measure;0;;;;;;;;;;;;;;;;
+1;541;;>4;50;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;;;;;;;;;;;;;;
+1;542;;>4;0;Harmony;Voice motion;Voice crossing is prohibited;last measure;1;;;;;;;;;;;;;;;;
 1;518;;;50;Harmony;Voice motion;Voice crossing is too long;> 1.5 measures;0;;;;;;;;;;;;;;;;
 1;519;;;100;Harmony;Voice motion;Voice crossing is too long;> 2.5 measures;0;;;;;;;;;;;;;;;;
 1;520;;;50;Harmony;Voice motion;Voice crossing between non-adjacent voices;non-adjacent;0;;;;;;;;;;;;;;;;
