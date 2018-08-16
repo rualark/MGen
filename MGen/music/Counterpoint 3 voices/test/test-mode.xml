@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-08-16</encoding-date>
+   <encoding-date>2018-08-17</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -425,7 +425,7 @@
   <measure number="18" width="150">
    <attributes>
     <key color="#000000">
-     <fifths>0</fifths>
+     <fifths>-1</fifths>
      <mode>major</mode>
     </key>
    </attributes>
@@ -439,7 +439,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 19 ==============-->
-  <measure number="19" width="209">
+  <measure number="19" width="222">
    <print new-system="yes">
     <system-layout>
      <system-margins>
@@ -452,7 +452,7 @@
    <attributes>
     <staff-details number="1" print-object="yes" />
    </attributes>
-   <note default-x="57">
+   <note default-x="73">
     <rest />
     <duration>1024</duration>
     <instrument id="P1-I1" />
@@ -462,7 +462,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 20 ==============-->
-  <measure number="20" width="153">
+  <measure number="20" width="150">
    <note default-x="15">
     <rest />
     <duration>1024</duration>
@@ -476,7 +476,13 @@
    </barline>
   </measure>
   <!--============== Part: P1, Measure: 21 ==============-->
-  <measure number="21" width="191">
+  <measure number="21" width="189">
+   <attributes>
+    <key color="#000000">
+     <fifths>0</fifths>
+     <mode>major</mode>
+    </key>
+   </attributes>
    <note>
     <rest />
     <duration>1024</duration>
@@ -490,7 +496,7 @@
    </barline>
   </measure>
   <!--============== Part: P1, Measure: 22 ==============-->
-  <measure number="22" width="166">
+  <measure number="22" width="163">
    <attributes>
     <key color="#000000">
      <fifths>-3</fifths>
@@ -507,7 +513,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 23 ==============-->
-  <measure number="23" width="166">
+  <measure number="23" width="163">
    <note default-x="15">
     <rest />
     <duration>1024</duration>
@@ -518,7 +524,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 24 ==============-->
-  <measure number="24" width="153">
+  <measure number="24" width="151">
    <note default-x="15">
     <rest />
     <duration>1024</duration>
@@ -1019,7 +1025,7 @@
   <measure number="18" width="150">
    <attributes>
     <key color="#000000">
-     <fifths>0</fifths>
+     <fifths>-1</fifths>
      <mode>major</mode>
     </key>
    </attributes>
@@ -1033,7 +1039,7 @@
    </note>
   </measure>
   <!--============== Part: P2, Measure: 19 ==============-->
-  <measure number="19" width="209">
+  <measure number="19" width="222">
    <print new-system="yes">
     <system-layout>
      <system-margins>
@@ -1048,7 +1054,7 @@
    <attributes>
     <staff-details number="1" print-object="yes" />
    </attributes>
-   <note default-x="57">
+   <note default-x="73">
     <rest />
     <duration>1024</duration>
     <instrument id="P2-I1" />
@@ -1058,7 +1064,7 @@
    </note>
   </measure>
   <!--============== Part: P2, Measure: 20 ==============-->
-  <measure number="20" width="153">
+  <measure number="20" width="150">
    <note default-x="15">
     <rest />
     <duration>1024</duration>
@@ -1072,7 +1078,13 @@
    </barline>
   </measure>
   <!--============== Part: P2, Measure: 21 ==============-->
-  <measure number="21" width="191">
+  <measure number="21" width="189">
+   <attributes>
+    <key color="#000000">
+     <fifths>0</fifths>
+     <mode>major</mode>
+    </key>
+   </attributes>
    <note>
     <rest />
     <duration>1024</duration>
@@ -1086,7 +1098,7 @@
    </barline>
   </measure>
   <!--============== Part: P2, Measure: 22 ==============-->
-  <measure number="22" width="166">
+  <measure number="22" width="163">
    <attributes>
     <key color="#000000">
      <fifths>-3</fifths>
@@ -1103,7 +1115,7 @@
    </note>
   </measure>
   <!--============== Part: P2, Measure: 23 ==============-->
-  <measure number="23" width="166">
+  <measure number="23" width="163">
    <note default-x="15">
     <rest />
     <duration>1024</duration>
@@ -1114,7 +1126,7 @@
    </note>
   </measure>
   <!--============== Part: P2, Measure: 24 ==============-->
-  <measure number="24" width="153">
+  <measure number="24" width="151">
    <note default-x="15">
     <rest />
     <duration>1024</duration>
@@ -1976,7 +1988,7 @@
   <measure number="18" width="150">
    <attributes>
     <key color="#000000">
-     <fifths>0</fifths>
+     <fifths>-1</fifths>
      <mode>major</mode>
     </key>
    </attributes>
@@ -2033,7 +2045,7 @@
    </note>
   </measure>
   <!--============== Part: P3, Measure: 19 ==============-->
-  <measure number="19" width="209">
+  <measure number="19" width="222">
    <print new-system="yes">
     <system-layout>
      <system-margins>
@@ -2048,7 +2060,7 @@
    <attributes>
     <staff-details number="1" print-object="yes" />
    </attributes>
-   <note color="#000000" default-x="57">
+   <note color="#000000" default-x="73">
     <pitch>
      <step>F</step>
      <octave>3</octave>
@@ -2060,7 +2072,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="95" default-y="5">
+   <note color="#000000" default-x="110" default-y="5">
     <pitch>
      <step>G</step>
      <octave>3</octave>
@@ -2072,7 +2084,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="133" default-y="10">
+   <note color="#000000" default-x="147" default-y="10">
     <pitch>
      <step>A</step>
      <octave>3</octave>
@@ -2084,7 +2096,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="171" default-y="-55">
+   <note color="#000000" default-x="185" default-y="-55">
     <pitch>
      <step>B</step>
      <alter>-1</alter>
@@ -2094,13 +2106,12 @@
     <instrument id="P3-I1" />
     <voice>1</voice>
     <type>quarter</type>
-    <accidental>flat</accidental>
     <stem>down</stem>
     <staff>1</staff>
    </note>
   </measure>
   <!--============== Part: P3, Measure: 20 ==============-->
-  <measure number="20" width="153">
+  <measure number="20" width="150">
    <note color="#000000" default-x="15">
     <pitch>
      <step>C</step>
@@ -2117,7 +2128,13 @@
    </barline>
   </measure>
   <!--============== Part: P3, Measure: 21 ==============-->
-  <measure number="21" width="191">
+  <measure number="21" width="189">
+   <attributes>
+    <key color="#000000">
+     <fifths>0</fifths>
+     <mode>major</mode>
+    </key>
+   </attributes>
    <note>
     <rest />
     <duration>1024</duration>
@@ -2131,7 +2148,7 @@
    </barline>
   </measure>
   <!--============== Part: P3, Measure: 22 ==============-->
-  <measure number="22" width="166">
+  <measure number="22" width="163">
    <attributes>
     <key color="#000000">
      <fifths>-3</fifths>
@@ -2153,7 +2170,7 @@
     <type>quarter</type>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="53" default-y="-15">
+   <note color="#000000" default-x="52" default-y="-15">
     <pitch>
      <step>C</step>
      <octave>3</octave>
@@ -2165,7 +2182,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="90" default-y="-10">
+   <note color="#000000" default-x="89" default-y="-10">
     <pitch>
      <step>D</step>
      <octave>3</octave>
@@ -2177,7 +2194,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="128" default-y="-5">
+   <note color="#000000" default-x="126" default-y="-5">
     <pitch>
      <step>E</step>
      <alter>-1</alter>
@@ -2192,7 +2209,7 @@
    </note>
   </measure>
   <!--============== Part: P3, Measure: 23 ==============-->
-  <measure number="23" width="166">
+  <measure number="23" width="163">
    <note color="#000000" default-x="15">
     <pitch>
      <step>F</step>
@@ -2205,7 +2222,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="52" default-y="5">
+   <note color="#000000" default-x="51" default-y="5">
     <pitch>
      <step>G</step>
      <octave>3</octave>
@@ -2217,7 +2234,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="90" default-y="10">
+   <note color="#000000" default-x="89" default-y="10">
     <pitch>
      <step>A</step>
      <alter>-1</alter>
@@ -2230,7 +2247,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="128" default-y="-55">
+   <note color="#000000" default-x="126" default-y="-55">
     <pitch>
      <step>B</step>
      <alter>-1</alter>
@@ -2245,7 +2262,7 @@
    </note>
   </measure>
   <!--============== Part: P3, Measure: 24 ==============-->
-  <measure number="24" width="153">
+  <measure number="24" width="151">
    <note color="#000000" default-x="15">
     <pitch>
      <step>C</step>
@@ -3070,7 +3087,7 @@
   <measure number="18" width="150">
    <attributes>
     <key color="#000000">
-     <fifths>0</fifths>
+     <fifths>-1</fifths>
      <mode>major</mode>
     </key>
    </attributes>
@@ -3091,7 +3108,7 @@
    </note>
   </measure>
   <!--============== Part: P4, Measure: 19 ==============-->
-  <measure number="19" width="209">
+  <measure number="19" width="222">
    <print new-system="yes">
     <system-layout>
      <system-margins>
@@ -3106,7 +3123,7 @@
    <attributes>
     <staff-details number="1" print-object="yes" />
    </attributes>
-   <note color="#000000" default-x="57">
+   <note color="#000000" default-x="73">
     <pitch>
      <step>G</step>
      <octave>2</octave>
@@ -3119,7 +3136,7 @@
    </note>
   </measure>
   <!--============== Part: P4, Measure: 20 ==============-->
-  <measure number="20" width="153">
+  <measure number="20" width="150">
    <note color="#000000" default-x="15">
     <pitch>
      <step>C</step>
@@ -3136,7 +3153,13 @@
    </barline>
   </measure>
   <!--============== Part: P4, Measure: 21 ==============-->
-  <measure number="21" width="191">
+  <measure number="21" width="189">
+   <attributes>
+    <key color="#000000">
+     <fifths>0</fifths>
+     <mode>major</mode>
+    </key>
+   </attributes>
    <note>
     <rest />
     <duration>1024</duration>
@@ -3150,7 +3173,7 @@
    </barline>
   </measure>
   <!--============== Part: P4, Measure: 22 ==============-->
-  <measure number="22" width="166">
+  <measure number="22" width="163">
    <attributes>
     <key color="#000000">
      <fifths>-3</fifths>
@@ -3174,7 +3197,7 @@
    </note>
   </measure>
   <!--============== Part: P4, Measure: 23 ==============-->
-  <measure number="23" width="166">
+  <measure number="23" width="163">
    <note color="#000000" default-x="15">
     <pitch>
      <step>G</step>
@@ -3188,7 +3211,7 @@
    </note>
   </measure>
   <!--============== Part: P4, Measure: 24 ==============-->
-  <measure number="24" width="153">
+  <measure number="24" width="151">
    <note color="#000000" default-x="15">
     <pitch>
      <step>C</step>
