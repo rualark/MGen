@@ -509,12 +509,12 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;97;;;50;Harmony;Nonchord tones;Double-neighbour tone;:left by leap;0;;There is a leap after last note of double-neighbour tone;;;;;;3;0;;;;;;;
 1;328;;;50;Harmony;Nonchord tones;Double-neighbour tone between bars;one note out;0;;Last note of DNT is out of current measure;;;;;;4;0;;;;;;1;
 1;281;;;50;Harmony;Nonchord tones;Double-neighbour tone between bars;more notes out;0;;Two or more last notes of DNT are out of current measure;;;;;;1;0;;;;;;1;
-1;282;24;;50;Harmony;Nonchord tones;Passing tone on downbeat;contrary motion;0;In upper voice only;;2;1;;;;50;1;;;;;;1;
-1;297;24;;50;Harmony;Nonchord tones;Passing tone on downbeat;:direct motion;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;;6;0;;;;;;1;
-1;298;24;;50;Harmony;Nonchord tones;Passing tone on downbeat;:parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;;18;1;;;;;;1;
-1;282;35;;0;Harmony;Nonchord tones;Passing tone on downbeat;contrary motion;1;In upper voice only;;2;1;;;;50;1;;;;;;1;
-1;297;35;;50;Harmony;Nonchord tones;Passing tone on downbeat;:direct motion;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;;6;0;;;;;;1;
-1;298;35;;50;Harmony;Nonchord tones;Passing tone on downbeat;:parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;;18;1;;;;;;1;
+1;282;24;;50;Harmony;Nonchord tones;Passing dissonance on downbeat;contrary motion;0;In upper voice only;;2;1;;;;50;1;;;;;;1;
+1;297;24;;50;Harmony;Nonchord tones;Passing dissonance on downbeat;:direct motion;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;;6;0;;;;;;1;
+1;298;24;;50;Harmony;Nonchord tones;Passing dissonance on downbeat;:parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;;18;1;;;;;;1;
+1;282;35;;0;Harmony;Nonchord tones;Passing dissonance on downbeat;contrary motion;1;In upper voice only;;2;1;;;;50;1;;;;;;1;
+1;297;35;;50;Harmony;Nonchord tones;Passing dissonance on downbeat;:direct motion;0;In upper voice only;Dissonance is formed by direct movement of voices;2;1;;;;6;0;;;;;;1;
+1;298;35;;50;Harmony;Nonchord tones;Passing dissonance on downbeat;:parallel;0;In upper voice only;Dissonance is formed by parallel movement of voices;2;1;;;;18;1;;;;;;1;
 1;287;;;50;Harmony;Nonchord tones;Anticipation;any;0;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with next note longer and previous note longer or equal;;;;;;52;14;;;;;225;;
 1;294;;;100;Harmony;Nonchord tones;Anticipation;:preceded by a shorter note;0;;Previous note is shorter than anticipation note;;;;;;1;1;1;;;;;;
 1;293;;;0;Harmony;Nonchord tones;Anticipation;next equal;1;;Next note has equal length with anticipation note;;;;;;7;5;1;;;;;;
