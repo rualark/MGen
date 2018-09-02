@@ -18,7 +18,7 @@ ly_rule_verbose = 1
 fill_steps_mul = 2 # Multiply number of notes between leap notes to get steps for filling (+2)
 first_steps_tonic = 3 # Number of first steps, which must contain tonic note (will increase by one if cantus is longer than 10 notes)
 
-show_hatch = 0 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
+show_hatch = 2 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
 harm_notation = 1 # Harmonic notation (see configs/harm/harm-notation.csv for details)
 show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show chord type (6 or 64)
 show_severity = 1 # =1 to show severity and flag id in square brackets in comments to notes (also when exporting to MIDI file)
