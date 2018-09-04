@@ -476,8 +476,10 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;187;;;100;Harmony;Dissonance;Dissonance left by leap;leap;0;;Leap from harmonic upbeat dissonance;;;;;;195;8;;;;;276,169,384;;
 1;169;;;0;Harmony;Dissonance;Dissonance on upbeat;stepwize;-1;;;;;;;;904;3;;;;;;;
 1;276;;;0;Harmony;Dissonance;Dissonance on upbeat;m2;-1;;Minor second;2;1;;;;6;3;1;;;;;;
-1;24;;;50;Harmony;Voice motion;Overlapping;adjacent voices;0;;;10;;;;overlap;54;9;1;;;;;;
-1;548;;;100;Harmony;Voice motion;Overlapping;non-adjacent;0;;;10;;;;overlap;;;;;;;;;
+1;24;;<5;50;Harmony;Voice motion;Overlapping;adjacent voices;0;;;10;;;;overlap;54;9;1;;;;;;
+1;548;;<5;100;Harmony;Voice motion;Overlapping;non-adjacent;0;;;10;;;;overlap;;;;;;;;;
+1;24;;>4;0;Harmony;Voice motion;Overlapping;adjacent voices;0;;;10;;;;overlap;54;9;1;;;;;;
+1;548;;>4;50;Harmony;Voice motion;Overlapping;non-adjacent;0;;;10;;;;overlap;;;;;;;;;
 1;541;;<3;50;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;12;;;;cross;;;;;;;;;
 1;542;;<3;50;Harmony;Voice motion;Voice crossing is prohibited;last measure;0;;;12;;;;cross;;;;;;;;;
 1;543;;<3;100;Harmony;Voice motion;Voice crossing is prohibited;any;0;;;12;;;;cross;;;;;;;;;
