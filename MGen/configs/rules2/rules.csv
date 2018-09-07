@@ -305,7 +305,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;437;5;;0;Melody;Range;Stagnation;19 notes <m6;0;;X consecutive notes have total pitch range less than Y;9;;;;Stagnation;3;0;;;;;;;
 1;15;;;0;Melody;Range;No melody development;12 notes <12;0;;Averaged melody direction within X notes is less than Y deci-semitones;9;;;;Stagnation;36;2;;1;;1;;;
 1;16;;;0;Melody;Range;No melody development;15 notes <15;0;;Averaged melody direction within X notes is less than Y deci-semitones;9;;;;Stagnation;20;1;;1;;;;;
-1;74;;;50;Melody;Melodic minor;bVII degree;:before the tonic;0;;Before tonic note: next (or second to next in cadence);8;;;;VIIb, not LT;31;4;1;;;;;;
+1;74;;;50;Melody;Melodic minor;bVII degree;:before the tonic;0;;Before tonic note: next (or second to next in cadence) in melodic minor;8;;;;VIIb, not LT;31;4;1;;;;;;
 1;200;;;0;Melody;Melodic minor;bVII degree;10 after VII#;0;;X notes after VII# note;8;;;;VII after VII#;28;7;;;;;;;
 1;349;;;0;Melody;Melodic minor;bVII degree near VI# degree;4 notes before;0;;X notes before VI#;8;;;;VII near VI#;52;1;;;;;;;
 1;350;;;0;Melody;Melodic minor;bVII degree near VI# degree;4 notes after;0;;X notes after VI#;8;;;;VII near VI#;43;0;;;;;;;
@@ -374,6 +374,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;324;;<5;50;Harmony;Perfect consonance;Doubling of leading-tone;LT doubling;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;;;;23;9;1;;;;;;
 1;324;;>4EB;50;Harmony;Perfect consonance;Doubling of leading-tone;LT doubling;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;;;;23;9;1;;;;;;
 1;324;;>4N;0;Harmony;Perfect consonance;Doubling of leading-tone;LT doubling;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;;;;23;9;1;;;;;;
+1;553;;<5;50;Harmony;Perfect consonance;Doubling of VI# tone in melodic minor;VI# doubling;0;;Harmonic octave for leaping notes and downbeat;;;;;;;;;;;;;;
+1;553;;>4EB;50;Harmony;Perfect consonance;Doubling of VI# tone in melodic minor;VI# doubling;0;;Harmonic octave for leaping notes and downbeat;;;;;;;;;;;;;;
+1;553;;>4N;0;Harmony;Perfect consonance;Doubling of VI# tone in melodic minor;VI# doubling;0;;Harmonic octave for leaping notes and downbeat;;;;;;;;;;;;;;
 1;325;;;0;Harmony;Perfect consonance;Culmination on 5th: long downbeat;culmination;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat 5th 1/2 or longer;2;1;;;;0;0;1;;;;;;
 1;326;;;0;Harmony;Perfect consonance;Culmination on 8ve / unison: long downbeat;culmination;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat octave 1/2 or longer;2;1;;;;3;0;1;;;;;;
 1;86;;;0;Harmony;Perfect consonance;Consecutive perfect consonances;different;-1;;Different adjacent perfect consonances;7;1;;;;167;4;;;;;;;
