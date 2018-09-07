@@ -463,6 +463,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;96;;;50;Harmony;Imperfect consonance;Too many consecutive 3rds;> 3;0;More than X same 3rds in a row;;9;1;;;Parallel 3rds;4;0;;;;;;;
 1;389;;;0;Harmony;Imperfect consonance;Too many consecutive 6ths;3;-1;More than X same 6ths in a row;;9;1;;;Parallel 6ths;19;0;;;;;;;
 1;390;;;50;Harmony;Imperfect consonance;Too many consecutive 6ths;> 3;0;More than X same 6ths in a row;;9;1;;;Parallel 6ths;6;0;;;;;;;
+1;552;;;50;Harmony;Imperfect consonance;Too many consecutive parallel 6th chords;3;0;More than X same 6ths in a row;;9;;;;Parallel 6th chords;;;;;;;;;
 1;379;;;0;Harmony;Dissonance;Virtual 4th;beat 1;-1;Situation when there is no harmonic 4th interval, but there are harmonic notes in same voice, which form sounding 4th;;12;;;;sounds 6/4;21;4;;;;;;;
 1;380;;;0;Harmony;Dissonance;Virtual 4th;beat 3;-1;Situation when there is no harmonic 4th interval, but there are harmonic notes in same voice, which form sounding 4th;;12;;;;sounds 6/4;10;4;;;;;;;
 1;381;;;0;Harmony;Dissonance;Virtual 4th;long;-1;Situation when there is no harmonic 4th interval, but there are harmonic notes in same voice, which form sounding 4th;;12;;;;sounds 6/4;12;4;;;;;;;
