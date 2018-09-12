@@ -65,7 +65,7 @@ BOOL CInfoDlg::OnInitDialog()
 		int eff;
 		CString st, st2;
 		// Note start and end
-		if (mv > 1) {
+		if (mv >= pGen->coff[ms].size()) {
 			pGen->mutex_output.unlock();
 			pGen->mutex_animate.unlock();
 			return TRUE;
