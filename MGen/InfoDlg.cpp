@@ -65,6 +65,11 @@ BOOL CInfoDlg::OnInitDialog()
 		int eff;
 		CString st, st2;
 		// Note start and end
+		if (mv > 1) {
+			pGen->mutex_output.unlock();
+			pGen->mutex_animate.unlock();
+			return TRUE;
+		}
 		int i = ms - pGen->coff[ms][mv];
 		int ei = ms + pGen->noff[ms][mv] - 1;
 		
