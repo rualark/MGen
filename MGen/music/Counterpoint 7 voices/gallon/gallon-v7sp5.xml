@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-09-03</encoding-date>
+   <encoding-date>2018-09-09</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -2045,10 +2045,10 @@
   </measure>
   <!--============== Part: P3, Measure: 10 ==============-->
   <measure number="10" width="168">
-   <note color="#000000" default-x="15" default-y="5">
+   <note color="#000000" default-x="15" default-y="-20">
     <pitch>
      <step>G</step>
-     <octave>4</octave>
+     <octave>3</octave>
     </pitch>
     <duration>512</duration>
     <instrument id="P3-I1" />
@@ -2057,17 +2057,17 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="84" default-y="-55">
+   <note color="#000000" default-x="84" default-y="-20">
     <pitch>
      <step>B</step>
      <alter>-1</alter>
-     <octave>4</octave>
+     <octave>3</octave>
     </pitch>
     <duration>512</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
     <type>half</type>
-    <stem>down</stem>
+    <stem>up</stem>
     <staff>1</staff>
    </note>
   </measure>
@@ -2076,7 +2076,7 @@
    <note color="#000000" default-x="15">
     <pitch>
      <step>C</step>
-     <octave>5</octave>
+     <octave>4</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P3-I1" />
@@ -4309,10 +4309,11 @@
   </measure>
   <!--============== Part: P6, Measure: 14 ==============-->
   <measure number="14" width="189">
-   <note color="#000000" default-x="15" default-y="-50">
+   <note color="#000000" default-x="15" default-y="-55">
     <pitch>
-     <step>C</step>
-     <octave>4</octave>
+     <step>B</step>
+     <alter>-1</alter>
+     <octave>3</octave>
     </pitch>
     <duration>512</duration>
     <instrument id="P6-I1" />

@@ -24,4 +24,3 @@ show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show ch
 show_severity = 1 # =1 to show severity and flag id in square brackets in comments to notes (also when exporting to MIDI file)
 
 show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show chord type (6 or 64)
-

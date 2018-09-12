@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-08-11</encoding-date>
+   <encoding-date>2018-09-09</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -66,7 +66,7 @@
   </appearance>
   <music-font font-family="Opus Std" font-size="19.8425" />
   <lyric-font font-family="Plantin MT Std" font-size="11.4715" />
-  <lyric-language xml:lang="ru" />
+  <lyric-language xml:lang="en" />
  </defaults>
  <credit page="2">
   <credit-words default-x="85" default-y="1510" font-style="normal" font-weight="normal" justify="left" valign="middle">2</credit-words>
@@ -3353,7 +3353,7 @@
   <measure number="10" width="151">
    <direction>
     <direction-type>
-     <words default-x="9" default-y="46" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">On admet la repetition d&apos;une blanche entre</words>
+     <words default-x="9" default-y="46" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Mes 9-10. Alto. On admet la repetition d&apos;une blanche entre</words>
      <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">l&apos;avant-derniere et la derniere mesure (31)</words>
     </direction-type>
     <voice>1</voice>
