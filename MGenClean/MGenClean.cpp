@@ -537,6 +537,8 @@ int main() {
 			}
 			Sleep(1000);
 		}
+		// Close always
+		return PauseClose();
 		if (close_flag) {
 			close_flag = 2;
 			break;
