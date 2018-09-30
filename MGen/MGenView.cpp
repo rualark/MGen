@@ -408,21 +408,20 @@ void CMGenView::OnDraw(CDC* pDC)
 					int ei = i + pGen->len[i][v] - 1;
 					// Check if note steps have different dynamics
 					int step_dyn2 = 0;
-					int note_lining = 0;
-					if (pGen->lining.size()) note_lining = pGen->lining[i][v];
+					int step_lining2 = 0;
 					if ((step_dyn) && (pGen->len[i][v] > 1)) {
 						for (int x = i + 1; x <= ei; ++x) {
 							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
-							if (pGen->lining.size() && pGen->lining[x][v]) note_lining = pGen->lining[x][v];
+							if (pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
 						}
 					}
 					else {
 						for (int x = i + 1; x <= ei; ++x) {
-							if (pGen->lining.size() && pGen->lining[x][v]) note_lining = pGen->lining[x][v];
+							if (pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
 						}
 					}
 					// Show without step dynamics
-					if (!step_dyn2 || !mf->show_vel) {
+					if (!step_lining2 && (!step_dyn2 || !mf->show_vel)) {
 						if (mf->show_vel) alpha = 40 + (80 * pGen->dyn[i][v] / 127);
 						else alpha = 100;
 						if (mf->show_notecolors) {
@@ -440,8 +439,8 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 						//SolidBrush brush(ncolor);
 						// Show lining
-						if (mf->show_lining && note_lining) {
-							hatch = static_cast<HatchStyle>(note_lining);
+						if (mf->show_lining && pGen->lining[i][v]) {
+							hatch = static_cast<HatchStyle>(pGen->lining[i][v]);
 							ncolor2 = Color(127 - (127 - ncolor.GetAlpha()) / 6.0, ncolor.GetRed() / 6.0,
 								ncolor.GetGreen() / 6.0, ncolor.GetBlue() / 6.0);
 						}
