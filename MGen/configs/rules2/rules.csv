@@ -350,7 +350,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;307;;;50;Harmony;Harmony;More than 1 harmony in measure;inside phrase;0;Only for counterpoint;In measures before penultimate measure;1;;;;2 harmonies;184;9;;;;;;;
 1;40;;;100;Harmony;Harmony;More than 2 harmonies in measure;>2 harmonies;0;;More than 2 harmonies in measure;1;;;;;54;2;;;;;;;
 1;310;;;0;Harmony;Harmony;Too many tonic chords;>2 within 9 mea.;0;;More than X tonic chords within Y consecutive harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;;3;0;;1;;;;;
-1;375;;;50;Harmony;Harmony;Augmented chord;DTIII#5;0;;Augmented chord is prohibited (DTIII#5);1;;;;;11;0;1;;;;;;
+1;555;;;100;Harmony;Harmony;Convoluted harmony;convoluted;0;;;1;;;;;;;;;;;;;
+1;375;;;50;Harmony;Harmony;Augmented chord;DTIII;0;;;1;;;;;11;0;1;;;;;;
 1;539;;;50;Harmony;Harmony;Diminished chord;VII;0;;;1;;;;;;;;;;;;;
 1;540;;;50;Harmony;Harmony;Diminished chord;VI;0;;;1;;;;;;;;;;;;;
 1;554;;;50;Harmony;Harmony;Diminished chord;II;0;;;1;;;;;;;;;;;;;
