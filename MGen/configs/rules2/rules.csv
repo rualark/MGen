@@ -445,7 +445,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;295;;;50;Harmony;Suspension;Suspension resolution ornament;leap from;0;;Leap from suspension to resolution ornament is longer than M3;12;;;;sus;0;0;1;;;;;;
 1;387;;;0;Harmony;Suspension;Wrong usage of sus. in 2nd sp.;I -> LT penultim.;1;;Suspension of LT by I note in penultimate measure in sp2;;;;;;8;0;1;;;;;;
 1;388;;;50;Harmony;Suspension;Wrong usage of sus. in 2nd sp.;not I -> LT pnu.;0;;Other suspension than LT by I note in penultimate measure in sp2;;;;;;14;4;;;;;;;
-1;458;;;100;Harmony;Suspension;Sus. prepared by dissonance;start diss.;0;;Suspension starts with dissonance;;;;;;23;6;;;;;;;
+1;458;;;100;Harmony;Suspension;Tied note prepared by dissonance;diss. prep;0;;Suspension starts with dissonance;;;;;;23;6;;;;;;;
 1;532;;;0;Harmony;Border;Non-permitted first note;V;-1;;;;;;;;;;;;;;;;
 1;533;;;0;Harmony;Border;Non-permitted first note;III syncope;-1;;;;;;;;;;;;;;;;
 1;534;;;50;Harmony;Border;Non-permitted first note;III;0;;;;;;;;;;;;;;;;
