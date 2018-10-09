@@ -584,9 +584,9 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="126">
+   <note color="#000000" default-x="126" default-y="-5">
     <pitch>
-     <step>F</step>
+     <step>E</step>
      <octave>4</octave>
     </pitch>
     <duration>256</duration>
