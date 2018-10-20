@@ -130,8 +130,8 @@
      <line>2</line>
     </clef>
     <clef number="2" color="#000000">
-     <sign>G</sign>
-     <line>2</line>
+     <sign>F</sign>
+     <line>4</line>
     </clef>
     <staff-details number="1" print-object="yes" />
     <staff-details number="2" print-object="yes" />
@@ -199,7 +199,7 @@
    <backup>
     <duration>1536</duration>
    </backup>
-   <note color="#000000" default-x="15" default-y="-20">
+   <note color="#000000" default-x="15" default-y="10">
     <pitch>
      <step>C</step>
      <octave>3</octave>
@@ -210,12 +210,12 @@
     <type>half</type>
     <stem>up</stem>
     <staff>2</staff>
-    <lyric default-y="-110" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
    </note>
-   <note color="#000000" default-x="79" default-y="-20">
+   <note color="#000000" default-x="79" default-y="-50">
     <pitch>
      <step>E</step>
      <octave>3</octave>
@@ -224,10 +224,10 @@
     <instrument id="P1-I1" />
     <voice>2</voice>
     <type>half</type>
-    <stem>up</stem>
+    <stem>down</stem>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="143" default-y="-20">
+   <note color="#000000" default-x="143" default-y="-5">
     <pitch>
      <step>G</step>
      <octave>2</octave>
@@ -273,10 +273,10 @@
    <backup>
     <duration>1536</duration>
    </backup>
-   <note color="#000000" default-x="15" default-y="-20">
+   <note color="#000000" default-x="15" default-y="10">
     <pitch>
-     <step>B</step>
-     <octave>2</octave>
+     <step>C</step>
+     <octave>3</octave>
     </pitch>
     <duration>256</duration>
     <instrument id="P1-I1" />
@@ -285,7 +285,7 @@
     <stem>up</stem>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="52" default-y="-20">
+   <note color="#000000" default-x="52" default-y="-5">
     <pitch>
      <step>G</step>
      <octave>2</octave>
@@ -297,7 +297,7 @@
     <stem>up</stem>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="90" default-y="-20">
+   <note color="#000000" default-x="90" default-y="-15">
     <pitch>
      <step>E</step>
      <octave>2</octave>
@@ -309,7 +309,7 @@
     <stem>up</stem>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="128" default-y="-20">
+   <note color="#000000" default-x="128" default-y="-55">
     <pitch>
      <step>D</step>
      <octave>3</octave>
@@ -318,10 +318,10 @@
     <instrument id="P1-I1" />
     <voice>2</voice>
     <type>quarter</type>
-    <stem>up</stem>
+    <stem>down</stem>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="166" default-y="-20">
+   <note color="#000000" default-x="166" default-y="-45">
     <pitch>
      <step>F</step>
      <octave>3</octave>
@@ -330,19 +330,19 @@
     <instrument id="P1-I1" />
     <voice>2</voice>
     <type>quarter</type>
-    <stem>up</stem>
+    <stem>down</stem>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="204" default-y="-20">
+   <note color="#000000" default-x="204" default-y="-30">
     <pitch>
-     <step>A</step>
+     <step>B</step>
      <octave>3</octave>
     </pitch>
     <duration>256</duration>
     <instrument id="P1-I1" />
     <voice>2</voice>
     <type>quarter</type>
-    <stem>up</stem>
+    <stem>down</stem>
     <staff>2</staff>
    </note>
   </measure>
@@ -452,7 +452,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-110" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp5</text>
     </lyric>
@@ -583,7 +583,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-116" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>D</text>
     </lyric>
@@ -708,7 +708,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-116" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
@@ -795,7 +795,7 @@
     <type>whole</type>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="148" default-y="-20">
+   <note color="#000000" default-x="148" default-y="-30">
     <pitch>
      <step>B</step>
      <octave>3</octave>
@@ -804,7 +804,7 @@
     <instrument id="P1-I1" />
     <voice>2</voice>
     <type>half</type>
-    <stem>up</stem>
+    <stem>down</stem>
     <staff>2</staff>
    </note>
   </measure>
@@ -950,7 +950,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-110" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
@@ -1048,7 +1048,7 @@
     <type>whole</type>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="148" default-y="-20">
+   <note color="#000000" default-x="148" default-y="5">
     <pitch>
      <step>B</step>
      <octave>2</octave>
@@ -1188,7 +1188,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-110" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
@@ -1301,7 +1301,7 @@
     <type>whole</type>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="190" default-y="-20">
+   <note color="#000000" default-x="190" default-y="5">
     <pitch>
      <step>B</step>
      <octave>2</octave>
@@ -1441,7 +1441,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-110" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
@@ -1539,7 +1539,7 @@
     <type>whole</type>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="148" default-y="-20">
+   <note color="#000000" default-x="148" default-y="5">
     <pitch>
      <step>B</step>
      <octave>2</octave>
@@ -1694,7 +1694,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-110" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
@@ -1792,7 +1792,7 @@
     <type>whole</type>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="148" default-y="-20">
+   <note color="#000000" default-x="148" default-y="-10">
     <pitch>
      <step>F</step>
      <octave>2</octave>
@@ -1932,7 +1932,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-110" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
@@ -2045,7 +2045,7 @@
     <type>whole</type>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="190" default-y="-20">
+   <note color="#000000" default-x="190" default-y="-10">
     <pitch>
      <step>F</step>
      <octave>2</octave>
@@ -2185,7 +2185,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-110" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
@@ -2272,7 +2272,7 @@
    <backup>
     <duration>1536</duration>
    </backup>
-   <note color="#000000" default-x="15" default-y="-20">
+   <note color="#000000" default-x="15">
     <pitch>
      <step>A</step>
      <octave>2</octave>
@@ -2285,7 +2285,7 @@
     <stem>up</stem>
     <staff>2</staff>
    </note>
-   <note color="#000000" default-x="123" default-y="-20">
+   <note color="#000000" default-x="123" default-y="-10">
     <pitch>
      <step>F</step>
      <octave>2</octave>
@@ -2443,7 +2443,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-116" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp5</text>
     </lyric>
@@ -2552,7 +2552,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-116" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>DVII</text>
     </lyric>
@@ -2664,7 +2664,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-116" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp5</text>
     </lyric>
@@ -2795,7 +2795,7 @@
     <type>whole</type>
     <dot />
     <staff>2</staff>
-    <lyric default-y="-116" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>DVII</text>
     </lyric>
@@ -2942,7 +2942,7 @@
     <voice>2</voice>
     <type>whole</type>
     <staff>2</staff>
-    <lyric default-y="-116" number="part2verse1" color="#000000">
+    <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
      <text>sp55</text>
     </lyric>
