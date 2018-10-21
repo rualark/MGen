@@ -564,7 +564,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;278;;;0;Rhythm;Rhythm;Anapaest;tie back;1;1/2 after 1/4 or 1/8 in measure;First note in measure is slurred to previous measure;11;;;;Anapaest;6;1;1;;;;;;
 1;240;;;50;Rhythm;Rhythm;Anapaest;inside;0;1/2 after 1/4 or 1/8 in measure;Before penultimate measure;11;;;;Anapaest;11;9;1;;;;239;;
 1;514;;;50;Rhythm;Rhythm;Wrong note value for this species;value;0;Except last note;;;;;;;;;;;;;;;
-1;550;;;50;Rhythm;Rhythm;Quarter is not marked by note start;no start;0;;;;;;;;;;;;;;;;
 1;525;;;50;Rhythm;Rhythm;Wrong measure length for this species;measure len;0;;;;;;;;;;;;;;;;
 1;515;;;50;Rhythm;Rhythm;Wrong note position for this species;position;0;;;;;;;;;;;;;;;;
 1;41;;;0;Rhythm;Rhythm;Note lasts for too many measures;>2;-1;;Note crosses more than two measures;;;;;;15;12;1;;;;;;
