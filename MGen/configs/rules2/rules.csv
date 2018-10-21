@@ -492,11 +492,13 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;543;;<3;100;Harmony;Voice motion;Voice crossing is prohibited;any;0;;;12;;;;cross;;;;;;;;;
 1;541;;>2;50;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;12;;;;cross;;;;;;;;;
 1;542;;>2;50;Harmony;Voice motion;Voice crossing is prohibited;last measure;0;;;12;;;;cross;;;;;;;;;
-1;541;;>4;50;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;12;;;;cross;;;;;;;;;
+1;541;;>4;0;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;12;;;;cross;;;;;;;;;
 1;542;;>4;0;Harmony;Voice motion;Voice crossing is prohibited;last measure;1;;;12;;;;cross;;;;;;;;;
-1;518;;;50;Harmony;Voice motion;Voice crossing is too long;> 1.5 measures;0;;;12;;;;cross;;;;;;;;;
-1;519;;;100;Harmony;Voice motion;Voice crossing is too long;> 2.5 measures;0;;;12;;;;cross;;;;;;;;;
-1;520;;;50;Harmony;Voice motion;Voice crossing between non-adjacent voices;non-adjacent;0;;;12;;;;cross;;;;;;;;;
+1;518;;<5;50;Harmony;Voice motion;Voice crossing is too long;> 1.5 measures;0;;;12;;;;cross;;;;;;;;;
+1;519;;<5;100;Harmony;Voice motion;Voice crossing is too long;> 2.5 measures;0;;;12;;;;cross;;;;;;;;;
+1;518;;>4;0;Harmony;Voice motion;Voice crossing is too long;> 1.5 measures;0;;;12;;;;cross;;;;;;;;;
+1;519;;>4;50;Harmony;Voice motion;Voice crossing is too long;> 2.5 measures;0;;;12;;;;cross;;;;;;;;;
+1;520;;;100;Harmony;Voice motion;Voice crossing between non-adjacent voices;non-adjacent;0;;;12;;;;cross;;;;;;;;;
 1;544;;;0;Harmony;Voice motion;Wrong voice movement during voice crossing;2nd interval;0;;Second interval at crossing;;;;;2nd;;;;;;;;;
 1;545;;;100;Harmony;Voice motion;Wrong voice movement during voice crossing;2 x 2nd;0;;Second interval before and at crossing;12;;;;2 x 2nd;;;;;;;;;
 1;546;;;0;Harmony;Voice motion;Wrong voice movement during voice crossing;direct leap;0;;Direct motion to crossing if one of voices leaps;12;;;;leap;;;;;;;;;
