@@ -412,12 +412,14 @@ void CMGenView::OnDraw(CDC* pDC)
 					if ((step_dyn) && (pGen->len[i][v] > 1)) {
 						for (int x = i + 1; x <= ei; ++x) {
 							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
-							if (pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
+							if (pGen->lining.size() && 
+								pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
 						}
 					}
 					else {
 						for (int x = i + 1; x <= ei; ++x) {
-							if (pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
+							if (pGen->lining.size() &&
+								pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
 						}
 					}
 					// Show without step dynamics
@@ -439,7 +441,8 @@ void CMGenView::OnDraw(CDC* pDC)
 						}
 						//SolidBrush brush(ncolor);
 						// Show lining
-						if (mf->show_lining && pGen->lining[i][v]) {
+						if (mf->show_lining && pGen->lining.size() &&
+							pGen->lining[i][v]) {
 							hatch = static_cast<HatchStyle>(pGen->lining[i][v]);
 							ncolor2 = Color(127 - (127 - ncolor.GetAlpha()) / 6.0, ncolor.GetRed() / 6.0,
 								ncolor.GetGreen() / 6.0, ncolor.GetBlue() / 6.0);
