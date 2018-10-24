@@ -673,7 +673,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_STATUS_PANE1        "Pane 1                                                                                                                                "
+    IDS_STATUS_PANE1        "Status bar                                                                                                                                "
     IDS_STATUS_PANE2        "Pane 2"
 END
 
