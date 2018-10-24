@@ -201,7 +201,7 @@
     <staff>2</staff>
     <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
-     <text>CF=low,sp3 Expect</text>
+     <text>CF=low,sp5 Expect</text>
     </lyric>
    </note>
   </measure>
@@ -448,7 +448,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 7 ==============-->
-  <measure number="7" width="280">
+  <measure number="7" width="287">
    <print new-system="yes">
     <system-layout>
      <system-margins>
@@ -480,7 +480,7 @@
     <type>quarter</type>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="101" default-y="-15">
+   <note color="#000000" default-x="100" default-y="-15">
     <pitch>
      <step>C</step>
      <octave>4</octave>
@@ -496,7 +496,7 @@
      <text>272</text>
     </lyric>
    </note>
-   <note color="#000000" default-x="158" default-y="-10">
+   <note color="#000000" default-x="165" default-y="-10">
     <pitch>
      <step>D</step>
      <octave>4</octave>
@@ -510,13 +510,13 @@
    </note>
    <direction>
     <direction-type>
-     <words default-x="195" default-y="43" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Sus replaced</words>
+     <words default-x="202" default-y="43" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Sus replaced</words>
      <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">with antici.</words>
     </direction-type>
     <voice>1</voice>
     <staff>1</staff>
    </direction>
-   <note color="#000000" default-x="201" default-y="-5">
+   <note color="#000000" default-x="208" default-y="-5">
     <pitch>
      <step>E</step>
      <octave>4</octave>
@@ -547,12 +547,12 @@
     <staff>2</staff>
     <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
-     <text>CF=low,sp3</text>
+     <text>CF=low,sp5</text>
     </lyric>
    </note>
   </measure>
   <!--============== Part: P1, Measure: 8 ==============-->
-  <measure number="8" width="195">
+  <measure number="8" width="193">
    <attributes />
    <note color="#000000" default-x="15" default-y="-5">
     <pitch>
@@ -582,7 +582,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="102" default-y="-20">
+   <note color="#000000" default-x="101" default-y="-20">
     <pitch>
      <step>B</step>
      <octave>3</octave>
@@ -596,13 +596,13 @@
    </note>
    <direction>
     <direction-type>
-     <words default-x="137" default-y="42" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Sus replaced</words>
+     <words default-x="136" default-y="42" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Sus replaced</words>
      <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">with antici.</words>
     </direction-type>
     <voice>1</voice>
     <staff>1</staff>
    </direction>
-   <note color="#000000" default-x="146" default-y="-15">
+   <note color="#000000" default-x="145" default-y="-15">
     <pitch>
      <step>C</step>
      <octave>4</octave>
@@ -634,7 +634,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 9 ==============-->
-  <measure number="9" width="163">
+  <measure number="9" width="161">
    <attributes />
    <note color="#000000" default-x="15" default-y="-15">
     <pitch>
@@ -654,7 +654,7 @@
    </note>
    <direction>
     <direction-type>
-     <words default-x="131" default-y="61" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Antici. </words>
+     <words default-x="130" default-y="61" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Antici. </words>
      <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">replaced</words>
      <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">with sus</words>
     </direction-type>
@@ -662,7 +662,7 @@
     <voice>1</voice>
     <staff>1</staff>
    </direction>
-   <note color="#000000" default-x="89" default-y="-5">
+   <note color="#000000" default-x="88" default-y="-5">
     <pitch>
      <step>E</step>
      <octave>4</octave>
@@ -694,7 +694,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 10 ==============-->
-  <measure number="10" width="163">
+  <measure number="10" width="161">
    <attributes />
    <note color="#000000" default-x="15" default-y="-5">
     <pitch>
@@ -710,13 +710,13 @@
    </note>
    <direction>
     <direction-type>
-     <words default-x="83" default-y="28" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Sus replaced</words>
+     <words default-x="82" default-y="28" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Sus replaced</words>
      <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">with antici.</words>
     </direction-type>
     <voice>1</voice>
     <staff>1</staff>
    </direction>
-   <note color="#000000" default-x="89">
+   <note color="#000000" default-x="88">
     <pitch>
      <step>F</step>
      <octave>4</octave>
@@ -748,7 +748,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 11 ==============-->
-  <measure number="11" width="117">
+  <measure number="11" width="116">
    <attributes />
    <note color="#000000" default-x="15">
     <pitch>
@@ -781,7 +781,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 12 ==============-->
-  <measure number="12" width="120">
+  <measure number="12" width="119">
    <attributes />
    <note>
     <rest />
@@ -907,7 +907,7 @@
     <staff>2</staff>
     <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
-     <text>CF=low,sp3</text>
+     <text>CF=low,sp5</text>
     </lyric>
    </note>
   </measure>
@@ -1276,7 +1276,7 @@
     <staff>2</staff>
     <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
-     <text>CF=low,sp3</text>
+     <text>CF=low,sp5</text>
     </lyric>
    </note>
   </measure>
