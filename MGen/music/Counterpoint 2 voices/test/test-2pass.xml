@@ -7,7 +7,7 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-10-21</encoding-date>
+   <encoding-date>2018-11-01</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -210,6 +210,10 @@
     <voice>2</voice>
     <type>whole</type>
     <staff>2</staff>
+    <lyric default-y="-80" number="part2verse1" color="#000000">
+     <syllabic>single</syllabic>
+     <text>sp3</text>
+    </lyric>
    </note>
   </measure>
   <!--============== Part: P1, Measure: 3 ==============-->
@@ -397,6 +401,10 @@
     <voice>2</voice>
     <type>whole</type>
     <staff>2</staff>
+    <lyric default-y="-80" number="part2verse1" color="#000000">
+     <syllabic>single</syllabic>
+     <text>sp3</text>
+    </lyric>
    </note>
   </measure>
   <!--============== Part: P1, Measure: 7 ==============-->
@@ -599,6 +607,10 @@
     <voice>2</voice>
     <type>whole</type>
     <staff>2</staff>
+    <lyric default-y="-80" number="part2verse1" color="#000000">
+     <syllabic>single</syllabic>
+     <text>sp3</text>
+    </lyric>
    </note>
   </measure>
   <!--============== Part: P1, Measure: 11 ==============-->
