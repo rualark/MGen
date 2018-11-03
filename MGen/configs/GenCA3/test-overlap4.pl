@@ -7,5 +7,5 @@
 include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
-# Created at 2018-11-04 00:14:38
-MusicXML_file = music\Counterpoint 2 voices\test\test-overlap.xml
+# Created at 2018-08-16 22:33:28
+MusicXML_file = music\Counterpoint 4 voices\test\test-overlap4.xml
