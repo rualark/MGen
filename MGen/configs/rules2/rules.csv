@@ -471,9 +471,10 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;83;;;100;Harmony;Dissonance;Dissonance;:on downbeat;0;;;;;;;;219;21;;;;;169;;
 1;223;;;50;Harmony;Dissonance;Dissonance;:longer than previous chord tone;0;;Dissonance is longer than previous note;;;;;;14;7;1;;;;;;
 1;384;;;0;Harmony;Dissonance;Dissonance;:longer than next chord tone;0;;Dissonance is longer than next consonance;;;;;;8;1;;;;;;;
-1;331;;;50;Harmony;Dissonance;Dissonance;chord tones;0;;Prohibit 4th upbeat consonance even if not lowest ;;;;;;0;0;1;;;;;;
+1;331;;;50;Harmony;Dissonance;Dissonance;tritone;0;;Tritone is prohibited between two chord tones with bass;;;;;;0;0;1;;;;;;
 1;551;;;100;Harmony;Dissonance;Dissonance;:first note;0;;;;;;;;;;;;;;;;
 1;170;;;50;Harmony;Dissonance;Dissonance;aux diss;0;;Auxiliary note should be surrounded by chord tones;;;;;;;;;;;;;;
+1;171;;;50;Harmony;Dissonance;Dissonance;4th;0;;4th is prohibited between two chord tones with bass;;;;;;;;;;;;;;
 1;36;;;100;Harmony;Dissonance;Dissonance approached by leap;leap;0;;Leap to harmonic upbeat dissonance;;;;;;;;;;;;276,169,384;;
 1;187;;;100;Harmony;Dissonance;Dissonance left by leap;leap;0;;Leap from harmonic upbeat dissonance;;;;;;195;8;;;;;276,169,384;;
 1;169;;;0;Harmony;Dissonance;Dissonance on upbeat;stepwize;-1;;;;;;;;904;3;;;;;;;
