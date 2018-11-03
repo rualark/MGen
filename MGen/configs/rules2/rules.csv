@@ -436,10 +436,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;221;;;100;Harmony;Suspension;Wrong resolution of suspension;:by leap;0;;Suspension resolution by leap;12;;;;sus;16;7;1;;;;;;
 1;291;;;0;Harmony;Suspension;Wrong resolution of suspension;short;0;;If resolution note is shorter than 1/4;12;;;;sus;2;1;1;;;;;;
 1;286;;;50;Harmony;Suspension;Wrong resolution of suspension;:off beat;0;;Suspension is not resolved on allowed beat;12;;;;sus;7;7;1;;;;;;
-1;296;;;0;Harmony;Suspension;Suspension resolution ornament;cons. leap down;1;;Leap down from consonance insertion to resolution;12;;;;sus;0;0;1;;;;;;
-1;136;;;0;Harmony;Suspension;Suspension resolution ornament;cons. leap up;1;;Leap up from consonance insertion to resolution;12;;;;sus;0;0;1;;;;;;
+1;296;;;50;Harmony;Suspension;Suspension resolution ornament;leap to resolution;0;;Leap from resolution ornament to resolution is longer than M3;12;;;;sus;0;0;1;;;;;;
 1;292;;;50;Harmony;Suspension;Suspension resolution ornament;chatty;0;;There are more than 2 notes in resolution ornament between suspension and resolution;12;;;;sus;1;1;1;;;;;;
-1;295;;;50;Harmony;Suspension;Suspension resolution ornament;leap from;0;;Leap from suspension to resolution ornament is longer than M3;12;;;;sus;0;0;1;;;;;;
+1;295;;;50;Harmony;Suspension;Suspension resolution ornament;leap from sus;0;;Leap from suspension to resolution ornament is longer than M3;12;;;;sus;0;0;1;;;;;;
 1;387;;;0;Harmony;Suspension;Wrong usage of sus. in 2nd sp.;I -> LT penultim.;1;;Suspension of LT by I note in penultimate measure in sp2;;;;;;8;0;1;;;;;;
 1;388;;;50;Harmony;Suspension;Wrong usage of sus. in 2nd sp.;not I -> LT pnu.;0;;Other suspension than LT by I note in penultimate measure in sp2;;;;;;14;4;;;;;;;
 1;458;;;100;Harmony;Suspension;Tied note prepared by dissonance;diss. prep;0;;Suspension starts with dissonance;;;;;;23;6;;;;;;;
@@ -470,13 +469,12 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;379;;;50;Harmony;Dissonance;Unresolved harmonic tritone;unresolved;0;Situation when there is no harmonic 4th interval, but there are harmonic notes in same voice, which form sounding 4th;;12;;;;tri;21;4;;;;;;;
 1;83;;;100;Harmony;Dissonance;Dissonance;:on downbeat;0;;;;;;;;219;21;;;;;169;;
 1;223;;;50;Harmony;Dissonance;Dissonance;:longer than previous chord tone;0;;Dissonance is longer than previous note;;;;;;14;7;1;;;;;;
-1;384;;;0;Harmony;Dissonance;Dissonance;:longer than next chord tone;0;;Dissonance is longer than next consonance;;;;;;8;1;;;;;;;
 1;331;;;50;Harmony;Dissonance;Dissonance;tritone;0;;Tritone is prohibited between two chord tones with bass;;;;;;0;0;1;;;;;;
 1;551;;;100;Harmony;Dissonance;Dissonance;:first note;0;;;;;;;;;;;;;;;;
 1;170;;;50;Harmony;Dissonance;Dissonance;aux diss;0;;Auxiliary note should be surrounded by chord tones;;;;;;;;;;;;;;
 1;171;;;50;Harmony;Dissonance;Dissonance;4th;0;;4th is prohibited between two chord tones with bass;;;;;;;;;;;;;;
-1;36;;;100;Harmony;Dissonance;Dissonance approached by leap;leap;0;;Leap to harmonic upbeat dissonance;;;;;;;;;;;;276,169,384;;
-1;187;;;100;Harmony;Dissonance;Dissonance left by leap;leap;0;;Leap from harmonic upbeat dissonance;;;;;;195;8;;;;;276,169,384;;
+1;36;;;100;Harmony;Dissonance;Dissonance approached by leap;leap;0;;Leap to harmonic upbeat dissonance;;;;;;;;;;;;276,169;;
+1;187;;;100;Harmony;Dissonance;Dissonance left by leap;leap;0;;Leap from harmonic upbeat dissonance;;;;;;195;8;;;;;276,169;;
 1;169;;;0;Harmony;Dissonance;Dissonance on upbeat;stepwize;-1;;;;;;;;904;3;;;;;;;
 1;276;;;0;Harmony;Dissonance;Dissonance on upbeat;m2;-1;;Minor second;2;1;;;;6;3;1;;;;;;
 1;24;;<5;50;Harmony;Voice motion;Overlapping;adjacent voices;0;;;10;;;;overlap;54;9;1;;;;;;
