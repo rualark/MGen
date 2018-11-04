@@ -348,7 +348,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;310;;;0;Harmony;Harmony;Too many tonic chords;>2 within 9 mea.;0;;More than X tonic chords within Y consecutive harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;;3;0;;1;;;;;
 1;555;;;100;Harmony;Harmony;Convoluted harmony;convoluted;0;Cannot detect harmony;;1;;;;;;;;;;;;;
 1;558;;;100;Harmony;Harmony;Ambiguous harmony;ambiguous;0;Chord should have at least one one downbeat chord tone;;1;;;;;;;;;;;;;
-1;559;;>2;100;Harmony;Harmony;Incomplete harmony;incomplete;0;Starting from 3 voices chord should have tonic and 3rd as downbeat or suspension resolution note;;1;;;;;;;;;;;;;
+1;559;;>2;50;Harmony;Harmony;Incomplete harmony;any;0;;Starting from 3 voices chord should have tonic and 3rd on first beat or suspension or PDD resolution note;1;;;;;;;;;;;;;
+1;172;;>2;50;Harmony;Harmony;Incomplete harmony;penultimate D;0;;Starting from 3 voices penultimate chord D should have all three chord notes on first beat or suspension or PDD resolution note;;;;;;;;;;;;;;
 1;375;;;50;Harmony;Harmony;Augmented chord;DTIII;0;;;1;;;;;11;0;1;;;;;;
 1;383;;;50;Harmony;Harmony;Six-four chord;:audible;0;;6/4 chord with non-repeating 5th on beat 2 or 4;1;;;;;20;0;1;;;;;;
 1;196;;;50;Harmony;Harmony;Six-four chord;:suggestive;0;;6/4 chord with repeating 5th on beat 2 or 4;1;;;;;;;1;;;;;;
