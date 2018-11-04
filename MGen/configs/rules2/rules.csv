@@ -332,9 +332,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;167;;;0;Harmony;Melodic minor;False dim or aug relation;VI#<->III;-1;;;10;;;;!srn!;37;3;1;;;;;;
 1;168;;;0;Harmony;Melodic minor;False dim or aug relation;VII#<->III;-1;;;10;;;;!srn!;80;5;1;;;;;;
 1;29;;;0;Harmony;Melodic minor;False dim or aug relation;Tritone;-1;;;;;;;;330;0;;;;;;;
-1;172;;;100;Harmony;Melodic minor;Dim or aug harmonic interval;VI<->VII#;0;If allowed, will be considered dissonance;Non-harmonic allowed;2;1;;;;0;0;1;;;;;;
-1;173;;;100;Harmony;Melodic minor;Dim or aug harmonic interval;VI#<->III;0;If allowed, will be considered dissonance;Non-harmonic allowed;2;1;;;;0;0;1;;;;;;
-1;174;;;100;Harmony;Melodic minor;Dim or aug harmonic interval;VII#<->III;0;If allowed, will be considered dissonance;Non-harmonic allowed;2;1;;;;0;0;1;;;;;;
 1;17;;;0;Harmony;Harmony;Repeating functions in a row;>4 T;0;More than X consecutive harmonies all have this letter;;9;;;;Weak prog.;6;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;428;;;0;Harmony;Harmony;Repeating functions in a row;>4 D;0;More than X consecutive harmonies all have this letter;;9;;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;429;;;0;Harmony;Harmony;Repeating functions in a row;>4 S;0;More than X consecutive harmonies all have this letter;;9;;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
