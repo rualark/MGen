@@ -511,8 +511,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;265;;;0;Harmony;Nonchord tones;Cambiata;leap from 4;1;;Leap from note #4 up to 4th interval;;;;;;11;0;;;;;;1;
 1;266;;;0;Harmony;Nonchord tones;Cambiata;back from 4;1;;Movement from note #4 in returning direction;;;;;;5;0;;;;;;1;
 1;279;;;0;Harmony;Nonchord tones;Cambiata;inverted;1;;Inverted cambiata;;;;;;19;0;;;;;;1;
-1;327;;;50;Harmony;Nonchord tones;Cambiata between bars;one note out;0;;Last note of cambiata is out of current measure;;;;;;3;0;;;;;;1;
-1;259;;;50;Harmony;Nonchord tones;Cambiata between bars;more notes out;0;;Two or more last notes of cambiata are out of current measure;;;;;;8;0;;;;;;1;
 1;258;;;0;Harmony;Nonchord tones;Double-neighbour tone;any;1;;Prohibit this rule to prevent detection of any double-neighbour tone;;;;;;35;0;;;;;;1;
 1;280;;;0;Harmony;Nonchord tones;Double-neighbour tone;mixed rhythm;1;;Rhythm of DNT contains not only 1/4 notes;;;;;;3;0;;;;;;1;
 1;260;;;50;Harmony;Nonchord tones;Double-neighbour tone;:leap of a 4th;0;;Allow leaps up to specified size;;;;;;5;0;;;;;;1;
