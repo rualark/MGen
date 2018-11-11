@@ -480,7 +480,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;548;;<5;100;Harmony;Voice motion;Overlapping;non-adjacent;0;;;10;;;;overlap;;;;;;;;;
 1;136;;<5;100;Harmony;Voice motion;Overlapping;direct 2nd;0;;;7;3;;;;;;;;;;;;
 1;24;;>4;0;Harmony;Voice motion;Overlapping;adjacent voices;0;;;10;;;;overlap;54;9;1;;;;;;
-1;548;;>4;50;Harmony;Voice motion;Overlapping;non-adjacent;0;;;10;;;;overlap;;;;;;;;;
+1;548;;>4;100;Harmony;Voice motion;Overlapping;non-adjacent;0;;;10;;;;overlap;;;;;;;;;
 1;136;;>4;100;Harmony;Voice motion;Overlapping;direct 2nd;0;;;7;3;;;;;;;;;;;;
 1;541;;<3;50;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;12;;;;cross;;;;;;;;;
 1;542;;<3;50;Harmony;Voice motion;Voice crossing is prohibited;last measure;0;;;12;;;;cross;;;;;;;;;

@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-10-31</encoding-date>
+   <encoding-date>2018-11-10</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -1116,7 +1116,7 @@
     <voice>1</voice>
     <staff>1</staff>
    </direction>
-   <note color="#000000" default-x="88">
+   <note color="#FF0000" default-x="88">
     <pitch>
      <step>F</step>
      <octave>4</octave>
@@ -1193,13 +1193,13 @@
    </note>
    <direction>
     <direction-type>
-     <words default-x="71" default-y="28" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">wrong tritone</words>
-     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">resolution</words>
+     <words default-x="71" default-y="28" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">tritone</words>
+     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">does not need resolution</words>
     </direction-type>
     <voice>1</voice>
     <staff>1</staff>
    </direction>
-   <note color="#000000" default-x="77">
+   <note color="#FF0000" default-x="77">
     <pitch>
      <step>F</step>
      <octave>4</octave>
@@ -1310,7 +1310,7 @@
     <voice>1</voice>
     <staff>1</staff>
    </direction>
-   <note color="#000000" default-x="80">
+   <note color="#FF0000" default-x="80">
     <pitch>
      <step>F</step>
      <octave>4</octave>
@@ -1755,8 +1755,8 @@
    </note>
    <direction>
     <direction-type>
-     <words default-x="74" default-y="28" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">non-harm tritone</words>
-     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">does not need resolution</words>
+     <words default-x="74" default-y="28" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">tritone</words>
+     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">unresolved</words>
     </direction-type>
     <voice>1</voice>
     <staff>1</staff>
@@ -2660,7 +2660,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="88" default-y="-55">
+   <note color="#FF0000" default-x="88" default-y="-55">
     <pitch>
      <step>B</step>
      <octave>3</octave>
@@ -2726,7 +2726,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="77" default-y="-55">
+   <note color="#FF0000" default-x="77" default-y="-55">
     <pitch>
      <step>B</step>
      <octave>3</octave>
@@ -2820,7 +2820,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="80" default-y="-55">
+   <note color="#FF0000" default-x="80" default-y="-55">
     <pitch>
      <step>B</step>
      <octave>3</octave>
