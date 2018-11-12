@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-11-10</encoding-date>
+   <encoding-date>2018-11-11</encoding-date>
    <encoder>ruala</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -245,6 +245,15 @@
   </measure>
   <!--============== Part: P1, Measure: 7 ==============-->
   <measure number="7" width="140">
+   <direction>
+    <direction-type>
+     <words default-x="71" default-y="56" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">tritone</words>
+     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">does not need resolution</words>
+    </direction-type>
+    <offset sound="no">512</offset>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note default-x="15">
     <rest />
     <duration>1024</duration>
@@ -1191,14 +1200,6 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <direction>
-    <direction-type>
-     <words default-x="71" default-y="28" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">tritone</words>
-     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">does not need resolution</words>
-    </direction-type>
-    <voice>1</voice>
-    <staff>1</staff>
-   </direction>
    <note color="#FF0000" default-x="77">
     <pitch>
      <step>F</step>

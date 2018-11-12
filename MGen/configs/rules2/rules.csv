@@ -304,13 +304,13 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;437;5;;0;Melody;Range;Stagnation;19 notes <m6;0;;X consecutive notes have total pitch range less than Y;9;;;;Stagnation;3;0;;;;;;;
 1;15;;;0;Melody;Range;No melody development;12 notes <12;0;;Averaged melody direction within X notes is less than Y deci-semitones;9;;;;Stagnation;36;2;;1;;1;;;
 1;16;;;0;Melody;Range;No melody development;15 notes <15;0;;Averaged melody direction within X notes is less than Y deci-semitones;9;;;;Stagnation;20;1;;1;;;;;
-1;74;;;50;Melody;Melodic minor;bVII degree;:before the tonic;0;;Before tonic note: next (or second to next in cadence) in melodic minor;8;;;;VIIb, not LT;31;4;1;;;;;;
+1;74;;;50;Melody;Melodic minor;bVII degree;:before the tonic;0;;Before tonic note: next (or second to next in cadence) in melodic minor, if both notes are chord tones;8;;;;VIIb, not LT;31;4;1;;;;;;
 1;200;;;0;Melody;Melodic minor;bVII degree;10 after VII#;0;;X notes after VII# note;8;;;;VII after VII#;28;7;;;;;;;
 1;349;;;0;Melody;Melodic minor;bVII degree near VI# degree;4 notes before;0;;X notes before VI#;8;;;;VII near VI#;52;1;;;;;;;
 1;350;;;0;Melody;Melodic minor;bVII degree near VI# degree;4 notes after;0;;X notes after VI#;8;;;;VII near VI#;43;0;;;;;;;
 1;199;;;0;Melody;Melodic minor;VI# degree without close VII# degree;within 2 notes;0;There is no VII# note before or after VI# note in close proximity;;;;;;;65;2;;;;;;;
-1;201;12350;;0;Melody;Melodic minor;Note not stepwise ascending;VI#;0;Harmonic VI# note is not surrounded by stepwise diatonic ascending movement;;8;;;;VI# not asc.;9;2;;;;;;;
-1;202;12350;;0;Melody;Melodic minor;Note not stepwise descending;VII natural;0;Harmonic VII natural note is not surrounded by stepwise diatonic descending movement;;8;;;;VII not desc.;;;;;;;;;
+1;201;12350;;0;Melody;Melodic minor;Note not stepwise ascending;VI#;0;Chord tone VI# is not surrounded by stepwise diatonic ascending movement;;8;;;;VI# not asc.;9;2;;;;;;;
+1;202;12350;;0;Melody;Melodic minor;Note not stepwise descending;VII natural;0;Chord tone VII natural is not surrounded by stepwise diatonic descending movement;;8;;;;VII not desc.;;;;;;;;;
 1;521;;;100;Melody;Melodic minor;Note is not part of the mode;wrong alteration;0;;Used alterations are not part of current mode (major I#, II# or VI# notes).;;;;;;;;;;;;;;
 1;152;;;100;Melody;Melodic minor;Chromaticism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;;!srn!;1;1;1;;;;;;
 1;153;;;100;Melody;Melodic minor;Chromaticism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;;!srn!;3;2;1;;;;;;
