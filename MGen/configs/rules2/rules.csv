@@ -1,6 +1,7 @@
 Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
-1;52;;;0;Melody;Cantus;Resolution of the penultimate note;VII not to I;0;;VII penultimate note resolves not to I note in melodic minor and major;12;;;;res;12;1;;;;;;;
-1;87;;;0;Melody;Cantus;Resolution of the penultimate note;IV not to III;0;;IV penultimate note resolves not to III note;12;;;;res;48;1;;;;;;;
+1;52;;;0;Melody;Melody;Resolution of the penultimate note;VII not to I;0;;VII penultimate note resolves not to I note in melodic minor and major;12;;;;res;12;1;;;;;;;
+1;87;;;0;Melody;Melody;Resolution of the penultimate note;IV not to III;0;;IV penultimate note resolves not to III note;12;;;;res;48;1;;;;;;;
+1;197;;;50;Melody;Melody;Leading tone is unresolved;LT;0;;;;;;;;;;;;;;;;
 1;42;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;3rd;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;199;0;;;999;;;;
 1;43;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;4th;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;88;0;;;999;;;;
 1;44;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;5th;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;76;0;;;999;;;;
