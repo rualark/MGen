@@ -468,7 +468,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;379;;;50;Harmony;Dissonance;Unresolved harmonic tritone;unresolved;0;Situation when there is no harmonic 4th interval, but there are harmonic notes in same voice, which form sounding 4th;;12;;;;tri;21;4;;;;;;;
 1;83;;;100;Harmony;Dissonance;Dissonance;:on downbeat;0;;;;;;;;219;21;;;;;169;;
 1;223;;;50;Harmony;Dissonance;Dissonance;:longer than previous chord tone;0;;Dissonance is longer than previous note;;;;;;14;7;1;;;;;;
-1;331;;;50;Harmony;Dissonance;Dissonance;tritone;0;;Tritone is prohibited between two chord tones with bass;;;;;;0;0;1;;;;;;
+1;331;;;50;Harmony;Dissonance;Dissonance;tritone;0;;Tritone is prohibited between two chord tones with bass in major and melodic minor. In ancient modes, tritone is prohibited between any voices;;;;;;0;0;1;;;;;;
 1;551;;;100;Harmony;Dissonance;Dissonance;:first note;0;;;;;;;;;;;;;;;;
 1;170;;;50;Harmony;Dissonance;Dissonance;aux diss;0;;Auxiliary note should be surrounded by chord tones;;;;;;;;;;;;;;
 1;171;;;50;Harmony;Dissonance;Dissonance;4th;0;;4th is prohibited between two chord tones with bass;;;;;;;;;;;;;;
