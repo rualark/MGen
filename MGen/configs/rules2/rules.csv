@@ -310,6 +310,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;200;;;0;Melody;Melodic minor;bVII degree;10 after VII#;0;;X notes after VII# note;8;;;;VII after VII#;28;7;;;;;;;
 1;349;;;0;Melody;Melodic minor;bVII degree near VI# degree;4 notes before;0;;X notes before VI#;8;;;;VII near VI#;52;1;;;;;;;
 1;350;;;0;Melody;Melodic minor;bVII degree near VI# degree;4 notes after;0;;X notes after VI#;8;;;;VII near VI#;43;0;;;;;;;
+1;203;;;50;Melody;Melodic minor;bVII degree near VI# degree;immediate;0;;;8;;;;bVII<->VI#;;;;;;;;;
 1;199;;;0;Melody;Melodic minor;VI# degree without close VII# degree;within 2 notes;0;There is no VII# note before or after VI# note in close proximity;;;;;;;65;2;;;;;;;
 1;201;12350;;0;Melody;Melodic minor;Note not stepwise ascending;VI#;0;Chord tone VI# is not surrounded by stepwise diatonic ascending movement;;8;;;;VI# not asc.;9;2;;;;;;;
 1;202;12350;;0;Melody;Melodic minor;Note not stepwise descending;VII natural;0;Chord tone VII natural is not surrounded by stepwise diatonic descending movement;;8;;;;VII not desc.;;;;;;;;;
