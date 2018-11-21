@@ -7,8 +7,8 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-10-23</encoding-date>
-   <encoder>ruala</encoder>
+   <encoding-date>2018-11-21</encoding-date>
+   <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
    <encoding-description>Sibelius / MusicXML 3.0</encoding-description>
@@ -92,8 +92,8 @@
     <instrument-sound>keyboard.piano.grand</instrument-sound>
     <solo />
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
-     <virtual-name>Concert Grand Piano</virtual-name>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Acoustic Piano</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
@@ -615,7 +615,7 @@
    </note>
    <direction>
     <direction-type>
-     <words default-x="82" default-y="20" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">LT doubling</words>
+     <words default-x="82" default-y="20" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">F# doubling</words>
     </direction-type>
     <voice>1</voice>
     <staff>1</staff>
@@ -739,7 +739,7 @@
    <attributes />
    <direction>
     <direction-type>
-     <words default-x="10" default-y="20" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">LT doubling</words>
+     <words default-x="10" default-y="20" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">F# doubling</words>
     </direction-type>
     <voice>1</voice>
     <staff>1</staff>
@@ -788,7 +788,7 @@
    </note>
    <direction>
     <direction-type>
-     <words default-x="118" default-y="47" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">LT doubling</words>
+     <words default-x="145" default-y="22" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">F# doubling</words>
     </direction-type>
     <voice>1</voice>
     <staff>1</staff>
