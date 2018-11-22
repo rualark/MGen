@@ -371,6 +371,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;80;;;0;Harmony;Perfect consonance;Perfect consonance;downbeat;-1;;;2;1;;;;338;2;;;;;;;
 1;81;;;0;Harmony;Perfect consonance;Perfect consonance;culmination;-1;;;2;1;;;;66;2;;;;;;;
 1;82;;;0;Harmony;Perfect consonance;Perfect consonance;db. culm.;-1;;Downbeat culmination;2;1;;;;48;11;1;;;;80;;
+1;222;;<5;50;Harmony;Perfect consonance;Doubling of tritone note;doubling;0;;Doubling of one of tritone notes is prohibited if both tritone notes are chord tones and both exist in voices in current measure;2;;;;;;;;;;;;;
+1;222;;>4EB;50;Harmony;Perfect consonance;Doubling of tritone note;doubling;0;;Doubling of one of tritone notes is prohibited if both tritone notes are chord tones and both exist in voices in current measure;2;;;;;;;;;;;;;
+1;222;;>4N;0;Harmony;Perfect consonance;Doubling of tritone note;doubling;0;;Doubling of one of tritone notes is prohibited if both tritone notes are chord tones and both exist in voices in current measure;2;;;;;;;;;;;;;
 1;324;;<5;50;Harmony;Perfect consonance;Doubling of leading-tone;LT doubling;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;;;;23;9;1;;;;;;
 1;324;;>4EB;50;Harmony;Perfect consonance;Doubling of leading-tone;LT doubling;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;;;;23;9;1;;;;;;
 1;324;;>4N;0;Harmony;Perfect consonance;Doubling of leading-tone;LT doubling;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;;;;23;9;1;;;;;;
