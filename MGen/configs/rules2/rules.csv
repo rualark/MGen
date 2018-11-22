@@ -324,10 +324,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;156;;;100;Melody;Melodic minor;Dim or aug melodic interval;VII#-III;0;;Augmented / diminished;8;;;;!srn!;7;3;1;;;;;;
 1;157;;;100;Melody;Melodic minor;Dim or aug melodic interval;III-VII#;0;;Augmented / diminished;8;;;;!srn!;3;1;1;;;;;;
 1;432;;;0;Melody;Melodic minor;Dim or aug melodic interval;III-VII#-I down;1;;III-VII# downward notes, then I note;8;;;;!srn!;2;0;1;;;;157;;
-1;160;;;0;Melody;Melodic minor;Dim or aug melodic interval: far;VI<->VII#;-1;;;8;;;;!srn!;16;3;1;;;;;;
-1;161;;;0;Melody;Melodic minor;Dim or aug melodic interval: far;VI#<->III;-1;;;8;;;;!srn!;27;4;1;;;;;;
-1;162;;;0;Melody;Melodic minor;Dim or aug melodic interval: far;VII#-III;-1;;;8;;;;!srn!;9;1;1;;;;;;
-1;163;;;0;Melody;Melodic minor;Dim or aug melodic interval: far;III-VII#;-1;;;8;;;;!srn!;20;2;1;;;;;;
 1;164;;;100;Harmony;Melodic minor;False chromatic relation;VI<->VI#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;10;;;;!srn!;25;4;1;;;;;;
 1;165;;;100;Harmony;Melodic minor;False chromatic relation;VII<->VII#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;10;;;;!srn!;30;6;1;;;;;;
 1;166;;;0;Harmony;Melodic minor;False dim or aug relation;VI<->VII#;-1;;;10;;;;!srn!;41;3;1;;;;;;
