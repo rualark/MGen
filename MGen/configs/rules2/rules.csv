@@ -555,9 +555,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;232;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;1/8 syncope;0;;1/8 note slurred forward to next beat;;;;;;3;3;1;;;;;;
 1;255;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;>2 x 1/8;0;;More than two 1/8 notes in measure;;;;;;19;6;1;;;;;;
 1;88;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;leap;0;;Leap from or to 1/8 note;5;;;;;47;12;1;;;;;;
-1;238;;;0;Rhythm;Rhythm;Anapaest;penultimate;1;1/2 after 1/4 or 1/8 in measure;Last or next to last measure;11;;;;Anapaest;21;6;1;;;;;;
-1;239;;;0;Rhythm;Rhythm;Anapaest;tie forward;1;1/2 after 1/4 or 1/8 in measure;1/2 is slurred forward;11;;;;Anapaest;71;18;1;;;;;;
-1;278;;;0;Rhythm;Rhythm;Anapaest;tie back;1;1/2 after 1/4 or 1/8 in measure;First note in measure is slurred to previous measure;11;;;;Anapaest;6;1;1;;;;;;
+1;239;;;0;Rhythm;Rhythm;Anapaest;tie forward;1;1/2 after 1/4 or 1/8 in measure;1/2 is slurred forward when there is only one sp5 voice, before penultimate measure;11;;;;Anapaest;71;18;1;;;;;;
 1;240;;;50;Rhythm;Rhythm;Anapaest;inside;0;1/2 after 1/4 or 1/8 in measure;Before penultimate measure;11;;;;Anapaest;11;9;1;;;;239;;
 1;514;;;50;Rhythm;Rhythm;Wrong note value for this species;value;0;Except last note;;;;;;;;;;;;;;;
 1;525;;;50;Rhythm;Rhythm;Wrong measure length for this species;measure len;0;;;;;;;;;;;;;;;;
