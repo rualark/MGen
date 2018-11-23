@@ -458,7 +458,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;317;;;0;Harmony;Border;Penultimate measure;VII natural;-1;;VII natural minor note in penultimate measure. This rule is disabled, because it duplicates "no leading-tone" rule;;;;;;21;4;1;;;;;;
 1;318;;;0;Harmony;Border;Penultimate measure;:isolated LT;0;;There is another harmony between leading tone and tonic note in penultimate measure;;;;;;26;10;1;;;;;;
 1;322;;;0;Harmony;Border;Penultimate measure;T/S after D;-1;;Any chord except V or VII(#) goes after V or VII(#) chord in penultimate measure. Disabled this rule, because it duplicates rule "penultimate harmony no D/DVII";;;;;;15;4;1;;;;;;
-1;335;;;50;Harmony;Border;Penultimate measure;:no V or VII;0;;Penultimate harmony is not V or VII;1;;;;;146;1;;;;;;;
+1;335;;;50;Harmony;Border;Penultimate measure;:no V or VII chord;0;;Penultimate harmony is not V or VII;1;;;;;146;1;;;;;;;
 1;9;;;100;Harmony;Border;Penultimate measure;:poor int.;0;;Penultimate measure starts with poor interval: 8ve or unison;;;;;;;;;;;;;;
 1;89;;;0;Harmony;Imperfect consonance;Too many consecutive 3rds;3;-1;More than X same 3rds in a row;;9;1;;;Parallel 3rds;27;0;;;;;;;
 1;96;;;50;Harmony;Imperfect consonance;Too many consecutive 3rds;> 3;0;More than X same 3rds in a row;;9;1;;;Parallel 3rds;4;0;;;;;;;
@@ -546,7 +546,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;233;;;0;Rhythm;Rhythm;Non-permitted rhythm;1/2. downbeat;1;;Dotted half note on downbeat;;;;;;23;4;1;;;;;;
 1;234;;;50;Rhythm;Rhythm;Non-permitted rhythm;1/2. upbeat;0;;Dotted half note on upbeat;11;;;;Rhythm;8;8;1;;;;;;
 1;235;;;50;Rhythm;Rhythm;Non-permitted rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;;;;22;19;1;;;;;;
-1;236;;;50;Rhythm;Rhythm;Non-permitted rhythm;whole inside;0;;Downbeat whole note inside counterpoint - not first or last note;;;;;;38;12;1;;;;;;
+1;236;;;50;Rhythm;Rhythm;Non-permitted rhythm;rhythm stagnation;0;;Downbeat full measure note inside counterpoint - not first or last note;;;;;;38;12;1;;;;;;
+1;160;;;50;Rhythm;Rhythm;Non-permitted rhythm;whole inside;0;;Whole or longer note in measure in species 2 or 4;;;;;;;;;;;;;;
 1;226;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;1st beat;0;;1/8 note on beat 1;;;;;;12;7;1;;;;;;
 1;227;;;0;Rhythm;Rhythm;Wrong usage of eighth notes;2nd beat;1;;1/8 note on beat 2;;;;;;47;5;1;;;;;;
 1;228;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;3rd beat;0;;1/8 note on beat 3;;;;;;25;8;1;;;;;;
