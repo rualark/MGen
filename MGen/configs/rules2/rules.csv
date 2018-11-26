@@ -460,10 +460,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;322;;;0;Harmony;Border;Penultimate measure;T/S after D;-1;;Any chord except V or VII(#) goes after V or VII(#) chord in penultimate measure. Disabled this rule, because it duplicates rule "penultimate harmony no D/DVII";;;;;;15;4;1;;;;;;
 1;335;;;50;Harmony;Border;Penultimate measure;:no V or VII chord;0;;Penultimate harmony is not V or VII;1;;;;;146;1;;;;;;;
 1;9;;;100;Harmony;Border;Penultimate measure;:poor int.;0;;Penultimate measure starts with poor interval: 8ve or unison;;;;;;;;;;;;;;
-1;89;;;0;Harmony;Imperfect consonance;Too many consecutive 3rds;3;-1;More than X same 3rds in a row;;9;1;;;Parallel 3rds;27;0;;;;;;;
-1;96;;;50;Harmony;Imperfect consonance;Too many consecutive 3rds;> 3;0;More than X same 3rds in a row;;9;1;;;Parallel 3rds;4;0;;;;;;;
-1;389;;;0;Harmony;Imperfect consonance;Too many consecutive 6ths;3;-1;More than X same 6ths in a row;;9;1;;;Parallel 6ths;19;0;;;;;;;
-1;390;;;50;Harmony;Imperfect consonance;Too many consecutive 6ths;> 3;0;More than X same 6ths in a row;;9;1;;;Parallel 6ths;6;0;;;;;;;
+1;89;;;50;Harmony;Imperfect consonance;Too many consecutive 3rds;> 3;0;More than X 3rds in a row;;9;1;;;Parallel 3rds;27;0;;;;;;;
+1;90;;;50;Harmony;Imperfect consonance;Too many consecutive 6ths;> 3;0;More than X 6ths in a row;;9;1;;;Parallel 6ths;;;;;;;;;
 1;552;;;0;Harmony;Imperfect consonance;Too many consecutive parallel 6th chords;3;-1;More than X same 6ths chords in a row;;9;;;;Parallel 6th chords;;;;;;;;;
 1;379;;;50;Harmony;Dissonance;Unresolved harmonic tritone;unresolved;0;Situation when there is no harmonic 4th interval, but there are harmonic notes in same voice, which form sounding 4th;;12;;;;tri;21;4;;;;;;;
 1;83;;;100;Harmony;Dissonance;Dissonance;:on downbeat;0;;;;;;;;219;21;;;;;169;;

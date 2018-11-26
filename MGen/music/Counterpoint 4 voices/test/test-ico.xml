@@ -7,8 +7,8 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-10-22</encoding-date>
-   <encoder>ruala</encoder>
+   <encoding-date>2018-11-26</encoding-date>
+   <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
    <encoding-description>Sibelius / MusicXML 3.0</encoding-description>
@@ -84,7 +84,8 @@
    <score-instrument id="P1-I1">
     <instrument-name>Soprano</instrument-name>
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Soprano Ensemble</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
@@ -100,7 +101,8 @@
    <score-instrument id="P2-I1">
     <instrument-name>Alto</instrument-name>
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Alto Ensemble</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
@@ -116,7 +118,8 @@
    <score-instrument id="P3-I1">
     <instrument-name>Tenor</instrument-name>
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Tenor Ensemble</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
@@ -229,6 +232,13 @@
   </measure>
   <!--============== Part: P1, Measure: 7 ==============-->
   <measure number="7" width="97">
+   <direction>
+    <direction-type>
+     <words default-x="9" default-y="20" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">parallel 3rds</words>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note color="#000000" default-x="15">
     <pitch>
      <step>G</step>
@@ -429,7 +439,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 17 ==============-->
-  <measure number="17" width="149">
+  <measure number="17" width="150">
    <print new-system="yes">
     <system-layout>
      <system-margins>
@@ -491,7 +501,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="94" default-y="-50">
+   <note color="#000000" default-x="93" default-y="-50">
     <pitch>
      <step>C</step>
      <octave>5</octave>
@@ -517,7 +527,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 20 ==============-->
-  <measure number="20" width="172">
+  <measure number="20" width="173">
    <note color="#000000" default-x="15" default-y="10">
     <pitch>
      <step>A</step>
@@ -542,7 +552,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="93">
+   <note color="#000000" default-x="94">
     <pitch>
      <step>F</step>
      <octave>4</octave>
@@ -568,9 +578,12 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 21 ==============-->
-  <measure number="21" width="109">
-   <note>
-    <rest />
+  <measure number="21" width="107">
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>C</step>
+     <octave>5</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
     <voice>1</voice>
@@ -820,6 +833,13 @@
   </measure>
   <!--============== Part: P2, Measure: 13 ==============-->
   <measure number="13" width="161">
+   <direction>
+    <direction-type>
+     <words default-x="9" default-y="20" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">parallel 3rds</words>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note color="#000000" default-x="15">
     <pitch>
      <step>E</step>
@@ -875,7 +895,7 @@
    </note>
   </measure>
   <!--============== Part: P2, Measure: 17 ==============-->
-  <measure number="17" width="149">
+  <measure number="17" width="150">
    <print new-system="yes">
     <system-layout>
      <system-margins>
@@ -939,7 +959,7 @@
     <stem>down</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="94" default-y="10">
+   <note color="#000000" default-x="93" default-y="10">
     <pitch>
      <step>A</step>
      <octave>4</octave>
@@ -965,7 +985,7 @@
    </note>
   </measure>
   <!--============== Part: P2, Measure: 20 ==============-->
-  <measure number="20" width="172">
+  <measure number="20" width="173">
    <note color="#000000" default-x="15">
     <pitch>
      <step>F</step>
@@ -990,7 +1010,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="93" default-y="-10">
+   <note color="#000000" default-x="94" default-y="-10">
     <pitch>
      <step>D</step>
      <octave>4</octave>
@@ -1016,9 +1036,12 @@
    </note>
   </measure>
   <!--============== Part: P2, Measure: 21 ==============-->
-  <measure number="21" width="109">
-   <note>
-    <rest />
+  <measure number="21" width="107">
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>G</step>
+     <octave>4</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P2-I1" />
     <voice>1</voice>
@@ -1321,7 +1344,7 @@
    </note>
   </measure>
   <!--============== Part: P3, Measure: 17 ==============-->
-  <measure number="17" width="149">
+  <measure number="17" width="150">
    <print new-system="yes">
     <system-layout>
      <system-margins>
@@ -1378,7 +1401,7 @@
    </note>
   </measure>
   <!--============== Part: P3, Measure: 20 ==============-->
-  <measure number="20" width="172">
+  <measure number="20" width="173">
    <note color="#000000" default-x="15">
     <pitch>
      <step>D</step>
@@ -1392,9 +1415,12 @@
    </note>
   </measure>
   <!--============== Part: P3, Measure: 21 ==============-->
-  <measure number="21" width="109">
-   <note>
-    <rest />
+  <measure number="21" width="107">
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>C</step>
+     <octave>3</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P3-I1" />
     <voice>1</voice>
