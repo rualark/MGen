@@ -340,7 +340,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;195;;;0;Harmony;Harmony;Accentuated bad progression;culmination;-1;Only for cantus firmus;;1;;;;;0;0;;;;;;;
 1;306;;;0;Harmony;Harmony;More than 1 harmony in measure;penultimate 2;1;Only for counterpoint;2 harmonies in penultimate measure;1;;;;2 harmonies;92;11;;;;;;;
 1;329;;;0;Harmony;Harmony;More than 1 harmony in measure;sus 5/6 stepw;1;Only for counterpoint;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure. Only for sp4 or sp5 (requires starting sus and half notes in sp5);9;;;;;33;1;;;;;;;
-1;307;;;50;Harmony;Harmony;More than 1 harmony in measure;inside phrase;0;Only for counterpoint;In measures before penultimate measure;1;;;;2 harmonies;184;9;;;;;;;
+1;307;;;50;Harmony;Harmony;More than 1 harmony in measure;not penultimate;0;Only for counterpoint;In measures before penultimate measure;1;;;;2 harmonies;184;9;;;;;;;
 1;40;;;100;Harmony;Harmony;More than 2 harmonies in measure;>2 harmonies;0;;More than 2 harmonies in measure;1;;;;;54;2;;;;;;;
 1;556;;;50;Harmony;Harmony;Wrong second harmony position in penultimate measure;wrong;0;;Has to be, based on measure length: - 2/4: second quarter - 3/4: third quarter - 4/4: third or fourth quarter - 5/4: fourth quarter - 6/4: fourth quarter - 3/2: third half ;1;;;;;;;;;;;;;
 1;310;;;0;Harmony;Harmony;Too many tonic chords;>2 within 9 mea.;0;;More than X tonic chords within Y consecutive harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;;3;0;;1;;;;;
