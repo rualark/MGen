@@ -24,6 +24,11 @@ int CDb::Connect(CString driver, CString server, CString port, CString dbname, C
 	m_login = login;
 	m_pass = pass;
 
+	//RealConnect();
+	return 0;
+}
+
+int CDb::RealConnect() {
 	CString connSt =
 		"Driver=" + m_driver + ";"
 		"Server=" + m_server + ";"
@@ -32,9 +37,13 @@ int CDb::Connect(CString driver, CString server, CString port, CString dbname, C
 		"Pwd=" + m_pass + ";";
 
 	try {
-		if (db.IsOpen()) db.Close();
-		if (!db.OpenEx(connSt)) {
-			WriteLog("Cannot open database: " + connSt);
+		if (db) {
+			delete db;
+		}
+		db = new CDatabase();
+		if (!db->OpenEx(connSt)) {
+			WriteLog("Cannot open database: " + connSt, 1);
+			abort();
 			return 1;
 		}
 	}
@@ -44,13 +53,13 @@ int CDb::Connect(CString driver, CString server, CString port, CString dbname, C
 		abort();
 		return 1;
 	}
-	rs.m_pDatabase = &db;
 	return 0;
 }
 
 int CDb::Query(CString q) {
 	TRY	{
-		db.ExecuteSQL(q);
+		RealConnect();
+		db->ExecuteSQL(q);
 	}
 	CATCH_ALL(e) {
 		TCHAR szCause[255];
@@ -65,8 +74,11 @@ int CDb::Query(CString q) {
 
 int CDb::Fetch(CString q) {
 	TRY {
-		if (rs.IsOpen()) rs.Close();
-		rs.Open(CRecordset::forwardOnly, q, CRecordset::readOnly);
+		RealConnect();
+		if (rs) delete rs;
+		rs = new CRecordset;
+		rs->m_pDatabase = db;
+		rs->Open(CRecordset::forwardOnly, q, CRecordset::readOnly);
 	}
 	CATCH(CDBException, e) {
 		WriteLog("Error executing query '" + q + "': " + e->m_strError, 1);
@@ -78,10 +90,10 @@ int CDb::Fetch(CString q) {
 }
 
 CString CDb::GetSt(CString fname) {
-	if (rs.IsEOF()) return "";
+	if (!rs || rs->IsEOF()) return "";
 	CString st;
 	TRY {
-		rs.GetFieldValue(fname, st);
+		rs->GetFieldValue(fname, st);
 	}
 	CATCH(CDBException, e) {
 		WriteLog("Error parsing field '" + fname + "': " + e->m_strError, 1);
@@ -101,7 +113,7 @@ float CDb::GetFloat(CString fname) {
 }
 
 void CDb::WriteLog(CString st, int no_db) {
-	if (db.IsOpen() && !no_db) {
+	if (db && db->IsOpen() && !no_db) {
 		CString q;
 		q.Format("INSERT INTO j_logs VALUES('','%d','%d',NOW(),'%s')",
 			server_id, j_id, Escape(st));
@@ -114,11 +126,11 @@ void CDb::WriteLog(CString st, int no_db) {
 
 void CDb::GetFields() {
 	field.clear();
-	int nFields = rs.GetODBCFieldCount();
+	int nFields = rs->GetODBCFieldCount();
 	for (short x = 0; x < nFields; x++) {
 		CODBCFieldInfo fieldinfo;
 		short pos = x;
-		rs.GetODBCFieldInfo(pos, fieldinfo);
+		rs->GetODBCFieldInfo(pos, fieldinfo);
 		field.push_back(fieldinfo.m_strName);
 	}
 }

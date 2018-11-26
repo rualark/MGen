@@ -316,7 +316,7 @@ void Init() {
 	db.log_fname = "server\\MGenClean.log";
 	// Get client hostname
 	db.Fetch("SELECT SUBSTRING_INDEX(host,':',1) as 'ip' from information_schema.processlist WHERE ID=connection_id()");
-	if (!db.rs.IsEOF()) {
+	if (db.rs && !db.rs->IsEOF()) {
 		client_host = db.GetSt("ip");
 	}
 }
@@ -370,12 +370,12 @@ void ProcessTask(path path_info) {
 		CDb::j_id);
 	db.Fetch(q);
 	// Database error
-	if (db.rs.IsEOF()) {
+	if (!db.rs || db.rs->IsEOF()) {
 		// Get passed time
 		q.Format("SELECT TIMESTAMPDIFF(DAY, '%s', NOW()) AS j_passed",
 			year + "-" + month + "-" + day);
 		db.Fetch(q);
-		if (db.rs.IsEOF()) {
+		if (!db.rs || db.rs->IsEOF()) {
 			WriteLogLocal("Error accessing mysql server");
 		}
 		int j_passed = db.GetInt("j_passed");
@@ -437,7 +437,7 @@ void ProcessTask(path path_info) {
 			q.Format("SELECT j_id FROM jobs WHERE f_id = %d AND j_id > %ld AND j_state = 3 AND j_result = 0 AND j_class = %d",
 				f_id, CDb::j_id, j_class);
 			db.Fetch(q);
-			if (!db.rs.IsEOF()) {
+			if (db.rs && !db.rs->IsEOF()) {
 				est.Format("Archived task %ld file %d: passed %d days, cleaned",
 					CDb::j_id, f_id, j_passed);
 				WriteLog(est);

@@ -23,7 +23,7 @@
     <ProjectGuid>{449FD8D4-C6FE-474C-BF69-C30181879123}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MGenTest</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

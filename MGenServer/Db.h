@@ -9,6 +9,7 @@ public:
 	~CDb();
 
 	int Connect(CString driver, CString server, CString port, CString dbname, CString login, CString pass);
+	int RealConnect();
 	int Query(CString q);
 	int Fetch(CString q);
 	CString GetSt(CString fname);
@@ -26,8 +27,8 @@ public:
 	CString m_pass;
 	CString log_fname;
 
-	CDatabase db;
-	CRecordset rs;
+	CDatabase* db = 0;
+	CRecordset* rs = 0;
 	vector <CString> field;
 
 	static int server_id;
