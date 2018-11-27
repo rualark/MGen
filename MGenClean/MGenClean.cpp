@@ -334,12 +334,12 @@ BOOL WINAPI ConsoleHandlerRoutine(DWORD dwCtrlType) {
 }
 
 void ProcessTask(path path_info) {
-	CString est, st, st2, st3, q;
+	CString est, q;
 	int pos;
 	CString ext = path_info.extension().string().c_str();
 	CString pth = path_info.string().c_str();
 	CString fname = CGLib::fname_from_path(pth);
-	CString fnoext = CGLib::noext_from_path(pth);
+	//CString fnoext = CGLib::noext_from_path(pth);
 	vector<CString> sa;
 	CGLib::Tokenize(pth, sa, "\\");
 	if (sa.size() < 3) {
@@ -353,7 +353,7 @@ void ProcessTask(path path_info) {
 		WriteLogLocal("Cannot parse: " + pth);
 		return;
 	}
-	CString u_id = fname.Left(pos);
+	//CString u_id = fname.Left(pos);
 	CDb::j_id = atoi(fname.Mid(pos + 1));
 	pos = sa[sa.size() - 2].Find("-");
 	if (pos == -1) {
