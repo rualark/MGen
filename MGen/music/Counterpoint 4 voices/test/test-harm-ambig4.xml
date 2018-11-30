@@ -7,8 +7,8 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-10-26</encoding-date>
-   <encoder>ruala</encoder>
+   <encoding-date>2018-11-30</encoding-date>
+   <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
    <encoding-description>Sibelius / MusicXML 3.0</encoding-description>
@@ -90,7 +90,8 @@
    <score-instrument id="P1-I1">
     <instrument-name>Soprano</instrument-name>
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Soprano Ensemble</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
@@ -106,7 +107,8 @@
    <score-instrument id="P2-I1">
     <instrument-name>Alto</instrument-name>
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Alto Ensemble</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
@@ -122,7 +124,8 @@
    <score-instrument id="P3-I1">
     <instrument-name>Tenor</instrument-name>
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Tenor Ensemble</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
@@ -138,7 +141,8 @@
    <score-instrument id="P4-I1">
     <instrument-name>Bass (2)</instrument-name>
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Bass Ensemble</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
