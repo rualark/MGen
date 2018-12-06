@@ -1,6 +1,6 @@
 Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
-1;197;;;50;Melody;;Leading tone is unresolved;need up;0;;Leading tone has to resolve up stepwise;12;;;;res;;;;;;;;;
-1;198;;;50;Melody;;Leading tone is unresolved;need stepwise;0;;Leading tone has to resolve up or down stepwise;12;;;;res;;;;;;;;;
+1;197;;;50;Melody;Border;Leading tone is unresolved;need up;0;;Leading tone has to resolve up stepwise;12;;;;res;;;;;;;;;
+1;198;;;50;Melody;Border;Leading tone is unresolved;need stepwise;0;;Leading tone has to resolve up or down stepwise;12;;;;res;;;;;;;;;
 1;42;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;3rd;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;199;0;;;999;;;;
 1;43;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;4th;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;88;0;;;999;;;;
 1;44;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;5th;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;76;0;;;999;;;;
@@ -235,7 +235,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;79;;;0;Melody;Melodic repeats;Melodic climax;early <5;-1;;Only for upper voice;;;;;;94;0;;;;1;;;
 1;78;;;0;Melody;Melodic repeats;Melodic climax;early <3;-1;;Only for upper voice;;;;;;71;1;;;;1;;;
 1;21;;;0;Melody;Melodic repeats;Melodic climax;late 3;-1;;Only for upper voice;;;;;;198;1;;;;1;;;
-1;6;;;0;Melody;Melodic repeats;Melodic climax;sync;-1;;Synchronized culminations in both voices;;;;;;;;;;;1;;;
 1;305;;;0;Melody;Melodic repeats;Melodic climax is repeated;in lower part;0;;Multiple culminations in lower voice;;;;;;47;13;1;;;;;;
 1;12;;;100;Melody;Melodic repeats;Melodic climax is repeated;in upper part;0;;Multiple culminations in higher voice;;;;;;108;39;1;;;;21,78,79,193;;
 1;70;;;50;Melody;Melodic repeats;Frequent return to the tonic;3 within 6;0;More than X tonic notes within Y adjacent notes;X tonic note equivalents within Y notes. Less weight is assigned to a tonic note in species 3,5 if all conditions meet:  There is no leap above M3 to this tonic note. This tonic note is not a local culmination. This tonic note is not longer than previous note. This tonic note is not downbeat. Tonic note length is less than half note.;9;;;;Many tonics;;;;;;;;;
@@ -248,32 +247,22 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;346;;;0;Melody;Melodic repeats;Notes stagnation;17 notes <6 pi;0;;X consecutive notes use less than Y pitches;9;;;;Stagnation;3;0;;;;;;;
 1;2;10;;50;Melody;Tritone;Tritone: adjacent;:resolved;0;Melodic adjacent tritone;Search 4 quarters for resolution if penultimate measure;13;;;;tri;8;2;1;;;;;;
 1;31;10;;100;Melody;Tritone;Tritone: adjacent;:unresolved;0;Melodic adjacent tritone;;13;;;;tri;29;3;;;;;2;;
-1;32;10;;0;Melody;Tritone;Tritone: adjacent;on climax;0;Melodic adjacent tritone;Local climax;13;;;;tri;17;5;1;;;;;;
 1;371;10;;0;Melody;Tritone;Audible tritone: framed;:resolved;0;Melodic tritone with one intermediate note, framed by two melody direction changes or leaps;;13;;;;tri;19;2;;;;;;;
 1;372;10;;50;Melody;Tritone;Audible tritone: framed;:unresolved;0;Melodic tritone with one intermediate note, framed by two melody direction changes or leaps;;13;;;;tri;38;2;;;;;371;;
-1;373;10;;0;Melody;Tritone;Audible tritone: framed;on climax;0;Melodic tritone with one intermediate note, framed by two melody direction changes or leaps;;13;;;;tri;33;4;;;;;;;
 1;368;2345;;50;Melody;Tritone;Tritone: adjacent;:resolved;0;Melodic adjacent tritone, not accented or framed;;13;;;;tri;3;1;;;;;;;
 1;369;2345;;100;Melody;Tritone;Tritone: adjacent;:unresolved;0;Melodic adjacent tritone, not accented or framed;;13;;;;tri;6;2;;;;;368;;
-1;370;2345;;0;Melody;Tritone;Tritone: adjacent;on climax;0;Melodic adjacent tritone, not accented or framed;;13;;;;tri;2;2;;;;;;;
 1;365;2345;;50;Melody;Tritone;Tritone: adjacent framed;:resolved;0;Melodic adjacent tritone, framed by two melody direction changes;;13;;;;tri;18;4;;;;;;;
 1;366;2345;;100;Melody;Tritone;Tritone: adjacent framed;:unresolved;0;Melodic adjacent tritone, framed by two melody direction changes;;13;;;;tri;20;5;;;;;365;;
-1;367;2345;;0;Melody;Tritone;Tritone: adjacent framed;on climax;0;Melodic adjacent tritone, framed by two melody direction changes;;13;;;;tri;7;4;;;;;;;
 1;360;2345;;50;Melody;Tritone;Tritone: adjacent accented;:resolved;0;Melodic adjacent tritone, last note is long or repeated;;13;;;;tri;1;0;1;;;;368;;
 1;361;2345;;100;Melody;Tritone;Tritone: adjacent accented;:unresolved;0;Melodic adjacent tritone, last note is long or repeated;;13;;;;tri;8;3;1;;;;360,368,369;;
-1;362;2345;;0;Melody;Tritone;Tritone: adjacent accented;on climax;0;Melodic adjacent tritone, last note is long or repeated;;13;;;;tri;4;1;;;;;;;
 1;18;2345;;0;Melody;Tritone;Audible tritone: framed;:resolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;13;;;;tri;4;0;1;;;;;;
 1;19;2345;;50;Melody;Tritone;Audible tritone: framed;:unresolved;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;13;;;;tri;33;21;1;;;;18;;
-1;363;2345;;0;Melody;Tritone;Audible tritone: framed;on climax;0;Tritone within measure with intermediate notes, framed by two melody direction changes;;13;;;;tri;8;2;;;;;;;
 1;342;2345;;0;Melody;Tritone;Audible tritone: accented;:resolved;0;Tritone within measure with intermediate notes, last note is long or repeated;;13;;;;tri;0;0;;;;;;;
 1;343;2345;;50;Melody;Tritone;Audible tritone: accented;:unresolved;0;Tritone within measure with intermediate notes, last note is long or repeated;;13;;;;tri;7;2;1;;;;342;;
-1;364;2345;;0;Melody;Tritone;Audible tritone: accented;on climax;0;Tritone within measure with intermediate notes, last note is long or repeated;;13;;;;tri;1;1;;;;;;;
 1;67;;;0;Melody;Range;Skipped notes;1;-1;Skipped notes that do not appear within this voice;;;;;;;174;45;1;;;;;;
 1;68;;;0;Melody;Range;Skipped notes;>1;-1;Skipped notes that do not appear within this voice;;;;;;;20;10;1;;;;;;
 1;69;;;0;Melody;Range;Skipped notes;>1 joined;0;Skipped notes that do not appear within this voice;;;;;;;69;24;1;;;;;;
 1;38;;;0;Melody;Range;Vocal range;voice <m6;0;;Only if voice is at least 8 notes and 4 measures long. Voice range below m6 is acceptable for cantus up to 10 notes;9;;;;Stagnation;96;2;;;;;;;
-1;37;;;0;Melody;Range;Vocal range: cantus;cf >M9;0;;Cantus firmus voice range;;;;;;28;1;;;;;;;
-1;7;;;0;Melody;Range;Vocal range: both parts;sum >22th;0;;Aggregate pitch range of both voices in this counterpoint;;;;;;2;1;;;;;;;
-1;11;;;0;Melody;Range;Interval between parts;int >16th;0;;Interval between counterpoint voices.  Maximum burst interval is 17th during 3 notes  Perfect: int >8va (burst 12th during 3 notes) Good: int >12va (burst 15th during 3 notes);12;;;;!srn!;29;1;;;;1;;;
 1;522;;;50;Melody;Range;Out of vocal range;out of range;0;;Notes are too high or too low for vocal range specified for this voice;12;;;;vocal range;;;;;;;;;
 1;523;;;50;Melody;Range;Vocal range is above higher vocal range;above higher;0;;This vocal range should not be above higher vocal range;;;;;;;;;;;;;;
 1;524;;;50;Melody;Range;Disbalance between vocal ranges;>7 quarters;0;One voice is in its highest third of range, while the other voice is in its lowest third range for X quarters;;12;;;;disbalance;;;;;;;;;
@@ -324,18 +313,12 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;432;;;0;Melody;Melodic minor;Dim or aug melodic interval;III-VII#-I down;1;;III-VII# downward notes, then I note;8;;;;!srn!;2;0;1;;;;157;;
 1;164;;;100;Harmony;Melodic minor;False chromatic relation;VI<->VI#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;10;;;;!srn!;25;4;1;;;;;;
 1;165;;;100;Harmony;Melodic minor;False chromatic relation;VII<->VII#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;10;;;;!srn!;30;6;1;;;;;;
-1;166;;;0;Harmony;Melodic minor;False dim or aug relation;VI<->VII#;-1;;;10;;;;!srn!;41;3;1;;;;;;
-1;167;;;0;Harmony;Melodic minor;False dim or aug relation;VI#<->III;-1;;;10;;;;!srn!;37;3;1;;;;;;
-1;168;;;0;Harmony;Melodic minor;False dim or aug relation;VII#<->III;-1;;;10;;;;!srn!;80;5;1;;;;;;
-1;29;;;0;Harmony;Melodic minor;False dim or aug relation;Tritone;-1;;;;;;;;330;0;;;;;;;
 1;17;;;0;Harmony;Harmony;Repeating functions in a row;>4 T;0;More than X consecutive harmonies all have this letter;;9;;;;Weak prog.;6;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;428;;;0;Harmony;Harmony;Repeating functions in a row;>4 D;0;More than X consecutive harmonies all have this letter;;9;;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;429;;;0;Harmony;Harmony;Repeating functions in a row;>4 S;0;More than X consecutive harmonies all have this letter;;9;;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;20;;;0;Harmony;Harmony;Missing functions in a row;>5 without T;0;More than X consecutive harmonies do not have this letter;;9;;;;No T;5;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;430;;;0;Harmony;Harmony;Missing functions in a row;>5 without D;0;More than X consecutive harmonies do not have this letter;;9;;;;No D;10;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;431;;;0;Harmony;Harmony;Missing functions in a row;>6 without S;0;More than X consecutive harmonies do not have this letter;;9;;;;No S;3;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;194;;;0;Harmony;Harmony;Accentuated bad progression;leap >4th;-1;Only for cantus firmus;;1;;;;;0;0;;;;;;;
-1;195;;;0;Harmony;Harmony;Accentuated bad progression;culmination;-1;Only for cantus firmus;;1;;;;;0;0;;;;;;;
 1;306;;;0;Harmony;Harmony;More than 1 harmony in measure;penultimate 2;1;Only for counterpoint;2 harmonies in penultimate measure;1;;;;2 harmonies;92;11;;;;;;;
 1;329;;;0;Harmony;Harmony;More than 1 harmony in measure;sus 5/6 stepw;1;Only for counterpoint;Stepwize resolution of 5th to 6th or 6th to 5th with two harmonies in measure. Only for sp4 or sp5 (requires starting sus and half notes in sp5);9;;;;;33;1;;;;;;;
 1;307;;;50;Harmony;Harmony;More than 1 harmony in measure;not penultimate;0;Only for counterpoint;In measures before penultimate measure;1;;;;2 harmonies;184;9;;;;;;;
@@ -362,9 +345,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;418;;;0;Harmony;Harmony;Repeated harmony;in changed position;0;;Chord is repeated, but inversion is changed;1;;;;;130;3;;;;;;;
 1;99;;;50;Harmony;Harmony;Repeated harmony;:in same position;0;;Chord is repeated with same inversion;1;;;;;28;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;321;;;50;Harmony;Harmony;Repeated harmony;:three times;0;;Same chord is used 3 times consecutively;9;;;;!rn!;7;1;1;;;;;;
-1;80;;;0;Harmony;Perfect consonance;Perfect consonance;downbeat;-1;;;2;1;;;;338;2;;;;;;;
-1;81;;;0;Harmony;Perfect consonance;Perfect consonance;culmination;-1;;;2;1;;;;66;2;;;;;;;
-1;82;;;0;Harmony;Perfect consonance;Perfect consonance;db. culm.;-1;;Downbeat culmination;2;1;;;;48;11;1;;;;80;;
 1;222;;<5;50;Harmony;Perfect consonance;Doubling of tritone note;doubling;0;;Doubling of one of tritone notes is prohibited if both tritone notes are chord tones and both exist in voices in current measure;2;;;;;;;;;;;;;
 1;222;;>4EB;50;Harmony;Perfect consonance;Doubling of tritone note;doubling;0;;Doubling of one of tritone notes is prohibited if both tritone notes are chord tones and both exist in voices in current measure;2;;;;;;;;;;;;;
 1;222;;>4N;0;Harmony;Perfect consonance;Doubling of tritone note;doubling;0;;Doubling of one of tritone notes is prohibited if both tritone notes are chord tones and both exist in voices in current measure;2;;;;;;;;;;;;;
@@ -376,7 +356,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;553;;>4N;0;Harmony;Perfect consonance;Doubling of VI# tone in melodic minor;VI# doubling;0;;Harmonic octave for leaping notes and downbeat;;;;;;;;;;;;;;
 1;325;;;0;Harmony;Perfect consonance;Culmination on 5th: long downbeat;culmination;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat 5th 1/2 or longer;2;1;;;;0;0;1;;;;;;
 1;326;;;0;Harmony;Perfect consonance;Culmination on 8ve / unison: long downbeat;culmination;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat octave 1/2 or longer;2;1;;;;3;0;1;;;;;;
-1;86;;;0;Harmony;Perfect consonance;Consecutive perfect consonances;different;-1;;Different adjacent perfect consonances;7;1;;;;167;4;;;;;;;
 1;84;;;100;Harmony;Perfect consonance;Consecutive 5ths;parallel;0;;;7;1;;;;32;5;1;;;;;;
 1;85;;<6;50;Harmony;Perfect consonance;Consecutive 5ths;contrary;0;;Contrary octaves are possible in cadence;7;1;;;;0;0;1;;;;;;
 1;85;;6E;50;Harmony;Perfect consonance;Consecutive 5ths;contrary;0;;Contrary octaves are possible in cadence;7;1;;;;0;0;1;;;;;;
@@ -439,15 +418,10 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;137;;;50;Harmony;Border;Non-permitted first harmony;not T;0;;Also prohibits T6;1;;;;;;;;;;;;;
 1;531;;;50;Harmony;Border;Non-permitted last harmony;not T;0;;Also prohibits T6;1;;;;;;;;;;;;;
 1;47;;;50;Harmony;Border;Penultimate chord;:no leading-tone;0;;no leading tone is allowed if last bass notes are V-I;;;;;;108;5;;;;;;;
-1;75;;;0;Harmony;Border;Penultimate chord;:no V or II note;0;;No V or II note;;;;;;32;19;1;;;;;;
-1;317;;;0;Harmony;Border;Penultimate chord;VII natural;-1;;VII natural minor note in penultimate measure. This rule is disabled, because it duplicates "no leading-tone" rule;;;;;;21;4;1;;;;;;
-1;318;;;0;Harmony;Border;Penultimate chord;:isolated LT;0;;There is another harmony between leading tone and tonic note in penultimate measure;;;;;;26;10;1;;;;;;
-1;322;;;0;Harmony;Border;Penultimate chord;T/S after D;-1;;Any chord except V or VII(#) goes after V or VII(#) chord in penultimate measure. Disabled this rule, because it duplicates rule "penultimate harmony no D/DVII";;;;;;15;4;1;;;;;;
 1;335;;;50;Harmony;Border;Penultimate chord;:no V or VII chord;0;;Penultimate harmony is not V or VII;1;;;;;146;1;;;;;;;
 1;9;;;100;Harmony;Border;Penultimate chord;:poor int.;0;;Penultimate measure starts with poor interval: 8ve or unison;;;;;;;;;;;;;;
 1;89;;;50;Harmony;Imperfect consonance;Too many consecutive 3rds;> 3;0;More than X 3rds in a row;;9;1;;;Parallel 3rds;27;0;;;;;;;
 1;90;;;50;Harmony;Imperfect consonance;Too many consecutive 6ths;> 3;0;More than X 6ths in a row;;9;1;;;Parallel 6ths;;;;;;;;;
-1;552;;;0;Harmony;Imperfect consonance;Too many consecutive parallel 6th chords;3;-1;More than X same 6ths chords in a row;;9;;;;Parallel 6th chords;;;;;;;;;
 1;379;;;50;Harmony;Dissonance;Unresolved harmonic tritone;unresolved;0;Situation when there is no harmonic 4th interval, but there are harmonic notes in same voice, which form sounding 4th;;12;;;;tri;21;4;;;;;;;
 1;83;;;100;Harmony;Dissonance;Dissonance;:on downbeat;0;;;;;;;;219;21;;;;;169;;
 1;223;;;50;Harmony;Dissonance;Dissonance;:longer than previous chord tone;0;;Dissonance is longer than previous note;;;;;;14;7;1;;;;;;
@@ -484,14 +458,12 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;546;;;0;Harmony;Voice motion;Wrong voice movement during voice crossing;direct leap;0;;Direct motion to crossing if one of voices leaps;12;;;;leap;;;;;;;;;
 1;547;;;50;Harmony;Voice motion;Wrong voice movement during voice crossing;direct leaps;0;;Direct motion to crossing if both voices leap;12;;;;leaps;;;;;;;;;
 1;550;;;50;Harmony;Voice motion;All voices move in parallel;two times;0;;;10;;;;parallel;;;;;;;;;
-1;35;;;0;Harmony;Voice motion;Not enough contrary motion;<60%;-1;Not enough contrary motion in counterpoin;;;;;;;177;0;;;999;;;;
-1;46;;;0;Harmony;Voice motion;Not enough contrary motion;<30%;-1;Not enough contrary motion in counterpoin;;;;;;;70;0;;;;;;;
 1;256;;;0;Harmony;Nonchord tones;Cambiata;any;1;;Prohibit this rule to prevent detection of any cambiata, thus processing as usual notes;;;;;;37;0;;;;;;1;
 1;258;;;0;Harmony;Nonchord tones;Double-neighbour tone;any;1;;Prohibit this rule to prevent detection of any double-neighbour tone;;;;;;35;0;;;;;;1;
 1;3;;;0;Harmony;Nonchord tones;Double-neighbour tone;approached by leap;0;;There is a leap before first note of double-neighbour tone group;;;;;;0;0;;;;;;;
 1;97;;;50;Harmony;Nonchord tones;Double-neighbour tone;:left by leap;0;;There is a leap after last note of double-neighbour tone;;;;;;3;0;;;;;;;
 1;282;;;50;Harmony;Nonchord tones;Passing dissonance on downbeat;any;0;In upper voice only;;;;;;;50;1;;;;;;1;
-1;287;;;50;Harmony;Nonchord tones;Anticipation;any;0;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with next note longer and previous note longer or equal;;;;;;52;14;;;;;225;;
+1;287;;;50;Harmony;Nonchord tones;Anticipation;any;0;;Prohibit this rule to prevent detection of any anticipation. By default allows stepwize anticipation in cadence with next note longer and previous note longer or equal;;;;;;52;14;;;;;;;
 1;237;;;50;Rhythm;Rhythm;Beginning is non-standard;uneven rest;0;;Starting pause in first measure does not equal length of next note;;;;;;21;18;1;;;;;;
 1;254;;;50;Rhythm;Rhythm;Beginning is non-standard;uneven start;0;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);11;;;;Rhythm;18;14;1;;;;;;
 1;230;;;50;Rhythm;Rhythm;Beginning is non-standard;1/8 note;0;;1/8 note in the first measure;;;;;;19;3;1;;;;;;
