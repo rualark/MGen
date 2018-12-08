@@ -7,8 +7,8 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2018-10-21</encoding-date>
-   <encoder>ruala</encoder>
+   <encoding-date>2018-12-08</encoding-date>
+   <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
    <encoding-description>Sibelius / MusicXML 3.0</encoding-description>
@@ -95,8 +95,8 @@
     <instrument-sound>keyboard.piano.grand</instrument-sound>
     <solo />
     <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
-     <virtual-name>Concert Grand Piano</virtual-name>
+     <virtual-library>General MIDI</virtual-library>
+     <virtual-name>Acoustic Piano</virtual-name>
     </virtual-instrument>
    </score-instrument>
   </score-part>
@@ -354,15 +354,25 @@
    <backup>
     <duration>1024</duration>
    </backup>
-   <note color="#000000" default-x="15">
+   <note color="#000000" default-x="15" default-y="10">
     <pitch>
      <step>C</step>
      <octave>3</octave>
     </pitch>
-    <duration>1024</duration>
+    <duration>768</duration>
     <instrument id="P1-I1" />
     <voice>2</voice>
-    <type>whole</type>
+    <type>half</type>
+    <dot />
+    <stem>up</stem>
+    <staff>2</staff>
+   </note>
+   <note default-x="130">
+    <rest />
+    <duration>256</duration>
+    <instrument id="P1-I1" />
+    <voice>2</voice>
+    <type>quarter</type>
     <staff>2</staff>
    </note>
   </measure>
