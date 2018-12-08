@@ -1221,7 +1221,15 @@
   </measure>
   <!--============== Part: P2, Measure: 3 ==============-->
   <measure number="3" width="144">
-   <note color="#000000" default-x="15" default-y="-35">
+   <direction>
+    <direction-type>
+     <words default-x="9" default-y="40" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">Tritone does not need </words>
+     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">resolution as nht sus</words>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
+   <note color="#FF0000" default-x="15" default-y="-35">
     <pitch>
      <step>F</step>
      <octave>5</octave>
@@ -3049,7 +3057,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="79" default-y="-55">
+   <note color="#FF0000" default-x="79" default-y="-55">
     <pitch>
      <step>B</step>
      <octave>3</octave>

@@ -1,4 +1,4 @@
-Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomment;Viztype;VI;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
+Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComment;Viztype;VI;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
 1;197;;;50;Melody;Border;Leading tone is unresolved;need up;0;;Leading tone has to resolve up stepwise;12;;;;res;;;;;;;;;
 1;198;;;50;Melody;Border;Leading tone is unresolved;need stepwise;0;;Leading tone has to resolve up or down stepwise;12;;;;res;;;;;;;;;
 1;42;;;0;Melody;Compensated leap;Uncompensated leap: compensation deviation to 2nd;3rd;-1;Compensation can be deviated one 2nd interval above last leap note;;5;;;;;199;0;;;999;;;;
@@ -73,11 +73,11 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;59;;;0;Melody;Change of melodic direction around leap;No change of direction before the leap: 1skip + close;3rd;1;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;5;;;;;170;0;;;;;;;
 1;60;;;0;Melody;Change of melodic direction around leap;No change of direction before the leap: 1skip + close;4th;1;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;5;;;;;44;6;;;;;;;
 1;61;;;0;Melody;Change of melodic direction around leap;No change of direction before the leap: 1skip + close;5th;1;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;5;;;;;38;5;;;;;;;
-1;62;;;100;Melody;Change of melodic direction around leap;No change of direction before the leap: 1skip + close;>5th;0;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;5;;;;;23;10;1;;;;;;
+1;62;;;50;Melody;Change of melodic direction around leap;No change of direction before the leap: 1skip + close;>5th;0;There is immediate melody direction change after leap, but before leap melody direction changes after one note, which goes in the same direction as leap;;5;;;;;23;10;1;;;;;;
 1;132;;;0;Melody;Change of melodic direction around leap;No change of direction before the leap: >1skip + close;3rd;-1;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;5;;;;;185;0;;;;;;;
 1;133;;;0;Melody;Change of melodic direction around leap;No change of direction before the leap: >1skip + close;4th;1;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;5;;;;;70;7;;;;;;;
 1;134;;;0;Melody;Change of melodic direction around leap;No change of direction before the leap: >1skip + close;5th;1;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;5;;;;;36;6;;;;;;;
-1;135;;;50;Melody;Change of melodic direction around leap;No change of direction before the leap: >1skip + close;>5th;0;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;5;;;;;13;4;1;;;;;;
+1;135;;;100;Melody;Change of melodic direction around leap;No change of direction before the leap: >1skip + close;>5th;0;There is immediate melody direction change after leap, but before leap melody direction changes after more than one note, which go in the same direction as leap;;5;;;;;13;4;1;;;;;;
 1;63;;;0;Melody;Change of melodic direction around leap;No change of direction before and after the leap: 1skip + 1skip;3rd;1;There is one note going in the same direction before and after leap;;5;;;;;18;5;1;;;;59,414,506;;
 1;64;;;0;Melody;Change of melodic direction around leap;No change of direction before and after the leap: 1skip + 1skip;4th;0;There is one note going in the same direction before and after leap;;5;;;;;6;2;1;;;;60,415,507;;
 1;65;;;50;Melody;Change of melodic direction around leap;No change of direction before and after the leap: 1skip + 1skip;5th;0;There is one note going in the same direction before and after leap;;5;;;;;7;2;1;;;;61,416,508;;
@@ -299,8 +299,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Rule;Subrule;Accept;Comment;Subcomme
 1;350;;;0;Melody;Melodic minor;bVII degree near VI# degree;4 notes after;0;;X notes after VI#;8;;;;VII near VI#;43;0;;;;;;;
 1;203;;;50;Melody;Melodic minor;bVII degree near VI# degree;immediate;0;;Prohibited even if one or both notes are non-chord tones;8;;;;bVII<->VI#;;;;;;;;;
 1;199;;;0;Melody;Melodic minor;VI# degree without close VII# degree;within 2 notes;0;There is no VII# note before or after VI# chord tone in close proximity;;;;;;;65;2;;;;;;;
-1;201;12350;;0;Melody;Melodic minor;Note not stepwise ascending;VI#;0;Chord tone VI# is not surrounded by stepwise diatonic ascending movement;;8;;;;VI# not asc.;9;2;;;;;;;
-1;202;12350;;0;Melody;Melodic minor;Note not stepwise descending;VII natural;0;Chord tone VII natural is not surrounded by stepwise diatonic descending movement;;8;;;;VII not desc.;;;;;;;;;
+1;201;12350;;50;Melody;Melodic minor;Note not stepwise ascending;VI#;0;Chord tone VI# is not surrounded by stepwise diatonic ascending movement;;8;;;;VI# not asc.;9;2;;;;;;;
+1;202;12350;;50;Melody;Melodic minor;Note not stepwise descending;VII natural;0;Chord tone VII natural is not surrounded by stepwise diatonic descending movement;;8;;;;VII not desc.;;;;;;;;;
 1;521;;;100;Melody;Melodic minor;Note is not part of the mode;wrong alteration;0;;Used alterations are not part of current mode (major I#, II# or VI# notes).;;;;;;;;;;;;;;
 1;152;;;100;Melody;Melodic minor;Chromaticism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;;!srn!;1;1;1;;;;;;
 1;153;;;100;Melody;Melodic minor;Chromaticism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;;!srn!;3;2;1;;;;;;
