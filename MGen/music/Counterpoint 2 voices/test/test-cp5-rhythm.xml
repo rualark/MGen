@@ -354,25 +354,15 @@
    <backup>
     <duration>1024</duration>
    </backup>
-   <note color="#000000" default-x="15" default-y="10">
+   <note color="#000000" default-x="15">
     <pitch>
      <step>C</step>
      <octave>3</octave>
     </pitch>
-    <duration>768</duration>
+    <duration>1024</duration>
     <instrument id="P1-I1" />
     <voice>2</voice>
-    <type>half</type>
-    <dot />
-    <stem>up</stem>
-    <staff>2</staff>
-   </note>
-   <note default-x="130">
-    <rest />
-    <duration>256</duration>
-    <instrument id="P1-I1" />
-    <voice>2</voice>
-    <type>quarter</type>
+    <type>whole</type>
     <staff>2</staff>
    </note>
   </measure>
