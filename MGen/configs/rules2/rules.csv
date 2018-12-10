@@ -338,6 +338,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;48;;;50;Harmony;Harmony;Cadential progression;V-I;0;;Bass note going from V note to I octave in D-T progression before cadence;1;;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;308;;;50;Harmony;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;;;;2;1;1;;;;;;
 1;309;;;50;Harmony;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;;;;2;1;1;;;;;;
+1;139;;;50;Harmony;Harmony;Prohibited progression;SII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after SII (BDF);1;;;;;;;;;;;;;
 1;77;;;0;Harmony;Harmony;Harmonic progression;non-ideal;-1;;See harmonic progressions with penalty 1;9;;;;!srn!;612;0;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;57;;;0;Harmony;Harmony;Harmonic progression;bad;-1;;See harmonic progressions with penalty 2;9;;;;Weak prog.;535;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;92;;;0;Harmony;Harmony;Harmonic progression;2 x bad;-1;;Two consecutive harmonic progressions each with penalty 2;9;;;;Weak prog.;103;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
