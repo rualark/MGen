@@ -262,7 +262,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;67;;;0;Melody;Range;Skipped notes;1;-1;Skipped notes that do not appear within this voice;;;;;;;174;45;1;;;;;;
 1;68;;;0;Melody;Range;Skipped notes;>1;-1;Skipped notes that do not appear within this voice;;;;;;;20;10;1;;;;;;
 1;69;;;0;Melody;Range;Skipped notes;>1 joined;0;Skipped notes that do not appear within this voice;;;;;;;69;24;1;;;;;;
-1;38;;;0;Melody;Range;Vocal range;voice <m6;0;;Only if voice is at least 8 notes and 4 measures long. Voice range below m6 is acceptable for cantus up to 10 notes;9;;;;Stagnation;96;2;;;;;;;
 1;522;;;50;Melody;Range;Out of vocal range;out of range;0;;Notes are too high or too low for vocal range specified for this voice;12;;;;vocal range;;;;;;;;;
 1;523;;;50;Melody;Range;Vocal range is above higher vocal range;above higher;0;;This vocal range should not be above higher vocal range;;;;;;;;;;;;;;
 1;524;;;50;Melody;Range;Disbalance between vocal ranges;>7 quarters;0;One voice is in its highest third of range, while the other voice is in its lowest third range for X quarters;;12;;;;disbalance;;;;;;;;;
