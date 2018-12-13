@@ -485,7 +485,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;514;;;50;Rhythm;Rhythm;Wrong note value for this species;value;0;Except last note;;;;;;;;;;;;;;;
 1;525;;;50;Rhythm;Rhythm;Wrong measure length for this species;measure len;0;;;;;;;;;;;;;;;;
 1;515;;;50;Rhythm;Rhythm;Wrong note position for this species;position;0;;;;;;;;;;;;;;;;
-1;41;;;0;Rhythm;Rhythm;Note lasts for too many measures;>2;-1;;Note crosses more than two measures;;;;;;15;12;1;;;;;;
+1;41;;;50;Rhythm;Rhythm;Note lasts for too many measures;>2;0;;Note crosses more than two measures;;;;;;15;12;1;;;;;;
 1;267;;;0;Rhythm;Rhythm;Last note is not a whole;not whole;0;;;;;;;;54;21;1;;;1;;;
 1;252;;;50;Rhythm;Rhythm;Last note is not a whole;1/4;0;;;;;;;;29;8;1;;;1;;;
 1;253;;;50;Rhythm;Rhythm;Last note is not a whole;1/8;0;;;;;;;;1;1;1;;;1;;;
