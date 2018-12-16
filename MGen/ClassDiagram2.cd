@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CP2R" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ankjUITLpD8unxahMEsBgA3eXyMWIpkcqIJdIUU85sg=</HashCode>
+      <FileName>Generators\CP2R.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CP2D" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>F+lz37f67NHovnvfw//m710b7pf+5qLV5ZdbtftdO/c=</HashCode>
+      <FileName>Generators\CP2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Arial" Size="9.75" />
+</ClassDiagram>

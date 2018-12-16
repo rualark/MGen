@@ -324,6 +324,7 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="MGen.reg" />
     <None Include="res\MGen.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
