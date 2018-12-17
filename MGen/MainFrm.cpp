@@ -1787,7 +1787,7 @@ void CMainFrame::OnUpdateButtonLy(CCmdUI *pCmdUI) {
 void CMainFrame::OnButtonLy() {
 	//::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir + "\\" + m_fname + ".ly", NULL, NULL, SW_SHOWNORMAL);
 	CString path = "C:\\Program Files (x86)\\Frescobaldi\\frescobaldi.exe";
-	CString par = "%1";
+	CString par = "\"%1\"";
 
 	par.Replace("%1", m_dir + "\\" + m_fname + ".ly");
 	int ret = CGLib::RunBackground(path, par, 200, SW_SHOWNORMAL);
