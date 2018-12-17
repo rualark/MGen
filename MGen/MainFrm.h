@@ -68,6 +68,8 @@ public:
 	int m_step_dyn = 1; // Show dynamics with note opacity for each step of note.Disable for slower computers.
 	int m_debug_level = 1; // Increase to show more debug logs
 	int mx = 0, my = 0; // Mouse position
+	CString m_lilypond_path = ""; // Path to lilypond or Frescobaldi executable
+	CString m_lilypond_param = ""; // Params for lilypond executable
 
 	CString m_cline; // Command line
 	int m_pspeed = 100; // Playback speed in percent

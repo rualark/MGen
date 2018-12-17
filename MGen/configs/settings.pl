@@ -29,3 +29,5 @@ Autoplay = 0 # Set to 1 to start playback as soon as first notes are generated
 View_timer = 100 # ms between each screen update during generation and playback. 100 ms is recommended. Increase for slower computers
 Step_dyn = 1 # Show dynamics with note opacity for each step of note. Disable for slower computers.
 Debug_level = 1 # Increase to show more debug logs
+Lilypond_path = C:\Program Files (x86)\Frescobaldi\frescobaldi.exe # Path to lilypond or Frescobaldi executable
+Lilypond_param = "%1" # Parameter for lilypond executable

@@ -1066,6 +1066,8 @@ void CMainFrame::LoadSettings()
 					pCombo->SelectItem(DISABLE_PLAYBACK);
 				}
 			}
+			if (st2 == "lilypond_path") m_lilypond_path = st3;
+			if (st2 == "lilypond_param") m_lilypond_param = st3;
 			if (st2 == "playback_speed") {
 				CMFCRibbonEdit* pRibbonSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_wndRibbonBar.FindByID(ID_SPIN_PSPEED));
 				pRibbonSpin->SetEditText(st3);
@@ -1186,6 +1188,10 @@ void CMainFrame::SaveSettings()
 	st.Format("Step_dyn = %d # Show dynamics with note opacity for each step of note. Disable for slower computers.\n", m_step_dyn);
 	fs << st;
 	st.Format("Debug_level = %d # Increase to show more debug logs\n", m_debug_level);
+	fs << st;
+	st.Format("Lilypond_path = %s # Path to lilypond or Frescobaldi executable\n", m_lilypond_path);
+	fs << st;
+	st.Format("Lilypond_param = %s # Parameter for lilypond executable\n", m_lilypond_param);
 	fs << st;
 	fs.close();
 }
@@ -1786,14 +1792,13 @@ void CMainFrame::OnUpdateButtonLy(CCmdUI *pCmdUI) {
 
 void CMainFrame::OnButtonLy() {
 	//::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir + "\\" + m_fname + ".ly", NULL, NULL, SW_SHOWNORMAL);
-	CString path = "C:\\Program Files (x86)\\Frescobaldi\\frescobaldi.exe";
-	CString par = "\"%1\"";
+	CString par = m_lilypond_param;
 
 	par.Replace("%1", m_dir + "\\" + m_fname + ".ly");
-	int ret = CGLib::RunBackground(path, par, 200, SW_SHOWNORMAL);
+	int ret = CGLib::RunBackground(m_lilypond_path, par, 200, SW_SHOWNORMAL);
 	if (ret) {
 		CString est;
-		est.Format("Error during executing lilypond: %d", ret);
+		est.Format("Error during executing lilypond %s %s: %d", m_lilypond_path, par, ret);
 		WriteLog(5, est);
 	}
 }
