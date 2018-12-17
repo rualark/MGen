@@ -1043,7 +1043,7 @@ void CMainFrame::LoadSettings()
 	while (fs.good()) {
 		fs.getline(pch, 2550);
 		st = pch;
-		pos = st.Find("#");
+		pos = st.ReverseFind('#');
 		if (pos != -1) st = st.Left(pos);
 		st.Trim();
 		pos = st.Find("=");
