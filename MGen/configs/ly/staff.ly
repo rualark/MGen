@@ -4,6 +4,8 @@
   \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
   \override Score.VoltaBracket #'font-shape = #'bold 
   \override Score.VoltaBracket.thickness = #3
+  \override Score.Glissando.breakable = ##t
+  \override Score.Glissando.after-line-breaking = ##t
   \override Staff.OttavaBracket.thickness = #2
   \override Staff.PianoPedalBracket.thickness = #2
   \set Staff.pedalSustainStyle = #'mixed
