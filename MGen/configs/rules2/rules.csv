@@ -358,8 +358,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;521;;;100;Melody;Melodic minor;Note is not part of the mode;wrong alteration;0;;Used alterations are not part of current mode (major I#, II# or VI# notes).;;;;;;;;;;;;;;
 1;152;;;100;Melody;Melodic minor;Chromaticism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;;;!srn!;1;1;1;;;;;;
 1;153;;;100;Melody;Melodic minor;Chromaticism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;;;!srn!;3;2;1;;;;;;
-1;158;;;50;Melody;Melodic minor;Chromaticism: far;VI<->VI#;0;These two chord tones are one note apart and are in neighboring harmonies;;8;;;;!srn!;7;3;1;;;;;;
-1;159;;;50;Melody;Melodic minor;Chromaticism: far;VII<->VII#;0;These two chord tones are one note apart and are in neighboring harmonies;;8;;;;!srn!;3;1;1;;;;;;
+1;158;;;50;Melody;Melodic minor;Chromaticism: far;VI<->VI#;0;These two notes are one note apart and are in neighboring harmonies;;8;;;;!srn!;7;3;1;;;;;;
+1;159;;;50;Melody;Melodic minor;Chromaticism: far;VII<->VII#;0;These two notes are one note apart and are in neighboring harmonies;;8;;;;!srn!;3;1;1;;;;;;
 1;154;;;50;Melody;Melodic minor;Dim or aug melodic interval;VI<->VII#;0;;Augmented / diminished;8;;;;!srn!;15;3;1;;;;;;
 1;155;;;100;Melody;Melodic minor;Dim or aug melodic interval;VI#<->III;0;;Augmented / diminished;8;;;;!srn!;4;1;1;;;;;;
 1;156;;;100;Melody;Melodic minor;Dim or aug melodic interval;VII#-III;0;;Augmented / diminished;8;;;;!srn!;7;3;1;;;;;;
@@ -406,9 +406,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;324;;>4N;0;Harmony;Perfect consonance;Doubling of leading-tone;LT doubling;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;;;;23;9;1;;;;;;
 1;325;;;0;Harmony;Perfect consonance;Culmination on 5th: long downbeat;culmination;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat 5th 1/2 or longer;2;1;;;;0;0;1;;;;;;
 1;326;;;0;Harmony;Perfect consonance;Culmination on 8ve / unison: long downbeat;culmination;0;Local culmination in upper voice within 4 measures in sp5. Sounds empty except last measure;Downbeat octave 1/2 or longer;2;1;;;;3;0;1;;;;;;
-1;162;;;100;Harmony;Perfect consonance;Consecutive tritones;parallel;0;;;7;1;;;;;;;;;;;;
-1;163;;<6;50;Harmony;Perfect consonance;Consecutive tritones;contrary;0;;;7;1;;;;;;;;;;;;
-1;163;;6E;50;Harmony;Perfect consonance;Consecutive tritones;contrary;0;;;7;1;;;;;;;;;;;;
+1;162;;;0;Harmony;Perfect consonance;Consecutive tritones;parallel;0;;;7;1;;;;;;;;;;;;
+1;163;;<6;0;Harmony;Perfect consonance;Consecutive tritones;contrary;0;;;7;1;;;;;;;;;;;;
+1;163;;6E;0;Harmony;Perfect consonance;Consecutive tritones;contrary;0;;;7;1;;;;;;;;;;;;
 1;84;;;100;Harmony;Perfect consonance;Consecutive 5ths;parallel;0;;;7;1;;;;32;5;1;;;;;;
 1;85;;<6;50;Harmony;Perfect consonance;Consecutive 5ths;contrary;0;;;7;1;;;;0;0;1;;;;;;
 1;85;;6E;50;Harmony;Perfect consonance;Consecutive 5ths;contrary;0;;;7;1;;;;0;0;1;;;;;;
