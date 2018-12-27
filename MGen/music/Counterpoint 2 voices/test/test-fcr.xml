@@ -7,7 +7,7 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-12-10</encoding-date>
+   <encoding-date>2018-12-27</encoding-date>
    <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -66,7 +66,7 @@
   </appearance>
   <music-font font-family="Opus Std" font-size="19.8425" />
   <lyric-font font-family="Plantin MT Std" font-size="11.4715" />
-  <lyric-language xml:lang="en" />
+  <lyric-language xml:lang="ru" />
  </defaults>
  <credit page="2">
   <credit-words default-x="85" default-y="1510" font-style="normal" font-weight="normal" justify="left" valign="middle">2</credit-words>
@@ -88,10 +88,6 @@
     <instrument-name>Piano (2)</instrument-name>
     <instrument-sound>keyboard.piano.grand</instrument-sound>
     <solo />
-    <virtual-instrument>
-     <virtual-library>General MIDI</virtual-library>
-     <virtual-name>Acoustic Piano</virtual-name>
-    </virtual-instrument>
    </score-instrument>
   </score-part>
   <part-group type="stop" number="1" />
