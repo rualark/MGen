@@ -11,97 +11,95 @@ int CDb::server_id = 0;
 long CDb::j_id = 0;
 
 CDb::CDb() {
+	conn = mysql_init(NULL);
+	if (conn == NULL) {
+		WriteLog("Cannot initialize mysql", 1);
+	}
+	else {
+		//WriteLog("Mysql init successful", 1);
+	}
 }
 
 CDb::~CDb() {
 }
 
-int CDb::Connect(CString driver, CString server, CString port, CString dbname, CString login, CString pass) {
-	m_driver = driver;
+int CDb::Connect(CString server, CString port, CString dbname, CString login, CString pass) {
 	m_server = server;
 	m_dbname = dbname;
 	m_port = port;
 	m_login = login;
 	m_pass = pass;
 
-	//RealConnect();
-	return 0;
-}
-
-int CDb::RealConnect() {
-	CString connSt =
-		"Driver=" + m_driver + ";"
-		"Server=" + m_server + ";"
-		"Database=" + m_dbname + ";"
-		"Uid=" + m_login + ";"
-		"Pwd=" + m_pass + ";";
-
-	try {
-		if (db) {
-			delete db;
-		}
-		db = new CDatabase();
-		if (!db->OpenEx(connSt)) {
-			WriteLog("Cannot open database: " + connSt, 1);
-			abort();
-			return 1;
-		}
-	}
-	catch (CDBException* pEX) {
-		WriteLog("Cannot open database: " + connSt + ": " + pEX->m_strError, 1);
-		pEX->Delete();
-		abort();
+	// Do not reconnect, because automatic reconnect is enabled
+	if (connected) return 0;
+	if (!mysql_real_connect(conn, m_server, m_login, m_pass, m_dbname, atoi(m_port), NULL, 0)) {
+		CString est;
+		est.Format("Error: can't connect to database: %s\n", mysql_error(conn));
+		WriteLog(est, 1);
+		connected = 0;
 		return 1;
 	}
+	else {
+		// Set automatic reconnect
+		my_bool reconnect = 1;
+		mysql_options(conn, MYSQL_OPT_RECONNECT, &reconnect);
+		WriteLog("Mysql connect successful", 1);
+	}
+	connected = 1;
 	return 0;
 }
 
 int CDb::Query(CString q) {
-	TRY	{
-		RealConnect();
-		db->ExecuteSQL(q);
-	}
-	CATCH_ALL(e) {
-		TCHAR szCause[255];
-		e->GetErrorMessage(szCause, 255);
-		WriteLog(szCause, 1);
-		abort();
+	//WriteLog(q, 1);
+	if (mysql_query(conn, q)) {
+		CString est;
+		est.Format("Error during query: %s: %s", q, mysql_error(conn));
+		WriteLog(est, 1);
 		return 1;
-	} 
-	END_CATCH_ALL;
+	}
 	return 0;
 }
 
 int CDb::Fetch(CString q) {
-	TRY {
-		RealConnect();
-		if (rs) delete rs;
-		rs = new CRecordset;
-		rs->m_pDatabase = db;
-		rs->Open(CRecordset::forwardOnly, q, CRecordset::readOnly);
-	}
-	CATCH(CDBException, e) {
-		WriteLog("Error executing query '" + q + "': " + e->m_strError, 1);
-		abort();
+	//WriteLog(q, 1);
+	field.clear();
+	result.clear();
+	if (mysql_query(conn, q)) {
+		CString est;
+		est.Format("Error during fetch: %s: %s", q, mysql_error(conn));
+		WriteLog(est, 1);
 		return 1;
 	}
-	END_CATCH; 
+	MYSQL_RES *res;
+	res = mysql_store_result(conn);
+	if (res) {
+		MYSQL_FIELD *fields;
+		int num_fields = mysql_num_fields(res);
+		fields = mysql_fetch_fields(res);
+		for (int i = 0; i < num_fields; ++i) {
+			field.push_back(fields[i].name);
+		}
+		int x = 0;
+		MYSQL_ROW row;
+		while (row = mysql_fetch_row(res)) {
+			for (int i = 0; i < mysql_num_fields(res); i++) {
+				result[field[i]].push_back(row[i]);
+				++x;
+			}
+		}
+		mysql_free_result(res);
+	}
+	else {
+		CString est;
+		est.Format("Error during query: %s: %s", q, mysql_error(conn));
+		WriteLog(est, 1);
+		return 1;
+	}
 	return 0;
 }
 
 CString CDb::GetSt(CString fname) {
-	if (!rs || rs->IsEOF()) return "";
-	CString st;
-	TRY {
-		rs->GetFieldValue(fname, st);
-	}
-	CATCH(CDBException, e) {
-		WriteLog("Error parsing field '" + fname + "': " + e->m_strError, 1);
-		abort();
-		return "";
-	}
-	END_CATCH;
-	return st;
+	return result[fname][0];
 }
 
 int CDb::GetInt(CString fname) {
@@ -113,7 +111,7 @@ float CDb::GetFloat(CString fname) {
 }
 
 void CDb::WriteLog(CString st, int no_db) {
-	if (db && db->IsOpen() && !no_db) {
+	if (connected && !no_db) {
 		CString q;
 		q.Format("INSERT INTO j_logs VALUES('','%d','%d',NOW(),'%s')",
 			server_id, j_id, Escape(st));
@@ -122,17 +120,6 @@ void CDb::WriteLog(CString st, int no_db) {
 	st = CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S") + " " + st;
 	cout << st << "\n";
 	CGLib::AppendLineToFile(log_fname, st + "\n");
-}
-
-void CDb::GetFields() {
-	field.clear();
-	int nFields = rs->GetODBCFieldCount();
-	for (short x = 0; x < nFields; x++) {
-		CODBCFieldInfo fieldinfo;
-		short pos = x;
-		rs->GetODBCFieldInfo(pos, fieldinfo);
-		field.push_back(fieldinfo.m_strName);
-	}
 }
 
 CString CDb::Escape(CString st) {

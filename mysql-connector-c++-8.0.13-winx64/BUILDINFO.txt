@@ -1,0 +1,10 @@
+Information about the build environment:
+
+OS information : Windows-6.1.7601
+C   compiler   : MSVC 19.0.24218.1
+C++ compiler   : MSVC 19.0.24218.1
+MSVC runtime   : linked dynamically (/MD)
+
+Legacy connector information:
+
+MySQL version  : 8.0.13

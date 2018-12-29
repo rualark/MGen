@@ -297,7 +297,7 @@ int PauseClose() {
 }
 
 int Connect() {
-	if (db.Connect(db_driver, db_server, db_port, db_name, db_login, db_pass)) {
+	if (db.Connect(db_server, db_port, db_name, db_login, db_pass)) {
 		nRetCode = 4;
 	}
 	return nRetCode;
@@ -316,7 +316,7 @@ void Init() {
 	db.log_fname = "server\\MGenClean.log";
 	// Get client hostname
 	db.Fetch("SELECT SUBSTRING_INDEX(host,':',1) as 'ip' from information_schema.processlist WHERE ID=connection_id()");
-	if (db.rs && !db.rs->IsEOF()) {
+	if (db.result.size()) {
 		client_host = db.GetSt("ip");
 	}
 }
@@ -370,12 +370,12 @@ void ProcessTask(path path_info) {
 		CDb::j_id);
 	db.Fetch(q);
 	// Database error
-	if (!db.rs || db.rs->IsEOF()) {
+	if (!db.result.size()) {
 		// Get passed time
 		q.Format("SELECT TIMESTAMPDIFF(DAY, '%s', NOW()) AS j_passed",
 			year + "-" + month + "-" + day);
 		db.Fetch(q);
-		if (!db.rs || db.rs->IsEOF()) {
+		if (!db.result.size()) {
 			WriteLogLocal("Error accessing mysql server");
 		}
 		int j_passed = db.GetInt("j_passed");
@@ -437,7 +437,7 @@ void ProcessTask(path path_info) {
 			q.Format("SELECT j_id FROM jobs WHERE f_id = %d AND j_id > %ld AND j_state = 3 AND j_result = 0 AND j_class = %d",
 				f_id, CDb::j_id, j_class);
 			db.Fetch(q);
-			if (db.rs && !db.rs->IsEOF()) {
+			if (db.result.size()) {
 				est.Format("Archived task %ld file %d: passed %d days, cleaned",
 					CDb::j_id, f_id, j_passed);
 				WriteLog(est);
@@ -527,7 +527,6 @@ int main() {
 	//cout << "Folder size: " << CGLib::FolderSize("share\\jobs\\2017\\") << "\n";
 	//return PauseClose();
 	for (;;) {
-		if (Connect()) return PauseClose();
 		CleanFolders();
 		if (nRetCode) return PauseClose();
 		for (int i = 0; i < clean_every_minutes * 60; ++i) {
