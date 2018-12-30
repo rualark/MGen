@@ -11,7 +11,11 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+/MGen/[Dd]ebug/
+/MGenClean/[Dd]ebug/
+/MGenServer/[Dd]ebug/
+/MGenTest/[Dd]ebug/
+/[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
