@@ -458,13 +458,13 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;458;;;100;Harmony;Suspension;Tied note prepared by dissonance;diss. prep;0;;Suspension starts with dissonance;;;;;;23;6;;;;;;;
 1;532;;;0;Harmony;Border;Non-permitted first note;V;-1;;;;;;;;;;;;;;;;
 1;533;;;0;Harmony;Border;Non-permitted first note;III syncope;-1;;;;;;;;;;;;;;;;
-1;534;;;50;Harmony;Border;Non-permitted first note;III;0;;;;;;;;;;;;;;;;
+1;534;;;0;Harmony;Border;Non-permitted first note;III;0;;;;;;;;;;;;;;;;
 1;535;;;100;Harmony;Border;Non-permitted first note;Other;0;;;;;;;;;;;;;;;;
-1;536;;EB;50;Harmony;Border;Non-permitted last note;V;0;For this rule E voice means highest voice;;;;;;;;;;;;;;;
-1;537;;EB;50;Harmony;Border;Non-permitted last note;III;0;For this rule E voice means highest voice;;;;;;;;;;;;;;;
+1;536;;EB;0;Harmony;Border;Non-permitted last note;V;0;For this rule E voice means highest voice;;;;;;;;;;;;;;;
+1;537;;EB;0;Harmony;Border;Non-permitted last note;III;0;For this rule E voice means highest voice;;;;;;;;;;;;;;;
 1;538;;EB;100;Harmony;Border;Non-permitted last note;Other;0;For this rule E voice means highest voice;;;;;;;;;;;;;;;
 1;536;;N;0;Harmony;Border;Non-permitted last note;V;-1;For this rule E voice means highest voice;;;;;;;;;;;;;;;
-1;537;;N;50;Harmony;Border;Non-permitted last note;III;0;For this rule E voice means highest voice;;;;;;;;;;;;;;;
+1;537;;N;0;Harmony;Border;Non-permitted last note;III;1;For this rule E voice means highest voice;;;;;;;;;;;;;;;
 1;538;;N;100;Harmony;Border;Non-permitted last note;Other;0;For this rule E voice means highest voice;;;;;;;;;;;;;;;
 1;137;;;50;Harmony;Border;Non-permitted first harmony;not T;0;;Also prohibits T6;1;;;;;;;;;;;;;
 1;531;;;50;Harmony;Border;Non-permitted last harmony;not T;0;;Also prohibits T6;1;;;;;;;;;;;;;
