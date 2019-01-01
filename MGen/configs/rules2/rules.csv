@@ -474,12 +474,12 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;89;;;50;Harmony;Imperfect consonance;Too many consecutive 3rds;> 3;0;More than X 3rds in a row;;9;1;;;Parallel 3rds;27;0;;;;;;;
 1;90;;;50;Harmony;Imperfect consonance;Too many consecutive 6ths;> 3;0;More than X 6ths in a row;;9;1;;;Parallel 6ths;;;;;;;;;
 1;379;;;50;Harmony;Dissonance;Unresolved harmonic tritone;unresolved;0;;;12;;;;tri;21;4;;;;;;;
-1;83;;;100;Harmony;Dissonance;Wrong non-chord tone;:on downbeat;0;;;;;;;;219;21;;;;;169;;
-1;223;;;50;Harmony;Dissonance;Wrong non-chord tone;:longer than previous chord tone;0;;Dissonance is longer than previous note;;;;;;14;7;1;;;;;;
-1;331;;;50;Harmony;Dissonance;Wrong non-chord tone;tritone;0;;Tritone is prohibited between two chord tones with bass in major and melodic minor. In ancient modes, tritone is prohibited between any voices;;;;;;0;0;1;;;;;;
-1;551;;;100;Harmony;Dissonance;Wrong non-chord tone;:first note;0;;;;;;;;;;;;;;;;
-1;170;;;50;Harmony;Dissonance;Wrong non-chord tone;neigh diss;0;;Neighbor tone should be surrounded by chord tones;;;;;;;;;;;;;;
-1;171;;;50;Harmony;Dissonance;Wrong non-chord tone;4th;0;;4th interval is prohibited between two chord tones with bass;;;;;;;;;;;;;;
+1;83;;;100;Harmony;Dissonance;Wrong chord tone;:on downbeat;0;;;;;;;;219;21;;;;;169;;
+1;223;;;50;Harmony;Dissonance;Wrong chord tone;:longer than previous chord tone;0;;Dissonance is longer than previous note;;;;;;14;7;1;;;;;;
+1;331;;;50;Harmony;Dissonance;Wrong chord tone;tritone;0;;Tritone is prohibited between two chord tones with bass in major and melodic minor. In ancient modes, tritone is prohibited between any voices;;;;;;0;0;1;;;;;;
+1;551;;;100;Harmony;Dissonance;Wrong chord tone;:first note;0;;;;;;;;;;;;;;;;
+1;170;;;50;Harmony;Dissonance;Wrong chord tone;neighbor dissonance;0;;Neighbor tone should be surrounded by chord tones;;;;;;;;;;;;;;
+1;171;;;50;Harmony;Dissonance;Wrong chord tone;4th;0;;4th interval is prohibited between two chord tones with bass;;;;;;;;;;;;;;
 1;36;;;100;Harmony;Dissonance;Non-chord tone approached by leap;leap;0;;Leap to harmonic upbeat dissonance;;;;;;;;;;;;276,169;;
 1;187;;;100;Harmony;Dissonance;Non-chord tone left by leap;leap;0;;Leap from harmonic upbeat dissonance;;;;;;195;8;;;;;276,169;;
 1;169;;;50;Harmony;Dissonance;Similar movement to dissonance;m7;0;In outer voices;Minor 7th;7;3;;;;904;3;;;;;;;
