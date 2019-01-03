@@ -1792,14 +1792,16 @@ void CMainFrame::OnUpdateButtonLy(CCmdUI *pCmdUI) {
 
 void CMainFrame::OnButtonLy() {
 	//::ShellExecute(GetDesktopWindow()->m_hWnd, "open", m_dir + "\\" + m_fname + ".ly", NULL, NULL, SW_SHOWNORMAL);
-	CString par = m_lilypond_param;
+	if (m_state_gen == 2 && pGen && m_fname != "" && pGen->ly_saved) {
+		CString par = m_lilypond_param;
 
-	par.Replace("%1", m_dir + "\\" + m_fname + ".ly");
-	int ret = CGLib::RunBackground(m_lilypond_path, par, 200, SW_SHOWNORMAL);
-	if (ret) {
-		CString est;
-		est.Format("Error during executing lilypond %s %s: %d", m_lilypond_path, par, ret);
-		WriteLog(5, est);
+		par.Replace("%1", m_dir + "\\" + m_fname + ".ly");
+		int ret = CGLib::RunBackground(m_lilypond_path, par, 200, SW_SHOWNORMAL);
+		if (ret) {
+			CString est;
+			est.Format("Error during executing lilypond %s %s: %d", m_lilypond_path, par, ret);
+			WriteLog(5, est);
+		}
 	}
 }
 
