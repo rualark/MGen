@@ -9,3 +9,5 @@ include "include/CA3.pl"
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-11-22 19:26:14
 MusicXML_file = music\Melody\test\test-minor-alter.xml
+
+species = 0
