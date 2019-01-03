@@ -21,6 +21,8 @@ CDb::CDb() {
 }
 
 CDb::~CDb() {
+	mysql_close(conn);
+	mysql_library_end();
 }
 
 int CDb::Connect(CString server, CString port, CString dbname, CString login, CString pass) {
