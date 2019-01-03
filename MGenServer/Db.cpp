@@ -52,6 +52,7 @@ int CDb::Connect(CString server, CString port, CString dbname, CString login, CS
 }
 
 int CDb::Query(CString q) {
+	if (mysql_ping(conn)) return 1;
 	//WriteLog(q, 1);
 	if (mysql_query(conn, q)) {
 		CString est;
@@ -63,6 +64,7 @@ int CDb::Query(CString q) {
 }
 
 int CDb::Fetch(CString q) {
+	if (mysql_ping(conn)) return 1;
 	//WriteLog(q, 1);
 	field.clear();
 	result.clear();
