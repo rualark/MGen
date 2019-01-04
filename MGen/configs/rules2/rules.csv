@@ -14,7 +14,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;234;;;50;Rhythm;Rhythm;Non-permitted rhythm;1/2. upbeat;0;;Dotted half note on upbeat;11;;;;Rhythm;8;8;1;;;;;;
 1;235;;;50;Rhythm;Rhythm;Non-permitted rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;;;;22;19;1;;;;;;
 1;236;;;50;Rhythm;Rhythm;Non-permitted rhythm;rhythm stagnation;0;;Downbeat full measure note inside counterpoint - not first or last note;;;;;;38;12;1;;;;;;
-1;160;;;50;Rhythm;Rhythm;Non-permitted rhythm;whole inside;0;;Whole or longer note in measure in species 2 or 4;;;;;;;;;;;;;;
+1;160;;;50;Rhythm;Rhythm;Non-permitted rhythm;whole inside;0;;Whole or longer note in measure in species 2 or 4. In species 5 allowed only if other voices move;;;;;;;;;;;;;;
 1;226;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;1st beat;0;;1/8 note on beat 1;;;;;;12;7;1;;;;;;
 1;227;;;0;Rhythm;Rhythm;Wrong usage of eighth notes;2nd beat;1;;1/8 note on beat 2;;;;;;47;5;1;;;;;;
 1;228;;;50;Rhythm;Rhythm;Wrong usage of eighth notes;3rd beat;0;;1/8 note on beat 3;;;;;;25;8;1;;;;;;
@@ -383,8 +383,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;310;;;0;Harmony;Harmony;Too many tonic chords;>2 within 9 mea.;0;;More than X tonic chords within Y consecutive harmonies (except first and last tonic). At border without tonic - one more tonic is allowed. Inversion decreases 50%;1;;;;;3;0;;1;;;;;
 1;555;;;100;Harmony;Harmony;Convoluted harmony;convoluted;0;Cannot detect harmony;;1;;;;;;;;;;;;;
 1;558;;;100;Harmony;Harmony;Ambiguous harmony;ambiguous;0;Chord should have at least one chord tone starting on the first beat of this chord;;1;;;;;;;;;;;;;
-1;559;;>2;50;Harmony;Harmony;Incomplete harmony;any;0;;Starting from 3 voices chord should have tonic and 3rd on first beat or suspension or PDD resolution note;1;;;;;;;;;;;;;
-1;172;;>2;50;Harmony;Harmony;Incomplete harmony;penultimate;0;;Starting from 3 voices chords in penultimate measure should have all three chord tones on first beat or suspension or PDD resolution note. In 2 voices - at least two chord tones.;;;;;;;;;;;;;;
+1;559;;;50;Harmony;Harmony;Incomplete harmony;any;0;;Starting from 3 voices chord should have tonic and 3rd on first beat or suspension or PDD resolution note;1;;;;;;;;;;;;;
+1;172;;;50;Harmony;Harmony;Incomplete harmony;penultimate;0;;Starting from 3 voices chords in penultimate measure should have all three chord tones on first beat or suspension or PDD resolution note. In 2 voices - at least two chord tones.;;;;;;;;;;;;;;
 1;375;;;50;Harmony;Harmony;Augmented chord;DTIII;0;;;1;;;;;11;0;1;;;;;;
 1;383;;;50;Harmony;Harmony;Six-four chord;:audible;0;;6/4 chord with non-repeating 5th on beat 2 or 4;1;;;;;20;0;1;;;;;;
 1;196;;;50;Harmony;Harmony;Six-four chord;:suggestive;0;;6/4 chord with repeating 5th on beat 2 or 4;1;;;;;;;1;;;;;;
