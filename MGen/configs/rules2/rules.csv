@@ -297,9 +297,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;348;;;50;Melody;Melodic repeats;Octave leap to the leading tone;LT 8ve leap;0;;Octave leap between leading tones;5;;;;;2;2;1;;;;;;
 1;10;;;0;Melody;Melodic repeats;Frequent return to the same note;>3 in 7 notes;-1;Same note repeats more than X times within Y adjacent notes;;9;;;;Stagnation;39;1;;1;;;;;
 1;39;;;50;Melody;Melodic repeats;Frequent return to the same note;>4 in 9 notes;0;Same note repeats more than X times within Y adjacent notes;;9;;;;Stagnation;21;0;;;;;;;
-1;344;;;0;Melody;Melodic repeats;Notes stagnation;5 notes <3 pi;0;;X consecutive notes use less than Y pitches;9;;;;Stagnation;17;0;;;;;;;
-1;345;;;0;Melody;Melodic repeats;Notes stagnation;7 notes <4 pi;0;;X consecutive notes use less than Y pitches;9;;;;Stagnation;27;0;;;;;;;
-1;346;;;0;Melody;Melodic repeats;Notes stagnation;17 notes <6 pi;0;;X consecutive notes use less than Y pitches;9;;;;Stagnation;3;0;;;;;;;
+1;344;;;0;Melody;Melodic repeats;Notes stagnation;5 notes <3 pitches;0;;X consecutive notes use less than Y pitches;9;;;;Stagnation;17;0;;;;;;;
+1;345;;;0;Melody;Melodic repeats;Notes stagnation;7 notes <4 pitches;0;;X consecutive notes use less than Y pitches;9;;;;Stagnation;27;0;;;;;;;
+1;346;;;0;Melody;Melodic repeats;Notes stagnation;17 notes <6 pitches;0;;X consecutive notes use less than Y pitches;9;;;;Stagnation;3;0;;;;;;;
 1;2;10;;50;Melody;Tritone;Tritone: adjacent;:resolved;0;Melodic adjacent tritone;Search 4 quarters for resolution if penultimate measure;13;;;;tri;8;2;1;;;;;;
 1;31;10;;100;Melody;Tritone;Tritone: adjacent;:unresolved;0;Melodic adjacent tritone;;13;;;;tri;29;3;;;;;2;;
 1;371;10;;0;Melody;Tritone;Audible tritone: framed;:resolved;0;Melodic tritone with one intermediate note, framed by two melody direction changes or leaps;;13;;;;tri;19;2;;;;;;;
