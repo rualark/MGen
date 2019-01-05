@@ -9,3 +9,4 @@ include "include/CA3.pl"
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-12-21 19:42:51
 MusicXML_file = music\Counterpoint 3 voices\problem\MTE 1110 - TS02 - Problemes-mod.xml
+species = 55
