@@ -1,0 +1,13 @@
+LN1;LN2;LN3;0;2;3;5;7;8;9;10;11
+Lower note;;;Upper melodic minor note;;;;;;;;
+;;;I;II;III;IV;V;VI;VI#;VII;VII#
+;;;A;B;C;D;E;F;F#;G;G#
+0;I;A;1|8;M2|M9;m3;4;5;m6;M6;m7;M7
+2;II;B;m7;1|8;m2|m9;m3;4;dim5;5;m6;M6
+3;III;C;M6;M7;1|8;M2|M9;m3;4;aug4;5;aug5
+5;IV;D;5;M6;m7;1|8;M2|M9;m3;M3;4;aug4
+7;V;E;4;5;m6;m7;1|8;m2|m9;M2|M9;m3;M3
+8;VI;F;M3;dim5;5;M6;M7;1|8;m2|aug8;M2|M9;aug2|aug9
+9;VI#;F#;m3;4;dim5;m6;m7;M7;1|8;m2|m9;M2|M9
+10;VII;G;M2|M9;M3;4;5;M6;m7;M7;1|8;m2|aug8
+11;VII#;G#;m2|m9;m3;dim4;dim5;m6;dim7;m7;dim8;1|8
