@@ -6,7 +6,7 @@ Public PageBreakState As Boolean
 Public sRows
 Public max_id
 
-Public Const DCount As Integer = 14
+Public Const DCount As Integer = 15
 
 ' Arrays
 Dim Rules(1000)
