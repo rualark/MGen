@@ -7,6 +7,6 @@
 include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
-# Created at 2019-01-06 12:08:50
-MusicXML_file = music\Counterpoint 3 voices\known\EX - TP06.xml
-species = 3
+# Created at 2019-01-06 19:45:58
+MusicXML_file = music\Counterpoint 3 voices\known\EX - TP10-mod.xml
+species=5
