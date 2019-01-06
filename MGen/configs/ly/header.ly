@@ -1,6 +1,9 @@
 \version "2.18.2"
 \language "english"
-\paper { #(include-special-characters) }
+\paper { 
+  #(include-special-characters) 
+  bottom-margin = 0.27\in
+}
 circle =
 \once \override NoteHead.stencil = #(lambda (grob)
     (let* ((note (ly:note-head::print grob))

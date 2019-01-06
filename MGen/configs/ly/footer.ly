@@ -29,7 +29,8 @@
       "is shown in the score with shape of same color"
       %"This note was corrected"
       %"This note is a dissonance"
-      "Circled note is considered non-harmonic (passing, auxiliary or other)"
+      "Circled note is considered non-chord tone (passing, auxiliary or other)"
+      "or a chord tone in a similar melodic form"
     }
   }
 } 
