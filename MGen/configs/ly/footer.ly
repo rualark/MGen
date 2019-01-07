@@ -1,6 +1,6 @@
 \markup { 
   \vspace #5
-  \bold Legend:
+  \bold \tiny Legend:
 } 
 
 \markup {
@@ -22,7 +22,7 @@
       %\raise #0.9 \musicglyph #"noteheads.s0harmonic"
     }
     \hspace #5
-    \column {
+    \tiny \column {
       "This note violates minor rule (green). If underlined, means that violation"
       "is shown in the score with shape of same color"
       "This note violates major rule (red). If underlined, means that violation"
