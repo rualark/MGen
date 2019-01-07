@@ -4,7 +4,7 @@
   <identification>
     <encoding>
       <software>Finale for Windows</software>
-      <encoding-date>2019-01-06</encoding-date>
+      <encoding-date>2019-01-07</encoding-date>
       <supports attribute="new-system" element="print" type="yes" value="yes"/>
       <supports attribute="new-page" element="print" type="yes" value="yes"/>
       <supports element="accidental" type="yes"/>
@@ -4193,8 +4193,12 @@
           <octave>4</octave>
         </pitch>
         <duration>32</duration>
+        <tie type="start"/>
         <voice>1</voice>
         <type>whole</type>
+        <notations>
+          <tied orientation="over" type="start"/>
+        </notations>
       </note>
       <backup>
         <duration>32</duration>
@@ -4238,9 +4242,13 @@
           <octave>4</octave>
         </pitch>
         <duration>16</duration>
+        <tie type="stop"/>
         <voice>1</voice>
         <type>half</type>
         <stem default-y="39">up</stem>
+        <notations>
+          <tied type="stop"/>
+        </notations>
       </note>
       <note default-x="69">
         <pitch>
@@ -4248,9 +4256,13 @@
           <octave>3</octave>
         </pitch>
         <duration>16</duration>
+        <tie type="start"/>
         <voice>1</voice>
         <type>half</type>
         <stem default-y="33.5">up</stem>
+        <notations>
+          <tied orientation="over" type="start"/>
+        </notations>
       </note>
       <backup>
         <duration>32</duration>
@@ -4273,9 +4285,13 @@
           <octave>3</octave>
         </pitch>
         <duration>16</duration>
+        <tie type="stop"/>
         <voice>1</voice>
         <type>half</type>
         <stem default-y="33.5">up</stem>
+        <notations>
+          <tied type="stop"/>
+        </notations>
       </note>
       <note default-x="69">
         <pitch>
