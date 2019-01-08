@@ -2,12 +2,14 @@
 <!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.0 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
 <score-partwise version="3.0">
  <work>
-  <work-title />
+  <work-title>test-xml Это тест</work-title>
  </work>
  <identification>
-  <rights>Copyright © </rights>
+  <creator type="composer">test-xml-composer Это тест</creator>
+  <creator type="arranger">test-xml-arranger Это тест</creator>
+  <rights>Copyright © test Это тест</rights>
   <encoding>
-   <encoding-date>2019-01-07</encoding-date>
+   <encoding-date>2019-01-08</encoding-date>
    <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -68,6 +70,9 @@
   <lyric-font font-family="Plantin MT Std" font-size="11.4715" />
   <lyric-language xml:lang="en" />
  </defaults>
+ <credit page="1">
+  <credit-words default-x="616" default-y="155" font-family="Plantin MT Std" font-style="normal" font-size="22.0128" font-weight="normal" justify="center" valign="middle">test-xml Это тест</credit-words>
+ </credit>
  <part-list>
   <part-group type="start" number="1">
    <group-symbol>brace</group-symbol>
