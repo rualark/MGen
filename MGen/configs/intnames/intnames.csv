@@ -7,7 +7,7 @@ Lower note;;;Upper melodic minor note;;;;;;;;
 0;III;C;M6;M7;1|8;M2|M9;m3;4;aug4;5;aug5
 2;IV;D;5;M6;m7;1|8;M2|M9;m3;M3;4;aug4
 4;V;E;4;5;m6;m7;1|8;m2|m9;M2|M9;m3;M3
-5;VI;F;M3;aug4;5;M6;M7;1|8;m2|aug8;M2|M9;aug2|aug9
+5;VI;F;M3;aug4;5;M6;M7;1|8;aug1|aug8;M2|M9;aug2|aug9
 6;VI#;F#;m3;4;dim5;m6;m7;M7;1|8;m2|m9;M2|M9
-7;VII;G;M2|M9;M3;4;5;M6;m7;M7;1|8;m2|aug8
+7;VII;G;M2|M9;M3;4;5;M6;m7;M7;1|8;aug1|aug8
 8;VII#;G#;m2|m9;m3;dim4;dim5;m6;dim7;m7;dim8;1|8
