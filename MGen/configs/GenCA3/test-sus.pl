@@ -9,3 +9,7 @@ include "include/CA3.pl"
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-11-03 15:26:22
 MusicXML_file = music\Counterpoint 2 voices\test\test-sus.xml
+
+"Violins section/Staccato/1": ensemble tightness = "28"
+#"Violins section/Arco/1": ensemble tightness = "28"
+Instruments = Violins section/Staccato
