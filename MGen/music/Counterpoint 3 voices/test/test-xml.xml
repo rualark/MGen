@@ -227,6 +227,15 @@
     <type>eighth</type>
     <staff>1</staff>
    </note>
+   <direction>
+    <direction-type>
+     <words default-x="40" default-y="82" justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">some text</words>
+     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">more text</words>
+     <words justify="left" valign="middle" font-family="Plantin MT Std" font-style="normal" font-size="11.9365" font-weight="normal">another text</words>
+    </direction-type>
+    <voice>1</voice>
+    <staff>1</staff>
+   </direction>
    <note color="#000000" default-x="46" default-y="-45">
     <pitch>
      <step>D</step>

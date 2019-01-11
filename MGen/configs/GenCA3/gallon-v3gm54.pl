@@ -9,3 +9,4 @@ include "include/CA3.pl"
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-08-18 13:27:47
 MusicXML_file = music\Counterpoint 3 voices\gallon\gallon-v3gm54.xml
+Instruments = Soprano,Alto,Tenor,Bass

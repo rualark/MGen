@@ -7,8 +7,8 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2018-08-18</encoding-date>
-   <encoder>ruala</encoder>
+   <encoding-date>2019-01-10</encoding-date>
+   <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
    <encoding-description>Sibelius / MusicXML 3.0</encoding-description>
@@ -66,7 +66,7 @@
   </appearance>
   <music-font font-family="Opus Std" font-size="19.8425" />
   <lyric-font font-family="Plantin MT Std" font-size="11.4715" />
-  <lyric-language xml:lang="ru" />
+  <lyric-language xml:lang="en" />
  </defaults>
  <credit page="2">
   <credit-words default-x="85" default-y="1510" font-style="normal" font-weight="normal" justify="left" valign="middle">2</credit-words>
@@ -89,9 +89,6 @@
    </part-abbreviation-display>
    <score-instrument id="P1-I1">
     <instrument-name>Soprano</instrument-name>
-    <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
-    </virtual-instrument>
    </score-instrument>
   </score-part>
   <score-part id="P2">
@@ -105,9 +102,6 @@
    </part-abbreviation-display>
    <score-instrument id="P2-I1">
     <instrument-name>Alto</instrument-name>
-    <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
-    </virtual-instrument>
    </score-instrument>
   </score-part>
   <score-part id="P3">
@@ -121,9 +115,6 @@
    </part-abbreviation-display>
    <score-instrument id="P3-I1">
     <instrument-name>Tenor</instrument-name>
-    <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
-    </virtual-instrument>
    </score-instrument>
   </score-part>
   <score-part id="P4">
@@ -137,9 +128,6 @@
    </part-abbreviation-display>
    <score-instrument id="P4-I1">
     <instrument-name>Bass (2)</instrument-name>
-    <virtual-instrument>
-     <virtual-library>Sibelius 7 Sounds</virtual-library>
-    </virtual-instrument>
    </score-instrument>
   </score-part>
   <part-group type="stop" number="1" />
