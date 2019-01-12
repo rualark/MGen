@@ -387,9 +387,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;196;;;50;Harmony;Harmony;Six-four chord;:suggestive;0;;6/4 chord with repeating 5th on beat 2 or 4;1;;1;;;;;;1;;;;;;
 1;433;;;100;Harmony;Harmony;Six-four chord;real;0;;6/4 chord with 5th on beat 1 or 3;1;;1;;;;172;0;1;;;;;;
 1;48;;;50;Harmony;Harmony;Cadential progression;V-I;0;;Bass note going from V note to I octave in D-T progression before cadence;1;;1;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;308;;;50;Harmony;Harmony;Prohibited progression;S-DVII (m);0;;Prohibit DVII (GBD) in root position after S (DF#A) in root position;1;;1;;;;2;1;1;;;;;;
-1;309;;;50;Harmony;Harmony;Prohibited progression;DVII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after DVII (GBD) in root position;1;;1;;;;2;1;1;;;;;;
-1;139;;;50;Harmony;Harmony;Prohibited progression;SII-DTIII (m);0;;Prohibit DTIII (CEG) in root position after SII (BDF);1;;1;;;;;;;;;;;;
+1;308;;;50;Harmony;Harmony;Modulating progression;IV-VII (m);0;;Prohibit VII (GBD) in root position after IV (DF#A) in root position in minor, because it is modulating;1;;1;;;;2;1;1;;;;;;
+1;309;;;50;Harmony;Harmony;Modulating progression;VII-III (m);0;;Prohibit III (CEG) in root position after VII (GBD) in root position in minor because it is modulating;1;;1;;;;2;1;1;;;;;;
+1;139;;;50;Harmony;Harmony;Modulating progression;II-III (m);0;;Prohibit III (CEG) in root position after II (BDF) in minor because it is modulating;1;;1;;;;;;;;;;;;
 1;77;;;0;Harmony;Harmony;Harmonic progression;non-ideal;-1;;See harmonic progressions with penalty 1;9;;1;;;!srn!;612;0;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;57;;;0;Harmony;Harmony;Harmonic progression;bad;-1;;See harmonic progressions with penalty 2;9;;1;;;Weak prog.;535;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;92;;;0;Harmony;Harmony;Harmonic progression;2 x bad;-1;;Two consecutive harmonic progressions each with penalty 2;9;;1;;;Weak prog.;103;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
@@ -427,7 +427,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;91;;;50;Harmony;Perfect consonance;Unison;:on downbeat;0;;Downbeat unison is not allowed inside counterpoint - only as first or last interval of counterpoint: except >4 voices or between two lowest voices in 4 voices.;2;1;1;;;;6;2;1;;;;;;
 1;275;;;50;Harmony;Perfect consonance;Unison;:follows m2;0;;Oblique motion from minor 2nd to unison;8;1;1;;;m2 - unis.;10;2;1;;;;;;
 1;277;;;0;Harmony;Perfect consonance;Unison;:follows M2;1;;Oblique motion from major 2nd to unison;8;1;1;;;M2 - unis.;1;1;1;;;;;;
-1;161;;;0;Harmony;Perfect consonance;Similar movement to tritone;tritone;0;;Direct movement to tritone;7;3;;;;;;;;;;;;;
 1;208;;;100;Harmony;Perfect consonance;Similar movement to 5th;stepw. cadence;0;;Direct movement to 5th with stepwize motion in higher voice to last or penultimate measure;7;3;;;;;1;1;1;;;;;;
 1;212;;;100;Harmony;Perfect consonance;Similar movement to 5th;leap cadence;0;;Direct movement to 5th with leaping motion in higher voice to last or penultimate measure;7;3;;;;;5;1;1;;;;;;
 1;210;;;100;Harmony;Perfect consonance;Similar movement to 5th;not cadence;0;;Direct movement to 5th with stepwize motion in higher voice: not in cadence;7;3;;;;;19;9;1;;;;;;
@@ -479,6 +478,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;171;;;50;Harmony;Dissonance;Wrong chord tone;4th;0;;4th interval is prohibited between two chord tones with bass;;;1;;;;;;;;;;;;
 1;36;;;100;Harmony;Dissonance;Non-chord tone approached by leap;leap;0;;Leap to harmonic upbeat dissonance;;;1;;;;;;;;;;276,169;;
 1;187;;;100;Harmony;Dissonance;Non-chord tone left by leap;leap;0;;Leap from harmonic upbeat dissonance;;;1;;;;195;8;;;;;276,169;;
+1;161;;;0;Harmony;Dissonance;Similar movement to tritone;tritone;0;;Direct movement to tritone;7;3;;;;;;;;;;;;;
 1;169;;;50;Harmony;Dissonance;Similar movement to dissonance;m7;0;In outer voices;Minor 7th;7;3;;;;;904;3;;;;;;;
 1;276;;;50;Harmony;Dissonance;Similar movement to dissonance;M7;0;In outer voices;Major 7th;7;3;;;;;6;3;1;;;;;;
 1;173;;;50;Harmony;Dissonance;Similar movement to dissonance;m9;0;In outer voices;Minor 9th;7;3;;;;;;;;;;;;;
@@ -502,7 +502,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;519;;>4;50;Harmony;Voice motion;Voice crossing is too long;> 2.5 measures;0;;;12;;1;;;cross;;;;;;;;;
 1;520;;;100;Harmony;Voice motion;Voice crossing between non-adjacent voices;non-adjacent;0;;;12;;1;;;cross;;;;;;;;;
 1;544;;;0;Harmony;Voice motion;Wrong voice movement during voice crossing;2nd interval;0;;Second interval at crossing;;;1;;;2nd;;;;;;;;;
-1;545;;;100;Harmony;Voice motion;Wrong voice movement during voice crossing;2 x 2nd;0;;Second interval before and at crossing;12;;1;;;2 x 2nd;;;;;;;;;
+1;545;;;50;Harmony;Voice motion;Wrong voice movement during voice crossing;2 x 2nd;0;;Second interval before and at crossing;12;;1;;;2 x 2nd;;;;;;;;;
 1;546;;;0;Harmony;Voice motion;Wrong voice movement during voice crossing;direct leap;0;;Direct motion to crossing if one of voices leaps;12;;1;;;leap;;;;;;;;;
 1;547;;;50;Harmony;Voice motion;Wrong voice movement during voice crossing;direct leaps;0;;Direct motion to crossing if both voices leap;12;;1;;;leaps;;;;;;;;;
 1;550;;>2;50;Harmony;Voice motion;All voices move in parallel;two times;0;;;10;;1;;;parallel;;;;;;;;;

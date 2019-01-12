@@ -17,14 +17,14 @@ xcopy /y Release\MGenClean.exe "%pth%\server\"
 xcopy /y Release\MGenTest.exe "%pth%\server\"
 robocopy /e /mir "MGen\configs" "%pth%\configs" *
 robocopy /e /mir "MGen\instruments" "%pth%\instruments" *
-robocopy /e /mir "MGen\midi" "%pth%\midi" *
+robocopy /e /mir "MGen\music" "%pth%\music" *
 robocopy /e /mir "MGen\autotest\configs" "%pth%\autotest\configs" *
 xcopy /y MGen\autotest\test.bat "%pth%\autotest\"
 xcopy /y MGen\autotest\test.csv "%pth%\autotest\"
 xcopy /y MGen\db\expect.csv "%pth%\db\"
 
 rem REMOVE UNNECESSARY
-rmdir /s /q "%pth%\midi\Music\private"
+rmdir /s /q "%pth%\music\Music\private"
 
 rem MAKE ZIP
 "c:\program files\winrar\winrar" a -afzip -r -ep1 "%pth%.zip" "%pth%"
