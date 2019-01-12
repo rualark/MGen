@@ -63,7 +63,7 @@ MidiFile::MidiFile(void) {
    readFileName[0] = '\0';
    timemap.clear();
    timemapvalid = 0;
-   rwstatus = 1;
+   m_rwstatus = 1;
 }
 
 
@@ -79,7 +79,7 @@ MidiFile::MidiFile(const char* filename) {
    read(filename);
    timemap.clear();
    timemapvalid = 0;
-   rwstatus = 1;
+   m_rwstatus = 1;
 }
 
 
@@ -95,7 +95,7 @@ MidiFile::MidiFile(const string& filename) {
    read(filename);
    timemap.clear();
    timemapvalid = 0;
-   rwstatus = 1;
+   m_rwstatus = 1;
 }
 
 
@@ -111,7 +111,7 @@ MidiFile::MidiFile(istream& input) {
    read(input);
    timemap.clear();
    timemapvalid = 0;
-   rwstatus = 1;
+   m_rwstatus = 1;
 }
 
 
@@ -137,7 +137,7 @@ MidiFile::MidiFile(const MidiFile& other) {
 
    timemapvalid = other.timemapvalid;
    timemap = other.timemap;
-   rwstatus = other.rwstatus;
+   m_rwstatus = other.m_rwstatus;
 }
 
 
@@ -160,7 +160,7 @@ MidiFile::MidiFile(MidiFile&& other) {
 
    timemapvalid = other.timemapvalid;
    timemap = other.timemap;
-   rwstatus = other.rwstatus;
+   m_rwstatus = other.m_rwstatus;
 }
 
 
@@ -179,7 +179,7 @@ MidiFile::~MidiFile() {
       events[0] = NULL;
    }
    events.resize(0);
-   rwstatus = 0;
+   m_rwstatus = 0;
    timemap.clear();
    timemapvalid = 0;
 }
@@ -197,7 +197,7 @@ MidiFile::~MidiFile() {
 //
 
 int MidiFile::read(const char* filename) {
-   rwstatus = 1;
+   m_rwstatus = 1;
    timemapvalid = 0;
    if (filename != NULL) {
       setFilename(filename);
@@ -210,8 +210,8 @@ int MidiFile::read(const char* filename) {
       return 0;
    }
 
-   rwstatus = MidiFile::read(input);
-   return rwstatus;
+   m_rwstatus = MidiFile::read(input);
+   return m_rwstatus;
 }
 
 
@@ -223,7 +223,7 @@ int MidiFile::read(const char* filename) {
 int MidiFile::read(const string& filename) {
    timemapvalid = 0;
    setFilename(filename);
-   rwstatus = 1;
+   m_rwstatus = 1;
 
    fstream input;
    input.open(filename.data(), ios::binary | ios::in);
@@ -232,8 +232,8 @@ int MidiFile::read(const string& filename) {
       return 0;
    }
 
-   rwstatus = MidiFile::read(input);
-   return rwstatus;
+   m_rwstatus = MidiFile::read(input);
+   return m_rwstatus;
 }
 
 
@@ -242,7 +242,7 @@ int MidiFile::read(const string& filename) {
 //
 
 int MidiFile::read(istream& input) {
-   rwstatus = 1;
+   m_rwstatus = 1;
    if (input.peek() != 'M') {
       // If the first byte in the input stream is not 'M', then presume that
       // the MIDI file is in the binasc format which is an ASCII representation
@@ -254,11 +254,11 @@ int MidiFile::read(istream& input) {
       binarydata.seekg(0, ios_base::beg);
       if (binarydata.peek() != 'M') {
 				 est = "Bad MIDI data input";
-         rwstatus = 0;
-         return rwstatus;
+         m_rwstatus = 0;
+         return m_rwstatus;
       } else {
-         rwstatus = read(binarydata);
-         return rwstatus;
+         m_rwstatus = read(binarydata);
+         return m_rwstatus;
       }
    }
 
@@ -276,44 +276,44 @@ int MidiFile::read(istream& input) {
    character = input.get();
    if (character == EOF) {
 	    est.Format("In file %s: unexpected end of file. Expecting 'M' at first byte, but found nothing.", filename);
-      rwstatus = 0; return rwstatus;
+      m_rwstatus = 0; return m_rwstatus;
    } else if (character != 'M') {
  		  est.Format("File %s is not a MIDI file. Expecting 'M' at first byte, but got '%c'.", filename, character);
-      rwstatus = 0; return rwstatus;
+      m_rwstatus = 0; return m_rwstatus;
    }
 
    character = input.get();
    if (character == EOF) {
 		  est.Format("In file %s: unexpected end of file. Expecting 'T' at second byte, but found nothing.", filename);
-      rwstatus = 0; return rwstatus;
+      m_rwstatus = 0; return m_rwstatus;
    } else if (character != 'T') {
 		 est.Format("File %s is not a MIDI file. Expecting 'T' at second byte, but got '%c'.", filename, character);
-		 rwstatus = 0; return rwstatus;
+		 m_rwstatus = 0; return m_rwstatus;
    }
 
    character = input.get();
    if (character == EOF) {
 		  est.Format("In file %s: unexpected end of file. Expecting 'h' at third byte, but found nothing.", filename);
-      rwstatus = 0; return rwstatus;
+      m_rwstatus = 0; return m_rwstatus;
    } else if (character != 'h') {
   		est.Format("File %s is not a MIDI file. Expecting 'h' at third byte, but got '%c'.", filename, character);
-      rwstatus = 0; return rwstatus;
+      m_rwstatus = 0; return m_rwstatus;
    }
 
    character = input.get();
    if (character == EOF) {
 		  est.Format("In file %s: unexpected end of file. Expecting 'd' at fourth byte, but found nothing.", filename);
-      rwstatus = 0; return rwstatus;
+      m_rwstatus = 0; return m_rwstatus;
    } else if (character != 'd') {
 		 est.Format("File %s is not a MIDI file. Expecting 'd' at fourth byte, but got '%c'.", filename, character);
-		 rwstatus = 0; return rwstatus;
+		 m_rwstatus = 0; return m_rwstatus;
    }
 
    // read header size (allow larger header size?)
    longdata = MidiFile::readLittleEndian4Bytes(input);
    if (longdata != 6) {
 		  est.Format("File %s is not a MIDI 1.0 Standard file. The header is %lu bytes.", filename, longdata);
-      rwstatus = 0; return rwstatus;
+      m_rwstatus = 0; return m_rwstatus;
    }
 
    // Header parameter #1: format type
@@ -329,7 +329,7 @@ int MidiFile::read(istream& input) {
       case 2:    // Type-2 MIDI files should probably be allowed as well.
       default:
 				 est.Format("Error: cannot handle a type-%hu MIDI file.", shortdata);
-         rwstatus = 0; return rwstatus;
+         m_rwstatus = 0; return m_rwstatus;
    }
 
    // Header parameter #2: track count
@@ -337,7 +337,7 @@ int MidiFile::read(istream& input) {
    shortdata = MidiFile::readLittleEndian2Bytes(input);
    if (type == 0 && shortdata != 1) {
 		  est.Format("Error: Type 0 MIDI file can only contain one track. Instead track count is: %hu", shortdata);
-      rwstatus = 0; return rwstatus;
+      m_rwstatus = 0; return m_rwstatus;
    } else {
       tracks = shortdata;
    }
@@ -399,37 +399,37 @@ int MidiFile::read(istream& input) {
       character = input.get();
       if (character == EOF) {
 				est.Format("In file %s: unexpected end of file. Expecting 'M' at first byte in track, but found nothing.", filename);
-				rwstatus = 0; return rwstatus;
+				m_rwstatus = 0; return m_rwstatus;
       } else if (character != 'M') {
 				est.Format("File %s is not a MIDI file. Expecting 'M' at first byte in track, but got '%c'.", filename, character);
-         rwstatus = 0; return rwstatus;
+         m_rwstatus = 0; return m_rwstatus;
       }
 
       character = input.get();
       if (character == EOF) {
 				est.Format("In file %s: unexpected end of file. Expecting 'T' at second byte in track, but found nothing.", filename);
-         rwstatus = 0; return rwstatus;
+         m_rwstatus = 0; return m_rwstatus;
       } else if (character != 'T') {
 				est.Format("File %s is not a MIDI file. Expecting 'T' at second byte in track, but got '%c'.", filename, character);
-         rwstatus = 0; return rwstatus;
+         m_rwstatus = 0; return m_rwstatus;
       }
 
       character = input.get();
       if (character == EOF) {
 				est.Format("In file %s: unexpected end of file. Expecting 'r' at third byte in track, but found nothing.", filename);
-         rwstatus = 0; return rwstatus;
+         m_rwstatus = 0; return m_rwstatus;
       } else if (character != 'r') {
 				est.Format("File %s is not a MIDI file. Expecting 'r' at third byte in track, but got '%c'.", filename, character);
-				rwstatus = 0; return rwstatus;
+				m_rwstatus = 0; return m_rwstatus;
       }
 
       character = input.get();
       if (character == EOF) {
 				est.Format("In file %s: unexpected end of file. Expecting 'k' at fourth byte in track, but found nothing.", filename);
-         rwstatus = 0; return rwstatus;
+         m_rwstatus = 0; return m_rwstatus;
       } else if (character != 'k') {
 				est.Format("File %s is not a MIDI file. Expecting 'k' at fourth byte in track, but got '%c'.", filename, character);
-         rwstatus = 0; return rwstatus;
+         m_rwstatus = 0; return m_rwstatus;
       }
 
       // Now read track chunk size and throw it away because it is
@@ -452,7 +452,7 @@ int MidiFile::read(istream& input) {
          absticks += longdata;
          xstatus = extractMidiData(input, bytes, runningCommand);
          if (xstatus == 0) {
-            rwstatus = 0;  return rwstatus;
+            m_rwstatus = 0;  return m_rwstatus;
          }
          event.setMessage(bytes);
          //cout << "command = " << hex << (int)event.data[0] << dec << endl;
@@ -510,9 +510,9 @@ int MidiFile::write(const char* filename) {
       est.Format("Error: could not write: %s", filename);
       return 0;
    }
-   rwstatus = write(output);
+   m_rwstatus = write(output);
    output.close();
-   return rwstatus;
+   return m_rwstatus;
 }
 
 
@@ -643,9 +643,9 @@ int MidiFile::writeHex(const char* aFile, int width) {
       est.Format("Error: could not write: %s", aFile);
       return 0;
    }
-   rwstatus = writeHex(output, width);
+   m_rwstatus = writeHex(output, width);
    output.close();
-   return rwstatus;
+   return m_rwstatus;
 }
 
 
@@ -705,9 +705,9 @@ int MidiFile::writeBinasc(const char* aFile) {
 		 est.Format("Error: could not write: %s", aFile);
 		 return 0;
    }
-   rwstatus = writeBinasc(output);
+   m_rwstatus = writeBinasc(output);
    output.close();
-   return rwstatus;
+   return m_rwstatus;
 }
 
 
@@ -718,9 +718,9 @@ int MidiFile::writeBinascWithComments(const char* aFile) {
 		 est.Format("Error: could not write: %s", aFile);
 		 return 0;
    }
-   rwstatus = writeBinascWithComments(output);
+   m_rwstatus = writeBinascWithComments(output);
    output.close();
-   return rwstatus;
+   return m_rwstatus;
 }
 
 
@@ -736,8 +736,8 @@ int MidiFile::writeBinascWithComments(const string& aFile) {
 
 int MidiFile::writeBinasc(ostream& output) {
    stringstream binarydata;
-   rwstatus = write(binarydata);
-   if (rwstatus == 0) {
+   m_rwstatus = write(binarydata);
+   if (m_rwstatus == 0) {
       return 0;
    }
 
@@ -751,8 +751,8 @@ int MidiFile::writeBinasc(ostream& output) {
 
 int MidiFile::writeBinascWithComments(ostream& output) {
    stringstream binarydata;
-   rwstatus = write(binarydata);
-   if (rwstatus == 0) {
+   m_rwstatus = write(binarydata);
+   if (m_rwstatus == 0) {
       return 0;
    }
 
@@ -773,7 +773,7 @@ int MidiFile::writeBinascWithComments(ostream& output) {
 //
 
 int MidiFile::status(void) {
-   return rwstatus;
+   return m_rwstatus;
 }
 
 
