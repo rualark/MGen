@@ -49,8 +49,10 @@ class _TickTime {
 
 
 class MidiFile {
+
    public:
-                MidiFile                  (void);
+			static CString est;
+								MidiFile                  (void);
                 MidiFile                  (const char* aFile);
                 MidiFile                  (const string& aFile);
                 MidiFile                  (istream& input);
