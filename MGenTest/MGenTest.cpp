@@ -42,6 +42,7 @@ int wait_sec2 = wait_sec2_default;
 void InitErrorMessages() {
 	errorMessages.resize(1000);
 	errorMessages[0] = "OK";
+	errorMessages[9] = "MGen detected warnings during run";
 	errorMessages[10] = "MGen detected critical errors during run";
 	errorMessages[11] = "MGen generator freeze on exit - possible error in generator";
 	errorMessages[100] = "GetExitCodeProcess error (for MGen.exe)";
@@ -121,7 +122,7 @@ void PublishTest(CString tname, int result, int tpassed, CString params) {
 	CString st;
 	CString st2;
 	st2.Format("%s: code %d (%s) in %d ms\n", tname, result, emes, tpassed);
-	if (result) {
+	if (result != 0 && result != 9) {
 		nRetCode = 2;
 		Log(st2, 3);
 	}
@@ -135,7 +136,7 @@ void PublishTest(CString tname, int result, int tpassed, CString params) {
 
 	if (continuous_integration) {
 		CString cat = "Passed";
-		if (result) cat = "Failed";
+		if (result != 0 && result != 9) cat = "Failed";
 		st.Format("UpdateTest \"%s\" -Framework MSTest -FileName MGen.exe -Duration %d -Outcome %s -ErrorMessage \"%d: %s\" >> autotest\\run.log 2>&1", 
 			tname, tpassed, cat, result, emes);
 		// First run is done without error stack to ensure that too long error stack will not prevent test from reporting
@@ -261,7 +262,7 @@ void LoadConfig() {
 			if (!GetExitCodeProcess(sei.hProcess, &ecode)) ecode = 100;
 			if (!CGLib::fileExists("autotest\\exit.log")) ecode = 101;
 
-			if (!ecode) {
+			if (ecode == 0 || ecode == 9) {
 				CString pname2 = pname;
 				pname2.Replace("configs\\", "");
 				pname2.Replace(".pl", "");

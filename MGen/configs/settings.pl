@@ -1,10 +1,10 @@
 # Settings of MGen
 # This file is loaded on MGen startup and automatically saved on every setting change
 
-Algorithm = 113 # Id of the currently selected algorithm
-Config = EX-TP10-55005 # Name of configuration file for selected algorithm
+Algorithm = 112 # Id of the currently selected algorithm
+Config = test-cp # Name of configuration file for selected algorithm
 MIDI_OUT = Babyface Midi Port 1 1 # Name of MIDI device used for playing notes
-Horizontal_zoom = 300 # Zoom of the piano roll. Can be from 1 to 2000
+Horizontal_zoom = 100 # Zoom of the piano roll. Can be from 1 to 2000
 playback_speed = 100 # Playback speed in percent
 show_marks = 1 # Set to 1 to show note mark strings
 show_comments = 0 # Set to 1 to surround notes which have comments with rectangles
