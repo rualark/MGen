@@ -227,7 +227,7 @@ class MidiFile {
 
       int               timemapvalid;
       vector<_TickTime> timemap;
-      int               rwstatus;                // read/write success flag
+      int               m_rwstatus;                // read/write success flag
 
    private:
       int        extractMidiData  (istream& inputfile, vector<uchar>& array,
