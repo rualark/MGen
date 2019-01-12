@@ -8,6 +8,7 @@ lclimax_mea = 8 # Local climax: Highest note in higher voice within 13 notes or 
 show_ignored_flags = 0 # Show even ignored flags (with strikethrough in rules.xlsm)
 show_allowed_flags = 0 # Show even allowed flags (bold in rules.xlsm)
 show_min_severity = 0 # Minimum severity to highlight note
+tempo_bell = 1.3 # Increase tempo in the middle of cantus / counterpoint. 0 - preserve source tempo
 
 # 0 - Show only rule name up to colon. Show only subrules starting with colon
 # 1 - Add subrules without colon
