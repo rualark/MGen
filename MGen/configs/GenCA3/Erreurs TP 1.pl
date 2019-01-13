@@ -5,7 +5,6 @@
 # Template config was created by removing Midi_file parameter from source config
 
 include "include/CA3.pl"
-voices_order_pitch = 3 # Difference in average pitch between adjacent voices to initiate voice swap. Set to 0 to disable swap
 
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2019-01-13 11:10:05
