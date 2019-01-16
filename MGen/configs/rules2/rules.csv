@@ -386,6 +386,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;383;;;50;Harmony;Harmony;Six-four chord;:audible;0;;6/4 chord with non-repeating 5th on beat 2 or 4;1;;1;;;;20;0;1;;;;;;
 1;196;;;50;Harmony;Harmony;Six-four chord;:suggestive;0;;6/4 chord with repeating 5th on beat 2 or 4;1;;1;;;;;;1;;;;;;
 1;433;;;100;Harmony;Harmony;Six-four chord;real;0;;6/4 chord with 5th on beat 1 or 3;1;;1;;;;172;0;1;;;;;;
+1;194;;2;100;Harmony;Harmony;7th chord;7th;0;;;1;;;;;;;;;;;;;;
+1;194;;>2;50;Harmony;Harmony;7th chord;7th;0;;;1;;;;;;;;;;;;;;
 1;48;;;50;Harmony;Harmony;Cadential progression;V-I;0;;Bass note going from V note to I octave in D-T progression before cadence;1;;1;;;;1;1;1;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;308;;;50;Harmony;Harmony;Modulating progression;IV-VII (m);0;;Prohibit VII (GBD) in root position after IV (DF#A) in root position in minor, because it is modulating;1;;1;;;;2;1;1;;;;;;
 1;309;;;50;Harmony;Harmony;Modulating progression;VII-III (m);0;;Prohibit III (CEG) in root position after VII (GBD) in root position in minor because it is modulating;1;;1;;;;2;1;1;;;;;;
