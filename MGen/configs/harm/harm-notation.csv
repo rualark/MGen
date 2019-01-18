@@ -1,24 +1,36 @@
 # 0 - Russian notation (Sposobin)
 Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
 Minor natural  ;t ;sII   ;dtIII   ;s  ;d ;tsVI   ;dVII
-Minor altered  ;t ;sII   ;DTIII   ;S  ;D ;tsVI   ;DVII
+Minor VI#      ;  ;sII   ;        ;S  ;  ;tsVI   ;DVII
+Minor VII#     ;t ;      ;DTIII   ;   ;D ;       ;DVII
+Minor VI# VII# ;  ;      ;        ;   ;  ;       ;DVII
 # 1 - Russian notation (detailed)
 Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
 Minor natural  ;t ;b5sII ;dtIII   ;s  ;d ;tsVI   ;dVII
-Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;b5DVII
+Minor VI#      ;  ;sII   ;        ;S  ;  ;b5tsVI ;DVII
+Minor VII#     ;t ;      ;#5DTIII ;   ;D ;       ;b5DVII
+Minor VI# VII# ;  ;      ;        ;   ;  ;       ;b5DVII
 # 2 - Russian notation (detailed MAJOR / minor)
 Major          ;T ;sII   ;dtIII   ;S  ;D ;tsVI   ;dVII
 Minor natural  ;t ;b5sII ;DTIII   ;s  ;d ;TSVI   ;DVII
-Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;b5dVII
+Minor VI#      ;  ;sII   ;        ;S  ;  ;b5tsVI ;dVII
+Minor VII#     ;t ;      ;#5DTIII ;   ;D ;       ;b5dVII
+Minor VI# VII# ;  ;      ;        ;   ;  ;       ;b5dVII
 # 3 - International notation (Walter Piston)
 Major          ;I ;II    ;III     ;IV ;V ;VI     ;VII
 Minor natural  ;I ;II    ;III     ;IV ;V ;VI     ;VII
-Minor altered  ;I ;II    ;III     ;IV ;V ;VI     ;VII
+Minor VI#      ;  ;II    ;        ;IV ;  ;VI     ;VII
+Minor VII#     ;I ;      ;III     ;   ;V ;       ;VII
+Minor VI# VII# ;  ;      ;        ;   ;  ;       ;VII
 # 4 - International notation (MAJOR / minor)
 Major          ;I ;ii    ;iii     ;IV ;V ;vi     ;vii
 Minor natural  ;i ;ii    ;III     ;iv ;v ;VI     ;VII
-Minor altered  ;i ;ii    ;III     ;IV ;V ;vi     ;vii
+Minor VI#      ;  ;ii    ;        ;IV ;  ;vi     ;vii
+Minor VII#     ;i ;      ;III     ;   ;V ;       ;vii
+Minor VI# VII# ;  ;      ;        ;   ;  ;       ;vii
 # 5 - International notation (detailed MAJOR / minor)
 Major          ;I ;ii    ;iii     ;IV ;V ;vi     ;b5vii
 Minor natural  ;i ;b5ii  ;III     ;iv ;v ;VI     ;VII
-Minor altered  ;i ;ii    ;#5III   ;IV ;V ;b5vi   ;b5vii
+Minor VI#      ;  ;ii    ;        ;IV ;  ;b5vi   ;vii
+Minor VII#     ;i ;      ;#5III   ;   ;V ;       ;b5vii
+Minor VI# VII# ;  ;      ;        ;   ;  ;       ;b5vii
