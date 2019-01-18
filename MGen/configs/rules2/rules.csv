@@ -1,4 +1,4 @@
-Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComment;Viztype;VI;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
+Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComment;Viztype;VI;VC;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
 1;237;;;50;Rhythm;Rhythm;Beginning is non-standard;uneven rest;0;;Starting pause in first measure does not equal length of next note;;;1;;;;21;18;1;;;;;;
 1;254;;;50;Rhythm;Rhythm;Beginning is non-standard;uneven start;0;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);11;;1;;;Rhythm;18;14;1;;;;;;
 1;230;;;50;Rhythm;Rhythm;Beginning is non-standard;1/8 note;0;;1/8 note in the first measure;;;1;;;;19;3;1;;;;;;
