@@ -1,0 +1,24 @@
+# 0 - Russian notation (Sposobin)
+Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
+Minor natural  ;t ;sII   ;dtIII   ;s  ;d ;tsVI   ;dVII
+Minor altered  ;t ;sII   ;DTIII   ;S  ;D ;tsVI   ;DVII
+# 1 - Russian notation (detailed)
+Major          ;T ;SII   ;DTIII   ;S  ;D ;TSVI   ;DVII
+Minor natural  ;t ;b5sII ;dtIII   ;s  ;d ;tsVI   ;dVII
+Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;b5DVII
+# 2 - Russian notation (detailed MAJOR / minor)
+Major          ;T ;sII   ;dtIII   ;S  ;D ;tsVI   ;dVII
+Minor natural  ;t ;b5sII ;DTIII   ;s  ;d ;TSVI   ;DVII
+Minor altered  ;t ;sII   ;#5DTIII ;S  ;D ;b5tsVI ;b5dVII
+# 3 - International notation (Walter Piston)
+Major          ;I ;II    ;III     ;IV ;V ;VI     ;VII
+Minor natural  ;I ;II    ;III     ;IV ;V ;VI     ;VII
+Minor altered  ;I ;II    ;III     ;IV ;V ;VI     ;VII
+# 4 - International notation (MAJOR / minor)
+Major          ;I ;ii    ;iii     ;IV ;V ;vi     ;vii
+Minor natural  ;i ;ii    ;III     ;iv ;v ;VI     ;VII
+Minor altered  ;i ;ii    ;III     ;IV ;V ;vi     ;vii
+# 5 - International notation (detailed MAJOR / minor)
+Major          ;I ;ii    ;iii     ;IV ;V ;vi     ;b5vii
+Minor natural  ;i ;b5ii  ;III     ;iv ;v ;VI     ;VII
+Minor altered  ;i ;ii    ;#5III   ;IV ;V ;b5vi   ;b5vii
