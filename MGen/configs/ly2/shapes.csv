@@ -1,0 +1,34 @@
+Phase;Task;Shape;Script
+1;Finish;Glis;\override NoteColumn.glissando-skip = ##f
+1;Start;Glis;\override Glissando.color=#(rgb-color $COLOR$)
+1;Start;Slur;\override Slur.color=#(rgb-color $COLOR$)
+1;Start;Pslur;\override PhrasingSlur.color=#(rgb-color $COLOR$)
+1;Start;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$)$n$ \leftBracket
+1;Start;Volta;"\override Score.VoltaBracket.color = #(rgb-color $COLOR$) \set Score.repeatCommands = #'((volta ""$TEXT$""))"
+1;Start;Bracket;\override HorizontalBracket.color=#(rgb-color $COLOR$)
+1;Start;Trill;\override TrillSpanner.bound-details.left.text = $TEXT2$ \override TrillSpanner.color = #(rgb-color $COLOR$)
+1;Start;Ottava;"\set Staff.ottavation = \markup { \teeny ""$TEXT$"" } \override Staff.OttavaBracket.color = #(rgb-color $COLOR$)"
+1;Start;TS;"\myTS ""$TEXT$"" #(rgb-color $COLOR$) \textSpannerDown"
+1;Start;Pedal;"\override Staff.PianoPedalBracket.color = #(rgb-color $COLOR$)$n$ \override Staff.SustainPedal #'stencil =$n$ #(lambda (grob) (grob-interpret-markup grob (markup$n$ #:with-color (rgb-color $COLOR$)$n$ #:lower 0.4$n$ (#:teeny ""$TEXT$""))))$n$ \textSpannerDown"
+2;Start;Cross;\once \speakOn
+2;Start;Petrucci;\once \override NoteHead.style = #'petrucci
+2;Start;Circle;\circle
+2;Start;Notecolor;\once \override NoteHead.color = #(rgb-color $COLOR$)$n$\once \override Stem.color = #(rgb-color $COLOR$)
+8;Start;Stac;\staccato
+8;Start;Staco;\staccatissimo
+9;Start;Trill;\startTrillSpan
+9;Start;TS;\startTextSpan
+9;Start;Pedal;\sustainOn
+9;Start;Bracket;"-\tweak #'stencil #(label ""$TEXT$"" (rgb-color $COLOR$))\startGroup"
+10;Finish;Slur;)
+10;Finish;PSlur;\)
+10;Finish;Bracket;\stopGroup
+10;Finish;TS;\stopTextSpan
+10;Finish;Trill;\stopTrillSpan
+10;Finish;Pedal;\sustainOff
+10;Start;Slur;(
+10;Start;PSlur;\(
+10;Start;Glis;\glissando$n$ \override NoteColumn.glissando-skip = ##t
+11;Finish;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$) \rightBracket
+11;Finish;Volta;\set Score.repeatCommands = #'((volta #f))
+11;Finish;Ottava;\unset Staff.ottavation
