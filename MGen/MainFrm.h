@@ -70,6 +70,7 @@ public:
 	int mx = 0, my = 0; // Mouse position
 	CString m_lilypond_path = ""; // Path to lilypond or Frescobaldi executable
 	CString m_lilypond_param = ""; // Params for lilypond executable
+	int m_lilypond_autostart = 0;
 
 	CString m_cline; // Command line
 	int m_pspeed = 100; // Playback speed in percent

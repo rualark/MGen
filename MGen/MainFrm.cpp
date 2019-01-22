@@ -885,6 +885,9 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam) {
 		if (CGLib::m_testing) {
 			SetTimer(TIMER4, 300, NULL);
 		}
+		// Start lilypond
+		if (m_lilypond_autostart) 
+			OnButtonLy();
 	}
 	if (wParam == 1) {
 		// This message is sent from generation thread when t_sent is increased
@@ -1091,6 +1094,7 @@ void CMainFrame::LoadSettings()
 			CGLib::CheckVar(&st2, &st3, "show_lines", &show_lines);
 			CGLib::CheckVar(&st2, &st3, "show_progress", &show_progress);
 			CGLib::CheckVar(&st2, &st3, "autoplay", &autoplay);
+			CGLib::CheckVar(&st2, &st3, "lilypond_autostart", &m_lilypond_autostart);
 			CGLib::CheckVar(&st2, &st3, "show_tempo", &show_tempo);
 			CGLib::CheckVar(&st2, &st3, "show_vel", &show_vel);
 			CGLib::CheckVar(&st2, &st3, "show_curve", &show_curve);
@@ -1192,6 +1196,8 @@ void CMainFrame::SaveSettings()
 	st.Format("Lilypond_path = %s # Path to lilypond or Frescobaldi executable\n", m_lilypond_path);
 	fs << st;
 	st.Format("Lilypond_param = %s # Parameter for lilypond executable\n", m_lilypond_param);
+	fs << st;
+	st.Format("Lilypond_autostart = %d # Start lilypond automatically after generation finish\n", m_lilypond_autostart);
 	fs << st;
 	fs.close();
 }
