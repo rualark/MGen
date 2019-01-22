@@ -2,7 +2,7 @@
 # This file is loaded on MGen startup and automatically saved on every setting change
 
 Algorithm = 113 # Id of the currently selected algorithm
-Config = 20190118-2 # Name of configuration file for selected algorithm
+Config = Exemples TP04-mod # Name of configuration file for selected algorithm
 MIDI_OUT = [DISABLE PLAYBACK] # Name of MIDI device used for playing notes
 Horizontal_zoom = 400 # Zoom of the piano roll. Can be from 1 to 2000
 playback_speed = 100 # Playback speed in percent
@@ -31,3 +31,4 @@ Step_dyn = 1 # Show dynamics with note opacity for each step of note. Disable fo
 Debug_level = 1 # Increase to show more debug logs
 Lilypond_path = C:\Program Files (x86)\Frescobaldi\frescobaldi.exe # Path to lilypond or Frescobaldi executable
 Lilypond_param = "%1" # Parameter for lilypond executable
+Lilypond_autostart = 1 # Start lilypond automatically after generation finish
