@@ -885,9 +885,11 @@ LRESULT CMainFrame::OnGenFinish(WPARAM wParam, LPARAM lParam) {
 		if (CGLib::m_testing) {
 			SetTimer(TIMER4, 300, NULL);
 		}
-		// Start lilypond
-		if (m_lilypond_autostart) 
-			OnButtonLy();
+		else {
+			// Start lilypond
+			if (m_lilypond_autostart)
+				OnButtonLy();
+		}
 	}
 	if (wParam == 1) {
 		// This message is sent from generation thread when t_sent is increased
