@@ -7,7 +7,7 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2019-01-26</encoding-date>
+   <encoding-date>2019-01-27</encoding-date>
    <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -6666,7 +6666,7 @@
    <note color="#000000" default-x="15">
     <pitch>
      <step>A</step>
-     <octave>2</octave>
+     <octave>3</octave>
     </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
