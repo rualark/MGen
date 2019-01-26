@@ -8,7 +8,7 @@
   \vspace #1
     \column {
  \raise #0.3 \teeny \override #`(direction . ,UP) { \dir-column {
-        \with-color #(rgb-color 0.2 0.995 0.000) 7
+        \with-color #(rgb-color 0.706 0.706 0.000) 7
  } }
     \hspace #5
       
@@ -23,9 +23,9 @@
     }
     \hspace #5
     \tiny \column {
-      "This note violates minor rule (green). If underlined, means that violation"
+      "This note violates a minor rule (yellow). If underlined, means that violation"
       "is shown in the score with shape of same color"
-      "This note violates major rule (red). If underlined, means that violation"
+      "This note violates a major rule (red). If underlined, means that violation"
       "is shown in the score with shape of same color"
       %"This note was corrected"
       %"This note is a dissonance"
