@@ -7,7 +7,7 @@
  <identification>
   <rights>Авторское право © </rights>
   <encoding>
-   <encoding-date>2019-01-24</encoding-date>
+   <encoding-date>2019-01-26</encoding-date>
    <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -6446,7 +6446,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 140 ==============-->
-  <measure number="140" width="140">
+  <measure number="140" width="141">
    <attributes />
    <direction>
     <direction-type>
@@ -6467,7 +6467,7 @@
     <stem>up</stem>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="77" default-y="10">
+   <note color="#000000" default-x="78" default-y="10">
     <pitch>
      <step>A</step>
      <octave>4</octave>
@@ -6647,10 +6647,13 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 146 ==============-->
-  <measure number="146" width="102">
+  <measure number="146" width="101">
    <attributes />
-   <note>
-    <rest />
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>E</step>
+     <octave>4</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
     <voice>1</voice>
@@ -6660,8 +6663,11 @@
    <backup>
     <duration>1024</duration>
    </backup>
-   <note>
-    <rest />
+   <note color="#000000" default-x="15">
+    <pitch>
+     <step>A</step>
+     <octave>2</octave>
+    </pitch>
     <duration>1024</duration>
     <instrument id="P1-I1" />
     <voice>2</voice>
