@@ -1,5 +1,4 @@
 Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComment;Viztype;VI;VC;VH;VS;VT;FQ;CF;GF;IF;DEU;MEI;ER;UE;R
-1;254;;;50;Rhythm;Rhythm;Beginning is non-standard;uneven start;0;;Starting measure contains notes/pauses of different length Allowed exception in sp5: (pause + 1/4 + 1/2 slurred);11;;1;;;Rhythm;18;14;1;;;;;;
 1;230;;;50;Rhythm;Rhythm;Beginning is non-standard;1/8 note;0;;1/8 note in the first measure;;;1;;;;19;3;1;;;;;;
 1;138;;;50;Rhythm;Rhythm;Wrong rest;wrong starting rest;0;;Wrong starting rest length;;;1;;;;;;;;;;;;
 1;517;;;50;Rhythm;Rhythm;Wrong rest;rest inside;0;;Rest inside counterpoint - not before first note;;;1;;;;;;;;;;;;
@@ -471,10 +470,11 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;163;;6E;0;Harmony;Dissonance;Consecutive tritones;contrary;0;;;7;1;;;;;;;;;;;;;
 1;83;;;100;Harmony;Dissonance;Wrong chord tone;:on downbeat;0;;;;;1;;;;219;21;;;;;169;;
 1;223;;;50;Harmony;Dissonance;Wrong chord tone;:longer than previous chord tone;0;;Dissonance is longer than previous note;;;1;;;;14;7;1;;;;;;
-1;331;;;50;Harmony;Dissonance;Wrong chord tone;tritone;0;;Tritone is prohibited between two chord tones with bass in major and melodic minor. In ancient modes, tritone is prohibited between any voices;;;1;;;;0;0;1;;;;;;
 1;551;;;100;Harmony;Dissonance;Wrong chord tone;:first note;0;;;;;1;;;;;;;;;;;;
-1;170;;;50;Harmony;Dissonance;Wrong chord tone;neighbor dissonance;0;;Neighbor tone should be surrounded by chord tones;;;1;;;;;;;;;;;;
-1;171;;;50;Harmony;Dissonance;Wrong chord tone;4th;0;;4th interval is prohibited between two chord tones with bass;;;1;;;;;;;;;;;;
+1;170;;;50;Harmony;Dissonance;Neighbor tone should be surrounded with chord tones;/wrong neighbor;0;;;;;1;;;;;;;;;;;;
+1;171;;;50;Harmony;Dissonance;Harmonic 4th;:with bass;0;;4th interval is prohibited between two chord tones with bass;;;1;;;;;;;;;;;;
+1;331;;;50;Harmony;Dissonance;Harmonic tritone;:with bass;0;;Tritone is prohibited between two chord tones with bass in major and melodic minor.;;;1;;;;0;0;1;;;;;;
+1;195;;;50;Harmony;Dissonance;Harmonic tritone;in archaic mode;0;;In ancient modes, tritone is prohibited between any voices;;;1;;;;;;;;;;;;
 1;36;;;100;Harmony;Dissonance;Non-chord tone approached by leap;/leap;0;;Leap to harmonic upbeat dissonance;;;1;;;;;;;;;;276,169;;
 1;187;;;100;Harmony;Dissonance;Non-chord tone left by leap;/leap;0;;Leap from harmonic upbeat dissonance;;;1;;;;195;8;;;;;276,169;;
 1;161;;;0;Harmony;Dissonance;Similar movement to tritone;tritone;0;;Direct movement to tritone;7;3;;;;;;;;;;;;;
