@@ -4,7 +4,7 @@
   <identification>
     <encoding>
       <software>Finale for Windows</software>
-      <encoding-date>2019-01-19</encoding-date>
+      <encoding-date>2019-01-28</encoding-date>
       <supports attribute="new-system" element="print" type="yes" value="yes"/>
       <supports attribute="new-page" element="print" type="yes" value="yes"/>
       <supports element="accidental" type="yes"/>
@@ -95,7 +95,7 @@
   </part-list>
   <!--=========================================================-->
   <part id="P1">
-    <measure number="1" width="205">
+    <measure number="1" width="208">
       <print>
         <system-layout>
           <system-margins>
@@ -121,7 +121,7 @@
         </clef>
       </attributes>
       <sound tempo="120"/>
-      <note default-x="142">
+      <note default-x="145">
         <pitch>
           <step>A</step>
           <alter>-1</alter>
@@ -134,7 +134,7 @@
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="142">
+      <note default-x="145">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -188,7 +188,7 @@ entre B-S</words>
         </direction-type>
         <offset>3</offset>
       </direction>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>D</step>
           <alter>-1</alter>
@@ -201,7 +201,7 @@ entre B-S</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -241,7 +241,7 @@ entre B-S</words>
     </measure>
     <!--=======================================================-->
     <measure number="5" width="84">
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>5</octave>
@@ -253,7 +253,7 @@ entre B-S</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -278,7 +278,7 @@ entre B-S</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="7" width="155">
+    <measure number="7" width="156">
       <attributes>
         <key>
           <cancel>-4</cancel>
@@ -294,7 +294,7 @@ entre B-S</words>
           <bracket default-y="19" line-end="down" line-type="solid" number="1" type="start"/>
         </direction-type>
       </direction>
-      <note default-x="91">
+      <note default-x="92">
         <pitch>
           <step>D</step>
           <octave>5</octave>
@@ -306,7 +306,7 @@ entre B-S</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="91">
+      <note default-x="92">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -324,7 +324,7 @@ entre B-S</words>
     </measure>
     <!--=======================================================-->
     <measure number="8" width="78">
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -337,7 +337,7 @@ entre B-S</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -422,14 +422,14 @@ entre B-S</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="12" width="82">
+    <measure number="12" width="78">
       <direction placement="above">
         <direction-type>
           <bracket line-end="down" number="1" type="stop"/>
         </direction-type>
         <offset>3</offset>
       </direction>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>C</step>
           <octave>5</octave>
@@ -441,7 +441,7 @@ entre B-S</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -455,7 +455,7 @@ entre B-S</words>
       </barline>
     </measure>
     <!--=======================================================-->
-    <measure number="13" width="164">
+    <measure number="13" width="163">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -489,7 +489,7 @@ terrible</words>
         </direction-type>
         <offset>8</offset>
       </direction>
-      <note default-x="92">
+      <note default-x="91">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -503,7 +503,7 @@ terrible</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="92">
+      <note default-x="91">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -531,7 +531,7 @@ terrible</words>
           <bracket default-y="-40" line-end="arrow" number="1" type="stop"/>
         </direction-type>
       </direction>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>D</step>
           <octave>5</octave>
@@ -544,7 +544,7 @@ terrible</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -561,7 +561,7 @@ terrible</words>
           <words default-y="-85" font-family="Times">5te</words>
         </direction-type>
       </direction>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -575,7 +575,7 @@ terrible</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>G</step>
           <octave>4</octave>
@@ -592,7 +592,7 @@ terrible</words>
           <words default-y="-85" font-family="Times">5te</words>
         </direction-type>
       </direction>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>C</step>
           <octave>5</octave>
@@ -605,7 +605,7 @@ terrible</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -797,10 +797,10 @@ terrible</words>
     </measure>
     <!--=======================================================-->
     <measure number="23" width="86">
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
-          <step>D</step>
-          <octave>5</octave>
+          <step>G</step>
+          <octave>4</octave>
         </pitch>
         <duration>32</duration>
         <voice>1</voice>
@@ -809,7 +809,7 @@ terrible</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>G</step>
           <octave>4</octave>
@@ -820,7 +820,7 @@ terrible</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="24" width="90">
+    <measure number="24" width="91">
       <note default-x="13">
         <pitch>
           <step>G</step>
@@ -847,7 +847,7 @@ terrible</words>
       </barline>
     </measure>
     <!--=======================================================-->
-    <measure number="25" width="204">
+    <measure number="25" width="205">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -870,7 +870,7 @@ terrible</words>
           <words default-y="22" font-family="Times" relative-x="-67" xml:lang="fr">Quel est le problème principal? ___________________________________</words>
         </direction-type>
       </direction>
-      <note default-x="108">
+      <note default-x="109">
         <pitch>
           <step>D</step>
           <alter>-1</alter>
@@ -883,7 +883,7 @@ terrible</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="108">
+      <note default-x="109">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -1004,7 +1004,7 @@ terrible</words>
         </direction-type>
         <offset>1</offset>
       </direction>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>5</octave>
@@ -1016,7 +1016,7 @@ terrible</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>A</step>
           <alter>-1</alter>
@@ -1042,7 +1042,7 @@ terrible</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="31" width="163">
+    <measure number="31" width="164">
       <attributes>
         <key>
           <cancel>-4</cancel>
@@ -1068,7 +1068,7 @@ retards et les app.?      2)______________________</words>
         </direction-type>
         <offset>7</offset>
       </direction>
-      <note default-x="67">
+      <note default-x="68">
         <pitch>
           <step>C</step>
           <octave>5</octave>
@@ -1080,7 +1080,7 @@ retards et les app.?      2)______________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="67">
+      <note default-x="68">
         <pitch>
           <step>E</step>
           <alter>-1</alter>
@@ -1115,7 +1115,7 @@ retards et les app.?      2)______________________</words>
         <accidental>natural</accidental>
         <notehead filled="yes">normal</notehead>
       </note>
-      <note default-x="25">
+      <note default-x="24">
         <chord/>
         <pitch>
           <step>F</step>
@@ -1128,7 +1128,7 @@ retards et les app.?      2)______________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="25">
+      <note default-x="24">
         <pitch>
           <step>D</step>
           <octave>4</octave>
@@ -1139,13 +1139,13 @@ retards et les app.?      2)______________________</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="33" width="118">
+    <measure number="33" width="115">
       <direction placement="below">
         <direction-type>
           <bracket default-y="-15" line-end="arrow" number="1" relative-x="10" type="stop"/>
         </direction-type>
       </direction>
-      <note default-x="19">
+      <note default-x="20">
         <pitch>
           <step>C</step>
           <octave>5</octave>
@@ -1184,7 +1184,7 @@ retards et les app.?      2)______________________</words>
       </barline>
     </measure>
     <!--=======================================================-->
-    <measure number="34" width="209">
+    <measure number="34" width="211">
       <print new-system="yes">
         <system-layout>
           <system-margins>
@@ -1207,7 +1207,7 @@ retards et les app.?      2)______________________</words>
 Où va la 7e? ________________________</words>
         </direction-type>
       </direction>
-      <note default-x="120">
+      <note default-x="121">
         <pitch>
           <step>F</step>
           <octave>4</octave>
@@ -1219,7 +1219,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="120">
+      <note default-x="121">
         <pitch>
           <step>D</step>
           <alter>-1</alter>
@@ -1303,7 +1303,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="16">
+      <note default-x="17">
         <pitch>
           <step>A</step>
           <alter>-1</alter>
@@ -1340,7 +1340,7 @@ Où va la 7e? ________________________</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="38" width="190">
+    <measure number="38" width="188">
       <attributes>
         <key>
           <cancel>-4</cancel>
@@ -1357,7 +1357,7 @@ Où va la 7e? ________________________</words>
         </direction-type>
         <offset>5</offset>
       </direction>
-      <note default-x="101">
+      <note default-x="98">
         <pitch>
           <step>B</step>
           <octave>4</octave>
@@ -1369,7 +1369,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="116">
+      <note default-x="114">
         <pitch>
           <step>B</step>
           <octave>4</octave>
@@ -1443,8 +1443,8 @@ Où va la 7e? ________________________</words>
       </direction>
     </measure>
     <!--=======================================================-->
-    <measure number="40" width="118">
-      <note default-x="24">
+    <measure number="40" width="120">
+      <note default-x="25">
         <pitch>
           <step>D</step>
           <octave>5</octave>
@@ -1453,13 +1453,13 @@ Où va la 7e? ________________________</words>
         <voice>1</voice>
         <type>whole</type>
         <notations>
-          <slur bezier-x="-7" bezier-y="-9" default-x="-3" default-y="-4" number="1" type="stop"/>
+          <slur bezier-x="-7" bezier-y="-9" default-x="-2" default-y="-4" number="1" type="stop"/>
         </notations>
       </note>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="24">
+      <note default-x="25">
         <pitch>
           <step>G</step>
           <octave>4</octave>
@@ -1468,7 +1468,7 @@ Où va la 7e? ________________________</words>
         <voice>2</voice>
         <type>whole</type>
         <notations>
-          <slur bezier-x="-7" bezier-y="10" default-x="-4" default-y="-36" number="1" placement="above" type="start"/>
+          <slur bezier-x="-7" bezier-y="10" default-x="-3" default-y="-36" number="1" placement="above" type="start"/>
         </notations>
       </note>
       <barline location="right">
@@ -1478,7 +1478,7 @@ Où va la 7e? ________________________</words>
   </part>
   <!--=========================================================-->
   <part id="P2">
-    <measure number="1" width="205">
+    <measure number="1" width="208">
       <attributes>
         <divisions>8</divisions>
         <key>
@@ -1495,7 +1495,7 @@ Où va la 7e? ________________________</words>
         </clef>
       </attributes>
       <sound tempo="120"/>
-      <note default-x="142">
+      <note default-x="145">
         <pitch>
           <step>D</step>
           <alter>-1</alter>
@@ -1508,7 +1508,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="142">
+      <note default-x="145">
         <pitch>
           <step>F</step>
           <octave>2</octave>
@@ -1556,7 +1556,7 @@ Où va la 7e? ________________________</words>
           <bracket default-y="-51" line-end="arrow" number="1" relative-x="-5" type="stop"/>
         </direction-type>
       </direction>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -1569,7 +1569,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>G</step>
           <octave>2</octave>
@@ -1617,7 +1617,7 @@ Où va la 7e? ________________________</words>
     </measure>
     <!--=======================================================-->
     <measure number="5" width="84">
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>A</step>
           <alter>-1</alter>
@@ -1630,7 +1630,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>A</step>
           <alter>-1</alter>
@@ -1656,7 +1656,7 @@ Où va la 7e? ________________________</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="7" width="155">
+    <measure number="7" width="156">
       <attributes>
         <key>
           <cancel>-4</cancel>
@@ -1673,7 +1673,7 @@ Où va la 7e? ________________________</words>
         </direction-type>
         <offset>2</offset>
       </direction>
-      <note default-x="91">
+      <note default-x="92">
         <pitch>
           <step>F</step>
           <octave>3</octave>
@@ -1685,7 +1685,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="91">
+      <note default-x="92">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -1703,7 +1703,7 @@ Où va la 7e? ________________________</words>
           <words default-y="35" font-family="Times" relative-x="8">ligne trop disjointe</words>
         </direction-type>
       </direction>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -1716,7 +1716,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>D</step>
           <octave>3</octave>
@@ -1835,8 +1835,8 @@ Où va la 7e? ________________________</words>
       </direction>
     </measure>
     <!--=======================================================-->
-    <measure number="12" width="82">
-      <note default-x="13">
+    <measure number="12" width="78">
+      <note default-x="14">
         <pitch>
           <step>A</step>
           <octave>3</octave>
@@ -1848,7 +1848,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>3</octave>
@@ -1862,7 +1862,7 @@ Où va la 7e? ________________________</words>
       </barline>
     </measure>
     <!--=======================================================-->
-    <measure number="13" width="164">
+    <measure number="13" width="163">
       <print new-system="yes"/>
       <direction placement="below">
         <direction-type>
@@ -1881,7 +1881,7 @@ Où va la 7e? ________________________</words>
         </direction-type>
         <offset>4</offset>
       </direction>
-      <note default-x="92">
+      <note default-x="91">
         <pitch>
           <step>D</step>
           <octave>3</octave>
@@ -1893,7 +1893,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="92">
+      <note default-x="91">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -1917,7 +1917,7 @@ Où va la 7e? ________________________</words>
           <bracket default-y="-24" line-end="arrow" number="1" type="stop"/>
         </direction-type>
       </direction>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>A</step>
           <octave>3</octave>
@@ -1929,7 +1929,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>D</step>
           <octave>3</octave>
@@ -1942,7 +1942,7 @@ Où va la 7e? ________________________</words>
     </measure>
     <!--=======================================================-->
     <measure number="15" width="86">
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>G</step>
           <octave>3</octave>
@@ -1954,7 +1954,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>E</step>
           <alter>-1</alter>
@@ -1968,7 +1968,7 @@ Où va la 7e? ________________________</words>
     </measure>
     <!--=======================================================-->
     <measure number="16" width="86">
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>A</step>
           <octave>3</octave>
@@ -1980,7 +1980,7 @@ Où va la 7e? ________________________</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>F</step>
           <octave>3</octave>
@@ -2205,7 +2205,7 @@ s'arrête</words>
         </direction-type>
         <offset>6</offset>
       </direction>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>B</step>
           <octave>3</octave>
@@ -2221,7 +2221,7 @@ s'arrête</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="14">
+      <note default-x="13">
         <pitch>
           <step>G</step>
           <octave>2</octave>
@@ -2238,7 +2238,7 @@ s'arrête</words>
       </direction>
     </measure>
     <!--=======================================================-->
-    <measure number="24" width="90">
+    <measure number="24" width="91">
       <note default-x="13">
         <pitch>
           <step>G</step>
@@ -2265,7 +2265,7 @@ s'arrête</words>
       </barline>
     </measure>
     <!--=======================================================-->
-    <measure number="25" width="204">
+    <measure number="25" width="205">
       <print new-system="yes"/>
       <attributes>
         <key>
@@ -2285,7 +2285,7 @@ s'arrête</words>
         </direction-type>
         <offset>2</offset>
       </direction>
-      <note default-x="108">
+      <note default-x="109">
         <pitch>
           <step>B</step>
           <alter>-1</alter>
@@ -2298,7 +2298,7 @@ s'arrête</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="108">
+      <note default-x="109">
         <pitch>
           <step>G</step>
           <octave>2</octave>
@@ -2430,7 +2430,7 @@ s'arrête</words>
         </direction-type>
         <offset>2</offset>
       </direction>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>3</octave>
@@ -2442,7 +2442,7 @@ s'arrête</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="13">
+      <note default-x="14">
         <pitch>
           <step>F</step>
           <octave>2</octave>
@@ -2467,7 +2467,7 @@ s'arrête</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="31" width="163">
+    <measure number="31" width="164">
       <attributes>
         <key>
           <cancel>-4</cancel>
@@ -2484,7 +2484,7 @@ s'arrête</words>
         </direction-type>
         <offset>13</offset>
       </direction>
-      <note default-x="67">
+      <note default-x="68">
         <pitch>
           <step>G</step>
           <octave>3</octave>
@@ -2496,7 +2496,7 @@ s'arrête</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="83">
+      <note default-x="84">
         <pitch>
           <step>G</step>
           <octave>3</octave>
@@ -2556,7 +2556,7 @@ s'arrête</words>
         <type>whole</type>
         <notehead filled="yes">normal</notehead>
       </note>
-      <note default-x="24">
+      <note default-x="25">
         <chord/>
         <pitch>
           <step>G</step>
@@ -2569,7 +2569,7 @@ s'arrête</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="25">
+      <note default-x="24">
         <pitch>
           <step>B</step>
           <octave>2</octave>
@@ -2589,13 +2589,13 @@ s'arrête</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="33" width="118">
+    <measure number="33" width="115">
       <direction placement="below">
         <direction-type>
           <bracket default-y="-16" line-end="arrow" number="1" type="stop"/>
         </direction-type>
       </direction>
-      <note default-x="19">
+      <note default-x="20">
         <pitch>
           <step>E</step>
           <alter>-1</alter>
@@ -2633,7 +2633,7 @@ s'arrête</words>
       </barline>
     </measure>
     <!--=======================================================-->
-    <measure number="34" width="209">
+    <measure number="34" width="211">
       <print new-system="yes"/>
       <attributes>
         <key>
@@ -2641,7 +2641,7 @@ s'arrête</words>
           <mode>minor</mode>
         </key>
       </attributes>
-      <note default-x="120">
+      <note default-x="121">
         <pitch>
           <step>A</step>
           <alter>-1</alter>
@@ -2654,7 +2654,7 @@ s'arrête</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="120">
+      <note default-x="121">
         <pitch>
           <step>F</step>
           <octave>3</octave>
@@ -2727,7 +2727,7 @@ s'arrête</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="38" width="190">
+    <measure number="38" width="188">
       <attributes>
         <key>
           <cancel>-4</cancel>
@@ -2744,7 +2744,7 @@ s'arrête</words>
         </direction-type>
         <offset>5</offset>
       </direction>
-      <note default-x="101">
+      <note default-x="98">
         <pitch>
           <step>D</step>
           <octave>4</octave>
@@ -2756,7 +2756,7 @@ s'arrête</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="101">
+      <note default-x="98">
         <pitch>
           <step>G</step>
           <octave>3</octave>
@@ -2829,7 +2829,7 @@ peut faire?</words>
       </note>
     </measure>
     <!--=======================================================-->
-    <measure number="40" width="118">
+    <measure number="40" width="120">
       <direction placement="above">
         <direction-type>
           <words default-y="27" font-family="Times">5te</words>
@@ -2851,7 +2851,7 @@ peut faire?</words>
         </direction-type>
         <offset>7</offset>
       </direction>
-      <note default-x="24">
+      <note default-x="25">
         <pitch>
           <step>G</step>
           <octave>3</octave>
@@ -2864,7 +2864,7 @@ peut faire?</words>
       <backup>
         <duration>32</duration>
       </backup>
-      <note default-x="24">
+      <note default-x="25">
         <pitch>
           <step>B</step>
           <octave>3</octave>
