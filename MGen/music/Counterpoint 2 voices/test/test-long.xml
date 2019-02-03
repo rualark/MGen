@@ -3636,7 +3636,7 @@
     <staff>2</staff>
     <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
-     <text>sp5</text>
+     <text>CF=low,sp5</text>
     </lyric>
    </note>
   </measure>
