@@ -504,7 +504,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;545;;;50;Harmony;Voice motion;Wrong voice movement during voice crossing;2 x 2nd;0;;Second interval before and at crossing;12;;1;;;2 x 2nd;;;;;;;;;
 1;546;;;0;Harmony;Voice motion;Wrong voice movement during voice crossing;direct leap;0;;Direct motion to crossing if one of voices leaps;12;;1;;;leap;;;;;;;;;
 1;547;;;50;Harmony;Voice motion;Wrong voice movement during voice crossing;direct leaps;0;;Direct motion to crossing if both voices leap;12;;1;;;leaps;;;;;;;;;
-1;550;;>2;50;Harmony;Voice motion;All voices move in parallel;two times;0;;;10;;1;;;parallel;;;;;;;;;
+1;214;;>2;50;Harmony;Voice motion;All voices move in same direction;/same direction;0;;;10;;;;;all similar;;;;;;;;;
+1;550;;>2;50;Harmony;Voice motion;All voices move in parallel;two times;0;;;10;;;;;parallel;;;;;;;;;
 1;256;;;0;Harmony;Nonchord tones;Cambiata;/any;1;;Prohibit this rule to prevent detection of any cambiata, thus processing as usual notes;;;1;;;;37;0;;;;;;1;
 1;258;;;0;Harmony;Nonchord tones;Double-neighbor tone;/any;1;;Prohibit this rule to prevent detection of any double-neighbour tone;;;1;;;;35;0;;;;;;1;
 1;3;;;0;Harmony;Nonchord tones;Double-neighbor tone;approached by leap;0;;There is a leap before first note of double-neighbour tone group;;;1;;;;0;0;;;;;;;
