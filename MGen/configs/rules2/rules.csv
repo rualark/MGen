@@ -8,7 +8,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;529;;;50;Rhythm;Rhythm;Wrong number of entering voices per measure;>2 voices;0;;;;;1;;;;;;;;;;;;
 1;530;;;50;Rhythm;Rhythm;Voices enter simultaneously;/simultaneous;0;;;;;1;;;;;;;;;;;;
 1;247;;;50;Rhythm;Rhythm;Same rhythm in adjacent measures;/same;0;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;12;;1;;;Same rhythm;48;16;1;;;;;;
-1;549;;;50;Rhythm;Rhythm;Same rhythm in two voices;/same;0;;One measure has same rhythm in two voices in species 5;12;;1;;;Same rhythm;;;;;;;;;
+1;549;;;0;Rhythm;Rhythm;Same rhythm in two voices;/same;1;;One measure has same rhythm in two voices in species 5;12;;1;;;Same rhythm;;;;;;;;;
+1;215;;;50;Rhythm;Rhythm;All voices have the same rhythm;/same;0;For any species except species 1;One measure has same rhythm in all voices;;;;;;;;;;;;;;;
 1;233;;;0;Rhythm;Rhythm;Non-permitted rhythm;1/2. downbeat;1;;Dotted half note on downbeat;;;1;;;;23;4;1;;;;;;
 1;234;;;50;Rhythm;Rhythm;Non-permitted rhythm;1/2. upbeat;0;;Dotted half note on upbeat;11;;1;;;Rhythm;8;8;1;;;;;;
 1;235;;;50;Rhythm;Rhythm;Non-permitted rhythm;1/4 syncope;0;;1/4 on beat 2 or 4 is slurred to next note;;;1;;;;22;19;1;;;;;;
