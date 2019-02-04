@@ -8,4 +8,4 @@ include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-11-23 19:58:13
-MusicXML_file = music\Counterpoint 4 voices\test\test-rhythm-stag.xml
+MusicXML_file = music\Counterpoint 3 voices\test\test-rhythm-stag.xml

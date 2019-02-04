@@ -8,5 +8,5 @@ include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2019-01-19 15:35:16
-MusicXML_file = music\Counterpoint 4 voices\problemes\Erreurs TP 1-mod.xml
+MusicXML_file = music\Counterpoint 3 voices\problemes\Erreurs TP 1-mod.xml
 species=1

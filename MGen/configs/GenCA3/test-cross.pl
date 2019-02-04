@@ -8,6 +8,6 @@ include "include/CA3.pl"
 
 # This config was created from default config file configs\GenCA3.pl
 # Created at 2018-07-29 00:05:44
-MusicXML_file = music\Counterpoint 4 voices\test\test-cross.xml
+MusicXML_file = music\Counterpoint 3 voices\test\test-cross.xml
 
 show_hatch = 0 # 0 - show no hatch, 1 = show dissonance hatch, 2 = show msh hatch
