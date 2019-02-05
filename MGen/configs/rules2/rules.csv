@@ -364,8 +364,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;432;;;0;Melody;Melodic minor;Dim or aug melodic interval;III-VII#-I down;1;;III-VII# downward notes, then I note;8;;1;;;!srn!;2;0;1;;;;157;;
 1;377;;;100;Harmony;Melodic minor;False chromatic relation: in outer voices;VI<->VI#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;1;;;;;;6;1;;;;;;;
 1;378;;;100;Harmony;Melodic minor;False chromatic relation: in outer voices;VII<->VII#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;1;;;;;;7;0;1;;;;;;
-1;164;;;50;Harmony;Melodic minor;False chromatic relation: in non-outer voices;VI<->VI#;0;;;1;;;;;;25;4;1;;;;;;
-1;165;;;50;Harmony;Melodic minor;False chromatic relation: in non-outer voices;VII<->VII#;0;;;1;;;;;;30;6;1;;;;;;
+1;164;;;50;Harmony;Melodic minor;False chromatic relation: in non-outer voices;VI<->VI#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;1;;;;;;25;4;1;;;;;;
+1;165;;;50;Harmony;Melodic minor;False chromatic relation: in non-outer voices;VII<->VII#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;1;;;;;;30;6;1;;;;;;
 1;17;;;0;Harmony;Harmony;Repeating functions in a row;>4 T;0;More than AA consecutive harmonies all have this letter;;9;;1;;;Weak prog.;6;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;428;;;0;Harmony;Harmony;Repeating functions in a row;>4 D;0;More than AA consecutive harmonies all have this letter;;9;;1;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;429;;;0;Harmony;Harmony;Repeating functions in a row;>4 S;0;More than AA consecutive harmonies all have this letter;;9;;1;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
@@ -463,8 +463,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;531;;;50;Harmony;Border;Non-permitted last harmony;not T;0;;Also prohibits T6;1;;1;;;;;;;;;;;;
 1;47;;;50;Harmony;Border;Penultimate chord;:no leading-tone;0;;no leading tone is allowed if last bass notes are V-I;;;1;;;;108;5;;;;;;;
 1;335;;;50;Harmony;Border;Penultimate chord;:no V or VII chord;0;;Penultimate harmony is not V or VII;1;;1;;;;146;1;;;;;;;
-1;89;;;50;Harmony;Imperfect consonance;Too many consecutive 3rds;> 3;0;More than AA 3rds in a row;;9;1;1;;;Parallel 3rds;27;0;;;;;;;
-1;90;;;50;Harmony;Imperfect consonance;Too many consecutive 6ths;> 3;0;More than AA 6ths in a row;;9;1;1;;;Parallel 6ths;;;;;;;;;
+1;89;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive 3rds;> 3;0;More than AA 3rds in a row;;9;1;1;;;Parallel 3rds;27;0;;;;;;;
+1;238;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive 4ths;> 3;0;More than AA 4ths in a row;;9;1;1;;;Parallel 4ths;;;;;;;;;
+1;90;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive 6ths;> 3;0;More than AA 6ths in a row;;9;1;1;;;Parallel 6ths;;;;;;;;;
 1;379;;;50;Harmony;Dissonance;Unresolved harmonic tritone;/unresolved;0;;;12;;2;;;tri;21;4;;;;;;;
 1;162;;;0;Harmony;Dissonance;Consecutive tritones;parallel;0;;;7;1;;;;;;;;;;;;;
 1;163;;<6;0;Harmony;Dissonance;Consecutive tritones;contrary;0;;;7;1;;;;;;;;;;;;;
