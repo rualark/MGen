@@ -1,0 +1,19 @@
+
+<!-- saved from url=(0045)http://artportal.su/ctools/work/check_cp2.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="icon" href="http://artportal.su/ctools/work/icons/shield.ico"></head><body><pre>Loaded 517 rules<br><title>Check CP2</title>Cannot map non-numeric rule id in code: accept[sp][vc][0][fid]<br>Cannot map non-numeric rule id in code: accept[sp][vc][vp][fl]<br>Cannot map non-numeric rule id in code: accept[sp][vc][vp][fl]<br>Cannot map non-numeric rule id in code: accept[sp][vc][vp][fl]<br>Cannot map non-numeric rule id in code: accept[sp][vc][vp][fl]<br>Cannot map non-numeric rule id in code: accept[0][av_cnt][0][fl]<br>Cannot map non-numeric rule id in code: FlagV(int voice, int fid,<br>Cannot map non-numeric rule id in code: FlagVL(int voice, int fid,<br>Cannot map non-numeric rule id in code: Flag(int voice, int fid,<br>Cannot map non-numeric rule id in code: FlagL(int voice, int fid,<br>Cannot map non-numeric rule id in code: Flag(int voice, int fid,<br>Cannot map non-numeric rule id in code: Flag(avoice, fid,<br>Cannot map non-numeric rule id in code: FlagL(int voice, int fid,<br>Cannot map non-numeric rule id in code: FlagL(avoice, fid,<br>Cannot map non-numeric rule id in code: FlagA(int voice, int fid,<br>Cannot map non-numeric rule id in code: FlagA(int voice, int fid,<br>Cannot map non-numeric rule id in code: FlagA(avoice, fid,<br>Cannot map non-numeric rule id in code: FlagL(v, flagab[fl].id,<br><h3>Rule id mismatch between code and rules.xlsm detected:<p><table border="1" cellpadding="3" style="border-collapse: collapse;"><tbody><tr><th>Rid</th><th>Status</th><th>Usage</th><th>Name</th></tr><tr>
+<td bgcolor="#00ff64">528
+</td><td>In rules.xlsm only</td><td>
+</td><td>Wrong number of entering voices per measure: 1 voice
+</td></tr><tr>
+<td bgcolor="#7d8264">529
+</td><td>In rules.xlsm only</td><td>
+</td><td>Wrong number of entering voices per measure: &gt;2 voices
+</td></tr><tr>
+<td bgcolor="#00ff64">325
+</td><td>In rules.xlsm only</td><td>
+</td><td>Culmination on 5th: long downbeat: /culmination
+</td></tr><tr>
+<td bgcolor="#00ff64">326
+</td><td>In rules.xlsm only</td><td>
+</td><td>Culmination on 8ve / unison: long downbeat: /culmination
+</td></tr></tbody></table></p></h3><h3>CHECK_READY and SET_READY code analysis:</h3>Function AutoChooseVoice: add DR_fli (used fli, bli)<br><font color="red">Function AutoFlag: remove DR_fli (not used)</font><br><font color="red">Function AutoFlagL: remove DR_fli (not used)</font><br><font color="red">Function AutoFlagA: remove DR_fli (not used)</font><br>Function FlagLtLt: add DR_hli (used hli, bhli)<br>Function GetRhythmId: add DR_fli (used fli, fli2, bli)<br><font color="red">Function FlagFullSimilar: remove DR_c (not used)</font><br>Function FlagFullSimilar: add DR_hli (used hli)<br>Function FlagFullSimilar: add DR_cct (used cct)<br>Function FlagFullSimilar: add DR_vca (used lva)<br>Function FlagFullSimilar: add DR_pc (used pcc)<br>Function FlagSus: add DR_sus (used sus)<br><font color="red">Function GetLT: remove DR_cct (not used)</font><br>Function FailBeat: add DR_nlen (used nlen)<br><font color="red">Function Remove7thFisGis: remove DR_fli (not used)</font><br><font color="red">Function Remove7thFisGis: remove DR_msh (not used)</font><br>Function Remove7thFisGis: add DR_nih (used nih)<br>Function Remove7thFisGis: add DR_chm_fis (used chm_fis, chm_gis)<br>Function EvalHarm: add DR_vca (used hva, lva)<br>Function FlagHarmIncomplete: add DR_hli (used hli, hli2)<br>Function GetHarmBass: add DR_cctp (used cctp)<br><font color="red">Function EvaluateMsh: remove DR_c (not used)</font><br><font color="red">Function EvalTriDouble: remove DR_resol (not used)</font><br><font color="red">Function DetectSus: remove DR_beat (not used)</font><br>Function FlagLTUnresolved: add DR_resol (used resol)<br><p>The script ran 0.366 seconds . </p></pre></body></html>
