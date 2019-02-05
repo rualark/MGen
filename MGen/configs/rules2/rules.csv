@@ -4,8 +4,6 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;517;;;50;Rhythm;Rhythm;Wrong rest;rest inside;0;;Rest inside counterpoint - not before first note;;;1;;;;;;;;;;;;
 1;527;;;50;Rhythm;Rhythm;Wrong rest;late entrance;0;;Voice is entering too late. For species 2-5, one or two voices should enter in each measure;;;1;;;;;;;;;;;;
 1;237;;;50;Rhythm;Rhythm;No starting rest;/no starting rest;0;;This species should start with a rest;;;;;;;;;;;;;;;
-1;528;;;0;Rhythm;Rhythm;Wrong number of entering voices per measure;1 voice;0;;;;;1;;;;;;;;;;;;
-1;529;;;50;Rhythm;Rhythm;Wrong number of entering voices per measure;>2 voices;0;;;;;1;;;;;;;;;;;;
 1;530;;;50;Rhythm;Rhythm;Voices enter simultaneously;/simultaneous;0;;;;;1;;;;;;;;;;;;
 1;247;;;50;Rhythm;Rhythm;Same rhythm in adjacent measures;/same;0;;Rhythm repeats in neighboring measures, while there are no croches or less than 4 notes in measure;12;;1;;;Same rhythm;48;16;1;;;;;;
 1;549;;;0;Rhythm;Rhythm;Same rhythm in two voices;/same;1;;One measure has same rhythm in two voices in species 5;12;;1;;;Same rhythm;;;;;;;;;
@@ -435,7 +433,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;211;;;100;Harmony;Perfect consonance;Similar movement to 8ve in outer voices;downbeat, not cadence;0;;Direct movement to 8ve: not in cadence;7;3;;;;;8;4;1;;;;;;
 1;168;;;50;Harmony;Perfect consonance;Similar movement to 8ve in outer voices;upbeat, not cadence;0;;Direct movement to 8ve: not in cadence;7;3;;;;;;;;;;;;;
 1;216;;;100;Harmony;Suspension;Suspension resolution sounds simultaneously with suspension;:above sus;0;;Suspension resolution is above suspension;;1;1;;;;1;1;1;;;;;;
-1;217;;;100;Harmony;Suspension;Suspension resolution sounds simultaneously with suspension;:below sus;0;;Suspension resolution is below suspension and no exceptions apply;;1;1;;;;5;4;1;;;;;;
+1;217;;;100;Harmony;Suspension;Suspension resolution sounds simultaneously with suspension;:below sus;0;;Suspension resolution is below suspension. Exception: starting from 5 voices, if there is a chord tone between suspension and suspension resolution, which sound simultaneously.;;1;1;;;;5;4;1;;;;;;
 1;218;;;100;Harmony;Suspension;Suspension resolution sounds simultaneously with suspension;:2nd;0;;2nd interval between suspension and suspension resolution. Does not include 9th interval and above;;1;1;;;;1;1;1;;;;;;
 1;219;;;100;Harmony;Suspension;Wrong resolution of suspension;:up;0;;Suspension resolution up except for leading note (LT stepwize resolution up to tonic is allowed);12;;1;;;sus;24;4;1;;;;;;
 1;220;;;100;Harmony;Suspension;Wrong resolution of suspension;:unresolved;0;;;12;;1;;;sus;6;2;1;;;;;;
@@ -487,10 +485,10 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;174;;;50;Harmony;Dissonance;Similar movement to dissonance in outer voices;M9;0;;Major 9th;7;3;;;;;;;;;;;;;
 1;24;;<5;50;Harmony;Voice motion;Voice overlapping;adjacent voices;0;;;10;;1;;;overlap;54;9;1;;;;;;
 1;548;;<5;100;Harmony;Voice motion;Voice overlapping;non-adjacent;0;;;10;;1;;;overlap;;;;;;;;;
-1;136;;<5;100;Harmony;Voice motion;Voice overlapping;direct 2nd;0;;;7;3;;;;;;;;;;;;;
+1;136;;<5;100;Harmony;Voice motion;Voice overlapping;direct 2nd;0;;Similar movement to harmonic second interval;7;3;;;;;;;;;;;;;
 1;24;;>4;0;Harmony;Voice motion;Voice overlapping;adjacent voices;0;;;10;;1;;;overlap;54;9;1;;;;;;
 1;548;;>4;100;Harmony;Voice motion;Voice overlapping;non-adjacent;0;;;10;;1;;;overlap;;;;;;;;;
-1;136;;>4;100;Harmony;Voice motion;Voice overlapping;direct 2nd;0;;;7;3;;;;;;;;;;;;;
+1;136;;>4;100;Harmony;Voice motion;Voice overlapping;direct 2nd;0;;Similar movement to harmonic second interval;7;3;;;;;;;;;;;;;
 1;541;;<3;50;Harmony;Voice motion;Voice crossing is prohibited;first measure;0;;;12;;1;;;cross;;;;;;;;;
 1;542;;<3;50;Harmony;Voice motion;Voice crossing is prohibited;last measure;0;;;12;;1;;;cross;;;;;;;;;
 1;543;;<3;100;Harmony;Voice motion;Voice crossing is prohibited;any;0;;;12;;1;;;cross;;;;;;;;;
