@@ -8,7 +8,8 @@
 #endif
 
 int CDb::server_id = 0;
-long CDb::j_id = 0;
+long long CDb::session_id = 0;
+long long CDb::j_id = 0;
 
 CDb::CDb() {
 	conn = mysql_init(NULL);
@@ -63,6 +64,10 @@ int CDb::Query(CString q) {
 	return 0;
 }
 
+long long CDb::GetInsertId() {
+	return mysql_insert_id(conn);
+}
+
 int CDb::Fetch(CString q) {
 	if (mysql_ping(conn)) return 1;
 	//WriteLog(q, 1);
@@ -110,6 +115,11 @@ int CDb::GetInt(CString fname) {
 	return atoi(GetSt(fname));
 }
 
+// Get unsigned long long
+long long CDb::GetLongLong(CString fname) {
+	return stoll(GetSt(fname).GetBuffer());
+}
+
 float CDb::GetFloat(CString fname) {
 	return atof(GetSt(fname));
 }
@@ -117,7 +127,7 @@ float CDb::GetFloat(CString fname) {
 void CDb::WriteLog(CString st, int no_db) {
 	if (connected && !no_db) {
 		CString q;
-		q.Format("INSERT INTO j_logs VALUES('','%d','%d',NOW(),'%s')",
+		q.Format("INSERT INTO j_logs VALUES('','%d','%lld',NOW(),'%s')",
 			server_id, j_id, Escape(st));
 		Query(q);
 	}

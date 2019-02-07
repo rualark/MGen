@@ -11,9 +11,11 @@ public:
 
 	int Connect(CString server, CString port, CString dbname, CString login, CString pass);
 	int Query(CString q);
+	long long GetInsertId();
 	int Fetch(CString q);
 	CString GetSt(CString fname);
 	int GetInt(CString fname);
+	long long GetLongLong(CString fname);
 	float GetFloat(CString fname);
 	CString Escape(CString st);
 	void WriteLog(CString st, int no_db = 0);
@@ -31,6 +33,7 @@ public:
 	vector <CString> field;
 
 	static int server_id;
-	static long j_id;
+	static long long session_id;
+	static long long j_id;
 };
 
