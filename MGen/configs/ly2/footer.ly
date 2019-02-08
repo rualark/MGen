@@ -2,7 +2,7 @@
   \vspace #5
   \bold \tiny Legend:
 } 
-
+\noPageBreak 
 \markup {
   \line {
   \vspace #1
@@ -34,3 +34,4 @@
     }
   }
 } 
+\noPageBreak 
