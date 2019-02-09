@@ -29,3 +29,5 @@ show_harmony_bass = 2 # 0 = do not show bass, 1 = Show harmony bass, 2 = Show ch
 ly_show_xml_text = 1 # 0 - do not show imported text from xml file; 1 - show
 ly_show_xml_lyrics = 1 # 0 - do not show imported lyrics from xml file; 1 - show
 voices_order_pitch = 0 # Difference in average pitch between adjacent voices to initiate voice swap. Set to 0 to disable swap
+
+ly_page_breaking = minimal-breaking # page-turn-breaking is most sparse and removes risk of page compression. minimal-breaking is most dense. optimal-breaking is something in between.

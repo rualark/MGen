@@ -3,7 +3,7 @@
 \paper { 
   #(include-special-characters) 
   bottom-margin = 0.27\in
-  #(define page-breaking ly:page-turn-breaking)
+  #(define page-breaking ly:$PAGE_BREAKING$)
 }
 circle =
 \once \override NoteHead.stencil = #(lambda (grob)
