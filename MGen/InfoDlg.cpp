@@ -223,8 +223,9 @@ BOOL CInfoDlg::OnInitDialog()
 			m_info.AddText(st, RGB(0, 0, 200), 0);
 		}
 		if (pGen->xmlfile_loaded) {
+			CStringA st3 = CW2A(CA2W(pGen->track_name[mv], CP_UTF8));
 			st.Format("From MusicXML file: track %d \"%s\"\n",
-				pGen->track_id[mv], pGen->track_name[mv]);
+				pGen->track_id[mv], st3);
 			m_info.AddText(st, RGB(0, 0, 200), 0);
 		}
 		m_info.AddText("\n", RGB(0, 0, 0), 0);
