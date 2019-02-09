@@ -216,10 +216,15 @@ BOOL CInfoDlg::OnInitDialog()
 		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		if (pGen->midifile_loaded) {
-			st.Format("From MIDI file: track %d \"%s\" local-voice %d, channel %d, start tick %u, end tick %u, start time %.03f s, end time %.03f s\n", 
-				pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv], 
+			st.Format("From MIDI file: track %d \"%s\" local-voice %d, channel %d, start tick %u, end tick %u, start time %.03f s, end time %.03f s\n",
+				pGen->track_id[mv], pGen->track_name[mv], pGen->track_vid[mv], pGen->midi_ch[ms][mv],
 				pGen->smst[i][mv], pGen->smet[ei][mv],
 				pGen->sstime[i][mv] / 1000, pGen->setime[ei][mv] / 1000);
+			m_info.AddText(st, RGB(0, 0, 200), 0);
+		}
+		if (pGen->xmlfile_loaded) {
+			st.Format("From MusicXML file: track %d \"%s\"\n",
+				pGen->track_id[mv], pGen->track_name[mv]);
 			m_info.AddText(st, RGB(0, 0, 200), 0);
 		}
 		m_info.AddText("\n", RGB(0, 0, 0), 0);
