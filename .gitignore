@@ -267,5 +267,4 @@ ModelManifest.xml
 /MGen/server
 /MGen/share
 /MGen/log
-/MGen/midi/Music/lavrov
-/MGen/midi/Music/private
+/MGen/music/Music/private
