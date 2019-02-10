@@ -77,6 +77,8 @@ public:
 	int y_start = 0; // Position of lowest note
 	int warning_mark_long = 0; // Mark is too long
 	int warn_noadapt = 0; // Sent not adapted music
+	int rbutton_down = 0; // Set to 1 if 
+	int lbutton_down = 0;
 
 protected:
 	vector< vector <unsigned char> > v_color; // Voice colors
@@ -96,6 +98,9 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMouseLeave();
 };
 
 #ifndef _DEBUG  // debug version in MGenView.cpp

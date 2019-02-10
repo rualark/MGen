@@ -47,6 +47,9 @@ BEGIN_MESSAGE_MAP(CMGenView, CScrollView)
 	ON_WM_LBUTTONUP()
 	ON_WM_ERASEBKGND()
 	ON_WM_KEYDOWN()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_MOUSELEAVE()
 END_MESSAGE_MAP()
 
 // CMGenView construction/destruction
@@ -822,7 +825,10 @@ void CMGenView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 
 void CMGenView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	OnLButtonUp(nFlags, point);
+	if (rbutton_down) {
+		OnLButtonUp(nFlags, point);
+	}
+	rbutton_down = 0;
 
 	//CScrollView::OnRButtonUp(nFlags, point);
 	//ClientToScreen(&point);
@@ -980,50 +986,48 @@ void CMGenView::GetToolTipLabelText(POINT cursor, CString & labelText, CString &
 {
 }
 
-BOOL CMGenView::PreTranslateMessage(MSG* pMsg)
-{
+BOOL CMGenView::PreTranslateMessage(MSG* pMsg) {
 	return CScrollView::PreTranslateMessage(pMsg);
 }
 
-void CMGenView::OnLButtonUp(UINT nFlags, CPoint point)
-{
+void CMGenView::OnLButtonUp(UINT nFlags, CPoint point) {
 	CString st;
 	int result;
 	CMainFrame *mf = (CMainFrame *)AfxGetMainWnd();
 	CGTemplate *pGen = mf->pGen;
-	if ((mouse_step > -1) && (mouse_voice > -1)) {
-		if (mouse_voices.size() > 1) {
-			CMenu *menu = new CMenu;
-			menu->CreatePopupMenu();
-			for (int i = mouse_voices.size() - 1; i >= 0; --i) {
-				int mv = mouse_voices[i];
-				st.Format("Voice %d (%s)", mv, pGen->icf[pGen->instr[mv]].group + "/" + pGen->icf[pGen->instr[mv]].name);
-				menu->AppendMenu(MF_STRING, mv+1, st);
+	if (lbutton_down) {
+		if ((mouse_step > -1) && (mouse_voice > -1)) {
+			if (mouse_voices.size() > 1) {
+				CMenu *menu = new CMenu;
+				menu->CreatePopupMenu();
+				for (int i = mouse_voices.size() - 1; i >= 0; --i) {
+					int mv = mouse_voices[i];
+					st.Format("Voice %d (%s)", mv, pGen->icf[pGen->instr[mv]].group + "/" + pGen->icf[pGen->instr[mv]].name);
+					menu->AppendMenu(MF_STRING, mv + 1, st);
+				}
+				ClientToScreen(&point);
+				result = menu->TrackPopupMenu(TPM_CENTERALIGN | TPM_RIGHTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, point.x, point.y, this);
+				if (!result) return;
+				mouse_voice = result - 1;
 			}
-			ClientToScreen(&point);
-			result = menu->TrackPopupMenu(TPM_CENTERALIGN | TPM_RIGHTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, point.x, point.y, this);
-			if (!result) return;
-			mouse_voice = result - 1;
+			CInfoDlg dlg;
+			dlg.DoModal();
 		}
-		CInfoDlg dlg;
-		dlg.DoModal();
+		else if ((mouse_step > -1) && (mouse_in_timeline)) {
+			if ((mf->m_state_gen == 2) && (mf->m_state_play == 0))
+				mf->StartPlay(mouse_step);
+		}
 	}
-	else if ((mouse_step > -1) && (mouse_in_timeline)) {
-		if ((mf->m_state_gen == 2) && (mf->m_state_play == 0))
-			mf->StartPlay(mouse_step);
-	}
+	lbutton_down = 0;
 
 	CScrollView::OnLButtonUp(nFlags, point);
 }
 
-
-BOOL CMGenView::OnEraseBkgnd(CDC* pDC)
-{
+BOOL CMGenView::OnEraseBkgnd(CDC* pDC) {
 	return false;
 
 	//return CScrollView::OnEraseBkgnd(pDC);
 }
-
 
 void CMGenView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
@@ -1057,4 +1061,23 @@ void CMGenView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_HOME) OnHScroll(SB_LEFT, 0, NULL);
 
 	CScrollView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+void CMGenView::OnRButtonDown(UINT nFlags, CPoint point) {
+	rbutton_down = 1;
+
+	CScrollView::OnRButtonDown(nFlags, point);
+}
+
+void CMGenView::OnLButtonDown(UINT nFlags, CPoint point) {
+	lbutton_down = 1;
+
+	CScrollView::OnLButtonDown(nFlags, point);
+}
+
+void CMGenView::OnMouseLeave() {
+	//lbutton_down = 0;
+	//rbutton_down = 0;
+
+	CScrollView::OnMouseLeave();
 }
