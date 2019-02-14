@@ -20,6 +20,14 @@
     \override Glissando.minimum-length = #5
     \override Glissando.springs-and-rods = #ly:spanner::set-spacing-rods
     \override Glissando.thickness = #'3
+    \override Glissando.details.glissando-text-font-size = -3
+    \override Glissando.details.glissando-text-padding = 0.4
+    %\override Glissando.font-shape = #'italic
+    %\override Glissando.font-series = #'bold
+    \override Glissando.bound-details.right.padding = 0.2
+    \override Glissando.bound-details.right-broken.padding = 0.2
+    \override Glissando.bound-details.left.padding = 0.2
+    \override Glissando.bound-details.left-broken.padding = 0.2
     \override Slur.line-thickness = #2
     \slurDashed
     \slurDashPattern #0.5 #0.75
