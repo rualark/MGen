@@ -204,9 +204,7 @@ leftBracket = {
   \once\override BreathingSign.Y-offset = ##f
   % Trick to print it after barlines and signatures:
   \once\override BreathingSign.break-align-symbol = #'custos
-  \override Score.RehearsalMark.break-align-symbols = #'(breathing-sign)
   \breathe 
-  \mark \markup { \teeny \with-color #(rgb-color 1.000 0.000 0.000) "  " }
 }
 
 
@@ -220,9 +218,7 @@ leftBracket = {
 rightBracket = {
   \once\override BreathingSign.text = #(make-right-bracket-markup)
   \once\override BreathingSign.Y-offset = ##f
-  \override Score.RehearsalMark.break-align-symbols = #'(breathing-sign)
   \breathe 
-  \mark \markup { \teeny \with-color #(rgb-color 1.000 0.000 0.000) "" }
 }
 
 #(define (label text color)
