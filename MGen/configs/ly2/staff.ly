@@ -21,7 +21,7 @@
     \override Glissando.springs-and-rods = #ly:spanner::set-spacing-rods
     \override Glissando.thickness = #'3
     \override Glissando.details.glissando-text-font-size = -3
-    \override Glissando.details.glissando-text-padding = 0.1
+    \override Glissando.details.glissando-text-padding = 0
     %\override Glissando.font-shape = #'italic
     \override Glissando.font-series = #'bold
     \override Glissando.bound-details.right.padding = 0.2
