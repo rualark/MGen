@@ -1,34 +1,21 @@
-Phase;Task;Shape;Script
-1;Finish;Glis;\override NoteColumn.glissando-skip = ##f
-1;Start;Glis;\override Glissando.color=#(rgb-color $COLOR$)
-1;Start;Slur;\override Slur.color=#(rgb-color $COLOR$)
-1;Start;Pslur;\override PhrasingSlur.color=#(rgb-color $COLOR$)
-1;Start;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$)$n$ \leftBracket
-1;Start;Volta;"\override Score.VoltaBracket.color = #(rgb-color $COLOR$) \set Score.repeatCommands = #'((volta ""$TEXT$""))"
-1;Start;Bracket;\override HorizontalBracket.color=#(rgb-color $COLOR$)
-1;Start;Trill;\override TrillSpanner.bound-details.left.text = $TEXT2$ \override TrillSpanner.color = #(rgb-color $COLOR$)
-1;Start;Ottava;"\set Staff.ottavation = \markup { \teeny ""$TEXT$"" } \override Staff.OttavaBracket.color = #(rgb-color $COLOR$)"
-1;Start;TS;"\myTS ""$TEXT$"" #(rgb-color $COLOR$) \textSpannerDown"
-1;Start;Pedal;"\override Staff.PianoPedalBracket.color = #(rgb-color $COLOR$)$n$ \override Staff.SustainPedal #'stencil =$n$ #(lambda (grob) (grob-interpret-markup grob (markup$n$ #:with-color (rgb-color $COLOR$)$n$ #:lower 0.4$n$ (#:teeny ""$TEXT$""))))$n$ \textSpannerDown"
-2;Start;Cross;\once \speakOn
-2;Start;Petrucci;\once \override NoteHead.style = #'petrucci
-2;Start;Circle;\circle
-2;Start;Notecolor;\once \override NoteHead.color = #(rgb-color $COLOR$)$n$\once \override Stem.color = #(rgb-color $COLOR$)
-8;Start;Stac;\staccato
-8;Start;Staco;\staccatissimo
-9;Start;Trill;\startTrillSpan
-9;Start;TS;\startTextSpan
-9;Start;Pedal;\sustainOn
-9;Start;Bracket;"-\tweak #'stencil #(label ""$TEXT$"" (rgb-color $COLOR$))\startGroup"
-10;Finish;Slur;)
-10;Finish;PSlur;\)
-10;Finish;Bracket;\stopGroup
-10;Finish;TS;\stopTextSpan
-10;Finish;Trill;\stopTrillSpan
-10;Finish;Pedal;\sustainOff
-10;Start;Slur;(
-10;Start;PSlur;\(
-10;Start;Glis;\glissando$n$ \override NoteColumn.glissando-skip = ##t
-11;Finish;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$) \rightBracket
-11;Finish;Volta;\set Score.repeatCommands = #'((volta #f))
-11;Finish;Ottava;\unset Staff.ottavation
+Shape id;Name;Type;Can overlap;Can show text;Can single note;Can any position;Can separate;Empty space;Comment
+0;Flag;1;1;0;1;1;0;0;Just flag number
+1;Harm;1;1;0;1;1;0;0;Harmony
+2;Interval;1;1;0;1;1;0;0;Interval
+3;VBracket;2;0;0;1;0;0;0;Vertical brackets
+4;Volta;3;0;1;1;0;0;0;Volta repeat
+5;Slur;4;0;0;0;0;0;0;Slur
+6;Pslur;4;0;0;0;0;0;0;Phrasing slur
+7;Glis;4;0;1;0;0;0;0;Glissando
+8;Bracket;5;0;1;0;0;0;0;Horizontal analysis brackets
+9;Trill;5;0;1;0;0;1;0;Trill
+10;TextSpanner;4;0;1;0;0;1;1;Text spanner
+11;Ottava;5;0;1;1;0;1;0;Ottava bracket
+12;Pedal;5;0;1;0;0;1;0;Pedal bracket
+13;NoteName;3;1;0;1;0;0;0;Note name
+14;Stac;1;1;0;1;0;0;0;Staccato
+15;Stacc;1;1;0;1;0;0;0;Staccattissimo
+16;NoteColor;1;1;0;1;0;0;0;Note color
+17;Petrucci;1;1;0;1;0;0;0;Petrucci notehead
+18;Cross;1;1;0;1;0;0;0;Cross on a stem
+19;Circle;1;1;0;1;0;0;0;Circle around notehead
