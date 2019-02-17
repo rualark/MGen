@@ -1,6 +1,6 @@
 Phase;Task;Shape;Script
 1;Finish;Glis;\override NoteColumn.glissando-skip = ##f
-1;Start;Glis;"\override Glissando.color=#(rgb-color $COLOR$) \override Glissando.details.glissando-text = \markup "" $TEXT$"" \glissandoTextOn"
+1;Start;Glis;"\override Glissando.color=#(rgb-color $COLOR$) \override Glissando.details.glissando-text = \markup { \whiteout ""$TEXT$"" } \glissandoTextOn"
 1;Start;Slur;\override Slur.color=#(rgb-color $COLOR$)
 1;Start;Pslur;\override PhrasingSlur.color=#(rgb-color $COLOR$)
 1;Start;VBracket;\override BreathingSign.color = #(rgb-color $COLOR$)$n$ \leftBracket
