@@ -3,7 +3,7 @@
   \override Score.VoltaBracket #'edge-height = #'(0.0 . 0.0)
   \override Score.VoltaBracket #'font-name = #"New Century Schoolbook" 
   \override Score.VoltaBracket #'font-shape = #'bold 
-  \override Score.VoltaBracket.thickness = #3
+  \override Score.VoltaBracket.thickness = #2
   \override Score.Glissando.breakable = ##t
   \override Score.Glissando.after-line-breaking = ##t
   \override Staff.OttavaBracket.thickness = #2
@@ -19,7 +19,7 @@
     \consists "Completion_rest_engraver"
     \override Glissando.minimum-length = #5
     \override Glissando.springs-and-rods = #ly:spanner::set-spacing-rods
-    \override Glissando.thickness = #'3
+    \override Glissando.thickness = #'2
     \override Glissando.details.glissando-text-font-size = -3
     \override Glissando.details.glissando-text-padding = 0
     %\override Glissando.font-shape = #'italic
