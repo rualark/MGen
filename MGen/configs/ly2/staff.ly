@@ -6,6 +6,7 @@
   \override Score.VoltaBracket.thickness = #2
   \override Score.Glissando.breakable = ##t
   \override Score.Glissando.after-line-breaking = ##t
+  \override Score.Glissando #'layer = #20
   \override Staff.OttavaBracket.thickness = #2
   \override Staff.PianoPedalBracket.thickness = #2
   \set Staff.pedalSustainStyle = #'mixed
@@ -23,7 +24,7 @@
     \override Glissando.details.glissando-text-font-size = -3
     \override Glissando.details.glissando-text-padding = 0
     %\override Glissando.font-shape = #'italic
-    \override Glissando.font-series = #'bold
+    %\override Glissando.font-series = #'bold
     \override Glissando.bound-details.right.padding = 0.2
     \override Glissando.bound-details.right-broken.padding = 0.2
     \override Glissando.bound-details.left.padding = 0.2
