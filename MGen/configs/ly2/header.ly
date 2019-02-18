@@ -249,5 +249,6 @@ myTS =
 \header {
   title = "$TITLE$"
   subtitle = "$SUBTITLE$"
+  subsubtitle = "$SUBSUBTITLE$"
   dedication = "$DEDICATION$"
 }
