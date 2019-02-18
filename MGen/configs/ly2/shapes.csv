@@ -6,7 +6,7 @@ Shape id;Name;Type;Can overlap;Can show text;Can single note;Can any position;Ca
 4;Volta;3;0;1;1;0;0;0;Volta repeat
 5;Slur;4;0;0;0;0;0;0;Slur
 6;Pslur;4;0;0;0;0;0;0;Phrasing slur
-7;Glis;4;0;1;0;0;0;1;Glissando
+7;Glis;4;0;1;0;0;0;2;Glissando
 8;Bracket;5;0;1;0;0;0;0;Horizontal analysis brackets
 9;Trill;5;0;1;0;0;1;0;Trill
 10;TextSpanner;4;0;1;0;0;1;1;Text spanner
