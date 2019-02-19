@@ -452,9 +452,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;286;;;50;Harmony;Suspension;Wrong resolution of suspension;:wrong beat;0;;Suspension is not resolved on allowed beat;12;;1;;;Sus.;7;7;1;;;;;;
 1;419;;;0;Harmony;Suspension;Wrong resolution of suspension;on beat 2;1;;Allows resolution to beat 2;;;1;;;;0;0;;;;;;;
 1;420;;;0;Harmony;Suspension;Wrong resolution of suspension;on beat 4;1;;Allows resolution to beat 4;;;1;;;;0;0;;;;;;;
-1;296;;;50;Harmony;Suspension;Suspension resolution ornament;leap to resolution;0;;Leap from resolution ornament to resolution is longer than M3;12;;1;;;Sus.;0;0;1;;;;;;
+1;296;;;50;Harmony;Suspension;Suspension resolution ornament;leap to resolution;0;;Leap from resolution ornament to resolution is longer than 8va;12;;1;;;Sus.;0;0;1;;;;;;
 1;292;;;50;Harmony;Suspension;Suspension resolution ornament;chatty;0;;There are more than 2 notes in resolution ornament between suspension and resolution;12;;1;;;Sus.;1;1;1;;;;;;
-1;295;;;50;Harmony;Suspension;Suspension resolution ornament;leap from sus;0;;Leap from suspension to resolution ornament is longer than M3;12;;1;;;Sus.;0;0;1;;;;;;
+1;295;;;50;Harmony;Suspension;Suspension resolution ornament;leap from sus;0;;Leap from suspension to resolution ornament is longer than 8ve;12;;1;;;Sus.;0;0;1;;;;;;
 1;387;;;0;Harmony;Suspension;Wrong usage of sus. in 2nd sp.;I -> LT penultimate measure;1;;Suspension of LT by I note in penultimate measure in sp2;;;1;;;;8;0;1;;;;;;
 1;388;;;50;Harmony;Suspension;Wrong usage of sus. in 2nd sp.;not I -> LT penultimate measure;0;;Other suspension than LT by I note in penultimate measure in sp2;;;1;;;;14;4;;;;;;;
 1;458;;;100;Harmony;Suspension;Suspension prepared by dissonance;/diss. prep;0;;Suspension starts with dissonance;;;1;;;;23;6;;;;;;;
