@@ -7,7 +7,7 @@
  <identification>
   <rights>Copyright © </rights>
   <encoding>
-   <encoding-date>2019-02-23</encoding-date>
+   <encoding-date>2019-02-24</encoding-date>
    <encoder>Rualark</encoder>
    <software>Sibelius 18.4.0</software>
    <software>Direct export, not from Dolet</software>
@@ -154,7 +154,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 2 ==============-->
-  <measure number="2" width="130">
+  <measure number="2" width="131">
    <attributes />
    <note default-x="15">
     <rest />
@@ -191,7 +191,7 @@
     <staff>2</staff>
     <lyric default-y="-80" number="part2verse1" color="#000000">
      <syllabic>single</syllabic>
-     <text>sp2</text>
+     <text>sp52</text>
     </lyric>
    </note>
   </measure>
@@ -232,15 +232,28 @@
    <backup>
     <duration>1024</duration>
    </backup>
-   <note color="#000000" default-x="15">
+   <note color="#000000" default-x="15" default-y="-50">
     <pitch>
      <step>E</step>
      <octave>3</octave>
     </pitch>
-    <duration>1024</duration>
+    <duration>512</duration>
     <instrument id="P1-I1" />
     <voice>2</voice>
-    <type>whole</type>
+    <type>half</type>
+    <stem>down</stem>
+    <staff>2</staff>
+   </note>
+   <note color="#000000" default-x="72" default-y="10">
+    <pitch>
+     <step>C</step>
+     <octave>3</octave>
+    </pitch>
+    <duration>512</duration>
+    <instrument id="P1-I1" />
+    <voice>2</voice>
+    <type>half</type>
+    <stem>up</stem>
     <staff>2</staff>
    </note>
   </measure>
@@ -274,7 +287,7 @@
    </note>
   </measure>
   <!--============== Part: P1, Measure: 5 ==============-->
-  <measure number="5" width="93">
+  <measure number="5" width="92">
    <attributes />
    <note>
     <rest />
@@ -307,7 +320,7 @@
     <type>half</type>
     <staff>1</staff>
    </note>
-   <note color="#000000" default-x="72" default-y="-40">
+   <note color="#000000" default-x="73" default-y="-40">
     <pitch>
      <step>E</step>
      <octave>5</octave>
@@ -375,15 +388,28 @@
    <backup>
     <duration>1024</duration>
    </backup>
-   <note color="#000000" default-x="15">
+   <note color="#000000" default-x="15" default-y="-5">
     <pitch>
-     <step>E</step>
-     <octave>3</octave>
+     <step>G</step>
+     <octave>2</octave>
     </pitch>
-    <duration>1024</duration>
+    <duration>512</duration>
     <instrument id="P1-I1" />
     <voice>2</voice>
-    <type>whole</type>
+    <type>half</type>
+    <stem>up</stem>
+    <staff>2</staff>
+   </note>
+   <note color="#000000" default-x="72" default-y="10">
+    <pitch>
+     <step>C</step>
+     <octave>3</octave>
+    </pitch>
+    <duration>512</duration>
+    <instrument id="P1-I1" />
+    <voice>2</voice>
+    <type>half</type>
+    <stem>up</stem>
     <staff>2</staff>
    </note>
   </measure>
@@ -533,15 +559,28 @@
    <backup>
     <duration>1024</duration>
    </backup>
-   <note color="#000000" default-x="15">
+   <note color="#000000" default-x="15" default-y="-5">
     <pitch>
-     <step>E</step>
-     <octave>3</octave>
+     <step>G</step>
+     <octave>2</octave>
     </pitch>
-    <duration>1024</duration>
+    <duration>512</duration>
     <instrument id="P1-I1" />
     <voice>2</voice>
-    <type>whole</type>
+    <type>half</type>
+    <stem>up</stem>
+    <staff>2</staff>
+   </note>
+   <note color="#000000" default-x="79" default-y="10">
+    <pitch>
+     <step>C</step>
+     <octave>3</octave>
+    </pitch>
+    <duration>512</duration>
+    <instrument id="P1-I1" />
+    <voice>2</voice>
+    <type>half</type>
+    <stem>up</stem>
     <staff>2</staff>
    </note>
   </measure>
