@@ -35,7 +35,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;301;;;0;Rhythm;Rhythm;Too many notes in one measure;5 notes after sus.;1;;5 notes in measure only allowed if first note is a suspension from previous measure;;;1;;;;22;3;1;;;;;;
 1;245;;;50;Rhythm;Rhythm;Too many notes in one measure;5 notes without sus.;0;;;11;;1;;;!srn!;36;10;1;;;;;;
 1;246;;;100;Rhythm;Rhythm;Too many notes in one measure;>5 notes;0;;;11;;1;;;!srn!;13;2;1;;;;245,301;;
-1;30;;;100;Rhythm;Repeats and ties;Note repeat;cantus;0;;Slurs are prohibited in cantus;;;1;;;;0;0;1;;;;;;
+1;30;;;100;Rhythm;Repeats and ties;Note repeat;cantus;0;;Slurs are prohibited in cantus;11;;1;;;Repeated note;0;0;1;;;;;;
 1;516;;;50;Rhythm;Repeats and ties;Note repeat;inside measure;0;;;;;1;;;;;;;;;;;;
 1;557;;;50;Rhythm;Repeats and ties;Simultaneous repeats of notes in multiple parts;/multivoice;0;;;;;1;;;;;;;;;;;;
 1;93;10;;0;Rhythm;Repeats and ties;Note is repeated: in 10 notes;1;0;;;;;1;;;;36;0;;;;1;;;
