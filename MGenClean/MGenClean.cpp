@@ -431,8 +431,8 @@ void ProcessTask(path path_info) {
 	}
 	//cout << "Task ID: " << CDb::j_id << " f_id " << f_id << " found in database\n";
 	int need_clean = 0;
-	if (f_store == 366000) {
-		if (j_passed > 366) {
+	if (f_store >= 366000) {
+		if (f_store == 366000 && j_passed > 366) {
 			// Check if task is last successful of this class
 			q.Format("SELECT j_id FROM jobs WHERE f_id = %d AND j_id > %ld AND j_state = 3 AND j_result = 0 AND j_class = %d",
 				f_id, CDb::j_id, j_class);
