@@ -388,8 +388,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;57;;;0;Harmony;Harmony;Harmonic progression;bad;-1;;See harmonic progressions with penalty 2;9;;1;;;Weak prog.;535;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;92;;;0;Harmony;Harmony;Harmonic progression;2 x bad;-1;;Two consecutive harmonic progressions each with penalty 2;9;;1;;;Weak prog.;103;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;23;;;0;Harmony;Harmony;Harmonic progression;3 x bad;0;;Three consecutive harmonic progressions each with penalty 2;9;;1;4;;Weak prog.;19;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
-1;418;;;0;Harmony;Harmony;Repeated harmony;in changed position;0;Harmonic stagnation;Chord is repeated, but inversion is changed;1;;1;;;;130;3;;;;;;;
-1;99;;;50;Harmony;Harmony;Repeated harmony;:in same position;0;Harmonic stagnation;Chord is repeated with same inversion;1;;1;;;;28;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
+1;418;;;0;Harmony;Harmony;Repeated harmony;in changed inversion;0;Harmonic stagnation;Chord is repeated, but inversion is changed;1;;1;;;;130;3;;;;;;;
+1;99;;;50;Harmony;Harmony;Repeated harmony;:in same inversion;0;Harmonic stagnation;Chord is repeated with same inversion;1;;1;;;;28;1;;;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;321;;;50;Harmony;Harmony;Repeated harmony;:three times;0;Harmonic stagnation;Same chord is used 3 times consecutively;9;;1;;;!rn!;7;1;1;;;;;;
 1;222;;;50;Harmony;Perfect consonance;Doubling of a tritone note;/doubling;0;;Doubling of one of tritone notes is prohibited if both tritone notes are chord tones and both exist in voices in current measure;;;1;;;;;;;;;;;;
 1;324;;<5;50;Harmony;Perfect consonance;Doubling of leading-tone;/LT doubling;0;;Leading tone harmonic octave for leaping notes and downbeat;2;;1;;;;23;9;1;;;;;;

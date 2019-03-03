@@ -35,8 +35,8 @@ Application.ScreenUpdating = False
 EventState = Application.EnableEvents
 Application.EnableEvents = False
 
-CalcState = Application.Calculation
-Application.Calculation = xlCalculationManual
+' CalcState = Application.Calculation
+' Application.Calculation = xlCalculationManual
 
 PageBreakState = ActiveSheet.DisplayPageBreaks
 ActiveSheet.DisplayPageBreaks = False
@@ -48,7 +48,7 @@ End Sub
 Sub OptimizeCode_End()
 
 ActiveSheet.DisplayPageBreaks = PageBreakState
-Application.Calculation = CalcState
+' Application.Calculation = CalcState
 Application.EnableEvents = EventState
 Application.ScreenUpdating = True
 Application.DisplayStatusBar = True
