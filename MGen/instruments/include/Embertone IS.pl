@@ -7,6 +7,8 @@ poly = 1 # Maximum number of simultaneous voices
 
 # Controls
 Volume_default = 117 # default 127 (direct CC volume, should not be changed by user)
+db_max = 0 # Maximum controlled loudness in db when volume CC is 127
+db_coef = 2 # Slope of CC to db function (2 for Kontakt, 1 for SWAM)
 CC_Name = 1:  "Vibrato intensity"
 CC_Name = 11: "Dynamics"
 CC_Name = 14: "Vibrato speed"

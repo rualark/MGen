@@ -10,6 +10,8 @@ CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers
 
 # Controls
 Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
+db_max = 0 # Maximum controlled loudness in db when volume CC is 127
+db_coef = 2 # Slope of CC to db function (2 for Kontakt, 1 for SWAM)
 CC_Name = 72: "Dynamics"
 CC_Name = 74: "Attack"
 CC_Name = 76: "Release time"

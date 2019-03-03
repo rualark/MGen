@@ -6,7 +6,9 @@ poly = 1 # Maximum number of simultaneous voices
 # Instrument parameters
 n_min = "C2" # Lowest note
 n_max = "B5" # Highest note
-Volume_default = 65 # (direct CC volume, should not be changed by user)
+Volume_default = 103 # (direct CC volume, should not be changed by user)
+db_max = 0 # Maximum controlled loudness in db when volume CC is 127
+db_coef = 2 # Slope of CC to db function (2 for Kontakt, 1 for SWAM)
 
 # Controls
 KswGroup = "C1: Long hits", "C#1: Dampened hits"

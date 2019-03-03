@@ -12,7 +12,9 @@ poly = 100 # Maximum number of simultaneous voices
 #dying = 5 # Seconds to fade out at mf
 
 # Controls
-Volume_default = 100 # default 127 (direct CC volume, should not be changed by user)
+Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
+db_max = 0 # Maximum controlled loudness in db when volume CC is 127
+db_coef = 2 # Slope of CC to db function (2 for Kontakt, 1 for SWAM)
 CC_Name = 2: "Filter cutoff" # Decreasing this value will decrease higher frequencies
 CC_Name = 3: "Filter resonance"
 CC_Name = 4: "Attack"
