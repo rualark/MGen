@@ -9,5 +9,5 @@ n_min = "C3" # Lowest note
 n_max = "B4" # Highest note
 Volume_default = 80 # (direct CC volume, should not be changed by user)
 db_max = 0 # Maximum controlled loudness in db when volume CC is 127
-db_coef = 2 # Slope of CC to db function (2 for Kontakt, 1 for SWAM)
+db_coef = 3 # Slope of CC to db function (3 for Kontakt, 1 for SWAM)
 

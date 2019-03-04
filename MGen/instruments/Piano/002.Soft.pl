@@ -96,7 +96,7 @@ rnd_vel = 8 # Randomize note velocity not greater than this percent
 # Controls
 Volume_default = 80 # default 127 (direct CC volume, should not be changed by user)
 db_max = 12 # Maximum controlled loudness in db when volume CC is 127
-db_coef = 2 # Slope of CC to db function (2 for Kontakt, 1 for SWAM)
+db_coef = 3 # Slope of CC to db function (3 for Kontakt, 1 for SWAM)
 
 # Initial  setup
 Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
