@@ -7,6 +7,7 @@ n_min = D2
 # Instrument parameters
 ReplacePitch = "C4" # Replace all notes in track with this pitch
 Volume_default = 80 # (direct CC volume, should not be changed by user)
+Volume = 85
 db_max = 0 # Maximum controlled loudness in db when volume CC is 127
 db_coef = 3 # Slope of CC to db function (3 for Kontakt, 1 for SWAM)
 
