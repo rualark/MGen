@@ -1355,7 +1355,10 @@ UINT CMainFrame::GenThread(LPVOID pParam) {
 	//WriteLog(1, "configs\\" + AlgFolder[m_algo] + "\\" + m_config + ".pl");
 	//WriteLog(1, dir + "\\config.pl");
 	// Export adapted MIDI if not playing
-	if (pGen->t_sent > 0) pGen->ExportAdaptedMidi(pGen->as_dir, pGen->as_fname);
+	if (pGen->t_sent > 0) {
+		pGen->ExportAdaptedMidi(pGen->as_dir, pGen->as_fname);
+		pGen->ExportNotes();
+	}
 
 	::PostMessage(pGen->m_hWnd, WM_GEN_FINISH, 0, 0);
 
