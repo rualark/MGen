@@ -359,9 +359,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;157;;;100;Melody;Melodic minor;Dim or aug melodic interval;III-VII#;0;;Augmented / diminished;8;;1;;;!srn!;3;1;1;;;;;;
 1;432;;;0;Melody;Melodic minor;Dim or aug melodic interval;III-VII#-I down;1;;III-VII# downward notes, then I note;8;;1;;;!srn!;2;0;1;;;;157;;
 1;377;;;100;Harmony;Melodic minor;False chromatic relation: in outer voices;VI<->VI#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;1;;;;;;6;1;;;;;;;
-1;378;;;100;Harmony;Melodic minor;False chromatic relation: in outer voices;VII<->VII#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;1;;;;;;7;0;1;;;;;;
+1;378;;;100;Harmony;Melodic minor;False chromatic relation: in outer voices;VII<->VII#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;;;;;;;7;0;1;;;;;;
 1;164;;;50;Harmony;Melodic minor;False chromatic relation: in non-outer voices;VI<->VI#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;1;;;;;;25;4;1;;;;;;
-1;165;;;50;Harmony;Melodic minor;False chromatic relation: in non-outer voices;VII<->VII#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;1;;;;;;30;6;1;;;;;;
+1;165;;;50;Harmony;Melodic minor;False chromatic relation: in non-outer voices;VII<->VII#;0;These two notes are harmonic tones in neighboring harmonies, but are in different voices;;;;;;;;30;6;1;;;;;;
 1;17;;;0;Harmony;Harmony;Repeating functions in a row;>4 T;0;More than AA consecutive harmonies all have this letter;;9;;1;;;Weak prog.;6;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;428;;;0;Harmony;Harmony;Repeating functions in a row;>4 D;0;More than AA consecutive harmonies all have this letter;;9;;1;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
 1;429;;;0;Harmony;Harmony;Repeating functions in a row;>4 S;0;More than AA consecutive harmonies all have this letter;;9;;1;;;Weak prog.;1;0;;1;;;;;17,20,23,48,57,77,92,99,428,429,430,431
