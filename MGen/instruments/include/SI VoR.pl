@@ -6,7 +6,7 @@ poly = 1 # Maximum number of simultaneous voices
 # Automation parameters
 CC_dynamics = 72
 CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
-CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
+CC_steps = 30 # Number of CC steps in one second
 
 # Controls
 Volume_default = 127 # default 127 (direct CC volume, should not be changed by user)
@@ -38,8 +38,8 @@ Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Randomization
-rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
-rand_pos_max = 70-0 # Maximum shift in ms (start-end)
+rand_pos = 0-0 # Randomize note starts-ends not greater than percent of note length 
+rand_pos_max = 0-0 # Maximum shift in ms (start-end)
 rnd_vel = 8 # Randomize note velocity not greater than this percent
 rnd_dyn = 10 # Randomize step dynamics not greater than this percent
 rnd_dyn_slow = 3 # Slow down random dynamics function by this value. Can be only integer: 1 and above

@@ -66,7 +66,7 @@ Legato = 101
 InitTechnique = "ord"
 
 Solo intonation = 2
-all_ahead = 128 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
+all_ahead = 28 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
 
 # Sul tasto adaptor
 tasto_import = 1 # Set to 0 to ignore sul tasto in source MIDI file and play as normal notes

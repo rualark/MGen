@@ -45,7 +45,7 @@ Legato mode = 127
 
 # Automation parameters
 CC_dynamics = 11
-CC_steps = 30 # Number of CC steps in one note step (please use only odd numbers)
+CC_steps = 30 # Number of CC steps in one second
 CC_ma = 9 # Number of CC steps to moving average (please use only odd numbers)
 
 # Legato adaptor
@@ -120,8 +120,8 @@ rnd_vel = 20 # Randomize note velocity not greater than this percent
 rnd_vel_repeat = 50 # Randomize note velocity not greater than this percent for note retriggers
 rnd_dyn = 15 # Randomize step dynamics not greater than this percent
 rnd_dyn_slow = 3 # Slow down random dynamics function by this value. Can be only integer: 1 and above
-rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
-rand_pos_max = 70-0 # Maximum shift in ms (start-end)
+rand_pos = 0-0 # Randomize note starts-ends not greater than percent of note length 
+rand_pos_max = 0-0 # Maximum shift in ms (start-end)
 
 # Flutter tongue adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection

@@ -13,7 +13,7 @@ db_coef = 3 # Slope of CC to db function (3 for Kontakt, 1 for SWAM)
 
 CC_dynamics = 1
 CC_ma = 3 # Number of CC steps to moving average (please use only odd numbers)
-CC_steps = 1 # Number of CC steps in one note step (please use only odd numbers)
+CC_steps = 1 # Number of CC steps in one second
 
 # Tremolo adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
@@ -23,6 +23,6 @@ trem_maxint = 127 # Maximum interval between notes of a trill in semitones to be
 
 # Randomization
 rnd_vel = 8 # Randomize note velocity not greater than this percent
-rand_pos = 8-0 # Randomize note starts-ends not greater than percent of note length 
-rand_pos_max = 40-0 # Maximum shift in ms (start-end)
+rand_pos = 0-0 # Randomize note starts-ends not greater than percent of note length 
+rand_pos_max = 0-0 # Maximum shift in ms (start-end)
 

@@ -74,7 +74,7 @@ KEYS Silent_key_on = 0
 # Instrument parameters
 n_min = "A0" # Lowest note
 n_max = "C8" # Highest note
-t_min = 10 # Shortest note in ms
+t_min = 0 # Shortest note in ms
 t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
 poly = 100 # Maximum number of simultaneous voices
 dyn_range = 0-100 # Dynamic range
@@ -89,7 +89,7 @@ lengroup_edt1 = 70 # delta to alter note ending time of all notes in group excep
 lengroup_edt2 = -100 # delta to alter note ending time of last note in group (ms)
 
 # Randomization
-rand_pos = 8-8 # Randomize note starts-ends not greater than percent of note length 
+rand_pos = 0-8 # Randomize note starts-ends not greater than percent of note length 
 rand_pos_max = 70-70 # Maximum shift in ms (start-end)
 rnd_vel = 8 # Randomize note velocity not greater than this percent
 

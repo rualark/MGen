@@ -13,4 +13,4 @@ db_coef = 3 # Slope of CC to db function (3 for Kontakt, 1 for SWAM)
 
 CC_dynamics = 1
 CC_ma = 3 # Number of CC steps to moving average (please use only odd numbers)
-CC_steps = 1 # Number of CC steps in one note step (please use only odd numbers)
+CC_steps = 1 # Number of CC steps in one second

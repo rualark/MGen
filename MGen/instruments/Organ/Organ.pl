@@ -40,8 +40,8 @@ lengroup_edt1 = 70 # delta to alter note ending time of all notes in group excep
 lengroup_edt2 = -100 # delta to alter note ending time of last note in group (ms)
 
 # Randomization
-rand_pos = 8-8 # Randomize note starts-ends not greater than percent of note length 
-rand_pos_max = 70-70 # Maximum shift in ms (start-end)
+rand_pos = 0-8 # Randomize note starts-ends not greater than percent of note length 
+rand_pos_max = 0-70 # Maximum shift in ms (start-end)
 
 # Delay adaptor
 all_ahead = 70 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
