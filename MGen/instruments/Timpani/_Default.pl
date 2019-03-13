@@ -19,6 +19,8 @@ CC_ma = 3 # Number of CC steps to moving average (please use only odd numbers)
 CC_steps = 1 # Number of CC steps in one second
 
 # Tremolo adaptor
+channels = 2 # Number of channels to initialize
+channels_dyn = 2 # Number of channels to send dynamics to
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
 trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
 trem_dyn_range = 0-100 # (0-100) Percent of tremolo dynamics compared to sustain notes

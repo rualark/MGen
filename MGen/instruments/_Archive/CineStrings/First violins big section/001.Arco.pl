@@ -1,14 +1,11 @@
 include "_Default.pl"
 
-channels = 4 # Number of channels to initialize
-channels_dyn = 2 # Number of channels to send dynamics to
-
 # Slur adaptor
 max_slur_count = 2 # Use slur for 2nd moves, but no longer than X moves
 max_slur_interval = 2 # in semitones
 
 # Legato adaptor
-legato_ahead = 35 # Time in ms to stretch legato notes back to cope with legato delay
+legato_ahead = 85 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
 
 # Nonlegato adaptor
@@ -23,21 +20,18 @@ stac_ahead = -1 # Time in ms to stretch stac notes back to cope with slow attack
 stac_dyn_range = 1-50 # (1-100) Percent of staccato dynamics compared to sustain notes
 spic_import = 1 # Allow to import spiccato technique from midi file into staccato articulation
 stac_import = 1 # Set to 0 to ignore staccato in source MIDI file and play as normal notes. Set to 1 to import as staccato
-stac_chan = 3 # Send stac to separate relative channel
 marc_import = 1 # Set to 0 to ignore marcato in source MIDI file and play as normal notes. Set to 1 to import as staccato
 
 # Pizzicato adaptor
 pizz_import = 1 # Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
 pizz_ahead = -1 # Time in ms to stretch pizz notes back to cope with slow attack. -1 falls back to all_ahead
 pizz_dyn_range = 1-60 # (1-100) Percent of pizz dynamics compared to sustain notes
-pizz_chan = 4 # Send pizz to separate relative channel
 
 # Tremolo adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
 trem_min_repeats = 3 # Minimum number of note repeats to detect tremolo
 trem_dyn_range = 0-80 # (0-100) Percent of tremolo dynamics compared to sustain notes
 trem_import = 1 # Set to 0 to ignore tremolo keyswitches and program changes in source MIDI file and play as normal notes
-trem_chan = 2 # Send trem to separate relative channel
 
 # Accent velocity
 acc_range = 1-90 # (1-127) Map dynamics to specified accent range

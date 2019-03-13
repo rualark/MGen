@@ -66,7 +66,7 @@ Unpitched percussion/Conga            | Low                   | 7   | 63  | -   
 Unpitched percussion/Jazz drum set    | Map                   | 15  | 64  | -   | jdk  | Jazz drum kit, Jazz drums
 Strings/Violin                        | Arco                  | 2   | 2   | +   | vn   | Vln, Violon, Violine, Geige, violino, skripka, 
 Strings/Violins section               | Arco                  | 2   | 2   | +   | vns  | Violins, Vlns, Violini
-Strings/First violins big section     | Arco                  | 2   | 7   | -   | vns  | 1st Violins, 1 Violins, Violins 1, Violins I, First Violins, 1 Vlns, Vlns. 1, Vlns. I, Violini
+Strings/First violins big section     | Arco                  | 1   | 7   | -   | vns  | 1st Violins, 1 Violins, Violins 1, Violins I, First Violins, 1 Vlns, Vlns. 1, Vlns. I, Violini
 #Strings/Second violins big section    | Arco                  | 2   | 2   | -   | vns  | Violins, Vlns, Violini
 Strings/Viola                         | Arco                  | 11  | 3   | +   | va   | Vla, Viole, Bratsche
 Strings/Violas section                | Arco                  | 11  | 3   | +   | vas  | Violas, Vlas
