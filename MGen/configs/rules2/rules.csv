@@ -199,8 +199,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;496;2;;100;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>30 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;0;0;;;;1;494;;
 1;493;3;;50;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>6 leaps;0;;;10;;1;;;Many leaps;10;0;;;;1;;;
 1;494;3;;50;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>22 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;11;0;;;;1;;;
-1;495;3;;100;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>6 leaps;0;;;10;;1;;;Many leaps;0;0;;;;1;493;;
-1;496;3;;100;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>22 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;0;0;;;;1;494;;
+1;495;3;;100;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>7 leaps;0;;;10;;1;;;Many leaps;0;0;;;;1;493;;
+1;496;3;;100;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>30 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;0;0;;;;1;494;;
 1;493;4;;0;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>7 leaps;0;;;10;;1;;;Many leaps;10;0;;;;1;;;
 1;494;4;;0;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>30 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;11;0;;;;1;;;
 1;495;4;;50;Melody;Leaps;Abuse of disjunct motion: within 9 notes;>8 leaps;0;;;10;;1;;;Many leaps;0;0;;;;1;493;;
@@ -219,12 +219,12 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;500;1;;50;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>46 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;0;0;;;;1;498;;
 1;497;2;;50;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>8 leaps;0;;;10;;1;;;Many leaps;6;0;;;;1;;;
 1;498;2;;50;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>32 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;5;0;;;;1;;;
-1;499;2;;100;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>8 leaps;0;;;10;;1;;;Many leaps;0;0;;;;1;497;;
-1;500;2;;100;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>32 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;0;0;;;;1;498;;
+1;499;2;;100;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>9 leaps;0;;;10;;1;;;Many leaps;0;0;;;;1;497;;
+1;500;2;;100;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>34 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;0;0;;;;1;498;;
 1;497;3;;50;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>8 leaps;0;;;10;;1;;;Many leaps;6;0;;;;1;;;
 1;498;3;;50;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>32 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;5;0;;;;1;;;
-1;499;3;;100;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>8 leaps;0;;;10;;1;;;Many leaps;0;0;;;;1;497;;
-1;500;3;;100;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>32 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;0;0;;;;1;498;;
+1;499;3;;100;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>9 leaps;0;;;10;;1;;;Many leaps;0;0;;;;1;497;;
+1;500;3;;100;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>34 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;0;0;;;;1;498;;
 1;497;4;;0;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>9 leaps;0;;;10;;1;;;Many leaps;6;0;;;;1;;;
 1;498;4;;0;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>40 leaped;0;;Total leaps length more than AA notes:  3 is third, 4 is fourth and so on;10;;1;;;Many leaps;5;0;;;;1;;;
 1;499;4;;50;Melody;Leaps;Abuse of disjunct motion: within 14 notes;>10 leaps;0;;;10;;1;;;Many leaps;0;0;;;;1;497;;
@@ -346,8 +346,8 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;350;;;0;Melody;Melodic minor;bVII degree near VI# degree;4 notes after;0;;AA notes after VI#;8;;1;;;VII near VI#;43;0;;;;;;;
 1;203;;;50;Melody;Melodic minor;bVII degree near VI# degree;immediate;0;;Prohibited even if one or both notes are non-chord tones;8;;1;;;bVII<->VI#;;;;;;;;;
 1;199;;;0;Melody;Melodic minor;VI# degree without close VII# degree;within 2 notes;0;There is no VII# note before or after VI# chord tone in close proximity;;;;1;;;;65;2;;;;;;;
-1;201;12350;;50;Melody;Melodic minor;VI# should be surrounded by ascending stepwise motion;/VI#;0;Chord tone VI# is not surrounded by stepwise diatonic ascending movement;;8;;1;;;VI# not asc.;9;2;;;;;;;
-1;202;12350;;50;Melody;Melodic minor;VIIb should be surrounded by descending stepwise motion;/VIIb;0;Chord tone VII natural is not surrounded by stepwise diatonic descending movement;;8;;1;;;VII not desc.;;;;;;;;;
+1;201;12350;;0;Melody;Melodic minor;VI# should be surrounded by ascending stepwise motion;/VI#;0;Chord tone VI# is not surrounded by stepwise diatonic ascending movement;;8;;1;;;VI# not asc.;9;2;;;;;;;
+1;202;12350;;0;Melody;Melodic minor;VIIb should be surrounded by descending stepwise motion;/VIIb;0;Chord tone VII natural is not surrounded by stepwise diatonic descending movement;;8;;1;;;VII not desc.;;;;;;;;;
 1;521;;;100;Melody;Melodic minor;Note is not part of the mode;/wrong alteration;0;;Used alterations are not part of current mode (major I#, II# or VI# notes).;;;1;;;;;;;;;;;;
 1;152;;;100;Melody;Melodic minor;Chromaticism: close;VI<->VI#;0;These two notes are tightly close;Chromatic;8;;1;;;!srn!;1;1;1;;;;;;
 1;153;;;100;Melody;Melodic minor;Chromaticism: close;VII<->VII#;0;These two notes are tightly close;Chromatic;8;;1;;;!srn!;3;2;1;;;;;;
