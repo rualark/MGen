@@ -2,6 +2,9 @@
 Library = "LA Scoring Strings 2.0" # For which library algorithm is optimized
 Type = 7 # Instrument type
 
+channels = 4 # Number of channels to initialize
+channels_dyn = 2 # Number of channels to send dynamics to
+
 # Velocity of legato note does not affect sound (speed and attack of legato cannot be controlled)
 
 # Instrument parameters

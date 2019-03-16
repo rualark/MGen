@@ -64,16 +64,15 @@ Unpitched percussion/Timbales         | High                  | 10  | 62  | -   
 Unpitched percussion/Bongo            | High                  | 7   | 63  | -   | bng  |
 Unpitched percussion/Conga            | Low                   | 7   | 63  | -   | cng  |
 Unpitched percussion/Jazz drum set    | Map                   | 15  | 64  | -   | jdk  | Jazz drum kit, Jazz drums
-Strings/Violin                        | Arco                  | 2   | 2   | +   | vn   | Vln, Violon, Violine, Geige, violino, skripka, 
-Strings/Violins section               | Arco                  | 2   | 2   | +   | vns  | Violins, Vlns, Violini
-Strings/First violins big section     | Arco                  | 1   | 7   | -   | vns  | 1st Violins, 1 Violins, Violins 1, Violins I, First Violins, 1 Vlns, Vlns. 1, Vlns. I, Violini
-#Strings/Second violins big section    | Arco                  | 2   | 2   | -   | vns  | Violins, Vlns, Violini
+Strings/Violin                        | Arco                  | 2   | 2   | +   | vn   | Vln, Violon, Violine, Geige, violino, skripka
+Strings/Violins section               | Arco                  | 1   | 7   | -   | vns  | Violins, Vlns, Violini, skripki
+Strings/Violins II section            | Arco                  | 1   | 8   | -   | vns  | 2nd Violins, Violins 2, Violins II, Second Violins, 2 Vlns, Vlns. 2, Vlns. 2, Vlns 2, Vlns II, Violini II, Violini 2
 Strings/Viola                         | Arco                  | 11  | 3   | +   | va   | Vla, Viole, Bratsche
-Strings/Violas section                | Arco                  | 11  | 3   | +   | vas  | Violas, Vlas
+Strings/Violas section                | Arco                  | 1   | 9   | -   | vas  | Violas, Vlas
 Strings/Cello                         | Arco                  | 12  | 4   | +   | vc   | Violoncello, Vlle, Violoncelle, violoncelle, violonchel, violonchelo, violoncelo
-Strings/Cellos section                | Arco                  | 12  | 4   | +   | vcs  | Cellos, Violoncellos, Violoncelli
+Strings/Cellos section                | Arco                  | 1   | 10  | -   | vcs  | Cellos, Violoncellos, Violoncelli
 Strings/Contrabass                    | Arco                  | 13  | 5   | +   | db   | Contrebasse, Double bass, String bass, Kontrabass, contrabasso, kontrabas, contrabajo, Contrabbasso
-Strings/Contrabasses section          | Arco                  | 13  | 5   | +   | dbs  | Contrabasses, Contrabbassi, Contrabassi
+Strings/Contrabasses section          | Arco                  | 1   | 11  | -   | dbs  | Contrabasses, Contrabbassi, Contrabassi
 Strings/Harp                          | Harp                  | 1   | 6   | -   | hp   | harpe, Harfe, arpa, arfa, 
 
 # CHN is MIDI channel to send this instrument to (for adapted MIDI file export and sending to MIDI port)

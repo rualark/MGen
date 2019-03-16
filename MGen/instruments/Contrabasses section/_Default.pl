@@ -1,10 +1,9 @@
-Ensemble on = 127
-Volume_default = 127
+include "..\include\LASS.pl"
 
-# Initial setup (can change)
-Ensemble intonation = 20 # default 10
-Ensemble L = 10 # default 10
-Ensemble R = 117 # default 117
-Ensemble tightness = 36 # default 36, alternative 65
-Ensemble randomize = 32 # default 32, alternative 100
-Ensemble combine transitions = 127 # default 0
+# Instrument parameters
+n_min = C1 # Lowest note
+n_max = C4 # Highest note
+t_min = 1 # Shortest note in ms (note will not sound if shorter)
+t_max = 0 # Longest melody withot pauses in ms (0 = no limit). Decreases with dynamics
+
+all_ahead = 54 # Time in ms to stretch sutain notes (not legato) back to cope with slow attack
