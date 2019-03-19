@@ -78,7 +78,7 @@ bell_len = 30-30 # Percent of notelength to use for slope at bell start-end
 bell_vel = 80-120 # Set belled note velocity to random between these percents of starting dynamics
 
 # Reverse bell adaptor
-rbell_freq = 80 # Frequency to apply reverse bell when all conditions met
+rbell_freq = 0 # Frequency to apply reverse bell when all conditions met
 rbell_dur = 1000-3000 # Minimum note duration (ms) that can have a reverse bell - that will have deepest reverse bell
 rbell_mul = 0.9-0.2 # Multiply dynamics by this parameter at bell center with mindur - with longer dur
 rbell_pos = 20-80 # Leftmost-rightmost minimum reverse bell position inside window (percent of window duration)

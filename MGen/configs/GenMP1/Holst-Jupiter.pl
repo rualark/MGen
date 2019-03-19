@@ -12,5 +12,5 @@ AutoLegato = 0
 Midi_file = music\Music\Holst\Holst-Jupiter.mid
 
 MidiFileType = "MuseScore" # Injected by Alexey Arkhipenko at 2019-03-14 23:35:03
-toload_time = "25" # Injected by Alexey Arkhipenko at 2019-03-14 23:36:03
+#toload_time = "25" # Injected by Alexey Arkhipenko at 2019-03-14 23:36:03
 Instruments = "Piccolo,Flute,Oboe,English Horn,Clarinet,Clarinet,Bassoon,Bassoon,Horn,Horn,Horn,Trumpet,Trumpet,Trombone,Trombone,Tuba,Tuba,Timpani,Timpani,Piano,Piano,Piano,Piano,Glockenspiel,Harp,Harp,Violins section,Violins II section,Violas section,Cellos section,Contrabasses section" # Injected by Alexey Arkhipenko at 2019-03-14 23:38:03

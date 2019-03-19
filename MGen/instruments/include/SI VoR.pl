@@ -61,7 +61,7 @@ bell_mul = 0.2-0.2 # Multiply dynamics by this parameter at bell start-end
 bell_len = 30-30 # Percent of notelength to use for slope at bell start-end
 
 # Reverse bell adaptor
-rbell_freq = 80 # Frequency to apply reverse bell when all conditions met
+rbell_freq = 0 # Frequency to apply reverse bell when all conditions met
 rbell_dur = 300-1000 # Minimum note duration (ms) that can have a reverse bell - that will have deepest reverse bell
 vib_sbell_freq = 100 # Frequency to apply vibrato bell when all conditions met
 rbell_mul = 0.8-0.2 # Multiply dynamics by this parameter at bell center with mindur - with longer dur
