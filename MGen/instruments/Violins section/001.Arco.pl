@@ -1,9 +1,5 @@
 include "_Default.pl"
 
-# Slur adaptor
-max_slur_count = 2 # Use slur for 2nd moves, but no longer than X moves
-max_slur_interval = 2 # in semitones
-
 # Legato adaptor
 legato_ahead = 35 # Time in ms to stretch legato notes back to cope with legato delay
 max_ahead_note = 12 # Maximum chromatic interval having ahead property
