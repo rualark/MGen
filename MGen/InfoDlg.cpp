@@ -205,9 +205,13 @@ BOOL CInfoDlg::OnInitDialog()
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		m_info.AddText("\n", RGB(170, 0, 0), 0);
 		 
-		st.Format("Voice: %d (%s, channel %d, type %d)\n", mv,
+		if (pGen->icf[pGen->instr[mv]].layer == 0) st2 = "instrument config";
+		if (pGen->icf[pGen->instr[mv]].layer == 1) st2 = "track config";
+		if (pGen->icf[pGen->instr[mv]].layer == 2) st2 = "stage config";
+		st.Format("Voice: %d (%s, channel %d, type %d, stage %d, %s)\n", mv,
 			pGen->icf[pGen->instr[mv]].group + "/" + pGen->icf[pGen->instr[mv]].name,
-			pGen->icf[pGen->instr[mv]].channel, pGen->icf[pGen->instr[mv]].type);
+			pGen->icf[pGen->instr[mv]].channel, pGen->icf[pGen->instr[mv]].type,
+			pGen->v_stage[mv], st2);
 		m_info.AddText(st, RGB(0, 0, 0), CFE_BOLD);
 		st.Format("Instrument library: %s (all ahead %d ms, legato ahead %d ms)\n", 
 			pGen->icf[pGen->instr[mv]].lib, pGen->icf[pGen->instr[mv]].all_ahead, 
