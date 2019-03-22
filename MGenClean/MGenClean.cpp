@@ -366,7 +366,7 @@ void ProcessTask(path path_info) {
 	// Pause to not overload mysql
 	Sleep(10);
 	// Query
-	q.Format("SELECT j_size, TIMESTAMPDIFF(DAY, GREATEST(j_added, j_queued, j_finished), NOW()) AS j_passed, f_name, f_store, j_cleaned, files.f_id, j_class FROM jobs LEFT JOIN files USING (f_id) WHERE j_id='%ld'",
+	q.Format("SELECT j_size, TIMESTAMPDIFF(DAY, GREATEST(j_added, j_queued, j_finished), NOW()) AS j_passed, f_name, f_store, j_cleaned, files.f_id, j_class FROM jobs LEFT JOIN files USING (f_id) WHERE j_id='%lld'",
 		CDb::j_id);
 	db.Fetch(q);
 	// Database error
@@ -381,7 +381,7 @@ void ProcessTask(path path_info) {
 		int j_passed = db.GetInt("j_passed");
 		// Delete unknown files only after a month
 		if (j_passed > 30) {
-			est.Format("Task %ld [%s-%s-%s]: passed %d days not found in database, deleting",
+			est.Format("Task %lld [%s-%s-%s]: passed %d days not found in database, deleting",
 				CDb::j_id, year, month, day, j_passed);
 			WriteLogLocal(est);
 			//Run("cmd.exe", "/c rmdir /s /q \"" + pth + "\"", 5000);
@@ -391,7 +391,7 @@ void ProcessTask(path path_info) {
 			//abort();
 		}
 		else {
-			est.Format("Task %ld [%s-%s-%s]: passed %d days not found in database",
+			est.Format("Task %lld [%s-%s-%s]: passed %d days not found in database",
 				CDb::j_id, year, month, day, j_passed);
 			//cout << est << "\n";
 		}
@@ -406,14 +406,14 @@ void ProcessTask(path path_info) {
 	int j_cleaned = db.GetInt("j_cleaned");
 	if (!f_id) {
 		if (j_passed > 31) {
-			est.Format("Task %ld [%s-%s-%s]: passed %d days does not have file in database, deleted",
+			est.Format("Task %lld [%s-%s-%s]: passed %d days does not have file in database, deleted",
 				CDb::j_id, year, month, day, j_passed);
 			WriteLogLocal(est);
-			q.Format("DELETE FROM jobs WHERE j_id='%ld'", CDb::j_id);
+			q.Format("DELETE FROM jobs WHERE j_id='%lld'", CDb::j_id);
 			db.Query(q);
 		}
 		else {
-			est.Format("Task %ld [%s-%s-%s]: passed %d days does not have file in database",
+			est.Format("Task %lld [%s-%s-%s]: passed %d days does not have file in database",
 				CDb::j_id, year, month, day, j_passed);
 			//cout << est << "\n";
 		}
@@ -424,7 +424,7 @@ void ProcessTask(path path_info) {
 	}
 	// Collect size
 	if (!j_size) {
-		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%ld'",
+		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%lld'",
 			CGLib::FolderSize(pth + "\\"), CDb::j_id);
 		db.Query(q);
 		cout << "Task " << CDb::j_id << ": collected size\n";
@@ -434,18 +434,18 @@ void ProcessTask(path path_info) {
 	if (f_store >= 366000) {
 		if (f_store == 366000 && j_passed > 366) {
 			// Check if task is last successful of this class
-			q.Format("SELECT j_id FROM jobs WHERE f_id = %d AND j_id > %ld AND j_state = 3 AND j_result = 0 AND j_class = %d",
+			q.Format("SELECT j_id FROM jobs WHERE f_id = %d AND j_id > %lld AND j_state = 3 AND j_result = 0 AND j_class = %d",
 				f_id, CDb::j_id, j_class);
 			db.Fetch(q);
 			if (db.result.size()) {
-				est.Format("Archived task %ld file %d: passed %d days, cleaned",
+				est.Format("Archived task %lld file %d: passed %d days, cleaned",
 					CDb::j_id, f_id, j_passed);
 				WriteLog(est);
 				need_clean = 2;
 			}
 			else {
 				if (!j_cleaned) {
-					est.Format("Task %ld file %d: passed %d days, cleaning stems",
+					est.Format("Task %lld file %d: passed %d days, cleaning stems",
 						CDb::j_id, f_id, j_passed);
 					WriteLog(est);
 					need_clean = 1;
@@ -456,26 +456,26 @@ void ProcessTask(path path_info) {
 	else {
 		if (j_passed > f_store) {
 			need_clean = 2;
-			est.Format("Task %ld file %d: passed %d > %d days, cleaned",
+			est.Format("Task %lld file %d: passed %d > %d days, cleaned",
 				CDb::j_id, f_id, j_passed, f_store);
 			WriteLog(est);
 		}
 	}
 	if (need_clean == 2) {
 		CGLib::RmDir(pth + "\\", ".pl");
-		q.Format("UPDATE jobs SET j_cleaned=2 WHERE j_id='%ld'", CDb::j_id);
+		q.Format("UPDATE jobs SET j_cleaned=2 WHERE j_id='%lld'", CDb::j_id);
 		db.Query(q);
 		// Collect size
-		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%ld'",
+		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%lld'",
 			CGLib::FolderSize(pth + "\\"), CDb::j_id);
 		db.Query(q);
 	}
 	if (need_clean == 1) {
 		CGLib::CleanFolder(pth + "\\" + CGLib::bname_from_path(f_name) + "*_*.mp3");
-		q.Format("UPDATE jobs SET j_cleaned=1 WHERE j_id='%ld'", CDb::j_id);
+		q.Format("UPDATE jobs SET j_cleaned=1 WHERE j_id='%lld'", CDb::j_id);
 		db.Query(q);
 		// Collect size
-		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%ld'",
+		q.Format("UPDATE jobs SET j_size='%llu' WHERE j_id='%lld'",
 			CGLib::FolderSize(pth + "\\"), CDb::j_id);
 		db.Query(q);
 	}
