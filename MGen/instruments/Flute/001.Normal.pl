@@ -2,6 +2,7 @@ include "..\include\SM Woodwinds.pl"
 
 # Main
 library = "Samplemodeling Flute 2.8.0" # For which library algorithm is optimized
+Pan_default = 45
 
 # Instrument parameters
 n_min = "A#3" # Lowest note
@@ -16,4 +17,3 @@ harsh_acc_vel = 90 # Velocity equal or above this value triggers harsh sustain
 harsh_acc_freq = 100 # Frequency of harsh sustain articulation in percent of all possible situations
 slow_acc_vel = 0 # Velocity equal or below this value triggers slow sustain
 slow_acc_minlen = 400 # Minimum note length (ms) that can have a normal or lower sustain
-
