@@ -8,7 +8,7 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2019-03-14 23:05:43
-Midi_file = music\Music\Arkhipenko\Dark crusade.mid
+Midi_file = music\Music\Alexey Arkhipenko\Dark crusade.mid
 
 MidiFileType = "Sibelius" # Injected by Alexey Arkhipenko at 2019-03-11 01:38:03
 AutoLegato = "1" # Injected by Alexey Arkhipenko at 2019-03-11 01:45:03

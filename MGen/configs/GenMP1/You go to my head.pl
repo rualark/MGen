@@ -8,7 +8,7 @@ midifile_in_mul = 16 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-02-08 23:34:19
-Midi_file = music\Music\Arkhipenko\You go to my head.mid
+Midi_file = music\Music\Alexey Arkhipenko\You go to my head.mid
 
 Instruments = "Tenor sax/Normal,Piano/Soft,Contrabass/Pizzicato,Jazz drum set/Map"
 

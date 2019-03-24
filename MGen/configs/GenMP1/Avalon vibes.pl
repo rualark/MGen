@@ -8,7 +8,7 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-30 11-38-57
-Midi_file = music\Music\arkhipenko\Avalon vibes.mid
+Midi_file = music\Music\Alexey Arkhipenko\Avalon vibes.mid
 Instruments = Piano,Piano,Tuba,Piano
 
 Instrument = Piano

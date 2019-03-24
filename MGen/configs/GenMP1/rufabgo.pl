@@ -8,7 +8,7 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-01-14 11:28:04
-Midi_file = music\Music\arkhipenko\rufabgo.mid
+Midi_file = music\Music\Alexey Arkhipenko\rufabgo.mid
 
 #Instruments = Piccolo,Flute,Alto Flute,Bass Flute
 #Instruments = Oboe,Clarinet,English Horn,Bassoon

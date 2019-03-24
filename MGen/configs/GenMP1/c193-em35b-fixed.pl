@@ -9,7 +9,7 @@ AutoLegato = 0
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2018-03-20 00:06:38
-Midi_file = music\Music\Arkhipenko\c193-em35b-fixed.mid
+Midi_file = music\Music\Alexey Arkhipenko\c193-em35b-fixed.mid
 
 MidiFileType = "Sibelius"
 reverb_mix = "20"

@@ -8,5 +8,5 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 
 # This config was created from default config file configs\GenMP1.pl
 # Created at 2017-04-24 19-15-17
-Midi_file = music\Music\arkhipenko\hamlet.mid
+Midi_file = music\Music\Alexey Arkhipenko\hamlet.mid
 Instruments = Violin,Piano,Piano,Piano,Piano
