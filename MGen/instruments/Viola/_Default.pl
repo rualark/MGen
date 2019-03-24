@@ -2,6 +2,7 @@ include "..\include\Embertone IS.pl"
 
 # Main
 library = "Fischer Viola 1.0" # For which library algorithm is optimized
+Pan_default = 55
 
 # Instrument parameters
 n_min = C3 # Lowest note

@@ -2,6 +2,7 @@
 library = "True Strike Cinematic Orchestral Percussion" # For which library algorithm is optimized
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
+Pan_default = XX
 
 # Instrument parameters
 n_min = "F4" # Lowest note

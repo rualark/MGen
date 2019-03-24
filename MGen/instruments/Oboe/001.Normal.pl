@@ -2,6 +2,7 @@ include "..\include\SM Woodwinds.pl"
 
 # Main
 library = "Samplemodeling Oboe 2.8.0" # For which library algorithm is optimized
+Pan_default = 52
 
 # Instrument parameters
 n_min = "G#3" # Lowest note

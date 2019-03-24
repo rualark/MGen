@@ -2,6 +2,7 @@ include "..\include\Embertone IS.pl"
 
 # Main
 library = "Blakus Cello 1.0" # For which library algorithm is optimized
+Pan_default = 65
 
 # Instrument parameters
 n_min = C2 # Lowest note

@@ -2,6 +2,7 @@ include "..\include\SM Brass.pl"
 
 # Main
 library = Samplemodeling Tuba v3 # For which library algorithm is optimized
+Pan_default = 69
 
 # Techniques mapping to commands
 Technique = "straight mute; Mute: 100"

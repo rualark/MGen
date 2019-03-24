@@ -1,4 +1,5 @@
 include "..\Flute\001.Normal.pl"
+Pan_default = 46
 
 # Main
 library = "Samplemodeling Alto Flute 2.8.0" # For which library algorithm is optimized

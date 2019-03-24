@@ -2,6 +2,7 @@ include "..\include\SM Brass.pl"
 
 # Main
 library = Samplemodeling Trumpet v3 # For which library algorithm is optimized
+Pan_default = 58
 
 # Initial setup
 

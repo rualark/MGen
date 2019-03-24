@@ -2,6 +2,7 @@ include "..\include\SM Woodwinds.pl"
 
 # Main
 library = "Samplemodeling Saxophones 2.8.0" # For which library algorithm is optimized
+Pan_default = 47
 
 # Instrument parameters
 n_min = "B2" # Lowest note

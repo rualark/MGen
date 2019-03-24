@@ -2,6 +2,7 @@ include "..\include\SM Brass.pl"
 
 # Main
 library = Samplemodeling Trombone v3 # For which library algorithm is optimized
+Pan_default = 33
 
 # Techniques mapping to commands
 Technique = "straight mute; Mute: 25"

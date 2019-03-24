@@ -2,6 +2,7 @@ include "..\include\SM Brass.pl"
 
 # Main
 library = "Samplemodeling Horn v3" # For which library algorithm is optimized
+Pan_default = 35
 
 # Techniques mapping to commands
 Technique = "brass stop; Mute: 25"

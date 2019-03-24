@@ -1,6 +1,7 @@
 # Main
 Library = ProjectSAM Organ Mystique - Large Organ # For which library algorithm is optimized
 Type = 0 # Instrument type
+Pan_default = 49
 
 # Instrument parameters
 n_min = C2 # Lowest note
@@ -29,7 +30,6 @@ Attack = 7 # default 7
 Decay = 0 # default 0
 Sustain = 127 # default 127
 Release = 21 # default 0
-Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Lengroup adaptor

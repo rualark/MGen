@@ -2,6 +2,7 @@ include "..\include\Embertone IS.pl"
 
 # Main
 library = "Friedlander Violin 1.5" # For which library algorithm is optimized
+Pan_default = 35
 
 # Instrument parameters
 n_min = G3 # Lowest note

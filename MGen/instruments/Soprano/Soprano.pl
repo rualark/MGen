@@ -1,4 +1,5 @@
 include "..\include\SI VoR.pl"
+Pan_default = 59
 
 # Controls
 KswGroup = "C0: Ah", "C#0: Oo" # Syllable

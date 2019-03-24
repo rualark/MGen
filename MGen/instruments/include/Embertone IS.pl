@@ -46,7 +46,6 @@ Reverb level = 0 # default: enabled
 # Initial setup (can change)
 Bow noise reduction = 0
 Round-robin on = 127
-Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Automation parameters

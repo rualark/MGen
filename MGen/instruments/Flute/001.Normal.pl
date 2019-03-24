@@ -2,7 +2,7 @@ include "..\include\SM Woodwinds.pl"
 
 # Main
 library = "Samplemodeling Flute 2.8.0" # For which library algorithm is optimized
-Pan_default = 45
+Pan_default = 48
 
 # Instrument parameters
 n_min = "A#3" # Lowest note

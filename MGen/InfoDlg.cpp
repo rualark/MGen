@@ -217,8 +217,10 @@ BOOL CInfoDlg::OnInitDialog()
 			pGen->icf[pGen->instr[mv]].lib, pGen->icf[pGen->instr[mv]].all_ahead, 
 			pGen->icf[pGen->instr[mv]].legato_ahead[0]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
-		st.Format("Instrument volume: %.1f dB, pan: %d\n",
-			pGen->icf[pGen->instr[mv]].db_compressed, pGen->icf[pGen->instr[mv]].pan);
+		st.Format("Instrument volume: %.1f dB, pan: %d (%s default %d, then pan %d)\n",
+			pGen->icf[pGen->instr[mv]].db_compressed, pGen->icf[pGen->instr[mv]].pan,
+			pGen->icf[pGen->instr[mv]].pan_invert?"invert":"no invert", pGen->icf[pGen->instr[mv]].pan_default,
+			pGen->icf[pGen->instr[mv]].pan_apply);
 		m_info.AddText(st, RGB(0, 0, 0), 0);
 		st.Format("Voice show transpose: %d semitones\n", pGen->show_transpose[mv]);
 		m_info.AddText(st, RGB(0, 0, 0), 0);

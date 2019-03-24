@@ -2,6 +2,7 @@ include "..\include\SM Woodwinds.pl"
 
 # Main
 library = "Samplemodeling Bassoon 2.8.0" # For which library algorithm is optimized
+Pan_default = 54
 
 # Instrument parameters
 n_min = "A1" # Lowest note

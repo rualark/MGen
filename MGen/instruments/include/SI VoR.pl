@@ -34,7 +34,6 @@ Legato transition speed = 0
 Legato on = 101
 Chord auto-pan on = 0
 Release samples on = 101
-Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Randomization

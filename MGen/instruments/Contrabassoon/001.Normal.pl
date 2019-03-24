@@ -2,6 +2,7 @@ include "..\include\SM Woodwinds.pl"
 
 # Main
 library = "Samplemodeling Contrabassoon 2.8.0" # For which library algorithm is optimized
+Pan_default = 58
 
 # Instrument parameters
 n_min = "A0" # Lowest note

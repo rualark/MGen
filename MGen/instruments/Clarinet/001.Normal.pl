@@ -2,6 +2,7 @@ include "..\include\SM Woodwinds.pl"
 
 # Main
 library = "Samplemodeling Clarinet 2.8.0" # For which library algorithm is optimized
+Pan_default = 45
 
 # Instrument parameters
 n_min = "C#3" # Lowest note

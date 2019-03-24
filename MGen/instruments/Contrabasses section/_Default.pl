@@ -1,4 +1,5 @@
 include "..\include\LASS.pl"
+Pan_default = 67
 
 # Instrument parameters
 n_min = C1 # Lowest note

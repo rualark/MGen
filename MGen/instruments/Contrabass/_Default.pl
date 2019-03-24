@@ -2,6 +2,7 @@ include "..\include\Embertone IS.pl"
 
 # Main
 library = "Leonid Bass 1.0" # For which library algorithm is optimized
+Pan_default = 67
 
 # Instrument parameters
 n_min = C1 # Lowest note

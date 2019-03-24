@@ -2,6 +2,7 @@ include "..\include\SM Woodwinds.pl"
 
 # Main
 library = "Samplemodeling English Horn 2.8.0" # For which library algorithm is optimized
+Pan_default = 58
 
 # Instrument parameters
 n_min = "D3" # Lowest note

@@ -2,6 +2,7 @@
 library = "ProjectSAM: Concert Harp Exp" # For which library algorithm is optimized
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
+Pan_default = 30
 
 # Instrument parameters
 n_min = "C#1" # Lowest note

@@ -12,5 +12,5 @@ AutoLegato = 0
 Midi_file = music\Music\test\test-multistage.mid
 Instruments = "Horn"
 
-"Horn/Normal/1/1": Volume = "50"
-"Horn/Normal/1": Pan = "60"
+#"Horn/Normal/1/1": Volume = "50"
+#"Horn/Normal/1/1": Pan = "60"

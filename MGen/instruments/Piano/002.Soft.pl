@@ -1,6 +1,7 @@
 # Main
 Library = Native Instruments Gentleman # For which library algorithm is optimized
 Type = 0 # Instrument type
+Pan_default = 47
 
 # These controls should be mapped manually
 CC_Name = 2: "Color"
@@ -99,7 +100,6 @@ db_max = 12 # Maximum controlled loudness in db when volume CC is 127
 db_coef = 3 # Slope of CC to db function (3 for Kontakt, 1 for SWAM)
 
 # Initial  setup
-Pan = 50 # default 50 (maximum left, 50 - default position, 100 - maximum right)
 Volume = 100 # default 100 (relative volume from 0 to 100)
 
 # Pedal adaptor
