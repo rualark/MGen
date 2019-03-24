@@ -2,7 +2,7 @@
 library = "CinePerc 1.1" # For which library algorithm is optimized
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
-Pan_default = XX
+Pan_default = 45
 
 # Instrument parameters
 n_min = "C2" # Lowest note

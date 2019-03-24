@@ -3,7 +3,7 @@ library = "True Strike Cinematic Orchestral Percussion" # For which library algo
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
 single_stage = 1 # Collapse all tracks for this instrument into a single stage
-Pan_default = XX
+Pan_default = 53
 
 # Instrument parameters
 n_min = "C2" # Lowest note

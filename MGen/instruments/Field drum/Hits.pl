@@ -3,7 +3,7 @@ library = "True Strike Cinematic Orchestral Percussion" # For which library algo
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
 n_min = D2
-Pan_default = XX
+Pan_default = 56
 
 # Instrument parameters
 ReplacePitch = "C4" # Replace all notes in track with this pitch
