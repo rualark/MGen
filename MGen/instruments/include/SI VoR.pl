@@ -54,10 +54,15 @@ nonlegato_freq = 20 # Frequency (in percent) when legato can be replaced with no
 nonlegato_minlen = 400 # Minimum note length (in ms) allowed to convert to nonlegato
 nonlegato_maxgap = 300 # Maximum gap between notes (in ms) introduced by automatic nonlegato 
 
-# Bell adaptor
-bell_mindur = 700-200 # Minimum note duration (ms) that can have a bell
-bell_mul = 0.2-0.2 # Multiply dynamics by this parameter at bell start-end
-bell_len = 30-30 # Percent of notelength to use for slope at bell start-end
+# Automatic crescendo for long notes without attack
+cresc_mindur = 700 # Minimum note duration (ms) that can have automatic crescendo
+cresc_mul = 0.2 # Multiply dynamics by this coefficient at crescendo start (0.2 creates smooth slope)
+cresc_len = 30 # Percent of note length to use for crescendo
+
+# Automatic diminuendo for long notes
+dim_mindur = 200 # Minimum note duration (ms) that can have automatic diminuendo
+dim_mul = 0.2 # Multiply dynamics by this coefficient at diminuendo end (0.2 creates smooth slope)
+dim_len = 30 # Percent of note length to use for diminuendo
 
 # Reverse bell adaptor
 rbell_freq = 0 # Frequency to apply reverse bell when all conditions met

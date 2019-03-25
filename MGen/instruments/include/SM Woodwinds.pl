@@ -71,11 +71,16 @@ retrigger_rand_max = 300 # Maximum length in ms to move note end to the left in 
 retrigger_rand_end = 40 # Maximum percent of note length to move note end to the left in case of nonlegato retrigger
 retrigger_mingap = 30 # Minimum gap between notes to create during retrigger
 
-# Bell adaptor
-bell_mindur = 800-300 # Minimum note duration (ms) that can have a bell
-bell_mul = 0.6-0.2 # Multiply dynamics by this parameter at bell start-end
-bell_len = 30-30 # Percent of notelength to use for slope at bell start-end
-bell_vel = 80-120 # Set belled note velocity to random between these percents of starting dynamics
+# Automatic crescendo for long notes without attack
+cresc_mindur = 800 # Minimum note duration (ms) that can have automatic crescendo
+cresc_mul = 0.6 # Multiply dynamics by this coefficient at crescendo start (0.2 creates smooth slope)
+cresc_len = 30 # Percent of note length to use for crescendo
+cresc_vel = 80-100 # Set belled note velocity to random between these percents of starting dynamics
+
+# Automatic diminuendo for long notes
+dim_mindur = 300 # Minimum note duration (ms) that can have automatic diminuendo
+dim_mul = 0.2 # Multiply dynamics by this coefficient at diminuendo end (0.2 creates smooth slope)
+dim_len = 30 # Percent of note length to use for diminuendo
 
 # Reverse bell adaptor
 rbell_freq = 0 # Frequency to apply reverse bell when all conditions met
