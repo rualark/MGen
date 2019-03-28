@@ -35,18 +35,18 @@ CC_vib = 2 # CC number for vibrato intensity
 
 # Automatic crescendo for long notes without attack
 cresc_mindur = 700 # Minimum note duration (ms) that can have automatic crescendo
-cresc_mul = 0.8 # Multiply dynamics by this coefficient at crescendo start (0.2 creates smooth slope)
+cresc_mul = 80 # Multiply dynamics by this percent at crescendo start (0.2 creates smooth slope)
 cresc_len = 30 # Percent of note length to use for crescendo
 
 # Automatic diminuendo for long notes
 dim_mindur = 300 # Minimum note duration (ms) that can have automatic diminuendo
-dim_mul = 0.4 # Multiply dynamics by this coefficient at diminuendo end (0.2 creates smooth slope)
+dim_mul = 40 # Multiply dynamics by this percent at diminuendo end (0.2 creates smooth slope)
 dim_len = 30 # Percent of note length to use for diminuendo
 
 # Reverse bell adaptor
 rbell_freq = 0 # Frequency to apply reverse bell when all conditions met
 rbell_dur = 300-1000 # Minimum note duration (ms) that can have a reverse bell - that will have deepest reverse bell
-rbell_mul = 0.8-0.2 # Multiply dynamics by this parameter at bell center with mindur - with longer dur
+rbell_mul = 20-80 # Multiply dynamics by this parameter at bell center with longer-shorter duration
 rbell_pos = 20-80 # Leftmost-rightmost minimum reverse bell position inside window (percent of window duration)
 
 # Vibrato adaptor

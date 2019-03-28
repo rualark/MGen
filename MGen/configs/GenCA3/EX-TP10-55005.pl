@@ -12,3 +12,7 @@ MusicXML_file = music\Counterpoint 3 voices\known\EX-TP10-55005.xml
 species=55555
 
 ctools_task_id = 55510
+
+Instruments = "Bass,Tenor,Alto,Soprano"
+species = "55555" # Automatic species analysis. Injected by Alexey Arkhipenko at 2019-02-21 13:50:02
+"Bass/Bass/1": Volume = "20" # Injected by Alexey Arkhipenko at 2019-03-28 17:10:03

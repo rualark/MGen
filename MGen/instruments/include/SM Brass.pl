@@ -80,19 +80,19 @@ retrigger_rand_end = 70 # Maximum percent of note length to move note end to the
 
 # Automatic crescendo for long notes without attack
 cresc_mindur = 800 # Minimum note duration (ms) that can have automatic crescendo
-cresc_mul = 0.6 # Multiply dynamics by this coefficient at crescendo start (0.2 creates smooth slope)
+cresc_mul = 60 # Multiply dynamics by this percent at crescendo start (0.2 creates smooth slope)
 cresc_len = 30 # Percent of note length to use for crescendo
 cresc_vel = 80-100 # Set belled note velocity to random between these percents of starting dynamics
 
 # Automatic diminuendo for long notes
 dim_mindur = 300 # Minimum note duration (ms) that can have automatic diminuendo
-dim_mul = 0.2 # Multiply dynamics by this coefficient at diminuendo end (0.2 creates smooth slope)
+dim_mul = 20 # Multiply dynamics by this percent at diminuendo end (0.2 creates smooth slope)
 dim_len = 30 # Percent of note length to use for diminuendo
 
 # Reverse bell adaptor
 rbell_freq = 0 # Frequency to apply reverse bell when all conditions met
 rbell_dur = 1000-3000 # Minimum note duration (ms) that can have a reverse bell - that will have deepest reverse bell
-rbell_mul = 0.9-0.2 # Multiply dynamics by this parameter at bell center with mindur - with longer dur
+rbell_mul = 20-90 # Multiply dynamics by this parameter at bell center with longer-shorter duration
 rbell_pos = 20-80 # Leftmost-rightmost minimum reverse bell position inside window (percent of window duration)
 
 # Vibrato adaptor
