@@ -2,7 +2,7 @@
 Keyboard/Piano                        | Hard                  | 1   | 0   | +   | pf   | Keyboard, Keys, Klavier, fortepiano
 Keyboard/Organ                        | Organ                 | 14  | 1   | +   | org  | Pipe organ
 Woodwinds/Piccolo                     | Normal                | 1   | 26  | -   | pic  | Pic., Piccolo flute, Flute piccolo, Petite flute, Pikkoloflote, kleine flote, ottavino, flauto piccolo, pikkolo, malaia fleita, fleita pikkolo, flautin, ottavino, ottavini
-Woodwinds/Flute                       | Normal                | 16  | 27  | +   | fl   | Fleita, Flauto, Fl., Grande flute, Flute traversiere, Flote, Querflote, Flauta, Flauti
+Woodwinds/Flute                       | Normal                | 16  | 27  | +   | fl   | Fleita, Flauto, Fl, Grande flute, Flute traversiere, Flote, Querflote, Flauta, Flauti
 Woodwinds/Alto Flute                  | Normal                | 1   | 28  | -   | afl  |
 Woodwinds/Bass Flute                  | Normal                | 1   | 29  | -   | bfl  |
 Woodwinds/Clarinet                    | Normal                | 15  | 30  | +   | cl   | Clarinette, Klarinette, Clarinetto, Klarnet, Clarinete
@@ -25,10 +25,10 @@ Brass/Trombone                        | Normal                | 5   | 14  | +   
 Brass/Valve trombone                  | Normal                | 5   | 20  | -   | vtbn |
 Brass/Bass trombone                   | Normal                | 5   | 21  | -   | btbn | Trombone basse
 Brass/Tuba                            | Normal                | 6   | 15  | +   | tba  | tube
-Vocal/Soprano                         | Soprano               | 7   | 22  | +   | sop  | Sopran
-Vocal/Alto                            | Alto                  | 8   | 23  | +   | alt  | contralto, Alt, 
-Vocal/Tenor                           | Tenor                 | 9   | 24  | +   | ten  | taille, tenore
-Vocal/Bass                            | Bass                  | 10  | 25  | +   | bas  | basse, basso, bas, bajo
+Vocal/Soprano vocal                   | Soprano               | 7   | 22  | +   | sop  | Sopran
+Vocal/Alto vocal                      | Alto                  | 8   | 23  | +   | alt  | contralto, Alt, 
+Vocal/Tenor vocal                     | Tenor                 | 9   | 24  | +   | ten  | taille, tenore
+Vocal/Bass vocal                      | Bass                  | 10  | 25  | +   | bas  | basse, basso, bas, bajo
 Pitched percussion/Timpani            | Long hits             | 1   | 40  | -   | tim  | Kettle drums, Pauken, Timps
 Pitched percussion/Xylophone          | Hits                  | 1   | 41  | -   | xyl  | Xylophon, xilofono, ksilofon, xilofon, xilofono, Silofono
 Pitched percussion/Glockenspiel       | Hits                  | 1   | 42  | -   | gl   | Campanelli, Bells, Concert bells, Orchestral bells, Carillon, Carillion
