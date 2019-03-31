@@ -1,4 +1,4 @@
-include "..\Flute\001.Normal.pl"
+include "..\Flute\001.Auto.pl"
 Pan_default = 46
 
 # Main

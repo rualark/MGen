@@ -1,4 +1,4 @@
-include "..\Flute\001.Normal.pl"
+include "..\Flute\001.Auto.pl"
 
 # Main
 library = "Samplemodeling Piccolo 2.8.0" # For which library algorithm is optimized

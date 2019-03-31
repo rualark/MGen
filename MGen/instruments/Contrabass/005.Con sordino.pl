@@ -1,3 +1,3 @@
-include "001.Arco.pl"
+include "001.Auto.pl"
 
 InitTechnique = "con sord"
