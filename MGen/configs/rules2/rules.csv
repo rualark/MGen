@@ -77,6 +77,7 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;105;;;0;Melody;Compensated leap;Compensated to 3rd;4th;-1;;;5;;1;;;;0;0;;;;;;;
 1;106;;;0;Melody;Compensated leap;Compensated to 3rd;5th;-1;;;5;;1;;;;0;0;;;;;;;
 1;107;;;0;Melody;Compensated leap;Compensated to 3rd;>5th;-1;;;5;;1;;;;0;0;;;;;;;
+1;304;;;50;Melody;Compensated leap;8ve compensated to 4th;8ve;0;;;5;;1;;;;;;;;;;;;
 1;144;;;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;3rd;-1;Compensated to 5th, precompensated within 6 notes;;5;;1;;;;0;0;;;;;;;
 1;145;;;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;4th;-1;Compensated to 5th, precompensated within 6 notes;;5;;1;;;;92;0;;;;;;;
 1;146;;;0;Melody;Compensated leap;C5P last 4 measures, 8 notes;5th;-1;Compensated to 5th, precompensated within 6 notes;;5;;1;;;;127;0;;;;;;;
@@ -480,9 +481,9 @@ Set;Rid;Species;Voices;Severity;Class;Group;Name;SubName;Accept;Comment;SubComme
 1;254;;;50;Harmony;Border;Non-permitted first harmonic interval;m9;0;;;;;;;;;;;;;;;;;
 1;47;;;50;Harmony;Border;Penultimate chord;:no leading-tone;0;;no leading tone is allowed if last bass notes are V-I;1;;1;;;;108;5;;;;;;;
 1;335;;;50;Harmony;Border;Penultimate chord;:no V or VII chord;0;;Penultimate harmony is not V or VII;1;;1;;;;146;1;;;;;;;
-1;89;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive 3rds;> 3;0;More than AA 3rds in a row;;9;1;1;;;Consec. 3rds;27;0;;;;;;;
-1;238;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive 4ths;> 3;0;More than AA 4ths in a row;;9;1;1;;;Parallel 4ths;;;;;;;;;
-1;90;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive 6ths;> 3;0;More than AA 6ths in a row;;9;1;1;;;Consec. 6ths;;;;;;;;;
+1;89;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive harmonic 3rds;> 3;0;More than AA 3rds in a row;;9;1;1;;;Consec. 3rds;27;0;;;;;;;
+1;238;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive harmonic 4ths;> 3;0;More than AA 4ths in a row;;9;1;1;;;Parallel 4ths;;;;;;;;;
+1;90;;;50;Harmony;Consecutive 3rds, 4ths and 6ths;Too many consecutive harmonic 6ths;> 3;0;More than AA 6ths in a row;;9;1;1;;;Consec. 6ths;;;;;;;;;
 1;379;;;50;Harmony;Dissonance;Unresolved harmonic tritone;/unresolved;0;;;12;;2;;;Tri.;21;4;;;;;;;
 1;162;;;0;Harmony;Dissonance;Consecutive tritones;parallel;0;;;7;1;;;;!fn!;;;;;;;;;
 1;163;;<6;0;Harmony;Dissonance;Consecutive tritones;contrary;0;;;7;1;;;;!fn!;;;;;;;;;
