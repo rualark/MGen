@@ -11,4 +11,4 @@ AutoLegato = 0
 # Created at 2018-03-09 18:42:43
 Midi_file = music\Music\test\test-trem2.mid
 
-Instruments = Snare drum
+Instruments = "Timpani,Timpani,Timpani" # Injected by Alexey Arkhipenko at 2019-04-02 00:32:04
