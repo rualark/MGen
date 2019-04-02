@@ -3,6 +3,7 @@ library = "True Strike Cinematic Orchestral Percussion" # For which library algo
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
 single_stage = 1 # Collapse all tracks for this instrument into a single stage
+Reverb_fixed = 1 # 0 - reverb can be changed; 1 - reverb cannot be changed (hard coded)
 
 # Instrument parameters
 ReplacePitch = "C4" # Replace all notes in track with this pitch

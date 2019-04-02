@@ -3,6 +3,7 @@ library = "Straight Ahead Jazz Drums 1.31" # For which library algorithm is opti
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
 Pan_default = 51
+Reverb_fixed = 0 # 0 - reverb can be changed; 1 - reverb cannot be changed (hard coded)
 
 # Instrument parameters
 n_min = "C1" # Lowest note

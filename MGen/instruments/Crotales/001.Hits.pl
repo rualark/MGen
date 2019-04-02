@@ -3,6 +3,7 @@ library = "True Strike Cinematic Orchestral Percussion" # For which library algo
 Type = 0 # Instrument type
 poly = 100 # Maximum number of simultaneous voices
 Pan_default = 44
+Reverb_fixed = 1 # 0 - reverb can be changed; 1 - reverb cannot be changed (hard coded)
 
 # Instrument parameters
 n_min = "A#3" # Lowest note
