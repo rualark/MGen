@@ -64,11 +64,14 @@ CC_vibf = 14 # CC number for vibrato speed
 cresc_mindur = 700 # Minimum note duration (ms) that can have automatic crescendo
 cresc_mul = 80 # Multiply dynamics by this percent at crescendo start (0.2 creates smooth slope)
 cresc_len = 30 # Percent of note length to use for crescendo
+cresc_maxvel = 119 # Maximum velocity to still trigger automatic crescendo
+cresc_minpause = 100 # Minimum pause length required before automatic crescendo (ms)
 
 # Automatic diminuendo for long notes
 dim_mindur = 200 # Minimum note duration (ms) that can have automatic diminuendo
 dim_mul = 20 # Multiply dynamics by this percent at diminuendo end (0.2 creates smooth slope)
 dim_len = 30 # Percent of note length to use for diminuendo
+dim_minpause = 100 # Minimum pause length required after automatic diminuendo (ms)
 
 # Reverse bell adaptor
 rbell_freq = 0 # Frequency to apply reverse bell when all conditions met
