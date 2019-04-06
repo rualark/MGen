@@ -10,4 +10,4 @@ midifile_in_mul = 4 # How much you want to decrease minimum step length
 # Created at 2017-04-26 21-17-57
 Midi_file = music\Music\Alexey Arkhipenko\trio.mid
 
-Instruments = "Flute/Normal,Violin/Arco,Cello"
+Instruments = "Flute,Violin,Cello"
