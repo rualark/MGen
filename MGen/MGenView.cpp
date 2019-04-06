@@ -392,153 +392,155 @@ void CMGenView::OnDraw(CDC* pDC)
 			int ci_old = -1;
 			int pos = 0;
 			RectF layoutRect(0, 0, 1000, 500);
-			for (int v = 0; v < pGen->v_cnt; v++) {
-				int ci = v;
-				if (pGen->midifile_loaded && pGen->track_id[v] > 0) ci = pGen->track_id[v] - 1;
-				// Show instrument name
-				if (ci_old != ci) {
-					ci_old = ci;
-					ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
-					SolidBrush brush_v(ncolor);
-					st = pGen->icf[pGen->instr[v]].group;
-					CStringW wst(st);
-					g.MeasureString(wst, st.GetLength(), &font, layoutRect, &sizeRect);
-					g.DrawString(wst, -1, &font, PointF(1150 + pos, 0), &brush_v);
-					pos += sizeRect.Width;
-				}
-				for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
-					if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
-					int ei = i + pGen->len[i][v] - 1;
-					// Check if note steps have different dynamics
-					int step_dyn2 = 0;
-					int step_lining2 = 0;
-					if ((step_dyn) && (pGen->len[i][v] > 1)) {
-						for (int x = i + 1; x <= ei; ++x) {
-							if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
-							if (pGen->lining.size() && 
-								pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
-						}
+			if (1 == 1) {
+				for (int v = 0; v < pGen->v_cnt; v++) {
+					int ci = v;
+					if (pGen->midifile_loaded && pGen->track_id[v] > 0) ci = pGen->track_id[v] - 1;
+					// Show instrument name
+					if (ci_old != ci) {
+						ci_old = ci;
+						ncolor = Color(255 /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
+						SolidBrush brush_v(ncolor);
+						st = pGen->icf[pGen->instr[v]].group;
+						CStringW wst(st);
+						g.MeasureString(wst, st.GetLength(), &font, layoutRect, &sizeRect);
+						g.DrawString(wst, -1, &font, PointF(1150 + pos, 0), &brush_v);
+						pos += sizeRect.Width;
 					}
-					else {
-						for (int x = i + 1; x <= ei; ++x) {
-							if (pGen->lining.size() &&
-								pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
-						}
-					}
-					// Show without step dynamics
-					if (!step_lining2 && (!step_dyn2 || !mf->show_vel)) {
-						if (mf->show_vel) alpha = 40 + (80 * pGen->dyn[i][v] / 127);
-						else alpha = 100;
-						if (mf->show_notecolors) {
-							if (pGen->color[i][v] != 0) {
-								if (CGLib::GetAlpha(pGen->color[i][v]) == 0) ncolor = CGLib::MakeColor(alpha,
-									CGLib::GetRed(pGen->color[i][v]), CGLib::GetGreen(pGen->color[i][v]), CGLib::GetBlue(pGen->color[i][v]));
-								else ncolor = pGen->color[i][v];
-							}
-							else {
-								ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+					for (int i = step1; i < step2; i++) if ((pGen->pause[i][v] == 0) && (pGen->note[i][v] > 0)) {
+						if (i == step1) if (pGen->coff[i][v] > 0) i = i - pGen->coff[i][v];
+						int ei = i + pGen->len[i][v] - 1;
+						// Check if note steps have different dynamics
+						int step_dyn2 = 0;
+						int step_lining2 = 0;
+						if ((step_dyn) && (pGen->len[i][v] > 1)) {
+							for (int x = i + 1; x <= ei; ++x) {
+								if (pGen->dyn[x][v] != pGen->dyn[x - 1][v]) step_dyn2 = 1;
+								if (pGen->lining.size() &&
+									pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
 							}
 						}
 						else {
-							ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
+							for (int x = i + 1; x <= ei; ++x) {
+								if (pGen->lining.size() &&
+									pGen->lining[x][v] != pGen->lining[x - 1][v]) step_lining2 = 1;
+							}
 						}
-						//SolidBrush brush(ncolor);
-						// Show lining
-						if (mf->show_lining && pGen->lining.size() &&
-							pGen->lining[i][v]) {
-							hatch = static_cast<HatchStyle>(pGen->lining[i][v]);
-							ncolor2 = Color(127 - (127 - ncolor.GetAlpha()) / 6.0, ncolor.GetRed() / 6.0,
-								ncolor.GetGreen() / 6.0, ncolor.GetBlue() / 6.0);
-						}
-						else {
-							hatch = HatchStyleLightUpwardDiagonal;
-							ncolor2 = ncolor;
-						}
-						HatchBrush brush(hatch, ncolor2, ncolor);
-						cutend = 0;
-						// Cut long notes end to prevent glueing with other voices
-						if ((i + pGen->noff[i][v] < pGen->t_generated) &&
-							(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) cutend = 1;
-						g.FillRectangle(&brush, X_FIELD + i * nwidth,
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-							pGen->len[i][v] * nwidth - cutend, nheight);
-						// Highlight selected note
-						if ((mouse_step >= i) && (mouse_step <= ei) && (mouse_voice == v)) {
-							g.FillRectangle(&brush, X_FIELD + i * nwidth,
-								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-								pGen->len[i][v] * nwidth - cutend, nheight);
-						}
-					}
-					// Show with step dynamics
-					else {
-						for (int x = i; x <= ei; x++) {
-							alpha = 40 + (80 * pGen->dyn[x][v] / 127);
-							if (mf->show_notecolors && pGen->color[x][v] != 0) {
-								if (CGLib::GetAlpha(pGen->color[x][v]) == 0)
-									ncolor = Color(alpha, CGLib::GetRed(pGen->color[x][v]), 
-										CGLib::GetGreen(pGen->color[x][v]), CGLib::GetBlue(pGen->color[x][v]));
-								else ncolor = pGen->color[x][v];
+						// Show without step dynamics
+						if (!step_lining2 && (!step_dyn2 || !mf->show_vel)) {
+							if (mf->show_vel) alpha = 40 + (80 * pGen->dyn[i][v] / 127);
+							else alpha = 100;
+							if (mf->show_notecolors) {
+								if (pGen->color[i][v] != 0) {
+									if (CGLib::GetAlpha(pGen->color[i][v]) == 0) ncolor = CGLib::MakeColor(alpha,
+										CGLib::GetRed(pGen->color[i][v]), CGLib::GetGreen(pGen->color[i][v]), CGLib::GetBlue(pGen->color[i][v]));
+									else ncolor = pGen->color[i][v];
+								}
+								else {
+									ncolor = Color(alpha /*A*/, v_color[v][0] /*R*/, v_color[v][1] /*G*/, v_color[v][2] /*B*/);
+								}
 							}
 							else {
 								ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
 							}
+							//SolidBrush brush(ncolor);
 							// Show lining
-							if (mf->show_lining && pGen->lining.size() && pGen->lining[x][v]) {
-								hatch = static_cast<HatchStyle>(pGen->lining[x][v]);
+							if (mf->show_lining && pGen->lining.size() &&
+								pGen->lining[i][v]) {
+								hatch = static_cast<HatchStyle>(pGen->lining[i][v]);
 								ncolor2 = Color(127 - (127 - ncolor.GetAlpha()) / 6.0, ncolor.GetRed() / 6.0,
 									ncolor.GetGreen() / 6.0, ncolor.GetBlue() / 6.0);
 							}
 							else {
-								hatch = HatchStyleOutlinedDiamond;
+								hatch = HatchStyleLightUpwardDiagonal;
 								ncolor2 = ncolor;
 							}
 							HatchBrush brush(hatch, ncolor2, ncolor);
 							cutend = 0;
-							if ((x == ei) && (i + pGen->noff[i][v] < pGen->t_generated) &&
+							// Cut long notes end to prevent glueing with other voices
+							if ((i + pGen->noff[i][v] < pGen->t_generated) &&
 								(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) cutend = 1;
-							g.FillRectangle(&brush, X_FIELD + x * nwidth,
+							g.FillRectangle(&brush, X_FIELD + i * nwidth,
 								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-								nwidth - cutend, nheight);
+								pGen->len[i][v] * nwidth - cutend, nheight);
 							// Highlight selected note
 							if ((mouse_step >= i) && (mouse_step <= ei) && (mouse_voice == v)) {
+								g.FillRectangle(&brush, X_FIELD + i * nwidth,
+									y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+									pGen->len[i][v] * nwidth - cutend, nheight);
+							}
+						}
+						// Show with step dynamics
+						else {
+							for (int x = i; x <= ei; x++) {
+								alpha = 40 + (80 * pGen->dyn[x][v] / 127);
+								if (mf->show_notecolors && pGen->color[x][v] != 0) {
+									if (CGLib::GetAlpha(pGen->color[x][v]) == 0)
+										ncolor = Color(alpha, CGLib::GetRed(pGen->color[x][v]),
+											CGLib::GetGreen(pGen->color[x][v]), CGLib::GetBlue(pGen->color[x][v]));
+									else ncolor = pGen->color[x][v];
+								}
+								else {
+									ncolor = Color(alpha /*A*/, v_color[ci][0] /*R*/, v_color[ci][1] /*G*/, v_color[ci][2] /*B*/);
+								}
+								// Show lining
+								if (mf->show_lining && pGen->lining.size() && pGen->lining[x][v]) {
+									hatch = static_cast<HatchStyle>(pGen->lining[x][v]);
+									ncolor2 = Color(127 - (127 - ncolor.GetAlpha()) / 6.0, ncolor.GetRed() / 6.0,
+										ncolor.GetGreen() / 6.0, ncolor.GetBlue() / 6.0);
+								}
+								else {
+									hatch = HatchStyleOutlinedDiamond;
+									ncolor2 = ncolor;
+								}
+								HatchBrush brush(hatch, ncolor2, ncolor);
+								cutend = 0;
+								if ((x == ei) && (i + pGen->noff[i][v] < pGen->t_generated) &&
+									(pGen->note[i + pGen->noff[i][v]][v] == pGen->note[i][v])) cutend = 1;
 								g.FillRectangle(&brush, X_FIELD + x * nwidth,
 									y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
 									nwidth - cutend, nheight);
+								// Highlight selected note
+								if ((mouse_step >= i) && (mouse_step <= ei) && (mouse_voice == v)) {
+									g.FillRectangle(&brush, X_FIELD + x * nwidth,
+										y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+										nwidth - cutend, nheight);
+								}
 							}
 						}
-					}
-					// Show comment
-					if (mf->show_comments && pGen->comment.size() && pGen->comment[i][v].size())
-						g.DrawRectangle(&pen_agray, X_FIELD + i * nwidth,
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-							pGen->len[i][v] * nwidth - cutend, nheight);
-					// Show dstime
-					if (mf->show_shift && pGen->dstime[i][v]) {
-						float twidth = pGen->etime[i] - pGen->stime[i];
-						Pen *mypen;
-						if (pGen->artic[i][v] == aLEGATO || pGen->artic[i][v] == aSLUR) mypen = &pen_black;
-						else if (pGen->artic[i][v] == aPIZZ) mypen = &pen_green;
-						else if (pGen->artic[i][v] == aSTAC) mypen = &pen_ablue;
-						else mypen = &pen_red;
-						g.DrawLine(mypen, X_FIELD + i * nwidth,
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-							(int)(X_FIELD + i * nwidth + pGen->dstime[i][v] * nwidth / twidth),
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
-						g.DrawLine(mypen, X_FIELD + i * nwidth,
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
-							X_FIELD + i * nwidth,
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1);
-						g.DrawLine(&pen_adgray, X_FIELD + (ei + 1) * nwidth - cutend,
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1,
-							(int)(X_FIELD + (ei + 1) * nwidth + pGen->detime[ei][v] * nwidth / twidth - cutend),
-							y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1);
-					}
-					if (pGen->noff[i][v] == 0) break;
-					i = i + pGen->noff[i][v] - 1;
-					// Protect from infinite loop
-					if (i < step1) break;
-				} // for i
-			} // for v
+						// Show comment
+						if (mf->show_comments && pGen->comment.size() && pGen->comment[i][v].size())
+							g.DrawRectangle(&pen_agray, X_FIELD + i * nwidth,
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+								pGen->len[i][v] * nwidth - cutend, nheight);
+						// Show dstime
+						if (mf->show_shift && pGen->dstime[i][v]) {
+							float twidth = pGen->etime[i] - pGen->stime[i];
+							Pen *mypen;
+							if (pGen->artic[i][v] == aLEGATO || pGen->artic[i][v] == aSLUR) mypen = &pen_black;
+							else if (pGen->artic[i][v] == aPIZZ) mypen = &pen_green;
+							else if (pGen->artic[i][v] == aSTAC) mypen = &pen_ablue;
+							else mypen = &pen_red;
+							g.DrawLine(mypen, X_FIELD + i * nwidth,
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+								(int)(X_FIELD + i * nwidth + pGen->dstime[i][v] * nwidth / twidth),
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight);
+							g.DrawLine(mypen, X_FIELD + i * nwidth,
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2 + 1) * nheight,
+								X_FIELD + i * nwidth,
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1);
+							g.DrawLine(&pen_adgray, X_FIELD + (ei + 1) * nwidth - cutend,
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1,
+								(int)(X_FIELD + (ei + 1) * nwidth + pGen->detime[ei][v] * nwidth / twidth - cutend),
+								y_start - (pGen->note[i][v] + pGen->show_transpose[v] - ng_min2) * nheight - 1);
+						}
+						if (pGen->noff[i][v] == 0) break;
+						i = i + pGen->noff[i][v] - 1;
+						// Protect from infinite loop
+						if (i < step1) break;
+					} // for i
+				} // for v
+			}
 			// Show marks
 			CString mark;
 			if (mf->show_marks && pGen->mark.size()) for (int v = 0; v < pGen->v_cnt; v++) {

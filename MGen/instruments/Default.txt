@@ -64,8 +64,8 @@ Unpitched percussion/Timbales         | High                                   |
 Unpitched percussion/Bongo            | High                                   | 7   | 63  | -   | bng  |
 Unpitched percussion/Conga            | Low                                    | 7   | 63  | -   | cng  |
 Unpitched percussion/Jazz drum set    | Map                                    | 15  | 64  | -   | jdk  | Jazz drum kit, Jazz drums
-Strings/Violin                        | Auto                                   | 2   | 2   | +   | vn   | Vln, Violon, Violine, Geige, violino, skripka
-Strings/Violins section               | Auto                                   | 1   | 7   | -   | vns  | Violins, Vlns, Violini, skripki
+Strings/Violin                        | Auto                                   | 2   | 2   | +   | vn   | Vln, Violon, Violine, Geige, violino, skripka, Violin I, Violin 1
+Strings/Violins section               | Auto                                   | 1   | 7   | -   | vns  | Violins, Vlns, Violini, skripki, Violins I, Violins 1
 Strings/Violins II section            | Auto                                   | 1   | 8   | -   | vns  | 2nd Violins, Violins 2, Violins II, Second Violins, 2 Vlns, Vlns. 2, Vlns. 2, Vlns 2, Vlns II, Violini II, Violini 2
 Strings/Viola                         | Auto                                   | 11  | 3   | +   | va   | Vla, Viole, Bratsche
 Strings/Violas section                | Auto                                   | 1   | 9   | -   | vas  | Violas, Vlas
@@ -84,6 +84,6 @@ Strings/Harp                          | Harp                                   |
 
 # Randomization
 rnd_tempo = 6 # Randomize tempo not greater than this percent
-rnd_tempo_step = 1 # Maximum difference in tempo (percent) between adjacent steps while randomizing
 rnd_tempo_slow = 1 # Tempo randomization function slowness
+rnd_tempo_step = 1 # Maximum difference in tempo (percent) between adjacent steps while randomizing
 

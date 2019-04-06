@@ -13,6 +13,7 @@ Volume = 85
 db_max = 0 # Maximum controlled loudness in db when volume CC is 127
 db_coef = 3 # Slope of CC to db function (3 for Kontakt, 1 for SWAM)
 alternate_transpose = 36 # Add this value to pitch for every odd note
+all_ahead = 73 # Time in ms to stretch all notes (sustains and legato) back to cope with slow attack
 
 # Controls
 CC_dynamics = 1

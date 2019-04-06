@@ -12,6 +12,7 @@ Volume_default = 100 # (direct CC volume, should not be changed by user)
 Volume = 85
 db_max = 0 # Maximum controlled loudness in db when volume CC is 127
 db_coef = 3 # Slope of CC to db function (3 for Kontakt, 1 for SWAM)
+all_ahead = 73 # Time in ms to stretch all notes (sustains and legato) back to cope with slow attack
 
 CC_dynamics = 1
 CC_ma = 3 # Number of CC steps to moving average (please use only odd numbers)

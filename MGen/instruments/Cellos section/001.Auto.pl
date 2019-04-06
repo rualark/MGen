@@ -26,10 +26,10 @@ marc_import = 1 # Set to 0 to ignore marcato in source MIDI file and play as nor
 
 # Pizzicato adaptor
 pizz_import = 1 # Set to 0 to ignore pizzicato in source MIDI file and play as normal notes
-pizz_ahead = -1 # Time in ms to stretch pizz notes back to cope with slow attack. -1 falls back to all_ahead
-pizz_dyn_range = 1-60 # (1-100) Percent of pizz dynamics compared to sustain notes
+pizz_ahead = 77 # Time in ms to stretch pizz notes back to cope with slow attack. -1 falls back to all_ahead
+pizz_dyn_range = 1-88 # (1-100) Percent of pizz dynamics compared to sustain notes
 pizz_chan = 4 # Send pizz to separate relative channel
-pizz_db = -12 # Relative db volume for pizz articulation
+pizz_db = -3 # Relative db volume for pizz articulation
 
 # Tremolo adaptor
 trem_maxlen = 100 # Maximum length of one note inside tremolo for detection
