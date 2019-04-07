@@ -258,6 +258,15 @@ ModelManifest.xml
 *.pkf
 *.wav
 /enc_temp_folder
+
+/MGen/Generators
+/MGen/GLibrary
+/MGen/MGenServer.cpp
+/MGen/MainFrm.cpp
+/MGen/MGenClean.cpp
+/MGen/plan
+/MGen/docs
+
 /MGen/git-version.h
 /MGen/git-version.h
 /MGen/autotest/LilyPond
