@@ -262,8 +262,6 @@ ModelManifest.xml
 /MGen/Generators
 /MGen/GLibrary
 /MGen/MGenServer.cpp
-/MGen/MainFrm.cpp
-/MGen/MGenClean.cpp
 /MGen/plan
 /MGen/docs
 
