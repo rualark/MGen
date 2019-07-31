@@ -1,10 +1,6 @@
 # MGen
 Windows build status: [![Build status](https://ci.appveyor.com/api/projects/status/55ruiwxsc0maepvk?svg=true)](https://ci.appveyor.com/project/rualark/mgen)
 
-Issues: [![Stories Shegolev](https://badge.waffle.io/rualark/MGen.png?label=shegolev&title=Shegolev)](http://waffle.io/rualark/MGen)
-[![Stories Thinking](https://badge.waffle.io/rualark/MGen.png?label=thinking&title=Thinking)](http://waffle.io/rualark/MGen)
-[![Stories in Ready](https://badge.waffle.io/rualark/MGen.png?label=ready&title=Ready)](http://waffle.io/rualark/MGen)
-[![Stories in Progress](https://badge.waffle.io/rualark/MGen.png?label=in%20progress&title=In%20progress)](http://waffle.io/rualark/MGen)
 [![Open Source Helpers](https://www.codetriage.com/rualark/mgen/badges/users.svg)](https://www.codetriage.com/rualark/mgen)
 
 Code analysis: [![Codacy Badge](https://api.codacy.com/project/badge/Grade/73206f26408f420bb4f89c751963aef5)](https://www.codacy.com/app/rualark/MGen?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rualark/MGen&amp;utm_campaign=Badge_Grade)
