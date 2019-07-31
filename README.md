@@ -13,6 +13,8 @@ Code analysis: [![Codacy Badge](https://api.codacy.com/project/badge/Grade/73206
 
 Desktop C++ algorithmic music generator laboratory, playing into DAW and exporting MIDI
 
+![MGen GUI](https://i.imgur.com/bJRIndr.png "MGen GUI")
+
 Read about this project: https://www.donationcoder.com/forum/index.php?topic=43816.0
 
 Documentation will be added later. Some schemes how it works: https://drive.google.com/drive/mobile/folders/0Bxe6bKDbjcgecmdaQV85TGxsTDA?usp=drive_webVideos:
